@@ -151,7 +151,13 @@ function setman_ranking($ia)
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	$ansresult = $connect->Execute($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount();
-	for ($i=1; $i<=$anscount; $i++)
+	$qidattributes=getQuestionAttributes($ia[0]);
+	if ($ma=arraySearchByKey("max_answers", $qidattributes, "attribute", 1)) {
+		$max_answers = $ma['value'];
+	} else {
+	    $max_answers = $anscount;
+	}
+	for ($i=1; $i<=$max_answers; $i++)
 	{
 		$mandatorys[]=$ia[1].$i;
 		$mandatoryfns[]=$ia[1];
@@ -1354,15 +1360,24 @@ function do_ranking($ia)
 	} else {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
+	if ($ma=arraySearchByKey("max_answers", $qidattributes, "attribute", 1)) {
+		$max_answers = $ma['value'];
+	} else {
+	    $max_answers = false;
+	}
 	$ansresult = db_execute_assoc($ansquery);   //Checked
 	$anscount = $ansresult->RecordCount();
+	if(!$max_answers) {
+	  $max_answers=$anscount;
+	}
+	$finished=$anscount-$max_answers;
 	$answer .= "\t\t\t<script type='text/javascript'>\n"
 	. "\t\t\t<!--\n"
 	. "\t\t\t\tfunction rankthis_{$ia[0]}(\$code, \$value)\n"
 	. "\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\$index=document.limesurvey.CHOICES_{$ia[0]}.selectedIndex;\n"
 	. "\t\t\t\t\tdocument.limesurvey.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
-	. "\t\t\t\t\tfor (i=1; i<=$anscount; i++)\n"
+	. "\t\t\t\t\tfor (i=1; i<=$max_answers; i++)\n"
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\t\$b=i;\n"
 	. "\t\t\t\t\t\t\$b += '';\n"
@@ -1382,10 +1397,10 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[b] = null;\n"
 	. "\t\t\t\t\t\t\t\t\t}\n"
 	. "\t\t\t\t\t\t\t\t}\n"
-	. "\t\t\t\t\t\t\ti=$anscount;\n"
+	. "\t\t\t\t\t\t\ti=$max_answers;\n"
 	. "\t\t\t\t\t\t\t}\n"
 	. "\t\t\t\t\t\t}\n"
-	. "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == 0)\n"
+	. "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length == $finished)\n"
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
 	. "\t\t\t\t\t\t}\n"
@@ -1438,7 +1453,7 @@ function do_ranking($ia)
 			$existing++;
 		}
 	}
-	for ($i=1; $i<=$anscount; $i++)
+	for ($i=1; $i<=$max_answers; $i++)
 	{
 		$myfname = $ia[1].$i;
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
