@@ -30,7 +30,7 @@
  If you want to distribute this code, please do it as a link to:
  http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/
 */
-
+ini_set('zend.ze1_compatibility_mode', '0'); 
 define('DOMXML_LOAD_PARSING',0);
 define('DOMXML_LOAD_VALIDATING',1);
 define('DOMXML_LOAD_RECOVERING',2);
