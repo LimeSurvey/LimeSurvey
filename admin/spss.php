@@ -446,9 +446,9 @@ for ($i=0; $i < $num_results; $i++) {
 				fwrite($fp, "'0'");
 			}
 			else {
-                if ($fields[$fieldno]['size']=='N' && my_is_numeric($strTmp)===false)
+                if ($fields[$fieldno]['SPSStype']=='N' && my_is_numeric($strTmp)===false)
                 {
-                    $fields[$fieldno]['size']='A';
+                    $fields[$fieldno]['SPSStype']='A';
                 }
 				$len = fwrite($fp, '\''.$strTmp.'\'') - 3; //Don't count the quotes
 				if($len > $fields[$fieldno]['size']){
