@@ -2,7 +2,7 @@
  /*
      pData - Simplifying data population for pChart
      Copyright (C) 2008 Jean-Damien POGOLOTTI
-     Version  1.13 last updated on 07/24/08
+     Version  1.13 last updated on 08/17/08
 
      http://pchart.sourceforge.net
 
@@ -30,6 +30,12 @@
       RemoveSerie($SerieName="Serie1")
       SetAbsciseLabelSerie($SerieName = "Name")
       SetSerieName($Name,$SerieName="Serie1")
+      SetXAxisName($Name="X Axis")
+      SetYAxisName($Name="Y Axis")
+      SetXAxisFormat($Format="number")
+      SetYAxisFormat($Format="number")
+      SetXAxisUnit($Unit="")
+      SetYAxisUnit($Unit="")
       removeSerieName($SerieName)
       removeAllSeries()
      Data retrieval methods :
@@ -45,9 +51,13 @@
 
    function pData()
     {
-     $this->Data = "";
-     $this->DataDescription = "";
-     $this->DataDescription["Position"] = "Name";
+     $this->Data                           = "";
+     $this->DataDescription                = "";
+     $this->DataDescription["Position"]    = "Name";
+     $this->DataDescription["Format"]["X"] = "number";
+     $this->DataDescription["Format"]["Y"] = "number";
+     $this->DataDescription["Unit"]["X"]   = NULL;
+     $this->DataDescription["Unit"]["Y"]   = NULL;
     }
 
    function ImportFromCSV($FileName,$Delimiter=",",$DataColumns=-1,$HasHeader=FALSE,$DataName=-1)
@@ -187,6 +197,36 @@
    function SetSerieName($Name,$SerieName="Serie1")
     {
      $this->DataDescription["Description"][$SerieName] = $Name;
+    }
+
+   function SetXAxisName($Name="X Axis")
+    {
+     $this->DataDescription["Axis"]["X"] = $Name;
+    }
+
+   function SetYAxisName($Name="Y Axis")
+    {
+     $this->DataDescription["Axis"]["Y"] = $Name;
+    }
+
+   function SetXAxisFormat($Format="number")
+    {
+     $this->DataDescription["Format"]["X"] = $Format;
+    }
+
+   function SetYAxisFormat($Format="number")
+    {
+     $this->DataDescription["Format"]["Y"] = $Format;
+    }
+
+   function SetXAxisUnit($Unit="")
+    {
+     $this->DataDescription["Unit"]["X"] = $Unit;
+    }
+
+   function SetYAxisUnit($Unit="")
+    {
+     $this->DataDescription["Unit"]["Y"] = $Unit;
     }
 
    function removeSerieName($SerieName)
