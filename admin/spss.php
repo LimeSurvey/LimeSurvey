@@ -39,12 +39,12 @@ $tempFile = '';
 include_once('login_check.php');
 
 $typeMap = array(
-'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'A'),
-'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'A'),
-'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'A'),
-'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'A'),
-'1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'A'),
-'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'A'),
+'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'N'),
+'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'N'),
+'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'N'),
+'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'N'),
+'1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'N'),
+'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'N'),
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'N'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'N'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
@@ -52,19 +52,19 @@ $typeMap = array(
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'N'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
 'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
-'!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'A'),
-'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'A'),
-'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'A'),
-'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'A'),
-'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'A'),
+'!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'N'),
+'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'N'),
+'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'N'),
+'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'N'),
+'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'N'),
 'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
 'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'N'),
 'M'=>Array('name'=>'Multiple Options','size'=>1,'SPSStype'=>'N'),
-'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'A'),
-'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'A'),
+'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'N'),
+'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'N'),
 'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'N'),
-'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'A'),
-'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'A'),
+'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'N'),
+'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'N'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'N'),
 );
 
@@ -353,7 +353,7 @@ for ($i=0; $i < $num_results; $i++) {
                 }
 		} else if ($fields[$fieldno]['LStype'] == 'Y') 
 		{
-			if ($row[$fieldno] == 'Y')
+			if ($row[$fieldno] == 'Y')    // Yes/No Question Type
 			{
 				@fwrite($fp, "'1' ");
 			} else if ($row[$fieldno] == 'N'){
@@ -361,7 +361,7 @@ for ($i=0; $i < $num_results; $i++) {
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]['LStype'] == 'G') 
+		} else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
 		{
 			if ($row[$fieldno] == 'F')
 			{
@@ -371,7 +371,7 @@ for ($i=0; $i < $num_results; $i++) {
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]['LStype'] == 'C') 
+		} else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
 		{
 			if ($row[$fieldno] == 'Y')
 			{
@@ -383,7 +383,7 @@ for ($i=0; $i < $num_results; $i++) {
 			} else {
 				@fwrite($fp, "'0' ");
 			}
-		} else if ($fields[$fieldno]['LStype'] == 'E') 
+		} else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
 		{
 			if ($row[$fieldno] == 'I')
 			{
@@ -446,6 +446,10 @@ for ($i=0; $i < $num_results; $i++) {
 				fwrite($fp, "'0'");
 			}
 			else {
+                if ($fields[$fieldno]['size']=='N' && my_is_numeric($strTmp)===false)
+                {
+                    $fields[$fieldno]['size']='A';
+                }
 				$len = fwrite($fp, '\''.$strTmp.'\'') - 3; //Don't count the quotes
 				if($len > $fields[$fieldno]['size']){
 					$fields[$fieldno]['size'] = $len;
@@ -661,6 +665,13 @@ function strip_tags_full($string) {
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return strip_tags($string);
 }
+
+function my_is_numeric($value)  {
+    $american = preg_match ("/^(-){0,1}([0-9]+)(,[0-9][0-9][0-9])*([.][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
+    $world = preg_match ("/^(-){0,1}([0-9]+)(.[0-9][0-9][0-9])*([,][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
+   return ($american or $world);
+}
+
 
 exit;
 ?>
