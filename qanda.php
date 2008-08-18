@@ -1710,7 +1710,7 @@ function do_multiplechoice($ia)
 
 		if ($maxansw > 0)
 		{
-			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('".$myfname."cbox').checked ) { count += 1; }\n"; 
+			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
 		}
 
 		if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
@@ -1733,7 +1733,7 @@ function do_multiplechoice($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), max, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
@@ -1905,7 +1905,7 @@ function do_multiplechoice_withcomments($ia)
 	{
 		$maxanswscript .= "\t\t\t\t\tif (count > max)\n"
 			. "\t\t\t\t\t\t{\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), max, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at most '%d' answer(s) for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\tif (me.type == 'checkbox') {me.checked = false;}\n"
 			. "\t\t\t\t\t\tif (me.type == 'text') {\n"
 			. "\t\t\t\t\t\t\tme.value = '';\n"
