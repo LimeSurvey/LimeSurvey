@@ -446,7 +446,7 @@ for ($i=0; $i < $num_results; $i++) {
 				fwrite($fp, "'0'");
 			}
 			else {
-                if ($fields[$fieldno]['SPSStype']=='N' && my_is_numeric($strTmp)===false)
+                if (($fields[$fieldno]['SPSStype']=='N' && my_is_numeric($strTmp)===false) || $fields[$fieldno]['size'>16)
                 {
                     $fields[$fieldno]['SPSStype']='A';
                 }
