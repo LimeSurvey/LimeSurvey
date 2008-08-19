@@ -90,6 +90,9 @@ function renderDataList($fieldArr){
 	foreach ($fieldArr as $field){
         echo "\n";
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
+        if($field['LStype'] == 'N' || $field['LStype']=='K') {
+            $field['size'].='.2';
+        }
 		echo " {$field['id']} {$field['SPSStype']}{$field['size']}";
 		$i++;
 	}
@@ -100,7 +103,7 @@ function renderDataList($fieldArr){
 
 if  (!isset($subaction))
 {
-    $exportspssoutput = browsemenubar($clang->gT("Export results"));
+    $exportspssoutput = browsemenubar($clang->gT('Export results'));
     $exportspssoutput .= "<br />\n";
     $exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
     $exportspssoutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export SPSS syntax file")."</a></li><li>"
@@ -124,10 +127,10 @@ if  ($subaction=='dldata')
 {
     header("Content-Type: application/download; charset=utf-8");
     header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_data_file.dat");
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: no-cache");
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
     
     
   // Get Base Language:
@@ -140,11 +143,11 @@ if  ($subaction=='dldata')
     # Build array that has to be returned
     $fieldmap=createFieldMap($surveyid);
 
-    //echo "FieldMap:";
+    //echo 'FieldMap:';
     //print_r($fieldmap);
 
     #See if tokens are being used
-    $tablelist = $connect->MetaTables() or safe_die ("Error getting table list<br />".$connect->ErrorMsg());
+    $tablelist = $connect->MetaTables() or safe_die ('Error getting table list<br />'.$connect->ErrorMsg());
     foreach ($tablelist as $tbl)
     {
         if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist =  1;}
@@ -158,34 +161,34 @@ if  ($subaction=='dldata')
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
         $row = $result->FetchRow();
-        if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name = $clang->gT("Attribute 1");}
-        if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name = $clang->gT("Attribute 2");}
+        if ($row['attribute1']) {$attr1_name = $row['attribute1'];} else {$attr1_name = $clang->gT('Attribute 1');}
+        if ($row['attribute2']) {$attr2_name = $row['attribute2'];} else {$attr2_name = $clang->gT('Attribute 2');}
         $surveyprivate=$row['private'];
         $language=$row['language'];
     }
 
     $fieldno=0;
 
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
 
         $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
         foreach ($tablefieldnames as $tokenfieldname) {
             $token_fields[]=$tokenfieldname;
         }
-        if (in_array("firstname", $token_fields)) {
-            $fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
+        if (in_array('firstname', $token_fields)) {
+            $fields[$fieldno++]=array('id'=>'fname','name'=>$clang->gT('First Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
         }
-        if (in_array("lastname", $token_fields)) {
-            $fields[$fieldno++]=array("id"=>"lname","name"=> $clang->gT("Last Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
+        if (in_array('lastname', $token_fields)) {
+            $fields[$fieldno++]=array('id'=>'lname','name'=> $clang->gT('Last Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
         }
-        if (in_array("email", $token_fields)) {
-            $fields[$fieldno++]=array("id"=>"email","name"=> $clang->gT("Email"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+        if (in_array('email', $token_fields)) {
+            $fields[$fieldno++]=array('id'=>'email','name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
         }
-        if (in_array("attribute_1", $token_fields)) {
-            $fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+        if (in_array('attribute_1', $token_fields)) {
+            $fields[$fieldno++]=array('id'=>'attr1','name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
         }
-        if (in_array("attribute_2", $token_fields)) {
-            $fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+        if (in_array('attribute_2', $token_fields)) {
+            $fields[$fieldno++]=array('id'=>'attr2','name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
         }
     } else {
         $fields=array();
@@ -201,9 +204,9 @@ if  ($subaction=='dldata')
         # - Length may not be longer than 8 characters
         # - Name may not begin with a digit
         $fieldname = $fieldnames[$i];
-        $fieldtype = "";
+        $fieldtype = '';
         $val_size = 1;
-        //echo $fieldname." - ";
+        //echo $fieldname.' - ';
         
         #Determine field type
         if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -246,11 +249,11 @@ if  ($subaction=='dldata')
             if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
         }
         
-        $tempArray = array($fieldno++ =>array("id"=>"d".$fieldno,
-                "name"=>mb_substr($fieldname, 0, 8),
-                "qid"=>$qid, "code"=>$code,"SPSStype"=>$fieldtype,
-                "LStype"=>"$ftype","LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
-                "VariableLabel"=>"","sql_name"=>$fieldname,"size"=>$val_size));
+        $tempArray = array($fieldno++ =>array('id'=>'d'.$fieldno,
+                'name'=>mb_substr($fieldname, 0, 8),
+                'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,
+                'LStype'=>$ftype,'LSlong'=>isset($typeMap[$ftype]['name'])?$typeMap[$ftype]['name']:$ftype,'ValueLabels'=>'',
+                'VariableLabel'=>'','sql_name'=>$fieldname,'size'=>$val_size));
             $fields = $fields + $tempArray;
         }
 
@@ -410,6 +413,7 @@ if  ($subaction=='dldata')
                     if($len > $fields[$fieldno]['size']){
                         $fields[$fieldno]['size'] = $len;
                     }
+                    $strTemp=str_replace("'",' ',$strTmp);
                     echo "'$strTmp'";
                 }
                 else
@@ -433,8 +437,8 @@ if  ($subaction=='dlstructure')
     header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Pragma: no-cache");
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: no-cache');
 
     // Get Base Language:
 
@@ -464,34 +468,34 @@ if  ($subaction=='dlstructure')
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
 	    $row = $result->FetchRow();
-	    if ($row["attribute1"]) {$attr1_name = $row["attribute1"];} else {$attr1_name = $clang->gT("Attribute 1");}
-	    if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name = $clang->gT("Attribute 2");}
+	    if ($row['attribute1']) {$attr1_name = $row['attribute1'];} else {$attr1_name = $clang->gT('Attribute 1');}
+	    if ($row['attribute2']) {$attr2_name = $row['attribute2'];} else {$attr2_name = $clang->gT('Attribute 2');}
 	    $surveyprivate=$row['private'];
 	    $language=$row['language'];
     }
 
     $fieldno=0;
 
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == "N") {
+    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
 
         $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
 	    foreach ($tablefieldnames as $tokenfieldname) {
 		    $token_fields[]=$tokenfieldname;
 	    }
-	    if (in_array("firstname", $token_fields)) {
-		    $fields[$fieldno++]=array("id"=>"fname","name"=>$clang->gT("First Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
+	    if (in_array('firstname', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'fname','name'=>$clang->gT('First Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
 	    }
-	    if (in_array("lastname", $token_fields)) {
-		    $fields[$fieldno++]=array("id"=>"lname","name"=> $clang->gT("Last Name"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>40);
+	    if (in_array('lastname', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'lname','name'=> $clang->gT('Last Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
 	    }
-	    if (in_array("email", $token_fields)) {
-		    $fields[$fieldno++]=array("id"=>"email","name"=> $clang->gT("Email"),"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+	    if (in_array('email', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'email','name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
 	    }
-	    if (in_array("attribute_1", $token_fields)) {
-		    $fields[$fieldno++]=array("id"=>"attr1","name"=>$attr1_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+	    if (in_array('attribute_1', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'attr1','name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
 	    }
-	    if (in_array("attribute_2", $token_fields)) {
-		    $fields[$fieldno++]=array("id"=>"attr2","name"=>$attr2_name,"code"=>"","qid"=>0,"LStype"=>"Undef","SPSStype"=>"A","size"=>100);
+	    if (in_array('attribute_2', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'attr2','name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
 	    }
     } else {
 	    $fields=array();
@@ -507,7 +511,7 @@ if  ($subaction=='dlstructure')
 	    # - Length may not be longer than 8 characters
 	    # - Name may not begin with a digit
 	    $fieldname = $fieldnames[$i];
-	    $fieldtype = "";
+	    $fieldtype = '';
 	    $val_size = 1;
 	    //echo $fieldname." - ";
 	    
@@ -552,10 +556,10 @@ if  ($subaction=='dlstructure')
 		    if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
 	    }
         
-	    $tempArray = array($fieldno++ =>array("id"=>"d".$fieldno,
-			    "name"=>mb_substr($fieldname, 0, 8),
-			    "qid"=>$qid, "code"=>$code,"SPSStype"=>$fieldtype,
-			    "LStype"=>"$ftype","LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
+	    $tempArray = array($fieldno++ =>array('id'=>'d'.$fieldno,
+			    'name'=>mb_substr($fieldname, 0, 8),
+			    'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,
+			    'LStype'=>$ftype,"LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
 			    "VariableLabel"=>"","sql_name"=>$fieldname,"size"=>$val_size));
 	        $fields = $fields + $tempArray;
         }
