@@ -8,7 +8,7 @@ form {
 	margin: 0;
 	padding: 0;
 }
-ul {
+ul,ol {
 	text-align: left;
 	font-size: 10pt;
 	color: #000;

@@ -360,7 +360,7 @@ elseif ($action == 'replacementfields')
 
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
-     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && 
+     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
      (isset($surveyid) || $action=='listurveys' || $action=='changelang' ||  $action=='changehtmleditormode' || $action=='checksettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
@@ -396,7 +396,7 @@ elseif ($action == 'replacementfields')
   
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
-      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) &&
+      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
       !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources)) 
@@ -456,7 +456,8 @@ elseif ($action == 'replacementfields')
   if (isset($deletesurveyoutput)) {$adminoutput.= $deletesurveyoutput;} 	
   if (isset($resetsurveylogicoutput)) {$adminoutput.= $resetsurveylogicoutput;} 	
   if (isset($vvoutput)) {$adminoutput.= $vvoutput;} 	
-  if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}     
+  if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}  
+  if (isset($exportspssoutput)) {$adminoutput.= $exportspssoutput;}  
                                                                         
   
   if (!isset($printablesurveyoutput) && ($subaction!='export'))
