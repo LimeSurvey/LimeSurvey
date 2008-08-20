@@ -74,6 +74,27 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.71+ Build 5425 to 5448 -  Legend:   + = New  # = Changed  - = Fix
++Rewrite of SPSS export to fix numerous problems
+    - SPSS 16 compatibility
+    - Data is exported now with a sytax and a data file 
+    - While exporting the data is checked - if non-numeric data for a field is found the field is switched to alphanumeric
+    - Data for numerical questions is handled as float
+    - Label size is cut down accordingly (c_schmitz)
++Added new template mint_idea (c_schmitz)
+-Fixed #2408: Layout Problem: Sending Mails to Group Members (c_schmitz)
+-Fixed bug #02382: Attribute max_answers doesn't work if "others" field is enabled (jcleeland)
+-Fixed bug #02393: Wrong question order for additional languages  (fix provided by beatjoerg) (jcleeland)
+-Fixed #2404: Problem exporting survey structure to XML (c_schmitz)
+-Added rest of template files (c_schmitz)
+-Fixed bug with sped-up conditions where javascript was broken in IE (c_schmitz)
+-Fixed #2402: Statistic doesnt work, [Display Responses causes error message] when answer with tokens and non-token answers are mix due to creating/deleting token table (c_schmitz)
+-Fixed #2406: "Reset Survey Logic"-Button isn't working (c_schmitz)
+-Fixed #2405: FF3: Delete Question Button has a wrong position (c_schmitz)
+-Fixed #2394: Additonal {LANG} parameter for the END URL ==> Thx to beatjoerg (el-matador)
+#Changes to templates so a custom help icon is used (help.gif or help.png) if found (c_schmitz)
+#Updated German translation (c_schmitz)
+
 
 Changes from 1.71+ Build 5394 to 5424 -  Legend:   + = New  # = Changed  - = Fix
 -Fixed #2389: Survey crashes when quotas are enabled and using MSSQL DB (c_schmitz)
