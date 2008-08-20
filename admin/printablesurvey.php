@@ -733,6 +733,70 @@ while ($degrow = $degresult->FetchRow())
 			$printablesurveyoutput .="\t\t\t</table>\n";
             if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 			break;
+			case ":": //ARRAY (Multi Flexible) (Numbers)
+			$headstyle="style='padding-left: 20px; padding-right: 7px'";
+        	$qidattributes=getQuestionAttributes($deqrow['qid']);
+        	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+        		$maxvalue=$maxvalue['value'];
+        	} else {
+        		$maxvalue=10;
+        	}
+        	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+        		$minvalue=$minvalue['value'];
+        	} else {
+        		$minvalue=1;
+        	}
+        	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+        		$stepvalue=$stepvalue['value'];
+        	} else {
+        		$stepvalue=1;
+        	}
+			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+			$mearesult = db_execute_assoc($meaquery);
+			if ($stepvalue > 1) 
+			{
+			    $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:")."</u><br />\n";
+			} else {
+			    $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a number between $minvalue and $maxvalue for each item:")."</u><br />\n";
+			}
+			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+			$fcount = $fresult->RecordCount();
+			$fwidth = "120";
+			$i=0;
+			while ($frow = $fresult->FetchRow())
+			{
+				$printablesurveyoutput .="\t\t\t\t\t\t<td align='center' valign='bottom' $headstyle><font size='1'>{$frow['title']}</font></td>\n";
+				$i++;
+			}
+			$printablesurveyoutput .="\t\t\t\t\t\t</tr>\n";
+			while ($mearow = $mearesult->FetchRow())
+			{
+				$printablesurveyoutput .="\t\t\t\t<tr>\n";
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
+				$printablesurveyoutput .="\t\t\t\t\t<td align='left'>$answertext</td>\n";
+				//$printablesurveyoutput .="\t\t\t\t\t<td>";
+				for ($i=1; $i<=$fcount; $i++)
+				{
+
+					$printablesurveyoutput .="\t\t\t\t\t<td align='center'";
+					if ($i > 1) {$printablesurveyoutput .=" $headstyle";}
+					$printablesurveyoutput .=">\n";
+					$printablesurveyoutput .="\t\t\t\t\t\t<input type='text' style='height: 14pt; width: 14pt' readonly='readonly' />\n";
+					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
+				}
+                $answertext=$mearow['answer'];
+                if (strpos($answertext,'|')) 
+                {
+                    $answertext=substr($answertext,strpos($answertext,'|')+1);
+                       $printablesurveyoutput .= "\t\t\t\t<td class='answertextright'>$answertext</td>\n";
+                }
+				$printablesurveyoutput .="\t\t\t\t</tr>\n";
+			}
+			$printablesurveyoutput .="\t\t\t</table>\n";
+			break;
 			case "F": //ARRAY (Flexible Labels)
 			//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 			$headstyle="style='padding-left: 20px; padding-right: 7px'";

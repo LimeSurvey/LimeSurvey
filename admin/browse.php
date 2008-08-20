@@ -196,6 +196,32 @@ if ($subaction == "id") // Looking at a SINGLE entry
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
 			}
 		}
+		elseif ($fnrow['type'] == ":")
+		{
+		   $fnrquery = "SELECT *
+		                FROM ".db_table_name('answers')." 
+					    WHERE qid={$fnrow['qid']}
+						AND language='{$language}' 
+						ORDER BY sortorder, answer";
+			$fnrresult = db_execute_assoc($fnrquery);
+			$fnr2query = "SELECT *
+			              FROM ".db_table_name('labels')."
+			              WHERE lid={$fnrow['lid']}
+			              AND language = '{$language}'
+			              ORDER BY sortorder, title";
+			$fnr2result = db_execute_assoc($fnr2query);
+			while( $fnr2row = $fnr2result->FetchRow())
+			{
+			  $lset[]=$fnr2row;
+			}
+			while ($fnrrow = $fnrresult->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']}: {$ls['title']})");
+                }
+			}
+		}
 		elseif ($fnrow['type'] == "R")
 		{
 			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
@@ -405,7 +431,8 @@ elseif ($subaction == "all")
 		$fnrow['type'] != "B" && $fnrow['type'] != "C" && $fnrow['type'] != "E" &&
 		$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
 		$fnrow['type'] != "J" && $fnrow['type'] != "K" && $fnrow['type'] != "1" &&  
-		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^")
+		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^" && 
+		$fnrow['type'] != ":")
 		{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
@@ -476,6 +503,37 @@ elseif ($subaction == "all")
 				$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}$i";
 				$ftitle = "Grp{$fnrow['qid']}Qst{$fnrow['title']}Opt$i";
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[$i]", "{$fnrow['gid']}");
+			}
+		}	
+		elseif ($fnrow['type'] == ":")
+		{
+			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
+			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
+			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
+			".db_table_name("questions").".qid={$fnrow['qid']} AND ".db_table_name("questions").".sid=$surveyid
+			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+			$i2result = db_execute_assoc($i2query);
+			$ab2query = "SELECT ".db_table_name('labels').".*
+			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			             WHERE sid=$surveyid 
+						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+			             AND ".db_table_name('questions').".language='".$language."'
+			             AND ".db_table_name('labels').".language='".$language."'
+			             AND ".db_table_name('questions').".qid=".$fnrow['qid']."
+			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+			while($ab2row=$ab2result->FetchRow())
+			{
+			    $lset[]=$ab2row;
+			}
+			while ($i2row = $i2result->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				    $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$i2row['code']}_{$ls['code']}";
+				    $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}Item{$i2row['code']}Label{$ls['code']}";
+				    $fnames[]=array($field, $ftitle, "{$fnrow['question']}<br />\n[{$i2row['answer']}]<br />[{$ls['title']}]", $fnrow['qid']);
+			    }
 			}
 		}
 		else

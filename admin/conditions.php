@@ -350,7 +350,7 @@ if ($questionscount > 0)
 				$rows['type'] == "C" ||
 				$rows['type'] == "E" ||
 				$rows['type'] == "F" ||
-				$rows['type'] == "H")
+				$rows['type'] == "H" )
 		{
 			$aquery="SELECT * "
 				."FROM {$dbprefix}answers "
@@ -384,16 +384,16 @@ if ($questionscount > 0)
 					break;
 					case "C": //Array Y/N/NA
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", $clang->gT("Yes"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
 					break;
 					case "E": //Array >/=/<
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", $clang->gT("Increase"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
 					break;
 					case "F": //Array Flexible Row
-						case "H": //Array Flexible Column
+					case "H": //Array Flexible Column
 						$fquery = "SELECT * "
 						."FROM {$dbprefix}labels "
 						."WHERE lid={$rows['lid']} "
@@ -412,6 +412,59 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
 			} //while
+		} elseif ($rows['type'] == ":") { // Multiflexi
+			//Get question attribute for $canswers
+			$qidattributes=getQuestionAttributes($rows['qid']);
+        	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+        		$maxvalue=$maxvalue['value'];
+        	} else {
+        		$maxvalue=10;
+        	}
+        	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+        		$minvalue=$minvalue['value'];
+        	} else {
+        		$minvalue=1;
+        	}
+        	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+        		$stepvalue=$stepvalue['value'];
+        	} else {
+        		$stepvalue=1;
+        	}
+			//Get the LIDs
+		    $fquery = "SELECT * "
+						."FROM {$dbprefix}labels "
+						."WHERE lid={$rows['lid']} "
+						."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+						."ORDER BY sortorder, code ";
+			$fresult = db_execute_assoc($fquery);
+			while ($frow=$fresult->FetchRow())
+				{
+					$lids[$frow['code']]=$frow['title'];
+				}
+			//Now cycle through the answers
+            $aquery="SELECT * "
+				."FROM {$dbprefix}answers "
+				."WHERE qid={$rows['qid']} "
+				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY sortorder, "
+				."answer";
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+			while ($arows = $aresult->FetchRow())
+			{
+				$shortanswer = strip_tags($arows['answer']);
+
+				$shortanswer .= " [{$arows['code']}]";
+				foreach($lids as $key=>$val) 
+				{
+				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
+        			for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
+        			{
+        			    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
+        			}
+				}
+			}
+		
 		} //if A,B,C,E,F,H
 		elseif ($rows['type'] == "1") //Multi Scale
 		{

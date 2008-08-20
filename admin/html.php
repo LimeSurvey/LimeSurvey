@@ -1273,7 +1273,15 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type']=="A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "K" || $qrrow['type'] == "1")
+			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || 
+			    $qrrow['type'] == "!" || $qrrow['type'] == "!" || 
+				$qrrow['type'] == "M" || $qrrow['type'] == "Q" || 
+				$qrrow['type'] == "A" || $qrrow['type'] == "B" || 
+				$qrrow['type'] == "C" || $qrrow['type'] == "E" || 
+				$qrrow['type'] == "F" || $qrrow['type'] == "H" || 
+				$qrrow['type'] == "P" || $qrrow['type'] == "R" || 
+				$qrrow['type'] == "K" || $qrrow['type'] == "1" || 
+				$qrrow['type'] == ":")
 			{
 			$questionsummary .= "\t\t\t\t\t" .
 			"<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'" .
@@ -1329,7 +1337,14 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$questionsummary .= "\t<tr><td align='right' valign='top'><strong>"
 		.$clang->gT("Type:")."</strong></td>\n\t<td align='left'>{$qtypes[$qrrow['type']]}";
 		$questionsummary .="</td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" || $qrrow['type'] == "!" || $qrrow['type'] == "M" || $qrrow['type'] == "Q" || $qrrow['type'] == "K" || $qrrow['type'] == "A" || $qrrow['type'] == "B" || $qrrow['type'] == "C" || $qrrow['type'] == "E" || $qrrow['type'] == "P" || $qrrow['type'] == "R" || $qrrow['type'] == "F"  || $qrrow['type'] == "1" ||$qrrow['type'] == "H"))
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" 
+		               || $qrrow['type'] == "!" || $qrrow['type'] == "M" 
+					   || $qrrow['type'] == "Q" || $qrrow['type'] == "K" 
+					   || $qrrow['type'] == "A" || $qrrow['type'] == "B" 
+					   || $qrrow['type'] == "C" || $qrrow['type'] == "E" 
+					   || $qrrow['type'] == "P" || $qrrow['type'] == "R" 
+					   || $qrrow['type'] == "F" || $qrrow['type'] == "1" 
+					   || $qrrow['type'] == "H" || $qrrow['type'] == ":"))
 		{
 			$questionsummary .= "\t\t<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='red'>"

@@ -519,26 +519,64 @@ foreach ($fields as $field){
 				}
 			}
 			#Lookup the answer
-			$query = "SELECT answer FROM {$dbprefix}answers WHERE 
-			qid='".$field["qid"]."' and language='".$language."' AND code ='".$field["code"]."'";
-			$result=db_execute_assoc($query) or safe_die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());  //Checked
-			$num_results = $result->RecordCount();
-			$num_fields = $num_results;
-			if ($num_results >0){
-				# Build array that has to be returned
-				for ($i=0; $i < $num_results; $i++) {
-					$row = $result->FetchRow();
-					echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row['answer']), 0, $length_varlabel)."'.\n";//minni"<br />";
+			if($field['ftype'] == ":")
+			{
+			    //get the lid
+			    $query = "SELECT lid FROM {$dbprefix}questions WHERE qid='".$field["qid"]."'";
+			    $result = db_execute_assoc($query) or die("Couldnt!<br />$query<br />".$connect->ErrorMsg());
+			    $row=$result->FetchRow();
+			    $lid=$row['lid'];
+			    list($ac, $lc)=explode("_", $field["code"]);
+    			$query = "SELECT title FROM {$dbprefix}labels WHERE
+    			lid='$lid' AND code='$lc' and language='".$language."'";
+    			$result=db_execute_assoc($query) or die("Couldnt!<br />$query<br />".$connect->ErrorMsg());
+    			$num_results = $result->RecordCount();
+    			if ($num_results > 0)
+    			{
+				    for($i=0; $i<$num_results; $i++)
+				    {
+					  $row=$result->FetchRow();
+					  $labels[]=$row['title'];
+					}
 				}
-			}
-			if (mb_substr($field['sql_name'], -5)=='other') {
-				echo "VARIABLE LABELS ".$field["id"]." '".
-				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-8)." - OTHER'.\n";
-			}
-			if (mb_substr($field['sql_name'], -7)=='comment') {
-				echo "VARIABLE LABELS ".$field['id']." '".
-				mb_substr(strip_tags_full($question_text), 0, $length_varlabel-10)." - COMMENT'.\n";
-			}
+    			
+				$query = "SELECT answer FROM {$dbprefix}answers WHERE 
+    			qid='".$field["qid"]."' and language='".$language."' AND code ='$ac'";
+    			$result=db_execute_assoc($query) or die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());
+    			$num_results = $result->RecordCount();
+    			$num_fields = $num_results;
+    			if ($num_results >0){
+    				# Build array that has to be returned
+    				for ($i=0; $i < $num_results; $i++) {
+    					$row = $result->FetchRow();
+    					foreach($labels as $label) {
+    					    echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row["answer"]." [".$label."]"), 0, $length_varlabel)."'.\n";//minni"<br />";
+    				    }
+					}
+    			}
+    			unset($labels);
+			} else {
+				$query = "SELECT answer FROM {$dbprefix}answers WHERE 
+				qid='".$field["qid"]."' and language='".$language."' AND code ='".$field["code"]."'";
+				$result=db_execute_assoc($query) or safe_die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());  //Checked
+				$num_results = $result->RecordCount();
+				$num_fields = $num_results;
+				if ($num_results >0){
+				    # Build array that has to be returned
+					for ($i=0; $i < $num_results; $i++) {
+						$row = $result->FetchRow();
+						echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row['answer']), 0, $length_varlabel)."'.\n";//minni"<br />";
+					}
+				}
+				if (mb_substr($field['sql_name'], -5)=='other') {
+					echo "VARIABLE LABELS ".$field["id"]." '".
+					mb_substr(strip_tags_full($question_text), 0, $length_varlabel-8)." - OTHER'.\n";
+				}
+				if (mb_substr($field['sql_name'], -7)=='comment') {
+					echo "VARIABLE LABELS ".$field['id']." '".
+					mb_substr(strip_tags_full($question_text), 0, $length_varlabel-10)." - COMMENT'.\n";
+				}
+	        }
 		}else{
 			$test=explode ("X", $field['name']);
 			$query = "SELECT question FROM {$dbprefix}questions 
@@ -559,7 +597,7 @@ foreach ($fields as $field)
 {
 	if ($field['qid']!=0)
 	{
-		if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E')
+		if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E' && $field['ftype'] != ':')
 		{
 			$query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
@@ -610,6 +648,33 @@ foreach ($fields as $field)
 
 					}
 				}
+			}
+		}
+		if ($field['LStype'] == ':')
+		{
+			$displayvaluelabel = 0;
+			//Get the labels that could apply!
+			$qidattributes=getQuestionAttributes($field["qid"]);
+        	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+        		$maxvalue=$maxvalue['value'];
+        	} else {
+        		$maxvalue=10;
+        	}
+        	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+        		$minvalue=$minvalue['value'];
+        	} else {
+        		$minvalue=1;
+        	}
+        	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+        		$stepvalue=$stepvalue['value'];
+        	} else {
+        		$stepvalue=1;
+        	}
+            for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
+            {
+			    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";  //Beginning of the line
+			    if ($displayvaluelabel == 0) $displayvaluelabel = 1; //Now do the rest of the line
+			    echo "$i \"$i\".\n";
 			}
 		}
 		if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)

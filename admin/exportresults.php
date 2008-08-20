@@ -73,6 +73,24 @@ if (!$style)
 				}
 			}
 		}
+		elseif ($rows['type']==":")
+		{
+			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
+			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($detailrows = $detailresult->FetchRow())
+			{
+			    $detailquery2="SELECT * 
+				               FROM {$dbprefix}labels 
+							   WHERE lid=".$rows['lid']."
+							   AND language='$surveybaselang'
+							   ORDER BY sortorder, title";
+				$detailresult2=db_execute_assoc($detailquery2) or die("Couldn't find labels<br />$detailquery2<br />".htmlspecialchars($connect->ErrorMsg()));
+				while ($dr2 = $detailresult2->FetchRow())
+				{
+				    $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."_".$dr2['code'];
+			    }
+			}
+		}
 		elseif ($rows['type']=='R')
 		{
 			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
@@ -603,6 +621,10 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"$qname";}
 			else {$firstline .= "$qname";}
 			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
+			if ($ftype == ":")
+			{
+			  
+			}
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$separator";
 		}
@@ -703,6 +725,29 @@ for ($i=0; $i<$fieldcount; $i++)
 						$fquest .= " [".strip_tags_full($lrow['answer'])."]";
 					}
 				}
+				break;
+				case ":":
+				    list($faid, $fcode) = explode("_", $faid);
+				    if ($answers == "short") {
+					  $fquest .= " [$faid] [$fcode]";
+					} else {
+					    $lq1="SELECT lid FROM {$dbprefix}questions WHERE qid=$fqid";
+					    $lr1=db_execute_assoc($lq1);
+					    while($lrow1=$lr1->FetchRow()) {
+						  $flid = $lrow1['lid'];
+						}
+    					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
+    					$lr = db_execute_assoc($lq);
+    					while ($lrow=$lr->FetchRow())
+    					{
+    					    $lq2 = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND code='$fcode' AND language = '$explang'";
+    					    $lr2 = db_execute_assoc($lq2);
+    					    while ($lrow2=$lr2->FetchRow())
+    					    {
+    						    $fquest .= " [".$lrow['answer']."] [".$lrow2['title']."]";
+    					    }
+						}
+					}
 				break;
 				case "1": // multi scale Headline				
                 $flid=$fielddata['lid']; 

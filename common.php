@@ -791,7 +791,8 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"X"=>$clang->gT("Boilerplate Question"),
 		"Y"=>$clang->gT("Yes/No"),
 		"Z"=>$clang->gT("List (Flexible Labels) (Radio)"),
-		"!"=>$clang->gT("List (Dropdown)")
+		"!"=>$clang->gT("List (Dropdown)"),
+		":"=>$clang->gT("Array (Multi Flexible) (Numbers)"),
 		//            "^"=>$clang->gT("Slider"),
 		);
         asort($qtypes);
@@ -1865,7 +1866,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
-		$arow['type'] != "^" && $arow['type'] != "1")
+		$arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1")
 		{
 			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
@@ -1916,6 +1917,48 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$counter++;
 				break;
 			}
+		}
+		elseif ($arow['type'] == ":")
+		{
+		    //MULTI FLEXI
+			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+			." FROM ".db_table_name('answers').", ".db_table_name('questions')
+			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
+			. "AND ".db_table_name('questions').".language='".$s_lang."'"
+			." AND ".db_table_name('answers').".language='".$s_lang."'"
+			." AND ".db_table_name('questions').".qid={$arow['qid']} "
+			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$ab2query = "SELECT ".db_table_name('labels').".*
+			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			             WHERE sid=$surveyid 
+						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+			             AND ".db_table_name('questions').".language='".$s_lang."'
+			             AND ".db_table_name('labels').".language='".$s_lang."'
+			             AND ".db_table_name('questions').".qid=".$arow['qid']."
+			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+			$lset=array();
+			while($ab2row=$ab2result->FetchRow())
+			{
+			    $lset[]=$ab2row;
+			}
+			while ($abrow=$abresult->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				  $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']."_".$ls['code']);
+				  if ($abrow['other']=="Y") {$alsoother="Y";}
+				  if ($style == "full")
+			  	  {
+					$fieldmap[$counter]['title']=$arow['title'];
+					$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+					$fieldmap[$counter]['group_name']=$arow['group_name'];
+				  }
+				  $counter++;
+			    }
+			}
+			unset($lset);
 		}
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
 		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
@@ -2599,7 +2642,7 @@ function questionAttributes()
 	"types"=>"LMZG",
 	"help"=>"Number of columns to display");
     $qattributes[]=array("name"=>"array_filter",
-    "types"=>"ABCEF",
+    "types"=>"ABCEF:",
     "help"=>"Filter an Array's Answers from a Multiple Options Question");
     $qattributes[]=array("name"=>"display_rows",
     "types"=>"TU",
@@ -2617,7 +2660,7 @@ function questionAttributes()
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQKRWZFHABCE1",
+    "types"=>"!LMOPQKRWZFHABCE1:",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
     "types"=>"NSTU",
@@ -2646,6 +2689,15 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"exclude_all_others",
 	"types"=>"M",
 	"help"=>"Excludes all other options if this is selected");
+	$qattributes[]=array("name"=>"multiflexible_max",
+	"types"=>":",
+	"help"=>"Maximum value for array(mult-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_min",
+	"types"=>":",
+	"help"=>"Minimum value for array(multi-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_step",
+	"types"=>":",
+	"help"=>"Step value for array (multi-flexible) question type");
 	$qattributes[]=array("name"=>"use_dropdown",
 	"types"=>"1",
 	"help"=>"Use Dual Dropdown instead of Dual Scale");
