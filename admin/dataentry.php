@@ -547,7 +547,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		usort($fnrows, 'CompareGroupThenTitle');
 		// $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
 		$fnames[] = array("id", "id", "id", "id", "id", "id", "id", "");
-
+        $fnames[] = array ("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "completed", "completed", "", "");
+		
 		if ($private == "N") //show token info if survey not private
 		{
 			$fnames[] = array ("token", $clang->gT("Token ID"), $clang->gT("Token"), "token", "TID", "", "");
@@ -737,9 +738,35 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				//$dataentryoutput .= "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info
 				switch ($fnames[$i][3])
 				{
+				    case "completed":
+                		// First compute the submitdate
+                		if ($private == "Y" && $datestamp == "N")
+                		{
+                			// In case of anonymous answers survey with no datestamp
+                			// then the the answer submutdate gets a conventional timestamp
+                			// 1st Jan 1980
+                			$mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+                		}
+                		else
+                		{
+                			$mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);      
+                		}
+				        $completedate= empty($idrow[$fnames[$i][0]]) ? $mysubmitdate : $idrow[$fnames[$i][0]];
+
+				        $dataentryoutput .= "                <select name='submitdate'>\n";
+				        $dataentryoutput .= "                    <option value=";
+				        if(empty($idrow[$fnames[$i][0]])) { $dataentryoutput .= "'' selected"; }
+				                                  else    { $dataentryoutput .= "'N'"; }
+				        $dataentryoutput .= ">".$clang->gT("No")."</option>\n";
+				        $dataentryoutput .= "                    <option value=";
+				        if(!empty($idrow[$fnames[$i][0]])) { $dataentryoutput .= "'' selected"; }
+				                                  else     { $dataentryoutput .= "'$completedate'"; }
+				        $dataentryoutput .= ">".$clang->gT("Yes")."</option>\n";
+				        $dataentryoutput .= "                </select>\n";
+				        break;
 					case "X": //Boilerplate question
-					$dataentryoutput .= "";
-					break;
+					    $dataentryoutput .= "";
+					    break;
 					case "Q":
 					case "K":
 						$dataentryoutput .= "\t\t\t{$fnames[$i][6]}&nbsp;<input type='text' name='{$fnames[$i][0]}' value='"
@@ -1576,7 +1603,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='{$_POST['ipaddr']}'";}
 		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='{$_POST['token']}'";}
 		if (isset($_POST['language']) && $_POST['language']) {$updateqr .= ", startlanguage='{$_POST['language']}'";}
+		if (isset($_POST['submitdate']) && $_POST['submitdate'] && $_POST['submitdate'] != "N") {$updateqr .= ", submitdate='{$_POST['submitdate']}'";}
+		if (isset($_POST['submitdate']) && $_POST['submitdate'] == "N") {$updateqr .= ", submitdate=NULL";}
 		$updateqr .= " WHERE id=$id";
+
 		$updateres = $connect->Execute($updateqr) or safe_die("Update failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
 		$thissurvey=getSurveyInfo($surveyid);
 		while (ob_get_level() > 0) {
