@@ -644,6 +644,7 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
 ."<img src='$imagefiles/seperator.gif' alt='' />"
 ."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
 ."</div></div></div>\n"
+."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
 ."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
 . "\t<tr>\n"
 . "\t\t<td>\n";
