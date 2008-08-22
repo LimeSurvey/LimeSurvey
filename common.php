@@ -2776,8 +2776,10 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     {
         $str=strip_tags($str);
     }
-    return str_replace(array('\'','"'),array("\\'",'\u0022'),$str);
-} 
+    return str_replace(array('\'','"', "\n"),
+	                   array("\\'",'\u0022', "\\n"),
+					   $str);
+}
 
 // This function returns the header as result string
 // If you want to echo the header use doHeader() !
