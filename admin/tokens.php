@@ -880,7 +880,7 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			$tokenoutput .= "\t\t<td align='left'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
-			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."', '_top')\" />"
+			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 //			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 			.$clang->gT("Delete Token Entry")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."\" />";
@@ -1690,7 +1690,8 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 		case "edit":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."' />\n"
 			."\t\t<input type='hidden' name='subaction' value='updatetoken' />\n"
-			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n";
+			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n"
+			."\t\t<input type='hidden' name='urlextra' value='&amp;start=".$_GET['start']."&amp;limit=".$_GET['limit']."&amp;order=".$_GET['order']."' />\n";
 			break;
 		case "addnew":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."' />\n"
@@ -1741,7 +1742,7 @@ if ($subaction == "updatetoken" &&
 		$udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 		$tokenoutput .=  "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
-						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse".$_POST['urlextra']."'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
 						."\t</td></tr></table>\n";
 	}
 	  else 
