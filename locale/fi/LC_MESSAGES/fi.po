@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Finnish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-18 18:25+0100\n"
-"PO-Revision-Date: 2008-08-18 18:25+0100\n"
+"POT-Creation-Date: 2008-08-24 15:08+0100\n"
+"PO-Revision-Date: 2008-08-24 15:09+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -36,33 +36,32 @@ msgstr "Oletus Ylläpitosivu"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:261
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:263
 msgid "Create/Edit Users"
-msgstr "Luo/Muokkaa Käyttäjiä"
+msgstr "Luo tai muokkaa käyttäjiä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:267
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:268
 msgid "Create/Edit Groups"
-msgstr "Luo/Muokkaa Ryhmiä"
+msgstr "Luo tai muokkaa ryhmiä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:273
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:275
-#, fuzzy
 msgid "Show System Summary"
-msgstr "LimeSurvey Järjestelmäyhteenveto"
+msgstr "LimeSurvey järjestelmäyhteenveto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:283
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:284
 msgid "Check Data Integrity"
-msgstr "Tarkista Tietojen Yhtenäisyys"
+msgstr "Tarkista tietojen yhtenäisyys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:294
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:296
 msgid "List Surveys"
-msgstr "Listaa Kyselyt"
+msgstr "Listaa tutkimukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:305
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:306
 msgid "Backup Entire Database"
-msgstr "Varmuuskopioi Koko Tietokanta"
+msgstr "Varmuuskopioi koko tietokanta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:318
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:319
@@ -76,12 +75,12 @@ msgstr "Mallieditori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:335
 msgid "Surveys"
-msgstr "Kyselyt"
+msgstr "Tutkimukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:345
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:346
 msgid "Create or Import New Survey"
-msgstr "Luo tai Tuo Uusi Kysely"
+msgstr "Luo tai tuo uusi tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:356
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:358
@@ -107,10 +106,10 @@ msgstr "Toimeton"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:861
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:886
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:929
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3421
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3455
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3494
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3530
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3423
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3457
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3496
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3532
 msgid "Please Choose..."
 msgstr "Valitse..."
 
@@ -118,15 +117,14 @@ msgstr "Valitse..."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:862
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:887
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:930
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3456
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3495
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3458
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3497
 msgid "None"
 msgstr "Ei Yhtään"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:768
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Taulukko (Joustavat Tunnukset)"
+msgstr "Taulukko (joustavat tunnukset)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:769
 msgid "5 Point Choice"
@@ -138,11 +136,11 @@ msgstr "Taulukko (5 Pistettä)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:771
 msgid "Array (10 Point Choice)"
-msgstr "Taulukko (10 Pistettä)"
+msgstr "Taulukko (10 pistettä)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:772
 msgid "Array (Yes/No/Uncertain)"
-msgstr "Taulukko (Kyllä/Ei/Epävarma)"
+msgstr "Taulukko (Kyllä/ei/ei osaa sanoa)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:773
 msgid "Date"
@@ -150,11 +148,11 @@ msgstr "Päivämäärä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:774
 msgid "Array (Increase, Same, Decrease)"
-msgstr "Taulukko (Kasvaa, Säilyy, Pienenee)"
+msgstr "Taulukko (suurenee, pysyy samana, pienenee)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:775
 msgid "Array (Flexible Labels)"
-msgstr "Taulukko (Joustavat Tunnukset)"
+msgstr "Taulukko (joustavat nimikkeet)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:776
 msgid "Gender"
@@ -162,7 +160,7 @@ msgstr "Sukupuoli"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:777
 msgid "Array (Flexible Labels) by Column"
-msgstr "Taulukko (Joustavat Tunnukset) Sarakkeiden mukaan"
+msgstr "Taulukko (joustavat nimikkeet) sarakkeiden mukaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:778
 msgid "Language Switch"
@@ -175,7 +173,7 @@ msgstr "Numeerinen syöte"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:780
 msgid "List (Radio)"
-msgstr "Lista (Radio)"
+msgstr "Lista (radiopainikkeet)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:781
 msgid "Multiple Options"
@@ -187,7 +185,7 @@ msgstr "Numeerinen syöte"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:783
 msgid "List With Comment"
-msgstr "Lista Kommenttien Kanssa"
+msgstr "Lista kommenttien kanssa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:784
 msgid "Multiple Options With Comments"
@@ -195,7 +193,7 @@ msgstr "Useita vaihtoehtoja kommentoituna"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:785
 msgid "Multiple Short Text"
-msgstr "Useita lyhyitä tekstejä"
+msgstr "Useita lyhyitä tekstikenttiä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:786
 msgid "Ranking"
@@ -213,11 +211,11 @@ msgstr "Pitkä vapaa teksti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:789
 msgid "Huge Free Text"
-msgstr "Suuri vapaa teksti"
+msgstr "Vapaa tekstikenttä (laaja)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:790
 msgid "List (Flexible Labels) (Dropdown)"
-msgstr "Lista (Joustavat Tunnukset) (Pudotusvalikko)"
+msgstr "Lista (joustavat nimikkeet) (pudotusvalikko)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:791
 msgid "Boilerplate Question"
@@ -225,15 +223,15 @@ msgstr "Vakiotekstikysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:792
 msgid "Yes/No"
-msgstr "Kyllä/Ei"
+msgstr "Kyllä/ei"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:793
 msgid "List (Flexible Labels) (Radio)"
-msgstr "Lista (Joustavat Tunnukset) (Radio)"
+msgstr "Lista (joustavat nimikkeet) (radiopainikkeet)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:794
 msgid "List (Dropdown)"
-msgstr "Lista (Pudotusvalikko)"
+msgstr "Lista (pudotusvalikko)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:820
 msgid "No email notification"
@@ -241,7 +239,7 @@ msgstr "Ei sähköposti-ilmoitusta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:821
 msgid "Basic email notification"
-msgstr "Yksinkertainen sähköposti-ilmoitus"
+msgstr "Perus sähköpostimuistutus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:822
 msgid "Detailed email notification with result codes"
@@ -252,7 +250,7 @@ msgid "LimeSurvey Setup"
 msgstr "LimeSurvey Asetukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1166
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4367
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4369
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:398
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:541
 msgid "Error"
@@ -264,11 +262,11 @@ msgstr "Joitain taulukoita tai kenttiä näyttää puuttuvan tietokannastasi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1170
 msgid "Check Database Fields"
-msgstr "Tarkista Tietokannan Kentät"
+msgstr "Tarkista tietokannan kentät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1376
 msgid "Return to Survey Administration"
-msgstr "Palaa Kyselynhallintaan"
+msgstr "Palaa tutkimuksen hallintaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1382
 msgid "Show summary information"
@@ -280,18 +278,18 @@ msgid "Display Responses"
 msgstr "Näytä Vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1404
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4678
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4680
 msgid "Please select a language:"
 msgstr "Valitse kieli:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1409
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4694
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4696
 msgid "Cancel"
 msgstr "Peruuta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1419
 msgid "Display Last 50 Responses"
-msgstr "Näytä Viimeiset 50 Vastausta"
+msgstr "Näytä viimeiset 50 vastausta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1423
 msgid "Dataentry Screen for Survey"
@@ -303,16 +301,16 @@ msgstr "Hae tilastot näistä vastauksista"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1434
 msgid "Export Results to Application"
-msgstr "Vie Tulokset Ohjelmaan"
+msgstr "Vie Tulokset ohjelmaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1439
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1441
 msgid "Export result to a SPSS command file"
-msgstr "Vie tulokset SPSS-komentotiedostoon"
+msgstr "Vie tulokset SPSS-tiedostomuotoon."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1445
 msgid "Import answers from a deactivated survey table"
-msgstr "Tuo vastaukset deaktivoidusta kyselytaulukosta"
+msgstr "Tuo vastaukset suljetusta tutkimustaulusta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1450
 msgid "View Saved but not submitted Responses"
@@ -389,8 +387,8 @@ msgstr "Ei"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1694
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1702
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4353
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4358
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4355
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4360
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:599
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:805
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:916
@@ -462,19 +460,19 @@ msgstr "Kommentti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2160
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr "Varoitus: Java ei ole käytössä selaimessasi. Et välttämättä pysty vastaamaan kaikkiin kysymyksiin. Tarkista selaimesi asetukset."
+msgstr "Varoitus: Java-tuki ei ole käytössä selaimessasi. Et välttämättä pysty vastaamaan kaikkiin kysymyksiin. Tarkista selaimesi asetukset."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2175
 msgid "There are no questions in this survey"
-msgstr "Kyselyssä ei ole kysymyksiä"
+msgstr "Tutkimuksessa ei ole kysymyksiä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2179
 msgid "There is 1 question in this survey"
-msgstr "Kyselyssä on 1 kysymys"
+msgstr "Tutkimuksessa on yksi kysymys."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2183
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "Kyselylomakkeessa on {NUMBEROFQUESTIONS} kysymystä."
+msgstr "Tutkimuslomakkeessa on {NUMBEROFQUESTIONS} kysymystä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2210
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2190
@@ -484,29 +482,29 @@ msgstr "Lähetä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
 msgid "A Note On Privacy"
-msgstr "Huomautus Yksityisyydestä"
+msgstr "Huomautus yksityisyydensuojasta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
 msgid "This survey is anonymous."
-msgstr "Tämä kysely ei ole anonyymi."
+msgstr "Tämä kysely on anonyymi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2229
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Kyselyn vastaustallenteesi ei sisällä mitään tunnitetietoja sinusta ellei tietty kysymys ole kysynyt niitä. Jos olet vastannut kyselyyn, joka käytti tunnistetta salliakseen pääsyn kyselyyn, voit olla vakuuttunut, että tunnitetta ei säilytetä vastaustesi kanssa. Sitä pidetään erillisessä tietokannassa, ja päivitetään vain merkitäkseen oletko suorittanut kyseisen kyselyn. Tunnistemerkkejä ei voi verrata kyselyn vastauksiin."
+msgstr "Tutkimukseen vastaamisesta ei jää mitään tunnistetietoja sinusta ellei tiettyssä kysymyksessä niitä ole erikseen kysytty. Jos olet vastannut tutkimukseen, jossa käytettiin tunnistetta, voit olla vakuuttunut, että tunnistetta ei säilytetä vastaustesi kanssa. Sitä pidetään erillisessä tietokannassa, ja päivitetään vain merkitäkseen oletko suorittanut kyseisen kyselyn. Tunnistemerkkejä ei voi verrata kyselyn vastauksiin."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2239
 msgid "Are you sure you want to clear all your responses?"
-msgstr "Vastauksiasi ei tallennneta. Oletko varma?"
+msgstr "Oletko varma, että vastauksiasi ei tallenneta?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2240
 msgid "Exit and Clear Survey"
-msgstr "Poistu tallentamatta"
+msgstr "Poistu tutkimuksesta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2264
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:481
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:485
 msgid "Load Unfinished Survey"
-msgstr "Lataa Keskeneräinen Kysely"
+msgstr "Lataa keskeneräinen tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2272
 msgid "Resume Later"
@@ -514,11 +512,11 @@ msgstr "Jatka myöhemmin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2331
 msgid "Thank You!"
-msgstr "Kiitos!"
+msgstr "Kiitos palautteestasi!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2331
 msgid "You have completed answering the questions in this survey."
-msgstr "Olet suorittanut kysymyksiin vastaamisen."
+msgstr "Olet vastannut tutkimuksen kysymyksiin."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2331
 msgid "Click on 'Submit' now to complete the process and save your answers."
@@ -535,7 +533,7 @@ msgstr "Vastaukset tyhjennetty"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2363
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2369
 msgid "Restart this Survey"
-msgstr "Palaa kyselyn alkuun"
+msgstr "Palaa tutkimuksen alkuun"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2372
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:135
@@ -552,23 +550,23 @@ msgstr "Sulje ikkuna"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2374
 msgid "Save Your Unfinished Survey"
-msgstr "Tallennä keskeneräiset vastaukset"
+msgstr "Tallennä keskeneräinen tutkimus."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2375
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Kirjoita nimi ja salasana tälle kyselylle ja paina tallenna alta."
+msgstr "Kirjoita nimi ja salasana tutkimukselle ja paina tallenna-nappia alla."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2375
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr "Kyselysi tallennetaan tällä nimellä ja salasanalla ja voidaan taydentää myöhemmin kirjautumalla sisään samoilla tunnuksilla."
+msgstr "Tutkimus tallennetaan tällä antamallasi nimellä ja salasanalla.  Tutkimusta voidaan taydentää myöhemmin kirjautumalla sisään samoilla tunnuksilla."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2375
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr "Jos annat sähköpostiosoitteen, sinulle lähetetään yksityiskohdat postina."
+msgstr "Jos annat sähköpostiosoitteesi, saat sähköpostiisi tietosi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2383
 msgid "Return To Survey"
-msgstr "Palaa kyselyyn"
+msgstr "Palaa tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2388
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:307
@@ -587,7 +585,7 @@ msgstr "Toista salasana"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2397
 msgid "Your Email"
-msgstr "Sähköposti"
+msgstr "Sähköposti-osoitteesi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2402
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2422
@@ -604,35 +602,35 @@ msgstr "Tallenna"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2410
 msgid "Load A Previously Saved Survey"
-msgstr "Jatka vastaamista"
+msgstr "Lataa aikaisemmin tallentamasi tutkimus."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2411
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Voit ladata aiemmin tallentamasi kyselyn tästä ruudusta."
+msgstr "Voit ladata aiemmin tallentamasi tutkimuksen tästä ruudusta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2411
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr "Kirjoita 'nimi', jolla tallensit kyselyn, sekä salasana."
+msgstr "Kirjoita 'nimi', jolla tallensit tutkimuksen, sekä salasana."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2414
 msgid "Saved name"
-msgstr "Nimi"
+msgstr "Tallenettu nimi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2427
 msgid "Load Now"
-msgstr "Palaa kyselyyn"
+msgstr "Lataa tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2432
 msgid "You must be registered to complete this survey"
-msgstr "Rekisteröidy vastataksesi tutkimukseen"
+msgstr "Rekisteröidy osallistuaksesi tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2433
 msgid "You may register for this survey if you wish to take part."
-msgstr "Voit rekisteröityä tähän kyselyyn, jos haluat osallistua."
+msgstr "Halutessasi voit rekisteröityä tähän tutkimukseen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2433
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
-msgstr "Kirjaa tietosi alapuolelle ja sinulle lähetetään välittömästi sähköposti sisältäen linkin kyselyyn osallistumissivulle."
+msgstr "Kirjaa tietosi alapuolelle. Saat tämän jälkeen välittömästi sähköpostiisi linkin tutkimukseen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2440
 msgid "First Name"
@@ -655,38 +653,38 @@ msgstr "Jatka"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2505
 msgid "Your Assessment"
-msgstr "Arvio"
+msgstr "Arvioisi"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2851
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2853
 msgid "Online Manual"
-msgstr "Verkkomanuaali"
+msgstr "Online-ohjekirja"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2854
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2856
 msgid "Support this project - Donate to "
-msgstr "Tue tätä projektia - Lahjoita"
+msgstr "Tue projektia - Lahjoita"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2857
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2859
 msgid "Visit our website!"
 msgstr "Käy nettisivullamme!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2857
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2859
 msgid "Version"
 msgstr "Versio"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3096
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3098
 msgid "Local Submission"
-msgstr ""
+msgstr "Paikallinen luovutus"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3305
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3310
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3307
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3312
 msgid "Executing"
 msgstr "Suoritetaan"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3305
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3307
 msgid "Failed! Reason: "
 msgstr "Epäonnistui! Syy:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3310
+#: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3312
 msgid "Success!"
 msgstr "Onnistui!"
 
@@ -706,7 +704,7 @@ msgstr "Vastauksia ei tallennettu"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:295
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:75
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Vastauksia ei tallennettu. Kysely ei ole vielä aktiivinen."
+msgstr "Vastauksia ei tallennettu. Tutkimus ei ole vielä aktiivinen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:109
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:296
@@ -719,7 +717,7 @@ msgstr "Tyhjennä vastaukset"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:320
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:110
 msgid "Thank you"
-msgstr "Kiitokset"
+msgstr "Kiitos"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:133
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:165
@@ -731,15 +729,14 @@ msgstr "Vastauksesi on tallennettu."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:174
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:330
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:120
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "Kirjoita vastauksesi tähän:"
+msgstr "Klikkaa tulostaaksesi vastauksesi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:232
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:64
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:182
 msgid "Sorry. There is no matching survey."
-msgstr "Pahoittelumme - ei kyselyä."
+msgstr "Pahoittelumme - tutkimusta ei ole saatavilla"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:257
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:760
@@ -747,14 +744,13 @@ msgstr "Pahoittelumme - ei kyselyä."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:595
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:612
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "Kysely ei ole aktiivinen. Vastauksia ei tallenneta."
+msgstr "Tutkimus ei ole aktiivinen. Vastauksia ei tallenneta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:402
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:505
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:313
-#, fuzzy
 msgid "Date is not valid!"
-msgstr "Sähköpostiosoite ei kelpaa."
+msgstr "Päivämäärä on virheellinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:174
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:203
@@ -763,9 +759,8 @@ msgid "ERROR"
 msgstr "VIRHE"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:175
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Ehkä sinulla ei ole oikeuksia."
+msgstr "Sinulla ei ole tarvittavia käyttöoikeuksia tähän."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:176
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:205
@@ -773,9 +768,9 @@ msgstr "Ehkä sinulla ei ole oikeuksia."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:380
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:400
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:47
-#, fuzzy, php-format
+#, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "auttaa ongelmatilanteissa"
+msgstr "Lisätietoa saadaksesi ole ystävällinen ja ota yhteyttä - %s ( %s )."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:204
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:46
@@ -789,26 +784,24 @@ msgid "Either you have been inactive for too long, you have cookies disabled for
 msgstr "Joko olet ollut toimettomana liian kauan tai yhteydessäsi oli ongelmia."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:291
-#, fuzzy
 msgid "No available surveys"
-msgstr "Ei vastaavaa kyselyä"
+msgstr "Ei saatavilla olevia tutkimuksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:294
 msgid "You have not provided a survey identification number"
 msgstr "Kyselyn tunnistenumero puuttuu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:296
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "Seuraavat kyselyt tulisi poistaa"
+msgstr "Seuraavat tutkimukset tulisi poistaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:379
 msgid "This survey is no longer available."
-msgstr "Kysely ei ole enää saatavilla."
+msgstr "Tämä tutkimus ei ole enää saatavilla."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:399
 msgid "You have already completed this survey."
-msgstr "Kyselyyn on jo vastattu."
+msgstr "Olet jo vastannut tähän tutkimukseen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:447
 msgid "You did not provide a name"
@@ -816,7 +809,7 @@ msgstr "Nimi puuttuu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:452
 msgid "You did not provide a password"
-msgstr "Salasana puuttuu"
+msgstr "Salasana puuttuu tai on virheellinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:463
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1584
@@ -824,7 +817,7 @@ msgstr "Salasana puuttuu"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:57
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:232
 msgid "The answer to the security question is incorrect"
-msgstr "Vastaus turvallisuuskysymykseen on väärin"
+msgstr "Vastaus turvallisuuskysymykseen on väärä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:513
 #, fuzzy
@@ -835,28 +828,28 @@ msgstr "Tämä ei ole julkinen kysely, sinun tulee antaa voimassa oleva tunniste
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1681
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1717
 msgid "The token you have provided is either not valid, or has already been used."
-msgstr "Tunniste on virheellinen tai se on jo käytetty."
+msgstr "Antamsi tunniste on virheellinen tai se on jo käytetty."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:515
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1682
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1718
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1874
-#, fuzzy, php-format
+#, php-format
 msgid "For further information contact %s"
-msgstr "Lisätietoja:"
+msgstr "Jos haluat lisätietoja ota yhteyttä %s"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:630
 msgid "Survey Saved"
-msgstr "Kysely Tallennettu"
+msgstr "Tutkimus on tallennettu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:663
 msgid "There is no matching saved survey"
-msgstr "Antamallasi nimellä ei ole tallennettu vastauksia"
+msgstr "Antamallasi nimellä ei ole tallennettu tutkimuksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:739
-#, fuzzy, php-format
+#, php-format
 msgid "%s %% complete"
-msgstr "valmis"
+msgstr "% s %% valmis"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1400
 msgid ""
@@ -870,13 +863,12 @@ msgid ""
 "\n"
 "{ADMINNAME}"
 msgstr ""
-"Hyvä {FIRSTNAME},\n"
+"Hyvä,\n"
 "\n"
-"Tämä sähköposti on vahvistus siitä, että olette tehneet kyselyn nimeltä {SURVEYNAME} ja vastauksenne on tallennettu. Kiitoksia osallistumisestanne.\n"
+"Tämä sähköposti on vahvistus siitä, että olette tehneet kyselyn nimeltä {SURVEYNAME} ja vastauksenne on tallennettu. Kiitos osallistumisestanne tutkimukseen.\n"
 "\n"
-"Jos teillä on kysyttävää tästä sähköpostista, ottakaa yhteyttä {ADMINNAME} osoiteessa {ADMINEMAIL}.\n"
 "\n"
-"Vilpittömästi,\n"
+"Yst. terveisin,\n"
 "\n"
 "{ADMINNAME}"
 
@@ -887,23 +879,23 @@ msgstr "Lähetä vastaukset."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1421
 msgid "Survey Submitted"
-msgstr "Kysely on lähetetty"
+msgstr "Tutkimus on lähetetty"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1422
 msgid "A new response was entered for your survey"
-msgstr "Uusi vastaus kyselyssä"
+msgstr "Tutkimukseesi on tullut uusi vastaus."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1425
 msgid "Click the following link to reload the survey:"
-msgstr "Paina seuraavaa linkkiä ladataksesi kysely uudestaan:"
+msgstr "Paina seuraavaa linkkiä ladataksesi tutkimus uudelleen:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1429
 msgid "Click the following link to see the individual response:"
-msgstr "Klikkaa linkkiä vastaukseen:"
+msgstr "Klikkaa linkkiä nähdäksesi yksittäisen vastaukseen:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1432
 msgid "Click the following link to edit the individual response:"
-msgstr "Klikkaa linkkä muokataksesi vastausta:"
+msgstr "Klikkaa linkkä muokataksesi yksittäistä vastausta:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1435
 msgid "View statistics by clicking here:"
@@ -915,7 +907,7 @@ msgstr "Järjestelmävirheen vuoksi vastauksia ei voitu tallentaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1514
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
-msgstr "Vastaukset lähettiin ylläpitäjälle, joka tallentaa ne myöhemmin tietokantaan."
+msgstr "Vastaukset lähettiin tutkimuksen ylläpitäjälle. Vastaukset tallentaan tietokantaan."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -927,7 +919,7 @@ msgstr "SYÖTETYT TIEDOT"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1521
 msgid "SQL CODE THAT FAILED"
-msgstr "SQL-LAUSE"
+msgstr "SQL-LAUSE EI ONNISTUNUT"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1523
 msgid "ERROR MESSAGE"
@@ -943,14 +935,14 @@ msgstr "Yritä uudelleen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1587
 msgid "Please confirm access to survey by answering the security question below and click continue."
-msgstr ""
+msgstr "Varmista pääsysi tutkimukseen vastaamalla turvakysymyksen alla. Klikkaa tämän jälkeen jatka-nappia."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1635
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1680
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1716
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1753
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Kysely on kohdennettu tietylle vastaajaryhmälle. Tarvitset tunnisteen osallistuaksesi."
+msgstr "Tutkimus on kohdennettu tietylle vastaajaryhmälle. Tarvitset tunnisteen osallistuaksesi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1636
 #, fuzzy
@@ -968,7 +960,7 @@ msgstr "Kirjoita saamasi tunniste allaolevaan kenttään ja napsauta 'Jatka'"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1873
 msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "Kyselyyn ei voi vielä vastata sillä siinä ei ole vielä kysymyksiä."
+msgstr "Tutkimukseen ei voi vielä vastata sillä siinä ei ole vielä kysymyksiä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2169
 msgid "Previous"
@@ -982,19 +974,16 @@ msgstr "Seuraava"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2572
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2585
-#, fuzzy
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Virhe: Anna kyselylle nimi."
+msgstr "Virhe: Tutkimuksella on oltava nimi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:133
-#, fuzzy
 msgid "PDF Export"
-msgstr "Vie"
+msgstr "Tallenna Pdf-muodossa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:142
-#, fuzzy
 msgid "Survey Name (ID)"
-msgstr "Kyselytunnus:"
+msgstr "Tutkimuksentunnus:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:162
 msgid "Token ID"
@@ -1011,9 +1000,8 @@ msgstr "Kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:262
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:264
-#, fuzzy
 msgid "Your Answer"
-msgstr "Ei Vastausta"
+msgstr "Ei vastausta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:292
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:300
@@ -1021,18 +1009,18 @@ msgstr "Ei Vastausta"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:316
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:324
 msgid "Choose one of the following answers"
-msgstr "Valitkaa yksi seuraavista"
+msgstr "Valitse yksi seuraavista vastauksista"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:337
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:362
 msgid "Check any that apply"
-msgstr "Valitkaa sopivimmat"
+msgstr "Valitse sopivimmat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:342
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:367
-#, fuzzy, php-format
+#, php-format
 msgid "Check at most %d answers"
-msgstr "Merkkaa korkeintaan"
+msgstr "Merkkaa korkeintaan %d vastausta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:352
 msgid "Choose your language"
@@ -1044,7 +1032,7 @@ msgstr "*"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:471
 msgid "This question must be answered correctly"
-msgstr "Vastauksen tulee olla oikeellisessa muodossa"
+msgstr "Vastauksen tulee olla oikeassa muodossa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:488
 msgid "This question is mandatory"
@@ -1052,12 +1040,11 @@ msgstr "Kysymys on pakollinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:499
 msgid "Please complete all parts"
-msgstr "Ole hyvä ja täydennä puuttuvat vastaukset"
+msgstr "Ole hyvä ja täydennä puuttuvat kohdat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:502
-#, fuzzy
 msgid "Please check the items"
-msgstr "Valitse vähintään yksi"
+msgstr "Tarkista vaihtoehdot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:504
 msgid "Please rank all items"
@@ -1069,11 +1056,11 @@ msgstr "Valitse vähintään yksi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:514
 msgid "If you choose 'Other:' you must provide a description."
-msgstr ""
+msgstr "Jos valitse kohdan muu, täytä avoin kohta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:535
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr "Et vi jatkaa ennen kuin kirjaat jotakin yhteen tai useampaan kysymykseen."
+msgstr "Et voi jatkaa ennen kuin kirjoitat jotakin yhteen tai useampaan kysymykseen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:539
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
@@ -1081,56 +1068,55 @@ msgstr "Yhdestä tai useammasta pakollisesta kysymyksestä puuttuu vastaus. Täy
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:562
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
-msgstr "Yhden tai useamman kysymyken vastaus ei ole oikeellisessa muodossa. Korjaa vastaukset jatkaaksesi."
+msgstr "Yhden tai useamman kysymysken vastaus ei ole oikeassa muodossa. Korjaa vastaukset jatkaaksesi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:622
 msgid "Day"
-msgstr ""
+msgstr "Päivä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:630
 msgid "Month"
-msgstr ""
+msgstr "Kuukausi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:631
-#, fuzzy
 msgid "Jan"
-msgstr "ja"
+msgstr "tammi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:632
 msgid "Feb"
-msgstr ""
+msgstr "helmi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:633
 msgid "Mar"
-msgstr ""
+msgstr "maalis"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:634
 msgid "Apr"
-msgstr ""
+msgstr "huhti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:635
 msgid "May"
-msgstr ""
+msgstr "touko"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:636
 msgid "Jun"
-msgstr ""
+msgstr "kesä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:637
 msgid "Jul"
-msgstr ""
+msgstr "heinä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:638
 msgid "Aug"
-msgstr ""
+msgstr "elo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:639
 msgid "Sep"
-msgstr ""
+msgstr "syys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:640
 msgid "Oct"
-msgstr ""
+msgstr "loka"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:641
 #, fuzzy
@@ -1138,23 +1124,20 @@ msgid "Nov"
 msgstr "Ei"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:642
-#, fuzzy
 msgid "Dec"
-msgstr "Poista"
+msgstr "joulu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:650
-#, fuzzy
 msgid "Year"
-msgstr "Tyhjennä"
+msgstr "Vuosi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:686
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Ole hyvä ja täydennä puuttuvat vastaukset"
+msgstr "Ole hyvä ja täydennä päivämäärä kohta oikein"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:700
 msgid "Format: YYYY-MM-DD"
-msgstr "Muodossa: VVVV-KK-PP"
+msgstr "Muoto: VVVV-KK-PP"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:701
 msgid "(eg: 2003-12-25 for Christmas day)"
@@ -1171,7 +1154,7 @@ msgstr "Valitse"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:921
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1165
 msgid "Error: The labelset used for this question is not available in this language."
-msgstr "Virhe: Tämän kysymyksen tunnusryhmä ei ole saatavilla tällä kielellä."
+msgstr "Virhe: Tämän kysymyksen nimikeryhmä ei ole saatavilla tällä kielellä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1228
 msgid "Please choose one of the following"
@@ -1179,7 +1162,7 @@ msgstr "Valitse yksi seuraavista"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1229
 msgid "Please enter your comment here"
-msgstr "Kommenttisi"
+msgstr "Kirjoita kommentisi tänne"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1472
 msgid "Remove this item"
@@ -1195,23 +1178,22 @@ msgstr "kaikken tärkeimmästä. Viimeiseksi klikkaat siis vähiten tärkeintä.
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1519
 msgid "Your Choices"
-msgstr "Valinnat"
+msgstr "Valintasi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1528
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1534
 msgid "Your Ranking"
-msgstr "Arviot"
+msgstr "Arviosi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1542
-#, fuzzy
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
-msgstr "Napsauttamalla saksia kunkin kohdan oikealla puolella"
+msgstr "Klikkaamalla saksi-ikonia vaihtoehdon kohdalla saat vaihtoehdon pois listalta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1736
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1908
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
-msgstr ""
+msgstr "Valitse enitään '%d' vastaus(t)a kysymykseen \"%s\""
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1852
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1879
@@ -1233,15 +1215,15 @@ msgstr "Anna vastauksesi numeroina"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2107
 #, php-format
 msgid "Total of all entries must not exceed %d"
-msgstr ""
+msgstr "Kokonaisvastausten määrä ei saa ylittää %d"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2111
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Kokonaisvastausten määrän tulee olla yhtä suuria kuin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2115
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Kokonaisvastausten määrän tulee olla vähintään"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2120
 #, fuzzy
@@ -1249,21 +1231,20 @@ msgid "Total: "
 msgstr "Kokonaismäärä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2123
-#, fuzzy
 msgid "Remaining: "
-msgstr "Sijoitus"
+msgstr "Jäljellä:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2153
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2159
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2189
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2198
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgstr "Vastaus on virheellinen. Kysymykseen ei odoteta kuin "
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2170
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2176
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Vastaus on virheellinen. Kysymykseen odotetaan vähintään"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2254
 msgid "Only numbers may be entered in this field"
@@ -1273,44 +1254,43 @@ msgstr "Anna vastauksesi numeroina"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3341
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3911
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
-msgstr "Virhe: Tämän kysymyksen tunnusryhmä ei ole saatavilla tällä kielellä tai sitä ei ole olemassa."
+msgstr "Virhe: Tämän kysymyksen nimikeryhmä ei ole saatavilla tällä kielellä tai sitä ei ole olemassa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3334
-#, fuzzy
 msgid "Error: There are no answers defined for this question."
-msgstr "Lisää kysymykseen vastauksia"
+msgstr "Virhe: Kysymykseen ei ole määritelty vastausta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:64
 msgid "The email you used is not valid. Please try again."
-msgstr "Sähköpostiosoite on virheellinen. Ole hyvä ja yritä uudelleen."
+msgstr "Antamasi sähköpostiosoite on virheellinen. Ole hyvä ja yritä uudelleen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:79
 msgid "The email you used has already been registered."
-msgstr "Sähköpostiosoitteeseen on jo lähetetty tutkimuslinkki."
+msgstr "Antamaasi sähköpostiosoitteeseen on lähetetty jo linkki tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:153
 msgid "Thank you for registering to participate in this survey."
-msgstr "Kiitoksia rekisteröinnistäsi osallistuaksesi tähän kyselyyn."
+msgstr "Kiitos rekisteröitymisestäsi ja osallistumisestasi tutkimukseen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:153
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Annettuun osoitteeseen on lähetetty sähköposti, jossa on yksityiskohdat kyselyyn pääsyyn. Seuraa linkkiä viestissä jatkaaksesi."
+msgstr "Antamaasi sähköpostiosoitteeseen on lähetetty linkki. Voit aloittaa tutkimukseen vastaamisen klikkaamalla saamaasi sähköposti linkkiä. Jos linkki ei aukea, kopio osoite internet-selaimeesi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:153
 msgid "Survey Administrator"
-msgstr "Kyselyn Ylläpitäjä"
+msgstr "Tutkimuksen hallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:179
 msgid "Please try again."
-msgstr "Yritä uudelleen."
+msgstr "Ole hyvä ja yritä uudelleen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:221
 msgid "You must supply a name for this saved session."
-msgstr "Tallennettavalla kyselyllä tulee olla nimi"
+msgstr "Tallennettavalla tutkimuksella tulee olla nimi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:222
 msgid "You must supply a password for this saved session."
-msgstr "Tallennettavalle kyselylle tulee antaa salasana."
+msgstr "Tallennettavalle tutkimuksella tulee antaa salasana."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:224
 msgid "Your passwords do not match."
@@ -1318,25 +1298,23 @@ msgstr "Salasanat eivät täsmää."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:248
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "Nimi on jo käytössä."
+msgstr "Nimi on jo käytössä tässä tutkimuksessa. Valitse toinen ja tallenna nimi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:304
 msgid "Saved Survey Details"
 msgstr "Tallennettu kyselylomake"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:305
-#, fuzzy
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Olet tallentanut keskeneräisen kyselyvastauksesi. Voit palata kyselyyn käyttäen allaolevia tietoja. "
+msgstr "Olet tallentanut keskeneräisen tutkimuksen. Voit palata kyselyyn käyttäen allaolevia tietoja. Säilytä tämä sähköposti, emme voi lähettää salasanaa sinulle. "
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:309
-#, fuzzy
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
-msgstr "Palaa kyselyyn:"
+msgstr "Lataa tutkimus uudelleen klikkaamalla linkkiä tai kopiomalla linkki selaimen osoiteriville:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:542
 msgid "Cannot submit results - there are none to submit."
-msgstr "Lomake on tyhjä joten sitä ei voitu lähettää"
+msgstr "Vastauksia ei voida lähettää lomake on tyhjä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:543
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
@@ -1344,7 +1322,7 @@ msgstr "Tämä virhe voi ilmetä jos olet jo lähettänyt vastauksesi ja uudelle
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:543
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Jos saat tämän viestin kesken kyselyn, paina <-TAKAISIN selaimestasi ja lataa edellinen sivu uudelleen. Edellisen sivun vastaukset häviävät, mutta kaikki aikaisemmat sailyvät. Tämä ongelma johtuu palvelimen ylikuormituksesta. Olemme pahoillamme ongelmasta."
+msgstr "Jos saat tämän viestin kesken tutkimukseen vastaamisen, paina <-TAKAISIN nappia selaimestasi ja lataa edellinen sivu uudelleen. Edellisen sivun vastaukset häviävät, mutta kaikki aikaisemmat sailyvät. Tämä ongelma johtuu palvelimen ylikuormituksesta. Olemme pahoillamme ongelmasta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:22
 msgid "Access denied!"
@@ -1364,39 +1342,39 @@ msgstr "Et voi muuttaa käyttäjätietoja!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:42
 msgid "You are not allowed to create new surveys!"
-msgstr "Et voi luoda uusia kyselyjä!"
+msgstr "Et voi luoda uusia tutkimuksia!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:47
 msgid "You are not allowed to delete this survey!"
-msgstr "Et voi poistaa tätä kyselyä!"
+msgstr "Et voi poistaa tätä tutkimusta!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:52
 msgid "You are not allowed to add new questions for this survey!"
-msgstr "Et voi lisätä uusia kysymyksiä tähän kyselyyn!"
+msgstr "Et voi lisätä uusia kysymyksiä tähän tutkimukseen!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:57
 msgid "You are not allowed to activate this survey!"
-msgstr "Et voi aktivoida tätä kyselyä!"
+msgstr "Et voi aktivoida tätä tutkimusta!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:62
 msgid "You are not allowed to deactivate this survey!"
-msgstr "Et voi deaktivoida tätä kyselyä!"
+msgstr "Et voi sulkea tätä tutkimusta!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:67
 msgid "You are not allowed to add a group to this survey!"
-msgstr "Et voi lisätä ryhmiä tähän kyselyyn!"
+msgstr "Et voi lisätä ryhmiä tähän tutkimukseen!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
-msgstr "Et voi järjestellä ryhmiä tässä kyselyssä!"
+msgstr "Et voi järjestellä ryhmiä tässä tutkimuksessa!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:77
 msgid "You are not allowed to edit this survey!"
-msgstr "Et voi muokata tätä kyselyä!"
+msgstr "Et voi muokata tätä tutkimusta!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:82
 msgid "You are not allowed to edit groups in this survey!"
-msgstr "Et voi muokata ryhmiä tässä kyselyssä!"
+msgstr "Et voi muokata ryhmiä tässä tutkimuksessa!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
@@ -1413,7 +1391,7 @@ msgstr "Et voi poistaa tätä ryhmää!"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:102
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/cmdline_importsurvey.php:73
 msgid "You are not allowed to import a survey!"
-msgstr "Et voi viedä kyselyä!"
+msgstr "Et voi viedä tutkimusta!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:108
 msgid "You are not allowed to import a group!"
@@ -1425,17 +1403,16 @@ msgstr "Et voi tuoda kysymyksiä!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:118
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:123
-#, fuzzy
 msgid "Security Alert"
-msgstr "Turvallisuuskysymys"
+msgstr "Turvallisuus huomautus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:118
 msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Turvatiedote, joku saattaa yrittää käyttää LimeSurveyn sessiota hyväkseen. Ota yhteys tutkimuksen hallintaan."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:123
 msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr ""
+msgstr "Turvavaroitus! LimeSurveyn sessiota saatetaan käyttää turvallisuusriskiin. Ota yhteys tutkimuken hallintaan."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -1451,17 +1428,15 @@ msgstr "Tälle kysymykselle ei ole asetettu tyyppiä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/activate.php:103
 msgid "This question requires a Labelset, but none is set."
-msgstr "Tämä kysymys vaatii Tunnusryhmän, mutta sitä ei ole asetettu."
+msgstr "Tämä kysymys vaatii tunnusryhmän, mutta sitä ei ole asetettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/activate.php:110
-#, fuzzy
 msgid "This question requires a second Labelset, but none is set."
-msgstr "Tämä kysymys vaatii Tunnusryhmän, mutta sitä ei ole asetettu."
+msgstr "Tämä kysymys vaatii tunnusryhmän, mutta sitä ei ole asetettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/activate.php:128
-#, fuzzy
 msgid "The labelset used in this question does not exists or is missing a translation."
-msgstr "Tämän kysymyksen Tunnusryhmästä käännös."
+msgstr "Tämän kysymyksen tunnusryhmästä käännös."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/activate.php:184
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
@@ -1604,12 +1579,12 @@ msgstr "Valinnainen"
 msgid "Switch to closed-access mode"
 msgstr "Vaihda suljettuun tilaan"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:511
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:524
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:512
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:525
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Verkkimanuaali"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:572
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/admin.php:573
 msgid "Help"
 msgstr "Ohje"
 
@@ -1740,24 +1715,23 @@ msgstr "Valmis"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:161
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:385
-#, fuzzy
 msgid "Date Started"
-msgstr "Päiväys Tallennettu"
+msgstr "Päiväys tallennettu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:162
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:386
 msgid "Date Last Action"
-msgstr ""
+msgstr "Päivämäärän viimeinen toiminta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:232
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:443
 msgid "1. scale"
-msgstr ""
+msgstr "1. asteikko"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:237
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:448
 msgid "2. scale"
-msgstr ""
+msgstr "2. asteikko"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:274
 msgid "View Response"
@@ -1843,36 +1817,35 @@ msgid "Edit this token"
 msgstr "Muokkaa kohtaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:714
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses for this survey"
-msgstr "kyselyn vastaukset"
+msgstr "%d tutkimukseen vastanneet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:715
-#, fuzzy, php-format
+#, php-format
 msgid "%d full responses"
-msgstr "kokonaiset vastaukset"
+msgstr "%d kaikki vastanneet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:716
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses not completely filled out"
-msgstr "keskeneräiset vastaukset"
+msgstr "%d vastaajat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
 msgstr "Käyttäjänimi virheellinen!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/cmdline_importsurvey.php:80
-#, fuzzy
 msgid "User name and password do not match!"
-msgstr "Käyttäjätunnus / salasana eivät täsmää!"
+msgstr "Käyttäjätunnus tai salasana eivät täsmää!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:33
 msgid "Condition Designer"
-msgstr "Ehtojen Suunnittelu"
+msgstr "Ehtojen suunnittelu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:40
 msgid "You have not selected a Survey."
-msgstr "Et ole valinnut Kyselyä."
+msgstr "Et ole valinnut tutkimusta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:40
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:48
@@ -1881,7 +1854,7 @@ msgstr "Et voi käynnistää tätä skriptiä suoraan."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:48
 msgid "You have not selected a Question."
-msgstr "Et ole valinnut Kysymystä."
+msgstr "Et ole valinnut kysymystä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:68
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
@@ -1905,14 +1878,13 @@ msgstr "Näytä vain kysymys {QID} JOS"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:772
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:992
-#, fuzzy
 msgid "Less than"
-msgstr "Numero pienempi kuin"
+msgstr "Pienempi kuin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:773
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:993
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "Vähemmään kuin tai yhtä suuri"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:774
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:994
@@ -1921,25 +1893,23 @@ msgstr "Samanlainen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:775
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:995
-#, fuzzy
 msgid "Not Equal to"
-msgstr "Ei Samanlaiset"
+msgstr "Ei yhtä suuri"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:776
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:996
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "Suurempi kuin tai yhtä suuri"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:777
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:997
-#, fuzzy
 msgid "Greater than"
-msgstr "Numero suurempi kuin"
+msgstr "Suurempi kuin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:778
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:998
 msgid "Regular Expression"
-msgstr ""
+msgstr "Säännöllinen ilmaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:801
 msgid "and"
@@ -1954,12 +1924,12 @@ msgstr "TAI"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:860
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1709
 msgid "No Answer"
-msgstr "Ei Vastausta"
+msgstr "Ei vastausta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:901
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:932
 msgid "Copy Conditions"
-msgstr "Kopioi Ehtoja"
+msgstr "Kopioi ehtoja"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:906
 msgid "Condition"
@@ -1976,7 +1946,7 @@ msgstr "Haluatko varmasti kopioida nämä ehdot valittuihin kysymyksiin?"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:950
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1018
 msgid "Add Condition"
-msgstr "Lisää Ehto"
+msgstr "Lisää ehto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:960
 msgid "Answer"
@@ -1984,11 +1954,11 @@ msgstr "Vastaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1000
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
-msgstr ""
+msgstr "HUOMAUTUS: Jos käytät ennalta määritelty ehtoja, vain yhtä suuri kuin ja erisuuri kuin ehdot ovat voimassa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Vakio arvo tai säännöllinen ilmaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1017
 msgid "Clear"
@@ -2023,9 +1993,9 @@ msgid "Group could not be deleted"
 msgstr "Ryhmää ei voitu poistaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:297
-#, fuzzy, php-format
+#, php-format
 msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr "Vastausta ei voitu lisätä. Kirjoita koodi pakolliseen kenttään"
+msgstr "Vastausta ei voitu lisätä. Kirjoita koodi pakolliseen kenttään (%s)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:384
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:708
@@ -2142,10 +2112,11 @@ msgstr "Vastauksen asettaminen oletusvastaukseksi epäonnistui"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1200
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1415
 msgid "Invitation to participate in survey"
-msgstr "Kutsu osallistumaan kyselyyn"
+msgstr "Kutsu tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1201
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1416
+#, fuzzy
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2166,16 +2137,20 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
-"Hyvä {FIRSTNAME}, \n"
+"Hyvä {FIRSTNAME},\n"
 "\n"
-"Teidät on kutsuttu osallistumaan kyselyyn.\n"
+"Äskettäin kutsuimme teidät osallistumaan kyselyyn.\n"
+"\n"
+"Ette ole vielä tehneet kyselyä, ja haluamme muistuttaa että se on edelleen saatavilla, jos haluatte osallistua.\n"
 "\n"
 "Kysely on nimeltään:\n"
 "\"{SURVEYNAME}\"\n"
 "\n"
-"Osallistuaksesi paina allaolevaa linkkiä.\n"
+"\"{SURVEYDESCRIPTION}\"\n"
 "\n"
-"Vilpittömästi,\n"
+"Osallistuaksesi, paina allaolevaa linkkiä.\n"
+"\n"
+"Yst. terveisin,\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
@@ -2186,7 +2161,7 @@ msgstr ""
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1202
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1417
 msgid "Reminder to participate in survey"
-msgstr "Muistutus osallistumaan kyselyyn"
+msgstr "Tämä on muistutus osallistumisesta tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1203
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1418
@@ -2225,7 +2200,7 @@ msgstr ""
 "\n"
 "Osallistuaksesi, paina allaolevaa linkkiä.\n"
 "\n"
-"Vilpittömästi,\n"
+"Yst. terveisin,\n"
 "\n"
 "{ADMINNAME} ({ADMINEMAIL})\n"
 "\n"
@@ -2236,12 +2211,12 @@ msgstr ""
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1204
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1419
 msgid "Confirmation of completed survey"
-msgstr "Suoritetun kyselyn vahvistus"
+msgstr "Vastatun tutkimuksen vahvistus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1206
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1421
 msgid "Survey Registration Confirmation"
-msgstr "Kyselyyn Rekisteröitymisen Vahvistus"
+msgstr "Vahvistus rekisteröitymisestä tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1207
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1422
@@ -2256,31 +2231,22 @@ msgid ""
 "\n"
 "If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
-"Hyvä {FIRSTNAME},\n"
-"\n"
-"Sinä, tai joku käyttäen sähköpostiosoitettasi on rekisteröitynyt osallistumaan? kyselyssä {SURVEYNAME}.\n"
-"\n"
-"Tehdäksesi tämän kyselyn, paina seuraavaa linkkiä:\n"
-"\n"
-"{SURVEYURL}\n"
-"\n"
-"Jos sinulla on kysyttävää tästä kyselystä tai jos et rekisteröitynyt ja uskot tämän viestin olevan virheellinen, ota yhteyttä {ADMINNAME} osoitteessa {ADMINEMAIL}."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1223
 msgid "Survey could not be updated"
-msgstr "Kyselyä ei voitu päivittää"
+msgstr "Tutkimusta ei voitu päivittää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1238
 msgid "ERROR deleting Survey id"
-msgstr "VIRHE poistettaessa Kyselyn tunnusta"
+msgstr "VIRHE poistettaessa tutkimuksen tunnusta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1314
 msgid "Survey could not be created because it did not have a short title"
-msgstr "Kyselyä ei voitu luoda koska siitä puuttui nimekemerkintä"
+msgstr "Tutkimusta ei voitu luoda koska siitä puuttui lyhyt otsikkomerkintä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/database.php:1437
 msgid "Survey could not be created"
-msgstr "Kyselyä ei voitu luoda"
+msgstr "Tutkimusta ei voitu luoda"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:44
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:65
@@ -2293,7 +2259,7 @@ msgstr "Tietojenkirjaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:47
 msgid "You have not selected a survey for data-entry."
-msgstr "Et ole valinnut kyselyä tietojenkirjausta varten."
+msgstr "Et ole valinnut tutkimusta tietojenkirjausta varten."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:111
 #, fuzzy
@@ -2309,9 +2275,8 @@ msgid "Follow the following link to update it"
 msgstr "Paina seuraavaa linkkiä paivittääksesi sen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:124
-#, fuzzy
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr "Tämä kysely käyttää anonyymejä vastauksia, et voi päivittää tätä vastausta"
+msgstr "Tämä tutkimus käyttää anonyymejä vastauksia, et voi päivittää tätä vastausta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:151
 msgid "Try again"
@@ -2331,7 +2296,7 @@ msgstr "Salasana:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:159
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2398
 msgid "Confirm Password:"
-msgstr "Vahvista Salasana:"
+msgstr "Vahvista salasana:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:161
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2400
@@ -2345,11 +2310,11 @@ msgstr "Aloituskieli:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:395
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
-msgstr ""
+msgstr "Tutkimuksen vastaukset on tallennettu onnistuneesti. Saat vahvistus sähköpostin."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
-msgstr "Tallennetulle kyselylle luotiin myös tunnistemerkintä."
+msgstr "Tallennetulle tutkimukselle luotiin myös tunnistemerkintä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:431
 msgid "An email has been sent with details about your saved survey"
@@ -2366,7 +2331,7 @@ msgstr "Merkinnälle annettiin seuraava tallennetunnus:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:449
 msgid "Add Another Record"
-msgstr "Lisää Toinen Tallenne"
+msgstr "Lisää toinen tallenne"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:457
 msgid "Browse Saved Responses"
@@ -2374,7 +2339,7 @@ msgstr "Selaa Tallennettuja Vastauksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:644
 msgid "Editing Response"
-msgstr "Muokataan Vastausta"
+msgstr "Vastausta muokataan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:673
 msgid "Cannot be modified"
@@ -2382,7 +2347,7 @@ msgstr "Ei voi muokata"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1250
 msgid "Update Entry"
-msgstr "Päivitä Merkintä"
+msgstr "Päivitä merkintä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1284
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2384
@@ -2392,7 +2357,7 @@ msgstr "Viimeistele vastauksenlähetys"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1286
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2390
 msgid "Save for further completion by survey user"
-msgstr "Tallenna kyselyn käyttäjän myöhempää täyttämistä varten"
+msgstr "Tallenna tutkimuksen käyttäjä myöhempää täyttämistä varten"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1440
 msgid "Record has been updated."
@@ -2400,7 +2365,7 @@ msgstr "Tallenne on päivitetty."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1461
 msgid "Record Deleted"
-msgstr "Tallenne Poistettu"
+msgstr "Tallenne poistettu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1536
 msgid "Datestamp"
@@ -2430,17 +2395,17 @@ msgstr "Ohje tähän kysymykseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2439
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Tämä kysely ei ole vielä toiminnassa. Vastaustasi ei voida tallentaa"
+msgstr "Tämä tutkimus ei ole vielä toiminnassa. Vastaustasi ei voida tallentaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2449
 msgid "The survey you selected does not exist"
-msgstr "Valittua kyselyä ei ole olemassa"
+msgstr "Valittua tutkimusta ei ole olemassa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:25
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:44
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:124
 msgid "Deactivate Survey"
-msgstr "Deaktivoi Kysely"
+msgstr "Sulje tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:34
 msgid "In an active survey, a table is created to store all the data-entry records."
@@ -2448,11 +2413,11 @@ msgstr "Aktiivisessa kyselyssä taulukko tehdään säilyttämään kaikki merki
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:35
 msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr "Kun deaktivoit kyselyn kaikki tiedot alkuperäisessä taulukossa siirretään muualle, ja kun aktivoit kyselyn uudestaan taulukko tulee olemaan tyhjä. Et voi enää tarkastella näitä tietoja käyttämällä LimeSurvey:tä."
+msgstr "Kun suljet tutkimuksen kaikki tiedot alkuperäisessä taulukossa siirretään muualle, ja kun avaat kyselyn uudestaan taulukko tulee olemaan tyhjä. Et voi enää tarkastella näitä tietoja käyttämällä LimeSurvey:tä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:36
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Deaktivoitujen kyselyjen tietoihin pääsee ainoastaan ylläpitäjä käyttämällä tiedonhakutyökalua kuten phpmyadmin. Jos kyselysi käyttää tunnisteita, tämä taulukko nimetään myös uudelleen ja siihen pääsevät ainoastaan ylläpitäjät."
+msgstr "Suljettujen tutkimusten tietoihin pääsee ainoastaan ylläpitäjä käyttämällä tiedonhakutyökalua kuten phpmyadmin. Jos kyselysi käyttää tunnisteita, tämä taulukko nimetään myös uudelleen ja siihen pääsevät ainoastaan ylläpitäjät."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -2460,11 +2425,11 @@ msgstr "Vastaustaulukkosi uudelleennimetään:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:38
 msgid "Also you should export your responses before deactivating."
-msgstr "Sinun tulisi myös viedä vastaukset ennen deaktivoimista."
+msgstr "Sinun tulisi viedä vastauksesi ennen tutkimuksen sulkemista."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
-msgstr "Kysely On Deaktivoitu"
+msgstr "Tutkimus on suljettu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:132
 msgid "The responses table has been renamed to: "
@@ -2472,7 +2437,7 @@ msgstr "Vastaustaulukko on uudelleennimetty:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:133
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr "Tämän kyselyn vastaukset eivät ole enää saatavilla käyttäen LimeSurvey:tä."
+msgstr "Tämän tutkimuksen vastaukset eivät ole enää saatavilla käyttäen LimeSurvey:tä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:134
 msgid "You should note the name of this table in case you need to access this information later."
@@ -2480,7 +2445,7 @@ msgstr "Laita taulukon nimi muistiin jos tarvitset näitä tietoja myöhemmin."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "Kyselyyn liitetty tunnistetaulukko on uudelleennimetty: "
+msgstr "Tutkimukseen liitetty tunnistetaulukko on uudelleennimetty: "
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deletesurvey.php:22
 msgid "Delete Survey"
@@ -2508,11 +2473,11 @@ msgstr "Tämä kysely on toiminnassa ja vastaustaulukko on olemassa. Jos poistat
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deletesurvey.php:53
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Tähän kyselyyn on liitetty tunnistetaulukko. Jos poistat kyselyn tämä tunnistetaulukko häviää. Suosittelemme että viet tai kopioit nämä tunnisteet ennen kyselyn poistamista."
+msgstr "Tähän tutkimukseen on liitetty tunnistetaulukko. Jos poistat tutkimuksen tämä tunnistetaulukko häviää. Suosittelemme että viet tai kopioit nämä tunnisteet ennen tutkimuksen poistamista."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
-msgstr "Kysely on poistettu."
+msgstr "Tutkimus on poistettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dumpdb.php:55
 msgid "Export database"
@@ -2529,15 +2494,15 @@ msgstr "Vie Kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dumplabel.php:30
 msgid "Export Label Set"
-msgstr "Vie Tunnusryhmä"
+msgstr "Vie tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
-msgstr ""
+msgstr "LID puuttuu. Nimikkeitä ei voida poistaa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dumpquestion.php:37
 msgid "No QID has been provided. Cannot dump question."
-msgstr ""
+msgstr "QID puuttuu. Kysymystä ei voi poistaa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:133
 msgid "Export Results"
@@ -2609,21 +2574,20 @@ msgid "Microsoft Word (Latin charset)"
 msgstr "Microsoft Word (Roomalainen merkistö)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:202
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "Microsoft Excel (Roomalainen merkistö)"
+msgstr "Excel-muoto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:205
 msgid "(Iconv Library not installed)"
-msgstr ""
+msgstr "(Iconv kirjastoa ei ole asennettu)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:215
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV-tiedosto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:220
 msgid "PDF"
-msgstr ""
+msgstr "Pdf-tiedosto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:229
 msgid "Export Data"
@@ -2680,7 +2644,7 @@ msgstr "Ominaisuus 2"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:401
 msgid "General information in language: "
-msgstr ""
+msgstr "Yleinen kieliasetus:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:560
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:561
@@ -2689,9 +2653,8 @@ msgid "Time Submitted"
 msgstr "Lähetysaika"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:861
-#, fuzzy
 msgid "New Record"
-msgstr "Katso Tallennetta"
+msgstr "Uusi tallenne"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:893
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:898
@@ -2706,14 +2669,13 @@ msgstr "Kieli"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:1113
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:1129
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:1130
-#, fuzzy
 msgid "N/A"
-msgstr "Ei tietoa"
+msgstr "Ei saatavilla"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:1255
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:1256
 msgid "Tokens problem - token table missing"
-msgstr ""
+msgstr "Tunniste ongelma - tunnistetaulu puuttuu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/export_structure_csv.php:44
 msgid "Export Survey"
@@ -2721,25 +2683,25 @@ msgstr "Vie Kysely"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
-msgstr ""
+msgstr "SID puuttuu. Tutkimusta ei voi poistaa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:83
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:98
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:112
 msgid "Firstname from token"
-msgstr ""
+msgstr "Etunimi tunnuksesta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:84
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:99
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:113
 msgid "Lastname from token"
-msgstr ""
+msgstr "Sukunimi tunnuksesta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:85
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:94
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:114
 msgid "Email from the token"
-msgstr ""
+msgstr "Sähköposti tunnuksesta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:86
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:102
@@ -2757,44 +2719,39 @@ msgstr "Ominaisuus 1"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:95
 msgid "Token code for this participant"
-msgstr ""
+msgstr "Tunnus koodi osallistujasta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:100
-#, fuzzy
 msgid "Name of the survey"
-msgstr "Ei vastaavaa kyselyä"
+msgstr "Tutkimuksen nimi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:101
-#, fuzzy
 msgid "Description of the survey"
-msgstr "kyselyn vastaukset"
+msgstr "Tutkimuksen kuvaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:104
-#, fuzzy
 msgid "Name of the survey administrator"
-msgstr "Kyselyn Ylläpitäjä"
+msgstr "Tutkimuksen hallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:105
 msgid "Email address of the survey administrator"
-msgstr ""
+msgstr "Tutkimuksen hallinnan sähköpostiosoite"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:106
-#, fuzzy
 msgid "URL of the survey"
-msgstr "Ei vastaavaa kyselyä"
+msgstr "Tutkimuksen URL-osoite"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:403
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Ei vaihtoehtoista muuttujaa tähän kohtaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:410
-#, fuzzy
 msgid "Standard Fields"
-msgstr "Standarditiedostot:"
+msgstr "Peruskentät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:422
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Edelliset vastauskentät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:451
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:457
@@ -2816,7 +2773,7 @@ msgstr "Kaikki kerrallaan"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:452
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:458
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Vain edellisen sivun vastaukset ovat saatavilla"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:458
 #, fuzzy, php-format
@@ -2889,11 +2846,11 @@ msgstr "Valitse CSV-tiedosto:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/grouphandling.php:73
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "Muunna linkkejä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/grouphandling.php:131
 msgid "Edit Group"
-msgstr "Muokkaa Ryhmää"
+msgstr "Muokkaa ryhmää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/grouphandling.php:165
 msgid "Update Group"
@@ -2910,7 +2867,7 @@ msgstr "Luomispäivämäärä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:45
 msgid "Owner"
-msgstr ""
+msgstr "Omistaja"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:46
 msgid "Access"
@@ -2925,19 +2882,16 @@ msgid "Status"
 msgstr "Tila"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:49
-#, fuzzy
 msgid "Full Responses"
-msgstr "kokonaiset vastaukset"
+msgstr "Kaikki vastaajat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:50
-#, fuzzy
 msgid "Partial Responses"
-msgstr "Tyhjennä vastaukset"
+msgstr "Osittaiset vastaajat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:51
-#, fuzzy
 msgid "Total Responses"
-msgstr "Vie Vastaukset"
+msgstr "Kokonaisvastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:63
 msgid "Anonymous"
@@ -2962,19 +2916,19 @@ msgstr "Erääntynyt"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:127
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:425
 msgid "This survey is active but expired."
-msgstr "Tämä kysely on toiminnassa, mutta erääntynyt."
+msgstr "Tämä tutkimus on toiminnassa, mutta erääntynyt."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:129
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:427
 msgid "This survey is active but expired"
-msgstr "Tämä kysely on toiminnassa, mutta erääntynyt"
+msgstr "Tämä tutkimus on toiminnassa, mutta erääntynyt"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:138
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:140
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:441
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:443
 msgid "De-activate this Survey"
-msgstr "Deaktivoi Kysely"
+msgstr "Sulje tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:144
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:147
@@ -2988,7 +2942,7 @@ msgstr "Tämä kysely on toiminnassa"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:408
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:409
 msgid "Activate this Survey"
-msgstr "Aktivoi tämä Kysely"
+msgstr "Aktivoi tämä tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:161
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:163
@@ -2999,7 +2953,7 @@ msgstr "Tämä kysely ei ole tällä hetkellä toiminnassa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:193
 msgid "No Surveys available - please create one."
-msgstr "Ei saatavia kyselyjä - luo uusi."
+msgstr "Ei luotuja tutkimuksia - luo uusi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:259
 msgid "LimeSurvey System Summary"
@@ -3019,23 +2973,23 @@ msgstr "Nykyinen Kieli"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:296
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Suositeltu HTML-editori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:299
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Ennalta asetettu HTML-editori asetus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:300
 msgid "No HTML editor"
-msgstr ""
+msgstr "HTML-editori ei käytössä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:301
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "Sisäinen HTML-editori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:302
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "Popup HTML editori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:310
 msgid "Users"
@@ -3043,11 +2997,11 @@ msgstr "Käyttäjät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:324
 msgid "Active Surveys"
-msgstr "Toimivat Kyselyt"
+msgstr "Aktiiviset tutkimukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:331
 msgid "De-activated Surveys"
-msgstr "Deaktivoidut Kyselyt"
+msgstr "Suljetut tutkimukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:338
 msgid "Active Token Tables"
@@ -3055,7 +3009,7 @@ msgstr "Toimivat Tunnistetaulukot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:345
 msgid "De-activated Token Tables"
-msgstr "Deaktivoidut Tunnistetaulukot"
+msgstr "Suljetut tunnistetaulukot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:355
 msgid "Show PHPInfo"
@@ -3064,12 +3018,12 @@ msgstr "Näytä PHPInfo"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:415
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:417
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr "Kyselyä ei voi aktivoida. Joko sinulla ei ole oikeuksia tai kyselyssä ei ole kysymyksiä."
+msgstr "Tutkimusta ei voi aktivoida. Joko sinulla ei ole oikeuksia tai tutkimuksessa ei ole kysymyksiä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:458
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:460
 msgid "Survey Security Settings"
-msgstr "Kyselyn Turvallisuusasetukset"
+msgstr "Tutkimuksen turvaasetukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:469
 msgid "Test This Survey"
@@ -3104,14 +3058,12 @@ msgstr "Poista Nykyinen Kysely"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:608
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:615
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:617
-#, fuzzy
 msgid "Reset Survey Logic"
-msgstr "Poista Kysely"
+msgstr "Nollaa tutkimuksen logiikka"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:612
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "Tämä kysely ei ole tällä hetkellä toiminnassa"
+msgstr "Tutkimuksen kysymyksissä ei käytetä ehto-lauseita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:615
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1005
@@ -3127,16 +3079,14 @@ msgstr "Vaihda Ryhmien Järjestystä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:638
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:639
-#, fuzzy
 msgid "Disabled - Change Group Order"
-msgstr "Vaihda Ryhmien Järjestystä"
+msgstr "Estetty - Vaihda ryhmien järjestystä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:647
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:648
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1924
-#, fuzzy
 msgid "Export Survey Structure"
-msgstr "Vie Kysely"
+msgstr "Vie tutkimuksen rakenne"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:661
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:662
@@ -3145,9 +3095,8 @@ msgstr "Aseta Arvioiden Säännöt"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:674
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:675
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "Aseta Kyselyn Oikeudet"
+msgstr "Aseta tutkimukset oikeudet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:687
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:688
@@ -3163,7 +3112,7 @@ msgstr "Aktivoi/Muokkaa Kyselyn Tunnisteita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:712
 msgid "Adding/editing tokens is not possible because this survey is not activated."
-msgstr ""
+msgstr "Tutkimus ei ole aktiivinen, joten tunnisteiden lisääminen ja muokkaaminen ei ole mahdollista."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:723
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2067
@@ -3179,21 +3128,18 @@ msgstr "Lisää Uusi Ryhmä Kyselyyn"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:750
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:751
-#, fuzzy
 msgid "Hide details of this Survey"
-msgstr "Piilota Yksityiskohdat"
+msgstr "Piilota tutkimuksen yksityiskohdat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:753
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:754
-#, fuzzy
 msgid "Show details of this survey"
-msgstr "Näytä Yksityiskohdat"
+msgstr "Näytä tutkimuksen yksityiskohdat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:758
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:759
-#, fuzzy
 msgid "Close this survey"
-msgstr "Sulje Kysely"
+msgstr "Sulje tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:789
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2465
@@ -3244,7 +3190,7 @@ msgstr "Osanottajat voivat tallentaa osittain suoritetut kyselyt"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:815
 msgid "Regenerate Question Codes:"
-msgstr "Uudista Kysymyskoodit:"
+msgstr "Generoi uudelleen kysymysten koodit:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:819
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:824
@@ -3409,9 +3355,8 @@ msgid "Impossible to delete this question because  there is at least one questio
 msgstr "Kysymystä ei voida poistaa koska ainakin yhdellä muulla kysymyksellä on ehto siihen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1174
-#, fuzzy
 msgid "Disabled - Delete Current Question"
-msgstr "Poista Kyseinen Kysymys"
+msgstr "Kysymysten poistaminen - Estetty"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1185
 msgid "Export this Question"
@@ -3490,24 +3435,20 @@ msgid "Label Set"
 msgstr "Tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1346
-#, fuzzy
 msgid "You need to choose a label set for this question!"
-msgstr "Valitse kysymykselle Tunnusryhmä"
+msgstr "Valitse kysymykselle tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1366
-#, fuzzy
 msgid "Second Label Set"
-msgstr "Muokkaa Tunnusryhmää"
+msgstr "Muokkaa tunnusryhmää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1370
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Valitse kysymykselle Tunnusryhmä"
+msgstr "Valitse kysymykselle toinen tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1384
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "Muokka/Lisää Tunnusryhmiä"
+msgstr "Muokka/Lisää tunnusryhmiä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1396
 msgid "Other:"
@@ -3527,7 +3468,7 @@ msgstr "Muokkaa Vastauksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1490
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
+msgstr "Virhe: Vastauksissa on kaksikertaa sama koodi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1518
 msgid "Code"
@@ -3639,16 +3580,15 @@ msgstr "Selaa Vastauksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1929
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey tutkimustiedosto (*.csv)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1933
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML tutkimus XML-muoto (*.xml)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1942
-#, fuzzy
 msgid "Export To File"
-msgstr "Vie malli"
+msgstr "Vie tiedosto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1961
 msgid "Survey Security"
@@ -3676,9 +3616,8 @@ msgstr "Muokkaa Kyselyä - Osa 1/2"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2159
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2851
-#, fuzzy
 msgid "General"
-msgstr "Sukupuoli"
+msgstr "Yleinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2186
 msgid "Remove"
@@ -3698,7 +3637,7 @@ msgstr "Sähköposti"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2222
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2899
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Esitys ja navigointi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2225
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2902
@@ -3711,9 +3650,8 @@ msgid "Question by Question"
 msgstr "Järjestyksessä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2258
-#, fuzzy
 msgid "Template Preview:"
-msgstr "Malli:"
+msgstr "Näkymän esikatselu:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2264
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2926
@@ -3732,9 +3670,8 @@ msgstr "Osanottajat voivat tallentaa osittain suoritetut kyselyt"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2300
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2953
-#, fuzzy
 msgid "List survey publicly:"
-msgstr "Listaa Kyselyt"
+msgstr "Listaa tutkimukset:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2314
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2963
@@ -3749,7 +3686,7 @@ msgstr "Lataa automaattisesti URL kun kysely on valmis?"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2333
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2983
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Julkaisu ja oikeuksien hallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2338
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2986
@@ -3769,7 +3706,7 @@ msgstr "Salli yleinen rekisteröinti?"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2372
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3013
 msgid "Use CAPTCHA for"
-msgstr ""
+msgstr "Käytä CAPTCHA:aa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2376
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2380
@@ -3791,9 +3728,8 @@ msgstr "Onnistui"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3016
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3018
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3020
-#, fuzzy
 msgid "Registration"
-msgstr "Hallinta"
+msgstr "Rekisteröinti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2376
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2384
@@ -3803,9 +3739,8 @@ msgstr "Hallinta"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3017
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3018
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3021
-#, fuzzy
 msgid "Save & Load"
-msgstr "Tallenna"
+msgstr "Tallenna & lataa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2407
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3026
@@ -3815,16 +3750,16 @@ msgstr "Tunnisteiden Ominaisuusnimet:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2414
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3031
 msgid "Use HTML format for token emails?"
-msgstr ""
+msgstr "Käytä HTML-muotoa tunnisteiden sähköposteissa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2415
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
-msgstr ""
+msgstr "Jos muutat sähköpostiasetuksia, tarkista, että sähköpostin näkymät tukevat uutta muotoa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2431
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3043
 msgid "Notification & Data Management"
-msgstr ""
+msgstr "Huomiot ja tiedonhallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2435
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3046
@@ -3838,7 +3773,7 @@ msgstr "Anonyymit vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2451
 msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
-msgstr ""
+msgstr "Et voi käyttää anonyymisyyttä, jos nimikkeisiin perustuvat jatkuvat vastaukset ovat sallittu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2456
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3062
@@ -3882,7 +3817,7 @@ msgstr "Vastauksiin kirjataan IP-osoite"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2534
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3086
 msgid "Save Referring URL?"
-msgstr "Tallenna Opastus-URL?"
+msgstr "Tallenna opastus-URL?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2539
 msgid "Responses will not have their referring URL logged."
@@ -3895,37 +3830,35 @@ msgstr "Vastauksiin kirjataan opastus-URL."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2560
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3093
 msgid "Enable Token-based answers persistence?"
-msgstr ""
+msgstr "Salli nimikkeisiin perustuvien vastausten jatkuvuus?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2561
 msgid "This option can't be set if Anonymous answers are used"
-msgstr ""
+msgstr "Tätä asetusta ei voi käyttää, jos vastaukset ovat anonyymejä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2589
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "PHP ei tue ZIP-kirjastoa. ZIP-tiedoston tuonti estetty"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2598
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "Tiedostojen käsittelyn hallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2605
-#, fuzzy
 msgid "Browse Uploaded Resources"
-msgstr "Selaa Tallennettuja Vastauksia"
+msgstr "Selaa tallennettuja vastauksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2606
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "Vie ZIP-muotoon."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2607
-#, fuzzy
 msgid "Select ZIP File:"
-msgstr "Valitse CSV-tiedosto:"
+msgstr "Valitse ZIP-tiedosto:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2609
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "Tuo ZIP-muodossa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2621
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
@@ -3933,7 +3866,7 @@ msgstr "Kaikki kysymykset, vastaukset ym. poistetuille kielille häviävät. Ole
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2621
 msgid "Save and Continue"
-msgstr "Tallenna ja Jatka"
+msgstr "Tallenna ja jatka"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2663
 msgid "This will replace the existing text. Continue?"
@@ -3961,9 +3894,9 @@ msgid "The following groups are concerned"
 msgstr "Koskee seuraavia ryhmiä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2771
-#, fuzzy, php-format
+#, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "katso merkityt ehdot"
+msgstr "Ryhmä %s on riippuvainen ryhmästä %s, katso merkityt kohdat:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2775
 #, fuzzy
@@ -3975,9 +3908,8 @@ msgid "Error: You have to enter a title for this survey."
 msgstr "Virhe: Anna kyselylle nimi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2845
-#, fuzzy
 msgid "Create or Import Survey"
-msgstr "Luo tai Tuo Uusi Kysely"
+msgstr "Luo tai tuo uusi tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2868
 msgid "This setting cannot be changed later!"
@@ -3996,7 +3928,7 @@ msgstr "Luo Kysely"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2945
 msgid "Participiants may print answers?"
-msgstr ""
+msgstr "Osallistujat voivat tulostaa vastaukset?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2992
 msgid "Date Format"
@@ -4014,26 +3946,24 @@ msgstr "Valitse CSV/SQL -tiedosto:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3121
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Muunna linkkejä ja INSERTAND kenttiä?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "Käynnistä HTML-editori popup ikkunana"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr ""
+msgstr "Anna HTML-editorille pop-ikkuna mahdollisuus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:37
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:45
-#, fuzzy
 msgid "HTML Editor"
-msgstr "Mallieditori"
+msgstr "HTML-editori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:53
-#, fuzzy
 msgid "Close Editor"
-msgstr "Mallieditori"
+msgstr "Sulje HTML-editori"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:86
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:136
@@ -4043,7 +3973,7 @@ msgstr "Muokkaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
-msgstr ""
+msgstr "Haluatko tallentaa muutokset?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/http_importsurvey.php:33
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:30
@@ -4087,16 +4017,16 @@ msgstr "Tämä tiedosto ei ole LimeSurvey ryhmätiedosto. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:249
 msgid "You can't import a group which doesn't support the current survey's base language."
-msgstr "Et voi tuoda ryhmää, joka ei ole nykyisen kyselyn kielellä."
+msgstr "Et voi tuoda ryhmää, joka ei ole nykyisen tutkimuksen kielellä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:265
 msgid "You can't import a question which doesn't support the current survey's base language."
-msgstr "Et voi tuoda kysymystä, joka ei ole nykyisen kyselyn kielellä."
+msgstr "Et voi tuoda kysymystä, joka ei ole nykyisen tutkimuksen kielellä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:283
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:281
 msgid "You can't import label sets which don't support the current survey's base language"
-msgstr "Et voi tuoda tunnusryhmiä, jotka eivät ole nykyisen kyselyn kielellä."
+msgstr "Et voi tuoda tunnusryhmiä, jotka eivät ole nykyisen tutkimuksen kielellä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:641
 msgid "Import partially successful."
@@ -4104,7 +4034,7 @@ msgstr "Tuonti onnistui osittain."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:642
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr "Seuraavia ryhmän kieliä ei tuotu, koska kysely ei sisällä niitä:"
+msgstr "Seuraavia ryhmän kieliä ei tuotu, koska tutkimus ei sisällä niitä:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:653
 msgid "Group Import Summary"
@@ -4122,9 +4052,8 @@ msgid "Labels"
 msgstr "Tunnukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:671
-#, fuzzy
 msgid "Question Attributes: "
-msgstr "Kysymysmääreet:"
+msgstr "Kysymyksen arvot:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:674
 msgid "Import of group is completed."
@@ -4175,11 +4104,11 @@ msgstr "Pika tilastot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importoldresponses.php:39
 msgid "Import responses from an old (deactivated) survey table into an active survey"
-msgstr "Tuo vastauksia vanhasta (deaktivoidusta) kysymystaulukosta aktiiviseen kyselyyn"
+msgstr "Tuo vastauksia vanhasta (sljetusta) kysymystaulukosta avoinna olevaan tutkimkseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importoldresponses.php:43
 msgid "Target Survey ID"
-msgstr "Kohdekyselyn Tunnus"
+msgstr "Kohdetutkimuksen tunnus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importoldresponses.php:48
 msgid "Source table"
@@ -4187,7 +4116,7 @@ msgstr "Lähdetaulukko"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Import Responses"
-msgstr "Vie Vastaukset"
+msgstr "Vie vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importoldresponses.php:58
 msgid "Are you sure?"
@@ -4195,15 +4124,15 @@ msgstr "Oletko varma?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:24
 msgid "Import Question"
-msgstr "Vie Kysymys"
+msgstr "Vie kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "SID (Kysely) puuttuu. Vastausta ei voi tuoda."
+msgstr "Tutkimuksen ID puuttuu. Vastausta ei voi tuoda."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "GID (Ryhmä) puuttuu. Vastausta ei voi tuoda."
+msgstr "Ryhmän ID puuttuu. Vastausta ei voi tuoda."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
@@ -4211,29 +4140,28 @@ msgstr "Tämä tiedosto ei ole LimeSurvey kysymystiedosto. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:107
 msgid "Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgstr "Pahoittelumme, kysymysten tuonti on rajoitettu vain versioon, jolla ne on tehty. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:240
 msgid "You can't import a question which doesn't support the current survey's base language"
-msgstr "Et voi tuoda kysymystä, joka ei ole nykyisen kyselyn kielellä."
+msgstr "Et voi tuoda kysymystä, joka ei ole nykyisen tutkimuksen kielellä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:496
 msgid "Question Import Summary"
-msgstr "Kysymysten Tuontiyhteenveto"
+msgstr "Kysymysten tuontiyhteenveto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:508
 msgid "Question Attributes:"
-msgstr "Kysymysmääreet:"
+msgstr "Kysymyksen arvot:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:512
-#, fuzzy
 msgid "Question import is complete."
-msgstr "Ryhmän tuonti suoritettu."
+msgstr "Kysymysten tuonti onnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:51
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr "Tämä tiedosto ei ole LimeSurvey kyselytiedosto. Tuonti epäonnistui."
+msgstr "Tämä tiedosto ei ole LimeSurvey tutkimustiedosto. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:372
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:381
@@ -4241,7 +4169,7 @@ msgstr "Tämä tiedosto ei ole LimeSurvey kyselytiedosto. Tuonti epäonnistui."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:564
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:594
 msgid "Import of this survey file failed"
-msgstr "Kyselytiedoston tuonti epäonnistui"
+msgstr "Tutkimustiedoston tuonti epäonnistui"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:373
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:381
@@ -4250,42 +4178,41 @@ msgstr "Tiedosto ei sisällä LimeSurvey tietoja oikeassa muodossa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:761
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
-msgstr ""
+msgstr "Tutkimuksen tuonti epäonnistui. Ryhmä CSV tai SQL-tiedostossa ei ole osa samaa tutkimusta."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:826
-#, fuzzy, php-format
+#, php-format
 msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
-msgstr "EI tuotu, koska kysymystyyppiä ei tiedetä"
+msgstr "Kysymystä \"%s - %s\" ei tuotu, koska kysymystyyppi on tuntematon"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:832
-#, fuzzy, php-format
+#, php-format
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
-msgstr "tuotiin, mutta tyypiksi asetettiin \""
+msgstr "Kysymys \"%s - %s\" tuotiin onnistuneesti, mutta kysymyksen tyyppi muutettiin '%s', mikä vastaa lähinnä kysymystäsi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1220
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1249
 msgid "Survey Import Summary"
-msgstr "Kyselytuontiyhteenveto"
+msgstr "Tutkimuksen tuonti yhteenveto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1233
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1260
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "Tuo Tunnusryhmä"
+msgstr "Tuo tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1233
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1260
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
-msgstr ""
+msgstr "Nimikkeitä ei tuotu, koska käyttöoikeudet eivät riitä uuden nimikkeen luontiin."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1235
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1261
 msgid "Question Attributes"
-msgstr "Kysymysmääreet"
+msgstr "Kysymyksen arvot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1237
 msgid "Quotas"
-msgstr ""
+msgstr "Lainaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1239
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1264
@@ -4293,9 +4220,8 @@ msgid "Import of Survey is completed."
 msgstr "Kyselyn vienti valmis."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1240
-#, fuzzy
 msgid "Go to survey"
-msgstr "Ei vastaavaa kyselyä"
+msgstr "Siirry tutkimukseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1241
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1265
@@ -4303,15 +4229,14 @@ msgid "Warnings"
 msgstr "Varoitukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:43
-#, fuzzy
 msgid "Import Survey Resources"
-msgstr "Vie Kysely"
+msgstr "Vie tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:49
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:219
 #, php-format
 msgid "Incorrect permissions in your %s folder."
-msgstr ""
+msgstr "Käyttöoikeudet kansioosi %s ovat virheelliset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:50
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:74
@@ -4323,60 +4248,57 @@ msgstr "Takaisin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:73
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:243
-#, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "Tämä tiedosto ei kuulu LimeSurvey tunnusryhmään. Tuonti epäonnistui."
+msgstr "ZIP-tiedosto ei ole oikeaa tiedostomuotoa. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:94
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:264
 msgid "Copy failed"
-msgstr ""
+msgstr "Kopiointi epäonnistui"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:103
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:273
 msgid "OK"
-msgstr ""
+msgstr "Ok"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:113
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:283
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "Kielletyt laajennukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:137
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:156
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:307
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:326
 msgid "Imported Files List"
-msgstr ""
+msgstr "Tuotujen tiedostojen lista"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:142
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:312
-#, fuzzy
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr "Tämä tiedosto ei ole LimeSurvey kyselytiedosto. Tuonti epäonnistui."
+msgstr "ZIP-tiedostosta puuttuvat tarvittavat tiedostot. Tuonti epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:143
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:313
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
+msgstr "Muistutus ZIP-tiedostossa ei saa olla alihakemistoja"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:151
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:321
 msgid "Partial"
-msgstr ""
+msgstr "Osittainen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:155
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:163
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:325
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:333
 msgid "Error Files List"
-msgstr ""
+msgstr "Virhetiedostojen lista"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:166
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:336
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "Vie Vastaukset"
+msgstr "Vie vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:168
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:338
@@ -4393,7 +4315,7 @@ msgstr "Tiedostoja tuotu yhteensä:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:170
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:340
 msgid "Total Errors"
-msgstr ""
+msgstr "Virheet yhteensä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:174
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:180
@@ -4406,7 +4328,7 @@ msgstr "Tiedosto:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:32
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:306
 msgid "Data Consistency Check"
-msgstr "Tietojen Yhtenäisyyden Tarkistus"
+msgstr "Tietojen yhtenäisyyden tarkistus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:32
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:306
@@ -4419,11 +4341,11 @@ msgstr "Ei vastaa Cqid:tä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:60
 msgid "No matching CFIELDNAME Group!"
-msgstr "Ei vastaavaa CKENTTÄNIMI Ryhmää!"
+msgstr "CFIELDNAME  ryhmää ei löydy!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:64
 msgid "No \"CFIELDNAME\" field set!"
-msgstr "\"CKENTTÄNIMI\" ei ole asetettu!"
+msgstr "Kohtaa \"CFIELDNAME\" ei ole asetettu!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:69
 msgid "The following conditions should be deleted"
@@ -4458,7 +4380,7 @@ msgstr "Kaikki kysymysmääreet täyttävät yhtenäisyysstandardit"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:111
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:211
 msgid "No matching survey"
-msgstr "Ei vastaavaa kyselyä"
+msgstr "Ei vastaavaa tutkimusta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:123
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:205
@@ -4472,11 +4394,11 @@ msgstr "Seuraavat arviot tulisi poistaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:135
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr "Kaikki Kyselyn (Kokonais) arviot täyttävät yhtenäisyysstandardit"
+msgstr "Kaikki tutkimuksen (kokonais) arviot täyttävät yhtenäisyysstandardit"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:145
 msgid "All Group assessments meet consistency standards"
-msgstr "Kaikki Ryhmien arviot täyttävät yhtenäisyysstandardit"
+msgstr "Kaikki ryhmien arviot täyttävät yhtenäisyysstandardit"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:158
 msgid "No matching question"
@@ -4496,11 +4418,11 @@ msgstr "Kieliasetuksia puuttuu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:187
 msgid "The following surveys should be deleted"
-msgstr "Seuraavat kyselyt tulisi poistaa"
+msgstr "Seuraavat tutkimukset tulisi poistaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:193
 msgid "All survey settings meet consistency standards"
-msgstr "Kaikki kyselyt täyttävät yhtenäisyysstandardit"
+msgstr "Kaikki tutkimukset täyttävät yhtenäisyysstandardit"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:216
 msgid "The following questions should be deleted"
@@ -4532,29 +4454,29 @@ msgstr "Kyllä - Poista ne!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:320
 msgid "Deleting Surveys"
-msgstr "Poistetaan Kyselyt"
+msgstr "Poistetaan tutkimukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:322
 msgid "Deleting Survey ID"
-msgstr "Poistetaan Kyselytunnus"
+msgstr "Poistetaan tutkimuksen ID"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:329
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:337
 msgid "Deleting Assessments"
-msgstr "Poistetaan Arviot"
+msgstr "Poistetaan arviot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:331
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:339
 msgid "Deleting ID"
-msgstr "Poistetaan Tunnus"
+msgstr "Poistetaan ID-tunnus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:345
 msgid "Deleting Question_Attributes"
-msgstr "Poistetaan Kysymysmääreet"
+msgstr "Poistetaan kysymysmääreet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:353
 msgid "Deleting Conditions"
-msgstr "Poistetaan Ehdot"
+msgstr "Poistetaan ehdot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:355
 msgid "Deleting cid"
@@ -4570,7 +4492,7 @@ msgstr "Poistetaan vastaus jossa qid"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:372
 msgid "Deleting Questions"
-msgstr "Poistetaan Kysymykset"
+msgstr "Poistetaan kysymykset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:374
 msgid "Deleting qid"
@@ -4578,7 +4500,7 @@ msgstr "Poistetaan qid"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:381
 msgid "Deleting Groups"
-msgstr "Poistetaan Ryhmät"
+msgstr "Poistetaan ryhmät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:383
 msgid "Deleting group id"
@@ -4590,11 +4512,11 @@ msgstr "Tarkista tietokanta uudestaan?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/integritycheck.php:390
 msgid "Check Again"
-msgstr "Tarkista Uudelleen"
+msgstr "Tarkista uudelleen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:66
 msgid "Label Sets Administration"
-msgstr "Tunnusryhmien Hallinta"
+msgstr "Tunnusryhmien hallinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:77
 msgid "Labelsets"
@@ -4602,7 +4524,7 @@ msgstr "Tunnusryhmät"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:97
 msgid "Add New Label Set"
-msgstr "Lisää Uusi Tunnusryhmä"
+msgstr "Lisää uusi tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:98
 msgid "Add new label set"
@@ -4610,20 +4532,19 @@ msgstr "Lisää uusi tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:129
 msgid "Error: You have to enter a name for this label set."
-msgstr "Virhe: Anna tunnusryhmälle nimi."
+msgstr "Virhe: anna tunnusryhmälle nimi."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:135
-#, fuzzy
 msgid "Create or Import New Label Set"
-msgstr "Luo tai Tuo Uusi Kysely"
+msgstr "Luo tai tuo uusi tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:135
 msgid "Create New Label Set"
-msgstr "Luo Uusi Tunnusryhmä"
+msgstr "Luo uusi tunnusryhmä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:136
 msgid "Edit Label Set"
-msgstr "Muokkaa Tunnusryhmää"
+msgstr "Muokkaa tunnusryhmää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:147
 msgid "Set Name"
@@ -4640,7 +4561,7 @@ msgstr "Päivitys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:259
 msgid "Edit label set"
-msgstr "Muokkaa Tunnusryhmää"
+msgstr "Muokkaa tunnusryhmää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:262
 msgid "Delete label set"
@@ -4662,9 +4583,8 @@ msgid "Add new label"
 msgstr "Lisää uusi tunnus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:394
-#, fuzzy
 msgid "Fix Order"
-msgstr "Järjestys"
+msgstr "Muuta järjestystä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/labels.php:420
 msgid "Inserting New labels must be done on the first language folder."
@@ -4725,11 +4645,11 @@ msgstr "Tunnuksen poistaminen epäonnistui"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/login_check.php:35
 msgid "You have to enter user name and email."
-msgstr "Kirjoita käyttäjänimi ja sähköposti."
+msgstr "Kirjoita käyttäjänimi ja sähköpostiosoite."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/login_check.php:48
 msgid "Check Data"
-msgstr "Tarkista Tiedot"
+msgstr "Tarkista tiedot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/login_check.php:74
 msgid "You have to login first."
@@ -4749,9 +4669,8 @@ msgid "if you answered"
 msgstr "jos vastasit"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:144
-#, fuzzy
 msgid "if you have NOT answered"
-msgstr "jos vastasit"
+msgstr "jos ET OLE vastannut"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:244
 msgid "or"
@@ -4762,9 +4681,9 @@ msgid "to question"
 msgstr "kysymykseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:257
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question %s"
-msgstr "Vastaa vain tähän kysymykseen"
+msgstr "Vastaa vain tähän %s kysymykseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:290
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:291
@@ -4873,20 +4792,19 @@ msgstr "Faksaa täyttämäsi lomake numeroon:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:974
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:975
-#, fuzzy, php-format
+#, php-format
 msgid "Please submit by %s"
-msgstr "Ole hyvä ja lähetä"
+msgstr "Ole hyvä ja lähetä %s"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:26
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "Virhe: Anna tunnusryhmälle nimi."
+msgstr "Virhe: Aseta koodi tähän kysymykseen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:30
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:36
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:164
 msgid "Add Question"
-msgstr "Lisää Kysymys"
+msgstr "Lisää kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:72
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:255
@@ -4902,22 +4820,21 @@ msgid "Second Label Set:"
 msgstr "Tunnusryhmä:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:133
-#, fuzzy
 msgid "Position:"
-msgstr "kohdassa"
+msgstr "Sijainti:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:136
 msgid "At end"
-msgstr ""
+msgstr "Lopussa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:137
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:759
 msgid "At beginning"
-msgstr ""
+msgstr "Alussa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:140
 msgid "After"
-msgstr ""
+msgstr "Jälkeen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:180
 msgid "Select CSV File"
@@ -4927,7 +4844,7 @@ msgstr "Valitse CSV-tiedosto"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:335
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:356
 msgid "Copy Question"
-msgstr "Kopioi Kysymys"
+msgstr "Kopioi kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:221
 msgid "Note: You MUST enter a new question code!"
@@ -4940,35 +4857,33 @@ msgstr "Ryhmä:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:346
 msgid "Copy Answers?"
-msgstr "Kopioi Vastauket?"
+msgstr "Kopioi vastauket?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:351
 msgid "Copy Attributes?"
-msgstr "Kopioi Määreet?"
+msgstr "Kopioi arvot?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:404
 msgid "Edit Question"
-msgstr "Muokkaa Kysymystä"
+msgstr "Muokkaa kysymystä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:456
-#, fuzzy
 msgid "Question Type:"
-msgstr "Kysymys:"
+msgstr "Kysymyksen tyyppi:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:467
-#, fuzzy
 msgid "Cannot be modified (Survey is active)"
-msgstr "Ei voi muokata"
+msgstr "Ei voi muokata (tutkimus on aktiivisena)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:520
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:521
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:550
 msgid "Survey is currently active."
-msgstr "Kysely on tällä hetkellä toiminnassa."
+msgstr "Tutkimus on tällä hetkellä julkaistu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:575
 msgid "Update Question"
-msgstr "Päivitä Kysymys"
+msgstr "Päivitä kysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:714
 msgid "Current group is using conditional questions"
@@ -4988,13 +4903,12 @@ msgid "Place after.."
 msgstr "Odota..."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/questionhandling.php:815
-#, fuzzy
 msgid "View Question"
-msgstr "Muokkaa Kysymystä"
+msgstr "Katso kysymystä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:252
 msgid "Modify Quota"
-msgstr ""
+msgstr "Muokkaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:256
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:315
@@ -5006,7 +4920,7 @@ msgstr "Aseta Nimi"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:262
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:605
 msgid "Quota Limit"
-msgstr ""
+msgstr "Rajoitus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:268
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:317
@@ -5026,7 +4940,7 @@ msgstr "Luo Kysely"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:343
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:615
 msgid "Terminate Survey With Warning"
-msgstr ""
+msgstr "Poista tutkimus varoituksen kanssa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:281
 #, fuzzy
@@ -5040,7 +4954,7 @@ msgstr "Kyselyt"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:318
 msgid "Limit"
-msgstr ""
+msgstr "Rajoitus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:335
 #, fuzzy
@@ -5049,7 +4963,7 @@ msgstr "Toimiva"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:351
 msgid "Modify"
-msgstr ""
+msgstr "Muokkaa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:373
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:452
@@ -5061,9 +4975,8 @@ msgid "Add Answer"
 msgstr "Lisää uusi Vastaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:416
-#, fuzzy
 msgid "No quotas have been set for this survey"
-msgstr "Kyselylle on luotu tunnistetaulukko."
+msgstr "Tutkimukselle on luotu tunnistetaulukko."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:422
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:620
@@ -5073,14 +4986,12 @@ msgstr "Uusi Tunniste Lisätty"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:452
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:528
-#, fuzzy
 msgid "Question Selection"
-msgstr "Järjestyksessä"
+msgstr "Kysymysten valinta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:455
-#, fuzzy
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Kyselyssä ei ole kysymyksiä"
+msgstr "Pahoittelumme tutkimuksessa ei ole tuettuja kysymystyyppejä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:468
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:544
@@ -5095,7 +5006,7 @@ msgstr "Turvallisuuskysymys"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:531
 msgid "All answers are already selected in this quota."
-msgstr ""
+msgstr "Kaikki vastaukset on jo valittu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:551
 #, fuzzy
@@ -5104,7 +5015,7 @@ msgstr "Poistetaan Vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/quota.php:595
 msgid "New Quota"
-msgstr ""
+msgstr "Uusi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/resetsurveylogic.php:42
 #, fuzzy
@@ -5141,20 +5052,64 @@ msgstr "Tunniste"
 msgid "Date Saved"
 msgstr "Päiväys Tallennettu"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:494
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:106
+#, fuzzy
+msgid "Export results"
+msgstr "Vie Tulokset"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:108
+#, fuzzy
+msgid "Export result data to SPSS"
+msgstr "Vie tulokset SPSS-tiedostomuotoon."
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:109
+#, fuzzy
+msgid "Export SPSS syntax file"
+msgstr "Vie VV-kysely -tiedosto"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:110
+#, fuzzy
+msgid "Export SPSS data file"
+msgstr "Vie tietokanta"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:111
+msgid "Instructions for the impatient"
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:113
+msgid "Download the data and the syntax file."
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:114
+msgid "Open the syntax file in SPSS in Unicode mode"
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:115
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:116
+msgid "Choose 'Run/All' from the menu to run the import."
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:118
+msgid "Your data should be imported now."
+msgstr ""
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:676
 msgid "Record ID"
 msgstr "Talleenteen tunniste"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:496
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:678
 msgid "Completion Date"
 msgstr "Päätöspäivämäärä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:498
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:680
 msgid "Start Language"
 msgstr "Aloituskieli"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:619
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:625
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:801
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:807
 msgid "Not Selected"
 msgstr "Ei valittu"
 
@@ -5195,22 +5150,20 @@ msgid "View summary of all available fields"
 msgstr "Näytä yhteenveto kaikista saatavilla olevista kentistä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1269
-#, fuzzy
 msgid "Enabled"
-msgstr "Salli"
+msgstr "Sallittu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1272
 msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
-msgstr ""
+msgstr "Älä huolehdi vajaista vastauksista (toimii vain, jos suodatus vajaat vastaukset estetty on päällä)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1277
-#, fuzzy
 msgid "Show Graphs"
-msgstr "Näytä loppu..."
+msgstr "Näytä grafiikka"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1282
 msgid "View Stats"
-msgstr "Näytä Tilastot"
+msgstr "Näytä tilastot"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1306
 msgid "Please wait ..."
@@ -5222,11 +5175,11 @@ msgstr "Takaisin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1323
 msgid "Getting Questions and Answers ..."
-msgstr "Haetaan Kysymyksiä ja Vastauksia ..."
+msgstr "Haetaan kysymyksiä ja vastauksia ..."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1497
 msgid "Getting Result Count ..."
-msgstr "Haetaan Tulosten Määrä ..."
+msgstr "Haetaan tulosten määrä ..."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1556
 msgid "Results"
@@ -5234,11 +5187,11 @@ msgstr "Tulokset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1559
 msgid "No of records in this query"
-msgstr "Kysymyksen tallenteiden määrä"
+msgstr "Vastauksien lukumäärä tutkimuksessa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1560
 msgid "Total records in survey"
-msgstr "Kyselyssä tallenteita yhteensä"
+msgstr "Vastauksia tutkimuksessa yhteensä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1566
 msgid "Percentage of total"
@@ -5277,13 +5230,13 @@ msgstr "Keskihajonta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2038
 msgid "Average"
-msgstr "Keskimääräinen"
+msgstr "Keskiarvo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2076
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2590
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:3048
 msgid "Count"
-msgstr "Luku"
+msgstr "Lukumäärä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2113
 msgid "1st Quartile (Q1)"
@@ -5302,33 +5255,30 @@ msgid "Null values are ignored in calculations"
 msgstr "Tyhjät arvot jätetään huomiotta laskuissa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2221
-#, fuzzy, php-format
+#, php-format
 msgid "Q1 and Q3 calculated using %s"
-msgstr "Q1 ja Q3 laskettu käyttäen"
+msgstr "Q1 ja Q3 lasketaan käyttäen %s"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2221
 msgid "minitab method"
-msgstr ""
+msgstr "Minitab metodi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2236
-#, fuzzy
 msgid "Not enough values for calculation"
-msgstr "Tyhjät arvot jätetään huomiotta laskuissa"
+msgstr "Ei tarpeeksi arvoja laskentaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2592
 msgid "Percentage"
 msgstr "Prosenttiosuus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:2843
-#, fuzzy
 msgid "Non completed"
-msgstr "valmis"
+msgstr "Keskeneräinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:42
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:309
-#, fuzzy
 msgid "Survey List Page"
-msgstr "Lähetyssivu"
+msgstr "Tutkimusten listaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:43
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:256
@@ -5370,35 +5320,33 @@ msgstr "Tallenna Sivu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:50
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:471
-#, fuzzy
 msgid "Print Answers Page"
-msgstr "Muokkaa Vastauksia"
+msgstr "Tulosta vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:130
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:250
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to copy %s to new template directory."
-msgstr "uuteen mallitiedostoon."
+msgstr "Tiedoston %s kopionti uuteen näkymä hakemistoon epäonnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:136
-#, fuzzy, php-format
+#, php-format
 msgid "Directory with the name `%s` already exists - choose another name"
-msgstr "on jo olemassa - valitse toinen nimi"
+msgstr "Hakemisto nimellä `%s` on jo olemassa. Valitse toinen nimi"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:138
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to create directory `%s`."
-msgstr "Hakemistoa ei voi luoda"
+msgstr "Hakemistoa  `%s` ei voi luoda"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:138
-#, fuzzy
 msgid "Please check the directory permissions."
-msgstr "Valitse vähintään yksi"
+msgstr "Tarkista hakemistojen oikeudet."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:146
-#, fuzzy, php-format
+#, php-format
 msgid "Directory could not be renamed to `%s`."
-msgstr "Hakemistoa ei voitu nimetä"
+msgstr "Hakemiston nimeä `%s` ei voitu vaihtaa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:146
 msgid "Maybe you don't have permission."
@@ -5463,48 +5411,48 @@ msgstr "kopio"
 msgid "Screen:"
 msgstr "Ruutu:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:656
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:657
 msgid "File Control:"
 msgstr "Tiedostonhallinta:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:666
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:667
 msgid "Standard Files:"
 msgstr "Standarditiedostot:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:667
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:668
 msgid "Now editing:"
 msgstr "Muokataan:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:670
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:671
 msgid "Other Files:"
 msgstr "Muut tiedostot:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:687
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:688
 msgid "Save Changes"
 msgstr "Tallenna muutokset"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:689
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:690
 msgid "Changes cannot be saved to the default template."
 msgstr "Muutoksia ei voi tallentaa oletusmalliin."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:700
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:701
 msgid "Are you sure you want to delete this file?"
 msgstr "Haluatko varmasti poistaa tämän tiedoston?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:702
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:703
 msgid "Files in the default template cannot be deleted."
 msgstr "Tiedostoja oletusmallissa ei voi poistaa."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:713
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:714
 msgid "Upload a File"
 msgstr "Lähetä tiedosto"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:714
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:715
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2204
 msgid "Upload"
 msgstr "Lähetä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:736
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/templates.php:737
 msgid "Preview:"
 msgstr "Edellinen:"
 
@@ -5658,7 +5606,7 @@ msgstr "UTF-8 Unicode"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:193
 msgid "You have not selected a survey"
-msgstr "Et ole valinnut kyselyä"
+msgstr "Et ole valinnut tutkimusta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:275
 msgid "Token table could not be created."
@@ -5667,23 +5615,23 @@ msgstr "Tunnistetaulukkoa ei voitu luoda."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:295
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:317
 msgid "A token table has been created for this survey."
-msgstr "Kyselylle on luotu tunnistetaulukko."
+msgstr "Tutkimukselle on luotu tunnistetaulukko."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:342
 msgid "Tokens have not been initialised for this survey."
-msgstr "Tunnisteita ei ole otettu käyttöön tässä kyselyssä."
+msgstr "Tunnisteita ei ole otettu käyttöön tässä tutkimuksessa."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:347
 msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
-msgstr "Jos otat tunnisteet käyttöön merkit tässä kyselyssä, siihen pääsevät vain käyttäjät, joille on annettu tunniste."
+msgstr "Jos otat tunnisteet käyttöön tutkimuksessa, tutkimukseen voivat osallistua vain käyttäjät, joille on annettu tunniste."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
-msgstr "Haluatko luoda tunnistetaulukon tälle kyselylle?"
+msgstr "Haluatko luoda tunnistetaulukon tälle tutkimukselle?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:374
 msgid "Restore Options"
-msgstr "Palauta Valinnat"
+msgstr "Palauta valinnat"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:378
 msgid "The following old token tables could be restored:"
@@ -5695,14 +5643,14 @@ msgstr "Palauta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:416
 msgid "Show Token Summary"
-msgstr ""
+msgstr "Näytä tunnisteiden yhteenveto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:420
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1744
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1791
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1799
 msgid "Display Tokens"
-msgstr "Näytä Tunnisteet"
+msgstr "Näytä tunnisteet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:428
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1792
@@ -5723,9 +5671,8 @@ msgid "Export Tokens to CSV file"
 msgstr "Vie tunnisteet CSV-tiedostoon"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:448
-#, fuzzy
 msgid "Edit Email Templates"
-msgstr "Vie malli"
+msgstr "Muokkaa sähköpostinäkymää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:450
 msgid "Send email invitation"
@@ -5737,37 +5684,36 @@ msgstr "Lähetä sähköpostimuistutus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:456
 msgid "Generate Tokens"
-msgstr "Luo Tunnisteet"
+msgstr "Luo tunnisteet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:460
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:705
 msgid "Drop tokens table"
-msgstr "Tyhjennä tunnistekentät"
+msgstr "Poista tunnistetaulu"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:484
 msgid "Total Records in this Token Table"
-msgstr "Merkkejä yhteensä tässä Valtuustaulukossa"
+msgstr "Merkkejä yhteensä tässä tunnistetaulukossa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:491
 msgid "Total With No Unique Token"
-msgstr "Yhteensä Tavallisia Tunnisteita"
+msgstr "Yhteensä tavallisia tunnisteita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:498
 msgid "Total Invitations Sent"
-msgstr "Kutsuja Lähetetty Yhteensä"
+msgstr "Kutsuja lähetetty yhteensä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:503
 msgid "Total Surveys Completed"
-msgstr "Kyselyjä Suoritettu Yhteensä"
+msgstr "Valmiita tutkimuksia yhteensä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:542
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "Muokkaa Tunnusryhmää"
+msgstr "Muokkaa sähköpostiasetuksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:555
 msgid "Invitation Email Subject:"
-msgstr "Kutsusähköpostin Aihe:"
+msgstr "Sähköpostikutsun aihe:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:558
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:564
@@ -5784,11 +5730,11 @@ msgstr "Käytä oletusta"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:562
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1088
 msgid "Invitation Email:"
-msgstr "Kutsusähköposti:"
+msgstr "Sähköpostikutsu:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:566
 msgid "Email Reminder Subject:"
-msgstr "Sähköposti Muistutus Aihe:"
+msgstr "Sähköpostikutsun muistutuksen aihe:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:571
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:573
@@ -5796,9 +5742,8 @@ msgid "Email Reminder:"
 msgstr "Sähköpostimuistutus:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:577
-#, fuzzy
 msgid "Confirmation Email Subject:"
-msgstr "Vahvistussähköpostin Aihe"
+msgstr "Vahvistussähköpostin aihe:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:582
 #, fuzzy
@@ -5811,12 +5756,12 @@ msgstr "Vahvistussähköposti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:588
 msgid "Public registration Email Subject:"
-msgstr "Yleisörekisteröinti-sähköpostin Aihe:"
+msgstr "Julkisen rekisteröinnin sähköpostikutsun aihe:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:593
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:595
 msgid "Public registration Email:"
-msgstr "Yleisörekisteröinti-sähköposti:"
+msgstr "Julkisen rekisteröinnin sähköpostikutsu:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:634
 #, fuzzy
@@ -5825,7 +5770,7 @@ msgstr "Kaikki valtuusmerkinnät on poistettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:649
 msgid "All token entries have been deleted."
-msgstr "Kaikki valtuusmerkinnät on poistettu."
+msgstr "Kaikki tunnistemerkinnät on poistettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:661
 msgid "All invite entries have been set to 'Not Invited'."
@@ -5833,15 +5778,15 @@ msgstr "Kaikki kutsumerkinnät on asetettu tilaan 'Ei Kutsuttu'."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:673
 msgid "All unique token numbers have been removed."
-msgstr "Kaikki ainutkertaiset valtuusnumerot on poistettu."
+msgstr "Kaikki ainutkertaiset tunniste numerot on poistettu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:685
 msgid "Token Database Administration Options"
-msgstr "Valtuustietokannan Hallintaominaisuudet"
+msgstr "Valtuustietokannan hallintaominaisuudet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:693
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr "Oletko todella varma että haluat asettaa nollata kaikki kutsutallenteet tilaan EI?"
+msgstr "Oletko todella varma että haluat asettaa kaikki kutsutallenteet EI tilaan?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:693
 msgid "Set all entries to 'No invitation sent'."
@@ -5849,7 +5794,7 @@ msgstr "Aseta kaikki merkinnät tilaan 'Kutsua ei lähetetty'."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:697
 msgid "Are you sure you want to delete all unique token numbers?"
-msgstr "Oletko varma että poistaa kaikki ainutkertaiset tunnistenumerot?"
+msgstr "Oletko varma että haluat poistaa kaikki ainutkertaiset tunnistenumerot?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:697
 msgid "Delete all unique token numbers"
@@ -5883,9 +5828,8 @@ msgstr "Järjestä:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:823
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1616
-#, fuzzy
 msgid "Email Status"
-msgstr "Tila"
+msgstr "Sähköpostin tila"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:838
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1652
@@ -5899,19 +5843,19 @@ msgstr "Valmis?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:883
 msgid "Edit Token Entry"
-msgstr "Muokkaa Tunnistemerkintää"
+msgstr "Muokkaa tunnistemerkintää"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:886
 msgid "Delete Token Entry"
-msgstr "Poista Tunnistemerkintä"
+msgstr "Poista tunnistemerkintä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:887
 msgid "Do Survey"
-msgstr "Tee Kysely"
+msgstr "Luo tutkimus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:916
 msgid "Update Response"
-msgstr "Päivitä Vastaus"
+msgstr "Päivitä vastaus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:931
 msgid "Send invitation email to this entry"
@@ -5927,7 +5871,7 @@ msgstr "Poista Tunnistetaulukko"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:970
 msgid "If you delete this table tokens will no longer be required to access this survey."
-msgstr "Jos poistat tämän taulukon tunnisteita ei enää vaadita kyselyyn pääsyyn."
+msgstr "Jos poistat tämän taulukon tunnisteita ei enää vaadita tutkimuksen pääsyyn."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:970
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
@@ -5935,11 +5879,11 @@ msgstr "Tästä taulukosta tehdään varmuuskopio jos jatkat. Järjestelmän yll
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:974
 msgid "Delete Tokens"
-msgstr "Poista Tunnisteet"
+msgstr "Poista tunnisteet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:998
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr "Tunnistetaulukko on poistettu ja tunnisteita ei enää vaadita kyselyyn pääsyyn."
+msgstr "Tunnistetaulukko on poistettu ja tunnisteita ei enää vaadita tutkimukseen pääsyyn."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:998
 msgid "A backup of this table has been made and can be accessed by your system administrator."
@@ -5986,9 +5930,8 @@ msgstr "Kutsu lähetettiin osoitteeseen:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1210
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1452
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr "Postin lähetys {FIRSTNAME} {LASTNAME} {EMAIL} Epäonnistui"
+msgstr "Postin lähetys {FIRSTNAME} {LASTNAME} {EMAIL} Epäonnistui. Virheteksti:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1225
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1469
@@ -6002,34 +5945,31 @@ msgstr "{EMAILCOUNT} sähköpostia on vielä lähettämättä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1246
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Sopia lähetettäviä sähköposteja ei ollut. Tämä johtuu seuraavista syistä - sähköpostiosoite puuttuu, kutsu jo lähetetty, kysely jo suoritettu tai tunniste puuttuu."
+msgstr "Sopivia lähetettäviä sähköposteja ei ollut. Tämä johtuu seuraavista syistä - sähköpostiosoite puuttuu, kutsu on jo lähetetty, tutkimus on jo suljettu tai tunniste puuttuu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1263
 msgid "Email Reminder"
 msgstr "Sähköpostimuistutus"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1313
-#, fuzzy
 msgid "Reminder Email:"
-msgstr "Ylläpitäjän Sähköposti:"
+msgstr "Muistutuksen sähköpostiosoite:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1324
-#, fuzzy
 msgid "Start at Token ID:"
-msgstr "Aloita Tunnistenumerosta:"
+msgstr "Aloita tunnistenumerosta:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1332
-#, fuzzy
 msgid "Stop at Token ID:"
-msgstr "Aloita Tunnistenumerosta:"
+msgstr "Aloita tunnistenumerosta:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1342
 msgid "Send Reminders"
-msgstr "Lähetä Muistutukset"
+msgstr "Lähetä muistutukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1354
 msgid "Sending Reminders"
-msgstr "Lähetetään Muistutuksia"
+msgstr "Lähetetään muistutuksia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1366
 #, fuzzy
@@ -6046,7 +5986,7 @@ msgstr "Sopivia lähetettäviä sähköposteja ei ollut. Tämä johtuu seuraavis
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1508
 msgid "Create Tokens"
-msgstr "Luo Tunnisteita"
+msgstr "Luo tunnisteita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1512
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
@@ -6067,9 +6007,8 @@ msgstr "Ladataan Ruutu Uudelleen. Odota."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1590
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1714
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1766
-#, fuzzy
 msgid "Add or Edit Token Entry"
-msgstr "Lisää tai Muokkaa Tunnisteita"
+msgstr "Lisää tai muokkaa tunnisteita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1594
 msgid "Auto"
@@ -6101,7 +6040,7 @@ msgstr "Epäonnistui"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1750
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1798
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
-msgstr ""
+msgstr "Vastauksissa on saman niminen tunniste. Samaa tunnistetta ei voi käyttää useassa vastauksessa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1751
 #, fuzzy
@@ -6149,7 +6088,7 @@ msgstr "Luodaan Tunnistemerkintöjä"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1977
 msgid "Records in CSV"
-msgstr "Tallenteet CSV:ssä"
+msgstr "Tallenteet CSV-tiedostona"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1978
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2160
@@ -6199,13 +6138,12 @@ msgstr "Tiedoston merkistö:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2202
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2236
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Suodata tyhjät sähköpostiosoiteet:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2203
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2237
-#, fuzzy
 msgid "Filter duplicate records:"
-msgstr "Kaksoistallenteet poistettu"
+msgstr "Suodata kaksoistallenteet:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2217
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
@@ -6221,7 +6159,7 @@ msgstr "Valitse suoritettava LDAP-kysely:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:48
 msgid "Forgot Password"
-msgstr "Unohditko Salasanan"
+msgstr "Unohditko salasanan?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:60
 msgid "User name and/or email not found!"
@@ -6254,7 +6192,7 @@ msgstr "Kirjaudutaan sisään..."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:164
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:265
 msgid "Incorrect User name and/or Password!"
-msgstr "Virheellinen Käyttäjätunnus tai Salasana!"
+msgstr "Virheellinen käyttäjätunnus tai salasana!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:149
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:289
@@ -6268,15 +6206,15 @@ msgstr "Sisäänkirjautuminen onnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:172
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
-msgstr ""
+msgstr "LimeSurvey käyttää palvelimen tunnistusta. Et ole vielä tunnistautunut."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
-msgstr ""
+msgstr "Ota yhteyttä järjestelmän hallintaan"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:256
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Automaattinen käyttäjien tuonti epäonnistui!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:307
 msgid "Logout successful."
@@ -6284,18 +6222,17 @@ msgstr "Uloskirjautuminen onnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:325
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:489
-#, fuzzy
 msgid "Email address is not valid."
-msgstr "Sähköpostiosoite ei kelpaa."
+msgstr "Sähköpostiosoite on virheellinen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:330
 msgid "Username was not supplied."
 msgstr "Käyttäjätunnus puuttuu."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:358
-#, fuzzy, php-format
+#, php-format
 msgid "You were signed in on the site %s"
-msgstr "Sinut rekisteröitiin sivulle"
+msgstr "Rekisteröidyit sivulle %s"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:367
 msgid "Login here"
@@ -6307,8 +6244,8 @@ msgstr "Käyttäjälle lähetettiin luotu salasana sähköpostilla."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:387
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:537
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:232
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:520
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:238
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:526
 msgid "Set User Rights"
 msgstr "Aseta Käyttäjäoikeudet"
 
@@ -6322,7 +6259,7 @@ msgid "Initial Superadmin cannot be deleted!"
 msgstr "Ylläpitäjää ei voi poistaa!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:469
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:177
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:183
 msgid "Modifying User"
 msgstr "Muokataan Käyttäjää"
 
@@ -6349,217 +6286,210 @@ msgid "You are not allowed to change your own rights!"
 msgstr "Et voi muuttaa omia oikeuksiasi!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:618
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:538
-#, fuzzy
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:544
 msgid "Set Template Rights"
-msgstr "Aseta Käyttäjäoikeudet"
+msgstr "Aseta näkymien käyttöoikeudet"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:638
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "Käyttäjäoikeuksien päivitys onnistui."
+msgstr "Käyttäjänäkymien päivitys onnistui."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:644
 msgid "Error while updating usertemplates."
-msgstr ""
+msgstr "Virhetoiminto päivitettäessä käyttäjänäkymiä."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:49
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:626
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:730
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:632
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:736
 msgid "Mail to all Members"
 msgstr "Lähetä kaikille jäsenille"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:60
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:64
 msgid "Edit Current User Group"
 msgstr "Muokkaa Nykyistä Käyttäjäryhmää"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:74
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:78
 msgid "Delete Current User Group"
 msgstr "Poista Nykyinen Käyttäjäryhmä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:85
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:89
 msgid "User Groups"
 msgstr "Käyttäjäryhmät"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:93
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:97
 msgid "Add New User Group"
 msgstr "Lisää Uusi Käyttäjäryhmä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:114
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "Aseta näkymä, jota tämä käyttäjä voi käyttää"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:128
-#, fuzzy
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:134
 msgid "Template Name"
-msgstr "Malli:"
+msgstr "Tyylin nimi"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:128
-#, fuzzy
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:134
 msgid "Allowed"
-msgstr "Salli Tallennus?"
+msgstr "Salli"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:146
-#, fuzzy
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:152
 msgid "Save Settings"
-msgstr "Asetukset"
+msgstr "Tallenna asetukset"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:181
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:378
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:187
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:384
 msgid "Full name"
 msgstr "Koko nimi"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:253
-#, fuzzy
-msgid "SuperAdministrator"
-msgstr "Kyselyn Ylläpitäjä"
-
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:259
+msgid "SuperAdministrator"
+msgstr "Kyselyn hallinta"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:265
 msgid "Configurator"
 msgstr "Konfiguraattori"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:262
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:268
 msgid "Create User"
 msgstr "Luo Käyttäjä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:265
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:943
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:271
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:949
 msgid "Delete User"
 msgstr "Poista Käyttäjä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:268
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:274
 msgid "Manage Template"
 msgstr "Hallitse Malleja"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:271
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:277
 msgid "Manage Labels"
 msgstr "Hallitse Tunnuksia"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:359
-#, fuzzy
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:365
 msgid "Setting as Administrator Child"
-msgstr "Kyselyn Ylläpitäjä"
+msgstr "Asetetaan kyselyn hallintaan"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:360
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:366
 msgid "Set Parent successful."
-msgstr ""
+msgstr "Aseta "
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:373
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:379
 msgid "User Control"
 msgstr "Käyttäjävalvonta"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:380
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:386
 msgid "Created by"
 msgstr "Luonut"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:415
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:547
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:421
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:553
 msgid "Edit User"
 msgstr "Muokkaa Käyttäjää"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:529
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:535
 msgid "Take Ownership"
-msgstr ""
+msgstr "Vaihda hallintaa"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:581
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:603
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:587
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:609
 msgid "Name:"
 msgstr "Nimi:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:601
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:607
 msgid "Edit User Group (Owner: "
 msgstr "Muokkaa Käyttäjäryhmää (Omistaja:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:607
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:613
 msgid "Update User Group"
-msgstr "Päivitä Käyttäjäryhmä"
+msgstr "Päivitä käyttäjäryhmä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:628
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:634
 msgid "Send me a copy:"
 msgstr "Lähetä minulle kopio:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:631
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:637
 msgid "Subject:"
 msgstr "Aihe:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:633
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:639
 msgid "Message:"
 msgstr "Viesti:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:635
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:641
 msgid "Send"
 msgstr "Lähetä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:636
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:642
 msgid "Reset"
 msgstr "Nollaa"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:648
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:654
 msgid "Deleting User Group"
 msgstr "Poistetaan Käyttäjäryhmä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:661
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:697
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:667
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:703
 msgid "Group Name"
 msgstr "Ryhmän Nimi"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:665
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:671
 msgid "Could not delete user group."
 msgstr "Käyttäjäryhmää ei voi poistaa."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:675
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:681
 msgid "Could not delete user group. No group selected."
 msgstr "Käyttäjäryhmää ei voi poistaa. Ryhmää ei valittu."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:685
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:691
 msgid "Adding User Group"
 msgstr "Lisätään Käyttäjäryhmä"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:701
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:807
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:842
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:707
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:813
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:848
 msgid "Description: "
 msgstr "Kuvaus:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:704
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:710
 msgid "User group successfully added!"
 msgstr "Käyttäjäryhmän lisäys onnistui!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:709
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:716
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:715
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:722
 msgid "Failed to add Group!"
 msgstr "Ryhmän lisäys epäonnistui!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:710
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:716
 msgid "Group already exists!"
 msgstr "Ryhmä on jo olemassa!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:717
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:723
 msgid "Group name was not supplied!"
 msgstr "Ryhmälle ei annettu nimeä!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:775
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:781
 msgid "Message(s) sent successfully!"
 msgstr "Viesti(t) lähetetty onnistuneesti!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:776
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:782
 msgid "To:"
 msgstr "Kenelle:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:781
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:787
 #, fuzzy
 msgid "Email not sent!"
 msgstr "Postia ei lähetetty!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:805
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:811
 msgid "Edit User Group Successfully!"
-msgstr "Käyttäjäryhmän Muokkaus Onnistui!"
+msgstr "Käyttäjäryhmän muokkaus onnistui!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:810
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:816
 msgid "Failed to update!"
-msgstr "Päivitys Epäonnistui!"
+msgstr "Päivitys epäonnistui!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:986
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/userrighthandling.php:992
 msgid "Adding User to group"
 msgstr "Lisätään Käyttäjä ryhmään"
 
@@ -6597,7 +6527,7 @@ msgstr "Korvaa vanha tallenne."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "Tuo vajaat vastaukset"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvimport.php:98
 msgid "Import"
@@ -6609,12 +6539,12 @@ msgstr "VV-Vienti -tiedostoa ei voi tuoda."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvimport.php:131
 msgid "Back to Response Import"
-msgstr "Palaa Vastaustentuontiin"
+msgstr "Palaa vastaustentuontiin"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvimport.php:258
-#, fuzzy, php-format
+#, php-format
 msgid "Import Failed on Record %d because [%s]"
-msgstr "Tallenteen tuonti epäonnistui"
+msgstr "Tallenteen %d tuonti epäonnistui [%s]"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvimport.php:271
 msgid "Important Note:"
@@ -6691,9 +6621,8 @@ msgid "Database has been successfully upgraded to version "
 msgstr "Tietokanta on päivitetty versioon"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:76
-#, fuzzy
 msgid "Albanian"
-msgstr "romania"
+msgstr "albania"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:81
 #, fuzzy
@@ -6705,22 +6634,20 @@ msgid "Basque"
 msgstr "baski"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:91
-#, fuzzy
 msgid "Bosnian"
-msgstr "romania"
+msgstr "bosnia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:96
 msgid "Bulgarian"
 msgstr "bulgaria"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:101
-#, fuzzy
 msgid "Catalan"
-msgstr "italia"
+msgstr "katalonia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:106
 msgid "Welsh"
-msgstr ""
+msgstr "wales"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:111
 msgid "Chinese (Simplified)"
@@ -6756,9 +6683,8 @@ msgid "English"
 msgstr "englanti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:151
-#, fuzzy
 msgid "Estonian"
-msgstr "romania"
+msgstr "viro"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:156
 msgid "Finnish"
@@ -6770,7 +6696,7 @@ msgstr "ranska"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:167
 msgid "Galician"
-msgstr ""
+msgstr "galicia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:172
 msgid "German"
@@ -6778,7 +6704,7 @@ msgstr "saksa"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:177
 msgid "German informal"
-msgstr "saksa epävirallinen"
+msgstr "saksa (epävirallinen)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:182
 msgid "Greek"
@@ -6794,11 +6720,11 @@ msgstr "unkari"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:197
 msgid "Icelandic"
-msgstr ""
+msgstr "islanti"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:202
 msgid "Indonesian"
-msgstr ""
+msgstr "indonesia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:207
 msgid "Italian"
@@ -6809,37 +6735,32 @@ msgid "Japanese"
 msgstr "japani"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:217
-#, fuzzy
 msgid "Korean"
-msgstr "norja"
+msgstr "korea"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:222
 msgid "Lithuanian"
 msgstr "liettua"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:227
-#, fuzzy
 msgid "Latvian"
-msgstr "kroatia"
+msgstr "latvia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:232
 msgid "Macedonian"
-msgstr ""
+msgstr "makedonia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:237
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "norja"
+msgstr "norja (kirjanorja)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:242
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "norja"
+msgstr "norja (uusi norja)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:247
-#, fuzzy
 msgid "Persian"
-msgstr "Versio"
+msgstr "persia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:252
 msgid "Polish"
@@ -6862,9 +6783,8 @@ msgid "Romanian"
 msgstr "romania"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:278
-#, fuzzy
 msgid "Slovak"
-msgstr "slovenia"
+msgstr "slovakia"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:283
 msgid "Slovenian"
@@ -6879,9 +6799,8 @@ msgid "Spanish"
 msgstr "espanja"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:298
-#, fuzzy
 msgid "Spanish (Mexico)"
-msgstr "espanja"
+msgstr "espanja (meksiko)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/classes/core/surveytranslator.php:303
 msgid "Swedish"
