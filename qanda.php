@@ -1846,7 +1846,7 @@ function do_multiplechoice_withcomments($ia)
 			$answer .= " checked='checked'";
 		}
 		$answer .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
-  				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\"; alert(this);' />"
+  				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />"
 				. "<label for='answer$myfname' class='answertext'>"
 				. $ansrow['answer']."</label>\n";
 
