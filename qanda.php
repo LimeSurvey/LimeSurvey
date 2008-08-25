@@ -511,7 +511,16 @@ function mandatory_message($ia)
                 $qrow = $qresult->FetchRow();
                 if ($qrow['other']=='Y')
                 {
-                    $qtitle .= "<br />\n".$clang->gT("If you choose 'Other:' you must provide a description.");
+                	$qidattributes=getQuestionAttributes($ia[0]);
+                	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+                	{
+                		$othertext=$clang->gT($othertexts['value']);
+                	}
+                	else
+                	{
+                		$othertext=$clang->gT("Other");
+                	}
+                    $qtitle .= "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
                 }
 				break;
 			} // end switch
