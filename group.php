@@ -606,13 +606,15 @@ foreach ($conditions as $cd)
 		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 		{
 			$auxqtitle = $comparedfieldname[1];
+			$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$auxqtitle];
+			$q2type=$qtypesarray[$sgq_from_sgqa];
 
 			// Let's determin the idname of this second question field
-			ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid2);
+			ereg("[0-9]+X([0-9]+)X.*",$auxqtitle,$sourceQuestionGid2);
 			if ($sourceQuestionGid2[1] == $gid && 
-				($cd[4] == "D" ||
-					$cd[4] == "N" ||
-					$cd[4] == "K") )
+				($q2type == "D" ||
+					$q2type == "N" ||
+					$q2type == "K") )
 			{ // field name for text input boxes differs if they are on the same page or not
 				$idname2 = "answer".$auxqtitle;
 			}
@@ -627,7 +629,7 @@ foreach ($conditions as $cd)
 
 				$java .= "(document.getElementById('" . $idname2 . "').value != '') && ";
 				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
-				if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+				if (in_array($cd[4],array("A","B","K","N","5")))
 				{ // Numerical questions
 					$java .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
@@ -649,8 +651,7 @@ foreach ($conditions as $cd)
 			}
 			else
 			{
-				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
-				if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+				if (in_array($cd[4],array("A","B","K","N","5")))
 				{
 					$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 				}
