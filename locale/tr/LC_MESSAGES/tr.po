@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Translating LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-19 09:00+0200\n"
-"PO-Revision-Date: 2008-08-25 11:58+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"POT-Creation-Date: 2008-08-26 09:00+0200\n"
+"PO-Revision-Date: 2008-08-26 12:17+0200\n"
+"Last-Translator: Murad BAYRAM <muradbayram@gmail.com>\n"
 "Language-Team: A. Murad BAYRAM <muradbayram@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -190,7 +190,7 @@ msgstr "Anket Kaynağı İçe Aktar"
 #: /srv/www/virtual/limesurvey.org/devSVN/save.php:541
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:398
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1166
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4367
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4369
 msgid "Error"
 msgstr "Hata"
 
@@ -777,7 +777,7 @@ msgid "Actions"
 msgstr "Eylemler"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/assessments.php:162
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:700
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:701
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2030
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:101
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:433
@@ -819,7 +819,7 @@ msgstr "Kaydet"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/resetsurveylogic.php:49
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:976
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1409
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4694
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4696
 msgid "Cancel"
 msgstr "İptal"
 
@@ -1039,52 +1039,52 @@ msgstr "kopyası"
 msgid "Screen:"
 msgstr "Ekran:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:656
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:657
 msgid "File Control:"
 msgstr "Dosya Kontrol:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:666
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:667
 msgid "Standard Files:"
 msgstr "Standart Dosyalar:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:667
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:668
 msgid "Now editing:"
 msgstr "Şimdi Düzenleme:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:670
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:671
 msgid "Other Files:"
 msgstr "Diğer Dosyalar"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:687
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:688
 msgid "Save Changes"
 msgstr "Değişiklikleri Kaydet"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:689
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:690
 msgid "Changes cannot be saved to the default template."
 msgstr "Değişiklikler varsayılan şablona kaydedilemez."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:700
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:701
 msgid "Are you sure you want to delete this file?"
 msgstr "Bu dosyayı silmek istediğinden emin misin?"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:702
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:703
 msgid "Files in the default template cannot be deleted."
 msgstr "Varsayılan şablondaki dosyalar silinemez."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:713
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:714
 msgid "Upload a File"
 msgstr "Bir Dosya Yükle"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:714
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:715
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:2204
 msgid "Upload"
 msgstr "Yükle"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:736
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:737
 msgid "Preview:"
 msgstr "Önizleme:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:870
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/templates.php:871
 #: /srv/www/virtual/limesurvey.org/devSVN/index.php:739
 #, php-format
 msgid "%s %% complete"
@@ -1206,7 +1206,7 @@ msgstr "Kolonları Seç"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:273
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:279
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:330
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:572
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:573
 msgid "Help"
 msgstr "Yardım"
 
@@ -1237,7 +1237,8 @@ msgstr "Anketiniz Pin Kodu'na bağlı olarak dışa aktarılabilecek durumda. D�
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:530
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:531
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:943
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:182
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:179
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:487
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:809
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1598
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2440
@@ -1248,7 +1249,8 @@ msgstr "Adı"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:525
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:526
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:946
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:185
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:182
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:490
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:813
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1604
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2447
@@ -1257,7 +1259,8 @@ msgstr "Soyadı"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:338
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:949
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:188
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:185
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:493
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:186
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:383
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/userrighthandling.php:859
@@ -1267,14 +1270,14 @@ msgstr "Soyadı"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:82
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/usercontrol.php:376
 msgid "Email"
-msgstr "Eposta"
+msgstr "E-posta"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:340
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:540
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:541
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:955
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/browse.php:376
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:504
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:682
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:828
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:1629
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:500
@@ -1291,7 +1294,8 @@ msgstr "Pin Kodu"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:961
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2409
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3027
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:167
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:164
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:472
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:405
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:848
 msgid "Attribute 1"
@@ -1302,7 +1306,8 @@ msgstr "Öznitelik 1"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:964
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2411
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3028
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:168
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:165
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:473
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:406
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:852
 msgid "Attribute 2"
@@ -1317,7 +1322,7 @@ msgstr "Genel bilgilerin verileceği dil:"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/saved.php:87
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:2454
 msgid "Email Address"
-msgstr "Eposta Adresi"
+msgstr "E-posta Adresi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:560
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:561
@@ -1387,15 +1392,16 @@ msgstr "Sıralama"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2114
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2130
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2174
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:765
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:869
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:984
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1047
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1091
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1179
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1560
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1781
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1872
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:521
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:774
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:878
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:993
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1056
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1100
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1188
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1569
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1790
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1882
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1571
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1678
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1734
@@ -1458,10 +1464,10 @@ msgstr "Dil"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3088
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3095
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:135
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:622
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:628
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:640
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:646
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:800
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:806
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:818
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:824
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:386
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:528
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:109
@@ -1495,9 +1501,9 @@ msgstr "Dil"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1616
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2197
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2254
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2435
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2760
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2806
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2450
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2775
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2821
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1686
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1692
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1708
@@ -1544,8 +1550,8 @@ msgstr "Evet"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3089
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:3096
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:136
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:641
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:647
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:819
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:825
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:388
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:529
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/questionhandling.php:111
@@ -1577,9 +1583,9 @@ msgstr "Evet"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1618
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2198
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2256
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2441
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2762
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2818
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2456
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2777
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2833
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1693
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1709
 msgid "No"
@@ -1595,7 +1601,7 @@ msgstr "N/A"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1121
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1122
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:32
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:635
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:813
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:538
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:654
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2418
@@ -1607,7 +1613,7 @@ msgstr "N/A"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:696
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1605
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1761
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2497
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2512
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1700
 msgid "Male"
 msgstr "Bay"
@@ -1615,7 +1621,7 @@ msgstr "Bay"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1125
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1126
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/quota.php:33
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:634
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:812
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:537
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:648
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2417
@@ -1627,14 +1633,14 @@ msgstr "Bay"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:693
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1606
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1760
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2485
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2500
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1701
 msgid "Female"
 msgstr "Bayan"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1181
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1182
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:648
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:826
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:387
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:840
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2359
@@ -1646,15 +1652,15 @@ msgstr "Bayan"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1163
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1617
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2255
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2761
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2811
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2776
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2826
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1710
 msgid "Uncertain"
 msgstr "Emin Değil"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1189
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1190
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:653
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:831
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:391
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:892
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2376
@@ -1665,15 +1671,15 @@ msgstr "Emin Değil"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:730
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1637
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2274
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2982
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3020
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2997
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3035
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1716
 msgid "Increase"
 msgstr "Arttır"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1193
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1194
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:654
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:832
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:392
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:897
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2377
@@ -1684,15 +1690,15 @@ msgstr "Arttır"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:730
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1639
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2275
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2983
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3025
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2998
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3040
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1718
 msgid "Same"
 msgstr "Ayni"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1197
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/exportresults.php:1198
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:655
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:833
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/conditions.php:393
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:902
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/statistics.php:2378
@@ -1703,8 +1709,8 @@ msgstr "Ayni"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:730
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1638
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2276
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2984
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3031
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2999
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3046
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1717
 msgid "Decrease"
 msgstr "Azalt"
@@ -1866,7 +1872,7 @@ msgstr "Anket"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:44
 msgid "Date Created"
-msgstr "Yaratılma Tarihi"
+msgstr "Oluşturulma Tarihi"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:45
 msgid "Owner"
@@ -1891,7 +1897,7 @@ msgstr "Tamamlanmış"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:50
 msgid "Partial Responses"
-msgstr "Parçalı Cevap"
+msgstr "Kısmen Tamamlanmış"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:51
 msgid "Total Responses"
@@ -2060,7 +2066,7 @@ msgstr "Bu Anketi Yürütün"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:559
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:1256
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1404
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4678
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4680
 msgid "Please select a language:"
 msgstr "Lütfen bir dil seçiniz:"
 
@@ -2174,8 +2180,8 @@ msgstr "Gruplar"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:862
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:887
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:930
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3456
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3495
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3458
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3497
 msgid "None"
 msgstr "Hiçbiri"
 
@@ -2258,7 +2264,7 @@ msgstr "Katılanlar tam bitirilmemiş anketleri kaydedebilirler"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:803
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:820
 msgid "No email notification"
-msgstr "Email ile bildirme"
+msgstr "E-posta bilgilendirmesi yapılmasın"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:806
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:821
@@ -2334,7 +2340,7 @@ msgstr "Yönetici"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2213
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2888
 msgid "Fax To:"
-msgstr "Fax:"
+msgstr "Faks:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:856
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2345
@@ -2980,12 +2986,12 @@ msgstr "Kaldır"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2209
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2884
 msgid "Admin Email:"
-msgstr "Yönetici Email:"
+msgstr "Yönetici E-posta:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2211
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2886
 msgid "Bounce Email:"
-msgstr "Bounce e-posta:"
+msgstr "İkincil (yedek) e-posta:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2222
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2899
@@ -3035,7 +3041,7 @@ msgstr "Katılanlar cevapların çıktısını alabilsin mi?"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2300
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2953
 msgid "List survey publicly:"
-msgstr "Anketi herkes için görünebilir kıl:"
+msgstr "Aktif anketler listesinde listelensin mi?:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2314
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/html.php:2963
@@ -3577,20 +3583,60 @@ msgstr "Anket Ver"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "SID sağlanmadı. Anket boşaltılamıyor"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:498
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:106
+msgid "Export results"
+msgstr "Sonuçları dışa aktar"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:108
+msgid "Export result data to SPSS"
+msgstr "Sonuç verisini SPSS'e aktar"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:109
+msgid "Export SPSS syntax file"
+msgstr "SPSS Syntax dosyası (.sps) olarak aktar"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:110
+msgid "Export SPSS data file"
+msgstr "SPSS veri dosyası (.dat) olarak aktar"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:111
+msgid "Instructions for the impatient"
+msgstr "Kullanım Talimatı"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:113
+msgid "Download the data and the syntax file."
+msgstr "SPSS Veri ve Syntax dosyalarını indirip bilgisayarınızda bir klasöre kaydedin."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:114
+msgid "Open the syntax file in SPSS in Unicode mode"
+msgstr "Syntax dosyasını SPSS'de Unicode olarak açın"
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:115
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
+msgstr "Dördüncü satırda dosyanın adını ve tam yolunu düzenleyin."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:116
+msgid "Choose 'Run/All' from the menu to run the import."
+msgstr "SPSS menüsünde 'Run/All' komutunu çalıştırarak aktarma işlemini başlatın."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:118
+msgid "Your data should be imported now."
+msgstr "Böylece verileriniz SPSS'e aktarılmış olmalıdır."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:676
 msgid "Record ID"
 msgstr "Kayıt ID"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:500
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:678
 msgid "Completion Date"
 msgstr "Bitiş Tarihi"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:502
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:680
 msgid "Start Language"
 msgstr "Başlangıç Dili"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:623
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:629
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:801
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/spss.php:807
 msgid "Not Selected"
 msgstr "Seçilmedi"
 
@@ -3842,8 +3888,8 @@ msgstr "Değişiklik başarısız!"
 msgid "Adding User to group"
 msgstr "Kullanıcının ekleneceği grup"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:511
-#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:524
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:512
+#: /srv/www/virtual/limesurvey.org/devSVN/admin/admin.php:525
 msgid "LimeSurvey Online Manual"
 msgstr "gnr Online Manual"
 
@@ -3891,10 +3937,10 @@ msgstr "Etiket Setleri"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:861
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:886
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:929
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3421
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3455
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3494
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3530
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3423
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3457
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3496
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3532
 msgid "Please Choose..."
 msgstr "Lütfen seçiniz"
 
@@ -4372,38 +4418,38 @@ msgstr "Koşula kopyalanacak soru seçilmedi"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/results.php:377
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1221
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:1747
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:599
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:805
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:916
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1066
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1198
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1258
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1311
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1315
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2452
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2516
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2563
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2622
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2672
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2721
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2765
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2832
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2987
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3044
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3115
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3133
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3202
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3248
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3249
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3509
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3536
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3643
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3840
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3888
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:608
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:814
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:925
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1075
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1207
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1267
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1320
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1324
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2467
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2531
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2578
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2637
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2687
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2736
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2780
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2847
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3002
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3059
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3130
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3148
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3217
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3263
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3264
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3524
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3551
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3658
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3855
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3903
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1694
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1702
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4353
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4358
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4355
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:4360
 msgid "No answer"
 msgstr "Cevap yok"
 
@@ -5636,12 +5682,12 @@ msgstr "Davet Maili:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:566
 msgid "Email Reminder Subject:"
-msgstr "Email Hatırlatma Konusu"
+msgstr "E-posta Hatırlatma Konusu"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:571
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:573
 msgid "Email Reminder:"
-msgstr "Email hatırlatıcısı"
+msgstr "E-posta hatırlatıcısı"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:577
 msgid "Confirmation Email Subject:"
@@ -5657,7 +5703,7 @@ msgstr "Onaylama Maili"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:588
 msgid "Public registration Email Subject:"
-msgstr "Herkese açık kayıt Email Konusu:"
+msgstr "Herkese açık kayıt E-posta Konusu:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:593
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/tokens.php:595
@@ -6098,8 +6144,8 @@ msgid "Please enter a date:"
 msgstr "Lütfen bir tarih girin:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:436
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1852
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1879
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1862
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1889
 msgid "Make a comment on your choice here:"
 msgstr "Seçiminiz için yorum girim:"
 
@@ -6184,7 +6230,7 @@ msgstr "Anketi tamamladığınız için teşekkürler."
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:968
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:969
 msgid "Please fax your completed survey to:"
-msgstr "Lütfen bitirdiğiniz anketi fax'layınız:"
+msgstr "Lütfen bitirdiğiniz anketi fakslayınız:"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:974
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/printablesurvey.php:975
@@ -6451,30 +6497,30 @@ msgstr "Cevap Düzenle"
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2253
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2273
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2304
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:729
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:794
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:905
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3820
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3868
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:738
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:803
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:914
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3835
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3883
 msgid "Please choose"
 msgstr "Lütfen seçiniz"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:914
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2028
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1472
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1481
 msgid "Remove this item"
 msgstr "Bu nesneyi kaldır"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:936
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2061
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1519
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1528
 msgid "Your Choices"
 msgstr "Seçiminiz"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:941
 #: /srv/www/virtual/limesurvey.org/devSVN/admin/dataentry.php:2066
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1528
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1534
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1537
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1543
 msgid "Your Ranking"
 msgstr "Sıralamanız"
 
@@ -6982,180 +7028,185 @@ msgstr "Lütfen seçenekleri sıralayınız"
 msgid "Please check at least one item"
 msgstr "Lütfen en az bir seçeneği işaretleyiniz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:514
-msgid "If you choose 'Other:' you must provide a description."
-msgstr "Eğer 'Diğer:' seçeneğini seçerseniz bir açıklama yapmalısınız."
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:517
+msgid "value"
+msgstr "değer"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:535
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:523
+#, php-format
+msgid "If you choose '%s' you must provide a description."
+msgstr "'%s' seçeneğini seçerseniz bir açıklama yapmalısınız."
+
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "En az bir soru alanını doldurmadan devam edemezsiniz."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:539
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:548
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "(*) Yıldız olan sorulara vereceğiniz cevaplar bizim için çok önemli. Anketi tamamlayabilmeniz için lütfen bu sorulara cevap veriniz."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:562
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:571
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Bir veya daha fazla soru uygun şekilde cevaplanmadı. Bu sorulara uygun cevaplar vermediğiniz sürece devam edemezsiniz."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:622
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:631
 msgid "Day"
 msgstr "Gün"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:630
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:639
 msgid "Month"
 msgstr "Ay"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:631
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:640
 msgid "Jan"
 msgstr "Oca"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:632
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:641
 msgid "Feb"
 msgstr "Şub"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:633
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:642
 msgid "Mar"
 msgstr "Mar"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:634
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:643
 msgid "Apr"
 msgstr "Nis"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:635
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:644
 msgid "May"
 msgstr "May"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:636
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:645
 msgid "Jun"
 msgstr "Haz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:637
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:646
 msgid "Jul"
 msgstr "Tem"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:638
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:647
 msgid "Aug"
 msgstr "Ağu"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:639
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:648
 msgid "Sep"
 msgstr "Eyl"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:640
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:649
 msgid "Oct"
 msgstr "Eki"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:641
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:650
 msgid "Nov"
 msgstr "Kas"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:642
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:651
 msgid "Dec"
 msgstr "Ara"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:650
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:659
 msgid "Year"
 msgstr "Yıl"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:686
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:695
 msgid "Please complete all parts of the date"
 msgstr "Lütfen tarihin tüm bölümlerini tamamlayınız"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:700
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:709
 msgid "Format: YYYY-MM-DD"
 msgstr "Format: YYYY-AA-GG"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:701
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:710
 msgid "(eg: 2003-12-25 for Christmas day)"
 msgstr "(ör: 2008-08-30 Zafer Bayramı)"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:921
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1165
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:930
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1174
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Hata: Bu soruda kullanılan etiket setleri seçilen dil için uygun değil"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1228
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1237
 msgid "Please choose one of the following"
 msgstr "Lütfen aşağıdakilerden birini seçin"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1229
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1238
 msgid "Please enter your comment here"
 msgstr "Lütfen yorumunuz buraya yazın"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1513
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1522
 msgid "Click on an item in the list on the left, starting with your"
 msgstr "Soldaki seçeneklerden sizce birinci olandan itibaren sırasıyla"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1514
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1523
 msgid "highest ranking item, moving through to your lowest ranking item."
 msgstr "tıklayarak sıralamanızı yüksek değerden küçük değere göre yapın."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1542
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1551
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Sıralamaya eklediğiniz seçeneklerin yanındaki makasa tıklayarak geri alabilirsiniz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1736
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1908
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1745
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1918
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
 msgstr "Please choose at most '%d' answer(s) for question \"%s\""
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1968
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2077
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2772
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3702
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:1983
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2092
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2787
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3717
 msgid "Error: This question has no answers."
 msgstr "Hata: Bu sorunun cevabı yok"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2103
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2118
 msgid "Only numbers may be entered in these fields"
 msgstr "Bu alana sadece rakam girebilirsiniz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2107
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2122
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Tüm girişler %d sayısını aşmamalı"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2111
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2126
 msgid "Total of all entries must equal "
 msgstr "Tüm girişler şuna eşit olmalı:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2115
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2130
 msgid "Total of all entries must be at least "
 msgstr "Tüm girişler en az şu olmalı:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2120
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2135
 msgid "Total: "
 msgstr "Toplam:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2123
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2138
 msgid "Remaining: "
 msgstr "Geri kalan:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2153
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2159
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2189
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2198
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2168
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2174
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2204
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2213
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Geçersiz cevap. Tüm girişler belli bir sınırı aşmamalı, bu sınır"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2170
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2176
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2185
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
 msgstr "Geçersiz cevap. Tüm girişlerin alt sınırı "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2254
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:2269
 msgid "Only numbers may be entered in this field"
 msgstr "Sadece rakam girebilirsiniz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3221
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3341
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3911
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3236
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3356
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3926
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Hata: Bu soruda kullanılan etiket seti bu dil için kullanılamıyor ve/veya bulunmuyor."
 
-#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3334
+#: /srv/www/virtual/limesurvey.org/devSVN/qanda.php:3349
 msgid "Error: There are no answers defined for this question."
 msgstr "Hata: Bu soru için cevap eklemeniz gerekiyor."
 
@@ -7189,7 +7240,7 @@ msgstr "Sistem Özetini Göster"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:283
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:284
 msgid "Check Data Integrity"
-msgstr "Veri bütünlüğünü doğrula"
+msgstr "Veri Bütünlüğünü Doğrula"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:294
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:296
@@ -7199,7 +7250,7 @@ msgstr "Anketleri Listele"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:305
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:306
 msgid "Backup Entire Database"
-msgstr "veritabanı  yedekle"
+msgstr "Veritabanının Tam Yedeğini Al"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:345
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:346
@@ -7333,7 +7384,7 @@ msgstr "Sonuçları uygulamaya ver"
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1439
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1441
 msgid "Export result to a SPSS command file"
-msgstr "Sonuçları SPSS Komut dosyasına ver"
+msgstr "Sonuçları SPSS'e Aktar"
 
 #: /srv/www/virtual/limesurvey.org/devSVN/common.php:1445
 msgid "Import answers from a deactivated survey table"
@@ -7472,36 +7523,36 @@ msgstr "Aşağıda sizden istenen bilgileri giriniz, böylece ankete katılabilm
 msgid "Your Assessment"
 msgstr "Değerlendirmeniz"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2851
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2853
 msgid "Online Manual"
 msgstr "Çevrimiçi Kullanım Klavuzu"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2854
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2856
 msgid "Support this project - Donate to "
 msgstr "Bu projeye destek olun - Bağış gönderin / "
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2857
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2859
 msgid "Visit our website!"
 msgstr "Sayfamızı ziyaret edin!"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2857
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:2859
 msgid "Version"
 msgstr "Versiyon"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3096
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3098
 msgid "Local Submission"
 msgstr "Yerel Gönderim"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3305
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3310
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3307
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3312
 msgid "Executing"
 msgstr "Yürütülüyor"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3305
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3307
 msgid "Failed! Reason: "
 msgstr "Başarısız! Sebebi:"
 
-#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3310
+#: /srv/www/virtual/limesurvey.org/devSVN/common.php:3312
 msgid "Success!"
 msgstr "Başarılı!"
 
@@ -7750,4 +7801,3 @@ msgstr "Vietnamca"
 #~ msgstr "Özel"
 #~ msgid "Public"
 #~ msgstr "Genel"
-
