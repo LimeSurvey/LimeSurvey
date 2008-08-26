@@ -15,9 +15,7 @@
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
-
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
 
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
@@ -284,15 +282,12 @@ $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
 
-// Latter is needed an array to get the title of the question and
-// its id for the form, with this will be more easy locate the
-// key for to construct the javascript code
-
-$titlejsid = array();
+$qtypesarray = array();
 
 foreach ($_SESSION['fieldarray'] as $ia)
 {
-    $titlejsid[$ia[2]] = $ia[1];
+// REMOVEME     $titlejsid[$ia[2]] = $ia[1];
+		$qtypesarray[$ia[1]] = $ia[4];
 
 	if ($ia[5] == $gid)
 	{
@@ -499,8 +494,11 @@ foreach ($conditions as $cd)
 
 		//Only evaluate if this question source is on the same page, and the evaluation hasn't already happened once
     	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
-    	if ($sourceQuestionGid[1] != $gid)
+	$use_value_ref = ereg('^@[0-9]+X([0-9])+X[^@]+@', $cd[3], $sourceQuestionGid2);
+    	if ($sourceQuestionGid[1] != $gid &&
+		(!$use_value_ref || $sourceQuestionGid2[1] != $gid) )
     	{ // if question is not from same page then this should only be evaluated the first time the page is loaded	
+	// In case the value field is an @SGQA@ tag, then this 'same gid' condition applies to this referenced question
     	  $java .= "    if (document.getElementById('runonce').value == '0') 
     {\n";
 		}
@@ -604,27 +602,41 @@ foreach ($conditions as $cd)
 		/* NEW
 		 * If the value is enclossed by @
 		 * the value of this question must be evaluated instead.
-		 * Remember $titlejs array? It will be used now
-		 * Another note: It's not clear why is used a norma to call
-		 * some elements like java*, answer* or just the fieldname
-		 * as far I can see now it's used the field name for text elements
-		 * so, I'll use by id with the prefix answer
 		 */
 		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 		{
-			//$auxqtitle = substr($cd[3],1,strlen($cd[3])-2);
-			$auxqtitle = $comparedfieldname;
-			$java .= "(document.getElementById('answer" . $cd[2] . "').value != '') && ";
+			$auxqtitle = $comparedfieldname[1];
 
-			if (in_array($titlejsid[$auxqtitle], $_SESSION['insertarray']))
-			{
-				$java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-				$java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
-			} else 
-			{ // Comment FIXME by lemeur: isn't it the same as above, so why if/else ???
-				$java .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-				$java .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
+			// Let's determin the idname of this second question field
+			ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid2);
+			if ($sourceQuestionGid2[1] == $gid && 
+				($cd[4] == "D" ||
+					$cd[4] == "N" ||
+					$cd[4] == "K") )
+			{ // field name for text input boxes differs if they are on the same page or not
+				$idname2 = "answer".$auxqtitle;
 			}
+			else
+			{ // other interresting cases are using the following format
+			// I know that this doesn't support P,M and other question types 
+			// but these are irrelevant for @SGQA@ tags
+				$idname2 = "java".$auxqtitle;
+			}
+
+			$java .= "(document.getElementById('" . $idname . "').value != '') && ";
+
+				$java .= "(document.getElementById('" . $idname2 . "').value != '') && ";
+				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+				if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+				{ // Numerical questions
+					$java .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+				}
+				else
+				{
+					$java .= "(document.getElementById('" . $idname . "').value $cd[6] document.getElementById('".$idname2."').value)";
+				}
+
+//			}
 		} else
 		{
 			if ($cd[3]) //Well supose that we are comparing a non empty value
@@ -637,7 +649,15 @@ foreach ($conditions as $cd)
 			}
 			else
 			{
-				$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+				if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+				{
+					$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
+				}
+				else
+				{
+					$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+				}
 			}
 		}
 	}

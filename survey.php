@@ -221,6 +221,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	{
 		if ($ia[5] == $gid)
 		{
+			$qtypesarray[$ia[1]] = $ia[4];
 			list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 			if ($plus_qanda)
 			{
@@ -486,7 +487,24 @@ END;
       // the value of this question must be evaluated instead.
       if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
       {
-            $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('answer".$comparedfieldname[1]."').value";
+	    if ($cd[4] == "D" || $cd[4] == "N" || $cd[4] == "K")
+	    {
+		$idname2 = "answer".$comparedfieldname[1];
+	    }
+	    else
+	    {
+		$idname2 = "java".$comparedfieldname[1];
+	    }
+		$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+		if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+		{ // Numerical questions
+			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+		}
+		else
+		{
+			$java .= "document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
+		}
+	
       }
       else
       {
@@ -496,7 +514,15 @@ END;
         }
         else
         {
-            $java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+		$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+		if (in_array($qtypesarray[$sgq_from_sgqa],array("A","B","K","N","5")))
+		{ // Numerical questions
+			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
+		}
+		else
+		{
+			$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+		}
         }
       }
     }

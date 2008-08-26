@@ -337,9 +337,10 @@ if (isset($postquestionscount) && $postquestionscount > 0) //Build the select bo
 if ($questionscount > 0)
 {
 	$X="X";
-	// Will detect if the questions are type D to use latter
-
+	// Will detect if the questions are type D to use later
 	$dquestions=array();
+	// Will detect if the questions are of Numerical type, for use in @SGQA@ conditions
+	$numquestions=array();
 
 	foreach($theserows as $rows)
 	{
@@ -411,6 +412,35 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
+
+				if ($rows['type'] == 'A' ||
+						$rows['type'] == 'B')
+				{
+					// TIBO TIBO
+					$rows['acode']=$arows['code']; // let's add the answer code data
+					$numquestions[]=$rows; // This is a numerical question type
+
+					foreach ($numquestions as $numq)
+					{
+						if ($rows['qid'] != $numq['qid'] ||
+								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
+						{
+							if ($numq['type'] == "A" ||
+									$numq['type'] == "B" ||
+									$numq['type'] == "K" ) // multiple line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+							}
+							elseif ($numq['type'] == "N" ||
+									$numq['type'] == "5") // single line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+							}
+						}
+					}
+					// END TIBO
+				}
+
 			} //while
 		} elseif ($rows['type'] == ":") { // Multiflexi
 			//Get question attribute for $canswers
@@ -541,6 +571,34 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
+
+				if ($rows['type'] == 'K')
+				{
+					// TIBO TIBO
+					$rows['acode']=$arows['code']; // let's add the answer code data
+					$numquestions[]=$rows; // This is a numerical question type
+
+					foreach ($numquestions as $numq)
+					{
+						if ($rows['qid'] != $numq['qid'] ||
+								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
+						{
+							if ($numq['type'] == "A" ||
+									$numq['type'] == "B" ||
+									$numq['type'] == "K") // multiple line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+							}
+							elseif ($numq['type'] == "N" ||
+									$numq['type'] == "5") // single line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+							}
+						}
+					}
+					// END TIBO
+				}
+
 			} //while
 		}
 		elseif ($rows['type'] == "R") //Answer Ranking
@@ -605,6 +663,27 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
+// TIBO TIBO
+				$numquestions[]=$rows; // This is a numerical question type
+
+				foreach ($numquestions as $numq)
+				{
+					if ($rows['qid'] != $numq['qid'])
+					{
+						if ($numq['type'] == "A" ||
+								$numq['type'] == "B" ||
+								$numq['type'] == "K" ) // multiple line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+						}
+						elseif ($numq['type'] == "N" ||
+								$numq['type'] == "5") // single line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+						}
+					}
+				}
+// END TIBO
 				break;
 				case "W": // List Flexibel Label Dropdown
 				case "Z": // List Flexible Radio Button
@@ -624,6 +703,36 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
+				break;
+
+				case "N": // Simple Numerical questions
+// TIBO TIBO
+				$numquestions[]=$rows; // This is a numerical question type
+
+				foreach ($numquestions as $numq)
+				{
+					if ($rows['qid'] != $numq['qid'])
+					{
+						if ($numq['type'] == "A" ||
+								$numq['type'] == "B" ||
+								$numq['type'] == "K" ) // multiple line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+						}
+						elseif ($numq['type'] == "N" ||
+								$numq['type'] == "5") // single line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+						}
+					}
+				}
+
+				// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
+// END TIBO
 				break;
 				default:
 				$aquery="SELECT * "
@@ -660,7 +769,8 @@ if ($questionscount > 0)
 						{   // Can´t compare with the same question, and only if are D
 							// The question tittle is enclossed by @ to be identified latter
 							// and be processed accordingly
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
+//							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$rows['sid'].$X.$rows['gid'].$X.$rows['qid']."@", $dq['title'].": ".$dq['question']);
 						}
 					}
 				}
@@ -685,8 +795,6 @@ if ($questionscount > 0)
 					}
 				}
 				break;
-				// types X,D,!,0,Q,N,S,T,U,^ just have an option as "No Answer" originally
-				// but now if type is D could have a list of questions D after it.
 			}//switch row type
 		} //else
 	} //foreach theserows
@@ -775,15 +883,16 @@ $conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
 . "\t\t\tif (document.getElementById('canswers').options.length > 0){\n"                                                                         
-. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = 'none';\n"
+//. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = 'none';\n"
 . "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
 . "\t\t\telse {\n"                                                                         
-. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = '';\n"
+//. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = '';\n"
 . "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
 ."\t\t}\n"
 ."function evaluateLabels(val)\n"
 ."{\n"
-."\tif(val == '>' || val == '>=' || val == '<' || val== '<=' || val == 'RX')\n"
+//."\tif(val == '>' || val == '>=' || val == '<' || val== '<=' || val == 'RX')\n"
+."\tif(val == 'RX')\n"
 ."\t{\n"
 ."\t\tdocument.getElementById('canswers').style.display='none';\n"
 ."\t}\n"
@@ -1059,7 +1168,8 @@ $conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
 // It will be showed when answers array is empty
 // on HTML´s JS code. I fixed that enclosing it in a div called
 // CONST_RGX and it will be showed or not.
-$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
+//$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
+$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
 ."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
 $conditionsoutput .= "</div>"
