@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+ * FCKeditor - The text editor for Internet - http://www.fckeditor.net
+ * Copyright (C) 2003-2008 Frederico Caldeira Knabben
+ *
+ * == BEGIN LICENSE ==
+ *
+ * Licensed under the terms of any of the following licenses at your
+ * choice:
+ *
+ *  - GNU General Public License Version 2 or later (the "GPL")
+ *    http://www.gnu.org/licenses/gpl.html
+ *
+ *  - GNU Lesser General Public License Version 2.1 or later (the "LGPL")
+ *    http://www.gnu.org/licenses/lgpl.html
+ *
+ *  - Mozilla Public License Version 1.1 or later (the "MPL")
+ *    http://www.mozilla.org/MPL/MPL-1.1.html
+ *
+ * == END LICENSE ==
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>FCKeditor ChangeLog - What's New?</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body { font-family: arial, verdana, sans-serif }
+		p { margin-left: 20px }
+		h1 { border-bottom: solid 1px gray; padding-bottom: 20px }
+	</style>
+</head>
+<body>
+	<h1>
+		FCKeditor ChangeLog - What's New?</h1>
+	<h3>
+		Version 2.6.3</h3>
+	<p>
+		Fixed Bugs:</p>
+	<ul>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2412">#2412</a>] FCK.InsertHtml()
+			is now properly removing selected contents after content insertion in Firefox.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2420">#2420</a>] Spelling
+			mistake corrections made by the spell checking dialog are now undoable. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2411">#2411</a>] Insert
+			anchor was not working for non-empty selections.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2426">#2426</a>] It was
+			impossible to switch between editor areas with a single click.</li>
+		<li>Language file updates for the following languages:
+			<ul>
+				<li>Canadian French</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2402">#2402</a>] Catalan
+				</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2400">#2400</a>] Chinese
+					(Simplified and Traditional)</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2401">#2401</a>] Croatian</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2422">#2422</a>] Czech</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2417">#2417</a>] Dutch</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2428">#2428</a>] French</li>
+				<li>German</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2427">#2427</a>] Hebrew</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2410">#2410</a>] Hindi</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2405">#2405</a>] Japanese</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2409">#2409</a>] Norwegian
+					and Norwegian Bokmål</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2429">#2429</a>] Spanish</li>
+				<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2406">#2406</a>] Vietnamese</li>
+			</ul>
+		</li>
+	</ul>
+	<p>
+		This version has been sponsored by <a href="http://www.dataillusion.com/fs/">Data Illusion
+			survey software solutions</a>.</p>
+	<h3>
+		Version 2.6.3 Beta</h3>
+	<p>
+		New Features and Improvements:</p>
+	<ul>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/439">#439</a>] Added a
+			new <strong>context menu option for opening links</strong> in the editor.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2220">#2220</a>] <strong>
+			Email links</strong> from the Link dialog <strong>are now encoded</strong> by default
+			to prevent being harvested by spammers. (Kudos to asuter for proposing the patch)
+		</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2234">#2234</a>] Added
+			the ability to create, modify and remove <strong>DIV containers</strong>. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2247">#2247</a>] The <strong>
+			SHIFT+SPACE</strong> keystroke will now <strong>produce a &amp;nbsp;</strong> character.
+		</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2252">#2252</a>] It's
+			now possible to enable the browsers default menu using the configuration file (FCKConfig.BrowserContextMenu
+			option). </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2032">#2032</a>] Added
+			HTML samples for legacy HTML and Flash HTML. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/234">#234</a>] Introduced
+			the "PreventSubmitHandler" setting, which makes it possible to instruct the editor
+			to not handle the hidden field update on form submit events.</li>
+	</ul>
+	<p>
+		Fixed Bugs:</p>
+	<ul>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2319">#2319</a>] On Opera
+			and Firefox 3, the entire page was scrolling on SHIFT+ENTER, or when EnterMode='br'.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2321">#2321</a>] On Firefox
+			3, the entire page was scrolling when inserting block elements with the FCK.InsertElement
+			function, used by the Table and Horizontal Rule buttons.. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/692">#692</a>] Added some
+			hints in editor/css/fck_editorarea.css on how to handle style items that would break
+			the style combo. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2263">#2263</a>] Fixed
+			a JavaScript error in IE which occurs when there are placeholder elements in the
+			document and the user has pressed the Source button.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2314">#2314</a>] Corrected
+			mixed up Chinese translations for the blockquote command.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2323">#2323</a>] Fixed
+			the issue where the show blocks command loses the current selection from the view
+			area when editing a long document.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2322">#2322</a>] Fixed
+			the issue where the fit window command loses the current selection and scroll position
+			in the editing area.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1917">#1917</a>] Fixed
+			the issue where the merge down command for tables cells does not work in IE for
+			more than two cells.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2320">#2320</a>] Fixed
+			the issue where the Find/Replace dialog scrolls the entire page.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1645">#1645</a>] Added
+			warning message about Firefox 3's strict origin policy.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2272">#2272</a>] Improved
+			the garbage filter in Paste from Word dialog.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2327">#2327</a>] Fixed
+			invalid HTML in the Paste dialog.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1907">#1907</a>] Fixed
+			sporadic "FCKeditorAPI is not defined" errors in Firefox 3.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2356">#2356</a>] Fixed
+			access denied error in IE7 when FCKeditor is launched from local filesystem.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1150">#1150</a>] Fixed
+			the type="_moz" attribute that sometimes appear in &lt;br&gt; tags in non-IE browsers.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/1229">#1229</a>] Converting
+			multiple contiguous paragraphs to Formatted will now be merged into a single &lt;PRE&gt;
+			block.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2363">#2363</a>] There
+			were some sporadic "Permission Denied" errors with IE on some situations.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2135">#2135</a>] Fixed
+			a data loss bug in IE when there are @import statements in the editor's CSS files,
+			and IE's cache is set to "Check for newer versions on every visit".</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2376">#2376</a>] FCK.InsertHtml()
+			will now insert to the last selected position after the user has selected things
+			outside of FCKeditor, in IE.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2368">#2368</a>] Fixed
+			broken protect source logic for comments in IE.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2387">#2387</a>] Fixed
+			JavaScript error with list commands when the editable document is selected with
+			Ctrl-A.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2390">#2390</a>] Fixed
+			the issue where indent styles in JavaScript-generated &lt;p&gt; blocks are erased
+			in IE.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2394">#2394</a>] Fixed
+			JavaScript error with the "split vertically" command in IE when attempting to split
+			cells in the last row of a table.</li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2316">#2316</a>] The sample
+			posted data page has now the table fixed at 100% width. </li>
+		<li>[<a target="_blank" href="http://dev.fckeditor.net/ticket/2396">#2396</a>] SpellerPages
+			was causing a "Permission Denied" error in some situations. </li>
+	</ul>
+	<p>
+		<a href="_whatsnew_history.html">See previous versions history</a></p>
+</body>
+</html>
