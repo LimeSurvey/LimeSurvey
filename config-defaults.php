@@ -276,7 +276,7 @@ $addTitleToLinks = false;
 // and the directories under it. File permissions should be 0555
 // this is read and execute permissions.
 
-$demoModeOnly = true;
+$demoModeOnly = false;
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
