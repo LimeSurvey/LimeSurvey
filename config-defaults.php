@@ -262,6 +262,21 @@ $usercontrolSameGroupPolicy = true;
 // it overlaps with tooltips.
 $addTitleToLinks = false;
 
+// $demoModeOnly
+// If this option is set to true, then LimeSurvey will go into demo mode.
+// Demo mode disables the following things:
+//
+// * Disables changing of the admin user's details and password
+// * Disables uploading files on the Template Editor
+// * Disables sending email invitations and reminders
+// * Disables doing a database dump
+//
+// FCK Editor includes a filemanager, we can't turn this off here.
+// To be safe, change the file permissions on the upload directory
+// and the directories under it. File permissions should be 0555
+// this is read and execute permissions.
+
+$demoModeOnly = true;
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
