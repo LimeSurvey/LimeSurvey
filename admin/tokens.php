@@ -1010,8 +1010,7 @@ if ($subaction == "kill" &&
 if ($subaction == "email" && 
 	($sumrows5['edit_survey_property'] || 
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && $demoModeOnly != true)
 {
     if (getEmailFormat($surveyid) == 'html')
     {
@@ -1255,8 +1254,7 @@ if ($subaction == "email" &&
 if ($subaction == "remind" && 
 	($sumrows5['edit_survey_property'] || 
 		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && $demoModeOnly != true)
 {
 	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"

@@ -152,7 +152,14 @@ if ($action == "templaterename" && isset($newname) && isset($copydir)) {
 
 if ($action == "templateupload") 
   {
-      $the_full_file_path = $tpldir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+
+      if ($demoModeOnly == true)
+      {
+			$action = '';
+			
+      } else
+      {
+	  $the_full_file_path = $tpldir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
       if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
       {
          if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
@@ -189,6 +196,7 @@ if ($action == "templateupload")
           echo "</td></tr></table>\n";
           echo "</body>\n</html>\n";
           exit;
+      }
       }
 }
 

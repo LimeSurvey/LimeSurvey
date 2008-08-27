@@ -465,15 +465,14 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 elseif ($action == "moduser")
 {
-	
 	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
 
 	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
 	$sresult = $connect->Execute($squery); //Checked
 	$sresultcount = $sresult->RecordCount();
 
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $postuserid == $_SESSION['loginID'] ||
-		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])
+	if(($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $postuserid == $_SESSION['loginID'] ||
+		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])) && !($demoModeOnly == true && $postuserid == 1)
 	  )
 	{
 		$users_name = html_entity_decode_php4($postuser);
