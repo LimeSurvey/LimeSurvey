@@ -51,7 +51,9 @@ $Config['Enabled'] = false ;
 
 
 
-if (isset($_SESSION['loginID']) && isset($_SESSION['FileManagerContext']))
+if ($demoModeOnly === false && 
+	isset($_SESSION['loginID']) && 
+	isset($_SESSION['FileManagerContext']))
 {
 	// disable upload at survey creation time
 	// because we don't know the sid yet

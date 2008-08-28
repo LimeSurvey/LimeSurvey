@@ -270,11 +270,6 @@ $addTitleToLinks = false;
 // * Disables uploading files on the Template Editor
 // * Disables sending email invitations and reminders
 // * Disables doing a database dump
-//
-// FCK Editor includes a filemanager, we can't turn this off here.
-// To be safe, change the file permissions on the upload directory
-// and the directories under it. File permissions should be 0555
-// this is read and execute permissions.
 
 $demoModeOnly = false;
 
