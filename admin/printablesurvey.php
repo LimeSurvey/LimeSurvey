@@ -27,7 +27,6 @@ $printablesurveyoutput="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//D
 . "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 . "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
 . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n"
 . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" />\n"
 . "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 . "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"

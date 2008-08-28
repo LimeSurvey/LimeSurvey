@@ -2904,11 +2904,9 @@ function getAdminHeader($meta=false)
 	$strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
-    . "<script type=\"text/javascript\" src=\"../scripts/mootools/mootools-1.2-core-yc.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/mootools/mootools-1.2-more.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/mootools/mymoo.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n";
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n";
     if (getLanguageRTL($_SESSION['adminlang']))
     {
     $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";

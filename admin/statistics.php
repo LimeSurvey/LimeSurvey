@@ -125,17 +125,7 @@ deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
 //hide/show the filter
 //filtersettings by default aren't shown when showing the results
-$statisticsoutput .= "\t<script type='text/javascript'>
-      <!--
-       function hide(element) {
-        document.getElementById(element).style.display='none';
-       }
-       function show(element) {
-        document.getElementById(element).style.display='';
-       }
-      //-->
-      </script>\n";
-
+$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
 
 //headline with all icons for available statistic options
 $statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
@@ -227,8 +217,8 @@ foreach ($rows as $row)
 // SHOW ID FIELD
 
 //some more output: I = filter by ID
-$statisticsoutput .= "\t\t<tr><td align='center'>
-       <table cellspacing='0' cellpadding='0' width='100%' id='filtersettings'><tr><td>
+$statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'>
+       <table cellspacing='0' cellpadding='0' width='100%'><tr><td>
         <table align='center'><tr>\n";
 
 $myfield = "id";
@@ -443,7 +433,7 @@ foreach ($filters as $flt)
 		    $myfield3="K{$myfield}".$row[0]."L";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			//question short code
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
 			//checkbox
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
 			//check SGQA -> do we want to pre-check the checkbox?
@@ -494,7 +484,7 @@ foreach ($filters as $flt)
 			$myfield2 = "Q".$myfield."$row[0]";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
@@ -525,7 +515,7 @@ foreach ($filters as $flt)
 			
 		$myfield2="T$myfield";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong></font>";
+		."<strong>$flt[3]</strong>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
@@ -1315,31 +1305,25 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></font></td></tr>\n"
+." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc' onchange='myVerticalSlide.toggle(); if (this.value==\"filter\") document.getElementById(\"noncompleted\").checked=false;'>\n"
+."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>    <div id='vertical_slide' >";    
-if ($selectshow=="")
-    {
-
-$statisticsoutput .= "\t<script type='text/javascript'>
-      <!--
-         startslidestyle='hidden';        
-      //-->
-      </script>\n";
-    
-    }
-    
-$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></font></div></td></tr>\n";
+."\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
+if ($selecthide!='')
+{
+    $statisticsoutput .= " style='display:none' ";
+}
+   
+$statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div></td></tr>\n";
 
 //only show option to show graphs if jpgraph is enabled
 $statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></font></td></tr>\n";
+$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n";
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
@@ -1349,9 +1333,9 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 ."\t\t<input type='hidden' name='display' value='stats' />\n"
 ."\t</td></tr>\n"
-."</table>\n"
+."</table></div>\n"
 ."</td></tr></table>\n"
-."\t</form>\n";
+."\t</form>\n";     
 
 // ----------------------------------- END FILTER FORM ---------------------------------------
 
@@ -3450,7 +3434,7 @@ if (isset($summary) && $summary)
                     //$DataSet->SetAbsciseLabelSerie();  
 
                     
-                    $Test = new pChart(640,$gheight);  
+                    $Test = new pChart(640,320);  
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
                     $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  

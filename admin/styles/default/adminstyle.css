@@ -278,10 +278,7 @@ span.settingcaption {
 	position: absolute;
 	display: none;
 	z-index: 10000;
-	opacity: 0.7px;
-	filter: alpha(opacity=70);
 	-khtml-opacity: 0.7px;
-	-moz-opacity: 0.7px;
 	-moz-border-radius: 5px;
 	background: #555;
 }
@@ -308,11 +305,8 @@ span.settingcaption {
 	top: 151px;
 	left: 80px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
@@ -328,11 +322,8 @@ span.settingcaption {
 	top: 100px;
 	left: 80px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
@@ -348,11 +339,8 @@ span.settingcaption {
 	top: 287px;
 	left: 473px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
