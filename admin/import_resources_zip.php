@@ -26,7 +26,17 @@ if (!isset($lid))
 	returnglobal('lid');
 }
 
+
+
 if ($action == "importsurvresources" && $surveyid) {
+	if ($demoModeOnly === true)
+	{
+		$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurvresourcesoutput .= sprintf ($clang->gT("Demo Mode Only: Uploading file is disabled in this system."),$basedestdir)."<br /><br />\n";
+		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
+		$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+		return;
+	}
 	require("classes/phpzip/phpzip.inc.php");
 	$zipfile=$_FILES['the_file']['tmp_name'];
 	$z = new PHPZip();
@@ -197,6 +207,15 @@ if ($action == "importsurvresources" && $surveyid) {
 
 if ($action == "importlabelresources" && $lid)
 {
+	if ($demoModeOnly === true)
+	{
+		$importlabelresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+		$importlabelresourcesoutput .= sprintf ($clang->gT("Demo Mode Only: Uploading file is disabled in this system."),$basedestdir)."<br /><br />\n";
+		$importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?action=labels&lid=$lid', '_top')\">\n";
+		$importlabelresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+		return;
+	}
+
 	require("classes/phpzip/phpzip.inc.php");
 	//$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 	$zipfile=$_FILES['the_file']['tmp_name'];
