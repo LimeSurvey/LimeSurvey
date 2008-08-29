@@ -2432,65 +2432,6 @@ function UpdateFieldArray()
     */
 }
 
-/**
-* getQuotaInformation() returns quota information for the current survey
-* @param string $surveyid - Survey identification number
-* @return array - nested array, Quotas->Members->Fields
-*/
-function getQuotaInformation($surveyid)
-{
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$query = "SELECT * FROM ".db_table_name('quota')." WHERE sid='{$surveyid}'";
-	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked 
-	$quota_info = array();
-	$x=0;
-	
-	// Check all quotas for the current survey
-	if ($result->RecordCount() > 0)
-	{
-		while ($survey_quotas = $result->FetchRow())
-		{
-			array_push($quota_info,array('Name' => $survey_quotas['name'],'Limit' => $survey_quotas['qlimit'],'Action' => $survey_quotas['action']));
-			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
-			$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked 
-			$quota_info[$x]['members'] = array();
-			if ($result_qe->RecordCount() > 0)
-			{
-				while ($quota_entry = $result_qe->FetchRow())
-				{
-					$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
-					$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked 
-					$qtype = $result_quest->FetchRow();
-					
-					$fieldnames = "0";
-					
-					if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
-					{
-						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
-						$value = $quota_entry['code'];
-					}
-					
-					if($qtype['type'] == "M")
-					{
-						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
-						$value = "Y";
-					}
-					
-					if($qtype['type'] == "A" || $qtype['type'] == "B")
-					{
-						$temp = explode('-',$quota_entry['code']);
-						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
-						$value = $temp[1];
-					}
-					
-					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'value' => $value,'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
-				}
-			}
-			$x++;
-		}
-	}
-	return $quota_info;
-}
 
 /**
 * check_quota() returns quota information for the current survey
