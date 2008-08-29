@@ -31,10 +31,9 @@ if (!isset($lid))
 if ($action == "importsurvresources" && $surveyid) {
 	if ($demoModeOnly === true)
 	{
-		$importsurvresourcesoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-	    $importsurvresourcesoutput .= sprintf ($clang->gT("Demo Mode Only: Uploading file is disabled in this system."),$basedestdir)."<br /><br />\n";
-		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&sid=$surveyid', '_top')\">\n";
-		$importsurvresourcesoutput .= "</td></tr></table><br />&nbsp;\n";
+		$importsurvresourcesoutput = "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurvresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
+		$importsurvresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\" />&nbsp;<br />&nbsp;<br />\n";
 		return;
 	}
 	require("classes/phpzip/phpzip.inc.php");
