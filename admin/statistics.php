@@ -3433,8 +3433,8 @@ if (isset($summary) && $summary)
                     
                     //$DataSet->SetAbsciseLabelSerie();  
 
-                    
-                    $Test = new pChart(640,320);  
+                    $gheight=320;
+                    $Test = new pChart(640,$gheight);  
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
                     $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  
