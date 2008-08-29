@@ -233,6 +233,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	$toolbarname = 'Basic';
 	$toolbaroption="";
 	$htmlformatoption="";
+	$oFCKeditorVarName = "oFCKeditor_".str_replace("-","_",$fieldname);
 
 	if ($fieldtype == 'editanswer' || 
 		$fieldtype == 'addanswer' ||
@@ -240,10 +241,10 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 		 $fieldtype == 'addlabel')
 	{
 		$toolbarname = 'LimeSurveyToolbarfull';
-		$toolbaroption="oFCKeditor_$fieldname.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
-		. "oFCKeditor_$fieldname.Config[\"ToolbarStartExpanded\"]=true;\n"
-		. "oFCKeditor_$fieldname.Config[\"ToolbarCanCollapse\"]=false;\n"
-		. "oFCKeditor_$fieldname.Height = \"50\"\n";
+		$toolbaroption="$oFCKeditorVarName.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
+		. "$oFCKeditorVarName.Config[\"ToolbarStartExpanded\"]=true;\n"
+		. "$oFCKeditorVarName.Config[\"ToolbarCanCollapse\"]=false;\n"
+		. "$oFCKeditorVarName.Height = \"50\"\n";
 	}
 
 	if ( $fieldtype == 'email-inv' ||
@@ -251,33 +252,33 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 		$fieldtype == 'email-conf' ||
 		$fieldtype == 'email-rem' ) 
 	{
-		$htmlformatoption = "oFCKeditor_$fieldname.Config[\"FullPage\"]=true;\n";
+		$htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n";
 	}
 
 	$htmlcode .= ""
 	. "<script type=\"text/javascript\">\n"
-	. "var oFCKeditor_$fieldname = new FCKeditor('$fieldname');\n"
-	. "oFCKeditor_$fieldname.BasePath     = '".$fckeditordir."/';\n"
-	. "oFCKeditor_$fieldname.Config[\"CustomConfigurationsPath\"] = \"".$fckeditordir."/limesurvey-config.js\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
-	. "oFCKeditor_$fieldname.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";\n"
+	. "var $oFCKeditorVarName = new FCKeditor('$fieldname');\n"
+	. "$oFCKeditorVarName.BasePath     = '".$fckeditordir."/';\n"
+	. "$oFCKeditorVarName.Config[\"CustomConfigurationsPath\"] = \"".$fckeditordir."/limesurvey-config.js\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
+	. "$oFCKeditorVarName.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
+	. "$oFCKeditorVarName.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";\n"
 	. $htmlformatoption
 	. $toolbaroption; 
 
 	if ($fieldtype == 'answer' || $fieldtype == 'label')
 	{
 		 $htmlcode .= ""
-		. "oFCKeditor_$fieldname.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
+		. "$oFCKeditorVarName.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
 	}
 
 	 $htmlcode .= ""
-	. "oFCKeditor_$fieldname.ToolbarSet = '".$toolbarname."';\n"
-	. "oFCKeditor_$fieldname.ReplaceTextarea() ;\n"
+	. "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n"
+	. "$oFCKeditorVarName.ReplaceTextarea() ;\n"
 	. '</script>';
 
 	return $htmlcode;
