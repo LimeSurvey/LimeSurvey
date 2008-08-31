@@ -3,19 +3,17 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-08-18 18:29+0100\n"
+"PO-Revision-Date: 2008-08-31 02:02+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: C:\\Dokumente und Einstellungen\\Prandstetter Josef"
-"\\Desktop\\LimeSurvey 1.6\\source\\\n"
+"X-Poedit-Basepath: C:\\Dokumente und Einstellungen\\Prandstetter Josef\\Desktop\\LimeSurvey 1.6\\source\\\n"
 "X-Poedit-Country: german\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: C:\\Dokumente und Einstellungen\\Prandstetter Josef"
-"\\Desktop\\LimeSurvey 1.6\\source\n"
+"X-Poedit-SearchPath-0: C:\\Dokumente und Einstellungen\\Prandstetter Josef\\Desktop\\LimeSurvey 1.6\\source\n"
 "X-Poedit-SearchPath-1: D:\\web\\TechPlat\\apache\\htdocs\\limesurvey\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
@@ -34,12 +32,8 @@ msgstr "Es gibt leider keine passende Umfrage."
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr ""
-"Diese Umfrage ist momentan nicht aktiv. Sie werden sie nicht abschließen "
-"können."
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Diese Umfrage ist momentan nicht aktiv. Sie werden sie nicht abschließen können."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:74
@@ -51,10 +45,8 @@ msgstr "Wurde nicht gespeichert"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"Ihre Antworten wurden nicht gespeichert. Diese Umfrage ist noch nicht aktiv."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Ihre Antworten wurden nicht gespeichert. Diese Umfrage ist noch nicht aktiv."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
@@ -298,12 +290,8 @@ msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"Warnung: Sie benutzen immer noch das Standard-Passwort ('password'). Bitte "
-"ändern Sie das Passwort und melden Sie sich ab und wieder an. "
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Warnung: Sie benutzen immer noch das Standard-Passwort ('password'). Bitte ändern Sie das Passwort und melden Sie sich ab und wieder an. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
 msgid "Administration"
@@ -1200,14 +1188,8 @@ msgid "Comment"
 msgstr "Kommentar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie "
-"daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre "
-"Browser-Einstellungen."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Achtung: Javascript ist in Ihrem Browser deaktiviert. Es kann sein, dass sie daher die Umfrage nicht abschließen werden können. Bitte überprüfen Sie ihre Browser-Einstellungen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1238,29 +1220,12 @@ msgid "This survey is anonymous."
 msgstr "Dies ist eine anonyme Umfrage."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/"
-"identifizierende Informationen, es sei denn bestimmte Fragen haben Sie "
-"explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel "
-"benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht "
-"zusammen mit den Daten abgespeichert wurde. Er wird in einer getrennten "
-"Datenbank aufbewahrt und nur aktualisiert, um zu speichern, ob Sie diese "
-"Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die "
-"Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Die Daten mit Ihren Antworten enthalten keinerlei auf Sie zurückzuführende/identifizierende Informationen, es sei denn bestimmte Fragen haben Sie explizit danach gefragt. Wenn Sie für diese Umfrage einen Zugangsschlüssel benutzt haben, so können Sie sicher sein, dass der Zugangsschlüssel nicht zusammen mit den Daten abgespeichert wurde. Er wird in einer getrennten Datenbank aufbewahrt und nur aktualisiert, um zu speichern, ob Sie diese Umfrage abgeschlossen haben oder nicht. Es gibt keinen Weg die Zugangsschlüssel mit den Umfrageergebnissen zusammenzuführen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
-msgstr ""
-"Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
+msgstr "Sind sie wirklich sicher, dass Sie alle Ihre  Antworten löschen wollen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2241
 msgid "Exit and Clear Survey"
@@ -1286,19 +1251,11 @@ msgstr "Sie haben die Beantwortung der Fragen in dieser Umfrage abgeschlossen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr ""
-"Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre "
-"Antworten zu speichern."
+msgstr "Klicken Sie nun auf 'Absenden', um die Umfrage abzuschließen und Ihre Antworten zu speichern."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, "
-"so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten "
-"nochmals durchgehen."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern wollen, so können Sie dies, indem Sie auf [Zurück] klicken und Sie Ihre Antworten nochmals durchgehen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1315,26 +1272,15 @@ msgstr "Umfrage zwischenspeichern"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-"Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken Sie "
-"auf Speichern."
+msgstr "Geben Sie einen Namen und ein Passwort für diese Umfrage an und klicken Sie auf Speichern."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann "
-"dann später von Ihnen weitergeführt und abgeschlossen werden, wenn Sie sich "
-"unter Ihrem Namen und Passwort wieder anmelden."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Ihre Umfrage  wird dann unter diesem Namen und Passwort gespeichert und kann dann später von Ihnen weitergeführt und abgeschlossen werden, wenn Sie sich unter Ihrem Namen und Passwort wieder anmelden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere "
-"Einzelheiten zugesandt."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere Einzelheiten zugesandt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
@@ -1390,14 +1336,11 @@ msgstr "Zwischengespeicherte Umfrage laden"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2412
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
-"Auf dieser Seite können Sie eine vorher zwischengespeichterte Umfrage laden."
+msgstr "Auf dieser Seite können Sie eine vorher zwischengespeichterte Umfrage laden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2412
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
-"Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre "
-"Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
+msgstr "Bitte geben Sie den Namen ein, den Sie benutzt haben, als Sie Ihre Umfragedaten zwischengespeichert haben (und natürlich das Passwort)."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2415
 msgid "Saved name"
@@ -1413,16 +1356,11 @@ msgstr "Sie müssen registriert sein, um an dieser Umfrage teilzunehmen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
 msgid "You may register for this survey if you wish to take part."
-msgstr ""
-"Sie müssen Sich für die Umfrage registrieren, wenn Sie teilnehmen wollen."
+msgstr "Sie müssen Sich für die Umfrage registrieren, wenn Sie teilnehmen wollen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden "
-"erhalten Sie per Email einen Link zu der Umfrage."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Bitte geben Sie unten die notwendigen Daten ein und nach dem Absenden erhalten Sie per Email einen Link zu der Umfrage."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1589,12 +1527,8 @@ msgid "The answer to the security question is incorrect"
 msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Dieser Name ist leider schon in Benutzung. Bitte benutzen Sie einen anderen "
-"Namen."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Dieser Name ist leider schon in Benutzung. Bitte benutzen Sie einen anderen Namen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
@@ -1603,53 +1537,25 @@ msgstr "Details Ihrer gespeicherten Umfrage"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"Danke, dass sie Ihre Antworten zwischengespeichert haben. Die folgenden "
-"Angaben können Sie dazu verwenden, um zu dieser Umfrage zurückzukehren und "
-"das Ausfülllen der Umfrage fortzuführen. Bitte bewahren Sie diese Email gut "
-"auf, da es sonst keine andere Möglichkeit gibt auf diese Antworten "
-"zuzugreifen."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Danke, dass sie Ihre Antworten zwischengespeichert haben. Die folgenden Angaben können Sie dazu verwenden, um zu dieser Umfrage zurückzukehren und das Ausfülllen der Umfrage fortzuführen. Bitte bewahren Sie diese Email gut auf, da es sonst keine andere Möglichkeit gibt auf diese Antworten zuzugreifen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
-msgstr ""
-"Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken (oder den Link "
-"manuell in Ihrem Browser eingeben):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
+msgstr "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken (oder den Link manuell in Ihrem Browser eingeben):"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben "
-"und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind "
-"Ihre Antworten schon gespeichert worden. "
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den "
-"'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu "
-"laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden "
-"Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann "
-"auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:203
@@ -1679,12 +1585,8 @@ msgstr "Es tut uns leid, aber Ihre Sitzung ist abgelaufen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr ""
-"Entweder sind Sie zu lange inaktive gewesen, Sie haben Cookies deaktiviert "
-"oder es gab ein Problem mit Ihrer Verbindung."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "Entweder sind Sie zu lange inaktive gewesen, Sie haben Cookies deaktiviert oder es gab ein Problem mit Ihrer Verbindung."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
 msgid "No available surveys"
@@ -1718,22 +1620,14 @@ msgstr "Sie haben kein Passwort angegeben"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr ""
-"Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis, daher müssen Sie "
-"einen Zugangsschlüssel angeben. Bitte kontaktieren Sie den Administrator für "
-"weitere Informationen."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis, daher müssen Sie einen Zugangsschlüssel angeben. Bitte kontaktieren Sie den Administrator für weitere Informationen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
-msgstr ""
-"Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde "
-"bereits verwendet."
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1682
@@ -1764,11 +1658,9 @@ msgstr "%s %%  vollständig"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1776,11 +1668,9 @@ msgid ""
 msgstr ""
 "Hallo {FIRSTNAME},\n"
 "\n"
-"Vielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. "
-"Ihre Antworten wurden bei uns gespeichert.\n"
+"Vielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.\n"
 "\n"
-"Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte "
-"{ADMINNAME} unter {ADMINEMAIL}.\n"
+"Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.\n"
 "\n"
 "Mit freundlichen Grüßen,\n"
 "\n"
@@ -1808,8 +1698,7 @@ msgstr "Klicken Sie hier, um die einzelnen Antworten zu sehen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1432
 msgid "Click the following link to edit the individual response:"
-msgstr ""
-"Klicken Sie auf den folgenden Link um die Antwortdaten direkt zu editieren:"
+msgstr "Klicken Sie auf den folgenden Link um die Antwortdaten direkt zu editieren:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1435
 msgid "View statistics by clicking here:"
@@ -1817,23 +1706,15 @@ msgstr "Klicken Sie hier, um die Gesamtstatistik zu sehen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1511
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr ""
-"Ein unerwarteter Fehler ist aufgetreten. Ihre Antworten können leider nicht "
-"gespeichert werden."
+msgstr "Ein unerwarteter Fehler ist aufgetreten. Ihre Antworten können leider nicht gespeichert werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Ihre Antworten sind nicht verloren gegangen. Sie wurden per eMail an den "
-"Administrator dieser Umfrage geschickt und werden zu einem späteren "
-"Zeitpunkt manuell in die Datenbank eingepflegt."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Ihre Antworten sind nicht verloren gegangen. Sie wurden per eMail an den Administrator dieser Umfrage geschickt und werden zu einem späteren Zeitpunkt manuell in die Datenbank eingepflegt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
-msgstr ""
-"Beim Speichern Ihrer Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
+msgstr "Beim Speichern Ihrer Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1516
 msgid "DATA TO BE ENTERED"
@@ -1856,53 +1737,31 @@ msgid "Try to submit again"
 msgstr "Versuchen Sie das Abschicken erneut"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
-"Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfrage "
-"unten beantworten und auf Weiter klicken."
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1716
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1753
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr ""
-"Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden "
-"Zugangsschlüssel."
+msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden Zugangsschlüssel."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr ""
-"Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das "
-"untenstehende Feld ein und klicken Sie auf 'Weiter'."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr ""
-"Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das "
-"untenstehende Feld ein und klicken Sie auf 'Weiter'."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr ""
-"Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfrage "
-"unten beantworten und auf Weiter klicken."
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet "
-"noch abgeschlossen werden."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
 msgid "Previous"
@@ -1923,8 +1782,7 @@ msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:64
 msgid "The email you used is not valid. Please try again."
-msgstr ""
-"Die angegebene Email-Adresse ist ungültig. Bitte versuchen Sie es erneut."
+msgstr "Die angegebene Email-Adresse ist ungültig. Bitte versuchen Sie es erneut."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:79
 msgid "The email you used has already been registered."
@@ -1932,18 +1790,11 @@ msgstr "Die angegeben Email wurde schon einmal benutzt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Thank you for registering to participate in this survey."
-msgstr ""
-"Vielen Dank, dass Sie sich für die Teilnahme an dieser Umfrage registriert "
-"haben."
+msgstr "Vielen Dank, dass Sie sich für die Teilnahme an dieser Umfrage registriert haben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Eine Email wurde gerade an Ihre Emailadresse versandt - in dieser finden Sie "
-"weitere Details, um auf die Umfrage zugreifen können. Bitte folgen Sie "
-"einfach dem Link in der Email um fortzufahren."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Eine Email wurde gerade an Ihre Emailadresse versandt - in dieser finden Sie weitere Details, um auf die Umfrage zugreifen können. Bitte folgen Sie einfach dem Link in der Email um fortzufahren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -2003,31 +1854,21 @@ msgid "Please check at least one item"
 msgstr "Bitte machen Sie mindestens ein Kreuz"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
-#, fuzzy, php-format
+#, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr "Wenn Sie 'Sonstiges' wählen, müssen sie eine Beschreibung angeben."
+msgstr "Wenn Sie '%s' wählen, müssen sie eine Beschreibung angeben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
-"Sie können nicht fortfahren, bevor Sie etwas Text für ein oder mehrere Frage "
-"eingegeben haben."
+msgstr "Sie können nicht fortfahren, bevor Sie etwas Text für ein oder mehrere Frage eingegeben haben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte "
-"beantworten Sie diese, um fortzufahren!"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte beantworten Sie diese, um fortzufahren!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie können "
-"nicht fortfahren, bevor Sie dies nicht getan haben."
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie können nicht fortfahren, bevor Sie dies nicht getan haben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
@@ -2130,11 +1971,8 @@ msgstr "Bitte wählen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
-msgstr ""
-"Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser "
-"Übersetzung verfügbar."
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
 msgid "Please choose one of the following"
@@ -2172,12 +2010,8 @@ msgid "Your Ranking"
 msgstr "Ihre Rangfolge"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
-msgstr ""
-"Klicken Sie auf die Schere rechts von jedem Element, um den letzten Eintrag "
-"in der Rangliste zu entfernen"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "Klicken Sie auf die Schere rechts von jedem Element, um den letzten Eintrag in der Rangliste zu entfernen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1918
@@ -2227,17 +2061,13 @@ msgstr "Verbleibend:"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
-"Antwort ist ungültig. Die Summer aller Einträge sollte nicht größer sein als"
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "Antwort ist ungültig. Die Summer aller Einträge sollte nicht größer sein als"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
-"Antwort ist ungültig. Die Summe aller Einträge muss mindenstens so gross "
-"sein wie"
+msgstr "Antwort ist ungültig. Die Summe aller Einträge muss mindenstens so gross sein wie"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2246,12 +2076,8 @@ msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser "
-"Übersetzung verfügbar oder wurde nicht angegeben."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
 msgid "Error: There are no answers defined for this question."
@@ -2364,10 +2190,8 @@ msgstr "Datenintegritätsprüfung"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
@@ -2607,12 +2431,8 @@ msgid "Remove"
 msgstr "Löschen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"Sie können diesen Eintrag nicht entfernen, da sie mindestens eine Sprache in "
-"einem Beschriftungsset benötigen."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "Sie können diesen Eintrag nicht entfernen, da sie mindestens eine Sprache in einem Beschriftungsset benötigen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2779,12 +2599,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr "Neue Labels dürfen nur auf der ersten Seite eingefügt werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"Sie können die Codes nicht ändern und keine Einträge hinzufügen oder "
-"löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Sie können die Codes nicht ändern und keine Einträge hinzufügen oder löschen, weil dieses Beschriftung-Set in einer aktiven Umfrage benutzt wird."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2799,8 +2615,7 @@ msgstr "Bitte wählen Sie eine Datei zum Importieren aus!"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2589
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
-"ZIP Bibliothek nicht unterstützt durch PHP, ZIP Import ist deaktiviert."
+msgstr "ZIP Bibliothek nicht unterstützt durch PHP, ZIP Import ist deaktiviert."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:461
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2598
@@ -2833,19 +2648,12 @@ msgid "Fix Sort"
 msgstr "Sort Check"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern der "
-"Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set kann "
-"ungewollte Ergebnisse nach sich ziehen."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Mindestens eine Umfrage benutzt momentan dieses Beschriftung-Set. ändern der Codes, Hinzufügen oder Löschen von Einträgen dieses Beschriftung-Set kann ungewollte Ergebnisse nach sich ziehen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
-"Fehler beim Kopieren von vorhanendenen Labels zu der hinzugefügten Sprache"
+msgstr "Fehler beim Kopieren von vorhanendenen Labels zu der hinzugefügten Sprache"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:588
 msgid "Failed to delete labels for removed languages"
@@ -2856,12 +2664,8 @@ msgid "Update of Label Set failed"
 msgstr "Aktualisieren des Beschriftung-Set fehlgeschlagen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
-"Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem "
-"Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Konnte Beschriftung-Set nicht löschen - Es gibt Fragen, die auf diesem Beschriftung-Set basieren. Sie müssen zuerst diese Fragen löschen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
@@ -2880,12 +2684,8 @@ msgid "Failed to insert label"
 msgstr "Konnte Label nicht einfügen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"Dieser Beschriftungscode wird bereits verwendet. Bitte wählen sie einen "
-"anderen oder benennen sie den bereits vorhanden um."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Dieser Beschriftungscode wird bereits verwendet. Bitte wählen sie einen anderen oder benennen sie den bereits vorhanden um."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2893,9 +2693,7 @@ msgstr "Fehler beim Aktualisieren des Labels"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:791
 msgid "Can't update labels because you are using duplicated codes"
-msgstr ""
-"Aktualisierung nicht möglich: idente Beschriftungscodes können nicht "
-"mehrfach verwendet werden"
+msgstr "Aktualisierung nicht möglich: idente Beschriftungscodes können nicht mehrfach verwendet werden"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:825
 msgid "Failed to delete label"
@@ -2916,12 +2714,8 @@ msgstr "Gruppen importieren"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten "
-"fehlerhafte Rechteeinstellungen des Ordners %s sein."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Beim Hochladen der Datei ist ein Fehler aufgetreten. Grund dafür könnten fehlerhafte Rechteeinstellungen des Ordners %s sein."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:41
@@ -3022,41 +2816,25 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Sie können keine Gruppe importieren, welche nicht zumindest die Basissprache "
-"dieser Umfrage unterstützt."
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Sie können keine Gruppe importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Sie können keine Frage importieren, welche nicht zumindest die Basissprache "
-"dieser Umfrage unterstützt."
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Sie können keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
-"Sie können keine Beschriftungs-Set importieren, welche nicht zumindest die "
-"Basissprache dieser Umfrage unterstützt."
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Sie können keine Beschriftungs-Set importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
 msgid "Import partially successful."
 msgstr "Import teilweise erfolgreich."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr ""
-"Die folgenden Sprachen in der Grupper wurden nicht importiert, da die "
-"Umfrage eine solche Sprache nicht enthält:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Die folgenden Sprachen in der Grupper wurden nicht importiert, da die Umfrage eine solche Sprache nicht enthält:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
 msgid "Group Import Summary"
@@ -3302,9 +3080,7 @@ msgstr "Datensatz IDs auslassen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
-"Wenn ein importierter Datensatz mit einer bestehenden Datensatz-ID "
-"übereinstimmt:"
+msgstr "Wenn ein importierter Datensatz mit einer bestehenden Datensatz-ID übereinstimmt:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
@@ -3362,12 +3138,8 @@ msgid "Important Note:"
 msgstr "Wichtige Anmerkung:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal "
-"importiert wird und Duplikate erzeugt werden"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal importiert wird und Duplikate erzeugt werden"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
 msgid "Total records imported:"
@@ -3477,13 +3249,8 @@ msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
-msgstr ""
-"Nicht abgeschlossene Antworten unberücksichtigt lassen (funktioniert nur "
-"wenn der 'Nicht vollständige Antworten ausblenden' auf 'Deaktiviert' gesetzt "
-"ist)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
+msgstr "Nicht abgeschlossene Antworten unberücksichtigt lassen (funktioniert nur wenn der 'Nicht vollständige Antworten ausblenden' auf 'Deaktiviert' gesetzt ist)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
 msgid "Show Graphs"
@@ -3723,35 +3490,21 @@ msgstr "Es wurde eine Probandentabelle für diese Umfrage erstellt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:342
 msgid "Tokens have not been initialised for this survey."
-msgstr ""
-"Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert."
+msgstr "Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
-"Wenn Sie die Zugangsschlüssel-Tabelle für diese Umfrage aktivieren, wird die "
-"Umfrage nur mit einem gültigen Zugangsschlüssel ausfüllbar sein."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Wenn Sie die Zugangsschlüssel-Tabelle für diese Umfrage aktivieren, wird die Umfrage nur mit einem gültigen Zugangsschlüssel ausfüllbar sein."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Wenn sie die Umfrage auf 'Anonyme Antworten\" setzen und eine "
-"Probandentabelle erstellen, wird LimeSurvey die Teilnehmer nicht mit einem "
-"Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein "
-"'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Wenn sie die Umfrage auf 'Anonyme Antworten\" setzen und eine Probandentabelle erstellen, wird LimeSurvey die Teilnehmer nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
-msgstr ""
-"Möchten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage "
-"erstellen?"
+msgstr "Möchten Sie eine Probandentabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:362
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:536
@@ -3764,8 +3517,7 @@ msgstr "Wiederherstellungsoptionen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:378
 msgid "The following old token tables could be restored:"
-msgstr ""
-"Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
+msgstr "Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:385
 msgid "Restore"
@@ -3927,8 +3679,7 @@ msgstr ""
 "\n"
 "'{SURVEYDESCRIPTION}'\n"
 "\n"
-"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden "
-"Link.\n"
+"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n"
 "\n"
 "Mit freundlichen Grüßen,\n"
 "\n"
@@ -3962,8 +3713,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3984,17 +3734,14 @@ msgstr ""
 "\n"
 "Vor kurzem haben wir Sie zu einer Umfrage eingeladen.\n"
 "\n"
-"Zu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht "
-"ausgefüllt haben. Wir möchten Ihnen mitteilen, dass die Umfrage noch aktiv "
-"ist und würden uns freuen, wenn Sie teilnehmen könnten.\n"
+"Zu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgefüllt haben. Wir möchten Ihnen mitteilen, dass die Umfrage noch aktiv ist und würden uns freuen, wenn Sie teilnehmen könnten.\n"
 "\n"
 "Der Titel der Umfrage ist \n"
 "'{SURVEYNAME}'\n"
 "\n"
 "'{SURVEYDESCRIPTION}'\n"
 "\n"
-"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden "
-"Link.\n"
+"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n"
 "\n"
 " Mit freundlichen Grüßen,\n"
 "\n"
@@ -4043,31 +3790,23 @@ msgstr "Text der Registrierungs-Email:"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "Hallo {FIRSTNAME},\n"
 "\n"
-"Sie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage "
-"mit dem Titel {SURVEYNAME} angemeldet.\n"
+"Sie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.\n"
 "\n"
-"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden "
-"Link.\n"
+"Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich "
-"_nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese "
-"Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte "
-"{ADMINNAME} unter {ADMINEMAIL}."
+"Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 msgid "Token Email Settings have been saved."
@@ -4091,9 +3830,7 @@ msgstr "Probanden Datenbank-Administration"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr ""
-"Sind sie wirklich sicher, dass Sie für ALLE Einträge den Einladungsstatus "
-"auf Nein zurücksetzen möchten?"
+msgstr "Sind sie wirklich sicher, dass Sie für ALLE Einträge den Einladungsstatus auf Nein zurücksetzen möchten?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Set all entries to 'No invitation sent'."
@@ -4101,8 +3838,7 @@ msgstr "Setze 'Eingeladen' auf Nein für alle Einträge."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:697
 msgid "Are you sure you want to delete all unique token numbers?"
-msgstr ""
-"Sind sie wirklich sicher, dass Sie ALLE Zugangsschlüssel entfernen wollen?"
+msgstr "Sind sie wirklich sicher, dass Sie ALLE Zugangsschlüssel entfernen wollen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:697
 msgid "Delete all unique token numbers"
@@ -4110,8 +3846,7 @@ msgstr "Alle Zugangsschlüssel entfernen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:701
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr ""
-"Sind Sie wirklich sicher, dass Sie ALLE Probanden-Einträge löschen wollen?"
+msgstr "Sind Sie wirklich sicher, dass Sie ALLE Probanden-Einträge löschen wollen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:701
 msgid "Delete all token entries"
@@ -4252,40 +3987,24 @@ msgid "Delete Tokens Table"
 msgstr "Probandentabelle löschen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"Wenn Sie diese Zugangsschlüssel-Tabelle löschen, benötigt man nicht länger "
-"einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Wenn Sie diese Zugangsschlüssel-Tabelle löschen, benötigt man nicht länger einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der "
-"Systemadministrator kann dann auf diese Daten zugreifen."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
 msgstr "Lösche die Probandentabelle"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"Die Probandentabelle wurde gelöscht, und es sind jetzt keine "
-"Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Die Probandentabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der "
-"Systemadministrator kann auf diese Daten zugreifen."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadministrator kann auf diese Daten zugreifen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
@@ -4333,18 +4052,12 @@ msgstr "Einladung versandt an:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr ""
-"Emailversand an {FIRSTNAME} {LASTNAME} ({EMAIL})  fehlgeschlagen. Fehler-"
-"Nachricht:"
+msgstr "Emailversand an {FIRSTNAME} {LASTNAME} ({EMAIL})  fehlgeschlagen. Fehler-Nachricht:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"Es sind mehr Mails zu versenden, als auf einmal versendbar sind. Unten "
-"klicken um weiter zu senden."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Es sind mehr Mails zu versenden, als auf einmal versendbar sind. Unten klicken um weiter zu senden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1468
@@ -4352,14 +4065,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Es sind noch {EMAILCOUNT} E-Mails zu versenden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen "
-"erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, die "
-"Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, die Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
@@ -4394,26 +4101,16 @@ msgid "Reminder sent to:"
 msgstr "Erinnerung gesendet an:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen "
-"erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, "
-"Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
 msgstr "Probanden erstellen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"Wenn Sie auf Ja klicken, wird für alle Probanden ohne eindeutigen "
-"Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Wenn Sie auf Ja klicken, wird für alle Probanden ohne eindeutigen Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4440,13 +4137,8 @@ msgid "Auto"
 msgstr "Auto"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"Sie können dieses Feld leer lassen und automatisch eindeutige "
-"Zugangsschlüssel generieren lassen mit 'Generiere eindeutige "
-"Zugangsschlüssel'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Sie können dieses Feld leer lassen und automatisch eindeutige Zugangsschlüssel generieren lassen mit 'Generiere eindeutige Zugangsschlüssel'"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
@@ -4469,13 +4161,8 @@ msgstr "Fehlgeschlagen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
-"Es gibt schon einen Eintrag mit genau diesem Zugangsschlüssel in der "
-"Teilnehmer-Tabelle. Der gleiche Zugangsschlüssel kann nicht für mehr als "
-"einen Teilnehmer benutzt werden."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "Es gibt schon einen Eintrag mit genau diesem Zugangsschlüssel in der Teilnehmer-Tabelle. Der gleiche Zugangsschlüssel kann nicht für mehr als einen Teilnehmer benutzt werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
 msgid "Show this token entry"
@@ -4496,37 +4183,20 @@ msgid "Note:"
 msgstr "Anmerkung:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
-"Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt mit doppelten "
-"Anführungszeichen). Die erste Zeile sollte die Feldnamen enthalten (diese "
-"Zeile wird übersprungen). Die Daten/Felder sollten in folgender Reihenfolge "
-"sein: \"vorname, nachname, email,[email status],[zugangsschlüssel], "
-"[attribut1], [attribut2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Die Datei sollte eine Standard CSV-Datei sein (Komma-getrennt mit doppelten Anführungszeichen). Die erste Zeile sollte die Feldnamen enthalten (diese Zeile wird übersprungen). Die Daten/Felder sollten in folgender Reihenfolge sein: \"vorname, nachname, email,[email status],[zugangsschlüssel], [attribut1], [attribut2]\"."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
 msgid "Upload LDAP entries"
 msgstr "LDAP Einträge hochladen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
-"LDAP Abfragen werden durch den Administrator in der Datei config-ldap.php "
-"definiert"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAP Abfragen werden durch den Administrator in der Datei config-ldap.php definiert"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"Hochgeladene Datei nicht gefunden. überprüfen Sie Ihre Berechtigung und den "
-"Pfad des Upload-Verzeichnisses."
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Hochgeladene Datei nicht gefunden. überprüfen Sie Ihre Berechtigung und den Pfad des Upload-Verzeichnisses."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
@@ -4622,9 +4292,7 @@ msgstr "Sie haben keine Umfrage zur Dateneingabe ausgewählt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:111
 msgid "The token you have provided is not valid or has already been used."
-msgstr ""
-"Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde "
-"bereits verwendet."
+msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
@@ -4641,9 +4309,7 @@ msgstr "Diesen Eintrag bearbeiten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:124
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr ""
-"Diese Umfrage benutzt anonymisierte Antworten, sie können Ihre Antwort nicht "
-"aktualisieren."
+msgstr "Diese Umfrage benutzt anonymisierte Antworten, sie können Ihre Antwort nicht aktualisieren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:151
 msgid "Try again"
@@ -4676,26 +4342,16 @@ msgid "Start Language:"
 msgstr "Start-Sprache"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
-"Ihre Antworten wurden erfolgreich zwischengespeichert. Sie werden außerdem "
-"eine Bestätigungsmail erhalten. Bitte merken Sie sich Ihr Passwort gut, da "
-"wir auf Ihre Zugangsdaten nicht zugreifen können."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "Ihre Antworten wurden erfolgreich zwischengespeichert. Sie werden außerdem eine Bestätigungsmail erhalten. Bitte merken Sie sich Ihr Passwort gut, da wir auf Ihre Zugangsdaten nicht zugreifen können."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
-msgstr ""
-"Es wurde außerdem für die zwischengespeicherte Umfrage ein Zugangsschlüssel "
-"angelegt."
+msgstr "Es wurde außerdem für die zwischengespeicherte Umfrage ein Zugangsschlüssel angelegt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:431
 msgid "An email has been sent with details about your saved survey"
-msgstr ""
-"Es wurde eine Email mit den Einzelheiten ihrer zwischengespeicherten Umfrage "
-"an Sie versandt."
+msgstr "Es wurde eine Email mit den Einzelheiten ihrer zwischengespeicherten Umfrage an Sie versandt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:445
 msgid "The entry was assigned the following record id: "
@@ -4773,8 +4429,7 @@ msgstr "Keine Antwort"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1719
 msgid "Only answer this if the following conditions are met:"
-msgstr ""
-"Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
+msgstr "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1741
 msgid "Help about this question"
@@ -4782,9 +4437,7 @@ msgstr "Hilfe zu dieser Frage"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2439
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr ""
-"Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht "
-"abgespeichert werden"
+msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespeichert werden"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:83
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:98
@@ -4941,9 +4594,7 @@ msgstr "Konnte %s nicht in das neue Vorlagen Verzeichnis kopieren."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:136
 #, php-format
 msgid "Directory with the name `%s` already exists - choose another name"
-msgstr ""
-"Ein Verzeichnis mit dem Namen `%s` existiert bereits - wählen Sie einen "
-"anderen Namen"
+msgstr "Ein Verzeichnis mit dem Namen `%s` existiert bereits - wählen Sie einen anderen Namen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:138
 #, php-format
@@ -5071,11 +4722,8 @@ msgid "Preview:"
 msgstr "Vorschau:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr ""
-"Importiere Antworten aus einer alten deaktivierten Umfrage in die aktuelle "
-"Umfrage"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Importiere Antworten aus einer alten deaktivierten Umfrage in die aktuelle Umfrage"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
@@ -5094,14 +4742,8 @@ msgid "Export database"
 msgstr "Datenbank exportieren"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"Der Datenbank-Export ist nur für MySQL-Datenbanken. Für anderen Datenbank-"
-"Typen nutzen Sie bitte das entsprechende Backup-Tool des Herstellers um "
-"einen Datenbank-Dump zu erzeugen."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Der Datenbank-Export ist nur für MySQL-Datenbanken. Für anderen Datenbank-Typen nutzen Sie bitte das entsprechende Backup-Tool des Herstellers um einen Datenbank-Dump zu erzeugen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5119,40 +4761,20 @@ msgid "You are about to delete this survey"
 msgstr "Sie sind im Begriff, diese Umfrage zu löschen..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Damit werden diese Umfrage und alle verknüpften Gruppen, Fragen, Antworten "
-"und Bedingungen gelöscht."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Damit werden diese Umfrage und alle verknüpften Gruppen, Fragen, Antworten und Bedingungen gelöscht."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Wir empfehlen Ihnen, bevor Sie die Umfrage löschen, die Umfrage zu "
-"exportieren."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Wir empfehlen Ihnen, bevor Sie die Umfrage löschen, die Umfrage zu exportieren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie diese "
-"Umfrage löschen, werden auch die Antworten gelöscht. Wir empfehlen Ihnen, "
-"dass Sie die Antworten exportieren, bevor Sie die Umfrage löschen."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Diese Umfrage ist aktiv und eine Antworten-Tabelle existiert. Wenn Sie diese Umfrage löschen, werden auch die Antworten gelöscht. Wir empfehlen Ihnen, dass Sie die Antworten exportieren, bevor Sie die Umfrage löschen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umfrage "
-"löschen, wird auch die Probandentabelle gelöscht. Wir empfehlen Ihnen, dass "
-"Sie die Probanden exportieren, bevor Sie die Umfrage löschen."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Diese Umfrage hat eine zugehörige Probanden-Tabelle. Wenn Sie diese Umfrage löschen, wird auch die Probandentabelle gelöscht. Wir empfehlen Ihnen, dass Sie die Probanden exportieren, bevor Sie die Umfrage löschen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5467,19 +5089,12 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
-"Sie können leider nur Fragen der gleichen LimeSurvey Version importieren. "
-"Import fehlgeschlagen."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Sie können leider nur Fragen der gleichen LimeSurvey Version importieren. Import fehlgeschlagen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"Sie können keine Frage importieren, welche nicht zumindest die Basissprache "
-"dieser Umfrage unterstützt."
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Sie können keine Frage importieren, welche nicht zumindest die Basissprache dieser Umfrage unterstützt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
@@ -5557,16 +5172,12 @@ msgstr "Importierte Dateiliste"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
-"Dieses ZIP-Archiv entält keine gültigen Ressourcen-Dateien. Import "
-"fehlgeschlagen."
+msgstr "Dieses ZIP-Archiv entält keine gültigen Ressourcen-Dateien. Import fehlgeschlagen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
-"Bitte denken Sie daran, dass Unterverzeichnisse im ZIP-Archiv nicht "
-"unterstützt werden"
+msgstr "Bitte denken Sie daran, dass Unterverzeichnisse im ZIP-Archiv nicht unterstützt werden"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:160
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:339
@@ -5770,12 +5381,8 @@ msgstr "PHPInfo anzeigen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Die Umfrage kann nicht aktiviert werden, da Sie entweder keine Berechtigung "
-"haben oder keine Fragen vorhanden sind."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Die Umfrage kann nicht aktiviert werden, da Sie entweder keine Berechtigung haben oder keine Fragen vorhanden sind."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
@@ -5863,11 +5470,8 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "Probanden aktivieren/bearbeiten für diese Umfrage"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
-msgstr ""
-"Hinzufügen/Bearbeiten von Probanden nicht möglich, da die Umfrage nicht "
-"aktiviert ist."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "Hinzufügen/Bearbeiten von Probanden nicht möglich, da die Umfrage nicht aktiviert ist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
 msgid "Add New Group to Survey"
@@ -5928,9 +5532,7 @@ msgstr "Es werden Cookies für die Zugriffskontrolle benutzt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:798
 msgid "If tokens are used, the public may register for this survey"
-msgstr ""
-"Wenn Zugangsschlüssel benutzt werden, kann man sich für diesen Fragebogen "
-"selbst registrieren."
+msgstr "Wenn Zugangsschlüssel benutzt werden, kann man sich für diesen Fragebogen selbst registrieren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:799
 msgid "Participants can save partially finished surveys"
@@ -5943,8 +5545,7 @@ msgstr "Fragen-Codes neu erzeugen:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:819
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:824
 msgid "Are you sure you want regenerate the question codes?"
-msgstr ""
-"Sind sie wirklich sicher, dass die Fragencodes neu erzeugen lassen wollen?"
+msgstr "Sind sie wirklich sicher, dass die Fragencodes neu erzeugen lassen wollen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:820
 msgid "Straight"
@@ -6040,12 +5641,8 @@ msgid "Edit Current Group"
 msgstr "Diese Gruppe bearbeiten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antworten, "
-"die sie enthält. Sind Sie sicher, dass Sie fortfahren möchten?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Das Löschen dieser Gruppe löscht auch alle möglichen Fragen und Antworten, die sie enthält. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -6053,12 +5650,8 @@ msgid "Delete Current Group"
 msgstr "Diese Gruppe löschen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Es ist unmöglich diese Gruppe zu löschen, da es mindestens eine Frage gibt, "
-"die Bedingungen zu eine Frage in dieser Gruppe hat."
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Es ist unmöglich diese Gruppe zu löschen, da es mindestens eine Frage gibt, die Bedingungen zu eine Frage in dieser Gruppe hat."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6095,24 +5688,16 @@ msgid "Edit Current Question"
 msgstr "Diese Frage bearbeiten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Das Löschen dieser Frage löscht auch alle möglichen Antworten, die sie "
-"umfasst. Sind Sie sicher, dass Sie fortfahren möchten?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Das Löschen dieser Frage löscht auch alle möglichen Antworten, die sie umfasst. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
 msgstr "Diese Frage löschen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr ""
-"Es ist unmöglich diese Frage zu löschen, da mindestens eine Frage eine "
-"Bedingung darauf gesetzt hat"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Es ist unmöglich diese Frage zu löschen, da mindestens eine Frage eine Bedingung darauf gesetzt hat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
 msgid "Disabled - Delete Current Question"
@@ -6276,12 +5861,8 @@ msgid "Add new Answer"
 msgstr "Neue Antwort hinzufügen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Sie können für diese Frage bzw. Fragetypen leider keine Antworten hinzufügen "
-"oder Fragecodes ändern, da die Umfrage aktiv ist."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Sie können für diese Frage bzw. Fragetypen leider keine Antworten hinzufügen oder Fragecodes ändern, da die Umfrage aktiv ist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6496,12 +6077,8 @@ msgid "Use HTML format for token emails?"
 msgstr "HTML Format für Probanden Emails benutzen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
-"Wenn Sie den Email-Modus umstellen, müssen Sie ihre Email-Vorlagen "
-"überarbeiten und diese auf das neue Format ggf. anpassen."
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "Wenn Sie den Email-Modus umstellen, müssen Sie ihre Email-Vorlagen überarbeiten und diese auf das neue Format ggf. anpassen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
@@ -6519,12 +6096,8 @@ msgid "Anonymous answers?"
 msgstr "Anonymisierte Antworten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
-msgstr ""
-"Sie können keine 'Anonymen Antworten' verwenden, wenn Zugangschlüssel-"
-"Persistenz aktiviert ist."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
+msgstr "Sie können keine 'Anonymen Antworten' verwenden, wenn Zugangschlüssel-Persistenz aktiviert ist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2490
@@ -6579,15 +6152,11 @@ msgstr "Aktiviere Teilnehmer-Basierte Antworten-Persistenz?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2561
 msgid "This option can't be set if Anonymous answers are used"
-msgstr ""
-"Diese Optione kann nicht gesetzt werden, wenn Anonyme Antworten genutzt wird."
+msgstr "Diese Optione kann nicht gesetzt werden, wenn Anonyme Antworten genutzt wird."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Alle Fragen, Antworten etc. für von Ihnen entfernte Sprachen werden "
-"gelöscht. Sind Sie sicher?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Alle Fragen, Antworten etc. für von Ihnen entfernte Sprachen werden gelöscht. Sind Sie sicher?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -6604,19 +6173,11 @@ msgstr "URL Beschreibung:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
-"Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen "
-"Gruppe."
+msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"Das Verändern der Gruppen-Reihenfolge ist bestimmten Beschränkungen "
-"unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor "
-"Fragen verschoben werden von denen die Bedingung abhängt."
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Das Verändern der Gruppen-Reihenfolge ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "The following groups are concerned"
@@ -6701,12 +6262,8 @@ msgid "You are about to delete all conditions on this survey's questions"
 msgstr "Sie sind im Begriff alle Bedingungen dieser Umfrage zu löschen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Wir empfehlen Ihnen, bevor Sie fortfahren, die gesamte Umfrage zu "
-"exportieren."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Wir empfehlen Ihnen, bevor Sie fortfahren, die gesamte Umfrage zu exportieren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
@@ -6756,15 +6313,11 @@ msgstr "Bitte ein Datum eingeben:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:448
 msgid "Please number each box in order of preference from 1 to"
-msgstr ""
-"Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnen "
-"mit 1 bis"
+msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnen mit 1 bis"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:449
 msgid "Please number each box in order of preference from 1 to "
-msgstr ""
-"Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnend "
-"von 1 bis"
+msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnend von 1 bis"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:470
@@ -6786,9 +6339,7 @@ msgstr "Antworten:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:537
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:538
 msgid "Please choose all that apply and provide a comment:"
-msgstr ""
-"Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen "
-"Kommentar dazu:"
+msgstr "Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen Kommentar dazu:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:542
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:543
@@ -6885,13 +6436,8 @@ msgid "Total"
 msgstr "Gesamt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"Sofern Sie auf dieser Seite Bewertungen anlegen, werden diese Bewertung am "
-"Ende eine Umfrage nach dem Abschicken durchgeführt."
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "Sofern Sie auf dieser Seite Bewertungen anlegen, werden diese Bewertung am Ende eine Umfrage nach dem Abschicken durchgeführt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
 msgid "SID"
@@ -6902,12 +6448,8 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr "Die angegebene LimeSurvey Datenbank existiert nicht."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"Entweder wurde die angegebene Datenbank noch nicht erstellt oder es gibt ein "
-"anderes Problem beim Zugriff."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Entweder wurde die angegebene Datenbank noch nicht erstellt oder es gibt ein anderes Problem beim Zugriff."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
 msgid "You have not selected a survey to browse."
@@ -6915,9 +6457,7 @@ msgstr "Sie haben keine Umfrage zum Anzeigen ausgewählt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:106
 msgid "This survey has not been activated. There are no results to browse."
-msgstr ""
-"Diese Umfrage wurde noch nicht aktiviert. Es gibt keine Antworten, die Sie "
-"anschauen könnten."
+msgstr "Diese Umfrage wurde noch nicht aktiviert. Es gibt keine Antworten, die Sie anschauen könnten."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:121
 msgid "There is no matching survey."
@@ -7013,35 +6553,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "Lesen Sie dies sorgfältig durch, bevor Sie fortfahren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr ""
-"In einer aktiven Umfrage wird eine Tabelle erstellt, welche alle Daten-"
-"Eingaben aufnimmt."
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "In einer aktiven Umfrage wird eine Tabelle erstellt, welche alle Daten-Eingaben aufnimmt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"Wenn Sie eine Umfrage deaktivieren, werden alle eingegebenen Daten von der "
-"Original-Tabelle in eine andere Tabelle verschoben. Wenn Sie dann die "
-"Umfrage wieder aktivieren, wird die Original-Tabelle und damit die Umfrage "
-"leer sein. Es ist dann nicht mehr möglich auf die alte Tabelle mit "
-"LimeSurvey zuzugreifen."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Wenn Sie eine Umfrage deaktivieren, werden alle eingegebenen Daten von der Original-Tabelle in eine andere Tabelle verschoben. Wenn Sie dann die Umfrage wieder aktivieren, wird die Original-Tabelle und damit die Umfrage leer sein. Es ist dann nicht mehr möglich auf die alte Tabelle mit LimeSurvey zuzugreifen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"Deaktivierte Umfrage-Daten können nur durch einen Systemadministrator mit "
-"Hilfe eines Datenbank-Tools wie beispielsweise PHPMyAdmin eingesehen werden. "
-"Falls Ihre Umfrage eine Probandentabelle benutzt, so wird auch diese "
-"umbenannt und ist folglich nur mehr einem Systemadministrator zugänglich."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Deaktivierte Umfrage-Daten können nur durch einen Systemadministrator mit Hilfe eines Datenbank-Tools wie beispielsweise PHPMyAdmin eingesehen werden. Falls Ihre Umfrage eine Probandentabelle benutzt, so wird auch diese umbenannt und ist folglich nur mehr einem Systemadministrator zugänglich."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -7064,24 +6585,16 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Die Antworten dieser Umfrage sind nicht mehr verfügbar in LimeSurvey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
-msgstr ""
-"Sie sollten sich den Namen dieser Tabelle notieren, falls Sie diese Daten "
-"später noch brauchen."
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Sie sollten sich den Namen dieser Tabelle notieren, falls Sie diese Daten später noch brauchen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
-"Die Probanden-Tabelle, die mit dieser Umfrage verknüpft war, wurde wie folgt "
-"umbenannt: "
+msgstr "Die Probanden-Tabelle, die mit dieser Umfrage verknüpft war, wurde wie folgt umbenannt: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
-"Diese Frage ist vom Typ 'Mehrere Antworten', hat aber noch keine Antworten "
-"definiert."
+msgstr "Diese Frage ist vom Typ 'Mehrere Antworten', hat aber noch keine Antworten definiert."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
@@ -7089,30 +6602,19 @@ msgstr "Diese Frage hat den Frage-Typ nicht gesetzt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:103
 msgid "This question requires a Labelset, but none is set."
-msgstr ""
-"Diese Frage benötigt ein Beschriftung-Set, aber es wurde keines angegeben."
+msgstr "Diese Frage benötigt ein Beschriftung-Set, aber es wurde keines angegeben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
-"Diese Frage benötigt ein zweites Beschriftungs-Set, aber es wurde keines "
-"angegeben."
+msgstr "Diese Frage benötigt ein zweites Beschriftungs-Set, aber es wurde keines angegeben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
-"Das in dieser Frage angegebene Beschriftungsset ist nicht vorhanden oder es "
-"fehlt eine Übersetzung."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Das in dieser Frage angegebene Beschriftungsset ist nicht vorhanden oder es fehlt eine Übersetzung."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Diese Frage hat eine Bedingung. Die Bedingung basiert jedoch auf einer "
-"Frage, die im Ablauf NACH dieser Frage kommt."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Diese Frage hat eine Bedingung. Die Bedingung basiert jedoch auf einer Frage, die im Ablauf NACH dieser Frage kommt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7124,17 +6626,11 @@ msgstr "Folgende Probleme wurden gefunden:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:231
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr ""
-"Die Umfrage kann nicht aktiviert werden, solange diese Probleme nicht gelöst "
-"sind."
+msgstr "Die Umfrage kann nicht aktiviert werden, solange diese Probleme nicht gelöst sind."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass "
-"ihre Fragen komplett und keine Änderungen mehr notwendig sind."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Sie sollten eine Umfrage nur aktivieren, wenn Sie ganz sicher sind, dass ihre Fragen komplett und keine Änderungen mehr notwendig sind."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
 msgid "Once a survey is activated you can no longer:"
@@ -7165,26 +6661,16 @@ msgid "Edit (change) your group names"
 msgstr "Gruppenname bearbeiten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"Vordefinierte Antworten bearbeiten (ausser bei Fragen mit  Mehrfach-Auswahl)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Vordefinierte Antworten bearbeiten (ausser bei Fragen mit  Mehrfach-Auswahl)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Change survey name or description"
 msgstr "Umfrage-Namen und Beschreibung ändern"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen "
-"noch hinzufügen oder löschen wollen, müssen Sie die Umfrage deaktivieren. "
-"Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-"
-"Tabelle verschoben werden."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Sobald Daten in die Umfrage eingegeben wurden und Sie Gruppen oder Fragen noch hinzufügen oder löschen wollen, müssen Sie die Umfrage deaktivieren. Dies hat zur Folge, dass alle eingegebenen Daten in eine separate Archiv-Tabelle verschoben werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7192,15 +6678,11 @@ msgstr "Die Umfrage konnte nicht aktiviert werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:520
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr ""
-"Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
+msgstr "Die Umfrage wurde aktiviert. Die Ergebnis-Tabelle wurde erfolgreich erstellt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr ""
-"Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine "
-"Zugangsschlüssel-Tabelle angelegt werden."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Diese Umfrage erlaubt öffentliche Registrierungen. Daher muss eine Zugangsschlüssel-Tabelle angelegt werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
 msgid "This survey is now active, and responses can be recorded."
@@ -7212,16 +6694,11 @@ msgstr "Offener Teilnehmerkreis"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
 msgid "No invitation code is needed to complete the survey."
-msgstr ""
-"Es wird kein Zugangsschlüssel für die Teilnahme an der Umfrage benötigt."
+msgstr "Es wird kein Zugangsschlüssel für die Teilnahme an der Umfrage benötigt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"Sie können den Teilnehmerkreis dieser Umfrage geschlossen machen, indem sie "
-"eine Teilnehmer-Tabelle anlegen."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Sie können den Teilnehmerkreis dieser Umfrage geschlossen machen, indem sie eine Teilnehmer-Tabelle anlegen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
 msgid "Optional"
@@ -7250,28 +6727,18 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Diese Datei enthält keine LimeSurvey-Daten im richtigen Format."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
-"Eine Gruppe in der CSV/SQL-Datei stammt nicht aus der gleichen Umfrage. Der "
-"Import der Umfrage wurde gestoppt."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "Eine Gruppe in der CSV/SQL-Datei stammt nicht aus der gleichen Umfrage. Der Import der Umfrage wurde gestoppt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
-msgstr ""
-"Frage \"%s - %s\" wurde NICHT importiert, da der Fragetyp unbekannt ist."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgstr "Frage \"%s - %s\" wurde NICHT importiert, da der Fragetyp unbekannt ist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
-msgstr ""
-"Frage \"%s - %s\" wurde importiert, aber der Typ wurde konvertiert auf '%s', "
-"da dies der ähnlichste Typ ist."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "Frage \"%s - %s\" wurde importiert, aber der Typ wurde konvertiert auf '%s', da dies der ähnlichste Typ ist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1249
@@ -7285,12 +6752,8 @@ msgstr "Nicht importierte Beschriftung-Sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
-"(Beschriftungs-Sets wurden nicht importiert, da Sie nicht die Berechtigung "
-"haben neue Beschriftungs-Sets anzulegen.)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(Beschriftungs-Sets wurden nicht importiert, da Sie nicht die Berechtigung haben neue Beschriftungs-Sets anzulegen.)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
@@ -7317,11 +6780,13 @@ msgstr "Warnungen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
-"Gruppe konnte nicht hinzugefügt werden.\\n\\n Der Gruppenname für die "
-"folgenden Sprachen fehlt"
+"Gruppe konnte nicht hinzugefügt werden.\\n"
+"\\n"
+" Der Gruppenname für die folgenden Sprachen fehlt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
 msgid "Error: The database reported the following error:"
@@ -7339,11 +6804,8 @@ msgstr "Gruppe konnte nicht gelöscht werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr ""
-"Antwort konnte nicht hinzugefügt werden. Sie müssen einen Code in das "
-"Pflichtfeld eingeben (%s)"
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "Antwort konnte nicht hinzugefügt werden. Sie müssen einen Code in das Pflichtfeld eingeben (%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -7352,16 +6814,8 @@ msgid "Question could not be created."
 msgstr "Frage konnte nicht erstellt werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Frage konnte nicht aktualisiert werden. Es gibt Bedingungen in anderen "
-"Fragen, welche von den Antworten auf diese Frage abhängen - dadurch gibt es "
-"Probleme beim ändern des Typs. Sie müssen diese Bedingung löschen, bevor Sie "
-"den Typ dieser Frage ändern können."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Frage konnte nicht aktualisiert werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen - dadurch gibt es Probleme beim ändern des Typs. Sie müssen diese Bedingung löschen, bevor Sie den Typ dieser Frage ändern können."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7373,13 +6827,8 @@ msgid "Answers can't be deleted"
 msgstr "Frage konnte nicht gelöscht werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Diese Frage bezieht sich durch Bedingungen auf die Antworten andere Fragen "
-"und kann daher in der Reihenfolge nicht hinter folgende GruppenID verschoben "
-"werden:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Diese Frage bezieht sich durch Bedingungen auf die Antworten andere Fragen und kann daher in der Reihenfolge nicht hinter folgende GruppenID verschoben werden:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:630
@@ -7392,28 +6841,17 @@ msgid "See conditions:"
 msgstr "Siehe Bedingungen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Einige Fragen beziehen sich auf die Antworten in dieser Frage. Sie können "
-"diese Frage nicht vor die folgende GruppenID schieben."
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Einige Fragen beziehen sich auf die Antworten in dieser Frage. Sie können diese Frage nicht vor die folgende GruppenID schieben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
+msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Frage konnte nicht hinzugefügt werden. Sie müssen einen Code eingeben."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, "
-"welche von den Antworten auf diese Frage abhängen. Sie können diese Frage "
-"nicht löschen, solange diese Bedingungen nicht entfernt wurden."
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Frage konnte nicht gelöscht werden. Es gibt Bedingungen in anderen Fragen, welche von den Antworten auf diese Frage abhängen. Sie können diese Frage nicht löschen, solange diese Bedingungen nicht entfernt wurden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7422,9 +6860,7 @@ msgstr "Frage konnte nicht gelöscht werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Fehler beim Hinzufügen der Antwort: Sie dürfen nicht den gleichen "
-"Antwortcode innerhalb einer Frage verwenden."
+msgstr "Fehler beim Hinzufügen der Antwort: Sie dürfen nicht den gleichen Antwortcode innerhalb einer Frage verwenden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:932
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:954
@@ -7440,12 +6876,8 @@ msgid "Failed to update answers"
 msgstr "Konnte Antworten nicht aktualisieren"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"Antworten mit einem Fragecode von '0' oder Leerzeichen sind nicht erlaubt "
-"und werden nicht gespeichert."
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Antworten mit einem Fragecode von '0' oder Leerzeichen sind nicht erlaubt und werden nicht gespeichert."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
 msgid "Duplicate codes found, these entries won't be updated"
@@ -7473,9 +6905,7 @@ msgstr "FEHLER beim Löschen der Umfrage ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1314
 msgid "Survey could not be created because it did not have a short title"
-msgstr ""
-"Umfrage konnte nicht erstellt werden. Bitte geben Sie einen Titel für diese "
-"Umfrage an."
+msgstr "Umfrage konnte nicht erstellt werden. Bitte geben Sie einen Titel für diese Umfrage an."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1437
 msgid "Survey could not be created"
@@ -7574,14 +7004,8 @@ msgid "Current group is using conditional questions"
 msgstr "Die aktuelle Gruppe nutzt Fragen mit Bedingungen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen "
-"unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor "
-"Fragen verschoben werden von denen die Bedingung abhängt."
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Das Verändern der Reihenfolge in dieser Gruppe ist bestimmten Beschränkungen unterworfen, um sicherzustellen, dass Fragen mit Bedingungen nicht vor Fragen verschoben werden von denen die Bedingung abhängt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "See the conditions marked on the following questions"
@@ -7632,9 +7056,7 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
@@ -7752,24 +7174,12 @@ msgid "Security Alert"
 msgstr "Sicherheits-Hinweis"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
-"Jemand könnte gerade versuchen Ihre LimeSurvey Sitzung zu übernehmen "
-"(Verdacht auf CSRF Angriff). Wenn Sie gerade auf einen verdächtigen Link "
-"geklickt haben, melden Sie dies bitte Ihrem System Administrator."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Jemand könnte gerade versuchen Ihre LimeSurvey Sitzung zu übernehmen (Verdacht auf CSRF Angriff). Wenn Sie gerade auf einen verdächtigen Link geklickt haben, melden Sie dies bitte Ihrem System Administrator."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
-"Jemand könnte gerade versuchen Ihre LimeSurvey Sitzung zu übernehmen "
-"(Verdacht auf CSRF Angriff). Wenn Sie gerade auf einen verdächtigen Link "
-"geklickt haben, melden Sie dies bitte Ihrem System Administrator."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Jemand könnte gerade versuchen Ihre LimeSurvey Sitzung zu übernehmen (Verdacht auf CSRF Angriff). Wenn Sie gerade auf einen verdächtigen Link geklickt haben, melden Sie dies bitte Ihrem System Administrator."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -7823,12 +7233,8 @@ msgid "You logged in successfully."
 msgstr "Sie haben sich erfolgreich eingeloggt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
-"LimeSurvey wurde konfiguriert die Webserver Authentifizierung zu nutzen, "
-"aber Sie sind anscheinend nicht angemeldet."
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "LimeSurvey wurde konfiguriert die Webserver Authentifizierung zu nutzen, aber Sie sind anscheinend nicht angemeldet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
@@ -7862,8 +7268,7 @@ msgstr "Anmeldung hier"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:377
 msgid "An email with a generated password was sent to the user."
-msgstr ""
-"Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
+msgstr "Es wurde eine Email mit einem generierten Passwort an den Benutzer versandt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:394
 msgid "Username and/or email address already exists."
@@ -8059,14 +7464,8 @@ msgid "You have not selected a Question."
 msgstr "Sie haben keine Frage ausgewählt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage "
-"und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage "
-"und eine Antwort aus."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -8133,12 +7532,8 @@ msgid "copy to"
 msgstr "kopieren nach"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr ""
-"Sind sie sicher, dass sie diese Bedingung zu den gewählten Fragen kopieren "
-"wollen?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Sind sie sicher, dass sie diese Bedingung zu den gewählten Fragen kopieren wollen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1018
@@ -8146,12 +7541,8 @@ msgid "Add Condition"
 msgstr "Bedingung hinzufügen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
-msgstr ""
-"Achtung: Wenn sie eine vor-definierte Antwort als Bedingung nutzen, dann "
-"können Sie nur gleich/ungleich Bedingungen nutzen."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
+msgstr "Achtung: Wenn sie eine vor-definierte Antwort als Bedingung nutzen, dann können Sie nur gleich/ungleich Bedingungen nutzen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
@@ -8230,33 +7621,20 @@ msgid "Choose Columns"
 msgstr "Spalten auswählen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Ihre Umfrage enthält mehr als 255 Antwortspalten. Spreadsheet Programme wie "
-"Excel importieren max. 255 Spalten. Wählen Sie die zu exportierenden Spalten "
-"aus der unten stehenden Liste."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Ihre Umfrage enthält mehr als 255 Antwortspalten. Spreadsheet Programme wie Excel importieren max. 255 Spalten. Wählen Sie die zu exportierenden Spalten aus der unten stehenden Liste."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
-msgstr ""
-"Wählen Sie die Spalten, die Sie exportieren wollen. Wählen Sie KEINE aus, um "
-"alle zu exportieren."
+msgstr "Wählen Sie die Spalten, die Sie exportieren wollen. Wählen Sie KEINE aus, um alle zu exportieren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:325
 msgid "Choose Token Fields"
 msgstr "Wählen Sie die Zugangsschlüssel-Felder."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"Ihre Umfragedaten können mit den zugeordneten Zugangsschlüssel-Daten "
-"exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden "
-"sollen."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Ihre Umfragedaten können mit den zugeordneten Zugangsschlüssel-Daten exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden sollen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
@@ -8291,9 +7669,7 @@ msgstr "Problem - Teilnehmer Tabelle fehlt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
-"Diese Datei ist keine LimeSurvey-Beschriftungsset-Datei. Import "
-"fehlgeschlagen."
+msgstr "Diese Datei ist keine LimeSurvey-Beschriftungsset-Datei. Import fehlgeschlagen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8301,12 +7677,8 @@ msgid "Return to Labels Admin"
 msgstr "Zurück zur Beschriftung-Set Administration"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
-"Das Beschriftungsset wurde nicht importiert, da es doppelt vorhanden ist. "
-"Stattdessen wird das Duplikat genutzt."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Das Beschriftungsset wurde nicht importiert, da es doppelt vorhanden ist. Stattdessen wird das Duplikat genutzt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
@@ -8358,8 +7730,7 @@ msgid "A database named \"%s\" already exists."
 msgstr "Eine Datenbank namens \"%s\" existiert bereits."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Möchten Sie in der Datenbank nun die notwendigen Tabellen anlegen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8372,12 +7743,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "Die Tabellen in der Datenbank `%s` wurden erfolgreich erstellt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
-"Datenbank Information nicht angegeben. Dieses Skript muss von admin.php "
-"aufgerufen werden."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Datenbank Information nicht angegeben. Dieses Skript muss von admin.php aufgerufen werden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -8397,71 +7764,50 @@ msgstr "Es wurde keine SID angegeben. Kann Umfrage nicht exportieren."
 
 #~ msgid "Change Group Order - Disabled"
 #~ msgstr "Ändere Gruppen-Reihenfolge - Deaktiviert"
-
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(nur möglich mit PHP4)"
-
 #~ msgid "answers"
 #~ msgstr "Antworten"
-
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "zuletzt hinzugefügte Element aus der Liste zu entfernen"
-
 #~ msgid "Please choose at most"
 #~ msgstr "Bitte wählen Sie maximal"
-
 #~ msgid "answer(s) for question"
 #~ msgstr "Antwort(en) für die Frage"
-
 #~ msgid "No matching Group"
 #~ msgstr "Keine übereinstimmende Gruppe"
-
 #~ msgid "No matching Survey!"
 #~ msgstr "Keine übereinstimmende Umfrage!"
-
 #~ msgid "Email address ist not valid."
 #~ msgstr "Email-Adresse ist nicht gültig."
-
 #~ msgid "depends on group"
 #~ msgstr "Hängt ab von Gruppe"
-
 #~ msgid "For further information contact"
 #~ msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte"
-
 #~ msgid "Farsi"
 #~ msgstr "Persisch"
-
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?"
-
 #~ msgid "Failed to copy"
 #~ msgstr "Fehler beim Kopieren"
-
 #~ msgid "Directory with the name"
 #~ msgstr "Verzeichnis mit dem Namen"
-
 #~ msgid "Please choose a login name to access your saved answers."
 #~ msgstr "Bitte wählen Sie einen "
-
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Sie müssen "
 #~ "einen Zugangsschlüssel angeben um teilzunehmen."
-
 #~ msgid "prev"
 #~ msgstr "Zurück"
-
 #~ msgid "next"
 #~ msgstr "Weiter"
-
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Der von ihnen angegebene Zugangsschlüssel ist ungültig."
-
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr ""
 #~ "Ihre Antworten auf diese Umfrage sind erfolgreich gespeichert worden."
-
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -8471,68 +7817,49 @@ msgstr "Es wurde keine SID angegeben. Kann Umfrage nicht exportieren."
 #~ "Antworten auf eine Umfrage zwischengespeichert. Die folgenden Angaben "
 #~ "können Sie dazu verwenden, um zu dieser Umfrage zurückzukehren und das "
 #~ "Ausfüllen der Umfrage fortzuführen."
-
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Die hochgeladene Datei ist grösser als die upload_max_filesize Directive "
 #~ "in der php.ini"
-
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Die Datei wurde nur teilweise hochgeladen"
-
 #~ msgid "No file was uploaded"
 #~ msgstr "Keine Datei hochgeladen"
-
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Fehler beim Datei-Upload. Sie müssen eine CSV-Datei angeben"
-
 #~ msgid "You need to upload the file"
 #~ msgstr "Sie müssen eine Date hochladen"
-
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Sie müssen eine Komma getrennte Datei (CSV) hochladen"
-
 #~ msgid "Upload CSV file"
 #~ msgstr "Komma getrennte Datei (CSV) hochladen"
-
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Sie können nur CSV-Dateien hochladen."
-
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Sie können keine leere Datei hochladen."
-
 #~ msgid "Uploading CSV file"
 #~ msgstr "Lade Komma getrennte Datei (CSV) hoch"
-
 #~ msgid "Visualization:"
 #~ msgstr "Visualisierung:"
-
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr ""
 #~ "Wählen Sie die Feldnummer aus, die sie für Ihre Antworten nutzen möchten:"
-
 #~ msgid "Select all"
 #~ msgstr "Alle auswählen"
-
 #~ msgid "Proceed"
 #~ msgstr "Fortfahren"
-
 #~ msgid "Question List"
 #~ msgstr "Fragenliste"
-
 #~ msgid "Like"
 #~ msgstr "Wie"
-
 #~ msgid "Not Equals"
 #~ msgstr "Ungleich"
-
 #~ msgid "Filter Conditions"
 #~ msgstr "Filer-Bedingungen"
-
 #~ msgid "Numerical"
 #~ msgstr "Zahleneingabe"
-
 #~ msgid "Huge free text"
 #~ msgstr "Ausführlicher Freitext"
+
