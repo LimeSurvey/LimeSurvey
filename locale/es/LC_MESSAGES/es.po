@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-08-21 20:24-0600\n"
+"PO-Revision-Date: 2008-08-30 20:58-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,8 +25,7 @@ msgstr "Guardar las respuestas realizadas hasta ahora"
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:182
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:232
 msgid "Sorry. There is no matching survey."
-msgstr ""
-"Lo sentimos. No hay ningún cuestionario que coincida con lo especificado."
+msgstr "Lo sentimos. No hay ningún cuestionario que coincida con lo especificado."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:91
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:595
@@ -48,8 +47,7 @@ msgstr "No se guardó"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 "Sus respuestas no han sido guardadas porque el cuestionario aún no está "
 "activo."
@@ -552,8 +550,7 @@ msgstr "Notificación básica por correo electrónico"
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:822
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:809
 msgid "Detailed email notification with result codes"
-msgstr ""
-"Notificación detallada por correo electrónico con los códigos de resultados"
+msgstr "Notificación detallada por correo electrónico con los códigos de resultados"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1164
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:32
@@ -1313,8 +1310,7 @@ msgstr "Guardar una encuesta no terminada"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
-"Introduzca un nombre y una contraseña para esta encuesta y pulse \"Guardar\"."
+msgstr "Introduzca un nombre y una contraseña para esta encuesta y pulse \"Guardar\"."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
 msgid ""
@@ -1720,8 +1716,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "La contraseña que se le ha proporcionado no es válida o ya fue usada."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1807,8 +1802,7 @@ msgstr "Vea las estadísticas pulsando aquí:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1511
 msgid "An unexpected error has occurred and your responses cannot be saved."
-msgstr ""
-"Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas."
+msgstr "Ha ocurrido un error inesperado y sus respuestas no han podido ser guardadas."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
 msgid ""
@@ -1909,8 +1903,7 @@ msgstr "Siguiente"
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2572
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2585
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr ""
-"Disculpe, sus respuestas han excedido la cuota definida para esta encuesta."
+msgstr "Disculpe, sus respuestas han excedido la cuota definida para esta encuesta."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:64
 msgid "The email you used is not valid. Please try again."
@@ -1920,8 +1913,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:79
 msgid "The email you used has already been registered."
-msgstr ""
-"La dirección de correo electrónico que indicó ya fue registrada previamente."
+msgstr "La dirección de correo electrónico que indicó ya fue registrada previamente."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Thank you for registering to participate in this survey."
@@ -1994,10 +1986,9 @@ msgid "Please check at least one item"
 msgstr "Por favor, seleccione al menos una opción"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
-#, fuzzy, php-format
+#, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr ""
-"Si usted escoge 'Otro:' debe escribir una respuesta en el cuadro de texto."
+msgstr "Si usted escoge '%s' debe escribir una descripción en el cuadro de texto."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
@@ -2120,8 +2111,7 @@ msgstr "Seleccione, por favor"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
+msgid "Error: The labelset used for this question is not available in this language."
 msgstr ""
 "Error: El Conjunto de Etiquetas utilizado para esta pregunta no esta "
 "disponible en este idioma."
@@ -2219,16 +2209,13 @@ msgstr "Restantes: "
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
-"La respuesta no es válida. El total de las entradas no puede ser más de "
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "La respuesta no es válida. El total de las entradas no puede ser más de "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
-"La respuesta no es válida. El total de las entradas debe ser de al menos "
+msgstr "La respuesta no es válida. El total de las entradas debe ser de al menos "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2355,10 +2342,8 @@ msgstr "Verificación de Consistencia de Datos"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Si aparecen errores, quizá deberá ejecutar esta aplicación varias veces."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Si aparecen errores, quizá deberá ejecutar esta aplicación varias veces."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
@@ -2419,13 +2404,11 @@ msgstr "Las siguientes evaluaciones deberían ser borradas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:135
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr ""
-"Todas las evaluaciones de Encuestas cumplen los estándares de consistencia"
+msgstr "Todas las evaluaciones de Encuestas cumplen los estándares de consistencia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:145
 msgid "All Group assessments meet consistency standards"
-msgstr ""
-"Todas las evaluaciones de grupos cumplen los estándares de consistencia"
+msgstr "Todas las evaluaciones de grupos cumplen los estándares de consistencia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:158
 msgid "No matching question"
@@ -2449,8 +2432,7 @@ msgstr "Las siguientes encuestas deberían ser eliminadas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:193
 msgid "All survey settings meet consistency standards"
-msgstr ""
-"Los parámetros de la encuesta satisfacen los estándares de consistencia"
+msgstr "Los parámetros de la encuesta satisfacen los estándares de consistencia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:216
 msgid "The following questions should be deleted"
@@ -2770,8 +2752,7 @@ msgstr "Advertencia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 msgid "Inserting New labels must be done on the first language folder."
-msgstr ""
-"Para ingresar nuevas etiquetas debe hacerlo en la primera pestaña de idioma"
+msgstr "Para ingresar nuevas etiquetas debe hacerlo en la primera pestaña de idioma"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
 msgid ""
@@ -3016,8 +2997,7 @@ msgstr "Leyendo el archivo..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:68
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr ""
-"El archivo no tiene un formato de grupo de LimeSurvey. La importación falló."
+msgstr "El archivo no tiene un formato de grupo de LimeSurvey. La importación falló."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
 msgid ""
@@ -3300,8 +3280,7 @@ msgstr "¿Excluir los IDs de los registros?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
-"Cuando un elemento importado concuerda con el ID de un registro existente:"
+msgstr "Cuando un elemento importado concuerda con el ID de un registro existente:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
@@ -4070,8 +4049,7 @@ msgstr "Se han borrado todos/as los/as encuestados/as"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:661
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr ""
-"Todas las entradas con invitación enviada han sido puestas a No enviada."
+msgstr "Todas las entradas con invitación enviada han sido puestas a No enviada."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:673
 msgid "All unique token numbers have been removed."
@@ -4308,8 +4286,7 @@ msgstr "Enviando a el/la encuestado/a ID"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
 msgid "Bypass token with failing email addresses"
-msgstr ""
-"No tomar en cuenta los/as encuestados/as con direcciones de correo erróneas"
+msgstr "No tomar en cuenta los/as encuestados/as con direcciones de correo erróneas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1105
 msgid "Send Invitations"
@@ -4509,8 +4486,7 @@ msgid "Upload LDAP entries"
 msgstr "Se leyeron los registros LDAP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr ""
 "Las consultas basadas en LDAP están definidas por el administrador en el "
 "archivo config-ldap.php"
@@ -4553,8 +4529,7 @@ msgstr "Se eliminaron los registros duplicados"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1979
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2161
 msgid "Records with invalid email address removed"
-msgstr ""
-"Se eliminaron los registros con direcciones de correo electrónico no válidas"
+msgstr "Se eliminaron los registros con direcciones de correo electrónico no válidas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1993
 msgid "Uploading LDAP Query"
@@ -4593,8 +4568,7 @@ msgstr "Subir"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2215
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
-msgstr ""
-"Disculpe, pero el módulo LDAP no se encuentra en su configuración de PHP"
+msgstr "Disculpe, pero el módulo LDAP no se encuentra en su configuración de PHP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2221
 msgid "LDAP is disabled or no LDAP query defined."
@@ -4619,8 +4593,7 @@ msgstr "No ha seleccionado una encuesta para realizar la entrada de datos."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:111
 msgid "The token you have provided is not valid or has already been used."
-msgstr ""
-"La contraseña que se le ha proporcionado no es válida o ya ha sido utilizada."
+msgstr "La contraseña que se le ha proporcionado no es válida o ya ha sido utilizada."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
@@ -4773,8 +4746,7 @@ msgstr "Ayuda sobre esta pregunta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2439
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr ""
-"Este cuestionario no ha sido activado. Sus respuestas no serán almacenadas."
+msgstr "Este cuestionario no ha sido activado. Sus respuestas no serán almacenadas."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:83
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:98
@@ -5059,8 +5031,7 @@ msgid "Preview:"
 msgstr "Vista Previa:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr ""
 "Importar respuestas de una encuesta antigua (desactivada) a una encuesta "
 "activa"
@@ -5457,8 +5428,7 @@ msgstr ""
 "importación."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
 msgstr ""
 "Disculpe, la importación de preguntas está limitada a la misma versión de "
 "LimeSurvey. La importación falló."
@@ -5495,7 +5465,7 @@ msgstr "La importación de la Pregunta finalizó correctamente."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr ""
+msgstr "Sistema en modo Demostración: la subida de archivos está deshabilitada en este sistema."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:36
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:59
@@ -5547,8 +5517,7 @@ msgstr "Lista de ficheros importados"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
-"El fichero ZIP no tiene archivos de encuestas válidos. La importación falló."
+msgstr "El fichero ZIP no tiene archivos de encuestas válidos. La importación falló."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
@@ -5850,8 +5819,7 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "Activar/Modificar los/as encuestados/as de esta encuesta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
 msgstr ""
 "No es posible añadir o editar encuestados/as porque esta encuesta aún no ha "
 "sido activada."
@@ -6239,8 +6207,7 @@ msgstr "Editar opciones"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1490
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
-"Error. Usted está intentando utilizar códigos duplicados en las opciones."
+msgstr "Error. Usted está intentando utilizar códigos duplicados en las opciones."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1546
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1588
@@ -6562,17 +6529,14 @@ msgstr "La respuestas registrarán la URL referente."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3093
 msgid "Enable Token-based answers persistence?"
-msgstr ""
-"¿Habilitar la persistencia de las respuestas basada en el/la encuestado/a?"
+msgstr "¿Habilitar la persistencia de las respuestas basada en el/la encuestado/a?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2561
 msgid "This option can't be set if Anonymous answers are used"
-msgstr ""
-"Esta opción no puede cambiarse si se utiliza el formato de respuesta anónima"
+msgstr "Esta opción no puede cambiarse si se utiliza el formato de respuesta anónima"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr ""
 "Se perderán todas las preguntas, respuestas, etc., para los idiomas "
 "eliminados. ¿Está seguro/a?"
@@ -6998,10 +6962,8 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "LEA CUIDADOSAMENTE ESTAS INSTRUCCIONES ANTES DE CONTINUAR"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr ""
-"En un cuestionario activo, se crea una tabla para almacenar las respuestas."
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "En un cuestionario activo, se crea una tabla para almacenar las respuestas."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
 msgid ""
@@ -7047,8 +7009,7 @@ msgstr "La tabla de respuestas ha sido renombrada a: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:133
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr ""
-"Las respuestas a este cuestionario ya no están disponibles para LimeSurvey."
+msgstr "Las respuestas a este cuestionario ya no están disponibles para LimeSurvey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
 msgid ""
@@ -7060,13 +7021,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
-"La tabla de encuestados/as asociada al cuestionario ha sido renombrada a: "
+msgstr "La tabla de encuestados/as asociada al cuestionario ha sido renombrada a: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
-"Esta pregunta es de múltiple opción pero aún no tiene definidas las opciones."
+msgstr "Esta pregunta es de múltiple opción pero aún no tiene definidas las opciones."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
@@ -7183,8 +7142,7 @@ msgstr ""
 "éxito."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 "Este cuestionario admite suscripción pública. Es necesario crear una tabla "
 "de encuestados/as."
@@ -7250,8 +7208,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr ""
 "La pregunta \"%s - %s\" NO fue importada porque el tipo de pregunta es "
 "desconocido."
@@ -7331,8 +7288,7 @@ msgstr "No se pudo borrar el grupo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
 msgstr ""
 "La opción no pudo añadirse. Debe introducir un código en el campo "
 "obligatorio ('%s')."
@@ -7391,10 +7347,8 @@ msgstr ""
 "no puede moverse por debajo de:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
-"No se pudo agregar la pregunta. Debe especificar obligatoriamente su código"
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "No se pudo agregar la pregunta. Debe especificar obligatoriamente su código"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
@@ -8013,8 +7967,7 @@ msgstr "Nueva cuota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:35
 msgid "You have to enter user name and email."
-msgstr ""
-"Debe ingresar un nombre de usuario y una dirección de correo electrónico."
+msgstr "Debe ingresar un nombre de usuario y una dirección de correo electrónico."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:48
 msgid "Check Data"
@@ -8276,8 +8229,7 @@ msgstr "No Disponible"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1255
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1256
 msgid "Tokens problem - token table missing"
-msgstr ""
-"Problema de encuestados/as - no se encuentra la tabla de encuestados/as"
+msgstr "Problema de encuestados/as - no se encuentra la tabla de encuestados/as"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
@@ -8348,8 +8300,7 @@ msgid "A database named \"%s\" already exists."
 msgstr "Ya existe una base de datos denominada \"%s\""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "¿Desea poblar la base de datos ahora creando las tablas necesarias?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8375,8 +8326,7 @@ msgstr "La Base de Datos ha sido creada."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:78
 msgid "Please click below to populate the database"
-msgstr ""
-"Haga clic para comenzar la creación de tablas y datos en la base de datos"
+msgstr "Haga clic para comenzar la creación de tablas y datos en la base de datos"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:85
 msgid "Could not create database"
@@ -8385,3 +8335,4 @@ msgstr "No se pudo crear la base de datos"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "No se indicó un SID. No se puede exportar el cuestionario."
+
