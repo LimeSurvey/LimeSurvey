@@ -4710,4 +4710,113 @@ function safe_die($text)
     die(implode( '<br />',$textarray));
 }
 
+/**
+* getQuotaInformation() returns quota information for the current survey
+* @param string $surveyid - Survey identification number
+* @param string $quotaid - Optional quotaid that restricts the result to a given quota
+* @return array - nested array, Quotas->Members->Fields
+*/
+function getQuotaInformation($surveyid,$quotaid='all')
+{
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$query = "SELECT * FROM ".db_table_name('quota')." WHERE sid='{$surveyid}'";
+	if ($quotaid != 'all')
+	{
+		$query .= " AND id=$quotaid";
+	}
+
+	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked 
+	$quota_info = array();
+	$x=0;
+	
+	// Check all quotas for the current survey
+	if ($result->RecordCount() > 0)
+	{
+		while ($survey_quotas = $result->FetchRow())
+		{
+			array_push($quota_info,array('Name' => $survey_quotas['name'],'Limit' => $survey_quotas['qlimit'],'Action' => $survey_quotas['action']));
+			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
+			$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked 
+			$quota_info[$x]['members'] = array();
+			if ($result_qe->RecordCount() > 0)
+			{
+				while ($quota_entry = $result_qe->FetchRow())
+				{
+					$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
+					$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked 
+					$qtype = $result_quest->FetchRow();
+					
+					$fieldnames = "0";
+					
+					if ($qtype['type'] == "I" || $qtype['type'] == "G" || $qtype['type'] == "Y")
+					{
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
+						$value = $quota_entry['code'];
+					}
+					
+					if($qtype['type'] == "M")
+					{
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
+						$value = "Y";
+					}
+					
+					if($qtype['type'] == "A" || $qtype['type'] == "B")
+					{
+						$temp = explode('-',$quota_entry['code']);
+						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$temp[0]);
+						$value = $temp[1];
+					}
+					
+					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'value' => $value,'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
+				}
+			}
+			$x++;
+		}
+	}
+	return $quota_info;
+}
+
+/**
+* get_quotaCompletedCount() returns the number of answers matching the quota
+* @param string $surveyid - Survey identification number
+* @param string $quotaid - quota id for which you want to compute the completed field
+* @return string - number of mathing entries in the result DB or 'N/A'
+*/
+function get_quotaCompletedCount($surveyid, $quotaid)
+{
+	$result ="N/A";
+	$quota_info = getQuotaInformation($surveyid,$quotaid);	
+	$quota = $quota_info[0];
+
+	if ( db_tables_exist(db_table_name_nq('survey_'.$surveyid))  &&
+			count($quota['members']) > 0)
+	{
+		$fields_list = array(); // Keep a list of fields for easy reference
+		unset($querycond);
+
+		foreach($quota['members'] as $member)
+		{
+			$fields_query = array();
+			$select_query = " (";
+			foreach($member['fieldnames'] as $fieldname)
+			{
+				$fields_list[] = $fieldname;
+				$fields_query[] = db_quote_id($fieldname)." = '{$member['value']}'";
+				// Incase of multiple fields for an answer - only needs to match once.
+				$select_query.= implode(' OR ',$fields_query).' )';
+				$querycond[] = $select_query;
+				unset($fields_query);
+			}
+
+		}
+		$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
+		$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
+		$quota_check = $result->FetchRow();
+		$result = $quota_check['count'];
+	}
+
+	return $result;
+}
+
+
 ?>

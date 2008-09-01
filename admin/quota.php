@@ -344,7 +344,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				}
 				$quotasoutput .='</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
-            		<td align="center">N/A</td>
+            		<td align="center">'.get_quotaCompletedCount($surveyid, $quotalisting['id']).'</td>
             		<td align="center" style="padding: 3px;">
             		<table width="100%"><tr><td align="center">
             		<form action="'.$scriptname.'" method="post">
