@@ -73,6 +73,18 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5498 to 5535 -  Legend:   + = New  # = Changed  - = Fix
++New variable $demoModeOnly, used to set limesurvey into a more secure demo mode. (machaven)
+#Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg (c_schmitz)
+#French language updated (b00z00)
+#Fixed #2427: JS-Errors using FCKEditor in inline mode for languages with combined code such as 'de-informal' (lemeur)
+#Fixed End URL not displayed when End URL description is empty (lemeur)
+#Updated translations by Pootle (lspootle)
+#Updated German Translation (c_schmitz)
+#Spanish language updated: 1 fuzzy, 1 untranslated. (kadejo)
+#Swedish translation updated. (maxz)
+-Fixed 02233: quota - completed tab always shows N/A (lemeur)
+
 Changes from 1.71+ Build 5448 to 5498 -  Legend:   + = New  # = Changed  - = Fix
 
 #Updated Finnish Translation by Juuso Heinisuo ( juuso dot p dot heinisuo aet tut dot fi) (c_schmitz)
