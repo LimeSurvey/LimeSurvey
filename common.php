@@ -1268,7 +1268,7 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
 {
 	global $dbprefix, $connect, $surveyid;
     $qid=sanitize_int($qid);
-	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);     
 	$cdresult = db_execute_num("SELECT qid, code, sortorder FROM ".db_table_name('answers')." WHERE qid={$qid} and language='{$baselang}' ORDER BY sortorder"); //Checked    
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
@@ -1325,7 +1325,7 @@ function fixsortorderGroups() //Function rewrites the sortorder for groups
 {
 	global $dbprefix, $connect, $surveyid;
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE language='{$baselang}' ORDER BY group_order, group_name"); //Checked
+    $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");    
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())
 	{
