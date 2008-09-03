@@ -962,8 +962,12 @@ function do_list_flexible_dropdown($ia)
 			$answer .= " none";
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "'  />";
+		$answer .= "' onchange='checkconditions(this.value, this.name, this.type);'";
+		$thisfieldname="$ia[1]other";
+		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
+		$answer .= " />\n";
 		// --> END NEW FEATURE - SAVE
+		$inputnames[]=$ia[1]."other";
 	}
 
 	$inputnames[]=$ia[1];
