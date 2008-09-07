@@ -2957,10 +2957,17 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug, $maildebugbody, $emailsmtpssl;
+	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang;
 
     //if ($ishtml) {$body=htmlwrap($body,110);}
 
+     if ($demoModeOnly==true)
+     {
+         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
+         $maildebugbody='';
+         return false;
+     }    
+    
 	if (is_null($bouncemail) )
 	{
 		$sender=$from;
