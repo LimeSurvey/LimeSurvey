@@ -360,10 +360,6 @@ span.settingcaption {
 	width: 200px;
 	margin-top: 3px;
 }
-span.invalidemail {
-	font-weight: 700;
-	color: red;
-}
 th.admincell {
 	background-color: #F8BDB5;
 }
@@ -423,4 +419,8 @@ table.alertbox {
   border: 1px solid;
   border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
  text-align: left;  
+}
+a.invalidemail {
+	font-weight: 700;
+	color: red;
 }

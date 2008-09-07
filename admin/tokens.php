@@ -819,10 +819,10 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Email")."' border='0' align='left' /></a>".$clang->gT("Email")."</th>\n"
 
-	."\t\t<th align='left' valign='top' class='settingcaption'>"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
+//	."\t\t<th align='left' valign='top' class='settingcaption'>"
+//	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+//	."<img src='$imagefiles/downarrow.png' alt='' title='"
+//	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
 
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
@@ -877,9 +877,13 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			if ($a =='email' && $brow['emailstatus'] != 'OK')
 			{
-				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>$brow[$a]</span></td>\n";
+				// TIBO Add here tooltip with $brow['emailstatus']
+//				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>"
+				$tokenoutput .= "\t\t<td class='$bgc'>"
+				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".javascript_escape($brow['emailstatus'])."');return false;\" "
+				."onmouseout=\"hideTooltip()\">$brow[$a]</a></td>\n";
 			}
-			else
+			elseif ($a != 'emailstatus')
 			{
 				$tokenoutput .= "\t\t<td class='$bgc'>$brow[$a]</td>\n";
 			}
@@ -1392,7 +1396,6 @@ if ($subaction == "remind" &&
 			$SQLemailstatuscondition = "";
 		}
 
-		// TIBO MAx reminder count
 		if (isset($_POST['maxremindercount']) &&
 			$_POST['maxremindercount'] != '' &&
 			intval($_POST['maxremindercount']) != 0)
@@ -1408,11 +1411,12 @@ if ($subaction == "remind" &&
 			$_POST['minreminderdelay'] != '' &&
 			intval($_POST['minreminderdelay']) != 0)
 		{
+			// $_POST['minreminderdelay'] in days (86400 seconds per day)
 			$compareddate = date_shift(
 				date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
 				"Y-m-d H:i",
 				$timeadjust);
-			$SQLreminderdelaycondition = " AND remindersent < '".$compareddate."'"; // $_POST['minreminderdelay'] in days (86400 seconds per day)
+			$SQLreminderdelaycondition = " AND remindersent < '".$compareddate."'";
 		}
 		else
 		{
