@@ -366,7 +366,7 @@ function createinsertquery()
                     $values[]='NULL';
                 }
                   else  {
-                		$values[]=$connect->qstr($myFilter->process($_SESSION[$value]));
+                		$values[]=strip_tags($connect->qstr($myFilter->process($_SESSION[$value])));
                         }
             }
         }
@@ -505,7 +505,7 @@ function createinsertquery()
 						}
 						else
 						{
-							$query .= db_quote_id($field)." = '".auto_escape($myFilter->process($_POST[$field]))."',";
+							$query .= db_quote_id($field)." = '".auto_escape(strip_tags($myFilter->process($_POST[$field])))."',";
 						}
 					}
 				}
