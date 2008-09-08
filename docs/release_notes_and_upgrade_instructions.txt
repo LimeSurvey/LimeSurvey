@@ -73,7 +73,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5535 to 5565 -  Legend:   + = New  # = Changed  - = Fix
+
+#Updated German translation (c_schmitz)
+#Updated Turkish Translation by Murad Bayram (c_schmitz)
+#Updated Finnish translation by Päivi Tyni (paivi - dot- tyni-a-t-uta -d-o-t- fi) (c_schmitz)
+#Updated Dutch translation by Gerton Poot (c_schmitz)
+#Update Norwegian Bokmal translation by Egil Hansen (c_schmitz)
+#Updated translation by Andrei Bogdan (c_schmitz)
+#Slovenian translation update (gasper_koren)
+#Some demo mode tweaking (c_schmitz)
+-Fixed an error in fixsortordergroups which ordered all groups of all surveys, not just the current survey. (c_schmitz)
+-Partially Fixed bug #02417: 5448 Other text not saved [and not mandatory - not fixed]. Bug where other text not reloaded when dropdown (flexible) question type is re-displayed (and thus, the originally entered text was overwritten with an empty string) fixed. (jcleeland)
+
 Changes from 1.71+ Build 5498 to 5535 -  Legend:   + = New  # = Changed  - = Fix
+
 +New variable $demoModeOnly, used to set limesurvey into a more secure demo mode. (machaven)
 #Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg (c_schmitz)
 #French language updated (b00z00)
