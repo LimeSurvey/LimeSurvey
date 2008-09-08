@@ -3688,7 +3688,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 	$qidresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked
 	while ($qrow =  $qidresult->FetchRow())
 	{
-		$myqid = $qrow[0];
+		$myqid = $qrow['qid'];
 		$query = "DELETE FROM ".db_table_name('answers')." WHERE qid='$myqid' and ($sqllang)";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());    //Checked
 	}
