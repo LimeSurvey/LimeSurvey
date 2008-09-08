@@ -2524,7 +2524,7 @@ function check_quota($checkaction,$surveyid)
 				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 				echo "\t<center><br />\n";
 				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
-				echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << prev ' name='move2' />
+				echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << ". $clang->gT("Previous")." ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' /></form>\n";
