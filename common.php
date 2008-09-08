@@ -27,7 +27,7 @@ if ($debug>0) {
         error_reporting(E_ALL); //For debug purposes - switch on in config.phh  
         }
 
-if (ini_get("max_execution_time")<120) @set_time_limit(120); // Maximum execution time - works only if safe_mode is off
+if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
 @ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys 
 
 // Now check for PHP & db version
