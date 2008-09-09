@@ -3050,14 +3050,7 @@ if (isset($summary) && $summary)
                     //check if we have to adjust ouput due to $showaggregateddata setting
                     if($showaggregateddata == 1 && isset($showaggregateddata))
                     {
-                    	if($i == 0 && (isset($aggregated) && $aggregated == true))
-                    	{
-							$statisticsoutput .= "\t\t </td><td>";
-                  	  	}
-                  	  	elseif($i == 0 || (isset($aggregated) && $aggregated == true))
-                  	  	{
-							$statisticsoutput .= "\t\t </td><td>";
-                   		} 
+                    	$statisticsoutput .= "\t\t </td><td>";
                     }              			
                     		
                 }
