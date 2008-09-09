@@ -1365,6 +1365,9 @@ function submittokens()
 		$fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
 		$fieldsarray["{ATTRIBUTE_1}"]=$cnfrow['attribute_1'];
 		$fieldsarray["{ATTRIBUTE_2}"]=$cnfrow['attribute_2'];
+		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
 		$subject=Replacefields($subject, $fieldsarray);
 

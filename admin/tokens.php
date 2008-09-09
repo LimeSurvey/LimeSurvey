@@ -1073,6 +1073,9 @@ if ($subaction == "email" &&
 			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+			$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+			$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+			$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
 			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
@@ -1307,6 +1310,9 @@ if ($subaction == "remind" &&
             $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
             $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
     
             $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
