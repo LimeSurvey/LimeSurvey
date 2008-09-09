@@ -56,7 +56,7 @@
 
 
 //MM: This setting will be put into config-defaults.php later
-$showaggregateddata = 0;
+$showaggregateddata = 1;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -2998,6 +2998,9 @@ if (isset($summary) && $summary)
             
             //we need to know which item we are editing
       	    $itemcounter = 1;
+      	    
+      	    //array to store items 1 - 5 of question types "5" and "A"
+      	    $stddevarray = array();
       	      
             //loop through all available answers
             while (isset($gdata[$i]))
@@ -3061,14 +3064,24 @@ if (isset($summary) && $summary)
                 
                 //data available
                 else
-                {
-                	
-                	                        	
+                {                	
                 	//MM: check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata))
                 	{
                 		//mark that we have done soemthing special here
-                		$aggregated = true;           		
+                		$aggregated = true; 
+                		
+                		
+                		//just calculate everything once. the data is there in the array      
+                		if($itemcounter == 1)
+                		{
+                			//there are always 5 answers
+                			for($x = 0; $x < 5; $x++)
+                			{ 
+                				//put 5 items into array for further calculations
+                				array_push($stddevarray, $grawdata[$x]);
+                			}
+                		}
                 		
                 		
                 		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
@@ -3248,10 +3261,17 @@ if (isset($summary) && $summary)
 	                		+ $grawdata[$i-4];
 	                		
 	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
-	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")."</strong></td>";
+	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>100.00%</strong></td>";
-	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>100.00%</strong></td></tr>";
+	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>100.00%</strong></td>";
+	                		
+	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
+	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' >100.00%</td>";
+	                		//there has to be a whitespace within the table cell to display correctly
+	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";  
 	                		
 	                	}
 	                	
@@ -3266,7 +3286,7 @@ if (isset($summary) && $summary)
                 		$statisticsoutput .= "\t\t";
                 	}
                 	                	                	
-                }	//end else -> $gdata[$i] != "N/A"        
+                }	//end else -> $gdata[$i] != "N/A"   	                		
                 
               	//end output per line. there has to be a whitespace within the table cell to display correctly
 	            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";              
@@ -3277,7 +3297,75 @@ if (isset($summary) && $summary)
 				$itemcounter++;
             
             }	//end while
-
+            
+            //only show additional values when this setting is enabled
+            if($showaggregateddata == 1 && isset($showaggregateddata))
+            {
+            	//it's only useful to calculate standard deviation and arithmetic means for question types
+            	//5 = 5 Point Scale
+            	//A = Array (5 Point Choice)
+            	if($qtype == "5" || $qtype == "A")
+            	{
+            		$stddev = 0;
+            		$am = 0;
+            			
+            		//calculate arithmetic mean
+            		if(isset($sumitems) && $sumitems > 0)
+            		{
+            			
+            			
+            			//calculate and round results
+            			//there are always 5 items
+            			for($x = 0; $x < 5; $x++)
+            			{
+            				//create product of item * value
+            				$am += (($x+1) * $stddevarray[$x]);
+            			}
+            			
+            			$am = round($am / array_sum($stddevarray),2);
+            			
+            			//calculate standard deviation -> loop through all data
+            			/*
+            			 * four steps to calculate the standard deviation
+            			 * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
+            			 * 2 = create sqaure value of difference
+            			 * 3 = sum up square values
+            			 * 4 = multiply result with 1 / (number of items)
+            			 * 5 = get root
+            			 */
+            			
+            			
+            			
+            			for($j = 0; $j < 5; $j++)
+            			{            				
+            				//1 = calculate difference between item and arithmetic mean
+            				$diff = (($j+1) - $am);
+            				
+            				//2 = create square value of difference
+            				$squarevalue = square($diff);
+            				
+            				//3 = sum up square values and multiply them with the occurence
+            				$stddev += $squarevalue * $stddevarray[$j];   
+            			}
+            			
+            			//4 = multiply result with 1 / (number of items (=5))            			
+            			//There are two different formulas to calculate standard derivation
+            			//$stddev = $stddev / array_sum($stddevarray);		//formula source: http://de.wikipedia.org/wiki/Standardabweichung
+            			$stddev = $stddev / (array_sum($stddevarray)-1);	//formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
+            			
+            			//5 = get root
+            			$stddev = sqrt($stddev);
+            			$stddev = round($stddev,2);
+            		}            		
+            		
+            		//calculate standard deviation
+		            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic Mean")." | ".$clang->gT("Standard Deviation")."</td>";	//German: "Fallzahl"
+			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
+			        //there has to be a whitespace within the table cell to display correctly
+			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";
+            	}
+            }
             
             
             
@@ -3513,6 +3601,10 @@ if (isset($summary) && $summary)
 				
 			}	//end if -> jpgraph enabled
 			
+			
+			
+			
+			
 			//close table/output
 			$statisticsoutput .= "</table>";
 			
@@ -3624,6 +3716,15 @@ function shortenCode($string, $max)
 	
 	return $output;
 }
+
+//simple function to square a value
+function square($number)
+{
+	$squarenumber = $number * $number;
+	
+	return $squarenumber;
+}
+
 
 
 ?>
