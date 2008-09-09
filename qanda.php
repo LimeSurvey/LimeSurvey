@@ -814,7 +814,7 @@ function do_list_dropdown($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
@@ -918,7 +918,7 @@ function do_list_flexible_dropdown($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
@@ -1033,7 +1033,7 @@ function do_list_radio($ia)
 	}
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
@@ -1140,7 +1140,7 @@ function do_list_flexible_radio($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
@@ -1618,7 +1618,7 @@ function do_multiplechoice($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
@@ -1854,7 +1854,7 @@ function do_multiplechoice_withcomments($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
 	{
-		$othertext=$othertexts['value'];
+		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
