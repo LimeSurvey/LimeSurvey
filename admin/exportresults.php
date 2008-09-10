@@ -241,6 +241,13 @@ if (!$style)
 	    .$clang->gT("PDF")."<br />"
         ."</label>\n";
     }
+    
+    //#1376 expoirt from X to Y
+    //disabled, doesn't work yet
+    /*$exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
+    $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='111'>";
+    */
+    
 	$exportoutput .="\t\t</font></font></td>\n"
 	."\t</tr>\n"
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
@@ -529,7 +536,14 @@ if (incompleteAnsFilterstate() === true)
 {
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
 }
-$dquery .=" ORDER BY id";
+
+//MM
+//calculate interval because the second argument at SQL "limit" 
+//is the number of records not the ending point
+$limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']);
+
+
+$dquery .=" ORDER BY id ";//LIMIT ".sanitize_int($_POST['export_from']).", ".$limit_interval;
 
 $dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
@@ -920,7 +934,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		    }
 	}
 }
-elseif ($answers == "long")        //vollständige Antworten gewählt
+elseif ($answers == "long")        //vollstï¿½ndige Antworten gewï¿½hlt
 {
 //	echo $dquery;
     $labelscache=array();
