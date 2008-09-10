@@ -1269,7 +1269,13 @@ $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enabled")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disabled")."</option>\n"
 ."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses (only works when Filter incomplete answers is Disable)")."</label></td></tr>\n";
+."\t\t\t\t<tr><td align='center'>";
+
+//this fixes bug #2470
+$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted' ";
+if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></td></tr>\n";
+
 
 //only show option to show graphs if jpgraph is enabled
 if (isset($usejpgraph) && $usejpgraph == 1)
