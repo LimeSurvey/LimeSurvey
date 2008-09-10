@@ -1317,8 +1317,11 @@ if ($selecthide!='')
 {
     $statisticsoutput .= " style='display:none' ";
 }
-   
-$statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted'/><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div></td></tr>\n";
+
+//this fixes bug #2470
+$statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
+if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div></td></tr>\n";
 
 //only show option to show graphs if jpgraph is enabled
 $statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
@@ -3051,8 +3054,7 @@ if (isset($summary) && $summary)
                     if($showaggregateddata == 1 && isset($showaggregateddata))
                     {
                     	$statisticsoutput .= "\t\t </td><td>";
-                    }              			
-                    		
+                    }     
                 }
                 
                 //data available
