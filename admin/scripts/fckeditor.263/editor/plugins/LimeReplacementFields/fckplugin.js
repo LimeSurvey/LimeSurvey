@@ -50,6 +50,7 @@ FCKLimeReplacementFieldss.Add = function( name )
 {
 	var oSpan = FCK.InsertElement( 'SPAN' ) ;
 	this.SetupSpan( oSpan, name ) ;
+	FCKSelection.SelectNode(oSpan);
 }
 
 FCKLimeReplacementFieldss.SetupSpan = function( span, name )

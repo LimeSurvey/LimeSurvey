@@ -32,19 +32,29 @@ $InsertansUnsupportedtypes=Array(); // Currently all question types are supporte
 $replFields=Array();
 $isInstertansEnabled=false;
 
-$limereplacementoutput=""
-	. "<script language=\"javascript\">\n"
-	. "var oEditor = window.parent.InnerDialogLoaded() ;\n"
-	. "var dialog = oEditor.FCK ;\n"
-	. "var FCKLang = oEditor.FCKLang ;\n"
-	. "var FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
-	. "window.onload = function ()\n"
-	. "{\n"
-	. "\toEditor.FCKLanguageManager.TranslatePage( document ) ;\n"
-	. "\tLoadSelected() ;\n"
-	. "\twindow.parent.SetOkButton( true ) ;\n"
-	. "}\n"
+$limereplacementoutput="<html>\n"
+	. "\t<head>\n"
+	. "\t\t<title>LimeReplacementFields</title>\n"
+	. "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+	. "\t\t<meta content=\"noindex, nofollow\" name=\"robots\">\n"
+	. "\t\t<script src=\"$fckeditordir/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
+	. "\t\t<script language=\"javascript\">\n"
+	. "\t\t\tvar mydialog = window.parent ;\n"
+	. "\t\t\tvar oEditor = mydialog.InnerDialogLoaded() ;\n"
+	. "\t\t\tvar dialog = oEditor.FCK ;\n"
+	. "\t\t\tvar FCKLang = oEditor.FCKLang ;\n"
+	. "\t\t\tvar FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
+	. "\t\t\twindow.onload = function ()\n"
+	. "\t\t\t{\n"
+	. "\t\t\t\toEditor.FCKLanguageManager.TranslatePage( document ) ;\n"
+	. "\t\t\t\tLoadSelected() ;\n"
+	. "\t\t\t\tmydialog.SetOkButton( true ) ;\n"
 	. "\n"
+	. "\t\t\t\tSelectField( 'cquestions' ) ;\n" 
+	. "\t\t\t}\n"
+	. "\n";
+
+/**$limereplacementoutput="\n"
 	. "if (! oEditor.FCKBrowserInfo.IsIE)\n"
 	. "{\n"
 	. "\tinnertext = '' + dialog.EditorWindow.getSelection() + '' ;\n"
@@ -52,29 +62,53 @@ $limereplacementoutput=""
 	. "else\n"
 	. "{\n"
 	. "\tinnertext = '' + dialog.EditorDocument.selection.createRange().text + '' ;\n"
-	. "}\n"
-	. "\n"
-	. "function Ok()\n"
-	. "{\n"
-	. "\tvar sValue = document.getElementById('cquestions').value ;\n"
-	. "\tFCKLimeReplacementFieldss.Add( sValue ) ;\n"
-	. "\treturn true ;\n"
-	. "}\n"
+	. "}\n";
+**/
+
+$limereplacementoutput .= ""
+	. "\t\t\tvar eSelected = dialog.Selection.GetSelectedElement() ;\n"
+	. "\n";
+
+/**
+$limereplacementoutput="\n"
 	. "function LoadSelected()\n"
 	. "{\n"
 	. "\tif ( innertext == '' )\n"
 	. "\t\treturn ;\n"
-//	. "\tif ( eSelected.tagName == 'SPAN' && eSelected._fckLimeReplacementFields )\n"
 	. "var replcode=innertext.substring(innertext.indexOf('{')+1,innertext.lastIndexOf('}'));\n"
-//	. "alert('TIBO=' + replcode);\n"
 	. "\t\tdocument.getElementById('cquestions').value = replcode;\n"
-//	. "\telse\n"
-//	. "\t\teSelected == null ;\n"
-	. "}\n"
-	. "</script>\n";
+	. "}\n";
+**/
+
+$limereplacementoutput .= ""
+	. "\t\t\tfunction LoadSelected()\n"
+	. "\t\t\t{\n"
+	. "\t\t\t\tif ( !eSelected )\n"
+	. "\t\t\t\t\treturn ;\n"
+	. "\t\t\t\tif ( eSelected.tagName == 'SPAN' && eSelected._fckLimeReplacementFields )\n"
+	. "\t\t\t\t\t document.getElementById('cquestions').value = eSelected._fckLimeReplacementFields ;\n"
+	. "\t\t\t\telse\n"
+	. "\t\t\t\t\teSelected == null ;\n"
+	. "\t\t\t}\n";
 	
 	
-$limereplacementoutput .= "<table><tr><td>";
+$limereplacementoutput .= ""
+	. "\t\t\tfunction Ok()\n"
+	. "\t\t\t{\n"
+	. "\t\t\t\tvar sValue = document.getElementById('cquestions').value ;\n"
+
+	. "\t\t\t\tFCKLimeReplacementFieldss.Add( sValue ) ;\n"
+	. "\t\t\t\treturn true ;\n"
+	. "\t\t\t}\n";
+
+$limereplacementoutput .= ""
+	. "\t\t\t</script>\n"
+	. "\t\t</head>\n";
+
+$limereplacementoutput .= "\t<body scroll=\"no\" style=\"OVERFLOW: hidden\">\n"
+			. "\t\t<table height=\"100%\" cellSpacing=\"0\" cellPadding=\"0\" width=\"100%\" border=\"0\">\n"
+			. "\t\t\t<tr>\n"
+			. "\t\t\t\t<td>\n";
 
 switch ($fieldtype)
 {
@@ -396,7 +430,7 @@ if ($isInstertansEnabled===true)
 
 if (count($replFields) > 0 || isset($cquestions) )
 {
-	$limereplacementoutput .= "\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15' ondblclick='Ok();'>\n";
+	$limereplacementoutput .= "\t\t\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15' ondblclick='Ok();'>\n";
 }
 else
 {
@@ -407,19 +441,19 @@ else
 
 if (count($replFields) > 0)
 {
-	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Standard Fields")."'>\n";
+	$limereplacementoutput .= "\t\t\t\t\t\t<optgroup label='".$clang->gT("Standard Fields")."'>\n";
 
 	foreach ($replFields as $stdfield)
 	{
-		$limereplacementoutput .= "\t\t\t\t<option value='".$stdfield[0]."'";
+		$limereplacementoutput .= "\t\t\t\t\t\t\t<option value='".$stdfield[0]."'";
 		$limereplacementoutput .= ">".$stdfield[1]."</option>\n";
 	}
-	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
+	$limereplacementoutput .= "\t\t\t\t\t\t</optgroup>\n";
 }
 
 if (isset($cquestions))
 {
-	$limereplacementoutput .= "\t\t\t\t<optgroup label='".$clang->gT("Previous Answers Fields")."'>\n";
+	$limereplacementoutput .= "\t\t\t\t\t\t<optgroup label='".$clang->gT("Previous Answers Fields")."'>\n";
 	foreach ($cquestions as $cqn)
 	{
 		$isDisabled="";
@@ -432,36 +466,48 @@ if (isset($cquestions))
 			 $isDisabled=" disabled='disabled'";
 		}
 
-		$limereplacementoutput .= "\t\t\t\t<option value='INSERTANS:$cqn[3]'";
+		$limereplacementoutput .= "\t\t\t\t\t\t\t<option value='INSERTANS:$cqn[3]'";
 		$limereplacementoutput .= " $isDisabled >$cqn[0]</option>\n";
 	}
-	$limereplacementoutput .= "\t\t\t\t</optgroup>\n";
+	$limereplacementoutput .= "\t\t\t\t\t\t</optgroup>\n";
 }
 
 
-$limereplacementoutput .= "\t\t\t</select>\n";
-$limereplacementoutput .= "</td></tr>\n";
+$limereplacementoutput .= "\t\t\t\t\t</select>\n";
+$limereplacementoutput .= "\t\t\t\t</td>\n"
+			. "\t\t\t</tr>\n";
 
 if (isset($surveyformat))
 {
     switch ($surveyformat)
     {
 	    case 'A':
-		    $limereplacementoutput .= "<tr><td>\n";
-		    $limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
-            $limereplacementoutput .= "<br />".sprintf($clang->gT("Survey Format is %s:"), $clang->gT("All in one"))."<br /><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
-		    $limereplacementoutput .= "</td></tr>\n";
+		    $limereplacementoutput .= "\t\t\t<tr>\n"
+					. "\t\t\t\t<td>\n";
+		    $limereplacementoutput .= "\t\t\t\t\t<br />\n"
+					. "\t\t\t\t\t<font color='orange'>".$clang->gT("Some Question have been disabled")."</font>\n";
+            $limereplacementoutput .= "\t\t\t\t\t<br />\n"
+				. "\t\t\t\t\t".sprintf($clang->gT("Survey Format is %s:"), $clang->gT("All in one"))
+				. "\t\t\t\t\t<br />\n"
+				. "\t\t\t\t\t<i>".$clang->gT("Only Previous pages answers are available")."</i>\n"
+				. "\t\t\t\t\t<br />\n";
+		    $limereplacementoutput .= "\t\t\t\t</td>\n"
+					. "\t\t\t</tr>\n";
 	    break;
 	    case 'G':
-		    $limereplacementoutput .= "<tr><td>\n";
-		    $limereplacementoutput .= "<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
-            $limereplacementoutput .= "<br />".sprintf($clang->gT("Survey mode is set to %s:"), $clang->gT("Group by Group"))."<br/><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";		    $limereplacementoutput .= "</td></tr>\n";
+		    $limereplacementoutput .= "\t\t\t<tr>\n"
+					. "\t\t\t\t<td>\n";
+		    $limereplacementoutput .= "\t\t\t\t\t<br /><font color='orange'>".$clang->gT("Some Question have been disabled")."</font>";
+            $limereplacementoutput .= "<br />".sprintf($clang->gT("Survey mode is set to %s:"), $clang->gT("Group by Group"))."<br/><i>".$clang->gT("Only Previous pages answers are available")."</i><br />";
+			$limereplacementoutput .= "\t\t\t\t</td>\n"
+						. "\t\t\t</tr>\n";
 	    break;
     }
 }
 
-$limereplacementoutput .= "</table>\n";
+$limereplacementoutput .= "\t\t</table>\n"
+			. "\t</body>\n"
+			. "</html>";
 
 echo $limereplacementoutput;
-
 ?>
