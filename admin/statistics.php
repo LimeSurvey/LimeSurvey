@@ -55,8 +55,14 @@
 //		- Use tooltipps to show additional information like whole question/answer text
 
 
-//MM: This setting will be put into config-defaults.php later
-$showaggregateddata = 1;
+//MM: This settingss will be put into config-defaults.php later
+
+//sum up data for question types "A" and "5" and show additional values 
+//like arithmetic mean and standard deviation
+$showaggregateddata = 0;
+
+//split up results to extend statistics
+$showcombinedresults = 0;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -76,6 +82,9 @@ require_once('classes/core/class.progressbar.php');
 
 //we collect all the output within this variable
 $statisticsoutput ='';
+
+//output for chosing questions to cross query
+$cr_statisticsoutput = '';
 
 //for creating graphs we need some more scripts which are included here
 if (isset($_POST['usegraph'])) 
@@ -270,8 +279,19 @@ if (isset($datestamp) && $datestamp == "Y") {
 	$allfields[]=$myfield4;
 	$allfields[]=$myfield5;
 }
+
 $statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID or timestamp forms
 
+if (isset($allfields))
+{
+	//connect all array elements using "+"
+	$allfield=implode("+", $allfields);
+}
+//option to chose all questions
+//$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
+//."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
+$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
+." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n";
 
 
 
@@ -1280,12 +1300,16 @@ foreach ($filters as $flt)
 //complete output
 $statisticsoutput .= "\n\t\t\t\t</tr>\n";
 
-//array allfields contains question codes
+$statisticsoutput .= "\t\t\t</table>\n"
+."\t\t</td></tr>\n";
+
+/*moved to the top because the option to chose all fields was moved there
+ * //array allfields contains question codes
 if (isset($allfields))
 {
 	//connect all array elements using "+"
 	$allfield=implode("+", $allfields);
-}
+}*/
 
 //pre-selection of filter forms
 if (incompleteAnsFilterstate() === true)
@@ -1299,14 +1323,277 @@ else
 	$selectshow="selected='selected'";
 }
 
+
+
+
+
+// ------------------------ BEGINN CROSS QUERY
+/*
+ * supported question types:
+ * 	G - Gender 
+	L - List (Radio) 
+	M - Multiple Options 
+	O - List With Comment 
+	P - Multiple Options With Comments 
+	W - List (Flexible Labels) (Dropdown) 
+	Y - Yes/No 
+	Z - List (Flexible Labels) (Radio) 
+	! - List (Dropdown)
+ * 
+ */
+
+//check if this option is set
+if(isset($showcombinedresults) && $showcombinedresults == 1)
+{	
+	//second row below options -> filter settings headline
+	$cr_statisticsoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
+	." cellspacing='0'>\n"
+	."<tr><td align='center' class='settingcaption' height='22'>"
+	//."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
+	."<font size='2'><strong>".$clang->gT("Cross Query Settings")."</strong></font>"
+	."</td></tr>\n"
+	."</table>\n"
+	
+	//table which holds all the filter fields
+	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
+
+	// Get answers for each supported question type
+			
+	//is there a currentgroup set?
+	if (!isset($currentgroup)) {$currentgroup="";}
+	
+	/*
+	 * let's go through the filter array which contains
+	 * 	['qid'],
+		['gid'],
+		['type'],
+		['title'],
+		['group_name'],
+		['question'],
+		['lid'],
+	    ['lid1']);
+	 */
+	foreach ($filters as $flt)
+	{		
+		//we don't want more than 4 questions in a row
+		if (isset($counter) && $counter == 4) {$cr_statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
+			
+		//SGQ identifier
+		$myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
+		
+		//full question title
+		$niceqtext = FlattenText($flt[5]);
+		
+		/*
+		 * Check question type: This question types will be used (all others are separated in the if clause)
+		 * 	G - Gender  
+			L - List (Radio) 
+			M - Multiple Options 
+			O - List With Comment 
+			P - Multiple Options With Comments 
+			Y - Yes/No 
+			! - List (Dropdown))
+		 */
+		if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
+		    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
+			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
+			$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
+			$flt[2] != ":" && $flt[2] != "5"  && $flt[2] != "I"  && $flt[2] != "N") //Have to make an exception for these types!
+		{
+			
+			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
+			."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
+			
+			//."<strong>".shortenCode($flt[5], 10)."</strong><br />\n"; //Heading (Question No)
+			
+			//multiple options:
+			if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+			
+			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+			if ($flt[2] == "N") {$myfield = "N$myfield";}
+			$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			
+			/*
+			 * one of these conditions has to be true
+			 * 1. SGQ can be found within the summary array
+			 * 2. M-SGQ can be found within the summary array (M = multiple options)
+			 * 3. N-SGQ can be found within the summary array (N = numerical input)
+			 * 
+			 * Always remember that we just have very few question types that are checked here
+			 * due to the if ouside this section!
+			 * 
+			 * Auto-check the question types mentioned above
+			 */
+			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+			{$cr_statisticsoutput .= " checked='checked'";}
+			
+			//show speaker symbol which contains full question text
+			$cr_statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
+			."<br />\n";
+			//numerical question type -> add some HTML to the output
+			if ($flt[2] == "N") {$cr_statisticsoutput .= "</font>";}
+			if ($flt[2] != "N") {$cr_statisticsoutput .= "\t\t\t\t<select name='";}
+			
+			//multiple options ("M"/"P") -> add "M" to output 
+			if ($flt[2] == "M" || $flt[2] == "P") {$cr_statisticsoutput .= "M";}
+			
+			//numerical -> add SGQ to output
+			if ($flt[2] != "N") {$cr_statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
+			
+			//Add the field name into the allfields array, which is used later to know which are the available fields for selection
+			$allfields[]=$myfield;
+			
+		}	//end if -> filter certain question types
+	
+		$cr_statisticsoutput .= "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		//This section presents the filter list, in various different ways depending on the question type
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//let's switch through the question type for each question
+		switch ($flt[2])
+		{		
+			case "G": // Gender
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='F'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Female")."</option>\n";
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='M'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select></font>\n";
+			break;
+			
+			
+			
+			case "Y": // Yes\No
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='Y'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
+			."\t\t\t\t\t<option value='N'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
+			break;
+						
+			
+			//Dropdown and radio lists
+			case "W":
+			case "Z":
+				
+			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
+			."<strong>$flt[3]&nbsp;"; //Heading (Question No)
+			$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			
+			//pre-check
+			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+			{$cr_statisticsoutput .= " checked='checked'";}
+			
+			$cr_statisticsoutput .= " />&nbsp;"
+			.showSpeaker($niceqtext)."</strong>"
+			."<br />\n";
+			$cr_statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
+			$allfields[]=$myfield;
+			
+			//get labels (code and title)
+			$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
+			$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+			
+			//loop through all the labels
+			while($row=$result->FetchRow())
+			{
+				$cr_statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+				
+				//pre-check
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+				
+				$cr_statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
+	            
+			} // while
+			
+			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			break;        
+	        
+	        
+	        /*
+	         * This question types use the default settings:
+	         * 	L - List (Radio) 
+				M - Multiple Options 
+				O - List With Comment 
+				P - Multiple Options With Comments 
+				! - List (Dropdown) 
+	         */
+			//default:
+			case "L":
+			case "M":
+			case "O":
+			case "P":
+			case "!":
+			
+			//get answers
+			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+			$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+			
+			//loop through answers
+			while ($row=$result->FetchRow())
+			{
+				$cr_statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+				
+				//pre-check
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+				
+				$cr_statisticsoutput .= ">$row[1]</option>\n";
+			}
+			
+			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			break;
+			
+		}	//end switch -> check question types and create filter forms
+		
+		$currentgroup=$flt[1];
+		
+		if (!isset($counter)) {$counter=0;}
+		$counter++;
+	}
+	
+	//complete output
+	$cr_statisticsoutput .= "\n\t\t\t\t</tr>\n";
+	
+	//array allfields contains question codes
+	if (isset($allfields))
+	{
+		//connect all array elements using "+"
+		$allfield=implode("+", $allfields);
+	}
+	
+	//add last lines to filter forms
+	$cr_statisticsoutput .= "\t\t\t</table>\n";
+
+	//add own output to general output
+	$statisticsoutput .= $cr_statisticsoutput;
+	
+}	//end if -> option crossquery set?
+
+
+// --------------------------------------- END CROSS QUERY ------------------------------------
+
+
+
+
+
 //add last lines to filter forms
-$statisticsoutput .= "\t\t\t</table>\n"
-."\t\t</td></tr>\n"
-."\t\t<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
-."\t\t<tr><td align='center' class='settingcaption'>\n"
+
+
+$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
@@ -1341,6 +1628,15 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t</form>\n";     
 
 // ----------------------------------- END FILTER FORM ---------------------------------------
+
+
+		
+
+
+
+
+
+
 
 
 // DISPLAY RESULTS
