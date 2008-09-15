@@ -73,6 +73,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5565 to 5599 -  Legend:   + = New  # = Changed  - = Fix
+
+#Changed: when adding ReplacementFields with a double click, the field is automatically selected, making it easier to change your mind and choose another one without having to close the select window. (lemeur)
+#Updated Turkish translation for calendar by A. Murad BAYRAM (c_schmitz)
+#Updated Hungarian Translation by Daniel Fuleki (c_schmitz)
+#Updated Croatian Translation by Ro Vino (c_schmitz)
+#Updated Polish Translation by piotr.plenik a-t-t- teamlab doott pl (c_schmitz)
+#Updated mint_idea Template: changed leaf to LimeSurvey-Logo and writing "mintidea" to "LimeSurvey" (el-matador-69)
+-Fixed #2434: Some words encoded in output - HTML tags are always completely stripped when saving result data (c_schmitz)
+-Fixed #2458: "<< prev"-Button at Quota Termination with warning isn't translated (c_schmitz)
+-Fixed #2448: common.php execution time exceeded when importing large survey - raised max_execution time to 600 (c_schmitz)
+-Fixed a bug where answers in obsolete language were not properly deleted after language was removed from survey (c_schmitz)
+-Fixed #2470:Status of checkbox "Don't consider NON completed responses" not reminded when reloading page (maziminke)
+-Fixed 02484: LimeReplacementFields seems not to work anymore in IE7.
+
 Changes from 1.71+ Build 5535 to 5565 -  Legend:   + = New  # = Changed  - = Fix
 
 #Updated German translation (c_schmitz)
