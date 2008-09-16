@@ -59,10 +59,10 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 0;
+$showaggregateddata = 1;
 
 //split up results to extend statistics
-$showcombinedresults = 0;
+$showcombinedresults = 1;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -404,7 +404,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
 		."<br />\n";
 		//numerical question type -> add some HTML to the output
-		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
+		//if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
 		
 		//multiple options ("M"/"P") -> add "M" to output 
@@ -655,8 +655,8 @@ foreach ($filters as $flt)
 			$statisticsoutput .= ">$i</option>\n";
 		}
 		
-		//End the select which starts before the CASE statement (around line 383)
-		$statisticsoutput .="\t\t\t\t</select></font>\n";
+		//End the select which starts before the CASE statement (around line 411)
+		$statisticsoutput .="\t\t\t\t</select>\n";
 		break;
 		
 		
@@ -673,7 +673,7 @@ foreach ($filters as $flt)
 		//pre-select values which were marked before
 		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		
-		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select></font>\n";
+		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select>\n";
 		break;
 		
 		
@@ -690,7 +690,7 @@ foreach ($filters as $flt)
 		//pre-select values which were marked before
 		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		
-		$statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
+		$statisticsoutput .= ">".$clang->gT("No")."</option></select>\n";
 		break;
 		
 
@@ -758,7 +758,7 @@ foreach ($filters as $flt)
 				$statisticsoutput .= ">$i</option>\n";
 			}
 			
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			
 			//add this to all the other fields
@@ -1107,7 +1107,7 @@ foreach ($filters as $flt)
 				$statisticsoutput .= ">$ans[1]</option>\n";
 			}
 			
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			
 			//add averything to main array
@@ -1343,7 +1343,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 	." cellspacing='0'>\n"
 	."<tr><td align='center' class='settingcaption' height='22'>"
 	//."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-	."<font size='2'><strong>".$clang->gT("Cross Query Settings")."</strong></font>"
+	."<font size='2'><strong>".$clang->gT("Split up results")."</strong></font>"
 	."</td></tr>\n"
 	."</table>\n"
 	
