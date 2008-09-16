@@ -226,9 +226,16 @@ foreach ($rows as $row)
 // SHOW ID FIELD
 
 //some more output: I = filter by ID
+//{VIEWALL} is a placemarker and is replaced by the html to choose to view all answers. Later there is a str_replace
+// to insert this code into this top section
 $statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'>
-       <table cellspacing='0' cellpadding='0' width='100%'><tr><td>
-        <table align='center'><tr>\n";
+       <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
+       <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
+	     <tr><td align='center' class='settingcaption'>
+	       <font size='1' face='verdana'>".$clang->gT("Filters")."</font>
+		  </td></tr>
+         <tr><td>
+          <table align='center'><tr>\n";
 
 $myfield = "id";
 $myfield2=$myfield."G";	//greater than field
@@ -282,16 +289,6 @@ if (isset($datestamp) && $datestamp == "Y") {
 
 $statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID or timestamp forms
 
-if (isset($allfields))
-{
-	//connect all array elements using "+"
-	$allfield=implode("+", $allfields);
-}
-//option to chose all questions
-//$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
-//."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n";
 
 
 
@@ -1300,16 +1297,12 @@ foreach ($filters as $flt)
 //complete output
 $statisticsoutput .= "\n\t\t\t\t</tr>\n";
 
-$statisticsoutput .= "\t\t\t</table>\n"
-."\t\t</td></tr>\n";
-
-/*moved to the top because the option to chose all fields was moved there
- * //array allfields contains question codes
+//array allfields contains question codes
 if (isset($allfields))
 {
 	//connect all array elements using "+"
 	$allfield=implode("+", $allfields);
-}*/
+}
 
 //pre-selection of filter forms
 if (incompleteAnsFilterstate() === true)
@@ -1591,15 +1584,34 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 
 
 //add last lines to filter forms
+$statisticsoutput .= "\t\t\t</table>\n"
+."\t\t</td></tr>\n";
 
-
-$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
+$viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
+."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
+."<script type'text/javascript'>
+   function showhidefilters(value) {
+     if(value == true) {
+       hide('filterchoices');
+     } else {
+	   show('filterchoices');
+	 }
+   }
+</script>"
+."\t\t\t\t<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
+." onClick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
+."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
-."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
+."\t\t\t\t</select><br />&nbsp;</td></tr>\n";
+$statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
+
+$statisticsoutput .= "</table>
+<table cellpadding='0' cellspacing='0' width='100%'>\n";
+
+$statisticsoutput .="\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
 if ($selecthide!='')
 {
     $statisticsoutput .= " style='display:none' ";
@@ -1628,15 +1640,6 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t</form>\n";     
 
 // ----------------------------------- END FILTER FORM ---------------------------------------
-
-
-		
-
-
-
-
-
-
 
 
 // DISPLAY RESULTS
