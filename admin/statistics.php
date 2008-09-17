@@ -59,10 +59,10 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 1;
+$showaggregateddata = 0;
 
 //split up results to extend statistics
-$showcombinedresults = 1;
+$showcombinedresults = 0;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -138,7 +138,7 @@ $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"
 
 //headline with all icons for available statistic options
 $statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-."\t<tr><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
 $statisticsoutput .= browsemenubar();
 $statisticsoutput .= "</table>\n"
@@ -148,7 +148,7 @@ $statisticsoutput .= "</table>\n"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' class='settingcaption' height='22'>"
 ."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-."<font size='2'><strong>".$clang->gT("Filter Settings")."</strong></font>"
+."<font size='3'><strong>".$clang->gT("Filter Settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
 
@@ -232,7 +232,7 @@ $statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'>
        <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
        <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
 	     <tr><td align='center' class='settingcaption'>
-	       <font size='1' face='verdana'>".$clang->gT("Filters")."</font>
+	       <font size='1' face='verdana'>".$clang->gT("General Filters")."</font>
 		  </td></tr>
          <tr><td>
           <table align='center'><tr>\n";
@@ -1372,6 +1372,18 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		//full question title
 		$niceqtext = FlattenText($flt[5]);
 		
+		/*//we don't want more than 4 questions in a row
+		if (isset($crcounter) && $crcounter == 4) 
+		{
+			//temporary save HTML tu output it later
+			$tempoutput = "\t\t\t\t</tr>\n\t\t\t\t<tr>"; 
+			$crcounter=0;
+		}
+		else
+		{			
+			$tempoutput = "";
+		}*/
+			
 		/*
 		 * Check question type: This question types will be used (all others are separated in the if clause)
 		 * 	G - Gender  
@@ -1385,19 +1397,21 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
 		    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
 			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
-			$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
+			//deleted question types "W" and "Z" to adjust output
+			$flt[2] != "X" && $flt[2] != "K" &&
+			//old statement: $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
 			$flt[2] != ":" && $flt[2] != "5"  && $flt[2] != "I"  && $flt[2] != "N") //Have to make an exception for these types!
 		{
-			if($showcrheadline === 0)
+			if($showcrheadline == 0)
 			{
-				$cr_statisticsoutput .= "<tr><td align='center' class='settingcaption' height='22'>"
-				."<font size='2'><strong>".$clang->gT("Split up results")."</strong></font>"
-				."</td></tr>\n"	
-          		."<table align='center'><tr>\n";
-			}
-			else
-			{
-				$showcrheadline = 1;
+				$cr_statisticsoutput = "\n\t\t\t\t<!-- new headline --></tr>\n\t\t\t</table><br /><br /></td></tr>\n"
+				."<tr><td align='center' class='settingcaption'  height='22'  style='border: 2px solid #555555;'>\n"
+				."<font size='3'><strong>".$clang->gT("Split up results")."</strong></font>"
+				."</td></tr>\n"
+				."<tr><td align='center'>\n"
+          		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
+          		
+          		$showcrheadline = 1;
 			}
 			
 			//we don't want more than 4 questions in a row
@@ -1406,17 +1420,35 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 				$cr_statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; 
 				$crcounter=0;
 			}
-		
 			
-			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
-			."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
+			//add temporary output
+			//$cr_statisticsoutput .= $tempoutput;
+			
+			//the headlines for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
+				."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
+			}
 						
 			//multiple options:
-			if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+			if ($flt[2] == "M" || $flt[2] == "P") 
+			{
+				$myfield = "M$myfield";
+			}
 			
 			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
-			if ($flt[2] == "N") {$myfield = "N$myfield";}
-			$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			if ($flt[2] == "N") 
+			{
+				$myfield = "N$myfield";
+			}
+			
+			//the checkboxes for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			}
+			
 			
 			/*
 			 * one of these conditions has to be true
@@ -1430,20 +1462,32 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			 * Auto-check the question types mentioned above
 			 */
 			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-			{$cr_statisticsoutput .= " checked='checked'";}
+			{
+				$cr_statisticsoutput .= " checked='checked'";
+			}
 			
-			//show speaker symbol which contains full question text
-			$cr_statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
-			."<br />\n";
+			//the speaker symbol for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				//show speaker symbol which contains full question text
+				$cr_statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
+				."<br />\n";
+			}
+			
 			//numerical question type -> add some HTML to the output
 			if ($flt[2] == "N") {$cr_statisticsoutput .= "</font>";}
-			if ($flt[2] != "N") {$cr_statisticsoutput .= "\t\t\t\t<select name='";}
+			
+			//only for non-numerical question types. qoutput for types "W" and "Z" is created later
+			if ($flt[2] != "N" && $flt[2] != "W" && $flt[2] != "Z") {$cr_statisticsoutput .= "\t\t\t\t<select name='";}
 			
 			//multiple options ("M"/"P") -> add "M" to output 
 			if ($flt[2] == "M" || $flt[2] == "P") {$cr_statisticsoutput .= "M";}
 			
-			//numerical -> add SGQ to output
-			if ($flt[2] != "N") {$cr_statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
+			//only for non-numerical question types. qoutput for types "W" and "Z" is created later
+			if ($flt[2] != "N" && $flt[2] != "W" && $flt[2] != "Z") 
+			{
+				$cr_statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
+			}
 			
 			//Add the field name into the allfields array, which is used later to know which are the available fields for selection
 			$allfields[]=$myfield;
@@ -1471,6 +1515,10 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
 			
 			$cr_statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select></font>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;
+			
 			break;
 			
 			
@@ -1488,6 +1536,10 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
 			
 			$cr_statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;
+			
 			break;
 						
 			
@@ -1526,6 +1578,10 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			} // while
 			
 			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;			
+			
 			break;        
 	        
 	        
@@ -1560,15 +1616,20 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			}
 			
 			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
-			break;
 			
+			//increase counter to adjust layout
+			$crcounter++;
+			
+			break;
+						
 		}	//end switch -> check question types and create filter forms
 		
 		$currentgroup=$flt[1];
 		
-		if (!isset($crcounter)) {$crcounter=0;}
-		$crcounter++;
-	}
+		//if (!isset($crcounter)) {$crcounter=0;}
+		//$crcounter++;
+	
+	}	//end foreach -> loop thorugh all available questions 
 		
 	//array allfields contains question codes
 	if (isset($allfields))
@@ -1576,6 +1637,8 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		//connect all array elements using "+"
 		$allfield=implode("+", $allfields);
 	}
+	
+	
 	
 	//add own output to general output
 	$statisticsoutput .= $cr_statisticsoutput;
@@ -1605,15 +1668,20 @@ $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
    }
 </script>"
 ."\t\t\t\t<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
-."\t\t<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
+." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
+//."\t\t<tr><td align='center' class='settingcaption'>\n"
+//."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 ."\t\t\t\t</select><br />&nbsp;</td></tr>\n";
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
 
+//add line to separate the the filters from the other options
+	$statisticsoutput .= "<tr><td align='center' class='settingcaption'>
+	       <font size='1' face='verdana'>&nbsp;</font>
+		  </td></tr>";
+	
 $statisticsoutput .= "</table>
 <table cellpadding='0' cellspacing='0' width='100%'>\n";
 
@@ -1626,12 +1694,23 @@ if ($selecthide!='')
 //this fixes bug #2470
 $statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
 if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div></td></tr>\n";
+$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div><br /></td></tr>\n";
 
-//only show option to show graphs if jpgraph is enabled
-$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
-if (isset($_POST['usegraph'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n";
+
+
+
+//check jpgraph settings
+if(isset($usejpgraph) && $usejpgraph == 1)
+{
+	//only show option to show graphs if jpgraph is enabled
+	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
+	
+	//if jpgraph is enabled in config.php pre-check this option
+	$statisticsoutput .= "checked='checked'";	
+	
+	//rest of output
+	$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n";
+}
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
