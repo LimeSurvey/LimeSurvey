@@ -105,6 +105,10 @@ table.menubar {
 	border-color: #8195BA;
 	border-style: solid;
 	border-width: 1px;
+	/*	Check this setting when merging 
+		I implemented it to correct the layout of the menu bar in statistics.php
+		Mazi*/
+	text-align: left;
 }
 .menubar td {
 	color: #265522;
