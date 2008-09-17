@@ -1338,22 +1338,19 @@ else
 //check if this option is set
 if(isset($showcombinedresults) && $showcombinedresults == 1)
 {	
-	//second row below options -> filter settings headline
-	$cr_statisticsoutput .= "<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-	." cellspacing='0'>\n"
-	."<tr><td align='center' class='settingcaption' height='22'>"
-	//."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-	."<font size='2'><strong>".$clang->gT("Split up results")."</strong></font>"
-	."</td></tr>\n"
-	."</table>\n"
 	
-	//table which holds all the filter fields
-	."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-
 	// Get answers for each supported question type
 			
 	//is there a currentgroup set?
 	if (!isset($currentgroup)) {$currentgroup="";}
+	
+	
+	
+	//just show the headline for the filter once
+	$showcrheadline = 0;
+	
+	///...and show 4 questions in each row
+	$crcounter = 0;
 	
 	/*
 	 * let's go through the filter array which contains
@@ -1368,8 +1365,6 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 	 */
 	foreach ($filters as $flt)
 	{		
-		//we don't want more than 4 questions in a row
-		if (isset($counter) && $counter == 4) {$cr_statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
 			
 		//SGQ identifier
 		$myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
@@ -1393,12 +1388,29 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
 			$flt[2] != ":" && $flt[2] != "5"  && $flt[2] != "I"  && $flt[2] != "N") //Have to make an exception for these types!
 		{
+			if($showcrheadline === 0)
+			{
+				$cr_statisticsoutput .= "<tr><td align='center' class='settingcaption' height='22'>"
+				."<font size='2'><strong>".$clang->gT("Split up results")."</strong></font>"
+				."</td></tr>\n"	
+          		."<table align='center'><tr>\n";
+			}
+			else
+			{
+				$showcrheadline = 1;
+			}
+			
+			//we don't want more than 4 questions in a row
+			if (isset($crcounter) && $crcounter == 4) 
+			{
+				$cr_statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; 
+				$crcounter=0;
+			}
+		
 			
 			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
-			
-			//."<strong>".shortenCode($flt[5], 10)."</strong><br />\n"; //Heading (Question No)
-			
+						
 			//multiple options:
 			if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
 			
@@ -1554,13 +1566,10 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		
 		$currentgroup=$flt[1];
 		
-		if (!isset($counter)) {$counter=0;}
-		$counter++;
+		if (!isset($crcounter)) {$crcounter=0;}
+		$crcounter++;
 	}
-	
-	//complete output
-	$cr_statisticsoutput .= "\n\t\t\t\t</tr>\n";
-	
+		
 	//array allfields contains question codes
 	if (isset($allfields))
 	{
@@ -1568,9 +1577,6 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		$allfield=implode("+", $allfields);
 	}
 	
-	//add last lines to filter forms
-	$cr_statisticsoutput .= "\t\t\t</table>\n";
-
 	//add own output to general output
 	$statisticsoutput .= $cr_statisticsoutput;
 	
@@ -1589,7 +1595,7 @@ $statisticsoutput .= "\t\t\t</table>\n"
 
 $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."<script type'text/javascript'>
+."<script type='text/javascript'>
    function showhidefilters(value) {
      if(value == true) {
        hide('filterchoices');
@@ -1599,7 +1605,7 @@ $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
    }
 </script>"
 ."\t\t\t\t<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." onClick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
+." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
 ."\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
 ."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
