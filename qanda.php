@@ -3444,10 +3444,10 @@ function do_array_multiflexi($ia)
 			{
 			    $myfname2=$myfname."_$ld";
 				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer{$myfname2}'>";
-				$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}'>\n";
+				$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
 				$answer .= "<select class='multiflexiselect' name='$myfname2' id='answer{$myfname2}' title='"
 				. html_escape($labelans[$thiskey])."'";
-				$answer .= " onChange='checkconditions(this.value, this.name, this.type); modfield(this.name)'>\n";
+				$answer .= " onChange='checkconditions(this.value, this.name, this.type)'>\n";
 				$answer .= "<option value=''>...</option>\n";
 				for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
 				  $answer .= "<option value='$ii'";
