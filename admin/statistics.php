@@ -932,17 +932,28 @@ foreach ($filters as $flt)
 		break;
 		
 		
-		
-		/*
-		 * For question type "F" and "H" you can use labels. 
-		 * The only difference is that the labels are applied to column heading 
-		 * or rows respectively
-		 */
 		case ":":  //ARRAY (Multi Flex)
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
+		//Get qidattributes for this question
+    	$qidattributes=getQuestionAttributes($flt[0]);
+    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+    		$maxvalue=$maxvalue['value'];
+    	} else {
+    		$maxvalue=10;
+    	}
+    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+    		$minvalue=$minvalue['value'];
+    	} else {
+    		$minvalue=1;
+    	}
+    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+    		$stepvalue=$stepvalue['value'];
+    	} else {
+    		$stepvalue=1;
+    	}
 		while ($row=$result->FetchRow())
 		{
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
@@ -962,7 +973,7 @@ foreach ($filters as $flt)
 			    ."<br />\n";
 			    //$statisticsoutput .= $fquery;
 			    $statisticsoutput .= "\t\t\t\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
-				for($ii=1; $ii<=10; $ii++)
+				for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
 				{
 				    $statisticsoutput .= "\t\t\t\t\t<option value='$ii'";
 				    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
@@ -976,6 +987,11 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td>\n";
 		$counter=0;
 		break;
+		/*
+		 * For question type "F" and "H" you can use labels. 
+		 * The only difference is that the labels are applied to column heading 
+		 * or rows respectively
+		 */
 		case "F": // ARRAY OF Flexible QUESTIONS
 		case "H": // ARRAY OF Flexible Questions (By Column)
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
