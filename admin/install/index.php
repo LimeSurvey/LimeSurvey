@@ -60,7 +60,7 @@ else
     $connect->database = $databasename;
     $connect->Execute("USE DATABASE `$databasename`");
 	$output=checkforupgrades();
-    if (!isset($ouput)) {$adminoutput.='<br />LimeSurvey Database is up to date. No action needed';}
+    if ($output== '') {$adminoutput.='<br />LimeSurvey Database is up to date. No action needed';}
       else {$adminoutput.=$output;}
     $adminoutput.="<br />Please <a href='$homeurl/$scriptname'>log in.</a>";
 
