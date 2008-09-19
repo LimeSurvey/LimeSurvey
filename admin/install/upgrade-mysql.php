@@ -212,6 +212,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
+	if ($oldversion < 128) {
+		//128
+		upgrade_token_tables128();
+	}
 
 function upgrade_survey_tables117()
 {
@@ -254,6 +258,24 @@ function upgrade_token_tables125()
         while ( $sv = $surveyidresult->FetchRow() )
             {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` varchar(255) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
+            }
+        }
+}
+
+// Add the reminders tracking fields
+// TIBO
+function upgrade_token_tables128()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` C(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` int I DEFAULT 0"); echo $modifyoutput; flush();
             }
         }
 }
