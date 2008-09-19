@@ -2199,9 +2199,6 @@ function templatereplace($line)
 	if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
 	if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
 	if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
-	if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
-	if (strpos($line, "{EXPIRY-DMY}") !== false) $line=str_replace("{EXPIRY-DMY}", date("d-m-Y",strtotime($thissurvey["expiry"])), $line);
-	if (strpos($line, "{EXPIRY-MDY}") !== false) $line=str_replace("{EXPIRY-MDY}", date("m-d-Y",strtotime($thissurvey["expiry"])), $line);
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);  
 	if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 	if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
@@ -2209,6 +2206,9 @@ function templatereplace($line)
 	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
+	if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
+	if (strpos($line, "{EXPIRY-DMY}") !== false) $line=str_replace("{EXPIRY-DMY}", date("d-m-Y",strtotime($thissurvey["expiry"])), $line);
+	if (strpos($line, "{EXPIRY-MDY}") !== false) $line=str_replace("{EXPIRY-MDY}", date("m-d-Y",strtotime($thissurvey["expiry"])), $line);
 	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
 	if ($totalquestionsAsked < 1)
 	{
