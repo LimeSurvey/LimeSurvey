@@ -215,6 +215,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	if ($oldversion < 128) {
 		//128
 		upgrade_token_tables128();
+	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
 function upgrade_survey_tables117()
@@ -274,8 +275,8 @@ function upgrade_token_tables128()
         {
         while ( $sv = $surveyidresult->FetchRow() )
             {
-            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` C(17) DEFAULT 'N'"); echo $modifyoutput; flush();
-            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` int I DEFAULT 0"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` INT(11)  DEFAULT 0"); echo $modifyoutput; flush();
             }
         }
 }

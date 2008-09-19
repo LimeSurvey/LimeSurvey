@@ -195,9 +195,6 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    return true;
-}
-
 	if ($oldversion < 127) {
         modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput; 
         modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput; 
@@ -214,6 +211,15 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput; 
         modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 }
+
+	if ($oldversion < 127) {
+		upgrade_token_tables128();
+	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
+
+    return true;
+}
+
 
 
 function upgrade_survey_tables117()
@@ -253,4 +259,14 @@ function upgrade_token_tables125()
             }
 }
 
+function upgrade_token_tables128()
+{
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            {
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindersent ] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount ] int DEFAULT '0'"); echo $modifyoutput; flush();
+            }
+}
 ?>
