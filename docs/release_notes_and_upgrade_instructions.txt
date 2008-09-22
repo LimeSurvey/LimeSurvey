@@ -73,6 +73,13 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5599 to 5638 -  Legend:   + = New  # = Changed  - = Fix
+# Swedish translation updated (maxz)
+# French translation updated (b00z00)
+- Fixed a small bug in installation script when no output results from the DB upgrade (lemeur)
+- Fixed a small inconsistency in db_upgrade_mysql for emailstatus field (lemeur)
+
+
 Changes from 1.71+ Build 5565 to 5599 -  Legend:   + = New  # = Changed  - = Fix
 
 #Changed: when adding ReplacementFields with a double click, the field is automatically selected, making it easier to change your mind and choose another one without having to close the select window. (lemeur)
