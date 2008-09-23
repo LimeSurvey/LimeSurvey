@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * PHPMailer language file.
  * Catalan Version

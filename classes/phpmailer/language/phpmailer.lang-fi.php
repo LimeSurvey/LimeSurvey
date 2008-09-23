@@ -21,5 +21,4 @@ $PHPMAILER_LANG["file_access"]          = 'Seuraavaan tiedostoon ei ole oikeuksi
 $PHPMAILER_LANG["file_open"]            = 'Tiedostovirhe: Ei voida avata tiedostoa: ';
 $PHPMAILER_LANG["encoding"]             = 'Tuntematon koodaustyyppi: ';
 $PHPMAILER_LANG["signing"]              = 'Signing Error: ';
-
 ?>
