@@ -51,18 +51,27 @@
 	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
-//TODO: - Use real question and answer title and cut them off after X chars. 
-//		- Use tooltipps to show additional information like whole question/answer text
-
-
 //MM: This settingss will be put into config-defaults.php later
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 0;
+$showaggregateddata = 1;
 
 //split up results to extend statistics
 $showcombinedresults = 0;
+
+/*
+ * this variable is used in the function shortencode() which cuts off a question/answer title
+ * after $maxchars and shows the rest as tooltip
+ */
+$maxchars = 10;
+
+
+
+
+
+
+
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
@@ -371,14 +380,9 @@ foreach ($filters as $flt)
 		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
 		$flt[2] != ":") //Have to make an exception for these types!
 	{
-		//MM 88
-		//$flt[3] = shortenCode($flt[3], 10);
-		
-		$statisticsoutput .= "\t\t\t\t<td align='center'>"
-		."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
-		
-		//."<strong>".shortenCode($flt[5], 10)."</strong><br />\n"; //Heading (Question No)
-		
+
+		$statisticsoutput .= "\t\t\t\t<td align='center'>";
+
 		//multiple options:
 		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
 		
@@ -401,8 +405,9 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 		
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
+		$statisticsoutput .= " /><strong>".showspeaker($flt[5])."</strong>"
 		."<br />\n";
+		
 		//numerical question type -> add some HTML to the output
 		//if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
@@ -426,6 +431,8 @@ foreach ($filters as $flt)
 	//let's switch through the question type for each question
 	switch ($flt[2])
 	{
+		//XXX question type K not tested!
+	
 		case "K": // Multiple Numerical
 		$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 		
@@ -449,20 +456,26 @@ foreach ($filters as $flt)
 		    $myfield2="K{$myfield}".$row[0]."G";
 		    $myfield3="K{$myfield}".$row[0]."L";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			
 			//question short code
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
+			
 			//checkbox
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
+			
 			//check SGQA -> do we want to pre-check the checkbox?
 			if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
-			$statisticsoutput .= " />&nbsp;&nbsp;";
+			$statisticsoutput .= " />&nbsp;<strong>";
+			
 			//show speaker
-		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))."<br />\n";
+		    $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))."</strong><br />\n";
+		    
 		    //input fields
 		    $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		    if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
+
 		    //check number input using JS
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
 		    ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
@@ -501,14 +514,14 @@ foreach ($filters as $flt)
 			$myfield2 = "Q".$myfield."$row[0]";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;&nbsp;";
-		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>";
+		    $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))
+			."</strong><br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 			if (isset($_POST[$myfield2]))
@@ -531,15 +544,14 @@ foreach ($filters as $flt)
 		case "U": // Huge free text
 			
 		$myfield2="T$myfield";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong>";
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
+		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		."</strong><br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
 		
@@ -554,16 +566,15 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 			
 		$myfield2="T$myfield";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong>";
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		
 		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
+		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		."</strong><br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		
@@ -614,9 +625,14 @@ foreach ($filters as $flt)
 		$myfield3="$myfield2=";
 		$myfield4="$myfield2<"; 
         $myfield5="$myfield2>";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]</strong>"
-		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
+		
+		//XXX no field to check this question type needed???
+		
+		."<strong>"
+		.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+		."</strong><br />\n"
+		
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 		."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 		
@@ -735,15 +751,15 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			//pre-check
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			
 			//there are always exactly 5 values which have to be listed
@@ -788,14 +804,14 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"; //heading
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"; //heading
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			
 			//here wo loop through 10 entries to create a larger output form
@@ -838,15 +854,15 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
 			{$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='Y'";
 			
@@ -898,14 +914,14 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='I'";
 			
@@ -965,12 +981,12 @@ foreach ($filters as $flt)
 			    if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			    $statisticsoutput .= " -->\n";
 			    if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
-			    $statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0]) ({$frow['code']})</b>"
+			    $statisticsoutput .= "\t\t\t\t<td align='center'>"
 			    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			    if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-			    $statisticsoutput .= " />&nbsp;"
-			    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]"))
-			    ."<br />\n";
+			    $statisticsoutput .= " />&nbsp;<strong>"
+			    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
+			    ."</strong><br />\n";
 			    //$statisticsoutput .= $fquery;
 			    $statisticsoutput .= "\t\t\t\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
 				for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
@@ -1013,14 +1029,14 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n";
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n";
 			
 			/*
 			 * when hoovering the speaker symbol we show the whole question
@@ -1101,15 +1117,15 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			
 			$statisticsoutput .= " -->\n"
-			."\t\t\t\t<td align='center'><b>$flt[3] ($i)</b>"
+			."\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			//pre-check
 			if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
 			
 			//output lists of ranking items
@@ -1154,17 +1170,14 @@ foreach ($filters as $flt)
 		case "W":
 		case "Z":
 			
-		$statisticsoutput .= "\t\t\t\t<td align='center'>"
-		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
+		$statisticsoutput .= "\t\t\t\t<td align='center'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 		
 		//pre-check
 		if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
-		.showSpeaker($niceqtext)."</strong>"
-		."<br />\n";
+		$statisticsoutput .= " />&nbsp;<strong>".showSpeaker($niceqtext)."</strong><br />\n";
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
 		
@@ -1221,8 +1234,8 @@ foreach ($filters as $flt)
 
                 
                 $statisticsoutput .= " />&nbsp;"
-                    .shortenCode($niceqtext." ".str_replace("'", "`", $row[1]), 10)//showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-                    ."<br />\n";
+                .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+                ."<br />\n";
                 
                 /*
                  * get labels. remember that there are two labels used -> add $i 
@@ -1387,18 +1400,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		
 		//full question title
 		$niceqtext = FlattenText($flt[5]);
-		
-		/*//we don't want more than 4 questions in a row
-		if (isset($crcounter) && $crcounter == 4) 
-		{
-			//temporary save HTML tu output it later
-			$tempoutput = "\t\t\t\t</tr>\n\t\t\t\t<tr>"; 
-			$crcounter=0;
-		}
-		else
-		{			
-			$tempoutput = "";
-		}*/
+
 			
 		/*
 		 * Check question type: This question types will be used (all others are separated in the if clause)
@@ -1444,7 +1446,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			if($flt[2] != "W" && $flt[2] != "Z")
 			{
 				$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
-				."<strong>".shortencode($flt[5], 10)."&nbsp;"; //Heading (Question No)
+				."<strong>".showspeaker($flt[5])."&nbsp;"; //Heading (Question No)
 			}
 						
 			//multiple options:
@@ -1493,7 +1495,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			//numerical question type -> add some HTML to the output
 			if ($flt[2] == "N") {$cr_statisticsoutput .= "</font>";}
 			
-			//only for non-numerical question types. qoutput for types "W" and "Z" is created later
+			//only for non-numerical question types. output for types "W" and "Z" is created later
 			if ($flt[2] != "N" && $flt[2] != "W" && $flt[2] != "Z") {$cr_statisticsoutput .= "\t\t\t\t<select name='";}
 			
 			//multiple options ("M"/"P") -> add "M" to output 
@@ -1563,8 +1565,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			case "W":
 			case "Z":
 				
-			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
-			."<strong>$flt[3]&nbsp;"; //Heading (Question No)
+			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>";
 			$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 			
 			//pre-check
@@ -2510,8 +2511,6 @@ if (isset($summary) && $summary)
 				//execute query
 				$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				
-				//same query begin as above?!?
-				//XXX what's the difference between $query and $querystarter?
 				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				
 				//filtering enabled?
@@ -2742,10 +2741,7 @@ if (isset($summary) && $summary)
 			
 			//check question types
 			switch($qtype)
-			{
-
-				//XXX MM: Here I will have to do some modifications
-				
+			{				
 				//Array of 5 point choices (several items to rank!)
 				case "A": 
 				
@@ -3424,21 +3420,7 @@ if (isset($summary) && $summary)
                 
                 //output absolute number of records
                 ."\t\t<td width='20%' align='center' >" . $grawdata[$i] . "\n";
-                
-                
-                //XXX $vp isn't used anywhere else?!? clean up?
-			                //data available?
-			                if ($results > 0) 
-			                {	
-			                	//calculate percentage and limit result to 2 internal decimal places
-			                	$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";
-			                } 
-			                else 
-			                {
-			                	$vp="N/A";
-			                }
-                
-                //MM: edited output format...
+
                 
                 //no data
                 if ($gdata[$i] == "N/A") 
@@ -4084,42 +4066,44 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 
 
 //show whole question title using tooltip for speaker symbol
-function showSpeaker($hinttext)
+/*function showSpeaker($hinttext)
 {
   global $imagefiles, $clang;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
   return $reshtml; 
-}
+}*/
 
-
-//function needs to have the original string and the max chars which should be shown
-function shortenCode($string, $max)
+function showSpeaker($hinttext)
 {
-	if(strlen($string) > ($max))
+	global $clang, $imagefiles, $max;
+	
+	if(!isset($max))
 	{
+		$max = 12;
+	}
+	
+	if(strlen($hinttext) > ($max))
+	{
+		$shortstring = strip_tags($hinttext);
+		
 		//create short string
-		$shortstring = substr($string, 0, $max);
+		$shortstring = substr($hinttext, 0, $max);
 		
 		//output with hoover effect
-		$output = "<span title='$string' alt='$string'>".$shortstring."...</span></a>";
+		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
+           ." \"$shortstring...\" </span>"
+           ."<img style='cursor: hand' src='$imagefiles/downarrow.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
 	}
 	else
 	{
-		$output = $string;	
+		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
 	}
 	
-	return $output;
+  return $reshtml; 
+  
 }
-
-//simple function to square a value
-function square($number)
-{
-	$squarenumber = $number * $number;
-	
-	return $squarenumber;
-}
-
-
 
 ?>
