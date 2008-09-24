@@ -758,7 +758,7 @@ if ($questionscount > 0)
 					}
 
 					// Now, save the questions type D only, then
-					// it don´t need pass by all the array elements...
+					// it donï¿½t need pass by all the array elements...
 					$dquestions[]=$rows;
 
 					// offer previous date questions to compare
@@ -766,7 +766,7 @@ if ($questionscount > 0)
 					{
 						if ($rows['qid'] != $dq['qid'] &&
 								$dq['type'] == "D")
-						{   // Can´t compare with the same question, and only if are D
+						{   // Canï¿½t compare with the same question, and only if are D
 							// The question tittle is enclossed by @ to be identified latter
 							// and be processed accordingly
 //							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
@@ -800,7 +800,7 @@ if ($questionscount > 0)
 	} //foreach theserows
 } //if questionscount > 0
 
-// Now I´ll add a hack to add the questions before as option
+// Now Iï¿½ll add a hack to add the questions before as option
 // if they are date type
 
 //JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
@@ -1166,7 +1166,7 @@ $conditionsoutput .= "\t\t</td>\n"
 $conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
 // Some one request to hidde this if it is not necesary
 // It will be showed when answers array is empty
-// on HTML´s JS code. I fixed that enclosing it in a div called
+// on HTMLï¿½s JS code. I fixed that enclosing it in a div called
 // CONST_RGX and it will be showed or not.
 //$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
 $conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
@@ -1200,13 +1200,53 @@ $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></t
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."</table><br />&nbsp;\n";
 
-function showSpeaker($hinttext)
+/*
+ * This is the old/original function to use the ugly speaker symbol
+function showSpeakerORIG($hinttext)
 {
   global $imagefiles, $clang;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"".strip_tags($hinttext)."\" title=\"".strip_tags($hinttext)."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />";
   return $reshtml; 
+}*/
+
+/*
+ * re-written function by Mazi
+ */
+
+function showSpeaker($hinttext)
+{
+	global $clang, $imagefiles, $max;
+	
+	if(!isset($max))
+	{
+		$max = 12;
+	}
+	
+	if(strlen($hinttext) > ($max))
+	{
+		$shortstring = strip_tags($hinttext);
+		
+		//create short string
+		$shortstring = substr($hinttext, 0, $max);
+		
+		//output with hoover effect
+		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
+           ." \"$shortstring...\" </span>"
+           ."<img style='cursor: hand' src='$imagefiles/downarrow.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+	}
+	else
+	{
+		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+	}
+	
+  return $reshtml; 
+  
 }
+
+
 
 
 ?>
