@@ -838,6 +838,7 @@ function getListOfFiles($wh){
 		closedir($handle);
 	}
 	$arr=explode("\n",$files);
+	sort($arr);
 	return $arr;
 }
 

@@ -2667,7 +2667,7 @@ function questionAttributes()
     "types"=>"!LMOPQKRWZFHABCE1:",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
-    "types"=>"NSTU",
+    "types"=>"NSTUK",
     "help"=>"Width of text input box");
     $qattributes[]=array("name"=>"numbers_only",
     "types"=>"Q",

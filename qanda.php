@@ -2196,13 +2196,13 @@ function do_multiplenumeric($ia)
 			}
 		if ($maxvalue || $equalvalue || $minvalue)
 		    {
-	    	$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><table class='question' style='border: 1px solid #111111'>\n";
+	    	$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><div id='multiplenumerichelp'><table class='question' style='border: 1px solid #111111'>\n";
 			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     		if ($equalvalue)
     		    {
     			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
     			}
-			$answer .= "</table></td></tr>\n";
+			$answer .= "</table></div></td></tr>\n";
 			}
 	}
 	$answer .= "\t\t\t\t\t\t</table>\n";
