@@ -192,8 +192,6 @@ echo str_pad('Loading... ',4096)."<br />\n";
         
 		modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    return true;
-}
 
 	if ($oldversion < 127) {
         modify_database("","create index `assessments_idx2` on `prefix_assessments` (`sid`)"); echo $modifyoutput; 
@@ -215,8 +213,11 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	if ($oldversion < 128) {
 		//128
 		upgrade_token_tables128();
-	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
+    return true;
+}
+
 
 function upgrade_survey_tables117()
 {

@@ -212,7 +212,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 }
 
-	if ($oldversion < 127) {
+	if ($oldversion < 128) {
 		upgrade_token_tables128();
 	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
