@@ -22,8 +22,6 @@ function db_upgrade($oldversion) {
     if ($oldversion < 125) {
 	}
 
-	if ($oldversion < 127) {
-	}
 
     return true;
 }
