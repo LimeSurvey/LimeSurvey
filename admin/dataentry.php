@@ -1347,6 +1347,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     	} else {
                     		$stepvalue=1;
                     	}
+			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+				$minvalue=0;
+				$maxvalue=1;
+				$stepvalue=1;
+	}
 					    $dataentryoutput .= "<table>\n";
 					    $thisqid=$fnames[$i][7];
 					    while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
@@ -2477,6 +2482,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     	} else {
                     		$stepvalue=1;
                     	}
+			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+				$minvalue=0;
+				$maxvalue=1;
+				$stepvalue=1;
+	}
 					    
 						$dataentryoutput .= "<table>\n";
 					    $dataentryoutput .= "  <tr><td></td>\n";

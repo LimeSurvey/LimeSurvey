@@ -750,14 +750,27 @@ while ($degrow = $degresult->FetchRow())
         	} else {
         		$stepvalue=1;
         	}
+        	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+        		$checkboxlayout=true;
+        	} else {
+        		$checkboxlayout=false;
+        	}
 			$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 			$mearesult = db_execute_assoc($meaquery);
-			if ($stepvalue > 1) 
+			if ($checkboxlayout === false)
 			{
-			    $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:")."</u><br />\n";
-			} else {
-			    $printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a number between $minvalue and $maxvalue for each item:")."</u><br />\n";
+				if ($stepvalue > 1) 
+				{
+					$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:")."</u><br />\n";
+				} else {
+					$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please write a number between $minvalue and $maxvalue for each item:")."</u><br />\n";
+				}
 			}
+			else
+			{ 
+					$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Check any that apply").":</u><br />\n";
+			}
+
 			$printablesurveyoutput .="\t\t\t<table align='left' cellspacing='0'><tr><td></td>\n";
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$deqrow['lid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 			$fresult = db_execute_assoc($fquery);
@@ -783,7 +796,14 @@ while ($degrow = $degresult->FetchRow())
 					$printablesurveyoutput .="\t\t\t\t\t<td align='center'";
 					if ($i > 1) {$printablesurveyoutput .=" $headstyle";}
 					$printablesurveyoutput .=">\n";
-					$printablesurveyoutput .="\t\t\t\t\t\t<input type='text' style='height: 14pt; width: 14pt' readonly='readonly' />\n";
+					if ($checkboxlayout === false)
+					{
+						$printablesurveyoutput .="\t\t\t\t\t\t<input type='text' style='height: 14pt; width: 14pt' readonly='readonly' />\n";
+					}
+					else
+					{
+						$printablesurveyoutput .="\t\t\t\t\t\t<input type='checkbox' readonly='readonly' />\n";
+					}
 					$printablesurveyoutput .="\t\t\t\t\t</td>\n";
 				}
                 $answertext=$mearow['answer'];

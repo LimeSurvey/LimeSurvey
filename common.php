@@ -2702,6 +2702,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"multiflexible_step",
 	"types"=>":",
 	"help"=>"Step value for array (multi-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_checkbox",
+	"types"=>":",
+	"help"=>"Use Checkbox layout for array (multi-flexible) question type");
 	$qattributes[]=array("name"=>"use_dropdown",
 	"types"=>"1",
 	"help"=>"Use Dual Dropdown instead of Dual Scale");

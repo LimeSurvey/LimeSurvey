@@ -460,6 +460,11 @@ if ($questionscount > 0)
         	} else {
         		$stepvalue=1;
         	}
+		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+			$minvalue=0;
+			$maxvalue=1;
+			$stepvalue=1;
+		}
 			//Get the LIDs
 		    $fquery = "SELECT * "
 						."FROM {$dbprefix}labels "

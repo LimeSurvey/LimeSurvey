@@ -670,6 +670,11 @@ foreach ($fields as $field)
         	} else {
         		$stepvalue=1;
         	}
+		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+			$minvalue=0;
+			$maxvalue=1;
+			$stepvalue=1;
+		}
             for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
             {
 			    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";  //Beginning of the line

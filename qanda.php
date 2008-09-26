@@ -3329,11 +3329,21 @@ function do_array_multiflexi($ia)
 	} else {
 		$minvalue=1;
 	}
+
+
 	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
 		$stepvalue=$stepvalue['value'];
 	} else {
 		$stepvalue=1;
 	}
+
+	$checkboxlayout=false;
+	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+		$minvalue=0;
+		$maxvalue=1;
+		$checkboxlayout=true;
+	} 
+
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
@@ -3442,24 +3452,51 @@ function do_array_multiflexi($ia)
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
-			    $myfname2=$myfname."_$ld";
-				$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer{$myfname2}'>";
-				$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
-				$answer .= "<select class='multiflexiselect' name='$myfname2' id='answer{$myfname2}' title='"
-				. html_escape($labelans[$thiskey])."'";
-				$answer .= " onChange='checkconditions(this.value, this.name, this.type)'>\n";
-				$answer .= "<option value=''>...</option>\n";
-				for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
-				  $answer .= "<option value='$ii'";
-				  if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
-				    $answer .= " selected";
-				  }
-				  $answer .= ">$ii</option>\n";
-                }
-			    $inputnames[]=$myfname2;
-				$answer .= "</select></label></td>\n";
 
-				$thiskey++;
+				if ($checkboxlayout == false)
+				{
+					$myfname2=$myfname."_$ld";
+					$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer{$myfname2}'>";
+					$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
+					$answer .= "<select class='multiflexiselect' name='$myfname2' id='answer{$myfname2}' title='"
+						. html_escape($labelans[$thiskey])."'";
+					$answer .= " onChange='checkconditions(this.value, this.name, this.type)'>\n";
+					$answer .= "<option value=''>...</option>\n";
+					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
+						$answer .= "<option value='$ii'";
+						if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
+							$answer .= " selected";
+						}
+						$answer .= ">$ii</option>\n";
+					}
+					$inputnames[]=$myfname2;
+					$answer .= "</select></label></td>\n";
+
+					$thiskey++;
+				}
+				else
+				{
+					$myfname2=$myfname."_$ld";
+					$answer .= "\t\t\t\t\t<td align='center' width='$cellwidth%'><label for='answer{$myfname2}'>";
+					$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
+					$answer .= "<input type='hidden' name='$myfname2' id='answer{$myfname2}' value='";
+					if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == "1")
+					{
+						$answer .= "1";
+						$setmyvalue="checked = 'checked'";
+					}
+					else
+					{
+						$answer .= "0";
+						$setmyvalue="";
+					}
+					$answer .= "' />";
+					$answer .= "";
+					$answer .= "<input type='checkbox' name='cbox_$myfname2' id='cbox_$myfname2' $setmyvalue onclick='if(this.checked) {document.getElementById(\"answer{$myfname2}\").value=\"1\";} else {document.getElementById(\"answer{$myfname2}\").value=\"0\";}; return true;' />";
+					$inputnames[]=$myfname2;
+					$answer .= "</label></td>\n";
+					$thiskey++;
+				}
 			}
             if (strpos($answertextsave,'|')) 
             {

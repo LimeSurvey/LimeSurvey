@@ -970,6 +970,11 @@ foreach ($filters as $flt)
     	} else {
     		$stepvalue=1;
     	}
+	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+		$minvalue=0;
+		$maxvalue=1;
+		$stepvalue=1;
+	}
 		while ($row=$result->FetchRow())
 		{
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
@@ -2842,6 +2847,11 @@ if (isset($summary) && $summary)
             	} else {
             		$stepvalue=1;
             	}
+		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+			$minvalue=0;
+			$maxvalue=1;
+			$stepvalue=1;
+		}
 				list($qacode, $licode)=explode("_", $qanswer);
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
 				//echo $qquery."<br />";
