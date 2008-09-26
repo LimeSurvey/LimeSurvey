@@ -779,6 +779,8 @@ else
 	.sprintf($clang->gT("%d full responses"), $num_completed_answers).", "
 	.sprintf($clang->gT("%d responses not completely filled out"), $num_total_answers-$num_completed_answers).")"
 	."\t</td></tr>\n"
+	."\t<tr><td align='center'><a href='#' onclick=\"if( confirm('".$clang->gT("Are you really sure you want to set all answers to not completed?","js")."')){".get2post("$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=unfinalizeanswers")."}\">".$clang->gT("Set all answers to not completed")."</a>"
+	."\t</td></tr>\n"
 	."</table>\n";
 
 }
