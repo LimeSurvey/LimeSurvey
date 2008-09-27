@@ -792,7 +792,6 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"Y"=>$clang->gT("Yes/No"),
 		"Z"=>$clang->gT("List (Flexible Labels) (Radio)"),
 		"!"=>$clang->gT("List (Dropdown)")
-		//            "^"=>$clang->gT("Slider"),
 		);
         asort($qtypes);
 		if ($ReturnType == "array") {return $qtypes;}
