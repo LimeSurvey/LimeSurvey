@@ -876,7 +876,7 @@ if ($surveyid)
 		// is at least 1 even if no additionnal language is present
 		$additionnalLanguagesCount = count($additionnalLanguagesArray);
 		if ($additionnalLanguagesCount == 0) $additionnalLanguagesCount = 1;
-		$surveysummary .= "<tr><td align='right' valign='top' rowspan='".$additionnalLanguagesCount."'><strong>"
+		$surveysummary .= "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Additional Languages").":</strong></td>\n";
 
 		$first=true;
@@ -884,7 +884,7 @@ if ($surveyid)
 		{
 			if ($langname)
 			{
-				if (!$first) {$surveysummary .= "<tr>";}
+				if (!$first) {$surveysummary .= "<tr><td>&nbsp;</td>";}
 				$first=false;
 				$surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname)."</td></tr>\n";
 			}
