@@ -195,7 +195,7 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
 {
-	include(dirname(__FILE__)."/admin/sessioncontrol.php");
+	include($homedir."/sessioncontrol.php");
 	/**
     * @param string $htmlheader
     * This is the html header text for all administration pages
@@ -3270,7 +3270,7 @@ function modify_database($sqlfile='', $sqlstring='') {
     global $modifyoutput;
     global $databasetabletype;
 
-	require_once($rootdir."/admin/classes/core/sha256.php");
+	require_once($homedir."/classes/core/sha256.php");
 
 	$success = true;  // Let's be optimistic
     $modifyoutput='';
