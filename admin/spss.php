@@ -49,7 +49,7 @@ $typeMap = array(
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
-'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'DATETIME23.2'),
+'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'DATETIME'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
 'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
@@ -91,7 +91,7 @@ function renderDataList($fieldArr){
         echo "\n";
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
         if($field['LStype'] == 'N' || $field['LStype']=='K') {
-            $field['size'].='.2';
+            $field['size'].='.'.($field['size']-1);
         }
 		echo " {$field['id']} {$field['SPSStype']}{$field['size']}";
 		$i++;
@@ -414,8 +414,8 @@ if  ($subaction=='dldata')
                     if($len > $fields[$fieldno]['size']){
                         $fields[$fieldno]['size'] = $len;
                     }
-                    $strTemp=str_replace("'",' ',$strTmp);
-                    echo "'$strTmp'";
+                    $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
+                    echo "'$strTemp'";
                 }
                 else
                 {  
