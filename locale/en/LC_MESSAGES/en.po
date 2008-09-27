@@ -5,17 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: LimeSurvey 1.71+\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2007-09-17 12:46-0500\n"
-"Last-Translator: Gustavo San Roman <gsanr@yahoo.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2008-09-27 13:38+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Basepath: .\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
 "X-Poedit-SearchPath-0: C:\\LimeSurvey_Sources\\source\\limesurvey\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
@@ -34,9 +36,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
+msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
@@ -44,20 +44,19 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1510
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:107
 msgid "Did Not Save"
-msgstr ""
+msgstr "Did not save"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:109
 msgid "Clear Responses"
-msgstr ""
+msgstr "Clear responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:320
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:110
@@ -84,7 +83,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:135
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:167
 msgid "Close this Window"
-msgstr ""
+msgstr "Close this window"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:330
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:120
@@ -132,11 +131,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:116
 msgid "Chinese (Traditional - Hong Kong)"
-msgstr ""
+msgstr "Chinese (Traditional; Hong Kong)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:121
 msgid "Chinese (Traditional - Taiwan)"
-msgstr ""
+msgstr "Chinese (Traditional; Taiwan)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:126
 msgid "Croatian"
@@ -295,9 +294,7 @@ msgid "Vietnamese"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
@@ -312,49 +309,49 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:252
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:577
 msgid "Default Administration Page"
-msgstr ""
+msgstr "Default administration page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:261
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:263
 msgid "Create/Edit Users"
-msgstr ""
+msgstr "Create/edit users"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:267
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:268
 msgid "Create/Edit Groups"
-msgstr ""
+msgstr "Create/edit groups"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:275
 msgid "Show System Summary"
-msgstr ""
+msgstr "Show system summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:284
 msgid "Check Data Integrity"
-msgstr ""
+msgstr "Check data integrity"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:296
 msgid "List Surveys"
-msgstr ""
+msgstr "List surveys"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:306
 msgid "Backup Entire Database"
-msgstr ""
+msgstr "Backup entire database"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:318
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:319
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1359
 msgid "Edit/Add Label Sets"
-msgstr ""
+msgstr "Edit/add label sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:331
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:332
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:572
 msgid "Template Editor"
-msgstr ""
+msgstr "Template editor"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:335
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:317
@@ -366,7 +363,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:345
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:346
 msgid "Create or Import New Survey"
-msgstr ""
+msgstr "Create or import new survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:356
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:358
@@ -383,7 +380,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:113
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:465
 msgid "Show Help"
-msgstr ""
+msgstr "Show help"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:579
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:83
@@ -414,7 +411,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:485
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:506
 msgid "Please Choose..."
-msgstr ""
+msgstr "Please choose..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:588
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:862
@@ -428,19 +425,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:768
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr ""
+msgstr "Array (Flexible Labels) dual scale"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:769
 msgid "5 Point Choice"
-msgstr ""
+msgstr "5 point choice"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:770
 msgid "Array (5 Point Choice)"
-msgstr ""
+msgstr "Array (5 point choice)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:771
 msgid "Array (10 Point Choice)"
-msgstr ""
+msgstr "Array (10 point choice)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:772
 msgid "Array (Yes/No/Uncertain)"
@@ -456,7 +453,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:775
 msgid "Array (Flexible Labels)"
-msgstr ""
+msgstr "Array (flexible labels)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:776
 msgid "Gender"
@@ -464,39 +461,39 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:777
 msgid "Array (Flexible Labels) by Column"
-msgstr ""
+msgstr "Array (flexible labels) by column"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:778
 msgid "Language Switch"
-msgstr ""
+msgstr "Language switch"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:779
 msgid "Multiple Numerical Input"
-msgstr ""
+msgstr "Multiple numerical input"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:780
 msgid "List (Radio)"
-msgstr ""
+msgstr "List (radio)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:781
 msgid "Multiple Options"
-msgstr ""
+msgstr "Multiple options"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:782
 msgid "Numerical Input"
-msgstr ""
+msgstr "Numerical input"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:783
 msgid "List With Comment"
-msgstr ""
+msgstr "List with comment"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:784
 msgid "Multiple Options With Comments"
-msgstr ""
+msgstr "Multiple options with comments"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:785
 msgid "Multiple Short Text"
-msgstr ""
+msgstr "Multiple short text"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:786
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1880
@@ -506,23 +503,23 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:787
 msgid "Short Free Text"
-msgstr ""
+msgstr "Short free text"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:788
 msgid "Long Free Text"
-msgstr ""
+msgstr "Long free text"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:789
 msgid "Huge Free Text"
-msgstr ""
+msgstr "Huge free text"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:790
 msgid "List (Flexible Labels) (Dropdown)"
-msgstr ""
+msgstr "List (flexible labels) (dropdown)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:791
 msgid "Boilerplate Question"
-msgstr ""
+msgstr "Boilerplate question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:792
 msgid "Yes/No"
@@ -530,11 +527,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:793
 msgid "List (Flexible Labels) (Radio)"
-msgstr ""
+msgstr "List (flexible labels) (radio)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:794
 msgid "List (Dropdown)"
-msgstr ""
+msgstr "List (dropdown)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:820
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:803
@@ -555,7 +552,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:49
 msgid "LimeSurvey Setup"
-msgstr ""
+msgstr "LimeSurvey setup"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1167
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:4370
@@ -648,7 +645,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1171
 msgid "Check Database Fields"
-msgstr ""
+msgstr "Check database fields"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1377
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:121
@@ -660,7 +657,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:62
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:67
 msgid "Return to Survey Administration"
-msgstr ""
+msgstr "Return to survey administration"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1383
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:126
@@ -671,7 +668,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1396
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:128
 msgid "Display Responses"
-msgstr ""
+msgstr "Display responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1405
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:4681
@@ -696,7 +693,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1420
 msgid "Display Last 50 Responses"
-msgstr ""
+msgstr "Display last 50 responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1424
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:517
@@ -704,7 +701,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:529
 msgid "Dataentry Screen for Survey"
-msgstr ""
+msgstr "Dataentry screen for survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1428
 msgid "Get statistics from these responses"
@@ -712,7 +709,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1435
 msgid "Export Results to Application"
-msgstr ""
+msgstr "Export results to application"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1440
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1442
@@ -727,7 +724,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:694
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:695
 msgid "View Saved but not submitted Responses"
-msgstr ""
+msgstr "View saved but not submitted responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1455
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:83
@@ -764,7 +761,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:167
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:504
 msgid "Date Stamp"
-msgstr ""
+msgstr "Date stamp"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1538
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:171
@@ -774,7 +771,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:393
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:934
 msgid "IP Address"
-msgstr ""
+msgstr "IP address"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1539
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:175
@@ -1195,10 +1192,7 @@ msgid "Comment"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
@@ -1223,22 +1217,14 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
 msgid "A Note On Privacy"
-msgstr ""
+msgstr "A note on privacy"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
 msgid "This survey is anonymous."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
@@ -1247,21 +1233,21 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2241
 msgid "Exit and Clear Survey"
-msgstr ""
+msgstr "Exit and clear survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2265
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:481
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:485
 msgid "Load Unfinished Survey"
-msgstr ""
+msgstr "Load unfinished survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2273
 msgid "Resume Later"
-msgstr ""
+msgstr "Resume later"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "Thank You!"
-msgstr ""
+msgstr "Thank you!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "You have completed answering the questions in this survey."
@@ -1272,44 +1258,37 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
-msgstr ""
+msgstr "Answers cleared"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2364
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2370
 msgid "Restart this Survey"
-msgstr ""
+msgstr "Restart this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2375
 msgid "Save Your Unfinished Survey"
-msgstr ""
+msgstr "Save your unfinished survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
 msgid "Enter a name and password for this survey and click save below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
+msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
-msgstr ""
+msgstr "Return to survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2389
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:307
@@ -1333,11 +1312,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2395
 msgid "Repeat Password"
-msgstr ""
+msgstr "Repeat password"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2398
 msgid "Your Email"
-msgstr ""
+msgstr "Your email"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2403
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2423
@@ -1346,18 +1325,18 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1648
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1786
 msgid "Security Question"
-msgstr ""
+msgstr "Security question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2406
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:339
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1852
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1905
 msgid "Save Now"
-msgstr ""
+msgstr "Save now"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2411
 msgid "Load A Previously Saved Survey"
-msgstr ""
+msgstr "Load a previously saved survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2412
 msgid "You can load a survey that you have previously saved from this screen."
@@ -1373,7 +1352,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2428
 msgid "Load Now"
-msgstr ""
+msgstr "Load now"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2433
 msgid "You must be registered to complete this survey"
@@ -1384,9 +1363,7 @@ msgid "You may register for this survey if you wish to take part."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
@@ -1399,7 +1376,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:531
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:943
 msgid "First Name"
-msgstr ""
+msgstr "First name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2448
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:813
@@ -1411,14 +1388,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:526
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:946
 msgid "Last Name"
-msgstr ""
+msgstr "Last name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2455
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:535
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:536
 msgid "Email Address"
-msgstr ""
+msgstr "Email address"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2499
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1604
@@ -1491,15 +1468,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2506
 msgid "Your Assessment"
-msgstr ""
+msgstr "Your assessment"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2854
 msgid "Online Manual"
-msgstr ""
+msgstr "Online manual"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2857
 msgid "Support this project - Donate to "
-msgstr ""
+msgstr "Support this project: Donate to "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2860
 msgid "Visit our website!"
@@ -1511,7 +1488,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:3099
 msgid "Local Submission"
-msgstr ""
+msgstr "Local submission"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:3308
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:3313
@@ -1538,7 +1515,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:146
 msgid "You must supply a password for this saved session."
-msgstr ""
+msgstr "Please supply a password for this saved session."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:147
@@ -1554,49 +1531,34 @@ msgid "The answer to the security question is incorrect"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "This name has already been used for this survey. Please use a unique save name."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
 msgid "Saved Survey Details"
-msgstr ""
+msgstr "Saved survey details"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Thank you for saving your survey in progress. The following details can be used to return to this survey and continue where you left off. Please keep this e-mail for your reference – we cannot retrieve the password for you."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
 msgid "Cannot submit results - there are none to submit."
+msgstr "Cannot submit results – there are none to submit."
+
+#: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-
-#: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
@@ -1627,9 +1589,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
@@ -1664,16 +1624,13 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr ""
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "This is a closed-access survey, thus a valid token is required. Please contact the administrator for assistance."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1686,7 +1643,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:630
 msgid "Survey Saved"
-msgstr ""
+msgstr "Survey saved"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:663
 msgid "There is no matching saved survey"
@@ -1705,11 +1662,9 @@ msgstr ""
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1718,11 +1673,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1419
 msgid "Answer Submission for Survey"
-msgstr ""
+msgstr "Answer submission for survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1421
 msgid "Survey Submitted"
-msgstr ""
+msgstr "Survey submitted"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1422
 msgid "A new response was entered for your survey"
@@ -1749,9 +1704,7 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
@@ -1779,9 +1732,7 @@ msgid "Try to submit again"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
+msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
@@ -1792,27 +1743,19 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
+msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
@@ -1845,14 +1788,12 @@ msgid "Thank you for registering to participate in this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
-msgstr ""
+msgstr "Survey administrator"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:292
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:300
@@ -1910,22 +1851,18 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
 #, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr ""
+msgstr "If you choose '%s', then please provide a description."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
@@ -2029,9 +1966,8 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
-msgstr ""
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Error: The label set used for this question is not available in this language."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
 msgid "Please choose one of the following"
@@ -2059,19 +1995,17 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:936
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2061
 msgid "Your Choices"
-msgstr ""
+msgstr "Your choices"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1537
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1543
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:941
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2066
 msgid "Your Ranking"
-msgstr ""
+msgstr "Your ranking"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
@@ -2122,8 +2056,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
+msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
@@ -2138,10 +2071,8 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Error: The label set used for this question is not available in this language and/or does not exist."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
 msgid "Error: There are no answers defined for this question."
@@ -2150,12 +2081,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:133
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:83
 msgid "PDF Export"
-msgstr ""
+msgstr "PDF export"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:290
 msgid "Survey Name (ID)"
-msgstr ""
+msgstr "Survey name (ID)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:500
@@ -2169,7 +2100,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:163
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:387
 msgid "Date Submitted"
-msgstr ""
+msgstr "Date submitted"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:264
@@ -2186,17 +2117,17 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:292
 msgid "Your Answer"
-msgstr ""
+msgstr "Your answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:53
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:457
 msgid "Browse Saved Responses"
-msgstr ""
+msgstr "Browse saved responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:64
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:68
 msgid "Saved Responses:"
-msgstr ""
+msgstr "Saved responses:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:84
 msgid "Identifier"
@@ -2204,7 +2135,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:86
 msgid "Date Saved"
-msgstr ""
+msgstr "Date saved"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:88
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:322
@@ -2250,17 +2181,16 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
 msgid "Data Consistency Check"
-msgstr ""
+msgstr "Data consistency check"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
+msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
-msgstr ""
+msgstr "No matching Cqid"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:60
 msgid "No matching CFIELDNAME Group!"
@@ -2317,11 +2247,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:135
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr ""
+msgstr "All survey (total) assessments meet consistency standards"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:145
 msgid "All Group assessments meet consistency standards"
-msgstr ""
+msgstr "All group assessments meet consistency standards"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:158
 msgid "No matching question"
@@ -2373,20 +2303,20 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:292
 msgid "Yes - Delete Them!"
-msgstr ""
+msgstr "Yes, delete them!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:320
 msgid "Deleting Surveys"
-msgstr ""
+msgstr "Deleting surveys"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:322
 msgid "Deleting Survey ID"
-msgstr ""
+msgstr "Deleting survey ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:329
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:337
 msgid "Deleting Assessments"
-msgstr ""
+msgstr "Deleting assessments"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:331
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:339
@@ -2399,7 +2329,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:353
 msgid "Deleting Conditions"
-msgstr ""
+msgstr "Deleting conditions"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:355
 msgid "Deleting cid"
@@ -2407,7 +2337,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:362
 msgid "Deleting Answers"
-msgstr ""
+msgstr "Deleting answers"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:365
 msgid "Deleting answer with qid"
@@ -2415,7 +2345,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:372
 msgid "Deleting Questions"
-msgstr ""
+msgstr "Deleting questions"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:374
 msgid "Deleting qid"
@@ -2423,7 +2353,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:381
 msgid "Deleting Groups"
-msgstr ""
+msgstr "Deleting groups"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:383
 msgid "Deleting group id"
@@ -2435,19 +2365,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:390
 msgid "Check Again"
-msgstr ""
+msgstr "Check again"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:66
 msgid "Label Sets Administration"
-msgstr ""
+msgstr "Label sets administration"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:77
 msgid "Labelsets"
-msgstr ""
+msgstr "Label sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:97
 msgid "Add New Label Set"
-msgstr ""
+msgstr "Add new label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:98
 msgid "Add new label set"
@@ -2459,19 +2389,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
 msgid "Create or Import New Label Set"
-msgstr ""
+msgstr "Create or import new label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
 msgid "Create New Label Set"
-msgstr ""
+msgstr "Create new label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:136
 msgid "Edit Label Set"
-msgstr ""
+msgstr "Edit label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:147
 msgid "Set Name"
-msgstr ""
+msgstr "Set name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:156
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1224
@@ -2496,10 +2426,8 @@ msgid "Remove"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "You cannot remove this item since you need at least one language in a label set."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2512,24 +2440,24 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:231
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:23
 msgid "Import Label Set"
-msgstr ""
+msgstr "Import label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:214
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:71
 msgid "Select CSV File:"
-msgstr ""
+msgstr "Select CSV file:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:218
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:73
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:182
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "Convert resources links?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:253
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:666
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1342
 msgid "Label Set"
-msgstr ""
+msgstr "Label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:259
 msgid "Edit label set"
@@ -2548,12 +2476,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:267
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumplabel.php:30
 msgid "Export Label Set"
-msgstr ""
+msgstr "Export label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:270
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1034
 msgid "Close Window"
-msgstr ""
+msgstr "Close window"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:292
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:668
@@ -2622,7 +2550,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1607
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:968
 msgid "Save All"
-msgstr ""
+msgstr "Save all"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:384
 msgid "New label"
@@ -2635,7 +2563,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:394
 msgid "Fix Order"
-msgstr ""
+msgstr "Fix order"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
@@ -2663,12 +2591,10 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 msgid "Inserting New labels must be done on the first language folder."
-msgstr ""
+msgstr "Inserting new labels must be done on the first language folder."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
@@ -2689,43 +2615,40 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:461
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2598
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "Uploaded resources management"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2605
 msgid "Browse Uploaded Resources"
-msgstr ""
+msgstr "Browse uploaded resources"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2606
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "Export resources as ZIP archive"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:470
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2607
 msgid "Select ZIP File:"
-msgstr ""
+msgstr "Select ZIP file:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:472
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2609
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "Import resources ZIP archive"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:489
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:830
 msgid "Fix Sort"
-msgstr ""
+msgstr "Fix sort"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
+msgstr "Failed to copy already defined labels to added languages"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:588
 msgid "Failed to delete labels for removed languages"
@@ -2733,17 +2656,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:596
 msgid "Update of Label Set failed"
-msgstr ""
+msgstr "Update of label set failed"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Couldn't delete label set because there are questions that rely on it. Please delete these questions first."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
-msgstr ""
+msgstr "Insert of label set failed"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:669
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:601
@@ -2758,10 +2679,8 @@ msgid "Failed to insert label"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "This label code is already used in this label set. Please choose another code or rename the existing one."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2779,7 +2698,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:65
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:75
 msgid "Import Group"
-msgstr ""
+msgstr "Import group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:30
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:130
@@ -2790,9 +2709,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
@@ -2845,11 +2762,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:88
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:50
 msgid "Main Admin Screen"
-msgstr ""
+msgstr "Main admin screen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:39
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr ""
+msgstr "No SID (survey) has been provided. Cannot import group."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:54
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:651
@@ -2894,22 +2811,16 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
+msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
+msgid "You can't import a question which doesn't support the current survey's base language."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
+msgid "You can't import label sets which don't support the current survey's base language"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
@@ -2917,14 +2828,12 @@ msgid "Import partially successful."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
 msgid "Group Import Summary"
-msgstr ""
+msgstr "Group import summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:654
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:723
@@ -2961,7 +2870,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:671
 msgid "Question Attributes: "
-msgstr ""
+msgstr "Question attributes: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:674
 msgid "Import of group is completed."
@@ -3203,7 +3112,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:131
 msgid "Back to Response Import"
-msgstr ""
+msgstr "Back to response import"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:139
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:70
@@ -3217,16 +3126,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:258
 #, php-format
 msgid "Import Failed on Record %d because [%s]"
-msgstr ""
+msgstr "Import failed on record %d because [%s]"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
 msgid "Important Note:"
-msgstr ""
+msgstr "Important note:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
@@ -3246,16 +3153,16 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:118
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:341
 msgid "Browse Responses"
-msgstr ""
+msgstr "Browse responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:136
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:36
 msgid "Quick Statistics"
-msgstr ""
+msgstr "Quick statistics"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:142
 msgid "Filter Settings"
-msgstr ""
+msgstr "Filter settings"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:228
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:394
@@ -3277,7 +3184,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:446
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:567
 msgid "Number Less Than"
-msgstr ""
+msgstr "Number less than"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:256
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1536
@@ -3314,7 +3221,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:521
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:545
 msgid "Responses Containing"
-msgstr ""
+msgstr "Responses containing"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1265
 msgid "View summary of all available fields"
@@ -3337,18 +3244,16 @@ msgid "Disabled"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
 msgid "Show Graphs"
-msgstr ""
+msgstr "Show graphs"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1282
 msgid "View Stats"
-msgstr ""
+msgstr "View stats"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1017
@@ -3361,15 +3266,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1308
 msgid "Go Back"
-msgstr ""
+msgstr "Go back"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1323
 msgid "Getting Questions and Answers ..."
-msgstr ""
+msgstr "Getting questions and answers ..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1497
 msgid "Getting Result Count ..."
-msgstr ""
+msgstr "Getting result count ..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1556
 msgid "Results"
@@ -3401,7 +3306,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1695
 msgid "Generating Summaries ..."
-msgstr ""
+msgstr "Generating summaries ..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1800
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1859
@@ -3414,7 +3319,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1970
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2579
 msgid "Field Summary for"
-msgstr ""
+msgstr "Field summary for"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1974
 msgid "Calculation"
@@ -3430,7 +3335,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2037
 msgid "Standard Deviation"
-msgstr ""
+msgstr "Standard deviation"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2038
 msgid "Average"
@@ -3449,15 +3354,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2113
 msgid "1st Quartile (Q1)"
-msgstr ""
+msgstr "1st quartile (Q1)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2147
 msgid "2nd Quartile (Median)"
-msgstr ""
+msgstr "2nd quartile (median)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2190
 msgid "3rd Quartile (Q3)"
-msgstr ""
+msgstr "3rd quartile (Q3)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2206
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:89
@@ -3503,7 +3408,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:51
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:591
 msgid "Add Group"
-msgstr ""
+msgstr "Add group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:41
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:137
@@ -3515,7 +3420,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:219
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:412
 msgid "Base Language"
-msgstr ""
+msgstr "Base language"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:45
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:588
@@ -3542,11 +3447,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:131
 msgid "Edit Group"
-msgstr ""
+msgstr "Edit group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:165
 msgid "Update Group"
-msgstr ""
+msgstr "Update group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:156
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2663
@@ -3558,7 +3463,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:223
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:320
 msgid "Token Control"
-msgstr ""
+msgstr "Token control"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:193
 msgid "You have not selected a survey"
@@ -3583,18 +3488,13 @@ msgid "Tokens have not been initialised for this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
@@ -3604,11 +3504,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:362
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:536
 msgid "Initialise Tokens"
-msgstr ""
+msgstr "Initialise tokens"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:374
 msgid "Restore Options"
-msgstr ""
+msgstr "Restore options"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:378
 msgid "The following old token tables could be restored:"
@@ -3644,14 +3544,14 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:416
 msgid "Show Token Summary"
-msgstr ""
+msgstr "Show token summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1742
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1789
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1797
 msgid "Display Tokens"
-msgstr ""
+msgstr "Display tokens"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:428
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1790
@@ -3661,19 +3561,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:432
 msgid "Import Tokens from CSV File"
-msgstr ""
+msgstr "Import tokens from CSV file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:434
 msgid "Import Tokens from LDAP Query"
-msgstr ""
+msgstr "Import tokens from LDAP query"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:440
 msgid "Export Tokens to CSV file"
-msgstr ""
+msgstr "Export tokens to CSV file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:448
 msgid "Edit Email Templates"
-msgstr ""
+msgstr "Edit email templates"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:450
 msgid "Send email invitation"
@@ -3685,7 +3585,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:456
 msgid "Generate Tokens"
-msgstr ""
+msgstr "Generate tokens"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:460
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:705
@@ -3694,27 +3594,27 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:484
 msgid "Total Records in this Token Table"
-msgstr ""
+msgstr "Total records in this token table"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:491
 msgid "Total With No Unique Token"
-msgstr ""
+msgstr "Total with no unique token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:498
 msgid "Total Invitations Sent"
-msgstr ""
+msgstr "Total invitations sent"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:503
 msgid "Total Surveys Completed"
-msgstr ""
+msgstr "Total surveys completed"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:542
 msgid "Edit Email Settings"
-msgstr ""
+msgstr "Edit email settings"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:555
 msgid "Invitation Email Subject:"
-msgstr ""
+msgstr "Invitation email subject:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:557
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1055
@@ -3738,7 +3638,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:562
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1087
 msgid "Invitation Email:"
-msgstr ""
+msgstr "Invitation email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:563
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1046
@@ -3768,7 +3668,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:566
 msgid "Email Reminder Subject:"
-msgstr ""
+msgstr "Email reminder subject:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:568
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1202
@@ -3779,7 +3679,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:571
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:573
 msgid "Email Reminder:"
-msgstr ""
+msgstr "Email reminder:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:574
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1276
@@ -3790,8 +3690,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3811,7 +3710,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:577
 msgid "Confirmation Email Subject:"
-msgstr ""
+msgstr "Confirmation email subject:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:579
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1204
@@ -3821,26 +3720,26 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:582
 msgid "Confirmation Email:"
-msgstr ""
+msgstr "Confirmation email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:584
 msgid "Confirmation Email"
-msgstr ""
+msgstr "Confirmation email"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:588
 msgid "Public registration Email Subject:"
-msgstr ""
+msgstr "Public registration email subject:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:590
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1206
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1421
 msgid "Survey Registration Confirmation"
-msgstr ""
+msgstr "Survey registration confirmation"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:593
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:595
 msgid "Public registration Email:"
-msgstr ""
+msgstr "Public registration email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:596
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1207
@@ -3848,21 +3747,18 @@ msgstr ""
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 msgid "Token Email Settings have been saved."
-msgstr ""
+msgstr "Token email settings have been saved."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:649
 msgid "All token entries have been deleted."
@@ -3870,7 +3766,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:661
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr ""
+msgstr "All invite entries have been set to 'Not invited'."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:673
 msgid "All unique token numbers have been removed."
@@ -3878,7 +3774,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:685
 msgid "Token Database Administration Options"
-msgstr ""
+msgstr "Token database administration options"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Are you really sure you want to reset all invitation records to NO?"
@@ -3907,7 +3803,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:735
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:597
 msgid "Data View Control"
-msgstr ""
+msgstr "Data view control"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:740
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:602
@@ -3938,12 +3834,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:764
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:634
 msgid "Records Displayed:"
-msgstr ""
+msgstr "Records displayed:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:765
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:635
 msgid "Starting From:"
-msgstr ""
+msgstr "Starting from:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:766
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:640
@@ -3982,7 +3878,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:823
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1614
 msgid "Email Status"
-msgstr ""
+msgstr "Email status"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:833
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1639
@@ -4007,24 +3903,24 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:883
 msgid "Edit Token Entry"
-msgstr ""
+msgstr "Edit token entry"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:886
 msgid "Delete Token Entry"
-msgstr ""
+msgstr "Delete token entry"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:887
 msgid "Do Survey"
-msgstr ""
+msgstr "Do survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:904
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:274
 msgid "View Response"
-msgstr ""
+msgstr "View response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:916
 msgid "Update Response"
-msgstr ""
+msgstr "Update response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:931
 msgid "Send invitation email to this entry"
@@ -4036,39 +3932,31 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:962
 msgid "Delete Tokens Table"
+msgstr "Delete tokens table"
+
+#: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
+msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-
-#: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
+msgstr "Delete tokens"
+
+#: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-
-#: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
-msgstr ""
+msgstr "Email invitation"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1074
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1285
@@ -4090,7 +3978,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1116
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1365
 msgid "Sending to Token ID"
-msgstr ""
+msgstr "Sending to token ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
@@ -4099,11 +3987,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1105
 msgid "Send Invitations"
-msgstr ""
+msgstr "Send invitations"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1115
 msgid "Sending Invitations"
-msgstr ""
+msgstr "Sending invitations"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1205
 msgid "Invitation sent to:"
@@ -4116,9 +4004,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
@@ -4127,59 +4013,51 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
-msgstr ""
+msgstr "Email reminder"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1311
 msgid "Reminder Email:"
-msgstr ""
+msgstr "Reminder email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1322
 msgid "Start at Token ID:"
-msgstr ""
+msgstr "Start at token ID:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1330
 msgid "Stop at Token ID:"
-msgstr ""
+msgstr "Stop at token ID:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1340
 msgid "Send Reminders"
-msgstr ""
+msgstr "Send reminders"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1352
 msgid "Sending Reminders"
-msgstr ""
+msgstr "Sending reminders"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1364
 msgid "From Token ID"
-msgstr ""
+msgstr "From token ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1446
 msgid "Reminder sent to:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
-msgstr ""
+msgstr "Create tokens"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
@@ -4194,35 +4072,33 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:157
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:297
 msgid "Reloading Screen. Please wait."
-msgstr ""
+msgstr "Reloading screen. Please wait."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1588
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1712
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1764
 msgid "Add or Edit Token Entry"
-msgstr ""
+msgstr "Add or edit token entry"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1592
 msgid "Auto"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "You can leave this blank, and automatically generate tokens using 'Create tokens'"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
-msgstr ""
+msgstr "Update token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1694
 msgid "Add Token"
-msgstr ""
+msgstr "Add token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1741
 msgid "Updated Token"
-msgstr ""
+msgstr "Updated token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1747
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1795
@@ -4233,9 +4109,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
@@ -4244,12 +4118,12 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1788
 msgid "Added New Token"
-msgstr ""
+msgstr "Added new token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1811
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1855
 msgid "Upload CSV File"
-msgstr ""
+msgstr "Upload CSV file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1817
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1839
@@ -4257,12 +4131,7 @@ msgid "Note:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
@@ -4270,23 +4139,20 @@ msgid "Upload LDAP entries"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
+msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
-msgstr ""
+msgstr "Importing CSV file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1876
 msgid "Creating Token Entries"
-msgstr ""
+msgstr "Creating token entries"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1975
 msgid "Records in CSV"
@@ -4314,11 +4180,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1993
 msgid "Uploading LDAP Query"
-msgstr ""
+msgstr "Uploading LDAP query"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2157
 msgid "Results from LDAP Query"
-msgstr ""
+msgstr "Results from LDAP query"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2165
 msgid "Can't bind to the LDAP directory"
@@ -4366,7 +4232,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1494
 msgid "Data Entry"
-msgstr ""
+msgstr "Data entry"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:47
 msgid "You have not selected a survey for data-entry."
@@ -4411,7 +4277,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:159
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2398
 msgid "Confirm Password:"
-msgstr ""
+msgstr "Confirm password:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:161
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2400
@@ -4421,13 +4287,10 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:163
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2402
 msgid "Start Language:"
-msgstr ""
+msgstr "Start Language:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
@@ -4444,17 +4307,17 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:449
 msgid "Add Another Record"
-msgstr ""
+msgstr "Add another record"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:453
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:666
 msgid "View This Record"
-msgstr ""
+msgstr "View this record"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:644
 msgid "Editing Response"
-msgstr ""
+msgstr "Editing response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:673
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:520
@@ -4465,7 +4328,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1250
 msgid "Update Entry"
-msgstr ""
+msgstr "Update entry"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1284
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2384
@@ -4483,13 +4346,13 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1461
 msgid "Record Deleted"
-msgstr ""
+msgstr "Record deleted"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1547
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:570
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:571
 msgid "IP-Address"
-msgstr ""
+msgstr "IP address"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1588
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1688
@@ -4510,7 +4373,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1709
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:860
 msgid "No Answer"
-msgstr ""
+msgstr "No answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1719
 msgid "Only answer this if the following conditions are met:"
@@ -4584,21 +4447,21 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:410
 msgid "Standard Fields"
-msgstr ""
+msgstr "Standard fields"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:422
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Previous answers fields"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:451
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:457
 msgid "Some Question have been disabled"
-msgstr ""
+msgstr "Some question have been disabled"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #, php-format
 msgid "Survey Format is %s:"
-msgstr ""
+msgstr "Survey format is %s:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2235
@@ -4609,7 +4472,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Only previous pages answers are available"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #, php-format
@@ -4620,12 +4483,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2232
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2905
 msgid "Group by Group"
-msgstr ""
+msgstr "Group by group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:42
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:317
 msgid "Survey List Page"
-msgstr ""
+msgstr "Survey list page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:43
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:264
@@ -4633,42 +4496,42 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:280
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:370
 msgid "Welcome Page"
-msgstr ""
+msgstr "Welcome page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:44
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:339
 msgid "Question Page"
-msgstr ""
+msgstr "Question page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:45
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:468
 msgid "Completed Page"
-msgstr ""
+msgstr "Completed page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:46
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:447
 msgid "Clear All Page"
-msgstr ""
+msgstr "Clear all page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:380
 msgid "Register Page"
-msgstr ""
+msgstr "Register page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:48
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:426
 msgid "Load Page"
-msgstr ""
+msgstr "Load page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:49
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:405
 msgid "Save Page"
-msgstr ""
+msgstr "Save page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:50
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:479
 msgid "Print Answers Page"
-msgstr ""
+msgstr "Print answers page"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:130
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:258
@@ -4679,7 +4542,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:136
 #, php-format
 msgid "Directory with the name `%s` already exists - choose another name"
-msgstr ""
+msgstr "Directory with the name `%s` already exists; choose another name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:138
 #, php-format
@@ -4748,11 +4611,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:638
 msgid "Export Template"
-msgstr ""
+msgstr "Export template"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:642
 msgid "Copy Template"
-msgstr ""
+msgstr "Copy template"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:643
 msgid "Make a copy of this template"
@@ -4768,11 +4631,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:665
 msgid "File Control:"
-msgstr ""
+msgstr "File control:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:675
 msgid "Standard Files:"
-msgstr ""
+msgstr "Standard files:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:676
 msgid "Now editing:"
@@ -4780,11 +4643,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:679
 msgid "Other Files:"
-msgstr ""
+msgstr "Other files:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:696
 msgid "Save Changes"
-msgstr ""
+msgstr "Save changes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:698
 msgid "Changes cannot be saved to the default template."
@@ -4800,20 +4663,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:722
 msgid "Upload a File"
-msgstr ""
+msgstr "Upload a file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:745
 msgid "Preview:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
-msgstr ""
+msgstr "Target survey ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:48
 msgid "Source table"
@@ -4821,24 +4683,21 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:58
 msgid "Import Responses"
-msgstr ""
+msgstr "Import responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:55
 msgid "Export database"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1879
 msgid "Delete Survey"
-msgstr ""
+msgstr "Delete survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:28
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:28
@@ -4850,29 +4709,19 @@ msgid "You are about to delete this survey"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
@@ -4882,29 +4731,29 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1964
 msgid "User Group"
-msgstr ""
+msgstr "User group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:49
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:632
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:736
 msgid "Mail to all Members"
-msgstr ""
+msgstr "Mail to all members"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:64
 msgid "Edit Current User Group"
-msgstr ""
+msgstr "Edit current user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:78
 msgid "Delete Current User Group"
-msgstr ""
+msgstr "Delete current user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:89
 msgid "User Groups"
-msgstr ""
+msgstr "User groups"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:97
 msgid "Add New User Group"
-msgstr ""
+msgstr "Add new user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
@@ -4912,7 +4761,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
 msgid "Template Name"
-msgstr ""
+msgstr "Template name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
 msgid "Allowed"
@@ -4920,12 +4769,12 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:152
 msgid "Save Settings"
-msgstr ""
+msgstr "Save settings"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:183
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:468
 msgid "Modifying User"
-msgstr ""
+msgstr "Modifying user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:185
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:382
@@ -4955,7 +4804,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:387
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:536
 msgid "Set User Rights"
-msgstr ""
+msgstr "Set user rights"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:259
 msgid "SuperAdministrator"
@@ -4967,7 +4816,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3039
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3108
 msgid "Create Survey"
-msgstr ""
+msgstr "Create survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:265
 msgid "Configurator"
@@ -4975,32 +4824,32 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:268
 msgid "Create User"
-msgstr ""
+msgstr "Create user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:271
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:949
 msgid "Delete User"
-msgstr ""
+msgstr "Delete user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:274
 msgid "Manage Template"
-msgstr ""
+msgstr "Manage template"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:277
 msgid "Manage Labels"
-msgstr ""
+msgstr "Manage labels"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:365
 msgid "Setting as Administrator Child"
-msgstr ""
+msgstr "Setting as administrator child"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:366
 msgid "Set Parent successful."
-msgstr ""
+msgstr "Set parent successful."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:379
 msgid "User Control"
-msgstr ""
+msgstr "User control"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:386
 msgid "Created by"
@@ -5009,16 +4858,16 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:421
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:553
 msgid "Edit User"
-msgstr ""
+msgstr "Edit user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:535
 msgid "Take Ownership"
-msgstr ""
+msgstr "Take ownership"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:544
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:617
 msgid "Set Template Rights"
-msgstr ""
+msgstr "Set template rights"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:568
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:573
@@ -5027,13 +4876,13 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2058
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:312
 msgid "Add User"
-msgstr ""
+msgstr "Add user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:585
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1714
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2073
 msgid "Add User Group"
-msgstr ""
+msgstr "Add user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:609
@@ -5042,11 +4891,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:607
 msgid "Edit User Group (Owner: "
-msgstr ""
+msgstr "Edit user group (owner: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:613
 msgid "Update User Group"
-msgstr ""
+msgstr "Update user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:634
 msgid "Send me a copy:"
@@ -5070,12 +4919,12 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:654
 msgid "Deleting User Group"
-msgstr ""
+msgstr "Deleting user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:667
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:703
 msgid "Group Name"
-msgstr ""
+msgstr "Group name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:671
 msgid "Could not delete user group."
@@ -5087,7 +4936,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:691
 msgid "Adding User Group"
-msgstr ""
+msgstr "Adding user group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:707
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:813
@@ -5102,7 +4951,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:715
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:722
 msgid "Failed to add Group!"
-msgstr ""
+msgstr "Failed to add group!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:716
 msgid "Group already exists!"
@@ -5126,7 +4975,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:811
 msgid "Edit User Group Successfully!"
-msgstr ""
+msgstr "Edit user group successfully!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:816
 msgid "Failed to update!"
@@ -5140,7 +4989,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:992
 msgid "Adding User to group"
-msgstr ""
+msgstr "Adding user to group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:1005
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1685
@@ -5167,53 +5016,50 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1701
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1756
 msgid "No Username selected."
-msgstr ""
+msgstr "No username selected."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:24
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:174
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:185
 msgid "Import Question"
-msgstr ""
+msgstr "Import question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr ""
+msgstr "No SID (survey) has been provided. Cannot import question."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr ""
+msgstr "No GID (group) has been provided. Cannot import question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
+msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
-msgstr ""
+msgstr "Question import summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:503
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1230
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1259
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:202
 msgid "Label Sets"
-msgstr ""
+msgstr "Label sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:508
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:153
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:588
 msgid "Question Attributes:"
-msgstr ""
+msgstr "Question attributes:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:512
 msgid "Question import is complete."
@@ -5222,7 +5068,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr ""
+msgstr "Demo mode only: Uploading file is disabled in this system."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:36
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:59
@@ -5236,7 +5082,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:52
 msgid "Import Survey Resources"
-msgstr ""
+msgstr "Import survey resources"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:237
@@ -5262,19 +5108,19 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:122
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:301
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "Forbidden extension"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:146
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:165
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:325
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:344
 msgid "Imported Files List"
-msgstr ""
+msgstr "Imported files list"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
+msgstr "This ZIP archive contains no valid resources files. Import failed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
@@ -5291,27 +5137,27 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:343
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:351
 msgid "Error Files List"
-msgstr ""
+msgstr "Error files list"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:175
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:354
 msgid "Imported Resources for"
-msgstr ""
+msgstr "Imported resources for"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:177
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:356
 msgid "Resources Import Summary"
-msgstr ""
+msgstr "Resources import summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:178
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:357
 msgid "Total Imported files"
-msgstr ""
+msgstr "Total imported files"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:179
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:358
 msgid "Total Errors"
-msgstr ""
+msgstr "Total errors"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:183
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:189
@@ -5327,7 +5173,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:44
 msgid "Date Created"
-msgstr ""
+msgstr "Date created"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:45
 msgid "Owner"
@@ -5339,7 +5185,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:47
 msgid "Answer Privacy"
-msgstr ""
+msgstr "Answer privacy"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:48
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:316
@@ -5348,15 +5194,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:49
 msgid "Full Responses"
-msgstr ""
+msgstr "Full responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:50
 msgid "Partial Responses"
-msgstr ""
+msgstr "Partial responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:51
 msgid "Total Responses"
-msgstr ""
+msgstr "Total responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:63
 msgid "Anonymous"
@@ -5364,7 +5210,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:65
 msgid "Not Anonymous"
-msgstr ""
+msgstr "Not anonymous"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:70
 msgid "Closed-access"
@@ -5393,7 +5239,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:443
 msgid "De-activate this Survey"
-msgstr ""
+msgstr "Deactivate this Survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:144
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:147
@@ -5418,24 +5264,24 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:193
 msgid "No Surveys available - please create one."
-msgstr ""
+msgstr "No surveys available; please create one."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:259
 msgid "LimeSurvey System Summary"
-msgstr ""
+msgstr "LimeSurvey system summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:265
 msgid "Database Name"
-msgstr ""
+msgstr "Database name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:272
 msgid "Default Language"
-msgstr ""
+msgstr "Default language"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:280
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:109
 msgid "Current Language"
-msgstr ""
+msgstr "Current language"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:296
 msgid "Preferred HTML editor mode"
@@ -5463,19 +5309,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:324
 msgid "Active Surveys"
-msgstr ""
+msgstr "Active surveys"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:331
 msgid "De-activated Surveys"
-msgstr ""
+msgstr "Deactivated Surveys"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:338
 msgid "Active Token Tables"
-msgstr ""
+msgstr "Active token tables"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:345
 msgid "De-activated Token Tables"
-msgstr ""
+msgstr "Deactivated Token Tables"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:355
 msgid "Show PHPInfo"
@@ -5483,23 +5329,21 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
 msgid "Survey Security Settings"
-msgstr ""
+msgstr "Survey security settings"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:469
 msgid "Test This Survey"
-msgstr ""
+msgstr "Test this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:473
 msgid "Execute This Survey"
-msgstr ""
+msgstr "Execute this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:525
 msgid "This survey is not active, data entry is not allowed"
@@ -5510,17 +5354,17 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:549
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:550
 msgid "Printable Version of Survey"
-msgstr ""
+msgstr "Printable version of survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:578
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:579
 msgid "Edit Current Survey"
-msgstr ""
+msgstr "Edit current survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:593
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:594
 msgid "Delete Current Survey"
-msgstr ""
+msgstr "Delete current survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:607
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:608
@@ -5528,7 +5372,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:617
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:22
 msgid "Reset Survey Logic"
-msgstr ""
+msgstr "Reset survey logic"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:612
 msgid "This survey's questions don't use conditions"
@@ -5538,54 +5382,53 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:631
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2757
 msgid "Change Group Order"
-msgstr ""
+msgstr "Change group order"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:638
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:639
 msgid "Disabled - Change Group Order"
-msgstr ""
+msgstr "Disabled – change group order"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:647
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:648
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1924
 msgid "Export Survey Structure"
-msgstr ""
+msgstr "Export survey structure"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:661
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:662
 msgid "Set Assessment Rules"
-msgstr ""
+msgstr "Set assessment rules"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:674
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:675
 msgid "Set Survey Quotas"
-msgstr ""
+msgstr "Set survey quotas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:688
 msgid "Browse Responses For This Survey"
-msgstr ""
+msgstr "Browse responses for this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:706
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:707
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:715
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:716
 msgid "Activate/Edit Tokens for this Survey"
-msgstr ""
+msgstr "Activate/edit tokens for this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
 msgid "Add New Group to Survey"
-msgstr ""
+msgstr "Add new group to survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:750
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:751
 msgid "Hide details of this Survey"
-msgstr ""
+msgstr "Hide details of this survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:753
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:754
@@ -5625,7 +5468,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:795
 msgid "IP Addresses will be logged"
-msgstr ""
+msgstr "IP addresses will be logged"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:796
 msgid "Referer-URL will be saved"
@@ -5645,7 +5488,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:815
 msgid "Regenerate Question Codes:"
-msgstr ""
+msgstr "Regenerate question codes:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:819
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:824
@@ -5658,7 +5501,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:825
 msgid "By Group"
-msgstr ""
+msgstr "By group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:830
 msgid "Survey URL"
@@ -5666,7 +5509,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:835
 msgid "Survey URL For Language:"
-msgstr ""
+msgstr "Survey URL for language:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:835
 msgid "Flag"
@@ -5690,28 +5533,28 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2213
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2888
 msgid "Fax To:"
-msgstr ""
+msgstr "Fax to:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:856
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2345
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2989
 msgid "Expiry Date:"
-msgstr ""
+msgstr "Expiry date:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:871
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2857
 msgid "Base Language:"
-msgstr ""
+msgstr "Base language:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:880
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2167
 msgid "Additional Languages"
-msgstr ""
+msgstr "Additional languages"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:896
 msgid "Exit Link"
-msgstr ""
+msgstr "Exit link"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:901
 msgid "Number of questions/groups"
@@ -5743,50 +5586,46 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:980
 msgid "Edit Current Group"
-msgstr ""
+msgstr "Edit current group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
 msgid "Delete Current Group"
-msgstr ""
+msgstr "Delete current group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:703
 msgid "Change Question Order"
-msgstr ""
+msgstr "Change question order"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1032
 msgid "Export Current Group"
-msgstr ""
+msgstr "Export current group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1055
 msgid "Add New Question to Group"
-msgstr ""
+msgstr "Add new question to group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1063
 msgid "Hide Details of this Group"
-msgstr ""
+msgstr "Hide details of this group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1066
 msgid "Show Details of this Group"
-msgstr ""
+msgstr "Show details of this group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1071
 msgid "Close this Group"
-msgstr ""
+msgstr "Close this group"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1097
 msgid "Questions with conditions to this group"
@@ -5794,66 +5633,62 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1147
 msgid "Edit Current Question"
-msgstr ""
+msgstr "Edit current question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
-msgstr ""
+msgstr "Delete current question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
 msgid "Disabled - Delete Current Question"
-msgstr ""
+msgstr "Disabled – delete current question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1185
 msgid "Export this Question"
-msgstr ""
+msgstr "Export this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1201
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1210
 msgid "Copy Current Question"
-msgstr ""
+msgstr "Copy current question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1210
 msgid "Copy question is not possible in an Active survey"
-msgstr ""
+msgstr "Copy question is not possible in an active survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1224
 msgid "Set Conditions for this Question"
-msgstr ""
+msgstr "Set conditions for this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1239
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1246
 msgid "Preview This Question"
-msgstr ""
+msgstr "Preview this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1278
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1335
 msgid "Edit/Add Answers for this Question"
-msgstr ""
+msgstr "Edit/add answers for this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1289
 msgid "Hide Details of this Question"
-msgstr ""
+msgstr "Hide details of this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1292
 msgid "Show Details of this Question"
-msgstr ""
+msgstr "Show details of this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1295
 msgid "Close this Question"
-msgstr ""
+msgstr "Close this question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:41
@@ -5864,11 +5699,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1309
 msgid "Mandatory Question"
-msgstr ""
+msgstr "Mandatory question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1310
 msgid "Optional Question"
-msgstr ""
+msgstr "Optional question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1314
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:45
@@ -5917,7 +5752,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1366
 msgid "Second Label Set"
-msgstr ""
+msgstr "Second label set"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1370
 msgid "You need to choose a second label set for this question!"
@@ -5925,7 +5760,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1384
 msgid "Edit/Add second Label Sets"
-msgstr ""
+msgstr "Edit/add second label sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1396
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:107
@@ -5947,7 +5782,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1487
 msgid "Edit Answers"
-msgstr ""
+msgstr "Edit answers"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1490
 msgid "Error: You are trying to use duplicate answer codes."
@@ -5966,17 +5801,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1617
 msgid "New Answer"
-msgstr ""
+msgstr "New answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1632
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:889
 msgid "Add new Answer"
-msgstr ""
+msgstr "Add new answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
@@ -5986,29 +5819,29 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2037
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2086
 msgid "Set Survey Rights"
-msgstr ""
+msgstr "Set survey rights"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1738
 msgid "User Group added."
-msgstr ""
+msgstr "User group added."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1750
 msgid "Failed to add User Group."
-msgstr ""
+msgstr "Failed to add user group."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1768
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:402
 msgid "Deleting User"
-msgstr ""
+msgstr "Deleting user"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1810
 msgid "Edit Survey Properties"
-msgstr ""
+msgstr "Edit survey properties"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1811
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1876
 msgid "Define Questions"
-msgstr ""
+msgstr "Define questions"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1815
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1880
@@ -6018,31 +5851,31 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:486
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:519
 msgid "Activate Survey"
-msgstr ""
+msgstr "Activate survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1875
 msgid "Edit Survey Property"
-msgstr ""
+msgstr "Edit survey property"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1877
 msgid "Browse Response"
-msgstr ""
+msgstr "Browse response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1929
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey survey file (*.csv)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1933
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML survey XML format (*.xml)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1942
 msgid "Export To File"
-msgstr ""
+msgstr "Export to file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1961
 msgid "Survey Security"
-msgstr ""
+msgstr "Survey security"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2052
 msgid "User"
@@ -6058,7 +5891,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2153
 msgid "Edit Survey - Step 1 of 2"
-msgstr ""
+msgstr "Edit survey – step 1 of 2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2159
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2851
@@ -6068,17 +5901,17 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2884
 msgid "Admin Email:"
-msgstr ""
+msgstr "Admin email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2211
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2886
 msgid "Bounce Email:"
-msgstr ""
+msgstr "Bounce email:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2899
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "Presentation & navigation"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2902
@@ -6088,16 +5921,16 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2229
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2904
 msgid "Question by Question"
-msgstr ""
+msgstr "Question by question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2258
 msgid "Template Preview:"
-msgstr ""
+msgstr "Template preview:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2926
 msgid "Allow Saves?"
-msgstr ""
+msgstr "Allow saves?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2276
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2937
@@ -6126,7 +5959,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2333
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2983
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Publication & access control"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2338
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2986
@@ -6136,7 +5969,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2349
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2995
 msgid "Use Cookies?"
-msgstr ""
+msgstr "Use cookies?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2361
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3006
@@ -6157,7 +5990,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3017
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3019
 msgid "Survey Access"
-msgstr ""
+msgstr "Survey access"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2380
@@ -6179,12 +6012,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3018
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3021
 msgid "Save & Load"
-msgstr ""
+msgstr "Save & load"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2407
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3026
 msgid "Token Attribute Names:"
-msgstr ""
+msgstr "Token attribute names:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2414
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3031
@@ -6192,20 +6025,18 @@ msgid "Use HTML format for token emails?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
 msgid "Notification & Data Management"
-msgstr ""
+msgstr "Notification & data management"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2435
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3046
 msgid "Admin Notification:"
-msgstr ""
+msgstr "Admin notification:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2443
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3054
@@ -6213,9 +6044,7 @@ msgid "Anonymous answers?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
@@ -6228,7 +6057,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2484
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3072
 msgid "Date Stamp?"
-msgstr ""
+msgstr "Date stamp?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2488
 msgid "Responses will not be date stamped."
@@ -6241,7 +6070,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2508
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3079
 msgid "Save IP Address?"
-msgstr ""
+msgstr "Save IP address?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2513
 msgid "Responses will not have the IP address logged."
@@ -6254,7 +6083,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2534
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3086
 msgid "Save Referring URL?"
-msgstr ""
+msgstr "Save referring URL?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2539
 msgid "Responses will not have their referring URL logged."
@@ -6274,32 +6103,28 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
-msgstr ""
+msgstr "Save and continue"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2669
 msgid "Edit Survey - Step 2 of 2"
-msgstr ""
+msgstr "Edit survey – step 2 of 2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2693
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2967
 msgid "URL Description:"
-msgstr ""
+msgstr "URL description:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "Current survey has questions with conditions outside their own group"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
@@ -6321,7 +6146,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2845
 msgid "Create or Import Survey"
-msgstr ""
+msgstr "Create or import survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2868
 msgid "This setting cannot be changed later!"
@@ -6337,26 +6162,26 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2992
 msgid "Date Format"
-msgstr ""
+msgstr "Date format"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3112
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3123
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:25
 msgid "Import Survey"
-msgstr ""
+msgstr "Import survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3119
 msgid "Select CSV/SQL File:"
-msgstr ""
+msgstr "Select CSV/SQL file:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3121
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Convert resources links and INSERTANS fields ?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:44
 msgid "Export Survey"
-msgstr ""
+msgstr "Export survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:51
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:170
@@ -6378,16 +6203,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:141
 msgid "Export Responses"
-msgstr ""
+msgstr "Export responses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:42
 msgid "You are about to delete all conditions on this survey's questions"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
@@ -6507,7 +6330,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:963
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:965
 msgid "Submit Your Survey."
-msgstr ""
+msgstr "Submit your survey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:964
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:965
@@ -6540,7 +6363,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:77
 msgid "No SID Provided"
-msgstr ""
+msgstr "No SID provided"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:89
 msgid "Scope"
@@ -6561,10 +6384,7 @@ msgid "Total"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
@@ -6576,9 +6396,7 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
@@ -6596,12 +6414,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:161
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:385
 msgid "Date Started"
-msgstr ""
+msgstr "Date started"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:386
 msgid "Date Last Action"
-msgstr ""
+msgstr "Date last action"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:232
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:443
@@ -6620,11 +6438,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:295
 msgid "Export this Response"
-msgstr ""
+msgstr "Export this response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:345
 msgid "Showing Filtered Results"
-msgstr ""
+msgstr "Showing filtered results"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:346
 msgid "Close"
@@ -6665,7 +6483,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpquestion.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpgroup.php:38
 msgid "Export Question"
-msgstr ""
+msgstr "Export question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpquestion.php:37
 msgid "No QID has been provided. Cannot dump question."
@@ -6675,7 +6493,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:44
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:124
 msgid "Deactivate Survey"
-msgstr ""
+msgstr "Deactivate survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:29
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:244
@@ -6683,23 +6501,15 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
+msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
@@ -6712,7 +6522,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
-msgstr ""
+msgstr "Survey has been deactivated"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:132
 msgid "The responses table has been renamed to: "
@@ -6723,9 +6533,7 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
+msgid "You should note the name of this table in case you need to access this information later."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
@@ -6742,22 +6550,18 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:103
 msgid "This question requires a Labelset, but none is set."
-msgstr ""
+msgstr "This question requires a label set, but none is set."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
+msgstr "This question requires a second label set, but none is set."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "The label set used in this question does not exists or is missing a translation."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
@@ -6773,9 +6577,7 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
@@ -6807,33 +6609,27 @@ msgid "Edit (change) your group names"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Add, remove or edit pre-defined question answers (except for multi-answer questions)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Change survey name or description"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
-msgstr ""
+msgstr "Survey could not be activated."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:520
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A token table must also be created."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
@@ -6849,9 +6645,7 @@ msgid "No invitation code is needed to complete the survey."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
@@ -6881,45 +6675,38 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1249
 msgid "Survey Import Summary"
-msgstr ""
+msgstr "Survey import summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
 msgid "Not imported Label Sets"
-msgstr ""
+msgstr "Not imported label sets"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(Label sets were not imported since you do not have the permission to create new label sets.)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
 msgid "Question Attributes"
-msgstr ""
+msgstr "Question attributes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1237
 msgid "Quotas"
@@ -6928,7 +6715,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1239
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1264
 msgid "Import of Survey is completed."
-msgstr ""
+msgstr "Import of survey is completed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1240
 msgid "Go to survey"
@@ -6941,8 +6728,9 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
@@ -6961,9 +6749,8 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr ""
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "Answer could not be added. Please insert a code in the mandatory field (%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -6972,12 +6759,8 @@ msgid "Question could not be created."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. Please delete these conditions before you change the type of this question."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -6989,9 +6772,7 @@ msgid "Answers can't be deleted"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
@@ -7005,22 +6786,16 @@ msgid "See conditions:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Question could not be added. Please insert a code in the mandatory field"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
@@ -7046,9 +6821,7 @@ msgid "Failed to update answers"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
@@ -7073,7 +6846,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1238
 msgid "ERROR deleting Survey id"
-msgstr ""
+msgstr "ERROR deleting survey id"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1314
 msgid "Survey could not be created because it did not have a short title"
@@ -7091,19 +6864,19 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:36
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:164
 msgid "Add Question"
-msgstr ""
+msgstr "Add question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:72
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:255
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:473
 msgid "Label Set:"
-msgstr ""
+msgstr "Label set:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:274
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:497
 msgid "Second Label Set:"
-msgstr ""
+msgstr "Second label set:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:133
 msgid "Position:"
@@ -7124,13 +6897,13 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:180
 msgid "Select CSV File"
-msgstr ""
+msgstr "Select CSV file"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:207
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:335
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:356
 msgid "Copy Question"
-msgstr ""
+msgstr "Copy question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:221
 msgid "Note: You MUST enter a new question code!"
@@ -7143,23 +6916,23 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:346
 msgid "Copy Answers?"
-msgstr ""
+msgstr "Copy answers?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:351
 msgid "Copy Attributes?"
-msgstr ""
+msgstr "Copy attributes?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:404
 msgid "Edit Question"
-msgstr ""
+msgstr "Edit question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:456
 msgid "Question Type:"
-msgstr ""
+msgstr "Question type:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:467
 msgid "Cannot be modified (Survey is active)"
-msgstr ""
+msgstr "Cannot be modified (survey is active)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:520
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:521
@@ -7169,17 +6942,14 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:575
 msgid "Update Question"
-msgstr ""
+msgstr "Update question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "Current group is using conditional questions"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
@@ -7192,7 +6962,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:815
 msgid "View Question"
-msgstr ""
+msgstr "View question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
@@ -7227,9 +6997,7 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
@@ -7246,21 +7014,21 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:678
 msgid "Completion Date"
-msgstr ""
+msgstr "Completion date"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:680
 msgid "Start Language"
-msgstr ""
+msgstr "Start language"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:801
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:807
 msgid "Not Selected"
-msgstr ""
+msgstr "Not selected"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/admin.php:512
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/admin.php:525
 msgid "LimeSurvey Online Manual"
-msgstr ""
+msgstr "LimeSurvey online manual"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/admin.php:573
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:273
@@ -7344,20 +7112,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
 msgid "Security Alert"
-msgstr ""
+msgstr "Security alert"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
@@ -7366,7 +7128,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:48
 msgid "Forgot Password"
-msgstr ""
+msgstr "Forgot password"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:60
 msgid "User name and/or email not found!"
@@ -7379,7 +7141,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:71
 msgid "New Password"
-msgstr ""
+msgstr "New password"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:83
 msgid "An email with your login data was sent to you."
@@ -7412,9 +7174,7 @@ msgid "You logged in successfully."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
@@ -7423,7 +7183,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:256
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Auto import user failed!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:307
 msgid "Logout successful."
@@ -7462,7 +7222,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:488
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:512
 msgid "Could not modify User Data."
-msgstr ""
+msgstr "Could not modify user data."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:504
 msgid "Unchanged"
@@ -7492,11 +7252,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:37
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:45
 msgid "HTML Editor"
-msgstr ""
+msgstr "HTML editor"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:53
 msgid "Close Editor"
-msgstr ""
+msgstr "Close editor"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:86
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:136
@@ -7509,44 +7269,44 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:252
 msgid "Modify Quota"
-msgstr ""
+msgstr "Modify quota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:256
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:315
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:599
 msgid "Quota Name"
-msgstr ""
+msgstr "Quota name"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:605
 msgid "Quota Limit"
-msgstr ""
+msgstr "Quota limit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:268
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:317
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:611
 msgid "Quota Action"
-msgstr ""
+msgstr "Quota action"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:341
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:614
 msgid "Terminate Survey"
-msgstr ""
+msgstr "Terminate survey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:276
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:343
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:615
 msgid "Terminate Survey With Warning"
-msgstr ""
+msgstr "Terminate survey with warning"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:281
 msgid "Update Quota"
-msgstr ""
+msgstr "Update quota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:312
 msgid "Survey Quotas"
-msgstr ""
+msgstr "Survey quotas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:318
 msgid "Limit"
@@ -7554,7 +7314,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:335
 msgid "Not Active"
-msgstr ""
+msgstr "Not active"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:351
 msgid "Modify"
@@ -7566,7 +7326,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
 msgid "Add Answer"
-msgstr ""
+msgstr "Add answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:416
 msgid "No quotas have been set for this survey"
@@ -7575,12 +7335,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:422
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:620
 msgid "Add New Quota"
-msgstr ""
+msgstr "Add new quota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
 msgid "Question Selection"
-msgstr ""
+msgstr "Question selection"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:455
 msgid "Sorry there are no supported question types in this survey."
@@ -7589,11 +7349,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
 msgid "Survey Quota"
-msgstr ""
+msgstr "Survey quota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:475
 msgid "Select Question"
-msgstr ""
+msgstr "Select question"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:531
 msgid "All answers are already selected in this quota."
@@ -7601,11 +7361,11 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:551
 msgid "Select Answer"
-msgstr ""
+msgstr "Select answer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:595
 msgid "New Quota"
-msgstr ""
+msgstr "New quota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:35
 msgid "You have to enter user name and email."
@@ -7613,7 +7373,7 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:48
 msgid "Check Data"
-msgstr ""
+msgstr "Check data"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:74
 msgid "You have to login first."
@@ -7625,15 +7385,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:100
 msgid "Forgot Your Password?"
-msgstr ""
+msgstr "Forgot your password?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:33
 msgid "Condition Designer"
-msgstr ""
+msgstr "Condition designer"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:40
 msgid "You have not selected a Survey."
-msgstr ""
+msgstr "You have not selected a survey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:40
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:48
@@ -7642,13 +7402,10 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:48
 msgid "You have not selected a Question."
-msgstr ""
+msgstr "You have not selected a question."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
@@ -7675,7 +7432,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:773
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:993
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "Less than or equal to"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:774
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:994
@@ -7685,12 +7442,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:775
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:995
 msgid "Not Equal to"
-msgstr ""
+msgstr "Not equal to"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:776
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:996
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "Greater than or equal to"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:777
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:997
@@ -7700,12 +7457,12 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:778
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:998
 msgid "Regular Expression"
-msgstr ""
+msgstr "Regular expression"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:901
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
 msgid "Copy Conditions"
-msgstr ""
+msgstr "Copy conditions"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:906
 msgid "Condition"
@@ -7716,37 +7473,33 @@ msgid "copy to"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1018
 msgid "Add Condition"
-msgstr ""
+msgstr "Add condition"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Constant value or regular expression"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:133
 msgid "Export Results"
-msgstr ""
+msgstr "Export results"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:142
 msgid "Filtered from Statistics Script"
-msgstr ""
+msgstr "Filtered from statistics script"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:143
 msgid "Single Response"
-msgstr ""
+msgstr "Single response"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:156
 msgid "Columns"
@@ -7762,15 +7515,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:169
 msgid "Question Codes"
-msgstr ""
+msgstr "Question codes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:182
 msgid "Answer Codes"
-msgstr ""
+msgstr "Answer codes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:185
 msgid "Full Answers"
-msgstr ""
+msgstr "Full answers"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:189
 msgid "Format"
@@ -7778,19 +7531,19 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:194
 msgid "Microsoft Word (Latin charset)"
-msgstr ""
+msgstr "Microsoft Word (latin charset)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:202
 msgid "Microsoft Excel (All charsets)"
-msgstr ""
+msgstr "Microsoft Excel (all charsets)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:205
 msgid "(Iconv Library not installed)"
-msgstr ""
+msgstr "(Iconv library not installed)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:215
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV File (all charsets)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:220
 msgid "PDF"
@@ -7798,21 +7551,18 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:229
 msgid "Export Data"
-msgstr ""
+msgstr "Export data"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:264
 msgid "Column Control"
-msgstr ""
+msgstr "Column control"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:269
 msgid "Choose Columns"
-msgstr ""
+msgstr "Choose columns"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
@@ -7821,12 +7571,10 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:325
 msgid "Choose Token Fields"
-msgstr ""
+msgstr "Choose token fields"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
@@ -7837,11 +7585,11 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:561
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:931
 msgid "Time Submitted"
-msgstr ""
+msgstr "Time submitted"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:861
 msgid "New Record"
-msgstr ""
+msgstr "New record"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:893
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:898
@@ -7858,7 +7606,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1255
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1256
 msgid "Tokens problem - token table missing"
-msgstr ""
+msgstr "Tokens problem; token table missing"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
@@ -7867,33 +7615,31 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
 msgid "Return to Labels Admin"
-msgstr ""
+msgstr "Return to labels admin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "There was a duplicate label set, so this set was not imported. The duplicate will be used instead."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
-msgstr ""
+msgstr "Label set import summary"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:211
 msgid "Import of Label Set is completed."
-msgstr ""
+msgstr "Import of label set is completed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "Start HTML editor in a popup window"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr ""
+msgstr "Give focus to the HTML editor popup window"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:34
 msgid "Welcome to LimeSurvey Setup!"
-msgstr ""
+msgstr "Welcome to LimeSurvey setup!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:35
 msgid "The database defined in config.php does not exist."
@@ -7910,14 +7656,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:39
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:29
 msgid "Create Database"
-msgstr ""
+msgstr "Create database"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:43
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:55
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:80
 msgid "Populate Database"
-msgstr ""
+msgstr "Populate database"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:52
 #, php-format
@@ -7925,8 +7671,7 @@ msgid "A database named \"%s\" already exists."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -7939,10 +7684,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Database information not provided. This script must be run from admin.php only."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -7959,3 +7702,4 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
 msgstr ""
+
