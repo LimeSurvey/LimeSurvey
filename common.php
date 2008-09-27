@@ -2360,7 +2360,10 @@ function templatereplace($line)
 	{
 		if ($thissurvey['active'] == "N") 
 		{
-			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y&amp;lang=".$s_lang."'>".$clang->gT("Restart this Survey")."</a>", $line);
+            $replacetext= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;newtest=Y";
+            if (isset($s_lang) && $s_lang!='') $replacetext.="&amp;lang=".$s_lang;
+            $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
+			$line=str_replace("{RESTART}", $replacetext, $line);
 		} else {
 			$restart_extra = "";
 			$restart_token = returnglobal('token');

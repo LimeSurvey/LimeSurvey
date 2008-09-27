@@ -455,6 +455,10 @@ if (isset($questionarray) && $questionarray) {
         foreach ($answerarray as $aa) {
             $answerfieldcontents=convertCSVRowToArray($aa,',','"');
             $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
+            if ($answerrowdata===false)
+            {
+              $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+            }
             if (isset($languagesSupported[$answerrowdata["language"]]))
             {
                 $code=$answerrowdata["code"];
