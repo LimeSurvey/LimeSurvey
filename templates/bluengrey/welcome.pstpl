@@ -1,29 +1,11 @@
-<table width="100%">
-        {CHECKJAVASCRIPT}
-	<tr bgcolor='#2F5376'>
-		<td> 
-		<div align="center">
-			<font style="font-family: Verdana; font-size: 14px;" color='#FFFFFF'><b>{SURVEYNAME}</b></font><br />
-			<font color='#FFFFFF'>{SURVEYDESCRIPTION}</font>
-		</div>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td>
-			<table width='95%' align='center' border='0'>
-			<tr>
-			<td>
-			<font>{WELCOME}</font><br /><br />
-			</td>
-			</tr>
-			</table>
+{CHECKJAVASCRIPT}
+<div id='welcome'>
+   <font style="font-family: Verdana; font-size: 14px;">
+   <b>{SURVEYNAME}</b>
+   </font><br />
+ {SURVEYDESCRIPTION}
+</div>
+<div id='welcometext'>
+			<p>{WELCOME}</p>
 			<font color='#333333'>{THEREAREXQUESTIONS}</font>
-		</td>
-	</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td>
+</div>

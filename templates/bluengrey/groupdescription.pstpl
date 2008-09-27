@@ -1,1 +1,3 @@
-			<br /><font color='#777777'>{GROUPDESCRIPTION}</font><br /><br />
+<div id='groupheader'>
+    <font color='#777777'>{GROUPDESCRIPTION}</font>
+</div>

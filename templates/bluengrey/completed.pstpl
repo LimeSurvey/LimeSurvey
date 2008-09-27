@@ -1,10 +1,6 @@
 <br />
-<table width='75%' align='center' border='1' style='border-collapse: collapse; border-color: #111111'  bgcolor='white'>
-	<tr>
-		<td align='center'>
-			<font >{COMPLETED}<br /><br />
+<div id='completed'>
+			{COMPLETED}<br /><br />
 
-			{URL}<br /><br /></font>
-		</td>
-	</tr>
-</table>
+			{URL}<br /><br />
+</div>

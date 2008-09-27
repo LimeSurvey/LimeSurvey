@@ -5,8 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />	
 <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 </head>
-<body style="background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);">
+<body>
 <br/>
-<table width='85%' align='center' style='border-collapse:collapse; border-color:#444444;' bgcolor='#E9E9E9' border='2' cellspacing='0'>
-	<tr>
-		<td style="font-family:Verdana; font-size:12px;">
+<div id='container'>
+

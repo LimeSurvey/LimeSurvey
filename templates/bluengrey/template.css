@@ -1,11 +1,90 @@
 body {
 color:#444;
-background-color:#FFF;
+background-color:#4E70A9;
 font-family:Verdana;
 font-size:12px;
 border:0;
 margin:0;
-padding:0;
+padding:0px;
+background-image: url(linearer_gradient_LimeSurvey2.gif);
+background-repeat:repeat-x;
+}
+
+#completed
+{
+   width:75%;
+   text-align:center;
+ background-color:#fff;
+ margin:10px auto;
+ padding-top:10px;
+   outline: 1px solid #111111;
+}
+
+#answers
+{
+font-size: 10px; 
+vertical-align:middle;
+margin:0 auto;
+width: 300px;
+}
+
+#questionhelp
+{
+font-size: 10px; 
+font-style: italic;
+line-height:30px;
+vertical-align:middle;
+}
+
+#questionhelp img
+{
+   margin:5px;
+}
+#question
+{
+outline: 1px solid #444;
+background-color:#fff;
+width:97%;
+margin:20px auto;
+}
+
+#questiontext
+{
+font-weight:bold;
+}
+
+#groupheader
+{
+  margin:1%;
+}
+
+
+#groupdescription
+{
+  margin:1%;
+}
+#container{
+   width:85%;
+  margin:0 auto;
+outline: 1px solid #444444;
+background-color:#E9E9E9;
+padding:5px 0;
+}
+
+#welcometext
+{
+width: 50%;
+margin:0 auto;
+padding-bottom: 30px;
+text-align:center;
+}
+
+#welcome
+{
+background-color:#2F5376;
+color:#fff;
+text-align:center;
+padding: 10px 0px;
 }
 
 .submit {
@@ -113,11 +192,12 @@ border-width:1px;
 }
 
 .printouttable td:first-child {
-background-color:#ddf;
+background-color:#4E70A9;
 font-weight:700;
 text-align:right;
 padding-right:5px;
 padding-left:5px;
+color:#fff;
 }
 
 .printouttitle {
