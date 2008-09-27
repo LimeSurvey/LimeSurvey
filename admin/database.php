@@ -72,7 +72,7 @@ if(isset($surveyid))
 	}
 	elseif ($action == "addattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
 		{
             if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dualscale_headerA' || $_POST['attribute_name']=='dualscale_headerB' ||
                 $_POST['attribute_name']=='dropdown_prepostfix' || $_POST['attribute_name']=='prefix' || $_POST['attribute_name']=='suffix')
@@ -94,7 +94,7 @@ if(isset($surveyid))
 					  (qid, attribute, value)
 					  VALUES ('{$postqid}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
 			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
-		}
+		} 
 	}
 	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
