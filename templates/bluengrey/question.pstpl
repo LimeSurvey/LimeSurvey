@@ -2,8 +2,14 @@
  <div id='questiontext'>
  {QUESTION_CODE}: {QUESTION} 
  </div>
- <div id='answers'>
-{ANSWER}
+<div id='answers'>
+<table style='margin:0 auto;'>
+  <tr style="text-align:center;">
+  <td style="text-align:left;">
+  {ANSWER}
+  </td>
+</tr>
+</table> 
  </div>
  <div id='questionhelp'>
 {QUESTIONHELP}

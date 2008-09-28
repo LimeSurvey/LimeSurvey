@@ -10,6 +10,15 @@ background-image: url(linearer_gradient_LimeSurvey2.gif);
 background-repeat:repeat-x;
 }
 
+#answers
+{
+margin:0 auto;
+width:90%;
+}
+
+
+
+
 #completed
 {
    width:75%;
@@ -20,13 +29,6 @@ background-repeat:repeat-x;
    outline: 1px solid #111111;
 }
 
-#answers
-{
-font-size: 10px; 
-vertical-align:middle;
-margin:0 auto;
-width: 300px;
-}
 
 #questionhelp
 {
@@ -116,6 +118,9 @@ border-color:#FFF;
 border-width:1px;
 }
 
+.answertext{
+font-size: 12px;
+}
 .answertextright {
 text-align:left;
 }
@@ -243,4 +248,15 @@ width: 100%;
 
 table.question tr.array1:hover,table.question tr.array2:hover {
 background-color:#A7A9D1;
+}
+
+td.answertext
+{
+  padding:3px 6px;
+}
+
+.dsheader
+{
+font-size:12px;
+font-weight:bold;
 }
