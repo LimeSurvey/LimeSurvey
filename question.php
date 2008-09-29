@@ -412,6 +412,7 @@ $inputnames=array();
 list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 if ($plus_qanda)
 {
+	$plus_qanda[] = $ia[4];
 	$qanda[]=$plus_qanda;
 }
 if ($plus_inputnames && !$bIsGroupDescrPage)
@@ -563,12 +564,12 @@ else
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
 
-	echo "\n\n<!-- PRESENT THE QUESTIONS (test)-->\n";
+	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
 		foreach ($qanda as $qa)
 		{
-			switch($qa[5])
+			switch($qa[8])
 			{	// I think this is a bad solution to adding classes to question
 				// DIVs but I can't think of a better solution. (eric_t_cruiser)
 
@@ -598,15 +599,15 @@ else
 				case "E": $q_class = 'array-increase-same-decrease' ; break; //ARRAY (Increase/Same/Decrease) radio-buttons
 				case "F": $q_class = 'array-flexible-row' ; break; //ARRAY (Flexible) - Row Format
 				case "H": $q_class = 'array-flexible-column' ; break; //ARRAY (Flexible) - Column Format
-		//		case "^": $q_class = 'slider' ; break; //SLIDER CONTROL
+//				case "^": $q_class = 'slider' ; break; //SLIDER CONTROL
 				case ":": $q_class = 'array-multi-flexi' ; break; //ARRAY (Multi Flexi) 1 to 10
 				case "1": $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
 			}
+			if ($qa[3] != "Y") {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
 			echo '
 	<!-- NEW QUESTION -->
-		<!-- QUESTION TYPE: '.$qa[5].' -->
-				<div id="question'.$qa[4].'" class="'.$q_class.'">
+				<div id="question'.$qa[4].'" class="'.$q_class.'"'.$n_q_display.'>
 ';
 			$question= $qa[0];
 			$answer=$qa[1];
