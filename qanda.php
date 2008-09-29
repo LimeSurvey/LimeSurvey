@@ -45,32 +45,32 @@ function retrieveConditionInfo($ia)
 	global $dbprefix, $connect;
 
 	if ($ia[7] == "Y")
-	{ //DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
-		$cquery = "SELECT {$dbprefix}conditions.qid, "
-		                ."{$dbprefix}conditions.cqid, "
-		                ."{$dbprefix}conditions.cfieldname, "
-		                ."{$dbprefix}conditions.value, "
-		                ."{$dbprefix}questions.type, "
-		                ."{$dbprefix}questions.sid, "
-                		."{$dbprefix}questions.gid, "
-                		."{$dbprefix}conditions.method "
-		           ."FROM {$dbprefix}conditions, "
-		                ."{$dbprefix}questions "
-		          ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-		            ."AND {$dbprefix}conditions.qid=$ia[0] "
-		            ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
-        	   ."ORDER BY {$dbprefix}conditions.cqid, "
-        	            ."{$dbprefix}conditions.cfieldname";
+	{	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
+		$cquery =	"SELECT {$dbprefix}conditions.qid, "
+				."{$dbprefix}conditions.cqid, "
+				."{$dbprefix}conditions.cfieldname, "
+				."{$dbprefix}conditions.value, "
+				."{$dbprefix}questions.type, "
+				."{$dbprefix}questions.sid, "
+				."{$dbprefix}questions.gid, "
+				."{$dbprefix}conditions.method "
+				."FROM {$dbprefix}conditions, "
+				."{$dbprefix}questions "
+				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+				."AND {$dbprefix}conditions.qid=$ia[0] "
+				."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
+				."ORDER BY {$dbprefix}conditions.cqid, "
+				."{$dbprefix}conditions.cfieldname";
 		$cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 		while ($crow = $cresult->FetchRow())
 		{
 			$conditions[] = array ($crow['qid'],
-			                       $crow['cqid'],
-			                       $crow['cfieldname'],
-			                       $crow['value'],
-			                       $crow['type'],
-			                       $crow['sid']."X".$crow['gid']."X".$crow['cqid'],
-			                       $crow['method']);
+						$crow['cqid'],
+						$crow['cfieldname'],
+						$crow['value'],
+						$crow['type'],
+						$crow['sid']."X".$crow['gid']."X".$crow['cqid'],
+						$crow['method']);
 		}
 		return $conditions;
 	}
@@ -83,45 +83,46 @@ function retrieveConditionInfo($ia)
 function create_mandatorylist($ia)
 {
 	//Checks current question and returns required mandatory arrays if required
-	if ($ia[6] == "Y")
+	if ($ia[6] == 'Y')
 	{
 		switch($ia[4])
 		{
-			case "R":
-			$thismandatory=setman_ranking($ia);
-			break;
-			case "M":
-			$thismandatory=setman_questionandcode($ia);
-			break;
-			case "J":
-			case "P":
-			case "Q":
-			case "K":
-			case "A":
-			case "B":
-			case "C":
-			case "E":
-			case "F":
-			case "H":
-			$thismandatory=setman_questionandcode($ia);
-			break;
-			case ":":
-			$thismandatory=setman_multiflex($ia);
-			break;
-			case "1":
-			$thismandatory=setman_questionandcode_multiscale($ia);
-			break;
-			case "X":
+			case 'R':
+				$thismandatory = setman_ranking($ia);
+				break;
+			case 'M':
+				$thismandatory = setman_questionandcode($ia);
+				break;
+			case 'J':
+			case 'P':
+			case 'Q':
+			case 'K':
+			case 'A':
+			case 'B':
+			case 'C':
+			case 'E':
+			case 'F':
+			case 'H':
+				$thismandatory = setman_questionandcode($ia);
+				break;
+			case ':':
+				$thismandatory = setman_multiflex($ia);
+				break;
+			case '1':
+				$thismandatory = setman_questionandcode_multiscale($ia);
+				break;
+			case 'X':
 			//Do nothing - boilerplate questions CANNOT be mandatory
-			break;
+				break;
 			default:
-			$thismandatory=setman_normal($ia);
+				$thismandatory = setman_normal($ia);
 		}
-		if ($ia[7] != "Y" && isset($thismandatory)) //Question is not conditional - addto mandatory arrays
+
+		if ($ia[7] != 'Y' && isset($thismandatory)) //Question is not conditional - addto mandatory arrays
 		{
 			$mandatory=$thismandatory;
 		}
-		if ($ia[7] == "Y" && isset($thismandatory)) //Question IS conditional - add to conmandatory arrays
+		if ($ia[7] == 'Y' && isset($thismandatory)) //Question IS conditional - add to conmandatory arrays
 		{
 			$conmandatory=$thismandatory;
 		}
@@ -155,16 +156,21 @@ function setman_ranking($ia)
 	$ansresult = $connect->Execute($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount();
 	$qidattributes=getQuestionAttributes($ia[0]);
+
 	if ($ma=arraySearchByKey("max_answers", $qidattributes, "attribute", 1)) {
 		$max_answers = $ma['value'];
-	} else {
-	    $max_answers = $anscount;
 	}
+	else
+	{
+		$max_answers = $anscount;
+	}
+
 	for ($i=1; $i<=$max_answers; $i++)
 	{
 		$mandatorys[]=$ia[1].$i;
 		$mandatoryfns[]=$ia[1];
 	}
+
 	return array($mandatorys, $mandatoryfns);
 }
 
@@ -176,60 +182,69 @@ function setman_questionandcode($ia)
 	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	$ansresult = db_execute_assoc($ansquery); //Checked
+
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$mandatorys[]=$ia[1].$ansrow['code'];
 		$mandatoryfns[]=$ia[1];
 	}
+
 	if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P"))
 	{
 		$mandatorys[]=$ia[1]."other";
 		$mandatoryfns[]=$ia[1];
 	}
+
 	return array($mandatorys, $mandatoryfns);
 }
 
 function setman_multiflex($ia)
 {
-    global $dbprefix, $connect;
+	global $dbprefix, $connect;
 	$qq="SELECT lid FROM {$dbprefix}questions WHERE qid={$ia[0]}";
 	$qr=db_execute_assoc($qq);
+
 	while($qd=$qr->FetchRow())
 	{
-	  $lid=$qd['lid'];
+		$lid=$qd['lid'];
 	}
+
 	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	$ansresult = db_execute_assoc($ansquery);
 	$ans2query = "SELECT * FROM {$dbprefix}labels WHERE lid={$lid} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, title";
 	$ans2result = db_execute_assoc($ans2query);
+
 	while ($ans2row=$ans2result->FetchRow())
 	{
-	  $lset[]=$ans2row;
+		$lset[]=$ans2row;
 	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
+
 	while ($ansrow = $ansresult->FetchRow())
 	{
-    	//Don't add to mandatory list if the row is filtered out with the array_filter option
+		//Don't add to mandatory list if the row is filtered out with the array_filter option
 		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1))
-    	{
-    	    //This particular one may not be mandatory if it's hidden
-    		$selected = getArrayFiltersForQuestion($ia[0]);
-    		if (!in_array($ansrow['code'],$selected))
-    		{
-                //This one's hidden, so don't add it to the mandatory list
-    		} else
-    		{
-			    //This one's not hidden. so add it to the mandatory list
-        	    foreach($lset as $ls)
-        	    {
-        		    $mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
-        		    $mandatoryfns[]=$ia[1];
-        	    }
-    		}
-    	}
-
+		{
+			//This particular one may not be mandatory if it's hidden
+			$selected = getArrayFiltersForQuestion($ia[0]);
+			if (!in_array($ansrow['code'],$selected))
+			{
+				//This one's hidden, so don't add it to the mandatory list
+			}
+			else
+			{
+				//This one's not hidden. so add it to the mandatory list
+				foreach($lset as $ls)
+				{
+					$mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
+					$mandatoryfns[]=$ia[1];
+				}
+			}
+		}
 	}
-    return array($mandatorys, $mandatoryfns);
+
+	return array($mandatorys, $mandatoryfns);
 }
 
 function setman_questionandcode_multiscale($ia)
@@ -251,7 +266,6 @@ function setman_questionandcode_multiscale($ia)
 
 	while ($ansrow = $ansresult->FetchRow())
 	{
-
 		if ($labelscount > 0)
 		{
 				$mandatorys[]=$ia[1].$ansrow['code']."#0";
@@ -263,6 +277,7 @@ function setman_questionandcode_multiscale($ia)
 			$mandatoryfns[]=$ia[1];
 		}
 		// second label set
+
 		if ($labelscount1 > 0)
 		{
 				$mandatorys[]=$ia[1].$ansrow['code']."#1";
@@ -273,14 +288,14 @@ function setman_questionandcode_multiscale($ia)
 			$mandatorys[]=$ia[1].$ansrow['code'];
 			$mandatoryfns[]=$ia[1];
 		}
-
-	 	
 	}
+
 	if ($other == "Y" and ($ia[4]=="!" or $ia[4]=="L" or $ia[4]=="M" or $ia[4]=="P" or $ia[4]=="1"))
 	{
 		$mandatorys[]=$ia[1]."other";
 		$mandatoryfns[]=$ia[1];
 	}
+
 	return array($mandatorys, $mandatoryfns);
 }
 
@@ -327,150 +342,150 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	//Create the question/answer html
 	switch ($ia[4])
 	{
-		case "X": //BOILERPLATE QUESTION
-		$values=do_boilerplate($ia);
-		break;
-		case "5": //5 POINT CHOICE radio-buttons
-		$values=do_5pointchoice($ia);
-		break;
-		case "D": //DATE
-		$values=do_date($ia);
-		break;
-		case "Z": //LIST Flexible drop-down/radio-button list
-		$values=do_list_flexible_radio($ia);
-		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose one of the following answers")."</font>";
-		}
-		break;
-		case "L": //LIST drop-down/radio-button list
-		$values=do_list_radio($ia);
-		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose one of the following answers")."</font>";
-		}
-		break;
-		case "W": //List - dropdown
-		$values=do_list_flexible_dropdown($ia);
-		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose one of the following answers")."</font>";
-		}
-		break;
-		case "!": //List - dropdown
-		$values=do_list_dropdown($ia);
-		if (!$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose one of the following answers")."</font>";
-		}
-		break;
-		case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-		$values=do_listwithcomment($ia);
-		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose one of the following answers")."</font>";
-		}
-		break;
-		case "R": //RANKING STYLE
-		$values=do_ranking($ia);
-		break;
-		case "M": //MULTIPLE OPTIONS checkbox
-		$values=do_multiplechoice($ia);
-		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+		case 'X': //BOILERPLATE QUESTION
+			$values = do_boilerplate($ia);
+			break;
+		case '5': //5 POINT CHOICE radio-buttons
+			$values = do_5pointchoice($ia);
+			break;
+		case 'D': //DATE
+			$values = do_date($ia);
+			break;
+		case 'Z': //LIST Flexible drop-down/radio-button list
+			$values = do_list_flexible_radio($ia);
+			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
 				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT("Check any that apply")."</font>";
+				. $clang->gT('Choose one of the following answers').'</font>';
 			}
-			else
+			break;
+		case 'L': //LIST drop-down/radio-button list
+			$values = do_list_radio($ia);
+			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
 				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+				. $clang->gT('Choose one of the following answers').'</font>';
 			}
-		}
-		break;
+			break;
+		case 'W': //List - dropdown
+			$values=do_list_flexible_dropdown($ia);
+			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
+			{
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</font>';
+			}
+			break;
+		case '!': //List - dropdown
+			$values=do_list_dropdown($ia);
+			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
+			{
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</font>';
+			}
+			break;
+		case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+			$values=do_listwithcomment($ia);
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
+			{
+				$qtitle .= "<br />\n<font class = \"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</font>';
+			}
+			break;
+		case 'R': //RANKING STYLE
+			$values=do_ranking($ia);
+			break;
+		case 'M': //MULTIPLE OPTIONS checkbox
+			$values=do_multiplechoice($ia);
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
+			{
+				if (!$maxansw=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
+				{
+					$qtitle .= "<br />\n<font class = \"questionhelp\">"
+					. $clang->gT('Check any that apply').'</font>';
+				}
+				else
+				{
+					$qtitle .= "<br />\n<font class = \"questionhelp\">"
+					. sprintf($clang->gT('Check at most %d answers'), $maxansw['value']).'</font>';
+				}
+			}
+			break;
 
-		case "I": //Language Question
-		$values=do_language($ia);
-		if (count($values[1]) > 1)
-		{
-			$qtitle .= "<br />\n<font class = \"questionhelp\">"
-			. $clang->gT("Choose your language")."</font>";
-		}
-		break;
-		case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-		$values=do_multiplechoice_withcomments($ia);
-		if (count($values[1]) > 1 && !$displaycols=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-		{
-			if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+		case 'I': //Language Question
+			$values=do_language($ia);
+			if (count($values[1]) > 1)
 			{
 				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT("Check any that apply")."</font>";
+				. $clang->gT('Choose your language').'</font>';
 			}
-			else
+			break;
+		case 'P': //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+			$values=do_multiplechoice_withcomments($ia);
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+				if (!$maxansw=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
+				{
+					$qtitle .= "<br />\n<font class = \"questionhelp\">"
+					. $clang->gT('Check any that apply').'</font>';
+				}
+				else
+				{
+					$qtitle .= "<br />\n<font class = \"questionhelp\">"
+					. sprintf($clang->gT('Check at most %d answers'), $maxansw['value']).'</font>';
+				}
 			}
-		}
-		break;
-		case "Q": //MULTIPLE SHORT TEXT
-		$values=do_multipleshorttext($ia);
-		break;
-		case "K": //MULTIPLE NUMERICAL QUESTION
-		$values=do_multiplenumeric($ia);
-		break;
-		case "N": //NUMERICAL QUESTION TYPE
-		$values=do_numerical($ia);
-		break;
-		case "S": //SHORT FREE TEXT
-		$values=do_shortfreetext($ia);
-		break;
-		case "T": //LONG FREE TEXT
-		$values=do_longfreetext($ia);
-		break;
-		case "U": //HUGE FREE TEXT
-		$values=do_hugefreetext($ia);
-		break;
-		case "Y": //YES/NO radio-buttons
-		$values=do_yesno($ia);
-		break;
-		case "G": //GENDER drop-down list
-		$values=do_gender($ia);
-		break;
-		case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-		$values=do_array_5point($ia);
-		break;
-		case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-		$values=do_array_10point($ia);
-		break;
-		case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-		$values=do_array_yesnouncertain($ia);
-		break;
-		case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-		$values=do_array_increasesamedecrease($ia);
-		break;
-		case "F": //ARRAY (Flexible) - Row Format
-		$values=do_array_flexible($ia);
-		break;
-		case "H": //ARRAY (Flexible) - Column Format
-		$values=do_array_flexiblecolumns($ia);
-		break;
-//		case "^": //SLIDER CONTROL
-//		$values=do_slider($ia);
-//		break;
-		case ":": //ARRAY (Multi Flexi) 1 to 10
-		$values=do_array_multiflexi($ia);
-		break;
-		case "1": //Array (Flexible Labels) dual scale
-		$values=do_array_flexible_dual($ia);
-		break;
+			break;
+		case 'Q': //MULTIPLE SHORT TEXT
+			$values=do_multipleshorttext($ia);
+			break;
+		case 'K': //MULTIPLE NUMERICAL QUESTION
+			$values=do_multiplenumeric($ia);
+			break;
+		case 'N': //NUMERICAL QUESTION TYPE
+			$values=do_numerical($ia);
+			break;
+		case 'S': //SHORT FREE TEXT
+			$values=do_shortfreetext($ia);
+			break;
+		case 'T': //LONG FREE TEXT
+			$values=do_longfreetext($ia);
+			break;
+		case 'U': //HUGE FREE TEXT
+			$values=do_hugefreetext($ia);
+			break;
+		case 'Y': //YES/NO radio-buttons
+			$values=do_yesno($ia);
+			break;
+		case 'G': //GENDER drop-down list
+			$values=do_gender($ia);
+			break;
+		case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+			$values=do_array_5point($ia);
+			break;
+		case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+			$values=do_array_10point($ia);
+			break;
+		case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+			$values=do_array_yesnouncertain($ia);
+			break;
+		case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+			$values=do_array_increasesamedecrease($ia);
+			break;
+		case 'F': //ARRAY (Flexible) - Row Format
+			$values=do_array_flexible($ia);
+			break;
+		case 'H': //ARRAY (Flexible) - Column Format
+			$values=do_array_flexiblecolumns($ia);
+			break;
+//		case '^': //SLIDER CONTROL
+//			$values=do_slider($ia);
+//			break;
+		case ':': //ARRAY (Multi Flexi) 1 to 10
+			$values=do_array_multiflexi($ia);
+			break;
+		case '1': //Array (Flexible Labels) dual scale
+			$values=do_array_flexible_dual($ia);
+			break;
 		
 	} //End Switch
 
@@ -482,15 +497,15 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	}
 
 	$answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-	if ($thissurvey['format'] == "S")
+	if ($thissurvey['format'] == 'S')
 	{
-		$answer .= "on"; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
+		$answer .= 'on'; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
 	}
 	$answer .= "' />\n"; //for conditional mandatory questions
 
-	if ($ia[6] == "Y")
+	if ($ia[6] == 'Y')
 	{
-		$qtitle = '<span class=\'asterisk\'>'.$clang->gT('*').'</span>'.$qtitle;
+		$qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
 	}
 	//If this question is mandatory but wasn't answered in the last page
 	//add a message HIGHLIGHTING the question
@@ -514,18 +529,20 @@ function validation_message($ia)
 		global $validationpopup, $popup;
 		if (in_array($ia[1], $notvalidated))
 		{
-			$help="";
+			$help='';
 			$helpselect="SELECT help\n"
 			."FROM {$dbprefix}questions\n"
 			."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
-			$helpresult=db_execute_assoc($helpselect) or safe_die("$helpselect<br />".$connect->ErrorMsg());     //Checked
+			$helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
 			while ($helprow=$helpresult->FetchRow())
 			{
-				$help=" <font class = \"questionhelp\">(".$helprow['help'].")</font>";
+				$help=' <font class = "questionhelp">('.$helprow['help'].')</font>';
 			}
-			$qtitle .= "<br /><span class='errormandatory'>".$clang->gT("This question must be answered correctly")." $help</span><br />\n";
+			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').' '.$help.'</span><br />
+';
 		}
 	}
+
 	return $qtitle;
 }
 
@@ -543,33 +560,34 @@ function mandatory_message($ia)
 			$qtitle .= "<strong><br /><span class='errormandatory'>".$clang->gT("This question is mandatory").".";
 			switch($ia[4])
 			{
-				case "A":
-				case "B":
-				case "C":
-				case "Q":
-				case "K":
-				case "F":
-				case "J":
-				case "H":
-				case ":":
-				$qtitle .= "<br />\n".$clang->gT("Please complete all parts").".";
-				break;
-				case "1":
-				$qtitle .= "<br />\n".$clang->gT("Please check the items").".";
-				case "R":
-				$qtitle .= "<br />\n".$clang->gT("Please rank all items").".";
-				break;
-				case "M":
-				case "P":
-				$qtitle .= " ".$clang->gT("Please check at least one item").".";
-                $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-                $qresult = db_execute_assoc($qquery);    //Checked
-                $qrow = $qresult->FetchRow();
-                if ($qrow['other']=='Y')
-                {
-                    $qtitle .= "<br />\n".$clang->gT("If you choose 'Other:' you must provide a description.");
-                }
-				break;
+				case 'A':
+				case 'B':
+				case 'C':
+				case 'Q':
+				case 'K':
+				case 'F':
+				case 'J':
+				case 'H':
+				case ':':
+					$qtitle .= "<br />\n".$clang->gT('Please complete all parts').'.';
+					break;
+				case '1':
+					$qtitle .= "<br />\n".$clang->gT('Please check the items').'.';
+					break;
+				case 'R':
+					$qtitle .= "<br />\n".$clang->gT('Please rank all items').'.';
+					break;
+				case 'M':
+				case 'P':
+					$qtitle .= ' '.$clang->gT('Please check at least one item').'.';
+					$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+					$qresult = db_execute_assoc($qquery);    //Checked
+					$qrow = $qresult->FetchRow();
+					if ($qrow['other']=='Y')
+					{
+						$qtitle .= "<br />\n".$clang->gT("If you choose 'Other:' you must provide a description.");
+					}
+					break;
 			} // end switch
 			$qtitle .= "</span></strong><br />\n";
 		}
@@ -586,7 +604,7 @@ function mandatory_popup($ia, $notanswered=null)
 	{
 		global $mandatorypopup, $popup, $clang;
 		//POPUP WARNING
-		if (!isset($mandatorypopup) && ($ia[4] == "T" || $ia[4] == "S" || $ia[4] == "U"))
+		if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
 		{
 			$popup="<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("You cannot proceed until you enter some text for one or more questions.", "js")."\")\n //-->\n</script>\n";
 			$mandatorypopup="Y";
@@ -625,37 +643,54 @@ function validation_popup($ia, $notvalidated=null)
 		return false;
 	}
 }
-//QUESTION METHODS
+
+
+// ==================================================================
+// setting constants for 'checked' and 'selected' inputs
+define('CHECKED' , ' checked="checked"' , true);
+define('SELECTED' , ' selected="selected"' , true);
+
+// ==================================================================
+//QUESTION METHODS ==================================================
+
 function do_boilerplate($ia)
 {
-    $answer = "\t\t<input type='hidden' name='$ia[1]' id='answer$ia[1]' value='' />\n";
-    $inputnames[]=$ia[1];
- 	return array($answer, $inputnames);
+	$answer = '
+		<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />
+';
+	$inputnames[]=$ia[1];
+
+	return array($answer, $inputnames);
 }
+
+// ------------------------------------------------------------------
 
 function do_5pointchoice($ia)
 {
 	global $shownoanswer, $clang;
 	
-	$answer="";
+	$answer = "\n<ul>\n";
 	for ($fp=1; $fp<=5; $fp++)
 	{
-		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]$fp' value='$fp'";
-		if ($_SESSION[$ia[1]] == $fp) {$answer .= " checked='checked'";}
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]$fp' class='answertext'>$fp</label>\n";
+		$answer .= "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
+		if ($_SESSION[$ia[1]] == $fp)
+		{
+			$answer .= CHECKED;
+		}
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
 	}
-	
+
 	if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
 	{
-		$answer .= "\t\t\t<input class='radio' type='radio' name='$ia[1]' id='NoAnswer' value=''";
+		$answer .= "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
 		if (!$_SESSION[$ia[1]])
 		{
-			$answer .= " checked='checked'";
+			$answer .= CHECKED;
 		}
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='NoAnswer' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
 	}
-	$answer .= "\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
+	$answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
