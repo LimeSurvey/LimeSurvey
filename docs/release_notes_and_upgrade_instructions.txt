@@ -73,6 +73,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.71+ Build 5638 to 5678 -  Legend:   + = New  # = Changed  - = Fix
+
+# Updated Norwegian translation (maziminke)
+# Updated Turkish translation by A. Murad BAYRAM (c_schmitz)
+# Spanish translation updated. Two new strings and West European cp1252 windows page code renamed to make it appear in a coherent order in the list (kadejo)
+- Added Dual Scale Matrix and Semantic Differential Question Type to Official LimeSurvey Sample Survey. (el-matador-69)
+- Corrected privacy message (c_schmitz)
+- Fixed #2459: Warning if testing inactive survey more than once in a browser session (c_schmitz)
+- Fixed #2499: Failure when changing default location of admin scripts ($homeurl and $homedir) (c_schmitz)
+- Fixed up bluengray template (c_schmitz)
+- Fixed some issues with SPSS export (c_schmitz)
+- Fixed #2377: Dual Scale Matrix: Printing Answers for Dual Scale now are more understandable (c_schmitz)
+- Fixed #2426: Strange alignment of Survey Status Screen when using a survey in more than one language (c_schmitz)
+- Removed white space after closing PHP bracket (c_schmitz)
+
+
 Changes from 1.71+ Build 5599 to 5638 -  Legend:   + = New  # = Changed  - = Fix
 # Swedish translation updated (maxz)
 # French translation updated (b00z00)
