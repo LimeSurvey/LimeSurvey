@@ -3267,7 +3267,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 	global $siteadminname;
 	global $defaultlang;
 	global $codeString;
-	global $rootdir;
+	global $rootdir, $homedir;
     global $connect;
     global $clang;
     global $modifyoutput;
