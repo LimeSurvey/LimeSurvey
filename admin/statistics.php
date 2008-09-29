@@ -627,9 +627,12 @@ foreach ($filters as $flt)
         $myfield5="$myfield2>";
 		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
 		
-		//XXX no field to check this question type needed???
+		."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		
-		."<strong>"
+		if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+		{$statisticsoutput .= " checked='checked'";}
+		
+		$statisticsoutput .= " /><strong>"
 		.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
 		."</strong><br />\n"
 		
