@@ -55,7 +55,7 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 1;
+$showaggregateddata = 0;
 
 //split up results to extend statistics
 $showcombinedresults = 0;
