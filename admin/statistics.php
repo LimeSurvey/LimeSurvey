@@ -53,7 +53,7 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 1;
+$showaggregateddata = 0;
 
 //split up results to extend statistics
 $showcombinedresults = 0;
@@ -73,11 +73,11 @@ $maxchars = 10;
 
 //showaggregateddata doesn't work when this filter is set
 //therefore we disable the function
-if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
+/*if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
 {
 	
     $showaggregateddata = 0;
-}
+}*/
 
 
 //don't call this script directly!
@@ -3356,7 +3356,7 @@ if (isset($summary) && $summary)
             if ((incompleteAnsFilterstate() === false) and ($qtype != "M") and ($qtype != "P"))
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-                if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
+                if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
                 {                	
                 	//counter
                     $i=0;
@@ -3467,8 +3467,8 @@ if (isset($summary) && $summary)
                 else
                 {                	
                 	//check if data should be aggregated
-                	if($showaggregateddata == 1 && isset($showaggregateddata))
-                	{
+                	if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
+                	{	
                 		//mark that we have done soemthing special here
                 		$aggregated = true; 
                 		
@@ -3488,6 +3488,7 @@ if (isset($summary) && $summary)
                 		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 	                	if($gdata[$i] <= 100)
 	                	{
+	                			
 	                		if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
