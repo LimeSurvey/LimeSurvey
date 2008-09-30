@@ -2494,8 +2494,8 @@ if (isset($summary) && $summary)
 				{
 					//put translation of mean and calculated data into $showem array
 					$showem[]=array($clang->gT("Sum"), $row['sum']);
-					$showem[]=array($clang->gT("Standard Deviation"), $row['stdev']);
-					$showem[]=array($clang->gT("Average"), $row['average']);
+					$showem[]=array($clang->gT("Standard Deviation"), round($row['stdev'],2));
+					$showem[]=array($clang->gT("Average"), round($row['average'],2));
 					$showem[]=array($clang->gT("Minimum"), $row['minimum']);
 					
 					//Display the maximum and minimum figures after the quartiles for neatness
