@@ -1208,6 +1208,13 @@ foreach ($filters as $flt)
 		
 		
 		
+		/*
+		 * MM: Let's check how this works:
+		 * 1. Two separated question Q1/Q2 which are treated separately
+		 * 2. Looping through labels for each question Q1L1 - Q1L2, ...
+		 * 3. Create headline and lists for each Q1L1/Q1L2, ...
+		 */
+		
         case "1": // MULTI SCALE
         $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
         
@@ -1222,17 +1229,24 @@ foreach ($filters as $flt)
             //loop through answers
             while ($row=$result->FetchRow())
             {
-            	//myfield2 = answer code. there are two answer to this question type (->add $i)
+            	//myfield2 = answer code. there are two answers to this question type (->add $i)
                 $myfield2 = $myfield . "$row[0]#".$i;
-                $statisticsoutput .= "<!-- $myfield2 - ";
                 
+                //3 lines of debugging output
+                $statisticsoutput .= "<!-- $myfield2 - ";                
                 if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
                 $statisticsoutput .= " -->\n";
                 
-                //some layout adaptions
-                if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+                //some layout adaptions -> new line after 4 entries
+                if ($counter2 == 4) 
+                {
+                	echo '<script language="javascript" type="text/javascript">alert("ABSATZ");</script>';
+                	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+                	$counter2=0;
+                }
                 
-                $statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] Label ".(1+$i)."($row[0])</b>"
+                //output checkbox
+                $statisticsoutput .= "\t\t\t\t<td align='center'>C=$counter2 <b>$flt[3] Label ".(1+$i)."($row[0])</b>"
                     ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
                 
                 //pre-check
@@ -1261,10 +1275,7 @@ foreach ($filters as $flt)
                 //$statisticsoutput .= $fquery;
                 
                 $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{$i}[]' multiple='multiple'>\n";
-                
-                
-                //Testweise die dual scale frage hinzufügen und anschauen, wie der filterscreen aussieht
-                
+                                
                 //for every item which should be rated we have two filter forms (remember: we have 2 labesets)
                 //if you want to rate 3 items you'll have 6 (3*2) forms
                 while ($frow = $fresult->FetchRow())
