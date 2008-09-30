@@ -12,8 +12,6 @@
 * 
 * $Id$
 * 
-* Edits bei Mazi marked as "MM" (2008-07-29)
-* 
 */
 
 /* 
@@ -2833,32 +2831,43 @@ if (isset($summary) && $summary)
 				$qquestion .= "<br />\n[".$atext."]";
 				$qtitle .= "($qanswer)";
 				break;
+				
+				
 				case ":": //Array (Multiple Flexi)
             	$qidattributes=getQuestionAttributes($qiqid);
             	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
             		$maxvalue=$maxvalue['value'];
-            	} else {
+            	} 
+            	else {
             		$maxvalue=10;
             	}
+            	
             	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
             		$minvalue=$minvalue['value'];
-            	} else {
+            	} 
+            	else {
             		$minvalue=1;
             	}
+            	
             	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
             		$stepvalue=$stepvalue['value'];
-            	} else {
+            	} 
+            	else {
             		$stepvalue=1;
             	}
-		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-			$minvalue=0;
-			$maxvalue=1;
-			$stepvalue=1;
-		}
+            	
+				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+					$minvalue=0;
+					$maxvalue=1;
+					$stepvalue=1;
+				}
+				
 				list($qacode, $licode)=explode("_", $qanswer);
+				
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
 				//echo $qquery."<br />";
 				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				
 				while ($qrow=$qresult->FetchRow())
 				{
 				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
@@ -2870,12 +2879,16 @@ if (isset($summary) && $summary)
 					}
 					$atext=$qrow[1];
 				}
-				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) {
+				
+				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) 
+				{
 				    $alist[]=array($i, $i);
 				}
+				
 				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
 				$qtitle .= "($qanswer)";
 				break;
+				
 				case "F": //Array of Flexible
 				case "H": //Array of Flexible by Column
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
@@ -3051,7 +3064,7 @@ if (isset($summary) && $summary)
 				
 			}	//end switch question type
 			
-			//MM moved because it's better to have "no answer" at the end of the list instead of the beginning
+			//moved because it's better to have "no answer" at the end of the list instead of the beginning
 			//put data into array
 			$alist[]=array("", $clang->gT("No answer"));
 			
@@ -3194,7 +3207,7 @@ if (isset($summary) && $summary)
 					}
 					
 					
-					//MM: check if aggregated results should be shown
+					//check if aggregated results should be shown
 					elseif ($showaggregateddata == 1 && isset($showaggregateddata))
 					{
 							
@@ -3202,7 +3215,6 @@ if (isset($summary) && $summary)
 						{
 							if($qtype == "5" || $qtype == "A")
 							{
-								//MM moved 
 								//four columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
 								."\t\t<td width='20%' align='center' >"
@@ -3217,8 +3229,7 @@ if (isset($summary) && $summary)
 							}
 							else
 							{
-								//MM moved 
-								//four columns
+								//three columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
 								."\t\t<td width='25%' align='center' >"
 								."<strong>".$clang->gT("Count")."</strong></td>\n"
@@ -3234,7 +3245,7 @@ if (isset($summary) && $summary)
 						//text for answer column is always needed
 						$fname="$al[1] ($al[0])";
 						
-						//MM: at the beginning only these question type are supported
+						//these question types get special treatment by $showaggregateddata
 						if($qtype == "5" || $qtype == "A")
 						{					
 							//put non-edited data in here because $row will be edited later
@@ -3289,6 +3300,10 @@ if (isset($summary) && $summary)
 					{
 						if(!isset($showheadline) || $showheadline != false)
 						{
+							//DELETE: check if this is used anytime
+							echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
+							
+							
 							//three columns
 							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
 							."\t\t<td width='25%' align='center' >"
@@ -3438,7 +3453,7 @@ if (isset($summary) && $summary)
                 //no data
                 if ($gdata[$i] == "N/A") 
                 {
-                	//MM new (moved from above)
+                	//output when having no data
                 	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 	
                 	//percentage = 0
@@ -3446,16 +3461,16 @@ if (isset($summary) && $summary)
                     $gdata[$i] = 0;
                     
                     //check if we have to adjust ouput due to $showaggregateddata setting
-                    if($showaggregateddata == 1 && isset($showaggregateddata))
+                    if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                     {
-                    	$statisticsoutput .= "\t\t </td><td>";
+                    	$statisticsoutput .= "\t\t</td><td>";
                     }     
                 }
                 
                 //data available
                 else
                 {                	
-                	//MM: check if data should be aggregated
+                	//check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata))
                 	{
                 		//mark that we have done soemthing special here
@@ -3509,7 +3524,7 @@ if (isset($summary) && $summary)
 	                			$percentage = $gdata[$i];
 	                		}
 	                		
-	                		//MM new (moved)
+	                		//output
 	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center'>";
 	                		
 	                		//output percentage
