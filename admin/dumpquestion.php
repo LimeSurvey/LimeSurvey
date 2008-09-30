@@ -95,17 +95,57 @@ $adump = BuildCSVFromQuery($aquery);
 
 //3: Labelsets Table
 //$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND qid=$qid";
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W') AND qid=$qid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W', '1') AND qid=$qid";
 $lsdump = BuildCSVFromQuery($lsquery);
 
-//4: Labels Table
-$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W') AND qid=$qid";
+//3a: Labels Table
+$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W', '1') AND qid=$qid";
 $ldump = BuildCSVFromQuery($lquery);
+
+//4: Labelsets1 Table
+//This exists specifically to deal with dual-scale questions (or any future question that may have 2 labelsets)
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid1 AND type in ('1') AND qid=$qid";
+$ls1dump = BuildCSVFromQuery($lsquery);
+$ls1=explode("\n", trim($ls1dump));
+
+if(count($ls1)>3) {
+  //If there is actually some data here, then add just the data (not the headers) into 
+  // $ls1dump - which will be outputted directly after $lsdump
+  $ls1dump=$ls1[4];
+  $ls1dump .= "\n";
+} else {
+  //If there is no data then make it an empty string.
+  $ls1dump = "";
+}
+//4a: Labels1 Table
+// See explanation for Labelsets1 Table!! These are the actual labels
+$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid1 AND type in ('1') AND qid=$qid";
+$l1dump = BuildCSVFromQuery($lquery);
+$ld1=explode("\n", trim($l1dump));
+
+if(count($ld1)>3) {
+  //If there is actually some data here, then add just the data (not the headers) into 
+  // $l1dump - which will be outputted directly after $ldump
+  $l1dump=array();
+  foreach($ld1 as $key=>$ld) {
+    //Put every line, other than the first three into this string
+    if($key > 3) {
+      $l1dump[]=$ld;
+    }
+  }
+  $l1dump = implode("\n", $l1dump);
+  $l1dump .= "\n";
+} else {
+  //If there is no data then make it an empty string.
+  $l1dump = "";
+}
+
 
 //5: Question Attributes
 $query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes WHERE {$dbprefix}question_attributes.qid=$qid";
 $qadump = BuildCSVFromQuery($query);
 $fn = "limesurvey_question_$qid.csv";
+
 
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
@@ -113,6 +153,6 @@ header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: cache");                          // HTTP/1.0
-echo $dumphead, $qdump, $adump, $lsdump, $ldump, $qadump;
+echo $dumphead, $qdump, $adump, $lsdump, $ls1dump, $ldump, $l1dump, $qadump;
 exit;
 ?>
