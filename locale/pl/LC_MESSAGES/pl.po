@@ -1,12 +1,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
-"POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-02-11 22:54+0100\n"
-"Last-Translator: Damian Kubiak <4xqleg@gmail.com>\n"
-"Language-Team:  <4xqleg@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-05 09:00+0200\n"
+"PO-Revision-Date: 2008-09-29 23:22+0100\n"
+"Last-Translator: Damian Kubiak <4xqleg[-at-]gmail.com>\n"
+"Language-Team: Damian Kubiak <4xqleg[-at-]gmail.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: POLAND\n"
@@ -453,12 +454,6 @@ msgstr "Ustawienia LimeSurvey"
 #: d:\limesurvey/common.php:4206
 #: d:\limesurvey/index.php:372
 #: d:\limesurvey/save.php:471
-#: d:\limesurvey/admin/activate.php:218
-#: d:\limesurvey/admin/activate.php:480
-#: d:\limesurvey/admin/browse.php:58
-#: d:\limesurvey/admin/browse.php:71
-#: d:\limesurvey/admin/browse.php:95
-#: d:\limesurvey/admin/browse.php:110
 #: d:\limesurvey/admin/dataentry.php:44
 #: d:\limesurvey/admin/dataentry.php:60
 #: d:\limesurvey/admin/dataentry.php:121
@@ -563,7 +558,6 @@ msgstr "Sprawdź pola bazy danych"
 # C:\limesurvey/admin/vvimport.php:69
 # C:\limesurvey/admin/vvimport.php:80
 #: d:\limesurvey/common.php:1317
-#: d:\limesurvey/admin/assessments.php:67
 #: d:\limesurvey/admin/dataentry.php:464
 #: d:\limesurvey/admin/labels.php:70
 #: d:\limesurvey/admin/saved.php:121
@@ -678,7 +672,6 @@ msgstr "Domyślny"
 #: d:\limesurvey/index.php:1450
 #: d:\limesurvey/index.php:1573
 #: d:\limesurvey/index.php:1585
-#: d:\limesurvey/admin/browse.php:369
 #: d:\limesurvey/admin/dataentry.php:519
 #: d:\limesurvey/admin/dataentry.php:1513
 #: d:\limesurvey/admin/exportresults.php:319
@@ -709,8 +702,6 @@ msgstr "Znacznik czasu"
 # C:\limesurvey/admin/saved.php:106
 #: d:\limesurvey/common.php:1417
 #: d:\limesurvey/printanswers.php:152
-#: d:\limesurvey/admin/browse.php:159
-#: d:\limesurvey/admin/browse.php:386
 #: d:\limesurvey/admin/dataentry.php:527
 #: d:\limesurvey/admin/exportresults.php:867
 #: d:\limesurvey/admin/saved.php:85
@@ -722,8 +713,6 @@ msgstr "Adres IP"
 # C:\limesurvey/admin/browse.php:369
 #: d:\limesurvey/common.php:1418
 #: d:\limesurvey/printanswers.php:156
-#: d:\limesurvey/admin/browse.php:163
-#: d:\limesurvey/admin/browse.php:390
 #: d:\limesurvey/admin/exportresults.php:541
 #: d:\limesurvey/admin/exportresults.php:542
 #: d:\limesurvey/admin/exportresults.php:873
@@ -1442,7 +1431,7 @@ msgstr "Ta ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 #: d:\limesurvey/admin/dataentry.php:1329
 #: d:\limesurvey/admin/dataentry.php:2423
 msgid "submit"
-msgstr "wyślij"
+msgstr "Wyślij"
 
 # C:\limesurvey/common.php:1906
 #: d:\limesurvey/common.php:2112
@@ -1480,10 +1469,12 @@ msgstr "Wyjdź i wyczyść ankietę"
 msgid "Load Unfinished Survey"
 msgstr "Otwórz niedokończoną ankietę"
 
-# C:\limesurvey/common.php:1949
+# C:\limesurvey/save.php:292
+# C:\limesurvey/admin/dataentry.php:355
 #: d:\limesurvey/common.php:2155
+#, fuzzy
 msgid "Save Survey and Return"
-msgstr "Zapisz ankietę i wróć"
+msgstr "Szczegóły zapisanej ankiety"
 
 # C:\limesurvey/common.php:1967
 #: d:\limesurvey/common.php:2173
@@ -1776,28 +1767,6 @@ msgstr "Adres e-mail"
 #: d:\limesurvey/index.php:1411
 #: d:\limesurvey/index.php:1458
 #: d:\limesurvey/index.php:1596
-#: d:\limesurvey/admin/access_denied.php:28
-#: d:\limesurvey/admin/access_denied.php:33
-#: d:\limesurvey/admin/access_denied.php:38
-#: d:\limesurvey/admin/access_denied.php:43
-#: d:\limesurvey/admin/access_denied.php:48
-#: d:\limesurvey/admin/access_denied.php:53
-#: d:\limesurvey/admin/access_denied.php:58
-#: d:\limesurvey/admin/access_denied.php:63
-#: d:\limesurvey/admin/access_denied.php:68
-#: d:\limesurvey/admin/access_denied.php:73
-#: d:\limesurvey/admin/access_denied.php:78
-#: d:\limesurvey/admin/access_denied.php:83
-#: d:\limesurvey/admin/access_denied.php:88
-#: d:\limesurvey/admin/access_denied.php:93
-#: d:\limesurvey/admin/access_denied.php:98
-#: d:\limesurvey/admin/access_denied.php:103
-#: d:\limesurvey/admin/access_denied.php:109
-#: d:\limesurvey/admin/access_denied.php:114
-#: d:\limesurvey/admin/access_denied.php:119
-#: d:\limesurvey/admin/access_denied.php:125
-#: d:\limesurvey/admin/access_denied.php:129
-#: d:\limesurvey/admin/access_denied.php:132
 #: d:\limesurvey/admin/html.php:1608
 #: d:\limesurvey/admin/html.php:1613
 #: d:\limesurvey/admin/html.php:1664
@@ -1994,10 +1963,26 @@ msgstr "BŁĄD"
 msgid "We are sorry but you don't have permissions to do this."
 msgstr "Nie posiadasz uprawnień do wykonania tej czynności."
 
-# C:\limesurvey/index.php:70
-# C:\limesurvey/index.php:120
-# C:\limesurvey/index.php:177
-# C:\limesurvey/index.php:197
+# C:\limesurvey/qanda.php:566
+# C:\limesurvey/qanda.php:611
+# C:\limesurvey/qanda.php:706
+# C:\limesurvey/admin/dataentry.php:626
+# C:\limesurvey/admin/dataentry.php:653
+# C:\limesurvey/admin/dataentry.php:690
+# C:\limesurvey/admin/dataentry.php:719
+# C:\limesurvey/admin/dataentry.php:968
+# C:\limesurvey/admin/dataentry.php:1037
+# C:\limesurvey/admin/dataentry.php:1631
+# C:\limesurvey/admin/dataentry.php:1656
+# C:\limesurvey/admin/dataentry.php:1694
+# C:\limesurvey/admin/dataentry.php:1727
+# C:\limesurvey/admin/dataentry.php:1966
+# C:\limesurvey/admin/dataentry.php:2020
+# C:\limesurvey/admin/dataentry.php:2035
+# C:\limesurvey/admin/dataentry.php:2056
+# C:\limesurvey/admin/dataentry.php:2077
+# C:\limesurvey/admin/dataentry.php:2097
+# C:\limesurvey/admin/dataentry.php:2128
 #: d:\limesurvey/index.php:159
 #: d:\limesurvey/index.php:188
 #: d:\limesurvey/index.php:275
@@ -2005,8 +1990,9 @@ msgstr "Nie posiadasz uprawnień do wykonania tej czynności."
 #: d:\limesurvey/index.php:374
 #: d:\limesurvey/printanswers.php:40
 #: d:\limesurvey/admin/templates.php:310
+#, fuzzy
 msgid "Please contact"
-msgstr "Skontaktuj się z administratorem"
+msgstr "Wybierz"
 
 # C:\limesurvey/index.php:70
 # C:\limesurvey/index.php:120
@@ -2019,8 +2005,9 @@ msgstr "Skontaktuj się z administratorem"
 #: d:\limesurvey/index.php:375
 #: d:\limesurvey/printanswers.php:40
 #: d:\limesurvey/admin/templates.php:310
+#, fuzzy
 msgid "for further assistance"
-msgstr "w celu późniejszej pomocy."
+msgstr "Skontaktuj się z %s ( %s ) w celu uzyskania pomocy."
 
 # C:\limesurvey/index.php:69
 #: d:\limesurvey/index.php:187
@@ -2047,6 +2034,7 @@ msgstr "Nie podano numeru identyfikacyjnego ankiety"
 # C:\limesurvey/admin/integritycheck.php:207
 #: d:\limesurvey/index.php:276
 #: d:\limesurvey/admin/templates.php:311
+#, fuzzy
 msgid "The Following Surveys Are Available"
 msgstr "Lista dostępnych ankiet w serwisie"
 
@@ -2086,8 +2074,9 @@ msgstr "Odpowiedź na pytanie bezpieczeństwa jest nieprawidłowa"
 # C:\limesurvey/index.php:1085
 # C:\limesurvey/index.php:1127
 #: d:\limesurvey/index.php:492
+#, fuzzy
 msgid "This is a closed-access survey. You need a valid token to participate."
-msgstr "Ankieta posiada ograniczony dostęp. Musisz posiadać token aby ją wypełnić."
+msgstr "Dostęp do ankiety jest ograniczony. Musisz posiadać token aby móc ją wypełnić."
 
 # C:\limesurvey/index.php:298
 # C:\limesurvey/index.php:1128
@@ -2104,8 +2093,9 @@ msgstr "Wprowadzony numer token jest albo nieprawidłowy albo w bieżącym użyc
 #: d:\limesurvey/index.php:1489
 #: d:\limesurvey/index.php:1525
 #: d:\limesurvey/index.php:1681
+#, fuzzy
 msgid "For further information contact"
-msgstr "W celu uzyskania szczegółowych danych skontaktuj się z "
+msgstr "W celu uzyskania szczegółowych danych skontaktuj się z %s"
 
 # C:\limesurvey/index.php:383
 #: d:\limesurvey/index.php:609
@@ -2117,10 +2107,11 @@ msgstr "Ankieta zapisana"
 msgid "There is no matching saved survey"
 msgstr "Nie ma zapisanej takiej ankiety."
 
-# C:\limesurvey/index.php:490
+# C:\limesurvey/admin/statistics.php:1571
 #: d:\limesurvey/index.php:717
+#, fuzzy
 msgid "complete"
-msgstr "zakończone"
+msgstr "Ukończone"
 
 # C:\limesurvey/index.php:942
 # C:\limesurvey/admin/html.php:2187
@@ -2254,10 +2245,9 @@ msgstr "Potwierdż otrzymany token i odpowiedz na poniższe pytanie bezpieczeńs
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ankieta nie posiada jeszcze żadnych pytań i nie może być uruchomiona/testowana."
 
-# C:\limesurvey/index.php:1431
 #: d:\limesurvey/index.php:1975
 msgid "prev"
-msgstr "wstecz"
+msgstr ""
 
 # C:\limesurvey/index.php:1436
 # C:\limesurvey/index.php:1441
@@ -2265,6 +2255,7 @@ msgstr "wstecz"
 #: d:\limesurvey/index.php:1980
 #: d:\limesurvey/index.php:1986
 #: d:\limesurvey/index.php:1991
+#, fuzzy
 msgid "next"
 msgstr "dalej"
 
@@ -2284,8 +2275,6 @@ msgstr "ID ankiety:"
 # C:\limesurvey/admin/browse.php:356
 # C:\limesurvey/admin/dataentry.php:442
 #: d:\limesurvey/printanswers.php:143
-#: d:\limesurvey/admin/browse.php:144
-#: d:\limesurvey/admin/browse.php:369
 #: d:\limesurvey/admin/dataentry.php:519
 #: d:\limesurvey/admin/exportresults.php:891
 msgid "Token ID"
@@ -2294,8 +2283,6 @@ msgstr "ID tokena"
 # C:\limesurvey/admin/browse.php:170
 # C:\limesurvey/admin/browse.php:358
 #: d:\limesurvey/printanswers.php:145
-#: d:\limesurvey/admin/browse.php:155
-#: d:\limesurvey/admin/browse.php:380
 msgid "Date Submitted"
 msgstr "Data wysłania"
 
@@ -2332,7 +2319,7 @@ msgstr "Twoja odpowiedź"
 #: d:\limesurvey/qanda.php:315
 #: d:\limesurvey/qanda.php:323
 msgid "Choose one of the following answers"
-msgstr "Należy wybrać jedną z dostępnych opcji."
+msgstr "Wybierz jedną z dostępnych odpowiedzi"
 
 # C:\limesurvey/qanda.php:282
 # C:\limesurvey/qanda.php:296
@@ -2346,14 +2333,16 @@ msgstr "Wybierz jeden lub więcej punktów."
 # C:\limesurvey/qanda.php:287
 #: d:\limesurvey/qanda.php:341
 #: d:\limesurvey/qanda.php:374
+#, fuzzy
 msgid "Check at most"
-msgstr "Wybierz wartość maksymalną"
+msgstr "Wybierz co njawyżej %d odpowiedzi"
 
-# C:\limesurvey/qanda.php:287
+# C:\limesurvey/admin/printablesurvey.php:425
 #: d:\limesurvey/qanda.php:341
 #: d:\limesurvey/qanda.php:374
+#, fuzzy
 msgid "answers"
-msgstr "odpowiedzi"
+msgstr "odpowiedzi:"
 
 # C:\limesurvey/qanda.php:305
 #: d:\limesurvey/qanda.php:359
@@ -2636,12 +2625,12 @@ msgstr "Usuń ten element"
 # C:\limesurvey/qanda.php:1277
 #: d:\limesurvey/qanda.php:1520
 msgid "Click on an item in the list on the left, starting with your"
-msgstr "Wybierz (poprzez kliknięcie) element z listy po lewej,"
+msgstr "Wybierz (poprzez kliknięcie) element z listy po lewej, rozpoczynając od "
 
 # C:\limesurvey/qanda.php:1278
 #: d:\limesurvey/qanda.php:1521
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "rozpoczynając od zmiennej o największym nasileniu cechy."
+msgstr "pierwszego miejsca, a następnie kolejne."
 
 # C:\limesurvey/qanda.php:1283
 # C:\limesurvey/admin/dataentry.php:877
@@ -2665,25 +2654,30 @@ msgstr "Twój ranking"
 
 # C:\limesurvey/qanda.php:1306
 #: d:\limesurvey/qanda.php:1549
+#, fuzzy
 msgid "Click on the scissors next to each item on the right"
-msgstr "Kliknij na ikonę nożyczek znajdującą się z prawej strony"
+msgstr "Aby usunąć wybór, kliknij na ikonę nożyczek, znajdującą się z prawej strony wybranego rankingu"
 
-# C:\limesurvey/qanda.php:1307
+# C:\limesurvey/qanda.php:1306
 #: d:\limesurvey/qanda.php:1550
+#, fuzzy
 msgid "to remove the last entry in your ranked list"
-msgstr "przy ostatnio wprowadzonym elemencie aby go usunąć z listy"
+msgstr "Aby usunąć wybór, kliknij na ikonę nożyczek, znajdującą się z prawej strony wybranego rankingu"
 
-# C:\limesurvey/qanda.php:1428
+# C:\limesurvey/admin/printablesurvey.php:425
 #: d:\limesurvey/qanda.php:1718
 #: d:\limesurvey/qanda.php:1890
+#, fuzzy
 msgid "Please choose at most"
-msgstr "Wybierz wartość maksymalną"
+msgstr "Należy wybrać wartość najczęstszą"
 
-# C:\limesurvey/qanda.php:1428
+# C:\limesurvey/admin/html.php:1123
+# C:\limesurvey/admin/html.php:1183
 #: d:\limesurvey/qanda.php:1718
 #: d:\limesurvey/qanda.php:1890
+#, fuzzy
 msgid "answer(s) for question"
-msgstr "odpowiedź(i) dla pytań"
+msgstr "Dodaj/Edytuj odpowiedzi do tego pytania"
 
 # C:\limesurvey/qanda.php:1483
 # C:\limesurvey/qanda.php:1509
@@ -2708,8 +2702,9 @@ msgid "Only numbers may be entered in these fields"
 msgstr "Można wprowadzać tylko liczby"
 
 #: d:\limesurvey/qanda.php:2103
+#, fuzzy
 msgid "Total of all entries must not exceed "
-msgstr "Suma wszystkich nie może być wyższa"
+msgstr "Suma wszystkich nie może być wyższa niż %d"
 
 #: d:\limesurvey/qanda.php:2107
 msgid "Total of all entries must equal "
@@ -2820,6 +2815,7 @@ msgstr "Szczegóły zapisanej ankiety"
 
 # C:\limesurvey/save.php:294
 #: d:\limesurvey/save.php:281
+#, fuzzy
 msgid "You, or someone using your email address, have saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
 msgstr "Ty, lub inna osoba wykorzystująca Twój adres email, zapisała sesję podczas udzielania odpowiedzi w ankiecie. Poniższe dane pozwolą na odtworzenie sesji i kontynuację wypełniania ankiety."
 
@@ -2827,6 +2823,7 @@ msgstr "Ty, lub inna osoba wykorzystująca Twój adres email, zapisała sesję p
 # C:\limesurvey/admin/dataentry.php:360
 #: d:\limesurvey/save.php:285
 #: d:\limesurvey/admin/dataentry.php:437
+#, fuzzy
 msgid "Reload your survey by clicking on the following URL:"
 msgstr "Wczytaj ponownie ankietę poprzez kliknięcie na poniższy link:"
 
@@ -2844,868 +2841,6 @@ msgstr "Niniejszy komunikat może pojawić się w przypadku wysłania odpowiedzi
 #: d:\limesurvey/save.php:473
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Jeśli widzisz ten komunikat podczas wypełniania ankiety, wybierz przycisk [<- Wstecz ] w Twojej przeglądarce a następnie odśwież [F5] okno przeglądarki. Podczas gdy odpowiedzi z ostatniej strony zostały utracone, to wszystkie wcześniejsze dalej znajdują się w pamięci i mogą być zapisane. Problem ten pojawia się gdy serwer jest przeciążony. Przepraszamy za niedogodności."
-
-# C:\limesurvey/admin/access_denied.php:43
-#: d:\limesurvey/admin/access_denied.php:22
-msgid "Access denied!"
-msgstr "Dostęp zabroniony!"
-
-# C:\limesurvey/admin/access_denied.php:120
-#: d:\limesurvey/admin/access_denied.php:27
-msgid "You are not allowed dump the database!"
-msgstr "Nie masz uprawnień do powielania ankiet!"
-
-# C:\limesurvey/admin/access_denied.php:120
-#: d:\limesurvey/admin/access_denied.php:32
-msgid "You are not allowed export a label set!"
-msgstr "Nie masz uprawnień do eksportowania ankiet!"
-
-# C:\limesurvey/admin/usercontrol.php:407
-#: d:\limesurvey/admin/access_denied.php:37
-msgid "You are not allowed to change user data!"
-msgstr "Nie możesz zmienić własnych uprawnień!"
-
-# C:\limesurvey/admin/access_denied.php:53
-#: d:\limesurvey/admin/access_denied.php:42
-msgid "You are not allowed to create new surveys!"
-msgstr "Nie masz uprawnień do tworzenia nowych ankiet!"
-
-# C:\limesurvey/admin/access_denied.php:58
-#: d:\limesurvey/admin/access_denied.php:47
-msgid "You are not allowed to delete this survey!"
-msgstr "Nie masz uprawnień do usunięcia tej ankiety!"
-
-# C:\limesurvey/admin/access_denied.php:63
-#: d:\limesurvey/admin/access_denied.php:52
-msgid "You are not allowed to add new questions for this survey!"
-msgstr "Nie masz uprawnień do dodawania nowych pytań do bieżącej ankiety!"
-
-# C:\limesurvey/admin/access_denied.php:68
-#: d:\limesurvey/admin/access_denied.php:57
-msgid "You are not allowed to activate this survey!"
-msgstr "Nie masz uprawnień do aktywowania tej ankiety!"
-
-# C:\limesurvey/admin/access_denied.php:73
-#: d:\limesurvey/admin/access_denied.php:62
-msgid "You are not allowed to deactivate this survey!"
-msgstr "Nie masz uprawnień do deaktywowania tej ankiety!"
-
-# C:\limesurvey/admin/access_denied.php:81
-#: d:\limesurvey/admin/access_denied.php:67
-msgid "You are not allowed to add a group to this survey!"
-msgstr "Nie masz uprawnień do dodawania grup do tej ankiety"
-
-# C:\limesurvey/admin/access_denied.php:86
-#: d:\limesurvey/admin/access_denied.php:72
-msgid "You are not allowed to order groups in this survey!"
-msgstr "Nie masz uprawnień do zmieniania kolejności grup w tej ankiecie!"
-
-# C:\limesurvey/admin/access_denied.php:91
-#: d:\limesurvey/admin/access_denied.php:77
-msgid "You are not allowed to edit this survey!"
-msgstr "Nie masz uprawnień do edycji tej ankiety!"
-
-# C:\limesurvey/admin/access_denied.php:96
-#: d:\limesurvey/admin/access_denied.php:82
-msgid "You are not allowed to edit groups in this survey!"
-msgstr "Nie masz uprawnień do edycji grup w tej ankiecie!"
-
-# C:\limesurvey/admin/access_denied.php:103
-#: d:\limesurvey/admin/access_denied.php:87
-msgid "You are not allowed to browse responses!"
-msgstr "Nie masz uprawnień do przeglądania odpowiedzi!"
-
-# C:\limesurvey/admin/access_denied.php:108
-#: d:\limesurvey/admin/access_denied.php:92
-msgid "You are not allowed to set assessment rules!"
-msgstr "Nie masz uprawnień do ustawień raportów ocen wyników  ankiety."
-
-# C:\limesurvey/admin/access_denied.php:115
-#: d:\limesurvey/admin/access_denied.php:97
-msgid "You are not allowed to delete this group!"
-msgstr "Nie masz uprawnień do usunięcia tej grupy!"
-
-# C:\limesurvey/admin/access_denied.php:120
-#: d:\limesurvey/admin/access_denied.php:102
-#: d:\limesurvey/admin/cmdline_importsurvey.php:73
-msgid "You are not allowed to import a survey!"
-msgstr "Nie masz uprawnień do importowania ankiet!"
-
-# C:\limesurvey/admin/access_denied.php:120
-#: d:\limesurvey/admin/access_denied.php:108
-msgid "You are not allowed to import a group!"
-msgstr "Nie masz uprawnień do importowania grup!"
-
-# C:\limesurvey/admin/access_denied.php:120
-#: d:\limesurvey/admin/access_denied.php:113
-msgid "You are not allowed to to import a question!"
-msgstr "Nie masz uprawnień do importowania pytań!"
-
-# C:\limesurvey/common.php:2037
-# C:\limesurvey/common.php:2057
-# C:\limesurvey/common.php:2102
-# C:\limesurvey/index.php:1098
-#: d:\limesurvey/admin/access_denied.php:118
-msgid "Security Alert"
-msgstr "Alert bezpieczeństwa"
-
-#: d:\limesurvey/admin/access_denied.php:118
-msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
-msgstr "Istnieje podejrzenie, iż ktoś wykorzystuje Twoją sesję LimeSurvey (atak CSRF). Jeśli wcześniej dokonano kliknięcia na podejrzany link, prosimy o zgłoszenie tego faktu do administratora."
-
-# C:\limesurvey/admin/access_denied.php:137
-#: d:\limesurvey/admin/access_denied.php:123
-msgid "You are not allowed to perform this operation!"
-msgstr "Nie masz uprawnień do wykonania tej operacji!"
-
-# C:\limesurvey/admin/activate.php:105
-#: d:\limesurvey/admin/activate.php:84
-msgid "This question is a multiple answer type question but has no answers."
-msgstr "To pytanie wymaga kilku odpowiedzi. Należy wprowadzić kilka wariantów odpowiedzi."
-
-# C:\limesurvey/admin/activate.php:114
-#: d:\limesurvey/admin/activate.php:93
-msgid "This question does not have a question 'type' set."
-msgstr "To pytanie nie ma ustawionego typu."
-
-# C:\limesurvey/admin/activate.php:121
-#: d:\limesurvey/admin/activate.php:103
-msgid "This question requires a Labelset, but none is set."
-msgstr "To pytanie wymaga ustalenia zbioru etykiet odpowiedzi."
-
-# C:\limesurvey/admin/activate.php:121
-#: d:\limesurvey/admin/activate.php:110
-msgid "This question requires a second Labelset, but none is set."
-msgstr "To pytanie wymaga ustalenia dodatkowego zestawu etykiet odpowiedzi."
-
-#: d:\limesurvey/admin/activate.php:128
-msgid "The labelset used in this question is missing a translation."
-msgstr "Zestaw etykiet wybrany dla tego pytania nie posiada odpowiedniej translacji."
-
-# C:\limesurvey/admin/activate.php:174
-#: d:\limesurvey/admin/activate.php:184
-msgid "This question has a condition set, however the condition is based on a question that appears after it."
-msgstr "To pytanie jest powiązane z pytaniem późniejszym. Należy dla niniejszych pytań ustalić poprawną kolejność lub zmienić powiązania."
-
-# C:\limesurvey/admin/activate.php:205
-# C:\limesurvey/admin/activate.php:230
-# C:\limesurvey/admin/activate.php:248
-# C:\limesurvey/admin/activate.php:427
-# C:\limesurvey/admin/activate.php:460
-# C:\limesurvey/admin/html.php:1563
-# C:\limesurvey/admin/html.php:1628
-#: d:\limesurvey/admin/activate.php:215
-#: d:\limesurvey/admin/activate.php:240
-#: d:\limesurvey/admin/activate.php:259
-#: d:\limesurvey/admin/activate.php:476
-#: d:\limesurvey/admin/activate.php:509
-#: d:\limesurvey/admin/html.php:1727
-#: d:\limesurvey/admin/html.php:1792
-msgid "Activate Survey"
-msgstr "Aktywowanie ankiety"
-
-# C:\limesurvey/admin/activate.php:209
-#: d:\limesurvey/admin/activate.php:219
-msgid "Survey does not pass consistency check"
-msgstr "Ankieta nie spełnia wymogu integralności danych."
-
-# C:\limesurvey/admin/activate.php:214
-#: d:\limesurvey/admin/activate.php:224
-msgid "The following problems have been found:"
-msgstr "Znaleziono następujące problemy:"
-
-# C:\limesurvey/admin/activate.php:221
-#: d:\limesurvey/admin/activate.php:231
-msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "Ankieta nie może być aktywowana zanim nie zostaną usunięte napotkane błędy/problemy."
-
-# C:\limesurvey/admin/activate.php:233
-# C:\limesurvey/admin/deactivate.php:50
-# C:\limesurvey/admin/deletesurvey.php:72
-# C:\limesurvey/admin/html.php:1181
-# C:\limesurvey/admin/html.php:1190
-# C:\limesurvey/admin/html.php:1396
-# C:\limesurvey/admin/html.php:2268
-# C:\limesurvey/admin/html.php:2691
-# C:\limesurvey/admin/labels.php:383
-# C:\limesurvey/admin/labels.php:392
-# C:\limesurvey/admin/labels.php:427
-# C:\limesurvey/admin/questionhandling.php:586
-# C:\limesurvey/admin/tokens.php:254
-# C:\limesurvey/admin/tokens.php:693
-# C:\limesurvey/admin/tokens.php:843
-# C:\limesurvey/admin/tokens.php:862
-# C:\limesurvey/admin/tokens.php:1006
-# C:\limesurvey/admin/tokens.php:1026
-#: d:\limesurvey/admin/activate.php:243
-#: d:\limesurvey/admin/deactivate.php:27
-#: d:\limesurvey/admin/deletesurvey.php:42
-#: d:\limesurvey/admin/html.php:1250
-#: d:\limesurvey/admin/html.php:1263
-#: d:\limesurvey/admin/html.php:1287
-#: d:\limesurvey/admin/html.php:1560
-#: d:\limesurvey/admin/html.php:2350
-#: d:\limesurvey/admin/html.php:2659
-#: d:\limesurvey/admin/html.php:2990
-#: d:\limesurvey/admin/html.php:3204
-#: d:\limesurvey/admin/labels.php:397
-#: d:\limesurvey/admin/labels.php:406
-#: d:\limesurvey/admin/labels.php:476
-#: d:\limesurvey/admin/questionhandling.php:710
-#: d:\limesurvey/admin/resetsurveylogic.php:42
-#: d:\limesurvey/admin/tokens.php:318
-#: d:\limesurvey/admin/tokens.php:972
-#: d:\limesurvey/admin/tokens.php:1193
-#: d:\limesurvey/admin/tokens.php:1216
-#: d:\limesurvey/admin/tokens.php:1424
-#: d:\limesurvey/admin/tokens.php:1447
-msgid "Warning"
-msgstr "Uwaga!"
-
-# C:\limesurvey/admin/activate.php:234
-# C:\limesurvey/admin/deactivate.php:50
-#: d:\limesurvey/admin/activate.php:244
-#: d:\limesurvey/admin/deactivate.php:27
-msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-msgstr "PROSIMY O UWAŻNE PRZECZYTANIE!"
-
-# C:\limesurvey/admin/activate.php:240
-#: d:\limesurvey/admin/activate.php:250
-msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Aktywuj ankietę wówczas gdy jej ustawienia będą zakończone. Po aktywacji zmiany nie będą możliwe."
-
-# C:\limesurvey/admin/activate.php:241
-#: d:\limesurvey/admin/activate.php:251
-msgid "Once a survey is activated you can no longer:"
-msgstr "Po aktywacji ankiety niemożliwe będzie:"
-
-# C:\limesurvey/admin/activate.php:241
-#: d:\limesurvey/admin/activate.php:251
-msgid "Add or delete groups"
-msgstr "Dodawanie lub usuwanie grup"
-
-# C:\limesurvey/admin/activate.php:241
-#: d:\limesurvey/admin/activate.php:251
-msgid "Add or remove answers to Multiple Answer questions"
-msgstr "Dodawanie lub usuwanie wariantów odpowiedzi dla pytań wielokrotnego wyboru"
-
-# C:\limesurvey/admin/activate.php:241
-#: d:\limesurvey/admin/activate.php:251
-msgid "Add or delete questions"
-msgstr "Dodawanie lub usuwanie pytań"
-
-# C:\limesurvey/admin/activate.php:242
-#: d:\limesurvey/admin/activate.php:252
-msgid "However you can still:"
-msgstr "W dalszym ciągu jednak będzie możliwa:"
-
-# C:\limesurvey/admin/activate.php:242
-#: d:\limesurvey/admin/activate.php:252
-msgid "Edit (change) your questions code, text or type"
-msgstr "Edycja (zmiana) typów pytań"
-
-# C:\limesurvey/admin/activate.php:242
-#: d:\limesurvey/admin/activate.php:252
-msgid "Edit (change) your group names"
-msgstr "Edycja (zmiana) nazw grup pytań"
-
-# C:\limesurvey/admin/activate.php:242
-#: d:\limesurvey/admin/activate.php:252
-msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
-msgstr "Zmiana (dodawanie, usuwanie, edycja) predefiniowanych odpowiedzi dla pytań (z wyłączeniem pytań wielokrotnego wyboru)"
-
-# C:\limesurvey/admin/activate.php:242
-#: d:\limesurvey/admin/activate.php:252
-msgid "Change survey name or description"
-msgstr "Zmiana nazwy lub opisu ankiety"
-
-# C:\limesurvey/admin/activate.php:243
-#: d:\limesurvey/admin/activate.php:253
-msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Zmiana grup, pytań i odpowiedzi w aktywowanej ankiecie wymaga jej deaktywacji. Deaktywacja ankiety powoduje jednak przesunięcie wszelkich danych pochodzących z procesu wypełniania ankiety do osobnych tabel."
-
-# C:\limesurvey/admin/activate.php:429
-#: d:\limesurvey/admin/activate.php:478
-msgid "Survey could not be actived."
-msgstr "Ankieta nie może być aktywowana"
-
-# C:\limesurvey/admin/activate.php:430
-# C:\limesurvey/admin/browse.php:82
-# C:\limesurvey/admin/browse.php:95
-# C:\limesurvey/admin/browse.php:119
-# C:\limesurvey/admin/browse.php:133
-# C:\limesurvey/admin/createdb.php:56
-# C:\limesurvey/admin/createdb.php:72
-# C:\limesurvey/admin/createdb.php:104
-# C:\limesurvey/admin/dataentry.php:69
-# C:\limesurvey/admin/dataentry.php:84
-# C:\limesurvey/admin/dataentry.php:2229
-# C:\limesurvey/admin/deactivate.php:79
-# C:\limesurvey/admin/deletesurvey.php:59
-# C:\limesurvey/admin/deletesurvey.php:151
-# C:\limesurvey/admin/dumpgroup.php:59
-# C:\limesurvey/admin/dumplabel.php:58
-# C:\limesurvey/admin/dumpquestion.php:60
-# C:\limesurvey/admin/dumpsurvey.php:69
-# C:\limesurvey/admin/importgroup.php:54
-# C:\limesurvey/admin/importgroup.php:76
-# C:\limesurvey/admin/importlabel.php:53
-# C:\limesurvey/admin/importquestion.php:55
-# C:\limesurvey/admin/importquestion.php:76
-# C:\limesurvey/admin/login_check.php:62
-# C:\limesurvey/admin/templates.php:125
-# C:\limesurvey/admin/tokens.php:127
-# C:\limesurvey/admin/tokens.php:145
-# C:\limesurvey/admin/tokens.php:197
-# C:\limesurvey/admin/tokens.php:266
-# C:\limesurvey/admin/tokens.php:711
-# C:\limesurvey/admin/usercontrol.php:149
-# C:\limesurvey/admin/install/createdb.php:56
-# C:\limesurvey/admin/install/createdb.php:72
-# C:\limesurvey/admin/install/createdb.php:104
-#: d:\limesurvey/admin/activate.php:479
-#: d:\limesurvey/admin/browse.php:61
-#: d:\limesurvey/admin/browse.php:74
-#: d:\limesurvey/admin/browse.php:98
-#: d:\limesurvey/admin/browse.php:112
-#: d:\limesurvey/admin/dataentry.php:48
-#: d:\limesurvey/admin/dataentry.php:63
-#: d:\limesurvey/admin/dataentry.php:2451
-#: d:\limesurvey/admin/deactivate.php:57
-#: d:\limesurvey/admin/deactivate.php:63
-#: d:\limesurvey/admin/deactivate.php:65
-#: d:\limesurvey/admin/deactivate.php:102
-#: d:\limesurvey/admin/deactivate.php:108
-#: d:\limesurvey/admin/deactivate.php:110
-#: d:\limesurvey/admin/deletesurvey.php:30
-#: d:\limesurvey/admin/deletesurvey.php:124
-#: d:\limesurvey/admin/dumpgroup.php:41
-#: d:\limesurvey/admin/dumplabel.php:33
-#: d:\limesurvey/admin/dumpquestion.php:38
-#: d:\limesurvey/admin/export_structure_csv.php:47
-#: d:\limesurvey/admin/importgroup.php:31
-#: d:\limesurvey/admin/importgroup.php:41
-#: d:\limesurvey/admin/importgroup.php:69
-#: d:\limesurvey/admin/importgroup.php:250
-#: d:\limesurvey/admin/importgroup.php:266
-#: d:\limesurvey/admin/importlabel.php:32
-#: d:\limesurvey/admin/importquestion.php:34
-#: d:\limesurvey/admin/importquestion.php:45
-#: d:\limesurvey/admin/import_resources_zip.php:220
-#: d:\limesurvey/admin/import_resources_zip.php:244
-#: d:\limesurvey/admin/import_resources_zip.php:314
-#: d:\limesurvey/admin/import_resources_zip.php:357
-#: d:\limesurvey/admin/login_check.php:52
-#: d:\limesurvey/admin/resetsurveylogic.php:30
-#: d:\limesurvey/admin/resetsurveylogic.php:69
-#: d:\limesurvey/admin/templates.php:161
-#: d:\limesurvey/admin/templates.php:173
-#: d:\limesurvey/admin/templates.php:185
-#: d:\limesurvey/admin/tokens.php:173
-#: d:\limesurvey/admin/tokens.php:191
-#: d:\limesurvey/admin/tokens.php:258
-#: d:\limesurvey/admin/tokens.php:342
-#: d:\limesurvey/admin/tokens.php:990
-#: d:\limesurvey/admin/tokens.php:992
-#: d:\limesurvey/admin/tokens.php:999
-#: d:\limesurvey/admin/install/createdb.php:39
-#: d:\limesurvey/admin/install/createdb.php:56
-#: d:\limesurvey/admin/install/createdb.php:88
-#: d:\limesurvey/admin/instal_l/createdb.php:39
-#: d:\limesurvey/admin/instal_l/createdb.php:56
-#: d:\limesurvey/admin/instal_l/createdb.php:88
-msgid "Main Admin Screen"
-msgstr "Strona główna administracji"
-
-# C:\limesurvey/admin/activate.php:461
-#: d:\limesurvey/admin/activate.php:510
-msgid "Survey has been activated. Results table has been successfully created."
-msgstr "Ankieta została aktywowana. Tabela rezultatów została pomyślnie utworzona."
-
-# C:\limesurvey/admin/activate.php:473
-#: d:\limesurvey/admin/activate.php:524
-msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ta ankieta zezwala na publiczną rejestrację. Tabela tokenów również musi zostać utworzona."
-
-# C:\limesurvey/admin/activate.php:469
-# C:\limesurvey/admin/activate.php:474
-# C:\limesurvey/admin/tokens.php:263
-#: d:\limesurvey/admin/activate.php:526
-#: d:\limesurvey/admin/tokens.php:339
-msgid "Initialise Tokens"
-msgstr "Inicjuj tokeny"
-
-# C:\limesurvey/admin/activate.php:478
-#: d:\limesurvey/admin/activate.php:530
-msgid "This survey is now active, and responses can be recorded."
-msgstr "Ta ankieta jest teraz aktywna i odpowiedzi mogą już być rejestrowane."
-
-#: d:\limesurvey/admin/activate.php:531
-msgid "Open-access mode"
-msgstr "Nieograniczony"
-
-# C:\limesurvey/common.php:2067
-#: d:\limesurvey/admin/activate.php:531
-msgid "No invitation code is needed to complete the survey."
-msgstr "Nie jest wymagane zaproszenie do wypełnienia ankiety."
-
-#: d:\limesurvey/admin/activate.php:531
-msgid "You can switch to the closed-access mode by initialising a token table with the button below."
-msgstr "Możesz ograniczyć dostęp do ankiety poprzez inicjację tokenów za pomocą poniższego przycisku."
-
-# C:\limesurvey/admin/userrighthandling.php:490
-# C:\limesurvey/admin/userrighthandling.php:855
-#: d:\limesurvey/admin/activate.php:533
-msgid "Optional"
-msgstr "Opcjonalnie"
-
-#: d:\limesurvey/admin/activate.php:533
-msgid "Switch to closed-access mode"
-msgstr "Przełącz na dostęp ograniczony"
-
-# C:\limesurvey/admin/admin.php:289
-# C:\limesurvey/admin/admin.php:300
-#: d:\limesurvey/admin/admin.php:492
-#: d:\limesurvey/admin/admin.php:504
-msgid "LimeSurvey Online Manual"
-msgstr "LimeSurvey Podręcznik Online"
-
-# C:\limesurvey/admin/admin.php:340
-# C:\limesurvey/admin/exportresults.php:240
-# C:\limesurvey/admin/exportresults.php:246
-# C:\limesurvey/admin/exportresults.php:297
-#: d:\limesurvey/admin/admin.php:552
-#: d:\limesurvey/admin/exportresults.php:252
-#: d:\limesurvey/admin/exportresults.php:258
-#: d:\limesurvey/admin/exportresults.php:309
-msgid "Help"
-msgstr "Pomoc"
-
-# C:\limesurvey/admin/assessments.php:83
-# C:\limesurvey/admin/importsurvey.php:1023
-#: d:\limesurvey/admin/assessments.php:63
-#: d:\limesurvey/admin/importsurvey.php:1088
-#: d:\limesurvey/admin/importsurvey.php:1112
-msgid "Assessments"
-msgstr "Oceny odpowiedzi"
-
-# C:\limesurvey/admin/assessments.php:96
-#: d:\limesurvey/admin/assessments.php:76
-msgid "No SID Provided"
-msgstr "Nie wprowadzono SID"
-
-# C:\limesurvey/admin/assessments.php:108
-#: d:\limesurvey/admin/assessments.php:88
-msgid "Scope"
-msgstr "Zakres"
-
-# C:\limesurvey/admin/assessments.php:108
-# C:\limesurvey/admin/assessments.php:109
-# C:\limesurvey/admin/assessments.php:130
-# C:\limesurvey/admin/html.php:841
-# C:\limesurvey/admin/html.php:2273
-# C:\limesurvey/admin/statistics.php:209
-# C:\limesurvey/admin/stats.php:311
-#: d:\limesurvey/admin/assessments.php:88
-#: d:\limesurvey/admin/assessments.php:89
-#: d:\limesurvey/admin/assessments.php:110
-#: d:\limesurvey/admin/assessments.php:143
-#: d:\limesurvey/admin/html.php:897
-#: d:\limesurvey/admin/html.php:2664
-#: d:\limesurvey/admin/statistics.php:191
-#: d:\limesurvey/admin/stats.php:293
-msgid "Group"
-msgstr "Grupa"
-
-# C:\limesurvey/admin/assessments.php:108
-# C:\limesurvey/admin/statistics.php:1097
-#: d:\limesurvey/admin/assessments.php:88
-#: d:\limesurvey/admin/statistics.php:1220
-msgid "Minimum"
-msgstr "Minimum"
-
-# C:\limesurvey/admin/assessments.php:108
-# C:\limesurvey/admin/statistics.php:1197
-#: d:\limesurvey/admin/assessments.php:88
-#: d:\limesurvey/admin/statistics.php:1319
-msgid "Maximum"
-msgstr "Maksimum"
-
-# C:\limesurvey/admin/assessments.php:108
-#: d:\limesurvey/admin/assessments.php:88
-msgid "Heading"
-msgstr "Nagłówek"
-
-# C:\limesurvey/admin/assessments.php:108
-# C:\limesurvey/admin/tokens.php:757
-# C:\limesurvey/admin/tokens.php:910
-#: d:\limesurvey/admin/assessments.php:88
-#: d:\limesurvey/admin/tokens.php:1059
-#: d:\limesurvey/admin/tokens.php:1276
-msgid "Message"
-msgstr "Wiadomość"
-
-# C:\limesurvey/admin/assessments.php:108
-#: d:\limesurvey/admin/assessments.php:88
-msgid "URL"
-msgstr "URL"
-
-# C:\limesurvey/admin/assessments.php:109
-# C:\limesurvey/admin/assessments.php:128
-#: d:\limesurvey/admin/assessments.php:89
-#: d:\limesurvey/admin/assessments.php:108
-#: d:\limesurvey/admin/assessments.php:142
-msgid "Total"
-msgstr "Razem"
-
-# C:\limesurvey/admin/assessments.php:116
-# C:\limesurvey/admin/html.php:2052
-# C:\limesurvey/admin/labels.php:160
-# C:\limesurvey/admin/labels.php:177
-# C:\limesurvey/admin/questionhandling.php:497
-# C:\limesurvey/admin/stats.php:385
-#: d:\limesurvey/admin/assessments.php:96
-#: d:\limesurvey/admin/html.php:2091
-#: d:\limesurvey/admin/labels.php:151
-#: d:\limesurvey/admin/labels.php:168
-#: d:\limesurvey/admin/questionhandling.php:589
-#: d:\limesurvey/admin/stats.php:367
-msgid "Add"
-msgstr "Dodaj"
-
-# C:\limesurvey/admin/assessments.php:139
-# C:\limesurvey/admin/assessments.php:164
-# C:\limesurvey/admin/saved.php:123
-#: d:\limesurvey/admin/assessments.php:119
-#: d:\limesurvey/admin/assessments.php:156
-#: d:\limesurvey/admin/saved.php:102
-msgid "Edit"
-msgstr "Edytuj"
-
-# C:\limesurvey/admin/assessments.php:147
-#: d:\limesurvey/admin/assessments.php:127
-msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
-msgstr "Jeśli utworzysz reguły oceniania odpowiedzi dla wybranej ankiety, będą one dostępne po zapisaniu odpowiedzi."
-
-# C:\limesurvey/admin/assessments.php:154
-# C:\limesurvey/admin/tokens.php:601
-#: d:\limesurvey/admin/assessments.php:132
-#: d:\limesurvey/admin/tokens.php:860
-msgid "Actions"
-msgstr "Akcje"
-
-# C:\limesurvey/admin/assessments.php:169
-# C:\limesurvey/admin/conditions.php:574
-# C:\limesurvey/admin/deletesurvey.php:92
-# C:\limesurvey/admin/html.php:1731
-# C:\limesurvey/admin/questionhandling.php:524
-# C:\limesurvey/admin/saved.php:122
-# C:\limesurvey/admin/templates.php:555
-# C:\limesurvey/admin/tokens.php:1081
-# C:\limesurvey/admin/userrighthandling.php:365
-# C:\limesurvey/admin/userrighthandling.php:438
-# C:\limesurvey/admin/userrighthandling.php:762
-#: d:\limesurvey/admin/assessments.php:161
-#: d:\limesurvey/admin/conditions.php:783
-#: d:\limesurvey/admin/deletesurvey.php:63
-#: d:\limesurvey/admin/html.php:1939
-#: d:\limesurvey/admin/questionhandling.php:616
-#: d:\limesurvey/admin/resetsurveylogic.php:52
-#: d:\limesurvey/admin/saved.php:101
-#: d:\limesurvey/admin/templates.php:670
-#: d:\limesurvey/admin/tokens.php:1511
-#: d:\limesurvey/admin/userrighthandling.php:488
-#: d:\limesurvey/admin/userrighthandling.php:569
-#: d:\limesurvey/admin/userrighthandling.php:958
-msgid "Delete"
-msgstr "Usuń"
-
-# C:\limesurvey/admin/assessments.php:169
-# C:\limesurvey/admin/browse.php:269
-# C:\limesurvey/admin/html.php:1731
-# C:\limesurvey/admin/userrighthandling.php:89
-# C:\limesurvey/admin/userrighthandling.php:365
-# C:\limesurvey/admin/userrighthandling.php:438
-# C:\limesurvey/admin/userrighthandling.php:762
-#: d:\limesurvey/admin/assessments.php:161
-#: d:\limesurvey/admin/browse.php:283
-#: d:\limesurvey/admin/html.php:1939
-#: d:\limesurvey/admin/userrighthandling.php:78
-#: d:\limesurvey/admin/userrighthandling.php:488
-#: d:\limesurvey/admin/userrighthandling.php:569
-#: d:\limesurvey/admin/userrighthandling.php:958
-msgid "Are you sure you want to delete this entry."
-msgstr "Czy na pewno chcesz usunąć ten element?"
-
-# C:\limesurvey/admin/html.php:2205
-# C:\limesurvey/admin/labels.php:569
-# C:\limesurvey/admin/questionhandling.php:515
-#: d:\limesurvey/admin/assessments.php:180
-#: d:\limesurvey/admin/html.php:2592
-#: d:\limesurvey/admin/labels.php:646
-#: d:\limesurvey/admin/questionhandling.php:607
-#: d:\limesurvey/admin/tokens.php:576
-msgid "Save"
-msgstr "Zapisz"
-
-# C:\limesurvey/admin/deletesurvey.php:91
-# C:\limesurvey/admin/html.php:468
-# C:\limesurvey/admin/html.php:524
-# C:\limesurvey/admin/html.php:1107
-# C:\limesurvey/admin/html.php:2593
-# C:\limesurvey/admin/tokens.php:699
-#: d:\limesurvey/admin/assessments.php:181
-#: d:\limesurvey/admin/deletesurvey.php:61
-#: d:\limesurvey/admin/html.php:468
-#: d:\limesurvey/admin/html.php:524
-#: d:\limesurvey/admin/html.php:1180
-#: d:\limesurvey/admin/html.php:3108
-#: d:\limesurvey/admin/resetsurveylogic.php:50
-#: d:\limesurvey/admin/tokens.php:979
-msgid "Cancel"
-msgstr "Anuluj"
-
-# C:\limesurvey/admin/browse.php:77
-# C:\limesurvey/admin/browse.php:90
-# C:\limesurvey/admin/browse.php:114
-# C:\limesurvey/admin/browse.php:129
-# C:\limesurvey/admin/browse.php:145
-# C:\limesurvey/admin/browse.php:315
-# C:\limesurvey/admin/browse.php:640
-# C:\limesurvey/admin/dataentry.php:396
-# C:\limesurvey/admin/dataentry.php:407
-# C:\limesurvey/admin/dataentry.php:1352
-# C:\limesurvey/admin/dataentry.php:1372
-# C:\limesurvey/admin/dataentry.php:1388
-# C:\limesurvey/admin/html.php:1560
-# C:\limesurvey/admin/vvimport.php:233
-#: d:\limesurvey/admin/browse.php:56
-#: d:\limesurvey/admin/browse.php:69
-#: d:\limesurvey/admin/browse.php:93
-#: d:\limesurvey/admin/browse.php:108
-#: d:\limesurvey/admin/browse.php:123
-#: d:\limesurvey/admin/browse.php:329
-#: d:\limesurvey/admin/browse.php:693
-#: d:\limesurvey/admin/dataentry.php:473
-#: d:\limesurvey/admin/dataentry.php:484
-#: d:\limesurvey/admin/dataentry.php:1444
-#: d:\limesurvey/admin/dataentry.php:1464
-#: d:\limesurvey/admin/dataentry.php:1492
-#: d:\limesurvey/admin/html.php:1724
-#: d:\limesurvey/admin/vvimport.php:219
-msgid "Browse Responses"
-msgstr "Przeglądanie odpowiedzi"
-
-# C:\limesurvey/admin/browse.php:80
-# C:\limesurvey/admin/dataentry.php:66
-#: d:\limesurvey/admin/browse.php:59
-#: d:\limesurvey/admin/dataentry.php:45
-msgid "The defined surveyor database does not exist"
-msgstr "Zdefiniowana dla ankiet baza danych nie istnieje"
-
-# C:\limesurvey/admin/browse.php:81
-# C:\limesurvey/admin/dataentry.php:67
-#: d:\limesurvey/admin/browse.php:60
-#: d:\limesurvey/admin/dataentry.php:46
-msgid "Either your selected database has not yet been created or there is a problem accessing it."
-msgstr "Brak dostępu do bazy danych lub wskazana baza nie istnieje."
-
-# C:\limesurvey/admin/browse.php:93
-#: d:\limesurvey/admin/browse.php:72
-msgid "You have not selected a survey to browse."
-msgstr "Nie wybrano ankiety do poglądu"
-
-# C:\limesurvey/admin/browse.php:117
-#: d:\limesurvey/admin/browse.php:96
-msgid "This survey has not been activated. There are no results to browse."
-msgstr "Bieżąca ankieta nie jest jeszcze aktywna. Nie zapisano żadnych odpowiedzi."
-
-# C:\limesurvey/admin/browse.php:132
-#: d:\limesurvey/admin/browse.php:111
-msgid "There is no matching survey."
-msgstr "Nie ma takiej ankiety"
-
-# C:\limesurvey/admin/statistics.php:1571
-#: d:\limesurvey/admin/browse.php:147
-#: d:\limesurvey/admin/browse.php:372
-#: d:\limesurvey/admin/exportresults.php:531
-#: d:\limesurvey/admin/exportresults.php:532
-#: d:\limesurvey/admin/exportresults.php:870
-#: d:\limesurvey/admin/quota.php:248
-#: d:\limesurvey/admin/statistics.php:1779
-msgid "Completed"
-msgstr "Ukończone"
-
-# C:\limesurvey/admin/saved.php:107
-#: d:\limesurvey/admin/browse.php:153
-#: d:\limesurvey/admin/browse.php:378
-msgid "Date Started"
-msgstr "Data zapisania"
-
-#: d:\limesurvey/admin/browse.php:154
-#: d:\limesurvey/admin/browse.php:379
-msgid "Date Last Action"
-msgstr "Data ostatniej aktywności"
-
-#: d:\limesurvey/admin/browse.php:224
-#: d:\limesurvey/admin/browse.php:436
-msgid "1. scale"
-msgstr "1. skala"
-
-#: d:\limesurvey/admin/browse.php:229
-#: d:\limesurvey/admin/browse.php:441
-msgid "2. scale"
-msgstr "2. skala"
-
-# C:\limesurvey/admin/browse.php:255
-# C:\limesurvey/admin/tokens.php:628
-#: d:\limesurvey/admin/browse.php:266
-#: d:\limesurvey/admin/tokens.php:906
-msgid "View Response"
-msgstr "Pokaż odpowiedzi"
-
-# C:\limesurvey/admin/browse.php:262
-#: d:\limesurvey/admin/browse.php:273
-#: d:\limesurvey/admin/dataentry.php:134
-msgid "Edit this entry"
-msgstr "Edytuj ten wpis"
-
-# C:\limesurvey/admin/browse.php:268
-#: d:\limesurvey/admin/browse.php:282
-msgid "Delete this entry"
-msgstr "Usuń ten wpis"
-
-# C:\limesurvey/admin/browse.php:272
-# C:\limesurvey/admin/browse.php:273
-#: d:\limesurvey/admin/browse.php:286
-#: d:\limesurvey/admin/browse.php:287
-msgid "Export this Response"
-msgstr "Eksportuj bieżące odpowiedzi"
-
-# C:\limesurvey/admin/browse.php:277
-# C:\limesurvey/admin/browse.php:278
-# C:\limesurvey/admin/browse.php:541
-# C:\limesurvey/admin/tokens.php:494
-#: d:\limesurvey/admin/browse.php:291
-#: d:\limesurvey/admin/browse.php:594
-#: d:\limesurvey/admin/tokens.php:745
-msgid "Show previous..."
-msgstr "Pokaż poprzedni..."
-
-# C:\limesurvey/admin/browse.php:281
-# C:\limesurvey/admin/browse.php:282
-# C:\limesurvey/admin/browse.php:545
-# C:\limesurvey/admin/tokens.php:498
-#: d:\limesurvey/admin/browse.php:295
-#: d:\limesurvey/admin/browse.php:598
-#: d:\limesurvey/admin/tokens.php:749
-msgid "Show next..."
-msgstr "Pokaż następny..."
-
-# C:\limesurvey/admin/browse.php:324
-#: d:\limesurvey/admin/browse.php:338
-msgid "Showing Filtered Results"
-msgstr "Pokaż zawartość filtrowaną"
-
-# C:\limesurvey/admin/browse.php:325
-#: d:\limesurvey/admin/browse.php:339
-msgid "Close"
-msgstr "Zamknij"
-
-# C:\limesurvey/admin/browse.php:532
-# C:\limesurvey/admin/tokens.php:486
-#: d:\limesurvey/admin/browse.php:586
-#: d:\limesurvey/admin/tokens.php:737
-msgid "Data View Control"
-msgstr "Podgląd danych"
-
-# C:\limesurvey/admin/browse.php:538
-# C:\limesurvey/admin/tokens.php:491
-#: d:\limesurvey/admin/browse.php:591
-#: d:\limesurvey/admin/tokens.php:742
-msgid "Show start.."
-msgstr "Pokaż pierwszy..."
-
-# C:\limesurvey/admin/browse.php:548
-# C:\limesurvey/admin/tokens.php:501
-#: d:\limesurvey/admin/browse.php:601
-#: d:\limesurvey/admin/tokens.php:752
-msgid "Show last..."
-msgstr "Pokaż ostatni..."
-
-# C:\limesurvey/admin/browse.php:570
-# C:\limesurvey/admin/tokens.php:515
-#: d:\limesurvey/admin/browse.php:623
-#: d:\limesurvey/admin/tokens.php:766
-msgid "Records Displayed:"
-msgstr "Liczba elementów na stronie:"
-
-# C:\limesurvey/admin/browse.php:571
-# C:\limesurvey/admin/tokens.php:516
-#: d:\limesurvey/admin/browse.php:624
-#: d:\limesurvey/admin/tokens.php:767
-msgid "Starting From:"
-msgstr "Wyświetlaj od:"
-
-# C:\limesurvey/admin/browse.php:572
-# C:\limesurvey/admin/statistics.php:654
-#: d:\limesurvey/admin/browse.php:625
-#: d:\limesurvey/admin/statistics.php:717
-msgid "Filter incomplete answers:"
-msgstr "Filtrowanie niekompletnych odpowiedzi:"
-
-# C:\limesurvey/admin/browse.php:573
-# C:\limesurvey/admin/exportresults.php:160
-# C:\limesurvey/admin/statistics.php:655
-# C:\limesurvey/admin/vvexport.php:75
-#: d:\limesurvey/admin/browse.php:626
-#: d:\limesurvey/admin/exportresults.php:172
-#: d:\limesurvey/admin/statistics.php:718
-#: d:\limesurvey/admin/vvexport.php:51
-msgid "Enable"
-msgstr "Włącz"
-
-# C:\limesurvey/admin/browse.php:574
-# C:\limesurvey/admin/exportresults.php:161
-# C:\limesurvey/admin/statistics.php:656
-# C:\limesurvey/admin/vvexport.php:76
-#: d:\limesurvey/admin/browse.php:627
-#: d:\limesurvey/admin/exportresults.php:173
-#: d:\limesurvey/admin/statistics.php:719
-#: d:\limesurvey/admin/vvexport.php:52
-msgid "Disable"
-msgstr "Wyłącz"
-
-# C:\limesurvey/admin/browse.php:576
-# C:\limesurvey/admin/tokens.php:517
-#: d:\limesurvey/admin/browse.php:629
-#: d:\limesurvey/admin/tokens.php:768
-msgid "Show"
-msgstr "Pokaż"
-
-# C:\limesurvey/admin/browse.php:602
-# C:\limesurvey/admin/dataentry.php:390
-# C:\limesurvey/admin/dataentry.php:1351
-#: d:\limesurvey/admin/browse.php:655
-#: d:\limesurvey/admin/dataentry.php:467
-#: d:\limesurvey/admin/dataentry.php:1443
-msgid "View This Record"
-msgstr "Pokaż ten rekord"
-
-# C:\limesurvey/admin/browse.php:653
-#: d:\limesurvey/admin/browse.php:706
-msgid "responses for this survey"
-msgstr "odpowiedzi dla tej ankiety"
-
-# C:\limesurvey/admin/browse.php:654
-#: d:\limesurvey/admin/browse.php:707
-msgid "full responses"
-msgstr "w pełni ukończone"
-
-# C:\limesurvey/admin/browse.php:655
-#: d:\limesurvey/admin/browse.php:708
-msgid "responses not completely filled out"
-msgstr "niekompletne"
 
 # C:\limesurvey/admin/html.php:1527
 # C:\limesurvey/admin/html.php:1676
@@ -3726,7 +2861,13 @@ msgstr "niekompletne"
 msgid "User name invalid!"
 msgstr "Niepoprawna nazwa użytkownika"
 
+# C:\limesurvey/admin/access_denied.php:120
+#: d:\limesurvey/admin/cmdline_importsurvey.php:73
+msgid "You are not allowed to import a survey!"
+msgstr "Nie masz uprawnień do importowania ankiet!"
+
 #: d:\limesurvey/admin/cmdline_importsurvey.php:80
+#, fuzzy
 msgid "User name / password dont match!"
 msgstr "Nieprawidłowy identyfikator lub hasło!"
 
@@ -3853,6 +2994,31 @@ msgstr "lub"
 msgid "No Answer"
 msgstr "Brak odpowiedzi"
 
+# C:\limesurvey/admin/assessments.php:169
+# C:\limesurvey/admin/conditions.php:574
+# C:\limesurvey/admin/deletesurvey.php:92
+# C:\limesurvey/admin/html.php:1731
+# C:\limesurvey/admin/questionhandling.php:524
+# C:\limesurvey/admin/saved.php:122
+# C:\limesurvey/admin/templates.php:555
+# C:\limesurvey/admin/tokens.php:1081
+# C:\limesurvey/admin/userrighthandling.php:365
+# C:\limesurvey/admin/userrighthandling.php:438
+# C:\limesurvey/admin/userrighthandling.php:762
+#: d:\limesurvey/admin/conditions.php:783
+#: d:\limesurvey/admin/deletesurvey.php:63
+#: d:\limesurvey/admin/html.php:1939
+#: d:\limesurvey/admin/questionhandling.php:616
+#: d:\limesurvey/admin/resetsurveylogic.php:52
+#: d:\limesurvey/admin/saved.php:101
+#: d:\limesurvey/admin/templates.php:670
+#: d:\limesurvey/admin/tokens.php:1511
+#: d:\limesurvey/admin/userrighthandling.php:488
+#: d:\limesurvey/admin/userrighthandling.php:569
+#: d:\limesurvey/admin/userrighthandling.php:958
+msgid "Delete"
+msgstr "Usuń"
+
 # C:\limesurvey/admin/conditions.php:606
 # C:\limesurvey/admin/conditions.php:637
 #: d:\limesurvey/admin/conditions.php:815
@@ -3897,7 +3063,7 @@ msgstr "Odpowiedź"
 
 #: d:\limesurvey/admin/conditions.php:914
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
-msgstr "Uwaga: Jeśli w pytaniu wykorzystywana jest predefiniowana odpowiedź jako warunek, wówczas należy zadziałają tylko warunki \"Równa się\" oraz \"Nie równa się\"."
+msgstr "Uwaga: Jeśli w pytaniu wykorzystywana jest predefiniowana odpowiedź jako warunek, wówczas zadziałają tylko warunki \"Równa się\" oraz \"Nie równa się\"."
 
 #: d:\limesurvey/admin/conditions.php:919
 msgid "Constant Value or Regular Expression"
@@ -3949,8 +3115,9 @@ msgstr "Grupa nie może zostać usunięta"
 
 # C:\limesurvey/admin/database.php:240
 #: d:\limesurvey/admin/database.php:254
+#, fuzzy
 msgid "Answer could not be added. You must insert a code in the mandatory field ("
-msgstr "Odpowiedź nie może być dodana. Musisz wprowadzić kod. To pole jest obowiązkowe."
+msgstr "Odpowiedź nie może być dodana. Musisz wprowadzić kod. To pole jest obowiązkowe (%s)."
 
 # C:\limesurvey/admin/database.php:278
 # C:\limesurvey/admin/database.php:498
@@ -4328,6 +3495,102 @@ msgstr "Ankieta nie może być utworzona"
 msgid "Data Entry"
 msgstr "Wprowadzanie danych"
 
+# C:\limesurvey/admin/browse.php:80
+# C:\limesurvey/admin/dataentry.php:66
+#: d:\limesurvey/admin/dataentry.php:45
+#, fuzzy
+msgid "The defined surveyor database does not exist"
+msgstr "Zdefiniowana dla ankiet baza danych nie istnieje"
+
+# C:\limesurvey/admin/browse.php:81
+# C:\limesurvey/admin/dataentry.php:67
+#: d:\limesurvey/admin/dataentry.php:46
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Brak dostępu do bazy danych lub wskazana baza nie istnieje."
+
+# C:\limesurvey/admin/activate.php:430
+# C:\limesurvey/admin/browse.php:82
+# C:\limesurvey/admin/browse.php:95
+# C:\limesurvey/admin/browse.php:119
+# C:\limesurvey/admin/browse.php:133
+# C:\limesurvey/admin/createdb.php:56
+# C:\limesurvey/admin/createdb.php:72
+# C:\limesurvey/admin/createdb.php:104
+# C:\limesurvey/admin/dataentry.php:69
+# C:\limesurvey/admin/dataentry.php:84
+# C:\limesurvey/admin/dataentry.php:2229
+# C:\limesurvey/admin/deactivate.php:79
+# C:\limesurvey/admin/deletesurvey.php:59
+# C:\limesurvey/admin/deletesurvey.php:151
+# C:\limesurvey/admin/dumpgroup.php:59
+# C:\limesurvey/admin/dumplabel.php:58
+# C:\limesurvey/admin/dumpquestion.php:60
+# C:\limesurvey/admin/dumpsurvey.php:69
+# C:\limesurvey/admin/importgroup.php:54
+# C:\limesurvey/admin/importgroup.php:76
+# C:\limesurvey/admin/importlabel.php:53
+# C:\limesurvey/admin/importquestion.php:55
+# C:\limesurvey/admin/importquestion.php:76
+# C:\limesurvey/admin/login_check.php:62
+# C:\limesurvey/admin/templates.php:125
+# C:\limesurvey/admin/tokens.php:127
+# C:\limesurvey/admin/tokens.php:145
+# C:\limesurvey/admin/tokens.php:197
+# C:\limesurvey/admin/tokens.php:266
+# C:\limesurvey/admin/tokens.php:711
+# C:\limesurvey/admin/usercontrol.php:149
+# C:\limesurvey/admin/install/createdb.php:56
+# C:\limesurvey/admin/install/createdb.php:72
+# C:\limesurvey/admin/install/createdb.php:104
+#: d:\limesurvey/admin/dataentry.php:48
+#: d:\limesurvey/admin/dataentry.php:63
+#: d:\limesurvey/admin/dataentry.php:2451
+#: d:\limesurvey/admin/deactivate.php:57
+#: d:\limesurvey/admin/deactivate.php:63
+#: d:\limesurvey/admin/deactivate.php:65
+#: d:\limesurvey/admin/deactivate.php:102
+#: d:\limesurvey/admin/deactivate.php:108
+#: d:\limesurvey/admin/deactivate.php:110
+#: d:\limesurvey/admin/deletesurvey.php:30
+#: d:\limesurvey/admin/deletesurvey.php:124
+#: d:\limesurvey/admin/dumpgroup.php:41
+#: d:\limesurvey/admin/dumplabel.php:33
+#: d:\limesurvey/admin/dumpquestion.php:38
+#: d:\limesurvey/admin/export_structure_csv.php:47
+#: d:\limesurvey/admin/importgroup.php:31
+#: d:\limesurvey/admin/importgroup.php:41
+#: d:\limesurvey/admin/importgroup.php:69
+#: d:\limesurvey/admin/importgroup.php:250
+#: d:\limesurvey/admin/importgroup.php:266
+#: d:\limesurvey/admin/importlabel.php:32
+#: d:\limesurvey/admin/importquestion.php:34
+#: d:\limesurvey/admin/importquestion.php:45
+#: d:\limesurvey/admin/import_resources_zip.php:220
+#: d:\limesurvey/admin/import_resources_zip.php:244
+#: d:\limesurvey/admin/import_resources_zip.php:314
+#: d:\limesurvey/admin/import_resources_zip.php:357
+#: d:\limesurvey/admin/login_check.php:52
+#: d:\limesurvey/admin/resetsurveylogic.php:30
+#: d:\limesurvey/admin/resetsurveylogic.php:69
+#: d:\limesurvey/admin/templates.php:161
+#: d:\limesurvey/admin/templates.php:173
+#: d:\limesurvey/admin/templates.php:185
+#: d:\limesurvey/admin/tokens.php:173
+#: d:\limesurvey/admin/tokens.php:191
+#: d:\limesurvey/admin/tokens.php:258
+#: d:\limesurvey/admin/tokens.php:342
+#: d:\limesurvey/admin/tokens.php:990
+#: d:\limesurvey/admin/tokens.php:992
+#: d:\limesurvey/admin/tokens.php:999
+#: d:\limesurvey/admin/install/createdb.php:39
+#: d:\limesurvey/admin/install/createdb.php:56
+#: d:\limesurvey/admin/install/createdb.php:88
+#: d:\limesurvey/admin/instal_l/createdb.php:39
+#: d:\limesurvey/admin/instal_l/createdb.php:56
+#: d:\limesurvey/admin/instal_l/createdb.php:88
+msgid "Main Admin Screen"
+msgstr "Strona główna administracji"
+
 # C:\limesurvey/admin/dataentry.php:82
 #: d:\limesurvey/admin/dataentry.php:61
 msgid "You have not selected a survey for data-entry."
@@ -4337,14 +3600,16 @@ msgstr "Nie wybrano żadnej ankiety dla wprowadzania odpowiedzi."
 # C:\limesurvey/index.php:1085
 # C:\limesurvey/index.php:1127
 #: d:\limesurvey/admin/dataentry.php:121
+#, fuzzy
 msgid "This is a closed-access survey, you must supply a valid token"
-msgstr "Ankieta posiada ograniczony dostęp. Musisz posiadać token aby ją wypełnić."
+msgstr "Ankieta posiada ograniczony dostęp. Musisz posiadać token aby ją wypełnić. Aby uzyskać pomoc skontaktuj się z administratorem."
 
 # C:\limesurvey/index.php:298
 # C:\limesurvey/index.php:1128
 #: d:\limesurvey/admin/dataentry.php:125
+#, fuzzy
 msgid "The token you have provided is not valid."
-msgstr "Wprowadzony numer token jest nieprawidłowy."
+msgstr "Wprowadzony numer token jest albo nieprawidłowy albo w bieżącym użyciu."
 
 #: d:\limesurvey/admin/dataentry.php:129
 msgid "There is already a recorded answer for this token"
@@ -4355,7 +3620,13 @@ msgstr "Istnieją już zapisane odpowiedzi dla tego tokenu"
 msgid "Follow the following link to update it"
 msgstr "Kliknij na poniższy link aby zaktualizować."
 
+# C:\limesurvey/admin/browse.php:262
+#: d:\limesurvey/admin/dataentry.php:134
+msgid "Edit this entry"
+msgstr "Edytuj ten wpis"
+
 #: d:\limesurvey/admin/dataentry.php:138
+#, fuzzy
 msgid "This surveys uses anonymous answers, you can't update this response"
 msgstr "Ta ankieta przechowuje odpowiedzi anonimowo i niemożliwa jest ich aktualizacja."
 
@@ -4401,20 +3672,24 @@ msgstr "Email:"
 msgid "Start Language:"
 msgstr "Język początkowy:"
 
-# C:\limesurvey/admin/dataentry.php:332
+# C:\limesurvey/group.php:150
+# C:\limesurvey/question.php:132
+# C:\limesurvey/survey.php:142
 #: d:\limesurvey/admin/dataentry.php:409
+#, fuzzy
 msgid "Your survey responses have been saved succesfully"
-msgstr "Twoje odpowiedzi w ankiecie zostały pomyślnie zapisane"
+msgstr "Twoje odpowiedzi zostały zapisane."
 
 # C:\limesurvey/admin/dataentry.php:346
 #: d:\limesurvey/admin/dataentry.php:423
 msgid "A token entry for the saved survey has been created too."
 msgstr "Dla zapisanej ankiety utworzono także token."
 
-# C:\limesurvey/admin/dataentry.php:356
+# C:\limesurvey/save.php:294
 #: d:\limesurvey/admin/dataentry.php:433
+#, fuzzy
 msgid "You, someone using your email address, or the administrator has saved a survey in progress. The following details can be used to return to this survey and continue where you left off."
-msgstr "Ty, inna osoba wykorzystująca Twój adres email lub Administrator serwisu zapisał sesję podczas udzielania odpowiedzi w ankiecie. Poniższe dane pozwolą na odtworzenie sesji i kontynuację wypełniania ankiety."
+msgstr "Ty, lub inna osoba wykorzystująca Twój adres email, zapisała sesję podczas udzielania odpowiedzi w ankiecie. Poniższe dane pozwolą na odtworzenie sesji i kontynuację wypełniania ankiety."
 
 # C:\limesurvey/admin/dataentry.php:368
 #: d:\limesurvey/admin/dataentry.php:445
@@ -4473,12 +3748,44 @@ msgstr "Wprowadzone odpowiedzi zapisano w rekordzie o numerze:"
 msgid "Add Another Record"
 msgstr "Dodaj rekord"
 
+# C:\limesurvey/admin/browse.php:602
+# C:\limesurvey/admin/dataentry.php:390
+# C:\limesurvey/admin/dataentry.php:1351
+#: d:\limesurvey/admin/dataentry.php:467
+#: d:\limesurvey/admin/dataentry.php:1443
+msgid "View This Record"
+msgstr "Pokaż ten rekord"
+
 # C:\limesurvey/admin/dataentry.php:394
 # C:\limesurvey/admin/saved.php:74
 #: d:\limesurvey/admin/dataentry.php:471
 #: d:\limesurvey/admin/saved.php:53
 msgid "Browse Saved Responses"
 msgstr "Podgląd zapisanych odpowiedzi dla"
+
+# C:\limesurvey/admin/browse.php:77
+# C:\limesurvey/admin/browse.php:90
+# C:\limesurvey/admin/browse.php:114
+# C:\limesurvey/admin/browse.php:129
+# C:\limesurvey/admin/browse.php:145
+# C:\limesurvey/admin/browse.php:315
+# C:\limesurvey/admin/browse.php:640
+# C:\limesurvey/admin/dataentry.php:396
+# C:\limesurvey/admin/dataentry.php:407
+# C:\limesurvey/admin/dataentry.php:1352
+# C:\limesurvey/admin/dataentry.php:1372
+# C:\limesurvey/admin/dataentry.php:1388
+# C:\limesurvey/admin/html.php:1560
+# C:\limesurvey/admin/vvimport.php:233
+#: d:\limesurvey/admin/dataentry.php:473
+#: d:\limesurvey/admin/dataentry.php:484
+#: d:\limesurvey/admin/dataentry.php:1444
+#: d:\limesurvey/admin/dataentry.php:1464
+#: d:\limesurvey/admin/dataentry.php:1492
+#: d:\limesurvey/admin/html.php:1724
+#: d:\limesurvey/admin/vvimport.php:219
+msgid "Browse Responses"
+msgstr "Przeglądanie odpowiedzi"
 
 # C:\limesurvey/admin/dataentry.php:581
 #: d:\limesurvey/admin/dataentry.php:672
@@ -4506,7 +3813,7 @@ msgstr "Aktualizuj wpis"
 #: d:\limesurvey/admin/dataentry.php:1305
 #: d:\limesurvey/admin/dataentry.php:2385
 msgid "Finalize response submission"
-msgstr "Finalizuj wysyłkę i zapis odpowiedzi"
+msgstr "Zapisz i wyślij odpowiedzi"
 
 # C:\limesurvey/admin/dataentry.php:1218
 # C:\limesurvey/admin/dataentry.php:2178
@@ -4577,10 +3884,9 @@ msgstr "Ankieta nie jest jeszcze aktywna. Twoje odpowiedzi nie zostaną zapisane
 msgid "The survey you selected does not exist"
 msgstr "Wybrana ankieta nie istnieje."
 
-# C:\limesurvey/admin/dbedit.php:411
 #: d:\limesurvey/admin/dbedit.php:390
 msgid "Answer could not be added. There is already an answer with this code"
-msgstr "Odpowiedź nie może zostać dodana. Istnieje już pozycja o takim kodzie."
+msgstr ""
 
 # C:\limesurvey/admin/dbedit.php:499
 # C:\limesurvey/admin/deletesurvey.php:58
@@ -4590,10 +3896,9 @@ msgstr "Odpowiedź nie może zostać dodana. Istnieje już pozycja o takim kodzi
 msgid "You have not selected a survey to delete"
 msgstr "Nie wybrałeś ankiety do usunięcia"
 
-# C:\limesurvey/admin/dbedit.php:565
 #: d:\limesurvey/admin/dbedit.php:544
 msgid "Answer could not be updated. There is already an answer with this code"
-msgstr "Odpowiedź nie może zostać zaktualizowana. Istnieje już pozycja o takim kodzie."
+msgstr ""
 
 # C:\limesurvey/admin/deactivate.php:46
 # C:\limesurvey/admin/deactivate.php:115
@@ -4602,6 +3907,54 @@ msgstr "Odpowiedź nie może zostać zaktualizowana. Istnieje już pozycja o tak
 #: d:\limesurvey/admin/deactivate.php:120
 msgid "Deactivate Survey"
 msgstr "Deaktywuj ankietę"
+
+# C:\limesurvey/admin/activate.php:233
+# C:\limesurvey/admin/deactivate.php:50
+# C:\limesurvey/admin/deletesurvey.php:72
+# C:\limesurvey/admin/html.php:1181
+# C:\limesurvey/admin/html.php:1190
+# C:\limesurvey/admin/html.php:1396
+# C:\limesurvey/admin/html.php:2268
+# C:\limesurvey/admin/html.php:2691
+# C:\limesurvey/admin/labels.php:383
+# C:\limesurvey/admin/labels.php:392
+# C:\limesurvey/admin/labels.php:427
+# C:\limesurvey/admin/questionhandling.php:586
+# C:\limesurvey/admin/tokens.php:254
+# C:\limesurvey/admin/tokens.php:693
+# C:\limesurvey/admin/tokens.php:843
+# C:\limesurvey/admin/tokens.php:862
+# C:\limesurvey/admin/tokens.php:1006
+# C:\limesurvey/admin/tokens.php:1026
+#: d:\limesurvey/admin/deactivate.php:27
+#: d:\limesurvey/admin/deletesurvey.php:42
+#: d:\limesurvey/admin/html.php:1250
+#: d:\limesurvey/admin/html.php:1263
+#: d:\limesurvey/admin/html.php:1287
+#: d:\limesurvey/admin/html.php:1560
+#: d:\limesurvey/admin/html.php:2350
+#: d:\limesurvey/admin/html.php:2659
+#: d:\limesurvey/admin/html.php:2990
+#: d:\limesurvey/admin/html.php:3204
+#: d:\limesurvey/admin/labels.php:397
+#: d:\limesurvey/admin/labels.php:406
+#: d:\limesurvey/admin/labels.php:476
+#: d:\limesurvey/admin/questionhandling.php:710
+#: d:\limesurvey/admin/resetsurveylogic.php:42
+#: d:\limesurvey/admin/tokens.php:318
+#: d:\limesurvey/admin/tokens.php:972
+#: d:\limesurvey/admin/tokens.php:1193
+#: d:\limesurvey/admin/tokens.php:1216
+#: d:\limesurvey/admin/tokens.php:1424
+#: d:\limesurvey/admin/tokens.php:1447
+msgid "Warning"
+msgstr "Uwaga!"
+
+# C:\limesurvey/admin/activate.php:234
+# C:\limesurvey/admin/deactivate.php:50
+#: d:\limesurvey/admin/deactivate.php:27
+msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
+msgstr "PROSIMY O UWAŻNE PRZECZYTANIE!"
 
 # C:\limesurvey/admin/deactivate.php:55
 #: d:\limesurvey/admin/deactivate.php:32
@@ -4683,6 +4036,22 @@ msgstr "Bieżąca ankieta jest aktywowana. Jeśli usuniesz ankietę, wszystkie d
 #: d:\limesurvey/admin/deletesurvey.php:54
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Z bieżącą ankietą powiązane są tabele z tokenami, które w przypadku jej usunięcia, również zostaną usunięte. Zaleca się wykonanie eksportu tokenów przed usunięciem ankiety."
+
+# C:\limesurvey/admin/deletesurvey.php:91
+# C:\limesurvey/admin/html.php:468
+# C:\limesurvey/admin/html.php:524
+# C:\limesurvey/admin/html.php:1107
+# C:\limesurvey/admin/html.php:2593
+# C:\limesurvey/admin/tokens.php:699
+#: d:\limesurvey/admin/deletesurvey.php:61
+#: d:\limesurvey/admin/html.php:468
+#: d:\limesurvey/admin/html.php:524
+#: d:\limesurvey/admin/html.php:1180
+#: d:\limesurvey/admin/html.php:3108
+#: d:\limesurvey/admin/resetsurveylogic.php:50
+#: d:\limesurvey/admin/tokens.php:979
+msgid "Cancel"
+msgstr "Anuluj"
 
 # C:\limesurvey/admin/deletesurvey.php:150
 #: d:\limesurvey/admin/deletesurvey.php:123
@@ -4788,6 +4157,26 @@ msgstr "Kody pytań"
 msgid "Filter incomplete answers"
 msgstr "Filtrowanie niekompletnych odpowiedzi"
 
+# C:\limesurvey/admin/browse.php:573
+# C:\limesurvey/admin/exportresults.php:160
+# C:\limesurvey/admin/statistics.php:655
+# C:\limesurvey/admin/vvexport.php:75
+#: d:\limesurvey/admin/exportresults.php:172
+#: d:\limesurvey/admin/statistics.php:718
+#: d:\limesurvey/admin/vvexport.php:51
+msgid "Enable"
+msgstr "Włącz"
+
+# C:\limesurvey/admin/browse.php:574
+# C:\limesurvey/admin/exportresults.php:161
+# C:\limesurvey/admin/statistics.php:656
+# C:\limesurvey/admin/vvexport.php:76
+#: d:\limesurvey/admin/exportresults.php:173
+#: d:\limesurvey/admin/statistics.php:719
+#: d:\limesurvey/admin/vvexport.php:52
+msgid "Disable"
+msgstr "Wyłącz"
+
 # C:\limesurvey/admin/exportresults.php:166
 # C:\limesurvey/admin/html.php:1247
 # C:\limesurvey/admin/importgroup.php:584
@@ -4843,6 +4232,16 @@ msgstr "Kontrola kolumn"
 #: d:\limesurvey/admin/exportresults.php:248
 msgid "Choose Columns"
 msgstr "Wybierz kolumny"
+
+# C:\limesurvey/admin/admin.php:340
+# C:\limesurvey/admin/exportresults.php:240
+# C:\limesurvey/admin/exportresults.php:246
+# C:\limesurvey/admin/exportresults.php:297
+#: d:\limesurvey/admin/exportresults.php:252
+#: d:\limesurvey/admin/exportresults.php:258
+#: d:\limesurvey/admin/exportresults.php:309
+msgid "Help"
+msgstr "Pomoc"
 
 # C:\limesurvey/admin/exportresults.php:241
 #: d:\limesurvey/admin/exportresults.php:253
@@ -4944,6 +4343,15 @@ msgstr "Atrybut 2"
 #: d:\limesurvey/admin/exportresults.php:864
 msgid "Time Submitted"
 msgstr "Wysłano"
+
+# C:\limesurvey/admin/statistics.php:1571
+#: d:\limesurvey/admin/exportresults.php:531
+#: d:\limesurvey/admin/exportresults.php:532
+#: d:\limesurvey/admin/exportresults.php:870
+#: d:\limesurvey/admin/quota.php:248
+#: d:\limesurvey/admin/statistics.php:1779
+msgid "Completed"
+msgstr "Ukończone"
 
 # C:\limesurvey/admin/exportresults.php:773
 #: d:\limesurvey/admin/exportresults.php:827
@@ -5073,7 +4481,7 @@ msgstr "Niektóre pytania zostały wyłaczone"
 # C:\limesurvey/admin/importsurvey.php:1012
 #: d:\limesurvey/admin/fck_LimeReplacementFields.php:433
 msgid "Survey Format is "
-msgstr "Format ankiety"
+msgstr "Format ankiety to:"
 
 # C:\limesurvey/admin/html.php:1864
 # C:\limesurvey/admin/html.php:2397
@@ -5090,8 +4498,9 @@ msgstr "Dostępne są tylko znaczniki odpowiedzi z poprzedniej strony"
 
 # C:\limesurvey/register.php:147
 #: d:\limesurvey/admin/fck_LimeReplacementFields.php:439
+#, fuzzy
 msgid "Survey mode is set to "
-msgstr "Tryb ankiety ustalono na: "
+msgstr "Tryb ankiety ustalono na: %s"
 
 # C:\limesurvey/admin/html.php:1861
 # C:\limesurvey/admin/html.php:2396
@@ -5297,10 +4706,11 @@ msgstr "Prywatność"
 msgid "Status"
 msgstr "Status"
 
-# C:\limesurvey/admin/html.php:55
+# C:\limesurvey/admin/browse.php:654
 #: d:\limesurvey/admin/html.php:44
+#, fuzzy
 msgid "Responses"
-msgstr "Odpowiedzi"
+msgstr "Ukończone odpowiedzi"
 
 # C:\limesurvey/admin/html.php:66
 #: d:\limesurvey/admin/html.php:56
@@ -5562,11 +4972,12 @@ msgstr "Zmień kolejność grup"
 msgid "Export Survey Structure"
 msgstr "Eksportuj strukturę ankiety"
 
-# C:\limesurvey/admin/html.php:574
-# C:\limesurvey/admin/html.php:575
+# C:\limesurvey/admin/html.php:537
+# C:\limesurvey/admin/html.php:538
 #: d:\limesurvey/admin/html.php:598
+#, fuzzy
 msgid "Export Current Survey"
-msgstr "Eksportuj bieżącą ankietę"
+msgstr "Edytuj bieżącą ankietę"
 
 # C:\limesurvey/admin/html.php:587
 # C:\limesurvey/admin/html.php:588
@@ -5602,16 +5013,19 @@ msgstr "Zarządzaj tokenami dla tej ankiety"
 
 # C:\limesurvey/admin/html.php:624
 #: d:\limesurvey/admin/html.php:660
+#, fuzzy
 msgid "Close this Survey"
 msgstr "Zamknij bieżącą ankietę"
 
 # C:\limesurvey/admin/html.php:632
 #: d:\limesurvey/admin/html.php:668
+#, fuzzy
 msgid "Show Details of this Survey"
 msgstr "Pokaż szczegóły tej ankiety"
 
 # C:\limesurvey/admin/html.php:634
 #: d:\limesurvey/admin/html.php:670
+#, fuzzy
 msgid "Hide Details of this Survey"
 msgstr "Ukryj szczegóły tej ankiety"
 
@@ -5831,6 +5245,20 @@ msgstr "Musisz dodać grupy"
 #: d:\limesurvey/admin/html.php:861
 msgid "You need to add questions"
 msgstr "Musisz dodać pytania"
+
+# C:\limesurvey/admin/assessments.php:108
+# C:\limesurvey/admin/assessments.php:109
+# C:\limesurvey/admin/assessments.php:130
+# C:\limesurvey/admin/html.php:841
+# C:\limesurvey/admin/html.php:2273
+# C:\limesurvey/admin/statistics.php:209
+# C:\limesurvey/admin/stats.php:311
+#: d:\limesurvey/admin/html.php:897
+#: d:\limesurvey/admin/html.php:2664
+#: d:\limesurvey/admin/statistics.php:191
+#: d:\limesurvey/admin/stats.php:293
+msgid "Group"
+msgstr "Grupa"
 
 # C:\limesurvey/admin/html.php:854
 #: d:\limesurvey/admin/html.php:910
@@ -6317,6 +5745,18 @@ msgstr "Definiowanie pytań"
 msgid "Export"
 msgstr "Eksportowanie ankiety"
 
+# C:\limesurvey/admin/activate.php:205
+# C:\limesurvey/admin/activate.php:230
+# C:\limesurvey/admin/activate.php:248
+# C:\limesurvey/admin/activate.php:427
+# C:\limesurvey/admin/activate.php:460
+# C:\limesurvey/admin/html.php:1563
+# C:\limesurvey/admin/html.php:1628
+#: d:\limesurvey/admin/html.php:1727
+#: d:\limesurvey/admin/html.php:1792
+msgid "Activate Survey"
+msgstr "Aktywowanie ankiety"
+
 # C:\limesurvey/admin/html.php:1623
 #: d:\limesurvey/admin/html.php:1787
 msgid "Edit Survey Property"
@@ -6351,6 +5791,16 @@ msgstr "Zarządzanie prawami dostępu do ankiety"
 msgid "User Group"
 msgstr "Grupa użytkowników"
 
+# C:\limesurvey/admin/saved.php:121
+#: d:\limesurvey/admin/html.php:1939
+#: d:\limesurvey/admin/userrighthandling.php:78
+#: d:\limesurvey/admin/userrighthandling.php:488
+#: d:\limesurvey/admin/userrighthandling.php:569
+#: d:\limesurvey/admin/userrighthandling.php:958
+#, fuzzy
+msgid "Are you sure you want to delete this entry."
+msgstr "Czy jesteś pewien, że chcesz usunąć ten wpis?"
+
 # C:\limesurvey/admin/html.php:1753
 #: d:\limesurvey/admin/html.php:1961
 msgid "User"
@@ -6376,6 +5826,20 @@ msgstr "Edytuj ankietę - krok 1 z 2"
 #: d:\limesurvey/admin/html.php:2779
 msgid "General"
 msgstr "Podstawowe"
+
+# C:\limesurvey/admin/assessments.php:116
+# C:\limesurvey/admin/html.php:2052
+# C:\limesurvey/admin/labels.php:160
+# C:\limesurvey/admin/labels.php:177
+# C:\limesurvey/admin/questionhandling.php:497
+# C:\limesurvey/admin/stats.php:385
+#: d:\limesurvey/admin/html.php:2091
+#: d:\limesurvey/admin/labels.php:151
+#: d:\limesurvey/admin/labels.php:168
+#: d:\limesurvey/admin/questionhandling.php:589
+#: d:\limesurvey/admin/stats.php:367
+msgid "Add"
+msgstr "Dodaj"
 
 # C:\limesurvey/admin/html.php:2052
 # C:\limesurvey/admin/labels.php:160
@@ -6695,6 +6159,16 @@ msgstr "Edytuj ankietę - krok 2 z 2"
 msgid "URL Description:"
 msgstr "Opis dla końcowego odnośnika URL:"
 
+# C:\limesurvey/admin/html.php:2205
+# C:\limesurvey/admin/labels.php:569
+# C:\limesurvey/admin/questionhandling.php:515
+#: d:\limesurvey/admin/html.php:2592
+#: d:\limesurvey/admin/labels.php:646
+#: d:\limesurvey/admin/questionhandling.php:607
+#: d:\limesurvey/admin/tokens.php:576
+msgid "Save"
+msgstr "Zapisz"
+
 # C:\limesurvey/admin/html.php:2268
 #: d:\limesurvey/admin/html.php:2659
 msgid "Current survey has questions with conditions outside their own group"
@@ -6710,35 +6184,33 @@ msgstr "Przed reorganizacją grup należy upewnić się czy istnieją powiązani
 msgid "The following groups are concerned"
 msgstr "Poniższe grupy są ze sobą powiązane"
 
-# C:\limesurvey/admin/html.php:2273
+# C:\limesurvey/admin/userrighthandling.php:958
 #: d:\limesurvey/admin/html.php:2664
+#, fuzzy
 msgid "depends on group"
-msgstr "zależnie od grupy"
+msgstr "Dodawanie użytkownika do grupy"
 
 # C:\limesurvey/admin/html.php:2273
 #: d:\limesurvey/admin/html.php:2664
+#, fuzzy
 msgid "see the marked conditions on"
-msgstr "pokaż wybrane warunki dla"
+msgstr "Grupa %s posiada powiązanie z grupą %s, sprawdź warunki powiązań"
 
-# C:\limesurvey/admin/html.php:2353
 #: d:\limesurvey/admin/html.php:2744
 msgid "The uploaded file is bigger than the upload_max_filesize directive in php.ini"
-msgstr "Wczytywany plik ma rozmiar większy niż wartość zmiennej upload_max_filesize w php.ini"
+msgstr ""
 
-# C:\limesurvey/admin/html.php:2357
 #: d:\limesurvey/admin/html.php:2748
 msgid "The file was only partially uploaded"
-msgstr "Plik został tylko częściowo wczytany"
+msgstr ""
 
-# C:\limesurvey/admin/html.php:2361
 #: d:\limesurvey/admin/html.php:2752
 msgid "No file was uploaded"
-msgstr "Żaden plik nie został wczytany"
+msgstr ""
 
-# C:\limesurvey/admin/html.php:2367
 #: d:\limesurvey/admin/html.php:2758
 msgid "Error on file transfer. You must select a CSV file"
-msgstr "Błąd podczas przesyłania pliku. Musisz wybrać plik CSV"
+msgstr ""
 
 # C:\limesurvey/admin/html.php:2377
 #: d:\limesurvey/admin/html.php:2769
@@ -6795,45 +6267,51 @@ msgstr "Wybierz plik CSV/SQL:"
 msgid "Convert Resources links and INSERTANS fields ?"
 msgstr "Konwertuj linki do zasobów oraz znaczniki"
 
-# C:\limesurvey/admin/html.php:2691
+# C:\limesurvey/admin/html.php:805
 #: d:\limesurvey/admin/html.php:3204
+#, fuzzy
 msgid "You need to upload the file"
-msgstr "Musisz wczytać plik"
+msgstr "Musisz dodać pytania"
 
-# C:\limesurvey/admin/html.php:2698
+# C:\limesurvey/admin/tokens.php:1281
+# C:\limesurvey/admin/tokens.php:1316
 #: d:\limesurvey/admin/html.php:3211
+#, fuzzy
 msgid "You must upload a CSV file"
-msgstr "Musisz wczytać plik CSV"
+msgstr "Wczytaj plik CSV"
 
-# C:\limesurvey/admin/html.php:2700
+# C:\limesurvey/admin/tokens.php:1281
+# C:\limesurvey/admin/tokens.php:1316
 #: d:\limesurvey/admin/html.php:3213
 msgid "Upload CSV file"
 msgstr "Wczytaj plik CSV"
 
-# C:\limesurvey/admin/html.php:2712
 #: d:\limesurvey/admin/html.php:3225
 msgid "It is impossible to upload a file other than CSV type"
-msgstr "Nie można wczytać pliku innego typu niż CSV"
+msgstr ""
 
-# C:\limesurvey/admin/html.php:2724
 #: d:\limesurvey/admin/html.php:3237
 msgid "It is impossible to upload an empty file"
-msgstr "Nie można wczytać pustego pliku"
+msgstr ""
 
-# C:\limesurvey/admin/html.php:2731
+# C:\limesurvey/admin/tokens.php:1281
+# C:\limesurvey/admin/tokens.php:1316
 #: d:\limesurvey/admin/html.php:3244
 msgid "Uploading CSV file"
-msgstr "Wczytywanie pliku CSV"
+msgstr "Wczytywaniej pliku CSV"
 
-# C:\limesurvey/admin/html.php:2732
+# C:\limesurvey/admin/html.php:1163
+# C:\limesurvey/admin/questionhandling.php:68
+# C:\limesurvey/admin/questionhandling.php:202
+# C:\limesurvey/admin/questionhandling.php:471
 #: d:\limesurvey/admin/html.php:3245
+#, fuzzy
 msgid "Visualization:"
-msgstr "Wizualizacja:"
+msgstr "Walidacja:"
 
-# C:\limesurvey/admin/html.php:2732
 #: d:\limesurvey/admin/html.php:3245
 msgid "Select the field number you would like to use for your answers:"
-msgstr "Należy wybrać numer pola dla własnej odpowiedzi"
+msgstr ""
 
 # C:\limesurvey/common.php:328
 # C:\limesurvey/common.php:329
@@ -7148,12 +6626,13 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Plik nie zawiera danych w formacie LimeSurvey."
 
 #: d:\limesurvey/admin/importsurvey.php:759
+#, fuzzy
 msgid "was NOT imported, because the question type is not know"
-msgstr "nie zostało zaimportowane z uwagi na nierozpoznany typ pytania"
+msgstr "Pytanie \"%s - %s\" nie zostało zaimportowane z uwagi na nierozpoznany typ pytania"
 
 #: d:\limesurvey/admin/importsurvey.php:765
 msgid "was imported, but the type was set to \""
-msgstr "zaimportowano pomyślnie lecz jego typ został zmieniony na \""
+msgstr ""
 
 # C:\limesurvey/admin/importsurvey.php:1011
 #: d:\limesurvey/admin/importsurvey.php:1072
@@ -7179,6 +6658,13 @@ msgstr "(Zestawy etykiet nie zostały zaimportowane ze względu na brak uprawnie
 #: d:\limesurvey/admin/importsurvey.php:1111
 msgid "Question Attributes"
 msgstr "Atrybuty pytania"
+
+# C:\limesurvey/admin/assessments.php:83
+# C:\limesurvey/admin/importsurvey.php:1023
+#: d:\limesurvey/admin/importsurvey.php:1088
+#: d:\limesurvey/admin/importsurvey.php:1112
+msgid "Assessments"
+msgstr "Oceny odpowiedzi"
 
 # C:\limesurvey/admin/importquestion.php:439
 # C:\limesurvey/admin/importsurvey.php:1025
@@ -7440,13 +6926,15 @@ msgstr "Ustawienia ankiety - OK"
 
 # C:\limesurvey/admin/html.php:912
 #: d:\limesurvey/admin/integritycheck.php:205
+#, fuzzy
 msgid "No matching Group"
-msgstr "Brak pasujących "
+msgstr "Brak pasujących grup"
 
 # C:\limesurvey/admin/browse.php:132
 #: d:\limesurvey/admin/integritycheck.php:211
+#, fuzzy
 msgid "No matching Survey!"
-msgstr "Nie ma takiej ankiety!"
+msgstr "Brak pasującej ankiety"
 
 # C:\limesurvey/admin/integritycheck.php:236
 #: d:\limesurvey/admin/integritycheck.php:216
@@ -7609,6 +7097,7 @@ msgstr "Podaj nazwę"
 
 # C:\limesurvey/admin/labels.php:160
 #: d:\limesurvey/admin/labels.php:151
+#, fuzzy
 msgid "You cannot remove this items since you need at least one language in a labelset."
 msgstr "Nie możesz usunąć tego elementu ponieważ wymagana jest przynajmniej jedna wersja językowa w każdym zbiorze etykiet."
 
@@ -7770,8 +7259,9 @@ msgstr "do pytania"
 
 # C:\limesurvey/admin/printablesurvey.php:237
 #: d:\limesurvey/admin/printablesurvey.php:232
+#, fuzzy
 msgid "Only answer this question"
-msgstr "Należy udzielić odpowiedzi na to pytanie"
+msgstr "Należy udzielić odpowiedzi na to pytanie (%s)"
 
 # C:\limesurvey/admin/printablesurvey.php:268
 # C:\limesurvey/admin/printablesurvey.php:279
@@ -7873,8 +7363,9 @@ msgstr "Wyślij wypełnioną ankietę na numer faksu:"
 
 # C:\limesurvey/admin/statistics.php:736
 #: d:\limesurvey/admin/printablesurvey.php:785
+#, fuzzy
 msgid "Please submit by"
-msgstr "Prosimy o dostarczenie ankiety przed"
+msgstr "Prosimy o dostarczenie ankiety przed %s"
 
 # C:\limesurvey/admin/labels.php:127
 #: d:\limesurvey/admin/questionhandling.php:24
@@ -8230,6 +7721,13 @@ msgstr "Data zapisania"
 msgid "Are you sure you want to delete this entry?"
 msgstr "Czy jesteś pewien, że chcesz usunąć ten wpis?"
 
+# C:\limesurvey/admin/assessments.php:139
+# C:\limesurvey/admin/assessments.php:164
+# C:\limesurvey/admin/saved.php:123
+#: d:\limesurvey/admin/saved.php:102
+msgid "Edit"
+msgstr "Edytuj"
+
 # C:\limesurvey/admin/spss.php:361
 #: d:\limesurvey/admin/spss.php:405
 msgid "Record ID"
@@ -8299,6 +7797,12 @@ msgstr "Odpowiedzi zawierające"
 #: d:\limesurvey/admin/statistics.php:714
 msgid "View summary of all available fields"
 msgstr "Pokaż statystyki dla wszystkich pytań"
+
+# C:\limesurvey/admin/browse.php:572
+# C:\limesurvey/admin/statistics.php:654
+#: d:\limesurvey/admin/statistics.php:717
+msgid "Filter incomplete answers:"
+msgstr "Filtrowanie niekompletnych odpowiedzi:"
 
 #: d:\limesurvey/admin/statistics.php:721
 msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
@@ -8401,6 +7905,12 @@ msgstr "Odchylenie standardowe"
 msgid "Average"
 msgstr "Średnia"
 
+# C:\limesurvey/admin/assessments.php:108
+# C:\limesurvey/admin/statistics.php:1097
+#: d:\limesurvey/admin/statistics.php:1220
+msgid "Minimum"
+msgstr "Minimum"
+
 # C:\limesurvey/admin/statistics.php:1378
 # C:\limesurvey/admin/statistics.php:1494
 #: d:\limesurvey/admin/statistics.php:1236
@@ -8423,6 +7933,12 @@ msgstr "2 kwartyl (Mediana)"
 #: d:\limesurvey/admin/statistics.php:1310
 msgid "3rd Quartile (Q3)"
 msgstr "3 kwartyl (Q3)"
+
+# C:\limesurvey/admin/assessments.php:108
+# C:\limesurvey/admin/statistics.php:1197
+#: d:\limesurvey/admin/statistics.php:1319
+msgid "Maximum"
+msgstr "Maksimum"
 
 # C:\limesurvey/admin/statistics.php:1208
 #: d:\limesurvey/admin/statistics.php:1329
@@ -8449,45 +7965,54 @@ msgstr "Procentowo"
 msgid "Non completed"
 msgstr "niezakończone"
 
-# C:\limesurvey/admin/stats.php:256
+# C:\limesurvey/admin/questionhandling.php:138
 #: d:\limesurvey/admin/stats.php:238
 msgid "Select all"
 msgstr "Wybierz wszystkie"
 
-# C:\limesurvey/admin/stats.php:257
+# C:\limesurvey/common.php:1358
 #: d:\limesurvey/admin/stats.php:239
+#, fuzzy
 msgid "Proceed"
-msgstr "Kontynuuj"
+msgstr "Domyślny"
 
-# C:\limesurvey/admin/stats.php:298
+# C:\limesurvey/admin/exportresults.php:147
+# C:\limesurvey/admin/html.php:939
+# C:\limesurvey/admin/importgroup.php:581
+# C:\limesurvey/admin/importquestion.php:424
+# C:\limesurvey/admin/importsurvey.php:1018
 #: d:\limesurvey/admin/stats.php:280
+#, fuzzy
 msgid "Question List"
-msgstr "Lista pytań"
+msgstr "Pytania"
 
-# C:\limesurvey/admin/stats.php:368
 #: d:\limesurvey/admin/stats.php:350
 msgid "Like"
-msgstr "Jak"
+msgstr ""
 
 # C:\limesurvey/admin/stats.php:376
 #: d:\limesurvey/admin/stats.php:358
+#, fuzzy
 msgid "Not Equals"
-msgstr "Nierówny"
+msgstr "Nierówne"
 
-# C:\limesurvey/admin/stats.php:432
+# C:\limesurvey/admin/importgroup.php:587
+# C:\limesurvey/admin/importsurvey.php:1020
 #: d:\limesurvey/admin/stats.php:414
+#, fuzzy
 msgid "Filter Conditions"
-msgstr "Kryteria filtrów"
+msgstr "Warunki"
 
-# C:\limesurvey/admin/stats.php:692
+# C:\limesurvey/common.php:704
 #: d:\limesurvey/admin/stats.php:674
+#, fuzzy
 msgid "Numerical"
-msgstr "Numeryczny"
+msgstr "Wartość liczbowa"
 
-# C:\limesurvey/admin/stats.php:725
+# C:\limesurvey/common.php:711
 #: d:\limesurvey/admin/stats.php:707
 msgid "Huge free text"
-msgstr "Tekst opisowy (długi)"
+msgstr "Tekst dowolny (bardzo długi)"
 
 # C:\limesurvey/admin/html.php:794
 #: d:\limesurvey/admin/templates.php:42
@@ -8557,34 +8082,36 @@ msgstr "Strona zapisu postępu"
 msgid "Print Answers Page"
 msgstr "Strona wydruku odpowiedzi"
 
-# C:\limesurvey/admin/templates.php:96
-# C:\limesurvey/admin/templates.php:210
+# C:\limesurvey/admin/userrighthandling.php:697
 #: d:\limesurvey/admin/templates.php:127
 #: d:\limesurvey/admin/templates.php:245
+#, fuzzy
 msgid "Failed to copy"
-msgstr "Nie skopiowano"
+msgstr "Aktualizacja nieudana!"
 
 # C:\limesurvey/admin/templates.php:96
 # C:\limesurvey/admin/templates.php:210
 #: d:\limesurvey/admin/templates.php:127
 #: d:\limesurvey/admin/templates.php:245
+#, fuzzy
 msgid "to new template directory."
-msgstr "do nowego katalogu szablonu."
+msgstr "Błąd przy kopiowaniu %s do nowego katalogu szablonu."
 
-# C:\limesurvey/admin/templates.php:102
 #: d:\limesurvey/admin/templates.php:133
 msgid "Directory with the name"
-msgstr "Katalog o nazwie"
+msgstr ""
 
 # C:\limesurvey/admin/templates.php:102
 #: d:\limesurvey/admin/templates.php:133
+#, fuzzy
 msgid "already exists - choose another name"
-msgstr "już istnieje - wybierz inną nazwę"
+msgstr "Katalog o nazwie `%s` już istnieje - wybierz inną nazwę"
 
 # C:\limesurvey/admin/templates.php:104
 #: d:\limesurvey/admin/templates.php:135
+#, fuzzy
 msgid "Unable to create directory"
-msgstr "Nie można utworzyć katalogu"
+msgstr "Nie można utworzyć katalogu `%s`."
 
 # C:\limesurvey/admin/templates.php:104
 # C:\limesurvey/admin/templates.php:112
@@ -8595,8 +8122,9 @@ msgstr "Być może nie posiadasz odpowiednich uprawnień"
 
 # C:\limesurvey/admin/templates.php:112
 #: d:\limesurvey/admin/templates.php:143
+#, fuzzy
 msgid "Directory could not be renamed to"
-msgstr "Nie można zmienić nazwy katalogu na:"
+msgstr "Nie można zmienić nazwy katalogu na: `%s`."
 
 #: d:\limesurvey/admin/templates.php:172
 #: d:\limesurvey/admin/templates.php:184
@@ -8944,6 +8472,13 @@ msgstr "Jeżeli zainicjujesz tokeny dla tej ankiety, dostęp do niej będą miel
 msgid "Do you want to create a tokens table for this survey?"
 msgstr "Czy chcesz utworzyć tabelę tokenów dla tej ankiety?"
 
+# C:\limesurvey/admin/activate.php:469
+# C:\limesurvey/admin/activate.php:474
+# C:\limesurvey/admin/tokens.php:263
+#: d:\limesurvey/admin/tokens.php:339
+msgid "Initialise Tokens"
+msgstr "Inicjuj tokeny"
+
 # C:\limesurvey/admin/tokens.php:281
 #: d:\limesurvey/admin/tokens.php:351
 msgid "Restore Options"
@@ -9098,6 +8633,7 @@ msgstr "Email przypomnienia:"
 # C:\limesurvey/admin/html.php:2180
 # C:\limesurvey/admin/html.php:2467
 #: d:\limesurvey/admin/tokens.php:552
+#, fuzzy
 msgid "Confirmation Email Subject"
 msgstr "Temat emalia potwierdzenia"
 
@@ -9176,15 +8712,69 @@ msgstr "Czy jesteś pewien, że chcesz skasować WSZYSTKIE wpisy tokenów?"
 msgid "Delete all token entries"
 msgstr "Usuń wszystkie wpisy tokenów"
 
-# C:\limesurvey/admin/tokens.php:461
+# C:\limesurvey/admin/labels.php:509
+# C:\limesurvey/admin/labels.php:549
 #: d:\limesurvey/admin/tokens.php:704
+#, fuzzy
 msgid "Update tokens table with new fields"
-msgstr "Aktualizuj tabelę tokenów z nowymi polami"
+msgstr "Aktualizacja zestawu etykiet nieudana"
+
+# C:\limesurvey/admin/browse.php:532
+# C:\limesurvey/admin/tokens.php:486
+#: d:\limesurvey/admin/tokens.php:737
+msgid "Data View Control"
+msgstr "Podgląd danych"
+
+# C:\limesurvey/admin/browse.php:538
+# C:\limesurvey/admin/tokens.php:491
+#: d:\limesurvey/admin/tokens.php:742
+msgid "Show start.."
+msgstr "Pierwsza strona..."
+
+# C:\limesurvey/admin/browse.php:277
+# C:\limesurvey/admin/browse.php:278
+# C:\limesurvey/admin/browse.php:541
+# C:\limesurvey/admin/tokens.php:494
+#: d:\limesurvey/admin/tokens.php:745
+msgid "Show previous..."
+msgstr "Poprzednia strona..."
+
+# C:\limesurvey/admin/browse.php:281
+# C:\limesurvey/admin/browse.php:282
+# C:\limesurvey/admin/browse.php:545
+# C:\limesurvey/admin/tokens.php:498
+#: d:\limesurvey/admin/tokens.php:749
+msgid "Show next..."
+msgstr "Następna strona..."
+
+# C:\limesurvey/admin/browse.php:548
+# C:\limesurvey/admin/tokens.php:501
+#: d:\limesurvey/admin/tokens.php:752
+msgid "Show last..."
+msgstr "Ostatnia strona..."
 
 # C:\limesurvey/admin/tokens.php:507
 #: d:\limesurvey/admin/tokens.php:758
 msgid "Search"
 msgstr "Szukaj"
+
+# C:\limesurvey/admin/browse.php:570
+# C:\limesurvey/admin/tokens.php:515
+#: d:\limesurvey/admin/tokens.php:766
+msgid "Records Displayed:"
+msgstr "Liczba elementów na stronie:"
+
+# C:\limesurvey/admin/browse.php:571
+# C:\limesurvey/admin/tokens.php:516
+#: d:\limesurvey/admin/tokens.php:767
+msgid "Starting From:"
+msgstr "Wyświetlaj od:"
+
+# C:\limesurvey/admin/browse.php:576
+# C:\limesurvey/admin/tokens.php:517
+#: d:\limesurvey/admin/tokens.php:768
+msgid "Show"
+msgstr "Pokaż"
 
 # C:\limesurvey/admin/tokens.php:555
 # C:\limesurvey/admin/tokens.php:559
@@ -9231,6 +8821,12 @@ msgstr "Zaproszenie wysłane:"
 msgid "Completed?"
 msgstr "Zakończone?"
 
+# C:\limesurvey/admin/assessments.php:154
+# C:\limesurvey/admin/tokens.php:601
+#: d:\limesurvey/admin/tokens.php:860
+msgid "Actions"
+msgstr "Akcje"
+
 # C:\limesurvey/admin/tokens.php:617
 #: d:\limesurvey/admin/tokens.php:885
 msgid "Edit Token Entry"
@@ -9245,6 +8841,12 @@ msgstr "Usuń wpis tokenu"
 #: d:\limesurvey/admin/tokens.php:889
 msgid "Do Survey"
 msgstr "Wypełnij ankietę"
+
+# C:\limesurvey/admin/browse.php:255
+# C:\limesurvey/admin/tokens.php:628
+#: d:\limesurvey/admin/tokens.php:906
+msgid "View Response"
+msgstr "Pokaż odpowiedzi"
 
 # C:\limesurvey/admin/tokens.php:644
 #: d:\limesurvey/admin/tokens.php:918
@@ -9311,6 +8913,14 @@ msgstr "Od"
 msgid "Subject"
 msgstr "Temat"
 
+# C:\limesurvey/admin/assessments.php:108
+# C:\limesurvey/admin/tokens.php:757
+# C:\limesurvey/admin/tokens.php:910
+#: d:\limesurvey/admin/tokens.php:1059
+#: d:\limesurvey/admin/tokens.php:1276
+msgid "Message"
+msgstr "Wiadomość"
+
 # C:\limesurvey/admin/tokens.php:778
 # C:\limesurvey/admin/tokens.php:904
 # C:\limesurvey/admin/tokens.php:944
@@ -9344,6 +8954,7 @@ msgstr "Wysłano zaproszenie do:"
 
 # C:\limesurvey/admin/tokens.php:833
 #: d:\limesurvey/admin/tokens.php:1183
+#, fuzzy
 msgid "Mail to {FIRSTNAME} {LASTNAME} ({EMAIL}) Failed"
 msgstr "Wysyłanie do {FIRSTNAME} {LASTNAME} ({EMAIL}) nieudane"
 
@@ -9379,6 +8990,7 @@ msgstr "Email administratora:"
 
 # C:\limesurvey/admin/tokens.php:896
 #: d:\limesurvey/admin/tokens.php:1294
+#, fuzzy
 msgid "Start at Token ID No:"
 msgstr "Zacznij od TID nr:"
 
@@ -9568,10 +9180,11 @@ msgstr "Usunięto rekordy z nieprawidłowym adresem email."
 msgid "Uploading LDAP Query"
 msgstr "Wczytywanie kwerendy LDAP"
 
-# C:\limesurvey/admin/tokens.php:1475
+# C:\limesurvey/admin/tokens.php:1069
 #: d:\limesurvey/admin/tokens.php:2021
+#, fuzzy
 msgid "{TOKENCOUNT} Records Created"
-msgstr "Liczba utworzonych rekordów: {TOKENCOUNT}"
+msgstr "Liczba utworzonych tokenów: {TOKENCOUNT}"
 
 # C:\limesurvey/admin/tokens.php:1479
 #: d:\limesurvey/admin/tokens.php:2025
@@ -9708,10 +9321,11 @@ msgstr "Nie wprowadzono nazwy użytkownika."
 
 # C:\limesurvey/admin/usercontrol.php:193
 #: d:\limesurvey/admin/usercontrol.php:280
+#, fuzzy
 msgid "You were signed in on the site"
 msgstr ""
 "Gratulacje!\n"
-"Utworzono dla Ciebie konto w systemie"
+"Utworzono dla Ciebie konto w systemie (%s)"
 
 # C:\limesurvey/admin/usercontrol.php:197
 #: d:\limesurvey/admin/usercontrol.php:289
@@ -9761,6 +9375,7 @@ msgstr "Nie można zmodyfikować danych użytkownika."
 # C:\limesurvey/admin/usercontrol.php:164
 # C:\limesurvey/admin/usercontrol.php:322
 #: d:\limesurvey/admin/usercontrol.php:436
+#, fuzzy
 msgid "Email address ist not valid."
 msgstr "Adres email jest nieprawidłowy."
 
@@ -10036,6 +9651,7 @@ msgstr "Do:"
 
 # C:\limesurvey/admin/userrighthandling.php:674
 #: d:\limesurvey/admin/userrighthandling.php:842
+#, fuzzy
 msgid "Mail not sent!"
 msgstr "Email niewysłany!"
 
@@ -10115,8 +9731,9 @@ msgstr "Wróć do importu odpowiedzi"
 
 # C:\limesurvey/admin/vvimport.php:217
 #: d:\limesurvey/admin/vvimport.php:203
+#, fuzzy
 msgid "Import Failed on Record"
-msgstr "Błąd przy imporcie rekordu"
+msgstr "Błąd przy imporcie rekordu %d (powód: [%s])"
 
 # C:\limesurvey/admin/vvimport.php:230
 #: d:\limesurvey/admin/vvimport.php:216
