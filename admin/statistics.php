@@ -55,7 +55,7 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 0;
+$showaggregateddata = 1;
 
 //split up results to extend statistics
 $showcombinedresults = 0;
@@ -3735,13 +3735,27 @@ if (isset($summary) && $summary)
             				$squarevalue = square($diff);
             				
             				//3 = sum up square values and multiply them with the occurence
-            				$stddev += $squarevalue * $stddevarray[$j];   
+            				//prevent divison by zero
+            				if($squarevalue != 0 && $stddevarray[$j] != 0)
+            				{
+            					$stddev += $squarevalue * $stddevarray[$j];
+            				}
+            				   
             			}
             			
             			//4 = multiply result with 1 / (number of items (=5))            			
             			//There are two different formulas to calculate standard derivation
             			//$stddev = $stddev / array_sum($stddevarray);		//formula source: http://de.wikipedia.org/wiki/Standardabweichung
-            			$stddev = $stddev / (array_sum($stddevarray)-1);	//formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
+            			
+            			//prevent division by zero
+            			if((array_sum($stddevarray)-1) != 0 && $stddev != 0)
+            			{
+            				$stddev = $stddev / (array_sum($stddevarray)-1);	//formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
+            			}
+            			else
+            			{
+            				$stddev = 0;
+            			}
             			
             			//5 = get root
             			$stddev = sqrt($stddev);
@@ -4078,15 +4092,6 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 }
 
 
-//show whole question title using tooltip for speaker symbol
-/*function showSpeaker($hinttext)
-{
-  global $imagefiles, $clang;
-  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
-           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
-  return $reshtml; 
-}*/
-
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
@@ -4113,10 +4118,23 @@ function showSpeaker($hinttext)
 	else
 	{
 		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+	}	
+  return $reshtml;   
+}
+
+//simple function to square a value
+function square($number)
+{
+	if($number == 0)
+	{
+		$squarenumber = 0;
+	}
+	else
+	{
+		$squarenumber = $number * $number;
 	}
 	
-  return $reshtml; 
-  
+	return $squarenumber;
 }
 
 ?>
