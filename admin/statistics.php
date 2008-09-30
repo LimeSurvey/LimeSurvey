@@ -2017,7 +2017,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
 	.$clang->gT("Total records in survey").": $total<br />\n";
 	
-	//only calculate percentage of $total is set
+	//only calculate percentage if $total is set
 	if ($total)
 	{
 		$percent=sprintf("%01.2f", ($results/$total)*100);
@@ -2037,7 +2037,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	if ($results > 0)
 	{
 		//add two buttons to browse results and export results
-		$statisticsoutput .= "\t<tr>"
+		$statisticsoutput .= "\t<tr> "
 		."\t\t<td align='right' width='50%'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
 		."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -2424,7 +2424,7 @@ if (isset($summary) && $summary)
 				}
 				
 				//outputting headline
-				$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
+				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
 				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
 				."</td></tr>\n"
 				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
@@ -2690,7 +2690,7 @@ if (isset($summary) && $summary)
 					//output
 					$statisticsoutput .= "\t<tr>\n"
 					."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
-					."\t</tr>\n</table>\n";
+					."\t</tr>\n</table><br />\n";
 					unset($showem);
 				}
 				
@@ -3299,11 +3299,7 @@ if (isset($summary) && $summary)
 					else
 					{
 						if(!isset($showheadline) || $showheadline != false)
-						{
-							//DELETE: check if this is used anytime
-							echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
-							
-							
+						{						
 							//three columns
 							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
 							."\t\t<td width='25%' align='center' >"
@@ -3778,7 +3774,6 @@ if (isset($summary) && $summary)
             		}            		
             		
             		//calculate standard deviation
-		            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic Mean")." | ".$clang->gT("Standard Deviation")."</td>";	//German: "Fallzahl"
 			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
 			        //there has to be a whitespace within the table cell to display correctly
@@ -4025,7 +4020,7 @@ if (isset($summary) && $summary)
 			
 			
 			//close table/output
-			$statisticsoutput .= "</table>";
+			$statisticsoutput .= "</table><br /> \n";
 			
 		}	//end if -> collect and display results
 		
