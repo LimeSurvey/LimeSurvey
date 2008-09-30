@@ -4562,8 +4562,35 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		return;
 	}
 
-    $newsid=sanitize_int($newsid);
-    $oldsid=sanitize_int($oldsid);
+	$newsid=sanitize_int($newsid);
+	$oldsid=sanitize_int($oldsid);
+
+	# translate 'description' INSERTANS tags in groups 
+	$sql = "SELECT gid, language, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' ";
+	$res = db_execute_assoc($sql) or safe_die("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
+
+	while ($qentry = $res->FetchRow())
+	{
+		$description = $qentry['description'];
+		$gid = $qentry['gid'];
+		$language = $qentry['language'];
+
+		foreach ($fieldnames as $fnrow)
+		{
+			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
+			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+			$description=ereg_replace($pattern, $replacement, $description);
+		}
+
+		if (strcmp($description,$qentry['description']) !=0 )
+		{
+			// Update Field
+			$sqlupdate = "UPDATE {$dbprefix}groups SET description='".$description."' WHERE gid=$gid AND language='$language'";
+			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in groups<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+		} // Enf if modified
+	} // end while qentry
+
+	# translate 'question' and 'help' INSERTANS tags in questions 
 	$sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%'";
 	$res = db_execute_assoc($sql) or safe_die("Can't read question table in transInsertAns ".$connect->ErrorMsg());     // Checked
 
@@ -4583,11 +4610,38 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		}
 
 		if (strcmp($question,$qentry['question']) !=0 ||
-			strcmp($help,$qentry['help']) !=0)
+				strcmp($help,$qentry['help']) !=0)
 		{
 			// Update Field
 			$sqlupdate = "UPDATE {$dbprefix}questions SET question='".$question."', help='".$help."' WHERE qid=$qid AND language='$language'";
 			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in question<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+		} // Enf if modified
+	} // end while qentry
+
+
+	# translate 'answer' INSERTANS tags in answers 
+	$sql = "SELECT a.qid, a.language, a.code, a.answer from {$dbprefix}answers as a INNER JOIN {$dbprefix}questions as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
+	$res = db_execute_assoc($sql) or safe_die("Can't read answers table in transInsertAns ".$connect->ErrorMsg());     // Checked
+
+	while ($qentry = $res->FetchRow())
+	{
+		$answer = $qentry['answer'];
+		$code = $qentry['code'];
+		$qid = $qentry['qid'];
+		$language = $qentry['language'];
+
+		foreach ($fieldnames as $fnrow)
+		{
+			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
+			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
+			$answer=ereg_replace($pattern, $replacement, $answer);
+		}
+
+		if (strcmp($answer,$qentry['answer']) !=0)
+		{
+			// Update Field
+			$sqlupdate = "UPDATE {$dbprefix}answers SET answer='".$answer."' WHERE qid=$qid AND code='$code' AND language='$language'";
+			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in answers<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
 		} // Enf if modified
 	} // end while qentry
 }
