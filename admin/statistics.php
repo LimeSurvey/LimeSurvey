@@ -49,7 +49,7 @@
 	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
-//MM: This settingss will be put into config-defaults.php later
+//MM: These settings will be put into config-defaults.php later
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
@@ -64,20 +64,6 @@ $showcombinedresults = 0;
  */
 $maxchars = 10;
 
-
-
-
-
-
-
-
-//showaggregateddata doesn't work when this filter is set
-//therefore we disable the function
-/*if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
-{
-	
-    $showaggregateddata = 0;
-}*/
 
 
 //don't call this script directly!
@@ -1023,6 +1009,8 @@ foreach ($filters as $flt)
 		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		
+		//XXX have to fix layout problem here, too
+		
 		//check all the answers
 		while ($row=$result->FetchRow())
 		{
@@ -1033,7 +1021,12 @@ foreach ($filters as $flt)
 			
 			$statisticsoutput .= " -->\n";
 			
-			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			if ($counter2 == 4) 
+			{
+				//XXX echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
+				$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+				$counter2=0;
+			}
 			
 			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
@@ -1218,13 +1211,16 @@ foreach ($filters as $flt)
         case "1": // MULTI SCALE
         $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
         
+        //special dual scale counter
+        $counter2=0;       
+         
         //multi/dual scale is like two mixed questions of the same type so we loop twice
         for ($i=0; $i<=1; $i++) 
         {
         	//get answers
             $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-            $counter2=0;
+            
             
             //loop through answers
             while ($row=$result->FetchRow())
@@ -1240,22 +1236,18 @@ foreach ($filters as $flt)
                 //some layout adaptions -> new line after 4 entries
                 if ($counter2 == 4) 
                 {
-                	echo '<script language="javascript" type="text/javascript">alert("ABSATZ");</script>';
                 	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
                 	$counter2=0;
                 }
                 
-                //output checkbox
-                $statisticsoutput .= "\t\t\t\t<td align='center'>C=$counter2 <b>$flt[3] Label ".(1+$i)."($row[0])</b>"
-                    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-                
+                //output checkbox and question/label text
+                $statisticsoutput .= "\t\t\t\t<td align='center'>";
+                $statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				
                 //pre-check
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+                $statisticsoutput .= " />&nbsp;<strong>".showSpeaker($flt[3]." ".$clang->gT("Label")." ".(1+$i)." (".$clang->gT("Item")." ".$row[0].")")."</strong><br />\n";
 
-                
-                $statisticsoutput .= " />&nbsp;"
-                .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-                ."<br />\n";
                 
                 /*
                  * get labels. remember that there are two labels used -> add $i 
