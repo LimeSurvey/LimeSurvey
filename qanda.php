@@ -1796,6 +1796,7 @@ function do_multiplechoice_withcomments($ia)
 	// Check if the max_answers attribute is set
 	$maxansw=0;
 	$callmaxanswscriptcheckbox = "";
+	$callmaxanswscriptcheckbox2 = "";
 	$callmaxanswscriptother = "";
 	$maxanswscript = "";
 	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
