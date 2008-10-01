@@ -714,25 +714,26 @@ function do_date($ia)
 		}
 		$answer = keycontroljs();
 		$answer .= '
-			<select id="day'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\';">
-				<option value="">'.$clang->gT('Day').'</option>
+			<p class="question">
+				<select id="day'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\';" class="day">
+					<option value="">'.$clang->gT('Day').'</option>
 ';
 		for ($i=1; $i<=31; $i++) {
 			if ($i == $currentdate)
 			{
-				$i_date_selected = ' selected="selected"';
+				$i_date_selected = SELECTED;
 			}
 			else
 			{
 				$i_date_selected = '';
 			}
-			$answer .= '				<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>
+			$answer .= '					<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>
 ';
 		}
 
-		$answer .= '			</select>
-			<select id="month'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\');">
-				<option value="">'.$clang->gT('Month').'</option>
+		$answer .= '				</select>
+				<select id="month'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\');" class="month">
+					<option value="">'.$clang->gT('Month').'</option>
 ';
 		$montharray=array(
 			$clang->gT('Jan'), 
@@ -750,35 +751,37 @@ function do_date($ia)
 		for ($i=1; $i<=12; $i++) {
 			if ($i == $currentmonth)
 			{
-				$i_date_selected = ' selected="selected"';
+				$i_date_selected = SELECTED;
 			}
 			else
 			{
 				$i_date_selected = '';
 			}
 
-			$answer .= '				<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>
+			$answer .= '					<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>
 ';
 		}
 
-		$answer .= "\t\t\t</select>
-			<select id='year{$ia[1]}' onChange='dateUpdater(\"{$ia[1]}\");'>
-				<option value=''>".$clang->gT("Year")."</option>\n";
+		$answer .= '				</select>
+				<select id="year'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\');" class="year">
+					<option value="">'.$clang->gT('Year').'</option>
+';
 
-		for ($i=date("Y"); $i>=(date("Y")-115); $i--) {
+		for ($i=date('Y'); $i>=(date('Y')-115); $i--) {
 			if ($i == $currentyear)
 			{
-				$i_date_selected = ' selected="selected"';
+				$i_date_selected = SELECTED;
 			}
 			else
 			{
 				$i_date_selected = '';
 			}
-			$answer .= '				<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>
+			$answer .= '					<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>
 ';
 		}
-		$answer .= '			</select>
-			<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+		$answer .= '				</select>
+				<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+			</p>
 ';
 /* Can't see the reason for this so am commenting it out. (Eric_T_Cruiser 2008-10-01)
 		$answer .= '
@@ -826,7 +829,7 @@ function do_date($ia)
 			</p>
 			<p class=\"tip\">
 				".$clang->gT('Format: YYYY-MM-DD')."<br />
-				".$clang->gT('(eg: 2008-12-25 for Christmas day)')."
+				".$clang->gT('(eg: 2003-12-25 for Christmas day)')."
 			</p>
 ";
 	// Here we do setup the date javascript
@@ -855,95 +858,127 @@ function do_language($ia)
 	global $dbprefix, $surveyid, $clang;
 	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-	$answer = "\n\t\t\t<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; checkconditions(this.value, this.name, this.type);\">\n";
-	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose')."..</option>\n";}
+	$answer = "\n\t\t\t<p class=\"question\">\n\t\t\t\t<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; checkconditions(this.value, this.name, this.type);\">\n";
+	if (!$_SESSION[$ia[1]]) {$answer .= "\t\t\t\t\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose')."..</option>\n";}
 	foreach ($answerlangs as $ansrow)
 	{
-		$answer .= "\t\t\t\t<option value=\"{$ansrow}\"";
+		$answer .= "\t\t\t\t\t<option value=\"{$ansrow}\"";
 		if ($_SESSION[$ia[1]] == $ansrow)
 		{
-			$answer .= ' selected="selected"';
+			$answer .= SELECTED;
 		}
 		elseif ($ansrow['default_value'] == 'Y')
 		{
-			$answer .= ' selected="selected"'; 
+			$answer .= SELECTED; 
 		 	$defexists = "Y";
 		}
 		$answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
 	}
-	$answer .= "\t\t\t</select>\n";
-	$answer .= "\t\t\t<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+	$answer .= "\t\t\t\t</select>\n";
+	$answer .= "\t\t\t\t<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
 	$inputnames[]=$ia[1];
-	$answer .= "\n\t\t\t<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n";
+	$answer .= "\n\t\t\t\t<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n\t\t\t</p>\n";
 
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
 
 function do_list_dropdown($ia)
 {
 	global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+
+	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
-		$othertext=$clang->gT("Other");
+		$othertext=$clang->gT('Other');
 	}
-	$answer="";
+
+	$answer='';
+
 	if (isset($defexists)) {unset ($defexists);}
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$result = db_execute_assoc($query);      //Checked
 	while($row = $result->FetchRow()) {$other = $row['other'];}
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());    //Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
+
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " selected='selected'";
+			$opt_select = SELECTED;
 		}
-		elseif ($ansrow['default_value'] == "Y")
+		elseif ($ansrow['default_value'] == 'Y')
 		{
-			$answer .= " selected='selected'"; 
-			$defexists = "Y";
+			$opt_select = SELECTED; 
+			$defexists = 'Y';
 		}
-		$answer .= ">{$ansrow['answer']}</option>\n";
+		else
+		{
+			$opt_select = '';
+		}
+		$answer .= '					<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['answer'].'</option>
+';
 	}
+
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
 	{
-		$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;
+		$answer = '					<option value="" '.SELECTED.'>'.$clang->gT('Please choose').'...</option>
+'.$answer;
 	}
-	if (isset($other) && $other=="Y")
+
+	if (isset($other) && $other=='Y')
 	{
-		$answer .= "\t\t\t\t\t\t<option value='-oth-'";
-		if ($_SESSION[$ia[1]] == "-oth-")
+		if ($_SESSION[$ia[1]] == '-oth-')
 		{
-			$answer .= " selected='selected'";
+			$opt_select = SELECTED;
 		}
-		$answer .= ">".$othertext."</option>\n";
+		else
+		{
+			$opt_select = '';
+		}
+		$answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
 	}
-	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
-	$answer .= "\t\t\t\t\t</select>\n";
-    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
-  
-	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);";
-	if (isset($other) && $other=="Y")
+	
+	if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
 	{
-		$sselect .= "; showhideother(this.name, this.value)";
+		$answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
 	}
-	$sselect .= "'>\n";
+	$answer .= '				</select>
+				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />
+";
+
+	if (isset($other) && $other=='Y')
+	{
+		$sselect_show_hide = ' showhideother(this.name, this.value);';
+	}
+	else
+	{
+		$sselect_show_hide = '';
+	}
+	$sselect = '
+			<p class="question">
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="checkconditions(this.value, this.name, this.type);'.$sselect_show_hide.'">
+';
 	$answer = $sselect.$answer;
-	if (isset($other) && $other=="Y")
+
+	if (isset($other) && $other=='Y')
 	{
 		$answer = "\n<script type=\"text/javascript\">\n"
 		."<!--\n"
@@ -961,23 +996,25 @@ function do_list_dropdown($ia)
 		."\t\t}\n"
 		."\t}\n"
 		."//--></script>\n".$answer;
-		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
+		$answer .= '				<input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
 
-		$inputnames[]=$ia[1]."other";
+		$inputnames[]=$ia[1].'other';
 
-		if ($_SESSION[$ia[1]] != "-oth-")
+		if ($_SESSION[$ia[1]] != '-oth-')
 		{
-			$answer .= "none";
+			$answer .= 'none';
 		}
 
 		// --> START BUG FIX - text field for other was not repopulating when returning to page via << PREV
-		$answer .= "'";
-		$thisfieldname=$ia[1]."other";
-		if (isset($_SESSION[$thisfieldname])) { $answer .= "' value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
+		$answer .= '"';
+		$thisfieldname=$ia[1].'other';
+		if (isset($_SESSION[$thisfieldname])) { $answer .= '" value="'.htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES).'" ';}
 		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
-		$answer .= "  />";
+		$answer .= ' />
+			</p>
+';
 		// --> END NEW FEATURE - SAVE
 	}
 
@@ -985,25 +1022,29 @@ function do_list_dropdown($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_list_flexible_dropdown($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
-		$othertext=$clang->gT("Other");
+		$othertext=$clang->gT('Other');
 	}
 	$answer="";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);  //Checked
 	while($row = $qresult->FetchRow()) {$other = $row['other']; $lid=$row['lid'];}
 	$filter="";
-	if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
+	if ($code_filter=arraySearchByKey('code_filter', $qidattributes, 'attribute', 1))
 	{
 		$filter=$code_filter['value'];
 		if(in_array($filter, $_SESSION['insertarray']))
@@ -1011,7 +1052,7 @@ function do_list_flexible_dropdown($ia)
 			$filter=trim($_SESSION[$filter]);
 		}
 	}
-	$filter .= "%";
+	$filter .= '%';
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -1090,6 +1131,10 @@ function do_list_flexible_dropdown($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_list_radio($ia)
 {
@@ -1205,6 +1250,10 @@ function do_list_radio($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_list_flexible_radio($ia)
 {
@@ -1336,6 +1385,10 @@ function do_list_flexible_radio($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_listwithcomment($ia)
 {
@@ -1473,6 +1526,10 @@ function do_listwithcomment($ia)
 	}
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_ranking($ia)
 {
@@ -1685,6 +1742,10 @@ function do_ranking($ia)
 
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_multiplechoice($ia)
 {
@@ -1922,6 +1983,10 @@ function do_multiplechoice($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
@@ -2078,6 +2143,10 @@ function do_multiplechoice_withcomments($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
@@ -2147,6 +2216,10 @@ function do_multipleshorttext($ia)
 	$answer .= "\t\t\t\t\t\t</table>\n";
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_multiplenumeric($ia)
 {
@@ -2367,6 +2440,10 @@ function do_multiplenumeric($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_numerical($ia)
 {
 	global $clang;
@@ -2413,6 +2490,10 @@ function do_numerical($ia)
 	return array($answer, $inputnames, $mandatory);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_shortfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -2453,6 +2534,10 @@ function do_shortfreetext($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_longfreetext($ia)
 {
@@ -2517,6 +2602,10 @@ function do_longfreetext($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_hugefreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -2577,6 +2666,10 @@ function do_hugefreetext($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_yesno($ia)
 {
 	global $shownoanswer, $clang;
@@ -2614,6 +2707,10 @@ function do_yesno($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_gender($ia)
 {
@@ -2678,6 +2775,10 @@ function do_gender($ia)
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_array_5point($ia)
 {
@@ -2791,6 +2892,10 @@ function do_array_5point($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_array_10point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
@@ -2887,6 +2992,10 @@ function do_array_10point($ia)
 	$answer .= "\t\t\t</table>\n";
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_array_yesnouncertain($ia)
 {
@@ -3107,6 +3216,10 @@ var s = new Slider(document.getElementById(\"slider-$myfname\"),
 	return array($answer, $inputnames);
 }*/
 
+
+
+// ---------------------------------------------------------------
+
 function do_array_increasesamedecrease($ia)
 {
 	global $dbprefix, $thissurvey, $clang;
@@ -3209,6 +3322,10 @@ function do_array_increasesamedecrease($ia)
 	$answer .= "\t\t\t</table>\n";
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_array_flexible($ia)
 {
@@ -3377,6 +3494,10 @@ function do_array_flexible($ia)
 	}
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_array_multiflexi($ia)
 {
@@ -3597,6 +3718,10 @@ function do_array_multiflexi($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+// ---------------------------------------------------------------
+
 function do_array_flexiblecolumns($ia)
 {
 	global $dbprefix;
@@ -3716,6 +3841,10 @@ function do_array_flexiblecolumns($ia)
 	}
 	return array($answer, $inputnames);
 }
+
+
+
+// ---------------------------------------------------------------
 
 function do_array_flexible_dual($ia)
 {
@@ -4287,6 +4416,10 @@ function do_array_flexible_dual($ia)
 	return array($answer, $inputnames);
 }
 
+
+
+
+// ---------------------------------------------------------------
 
 function answer_replace($text) {
 	while (strpos($text, "{INSERTANS:") !== false)
