@@ -509,8 +509,9 @@ $importquestion .= "\t<li>".$clang->gT("Question Attributes:");
 if (isset($countquestion_attributes)) {$importquestion .= $countquestion_attributes;}
 $importquestion .= "</li></ul><br />\n";
 
-$importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n"
-."</td></tr></table><br/>\n";
+$importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
+$importquestion .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid&amp;qid=$newqid'>".$clang->gT("Go to question")."</a><br />\n";
+$importquestion .= "</td></tr></table><br/>\n";
 
 
 unlink($the_full_file_path);
