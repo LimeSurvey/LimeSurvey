@@ -243,11 +243,12 @@ if (!$style)
         ."</label>\n";
     }
     
+    // TIBO
     //#1376 expoirt from X to Y
     //disabled, doesn't work yet
-    /*$exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
+    $exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
     $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='111'>";
-    */
+    
     
 	$exportoutput .="\t\t</font></font></td>\n"
 	."\t</tr>\n"
@@ -537,12 +538,6 @@ if (incompleteAnsFilterstate() === true)
 {
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
 }
-
-//MM
-//calculate interval because the second argument at SQL "limit" 
-//is the number of records not the ending point
-$limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']);
-
 
 $dquery .=" ORDER BY id ";//LIMIT ".sanitize_int($_POST['export_from']).", ".$limit_interval;
 
@@ -840,6 +835,14 @@ else
 }
 
 
+// TIBO
+//MM
+//calculate interval because the second argument at SQL "limit" 
+//is the number of records not the ending point
+$from_record = sanitize_int($_POST['export_from']) - 1;
+$limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']) + 1;
+
+
 //Now dump the data
 if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['token']) && $_POST['token']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
 {
@@ -904,7 +907,8 @@ if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if
 $dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 {
-	$dresult = db_execute_assoc($dquery);
+	//$dresult = db_execute_assoc($dquery);
+	$dresult = db_select_limit_assoc($dquery, $limit_interval, $from_record);
 	$rowcounter=0;
 	while ($drow = $dresult->FetchRow())
 	{
@@ -944,7 +948,8 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 {
 //	echo $dquery;
     $labelscache=array();
-	$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
+	//$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
+	$dresult = db_select_limit_num($dquery, $limit_interval, $from_record);
 	$fieldcount = $dresult->FieldCount();
 	$rowcounter=0;
 
