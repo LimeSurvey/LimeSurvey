@@ -469,6 +469,7 @@ print <<<END
 		        document.getElementById(hiddenformname).value='';
             }
         }
+
 END;
     $java="";
     $cqcount=1;
@@ -484,28 +485,39 @@ END;
  * $condition[n][6] => method used to evaluate *NEW*
  */
 
-foreach ($conditions as $cd)
+//foreach ($conditions as $cd)
+for ($i=0;$i<count($conditions);$i++)
 {
+	$cd=$conditions[$i]; // this is the currently evaluated condition
+
 	if (trim($cd[6])=='') $cd[6]='==';
-	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
+
+	// If this is a New Question ('New If Statement'):
+	// * add the endzone to output and reset it
+	// * reset the cqcount (uused to append && or || to conditions
+	// * set the runonce flag to true (will stay true if no condition is on a question from this group)
+	// * initialize the new if statement code in newjava to the empty string (will be appended to $java at 'After If Statement')
+	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))
 	{
 		$java .= $endzone;
 		$endzone = "";
 		$cqcount=1;
+		$newjava_runonce = true;
+		$newjava ="";
 
-		//Only evaluate if this question source is on the same page, and the evaluation hasn't already happened once
-    	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
-	$use_value_ref = ereg('^@[0-9]+X([0-9])+X[^@]+@', $cd[3], $sourceQuestionGid2);
-    	if ($sourceQuestionGid[1] != $gid &&
-		(!$use_value_ref || $sourceQuestionGid2[1] != $gid) )
-    	{ // if question is not from same page then this should only be evaluated the first time the page is loaded	
-	// In case the value field is an @SGQA@ tag, then this 'same gid' condition applies to this referenced question
-    	  $java .= "    if (document.getElementById('runonce').value == '0') 
-    {\n";
-		}
-		$java .= "\n\tif ((";
+		$newjava .= "\n\tif ((";
     
 	}
+
+	// If the Gid of the question used for the condition is on the same group,
+	// the set the runconce flag to False, because we'll need to evaluate this condition
+	//each time another question in this page is modified
+	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
+	if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] == $gid)
+	{
+		$newjava_runonce = false;
+	}
+
 	if (!isset($oldcq) || !$oldcq)
 	{
 		$oldcq = $cd[2];
@@ -566,11 +578,11 @@ foreach ($conditions as $cd)
 
 	if ($cqcount > 1 && $oldcq ==$cd[2])
 	{
-		$java .= " || ";
+		$newjava .= " || ";
 	}
 	elseif ($cqcount >1 && $oldcq != $cd[2])
 	{
-		$java .= ") && (";
+		$newjava .= ") && (";
 	}
 
 // The [3] element is for the value used to be compared with
@@ -584,11 +596,11 @@ foreach ($conditions as $cd)
 	{
 		if ($cd[6] == '==')
 		{
-			$java .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
 		} else 
 		{
 			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
-			$java .= "document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname').value";
 		}
 	}
 	elseif ($cd[4] == "M" || 
@@ -596,8 +608,8 @@ foreach ($conditions as $cd)
 		//                $cd[4] == "P" ||
 		//                $cd[4] == "!")
 	{
-		//$java .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
-		$java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'"; // 
+		//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+		$newjava .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'"; // 
 	} else
 	{
 		/* NEW
@@ -626,17 +638,17 @@ foreach ($conditions as $cd)
 				$idname2 = "java".$auxqtitle;
 			}
 
-			$java .= "(document.getElementById('" . $idname . "').value != '') && ";
+			$newjava .= "(document.getElementById('" . $idname . "').value != '') && ";
 
-				$java .= "(document.getElementById('" . $idname2 . "').value != '') && ";
+				$newjava .= "(document.getElementById('" . $idname2 . "').value != '') && ";
 				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
 				if (in_array($cd[4],array("A","B","K","N","5")))
 				{ // Numerical questions
-					$java .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
 				else
 				{
-					$java .= "(document.getElementById('" . $idname . "').value $cd[6] document.getElementById('".$idname2."').value)";
+					$newjava .= "(document.getElementById('" . $idname . "').value $cd[6] document.getElementById('".$idname2."').value)";
 				}
 
 //			}
@@ -644,21 +656,21 @@ foreach ($conditions as $cd)
 		{
 			if ($cd[3]) //Well supose that we are comparing a non empty value
 			{
-				$java .= "document.getElementById('$idname').value != '' && ";
+				$newjava .= "document.getElementById('$idname').value != '' && ";
 			}
 			if ($cd[6] == 'RX')
 			{
-				$java .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
+				$newjava .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
 			}
 			else
 			{
 				if (in_array($cd[4],array("A","B","K","N","5")))
 				{
-					$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
+					$newjava .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 				}
 				else
 				{
-					$java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+					$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 				}
 			}
 		}
@@ -677,22 +689,30 @@ foreach ($conditions as $cd)
 		$endzone .= "\t}\n";
 		$cqcount++;
 	}
-	//Close the expression for those where the question source is not on this page
-	if((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid) 
-	{
-	  $endzone .= "    }\n";
+	
+	// If next condition doesn't exist, or if nex condition is on a different question
+	// then current If statemement is over. We just need to check if it should be wrapped in an
+	// additionnal runonce If statement
+	if ( ( isset($conditions[$i+1]) && $conditions[$i+1][0] != $cd[0]) || (! isset($conditions[$i+1])) )
+	{ // After If Statement
+
+		if ($newjava_runonce == true)
+		{
+			$java .= "    if (document.getElementById('runonce').value == '0')\n"
+				."    {\n";
+			$java .= $newjava;
+			$endzone .= "    }\n";
+		}
+		else
+		{
+			$java .= $newjava;
+		}
+		$newjava = "";
 	}
 
 	$oldq = $cd[0]; //Update oldq for next loop
 	$oldcq = $cd[2];  //Update oldcq for next loop
 } // end foreach
-
-//Close the expression for those where the question source is not on this page
-//echo "OLDQ: $oldq, CD[0]: $cd[0], GID: $gid, sourceQuestionGid: $sourceQuestionGid[1]\n";
-if((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid) 
-{
-  $endzone .= "    }\n";
-}
 
 $java .= $endzone;
 }
@@ -735,7 +755,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-echo "document.getElementById('runonce').value=1\n"
+echo "\n\tdocument.getElementById('runonce').value=1\n"
 . "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
