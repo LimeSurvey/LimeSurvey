@@ -939,7 +939,7 @@ function do_list_dropdown($ia)
 
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
 	{
-		$answer = '					<option value="" '.SELECTED.'>'.$clang->gT('Please choose').'...</option>
+		$answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose').'...</option>
 '.$answer;
 	}
 
@@ -1031,6 +1031,7 @@ function do_list_flexible_dropdown($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+
 	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
@@ -1039,11 +1040,13 @@ function do_list_flexible_dropdown($ia)
 	{
 		$othertext=$clang->gT('Other');
 	}
-	$answer="";
+
+	$answer='';
+
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);  //Checked
 	while($row = $qresult->FetchRow()) {$other = $row['other']; $lid=$row['lid'];}
-	$filter="";
+	$filter='';
 	if ($code_filter=arraySearchByKey('code_filter', $qidattributes, 'attribute', 1))
 	{
 		$filter=$code_filter['value'];
@@ -1053,54 +1056,77 @@ function do_list_flexible_dropdown($ia)
 		}
 	}
 	$filter .= '%';
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
-	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());//Checked
+	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());//Checked
 
 	if (labelset_exists($lid,$_SESSION['s_lang']))
 	{
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
-				$answer .= " selected='selected'";
+				$opt_select = SELECTED;
 			}
-			$answer .= ">{$ansrow['title']}</option>\n";
+			else
+			{
+				$opt_select = '';
+			}
+			$answer .= '					<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['title']."</option>\n";
 		}
+
 		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
 		{
-			$answer = "\t\t\t\t\t\t<option value='' selected='selected'>".$clang->gT("Please choose")."..</option>\n".$answer;
+			$answer = '					<option value=""'.$opt_select.'>'.$clang->gT('Please choose')."...</option>\n".$answer;
 		}
-		if (isset($other) && $other=="Y")
+
+		if (isset($other) && $other=='Y')
 		{
-			$answer .= "\t\t\t\t\t\t<option value='-oth-'";
-			if ($_SESSION[$ia[1]] == "-oth-")
+			if ($_SESSION[$ia[1]] == '-oth-')
 			{
-				$answer .= " selected='selected'";
+				$opt_select = SELECTED;
 			}
-			$answer .= ">".$othertext."</option>\n";
+			else
+			{
+				$opt_select = '';
+			}
+			$answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
 		}
-		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists) && $ia[6] != "Y" && $shownoanswer == 1) {$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";}
-		$answer .= "\t\t\t\t\t</select>\n";
+
+		if ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists) && $ia[6] != 'Y' && $shownoanswer == 1)
+		{
+			$answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
+		}
+		$answer .= "\t\t\t\t</select>\n";
 	}
-	  else 
-	  {
-	    $answer .= "<option>".$clang->gT('Error: The labelset used for this question is not available in this language.')."</option>";
-	  }	
-	
-    $answer .= "\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n";
-	$sselect = "\n\t\t\t\t\t<select name='$ia[1]' id='answer$ia[1]' onchange='checkconditions(this.value, this.name, this.type);";
+	else 
+	{
+		$answer .= '					<option>'.$clang->gT('Error: The labelset used for this question is not available in this language.').'</option>
+';
+	}
+
+	$answer .= '				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+
 	if (isset($other) && $other=="Y")
 	{
-		$sselect .= "; showhideother(this.name, this.value)";
+		$sselect_show_hide = ' showhideother(this.name, this.value)';
 	}
-	$sselect .= "'>\n";
+	else
+	{
+		$sselect_show_hide = '';
+	}
+	$sselect = '
+			<p class="question">
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="checkconditions(this.value, this.name, this.type);'.$sselect_show_hide."\">\n";
 	$answer = $sselect.$answer;
-	if (isset($other) && $other=="Y")
+
+	if (isset($other) && $other=='Y')
 	{
 		$answer = "\n<script type=\"text/javascript\">\n"
 		."<!--\n"
@@ -1118,13 +1144,14 @@ function do_list_flexible_dropdown($ia)
 		."\t\t}\n"
 		."\t}\n"
 		."//--></script>\n".$answer;
-		$answer .= "<input type='text' id='othertext".$ia[1]."' name='$ia[1]other' style='display:";
-		if ($_SESSION[$ia[1]] != "-oth-")
+
+		$answer .= '				<input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+		if ($_SESSION[$ia[1]] != '-oth-')
 		{
-			$answer .= " none";
+			$answer .= ' none';
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "'  />";
+		$answer .= "\" />\n\t\t\t</p>\n";
 		// --> END NEW FEATURE - SAVE
 	}
 
