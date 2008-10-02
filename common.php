@@ -393,7 +393,8 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
 
-	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or safe_die($sql);
+	$connect->SetFetchMode(ADODB_FETCH_NUM);
+	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false) or safe_die($sql);
 	return $dataset;
 }
 
