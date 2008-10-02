@@ -1167,39 +1167,64 @@ function do_list_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
 	global $shownoanswer;
-	$answer="";
+
+	$answer='';
+
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+
+	if (isset($defexists))
 	{
-		$dcols=$displaycols['value'];
+		unset ($defexists);
+	}
+	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
+	$result = db_execute_assoc($query);  //Checked
+	while($row = $result->FetchRow())
+	{
+		$other = $row['other'];
+	}
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+	}
+	else 
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+	}
+	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
+	$anscount = $ansresult->RecordCount();
+
+//	CSS columns are a problem. Really there are no perfect solutions to columns at the moment.
+//	Using Tables you have semantic problems
+//	Using inline or float you really only get rows
+//	Using nested unordered list with the wrapping li floated, is also bad semantically
+//	Breaking the unordered lists into consecutive floated lists is also bad semantically although possibly not as bad as it could be.
+//	I have gone with the semantically correct but imperfect floated lists.
+
+	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
+	{
+//		$dcols = $displaycols['value'];
+		$dcols = ' class="cols-'.$displaycols['value'].'"';
 	}
 	else
 	{
-		$dcols=0;
+//		$dcols=0;
+		$dcols = '';
 	}
-	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+
+	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
-		$othertext=$clang->gT("Other");
+		$othertext=$clang->gT('Other');
 	}
-	if (isset($defexists)) {unset ($defexists);}
-	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
-	$result = db_execute_assoc($query);  //Checked
-	while($row = $result->FetchRow()) {$other = $row['other'];}
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	}
-	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());  //Checked
-	$anscount = $ansresult->RecordCount();
-	if (isset($other) && $other=="Y") {$anscount++;} //Count up for the Other answer
-	if ($ia[6] != "Y" && $shownoanswer == 1) {$anscount++;} //Count up if "No answer" is showing
-	$divider="";
+
+	if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
+	if ($ia[6] != 'Y' && $shownoanswer == 1) {$anscount++;} //Count up if "No answer" is showing
+	$divider='';
 	$maxrows=0;
+/*
 	if ($dcols >0 && $anscount >= $dcols) //Break into columns
 	{
 		$denominator=$dcols; //Change this to set the number of columns
@@ -1214,66 +1239,95 @@ function do_list_radio($ia)
 		. "\t\t\t\t\t\t<tr>\n"
 		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
-	$rowcounter=0;
+*/
+	$answer .= '
+			<ul'.$dcols.">\n";
+
+//	$rowcounter=0;
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
+//		$rowcounter++;
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$answer .= " checked='checked'";
+			$radio_check = CHECKED;
 		}
-		elseif ($ansrow['default_value'] == "Y") 
-            {
-                $answer .= " checked='checked'"; $defexists = "Y";
-            }
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
-		// --> END NEW FEATURE - SAVE
+		elseif ($ansrow['default_value'] == 'Y') 
+		{
+			$radio_check = CHECKED;
+			$defexists = 'Y';
+		}
+		else
+		{
+			$radio_check ='';
+		}
+		$answer .= '				<li>
+					<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+					<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
+				</li>
+';
 
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 	}
-	
-	if (isset($other) && $other=="Y")
+
+	if (isset($other) && $other=='Y')
 	{
-		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t\t\t  <div style='text-indent: -22px; margin: 0px 0px 0px 22px;'> <input class='radio' type='radio' value='-oth-' name='$ia[1]' id='SOTH$ia[1]'";
+//		$rowcounter++;
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
-			$answer .= " checked='checked'";
+			$radio_check = CHECKED;
 		}
-		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='SOTH$ia[1]' class='answertext'>".$othertext."</label>\n";
-		// --> END NEW FEATURE - SAVE
+		else
+		{
+			$radio_check = '';
+		}
 
-		$answer .= "<label for='answer$ia[1]othertext'><input type='text' class='text' id='answer$ia[1]othertext' name='$ia[1]other' size='20' title='".$clang->gT("Other")."' ";
-		$thisfieldname=$ia[1]."other";
-		if (isset($_SESSION[$thisfieldname])) { $answer .= "value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
-		// --> START NEW FEATURE - SAVE
-		$answer .= "onclick=\"javascript:document.getElementById('SOTH$ia[1]').checked=true; checkconditions(document.getElementById('SOTH$ia[1]').value, document.getElementById('SOTH$ia[1]').name, document.getElementById('SOTH$ia[1]').type);\" /></label><br /></div>\n";
+		$thisfieldname=$ia[1].'other';
+		if (isset($_SESSION[$thisfieldname]))
+		{
+			$answer_other = ' value="'.htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES).'"';
+		}
+		else
+		{
+			$answer_other = ' value=""';
+		}
+
+		$answer .= '				<li>
+					<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+					<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
+					<label for="answer'.$ia[1].'othertext">
+						<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+					</label>
+				</li>';
 		// --> END NEW FEATURE - SAVE
 		$inputnames[]=$thisfieldname;
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 	}
-	if ($ia[6] != "Y" && $shownoanswer == 1)
+
+	if ($ia[6] != 'Y' && $shownoanswer == 1)
 	{
-		$rowcounter++;
-		$answer .= "\t\t\t\t\t\t  <input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]NANS' value=' ' ";
+//		$rowcounter++;
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
-			$answer .= " checked='checked'"; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$radio_check = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
-		// --> START NEW FEATURE - SAVE
-		$answer .=" onclick='checkconditions(this.value, this.name, this.type)' />"
-		. "<label for='answer$ia[1]NANS' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		else
+		{
+			$radio_check = '';
+		}
+
+		$answer .= '				<li>
+					<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+					<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
+				</li>
+';
 		// --> END NEW FEATURE - SAVE
 
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
 	}
-	$answer .= "\t\t\t\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
-	. "\t\t\t\t\t\t\t</td>\n"
-	. "\t\t\t\t\t\t</tr>\n"
-	. "\t\t\t\t\t</table>\n";
+	$answer .= '
+			</ul>
+			<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
