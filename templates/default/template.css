@@ -133,3 +133,99 @@ width: 100%;
 table.question tr.array1:hover,table.question tr.array2:hover {
 background-color:#A7A9D1;
 }
+/* -------------------------------------------------
+   START: Question styles  ------------------------- */
+
+/* NOT IN USE YET
+.boilerplate {}
+*/
+
+.choice-5-pt-radio ul
+{
+	text-align: center;
+	margin-left: 0%;
+	padding-left: 0%;
+}
+.choice-5-pt-radio ul li
+{
+	list-style: none;
+	display: inline;
+	padding: 0% 1em;
+}
+
+/* NOT IN USE YET
+.date {}
+.date p.question {}
+.date p.question select.day {}
+.date p.question select.month {}
+.date p.question select.year {}
+.date p.tip {}
+*/
+
+.list-radio-flexible {}
+
+.list-radio ul
+{
+	margin: 0%
+	padding: 0%
+}
+.list-radio li
+{
+	list-style: none;
+	text-align: left;
+	margin: 0% 0% 0.5em 0%;
+}
+
+ .list-radio ul.cols-2
+, .list-radio ul.cols-3
+, .list-radio ul.cols-4
+, .list-radio ul.cols-5
+, .list-radio ul.cols-6
+, .list-radio ul.cols-7
+, .list-radio ul.cols-8 { width: 98%; }
+
+ .list-radio ul.cols-2 li
+, .list-radio ul.cols-3 li
+, .list-radio ul.cols-4 li
+, .list-radio ul.cols-5 li
+, .list-radio ul.cols-6 li
+, .list-radio ul.cols-7 li
+, .list-radio ul.cols-8 li
+{
+	float: left;
+	padding: 0% 0.5em;
+	white-space: normal
+}
+
+.list-radio ul.cols-2 li { width: 48%; }
+.list-radio ul.cols-3 li { width: 31%; }
+.list-radio ul.cols-4 li { width: 23%; }
+.list-radio ul.cols-5 li { width: 19%; }
+.list-radio ul.cols-6 li { width: 15%; }
+.list-radio ul.cols-7 li { width: 13%; }
+.list-radio ul.cols-8 li { width: 11.5%; }
+
+.list-dropdown-flexible {}
+.list-dropdown {}
+.list-with-comment {}
+.ranking {}
+.multiple-opt {}
+.language {}
+.multiple-opt-comments {}
+.multiple-short-txt {}
+.numeric-multi {}
+.numeric {}
+.text-short {}
+.text-long {}
+.text-huge {}
+.yes-no {}
+.gender {}
+.array-5-pt {}
+.array-10-pt {}
+.array-yes-uncertain-no {}
+.array-increase-same-decrease {}
+.array-flexible-row {}
+.array-flexible-column {}
+.slider {}
+.array-multi-flexi {}
+.array-flexible-duel-scale {}
