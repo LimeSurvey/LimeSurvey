@@ -691,6 +691,10 @@ function loadanswers()
 			{
 				$_SESSION['datestamp']=$value;
 			}
+			if ($column == "startdate")
+			{
+				$_SESSION['startdate']=$value;
+			}
 			else
 			{
 				//Only make session variables for those in insertarray[]
@@ -2291,7 +2295,7 @@ function doAssessment($surveyid)
 			
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "startdate") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
 				{
 					if (isset($_SESSION[$field['fieldname']])) 
 					{

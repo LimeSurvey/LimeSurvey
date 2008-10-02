@@ -49,6 +49,7 @@ if (!$style)
     $excesscols[]="id";
     $excesscols[]='completed';
     if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
+    if ($thissurvey["datestamp"]=='Y') {$excesscols[]='startdate';}
     if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
     if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}    
     
@@ -592,8 +593,13 @@ for ($i=0; $i<$fieldcount; $i++)
 	}
 	elseif ($fieldinfo == "datestamp")
 	{
-		if ($type == "csv") {$firstline .= "\"".$elang->gT("Time Submitted")."\"$separator";}
-		else {$firstline .= $elang->gT("Time Submitted")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Last Action")."\"$separator";}
+		else {$firstline .= $elang->gT("Date Last Action")."$separator";}
+	}
+	elseif ($fieldinfo == "startdate")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Started")."\"$separator";}
+		else {$firstline .= $elang->gT("Date Started")."$separator";}
 	}
 	elseif ($fieldinfo == "completed")
 	{
@@ -964,7 +970,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
+            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
 			{
 //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
                 $fielddata=$outmap[$fieldinfo];
@@ -990,7 +996,10 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 					switch($fieldinfo)
 					{
 						case "datestamp":
-						$ftitle=$elang->gT("Time Submitted").":";
+						$ftitle=$elang->gT("Date Last Action").":";
+						break;
+						case "startdate":
+						$ftitle=$elang->gT("Date Started").":";
 						break;
 						case "ipaddr":
 						$ftitle=$elang->gT("IP Address").":";

@@ -1528,7 +1528,8 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	global $dbprefix, $surveyid, $connect, $clang;
 	if (!isset($fieldcode)) {return $clang->gT("Preset");}
 	if ($fieldcode == "token") {return $clang->gT("Token");}
-	if ($fieldcode == "datestamp") {return $clang->gT("Date Stamp");}
+	if ($fieldcode == "datestamp") {return $clang->gT("Date Last Action");}
+	if ($fieldcode == "startdate") {return $clang->gT("Date Started");}
 	if ($fieldcode == "ipaddr") {return $clang->gT("IP Address");}
 	if ($fieldcode == "refurl") {return $clang->gT("Referring URL");}
 
@@ -1823,6 +1824,17 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			{
 				$fieldmap[$counter]['title']="";
 				$fieldmap[$counter]['question']="datestamp";
+				$fieldmap[$counter]['group_name']="";
+			}
+			$counter++;
+		}
+		if ($prow['datestamp'] == "Y")
+		{
+			$fieldmap[]=array("fieldname"=>"startdate", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			if ($style == "full")
+			{
+				$fieldmap[$counter]['title']="";
+				$fieldmap[$counter]['question']="startdate";
 				$fieldmap[$counter]['group_name']="";
 			}
 			$counter++;
@@ -4416,7 +4428,7 @@ function bHasSurveyGotTokentable($thesurvey, $sid=null)
 	return false;
 }
 
-// Returns false if the survey is anonymous, but answers must be datestamp
+// Returns false if the survey is anonymous, 
 // and a token table exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise
