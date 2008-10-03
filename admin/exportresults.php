@@ -23,6 +23,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
+if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
+if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);
@@ -189,6 +191,11 @@ if (!$style)
 	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='headcodes' id='headcodes'>"
 	."<label for='headcodes'>"
 	.$clang->gT("Question Codes")."</label><br />\n"
+	
+	."\t\t\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous'>"
+	."<font size='1'><label for='convertspacetous'>"
+	.$clang->gT("Convert Spaces in Question Text to Underscores")."</label><br />"
+	
 	."\t\t\t&nbsp ".$clang->gT("Filter incomplete answers")." <select name='filterinc'>\n"
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
@@ -201,7 +208,14 @@ if (!$style)
 	."\t\t<td>\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='answers' value='short' id='ansabbrev'>"
 	."<font size='1'><label for='ansabbrev'>"
-	.$clang->gT("Answer Codes")."</label><br />\n"
+	.$clang->gT("Answer Codes")."</label>";
+	
+	$exportoutput .= "<br />\n"
+	."\t\t\t<input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px'>"
+	."<font size='1'><label for='convertyto1'>"
+	.$clang->gT("Convert Y to 1")."</label>";
+
+     $exportoutput .= "<br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"
 	."<label for='ansfull'>"
 	.$clang->gT("Full Answers")."</label>\n"
@@ -622,7 +636,6 @@ for ($i=0; $i<$fieldcount; $i++)
 		$fsid=$fielddata['sid'];
 		$fgid=$fielddata['gid'];
 		$faid=$fielddata['aid'];
-         
 		if ($style == "abrev")
 		{
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
@@ -641,6 +654,12 @@ for ($i=0; $i<$fieldcount; $i++)
 			  
 			}
 			if ($type == "csv") {$firstline .= "\"";}
+			$firstline .= "$separator";
+		}
+		elseif ($style == "headcodes")
+		{
+		    $qname=$fieldinfo;
+			$firstline .= "$qname";
 			$firstline .= "$separator";
 		}
 		else
@@ -801,6 +820,10 @@ for ($i=0; $i<$fieldcount; $i++)
 				$firstline .= "$fquest $separator";
 			}
 		}
+		if($convertspacetous == "Y")
+		{
+		  $firstline=str_replace(" ", "_", $firstline);
+		}
 	}
 }
 if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
@@ -913,7 +936,22 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 	while ($drow = $dresult->FetchRow())
 	{
 		$drow=array_map('strip_tags_full',$drow);
-        $rowcounter++;
+		if($convertyto1 == "Y")
+		//Converts "Y" to "1" in export
+		{
+		  foreach($drow as $key=>$dr) {
+            $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+            if($fielddata['type'] == "M" || 
+			   $fielddata['type'] == "P"
+			   )
+            {
+		      if($dr == "Y") {$dr = "1";}
+		    }
+		    $line[$key]=$dr;
+		  }
+		  $drow=$line;
+		}
+		$rowcounter++;
         if ($type == "csv")
 	     	{
 	     		$exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
