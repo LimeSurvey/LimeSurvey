@@ -114,10 +114,11 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	{
 		$sourcefields[] = array_key_exists($field,$presetfields)?
 		$presetfields[$field]
-		: ($oldtable.'.'.$field);
+		: ($oldtable.'.`'.$field.'`');
+		$fieldstoimport2[] = '`'.$field.'`'; 
 	}
 
-	$query = "INSERT INTO {$activetable} (\n\t".join("\t, ",$fieldstoimport)."\n) "
+	$query = "INSERT INTO {$activetable} (\n\t".join("\t, ",$fieldstoimport2)."\n) "
 	."SELECT\n\t".join("\t,",$sourcefields)."\n"
 	."FROM {$oldtable}";
 	if (is_array($importidrange))
