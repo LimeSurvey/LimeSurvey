@@ -15,6 +15,17 @@
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
+/**
+ * $column_style defines how columns are rendered for survey answers.
+ * There are four possible options:
+ *     'css'   using one of the various CSS only methods for splicing. (DEFAULT)
+ *     'ul'    using multiple floated unordered lists.
+ *     'table' using conventional tables based layout.
+ *     NULL    blocks the use of columns
+ */
+$column_style = 'ul';
+
+
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 /*
@@ -650,6 +661,78 @@ function validation_popup($ia, $notvalidated=null)
 define('CHECKED' , ' checked="checked"' , true);
 define('SELECTED' , ' selected="selected"' , true);
 
+
+// sets the contsant for columns styles
+
+function setup_columns($columns, $answer_count)
+{
+	global $column_style;
+
+	if(isset($column_style) && strtolower($column_style) == ('css' || 'ul' || 'table' || null ))
+	{
+		$colstyle = strtolower($column_style);
+	}
+	else
+	{
+		$colstyle = null;
+	};
+
+	if($columns < 2)
+	{
+		$column_style = null;
+	}
+	elseif($columns > $answer_count)
+	{
+		$columns = $answer_count;
+	};
+
+	if($columns > 1 && $colstyle != null)
+	{
+		if($colstyle == 'ul')
+		{
+			$ul = '-ul';
+		}
+		else
+		{
+			$ul = '';
+		}
+		$class = ' class="cols-'.$columns . $ul.'"';
+	}
+	else
+	{
+		$class = '';
+	};
+
+	$wrapper['whole-start']	= "\n<ul$class>\n";
+	$wrapper['whole-end']	= "</ul>\n";
+	$wrapper['col-devide']	= '';
+	$wrapper['item-start']	= "\t<li>\n";
+	$wrapper['item-end']	= "\t</li>\n";
+	$wrapper['maxrows'] = ceil($answer_count/$columns); //Always rounds up to nearest whole number
+
+	switch($colstyle)
+	{
+		case 'ul':	if($columns > 1)
+				{
+					$wrapper['col-devide']	= "\n</ul>\n\n<ul$class>\n";
+				}
+				break;
+
+		case 'table':	$table_cols = '';
+				for($cols = $columns ; $cols > 0 ; --$cols)
+				{
+					$table_cols .= "\t<col$class />\n";
+				};
+				$wrapper['whole-start']	= "\n<table>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n";
+				$wrapper['whole-end']	= "\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
+				$wrapper['col-devide']	= "\t\t\t</td>\n\n\t\t\t<td>\n";
+				$wrapper['item-start']	= '';
+				$wrapper['item-end']	= "<br />\n";
+	};
+
+	return $wrapper;
+};
+
 // ==================================================================
 //QUESTION METHODS ==================================================
 
@@ -1193,22 +1276,25 @@ function do_list_radio($ia)
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 
-//	CSS columns are a problem. Really there are no perfect solutions to columns at the moment.
-//	Using Tables you have semantic problems
-//	Using inline or float you really only get rows
-//	Using nested unordered list with the wrapping li floated, is also bad semantically
-//	Breaking the unordered lists into consecutive floated lists is also bad semantically although possibly not as bad as it could be.
-//	I have gone with the semantically correct but imperfect floated lists.
+// CSS columns are a problem. Really there are no perfect
+//	solutions to columns at the moment.
+// Using Tables you have semantic problems
+// Using inline or float you really only get rows
+// Using nested unordered list with the wrapping li floated,
+//	is also bad semantically
+// Breaking the unordered lists into consecutive floated lists
+//	is also bad semantically although possibly not as bad
+//	as it could be.
+// I have gone with the semantically correct but imperfect
+//	floated lists.
 
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
 	{
-//		$dcols = $displaycols['value'];
-		$dcols = ' class="cols-'.$displaycols['value'].'"';
+		$dcols = $displaycols['value'];
 	}
 	else
 	{
-//		$dcols=0;
-		$dcols = '';
+		$dcols= 1;
 	}
 
 	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
@@ -1240,13 +1326,21 @@ function do_list_radio($ia)
 		. "\t\t\t\t\t\t\t<td align='left'>\n";
 	}
 */
-	$answer .= '
-			<ul'.$dcols.">\n";
+/*
+	$wrapper['whole-start']
+	$wrapper['whole-end']
+	$wrapper['col-devide']
+	$wrapper['item-start']
+	$wrapper['item-end']
+	$wrapper['maxrows']
+*/
+	$wrapper = setup_columns($dcols , $anscount);
+	$answer .= $wrapper['whole-start'];
 
-//	$rowcounter=0;
+	$rowcounter = 0;
 	while ($ansrow = $ansresult->FetchRow())
 	{
-//		$rowcounter++;
+		++$rowcounter;
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
 			$radio_check = CHECKED;
@@ -1260,18 +1354,20 @@ function do_list_radio($ia)
 		{
 			$radio_check ='';
 		}
-		$answer .= '				<li>
-					<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'					<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
 					<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
-				</li>
-';
+'.$wrapper['item-end'];
 
-//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		if ($rowcounter == $wrapper['maxrows'])
+		{
+			$answer .= $wrapper['col-devide'];
+			$rowcounter = 0;
+		}
 	}
 
 	if (isset($other) && $other=='Y')
 	{
-//		$rowcounter++;
+		$rowcounter++;
 		if ($_SESSION[$ia[1]] == "-oth-")
 		{
 			$radio_check = CHECKED;
@@ -1291,21 +1387,25 @@ function do_list_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= '				<li>
-					<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'					<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
 					<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 					<label for="answer'.$ia[1].'othertext">
 						<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
 					</label>
-				</li>';
+'.$wrapper['item-end'];
+
 		// --> END NEW FEATURE - SAVE
 		$inputnames[]=$thisfieldname;
-//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		if ($rowcounter == $wrapper['maxrows'])
+		{
+			$answer .= $wrapper['col-devide'];
+			$rowcounter = 0;
+		}
 	}
 
 	if ($ia[6] != 'Y' && $shownoanswer == 1)
 	{
-//		$rowcounter++;
+		$rowcounter++;
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
 			$radio_check = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
@@ -1315,17 +1415,19 @@ function do_list_radio($ia)
 			$radio_check = '';
 		}
 
-		$answer .= '				<li>
+		$answer .= $wrapper['item-start'].'
 					<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
 					<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
-				</li>
-';
+'.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
 
-//		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		if ($rowcounter == $wrapper['maxrows'])
+		{
+			$answer .= $wrapper['col-devide'];
+			$rowcounter = 0;
+		}
 	}
-	$answer .= '
-			</ul>
+	$answer .= $wrapper['whole-end'].'
 			<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
 	$inputnames[]=$ia[1];
