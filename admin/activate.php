@@ -401,6 +401,7 @@ else
 			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
 			             WHERE sid=$surveyid 
 						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+						 AND ".db_table_name('labels').".language='".GetbaseLanguageFromSurveyid($postsid)."' 
 			             AND ".db_table_name('questions').".qid=".$arow['qid']."
 			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
 			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
