@@ -3705,7 +3705,7 @@ function do_array_multiflexi($ia)
 	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
 		$minvalue=$minvalue['value'];
 	} else {
-	    if($minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
+	    if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
 	}
 
 

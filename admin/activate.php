@@ -393,8 +393,8 @@ else
 			//MULTI ENTRY
 			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
                        ." WHERE a.qid=q.qid AND sid={$postsid} AND q.qid={$arow['qid']} "
-                       ." AND a.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
-                       ." AND q.language='".GetbaseLanguageFromSurveyid($_GET['sid']). "' "
+                       ." AND a.language='".GetbaseLanguageFromSurveyid($postsid). "' "
+                       ." AND q.language='".GetbaseLanguageFromSurveyid($postsid). "' "
                        ." ORDER BY a.sortorder, a.answer";
 			$abresult=db_execute_assoc($abquery) or die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			$ab2query = "SELECT ".db_table_name('labels').".*
