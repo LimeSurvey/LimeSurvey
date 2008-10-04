@@ -12,7 +12,6 @@
 */
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
-
 require_once(dirname(__FILE__).'/classes/core/startup.php');   
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
@@ -196,6 +195,32 @@ if (isset($_SESSION['s_lang']))
 			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
 			{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+			}
+		}
+		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
+		{
+		   $fnrquery = "SELECT *
+		                FROM ".db_table_name('answers')." 
+					    WHERE qid={$fnrow['qid']}
+						AND language='{$language}' 
+						ORDER BY sortorder, answer";
+			$fnrresult = db_execute_assoc($fnrquery);
+			$fnr2query = "SELECT *
+			              FROM ".db_table_name('labels')."
+			              WHERE lid={$fnrow['lid']}
+			              AND language = '{$language}'
+			              ORDER BY sortorder, title";
+			$fnr2result = db_execute_assoc($fnr2query);
+			while( $fnr2row = $fnr2result->FetchRow())
+			{
+			  $lset[]=$fnr2row;
+			}
+			while ($fnrrow = $fnrresult->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']}: {$ls['title']})");
+                }
 			}
 		}
 		elseif ($fnrow['type'] == "R")
