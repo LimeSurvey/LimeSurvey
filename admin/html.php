@@ -2292,7 +2292,7 @@ if ($action == "editsurvey")
 			. "\t</div>\n";
 
 			//ALLOW PREV
-			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Show [<< Prev] button")."</span>\n"
+			$editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Show [<< Prev] button?")."</span>\n"
 			. "\t\t<span class='settingentry'><select name='allowprev'>\n"
 			. "\t\t\t<option value='Y'";
 			if (!isset($esrow['allowprev']) || !$esrow['allowprev'] || $esrow['allowprev'] == "Y") {$editsurvey .= " selected='selected'";}
@@ -2316,7 +2316,7 @@ if ($action == "editsurvey")
             . "\t</div>\n";
 
             //Public Surveys
-            $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Add survey to the '")."<a href='$rooturl' target='_blank'>".$clang->gT("Public surveys portal")."'</a></span>\n"
+            $editsurvey .= "\t<div class='settingrow'><span class='settingcaption'>".sprintf($clang->gT("List survey on the %s?"),"<a href='$rooturl' target='_blank'>".$clang->gT("public portal page")."</a>")."</span>\n"
             . "\t\t<span class='settingentry'><select name='public'>\n"
             . "\t\t\t<option value='Y'";
             if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") {$editsurvey .= " selected='selected'";}
