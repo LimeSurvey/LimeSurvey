@@ -198,7 +198,14 @@
     {
      $this->XSize   = $XSize;
      $this->YSize   = $YSize;
-     $this->Picture = imagecreatetruecolor($XSize,$YSize);
+     
+     if (function_exists('imagecreatetruecolor')) {
+        $this->Picture = imagecreatetruecolor($XSize,$YSize);
+    }
+    else 
+    {
+    $this->Picture = imagecreate($XSize,$YSize);
+    }
 
      $C_White =$this->AllocateColor($this->Picture,255,255,255);
      imagefilledrectangle($this->Picture,0,0,$XSize,$YSize,$C_White);

@@ -67,7 +67,7 @@ $maxchars = 10;
 
 
 //don't call this script directly!
-if (isset($_REQUEST['jpgraphdir'])) {die('You cannot start this script directly');}
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 //some includes, the progressbar is used to show a progressbar while generating the graphs
 include_once("login_check.php");
@@ -85,7 +85,7 @@ if (isset($_POST['usegraph']))
     require_once('../classes/pchart/pchart/pChart.class');
     require_once('../classes/pchart/pchart/pData.class');
 
-	//$currentuser is created as prefix for jpgraph files
+	//$currentuser is created as prefix for pchart files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
 	{
 		$currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
@@ -1693,14 +1693,15 @@ $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 	 }
    }
 </script>"
-."\t\t\t\t<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
+."<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
-//."\t\t<tr><td align='center' class='settingcaption'>\n"
-//."\t\t<font size='1' face='verdana'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
-."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
-."\t\t\t\t</select><br />&nbsp;</td></tr>\n";
+."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
+if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
+$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n"
+."<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
+."<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+."<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+."</select><br />&nbsp;</td></tr>\n";
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
 
 //add line to separate the the filters from the other options
@@ -1721,22 +1722,6 @@ if ($selecthide!='')
 $statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
 if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
 $statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div><br /></td></tr>\n";
-
-
-
-
-//check jpgraph settings
-if(isset($usejpgraph) && $usejpgraph == 1)
-{
-	//only show option to show graphs if jpgraph is enabled
-	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
-	
-	//if jpgraph is enabled in config.php pre-check this option
-	$statisticsoutput .= "checked='checked'";	
-	
-	//rest of output
-	$statisticsoutput .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n";
-}
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
@@ -2156,7 +2141,7 @@ if (isset($summary) && $summary)
 	$prb->setLabelValue('txt1',$clang->gT('Generating Summaries ...'));
 	$prb->moveStep($process_status);
 	
-	//check if jpgraph is available
+	//check if pchart should be used
 	if (isset($_POST['usegraph'])) 
 	{
 		//Delete any old temp image files
@@ -3788,11 +3773,9 @@ if (isset($summary) && $summary)
             
             
             
-            //-------------------------- JPGRAPH OUTPUT ----------------------------
+            //-------------------------- PCHART OUTPUT ----------------------------
             
-            //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
-            
-            //jpgraph has to be enabled and we need some data
+            //PCHART has to be enabled and we need some data
 			if (isset($_POST['usegraph']) && array_sum($gdata)>0) 
 			{
 				$graph = "";
@@ -3814,7 +3797,7 @@ if (isset($summary) && $summary)
 				
 				//$gdata and $lbl are arrays built at the end of the last section
 				//that contain the values, and labels for the data we are about
-				//to send to jpgraph.
+				//to send to pchart.
 				
 				/*
 				 * Multiple options = bar charts
@@ -3940,13 +3923,20 @@ if (isset($summary) && $summary)
                     //$DataSet->SetAbsciseLabelSerie();  
 
                     $gheight=320;
-                    $Test = new pChart(640,$gheight);  
+                    echo $maxvalue;
+                    if ($counter>15) 
+                    {
+                     $gheight=$gheight+(10*($counter-15));
+                    } 
+                    $Test = new pChart(640,$gheight); 
+                     
+                    $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
                     $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,635,$gheight-5,5,230,230,230);  
                     $Test->drawGraphArea(255,255,255,TRUE);  
-                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),$maxvalue,150,150,150,TRUE,90,0,TRUE);  
+                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
                      $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
@@ -3957,7 +3947,7 @@ if (isset($summary) && $summary)
                      //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
                      // Finish the graph
                      $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
-                     $Test->drawLegend(510,144,$DataSet->GetDataDescription(),255,255,255);
+                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                      $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
 //Todo:                     $Test->drawTitle(50,22,"Example 12",50,50,50,585);
 
@@ -4017,7 +4007,7 @@ if (isset($summary) && $summary)
 				//add graph to output
 				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
 				
-			}	//end if -> jpgraph enabled
+			}
 			
 			
 			
