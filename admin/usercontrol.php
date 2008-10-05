@@ -355,8 +355,9 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			"manage_label"=>$srow['manage_label']));
 
 			// send Mail
-			$body = sprintf($clang->gT("You were signed in on the site %s"), $sitename)."<br />\n";
-			$body .= $clang->gT("Your data:")."<br />\n";
+            $body = sprintf($clang->gT("Hello %s,"), $new_full_name)."<br /><br />\n";
+			$body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), $sitename)."<br /><br />\n";
+			$body .= $clang->gT("You can use now the following credentials to log into the site:")."<br />\n";
 			$body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
 			if ($useWebserverAuth === false)
 			{ // authent is not delegated to web server
@@ -364,12 +365,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 				$body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
 			}
 
-			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Login here")."</a><br />\n";
+			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
+            $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
 
 			$subject = 'Registration';
-			$to = $new_email;
-			$from = $siteadminemail;
-			$sitename = $siteadminname;
+			$to = $new_user." <$new_email>";
+			$from = $siteadminname." <$siteadminemail>";
 
 			if(MailTextMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
 			{
@@ -378,7 +379,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			}
 			else
 			{
-				// Muss noch mal gesendet werden oder andere M??glichkeit
+				// has to be sent again or no other way
 				$tmp = str_replace("{NAME}", "<strong>".$new_user."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
 				$addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
 			}
