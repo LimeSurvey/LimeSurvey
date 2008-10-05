@@ -3923,7 +3923,6 @@ if (isset($summary) && $summary)
                     //$DataSet->SetAbsciseLabelSerie();  
 
                     $gheight=320;
-                    echo $maxvalue;
                     if ($counter>15) 
                     {
                      $gheight=$gheight+(10*($counter-15));
