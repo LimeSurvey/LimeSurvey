@@ -257,11 +257,21 @@ if (!$style)
         ."</label>\n";
     }
     
-    // TIBO
-    //#1376 expoirt from X to Y
-    //disabled, doesn't work yet
+    
+    //get max number of datasets
+    $max_datasets = 0;
+    
+    $max_datasets_query = "SELECT COUNT(id) FROM {$dbprefix}survey_$surveyid";    
+    $max_datasets_result = db_execute_num($max_datasets_query);
+    
+    while($max = $max_datasets_result -> FetchRow())
+    {
+    	$max_datasets = $max[0];
+    }
+    
+    // form fields to limit export from X to Y
     $exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
-    $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='111'>";
+    $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets'>";
     
     
 	$exportoutput .="\t\t</font></font></td>\n"
@@ -553,7 +563,7 @@ if (incompleteAnsFilterstate() === true)
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
 }
 
-$dquery .=" ORDER BY id ";//LIMIT ".sanitize_int($_POST['export_from']).", ".$limit_interval;
+$dquery .=" ORDER BY id ";
 
 $dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
