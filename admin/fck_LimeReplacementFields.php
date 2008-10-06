@@ -157,6 +157,7 @@ switch ($fieldtype)
 		$replFields[]=array('EXPIRY',$clang->gT("Survey Expiration date (YYYY-MM-DD)"));
 		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey Expiration date (DD-MM-YYYY)"));
 		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey Expiration date (MM-DD-YYYY)"));
+	case 'editanswer':
 		$isInstertansEnabled=true;
 	break;
 }
@@ -221,6 +222,7 @@ if ($isInstertansEnabled===true)
 				}
 			break;
 
+			case 'editanswer':
 			case 'copyquestion':
 			case 'editquestion':
 				if (empty($gid)) {die("No GID provided.");}
