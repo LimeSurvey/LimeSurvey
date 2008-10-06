@@ -148,6 +148,7 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+	case 'editanswer':
 		$isInstertansEnabled=true;
 	break;
 }
@@ -212,6 +213,7 @@ if ($isInstertansEnabled===true)
 				}
 			break;
 
+			case 'editanswer':
 			case 'copyquestion':
 			case 'editquestion':
 				if (empty($gid)) {die("No GID provided.");}
