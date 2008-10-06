@@ -1,0 +1,149 @@
+.rank, .rank td {background-color: #f5f9f9;}
+.survey-cleared {margin: 0 auto 0 auto;text-align:center;}
+.survey-navigator {margin: 0 0 10px 0;}
+
+/* --------------------------------------------------- */
+
+.numquestions {
+	color:green;
+}
+
+table, tr, td, th {
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  align: center;
+}
+
+table {
+}
+
+.grayboxheader {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+}
+
+.grayboxfont {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  color: #424142;
+}
+
+.question {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: #262C4C;
+}
+
+.percentage {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  color: #000000;
+}
+
+.error {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #CB0404;
+}
+
+
+.printouttable
+{
+  width:100%;
+}
+
+.printouttable td
+{
+border-style:solid;
+border-color:#ffffff ;
+border-bottom-color:#ddddff ;
+border-width:1px;
+}
+
+
+.printouttable td:first-child
+{
+  background-color:#ddddff;
+  font-weight:bold;
+  text-align:right;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.printouttitle
+{
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+/* ---Hacks by joost---------------------------------------- */
+
+html {background: #7bbbcc url(pagebg.png) 0 0 repeat-x;font-family: Arial, Verdana, Helvetica, sans-serif;nt-size:8pt}
+div#wrapper {float:  left;width: 868px;}
+div#wrapper2 {margin: 0 auto;width: 999px;padding-top: 18px;padding-left: 100px;}
+div#header {background: url(header-bg.png) no-repeat; right-bottom}
+div#header .rk-1 {background:  url(header-r.png) 100% 0 no-repeat;}
+div#header .rk-2 {background:  url(header-l.png) 0 0 no-repeat;height: 153px;overflow: hidden;}
+img#logo {float:left;margin-left:38px;width:255px;height:148px;background: url(logo.png) 0 0 no-repeat;}
+div#prefooter1 {height:4px;padding:0;background:#00677d;}
+div#prefooter2 {height:100px;background: url(prefooter-bg.png) 0 0 repeat-x;text-align:center;}
+div#prefooter3 {height:54px;background: #00407a;text-align:center;}
+div#footer {background: url(footer-bg.png) 0 0 repeat-x;height:95px;}
+div#footer .rk-1 {background: url(footer-r.png) 100% 0 no-repeat;}
+div#footer .rk-2 {background: url(footer-l.png) 0 0 no-repeat;height: 105px;overflow: hidden;}
+.surveyname {background:#00677d;text-align:center; color:white;padding: 5px;font-size:1.3em;}
+.survey-main {background: #f5feff;border:1px solid #00677d; padding:15px;}
+.survey-description, .survey-survey-description {font-weight:bold;padding-left:20px;margin-bottom:10px}
+.survey-welcome {border-top: 1px solid #86b8bc;border-bottom: 1px solid #86b8bc;background-color: #f0fdff;padding:5px;text-align:justify;}
+.submit	{background-color: #e0fcff;border:1px solid #86b8bc;cursor:pointer;}
+.submit:hover{background:#c2f9ff;border:1px solid #00677d;}
+input.submit:hover{background:#c2f9ff;border:1px solid #00677d;}
+.clearall {font-family: arial;margin: 0 0 10px 0;margin-top:20px;}
+.clearall A:link, .clearall A:visited, .clearall A:active {text-decoration:none;color:#00677d;border-bottom:1px dashed #00677d;}
+.clearall A:hover {text-decoration:none;color:#004554;;border-bottom:1px solid #004554;}
+.survey-survey-description {margin: 5px 0 10px 0;}
+.survey-survey-percent {width:160px;margin:0 auto;text-align:center;}
+.innergraph {background-color:#f0fdff;color: #777777;font-family: arial;}
+.innergraph img{height:12px;vertical-align:top;}
+.innergraph table{height:12px;border:1px solid #00677d;table-layout:fixed !important;}
+.innergraph td{height:12px;}
+.graph {border:solid;border-width:2px;border-color:#86b8bc;background-color:#f0fdff;}
+.survey-groupname {color:#00677d;font-weight:bold;margin: 20px 0 0 0;padding: 2px 0 0 3px;text-align:center;;border-bottom: 2px solid #71acbc;}
+.survey-groupdescription {font-weight:normal;color:#00262e;padding: 10px;margin:0 0 10px 0;}
+.survey-question {margin:0;padding:5px;border: 1px solid #86b8bc;background:#fafeff;}
+.survey-question-text {display:inline;font-weight:bold;margin:0 0 15px 0;font-size:0.9em}
+.asterisk {color: #FF0000;padding:0 5px 0 10px;}
+.questionhelp{visibility:hidden;display:block}
+.survey-question-answer {display:inline;font-weight:normal;padding-left:25px;}
+.survey-question-answer button {}
+.survey-question-answer input {}
+.survey-question-answer select {background-color: #f0fdff;}
+.survey-question-answer option {background-color: #f0fdff;}
+.select {background-color: #f0fdff;}
+.survey-question-help {margin: 12px 0px 0 2px;}
+.survey-question-help img {padding: 0 5px 10px 25px;}
+.radio {}
+table.question {background:#fafeff}
+.answertextright {text-align:left;}
+.textarea {background:#f5feff;color: #00677d;width:96%;border:1px solid #3c9aae;padding:4px;margin:0 10px 0 10px;}
+.textarea:focus {background:white;color:#004554;}
+.array1 {background-color: #cbeff2;text-align: center;}
+.array2 {background-color: #e0fbff;text-align: center;}
+th.array1 {background-color: #a5d6da; }
+table.question tr.array1:hover {background-color: #a5d6da; }
+table.question tr.array2:hover {background-color: #a5d6da; }
+.errormandatory {font-weight: bold;color: #CB0404;}
+.survey-assessment, .survey-completed {text-align:center;border: 1px solid #00677d;background:#f0fdff;}
+A:link, A:visited, A:active {text-decoration:none;color:#00677d;border-bottom:1px dashed #00677d;}
+A:hover {text-decoration:none;color:#004554;;border-bottom:1px solid #004554;}
+.credits {color:white;font-style:italic;float:right;padding-right:15px;margin:-35px 0 0 0;font-size:0.7em}
+.credits a {color:white;border-bottom:1px dashed white}
+.credits a:hover {border-bottom:1px solid white}
+a.imglink {text-decoration:none;border:0}
+.kullogo {border:0;margin:10px 0 -10px 0}
+.warningjs {font-weight:bold;color:red;}
+.survey-question-space {height:5px;}
+.answertext {color: #000;font-weight:normal;font-size:0.9em}
+.nosurveyid {font-size:1.2em;font-weight:bold;text-align:center;padding:20px 10px 20px 10px; margin:20px 0 20px 0;border:1px solid #3c9aae;background-color:#e0fbff}
