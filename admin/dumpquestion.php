@@ -86,24 +86,38 @@ function BuildOutput($Query)
 
 
 //1: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE qid=$qid";
+$qquery = "SELECT * 
+           FROM {$dbprefix}questions 
+		   WHERE qid=$qid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
-$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers WHERE {$dbprefix}answers.qid = $qid";
+$aquery = "SELECT {$dbprefix}answers.* 
+           FROM {$dbprefix}answers 
+		   WHERE {$dbprefix}answers.qid = $qid";
 $adump = BuildCSVFromQuery($aquery);
 
 //3: Labelsets Table
 //$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type='F' AND qid=$qid";
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W') AND qid=$qid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* 
+            FROM {$dbprefix}labelsets, {$dbprefix}questions 
+			WHERE {$dbprefix}labelsets.lid={$dbprefix}questions.lid 
+			AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
+			AND qid=$qid";
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //4: Labels Table
-$lquery = "SELECT DISTINCT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid AND type in ('F', 'H', 'Z', 'W') AND qid=$qid";
+$lquery = "SELECT DISTINCT {$dbprefix}labels.* 
+		   FROM {$dbprefix}labels, {$dbprefix}questions 
+		   WHERE {$dbprefix}labels.lid={$dbprefix}questions.lid 
+		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
+		   AND qid=$qid";
 $ldump = BuildCSVFromQuery($lquery);
 
 //5: Question Attributes
-$query = "SELECT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes WHERE {$dbprefix}question_attributes.qid=$qid";
+$query = "SELECT {$dbprefix}question_attributes.* 
+	      FROM {$dbprefix}question_attributes 
+		  WHERE {$dbprefix}question_attributes.qid=$qid";
 $qadump = BuildCSVFromQuery($query);
 $fn = "limesurvey_question_$qid.csv";
 

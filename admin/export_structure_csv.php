@@ -61,51 +61,86 @@ $dumphead = "# LimeSurvey Survey Dump\n"
         . "# Do not change this header!\n";
 
 //1: Surveys table
-$squery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
+$squery = "SELECT * 
+           FROM {$dbprefix}surveys 
+		   WHERE sid=$surveyid";
 $sdump = BuildCSVFromQuery($squery);
 
 //2: Surveys Languagsettings table
-$slsquery = "SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
+$slsquery = "SELECT * 
+             FROM {$dbprefix}surveys_languagesettings 
+			 WHERE surveyls_survey_id=$surveyid";
 $slsdump = BuildCSVFromQuery($slsquery);
 
 //3: Groups Table
-$gquery = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by gid";
+$gquery = "SELECT * 
+           FROM {$dbprefix}groups 
+		   WHERE sid=$surveyid 
+		   ORDER BY gid";
 $gdump = BuildCSVFromQuery($gquery);
 
 //4: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid order by qid";
+$qquery = "SELECT * 
+           FROM {$dbprefix}questions 
+		   WHERE sid=$surveyid 
+		   ORDER BY qid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //5: Answers table
-$aquery = "SELECT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.language={$dbprefix}questions.language AND {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$aquery = "SELECT {$dbprefix}answers.* 
+           FROM {$dbprefix}answers, {$dbprefix}questions 
+		   WHERE {$dbprefix}answers.language={$dbprefix}questions.language 
+		   AND {$dbprefix}answers.qid={$dbprefix}questions.qid 
+		   AND {$dbprefix}questions.sid=$surveyid";
 $adump = BuildCSVFromQuery($aquery);
 
 //6: Conditions table
-$cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$cquery = "SELECT DISTINCT {$dbprefix}conditions.* 
+           FROM {$dbprefix}conditions, {$dbprefix}questions 
+		   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid 
+		   AND {$dbprefix}questions.sid=$surveyid";
 $cdump = BuildCSVFromQuery($cquery);
 
 //7: Label Sets
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) AND type IN ('F', 'H', 'W', 'Z', '1') AND sid=$surveyid";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages 
+            FROM {$dbprefix}labelsets, {$dbprefix}questions 
+			WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) 
+			AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';') 
+			AND sid=$surveyid";
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
-$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) AND type in ('F', 'W', 'H', 'Z', '1') AND sid=$surveyid group by {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language 
+           FROM {$dbprefix}labels, {$dbprefix}questions 
+		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
+		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
+		   AND sid=$surveyid 
+		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid AND {$dbprefix}questions.sid=$surveyid";
+$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
+          FROM {$dbprefix}question_attributes, {$dbprefix}questions 
+		  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid 
+		  AND {$dbprefix}questions.sid=$surveyid";
 $qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
-$query = "SELECT {$dbprefix}assessments.* FROM {$dbprefix}assessments WHERE {$dbprefix}assessments.sid=$surveyid";
+$query = "SELECT {$dbprefix}assessments.* 
+          FROM {$dbprefix}assessments 
+		  WHERE {$dbprefix}assessments.sid=$surveyid";
 $asdump = BuildCSVFromQuery($query);
 
 //11: Quota;
-$query = "SELECT {$dbprefix}quota.* FROM {$dbprefix}quota WHERE {$dbprefix}quota.sid=$surveyid";
+$query = "SELECT {$dbprefix}quota.* 
+          FROM {$dbprefix}quota 
+		  WHERE {$dbprefix}quota.sid=$surveyid";
 $quotadump = BuildCSVFromQuery($query);
 
 //12: Quota Members;
-$query = "SELECT {$dbprefix}quota_members.* FROM {$dbprefix}quota_members WHERE {$dbprefix}quota_members.sid=$surveyid";
+$query = "SELECT {$dbprefix}quota_members.* 
+          FROM {$dbprefix}quota_members 
+		  WHERE {$dbprefix}quota_members.sid=$surveyid";
 $quotamemdump = BuildCSVFromQuery($query);
 
 $fn = "limesurvey_survey_$surveyid.csv";
