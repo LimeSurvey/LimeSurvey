@@ -433,12 +433,15 @@ if ($isInstertansEnabled===true)
 if (count($replFields) > 0 || isset($cquestions) )
 {
 	$limereplacementoutput .= "\t\t\t\t\t<select name='cquestions' id='cquestions' style='font-family:verdana; background-color: #FFFFFF; font-size:10; border: 0px;width:99%;' size='15' ondblclick='Ok();'>\n";
+	$noselection = false;
 }
 else
 {
-	$limereplacementoutput = $clang->gT("No replacement variable available for this field");
-	echo $limereplacementoutput;
-	return;
+	$limereplacementoutput .= $clang->gT("No replacement variable available for this field");
+	//echo $limereplacementoutput;
+	//return;
+	$noselection = true;
+	
 }
 
 if (count($replFields) > 0)
@@ -475,7 +478,11 @@ if (isset($cquestions))
 }
 
 
-$limereplacementoutput .= "\t\t\t\t\t</select>\n";
+if ($noselection === false)
+{
+	$limereplacementoutput .= "\t\t\t\t\t</select>\n";
+}
+
 $limereplacementoutput .= "\t\t\t\t</td>\n"
 			. "\t\t\t</tr>\n";
 
