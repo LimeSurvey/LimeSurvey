@@ -51,7 +51,7 @@
 //		- Use tooltipps to show additional information like whole question/answer text
 
 
-//MM: This setting will be put into config-defaults.php later
+//DO NEVER SET THIS TO "1" BECAUSE THIS FEATURE IS ONLY AVAILABLE AT LS1.8 AND ABOVE!
 $showaggregateddata = 0;
 
 
@@ -293,6 +293,10 @@ if (!isset($currentgroup)) {$currentgroup="";}
  */
 foreach ($filters as $flt)
 {
+	//is there a previous question type set?
+	if (!isset($previousquestiontype)) {$previousquestiontype="";}
+	
+
 	//does gid equal $currentgroup?
 	if ($flt[1] != $currentgroup)	
 	{   
@@ -315,7 +319,23 @@ foreach ($filters as $flt)
 	}
 	
 	//we don't want more than 4 questions in a row
-	if (isset($counter) && $counter == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
+	//and we need a new row after each multiple/array question
+	if (isset($counter) && $counter == 4 || 
+	   ($previousquestiontype == "1" || 
+		$previousquestiontype == "A" || 
+		$previousquestiontype == "B" || 
+		$previousquestiontype == "C" || 
+		$previousquestiontype == "E" || 
+		$previousquestiontype == "F" || 
+		$previousquestiontype == "H" || 
+		$previousquestiontype == "K" || 
+		$previousquestiontype == "Q" || 
+		$previousquestiontype == "R" || 
+		$previousquestiontype == ":" || 
+		$previousquestiontype == ";"))	
+	{
+		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;
+	}
 	
 	/*
 	 * remember: $flt is structured like this
@@ -1232,6 +1252,10 @@ foreach ($filters as $flt)
 	
 	if (!isset($counter)) {$counter=0;}
 	$counter++;
+	
+	//temporary save the type of the previous question
+	//used to adjust linebreaks
+	$previousquestiontype = $flt[2];
 }
 
 //complete output
