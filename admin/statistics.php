@@ -1235,10 +1235,17 @@ foreach ($filters as $flt)
         
         //special dual scale counter
         $counter2=0;       
-         
+        
+        //two arrays to temporary save questions and answers
+        //$q_array1 = array();
+        //$q_array2 = array();
+        
+        //$a_array1 = array();
+        //$a_array2 = array();
+        
         //multi/dual scale is like two mixed questions of the same type so we loop twice
         for ($i=0; $i<=1; $i++) 
-        {
+        {        	
         	//get answers
             $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -1252,7 +1259,11 @@ foreach ($filters as $flt)
                 
                 //3 lines of debugging output
                 $statisticsoutput .= "<!-- $myfield2 - ";                
-                if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+                if (isset($_POST[$myfield2])) 
+                {
+                	$statisticsoutput .= $_POST[$myfield2];
+                }
+                
                 $statisticsoutput .= " -->\n";
                 
                 //some layout adaptions -> new line after 4 entries
@@ -1269,10 +1280,24 @@ foreach ($filters as $flt)
                 //pre-check
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
                 $statisticsoutput .= " />&nbsp;<strong>".showSpeaker($flt[3]." ".$clang->gT("Label")." ".(1+$i)." (".$clang->gT("Item")." ".$row[0].")")."</strong><br />\n";
-
+				
                 
                 /*
-                 * get labels. remember that there are two labels used -> add $i 
+                 * flt[3] = question
+                 * $row[0] = item number --> XXX this has to be considered!
+                 * $frow['code'] = itemcode
+                 * $frow['title'] = itemtitle
+                 */
+           		if($i == 0)
+               	{
+               		//array_push($q_array1, $flt[3]." - ".$row[0]);
+               	}
+               	else
+               	{
+               		//array_push($q_array2, $flt[3]." - ".$row[0]);
+               	}
+                
+                 /* get labels. remember that there are two labels used -> add $i 
                  * $flt[6] contains the "normal" label-id and fltd[7] = second label
                  * 
                  * table "labels" contains
@@ -1282,6 +1307,7 @@ foreach ($filters as $flt)
                  * - sortorder
                  * - language
                  */
+                 
                 $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6+$i]} AND language='{$language}' ORDER BY sortorder, code";
                 $fresult = db_execute_assoc($fquery);
                 
@@ -1300,6 +1326,14 @@ foreach ($filters as $flt)
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
                     
                     $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                	if($i == 0)
+                	{
+                		//array_push($a_array1, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
+                	}
+                	else
+                	{
+                		//array_push($a_array2, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
+                	}
                     
                 }
                 
@@ -1312,6 +1346,64 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t<td>\n";
             
         }
+        
+        /*
+         * anzahl elemente in antwortarray
+         * A1 - L1
+         * A1 - L2
+         * A2 - L1
+         * A2 - L2
+         * A3 - L1
+         * A3 - L2
+         */
+        
+        /*$numberofquestions = count($q_array1);
+        $numberofanswers = count($a_array1);
+        
+        if($numberofanswers > 0 && $numberofquestions > 0)
+        {
+        	$answersperquestion = $numberofanswers / $numberofquestions;
+        }
+        else
+        {
+        	$answersperquestion = 0;
+        }
+        
+        
+        echo "NOA: $numberofanswers - NOQ: $numberofquestions - APQ: $answersperquestion<br><br>";
+       $x = 0;
+       $i = 0;
+        while($x < $numberofquestions)
+        {
+         	
+         	
+         	if($i == 0)
+         	{
+        		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
+        	
+		        for($j = 0; $j < $answersperquestion; $j++)
+		        {
+		        	echo "A$j: ".$a_array1[$j]."<br />";
+		        }
+		        
+		        $i = 1;
+		        echo "<br />";
+         	}
+         	else
+         	{
+         		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
+         		
+         		for($j = 0; $j < $answersperquestion; $j++)
+		        {
+		        	echo "A$j: ".$a_array1[$j]."<br />";
+		        }
+		        
+		        $i = 0;
+		        echo "<br />";
+         	}
+	   $x++;     
+       }*/
+        
         
         $counter=0;
         break;
