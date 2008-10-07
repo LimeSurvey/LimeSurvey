@@ -192,10 +192,31 @@ echo str_pad('Loading... ',4096)."<br />\n";
         
 		modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+
+	if ($oldversion < 127) {
+        modify_database("","create index `assessments_idx2` on `prefix_assessments` (`sid`)"); echo $modifyoutput; 
+        modify_database("","create index `assessments_idx3` on `prefix_assessments` (`gid`)"); echo $modifyoutput; 
+        modify_database("","create index `conditions_idx2` on `prefix_conditions` (`qid`)"); echo $modifyoutput; 
+        modify_database("","create index `groups_idx2` on `prefix_groups` (`sid`)"); echo $modifyoutput; 
+        modify_database("","create index `questions_idx2` on `prefix_questions` (`sid`)"); echo $modifyoutput; 
+        modify_database("","create index `questions_idx3` on `prefix_questions` (`gid`)"); echo $modifyoutput; 
+        modify_database("","create index `question_attributes_idx2` on `prefix_question_attributes` (`qid`)"); echo $modifyoutput; 
+        modify_database("","create index `quota_idx2` on `prefix_quota` (`sid`)"); echo $modifyoutput; 
+        modify_database("","create index `saved_control_idx2` on `prefix_saved_control` (`sid`)"); echo $modifyoutput; 
+        modify_database("","create index `user_in_groups_idx1` on `prefix_user_in_groups`  (`ugid`, `uid`)"); echo $modifyoutput; 
+        modify_database("","create index `answers_idx2` on `prefix_answers` (`sortorder`)"); echo $modifyoutput;
+        modify_database("","create index `conditions_idx3` on `prefix_conditions` (`cqid`)"); echo $modifyoutput;
+        modify_database("","create index `questions_idx4` on `prefix_questions` (`type`)"); echo $modifyoutput;
+        modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
+
+	if ($oldversion < 128) {
+		//128
+		upgrade_token_tables128();
+	    modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
     return true;
 }
-
-
 
 
 function upgrade_survey_tables117()
@@ -239,6 +260,24 @@ function upgrade_token_tables125()
         while ( $sv = $surveyidresult->FetchRow() )
             {
             modify_database("","ALTER TABLE ".$sv[0]." ADD `emailstatus` varchar(300) NOT NULL DEFAULT 'OK'"); echo $modifyoutput; flush();
+            }
+        }
+}
+
+// Add the reminders tracking fields
+// TIBO
+function upgrade_token_tables128()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindersent` VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `remindercount` INT(11)  DEFAULT 0"); echo $modifyoutput; flush();
             }
         }
 }

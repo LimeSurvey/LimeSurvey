@@ -671,8 +671,9 @@ $importgroup .= ")</li>\n";
 $importgroup .= "\t<li>".$clang->gT("Question Attributes: ");
 $importgroup .= $countquestion_attributes;
 $importgroup .= "</li>\n</ul>\n";
-$importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n"
-."</td></tr></table><br />&nbsp;\n";
+$importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n";
+$importgroup .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid'>".$clang->gT("Go to group")."</a><br />\n";
+$importgroup .= "</td></tr></table><br />&nbsp;\n";
 
 
 unlink($the_full_file_path);

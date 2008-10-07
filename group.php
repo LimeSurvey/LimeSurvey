@@ -15,9 +15,7 @@
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
-
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
-
 
 //Move current step ###########################################################################
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
@@ -196,9 +194,9 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 
 			$url = $thissurvey['url'];
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
-         $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-         $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
-         $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
+            $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
 			header("Location: {$url}");
 			
@@ -284,15 +282,12 @@ $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
 
-// Latter is needed an array to get the title of the question and
-// its id for the form, with this will be more easy locate the
-// key for to construct the javascript code
-
-$titlejsid = array();
+$qtypesarray = array();
 
 foreach ($_SESSION['fieldarray'] as $ia)
 {
-    $titlejsid[$ia[2]] = $ia[1];
+// REMOVEME     $titlejsid[$ia[2]] = $ia[1];
+		$qtypesarray[$ia[1]] = $ia[4];
 
 	if ($ia[5] == $gid)
 	{
@@ -300,6 +295,7 @@ foreach ($_SESSION['fieldarray'] as $ia)
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)
 		{
+			$plus_qanda[] = $ia[4];
 			$qanda[]=$plus_qanda;
 		}
 		if ($plus_inputnames)
@@ -512,7 +508,7 @@ for ($i=0;$i<count($conditions);$i++)
 	}
 
 	// If the Gid of the question used for the condition is on the same group,
-	// the set the runconce flag to False, because we'll need to evaluate this condition 
+	// the set the runconce flag to False, because we'll need to evaluate this condition
 	//each time another question in this page is modified
 	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
 	if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] == $gid)
@@ -617,11 +613,6 @@ for ($i=0;$i<count($conditions);$i++)
 		/* NEW
 		 * If the value is enclossed by @
 		 * the value of this question must be evaluated instead.
-		 * Remember $titlejs array? It will be used now
-		 * Another note: It's not clear why is used a norma to call
-		 * some elements like java*, answer* or just the fieldname
-		 * as far I can see now it's used the field name for text elements
-		 * so, I'll use by id with the prefix answer
 		 */
 		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 		{
@@ -629,7 +620,31 @@ for ($i=0;$i<count($conditions);$i++)
 			$auxqtitle = $comparedfieldname;
 			$newjava .= "(document.getElementById('answer" . $cd[2] . "').value != '') && ";
 
-			if (in_array($titlejsid[$auxqtitle], $_SESSION['insertarray']))
+			// Let's determin the idname of this second question field
+			ereg("[0-9]+X([0-9]+)X.*",$auxqtitle,$sourceQuestionGid2);
+			if ($sourceQuestionGid2[1] == $gid && 
+				($q2type == "D" ||
+					$q2type == "N" ||
+					$q2type == "K") )
+			{ // field name for text input boxes differs if they are on the same page or not
+				$idname2 = "answer".$auxqtitle;
+			}
+			else
+			{ // other interresting cases are using the following format
+			// I know that this doesn't support P,M and other question types 
+			// but these are irrelevant for @SGQA@ tags
+				$idname2 = "java".$auxqtitle;
+			}
+
+			$newjava .= "(document.getElementById('" . $idname . "').value != '') && ";
+
+				$newjava .= "(document.getElementById('" . $idname2 . "').value != '') && ";
+				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+				if (in_array($cd[4],array("A","B","K","N","5")))
+				{ // Numerical questions
+					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+				}
+				else
 			{
 				$newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
 				$newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
@@ -638,6 +653,8 @@ for ($i=0;$i<count($conditions);$i++)
 				$newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
 				$newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
 			}
+
+//			}
 		} else
 		{
 			if ($cd[3]) //Well supose that we are comparing a non empty value
@@ -652,6 +669,9 @@ for ($i=0;$i<count($conditions);$i++)
 			{
 				$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 			}
+				else
+				{
+					$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 		}
 	}
 	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
@@ -762,9 +782,47 @@ if (isset($qanda) && is_array($qanda))
 {
 	foreach ($qanda as $qa)
 	{
-		echo "\n\t<!-- NEW QUESTION -->\n";
-		echo "\t\t\t\t<div id='question$qa[4]'";
-		if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
+		switch($qa[8])
+		{	// I think this is a bad solution to adding classes to question
+			// DIVs but I can't think of a better solution. (eric_t_cruiser)
+
+			case "X": $q_class = 'boilerplate' ; break; //BOILERPLATE QUESTION
+			case "5": $q_class = 'choice-5-pt-radio' ; break; //5 POINT CHOICE radio-buttons
+			case "D": $q_class = 'date' ; break; //DATE
+			case "Z": $q_class = 'list-radio-flexible' ; break; //LIST Flexible drop-down/radio-button list
+			case "L": $q_class = 'list-radio' ; break; //LIST drop-down/radio-button list
+			case "W": $q_class = 'list-dropdown-flexible' ; break; // (flexible label)
+			case "!": $q_class = 'list-dropdown' ; break; //List - dropdown
+			case "O": $q_class = 'list-with-comment' ; break; // drop-down/radio-button list + textarea
+			case "R": $q_class = 'ranking' ; break; //RANKING STYLE
+			case "M": $q_class = 'multiple-opt' ; break; //MULTIPLE OPTIONS checkbox
+			case "I": $q_class = 'language' ; break; //Language Question
+			case "P": $q_class = 'multiple-opt-comments' ; break; //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+			case "Q": $q_class = 'multiple-short-txt' ; break; // TEXT
+			case "K": $q_class = 'numeric-multi' ; break; //MULTIPLE NUMERICAL QUESTION
+			case "N": $q_class = 'numeric' ; break; //NUMERICAL QUESTION TYPE
+			case "S": $q_class = 'text-short' ; break; //SHORT FREE TEXT
+			case "T": $q_class = 'text-long' ; break; //LONG FREE TEXT
+			case "U": $q_class = 'text-huge' ; break; //HUGE FREE TEXT
+			case "Y": $q_class = 'yes-no' ; break; //YES/NO radio-buttons
+			case "G": $q_class = 'gender' ; break; //GENDER drop-down list
+			case "A": $q_class = 'array-5-pt' ; break; //ARRAY (5 POINT CHOICE) radio-buttons
+			case "B": $q_class = 'array-10-pt' ; break; //ARRAY (10 POINT CHOICE) radio-buttons
+			case "C": $q_class = 'array-yes-uncertain-no' ; break; //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+			case "E": $q_class = 'array-increase-same-decrease' ; break; //ARRAY (Increase/Same/Decrease) radio-buttons
+			case "F": $q_class = 'array-flexible-row' ; break; //ARRAY (Flexible) - Row Format
+			case "H": $q_class = 'array-flexible-column' ; break; //ARRAY (Flexible) - Column Format
+//			case "^": $q_class = 'slider' ; break; //SLIDER CONTROL
+			case ":": $q_class = 'array-multi-flexi' ; break; //ARRAY (Multi Flexi) 1 to 10
+			case "1": $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
+		}
+
+		if ($qa[3] != "Y") {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+
+		echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.'"'.$n_q_display.'>
+';
 		$question=$qa[0];
 		$answer=$qa[1];
 		$help=$qa[2];

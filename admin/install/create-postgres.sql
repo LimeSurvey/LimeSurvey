@@ -489,7 +489,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '126');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '128');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --
@@ -501,4 +501,20 @@ INSERT INTO prefix_users(
             create_survey, create_user, delete_user, superadmin, configurator, 
             manage_template, manage_label,htmleditormode)
             VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
+
+
+
+--
+-- indexes 
+--
+create index assessments_idx2 on prefix_assessments (sid);
+create index assessments_idx3 on prefix_assessments (gid);
+create index conditions_idx2 on prefix_conditions (qid);
+create index groups_idx2 on prefix_groups (sid);
+create index question_attributes_idx2 on prefix_question_attributes (qid);
+create index questions_idx2 on prefix_questions (sid);
+create index questions_idx3 on prefix_questions (gid);
+create index quota_idx2 on prefix_quota (sid);
+create index saved_control_idx2 on prefix_saved_control (sid);
+create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
 

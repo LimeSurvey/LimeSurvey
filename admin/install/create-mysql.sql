@@ -348,11 +348,30 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '126');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '128');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table `users`
 --
 INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
+
+
+
+--
+-- indexes 
+--
+create index `answers_idx2` on `prefix_answers` (`sortorder`);
+create index `assessments_idx2` on `prefix_assessments` (`sid`);
+create index `assessments_idx3` on `prefix_assessments` (`gid`);
+create index `conditions_idx2` on `prefix_conditions` (`qid`);
+create index `conditions_idx3` on `prefix_conditions` (`cqid`);
+create index `groups_idx2` on `prefix_groups` (`sid`);
+create index `question_attributes_idx2` on `prefix_question_attributes` (`qid`);
+create index `questions_idx2` on `prefix_questions` (`sid`);
+create index `questions_idx3` on `prefix_questions` (`gid`);
+create index `questions_idx4` on `prefix_questions` (`type`);
+create index `quota_idx2` on `prefix_quota` (`sid`);
+create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
+create index `user_in_groups_idx1` on `prefix_user_in_groups` (`ugid`, `uid`);
 

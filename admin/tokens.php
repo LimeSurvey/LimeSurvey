@@ -254,6 +254,8 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		$createtokentable.= "token C(36) ,\n "
 		. "language C(25) ,\n "
 		. "sent C(17) DEFAULT 'N',\n "
+		. "remindersent C(17) DEFAULT 'N',\n "
+		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
 		. "attribute_1 C(100) ,\n"
 		. "attribute_2 C(100) ,\n"
@@ -656,7 +658,7 @@ if ($subaction == "clearinvites" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N'";
+	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
 	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
 	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All invite entries have been set to 'Not Invited'.")."</font></strong></td></tr>\n";
 	$subaction="";
@@ -775,7 +777,7 @@ if ($subaction == "browse" || $subaction == "search")
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	$bresult = db_select_limit_assoc($bquery, 1) or safe_die($clang->gT("Error")." counting fields<br />".$connect->ErrorMsg());
 	$bfieldcount=$bresult->FieldCount()-1;
-	$bquery = "SELECT tid,firstname,lastname,email,emailstatus,token,language,sent,completed,attribute_1,attribute_2,mpid FROM ".db_table_name("tokens_$surveyid");
+	$bquery = "SELECT tid,firstname,lastname,email,emailstatus,token,language,sent,remindersent,remindercount,completed,attribute_1,attribute_2,mpid FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
 	{
 		$bquery .= " WHERE firstname LIKE '%$searchstring%' "
@@ -817,10 +819,10 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Email")."' border='0' align='left' /></a>".$clang->gT("Email")."</th>\n"
 
-	."\t\t<th align='left' valign='top' class='settingcaption'>"
-	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
+//	."\t\t<th align='left' valign='top' class='settingcaption'>"
+//	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+//	."<img src='$imagefiles/downarrow.png' alt='' title='"
+//	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
 
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
@@ -836,6 +838,14 @@ if ($subaction == "browse" || $subaction == "search")
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=sent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Invite sent?")."' border='0' align='left' /></a>".$clang->gT("Invite sent?")."</th>\n"
+	."\t\t<th align='left' valign='top' class='settingcaption'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
+	.$clang->gT("Sort by: ").$clang->gT("Reminder sent?")."' border='0' align='left' /></a>".$clang->gT("Reminder sent?")."</th>\n"
+	."\t\t<th align='left' valign='top' class='settingcaption'>"
+	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+	."<img src='$imagefiles/downarrow.png' alt='' title='"
+	.$clang->gT("Sort by: ").$clang->gT("Reminder count")."' border='0' align='left' /></a>".$clang->gT("Reminder count")."</th>\n"
 	."\t\t<th align='left' valign='top' class='settingcaption'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
@@ -867,9 +877,13 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			if ($a =='email' && $brow['emailstatus'] != 'OK')
 			{
-				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>$brow[$a]</span></td>\n";
+				// TIBO Add here tooltip with $brow['emailstatus']
+//				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>"
+				$tokenoutput .= "\t\t<td class='$bgc'>"
+				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".javascript_escape($brow['emailstatus'])."');return false;\" "
+				."onmouseout=\"hideTooltip()\">$brow[$a]</a></td>\n";
 			}
-			else
+			elseif ($a != 'emailstatus')
 			{
 				$tokenoutput .= "\t\t<td class='$bgc'>$brow[$a]</td>\n";
 			}
@@ -880,7 +894,7 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			$tokenoutput .= "\t\t<td align='left'>\n"
 			."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='E' title='"
-			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."', '_top')\" />"
+			.$clang->gT("Edit Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
 			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 //			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 			.$clang->gT("Delete Token Entry")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."\" />";
@@ -1058,6 +1072,9 @@ if ($subaction == "email" &&
 			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+			$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+			$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+			$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
 			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
@@ -1100,7 +1117,6 @@ if ($subaction == "email" &&
 		. "\t\t<option value='Y'>".$clang->gT("Yes")."</option>"
 		. "\t\t<option value='N'>".$clang->gT("No")."</option>"
 		. "\t</select><br/>\n"
-		. "\t\n"
 		. "\t<input type='submit' value='"
 		.$clang->gT("Send Invitations")."'>\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
@@ -1292,6 +1308,9 @@ if ($subaction == "remind" &&
             $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
             $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
             $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
     
             $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
             $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
@@ -1331,12 +1350,20 @@ if ($subaction == "remind" &&
 			."\t\t<td>{$tokenid}</font></td>\n"
 			."\t</tr>\n";
 		}		
-		$tokenoutput .="\t\t<tr><td>&nbsp;</td><td align='left'>\n"
-		.$clang->gT("Bypass token with failing email addresses").":&nbsp;\n"
-		."\t\t\t<select name='bypassbademails'>\n"
+		$tokenoutput .="\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
+		.$clang->gT("Bypass token with failing email addresses").":&nbsp;</strong></td>\n"
+		."\t\t\t<td><select name='bypassbademails'>\n"
 		."\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		."\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
-		."\t\t\t</select><br/>\n"
+		."\t\t\t</select></td></tr>\n"
+		. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
+		. $clang->gT("Min time between reminders").":&nbsp;</strong>\n"
+		."\t\t\t<td><input type='text' value='' name='minreminderdelay' id='minreminderdelay' /></td></tr>\n"
+		. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
+		. $clang->gT("Max reminders").":&nbsp;</strong>\n"
+		. "\t\t\t<td><input type='text' value='' name='maxremindercount' id='maxremindercount' /></td></tr>\n"
+		. "\t\t<tr><td align='right' width='150' valign='top'>&nbsp;</td>\n"
+		. "\t\t<td>\n"
 		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
 		."\t<input type='hidden' name='ok' value='absolutely' />\n"
 		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
@@ -1373,7 +1400,34 @@ if ($subaction == "remind" &&
 			$SQLemailstatuscondition = "";
 		}
 
-		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition";
+		if (isset($_POST['maxremindercount']) &&
+			$_POST['maxremindercount'] != '' &&
+			intval($_POST['maxremindercount']) != 0)
+		{
+			$SQLremindercountcondition = " AND remindercount < ".intval($_POST['maxremindercount']);
+		}
+		else
+		{
+			$SQLremindercountcondition = "";
+		}
+
+		if (isset($_POST['minreminderdelay']) && 
+			$_POST['minreminderdelay'] != '' &&
+			intval($_POST['minreminderdelay']) != 0)
+		{
+			// $_POST['minreminderdelay'] in days (86400 seconds per day)
+			$compareddate = date_shift(
+				date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
+				"Y-m-d H:i",
+				$timeadjust);
+			$SQLreminderdelaycondition = " AND remindersent < '".$compareddate."'";
+		}
+		else
+		{
+			$SQLreminderdelaycondition = "";
+		}
+
+		$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 		if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
@@ -1385,7 +1439,7 @@ if ($subaction == "remind" &&
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		// TLR change to put date into sent
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
@@ -1443,6 +1497,12 @@ if ($subaction == "remind" &&
 
 				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
 				{
+					// Put date into remindersent
+					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+					$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+					."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
+					//
+					$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
 					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 				}
 				else
@@ -1688,7 +1748,8 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 		case "edit":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."' />\n"
 			."\t\t<input type='hidden' name='subaction' value='updatetoken' />\n"
-			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n";
+			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n"
+			."\t\t<input type='hidden' name='urlextra' value='&amp;start=".$_GET['start']."&amp;limit=".$_GET['limit']."&amp;order=".$_GET['order']."' />\n";
 			break;
 		case "addnew":
 			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."' />\n"
@@ -1739,7 +1800,7 @@ if ($subaction == "updatetoken" &&
 		$udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 		$tokenoutput .=  "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
 						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
-						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse".$_POST['urlextra']."'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
 						."\t</td></tr></table>\n";
 	}
 	  else 
@@ -1851,6 +1912,7 @@ if ($subaction == "upload" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
+   	$duplicatelist=array();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
@@ -1920,6 +1982,7 @@ if ($subaction == "upload" &&
 						if ( $dupresult->RecordCount() > 0)
 						{
 							$dupfound = true;
+							$duplicatelist[]=$line[0]." ".$line[1]." (".$line[2].")";
 						}
 					}	
 				
@@ -1975,7 +2038,24 @@ if ($subaction == "upload" &&
 		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
 		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 		$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
-		$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
+		$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
+		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
+		$message .= "$xy ".$clang->gT("Duplicate records removed");
+		$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+		$message .= "<div id='duplicateslist' style='display: none; 
+		                                             width: 400px; 
+													 background-color: #FFF;
+													 border: 1px solid #CCC;
+													 height: 50px; 
+													 overflow: auto; 
+													 text-align: left;
+													 margin-bottom: 0px;
+													 font-size: 8pt'>";
+		foreach($duplicatelist as $data) {
+		  $message .= "<li>$data</li>\n";
+		}
+		$message .= "</div>";
+		$message .= "<br />\n";
 		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
 		unlink($the_full_file_path);
@@ -1989,6 +2069,7 @@ if ($subaction == "uploadldap" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
+    $duplicatelist=array();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Uploading LDAP Query")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
@@ -2106,6 +2187,8 @@ if ($subaction == "uploadldap" &&
 							if ( $dupresult->RecordCount() > 0)
 							{
 								$dupfound = true;
+								$duplicatelist[]=$myfirstname." ".$mylastname." (".$myemail.")";
+
 							}
 						}	
 						if ($filterblankemail && $myemail=='')

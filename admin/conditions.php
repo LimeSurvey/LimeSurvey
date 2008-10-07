@@ -337,9 +337,10 @@ if (isset($postquestionscount) && $postquestionscount > 0) //Build the select bo
 if ($questionscount > 0)
 {
 	$X="X";
-	// Will detect if the questions are type D to use latter
-
+	// Will detect if the questions are type D to use later
 	$dquestions=array();
+	// Will detect if the questions are of Numerical type, for use in @SGQA@ conditions
+	$numquestions=array();
 
 	foreach($theserows as $rows)
 	{
@@ -350,7 +351,7 @@ if ($questionscount > 0)
 				$rows['type'] == "C" ||
 				$rows['type'] == "E" ||
 				$rows['type'] == "F" ||
-				$rows['type'] == "H")
+				$rows['type'] == "H" )
 		{
 			$aquery="SELECT * "
 				."FROM {$dbprefix}answers "
@@ -384,16 +385,16 @@ if ($questionscount > 0)
 					break;
 					case "C": //Array Y/N/NA
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "Y", $clang->gT("Yes"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "U", $clang->gT("Uncertain"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "N", $clang->gT("No"));
 					break;
 					case "E": //Array >/=/<
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "I", $clang->gT("Increase"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
-					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "S", $clang->gT("Same"));
+					    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "D", $clang->gT("Decrease"));
 					break;
 					case "F": //Array Flexible Row
-						case "H": //Array Flexible Column
+					case "H": //Array Flexible Column
 						$fquery = "SELECT * "
 						."FROM {$dbprefix}labels "
 						."WHERE lid={$rows['lid']} "
@@ -411,7 +412,94 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
+
+				if ($rows['type'] == 'A' ||
+						$rows['type'] == 'B')
+				{
+					// TIBO TIBO
+					$rows['acode']=$arows['code']; // let's add the answer code data
+					$numquestions[]=$rows; // This is a numerical question type
+
+					foreach ($numquestions as $numq)
+					{
+						if ($rows['qid'] != $numq['qid'] ||
+								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
+						{
+							if ($numq['type'] == "A" ||
+									$numq['type'] == "B" ||
+									$numq['type'] == "K" ) // multiple line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+							}
+							elseif ($numq['type'] == "N" ||
+									$numq['type'] == "5") // single line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+							}
+						}
+					}
+					// END TIBO
+				}
+
 			} //while
+		} elseif ($rows['type'] == ":") { // Multiflexi
+			//Get question attribute for $canswers
+			$qidattributes=getQuestionAttributes($rows['qid']);
+        	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+        		$maxvalue=$maxvalue['value'];
+        	} else {
+        		$maxvalue=10;
+        	}
+        	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+        		$minvalue=$minvalue['value'];
+        	} else {
+        		$minvalue=1;
+        	}
+        	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+        		$stepvalue=$stepvalue['value'];
+        	} else {
+        		$stepvalue=1;
+        	}
+		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+			$minvalue=0;
+			$maxvalue=1;
+			$stepvalue=1;
+		}
+			//Get the LIDs
+		    $fquery = "SELECT * "
+						."FROM {$dbprefix}labels "
+						."WHERE lid={$rows['lid']} "
+						."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+						."ORDER BY sortorder, code ";
+			$fresult = db_execute_assoc($fquery);
+			while ($frow=$fresult->FetchRow())
+				{
+					$lids[$frow['code']]=$frow['title'];
+				}
+			//Now cycle through the answers
+            $aquery="SELECT * "
+				."FROM {$dbprefix}answers "
+				."WHERE qid={$rows['qid']} "
+				."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY sortorder, "
+				."answer";
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+			while ($arows = $aresult->FetchRow())
+			{
+				$shortanswer = strip_tags($arows['answer']);
+
+				$shortanswer .= " [{$arows['code']}]";
+				foreach($lids as $key=>$val) 
+				{
+				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
+        			for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
+        			{
+        			    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
+        			}
+				}
+			}
+		
 		} //if A,B,C,E,F,H
 		elseif ($rows['type'] == "1") //Multi Scale
 		{
@@ -488,6 +576,34 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
+
+				if ($rows['type'] == 'K')
+				{
+					// TIBO TIBO
+					$rows['acode']=$arows['code']; // let's add the answer code data
+					$numquestions[]=$rows; // This is a numerical question type
+
+					foreach ($numquestions as $numq)
+					{
+						if ($rows['qid'] != $numq['qid'] ||
+								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
+						{
+							if ($numq['type'] == "A" ||
+									$numq['type'] == "B" ||
+									$numq['type'] == "K") // multiple line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+							}
+							elseif ($numq['type'] == "N" ||
+									$numq['type'] == "5") // single line numerical questions
+							{
+								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+							}
+						}
+					}
+					// END TIBO
+				}
+
 			} //while
 		}
 		elseif ($rows['type'] == "R") //Answer Ranking
@@ -552,6 +668,27 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
+// TIBO TIBO
+				$numquestions[]=$rows; // This is a numerical question type
+
+				foreach ($numquestions as $numq)
+				{
+					if ($rows['qid'] != $numq['qid'])
+					{
+						if ($numq['type'] == "A" ||
+								$numq['type'] == "B" ||
+								$numq['type'] == "K" ) // multiple line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+						}
+						elseif ($numq['type'] == "N" ||
+								$numq['type'] == "5") // single line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+						}
+					}
+				}
+// END TIBO
 				break;
 				case "W": // List Flexibel Label Dropdown
 				case "Z": // List Flexible Radio Button
@@ -571,6 +708,36 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
+				break;
+
+				case "N": // Simple Numerical questions
+// TIBO TIBO
+				$numquestions[]=$rows; // This is a numerical question type
+
+				foreach ($numquestions as $numq)
+				{
+					if ($rows['qid'] != $numq['qid'])
+					{
+						if ($numq['type'] == "A" ||
+								$numq['type'] == "B" ||
+								$numq['type'] == "K" ) // multiple line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
+						}
+						elseif ($numq['type'] == "N" ||
+								$numq['type'] == "5") // single line numerical questions
+						{
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
+						}
+					}
+				}
+
+				// Only Show No-Answer if question is not mandatory
+				if ($rows['mandatory'] != 'Y')
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
+				}
+// END TIBO
 				break;
 				default:
 				$aquery="SELECT * "
@@ -596,7 +763,7 @@ if ($questionscount > 0)
 					}
 
 					// Now, save the questions type D only, then
-					// it don´t need pass by all the array elements...
+					// it donï¿½t need pass by all the array elements...
 					$dquestions[]=$rows;
 
 					// offer previous date questions to compare
@@ -604,10 +771,11 @@ if ($questionscount > 0)
 					{
 						if ($rows['qid'] != $dq['qid'] &&
 								$dq['type'] == "D")
-						{   // Can´t compare with the same question, and only if are D
+						{   // Canï¿½t compare with the same question, and only if are D
 							// The question tittle is enclossed by @ to be identified latter
 							// and be processed accordingly
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
+//							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$rows['sid'].$X.$rows['gid'].$X.$rows['qid']."@", $dq['title'].": ".$dq['question']);
 						}
 					}
 				}
@@ -632,14 +800,12 @@ if ($questionscount > 0)
 					}
 				}
 				break;
-				// types X,D,!,0,Q,N,S,T,U,^ just have an option as "No Answer" originally
-				// but now if type is D could have a list of questions D after it.
 			}//switch row type
 		} //else
 	} //foreach theserows
 } //if questionscount > 0
 
-// Now I´ll add a hack to add the questions before as option
+// Now Iï¿½ll add a hack to add the questions before as option
 // if they are date type
 
 //JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
@@ -722,15 +888,16 @@ $conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
 . "\t\t\tif (document.getElementById('canswers').options.length > 0){\n"                                                                         
-. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = 'none';\n"
+//. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = 'none';\n"
 . "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
 . "\t\t\telse {\n"                                                                         
-. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = '';\n"
+//. "\t\t\t\tdocument.getElementById('CONST_RGX').style.display = '';\n"
 . "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
 ."\t\t}\n"
 ."function evaluateLabels(val)\n"
 ."{\n"
-."\tif(val == '>' || val == '>=' || val == '<' || val== '<=' || val == 'RX')\n"
+//."\tif(val == '>' || val == '>=' || val == '<' || val== '<=' || val == 'RX')\n"
+."\tif(val == 'RX')\n"
 ."\t{\n"
 ."\t\tdocument.getElementById('canswers').style.display='none';\n"
 ."\t}\n"
@@ -1004,9 +1171,10 @@ $conditionsoutput .= "\t\t</td>\n"
 $conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
 // Some one request to hidde this if it is not necesary
 // It will be showed when answers array is empty
-// on HTML´s JS code. I fixed that enclosing it in a div called
+// on HTMLï¿½s JS code. I fixed that enclosing it in a div called
 // CONST_RGX and it will be showed or not.
-$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
+//$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
+$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
 ."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
 ."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
 $conditionsoutput .= "</div>"
@@ -1037,13 +1205,53 @@ $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></t
 $conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
 ."</table><br />&nbsp;\n";
 
-function showSpeaker($hinttext)
+/*
+ * This is the old/original function to use the ugly speaker symbol
+function showSpeakerORIG($hinttext)
 {
   global $imagefiles, $clang;
   $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt=\"".strip_tags($hinttext)."\" title=\"".strip_tags($hinttext)."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />";
   return $reshtml; 
+}*/
+
+/*
+ * re-written function by Mazi
+ */
+
+function showSpeaker($hinttext)
+{
+	global $clang, $imagefiles, $max;
+	
+	if(!isset($max))
+	{
+		$max = 12;
+	}
+	
+	if(strlen($hinttext) > ($max))
+	{
+		$shortstring = strip_tags($hinttext);
+		
+		//create short string
+		$shortstring = substr($hinttext, 0, $max);
+		
+		//output with hoover effect
+		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
+           ." \"$shortstring...\" </span>"
+           ."<img style='cursor: hand' src='$imagefiles/downarrow.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+	}
+	else
+	{
+		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+	}
+	
+  return $reshtml; 
+  
 }
+
+
 
 
 ?>

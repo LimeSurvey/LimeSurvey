@@ -1,4 +1,4 @@
-﻿/*
+/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
  * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
@@ -122,8 +122,11 @@ FCKConfig.ToolbarSets["Default"] = [
 //FCKConfig.ToolbarSets["Basic"] = [
 //	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About','LimeFitWin','LimeReplacementFields']
 //] ;
+//FCKConfig.ToolbarSets["Basic"] = [
+//	['Undo','Redo','-','Cut','Copy','Paste','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields','LimeFitWin']
+//] ;
 FCKConfig.ToolbarSets["Basic"] = [
-	['Undo','Redo','-','Cut','Copy','Paste','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields','LimeFitWin']
+	['LimeFitWin','-','Bold','Italic','Underline','-','OrderedList','UnorderedList','-','Outdent','Indent','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-','Link','Unlink','Image','Table','-','LimeReplacementFields']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [

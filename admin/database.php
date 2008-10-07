@@ -72,7 +72,7 @@ if(isset($surveyid))
 	}
 	elseif ($action == "addattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
 		{
             if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dualscale_headerA' || $_POST['attribute_name']=='dualscale_headerB' ||
                 $_POST['attribute_name']=='dropdown_prepostfix' || $_POST['attribute_name']=='prefix' || $_POST['attribute_name']=='suffix')
@@ -94,7 +94,7 @@ if(isset($surveyid))
 					  (qid, attribute, value)
 					  VALUES ('{$postqid}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
 			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
-		}
+		} 
 	}
 	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
@@ -367,7 +367,7 @@ if(isset($surveyid))
 						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 						." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
 						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$alang}')";
-                        if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('questions')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('questions')." OFF;";
+                        if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
 						$result2 = $connect->Execute($query);
 						if (!$result2)
 						{
@@ -462,7 +462,7 @@ if(isset($surveyid))
 		// These are the questions types that use labelsets and 
 		// therefore we set the label set of all other question types to 0
 		if (($_POST['type']!= "F") && ($_POST['type']!= "H") && ($_POST['type']!= "W") &&
-		    ($_POST['type']!= "Z") && ($_POST['type']!= "1"))
+		    ($_POST['type']!= "Z") && ($_POST['type']!= "1") && ($_POST['type']!= ":"))
 		{
 			$_POST['lid']=0;
 		}

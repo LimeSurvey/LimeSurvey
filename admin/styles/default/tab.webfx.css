@@ -25,13 +25,10 @@ dark:	rgb(0,66,174);
 	background:		rgb(234,242,255);
 	border:			1px solid;
 	border-color:	rgb(210,210,210);
-	border-left:	1;
+	border-left:	1px;
 	border-bottom:	0;
-	border-top:	    1;
-	
-	cursor:			hand;
+	border-top:	    1px;
 	cursor:			pointer;
-	
 	z-index:		1;
 	position:		relative;
 	top:			0;
@@ -53,8 +50,7 @@ dark:	rgb(0,66,174);
 	font-size:			13px;
 	color:				#5670A1;
 	text-decoration:	none;
-	cursor:			hand;
-	cursor:			pointer;	
+	cursor:			    pointer;	
 }
 
 .dynamic-tab-pane-control .tab-row .hover a {

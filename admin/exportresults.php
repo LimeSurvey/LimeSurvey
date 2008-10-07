@@ -23,6 +23,8 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($style)) {$style=returnglobal('style');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
+if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
+if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);
@@ -49,6 +51,7 @@ if (!$style)
     $excesscols[]="id";
     $excesscols[]='completed';
     if ($thissurvey["datestamp"]=='Y') {$excesscols[]='datestamp';}
+    if ($thissurvey["datestamp"]=='Y') {$excesscols[]='startdate';}
     if ($thissurvey["ipaddr"]=='Y') {$excesscols[]='ipaddr';}
     if ($thissurvey["refurl"]=='Y') {$excesscols[]='refurl';}    
     
@@ -71,6 +74,24 @@ if (!$style)
 				{
 					$excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."comment";
 				}
+			}
+		}
+		elseif ($rows['type']==":")
+		{
+			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
+			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			while ($detailrows = $detailresult->FetchRow())
+			{
+			    $detailquery2="SELECT * 
+				               FROM {$dbprefix}labels 
+							   WHERE lid=".$rows['lid']."
+							   AND language='$surveybaselang'
+							   ORDER BY sortorder, title";
+				$detailresult2=db_execute_assoc($detailquery2) or die("Couldn't find labels<br />$detailquery2<br />".htmlspecialchars($connect->ErrorMsg()));
+				while ($dr2 = $detailresult2->FetchRow())
+				{
+				    $excesscols[]=$surveyid.'X'.$rows['gid']."X".$rows['qid'].$detailrows['code']."_".$dr2['code'];
+			    }
 			}
 		}
 		elseif ($rows['type']=='R')
@@ -167,6 +188,11 @@ if (!$style)
 	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='headcodes' id='headcodes'>"
 	."<label for='headcodes'>"
 	.$clang->gT("Question Codes")."</label><br />\n"
+	
+	."\t\t\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous'>"
+	."<font size='1'><label for='convertspacetous'>"
+	.$clang->gT("Convert Spaces in Question Text to Underscores")."</label><br />"
+	
 	."\t\t\t&nbsp ".$clang->gT("Filter incomplete answers")." <select name='filterinc'>\n"
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
@@ -179,7 +205,14 @@ if (!$style)
 	."\t\t<td>\n"
 	."\t\t\t<input type='radio' class='radiobtn' name='answers' value='short' id='ansabbrev'>"
 	."<font size='1'><label for='ansabbrev'>"
-	.$clang->gT("Answer Codes")."</label><br />\n"
+	.$clang->gT("Answer Codes")."</label>";
+	
+	$exportoutput .= "<br />\n"
+	."\t\t\t<input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px'>"
+	."<font size='1'><label for='convertyto1'>"
+	.$clang->gT("Convert Y to 1")."</label>";
+
+     $exportoutput .= "<br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"
 	."<label for='ansfull'>"
 	.$clang->gT("Full Answers")."</label>\n"
@@ -220,6 +253,24 @@ if (!$style)
 	    .$clang->gT("PDF")."<br />"
         ."</label>\n";
     }
+    
+    
+    //get max number of datasets
+    $max_datasets = 0;
+    
+    $max_datasets_query = "SELECT COUNT(id) FROM {$dbprefix}survey_$surveyid";    
+    $max_datasets_result = db_execute_num($max_datasets_query);
+    
+    while($max = $max_datasets_result -> FetchRow())
+    {
+    	$max_datasets = $max[0];
+    }
+    
+    // form fields to limit export from X to Y
+    $exportoutput .= "<br /> ".$clang->gT("from")." <input type='text' name='export_from' size='8' value='1'>";
+    $exportoutput .= " ".$clang->gT("to")." <input type='text' name='export_to' size='8' value='$max_datasets'>";
+    
+    
 	$exportoutput .="\t\t</font></font></td>\n"
 	."\t</tr>\n"
 	."\t<tr><td height='2' bgcolor='silver'></td></tr>\n"
@@ -508,7 +559,8 @@ if (incompleteAnsFilterstate() === true)
 {
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
 }
-$dquery .=" ORDER BY id";
+
+$dquery .=" ORDER BY id ";
 
 $dresult = db_select_limit_assoc($dquery, 1) or safe_die($clang->gT("Error")." getting results<br />$dquery<br />".$connect->ErrorMsg());
 $fieldcount = $dresult->FieldCount();
@@ -557,8 +609,13 @@ for ($i=0; $i<$fieldcount; $i++)
 	}
 	elseif ($fieldinfo == "datestamp")
 	{
-		if ($type == "csv") {$firstline .= "\"".$elang->gT("Time Submitted")."\"$separator";}
-		else {$firstline .= $elang->gT("Time Submitted")."$separator";}
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Last Action")."\"$separator";}
+		else {$firstline .= $elang->gT("Date Last Action")."$separator";}
+	}
+	elseif ($fieldinfo == "startdate")
+	{
+		if ($type == "csv") {$firstline .= "\"".$elang->gT("Date Started")."\"$separator";}
+		else {$firstline .= $elang->gT("Date Started")."$separator";}
 	}
 	elseif ($fieldinfo == "completed")
 	{
@@ -586,7 +643,6 @@ for ($i=0; $i<$fieldcount; $i++)
 		$fsid=$fielddata['sid'];
 		$fgid=$fielddata['gid'];
 		$faid=$fielddata['aid'];
-         
 		if ($style == "abrev")
 		{
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
@@ -600,7 +656,17 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"$qname";}
 			else {$firstline .= "$qname";}
 			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
+			if ($ftype == ":")
+			{
+			  
+			}
 			if ($type == "csv") {$firstline .= "\"";}
+			$firstline .= "$separator";
+		}
+		elseif ($style == "headcodes")
+		{
+		    $qname=$fieldinfo;
+			$firstline .= "$qname";
 			$firstline .= "$separator";
 		}
 		else
@@ -701,6 +767,29 @@ for ($i=0; $i<$fieldcount; $i++)
 					}
 				}
 				break;
+				case ":":
+				    list($faid, $fcode) = explode("_", $faid);
+				    if ($answers == "short") {
+					  $fquest .= " [$faid] [$fcode]";
+					} else {
+					    $lq1="SELECT lid FROM {$dbprefix}questions WHERE qid=$fqid";
+					    $lr1=db_execute_assoc($lq1);
+					    while($lrow1=$lr1->FetchRow()) {
+						  $flid = $lrow1['lid'];
+						}
+    					$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND code= '$faid' AND language = '$explang'";
+    					$lr = db_execute_assoc($lq);
+    					while ($lrow=$lr->FetchRow())
+    					{
+    					    $lq2 = "SELECT * FROM {$dbprefix}labels WHERE lid=$flid AND code='$fcode' AND language = '$explang'";
+    					    $lr2 = db_execute_assoc($lq2);
+    					    while ($lrow2=$lr2->FetchRow())
+    					    {
+    						    $fquest .= " [".$lrow['answer']."] [".$lrow2['title']."]";
+    					    }
+						}
+					}
+				break;
 				case "1": // multi scale Headline				
                 $flid=$fielddata['lid']; 
 		        $flid1=$fielddata['lid1'];
@@ -738,6 +827,10 @@ for ($i=0; $i<$fieldcount; $i++)
 				$firstline .= "$fquest $separator";
 			}
 		}
+		if($convertspacetous == "Y")
+		{
+		  $firstline=str_replace(" ", "_", $firstline);
+		}
 	}
 }
 if ($type == "csv") { $firstline = mb_substr(trim($firstline),0,strlen($firstline)-1);}
@@ -770,6 +863,14 @@ else
 {
 	$exportoutput .= $firstline; //Sending the header row
 }
+
+
+// TIBO
+//MM
+//calculate interval because the second argument at SQL "limit" 
+//is the number of records not the ending point
+$from_record = sanitize_int($_POST['export_from']) - 1;
+$limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']) + 1;
 
 
 //Now dump the data
@@ -836,12 +937,28 @@ if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if
 $dquery .= "ORDER BY $surveytable.id";
 if ($answers == "short") //Nice and easy. Just dump the data straight
 {
-	$dresult = db_execute_assoc($dquery);
+	//$dresult = db_execute_assoc($dquery);
+	$dresult = db_select_limit_assoc($dquery, $limit_interval, $from_record);
 	$rowcounter=0;
 	while ($drow = $dresult->FetchRow())
 	{
 		$drow=array_map('strip_tags_full',$drow);
-        $rowcounter++;
+		if($convertyto1 == "Y")
+		//Converts "Y" to "1" in export
+		{
+		  foreach($drow as $key=>$dr) {
+            $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+            if($fielddata['type'] == "M" || 
+			   $fielddata['type'] == "P"
+			   )
+            {
+		      if($dr == "Y") {$dr = "1";}
+		    }
+		    $line[$key]=$dr;
+		  }
+		  $drow=$line;
+		}
+		$rowcounter++;
         if ($type == "csv")
 	     	{
 	     		$exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
@@ -872,11 +989,12 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		    }
 	}
 }
-elseif ($answers == "long")        //vollständige Antworten gewählt
+elseif ($answers == "long")        //vollstï¿½ndige Antworten gewï¿½hlt
 {
 //	echo $dquery;
     $labelscache=array();
-	$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
+	//$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
+	$dresult = db_select_limit_num($dquery, $limit_interval, $from_record);
 	$fieldcount = $dresult->FieldCount();
 	$rowcounter=0;
 
@@ -902,7 +1020,7 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
+            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
 			{
 //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
                 $fielddata=$outmap[$fieldinfo];
@@ -928,7 +1046,10 @@ elseif ($answers == "long")        //vollständige Antworten gewählt
 					switch($fieldinfo)
 					{
 						case "datestamp":
-						$ftitle=$elang->gT("Time Submitted").":";
+						$ftitle=$elang->gT("Date Last Action").":";
+						break;
+						case "startdate":
+						$ftitle=$elang->gT("Date Started").":";
 						break;
 						case "ipaddr":
 						$ftitle=$elang->gT("IP Address").":";

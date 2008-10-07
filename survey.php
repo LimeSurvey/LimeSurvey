@@ -144,10 +144,10 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 			session_write_close();
 			
 			$url = $thissurvey['url'];
-			$url=str_replace("{SAVEDID}",$saved_id, $url);			        // to activate the SAVEDID in the END URL
-         $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-         $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
-         $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
+			$url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
+            $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+            $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
+            $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
 			header("Location: {$url}");
 		}
@@ -221,9 +221,11 @@ foreach ($_SESSION['grouplist'] as $gl)
 	{
 		if ($ia[5] == $gid)
 		{
+			$qtypesarray[$ia[1]] = $ia[4];
 			list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 			if ($plus_qanda)
 			{
+				$plus_qanda[] = $ia[4];
 				$qanda[]=$plus_qanda;
 			}
 			if ($plus_inputnames)
@@ -486,7 +488,25 @@ END;
       // the value of this question must be evaluated instead.
       if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
       {
-            $java .= "document.getElementById('$idname').value $cd[6] document.getElementById('answer".$comparedfieldname[1]."').value";
+		$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
+		$q2type=$qtypesarray[$sgq_from_sgqa];
+		if ($q2type == "D" || $q2type == "N" || $q2type == "K")
+	    {
+		$idname2 = "answer".$comparedfieldname[1];
+      }
+      else
+      {
+		$idname2 = "java".$comparedfieldname[1];
+	    }
+		if (in_array($cd[4],array("A","B","K","N","5")))
+		{ // Numerical questions
+			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+		}
+		else
+		{
+			$java .= "document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
+		}
+	
       }
       else
       {
@@ -496,9 +516,16 @@ END;
         }
         else
         {
+		if (in_array($cd[4],array("A","B","K","N","5")))
+		{ // Numerical questions
+			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
+		}
+		else
+		{
             $java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
         }
       }
+    }
     }
 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
@@ -586,9 +613,47 @@ foreach ($_SESSION['grouplist'] as $gl)
 		{
 			if ($gl[0] == $qa[6])
 			{
-				echo "\n\t<!-- NEW QUESTION -->\n";
-				echo "\t\t\t\t<div id='question$qa[4]'";
-				if ($qa[3] != "Y") {echo ">\n";} else {echo " style='display: none'>\n";}
+				switch($qa[8])
+				{	// I think this is a bad solution to adding classes to question
+					// DIVs but I can't think of a better solution. (eric_t_cruiser)
+
+					case "X": $q_class = 'boilerplate' ; break; //BOILERPLATE QUESTION
+					case "5": $q_class = 'choice-5-pt-radio' ; break; //5 POINT CHOICE radio-buttons
+					case "D": $q_class = 'date' ; break; //DATE
+					case "Z": $q_class = 'list-radio-flexible' ; break; //LIST Flexible drop-down/radio-button list
+					case "L": $q_class = 'list-radio' ; break; //LIST drop-down/radio-button list
+					case "W": $q_class = 'list-dropdown-flexible' ; break; // (flexible label)
+					case "!": $q_class = 'list-dropdown' ; break; //List - dropdown
+					case "O": $q_class = 'list-with-comment' ; break; // drop-down/radio-button list + textarea
+					case "R": $q_class = 'ranking' ; break; //RANKING STYLE
+					case "M": $q_class = 'multiple-opt' ; break; //MULTIPLE OPTIONS checkbox
+					case "I": $q_class = 'language' ; break; //Language Question
+					case "P": $q_class = 'multiple-opt-comments' ; break; //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+					case "Q": $q_class = 'multiple-short-txt' ; break; // TEXT
+					case "K": $q_class = 'numeric-multi' ; break; //MULTIPLE NUMERICAL QUESTION
+					case "N": $q_class = 'numeric' ; break; //NUMERICAL QUESTION TYPE
+					case "S": $q_class = 'text-short' ; break; //SHORT FREE TEXT
+					case "T": $q_class = 'text-long' ; break; //LONG FREE TEXT
+					case "U": $q_class = 'text-huge' ; break; //HUGE FREE TEXT
+					case "Y": $q_class = 'yes-no' ; break; //YES/NO radio-buttons
+					case "G": $q_class = 'gender' ; break; //GENDER drop-down list
+					case "A": $q_class = 'array-5-pt' ; break; //ARRAY (5 POINT CHOICE) radio-buttons
+					case "B": $q_class = 'array-10-pt' ; break; //ARRAY (10 POINT CHOICE) radio-buttons
+					case "C": $q_class = 'array-yes-uncertain-no' ; break; //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+					case "E": $q_class = 'array-increase-same-decrease' ; break; //ARRAY (Increase/Same/Decrease) radio-buttons
+					case "F": $q_class = 'array-flexible-row' ; break; //ARRAY (Flexible) - Row Format
+					case "H": $q_class = 'array-flexible-column' ; break; //ARRAY (Flexible) - Column Format
+		//			case "^": $q_class = 'slider' ; break; //SLIDER CONTROL
+					case ":": $q_class = 'array-multi-flexi' ; break; //ARRAY (Multi Flexi) 1 to 10
+					case "1": $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
+				}
+
+				if ($qa[3] != "Y") {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+
+				echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.'"'.$n_q_display.'>
+';
 				$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
 				$answer=$qa[1];
 				$help=$qa[2];

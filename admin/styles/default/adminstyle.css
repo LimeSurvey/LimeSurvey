@@ -108,6 +108,10 @@ table.menubar {
 	border-color: #8195BA;
 	border-style: solid;
 	border-width: 1px;
+	/*	Check this setting when merging 
+		I implemented it to correct the layout of the menu bar in statistics.php
+		Mazi*/
+	text-align: left;
 }
 .menubar td {
 	color: #265522;
@@ -281,10 +285,7 @@ span.settingcaption {
 	position: absolute;
 	display: none;
 	z-index: 10000;
-	opacity: 0.7px;
-	filter: alpha(opacity=70);
 	-khtml-opacity: 0.7px;
-	-moz-opacity: 0.7px;
 	-moz-border-radius: 5px;
 	background: #555;
 }
@@ -311,11 +312,8 @@ span.settingcaption {
 	top: 151px;
 	left: 80px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
@@ -331,11 +329,8 @@ span.settingcaption {
 	top: 100px;
 	left: 80px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
@@ -351,11 +346,8 @@ span.settingcaption {
 	top: 287px;
 	left: 473px;
 	z-index: 10000;
-	opacity: 0.7px;
 	visibility: hidden;
-	filter: alpha(opacity=95);
 	-khtml-opacity: 0.95px;
-	-moz-opacity: 0.95px;
 	-moz-border-radius: 6px;
 	background: #FDFDF5;
 	font: 11px arial, verdana, sans-serif;
@@ -374,10 +366,6 @@ span.settingcaption {
 .ranklist {
 	width: 200px;
 	margin-top: 3px;
-}
-span.invalidemail {
-	font-weight: 700;
-	color: red;
 }
 th.admincell {
 	background-color: #F8BDB5;
@@ -447,4 +435,9 @@ table.alertbox {
 div.menubar input {
 margin-left:-5px;
 vertical-align:top;
+}
+}
+a.invalidemail {
+	font-weight: 700;
+	color: red;
 }

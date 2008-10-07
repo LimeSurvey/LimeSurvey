@@ -62,23 +62,39 @@ header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: cache");
 
 //0: Groups Table
-$gquery = "SELECT * FROM {$dbprefix}groups WHERE gid=$gid";
+$gquery = "SELECT * 
+           FROM {$dbprefix}groups 
+		   WHERE gid=$gid";
 $gdump = BuildCSVFromQuery($gquery);
 
 //1: Questions Table
-$qquery = "SELECT * FROM {$dbprefix}questions WHERE gid=$gid";
+$qquery = "SELECT * 
+           FROM {$dbprefix}questions 
+		   WHERE gid=$gid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
-$aquery = "SELECT DISTINCT {$dbprefix}answers.* FROM {$dbprefix}answers, {$dbprefix}questions WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) AND ({$dbprefix}questions.gid=$gid)";
+$aquery = "SELECT DISTINCT {$dbprefix}answers.* 
+           FROM {$dbprefix}answers, {$dbprefix}questions 
+		   WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) 
+		   AND ({$dbprefix}questions.gid=$gid)";
 $adump = BuildCSVFromQuery($aquery);
 
 //3: Conditions table - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
-$cquery = "SELECT DISTINCT {$dbprefix}conditions.* FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) AND ({$dbprefix}conditions.qid=b.qid) AND ({$dbprefix}questions.gid=$gid) AND (b.gid=$gid)";
+$cquery = "SELECT DISTINCT {$dbprefix}conditions.* 
+           FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}questions b 
+		   WHERE ({$dbprefix}conditions.cqid={$dbprefix}questions.qid) 
+		   AND ({$dbprefix}conditions.qid=b.qid) 
+		   AND ({$dbprefix}questions.gid=$gid) 
+		   AND (b.gid=$gid)";
 $cdump = BuildCSVFromQuery($cquery);
 
 //4: Labelsets Table
-$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* FROM {$dbprefix}labelsets, {$dbprefix}questions WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W', '1')) AND (gid=$gid)";
+$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.* 
+            FROM {$dbprefix}labelsets, {$dbprefix}questions 
+			WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid) 
+			AND (type in ('F', 'W', 'H', 'Z', '1', ':', ';'))
+			AND (gid=$gid)";
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //5: Labelsets1 Table
@@ -98,7 +114,7 @@ if(count($ls1)>3) {
 }
 
 //4a: Labels Table
-$lquery = "SELECT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W', '1')) AND (gid=$gid)";
+$lquery = "SELECT {$dbprefix}labels.* FROM {$dbprefix}labels, {$dbprefix}questions WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid) AND (type in ('F', 'H', 'Z', 'W', '1', ':', ';')) AND (gid=$gid)";
 $ldump = BuildCSVFromQuery($lquery);
 
 //5a: Labels1 Table
@@ -127,7 +143,10 @@ if(count($ld1)>3) {
 
 
 //8: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* FROM {$dbprefix}question_attributes, {$dbprefix}questions WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) AND ({$dbprefix}questions.gid=$gid)";
+$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
+	   	  FROM {$dbprefix}question_attributes, {$dbprefix}questions 
+		  WHERE ({$dbprefix}question_attributes.qid={$dbprefix}questions.qid) 
+		  AND ({$dbprefix}questions.gid=$gid)";
 $qadump = BuildCSVFromQuery($query);
 
 // HTTP/1.0

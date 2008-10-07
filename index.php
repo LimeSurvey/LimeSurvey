@@ -691,6 +691,10 @@ function loadanswers()
 			{
 				$_SESSION['datestamp']=$value;
 			}
+			if ($column == "startdate")
+			{
+				$_SESSION['startdate']=$value;
+			}
 			else
 			{
 				//Only make session variables for those in insertarray[]
@@ -1365,6 +1369,9 @@ function submittokens()
 		$fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
 		$fieldsarray["{ATTRIBUTE_1}"]=$cnfrow['attribute_1'];
 		$fieldsarray["{ATTRIBUTE_2}"]=$cnfrow['attribute_2'];
+		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 
 		$subject=Replacefields($subject, $fieldsarray);
 
@@ -1379,7 +1386,7 @@ function submittokens()
 			$ishtml=false;
 		}           
 
-		if ($thissurvey['email_confirm'])
+		if (trim(strip_tags($thissurvey['email_confirm'])) != "")
 		{
 			$message=$thissurvey['email_confirm'];
 			$message=Replacefields($message, $fieldsarray);
@@ -1392,20 +1399,17 @@ function submittokens()
 			{
 				$message=html_entity_decode_php4($message,ENT_QUOTES, "UTF-8");
 			}
+
+			//Only send confirmation email if there is a valid email address
+    		if (validate_email($cnfrow['email']))
+    		{
+    			MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
+    		}
 		}
 		else
 		{
-			//Get the default email_confirm from the default language file
-			// Todo: This can't be right
-			$message = conditional_nl2br($clang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}"),$ishtml);
-			$message=Replacefields($message, $fieldsarray);
-		}
-
-		//Only send confirmation email if there is a valid email address
-
-		if (validate_email($cnfrow['email']))
-		{
-			MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
+            //There is nothing in the message, so don't send a confirmation email
+            //This section only here as placeholder to indicate new feature :-)
 		}
 	}
 }
@@ -1802,6 +1806,8 @@ function buildsurveysession()
 	unset($_SESSION['fieldarray']);
 	unset($_SESSION['insertarray']);
 	unset($_SESSION['thistoken']);
+	unset($_SESSION['fieldnamesInfo']);
+	$_SESSION['fieldnamesInfo'] = Array();
 
 
 	//RL: multilingual support
@@ -1923,20 +1929,59 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			while ($abrow = $abresult->FetchRow())
 			{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); // TIBO
+
 				$alsoother = "";
 				if ($abrow['other'] == "Y") {$alsoother = "Y";}
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); // TIBO
 				}
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname."othercomment";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); // TIBO
 				}
+			}
+		}
+        elseif ($arow['type'] == ":")   //Multi Flexi
+		{
+// Optimized Query
+			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"
+			. " FROM ".db_table_name('answers')."\n"
+			. " INNER JOIN ".db_table_name('questions')."\n"
+			. " ON ".db_table_name('answers').".qid=".db_table_name('questions').".qid\n"
+			. " WHERE ".db_table_name('questions').".sid=$surveyid\n"
+			. " AND ".db_table_name('questions').".qid={$arow['qid']}\n"
+			. " AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."' \n"
+			. " AND ".db_table_name('answers').".language='".$_SESSION['s_lang']."' \n"
+			. " ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abresult = db_execute_assoc($abquery);
+			$ab2query = "SELECT ".db_table_name('labels').".*
+			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			             WHERE sid=$surveyid 
+						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+			             AND ".db_table_name('questions').".language='".$_SESSION['s_lang']."'
+			             AND ".db_table_name('labels').".language='".$_SESSION['s_lang']."'
+			             AND ".db_table_name('questions').".qid=".$arow['qid']."
+			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+			while($ab2row=$ab2result->FetchRow())
+			{
+			    $lset[]=$ab2row;
+			}
+			while ($abrow = $abresult->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				    $_SESSION['insertarray'][] = $fieldname.$abrow['code']."_".$ls['code'];
+			    }
 			}
 		}
 		elseif ($arow['type'] == "1")	// Multi Scale
@@ -1967,12 +2012,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				if ($abmultiscalecount>0)
 				{
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#0";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#0" => $fieldname)); // TIBO
 						$alsoother = "";
 						
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
 							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); // TIBO
 						}
 
 				}
@@ -1989,12 +2036,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				if ($abmultiscalecount>0)
 				{
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#1";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#1" => $fieldname)); // TIBO
 						$alsoother = "";
 						
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
 							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); // TIBO
 						}
 				}
 		
@@ -2002,9 +2051,11 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname."othercomment";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); // TIBO
 				}
 			}
 		}
@@ -2029,6 +2080,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			for ($i=1; $i<=$abcount; $i++)
 			{
 				$_SESSION['insertarray'][] = "$fieldname".$i;
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."$i" => $fieldname)); // TIBO
 			}
 		}
 
@@ -2047,18 +2099,26 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			while ($abrow = $abresult->FetchRow())
 			{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); // TIBO
 			}
 		}
 		elseif ($arow['type'] == "O")	// List With Comment
 		{
 			$_SESSION['insertarray'][] = $fieldname;
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
 			$fn2 = $fieldname."comment";
 			$_SESSION['insertarray'][] = $fn2;
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); // TIBO
 		}
 		elseif ($arow['type'] == "L" || $arow['type'] == "!" || $arow['type'] == "Z" || $arow['type'] == "L")	// List (Radio) - List (Dropdown)
 		{
 			$_SESSION['insertarray'][] = $fieldname;
-			if ($arow['other'] == "Y") { $_SESSION['insertarray'][] = $fieldname."other";}
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
+			if ($arow['other'] == "Y") 
+			{
+				$_SESSION['insertarray'][] = $fieldname."other";
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
+			}
 
 		//go through answers, and if there is a default, register it now so that conditions work properly the first time
 
@@ -2080,10 +2140,12 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		{
 			$totalBoilerplatequestions++;
 			$_SESSION['insertarray'][] = $fieldname;
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
 		}
 		else
 		{
 			$_SESSION['insertarray'][] = $fieldname;
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
 		}
 
 
@@ -2233,7 +2295,7 @@ function doAssessment($surveyid)
 			
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
+				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "startdate") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
 				{
 					if (isset($_SESSION[$field['fieldname']])) 
 					{

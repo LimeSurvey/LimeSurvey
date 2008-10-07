@@ -12,8 +12,6 @@
 * 
 * $Id$
 * 
-* Edits bei Mazi marked as "MM" (2008-07-29)
-* 
 */
 
 /* 
@@ -45,18 +43,33 @@
 	Y - Yes/No 
 	Z - List (Flexible Labels) (Radio) 
 	! - List (Dropdown)
+	: - Array (Flexible Labels) multiple drop down
+	; - Array (Flexible Labels) multiple texts
+
+
+	Debugging help:
+	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
-//TODO: - Use real question and answer title and cut them off after X chars. 
-//		- Use tooltipps to show additional information like whole question/answer text
+//MM: These settings will be put into config-defaults.php later
 
+//sum up data for question types "A" and "5" and show additional values 
+//like arithmetic mean and standard deviation
+$showaggregateddata = 1;
 
-//DO NEVER SET THIS TO "1" BECAUSE THIS FEATURE IS ONLY AVAILABLE AT LS1.8 AND ABOVE!
-$showaggregateddata = 0;
+//split up results to extend statistics
+$showcombinedresults = 0;
+
+/*
+ * this variable is used in the function shortencode() which cuts off a question/answer title
+ * after $maxchars and shows the rest as tooltip
+ */
+$maxchars = 10;
+
 
 
 //don't call this script directly!
-if (isset($_REQUEST['jpgraphdir'])) {die('You cannot start this script directly');}
+if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 //some includes, the progressbar is used to show a progressbar while generating the graphs
 include_once("login_check.php");
@@ -65,20 +78,16 @@ require_once('classes/core/class.progressbar.php');
 //we collect all the output within this variable
 $statisticsoutput ='';
 
+//output for chosing questions to cross query
+$cr_statisticsoutput = '';
+
 //for creating graphs we need some more scripts which are included here
-if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+if (isset($_POST['usegraph'])) 
 {
-  if (isset($jpgraphfontdir) && $jpgraphfontdir!="")
-  {
-  DEFINE("TTF_DIR",$jpgraphfontdir); // url of fonts files
-  }
-	require_once ("$jpgraphdir/jpgraph.php");
-	require_once ("$jpgraphdir/jpgraph_pie.php");
-	require_once ("$jpgraphdir/jpgraph_pie3d.php");
-	require_once ("$jpgraphdir/jpgraph_bar.php");
+    require_once('../classes/pchart/pchart/pChart.class');
+    require_once('../classes/pchart/pchart/pData.class');
 
-
-	//$currentuser is created as prefix for jpgraph files
+	//$currentuser is created as prefix for pchart files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
 	{
 		$currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
@@ -120,26 +129,21 @@ deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
 //hide/show the filter
 //filtersettings by default aren't shown when showing the results
-$statisticsoutput .= "\t<script type='text/javascript'>
-      <!--
-       function hide(element) {
-        document.getElementById(element).style.display='none';
-       }
-       function show(element) {
-        document.getElementById(element).style.display='';
-       }
-      //-->
-      </script>\n";
+$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
 
+//headline with all icons for available statistic options
+$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
+."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+//Get the menubar
+$statisticsoutput .= browsemenubar();
+$statisticsoutput .= "</table>\n"
 
-//Get the menubar with all icons for available statistic options
-$statisticsoutput .= browsemenubar($clang->gT("Quick Statistics"))
 //second row below options -> filter settings headline
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' class='settingcaption' height='22'>"
 ."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-."<font size='2'><strong>".$clang->gT("Filter Settings")."</strong></font>"
+."<font size='3'><strong>".$clang->gT("Filter Settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
 
@@ -217,8 +221,15 @@ foreach ($rows as $row)
 // SHOW ID FIELD
 
 //some more output: I = filter by ID
-$statisticsoutput .= "\t\t<tr><td align='center'>
-       <table cellspacing='0' cellpadding='0' width='100%' id='filtersettings'><tr><td>
+//{VIEWALL} is a placemarker and is replaced by the html to choose to view all answers. Later there is a str_replace
+// to insert this code into this top section
+$statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'>
+       <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
+       <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
+	     <tr><td align='center' class='settingcaption'>
+	       <font size='1' face='verdana'>".$clang->gT("General Filters")."</font>
+		  </td></tr>
+         <tr><td>
         <table align='center'><tr>\n";
 
 $myfield = "id";
@@ -270,6 +281,7 @@ if (isset($datestamp) && $datestamp == "Y") {
 	$allfields[]=$myfield4;
 	$allfields[]=$myfield5;
 }
+
 $statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID or timestamp forms
 
 
@@ -279,6 +291,10 @@ $statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID 
 		
 //is there a currentgroup set?
 if (!isset($currentgroup)) {$currentgroup="";}
+
+//is there a previous question type set?
+if (!isset($previousquestiontype)) {$previousquestiontype="";}
+
 
 /*
  * let's go through the filter array which contains
@@ -371,11 +387,12 @@ foreach ($filters as $flt)
 	if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
 	    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
 		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
-		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K") //Have to make an exception for these types!
+		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
+		$flt[2] != ":") //Have to make an exception for these types!
 	{
-		$statisticsoutput .= "\t\t\t\t<td align='center'>"
-		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
 		
+		$statisticsoutput .= "\t\t\t\t<td align='center'>";
+
 		//multiple options:
 		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
 		
@@ -398,11 +415,11 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 		
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
+		$statisticsoutput .= " /><strong>".showspeaker($flt[5])."</strong>"
 		."<br />\n";
 		
 		//numerical question type -> add some HTML to the output
-		if ($flt[2] == "N") {$statisticsoutput .= "</font>";}
+		//if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
 		
 		//multiple options ("M"/"P") -> add "M" to output 
@@ -424,6 +441,8 @@ foreach ($filters as $flt)
 	//let's switch through the question type for each question
 	switch ($flt[2])
 	{
+		//XXX question type K not tested!
+	
 		case "K": // Multiple Numerical
 		$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 		
@@ -447,20 +466,25 @@ foreach ($filters as $flt)
 		    $myfield2="K{$myfield}".$row[0]."G";
 		    $myfield3="K{$myfield}".$row[0]."L";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			
 			//question short code
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
 			//checkbox
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
+			
 			//check SGQA -> do we want to pre-check the checkbox?
 			if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
-			$statisticsoutput .= " />&nbsp;&nbsp;";
+			$statisticsoutput .= " />&nbsp;<strong>";
+			
 			//show speaker
-		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))."<br />\n";
+		    $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))."</strong><br />\n";
+		    
 		    //input fields
 		    $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		    if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
+
 		    //check number input using JS
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
 		    ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
@@ -499,14 +523,14 @@ foreach ($filters as $flt)
 			$myfield2 = "Q".$myfield."$row[0]";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong></font>";
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;&nbsp;";
-		    $statisticsoutput .= showSpeaker(FlattenText($row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>";
+		    $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))
+			."</strong><br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 			if (isset($_POST[$myfield2]))
@@ -529,15 +553,14 @@ foreach ($filters as $flt)
 		case "U": // Huge free text
 			
 		$myfield2="T$myfield";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong></font>";
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
+		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		."</strong><br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
 		
@@ -552,16 +575,15 @@ foreach ($filters as $flt)
 		case "S": // Short free text
 			
 		$myfield2="T$myfield";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
-		."<strong>$flt[3]</strong>";
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		
 		if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
+		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		."</strong><br />\n"
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		
@@ -612,9 +634,17 @@ foreach ($filters as $flt)
 		$myfield3="$myfield2=";
 		$myfield4="$myfield2<"; 
         $myfield5="$myfield2>";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]</strong>"
-		."&nbsp;".showSpeaker($niceqtext)
-		."<br />\n"
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
+		
+		."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+		
+		if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+		{$statisticsoutput .= " checked='checked'";}
+		
+		$statisticsoutput .= " /><strong>"
+		.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+		."</strong><br />\n"
+		
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 		."\t\t\t\t\t<input name='$myfield3' type='text' value='";
 		
@@ -653,8 +683,8 @@ foreach ($filters as $flt)
 			$statisticsoutput .= ">$i</option>\n";
 		}
 		
-		//End the select which starts before the CASE statement (around line 383)
-		$statisticsoutput .="\t\t\t\t</select></font>\n";
+		//End the select which starts before the CASE statement (around line 411)
+		$statisticsoutput .="\t\t\t\t</select>\n";
 		break;
 		
 		
@@ -671,7 +701,7 @@ foreach ($filters as $flt)
 		//pre-select values which were marked before
 		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		
-		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select></font>\n";
+		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select>\n";
 		break;
 		
 		
@@ -688,7 +718,7 @@ foreach ($filters as $flt)
 		//pre-select values which were marked before
 		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		
-		$statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
+		$statisticsoutput .= ">".$clang->gT("No")."</option></select>\n";
 		break;
 		
 
@@ -733,15 +763,15 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			//pre-check
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			
 			//there are always exactly 5 values which have to be listed
@@ -756,7 +786,7 @@ foreach ($filters as $flt)
 				$statisticsoutput .= ">$i</option>\n";
 			}
 			
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			
 			//add this to all the other fields
@@ -786,14 +816,14 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"; //heading
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"; //heading
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 			
 			//here wo loop through 10 entries to create a larger output form
@@ -836,15 +866,15 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
 			{$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='Y'";
 			
@@ -896,14 +926,14 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n"
 			."\t\t\t\t\t<option value='I'";
 			
@@ -930,7 +960,66 @@ foreach ($filters as $flt)
 		break;
 		
 		
-		
+		case ":":  //ARRAY (Multi Flex)
+		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		//Get qidattributes for this question
+    	$qidattributes=getQuestionAttributes($flt[0]);
+    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+    		$maxvalue=$maxvalue['value'];
+    	} else {
+    		$maxvalue=10;
+    	}
+    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+    		$minvalue=$minvalue['value'];
+    	} else {
+    		$minvalue=1;
+    	}
+    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+    		$stepvalue=$stepvalue['value'];
+    	} else {
+    		$stepvalue=1;
+    	}
+	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+		$minvalue=0;
+		$maxvalue=1;
+		$stepvalue=1;
+	}
+		while ($row=$result->FetchRow())
+		{
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+			while ($frow = $fresult->FetchRow())
+			{
+			    $myfield2 = $myfield . $row[0] . "_" . $frow['code'];
+			    $statisticsoutput .= "<!-- $myfield2 - ";
+			    if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+			    $statisticsoutput .= " -->\n";
+			    if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			    $statisticsoutput .= "\t\t\t\t<td align='center'>"
+			    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+			    if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			    $statisticsoutput .= " />&nbsp;<strong>"
+			    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
+			    ."</strong><br />\n";
+			    //$statisticsoutput .= $fquery;
+			    $statisticsoutput .= "\t\t\t\t<select name='{$myfield2}[]' multiple='multiple' rows='5' cols='5'>\n";
+				for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
+				{
+				    $statisticsoutput .= "\t\t\t\t\t<option value='$ii'";
+				    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+				    $statisticsoutput .= ">$ii</option>\n";
+				}
+				$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+				$counter2++;
+				$allfields[]=$myfield2;
+			}
+		}
+		$statisticsoutput .= "\t\t\t\t<td>\n";
+		$counter=0;
+		break;
 		/*
 		 * For question type "F" and "H" you can use labels. 
 		 * The only difference is that the labels are applied to column heading 
@@ -945,6 +1034,8 @@ foreach ($filters as $flt)
 		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		
+		//XXX have to fix layout problem here, too
+		
 		//check all the answers
 		while ($row=$result->FetchRow())
 		{
@@ -955,16 +1046,21 @@ foreach ($filters as $flt)
 			
 			$statisticsoutput .= " -->\n";
 			
-			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			if ($counter2 == 4) 
+			{
+				//XXX echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
+				$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+				$counter2=0;
+			}
 			
-			$statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] ($row[0])</b>"
+			$statisticsoutput .= "\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n";
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n";
 			
 			/*
 			 * when hoovering the speaker symbol we show the whole question
@@ -1045,15 +1141,15 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 			
 			$statisticsoutput .= " -->\n"
-			."\t\t\t\t<td align='center'><b>$flt[3] ($i)</b>"
+			."\t\t\t\t<td align='center'>"
 			."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 			
 			//pre-check
 			if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {$statisticsoutput .= " checked='checked'";}
 			
-			$statisticsoutput .= " />&nbsp;"
-			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-			."<br />\n"
+			$statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
+			."</strong><br />\n"
 			."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$i}[]' multiple='multiple'>\n";
 			
 			//output lists of ranking items
@@ -1067,7 +1163,7 @@ foreach ($filters as $flt)
 				$statisticsoutput .= ">$ans[1]</option>\n";
 			}
 			
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</font></td>\n";
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
 			$counter2++;
 			
 			//add averything to main array
@@ -1098,17 +1194,14 @@ foreach ($filters as $flt)
 		case "W":
 		case "Z":
 			
-		$statisticsoutput .= "\t\t\t\t<td align='center'>"
-		."<strong>$flt[3]&nbsp;"; //Heading (Question No)
+		$statisticsoutput .= "\t\t\t\t<td align='center'>";
 		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
 		
 		//pre-check
 		if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 		{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " />&nbsp;"
-		.showSpeaker($niceqtext)."</strong>"
-		."<br />\n";
+		$statisticsoutput .= " />&nbsp;<strong>".showSpeaker($niceqtext)."</strong><br />\n";
 		$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
 		$allfields[]=$myfield;
 		
@@ -1133,8 +1226,25 @@ foreach ($filters as $flt)
 		
 		
 		
+		/*
+		 * MM: Let's check how this works:
+		 * 1. Two separated question Q1/Q2 which are treated separately
+		 * 2. Looping through labels for each question Q1L1 - Q1L2, ...
+		 * 3. Create headline and lists for each Q1L1/Q1L2, ...
+		 */
+		
         case "1": // MULTI SCALE
         $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+        
+        //special dual scale counter
+        $counter2=0;       
+        
+        //two arrays to temporary save questions and answers
+        //$q_array1 = array();
+        //$q_array2 = array();
+        
+        //$a_array1 = array();
+        //$a_array2 = array();
         
         //multi/dual scale is like two mixed questions of the same type so we loop twice
         for ($i=0; $i<=1; $i++) 
@@ -1142,34 +1252,55 @@ foreach ($filters as $flt)
         	//get answers
             $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
             $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-            $counter2=0;
+            
             
             //loop through answers
             while ($row=$result->FetchRow())
             {
-            	//myfield2 = answer code. there are two answer to this question type (->add $i)
+            	//myfield2 = answer code. there are two answers to this question type (->add $i)
                 $myfield2 = $myfield . "$row[0]#".$i;
-                $statisticsoutput .= "<!-- $myfield2 - ";
                 
-                if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+                //3 lines of debugging output
+                $statisticsoutput .= "<!-- $myfield2 - ";
+                if (isset($_POST[$myfield2])) 
+                {
+                	$statisticsoutput .= $_POST[$myfield2];
+                }
+                
                 $statisticsoutput .= " -->\n";
                 
-                //some layout adaptions
-                if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+                //some layout adaptions -> new line after 4 entries
+                if ($counter2 == 4) 
+                {
+                	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+                	$counter2=0;
+                }
                 
-                $statisticsoutput .= "\t\t\t\t<td align='center'><b>$flt[3] Label ".(1+$i)."($row[0])</b>"
-                    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+                //output checkbox and question/label text
+                $statisticsoutput .= "\t\t\t\t<td align='center'>";
+                $statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
                 
                 //pre-check
                 if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+                $statisticsoutput .= " />&nbsp;<strong>".showSpeaker($flt[3]." ".$clang->gT("Label")." ".(1+$i)." (".$clang->gT("Item")." ".$row[0].")")."</strong><br />\n";
 
                 
-                $statisticsoutput .= " />&nbsp;"
-                    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
-                    ."<br />\n";
-                
                 /*
-                 * get labels. remember that there are two labels used -> add $i 
+                 * flt[3] = question
+                 * $row[0] = item number --> XXX this has to be considered!
+                 * $frow['code'] = itemcode
+                 * $frow['title'] = itemtitle
+                 */
+           		if($i == 0)
+               	{
+               		//array_push($q_array1, $flt[3]." - ".$row[0]);
+               	}
+               	else
+               	{
+               		//array_push($q_array2, $flt[3]." - ".$row[0]);
+               	}
+                
+                 /* get labels. remember that there are two labels used -> add $i 
                  * $flt[6] contains the "normal" label-id and fltd[7] = second label
                  * 
                  * table "labels" contains
@@ -1179,6 +1310,7 @@ foreach ($filters as $flt)
                  * - sortorder
                  * - language
                  */
+                 
                 $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6+$i]} AND language='{$language}' ORDER BY sortorder, code";
                 $fresult = db_execute_assoc($fquery);
                 
@@ -1186,9 +1318,6 @@ foreach ($filters as $flt)
                 //$statisticsoutput .= $fquery;
                 
                 $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{$i}[]' multiple='multiple'>\n";
-                
-                
-                //Testweise die dual scale frage hinzufügen und anschauen, wie der filterscreen aussieht
                 
                 //for every item which should be rated we have two filter forms (remember: we have 2 labesets)
                 //if you want to rate 3 items you'll have 6 (3*2) forms
@@ -1200,6 +1329,14 @@ foreach ($filters as $flt)
                     if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
                     
                     $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                	if($i == 0)
+                	{
+                		//array_push($a_array1, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
+                	}
+                	else
+                	{
+                		//array_push($a_array2, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
+                	}
                     
                 }
                 
@@ -1212,6 +1349,64 @@ foreach ($filters as $flt)
             $statisticsoutput .= "\t\t\t\t<td>\n";
             
         }
+        
+        /*
+         * anzahl elemente in antwortarray
+         * A1 - L1
+         * A1 - L2
+         * A2 - L1
+         * A2 - L2
+         * A3 - L1
+         * A3 - L2
+         */
+        
+        /*$numberofquestions = count($q_array1);
+        $numberofanswers = count($a_array1);
+        
+        if($numberofanswers > 0 && $numberofquestions > 0)
+        {
+        	$answersperquestion = $numberofanswers / $numberofquestions;
+        }
+        else
+        {
+        	$answersperquestion = 0;
+        }
+        
+        
+        echo "NOA: $numberofanswers - NOQ: $numberofquestions - APQ: $answersperquestion<br><br>";
+       $x = 0;
+       $i = 0;
+        while($x < $numberofquestions)
+        {
+         	
+         	
+         	if($i == 0)
+         	{
+        		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
+        	
+		        for($j = 0; $j < $answersperquestion; $j++)
+		        {
+		        	echo "A$j: ".$a_array1[$j]."<br />";
+		        }
+		        
+		        $i = 1;
+		        echo "<br />";
+         	}
+         	else
+         	{
+         		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
+         		
+         		for($j = 0; $j < $answersperquestion; $j++)
+		        {
+		        	echo "A$j: ".$a_array1[$j]."<br />";
+		        }
+		        
+		        $i = 0;
+		        echo "<br />";
+         	}
+	   $x++;     
+       }*/
+        
         
         $counter=0;
         break;
@@ -1280,32 +1475,374 @@ else
 	$selectshow="selected='selected'";
 }
 
+
+
+
+
+// ------------------------ BEGINN CROSS QUERY
+/*
+ * supported question types:
+ * 	G - Gender 
+	L - List (Radio) 
+	M - Multiple Options 
+	O - List With Comment 
+	P - Multiple Options With Comments 
+	W - List (Flexible Labels) (Dropdown) 
+	Y - Yes/No 
+	Z - List (Flexible Labels) (Radio) 
+	! - List (Dropdown)
+ * 
+ */
+
+//check if this option is set
+if(isset($showcombinedresults) && $showcombinedresults == 1)
+{	
+	
+	// Get answers for each supported question type
+			
+	//is there a currentgroup set?
+	if (!isset($currentgroup)) {$currentgroup="";}
+	
+	
+	
+	//just show the headline for the filter once
+	$showcrheadline = 0;
+	
+	///...and show 4 questions in each row
+	$crcounter = 0;
+	
+	/*
+	 * let's go through the filter array which contains
+	 * 	['qid'],
+		['gid'],
+		['type'],
+		['title'],
+		['group_name'],
+		['question'],
+		['lid'],
+	    ['lid1']);
+	 */
+	foreach ($filters as $flt)
+	{		
+			
+		//SGQ identifier
+		$myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
+		
+		//full question title
+		$niceqtext = FlattenText($flt[5]);
+
+			
+		/*
+		 * Check question type: This question types will be used (all others are separated in the if clause)
+		 * 	G - Gender  
+			L - List (Radio) 
+			M - Multiple Options 
+			O - List With Comment 
+			P - Multiple Options With Comments 
+			Y - Yes/No 
+			! - List (Dropdown))
+		 */
+		if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
+		    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
+			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
+			//deleted question types "W" and "Z" to adjust output
+			$flt[2] != "X" && $flt[2] != "K" &&
+			//old statement: $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
+			$flt[2] != ":" && $flt[2] != "5"  && $flt[2] != "I"  && $flt[2] != "N") //Have to make an exception for these types!
+		{
+			if($showcrheadline == 0)
+			{
+				$cr_statisticsoutput = "\n\t\t\t\t<!-- new headline --></tr>\n\t\t\t</table><br /><br /></td></tr>\n"
+				."<tr><td align='center' class='settingcaption'  height='22'  style='border: 2px solid #555555;'>\n"
+				."<font size='3'><strong>".$clang->gT("Split up results")."</strong></font>"
+				."</td></tr>\n"
+				."<tr><td align='center'>\n"
+          		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
+          		
+          		$showcrheadline = 1;
+			}
+			
+			//we don't want more than 4 questions in a row
+			if (isset($crcounter) && $crcounter == 4) 
+			{
+				$cr_statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; 
+				$crcounter=0;
+			}
+			
+			//add temporary output
+			//$cr_statisticsoutput .= $tempoutput;
+			
+			//the headlines for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				$cr_statisticsoutput .= "\t\t\t\t<td align='center'>"
+				."<strong>".showspeaker($flt[5])."&nbsp;"; //Heading (Question No)
+			}
+						
+			//multiple options:
+			if ($flt[2] == "M" || $flt[2] == "P") 
+			{
+				$myfield = "M$myfield";
+			}
+			
+			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+			if ($flt[2] == "N") 
+			{
+				$myfield = "N$myfield";
+			}
+			
+			//the checkboxes for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			}
+			
+			
+			/*
+			 * one of these conditions has to be true
+			 * 1. SGQ can be found within the summary array
+			 * 2. M-SGQ can be found within the summary array (M = multiple options)
+			 * 3. N-SGQ can be found within the summary array (N = numerical input)
+			 * 
+			 * Always remember that we just have very few question types that are checked here
+			 * due to the if ouside this section!
+			 * 
+			 * Auto-check the question types mentioned above
+			 */
+			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+			{
+				$cr_statisticsoutput .= " checked='checked'";
+			}
+			
+			//the speaker symbol for question types "W" and "Z" are created later
+			if($flt[2] != "W" && $flt[2] != "Z")
+			{
+				//show speaker symbol which contains full question text
+				$cr_statisticsoutput .= " />&nbsp;".showSpeaker($niceqtext)."</strong>"
+				."<br />\n";
+			}
+			
+			//numerical question type -> add some HTML to the output
+			if ($flt[2] == "N") {$cr_statisticsoutput .= "</font>";}
+			
+			//only for non-numerical question types. output for types "W" and "Z" is created later
+			if ($flt[2] != "N" && $flt[2] != "W" && $flt[2] != "Z") {$cr_statisticsoutput .= "\t\t\t\t<select name='";}
+			
+			//multiple options ("M"/"P") -> add "M" to output 
+			if ($flt[2] == "M" || $flt[2] == "P") {$cr_statisticsoutput .= "M";}
+			
+			//only for non-numerical question types. qoutput for types "W" and "Z" is created later
+			if ($flt[2] != "N" && $flt[2] != "W" && $flt[2] != "Z") 
+			{
+				$cr_statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
+			}
+			
+			//Add the field name into the allfields array, which is used later to know which are the available fields for selection
+			$allfields[]=$myfield;
+			
+		}	//end if -> filter certain question types
+	
+		$cr_statisticsoutput .= "\t\t\t\t\t<!-- QUESTION TYPE = $flt[2] -->\n";
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		//This section presents the filter list, in various different ways depending on the question type
+		/////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//let's switch through the question type for each question
+		switch ($flt[2])
+		{		
+			case "G": // Gender
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='F'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Female")."</option>\n";
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='M'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select></font>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;
+			
+			break;
+			
+			
+			
+			case "Y": // Yes\No
+			$cr_statisticsoutput .= "\t\t\t\t\t<option value='Y'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
+			."\t\t\t\t\t<option value='N'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+			
+			$cr_statisticsoutput .= ">".$clang->gT("No")."</option></select></font>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;
+			
+			break;
+						
+			
+			//Dropdown and radio lists
+			case "W":
+			case "Z":
+				
+			$cr_statisticsoutput .= "\t\t\t\t<td align='center'>";
+			$cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			
+			//pre-check
+			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+			{$cr_statisticsoutput .= " checked='checked'";}
+			
+			$cr_statisticsoutput .= " />&nbsp;"
+			.showSpeaker($niceqtext)."</strong>"
+			."<br />\n";
+			$cr_statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";
+			$allfields[]=$myfield;
+			
+			//get labels (code and title)
+			$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
+			$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+			
+			//loop through all the labels
+			while($row=$result->FetchRow())
+			{
+				$cr_statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+				
+				//pre-check
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+				
+				$cr_statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
+	            
+			} // while
+			
+			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;			
+			
+			break;        
+	        
+	        
+	        /*
+	         * This question types use the default settings:
+	         * 	L - List (Radio) 
+				M - Multiple Options 
+				O - List With Comment 
+				P - Multiple Options With Comments 
+				! - List (Dropdown) 
+	         */
+			//default:
+			case "L":
+			case "M":
+			case "O":
+			case "P":
+			case "!":
+			
+			//get answers
+			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+			$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+			
+			//loop through answers
+			while ($row=$result->FetchRow())
+			{
+				$cr_statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+				
+				//pre-check
+				if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$cr_statisticsoutput .= " selected";}
+				
+				$cr_statisticsoutput .= ">$row[1]</option>\n";
+			}
+			
+			$cr_statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			
+			//increase counter to adjust layout
+			$crcounter++;
+			
+			break;
+						
+		}	//end switch -> check question types and create filter forms
+		
+		$currentgroup=$flt[1];
+		
+		//if (!isset($crcounter)) {$crcounter=0;}
+		//$crcounter++;
+	
+	}	//end foreach -> loop thorugh all available questions 
+		
+	//array allfields contains question codes
+	if (isset($allfields))
+	{
+		//connect all array elements using "+"
+		$allfield=implode("+", $allfields);
+	}
+	
+	
+	
+	//add own output to general output
+	$statisticsoutput .= $cr_statisticsoutput;
+	
+}	//end if -> option crossquery set?
+
+
+// --------------------------------------- END CROSS QUERY ------------------------------------
+
+
+
+
+
 //add last lines to filter forms
 $statisticsoutput .= "\t\t\t</table>\n"
-."\t\t</td></tr>\n"
-."\t\t<tr><td align='center' class='settingcaption'>\n"
+."\t\t</td></tr>\n";
+
+$viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'><input type='radio' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></td></tr>\n"
-."\t\t<tr><td align='center' class='settingcaption'>\n"
-."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>".$clang->gT("Filter incomplete answers:")."<select name='filterinc'>\n"
-."\t\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enabled")."</option>\n"
-."\t\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disabled")."</option>\n"
-."\t\t\t\t</select></td></tr>\n"
-."\t\t\t\t<tr><td align='center'>";
+."<script type='text/javascript'>
+   function showhidefilters(value) {
+     if(value == true) {
+       hide('filterchoices');
+     } else {
+	   show('filterchoices');
+	 }
+   }
+</script>"
+."<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
+." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
+."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
+if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
+$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n"
+."<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
+."<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+."<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+."</select><br />&nbsp;</td></tr>\n";
+$statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
+
+//add line to separate the the filters from the other options
+	$statisticsoutput .= "<tr><td align='center' class='settingcaption'>
+	       <font size='1' face='verdana'>&nbsp;</font>
+		  </td></tr>";
+	
+$statisticsoutput .= "</table>
+<table cellpadding='0' cellspacing='0' width='100%'>\n";
+
+$statisticsoutput .="\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
+if ($selecthide!='')
+{
+    $statisticsoutput .= " style='display:none' ";
+}
 
 //this fixes bug #2470
-$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted' ";
+$statisticsoutput.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
 if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></td></tr>\n";
-
-
-//only show option to show graphs if jpgraph is enabled
-if (isset($usejpgraph) && $usejpgraph == 1)
-{
-	$statisticsoutput .= "\t\t\t\t<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' checked='checked'/><label for='usergraph'>".$clang->gT("Show Graphs")."</label></font></td></tr>\n";
-}
+$statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div><br /></td></tr>\n";
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
@@ -1315,7 +1852,7 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 ."\t\t<input type='hidden' name='display' value='stats' />\n"
 ."\t</td></tr>\n"
-."</table>\n"
+."</table></div>\n"
 ."</td></tr></table>\n"
 ."\t</form>\n";
 
@@ -1589,7 +2126,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
 	.$clang->gT("Total records in survey").": $total<br />\n";
 	
-	//only calculate percentage of $total is set
+	//only calculate percentage if $total is set
 	if ($total)
 	{
 		$percent=sprintf("%01.2f", ($results/$total)*100);
@@ -1725,8 +2262,8 @@ if (isset($summary) && $summary)
 	$prb->setLabelValue('txt1',$clang->gT('Generating Summaries ...'));
 	$prb->moveStep($process_status);
 	
-	//check if jpgraph is available
-	if ($usejpgraph == 1 && isset($jpgraphdir)) //JPGRAPH CODING SUBMITTED BY Pieterjan Heyse
+	//check if pchart should be used
+	if (isset($_POST['usegraph'])) 
 	{
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
@@ -1996,7 +2533,7 @@ if (isset($summary) && $summary)
 				}
 				
 				//outputting headline
-				$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
+				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
 				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
 				."</td></tr>\n"
 				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
@@ -2064,8 +2601,8 @@ if (isset($summary) && $summary)
 				{
 					//put translation of mean and calculated data into $showem array
 					$showem[]=array($clang->gT("Sum"), $row['sum']);
-					$showem[]=array($clang->gT("Standard Deviation"), $row['stdev']);
-					$showem[]=array($clang->gT("Average"), $row['average']);
+					$showem[]=array($clang->gT("Standard Deviation"), round($row['stdev'],2));
+					$showem[]=array($clang->gT("Average"), round($row['average'],2));
 					$showem[]=array($clang->gT("Minimum"), $row['minimum']);
 					
 					//Display the maximum and minimum figures after the quartiles for neatness
@@ -2089,8 +2626,6 @@ if (isset($summary) && $summary)
 				//execute query
 				$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				
-				//same query begin as above?!?
-				//XXX what's the difference between $query and $querystarter?
 				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
 				
 				//filtering enabled?
@@ -2246,7 +2781,7 @@ if (isset($summary) && $summary)
 					
 					//footer of question type "N"
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td colspan='3' align='center' bgcolor='#EEEEEE'>\n"
+					."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
 					."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
 					."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
 					."</font>\n"
@@ -2263,8 +2798,8 @@ if (isset($summary) && $summary)
 				{
 					//output
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center'  colspan='3'>".$clang->gT("Not enough values for calculation")."</td>\n"
-					."\t</tr>\n</table>\n";
+					."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
+					."\t</tr>\n</table><br />\n";
 					unset($showem);
 				}
 				
@@ -2319,15 +2854,9 @@ if (isset($summary) && $summary)
 				$qother=$nrow[6];
 			}
 			
-			//put data into array
-			$alist[]=array("", $clang->gT("No answer"));
-			
 			//check question types
 			switch($qtype)
 			{
-
-				//XXX MM: Here I will have to do some modifications
-				
 				//Array of 5 point choices (several items to rank!)
 				case "A": 
 				
@@ -2413,6 +2942,61 @@ if (isset($summary) && $summary)
 				break;
 				
 				
+				case ":": //Array (Multiple Flexi)
+            	$qidattributes=getQuestionAttributes($qiqid);
+            	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+            		$maxvalue=$maxvalue['value'];
+            	} 
+            	else {
+            		$maxvalue=10;
+            	}
+				
+            	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+            		$minvalue=$minvalue['value'];
+            	} 
+            	else {
+            		$minvalue=1;
+            	}
+            	
+            	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+            		$stepvalue=$stepvalue['value'];
+            	} 
+            	else {
+            		$stepvalue=1;
+            	}
+            	
+				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+					$minvalue=0;
+					$maxvalue=1;
+					$stepvalue=1;
+				}
+				
+				list($qacode, $licode)=explode("_", $qanswer);
+				
+				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+				//echo $qquery."<br />";
+				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				
+				while ($qrow=$qresult->FetchRow())
+				{
+				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+					$fresult = db_execute_assoc($fquery);
+					while ($frow=$fresult->FetchRow())
+					{
+						//$alist[]=array($frow['code'], $frow['title']);
+						$ltext=$frow['title'];
+					}
+					$atext=$qrow[1];
+				}
+				
+				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) 
+				{
+				    $alist[]=array($i, $i);
+				}
+				
+				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
+				$qtitle .= "($qanswer)";
+				break;
 				
 				case "F": //Array of Flexible
 				case "H": //Array of Flexible by Column
@@ -2589,6 +3173,10 @@ if (isset($summary) && $summary)
 				
 			}	//end switch question type
 			
+			//moved because it's better to have "no answer" at the end of the list instead of the beginning
+			//put data into array
+			$alist[]=array("", $clang->gT("No answer"));
+			
 		}	//end else -> single option answers 
 
 		//foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
@@ -2603,25 +3191,17 @@ if (isset($summary) && $summary)
 		{
 			//output
 			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
-			."\t<tr><td colspan='3' align='center'><strong>"
+			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//headline
 			.$clang->gT("Field Summary for")." $qtitle:</strong>"
 			."</td></tr>\n"
-			."\t<tr><td colspan='3' align='center'><strong>"
+			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//question title
 			."$qquestion</strong></td></tr>\n"
-			."\t<tr>\n\t\t<td width='50%' align='center' >"
+			."\t<tr>\n\t\t<td width='50%' align='center' >";
 			
-			//three columns
-			."<strong>".$clang->gT("Answer")."</strong></td>\n"
-			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Count")."</strong></td>\n"
-			."\t\t<td width='25%' align='center' >"
-			."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-			."\t</tr>\n";
-            
 			// this will count the answers considered completed
 			$TotalCompleted = 0;    
 			
@@ -2736,13 +3316,45 @@ if (isset($summary) && $summary)
 					}
 					
 					
-					//MM: check if aggregated results should be shown
+					//check if aggregated results should be shown
 					elseif ($showaggregateddata == 1 && isset($showaggregateddata))
 					{
+							
+						if(!isset($showheadline) || $showheadline != false)
+						{
+							if($qtype == "5" || $qtype == "A")
+							{
+								//four columns
+								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+								."\t\t<td width='20%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></td>\n"
+								."\t\t<td width='20%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+								."\t\t<td width='10%' align='center' >"
+								."<strong>".$clang->gT("Sum")."</strong></td>\n"
+								."\t</tr>\n";
+								
+								$showheadline = false;							
+							}
+							else
+							{
+								//three columns
+								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+								."\t\t<td width='25%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></td>\n"
+								."\t\t<td width='25%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+								."\t</tr>\n";
+								
+								$showheadline = false;
+							}
+							
+						}
+						
 						//text for answer column is always needed
 						$fname="$al[1] ($al[0])";
 						
-						//MM: at the beginning only these question type are supported
+						//these question types get special treatment by $showaggregateddata
 						if($qtype == "5" || $qtype == "A")
 						{					
 							//put non-edited data in here because $row will be edited later
@@ -2795,6 +3407,18 @@ if (isset($summary) && $summary)
 					//handling what's left
 					else
 					{
+						if(!isset($showheadline) || $showheadline != false)
+						{						
+							//three columns
+							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
+							."\t\t<td width='25%' align='center' >"
+							."<strong>".$clang->gT("Count")."</strong></td>\n"
+							."\t\t<td width='25%' align='center' >"
+							."<strong>".$clang->gT("Percentage")."</strong></td>\n"
+							."\t</tr>\n";
+						
+							$showheadline = false;
+						}
 						//answer text
 						$fname="$al[1] ($al[0])";
 					}
@@ -2817,7 +3441,6 @@ if (isset($summary) && $summary)
 					{
 						//put absolute data into array
 						$grawdata[]=$row[0];
-						
 					}
 					else
 					{
@@ -2832,7 +3455,7 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
+                    $lbl[] = wordwrap(strip_tags($fname), 25, "\n");
                     
                 }	//end while -> loop through results
                 
@@ -2842,7 +3465,7 @@ if (isset($summary) && $summary)
             if ((incompleteAnsFilterstate() === false) and ($qtype != "M") and ($qtype != "P"))
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-                if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on"))
+                if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
                 {
                 	//counter
                     $i=0;
@@ -2905,9 +3528,19 @@ if (isset($summary) && $summary)
             //counter
             $i=0;
             
+            //we need to know which item we are editing
+      	    $itemcounter = 1;
+      	    
+      	    //array to store items 1 - 5 of question types "5" and "A"
+      	    $stddevarray = array();
+      	      
             //loop through all available answers
             while (isset($gdata[$i]))
             {
+            	//repeat header (answer, count, ...) for each new question
+            	unset($showheadline);
+            	
+            	
             	/*
             	 * there are 3 colums:
             	 * 
@@ -2919,66 +3552,134 @@ if (isset($summary) && $summary)
                 ."\t\t</td>\n"
                 
                 //output absolute number of records
-                ."\t\t<td width='25%' align='center' >" . $grawdata[$i] . "\n";
+                ."\t\t<td width='20%' align='center' >" . $grawdata[$i] . "\n";
                 
-                
-                //XXX $vp isn't used anywhere else?!? clean up?
-			                //data available?
-			                if ($results > 0) 
-			                {	
-			                	//calculate percentage and limit result to 2 internal decimal places
-			                	$vp=sprintf("%01.2f", ($row[0]/$results)*100)."%";
-			                } 
-			                else 
-			                {
-			                	$vp="N/A";
-			                }
-                
-                //MM: edited output format...
                 
                 //no data
                 if ($gdata[$i] == "N/A") 
                 {
-                	//MM new (moved from above)
-                	$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+                	//output when having no data
+                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 	
                 	//percentage = 0
                     $statisticsoutput .= $gdata[$i];
                     $gdata[$i] = 0;
+                    
+                    //check if we have to adjust ouput due to $showaggregateddata setting
+                    if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
+                    {
+                    	$statisticsoutput .= "\t\t</td><td>";
+                }
                 }
                 
                 //data available
                 else
                 {                        	
-                	//MM: check if data should be aggregated
-                	if($showaggregateddata == 1 && isset($showaggregateddata))
+                	//check if data should be aggregated
+                	if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                 	{
-                		//cope with "normal" data of this question type
-                		//nothing special to do here, just adjust output
+                		//mark that we have done soemthing special here
+                		$aggregated = true; 
+                		
+                		
+                		//just calculate everything once. the data is there in the array      
+                		if($itemcounter == 1)
+                		{
+                			//there are always 5 answers
+                			for($x = 0; $x < 5; $x++)
+                			{ 
+                				//put 5 items into array for further calculations
+                				array_push($stddevarray, $grawdata[$x]);
+                			}
+                		}
+                		
+                		
+                		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 	                	if($gdata[$i] <= 100)
 	                	{
-	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+	                		
+	                		if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+4]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+4])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
+	                			
+	                		}
+	                		elseif($itemcounter == 4 && $label[$i+2] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+2]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+2])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
+	                		}
+	                		else
+	                		{
+	                			$percentage = $gdata[$i];
+	                		}
+	                		
+	                		//output
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center'>";
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
+	                		
+	                		//adjust output
+	                		if($qtype == "5" || $qtype == "A")
+	                		{
 	                		$statisticsoutput .= "\t\t</td><td>";
 	                	}
+	                		else
+	                		{
+	                			$statisticsoutput .= "\t\t ";
+	                		}
+	                	}
 	                	
-	                	//middle value -> just show results twice
+	                	//item 3 - just show results twice
 	                	if($gdata[$i] >= 400)
 	                	{         		
 	                		//remove "400" which was added before
-	                		//to get the original percentage
 	                		$gdata[$i] -= 400;	                		
 	                		
+	                		if($itemcounter == 3 && $label[$i+3] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+3]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+3])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                			}
+	                		}
+	                		else
+	                		{	                			
+	                			//get the original percentage
+	                			$percentage = $gdata[$i];
+	                		}
+	                		
 	                		//output percentage
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 							//output again (no real aggregation here)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i])."%";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
+	                		$statisticsoutput .= "\t\t";
 	                	}
 	                	
 	                	//FIRST value -> add percentage of item 1 + item 2
@@ -2987,20 +3688,39 @@ if (isset($summary) && $summary)
 	                		//remove "300" which was added before
 	                		$gdata[$i] -= 300;
 	                		
-	                		//calculate aggregated data
-	                		$index = $i + 1;
+	                		if($itemcounter == 1 && $label[$i+5] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+5]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+5])) * 100;
+	                				$percentage2 = ($grawdata[$i + 1] / ($results - $grawdata[$i+5])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                				$percentage2 = 0;
+	                		
+	                			}
+	                		}
+	                		else
+	                		{
+	                			$percentage = $gdata[$i];
+	                			$percentage2 = $gdata[$i+1];
+	                		}
 	                		
 	                		//percentage of item 1 + item 2
-	                		$aggregatedgdata = $gdata[$i] + $gdata[$index];
+	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//output percentage
-	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+	                		$statisticsoutput .= "\t\t";
 	                	}
 	                	
 	                	//LAST value -> add item 4 + item 5
@@ -3009,19 +3729,61 @@ if (isset($summary) && $summary)
 	                		//remove "200" which was added before
 	                		$gdata[$i] -= 200;
 	                		
-	                		//calculate aggregated data
-	                		$index = $i - 1;
+	                		if($itemcounter == 5 && $label[$i+1] == $clang->gT("No answer"))
+	                		{
+	                			//prevent division by zero
+	                			if(($results - $grawdata[$i+1]) > 0)
+	                			{
+	                				//re-calculate percentage
+	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+1])) * 100;
+	                				$percentage2 = ($grawdata[$i - 1] / ($results - $grawdata[$i+1])) * 100;
+	                			}
+	                			else
+	                			{
+	                				$percentage = 0;
+	                				$percentage2 = 0;
+	                		
+	                			}	                			
+	                		}
+	                		else
+	                		{	                			
+	                			$percentage = $gdata[$i];
+	                			$percentage2 = $gdata[$i-1];
+	                		}
 	                		
 	                		//item 4 + item 5
-	                		$aggregatedgdata = $gdata[$i] + $gdata[$index];
+	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
-	                		//MM new (moved)
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='center' >";
-	                		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+	                		//output percentage
+	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='12%' align='right' >";
+	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
+	                		$statisticsoutput .= "\t\t";
+	                		
+	                		//NEW: create new row "sum"
+	                		//calculate sum of items 1-5
+	                		$sumitems = $grawdata[$i] 
+	                		+ $grawdata[$i-1] 
+	                		+ $grawdata[$i-2]
+	                		+ $grawdata[$i-3]
+	                		+ $grawdata[$i-4];
+	                		
+	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>100.00%</strong></td>";
+	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>100.00%</strong></td>";
+	                		
+	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
+	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' >100.00%</td>";
+	                		//there has to be a whitespace within the table cell to display correctly
+	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";  
+	                		
 	                	}
 	                	
                 	}	//end if -> show aggregated data
@@ -3030,20 +3792,112 @@ if (isset($summary) && $summary)
                 	else
                 	{                		
                 		//output percentage 
-	                	$statisticsoutput .= "\t\t</td><td width='25%' align='center' >";
+	                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
+                		$statisticsoutput .= "\t\t";
                 	}
                 	                	                	
                 }	//end else -> $gdata[$i] != "N/A"                    
                 
-                //end output per line
-                $statisticsoutput .= "\t\t</td>\n\t</tr>\n";
+              	//end output per line. there has to be a whitespace within the table cell to display correctly
+	            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";              
                 
                 //increase counter
                 $i++;
+                
+				$itemcounter++;
+            
+            }	//end while
+            
+            //only show additional values when this setting is enabled
+            if($showaggregateddata == 1 && isset($showaggregateddata))
+            {
+            	//it's only useful to calculate standard deviation and arithmetic means for question types
+            	//5 = 5 Point Scale
+            	//A = Array (5 Point Choice)
+            	if($qtype == "5" || $qtype == "A")
+            	{
+            		$stddev = 0;
+            		$am = 0;
+            			
+            		//calculate arithmetic mean
+            		if(isset($sumitems) && $sumitems > 0)
+            		{
+            			
+            			
+            			//calculate and round results
+            			//there are always 5 items
+            			for($x = 0; $x < 5; $x++)
+            			{
+            				//create product of item * value
+            				$am += (($x+1) * $stddevarray[$x]);
             }
 
-			if ($usejpgraph == 1 && isset($_POST['usegraph']) && array_sum($gdata)>0) //JPGRAPH CODING ORIGINALLY SUBMITTED BY Pieterjan Heyse
+            			$am = round($am / array_sum($stddevarray),2);
+            			
+            			//calculate standard deviation -> loop through all data
+            			/*
+            			 * four steps to calculate the standard deviation
+            			 * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
+            			 * 2 = create sqaure value of difference
+            			 * 3 = sum up square values
+            			 * 4 = multiply result with 1 / (number of items)
+            			 * 5 = get root
+            			 */
+            			
+            			
+            			
+            			for($j = 0; $j < 5; $j++)
+            			{            				
+            				//1 = calculate difference between item and arithmetic mean
+            				$diff = (($j+1) - $am);
+            				
+            				//2 = create square value of difference
+            				$squarevalue = square($diff);
+            				
+            				//3 = sum up square values and multiply them with the occurence
+            				//prevent divison by zero
+            				if($squarevalue != 0 && $stddevarray[$j] != 0)
+            				{
+            					$stddev += $squarevalue * $stddevarray[$j];
+            				}
+            				   
+            			}
+            			
+            			//4 = multiply result with 1 / (number of items (=5))            			
+            			//There are two different formulas to calculate standard derivation
+            			//$stddev = $stddev / array_sum($stddevarray);		//formula source: http://de.wikipedia.org/wiki/Standardabweichung
+            			
+            			//prevent division by zero
+            			if((array_sum($stddevarray)-1) != 0 && $stddev != 0)
+            			{
+            				$stddev = $stddev / (array_sum($stddevarray)-1);	//formula source: http://de.wikipedia.org/wiki/Empirische_Varianz
+            			}
+            			else
+            			{
+            				$stddev = 0;
+            			}
+            			
+            			//5 = get root
+            			$stddev = sqrt($stddev);
+            			$stddev = round($stddev,2);
+            		}            		
+            		
+            		//calculate standard deviation
+			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic Mean")." | ".$clang->gT("Standard Deviation")."</td>";	//German: "Fallzahl"
+			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
+			        //there has to be a whitespace within the table cell to display correctly
+			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";
+            	}
+            }
+            
+            
+            
+            
+            //-------------------------- PCHART OUTPUT ----------------------------
+            
+            //PCHART has to be enabled and we need some data
+			if (isset($_POST['usegraph']) && array_sum($gdata)>0) 
 			{
 				$graph = "";
 				$p1 = "";
@@ -3062,24 +3916,61 @@ if (isset($summary) && $summary)
 				//First, lets delete any earlier graphs from the tmp directory
 				//$gdata and $lbl are arrays built at the end of the last section
 				//that contain the values, and labels for the data we are about
-				//to send to jpgraph.
-				if ($qtype == "M" || $qtype == "P") { //Bar Graph
-					$graph = new Graph(640,320,'png');
-					$graph->SetScale("textint");
-					$graph->img->SetMargin(50,50,50,50);
-					$graph->xaxis->SetTickLabels($justcode);
-					$graph->xaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->xaxis->SetColor("black");
-				//	$graph->xaxis->title->Set($clang->gT("Code"));
-					$graph->xaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					$graph->xaxis->title->SetColor("black");
-					$graph->yaxis->SetFont(constant($jpgraphfont), FS_NORMAL, 8);
-					$graph->yaxis->SetColor("black");
-					$graph->yaxis->title->Set($clang->gT("Count")." / $results");
-					$graph->yaxis->title->SetFont(constant($jpgraphfont), FS_BOLD, 9);
-					$graph->yaxis->title->SetColor("black");
-					//$graph->Set90AndMargin();
-				} else { //Pie Charts
+				//to send to pchart.
+				
+				/*
+				 * Multiple options = bar charts
+				 * 
+				 * M = multiple options
+				 * P = multiple options with comments
+				 */
+				if ($qtype == "M" || $qtype == "P") 
+				{ 
+					//TODO: adapt size depending on the number of answers
+					
+					//(TODO): improve colors/styles e.g. floating color (blue -> white)
+					
+					//(TODO): put absolute number on top of bar and don't use decimal numbers
+					
+					//TODO: show answer title (legend) left/right beside the chart
+					//		by turning it 90 degrees
+					
+					//TODO: order by absolute number decreasing (only seems suitable when using answer title instead of ocde)
+									
+					//TODO: Ranking type: Use charts like this to compare rankings: 
+					//		http://www.aditus.nu/jpgraph/img/gallery/mulyaxis.png (just one axis needed)
+					
+					//we always use the same size
+					//$graph = new Graph(640,320,'png');
+					
+					//MM: file size depending on number of answers
+					//there are about 500px to place the bars
+					
+					//get number of options
+					$totaloptions = count($grawdata);
+					
+					if($totaloptions <= 10)
+					{
+						$width = $totaloptions * 70;
+					}
+					if($totaloptions > 10 && $totaloptions <= 25)
+					{
+						$width = $totaloptions * 40;
+					}
+					if($totaloptions > 20 && $totaloptions <= 50)
+					{
+						$width = $totaloptions * 20;
+					}
+					if($totaloptions > 50 && $totaloptions <= 100)
+					{
+						$width = $totaloptions * 10;
+					}
+					
+					if($totaloptions > 100)
+					{
+						$width = $totaloptions * 8;
+					}
+				} 
 				
                     $i = 0;
                     foreach ($gdata as $data)
@@ -3098,31 +3989,73 @@ if (isset($summary) && $summary)
 						$legendtop=0.07;
 						$setcentrey=0.5;
 					}
-					$graph = new PieGraph(680,$gheight,'png');
-					$graph->legend->SetFont(constant($jpgraphfont), FS_NORMAL, $fontsize);
-					$graph->legend->SetPos(0.015, $legendtop, 'right', 'top');
-					$graph->legend->SetFillColor("white");
-					global $jpgraph_antialiasing;
-					if ($jpgraph_antialiasing == 1) $graph->SetAntiAliasing();
-				}
-				$graph->title->SetColor("black");
-				$graph->SetMarginColor("#FFFFFF");
-				// Set A title for the plot
-				// $graph->title->Set($qquestion); //disabled: printing titles is only a good solution if question texts are short
-				$graph->title->SetFont(constant($jpgraphfont),FS_BOLD,12);
-				// Create pie plot
-				if ($qtype == "M" || $qtype == "P") { //Bar Graph
-					$p1 = new BarPlot($grawdata);
-					$p1->SetWidth(0.8);
-					$p1->SetValuePos("center");
-					$p1->SetFillColor("#4f81bd");
-					if (!in_array(0, $grawdata)) { //don't show shadows if any of the values are 0 - jpgraph bug
-						$p1->SetShadow();
+					
+				}	//end else -> pie charts
+				
+				
+				// Create bar chart for multiple options
+				if ($qtype == "M" || $qtype == "P") 
+				{ 
+					//new bar chart using data from array $grawdata which contains percentage
+
+                    $DataSet = new pData;  
+                    $counter=0;
+                    $maxvalue=0;
+                    foreach ($grawdata as $datapoint)
+                    {
+                        $DataSet->AddPoint(array($datapoint),"Serie$counter");  
+                        $DataSet->AddSerie("Serie$counter");
+
+                        $counter++;
+                        if ($datapoint>$maxvalue) $maxvalue=$datapoint;
+                    }
+//                    $DataSet->AddPoint($justcode,"LabelX");
+//                    $DataSet->SetAbsciseLabelSerie("LabelX");  
+                    $counter=0;
+                    foreach ($lbl as $label)
+                    {
+                        $DataSet->SetSerieName($label,"Serie$counter");  
+                        $counter++;
+                    }
+                    
+                    //$DataSet->SetAbsciseLabelSerie();  
+
+                    $gheight=320;
+                    if ($counter>15) 
+                    {
+                     $gheight=$gheight+(10*($counter-15));
 					}
-					$p1->value->Show();
-					$p1->value->SetFont(constant($jpgraphfont),FS_BOLD,8);
-					$p1->value->SetColor("#FFFFFF");
-				} else { //Pie Chart
+                    $Test = new pChart(640,$gheight); 
+                     
+                    $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
+                    $Test->setGraphArea(50,30,500,$gheight-60);  
+                    $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,635,$gheight-5,5,230,230,230);  
+                    $Test->drawGraphArea(255,255,255,TRUE);  
+                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE);  
+                    $Test->drawGrid(4,TRUE,230,230,230,50);     
+                                      // Draw the 0 line
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
+                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+                     // Draw the bar graph
+                     $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                     //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
+                     // Finish the graph
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
+                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
+//Todo:                     $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+
+                                        
+	
+					
+				}	//end if (bar chart)
+				
+				//Pie Chart
+				else 
+				{ 
                     // this block is to remove the items with value == 0
                     $i = 0;
                     while (isset ($gdata[$i]))
@@ -3137,26 +4070,22 @@ if (isset($summary) && $summary)
                     }
                 
                     //create new 3D pie chart
-					$p1 = new PiePlot3d($gdata);
+					$DataSet = new pData; 
+                    $DataSet->AddPoint($gdata,"Serie1");  
+                    $DataSet->AddPoint($lbl,"Serie2");  
+                    $DataSet->AddAllSeries();
+                    $DataSet->SetAbsciseLabelSerie("Serie2");
 					
-					//debugging
-					//                        $statisticsoutput .= "<pre>";print_r($lbl);$statisticsoutput .= "</pre>";
-					//                        $statisticsoutput .= "<pre>";print_r($gdata);$statisticsoutput .= "</pre>";
 					
-					//MM: color theme (see http://doc.async.com.br/jpgraph/html/4020pieplot.html#7_2_4)
-					$p1->SetTheme("earth");					
+                    $Test = new pChart(640,$gheight);  
+//                    $Test->drawFilledRoundedRectangle(7,7,293,193,5,240,240,240);  
+                          //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
 					
-					$p1->SetLegends($lbl);
-					$p1->SetSize(200);
-					$p1->SetCenter(0.375,$setcentrey);
-					
-					//black
-					$p1->value->SetColor("#000000");
-					$p1->value->SetFont(constant($jpgraphfont),FS_NORMAL,12);
-					
-					//XXX can this be deleted?
-					// Set how many pixels each slice should explode
-					//$p1->Explode(array(0,15,15,25,15));
+                    // Draw the pie chart  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",11);  
+                    $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",9);  
+                    $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
 					
 				}	//end else -> pie charts
 
@@ -3166,22 +4095,23 @@ if (isset($summary) && $summary)
 				//increase counter, start value -> 1
 				$ci++;
 				
-				//add graph
-				$graph->Add($p1);
-				
 				//filename of chart image
 				$gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
 				
 				//create graph
-				$graph->Stroke($tempdir."/".$gfilename);
+				$Test->Render($tempdir."/".$gfilename);
 				
 				//add graph to output
-				$statisticsoutput .= "<tr><td colspan='3' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
+				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
 				
-			}	//end if -> jpgraph enabled
+			}
+			
+			
+			
+			
 			
 			//close table/output
-			$statisticsoutput .= "</table>";
+			$statisticsoutput .= "</table><br /> \n";
 			
 		}	//end if -> collect and display results
 		
@@ -3263,13 +4193,49 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 }
 
 
-//show whole question title using tooltip for speaker symbol
 function showSpeaker($hinttext)
 {
-  global $imagefiles, $clang;
-  $reshtml= "<img src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
+	global $clang, $imagefiles, $max;
+	
+	if(!isset($max))
+	{
+		$max = 12;
+	}
+	
+	if(strlen($hinttext) > ($max))
+	{
+		$shortstring = strip_tags($hinttext);
+		
+		//create short string
+		$shortstring = substr($hinttext, 0, $max);
+		
+		//output with hoover effect
+		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
+           ." \"$shortstring...\" </span>"
+           ."<img style='cursor: hand' src='$imagefiles/downarrow.png' align='bottom' alt='$hinttext' title='$hinttext' "
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+	}
+	else
+	{
+		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+	}	
   return $reshtml; 
+}
+
+//simple function to square a value
+function square($number)
+{
+	if($number == 0)
+	{
+		$squarenumber = 0;
+	}
+	else
+	{
+		$squarenumber = $number * $number;
+	}
+	
+	return $squarenumber;
 }
 
 ?>

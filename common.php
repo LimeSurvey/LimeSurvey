@@ -17,8 +17,8 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
-$versionnumber = "1.71+";
-$dbversionnumber = 126;
+$versionnumber = "1.80";
+$dbversionnumber = 128;
 $buildnumber = "";
 
 
@@ -393,7 +393,8 @@ function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
 {
 	global $connect;
 
-	$dataset=$connect->SelectLimit($sql,$numrows=-1,$offset=-1,$inputarr=false) or safe_die($sql);
+	$connect->SetFetchMode(ADODB_FETCH_NUM);
+	$dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false) or safe_die($sql);
 	return $dataset;
 }
 
@@ -791,7 +792,8 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"X"=>$clang->gT("Boilerplate Question"),
 		"Y"=>$clang->gT("Yes/No"),
 		"Z"=>$clang->gT("List (Flexible Labels) (Radio)"),
-		"!"=>$clang->gT("List (Dropdown)")
+		"!"=>$clang->gT("List (Dropdown)"),
+		":"=>$clang->gT("Array (Multi Flexible) (Numbers)"),
 		);
         asort($qtypes);
 		if ($ReturnType == "array") {return $qtypes;}
@@ -1533,7 +1535,8 @@ function returnquestiontitlefromfieldcode($fieldcode)
 	global $dbprefix, $surveyid, $connect, $clang;
 	if (!isset($fieldcode)) {return $clang->gT("Preset");}
 	if ($fieldcode == "token") {return $clang->gT("Token");}
-	if ($fieldcode == "datestamp") {return $clang->gT("Date Stamp");}
+	if ($fieldcode == "datestamp") {return $clang->gT("Date Last Action");}
+	if ($fieldcode == "startdate") {return $clang->gT("Date Started");}
 	if ($fieldcode == "ipaddr") {return $clang->gT("IP Address");}
 	if ($fieldcode == "refurl") {return $clang->gT("Referring URL");}
 
@@ -1832,6 +1835,17 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			}
 			$counter++;
 		}
+		if ($prow['datestamp'] == "Y")
+		{
+			$fieldmap[]=array("fieldname"=>"startdate", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			if ($style == "full")
+			{
+				$fieldmap[$counter]['title']="";
+				$fieldmap[$counter]['question']="startdate";
+				$fieldmap[$counter]['group_name']="";
+			}
+			$counter++;
+		}
 		if ($prow['ipaddr'] == "Y")
 		{
 			$fieldmap[]=array("fieldname"=>"ipaddr", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
@@ -1872,7 +1886,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
-		$arow['type'] != "^" && $arow['type'] != "1")
+		$arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1")
 		{
 			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
@@ -1923,6 +1937,48 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$counter++;
 				break;
 			}
+		}
+		elseif ($arow['type'] == ":")
+		{
+		    //MULTI FLEXI
+			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+			." FROM ".db_table_name('answers').", ".db_table_name('questions')
+			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
+			. "AND ".db_table_name('questions').".language='".$s_lang."'"
+			." AND ".db_table_name('answers').".language='".$s_lang."'"
+			." AND ".db_table_name('questions').".qid={$arow['qid']} "
+			." ORDER BY ".db_table_name('answers').".sortorder, ".db_table_name('answers').".answer";
+			$abresult=db_execute_assoc($abquery) or die ("Couldn't get list of answers in createFieldMap function (case :)<br />$abquery<br />".htmlspecialchars($connect->ErrorMsg()));
+			$ab2query = "SELECT ".db_table_name('labels').".*
+			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
+			             WHERE sid=$surveyid 
+						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+			             AND ".db_table_name('questions').".language='".$s_lang."'
+			             AND ".db_table_name('labels').".language='".$s_lang."'
+			             AND ".db_table_name('questions').".qid=".$arow['qid']."
+			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+			$lset=array();
+			while($ab2row=$ab2result->FetchRow())
+			{
+			    $lset[]=$ab2row;
+			}
+			while ($abrow=$abresult->FetchRow())
+			{
+			    foreach($lset as $ls)
+			    {
+				  $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']."_".$ls['code']);
+				  if ($abrow['other']=="Y") {$alsoother="Y";}
+				  if ($style == "full")
+			  	  {
+					$fieldmap[$counter]['title']=$arow['title'];
+					$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+					$fieldmap[$counter]['group_name']=$arow['group_name'];
+				  }
+				  $counter++;
+			    }
+			}
+			unset($lset);
 		}
 		elseif ($arow['type'] == "M" || $arow['type'] == "A" || $arow['type'] == "B" ||
 		$arow['type'] == "C" || $arow['type'] == "E" || $arow['type'] == "F" ||
@@ -2198,6 +2254,9 @@ function templatereplace($line)
 
 	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
 
+	if (strpos($line, "{EXPIRY}") !== false) $line=str_replace("{EXPIRY}", $thissurvey['expiry'], $line);
+	if (strpos($line, "{EXPIRY-DMY}") !== false) $line=str_replace("{EXPIRY-DMY}", date("d-m-Y",strtotime($thissurvey["expiry"])), $line);
+	if (strpos($line, "{EXPIRY-MDY}") !== false) $line=str_replace("{EXPIRY-MDY}", date("m-d-Y",strtotime($thissurvey["expiry"])), $line);
 	while (strpos($line, "{INSERTANS:") !== false)
 	{
 		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
@@ -2639,7 +2698,7 @@ function questionAttributes()
 	"types"=>"LMZG",
 	"help"=>"Number of columns to display");
     $qattributes[]=array("name"=>"array_filter",
-    "types"=>"ABCEF",
+    "types"=>"ABCEF:",
     "help"=>"Filter an Array's Answers from a Multiple Options Question");
     $qattributes[]=array("name"=>"display_rows",
     "types"=>"TU",
@@ -2651,16 +2710,16 @@ function questionAttributes()
 	"types"=>"WZ",
 	"help"=>"Filter the available answers by this value");
 	$qattributes[]=array("name"=>"max_answers",
-	"types"=>"MP",
+	"types"=>"MPR",
 	"help"=>"Limit the number of possible answers");
     $qattributes[]=array("name"=>"maximum_chars",
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQKRWZFHABCE1",
+    "types"=>"!LMOPQKRWZFHABCE1:",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
-    "types"=>"NSTU",
+    "types"=>"NSTUK",
     "help"=>"Width of text input box");
     $qattributes[]=array("name"=>"numbers_only",
     "types"=>"Q",
@@ -2686,6 +2745,18 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"exclude_all_others",
 	"types"=>"M",
 	"help"=>"Excludes all other options if this is selected");
+	$qattributes[]=array("name"=>"multiflexible_max",
+	"types"=>":",
+	"help"=>"Maximum value for array(mult-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_min",
+	"types"=>":",
+	"help"=>"Minimum value for array(multi-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_step",
+	"types"=>":",
+	"help"=>"Step value for array (multi-flexible) question type");
+	$qattributes[]=array("name"=>"multiflexible_checkbox",
+	"types"=>":",
+	"help"=>"Use Checkbox layout for array (multi-flexible) question type");
 	$qattributes[]=array("name"=>"use_dropdown",
 	"types"=>"1",
 	"help"=>"Use Dual Dropdown instead of Dual Scale");
@@ -2893,9 +2964,10 @@ function getAdminHeader($meta=false)
         }
 	$strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"
+	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"scripts/tabpane/css/tab.webfx.css \" />\n";
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n";
     if (getLanguageRTL($_SESSION['adminlang']))
     {
     $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
@@ -4405,7 +4477,7 @@ function bHasSurveyGotTokentable($thesurvey, $sid=null)
 	return false;
 }
 
-// Returns false if the survey is anonymous, but answers must be datestamp
+// Returns false if the survey is anonymous, 
 // and a token table exists: in this case the completed field of a token
 // will contain 'Y' instead of the submitted date to ensure privacy
 // Returns true otherwise

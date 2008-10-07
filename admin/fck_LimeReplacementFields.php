@@ -119,6 +119,9 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+		$replFields[]=array('EXPIRY',$clang->gT("Survey Expiration date (YYYY-MM-DD)"));
+		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey Expiration date (DD-MM-YYYY)"));
+		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey Expiration date (MM-DD-YYYY)"));
 	break;
 
 	case 'email-inv':
@@ -138,6 +141,9 @@ switch ($fieldtype)
 		$replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
 		$replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
 		$replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
+		$replFields[]=array('EXPIRY',$clang->gT("Survey Expiration date (YYYY-MM-DD)"));
+		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey Expiration date (DD-MM-YYYY)"));
+		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey Expiration date (MM-DD-YYYY)"));
 	break;
 
 	case 'group-desc':
@@ -148,6 +154,9 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
 		$replFields[]=array('TOKEN:ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+		$replFields[]=array('EXPIRY',$clang->gT("Survey Expiration date (YYYY-MM-DD)"));
+		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey Expiration date (DD-MM-YYYY)"));
+		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey Expiration date (MM-DD-YYYY)"));
 	case 'editanswer':
 		$isInstertansEnabled=true;
 	break;
