@@ -68,83 +68,53 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 			$refererargs = html_escape($_SERVER['QUERY_STRING']);
 		}
 
-		// Language selection
-		$loginsummary = '
-			<form name="language" id="language" method="post" action="'.$rooturl.'/admin/admin.php" >
-				<table style="margin-bottom: 2em;">
-					<tbody>
-						<tr>
-							<td style="padding-top:2em; text-align: center;">
-								<label for="lang">'.$clang->gT('Current Language').'</label>:
-								<select name="lang" id="lang" onchange="form.submit()">';
-		foreach (getlanguagedata() as $langkey=>$languagekind)
-		{
-			$loginsummary .= "\n\t\t\t\t\t\t\t\t\t<option value=\"$langkey\"";
-			if (isset($_SESSION['adminlang']) && $langkey == $_SESSION['adminlang']) {$loginsummary .= ' selected="selected"';}
-			// in case it is a logout, session has already been killed
-			if (!isset($_SESSION['adminlang']) && $langkey == $clang->getlangcode() ){$loginsummary .= ' selected="selected"';}
-			$loginsummary .= '>'.$languagekind['description'].' - '.$languagekind['nativedescription']."</option>\n";
-		}
-		$loginsummary .= '
-								</select>
-								<input type="hidden" name="action" value="changelang" />
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-';
+     	$hidden_loginlang = "<input type='hidden' name='loginlang' id='loginlang' value='".$defaultlang."' />";
 
-		$hidden_loginlang = '';
-		if (isset($_POST['lang']) && $_POST['lang'])
-		{
-			$hidden_loginlang = '<input type="hidden" name="loginlang" value="'.sanitize_languagecode($_POST['lang']).'" />';
-		}
-
+        
 		if (!isset($logoutsummary))
 		{
-			$loginsummary .= '
-			<form name="login" id="login" method="post" action="'.$rooturl.'/admin/admin.php" >
-				<p><strong>'.$clang->gT('You have to login first.').'</strong></p>
-';
+			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
 		}
 		else
 		{
-			$loginsummary .= '
-			<form name="login" id="login" method="post" action="'.$rooturl.'/admin/admin.php" >
-				<p><strong>'.$logoutsummary.'</strong></p>
-';
+			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
 		}
 
-		$loginsummary .= '
-				<table>
-					<tbody>
-						<tr>
-							<td><label for="user">'.$clang->gT('Username').'</label></td>
-							<td><input name="user" id="user" type="text" size="40" maxlength="40" value="" /></td>
-						</tr>
-						<tr>
-							<td><label for="password">'.$clang->gT('Password').'</label></td>
-							<td><input name="password" id="password" type="password" size="40" maxlength="40" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td align="center">
-								<input type="hidden" name="action" value="login" />
-								<input type="hidden" name="refererargs" value="'.$refererargs.'" />
-								'.$hidden_loginlang.'
-								<input class="action" type="submit" value="'.$clang->gT('Login').'" />
-							</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-							<td><a href="'.$scriptname.'?action=forgotpassword">'.$clang->gT('Forgot Your Password?').'</a></td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-';
-
+		$loginsummary .= "
+							<table>
+								<tr>
+									<td>".$clang->gT("Username")."</td>
+									<td><input name='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
+								</tr>
+								<tr>
+									<td>".$clang->gT("Password")."</td>
+									<td><input name='password' id='password' type='password' size='40' maxlength='40' /></td>
+								</tr>
+                                <tr>
+                                    <td>".$clang->gT("Language")."</td>
+                                    <td>
+                                    <select name='lang' style='width:210px;' onchange='loginlang.value=this.value;'>\n";
+                                    $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
+                                    foreach (getlanguagedata() as $langkey=>$languagekind)
+                                    {
+                                        $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
+                                    }
+                                    $loginsummary .= "\t\t\t</select>\n"
+                                    . "</td>
+                                </tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td align='center'><input type='hidden' name='action' value='login' />
+									<input type='hidden' name='refererargs' value='".$refererargs."' />
+									$hidden_loginlang
+									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n</td>
+								</tr>
+								<tr>
+									<td>&nbsp;</td>
+									<td align='center'><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n</td>
+								</tr>
+							</table>
+						</form><br />";
 	}
 }
 
