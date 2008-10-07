@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.71+!
+Welcome to LimeSurvey v1.72(+)!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -44,13 +44,13 @@ HOW TO UPGRADE from LimeSurvey 1.45 or later (<=1.70)
 6. Run the installer in /admin/install/index.php to update the database.
 7. Done.
 
-Special note for UPGRADING from 1.53 to 1.71(+)
+Special note for UPGRADING from 1.53 to 1.72(+)
 -----------------------------------------------
 After you upgraded please check the global user rights of each user. There was a 
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.72(+)
 ---------------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -73,284 +73,87 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.71(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.71+ Build 5638 to 5678 -  Legend:   + = New  # = Changed  - = Fix
+Changes from 1.71 to 1.72 (build 5737)  (2008/10/07)
 
-# Updated Norwegian translation (maziminke)
-# Updated Turkish translation by A. Murad BAYRAM (c_schmitz)
-# Spanish translation updated. Two new strings and West European cp1252 windows page code renamed to make it appear in a coherent order in the list (kadejo)
-- Added Dual Scale Matrix and Semantic Differential Question Type to Official LimeSurvey Sample Survey. (el-matador-69)
-- Corrected privacy message (c_schmitz)
-- Fixed #2459: Warning if testing inactive survey more than once in a browser session (c_schmitz)
-- Fixed #2499: Failure when changing default location of admin scripts ($homeurl and $homedir) (c_schmitz)
-- Fixed up bluengray template (c_schmitz)
-- Fixed some issues with SPSS export (c_schmitz)
-- Fixed #2377: Dual Scale Matrix: Printing Answers for Dual Scale now are more understandable (c_schmitz)
-- Fixed #2426: Strange alignment of Survey Status Screen when using a survey in more than one language (c_schmitz)
-- Removed white space after closing PHP bracket (c_schmitz)
+New Features:
+-Added template preview to survey settings (c_schmitz)
+-Added the ability to the template editor to edit a CSS file - where the CSS filename must be the same name as the template. (c_schmitz)
+-Added Prefix & Suffix Question Attributes for Short Text, and Multiple Short Text (jcleeland)
+-Added feature request #02065 - Prefix & Suffix Question Attributes for Numerical Input (jcleeland)
+-Added new attribute "other_replace_text" to use alternative text to "Other" for question types that have this option (jcleeland)
+-PDF Orientation can be changed in config-defaults.php (stfreud)
+-ssl/tls is now possible in emailer configuration, previously only tls was supported (Updated PHPMailer to version 2.02) (c_schmitz)
+-Added qmail to possible mailer config settings (c_schmitz)
+-Implemented 02113: Add some details to Naming of Excel Export File (jcleeland)
+-Rewrite of SPSS export to fix numerous problems
+    -SPSS 16 compatibility
+    -Data is exported now with a sytax and a data file
+    -While exporting the data is checked - if non-numeric data for a field is found the field is switched to alphanumeric
+    -Data for numerical questions is handled as float
+    -Label size is cut down accordingly (c_schmitz)
+-Added new template mint_idea (c_schmitz)
+-New variable $demoModeOnly, used to set limesurvey into a more secure demo mode. (machaven)
 
+Feature Changes:
+-Raised LimeSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
+-Upgraded adodb to 4.98 (c_schmitz)
+-Updated FCKeditor to version 2.6.3 (lemeur)
+-Updated configs for faster parsing (c_schmitz)
+-Rewrote commandline installation for better security and merged into one file
+-Renamed css_only template to sherpa (c_schmitz)
+-Moved CSS to separate files for all templates (c_schmitz)
+-Removed style code from source and placed it into CSS file (c_schmitz)
+-added .questiontext to all templates (addendum to rev. 5149) (el-matador-69)
+-Implemented #2340 Added printablestyle.css (lazar)
+-Better markup for mandatory errors in Sherpa template (c_schmitz)
+-Changes to templates so a custom help icon is used (help.gif or help.png) if found (c_schmitz)
+-Optimized image sizes (c_schmitz)
+-Corrected privacy message (c_schmitz)
+-Admin maintoolbar and survey toolbar are converted to pure CSS now (thanks to Messi) (c_schmitz)
+-Added another XSS filter. Now there are two XSS filters double-checking the input to prevent XSS attacks due to security flaws in the IE6 browser.  (c_schmitz)
+-Added session regeneration after login to prevent Session Fixation attacks (c_schmitz)
+-Added the "Character Set" option for the VVimport feature. (lemeur)
+-Removed obsolete label tag (c_schmitz)
+-Add a warning when "Token Persistence" is set at the same time as "Anonymous answers" (lemeur)
+-Minor changes to statistics (Mazi)
+-Changed: when adding ReplacementFields with a double click, the field is automatically selected, making it easier to change your mind and choose another one without having to close the select window. (lemeur)
+-Added Dual Scale Matrix and Semantic Differential Question Type to Official LimeSurvey Sample Survey. (el-matador-69)
+-Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
 
-Changes from 1.71+ Build 5599 to 5638 -  Legend:   + = New  # = Changed  - = Fix
-# Swedish translation updated (maxz)
-# French translation updated (b00z00)
-- Fixed a small bug in installation script when no output results from the DB upgrade (lemeur)
-- Fixed a small inconsistency in db_upgrade_mysql for emailstatus field (lemeur)
+Languages:
+-Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
+-Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
+-Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu
+-Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
+-Updated Chinese Traditional Language File by Mark Yeung
+-Updated Croatian Translation by Ro Vino (c_schmitz)
+-Updated Danish translation by Thomas Clausen
+-Updated Dutch translation by Hans Delva, Gerton Poot
+-Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
+-Renamed Farsi to Persian (c_schmitz)
+-Updated Finnish Translation by Juuso Heinisuo, Päivi Tyni  (c_schmitz)
+-Updated French translation (b00z00 and el Almoman walmoman -a-t- hemisa -d-o-z- com)
+-Updated German translations (c_schmitz)
+-Updated Greek translation by Christos Rodosthenous and Yiannos Katsirintakis
+-Updated Hungarian, Macedonian, Traditional Chinese (Taiwan), Italian, Croatian & Estonain Language Files
+-Updated Hungarian Translation by Daniel Fuleki (c_schmitz)
+-Updated Italian translation by Eniel Ninka  ( e d-0-t- ninka -a-t- univpm -d-a-t- it)
+-Updated Korean translation submitted by the Korea National Police university translation team
+-Updated Latvian translation provided by Marcis Trapencieris (marcic -a-t- sociology -d-i-t- lv)
+-Updated Norwegian Bokmal and Nynorsk translations by dittaeva, Egil Hansen
+-Updated Persian translation by Hooman Mesgary  - mesgary -a-tt- gmail -d-o-tt- com
+-Updated Polish Translation by piotr.plenik a-t-t- teamlab doott pl and xqleg
+-Updated Portuguese-Brazilian translation by Luiz Rafael Santos (lrsantos11 -i-t- gmail -d-o-a-t com)
+-Updated Portuguese Translation by Duarte Geraldes (duarte -it- roquettegeraldes -d-i-t- com)
+-Updated Slovenian translation (gasper_koren)
+-Updated Spanish translation (kedajo)
+-Updated the swedish translation (maxz)
+-Updated complete Turkish translation by Murad Bayram (murad dott bayram att rshm dott gov dott tr) (c_schmitz)
+-Updated Turkish translation for calendar by A. Murad BAYRAM (c_schmitz)
+-Added and updated calendar translations (c_schmitz)
 
-
-Changes from 1.71+ Build 5565 to 5599 -  Legend:   + = New  # = Changed  - = Fix
-
-#Changed: when adding ReplacementFields with a double click, the field is automatically selected, making it easier to change your mind and choose another one without having to close the select window. (lemeur)
-#Updated Turkish translation for calendar by A. Murad BAYRAM (c_schmitz)
-#Updated Hungarian Translation by Daniel Fuleki (c_schmitz)
-#Updated Croatian Translation by Ro Vino (c_schmitz)
-#Updated Polish Translation by piotr.plenik a-t-t- teamlab doott pl (c_schmitz)
-#Updated mint_idea Template: changed leaf to LimeSurvey-Logo and writing "mintidea" to "LimeSurvey" (el-matador-69)
--Fixed #2434: Some words encoded in output - HTML tags are always completely stripped when saving result data (c_schmitz)
--Fixed #2458: "<< prev"-Button at Quota Termination with warning isn't translated (c_schmitz)
--Fixed #2448: common.php execution time exceeded when importing large survey - raised max_execution time to 600 (c_schmitz)
--Fixed a bug where answers in obsolete language were not properly deleted after language was removed from survey (c_schmitz)
--Fixed #2470:Status of checkbox "Don't consider NON completed responses" not reminded when reloading page (maziminke)
--Fixed 02484: LimeReplacementFields seems not to work anymore in IE7.
-
-Changes from 1.71+ Build 5535 to 5565 -  Legend:   + = New  # = Changed  - = Fix
-
-#Updated German translation (c_schmitz)
-#Updated Turkish Translation by Murad Bayram (c_schmitz)
-#Updated Finnish translation by Päivi Tyni (paivi - dot- tyni-a-t-uta -d-o-t- fi) (c_schmitz)
-#Updated Dutch translation by Gerton Poot (c_schmitz)
-#Update Norwegian Bokmal translation by Egil Hansen (c_schmitz)
-#Updated translation by Andrei Bogdan (c_schmitz)
-#Slovenian translation update (gasper_koren)
-#Some demo mode tweaking (c_schmitz)
--Fixed an error in fixsortordergroups which ordered all groups of all surveys, not just the current survey. (c_schmitz)
--Partially Fixed bug #02417: 5448 Other text not saved [and not mandatory - not fixed]. Bug where other text not reloaded when dropdown (flexible) question type is re-displayed (and thus, the originally entered text was overwritten with an empty string) fixed. (jcleeland)
-
-Changes from 1.71+ Build 5498 to 5535 -  Legend:   + = New  # = Changed  - = Fix
-
-+New variable $demoModeOnly, used to set limesurvey into a more secure demo mode. (machaven)
-#Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg (c_schmitz)
-#French language updated (b00z00)
-#Fixed #2427: JS-Errors using FCKEditor in inline mode for languages with combined code such as 'de-informal' (lemeur)
-#Fixed End URL not displayed when End URL description is empty (lemeur)
-#Updated translations by Pootle (lspootle)
-#Updated German Translation (c_schmitz)
-#Spanish language updated: 1 fuzzy, 1 untranslated. (kadejo)
-#Swedish translation updated. (maxz)
--Fixed 02233: quota - completed tab always shows N/A (lemeur)
-
-Changes from 1.71+ Build 5448 to 5498 -  Legend:   + = New  # = Changed  - = Fix
-
-#Updated Finnish Translation by Juuso Heinisuo ( juuso dot p dot heinisuo aet tut dot fi) (c_schmitz)
-#Updated complete Turkish translation by Murad Bayram (murad dott bayram att rshm dott gov dott tr) (c_schmitz)
-#Updated the swedish translation, just a few fuzzy left but I have to check the code for the context to be able to determine suitable translations. (maxz)
-#Spanish translation updated (kadejo)
-#Updated FCKeditor to 2.6.3 (lemeur)
--Fixed #2410: Layout-Error in the template editor with older browsers (c_schmitz)
--Fixed bug #02415: The max_answers attribute will not alway enforce max answers - problem caused by newline characters in question text breaking javascript (jcleeland)
--Fixed bug #02430: Multiple Options with Comments & max_answer isn't working correctly (jcleeland)
--Fixed bug #02430: removed stray debug 'alert' (jcleeland)
-
-Changes from 1.71+ Build 5425 to 5448 -  Legend:   + = New  # = Changed  - = Fix
-+Rewrite of SPSS export to fix numerous problems
-    - SPSS 16 compatibility
-    - Data is exported now with a sytax and a data file 
-    - While exporting the data is checked - if non-numeric data for a field is found the field is switched to alphanumeric
-    - Data for numerical questions is handled as float
-    - Label size is cut down accordingly (c_schmitz)
-+Added new template mint_idea (c_schmitz)
--Fixed #2408: Layout Problem: Sending Mails to Group Members (c_schmitz)
--Fixed bug #02382: Attribute max_answers doesn't work if "others" field is enabled (jcleeland)
--Fixed bug #02393: Wrong question order for additional languages  (fix provided by beatjoerg) (jcleeland)
--Fixed #2404: Problem exporting survey structure to XML (c_schmitz)
--Added rest of template files (c_schmitz)
--Fixed bug with sped-up conditions where javascript was broken in IE (c_schmitz)
--Fixed #2402: Statistic doesnt work, [Display Responses causes error message] when answer with tokens and non-token answers are mix due to creating/deleting token table (c_schmitz)
--Fixed #2406: "Reset Survey Logic"-Button isn't working (c_schmitz)
--Fixed #2405: FF3: Delete Question Button has a wrong position (c_schmitz)
--Fixed #2394: Additonal {LANG} parameter for the END URL ==> Thx to beatjoerg (el-matador)
-#Changes to templates so a custom help icon is used (help.gif or help.png) if found (c_schmitz)
-#Updated German translation (c_schmitz)
-
-
-Changes from 1.71+ Build 5394 to 5424 -  Legend:   + = New  # = Changed  - = Fix
--Fixed #2389: Survey crashes when quotas are enabled and using MSSQL DB (c_schmitz)
--Fixed #2388: Importing multilingual survey with MS SQL Server DB fails (c_schmitz)
--Fixed #2386: Extra space in front of "Other" option in "Multiple options" question (c_schmitz)
--Fixed #2380: hint & layout bug (c_schmitz)
--Fixed #2389: Fatal error in PDF creation (c_schmitz)
--Fixed minor display issues (c_schmitz)
--Fixed #2374: Any superadmin can accidently delete admin rights  (c_schmitz)) 
--Fixed #2379: Changing language of mandatory question (in multiligual survey) cancels its mandatory characteristic in question-by-question mode (c_schmitz))
--Make XML export available on PHP4 and 5 (c_schmitz)
--Fixed #2381: Progress bar in RTL mode & table width alignment (el-matador-69) 
--Several Layout & CSS Fixes (c_schmitz)
--Fixed #02268: answer selections of conditional questions with IE browser are delayed but not with Firefox & Opera. Rewrote javascript to speed processing.(jcleeland)
--Fixed #2376: Layout Problem on Widescreen Displays(c_schmitz) 
-#Minor changes to statistics (Mazi)
-#French language updated (b00z00)
-#German langauge updated (c_schmitz)
-
-Changes from 1.71+ Build 5372 to 5394 -  Legend:   + = New  # = Changed  - = Fix
-
-+New Arabic translation by shubbar
--Fixed #2224: 100% on graphs does not show full number (el-matador-69) 
--Small fixes for style and username handling (c_schmitz)
--Fixed problems with editing users and template rights in MS SQL (c_schmitz)
--Fixed #2367: Updated Norwegian Nynorsk translation - Thx to dittaeva (el-matador-69)
--Fixed a problem with SMTP and SSL (c_schmitz)
--Fixed a bug with INSERTANS-convert on survey import inserting escape chars (c_schmitz)
-#Removed obsolete lines in admin notification mail (c_schmitz)
-#French translation updated (b00z00) 
-#Updated Italian translation by Eniel Ninka  ( e d-0-t- ninka -a-t- univpm -d-a-t- it)
-#Better markup for mandatory errors in Sherpa template (c_schmitz)
-#Admin maintoolbar and survey toolbar are converted to pure CSS now (thanks to Messi) (c_schmitz)
-#Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
-#Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
-#Updated Greek translation by Christos Rodosthenous  ( chrisrodo -a-t- cti -d-o-t gr )
-#Updated Dutch translation by Hans Delva
-
-
-Changes from 1.71+ Build 5327 to 5371 -  Legend:   + = New  # = Changed  - = Fix
-
-- Fixed small HTML errors (c_schmitz)
-- Fixed special chars not being exported on answer code & question code export (c_schmitz)
-- Fixed #2340 Added printablestyle.css (lazar)
-- Fixed that results were saved as incomplete if the last group had no questions. (c_schmitz)
-- Fixed problems on user/group inserts with MSSQL Server (c_schmitz)
-- Fixed #2265: Unnecessary SPSS VALUE LABELS with multiple numeric quetion types in SPSS export (c_schmitz)
-- Fixed #2261: Text in "Welcome" field is not saved when creating a survey (c_schmitz)
-- Fixed FF2 layout issues with content following main bar (c_schmitz)
-- Fixed layout issues in certain screens (c_schmitz)
-- Fixed conditions on group import were not imported correctly under certain circumstances (c_schmitz)
-- Fixed minor HTML issues (c_schmitz)
-- Fixed spelling mistake (jcleeland)
-- Fixed #2284: strpos : empty delimiter. (lemeur)
-# Applied patch with changes for better RTL-support; provided by Messi (el-matador-96)
-# Updated Persian language and calendar-files, provided by Messi (part of #2276) (el-matador-96)
-# Updated Norwegian Bokmal and Nynorsk translations - THX to dittaeva (el-matador-96)
-# Updated French Lnaguage (b00z00)
-# Adjusted small things in config-defaults.php (c_schmitz)
-
-
-Changes from 1.71+ Build 5243 to 5326 -  Legend:   + = New  # = Changed  - = Fix
-
-- Fixed bug #2250: The dropdown-date atribute, on a date type question, cancels its mandatory characteristic. Javascript modified so that answer field not filled in until all date elements have been chosen (jcleeland)
-- Fixed bug #2223/#2228: Javascript Error with Array Filter. Also fixed javascript for related error where missing array_filter values were causing javascript to crash. Array filter javascript now also checks for existence of object before testing its value. (jcleeland)
-- Fixed bugs in RTL language display (c_schmitz)
-- Fixed bug #2277: question attributes active when conditional question should be skipped - now checks that the display value is turned on before running validation (jcleeland)
-- Fixed bug #2271: Logout icon in Editing Label Sets - added logout button to templates and labelsets screens (jcleeland)
-
-Changes from 1.71+ Build 5204 to 5243 -  Legend:   + = New  # = Changed  - = Fix
-
-# Optimized image sizes (c_schmitz)
-+ Added qmail to possible mailer config settings (c_schmitz)
-# Updated FCKeditor to version 2.6.2 (lemeur)
-# Updated German Translations (c_schmitz)
-# Updated French Translation (b00z00)
-# Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
-- Fixed $debug being set to 2 in config-defaults.php (c_schmitz)
-- Fixed #2118 unwanted HTML tags (stfreud)
-- Fixed #2240 undefined variable (stfreud)
-- Fixed #2244: array_filter doesnt work after changes made to questions - actually, array_filter wasn't working properly in all-in-one survey mode. Modified common.php function getArrayFiltersForGroup() which was only working for groups. Also cleaned up code so that similar functions in group.php & survey.php could be better compared. (jcleeland)
-- Fixed mailer being able to use a port in the hostnamesetting (c_schmitz)
-- Fixed small Javascript escape issue (c_schmitz)
-- More SPSS issues fixed - patch kindly provided by Menno Dekker
-- Fixed completion not saved if last group only contains  aboilerplate question (c_schmitz)
-- Fixed some serious bugs in SPSS export. Speed improvements by 90%. (c_schmitz)
-- Fixed #1926: SPSS export is missing fields  - thanks to mdekker (c_schmitz)
-- Fixed #2229: Reminder Sending function does not work with "Start From" parameter (c_schmitz)
-- Fixed #2193: Group by group and question by question mode do not save completion when last group/question is not shown due to conditions (c_schmitz)
-- Fixed #2188: Logout/login page language direction wrong with RTL-languages (c_schmitz)
-- Fixed #2251: corrected a german typo (el-matador-69)
-
-
-
-
-Changes from 1.71+ Build 5146 to 5203 -  Legend:   + = New  # = Changed  - = Fix
-
-+ PDF Orientation can be changed in config-defaults.php (stfreud)
-+ Updated PHPMailer to version 2.02 - ssl/tls is now possible (previously only tls) (c_schmitz)
-# Removed style code from source and placed it into CSS file (c_schmitz)
-# added .questiontext to all templates (addendum to rev. 5149) (el-matador-69)
-# Updated Persian translation by Hooman Mesgary (c_schmitz)
-# Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
-# Removed obsolete label tag (c_schmitz)
-# French language updated (b00z00)
-# Add a warning when "Token Persistence" is set at the same time as "Anonymous answers"
-# Updated German Translation (c_schmitz)
-# Spanish language updated (kadejo)
-# Updated configs for faster parsing (c_schmitz)
-# Upgraded adodb to 4.98 (c_schmitz)
-# Rewrote commandline installation for better security and merged into one file
-- Fixed a W3C issues with javascript (c_schmitz)
-- Fixed #2187: INSERTANS not working for "Other" of List (Flexible Label) (jcleeland)
-- Fixed #2124: white characters in tokens are accepted in non-anonymous surveys (c_schmitz)
-- Fixed #2083: deletenonanswers now working for question-per-page and group-per-page surveys (lemeur)
-- Fixing two small notices when trying to import an invalid survey file (c_schmitz)
-- Fixed #2215 & #2118 HMTL Code deleted in pdf-export (stfreud)
-- Fixed #1957: Unable to use other than a-zA-Z0-9 in name from ldap (lemeur)
-- Fixed #2097: Path Error was thrown in config.php when installing in root dir (c_schmitz)
-
-
-Changes from 1.71+ Build 5048 to 5146 -  Legend:   + = New  # = Changed  - = Fix
-
-#Raised LimeSurvey requirement to at least PHP 4.3.2 installed (c_schmitz)
-#Added session regeneration after login to prevent Session Fixation attacks (c_schmitz)
-#Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu 
-#Updated French translation by Wael Almoman walmoman -a-t- hemisa -d-o-z- com 
-#Updated German translations (c_schmitz)
-#Updated Spanish translation (kadejo)
-#Updated Persian translation by Hooman Mesgary  - mesgary -a-tt- gmail -d-o-tt- com
-#Updated Hungarian, Macedonian, Traditional Chinese (Taiwan), Italian, Croatian & Estonain Language Files
-#Renamed Farsi to Persian (c_schmitz)
-#Added another XSS filter. Now there are two XSS filters double-checking the input to prevent XSS attacks due to security flaws in the IE6 browser.  (c_schmitz)
--Fixed #2117: Fixed two more "(other)" haven't been translated at browse.php (el-matador)
--Fixed #1867: "Test this survey" loose lang code after 2nd page. (lemeur)
--Fixed #2184: SQL Error when Reordering Label Set (lemeur)
--Fixed #2134 and #1711 related to typos and better comments in config-ldap.php (lemeur)
--Minor changes to ensure token integrity (c_schmitz)
--Changes to original text changes to make it more compatible for translations - thanks to  Hooman Mesgary 
--Fixed #02121: Problem with "exclude all others" question attribute - exclude_all_others didn't work when there was more than one question on page using attribute. Also fixed feature to disable other checkboxes when reloading a previously completed page. (jcleeland))
--Fixed #2110: VVimport only works for UTF8 encoded files. Added "Character set" option to vvimport (lemeur)
--Fixed #2082: AllowPresistence for token answers isn't working on All-In-One surveys (lemeur)
--Fixed #2000: Changing an answer code of a labelset doesn't update conditions (lemeur)
--Fixed #645: Labels defined as a simple image aren't displayed in Dropdown lists - at least the label code is shown now (c_schmitz)
--Fixed #2088: max_answer javascript does not work when question has line breaks. (c_schmitz)
-(Needed to add strip_tags parameter to javascript_escape function since the processing order is important) (c_schmitz)
--Fixed bug #02112: Pipe-Char of Semantic Differential breaks Excel Export - internal $seperator value doesn't have to be just a pipe (so far as I can see) (jcleeland)
--Fixed bug #02107: other_replace_text truncated (fix supplied by ITEd) (jcleeland)
--Fixed bug #02113: Add some details to Naming of Excel Export File (or is it a new feature).. anyway, it's done (minor change)  (jcleeland)
--Fixed some minor html issues & the javascript escaping again (c_schmitz)
--Fixed #2117: Browse Response: (other) isn't translated (c_schmitz)
--Fixed #2091: Single and double quotes ( " and ') in a text field are prepended with slashes
--Fixed a fatal error in template rights (c_schmitz)
-
-
-Changes from 1.71+ Build 5044 to 5048 -  Legend:   + = New  # = Changed  - = Fix
--Fixed bug with "array_filter" question attribute, where if another question used the same ID in a different survey, the attribute would fail. Search for matching question name now restricts itself only to questions from the same survey. (jcleeland)
--Fixed bug #02104: Can't choose labelset and other option isn't available (jcleeland)
-#Spanish translation updated. 100% now, hopefully ready for 1.71+. (kadejo)
-
-
-Changes from 1.71 to 1.71+ Build 5044 -   Legend:   + = New  # = Changed  - = Fix
-+Added Icelandic translation kindly provided by Jóhann Friðriksson ( johannfr -i-t- arskoli -d-i-t- is )
-+Added template preview to survey settings (c_schmitz)
-+Added the ability to the template editor to edit a CSS file - where the CSS filename must be the same name as the template. (c_schmitz)
-+Added Prefix & Suffix Question Attributes for Short Text, and Multiple Short Text (jcleeland)
-+Added feature request #02065 - Prefix & Suffix Question Attributes for Numerical Input (jcleeland)
-+Added new attribute "other_replace_text" to use alternative text to "Other" for question types that have this option (jcleeland)
-
-#Renamed css_only template to sherpa (c_schmitz)
-#Moved CSS to separate files for all templates (c_schmitz)
-#Added and updated calendar translations (c_schmitz)
-#Updated Chinese Traditional Language File by Mark Yeung
-#Updated Danish translation by Thomas Clausen 
-#Updated Korean translation submitted by the Korea National Police university translation team
-#Updated Latvian translation provided by Marcis Trapencieris (marcic -a-t- sociology -d-i-t- lv)
-#Updated Portuguese-Brazilian translation by Luiz Rafael Santos (lrsantos11 -i-t- gmail -d-o-a-t com)
-#Updated Spanish translation (kedajo)
-#Updated Portuguese Translation by Duarte Geraldes (duarte -it- roquettegeraldes -d-i-t- com)
-
--Security Fixes - Separate Security advisory will be published soon
+Fixes:
+-Security Fixes  (see published Security advisories)
 -Fixed missing "other" option for List (flexible) question types. (jcleeland)
 -Fixed #2095: Error exporting a not public survey in spss format (awarren)
 -Fixed some English strings
@@ -366,6 +169,110 @@ Changes from 1.71 to 1.71+ Build 5044 -   Legend:   + = New  # = Changed  - = Fi
 -Fixed a small issue with html header(c_schmitz)
 -Fixed array_filter not working right in group-by-group mode on the same page(c_schmitz)
 -Fixed #2067: corrected topright_bord.gif - THX to moontan (el-matador)
+-Fixed #2134 and #1711 related to typos and better comments in config-ldap.php (lemeur)
+-Minor changes to ensure token integrity (c_schmitz)
+-Changes to original text changes to make it more compatible for translations - thanks to  Hooman Mesgary
+-Fixed #02121: Problem with "exclude all others" question attribute - exclude_all_others didn't work when there was more than one question on page using attribute. Also fixed feature to disable other checkboxes when reloading a previously completed page. (jcleeland)
+-Fixed #2082: AllowPresistence for token answers isn't working on All-In-One surveys (lemeur)
+-Fixed #2000: Changing an answer code of a labelset doesn't update conditions (lemeur)
+-Fixed #645: Labels defined as a simple image aren't displayed in Dropdown lists - at least the label code is shown now (c_schmitz)
+-Fixed #2088: max_answer javascript does not work when question has line breaks. (c_schmitz)
+-Fixed bug #02112: Pipe-Char of Semantic Differential breaks Excel Export - internal $seperator value doesn't have to be just a pipe (jcleeland)
+-Fixed bug #02107: other_replace_text truncated (fix supplied by ITEd) (jcleeland)
+-Fixed #2117: Browse Response: (other) isn't translated (c_schmitz)
+-Fixed #2091: Single and double quotes ( " and ') in a text field are prepended with slashes
+-Fixed a fatal error in template rights (c_schmitz)
+-Fixed a W3C issues with javascript (c_schmitz)
+-Fixed #2187: INSERTANS not working for "Other" of List (Flexible Label) (jcleeland)
+-Fixed #2124: white characters in tokens are accepted in non-anonymous surveys (c_schmitz)
+-Fixed #2083: deletenonanswers now working for question-per-page and group-per-page surveys (lemeur)
+-Fixing two small notices when trying to import an invalid survey file (c_schmitz)
+-Fixed #2215 & #2118 HMTL Code deleted in pdf-export (stfreud)
+-Fixed #1957: Unable to use other than a-zA-Z0-9 in name from ldap (lemeur)
+-Fixed #2097: Path Error was thrown in config.php when installing in root dir (c_schmitz)
+-Fixed #2118 unwanted HTML tags (stfreud)
+-Fixed #2240 undefined variable (stfreud)
+-Fixed #2244: array_filter doesnt work n all-in-one survey mode (jcleeland)
+-Fixed mailer being able to use a port in the hostnamesetting (c_schmitz)
+-Fixed answer completion not saved if last group only contains a boilerplate question (c_schmitz)
+-Fixed some serious bugs in SPSS export including bug #1926, . Speed improvements by 90%. (c_schmitz, Menno Dekker)
+-Fixed #2229: Reminder Sending function does not work with "Start From" parameter (c_schmitz)
+-Fixed #2193: Group by group and question by question mode do not save completion when last group/question is not shown due to conditions (c_schmitz)
+-Fixed #2188: Fixed several RTL-languages issues including bugs #2188 (c_schmitz, Messi)
+-Fixed #2251: corrected a german typo (el-matador-69)
+-Fixed bug #2250: The dropdown-date attribute, on a date type question, cancels its mandatory characteristic. (jcleeland)
+-Fixed bug #2223/#2228: Javascript Error with Array Filter. Also fixed javascript for related error where missing array_filter values were causing javascript to crash. (jcleeland)
+-Fixed bug #2277: question attributes active when conditional question should be skipped - now checks that the display value is turned on before running validation (jcleeland)
+-Fixed bug #2271: Logout icon in Editing Label Sets - added logout button to templates and labelsets screens (jcleeland)
+-Fixed special chars not being exported on answer code & question code export (c_schmitz)
+-Fixed that results were saved as incomplete if the last group had no questions. (c_schmitz)
+-Fixed problems on user/group inserts with MSSQL Server (c_schmitz)
+-Fixed #2265: Unnecessary SPSS VALUE LABELS with multiple numeric quetion types in SPSS export (c_schmitz)
+-Fixed #2261: Text in "Welcome" field is not saved when creating a survey (c_schmitz)
+-Fixed FF2 layout issues with content following main bar (c_schmitz)
+-Fixed layout issues in certain screens (c_schmitz)
+-Fixed conditions on group import were not imported correctly under certain circumstances (c_schmitz)
+-Fixed #2284: strpos : empty delimiter. (lemeur)
+-Fixed #2224: 100% on graphs does not show full number (el-matador-69)
+-Small fixes for style and username handling (c_schmitz)
+-Fixed problems with editing users and template rights in MS SQL (c_schmitz)
+-Fixed a problem with SMTP and SSL (c_schmitz)
+-Fixed a bug with INSERTANS-convert on survey import inserting escape chars (c_schmitz)
+-Removed obsolete lines in admin notification mail (c_schmitz)
+-Fixed #2389: Survey crashes when quotas are enabled and using MSSQL DB (c_schmitz)
+-Fixed #2388: Importing multilingual survey with MS SQL Server DB fails (c_schmitz)
+-Fixed #2386: Extra space in front of "Other" option in "Multiple options" question (c_schmitz)
+-Fixed #2380: hint & layout bug (c_schmitz)
+-Fixed #2389: Fatal error in PDF creation (c_schmitz)
+-Fixed minor display issues (c_schmitz)
+-Fixed #2374: Any superadmin can accidently delete admin rights  (c_schmitz)
+-Fixed #2379: Changing language of mandatory question (in multiligual survey) cancels its mandatory characteristic in question-by-question mode (c_schmitz)
+-Make XML export available on PHP4 and 5 (c_schmitz)
+-Fixed #2381: Progress bar in RTL mode & table width alignment (el-matador-69)
+-Several Layout & CSS Fixes (c_schmitz)
+-Fixed #02268: answer selections of conditional questions with IE browser are delayed but not with Firefox & Opera. Rewrote javascript to speed processing.(jcleeland)
+-Fixed #2376: Layout Problem on Widescreen Displays(c_schmitz)
+-Fixed #2408: Layout Problem: Sending Mails to Group Members (c_schmitz)
+-Fixed bug #02382: Attribute max_answers doesn't work if "others" field is enabled (jcleeland)
+-Fixed bug #02393: Wrong question order for additional languages  (fix provided by beatjoerg) (jcleeland)
+-Fixed #2404: Problem exporting survey structure to XML (c_schmitz)
+-Fixed bug with sped-up conditions where javascript was broken in IE (c_schmitz)
+-Fixed #2402: Statistic doesnt work, [Display Responses causes error message] when answer with tokens and non-token answers are mix due to creating/deleting token table (c_schmitz)
+-Fixed #2406: "Reset Survey Logic"-Button isn't working (c_schmitz)
+-Fixed #2405: FF3: Delete Question Button has a wrong position (c_schmitz)
+-Fixed #2394: Additonal {LANG} parameter for the END URL ==> Thx to beatjoerg (el-matador)
+-Fixed #2410: Layout-Error in the template editor with older browsers (c_schmitz)
+-Fixed bug #02415: The max_answers attribute will not alway enforce max answers - problem caused by newline characters in question text breaking javascript (jcleeland)
+-Fixed bug #02430: Multiple Options with Comments & max_answer isn't working correctly (jcleeland)
+-Fixed bug #02430: removed stray debug 'alert' (jcleeland)
+-Fixed #2427: JS-Errors using FCKEditor in inline mode for languages with combined code such as 'de-informal' (lemeur)
+-Fixed End URL not displayed when End URL description is empty (lemeur)
+-Fixed 02233: quota - completed tab always shows N/A (lemeur)
+-Fixed an error in fixsortordergroups which ordered all groups of all surveys, not just the current survey. (c_schmitz)
+-Partially Fixed bug #02417: 5448 Other text not saved [and not mandatory - not fixed]. Bug where other text not reloaded when dropdown (flexible) question type is re-displayed (and thus, the originally entered text was overwritten with an empty string) fixed. (jcleeland)
+-Fixed #2434: Some words encoded in output - HTML tags are always completely stripped when saving result data (c_schmitz)
+-Fixed #2458: "<< prev"-Button at Quota Termination with warning isn't translated (c_schmitz)
+-Fixed #2448: common.php execution time exceeded when importing large survey - raised max_execution time to 600 (c_schmitz)
+-Fixed a bug where answers in obsolete language were not properly deleted after language was removed from survey (c_schmitz)
+-Fixed #2470:Status of checkbox "Don't consider NON completed responses" not reminded when reloading page (maziminke)
+-Fixed 02484: LimeReplacementFields seems not to work anymore in IE7.
+-Fixed a small bug in installation script when no output results from the DB upgrade (lemeur)
+-Fixed a small inconsistency in db_upgrade_mysql for emailstatus field (lemeur)
+-Fixed #2459: Warning if testing inactive survey more than once in a browser session (c_schmitz)
+-Fixed #2499: Failure when changing default location of admin scripts ($homeurl and $homedir) (c_schmitz)
+-Fixed up bluengray template (c_schmitz)
+-Fixed some issues with SPSS export (c_schmitz)
+-Fixed #2377: Dual Scale Matrix: Printing Answers for Dual Scale now are more understandable (c_schmitz)
+-Fixed #2426: Strange alignment of Survey Status Screen when using a survey in more than one language (c_schmitz)
+-Removed white space after closing PHP bracket (c_schmitz)
+-Fixed bug #02518: Exporting a group or a question with a dual scale matrix doesn't include labelsets (jcleeland)
+-Fixed bug #02516: Notice at running official LimeSurvey Sample Survey in Debug Mode (jcleeland)
+-Fixed 02503: INSERTANS tags in Answers or Groups text are not translated during import(lemeur)
+-Fixed 02509: some cross group conditions are not working in Group by Group View (lemeur)
+-Fixed 02511: Importing an old result table fails when a dual scale question exists in the survey (lemeur)
+-Fixed LimeReplacementFields not available for EditAnswers action (lemeur)
+-Fixed LimeReplacementFields for the first question and its answers (lemeur)
+-Multi-langual other_replace_text text was not working for most question types
 
 
 Changes from 1.70 to 1.71 (2008/06/02)
