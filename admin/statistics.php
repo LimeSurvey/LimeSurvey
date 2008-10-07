@@ -43,7 +43,9 @@
 	Y - Yes/No 
 	Z - List (Flexible Labels) (Radio) 
 	! - List (Dropdown)
-	: - Multi Flexi
+	: - Array (Flexible Labels) multiple drop down
+	; - Array (Flexible Labels) multiple texts
+
 
 	Debugging help:
 	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
@@ -53,7 +55,7 @@
 
 //sum up data for question types "A" and "5" and show additional values 
 //like arithmetic mean and standard deviation
-$showaggregateddata = 0;
+$showaggregateddata = 1;
 
 //split up results to extend statistics
 $showcombinedresults = 0;
@@ -290,6 +292,10 @@ $statisticsoutput .= "</tr></table></td></tr>";	//close table with filter by ID 
 //is there a currentgroup set?
 if (!isset($currentgroup)) {$currentgroup="";}
 
+//is there a previous question type set?
+if (!isset($previousquestiontype)) {$previousquestiontype="";}
+
+
 /*
  * let's go through the filter array which contains
  * 	['qid'],
@@ -325,7 +331,23 @@ foreach ($filters as $flt)
 	}
 	
 	//we don't want more than 4 questions in a row
-	if (isset($counter) && $counter == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;}
+	//and we need a new row after each multiple/array question
+	if (isset($counter) && $counter == 4 || 
+	   ($previousquestiontype == "1" || 
+		$previousquestiontype == "A" || 
+		$previousquestiontype == "B" || 
+		$previousquestiontype == "C" || 
+		$previousquestiontype == "E" || 
+		$previousquestiontype == "F" || 
+		$previousquestiontype == "H" || 
+		$previousquestiontype == "K" || 
+		$previousquestiontype == "Q" || 
+		$previousquestiontype == "R" || 
+		$previousquestiontype == ":" || 
+		$previousquestiontype == ";"))	
+	{
+		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>"; $counter=0;
+	}
 	
 	/*
 	 * remember: $flt is structured like this
@@ -1330,6 +1352,10 @@ foreach ($filters as $flt)
 	
 	if (!isset($counter)) {$counter=0;}
 	$counter++;
+	
+	//temporary save the type of the previous question
+	//used to adjust linebreaks
+	$previousquestiontype = $flt[2];
 }
 
 //complete output
