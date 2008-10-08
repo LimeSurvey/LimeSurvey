@@ -2691,6 +2691,9 @@ function questionAttributes()
 	// name - the display name
 	// types - a string with one character representing each question typ to which the attribute applies
 	// help - a short explanation
+
+	global $useJqueryForPublicInterface;
+
     $qattributes[]=array("name"=>"answer_width",
     "types"=>"ABCEF1",
     "help"=>"The percentage width of the answer column");
@@ -2733,6 +2736,26 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"min_num_value",
 	"types"=>"K",
 	"help"=>"Multiple numeric inputs must be greater than this value");
+
+	if ($useJqueryForPublicInterface === true)
+	{
+		$qattributes[]=array("name"=>"slider_layout",
+		"types"=>"K",
+		"help"=>"Use slider layout");
+		$qattributes[]=array("name"=>"slider_decimal",
+		"types"=>"K",
+		"help"=>"How many decimal number we should use");
+		$qattributes[]=array("name"=>"slider_min",
+		"types"=>"K",
+		"help"=>"Slider min value");
+		$qattributes[]=array("name"=>"slider_max",
+		"types"=>"K",
+		"help"=>"Slider max value");
+		$qattributes[]=array("name"=>"slider_divisor",
+		"types"=>"K",
+		"help"=>"Slider divisor");
+	}
+
 	$qattributes[]=array("name"=>"prefix",
 	"types"=>"KNSQ",
 	"help"=>"Add a prefix to the answer field");
@@ -2859,7 +2882,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 // If you want to echo the header use doHeader() !
 function getHeader()
 {
-	global $embedded, $surveyid, $rooturl,$defaultlang;
+	global $embedded, $surveyid, $rooturl,$defaultlang, $useJqueryForPublicInterface, $runtime_jqueryheader;
 
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'])
     {
@@ -2873,6 +2896,19 @@ function getHeader()
     {
         $surveylanguage=$defaultlang;
     }
+
+	if ($useJqueryForPublicInterface === true)
+	{
+		$jqueryheader = "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n";
+		$jqueryheader .= "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui-core-1.6rc2.min.js\"></script>\n";
+		$jqueryheader .= "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui-slider-1.6rc2.min.js\"></script>\n";
+		$jqueryheader .= $runtime_jqueryheader;
+	}
+	else
+	{
+		$jqueryheader = "";
+	}
+
 	if ( !$embedded )
 	{
 		$header=  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -2889,7 +2925,8 @@ function getHeader()
 //        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
-        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n";
+        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
+			. $jqueryheader;
         return $header;        
     }
 

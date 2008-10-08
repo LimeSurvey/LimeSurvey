@@ -2424,55 +2424,60 @@ function do_multipleshorttext($ia)
 
 function do_multiplenumeric($ia)
 {
-	global $dbprefix, $clang;
+	global $dbprefix, $clang, $useJqueryForPublicInterface, $runtime_jqueryheader;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	//Must turn on the "numbers only javascript"
 	$numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
-    if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
-    {
-        $maxsize=$maxchars['value'];
-    } else {
-        $maxsize=255;
-    }
-    if ($equalvalue=arraySearchByKey("equals_num_value", $qidattributes, "attribute", 1))
-    {
-	    $equals_num_value=$equalvalue['value'];
-	    $numbersonlyonblur[]="calculateValue".$ia[1]."(3)";
-	    $calculateValue[]=3;
+	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	{
+		$maxsize=$maxchars['value'];
 	} else {
-	    $equals_num_value[]=0;
+		$maxsize=255;
 	}
-    if ($minvalue=arraySearchByKey("min_num_value", $qidattributes, "attribute", 1))
-    {
-	    $min_num_value=$minvalue['value'];
-	    $numbersonlyonblur[]="calculateValue".$ia[1]."(2)";
-	    $calculateValue[]=2;
+	if ($equalvalue=arraySearchByKey("equals_num_value", $qidattributes, "attribute", 1))
+	{
+		$equals_num_value=$equalvalue['value'];
+		$numbersonlyonblur[]="calculateValue".$ia[1]."(3)";
+		$calculateValue[]=3;
 	} else {
-	    $min_num_value=0;
+		$equals_num_value[]=0;
 	}
-    if ($maxvalue=arraySearchByKey("max_num_value", $qidattributes, "attribute", 1))
-    {
-	    $max_num_value = $maxvalue['value'];
-        $numbersonlyonblur[]="calculateValue".$ia[1]."(1)"; 
-	    $calculateValue[]=1;
+	if ($minvalue=arraySearchByKey("min_num_value", $qidattributes, "attribute", 1))
+	{
+		$min_num_value=$minvalue['value'];
+		$numbersonlyonblur[]="calculateValue".$ia[1]."(2)";
+		$calculateValue[]=2;
 	} else {
-	    $max_num_value = 0;
+		$min_num_value=0;
+	}
+	if ($maxvalue=arraySearchByKey("max_num_value", $qidattributes, "attribute", 1))
+	{
+		$max_num_value = $maxvalue['value'];
+		$numbersonlyonblur[]="calculateValue".$ia[1]."(1)"; 
+		$calculateValue[]=1;
+	} else {
+		$max_num_value = 0;
 	}
 	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
 	{
-	    $prefix = $prefix['value'];
+		$prefix = $prefix['value'];
 	} else {
-	    $prefix = "";
+		$prefix = "";
 	}
 	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
 	{
-	    $suffix = $suffix['value'];
+		$suffix = $suffix['value'];
 	} else {
-	    $suffix = "";
+		$suffix = "";
 	}
 	if(!empty($numbersonlyonblur))
 	{
-	    $numbersonly .= " onblur=\"".implode(";", $numbersonlyonblur)."\"";
+		$numbersonly .= " onblur=\"".implode(";", $numbersonlyonblur)."\"";
+		$numbersonly_slider = implode(";", $numbersonlyonblur);
+	}
+	else
+	{
+		$numbersonly_slider = "";
 	}
 	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
 	{
@@ -2482,12 +2487,55 @@ function do_multiplenumeric($ia)
 	{
 		$tiwidth=10;
 	}
-    if ($hidetip=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
-    {
-        $hidetip=$hidetip['value'];
-    } else {
-        $hidetip=0;
-    }
+
+	if (arraySearchByKey("slider_layout", $qidattributes, "attribute", 1))
+	{
+		$slider_layout=true;
+		$slider_min=arraySearchByKey("slider_min", $qidattributes, "attribute", 1);
+		if (isset($slider_min['value']))
+		{
+			$slider_min = $slider_min['value'];
+		}
+		else
+		{
+			$slider_min = 0;
+		}
+
+		$slider_max=arraySearchByKey("slider_max", $qidattributes, "attribute", 1);
+		if (isset($slider_max['value']))
+		{
+			$slider_max = $slider_max['value'];
+		}
+		else
+		{
+			$slider_max = 100;
+		}
+
+		$slider_divisor=arraySearchByKey("slider_divisor", $qidattributes, "attribute", 1);
+		if (isset($slider_divisor['value']))
+		{
+			$slider_divisor = $slider_divisor['value'];
+		}
+		else
+		{
+			$slider_divisor = 1;
+		}
+
+	}
+	else
+	{
+		$slider_layout = false;
+	}
+
+	if ($hidetip=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
+	{
+		$hidetip=$hidetip['value'];
+	} elseif ($slider_layout === true) { // auto hide tip when using sliders
+		 $hidetip=1;
+	} else {
+		$hidetip=0;
+	}
+
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -2497,147 +2545,203 @@ function do_multiplenumeric($ia)
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
-    $answer = keycontroljs();
+	$answer = keycontroljs();
 	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
 	if ($anscount==0) 
-	   {
-		  $inputnames=array();
-		  $answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
-	   }
-    else 
-    {
-	 	while ($ansrow = $ansresult->FetchRow())
+	{
+		$inputnames=array();
+		$answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
+	}
+	else 
+	{
+		while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
 			$answer .= "\t\t\t\t\t\t\t<tr>\n"
-			. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
-			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
-			. "\t\t\t\t\t\t\t\t</td>\n"
-			. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-			. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
-			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-	
-			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
-			. "\t\t\t\t\t\t\t\t</td>\n"
-			. "\t\t\t\t\t\t\t</tr>\n";
-			// --> END NEW FEATURE - SAVE
-	
+				. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
+				. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
+				. "\t\t\t\t\t\t\t\t</td>\n";
+
+			if ($slider_layout === false || $useJqueryForPublicInterface === false)
+			{
+				$answer .= ""
+					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
+					. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
+				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+
+				// --> START NEW FEATURE - SAVE
+				$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
+					. "\t\t\t\t\t\t\t\t</td>\n";
+				// --> END NEW FEATURE - SAVE
+			}
+			else
+			{
+				$runtime_jqueryheader .= ""
+					. "\t\t\t\t\t\t\t\t\t<script language=\"javascript\" type=\"text/javascript\">\n"
+					//					. "\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").hide();\n"
+					. "\t\t\t\t\t\t\t\t\t$(document).ready(function() {\n"
+					. "\t\t\t\t\t\t\t\t\t$(\"#slider-$myfname\").slider({\n"
+//					. "\t\t\t\t\t\t\t\t\t\tanimate: true,\n"
+					. "\t\t\t\t\t\t\t\t\t\tmin: $slider_min,\n"
+					. "\t\t\t\t\t\t\t\t\t\tmax: $slider_max,\n";
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '') {$runtime_jqueryheader .= "\t\t\t\t\t\t\t\t\t\tstartValue: ".$_SESSION[$myfname] * $slider_divisor.",\n";}
+				$runtime_jqueryheader .= ""
+//					. "\t\t\t\t\t\t\t\t\t\tstart: function(e, ui) {\n"
+					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").fadeIn('fast');\n"
+//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
+//					. "\t\t\t\t\t\t\t\t\t\t},\n"
+					. "\t\t\t\t\t\t\t\t\t\tslide: function(e, ui) {\n"
+					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text(Math.round(ui.value));\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
+					. "\t\t\t\t\t\t\t\t\t\t},\n"
+					//					. "\t\t\t\t\t\t\t\t\t\tstop: function(e, ui) {\n"
+					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").fadeOut('fast');\n"
+					//					. "\t\t\t\t\t\t\t\t\t\t},\n"
+					. "\t\t\t\t\t\t\t\t\t\tchange: function(e, ui) {\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#answer$myfname\").val(ui.value / $slider_divisor);\n"
+					. "\t\t\t\t\t\t\t\t\t\t\tcheckconditions(ui.value / $slider_divisor,\"#answer$myfname\",\"text\");\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t$numbersonly_slider;\n"
+					. "\t\t\t\t\t\t\t\t\t\t}\n"
+					. "\t\t\t\t\t\t\t\t\t});\n";
+
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '') {
+					$runtime_jqueryheader .= "\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', $(\"#slider-handle-$myfname\").css('left')).text('$prefix' + $(\"#slider-$myfname\").slider('value') / $slider_divisor + '$suffix');\n";
+				}
+
+				$runtime_jqueryheader .= ""
+					. "\t\t\t\t\t\t\t\t\t});\n"
+					. "\t\t\t\t\t\t\t\t\t</script>\n";
+
+				$answer .= ""
+					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
+					. "\t\t\t\t\t\t\t\t\t<div id='slider-$myfname' class='ui-slider-1'>\n"
+					. "\t\t\t\t\t\t\t\t\t\t<div class='slider_callout' id='slider-callout-$myfname'></div>\n"
+					. "\t\t\t\t\t\t\t\t\t\t<div class='ui-slider-handle' id='slider-handle-$myfname'></div>\n"
+					. "\t\t\t\t\t\t\t\t\t</div>\n"
+					. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' name='$myfname' id='answer$myfname' style='display: none;' value='";
+				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+				$answer .= "'/>\n"
+					. "\t\t\t\t\t\t\t\t</td>\n";
+			}
+
+			$answer .= "\t\t\t\t\t\t\t</tr>\n";
+
 			$fn++;
 			$inputnames[]=$myfname;
 		}
 		if($hidetip == 0) 
 		{
-		    $answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
-        }
-        if ($maxvalue)
-            {
+			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
+		}
+		if ($maxvalue)
+		{
 			$answer .= "\t\t\t<div id='max_num_value_{$ia[1]}'><font size='1'><i>".sprintf($clang->gT("Total of all entries must not exceed %d"), $max_num_value)."</i></font></div>\n";
-			}
-        if ($equalvalue)
-            {
+		}
+		if ($equalvalue)
+		{
 			$answer .= "\t\t\t<div id='equals_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></div>\n";
-			}
-        if ($minvalue)
-            {
+		}
+		if ($minvalue)
+		{
 			$answer .= "\t\t\t<div id='min_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></div>\n";
-			}
+		}
 		if ($maxvalue || $equalvalue || $minvalue)
-		    {
-	    	$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><div id='multiplenumerichelp'><table class='question' style='border: 1px solid #111111'>\n";
+		{
+			$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><div id='multiplenumerichelp'><table class='question' style='border: 1px solid #111111'>\n";
 			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
-    		if ($equalvalue)
-    		    {
-    			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
-    			}
-			$answer .= "</table></div></td></tr>\n";
+			if ($equalvalue)
+			{
+				$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
 			}
+			$answer .= "</table></div></td></tr>\n";
+		}
 	}
 	$answer .= "\t\t\t\t\t\t</table>\n";
-	
+
 	if ($maxvalue || $equalvalue || $minvalue) 
-    { //Do value validation
-	    $answer .= "<input type='hidden' name='qattribute_answer[]' value='".$ia[1]."'>\n";
+	{ //Do value validation
+		$answer .= "<input type='hidden' name='qattribute_answer[]' value='".$ia[1]."'>\n";
 		$answer .= "<input type='hidden' name='qattribute_answer".$ia[1]."'>\n";
 
-	    $answer .= "<script type='text/javascript'>\n";
-	    $answer .= "    function calculateValue".$ia[1]."(method) {\n";
-	    //Make all empty fields 0 (or else calculation won't work
-	    foreach ($inputnames as $inputname)
-	    {
-		    $answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
-            $javainputnames[]="parseInt(parseFloat(document.limesurvey.answer".$inputname.".value)*1000)"; 
+		$answer .= "<script type='text/javascript'>\n";
+		$answer .= "    function calculateValue".$ia[1]."(method) {\n";
+		//Make all empty fields 0 (or else calculation won't work
+		foreach ($inputnames as $inputname)
+		{
+			$answer .= "       if(document.limesurvey.answer".$inputname.".value == '') { document.limesurvey.answer".$inputname.".value = 0; }\n";
+			$javainputnames[]="parseInt(parseFloat(document.limesurvey.answer".$inputname.".value)*1000)"; 
 		}
-	    $answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
-	    $answer .= "       totalvalue_".$ia[1]."=(";
-	    $answer .= implode(" + ", $javainputnames);
-	    $answer .= ")/1000;\n";
-	    $answer .= "       document.getElementById('totalvalue_{$ia[1]}').value=parseFloat(totalvalue_{$ia[1]});\n";
-	    $answer .= "       switch(method)\n";
-	    $answer .= "       {\n";
-	    $answer .= "       case 1:\n";
-	    $answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
-	    $answer .= "             {\n";
-	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
-	    $answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
-	    $answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
+		$answer .= "       bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n";
+		$answer .= "       totalvalue_".$ia[1]."=(";
+		$answer .= implode(" + ", $javainputnames);
+		$answer .= ")/1000;\n";
+		$answer .= "       document.getElementById('totalvalue_{$ia[1]}').value=parseFloat(totalvalue_{$ia[1]});\n";
+		$answer .= "       switch(method)\n";
+		$answer .= "       {\n";
+		$answer .= "       case 1:\n";
+		$answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
+		$answer .= "             {\n";
+		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
+		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
+		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
 		$answer .= "               }\n";
-	    $answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
+		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 2:\n";
-	    $answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
-	    $answer .= "             {\n";
-	    $answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
-	    $answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-	    $answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
+		$answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
+		$answer .= "             {\n";
+		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
+		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
 		$answer .= "               }\n";
-	    $answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
+		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
 		$answer .= "          remainingvalue = (parseInt(parseFloat($equals_num_value)*1000) - parseInt(parseFloat(totalvalue_".$ia[1].")*1000))/1000;\n";
 		$answer .= "          document.getElementById('remainingvalue_".$ia[1]."').value=remainingvalue;\n";
-	    $answer .= "          if (totalvalue_".$ia[1]." == $equals_num_value)\n";
+		$answer .= "          if (totalvalue_".$ia[1]." == $equals_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-	    $answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
-	    $answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+		$answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
 		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
-	    $answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
-	    $answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-	    $answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
+		$answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
+		$answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+		$answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "             }\n";
 		$answer .= "             break;\n";
 		$answer .= "       }\n";
 		$answer .= "    }\n";
-	    foreach($calculateValue as $cValue) 
+		foreach($calculateValue as $cValue) 
 		{
-		    $answer .= "    calculateValue".$ia[1]."($cValue);\n";
+			$answer .= "    calculateValue".$ia[1]."($cValue);\n";
 		}
 		$answer .= "</script>\n";
-	    
+
 	}
-	
+
 	return array($answer, $inputnames);
 }
 

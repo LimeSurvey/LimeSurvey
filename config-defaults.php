@@ -296,6 +296,15 @@ $pdffontsize    = 10;                      //Fontsize for normal text; Surveytit
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
 
+// JQuery settings
+// JQuery is used to add new dynamic features in the public survey interface
+// such as the slider variant of the multiple numerical question type.
+//
+// Since it requires loading the jquery files , it could slow down the public
+// interface and is disabled by default
+$useJqueryForPublicInterface = false;
+
+
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
