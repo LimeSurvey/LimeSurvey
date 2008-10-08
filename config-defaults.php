@@ -260,6 +260,14 @@ $addTitleToLinks = false;
 
 $demoModeOnly = false;
 
+// JQuery settings
+// JQuery is used to add new dynamic features in the public survey interface
+// such as the slider variant of the multiple numerical question type.
+//
+// Since it requires loading the jquery files , it could slow down the public
+// interface and is disabled by default
+$useJqueryForPublicInterface = false;
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
@@ -295,14 +303,6 @@ $pdfdefaultfont = 'freemono';              //Default font for the pdf Export
 $pdffontsize    = 10;                      //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
-
-// JQuery settings
-// JQuery is used to add new dynamic features in the public survey interface
-// such as the slider variant of the multiple numerical question type.
-//
-// Since it requires loading the jquery files , it could slow down the public
-// interface and is disabled by default
-$useJqueryForPublicInterface = false;
 
 
 // Computing relative url
