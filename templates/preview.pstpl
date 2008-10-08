@@ -83,6 +83,14 @@ table.question tr.array2:hover
     {
     background-color: #A7A9D1;
     }
+.ui-wrapper { border: 1px solid #50A029; }
+.ui-wrapper input, .ui-wrapper textarea { border: 0; }
+.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../images/slider-handle.gif);  }
+.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
+.ui-slider-1 { width: 200px; height: 23px; position: relative; background-image: url(../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
+.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
+.slider_callout { no-repeat; height: 20px; width: 30; overflow: hidden; position: absolute; top: -18px; margin-left:+15px; padding: 8px 0px 0px 0px;
+        font-family: "Myriad Pro"; color: #284a6e; font-weight: bold; text-align: center;}
 </style>
 </head>
 <body class='default'>
