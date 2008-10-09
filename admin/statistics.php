@@ -57,7 +57,7 @@
 //like arithmetic mean and standard deviation
 $showaggregateddata = 1;
 
-//split up results to extend statistics
+//split up results to extend statistics -> NOT WORKING YET! DO NET ENABLE THIS!
 $showcombinedresults = 0;
 
 /*
@@ -3989,8 +3989,9 @@ if (isset($summary) && $summary)
 						$legendtop=0.07;
 						$setcentrey=0.5;
 					}
-					
-				}	//end else -> pie charts
+
+				//Mazi: Commented out the following line to fix bug #2541
+				//}	//end else -> pie charts
 				
 				
 				// Create bar chart for multiple options
@@ -4047,10 +4048,6 @@ if (isset($summary) && $summary)
                      $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                      $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
 //Todo:                     $Test->drawTitle(50,22,"Example 12",50,50,50,585);
-
-                                        
-	
-					
 				}	//end if (bar chart)
 				
 				//Pie Chart
