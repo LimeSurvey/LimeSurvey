@@ -1330,7 +1330,7 @@ function remove_nulls_from_array($array)
 
 function submittokens()
 {
-	global $thissurvey, $timeadjust;
+	global $thissurvey, $timeadjust, $emailcharset ;
 	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl, $clang, $clienttoken;
 
@@ -1375,7 +1375,7 @@ function submittokens()
 
 		$subject=Replacefields($subject, $fieldsarray);
 
-		$subject=html_entity_decode_php4($subject, ENT_QUOTES, "UTF-8");
+		$subject=html_entity_decode_php4($subject, ENT_QUOTES, $emailcharset);
 
 		if (getEmailFormat($surveyid) == 'html')
 		{
@@ -1393,11 +1393,11 @@ function submittokens()
 
 			if (!$ishtml)
 			{
-				$message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, "UTF-8")));
+				$message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, $emailcharset )));
 			}
 			else 
 			{
-				$message=html_entity_decode_php4($message,ENT_QUOTES, "UTF-8");
+				$message=html_entity_decode_php4($message,ENT_QUOTES, $emailcharset );
 			}
 
 			//Only send confirmation email if there is a valid email address
@@ -1417,7 +1417,7 @@ function submittokens()
 function sendsubmitnotification($sendnotification)
 {
 	global $thissurvey, $debug;
-	global $dbprefix, $clang;
+	global $dbprefix, $clang, $emailcharset;
 	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug;
 
 	$subject = $clang->gT("Answer Submission for Survey","unescaped")." ".$thissurvey['name'];
@@ -1448,7 +1448,7 @@ function sendsubmitnotification($sendnotification)
             if ($prevquestion!=$qaarray[0])
             {
                 $prevquestion=$qaarray[0];
-                $questiontitle=strip_tags(html_entity_decode_php4($prevquestion, ENT_QUOTES, 'UTF-8'));
+                $questiontitle=strip_tags(html_entity_decode_php4($prevquestion, ENT_QUOTES, $emailcharset));
                 $message .= "\n$questiontitle: ";
                 if ($qaarray[1]!='')
                 {
@@ -1457,7 +1457,7 @@ function sendsubmitnotification($sendnotification)
             }
             if ($qaarray[1]!='')
             {
-			    $answeroption=strip_tags(html_entity_decode_php4($qaarray[1], ENT_QUOTES, 'UTF-8'));
+			    $answeroption=strip_tags(html_entity_decode_php4($qaarray[1], ENT_QUOTES, $emailcharset));
 			    $message .= "[$answeroption]:   ";
             }
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
@@ -1468,14 +1468,14 @@ function sendsubmitnotification($sendnotification)
 				{
 					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) 
 					{
-					 		$message .= "\t" . strip_tags(html_entity_decode_php4($line, ENT_QUOTES, "UTF-8"));
+					 		$message .= "\t" . strip_tags(html_entity_decode_php4($line, ENT_QUOTES, $emailcharset));
 							$message .= "\n";
 					}
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
-				$message .= strip_tags(html_entity_decode_php4(getextendedanswer($value, $_SESSION[$value],ENT_QUOTES, "UTF-8")));
+				$message .= strip_tags(html_entity_decode_php4(getextendedanswer($value, $_SESSION[$value],ENT_QUOTES, $emailcharset)));
 				$message .= "\n";
 			}
 		}

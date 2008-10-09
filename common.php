@@ -3068,7 +3068,8 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly;
+	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang;
+    global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
 
     //if ($ishtml) {$body=htmlwrap($body,110);}
 
@@ -3093,7 +3094,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     {
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
     }
-	$mail->CharSet = "UTF-8";
+	$mail->CharSet = $emailcharset;
 	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
         if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
     	 else {$mail->SMTPSecure = $emailsmtpssl;}
@@ -3169,7 +3170,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     	$mail->Body = $textbody;
         }
 
-	if (trim($subject)!='') {$mail->Subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";}
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
     $maildebugbody=$mail->Body;

@@ -111,6 +111,8 @@ $emailsmtpssl       =   '';               // Set this to 'ssl' or 'tls' to use S
 
 $maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
+$emailcharset = "UTF-8";                 // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
+
 // CMS Integration Settings
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
 $embedded = false;
