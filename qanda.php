@@ -1324,18 +1324,18 @@ function do_list_radio($ia)
 	{
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
 		{
-			$radio_check = CHECKED;
+			$check_ans = CHECKED;
 		}
 		elseif ($ansrow['default_value'] == 'Y') 
 		{
-			$radio_check = CHECKED;
+			$check_ans = CHECKED;
 			$defexists = 'Y';
 		}
 		else
 		{
-			$radio_check = '';
+			$check_ans = '';
 		}
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
 '.$wrapper['item-end'];
 
@@ -1351,11 +1351,11 @@ function do_list_radio($ia)
 	{
 		if ($_SESSION[$ia[1]] == '-oth-')
 		{
-			$radio_check = CHECKED;
+			$check_ans = CHECKED;
 		}
 		else
 		{
-			$radio_check = '';
+			$check_ans = '';
 		}
 
 		$thisfieldname=$ia[1].'other';
@@ -1368,7 +1368,7 @@ function do_list_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
 			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
@@ -1389,14 +1389,14 @@ function do_list_radio($ia)
 	{
 		if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) || ($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 		{
-			$radio_check = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$check_ans = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
 		else
 		{
-			$radio_check = '';
+			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
@@ -1482,13 +1482,13 @@ function do_list_flexible_radio($ia)
 		{
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
-				$radio_check = CHECKED;
+				$check_ans = CHECKED;
 			}
 			else
 			{
-				$radio_check ='';
+				$check_ans ='';
 			};
-			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['title'].'</label>
 '.$wrapper['item-end'];
 
@@ -1499,7 +1499,6 @@ function do_list_flexible_radio($ia)
 				$rowcounter = 0;
 			};
 		}
-
 	}
 	else 
 	{
@@ -1510,11 +1509,11 @@ function do_list_flexible_radio($ia)
 	{
 		if ($_SESSION[$ia[1]] == '-oth-')
 		{
-			$radio_check = CHECKED;
+			$check_ans = CHECKED;
 		}
 		else
 		{
-			$radio_check = '';
+			$check_ans = '';
 		}
 
 		$thisfieldname=$ia[1].'other';
@@ -1527,7 +1526,7 @@ function do_list_flexible_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
 			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
@@ -1548,14 +1547,14 @@ function do_list_flexible_radio($ia)
 	{
 		if ((!isset($defexists) || $defexists != 'Y') && (!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '' || $_SESSION[$ia[1]] == ' '))
 		{
-			$radio_check = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
+			$check_ans = CHECKED; //Check the "no answer" radio button if there is no default, and user hasn't answered this.
 		}
 		else
 		{
-			$radio_check = '';
+			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$radio_check.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 
@@ -1582,135 +1581,158 @@ function do_listwithcomment($ia)
 {
 	global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer, $clang;
-	$answer="";
+
+	$answer = '';
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if (!isset($maxoptionsize)) {$maxoptionsize=35;}
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
 	$ansresult = db_execute_assoc($ansquery);      //Checked
 	$anscount = $ansresult->RecordCount();
-	if ($lwcdropdowns == "R" && $anscount <= $dropdownthreshold)
+
+	$hint_list = $clang->gT('Please choose one of the following');
+	$hint_comment = $clang->gT('Please enter your comment here');
+
+	if ($lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
 	{
-		$answer .= "\t\t\t<table class='question'>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td><u>".$clang->gT("Please choose one of the following").":</u></td>\n"
-		. "\t\t\t\t\t<td><u><label for='answer$ia[1]comment'>".$clang->gT("Please enter your comment here").":</label></u></td>\n"
-		. "\t\t\t\t</tr>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td valign='top' align='left'>\n";
+		$answer .= '
+<div class="list">
+	<p class="hint">'.$hint_list.':</p>
+
+	<ul>
+';
 
 		while ($ansrow=$ansresult->FetchRow())
 		{
-			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' value='{$ansrow['code']}' name='$ia[1]' id='answer$ia[1]{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{$answer .= " checked='checked'";}
-			elseif ($ansrow['default_value'] == "Y")
 			{
-				$answer .= " checked='checked'"; 
-				$defexists = "Y";
+				$check_ans = CHECKED;
 			}
-			$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+			elseif ($ansrow['default_value'] == 'Y')
+			{
+				$check_ans = CHECKED; 
+				$defexists = 'Y';
+			}
+			else
+			{
+				$check_ans = '';
+			}
+			$answer .= '		<li>
+			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+			<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
+		</li>
+';
+		}
 
-		}
-		if ($ia[6] != "Y" && $shownoanswer == 1)
+		if ($ia[6] != 'Y' && $shownoanswer == 1)
 		{
-			$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]' value=' ' onclick='checkconditions(this.value, this.name, this.type)' ";
-			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
-				$answer .= "checked='checked' />";
+				$check_ans = CHECKED;
 			}
-			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
+			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
 			{
-				$answer .= " />";
+				$check_ans = '';
 			}
-			$answer .= "<label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
+			$answer .= '		<li>
+			<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="checkconditions(this.value, this.name, this.type)"'.$check_ans.' />
+			<label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
+		</li>
+';
 		}
-		$answer .= "\t\t\t\t\t</td>\n";
-		$fname2 = $ia[1]."comment";
+
+		$fname2 = $ia[1].'comment';
 		if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
 		// --> START NEW FEATURE - SAVE
 		//    --> START ORIGINAL
 		//        $answer .= "\t\t\t\t\t<td valign='top'>\n"
 		//                 . "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30'>";
 		//    --> END ORIGINAL
-		$answer .= "\t\t\t\t\t<td valign='top'>\n"
-		. "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='30' >";
+		$answer .= '	</ul>
+</div>
+
+<p class="comment">
+	<label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
+
+	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="30" >';
 		// --> END NEW FEATURE - SAVE
 		if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
 		{
 			$answer .= str_replace("\\", "", $_SESSION[$fname2]);
 		}
-		$answer .= "</textarea>\n"
-		. "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
-		. "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t</tr>\n"
-		. "\t\t\t</table>\n";
+		$answer .= '</textarea>
+</p>
+
+<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />
+";
 		$inputnames[]=$ia[1];
-		$inputnames[]=$ia[1]."comment";
+		$inputnames[]=$ia[1].'comment';
 	}
 	else //Dropdown list
 	{
 		// --> START NEW FEATURE - SAVE
-		$answer .= "\t\t\t<table class='question'>\n"
-		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td valign='top' align='center'>\n"
-		. "\t\t\t\t\t<select class='select' name='$ia[1]' id='answer$ia[1]' onclick='checkconditions(this.value, this.name, this.type)' >\n";
+		$answer .= '<p class="select">
+	<select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onclick="checkconditions(this.value, this.name, this.type)" >
+';
 		// --> END NEW FEATURE - SAVE
 		while ($ansrow=$ansresult->FetchRow())
 		{
-			$answer .= "\t\t\t\t\t\t<option value='{$ansrow['code']}'";
 			if ($_SESSION[$ia[1]] == $ansrow['code'])
-			{$answer .= " selected='selected'";}
-			elseif ($ansrow['default_value'] == "Y")
 			{
-				$answer .= " selected='selected'"; 
+				$check_ans = SELECTED;
+			}
+			elseif ($ansrow['default_value'] == 'Y')
+			{
+				$check_ans = SELECTED; 
 				$defexists = "Y";
 			}
-			$answer .= ">{$ansrow['answer']}</option>\n";
+			$answer .= '		<option value="'.$ansrow['code'].'"'.$check_ans.'>'.$ansrow['answer']."</option>\n";
+
 			if (strlen($ansrow['answer']) > $maxoptionsize)
 			{
 				$maxoptionsize = strlen($ansrow['answer']);
 			}
 		}
-		if ($ia[6] != "Y" && $shownoanswer == 1)
+		if ($ia[6] != 'Y' && $shownoanswer == 1)
 		{
-			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == "") && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
+			if (((!isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] == '') && (!isset($defexists) || !$defexists)) ||($_SESSION[$ia[1]] == ' ' && (!isset($defexists) || !$defexists)))
 			{
-				$answer .= "\t\t\t\t\t\t<option value=' ' selected='selected'>".$clang->gT("No answer")."</option>\n";
+				$check_ans = SELECTED;
 			}
-			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != "") && (!isset($defexists) || !$defexists))
+			elseif ((isset($_SESSION[$ia[1]]) || $_SESSION[$ia[1]] != '') && (!isset($defexists) || !$defexists))
 			{
-				$answer .= "\t\t\t\t\t\t<option value=' '>".$clang->gT("No answer")."</option>\n";
+				$check_ans = '';
 			}
+			$answer .= '		<option value=" "'.$check_ans.'>'.$clang->gT('No answer')."</option>\n";
 		}
-		$answer .= "\t\t\t\t\t</select>\n"
-		. "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t</tr>\n"
-		. "\t\t\t\t<tr>\n";
-		$fname2 = $ia[1]."comment";
+		$answer .= '	</select>
+</p>
+';
+		$fname2 = $ia[1].'comment';
 		if ($anscount > 8) {$tarows = $anscount/1.2;} else {$tarows = 4;}
 		if ($tarows > 15) {$tarows=15;}
 		$maxoptionsize=$maxoptionsize*0.72;
 		if ($maxoptionsize < 33) {$maxoptionsize=33;}
 		if ($maxoptionsize > 70) {$maxoptionsize=70;}
-		$answer .= "\t\t\t\t\t<td valign='top'>\n";
-		// --> START NEW FEATURE - SAVE
-		$answer .= "\t\t\t\t\t\t<textarea class='textarea' name='$ia[1]comment' id='answer$ia[1]comment' rows='$tarows' cols='$maxoptionsize' >";
+		$answer .= '<p class="comment">
+	'.$hint_comment.'
+	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
 		// --> END NEW FEATURE - SAVE
 		if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
 		{
 			$answer .= str_replace("\\", "", $_SESSION[$fname2]);
 		}
-		$answer .= "</textarea>\n"
-		. "\t\t\t\t<input class='radio' type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
-		. "\t\t\t\t\t</td>\n"
-		. "\t\t\t\t</tr>\n"
-		. "\t\t\t</table>\n";
+		$answer .= '</textarea>
+	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]." value=\"{$_SESSION[$ia[1]]}\" />\n</p>\n";
 		$inputnames[]=$ia[1];
-		$inputnames[]=$ia[1]."comment";
+		$inputnames[]=$ia[1].'comment';
 	}
 	return array($answer, $inputnames);
 }
