@@ -207,7 +207,46 @@ ul.cols-8 li , ul.cols-8-ul { width: 11.5%; }
 
 .list-dropdown-flexible {}
 .list-dropdown {}
-.list-with-comment {}
+
+.list-with-comment div.list
+{
+	width: 47%;
+	float: left;
+	padding: 0.5em;
+}
+.list-with-comment p.select
+{
+	width: 47%;
+	float: left;
+	padding: 0.5em;
+	margin: 0%;
+}
+.list-with-comment div.list p
+{
+	margin: 0%;
+	text-align: left;
+}
+.list-with-comment ul
+{
+	margin: 0%;
+	padding: 0%;
+}
+
+.list-with-comment ul li
+{
+	list-style: none;
+	text-align: left;
+}
+.list-with-comment p.comment
+{
+	margin: 0%;
+	padding: 0.5em;
+	text-align: left;
+	float: left;
+	width: 47%;
+}
+
+
 .ranking {}
 .multiple-opt {}
 .language {}
