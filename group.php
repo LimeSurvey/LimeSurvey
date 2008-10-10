@@ -645,14 +645,10 @@ for ($i=0;$i<count($conditions);$i++)
 					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
 				else
-			{
-				$newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-				$newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
-			} else 
-			{ // Comment FIXME by lemeur: isn't it the same as above, so why if/else ???
-				$newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-				$newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
-			}
+			    {
+				    $newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
+				    $newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
+			    }
 
 //			}
 		} else
@@ -669,9 +665,6 @@ for ($i=0;$i<count($conditions);$i++)
 			{
 				$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 			}
-				else
-				{
-					$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
 		}
 	}
 	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
