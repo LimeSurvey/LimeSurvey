@@ -6,7 +6,7 @@
 		</td>
 	</tr>
 	<tr>
-    <td align='center' bgcolor='#0099CC' valign='middle'>
+    <td align='center' valign='middle'>
       {PERCENTCOMPLETE}
     </td>
   </tr>

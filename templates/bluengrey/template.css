@@ -197,12 +197,10 @@ border-width:1px;
 }
 
 .printouttable td:first-child {
-background-color:#4E70A9;
 font-weight:700;
 text-align:right;
 padding-right:5px;
 padding-left:5px;
-color:#fff;
 }
 
 .printouttitle {
