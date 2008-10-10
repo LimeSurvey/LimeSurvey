@@ -1,0 +1,18 @@
+## MOD_REWRITE for LimeSurvey ##
+<IfModule mod_rewrite.c>
+		RewriteEngine On
+		
+		## DONT TOUCH ANYTHING ##
+		# Only with survey code
+		# http://server.fr/123456
+		RewriteRule ^([0-9]+)/*$ index.php?sid=$1 [L,QSA]
+
+		# Survey code + Lang  : http://server.fr/123456/lang-fr
+		RewriteRule ^([0-9]+)/lang-([^/]*)/*$ index.php?sid=$1&lang=$2 [L,QSA]
+
+		# Survey code + Lang + Token : http://server.fr/123456/lang-fr/tk-sdlfkjozeiru
+		RewriteRule ^([0-9]+)/lang-([^/]*)/tk-([^/]*)/*$ index.php?sid=$1&lang=$2&token=$3 [L,QSA]
+
+		# Survey code + Token : http://server.fr/123456/tk-sdlfkjozeiru
+		RewriteRule ^([0-9]+)/tk-([^/]*)/*$ index.php?sid=$1&token=$2 [L,QSA]
+</IfModule>

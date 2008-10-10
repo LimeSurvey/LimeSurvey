@@ -828,13 +828,21 @@ if ($surveyid)
 		$surveysummary .= "<tr>"
 		. "<td align='right' valign='top'><strong>"
 		. $clang->gT("Survey URL") ." (".getLanguageNameFromCode($s1row['language'],false)."):</strong></td>\n";
+    if ( $modrewrite ) {
+        $tmp_url = $GLOBALS['publicurl'] . '/' . $s1row['sid'];
+		    $surveysummary .= "<td align='left'> <a href='$tmp_url/lang-".$s1row['language']."' target='_blank'>$tmp_url/lang-".$s1row['language']."</a>";
+        foreach ($additionnalLanguagesArray as $langname)
+        {
+          $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";  
+        }
+    } else {
 		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $s1row['sid'];
 		$surveysummary .= "<td align='left'> <a href='$tmp_url&amp;lang=".$s1row['language']."' target='_blank'>$tmp_url&amp;lang=".$s1row['language']."</a>";
         foreach ($additionnalLanguagesArray as $langname)
         {
           $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";  
         }
-        
+    }
         
 		$surveysummary .= "</td></tr>\n"
 		. "<tr><td align='right' valign='top'><strong>"

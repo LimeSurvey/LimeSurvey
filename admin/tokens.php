@@ -1200,12 +1200,25 @@ if ($subaction == "email" &&
 
 				if ($ishtml === false)
 				{
+          if ( $modrewrite ) 
+          {
+            $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+          } 
+          else 
+          {
 					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 				}
+				}
+				else
+        {
+          if ( $modrewrite ) 
+          {
+            $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+          } 
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
-
+          }
                 }
                 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
@@ -1484,8 +1497,21 @@ if ($subaction == "remind" &&
 
 				if ($ishtml === false)
 				{
+          if ( $modrewrite ) 
+          {
+            $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+          } 
+          else 
+          {
 					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 				}
+				}
+				else
+				{
+          if ( $modrewrite ) 
+          {
+            $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+          } 
 				else
 				{
 					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";

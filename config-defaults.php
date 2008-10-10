@@ -48,6 +48,7 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey
                             // If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
                             // then try setting this to 1 .
 
+// MOD_REWRITE ?
 
 // Site Info
 $sitename           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
@@ -112,6 +113,25 @@ $emailsmtpssl       =   '';               // Set this to 'ssl' or 'tls' to use S
 $maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
 $emailcharset = "UTF-8";                 // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
+
+
+// Support for Fancy URLs
+//
+// This new feature makes survey URLs more readable
+// For example a normal survey that looks like this 
+
+//     http://example.com/limesurvey/index.php?sid=12345&lang=de
+
+// will look like this
+
+//      http://example.com/lime/survey/12345/lang-fr/tk-ertoiuy [^]
+
+// If you want to have fancy URLs, set this to 1 AND
+// rename htaccess.txt in the LimeSurvey root directory to .htaccees.
+// 
+// NOTE: You MUST have the Apache mod_rewrite module installed.
+// If you don't know what this is better leave this setting alone.
+$modrewrite         =   0;  
 
 // CMS Integration Settings
 // Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
