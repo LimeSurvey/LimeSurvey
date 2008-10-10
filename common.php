@@ -69,6 +69,10 @@ if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami"
 }
 
 
+// Array of JS scripts to include in header
+// is updated by questions in qanda.php
+$js_header_includes = Array();
+
 /*
 * $sourcefrom variable checks the location of the current script against
 * the administration directory, and if the current script is running
@@ -2692,8 +2696,6 @@ function questionAttributes()
 	// types - a string with one character representing each question typ to which the attribute applies
 	// help - a short explanation
 
-	global $useJqueryForPublicInterface;
-
     $qattributes[]=array("name"=>"answer_width",
     "types"=>"ABCEF1",
     "help"=>"The percentage width of the answer column");
@@ -2737,24 +2739,21 @@ function questionAttributes()
 	"types"=>"K",
 	"help"=>"Multiple numeric inputs must be greater than this value");
 
-	if ($useJqueryForPublicInterface === true)
-	{
-		$qattributes[]=array("name"=>"slider_layout",
-		"types"=>"K",
-		"help"=>"Use slider layout");
-		$qattributes[]=array("name"=>"slider_decimal",
-		"types"=>"K",
-		"help"=>"How many decimal number we should use");
-		$qattributes[]=array("name"=>"slider_min",
-		"types"=>"K",
-		"help"=>"Slider min value");
-		$qattributes[]=array("name"=>"slider_max",
-		"types"=>"K",
-		"help"=>"Slider max value");
-		$qattributes[]=array("name"=>"slider_divisor",
-		"types"=>"K",
-		"help"=>"Slider divisor");
-	}
+	$qattributes[]=array("name"=>"slider_layout",
+	"types"=>"K",
+	"help"=>"Use slider layout");
+	$qattributes[]=array("name"=>"slider_decimal",
+	"types"=>"K",
+	"help"=>"How many decimal number we should use");
+	$qattributes[]=array("name"=>"slider_min",
+	"types"=>"K",
+	"help"=>"Slider min value");
+	$qattributes[]=array("name"=>"slider_max",
+	"types"=>"K",
+	"help"=>"Slider max value");
+	$qattributes[]=array("name"=>"slider_accuracy",
+	"types"=>"K",
+	"help"=>"Slider accuracy");
 
 	$qattributes[]=array("name"=>"prefix",
 	"types"=>"KNSQ",
@@ -2882,7 +2881,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 // If you want to echo the header use doHeader() !
 function getHeader()
 {
-	global $embedded, $surveyid, $rooturl,$defaultlang, $useJqueryForPublicInterface, $runtime_jqueryheader;
+	global $embedded, $surveyid, $rooturl,$defaultlang, $js_header_includes;
 
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'])
     {
@@ -2897,16 +2896,10 @@ function getHeader()
         $surveylanguage=$defaultlang;
     }
 
-	if ($useJqueryForPublicInterface === true)
+	$js_header = "";
+	foreach ($js_header_includes as $jsinclude)
 	{
-		$jqueryheader = "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n";
-		$jqueryheader .= "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui-core-1.6rc2.min.js\"></script>\n";
-		$jqueryheader .= "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui-slider-1.6rc2.min.js\"></script>\n";
-		$jqueryheader .= $runtime_jqueryheader;
-	}
-	else
-	{
-		$jqueryheader = "";
+		$js_header .= "<script type=\"text/javascript\" src=\"".$rooturl."$jsinclude\"></script>\n";
 	}
 
 	if ( !$embedded )
@@ -2926,7 +2919,7 @@ function getHeader()
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
         		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
-			. $jqueryheader;
+			. $js_header;
         return $header;        
     }
 

@@ -2438,7 +2438,7 @@ function do_multipleshorttext($ia)
 
 function do_multiplenumeric($ia)
 {
-	global $dbprefix, $clang, $useJqueryForPublicInterface, $runtime_jqueryheader;
+	global $dbprefix, $clang, $js_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	//Must turn on the "numbers only javascript"
 	$numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
@@ -2504,10 +2504,26 @@ function do_multiplenumeric($ia)
 	if (arraySearchByKey("slider_layout", $qidattributes, "attribute", 1))
 	{
 		$slider_layout=true;
+
+		$slider_accuracy=arraySearchByKey("slider_accuracy", $qidattributes, "attribute", 1);
+		if (isset($slider_accuracy['value']))
+		{
+			//$slider_divisor = 1 / $slider_accuracy['value'];
+			$decimnumber = strlen($slider_accuracy['value']) - strpos($slider_accuracy['value'],'.') -1; 
+			$slider_divisor = pow(10,$decimnumber);
+			$slider_stepping = $slider_accuracy['value'] * $slider_divisor;
+		//	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_stepping");
+		}
+		else
+		{
+			$slider_divisor = 1;
+			$slider_stepping = 1;
+		}
+
 		$slider_min=arraySearchByKey("slider_min", $qidattributes, "attribute", 1);
 		if (isset($slider_min['value']))
 		{
-			$slider_min = $slider_min['value'];
+			$slider_min = $slider_min['value'] * $slider_divisor;
 		}
 		else
 		{
@@ -2516,26 +2532,18 @@ function do_multiplenumeric($ia)
 		$slider_max=arraySearchByKey("slider_max", $qidattributes, "attribute", 1);
 		if (isset($slider_max['value']))
 		{
-			$slider_max = $slider_max['value'];
+			$slider_max = $slider_max['value'] * $slider_divisor;
 		}
 		else
 		{
-			$slider_max = 100;
-		}
-		$slider_divisor=arraySearchByKey("slider_divisor", $qidattributes, "attribute", 1);
-		if (isset($slider_divisor['value']))
-		{
-			$slider_divisor = $slider_divisor['value'];
-		}
-		else
-		{
-			$slider_divisor = 1;
+			$slider_max = 100 * $slider_divisor;
 		}
 	}
 	else
 	{
 		$slider_layout = false;
 	}
+
 	if ($hidetip=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
 	{
 		$hidetip=$hidetip['value'];
@@ -2544,6 +2552,7 @@ function do_multiplenumeric($ia)
 	} else {
 		$hidetip=0;
 	}
+
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
@@ -2553,7 +2562,7 @@ function do_multiplenumeric($ia)
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
-    $answer = keycontroljs();
+	$answer = keycontroljs();
 	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
 	if ($anscount==0) 
 	{
@@ -2570,7 +2579,7 @@ function do_multiplenumeric($ia)
 				. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
 				. "\t\t\t\t\t\t\t\t</td>\n";
 
-			if ($slider_layout === false || $useJqueryForPublicInterface === false)
+			if ($slider_layout === false)
 			{
 				$answer .= ""
 					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
@@ -2584,6 +2593,7 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
+/*************
 				$runtime_jqueryheader .= ""
 					. "\t\t\t\t\t\t\t\t\t<script language=\"javascript\" type=\"text/javascript\">\n"
 					//					. "\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").hide();\n"
@@ -2620,12 +2630,37 @@ function do_multiplenumeric($ia)
 				$runtime_jqueryheader .= ""
 					. "\t\t\t\t\t\t\t\t\t});\n"
 					. "\t\t\t\t\t\t\t\t\t</script>\n";
+***************/
 
+				$js_header_includes[] = '/scripts/jquery/jquery.js';
+				$js_header_includes[] = '/scripts/jquery/jquery-ui-core-1.6rc2.min.js';
+				$js_header_includes[] = '/scripts/jquery/jquery-ui-slider-1.6rc2.min.js';
+				$js_header_includes[] = '/scripts/jquery/lime-slider.js';
+				$js_header_includes = array_unique($js_header_includes);
+
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
+				{
+					$slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
+				} 
+				else 
+				{
+					$slider_startvalue = 'NULL';
+				}
 				$answer .= ""
 					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-					. "\t\t\t\t\t\t\t\t\t<div id='slider-$myfname' class='ui-slider-1'>\n"
-					. "\t\t\t\t\t\t\t\t\t\t<div class='slider_callout' id='slider-callout-$myfname'></div>\n"
-					. "\t\t\t\t\t\t\t\t\t\t<div class='ui-slider-handle' id='slider-handle-$myfname'></div>\n"
+					. "\t\t\t\t\t\t\t\t\t<div id='container-$myfname' class='multinum-slider'>\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-min-$myfname' value='$slider_min' style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-max-$myfname' value='$slider_max' style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-stepping-$myfname' value='$slider_stepping' style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-divisor-$myfname' value='$slider_divisor' style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-startvalue-$myfname' value='$slider_startvalue' style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-onchange-js-$myfname' value=\"$numbersonly_slider\" style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-prefix-$myfname' value=\"$prefix\" style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-suffix-$myfname' value=\"$suffix\" style='display: none;' />\n"
+					. "\t\t\t\t\t\t\t\t\t\t<div id='slider-$myfname' class='ui-slider-1'>\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t<div class='slider_callout' id='slider-callout-$myfname'></div>\n"
+					. "\t\t\t\t\t\t\t\t\t\t\t<div class='ui-slider-handle' id='slider-handle-$myfname'></div>\n"
+					. "\t\t\t\t\t\t\t\t\t\t</div>\n"
 					. "\t\t\t\t\t\t\t\t\t</div>\n"
 					. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' name='$myfname' id='answer$myfname' style='display: none;' value='";
 				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
