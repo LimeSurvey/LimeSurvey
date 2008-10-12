@@ -1,4 +1,4 @@
--- phpSurveyor MS SQL Server 2000 database schema
+-- LimeSurvey MS SQL Server 2000 database schema
 
 -- --------------------------------------------------------
 
@@ -203,6 +203,7 @@ CREATE TABLE [prefix_surveys] (
   [owner_id] INT NOT NULL,
   [admin] VARCHAR(50) default NULL,
   [active] char(1) NOT NULL default 'N',
+  [startdate] DATETIME default NULL,
   [expires] DATETIME default NULL,
   [adminemail] VARCHAR(320) default NULL,
   [private] char(1) default NULL,
@@ -224,6 +225,7 @@ CREATE TABLE [prefix_surveys] (
   [allowprev] char(1) default 'Y',
   [printanswers] char(1) default 'N',
   [ipaddr] char(1) default 'N',
+  [usestartdate] char(1) NOT NULL default 'N',
   [useexpiry] char(1) NOT NULL default 'N',
   [refurl] char(1) default 'N',
   [datecreated] DATETIME default NULL,
@@ -352,7 +354,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '128');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '129');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --

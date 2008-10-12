@@ -216,7 +216,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
 		upgrade_token_tables128();
 	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
-
+	if ($oldversion < 129) {
+		//128
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [startdate] DATETIME"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [usestartdate] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+	    modify_database("","update `prefix_settings_global` set `stg_value`='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
     return true;
 }
 

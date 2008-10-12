@@ -79,7 +79,12 @@ if ($action == "listsurveys")
 				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$status=$clang->gT("Expired") ;
-				} else {
+				} 
+                elseif ($rows['usestartdate']=='Y' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+                {
+                    $status=$clang->gT("Not yet active") ;
+                }                
+                else {
 					$status=$clang->gT("Active") ;
 				}
 				// Complete Survey Responses - added by DLR
@@ -426,6 +431,13 @@ if ($surveyid)
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
 			}
+            elseif (($s1row['usestartdate']=='Y') && ($s1row['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+            {
+                $surveysummary .= "<img src='$imagefiles/notyetstarted.png' title='' "
+                . "alt='".$clang->gT("This survey is active but has a start date.")."' "
+                . "onmouseout=\"hideTooltip()\""
+                . "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but has a start date.", "js")."');return false\" />\n";
+            }
 			else
 			{
 				$surveysummary .= "<img src='$imagefiles/active.png' title='' "
@@ -860,7 +872,18 @@ if ($surveyid)
 		. $clang->gT("Fax To:")."</strong></td>\n<td align='left'>";
 		if (trim($s1row['faxto'])!='') {$surveysummary .= " {$s1row['faxto']}";}
 		$surveysummary .= "</td></tr>\n"
-		. "<tr><td align='right' valign='top'><strong>"
+        . "<tr><td align='right' valign='top'><strong>"
+        . $clang->gT("Start date:")."</strong></td>\n";
+        if ($s1row['usestartdate']== "Y")
+        {
+            $startdate=$s1row['startdate'];
+        }
+        else
+        {
+            $startdate="-";
+        }
+        $surveysummary .= "<td align='left'>$startdate</td></tr>\n"		
+        . "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Expiry Date:")."</strong></td>\n";
 		if ($s1row['useexpiry']== "Y")
 		{
@@ -2356,9 +2379,20 @@ if ($action == "editsurvey")
 		$editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2>\n";
 
 
+            // Start date
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
+            . "<span class='settingentry'><select name='usestartdate'><option value='Y'";
+            if (isset($esrow['usestartdate']) && $esrow['usestartdate'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if (!isset($esrow['usestartdate']) || $esrow['usestartdate'] != "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option></select></span></div>"
+            . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
+            . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value=\"{$esrow['startdate']}\" /><button type='reset' id='f_trigger_a'>...</button></span></div>\n";
+
+
 			// Expiration
-			$editsurvey .= ""
-			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
+			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
 			. "<span class='settingentry'><select name='useexpiry'><option value='Y'";
 			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected='selected'";}
 			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2655,7 +2689,15 @@ if ($action == "editsurvey")
 			. "singleClick    :    true,\n"             // double-click mode
 			. "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
 			. "});\n"
-			. "</script>\n";
+            . "Calendar.setup({\n"
+            . "inputField     :    \"f_date_a\",\n"     // id of the input field
+            . "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
+            . "showsTime      :    false,\n"            // will display a time selector
+            . "button         :    \"f_trigger_a\",\n"  // trigger for the calendar (button ID)
+            . "singleClick    :    true,\n"             // double-click mode
+            . "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
+            . "});\n"
+            . "</script>\n";
 		}
 
 	}
@@ -3005,6 +3047,16 @@ if ($action == "newsurvey")
 		// Publication and access control TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2>\n";
 
+
+        // Timed Start
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
+        . "<span class='settingentry'><select name='usestartdate'><option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N' selected='selected'>".$clang->gT("No")."</option></select></span></div>\n"
+        . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
+        . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value='"
+        . date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_a'>...</button>"
+        . "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
+
 		// Expiration
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
 		. "<span class='settingentry'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
@@ -3159,6 +3211,14 @@ if ($action == "newsurvey")
 
 		// Here we do setup the date javascript
 		$newsurvey .= "<script type=\"text/javascript\">\n"
+        . "Calendar.setup({\n"
+        . "inputField     :    \"f_date_a\",\n"    // id of the input field
+        . "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
+        . "showsTime      :    false,\n"                    // will display a time selector
+        . "button         :    \"f_trigger_a\",\n"         // trigger for the calendar (button ID)
+        . "singleClick    :    true,\n"                   // double-click mode
+        . "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
+        . "});\n"
 		. "Calendar.setup({\n"
 		. "inputField     :    \"f_date_b\",\n"    // id of the input field
 		. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field

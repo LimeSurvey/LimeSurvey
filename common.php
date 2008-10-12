@@ -18,7 +18,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.80";
-$dbversionnumber = 128;
+$dbversionnumber = 129;
 $buildnumber = "";
 
 
@@ -537,7 +537,8 @@ function db_tables_exist($table)
 function getsurveylist()
     {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
-    $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, a.useexpiry, a.expires, "
+    $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, "
+                    ." a.useexpiry, a.expires, a.usestartdate, a.startdate, "
 					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
 					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
 					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a "

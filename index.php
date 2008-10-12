@@ -271,8 +271,11 @@ if (!$surveyid)
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d")."'
-			  AND a.useexpiry = 'Y') OR
-			  (a.useexpiry = 'N'))
+			        AND a.useexpiry = 'Y') OR
+			        (a.useexpiry = 'N'))
+              AND ((a.startdate <= '".date("Y-m-d")."'
+                    AND a.usestartdate = 'Y') OR
+                    (a.usestartdate = 'N'))
 			  ORDER BY surveyls_title";
 	$result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked 
 	$list=array();
@@ -383,6 +386,23 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 	doFooter();
 	exit;
+}
+
+//MAKE SURE SURVEY HASN'T EXPIRED
+if ($thissurvey['startdate'] > date("Y-m-d") && $thissurvey['usestartdate'] == "Y")
+{
+    sendcacheheaders();
+    doHeader();
+
+    echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+    echo "\t\t<center><br />\n"
+    ."\t\t\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
+    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+    ."<br /><br />\n";
+
+    echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+    doFooter();
+    exit;
 }
 
 //CHECK FOR PREVIOUSLY COMPLETED COOKIE

@@ -213,6 +213,7 @@ CREATE TABLE prefix_surveys (
     owner_id integer NOT NULL,
     "admin" character varying(50),
     active character(1) DEFAULT 'N'::bpchar NOT NULL,
+    startdate date,
     expires date,
     adminemail character varying(320) NOT NULL,
     private character(1),
@@ -235,6 +236,7 @@ CREATE TABLE prefix_surveys (
     allowprev character(1) DEFAULT 'Y'::bpchar,
     ipaddr character(1) DEFAULT 'N'::bpchar,
     useexpiry character(1) DEFAULT 'N'::bpchar NOT NULL,
+    usestartdate character(1) DEFAULT 'N'::bpchar NOT NULL,
     refurl character(1) DEFAULT 'N'::bpchar,
     datecreated date,
     listpublic character(1) DEFAULT 'N'::bpchar,
@@ -489,7 +491,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '128');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '129');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

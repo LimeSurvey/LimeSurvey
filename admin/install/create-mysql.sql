@@ -1,17 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 2.8.0.2
--- http://www.phpmyadmin.net
--- 
--- Host: localhost
--- Generation Time: Jul 23, 2006 at 07:56 PM
--- Server version: 5.0.20
--- PHP Version: 5.1.4
--- 
--- Database: `limesurvey-development`
--- 
-
-
-
 -- 
 -- Table structure for table `answers`
 -- 
@@ -214,6 +200,7 @@ CREATE TABLE `prefix_surveys` (
   `admin` varchar(50) default NULL,
   `active` char(1) NOT NULL default 'N',
   `expires` date default NULL,
+  `startdate` date default NULL,
   `adminemail` varchar(320) default NULL,
   `private` char(1) default NULL,
   `faxto` varchar(20) default NULL,
@@ -235,6 +222,7 @@ CREATE TABLE `prefix_surveys` (
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
   `useexpiry` char(1) NOT NULL default 'N',
+  `usestartdate` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
   `listpublic` char(1) default 'N',
@@ -348,7 +336,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '128');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '129');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
