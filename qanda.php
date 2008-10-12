@@ -15,17 +15,6 @@
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 
-/**
- * $column_style defines how columns are rendered for survey answers.
- * There are four possible options:
- *     'css'   using one of the various CSS only methods for splicing. (DEFAULT)
- *     'ul'    using multiple floated unordered lists.
- *     'table' using conventional tables based layout.
- *     NULL    blocks the use of columns
- */
-$column_style = 'ul';
-
-
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 /*
@@ -49,6 +38,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
 * $condition[n][6] => method used to evaluate *NEW*
 */
+
 function retrieveConditionInfo($ia)
 {
 	//This function returns an array containing all related conditions
@@ -568,7 +558,7 @@ function mandatory_message($ia)
 		global $mandatorypopup, $popup;
 		if (in_array($ia[1], $notanswered))
 		{
-			$qtitle .= "<strong><br /><span class='errormandatory'>".$clang->gT("This question is mandatory").".";
+			$qtitle .= "<strong><br /><span class='errormandatory'>".$clang->gT('This question is mandatory').'.';
 			switch($ia[4])
 			{
 				case 'A':
@@ -591,23 +581,23 @@ function mandatory_message($ia)
 				case 'M':
 				case 'P':
 					$qtitle .= ' '.$clang->gT('Please check at least one item').'.';
-                $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
-                $qresult = db_execute_assoc($qquery);    //Checked
-                $qrow = $qresult->FetchRow();
-                if ($qrow['other']=='Y')
-                {
-                	$qidattributes=getQuestionAttributes($ia[0]);
-                	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
-                	{
-                		$othertext=$clang->gT($othertexts['value']);
+					$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
+					$qresult = db_execute_assoc($qquery);    //Checked
+					$qrow = $qresult->FetchRow();
+					if ($qrow['other']=='Y')
+					{
+						$qidattributes=getQuestionAttributes($ia[0]);
+						if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
+						{
+							$othertext=$clang->gT($othertexts['value']);
+						}
+						else
+						{
+							$othertext=$clang->gT('Other');
+						}
+						$qtitle .= "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
 					}
-                	else
-                	{
-                		$othertext=$clang->gT("Other");
-                	}
-                    $qtitle .= "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
-                }
-				break;
+					break;
 			} // end switch
 			$qtitle .= "</span></strong><br />\n";
 		}
@@ -670,21 +660,79 @@ function validation_popup($ia, $notvalidated=null)
 define('CHECKED' , ' checked="checked"' , true);
 define('SELECTED' , ' selected="selected"' , true);
 
+/**
+ * The following prepares and defines the 'COLSTYLE' constant which
+ * dictates how columns are to be marked up for list type questions.
+ *
+ * $column_style is initialised at the end of config.php.
+ */
+$column_style = isset($column_style)?$column_style:'ul';
+if($column_style  != ('css' || 'ul' || 'table' || null ))
+{
+	$column_style = 'ul';
+};
+define('COLSTYLE' ,strtolower($column_style), true);
 
-// sets the contsant for columns styles
 
 function setup_columns($columns, $answer_count)
 {
-	global $column_style;
+/**
+ * setup_columns() defines all the html tags to be wrapped around
+ * various list type answers.
+ *
+ * It accepts two variable:
+ *     $columns - usually supplied by $dcols
+ *     $answer_count - usually supplied by $anscount
+ *
+ * It returns an array with the following items:
+ *    $wrapper['whole-start']   = Opening wrapper for the whole list
+ *    $wrapper['whole-end']     = closing wrapper for the whole list
+ *    $wrapper['col-devide']    = normal column devider
+ *    $wrapper['col-devide-last'] = the last column devider (to allow
+ *                                for different styling of the last
+ *                                column
+ *    $wrapper['item-start']    = opening wrapper tag for individual
+ *                                option
+ *    $wrapper['item-end']      = closing wrapper tag for individual
+ *                                option
+ *    $wrapper['maxrows']       = maximum number of rows in each column
+ *    $wrapper['cols']          = Number of columns to be inserted (and
+ *                                checked against)
+ *
+ * It also expect the constant COLSTYLE which defines how columns should
+ * be rendered.
+ *
+ * COLSTYLE is defined above.
+ *
+ * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ * Columns are a problem.
+ * Really there is no perfect solution to columns at the moment.
+ *
+ * -  Using Tables is problematic semanticly.
+ * -  Using inline or float the order of the answers flows
+ *    horizontally, not vertically so that's not ideal visually
+ * -  Using nested unordered list with the first level of <LI>s
+ *    floated is the same as using tables and so is bad semantically
+ *    for the same reason tables are bad
+ * -  Breaking the unordered lists into consecutive floated unordered
+ *    lists is not great semantically but probably not as bad
+ *    semanically as using tables.
+ *
+ * Because I haven't been able to decide which option is the least
+ * bad, I have handed over that responsibility to the admin who sets
+ * LimeSurvey up on their server.
+ *
+ * There are four options:
+ *     'css'   using one of the various CSS only methods for splicing.
+ *     'ul'    using multiple floated unordered lists. (DEFAULT)
+ *     'table' using conventional tables based layout.
+ *     NULL    blocks the use of columns
+ *
+ * 'ul' is the default because it's the best possible compromise between
+ * semantic and visual layout.
+ */
 
-	if(isset($column_style) && strtolower($column_style) == ('css' || 'ul' || 'table' || null ))
-	{
-		$colstyle = strtolower($column_style);
-	}
-	else
-	{
-		$colstyle = null;
-	};
+	$colstyle = COLSTYLE;
 
 	if($columns < 2)
 	{
@@ -706,36 +754,54 @@ function setup_columns($columns, $answer_count)
 			$ul = '';
 		}
 		$class = ' class="cols-'.$columns . $ul.'"';
-		
+		$class_last_ul = ' class="cols-'.$columns . $ul.' last"';
+		$class_last_table = ' class="cols-'.$columns.' last"';
 	}
 	else
 	{
 		$class = '';
+		$class_last_ul = '';
+		$class_last_table = '';
 	};
 
 	$wrapper['whole-start']	= "\n<ul$class>\n";
 	$wrapper['whole-end']	= "</ul>\n";
 	$wrapper['col-devide']	= '';
+	$wrapper['col-devide-last'] = '';
 	$wrapper['item-start']	= "\t<li>\n";
 	$wrapper['item-end']	= "\t</li>\n";
-	$wrapper['maxrows'] = ceil($answer_count/$columns); //Always rounds up to nearest whole number
+	$wrapper['maxrows']	= ceil($answer_count/$columns); //Always rounds up to nearest whole number
+	$wrapper['cols']	= $columns;
 
 	switch($colstyle)
 	{
 		case 'ul':	if($columns > 1)
 				{
 					$wrapper['col-devide']	= "\n</ul>\n\n<ul$class>\n";
+					$wrapper['col-devide-last']	= "\n</ul>\n\n<ul$class_last_ul>\n";
 				}
 				break;
 
 		case 'table':	$table_cols = '';
 				for($cols = $columns ; $cols > 0 ; --$cols)
 				{
-					$table_cols .= "\t<col$class />\n";
+					if($cols == 1)
+					{
+						$table_cols .= "\t<col class=\"cols-$columns last\" />\n";
+					}
+					else
+					{
+						$table_cols .= "\t<col$class />\n";
+					}
 				};
-				$wrapper['whole-start']	= "\n<table>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n";
+
+				if($columns > 1)
+				{
+					$wrapper['col-devide']	= "\t\t\t</td>\n\n\t\t\t<td>\n";
+					$wrapper['col-devide-last']	= "\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n";
+				};
+				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n";
 				$wrapper['whole-end']	= "\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
-				$wrapper['col-devide']	= "\t\t\t</td>\n\n\t\t\t<td>\n";
 				$wrapper['item-start']	= '';
 				$wrapper['item-end']	= "<br />\n";
 	};
@@ -744,7 +810,7 @@ function setup_columns($columns, $answer_count)
 };
 
 // ==================================================================
-//QUESTION METHODS ==================================================
+// QUESTION METHODS =================================================
 
 function do_boilerplate($ia)
 {
@@ -1284,17 +1350,6 @@ function do_list_radio($ia)
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 
-// CSS columns are a problem. Really there are no perfect
-//	solutions to columns at the moment.
-// Using Tables you have semantic problems
-// Using inline or float you really only get rows
-// Using nested unordered list with the wrapping li floated,
-//	is also bad semantically
-// Breaking the unordered lists into consecutive floated lists
-//	is also bad semantically although possibly not as bad
-//	as it could be.
-// There are now
-
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
 	{
 		$dcols = $displaycols['value'];
@@ -1320,6 +1375,7 @@ function do_list_radio($ia)
 	$answer = $wrapper['whole-start'];
 
 	$rowcounter = 0;
+	$colcounter = 1;
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		if ($_SESSION[$ia[1]] == $ansrow['code'])
@@ -1340,10 +1396,18 @@ function do_list_radio($ia)
 '.$wrapper['item-end'];
 
 		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'])
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		{
-			$answer .= $wrapper['col-devide'];
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
 			$rowcounter = 0;
+			++$colcounter;
 		}
 	}
 
@@ -1378,10 +1442,18 @@ function do_list_radio($ia)
 		$inputnames[]=$thisfieldname;
 
 		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'])
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		{
-			$answer .= $wrapper['col-devide'];
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
 			$rowcounter = 0;
+			++$colcounter;
 		}
 	}
 
@@ -1401,12 +1473,22 @@ function do_list_radio($ia)
 '.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
 
+
 		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'])
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		{
-			$answer .= $wrapper['col-devide'];
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
 			$rowcounter = 0;
+			++$colcounter;
 		}
+
 	}
 	$answer .= $wrapper['whole-end'].'
 <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
@@ -1474,7 +1556,8 @@ function do_list_flexible_radio($ia)
 	$wrapper = setup_columns($dcols , $anscount);
 	$answer = $wrapper['whole-start'];
 
-	$rowcounter=0;
+	$rowcounter = 0;
+	$colcounter = 1;
 
 	if (labelset_exists($lid,$_SESSION['s_lang']))
 	{
@@ -1493,11 +1576,19 @@ function do_list_flexible_radio($ia)
 '.$wrapper['item-end'];
 
 			++$rowcounter;
-			if ($rowcounter == $wrapper['maxrows'])
+			if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 			{
-				$answer .= $wrapper['col-devide'];
+				if($colcounter == $wrapper['cols'] - 1)
+				{
+					$answer .= $wrapper['col-devide-last'];
+				}
+				else
+				{
+					$answer .= $wrapper['col-devide'];
+				}
 				$rowcounter = 0;
-			};
+				++$colcounter;
+			}
 		}
 	}
 	else 
@@ -1535,12 +1626,20 @@ function do_list_flexible_radio($ia)
 
 		$inputnames[]=$thisfieldname;
 
-		if ($rowcounter == $wrapper['maxrows'])
-		{
-			$answer .= $wrapper['col-devide'];
-			$rowcounter = 0;
-		}
 		++$rowcounter;
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+		{
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
+			$rowcounter = 0;
+			++$colcounter;
+		}
 	}
 
 	if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -1558,12 +1657,22 @@ function do_list_flexible_radio($ia)
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 
+
 		++$rowcounter;
-		if ($rowcounter == $wrapper['maxrows'])
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		{
-			$answer .= $wrapper['col-devide'];
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
 			$rowcounter = 0;
+			++$colcounter;
 		}
+
 	}
 
 	$answer .= $wrapper['whole-end'].'
@@ -1960,50 +2069,54 @@ function do_ranking($ia)
 function do_multiplechoice($ia)
 {
 	global $dbprefix, $clang, $connect;
+
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+
+	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
-		$othertext=$clang->gT("Other");
+		$othertext=$clang->gT('Other');
 	}
-	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+
+	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
 	{
-		$dcols=$displaycols['value'];
+		$dcols = $displaycols['value'];
 	}
 	else
 	{
-		$dcols=0;
+		$dcols = 1;
 	}
+
 	// Check if the max_answers attribute is set
-	$maxansw=0;
-	$callmaxanswscriptcheckbox = "";
-	$callmaxanswscriptother = "";
-	$maxanswscript = "";
-	if ($excludeothers=arraySearchByKey("exclude_all_others", $qidattributes, "attribute", ""))
+	$maxansw = 0;
+	$callmaxanswscriptcheckbox = '';
+	$callmaxanswscriptother = '';
+	$maxanswscript = '';
+	if ($excludeothers=arraySearchByKey('exclude_all_others', $qidattributes, 'attribute', ''))
 	{
-	    foreach($excludeothers as $excludeother) {
-	      $excludeallothers[]=$excludeother['value'];
-	    }
-	    $excludeallotherscript = "
+		foreach($excludeothers as $excludeother) {
+		$excludeallothers[]=$excludeother['value'];
+	}
+	$excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
 		function excludeAllOthers$ia[1](value, doconditioncheck)
 		{\n";
-		$excludeallotherscripton="";
-		$excludeallotherscriptoff="";
-	} else {
-	    $excludeallothers=array();
+		$excludeallotherscripton='';
+		$excludeallotherscriptoff='';
 	}
-	
-	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+	else
+	{
+		$excludeallothers=array();
+	}
+	if ($maxanswattr=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
 	{
 		$maxansw=$maxanswattr['value'];
 		$callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
 		$callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
-
 		$maxanswscript = "\t\t\t<script type='text/javascript'>\n"
 			. "\t\t\t<!--\n"
 			. "\t\t\t\tfunction limitmaxansw_{$ia[0]}(me)\n"
@@ -2012,145 +2125,178 @@ function do_multiplechoice($ia)
 			. "\t\t\t\t\tcount=0;\n"
 			. "\t\t\t\t\tif (max == 0) { return count; }\n";
 	}
-	$answer  = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>&nbsp;</td>\n"
-	. "\t\t\t\t\t<td align='left' class='answertext'>\n";
+
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-//    echo $ansquery;
+//	echo $ansquery;
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount();
-	if ($other == "Y") {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
-	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
-	$divider="";
-	$maxrows=0;
-	$closetable=false;
-	if ($dcols >0 && $anscount >= $dcols) //Break into columns
-	{
-		$width=sprintf("%0d", 100/$dcols);
-		$maxrows=ceil(100*($anscount/$dcols)/100); //Always rounds up to nearest whole number
-		$answer .= "<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
-		$divider=" </td>\n <td valign='top' width='$width%' nowrap='nowrap'>";
-		$closetable=true;
-	}
+
+	if ($other == 'Y') {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+
+	$wrapper = setup_columns($dcols, $anscount);
+
+	$answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount.'" />
+
+'.$wrapper['whole-start'];
+
 	$fn = 1;
-	if (!isset($multifields)) {$multifields="";}
-	$rowcounter=0;
-	$postrow="";
+	if (!isset($multifields))
+	{
+		$multifields = '';
+	}
+
+	$rowcounter = 0;
+	$colcounter = 1;
+	$postrow = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		$rowcounter++;
 		$myfname = $ia[1].$ansrow['code'];
-		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$ia[1]{$ansrow['code']}' id='answer$ia[1]{$ansrow['code']}' value='Y'";
+		$answer .= $wrapper['item-start'].'		<input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['code'].'" id="answer'.$ia[1].$ansrow['code'].'" value="Y"';
 		if (isset($_SESSION[$myfname]))
 		{
-			if ($_SESSION[$myfname] == "Y")
+			if ($_SESSION[$myfname] == 'Y')
 			{
-				$answer .= " checked='checked'";
+				$answer .= CHECKED;
 				if(in_array($ansrow['code'], $excludeallothers)) 
 				{
-				  $postrow.="\n\n<script type='text/javascript'>
-				  <!--
-				  excludeAllOthers$ia[1]('answer$ia[1]{$ansrow['code']}', 'no');
-				  -->
-				  </script>\n";
+					$postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['code']}', 'no');\n-->\n</script>\n";
 				}
 			}
 		}
 		elseif ($ansrow['default_value'] == 'Y')
 		{
-			$answer .= " checked='checked'";
+			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
 		$answer .= " onclick='";
 		if(in_array($ansrow['code'], $excludeallothers))
 		{
-		  $answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
-		  $excludeallotherscripton .= "/* SKIPPING QUESTION {$ia[1]} */\n";
-		  //$excludeallotherscripton .= "alert(value+'---'+'answer$ia[1]{$ansrow['code']}');\n";
-		  $excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['code']}') {\n"
-		            . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
-					. "\t\tthiselt.checked='';\n"
-					. "\t\tthiselt.disabled='true';\n"
-					. "\t\tif (doconditioncheck == 'yes') {\n"
-					. "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
-					. "\t\t}\n}\n";
-		  $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
-		  
-		} elseif (count($excludeallothers)>0) {
-		  $excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
-					. "\t\tthiselt.checked='';\n"
-					. "\t\tthiselt.disabled='true';\n"
-					. "\t\tif (doconditioncheck == 'yes') {\n"
-					. "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
-					. "\t\t}\n";
-		  $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+			$answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
+			$excludeallotherscripton .= "/* SKIPPING QUESTION {$ia[1]} */\n";
+//			$excludeallotherscripton .= "alert(value+'---'+'answer$ia[1]{$ansrow['code']}');\n";
+			$excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['code']}') {\n"
+						 . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
+						 . "\t\tthiselt.checked='';\n"
+						 . "\t\tthiselt.disabled='true';\n"
+						 . "\t\tif (doconditioncheck == 'yes') {\n"
+						 . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t\t}\n}\n";
+			$excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
 		}
-		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)'  /><label for='answer$ia[1]{$ansrow['code']}' class='answertext'>{$ansrow['answer']}</label><br />\n";
+		elseif (count($excludeallothers)>0)
+		{
+			$excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['code']}');\n"
+						 . "\t\tthiselt.checked='';\n"
+						 . "\t\tthiselt.disabled='true';\n"
+						 . "\t\tif (doconditioncheck == 'yes') {\n"
+						 . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t\t}\n";
+			$excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
+		}
+		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' />\n\t\t<label for=\"answer$ia[1]{$ansrow['code']}\" class=\"answertext\">{$ansrow['answer']}</label>\n";
 		// --> END NEW FEATURE - SAVE
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
-		$fn++;
-		$answer .= "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n";
-		$inputnames[]=$myfname;
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
-	}
-	if ($other == "Y")
-	{
-		$rowcounter++;
-		$myfname = $ia[1]."other";
-	    if(count($excludeallothers) > 0) 
+		++$fn;
+		$answer .= '		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="'; 
+		if (isset($_SESSION[$myfname]))
 		{
-		  $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
-		                            . "\t\tthiselt.checked='';\n"
-		                            . "\t\tthiselt.disabled='true';\n";
-		  $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
-		                            . "\t\tthiselt.value='';\n"
-		                            . "\t\tthiselt.disabled='true';\n"
-									. "\t\tif (doconditioncheck == 'yes') {\n"
-		                            . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
-									. "\t\t}\n";
-		  $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
-		  $excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
+			$answer .= $_SESSION[$myfname];
 		}
-		$answer .= "\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='{$myfname}cbox' id='answer{$myfname}cbox'";
-		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='') {$answer .= " checked='checked'";}
-		$answer .= " onclick='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />";
-		$answer .= "<label for='answer$myfname' class='answertext'>".$othertext.":</label> <input class='text' type='text' name='$myfname' id='answer$myfname'";
-		if (isset($_SESSION[$myfname])) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
-		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother."/>\n"
-		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		$answer .= "\" />\n{$wrapper['item-end']}";
+
+		$inputnames[]=$myfname;
+
+		++$rowcounter;
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+		{
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
+			$rowcounter = 0;
+			++$colcounter;
+		}
+	}
+	if ($other == 'Y')
+	{
+		$myfname = $ia[1].'other';
+		if(count($excludeallothers) > 0) 
+		{
+			$excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
+						 . "\t\tthiselt.checked='';\n"
+						 . "\t\tthiselt.disabled='true';\n";
+			$excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
+						 . "\t\tthiselt.value='';\n"
+						 . "\t\tthiselt.disabled='true';\n"
+						 . "\t\tif (doconditioncheck == 'yes') {\n"
+						 . "\t\t\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t\t}\n";
+			$excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
+			$excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
+		}
+
+		$answer .= $wrapper['item-start'].'
+		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
+
+		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
+		{
+			$answer .= CHECKED;
+		}
+		$answer .= " onclick='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
+		<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>
+		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
+		if (isset($_SESSION[$myfname]))
+		{
+			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
+		}
+		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother.' />
+		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
 		if ($maxansw > 0)
 		{
 			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
 		}
 
-		if (isset($_SESSION[$myfname])) {$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);}
+		if (isset($_SESSION[$myfname]))
+		{
+			$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);
+		}
 
-		$answer .= "' />\n";
+		$answer .= "\" />\n{$wrapper['item-end']}";
 		$inputnames[]=$myfname;
-		$anscount++;
-		if ($rowcounter==$maxrows) {$answer .= $divider; $rowcounter=0;}
+		++$anscount;
+
+		++$rowcounter;
+		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
+		{
+			if($colcounter == $wrapper['cols'] - 1)
+			{
+				$answer .= $wrapper['col-devide-last'];
+			}
+			else
+			{
+				$answer .= $wrapper['col-devide'];
+			}
+			$rowcounter = 0;
+			++$colcounter;
+		}
 	}
-	if ($closetable) $answer.="</td></tr></table>\n";
-	$answer .= "\t\t\t\t\t</td>\n";
-	if ($dcols <1)
-	{ //This just makes a single column look a bit nicer
-		$answer .= "\t\t\t\t\t<td>&nbsp;</td>\n";
-	}
-	$answer .= "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
+	$answer .= $wrapper['whole-end'];
 
 	if ( $maxansw > 0 )
 	{
@@ -2173,19 +2319,19 @@ function do_multiplechoice($ia)
 	}
 	if (count($excludeallothers)>0)
 	{
-	    $excludeallotherscript .= "
+		$excludeallotherscript .= "
 		if (document.getElementById(value).checked)
-	      {
-	      $excludeallotherscripton
-	      }
-	    else
-	      {
-	      $excludeallotherscriptoff
-	      }
-        }
+		{
+			$excludeallotherscripton
+		}
+		else
+		{
+			$excludeallotherscriptoff
+		}
+		}
 		//-->
 		</script>";
-	    $answer = $excludeallotherscript . $answer;
+		$answer = $excludeallotherscript . $answer;
 	}
 	$answer .= $postrow;
 	return array($answer, $inputnames);
@@ -4769,7 +4915,8 @@ function do_array_flexible_dual($ia)
 
 // ---------------------------------------------------------------
 
-function answer_replace($text) {
+function answer_replace($text)
+{
 	while (strpos($text, "{INSERTANS:") !== false)
 	{
 		$replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
@@ -4780,7 +4927,11 @@ function answer_replace($text) {
 	return $text;
 }
 
-function labelset_exists($labelid,$language) {
+
+// ---------------------------------------------------------------
+
+function labelset_exists($labelid,$language)
+{
 
 	$qulabel = "SELECT * FROM ".db_table_name('labels')." WHERE lid=$labelid AND language='$language'";
 	$tablabel = db_execute_assoc($qulabel) or safe_die("Couldn't check for labelset<br />$ansquery<br />".$connect->ErrorMsg()); //Checked
