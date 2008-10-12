@@ -52,4 +52,19 @@ $siteadminemail     =   'your@email.org'; // The default email address of the si
 $siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   'Your Name';      // The name of the site administrator
 
+
+/**
+ * Because columns are a tricky thing, in terms of balancing visual
+ * layout against semantic markup. The choice has been left to the
+ * system administrator or designer. (Who ever cares most.)
+ *
+ * $column_style defines how columns are rendered for survey answers.
+ * There are four possible options:
+ *     'css'   using one of the various CSS only methods for creating
+               columns (see template style sheet for details).
+ *     'ul'    using multiple floated unordered lists. (DEFAULT)
+ *     'table' using conventional tables based layout.
+ *     NULL    blocks the use of columns
+ */
+$column_style = 'css';
 ?>
