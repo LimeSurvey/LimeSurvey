@@ -36,19 +36,19 @@ function db_upgrade($oldversion) {
         modify_database("","create index [quota_idx2] on [prefix_quota] ([sid])"); echo $modifyoutput; 
         modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput; 
         modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput; 
-        modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
 	if ($oldversion < 128) {
 		//128
-	    modify_database("","update `prefix_settings_global` set `stg_value`='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
 	if ($oldversion < 129) {
 		//129
-        modify_database("","ALTER TABLE prefix_surveys ADD startdate DATETIME"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys ADD startdate date"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys ADD usestartdate char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-	    modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
     return true;
