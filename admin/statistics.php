@@ -3855,16 +3855,35 @@ if (isset($summary) && $summary)
 	                		+ $grawdata[$i-3]
 	                		+ $grawdata[$i-4];
 	                		
+	                		//special treatment for zero values
+	                		if($sumitems > 0)
+	                		{
+	                			$sumpercentage = "100.00";
+	                		}
+	                		else
+	                		{
+	                			$sumpercentage = "0";
+	                		}
+	                		//special treatment for zero values
+	                		if($TotalCompleted > 0)
+	                		{
+	                			$casepercentage = "100.00";
+	                		}
+	                		else
+	                		{
+	                			$casepercentage = "0";
+	                		}
+	                		
 	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
-	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>100.00%</strong></td>";
-	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>100.00%</strong></td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
+	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		
 	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
-	                		$statisticsoutput .= "<td width='20%' align='center' >100.00%</td>";
+	                		$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
 	                		//there has to be a whitespace within the table cell to display correctly
 	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";  
 	                		
