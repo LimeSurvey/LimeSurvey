@@ -126,10 +126,6 @@ font-weight:700;
 color:RED;
 }
 
-table.question {
-width: 100%;
-}
-
 table.question tr.array1:hover,table.question tr.array2:hover {
 background-color:#A7A9D1;
 }
