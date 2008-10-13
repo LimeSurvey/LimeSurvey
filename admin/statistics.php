@@ -51,12 +51,6 @@
 	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
-//MM: These settings will be put into config-defaults.php later
-
-//sum up data for question types "A" and "5" and show additional values 
-//like arithmetic mean and standard deviation
-$showaggregateddata = 1;
-
 //split up results to extend statistics -> NOT WORKING YET! DO NET ENABLE THIS!
 $showcombinedresults = 0;
 
