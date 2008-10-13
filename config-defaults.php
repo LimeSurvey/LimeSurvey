@@ -343,4 +343,11 @@ $relativeurl= isset($parsedurl['path']) ? $parsedurl['path'] : "";
  */
 $column_style = 'ul';
 
+
+/*
+ * When activated there are additional values like arithmetic mean and standard deviation at statistics.
+ * This only affects question types "A" (5 point array) and "5" (5 point choice).
+ * Furthermore data is aggregated to get a faster overview. 
+ */
+$showaggregateddata = 1;
 ?>
