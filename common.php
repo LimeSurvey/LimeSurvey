@@ -799,6 +799,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		"Z"=>$clang->gT("List (Flexible Labels) (Radio)"),
 		"!"=>$clang->gT("List (Dropdown)"),
 		":"=>$clang->gT("Array (Multi Flexible) (Numbers)"),
+		";"=>$clang->gT("Array (Multi Flexible) (Text)"),
 		);
         asort($qtypes);
 		if ($ReturnType == "array") {return $qtypes;}
@@ -1891,7 +1892,8 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		$arow['type'] !="C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] !="P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "J" && $arow['type'] != "K" && 
-		$arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1")
+		$arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1" &&
+		$arow['type'] != ";")
 		{
 			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
@@ -1943,7 +1945,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				break;
 			}
 		}
-		elseif ($arow['type'] == ":")
+		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 		    //MULTI FLEXI
 			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
@@ -2698,13 +2700,13 @@ function questionAttributes()
 	// help - a short explanation
 
     $qattributes[]=array("name"=>"answer_width",
-    "types"=>"ABCEF1",
+    "types"=>"ABCEF1:;",
     "help"=>"The percentage width of the answer column");
 	$qattributes[]=array("name"=>"display_columns",
 	"types"=>"LMZG",
 	"help"=>"Number of columns to display");
     $qattributes[]=array("name"=>"array_filter",
-    "types"=>"ABCEF:",
+    "types"=>"ABCEF:;",
     "help"=>"Filter an Array's Answers from a Multiple Options Question");
     $qattributes[]=array("name"=>"display_rows",
     "types"=>"TU",
@@ -2722,10 +2724,10 @@ function questionAttributes()
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
     $qattributes[]=array("name"=>"random_order",
-    "types"=>"!LMOPQKRWZFHABCE1:",
+    "types"=>"!LMOPQKRWZFHABCE1:;",
     "help"=>"Present Answers in random order");
     $qattributes[]=array("name"=>"text_input_width",
-    "types"=>"NSTUK",
+    "types"=>"NSTUK;",
     "help"=>"Width of text input box");
     $qattributes[]=array("name"=>"numbers_only",
     "types"=>"Q",

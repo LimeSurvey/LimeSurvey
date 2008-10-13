@@ -1308,7 +1308,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$qrrow['type'] == "F" || $qrrow['type'] == "H" || 
 				$qrrow['type'] == "P" || $qrrow['type'] == "R" || 
 				$qrrow['type'] == "K" || $qrrow['type'] == "1" || 
-				$qrrow['type'] == ":")
+				$qrrow['type'] == ":" || $qrrow['type'] == ";")
 			{
 			$questionsummary .= "" .
 			"<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'" .
@@ -1372,7 +1372,8 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 					   || $qrrow['type'] == "C" || $qrrow['type'] == "E" 
 					   || $qrrow['type'] == "P" || $qrrow['type'] == "R" 
 					   || $qrrow['type'] == "F" || $qrrow['type'] == "1" 
-					   || $qrrow['type'] == "H" || $qrrow['type'] == ":"))
+					   || $qrrow['type'] == "H" || $qrrow['type'] == ":"
+					   || $qrrow['type'] == ";"))
 		{
 			$questionsummary .= "<tr ><td></td><td align='left'>"
 			. "<font face='verdana' size='1' color='red'>"

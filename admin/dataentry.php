@@ -207,7 +207,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && 
 				    $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
 					$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
-					$irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" )
+					$irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" && $irow['type'] != ";")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
@@ -260,7 +260,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$insertqr .= "'" . auto_escape($_POST["d$fieldname"]) . "', \n";
 					}
 				}
-        		elseif ($irow['type'] == ":")
+        		elseif ($irow['type'] == ":" || $irow['type'] == ";")
         		{
         			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
         			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
@@ -571,7 +571,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 
 			}
-			elseif ($fnrow['type'] == ":")
+			elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
 			{
 				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} and language='{$language}' ORDER BY sortorder, answer";
 				$fnrresult = db_execute_assoc($fnrquery);
@@ -1309,7 +1309,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$i--;
 						$dataentryoutput .= "</table>\n";
 						break;
-					case ":": //ARRAY (Multi Flexi)
+					case ":": //ARRAY (Multi Flexi) (Numbers)
                     	$qidattributes=getQuestionAttributes($fnames[$i][7]);
                     	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
                     		$maxvalue=$maxvalue['value'];
@@ -1326,11 +1326,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     	} else {
                     		$stepvalue=1;
                     	}
-			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-				$minvalue=0;
-				$maxvalue=1;
-				$stepvalue=1;
-	}
+            			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+            				$minvalue=0;
+            				$maxvalue=1;
+            				$stepvalue=1;
+            			}
 					    $dataentryoutput .= "<table>\n";
 					    $thisqid=$fnames[$i][7];
 					    while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
@@ -1347,6 +1347,24 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							   $dataentryoutput .= ">$ii</option>\n";
 							}
 							$dataentryoutput .= "\t\t</font></td>\n"
+							."\t</tr>\n";
+						   $i++;
+						}
+						$i--;
+						$dataentryoutput .= "</table>\n";
+					break;
+					case ";": //ARRAY (Multi Flexi)
+					    $dataentryoutput .= "<table>\n";
+					    $thisqid=$fnames[$i][7];
+					    while (isset($fnames[$i][7]) && $fnames[$i][7] == $thisqid)
+					    {
+						   $fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
+						   $dataentryoutput .= "\t<tr>\n"
+						                     . "\t\t<td align='right' valign='top'>{$fnames[$i][6]}</font></td>\n";
+							$dataentryoutput .= "\t\t<td>\n";
+							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
+							if(!empty($idrow[$fnames[$i][0]])) {$dataentryoutput .= $idrow[$fnames[$i][0]];}
+							$dataentryoutput .= "' />\t\t</font></td>\n"
 							."\t</tr>\n";
 						   $i++;
 						}
@@ -1466,7 +1484,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			if ($irow['type'] != "Q" && $irow['type'] != "M" && $irow['type'] != "P" && $irow['type'] != "A" && 
 			    $irow['type'] != "B" && $irow['type'] != "C" && $irow['type'] != "E" && $irow['type'] != "F" && 
 				$irow['type'] != "H" && $irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "^" && 
-				$irow['type'] != "J" && $irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" )
+				$irow['type'] != "J" && $irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" &&
+				$irow['type'] != ";")
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
@@ -1521,7 +1540,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($_POST["d$fieldname"]) . "', \n";
 				}
 			}
-			elseif ($irow['type'] == ":")
+			elseif ($irow['type'] == ":" || $irow['type'] == ";")
 			{
 				$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
 				WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
@@ -1862,6 +1881,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							case "F":
 							case "H":
 							case ":":
+							case ";":
 								$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$language}'";
 								$ansresult=db_execute_assoc($ansquery);
@@ -2485,11 +2505,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                     	} else {
                     		$stepvalue=1;
                     	}
-			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-				$minvalue=0;
-				$maxvalue=1;
-				$stepvalue=1;
-	}
+            			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+            				$minvalue=0;
+            				$maxvalue=1;
+            				$stepvalue=1;
+            			}
 					    
 						$dataentryoutput .= "<table>\n";
 					    $dataentryoutput .= "  <tr><td></td>\n";
@@ -2537,6 +2557,54 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     							   $dataentryoutput .= ">$ii</option>\n";
     							}
     							$dataentryoutput .= "\t\t</select></font></td>\n";
+    						}
+							$dataentryoutput .= "\t</tr>\n";
+						   $i++;
+						}
+						$i--;
+						$dataentryoutput .= "</table>\n";
+					break;
+					case ";": //ARRAY (Multi Flexi)
+						$dataentryoutput .= "<table>\n";
+					    $dataentryoutput .= "  <tr><td></td>\n";
+					    $lidquery = "SELECT lid FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']}";
+					    $lidresult = db_execute_assoc($lidquery);
+					    while ($data=$lidresult->FetchRow())
+					    {
+						  $lid=$data['lid'];
+						}
+						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid=$lid and language='$language' ORDER BY sortorder, title";
+						$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
+					    while ($data=$lresult->FetchRow())
+					    {
+					      $dataentryoutput .= "    <th>{$data['title']}</th>\n";
+					      $labelcodes[]=$data['code'];
+					    }
+					    
+					    $dataentryoutput .= "  </tr>\n";
+					    
+						$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} and language='$language' ORDER BY sortorder, answer";
+						$mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />".htmlspecialchars($connect->ErrorMsg()));
+					    $i=0;
+						while ($mearow=$mearesult->FetchRow())
+					    {
+						    if (strpos($mearow['answer'],'|'))
+                            {
+                              $answerleft=substr($mearow['answer'],0,strpos($mearow['answer'],'|'));
+                              $answerright=substr($mearow['answer'],strpos($mearow['answer'],'|')+1);
+                            } 
+                              else 
+                              {
+                                $answerleft=$mearow['answer'];
+                                $answerright='';
+                              }
+                        	$dataentryoutput .= "\t<tr>\n";
+							$dataentryoutput .= "\t\t<td align='right'>{$answerleft}</td>\n";
+							foreach($labelcodes as $ld)
+							{
+    							$dataentryoutput .= "\t\t<td>\n";
+    							$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname{$mearow['code']}_$ld' />";
+    							$dataentryoutput .= "\t\t</font></td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
 						   $i++;

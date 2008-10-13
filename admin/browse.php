@@ -194,7 +194,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
 			}
 		}
-		elseif ($fnrow['type'] == ":")
+		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
 		{
 		   $fnrquery = "SELECT *
 		                FROM ".db_table_name('answers')." 
@@ -429,7 +429,7 @@ elseif ($subaction == "all")
 		$fnrow['type'] != "F" && $fnrow['type'] != "H" && $fnrow['type'] != "P" &&
 		$fnrow['type'] != "J" && $fnrow['type'] != "K" && $fnrow['type'] != "1" &&  
 		$fnrow['type'] != "O" && $fnrow['type'] != "R" && $fnrow['type'] != "^" && 
-		$fnrow['type'] != ":")
+		$fnrow['type'] != ":" && $fnrow['type'] != ";")
 		{
 			$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 			$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
@@ -502,7 +502,7 @@ elseif ($subaction == "all")
 				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}<br />\n[$i]", "{$fnrow['gid']}");
 			}
 		}	
-		elseif ($fnrow['type'] == ":")
+		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
 		{
 			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
 			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND

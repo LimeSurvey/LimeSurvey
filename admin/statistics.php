@@ -388,7 +388,7 @@ foreach ($filters as $flt)
 	    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
 		$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
 		$flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
-		$flt[2] != ":") //Have to make an exception for these types!
+		$flt[2] != ":" && $flt[2] != ";") //Have to make an exception for these types!
 	{
 		
 		$statisticsoutput .= "\t\t\t\t<td align='center'>";
@@ -959,8 +959,42 @@ foreach ($filters as $flt)
 		$counter=0;
 		break;
 		
-		
-		case ":":  //ARRAY (Multi Flex)
+		case ";":  //ARRAY (Multi Flex) (Text)
+		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		while ($row=$result->FetchRow())
+		{
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+			while ($frow = $fresult->FetchRow())
+			{
+			    $myfield2 = "T".$myfield . $row[0] . "_" . $frow['code'];
+			    $statisticsoutput .= "<!-- $myfield2 - ";
+			    if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+			    $statisticsoutput .= " -->\n";
+			    if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
+			    $statisticsoutput .= "\t\t\t\t<td align='center'>"
+			    ."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+			    if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+			    $statisticsoutput .= " />&nbsp;<strong>"
+			    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
+			    ."</strong><br />\n";
+			    //$statisticsoutput .= $fquery;
+				$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n";
+			    $statisticsoutput .= "\t\t\t\t<input type='text' name='{$myfield2}' value='";
+				if(isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
+				$statisticsoutput .= "' />\n\t\t\t\t</td>\n";
+				$counter2++;
+				$allfields[]=$myfield2;
+			}
+		}
+		$statisticsoutput .= "\t\t\t\t<td>\n";
+		$counter=0;
+		break;
+				
+		case ":":  //ARRAY (Multi Flex) (Numbers)
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
@@ -982,11 +1016,11 @@ foreach ($filters as $flt)
     	} else {
     		$stepvalue=1;
     	}
-	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-		$minvalue=0;
-		$maxvalue=1;
-		$stepvalue=1;
-	}
+    	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+    		$minvalue=0;
+    		$maxvalue=1;
+    		$stepvalue=1;
+    	}
 		while ($row=$result->FetchRow())
 		{
 			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
@@ -1544,11 +1578,11 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		 */
 		if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
 		    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
-			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" && $flt[2] != "1" && 
+			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" &&  
 			//deleted question types "W" and "Z" to adjust output
-			$flt[2] != "X" && $flt[2] != "K" &&
+			$flt[2] != "1" && $flt[2] != "X" && $flt[2] != "K" && $flt[2] != "5"  && 
 			//old statement: $flt[2] != "X" && $flt[2] != "W" && $flt[2] != "Z" && $flt[2] != "K" &&
-			$flt[2] != ":" && $flt[2] != "5"  && $flt[2] != "I"  && $flt[2] != "N") //Have to make an exception for these types!
+			$flt[2] != ":" && $flt[2] != "I" && $flt[2] != "N" && $flt[2] != ";") //Have to make an exception for these types!
 		{
 			if($showcrheadline == 0)
 			{
@@ -1934,7 +1968,7 @@ if (isset($_POST['display']) && $_POST['display'])
 			}
 			
 			//M - Multiple Options 
-			elseif (substr($pv, 0, 1) == "M")
+			elseif ($firstletter == "M")
 			{
 				//create a list out of the $pv array
 				list($lsid, $lgid, $lqid) = explode("X", $pv);
@@ -1960,7 +1994,7 @@ if (isset($_POST['display']) && $_POST['display'])
 			
 			//N - Numerical Input 
 			//K - Multiple Numerical Input 
-			elseif (substr($pv, 0, 1) == "N" || substr($pv, 0, 1) == "K")
+			elseif ($firstletter == "N" || $firstletter == "K")
 			{
 				//value greater than
 				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
@@ -1994,13 +2028,13 @@ if (isset($_POST['display']) && $_POST['display'])
 			
 			//T - Long Free Text 
 			//Q - Multiple Short Text 
-			elseif ((substr($pv, 0, 1) == "T" || substr($pv, 0, 1) == "Q" ) && $_POST[$pv] != "")
+			elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
 			{
                 $selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '%".$_POST[$pv]."%'";
 			}
 			
 			//D - Date 
-			elseif (substr($pv, 0, 1) == "D" && $_POST[$pv] != "")
+			elseif ($firstletter == "D" && $_POST[$pv] != "")
 			{
 				//Date equals
 				if (substr($pv, -1, 1) == "=")
@@ -2292,11 +2326,11 @@ if (isset($summary) && $summary)
 		if ($process_status < 100) $process_status++;		
 		$prb->moveStep($process_status);
 		
-		
+		$firstletter = substr($rt, 0, 1);
 		// 1. Get answers for question ##############################################################
 		
 		//M - Multiple Options, therefore multiple fields
-		if (substr($rt, 0, 1) == "M") 
+		if ($firstletter == "M") 
 		{
 			//get SGQ data
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -2341,13 +2375,25 @@ if (isset($summary) && $summary)
 		
 		//S - Short Free Text 
 		//T - Long Free Text 		
-		elseif (substr($rt, 0, 1) == "T" || substr($rt, 0, 1) == "S") //Short and long text
+		elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
 		{
+			$fieldmap=createFieldMap($surveyid, "full");
+			
+			//search for key
+			$fielddata=arraySearchByKey(substr($rt, 1, strlen($rt)), $fieldmap, "fieldname", 1);
+			
+			//get SGQA IDs
+			$qsid=$fielddata['sid'];
+			$qgid=$fielddata['gid'];
+			$qqid=$fielddata['qid'];
+			
+			list($qanswer, $qlid)=explode("_", $fielddata['aid']);
 			//get SGQ data
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+			//list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+			
 			
 			//get question data
-			$nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+			$nquery = "SELECT title, type, question, other, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
 			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
 			
 			//loop through question data
@@ -2356,7 +2402,26 @@ if (isset($summary) && $summary)
 				$qtitle=strip_tags($nrow[0]); 
 				$qtype=$nrow[1];
 				$qquestion=strip_tags($nrow[2]);
+				$nlid=$nrow[4];
 			}			
+			
+			if(!empty($qanswer)) {
+	  		  	$nquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language = '{$language}' AND code='$qanswer' ORDER BY sortorder, answer";
+			  	$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question answer<br />$nquery<br />".$connect->ErrorMsg());
+    			while ($nrow=$nresult->FetchRow())
+    			{
+    			    $qtitle .= " [".$nrow['answer']."]";
+    			}
+			}
+
+			if(!empty($qlid)) {
+			    $nquery = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$nlid} AND code='$qlid' AND language='{$language}' ORDER BY sortorder, code";
+				$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get labelset for text question<br />$nquery<br />".$connect->ErrorMsg());
+				while ($nrow = $nresult->FetchRow())
+				{
+    			    $qtitle .= " [".$nrow['title']."]";
+				}
+			}
 			
 			$mfield=substr($rt, 1, strlen($rt));
 			
@@ -2370,7 +2435,7 @@ if (isset($summary) && $summary)
 		
 		
 		//Multiple short text
-		elseif (substr($rt, 0, 1) == "Q") 
+		elseif ($firstletter == "Q") 
 		{
 			//get SGQ data
 			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -2429,7 +2494,7 @@ if (isset($summary) && $summary)
 		
 		
 		//RANKING OPTION THEREFORE CONFUSING
-		elseif (substr($rt, 0, 1) == "R") 
+		elseif ($firstletter == "R") 
 		{
 			//getting the needed IDs somehow
 			$lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
@@ -2462,7 +2527,7 @@ if (isset($summary) && $summary)
 		
 		//N = numerical input
 		//K = multiple numerical input
-		elseif (substr($rt, 0, 1) == "N" || substr($rt, 0, 1) == "K") //NUMERICAL TYPE
+		elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
 		{
 			//check last character, greater/less/equals don't need special treatment
 			if (substr($rt, -1) == "G" ||  substr($rt, -1) == "L" || substr($rt, -1) == "=")
@@ -2475,7 +2540,7 @@ if (isset($summary) && $summary)
 		        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 				
 		        //multiple numerical input
-			    if(substr($rt, 0, 1) == "K")
+			    if($firstletter == "K")
 			    { 
 			    	// This is a multiple numerical question so we need to strip of the answer id to find the question title
                     $tmpqid=substr($qqid, 0, strlen($qqid)-1);
@@ -2808,7 +2873,7 @@ if (isset($summary) && $summary)
 		}	//end else-if -> multiple numerical types
 		
 		//is there some "id", "datestamp" or "D" within the type?
- 		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || (substr($rt, 0, 1) == "D"))
+ 		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D"))
 		{
 			//don't do anything
 		}
@@ -2942,7 +3007,31 @@ if (isset($summary) && $summary)
 				break;
 				
 				
-				case ":": //Array (Multiple Flexi)
+				case ";": //Array (Multi Flexi) (Text)
+				list($qacode, $licode)=explode("_", $qanswer);
+				
+				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+				//echo $qquery."<br />";
+				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+				
+				while ($qrow=$qresult->FetchRow())
+				{
+				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+					$fresult = db_execute_assoc($fquery);
+					while ($frow=$fresult->FetchRow())
+					{
+						$alist[]=array($frow['code'], $frow['title']);
+						$ltext=$frow['title'];
+					}
+					$atext=$qrow[1];
+				}
+
+				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
+				$qtitle .= "($qanswer)";
+				break;
+
+
+				case ":": //Array (Multiple Flexi) (Numbers)
             	$qidattributes=getQuestionAttributes($qiqid);
             	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
             		$maxvalue=$maxvalue['value'];
@@ -3227,7 +3316,8 @@ if (isset($summary) && $summary)
 					 * S = short free text
 					 * Q = multiple short text
 					 */
-					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q")
+
+					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q" || $qtype == ";")
 					{
 						//free text answers
 						if($al[0]=="Answers")

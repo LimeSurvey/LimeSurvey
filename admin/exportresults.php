@@ -76,7 +76,7 @@ if (!$style)
 				}
 			}
 		}
-		elseif ($rows['type']==":")
+		elseif ($rows['type']==":" || $rows['type'] == ";")
 		{
 			$detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
 			$detailresult=db_execute_assoc($detailquery) or die("Couldn't find detailfields<br />$detailquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -656,7 +656,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"$qname";}
 			else {$firstline .= "$qname";}
 			if (isset($faid)) {$firstline .= " [{$faid}]"; $faid="";}
-			if ($ftype == ":")
+			if ($ftype == ":" || $ftype == ";")
 			{
 			  
 			}
@@ -768,6 +768,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				}
 				break;
 				case ":":
+				case ";":
 				    list($faid, $fcode) = explode("_", $faid);
 				    if ($answers == "short") {
 					  $fquest .= " [$faid] [$fcode]";

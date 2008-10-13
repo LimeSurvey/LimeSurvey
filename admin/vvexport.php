@@ -42,22 +42,29 @@ if (!$subaction == "export")
 
 	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
     	."<table align='center' class='outlinetable'>"
-        ."<tr><th colspan='2'>".$clang->gT("Export a VV survey file")."</th></tr>"
         ."<tr>"
-        ."<td align='right'>".$clang->gT("Export Survey").":</td>"
-        ."<td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
+		." <th colspan='2'>".$clang->gT("Export a VV survey file")."</th>"
+		."</tr>"
+        ."<tr>"
+        ." <td align='right'>".$clang->gT("Export Survey").":</td>"
+        ." <td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
         ."</tr>"
-	."<tr>"
-	."<td align='right'>".$clang->gT("Filter incomplete answers")." </td>"
-	."<td><select name='filterinc'>\n"
-	."\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-	."\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
-	."</select></td>\n"
+    	."<tr>"
+	    ." <td align='right'>".$clang->gT("Filter incomplete answers")." </td>"
+	    ." <td><select name='filterinc'>\n"
+		."  <option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
+		."  <option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+		." </select></td>\n"
+		."</tr>"
+		."<tr>"
+		." <td align='right'>".$clang->gT("File Extension")." </td>\n"
+		." <td><input type='text' name='extension' size='3' value='csv'></td>\n"
+		."</tr>\n"
         ."<tr>"
-        ."<td colspan='2' align='center'>"
-        ."<input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;"
-        ."<input type='hidden' name='subaction' value='export' />"
-        ."</td>"
+        ." <td colspan='2' align='center'>"
+        ."  <input type='submit' value='".$clang->gT("Export Responses")."' />&nbsp;"
+        ."  <input type='hidden' name='subaction' value='export' />"
+        ." </td>"
         ."</tr>"
         ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
         ."</table>";
@@ -65,7 +72,8 @@ if (!$subaction == "export")
 elseif (isset($surveyid) && $surveyid)
 {
 	//Export is happening
-	header("Content-Disposition: attachment; filename=vvexport_$surveyid.csv");
+	$extension=sanitize_paranoid_string(returnglobal('extension'));
+	header("Content-Disposition: attachment; filename=vvexport_$surveyid.".$extension);
 	header("Content-type: text/comma-separated-values; charset=UTF-8");
 	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	header("Pragma: cache");
@@ -126,6 +134,7 @@ elseif (isset($surveyid) && $surveyid)
 			// for us.
 			$value=preg_replace('/^"/','{quote}',$value);
 			// yay!  that nasty soab won't hurt us now!
+			if($field == "submitdate" && !$value) {$value = "NULL";}
 			$sun[]=$value;
 		}
 		$beach=implode($s, $sun);

@@ -160,7 +160,10 @@ if (isset($_SESSION['s_lang']))
 	{
 		$fnames[] = array("token", "token", $clang->gT("Token ID"));
 	}
-	$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
+	//The "submitdate" field shouldn't show. If there is a datestamp being recorded, that's covered in "datestamp".
+	//The submitdate field is an internal field and always filled out, but sometimes is not actually the date the 
+	//survey is submitted (in anonymous surveys, the datestamp is always unix epoch)
+	//$fnames[] = array("submitdate", "submitdate", $clang->gT("Date Submitted"));
 	if ($datestamp == "Y") //add datetime to list if survey is datestamped
 	{
 		$fnames[] = array("datestamp", "datestamp", $clang->gT("Date Stamp"));

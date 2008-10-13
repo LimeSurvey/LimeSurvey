@@ -879,7 +879,7 @@ function questionjavascript($type, $qattributes)
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
     . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
     . "\t\t}\n"
-    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':')\n"
+    . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')\n"
     . "\t\t{\n"
     . "\t\tdocument.getElementById('LabelSets').style.display = '';\n"
     . "\t\tif (document.getElementById('LabelSets1'))  {document.getElementById('LabelSets1').style.display = 'none';}\n"    

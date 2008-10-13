@@ -1970,7 +1970,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				}
 			}
 		}
-        elseif ($arow['type'] == ":")   //Multi Flexi
+        elseif ($arow['type'] == ":" || $arow['type'] == ";")   //Multi Flexi
 		{
 // Optimized Query
 			$abquery = "SELECT ".db_table_name('answers').".code, ".db_table_name('questions').".other\n"

@@ -462,7 +462,8 @@ if(isset($surveyid))
 		// These are the questions types that use labelsets and 
 		// therefore we set the label set of all other question types to 0
 		if (($_POST['type']!= "F") && ($_POST['type']!= "H") && ($_POST['type']!= "W") &&
-		    ($_POST['type']!= "Z") && ($_POST['type']!= "1") && ($_POST['type']!= ":"))
+		    ($_POST['type']!= "Z") && ($_POST['type']!= "1") && ($_POST['type']!= ":") &&
+			($_POST['type']!= ";"))
 		{
 			$_POST['lid']=0;
 		}

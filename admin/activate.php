@@ -68,7 +68,8 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	//  # "R" -> RANKING
 	//  # "U" -> FILE CSV MORE
 	//  # "I" -> FILE CSV ONE
-	//  # ":" -> Multi Flexi Array Type
+	//  # ":" -> Array Multi Flexi Numbers
+	//  # ";" -> Array Multi Flexi Text
 	//  # "1" -> MULTI SCALE
 	
 
@@ -314,7 +315,8 @@ else
 		$arow['type'] != "C" && $arow['type'] != "E" && $arow['type'] != "F" &&
 		$arow['type'] != "H" && $arow['type'] != "P" && $arow['type'] != "R" &&
 		$arow['type'] != "Q" && $arow['type'] != "^" && $arow['type'] != "J" &&
-		$arow['type'] != "K" && $arow['type'] != ":" && $arow['type'] != "1")
+		$arow['type'] != "K" && $arow['type'] != ":" && $arow['type'] != ";" &&
+		$arow['type'] != "1")
 		{
 			$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}`";
 			switch($arow['type'])
@@ -388,7 +390,7 @@ else
 				}
 			}
 		}
-		elseif ($arow['type'] == ":")
+		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 			//MULTI ENTRY
 			$abquery = "SELECT a.*, q.other FROM {$dbprefix}answers as a, {$dbprefix}questions as q"
