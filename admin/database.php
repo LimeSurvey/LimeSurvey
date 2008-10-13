@@ -1133,6 +1133,10 @@ if(isset($surveyid))
 		{
 			$_POST['expires']='1980-01-01';
 		}
+		if (trim($_POST['startdate'])=="")
+		{
+			$_POST['startdate']='1980-01-01';
+		}
 		CleanLanguagesFromSurvey($postsid,$_POST['languageids']);
 		FixLanguageConsistency($postsid,$_POST['languageids']);
 		
