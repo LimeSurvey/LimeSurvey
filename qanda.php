@@ -668,7 +668,7 @@ define('SELECTED' , ' selected="selected"' , true);
  * The following prepares and defines the 'COLSTYLE' constant which
  * dictates how columns are to be marked up for list type questions.
  *
- * $column_style is initialised at the end of config.php.
+ * $column_style is initialised at the end of config-defaults.php
  */
 $column_style = isset($column_style)?$column_style:'ul';
 if($column_style  != ('css' || 'ul' || 'table' || null ))
@@ -699,41 +699,43 @@ function setup_columns($columns, $answer_count)
  *                                option
  *    $wrapper['item-end']      = closing wrapper tag for individual
  *                                option
- *    $wrapper['maxrows']       = maximum number of rows in each column
- *    $wrapper['cols']          = Number of columns to be inserted (and
- *                                checked against)
+ *    $wrapper['maxrows']       = maximum number of rows in each
+ *                                column
+ *    $wrapper['cols']          = Number of columns to be inserted
+ *                                (and checked against)
  *
- * It also expect the constant COLSTYLE which defines how columns should
+ * It also expect the constant COLSTYLE which sets how columns should
  * be rendered.
  *
- * COLSTYLE is defined above.
+ * COLSTYLE is defined 30 lines above.
  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  * Columns are a problem.
  * Really there is no perfect solution to columns at the moment.
  *
  * -  Using Tables is problematic semanticly.
- * -  Using inline or float the order of the answers flows
+ * -  Using inline or float, the order of the answers flows
  *    horizontally, not vertically so that's not ideal visually
  * -  Using nested unordered list with the first level of <LI>s
  *    floated is the same as using tables and so is bad semantically
  *    for the same reason tables are bad
  * -  Breaking the unordered lists into consecutive floated unordered
- *    lists is not great semantically but probably not as bad
- *    semanically as using tables.
+ *    lists is not great semantically but probably not as bad as
+ *    using tables.
  *
  * Because I haven't been able to decide which option is the least
  * bad, I have handed over that responsibility to the admin who sets
  * LimeSurvey up on their server.
  *
  * There are four options:
- *     'css'   using one of the various CSS only methods for splicing.
+ *     'css'   using one of the various CSS only methods for
+ *             rendering columns.
  *     'ul'    using multiple floated unordered lists. (DEFAULT)
  *     'table' using conventional tables based layout.
  *     NULL    blocks the use of columns
  *
- * 'ul' is the default because it's the best possible compromise between
- * semantic and visual layout.
+ * 'ul' is the default because it's the best possible compromise
+ * between semantic and visual layout.
  */
 
 	$colstyle = COLSTYLE;
