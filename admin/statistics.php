@@ -434,9 +434,7 @@ foreach ($filters as $flt)
 	
 	//let's switch through the question type for each question
 	switch ($flt[2])
-	{
-		//XXX question type K not tested!
-	
+	{	
 		case "K": // Multiple Numerical
 		$statisticsoutput .= "\t\t\t\t\t</tr>\n\t\t\t\t\t<tr>\n";
 		
@@ -1062,8 +1060,6 @@ foreach ($filters as $flt)
 		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
 		
-		//XXX have to fix layout problem here, too
-		
 		//check all the answers
 		while ($row=$result->FetchRow())
 		{
@@ -1076,7 +1072,6 @@ foreach ($filters as $flt)
 			
 			if ($counter2 == 4) 
 			{
-				//XXX echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
 				$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
 				$counter2=0;
 			}
@@ -1254,187 +1249,168 @@ foreach ($filters as $flt)
 		
 		
 		
-		/*
-		 * MM: Let's check how this works:
-		 * 1. Two separated question Q1/Q2 which are treated separately
-		 * 2. Looping through labels for each question Q1L1 - Q1L2, ...
-		 * 3. Create headline and lists for each Q1L1/Q1L2, ...
-		 */
 		
         case "1": // MULTI SCALE
         $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
         
         //special dual scale counter
-        $counter2=0;       
+        $counter2=0;  
         
-        //two arrays to temporary save questions and answers
-        //$q_array1 = array();
-        //$q_array2 = array();
-        
-        //$a_array1 = array();
-        //$a_array2 = array();
-        
-        //multi/dual scale is like two mixed questions of the same type so we loop twice
-        for ($i=0; $i<=1; $i++) 
-        {
-        	//get answers
-            $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-            $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-            
-            
-            //loop through answers
-            while ($row=$result->FetchRow())
+        //get answers
+        $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+        $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+                        
+        //loop through answers
+         while ($row=$result->FetchRow())
+         {
+         	
+         	//----------------- LABEL 1 ---------------------
+          	//myfield2 = answer code.
+            $myfield2 = $myfield . "$row[0]#0";
+                
+            //3 lines of debugging output
+            $statisticsoutput .= "<!-- $myfield2 - ";
+            if (isset($_POST[$myfield2])) 
             {
-            	//myfield2 = answer code. there are two answers to this question type (->add $i)
-                $myfield2 = $myfield . "$row[0]#".$i;
+            	$statisticsoutput .= $_POST[$myfield2];
+            }
                 
-                //3 lines of debugging output
-                $statisticsoutput .= "<!-- $myfield2 - ";
-                if (isset($_POST[$myfield2])) 
-                {
-                	$statisticsoutput .= $_POST[$myfield2];
-                }
+            $statisticsoutput .= " -->\n";
                 
-                $statisticsoutput .= " -->\n";
+            //some layout adaptions -> new line after 4 entries
+            if ($counter2 == 4) 
+            {
+            	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+              	$counter2=0;
+            }
                 
-                //some layout adaptions -> new line after 4 entries
-                if ($counter2 == 4) 
-                {
-                	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
-                	$counter2=0;
-                }
+            //output checkbox and question/label text
+            $statisticsoutput .= "\t\t\t\t<td align='center'>";
+            $statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
                 
-                //output checkbox and question/label text
-                $statisticsoutput .= "\t\t\t\t<td align='center'>";
-                $statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
-                
-                //pre-check
-                if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
-                $statisticsoutput .= " />&nbsp;<strong>".showSpeaker($flt[3]." ".$clang->gT("Label")." ".(1+$i)." (".$clang->gT("Item")." ".$row[0].")")."</strong><br />\n";
-
-                
-                /*
-                 * flt[3] = question
-                 * $row[0] = item number --> XXX this has to be considered!
-                 * $frow['code'] = itemcode
-                 * $frow['title'] = itemtitle
-                 */
-           		if($i == 0)
-               	{
-               		//array_push($q_array1, $flt[3]." - ".$row[0]);
-               	}
-               	else
-               	{
-               		//array_push($q_array2, $flt[3]." - ".$row[0]);
-               	}
-                
-                 /* get labels. remember that there are two labels used -> add $i 
-                 * $flt[6] contains the "normal" label-id and fltd[7] = second label
-                 * 
-                 * table "labels" contains
-                 * - lid
-                 * - code
-                 * - title
-                 * - sortorder
-                 * - language
-                 */
-                 
-                $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6+$i]} AND language='{$language}' ORDER BY sortorder, code";
-                $fresult = db_execute_assoc($fquery);
-                
-                //this is for debugging only
-                //$statisticsoutput .= $fquery;
-                
-                $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{$i}[]' multiple='multiple'>\n";
-                
-                //for every item which should be rated we have two filter forms (remember: we have 2 labesets)
-                //if you want to rate 3 items you'll have 6 (3*2) forms
-                while ($frow = $fresult->FetchRow())
-                {
-                    $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
-                    
-                    //pre-check
-                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                    
-                    $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
-                	if($i == 0)
-                	{
-                		//array_push($a_array1, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
-                	}
-                	else
-                	{
-                		//array_push($a_array2, "CODE: ".$frow['code']." - TITLE: ".strip_tags($frow['title']." - ITEM: ".$row[0]));
-                	}
-                    
-                }
-                
-                $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
-                $counter2++;
-                $allfields[]=$myfield2;
-                
+            //pre-check
+            if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
+            
+            //get label text
+            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
+            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$query<br />".$connect->ErrorMsg());
+         
+            //get title
+            while ($lrow=$lresult->FetchRow())
+            {
+            	$labeltitle = $lrow[0];
             }
             
-            $statisticsoutput .= "\t\t\t\t<td>\n";
+            $statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle)
+			."</strong><br />\n";
+			
+            /* get labels
+             * table "labels" contains
+             * - lid
+             * - code
+             * - title
+             * - sortorder
+             * - language
+             */
+                 
+            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+            $fresult = db_execute_assoc($fquery);
+                
+            //this is for debugging only
+            //$statisticsoutput .= $fquery;
+                
+            $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{0}[]' multiple='multiple'>\n";
+                
+            //list answers
+            while ($frow = $fresult->FetchRow())
+            {
+                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+                    
+                //pre-check
+                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+                    
+                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                
+            }
+                
+            $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+            $counter2++;
+            $allfields[]=$myfield2;  
+
+                
+                
+                
+             //----------------- LABEL 2 ---------------------           
+             
+            //myfield2 = answer code
+            $myfield2 = $myfield . "$row[0]#1";
+              
+            //3 lines of debugging output
+            $statisticsoutput .= "<!-- $myfield2 - ";
+            if (isset($_POST[$myfield2])) 
+            {
+            	$statisticsoutput .= $_POST[$myfield2];
+            }
+                
+            $statisticsoutput .= " -->\n";
+                
+            //some layout adaptions -> new line after 4 entries
+            if ($counter2 == 4) 
+            {
+            	$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; 
+              	$counter2=0;
+            }
+                
+            //output checkbox and question/label text
+            $statisticsoutput .= "\t\t\t\t<td align='center'>";
+            $statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+        
+            //pre-check
+            if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
             
-        }
-        
-        /*
-         * anzahl elemente in antwortarray
-         * A1 - L1
-         * A1 - L2
-         * A2 - L1
-         * A2 - L2
-         * A3 - L1
-         * A3 - L2
-         */
-        
-        /*$numberofquestions = count($q_array1);
-        $numberofanswers = count($a_array1);
-        
-        if($numberofanswers > 0 && $numberofquestions > 0)
-        {
-        	$answersperquestion = $numberofanswers / $numberofquestions;
-        }
-        else
-        {
-        	$answersperquestion = 0;
-        }
-        
-        
-        echo "NOA: $numberofanswers - NOQ: $numberofquestions - APQ: $answersperquestion<br><br>";
-       $x = 0;
-       $i = 0;
-        while($x < $numberofquestions)
-        {
-         	
-         	
-         	if($i == 0)
-         	{
-        		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
-        	
-		        for($j = 0; $j < $answersperquestion; $j++)
-		        {
-		        	echo "A$j: ".$a_array1[$j]."<br />";
-		        }
-		        
-		        $i = 1;
-		        echo "<br />";
-         	}
-         	else
-         	{
-         		echo "Q$i: <strong>".$q_array1[$i]."</strong><br />";
-         		
-         		for($j = 0; $j < $answersperquestion; $j++)
-		        {
-		        	echo "A$j: ".$a_array1[$j]."<br />";
-		        }
-		        
-		        $i = 0;
-		        echo "<br />";
-         	}
-	   $x++;     
-       }*/
-        
+            //get label text
+            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
+            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$query<br />".$connect->ErrorMsg());
+         
+            //get title
+            while($lrow2=$lresult2->FetchRow())
+            {
+            	$labeltitle2 = $lrow2[0];
+            }
+            
+            $statisticsoutput .= " />&nbsp;<strong>"
+			.showSpeaker($niceqtext." [".str_replace("'", "`", $row[1])."] - ".$clang->gT("Label").": ".$labeltitle2)
+			."</strong><br />\n";
+                 
+            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[7]} AND language='{$language}' ORDER BY sortorder, code";
+            $fresult = db_execute_assoc($fquery);
+                
+            //this is for debugging only
+            //$statisticsoutput .= $fquery;
+                
+            $statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}#{1}[]' multiple='multiple'>\n";
+                
+            //list answers
+            while ($frow = $fresult->FetchRow())
+            {
+                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+                    
+                //pre-check
+                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+                   
+                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                
+            }
+                
+            $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+            $counter2++;
+            $allfields[]=$myfield2;
+            
+        }	//end WHILE -> loop through all answers
+            
+        $statisticsoutput .= "\t\t\t\t<td>\n";            
+               
         
         $counter=0;
         break;
