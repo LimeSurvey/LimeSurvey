@@ -1287,8 +1287,8 @@ if ($subaction == "remind" &&
 {
 	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Email Reminder").":</strong></td></tr>\n"
-	."\t<tr><td colspan='2' align='center'>\n";
+		.$clang->gT("Email Reminder").":</strong></td></tr>\n"
+		."\t<tr><td colspan='2' align='center'>\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		//GET SURVEY DETAILS
@@ -1298,108 +1298,108 @@ if ($subaction == "remind" &&
 		array_unshift($surveylangs,$baselang);
 
 		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
-        foreach ($surveylangs as $language)
-	    {
+		foreach ($surveylangs as $language)
+		{
 			//GET SURVEY DETAILS
 			$thissurvey=getSurveyInfo($surveyid,$language);
 			if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}"));}
-	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
-	    	if ($language==$baselang) 
-	        {
-	            $tokenoutput .= "(".$clang->gT("Base Language").")";
-	        }    
-	        $tokenoutput .= "</h2><table class='table2columns' >\n"
-			."\n"
-			."\t<tr>\n"
-			."\t\t<td align='right' width='150'><strong>".$clang->gT("From").":</strong></td>\n"
-			."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></td>\n";
+			$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
+			if ($language==$baselang) 
+			{
+				$tokenoutput .= "(".$clang->gT("Base Language").")";
+			}    
+			$tokenoutput .= "</h2><table class='table2columns' >\n"
+				."\n"
+				."\t<tr>\n"
+				."\t\t<td align='right' width='150'><strong>".$clang->gT("From").":</strong></td>\n"
+				."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
+				."\t</tr>\n"
+				."\t<tr>\n"
+				."\t\t<td align='right' width='150'><strong>".$clang->gT("Subject").":</strong></td>\n";
 
-            $fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
-            $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
-            $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
-            $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
-    
-            $subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
-            $textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
+			$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+			$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+			$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+			$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+			$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+			$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+			$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+
+			$subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
+			$textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
 
 			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value=\"$subject\" /></td>\n"
-			."\t</tr>\n";
-	
+				."\t</tr>\n";
+
 			$tokenoutput .= "\t<tr>\n"
-			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Message").":</strong></td>\n"
-			."\t\t<td>\n"
-			."\t\t\t<textarea name='message_$language' id='message_$language' rows='20' cols='80' >\n";
-	
+				."\t\t<td align='right' width='150' valign='top'><strong>"
+				.$clang->gT("Message").":</strong></td>\n"
+				."\t\t<td>\n"
+				."\t\t\t<textarea name='message_$language' id='message_$language' rows='20' cols='80' >\n";
+
 			$tokenoutput .= $textarea;
-	
+
 			$tokenoutput .= "\t\t\t</textarea>\n"
-			. getEditor("email-rem","message_$language","[".$clang->gT("Reminder Email:", "js")."](".$language.")",$surveyid,'','',$action)
-			."\t\t</td>\n"
-			."\t</tr>\n"
-			."</table></div>";
+				. getEditor("email-rem","message_$language","[".$clang->gT("Reminder Email:", "js")."](".$language.")",$surveyid,'','',$action)
+				."\t\t</td>\n"
+				."\t</tr>\n"
+				."</table></div>";
 		}	
 
-        $tokenoutput .= "</div><table class='table2columns'>\n";
+		$tokenoutput .= "</div><table class='table2columns'>\n";
 		if (!isset($tokenid))
 		{
 			$tokenoutput .= "\t<tr>\n"
-			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Start at Token ID:")."</strong></td>\n"
-			."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
-			."\t</tr>\n";
+				."\t\t<td align='right' width='150' valign='top'><strong>"
+				.$clang->gT("Start at Token ID:")."</strong></td>\n"
+				."\t\t<td><input type='text' size='5' name='last_tid' /></td>\n"
+				."\t</tr>\n";
 		}
 		else
 		{
 			$tokenoutput .= "\t<tr>\n"
-			."\t\t<td align='right' width='150' valign='top'><strong>"
-			.$clang->gT("Stop at Token ID:").":&nbsp;</strong></font></td>\n"
-			."\t\t<td>{$tokenid}</font></td>\n"
-			."\t</tr>\n";
+				."\t\t<td align='right' width='150' valign='top'><strong>"
+				.$clang->gT("Stop at Token ID:").":&nbsp;</strong></font></td>\n"
+				."\t\t<td>{$tokenid}</font></td>\n"
+				."\t</tr>\n";
 		}		
 		$tokenoutput .="\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
-		.$clang->gT("Bypass token with failing email addresses").":&nbsp;</strong></td>\n"
-		."\t\t\t<td><select name='bypassbademails'>\n"
-		."\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
-		."\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
-		."\t\t\t</select></td></tr>\n"
-		. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
-		. $clang->gT("Min time between reminders").":&nbsp;</strong>\n"
-		."\t\t\t<td><input type='text' value='' name='minreminderdelay' id='minreminderdelay' /></td></tr>\n"
-		. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
-		. $clang->gT("Max reminders").":&nbsp;</strong>\n"
-		. "\t\t\t<td><input type='text' value='' name='maxremindercount' id='maxremindercount' /></td></tr>\n"
-		. "\t\t<tr><td align='right' width='150' valign='top'>&nbsp;</td>\n"
-		. "\t\t<td>\n"
-		."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
-		."\t<input type='hidden' name='ok' value='absolutely' />\n"
-		."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
-		."\t<input type='hidden' name='subaction' value='remind' />\n"
-		."\t\t</td>\n"
-		."\t</tr>\n";
+			.$clang->gT("Bypass token with failing email addresses").":&nbsp;</strong></td>\n"
+			."\t\t\t<td><select name='bypassbademails'>\n"
+			."\t\t\t\t<option value='Y'>".$clang->gT("Yes")."</option>\n"
+			."\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
+			."\t\t\t</select></td></tr>\n"
+			. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
+			. $clang->gT("Min time between reminders").":&nbsp;</strong>\n"
+			."\t\t\t<td><input type='text' value='' name='minreminderdelay' id='minreminderdelay' /></td></tr>\n"
+			. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
+			. $clang->gT("Max reminders").":&nbsp;</strong>\n"
+			. "\t\t\t<td><input type='text' value='' name='maxremindercount' id='maxremindercount' /></td></tr>\n"
+			. "\t\t<tr><td align='right' width='150' valign='top'>&nbsp;</td>\n"
+			. "\t\t<td>\n"
+			."\t\t\t<input type='submit' value='".$clang->gT("Send Reminders")."' />\n"
+			."\t<input type='hidden' name='ok' value='absolutely' />\n"
+			."\t<input type='hidden' name='sid' value='{$_GET['sid']}' />\n"
+			."\t<input type='hidden' name='subaction' value='remind' />\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
 		if (isset($tokenid)) {$tokenoutput .= "\t<input type='hidden' name='tid' value='{$tokenid}' />\n";}
 		$tokenoutput .= "\t</table>\n"
-		."</form>\n";
+			."</form>\n";
 	}
 	else
 	{
 		$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
-		
+
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselanguage);
-		
+
 		foreach ($surveylangs as $language)
-		    {
+		{
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-			}
+		}
 
 		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
@@ -1414,8 +1414,8 @@ if ($subaction == "remind" &&
 		}
 
 		if (isset($_POST['maxremindercount']) &&
-			$_POST['maxremindercount'] != '' &&
-			intval($_POST['maxremindercount']) != 0)
+				$_POST['maxremindercount'] != '' &&
+				intval($_POST['maxremindercount']) != 0)
 		{
 			$SQLremindercountcondition = " AND remindercount < ".intval($_POST['maxremindercount']);
 		}
@@ -1425,14 +1425,14 @@ if ($subaction == "remind" &&
 		}
 
 		if (isset($_POST['minreminderdelay']) && 
-			$_POST['minreminderdelay'] != '' &&
-			intval($_POST['minreminderdelay']) != 0)
+				$_POST['minreminderdelay'] != '' &&
+				intval($_POST['minreminderdelay']) != 0)
 		{
 			// $_POST['minreminderdelay'] in days (86400 seconds per day)
 			$compareddate = date_shift(
-				date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
-				"Y-m-d H:i",
-				$timeadjust);
+					date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
+					"Y-m-d H:i",
+					$timeadjust);
 			$SQLreminderdelaycondition = " AND remindersent < '".$compareddate."'";
 		}
 		else
@@ -1460,8 +1460,8 @@ if ($subaction == "remind" &&
 		$emresult = db_select_limit_assoc($emquery, $maxemails) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
 		$emcount = $emresult->RecordCount();
 		$tokenoutput .= "<table width='500' align='center' >\n"
-		."\t<tr>\n"
-		."\t\t<td><font size='1'>\n";
+			."\t<tr>\n"
+			."\t\t<td><font size='1'>\n";
 
 
 
@@ -1497,88 +1497,89 @@ if ($subaction == "remind" &&
 
 				if ($ishtml === false)
 				{
-          if ( $modrewrite ) 
-          {
-            $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
-          } 
-          else 
-          {
-					$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
-				}
-				}
-				else
-				{
-          if ( $modrewrite ) 
-          {
-            $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
-          } 
-				else
-				{
-					$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
-                    $_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
-                }
-
-				$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
-				$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-
-				if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
-				{
-					// Put date into remindersent
-					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
-					$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
-					."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
-					//
-					$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-					$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
-				}
-				else
-				{
-                    $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
-                    if ($debug>0) 
-                    {
-                        $tokenoutput .= "<pre>Subject : $msgsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
-                    }
-               
-                }
-				$lasttid = $emrow['tid'];
-			}
-			if ($ctcount > $emcount)
-			{
-				$lefttosend = $ctcount-$maxemails;
-				$tokenoutput .= "\t\t</td>\n"
-				."\t</tr>\n"
-                ."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
-				."\t\t<td align='center'>\n"
-				."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
-				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
-				.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
-				."<br />\n"
-				."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
-				."\t\t</td>\n"
-				."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-                ."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
-                ."\t<input type='hidden' name='action' value=\"tokens\" />\n"
-				."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
-		        foreach ($surveylangs as $language)
-				    {
-          			$message = html_escape($_POST['message_'.$language]);
-					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
-					."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
-					."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					if ( $modrewrite ) 
+					{
+						$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+					} 
+					else 
+					{
+						$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
 					}
-				$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
-				."\t</form>\n";
+				}
+				else
+				{
+					if ( $modrewrite ) 
+					{
+						$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+					} 
+					else
+					{
+						$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+						$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
+					}
+
+					$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+					$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+
+					if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
+					{
+						// Put date into remindersent
+						$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+						$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+							."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
+						//
+						$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+						$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+					}
+					else
+					{
+						$tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+						if ($debug>0) 
+						{
+							$tokenoutput .= "<pre>Subject : $msgsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+						}
+
+					}
+					$lasttid = $emrow['tid'];
+				}
+				if ($ctcount > $emcount)
+				{
+					$lefttosend = $ctcount-$maxemails;
+					$tokenoutput .= "\t\t</td>\n"
+						."\t</tr>\n"
+						."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+						."\t\t<td align='center'>\n"
+						."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
+						.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
+						.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
+						."<br />\n"
+						."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+						."\t\t</td>\n"
+						."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+						."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
+						."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+						."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+					foreach ($surveylangs as $language)
+					{
+						$message = html_escape($_POST['message_'.$language]);
+						$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+							."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+							."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+					}
+					$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
+						."\t</form>\n";
+				}
 			}
 		}
 		else
 		{
 			$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n"
-			.$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
-			."<br /><br />\n"
-			."\t\t</td>\n";
+				.$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
+				."<br /><br />\n"
+				."\t\t</td>\n";
 		}
 		$tokenoutput .= "\t</tr>\n"
-		."</table>\n";
+			."</table>\n";
 	}
 	$tokenoutput .= "</td></tr></table>\n";
 }
