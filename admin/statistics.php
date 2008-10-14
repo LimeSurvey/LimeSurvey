@@ -1291,14 +1291,31 @@ foreach ($filters as $flt)
             //pre-check
             if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
             
-            //get label text
-            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
-            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$query<br />".$connect->ErrorMsg());
+             //check if there is a dualscale_headerA/B
+            $dshquery = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerA'";
+            $dshresult = db_execute_num($dshquery) or safe_die ("Couldn't get dualscale header!<br />$dshquery<br />".$connect->ErrorMsg());
          
-            //get title
-            while ($lrow=$lresult->FetchRow())
+            //get header
+            while($dshrow=$dshresult->FetchRow())
             {
-            	$labeltitle = $lrow[0];
+            	$dualscaleheadera = $dshrow[0];
+            }
+            
+            if(isset($dualscaleheadera) && $dualscaleheadera != "")
+            {
+            	$labeltitle = $dualscaleheadera;
+            }
+            else
+            {
+	            //get label text
+	            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
+	            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$lquery<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while ($lrow=$lresult->FetchRow())
+	            {
+	            	$labeltitle = $lrow[0];
+	            }
             }
             
             $statisticsoutput .= " />&nbsp;<strong>"
@@ -1369,14 +1386,31 @@ foreach ($filters as $flt)
             //pre-check
             if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
             
-            //get label text
-            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
-            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$query<br />".$connect->ErrorMsg());
+            //check if there is a dualsclae_headerA/B
+            $dshquery2 = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerB'";
+            $dshresult2 = db_execute_num($dshquery2) or safe_die ("Couldn't get dualscale header!<br />$dshquery2<br />".$connect->ErrorMsg());
          
-            //get title
-            while($lrow2=$lresult2->FetchRow())
+            //get header
+            while($dshrow2=$dshresult2->FetchRow())
             {
-            	$labeltitle2 = $lrow2[0];
+            	$dualscaleheaderb = $dshrow2[0];
+            }
+            
+            if(isset($dualscaleheaderb) && $dualscaleheaderb != "")
+            {
+            	$labeltitle2 = $dualscaleheaderb;
+            }
+            else
+            {
+	            //get label text
+	            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
+	            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$lquery2<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while($lrow2=$lresult2->FetchRow())
+	            {
+	            	$labeltitle2 = $lrow2[0];
+	            }
             }
             
             $statisticsoutput .= " />&nbsp;<strong>"
