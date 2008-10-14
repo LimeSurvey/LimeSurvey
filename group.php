@@ -808,7 +808,9 @@ if (isset($qanda) && is_array($qanda))
 			case 'H': $q_class = 'array-flexible-column' ; break; //ARRAY (Flexible) - Column Format
 //			case '^': $q_class = 'slider' ; break; //SLIDER CONTROL
 			case ':': $q_class = 'array-multi-flexi' ; break; //ARRAY (Multi Flexi) 1 to 10
-			case '1': $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
+			case ";": $q_class = 'array-multi-flexi' ; break;
+			case "1": $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
+			default:  $q_class = 'generic_question' ; break; //Should have a default fallback
 		}
 
 		if ($qa[9] == 'Y')
