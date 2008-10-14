@@ -2381,7 +2381,8 @@ if (isset($summary) && $summary)
 			$qgid=$fielddata['gid'];
 			$qqid=$fielddata['qid'];
 			
-			list($qanswer, $qlid)=explode("_", $fielddata['aid']);
+		
+			list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
 			//get SGQ data
 			//list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			
