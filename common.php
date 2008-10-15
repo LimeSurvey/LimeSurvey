@@ -2954,7 +2954,15 @@ function getAdminFooter($url, $explanation)
 	{
 		$buildtext="";
 	}
-
+   
+   //If user is not logged in, don't print the version number information in the footer.
+   $versiontitle=$clang->gT('Version');
+   if(!isset($_SESSION['loginID'])) 
+   {
+     $versionnumber="";
+     $buildtext="";
+     $versiontitle="";
+   }
 
 	$strHTMLFooter = "<div class='footer'>\n"
 	. "\t\t\t<div style='float:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.gif' "
@@ -2963,7 +2971,7 @@ function getAdminFooter($url, $explanation)
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
 	. "onclick=\"window.open('http://www.limesurvey.org/component/option,com_dtdonate/lang,en/index.php?option=com_dtdonate')\" "
 	. "onmouseover=\"document.body.style.cursor='pointer'\" onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$clang->gT('Version')." $versionnumber $buildtext</div>"
+	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$versiontitle." $versionnumber $buildtext</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
 }
