@@ -132,24 +132,50 @@ background-color:#A7A9D1;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
-/* NOT IN USE YET
+/* - - -  - - -  - - -  - - - - - -  - - -  - - - -
+   START: General list styles - - -  - - -  - - - - */
+ .choice-5-pt-radio ul
+,.list-radio-flexible ul
+,.list-radio ul
+,.list-with-comment ul
+,.multiple-opt ul
+,.multiple-opt-comments ul
+{
+	text-align: center;
+	margin-left: 0%;
+	padding-left: 0%;
+}
+
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+,.multiple-opt li
+,.multiple-opt-comments li
+{
+	list-style-type: none;
+	text-align: left;
+	margin: 0% 0% 0.5em 0%;
+}
+/* END:  General list styles - - - -  - - -  - - - -
+- - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
+
+
+/* NOT IN USE YET - - - - -
 .boilerplate {}
 */
 
 .choice-5-pt-radio ul
 {
 	text-align: center;
-	margin-left: 0%;
-	padding-left: 0%;
 }
 .choice-5-pt-radio ul li
 {
-	list-style: none;
 	display: inline;
 	padding: 0% 1em;
 }
 
-/* NOT IN USE YET
+/* NOT IN USE YET - - - - -
 .date {}
 .date p.question {}
 .date p.question select.day {}
@@ -159,20 +185,11 @@ background-color:#A7A9D1;
 */
 
 
- .list-radio-flexible ul
-,.list-radio ul
-{
-	margin: 0%;
-	padding: 0%
-}
- .list-radio-flexible li
-,.list-radio li
-{
-	list-style: none;
-	text-align: left;
-	margin: 0% 0% 0.5em 0%;
-}
 
+/* DEFINED ABOVE UNDER "General list styles" - - - - -
+.list-radio-flexible
+.list-radio
+*/
 
   ul.cols-2 , table.cols-2
 , ul.cols-3 , table.cols-3
@@ -180,7 +197,11 @@ background-color:#A7A9D1;
 , ul.cols-5 , table.cols-5
 , ul.cols-6 , table.cols-6
 , ul.cols-7 , table.cols-7
-, ul.cols-8 , table.cols-8 { width: 98%; }
+, ul.cols-8 , table.cols-8
+{
+	width: 98%;
+	margin: 0% auto;
+}
 
   ul.cols-2 li , ul.cols-2-ul
 , ul.cols-3 li , ul.cols-3-ul
@@ -196,16 +217,17 @@ background-color:#A7A9D1;
 }
 
 ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; }
-ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 31%; }
+ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30.5%; }
 ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 23%; }
 ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19%; }
 ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
 ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
+/* NOT IN USE YET - - - - -
 .list-dropdown-flexible {}
 .list-dropdown {}
-
+*/
 .list-with-comment div.list
 {
 	width: 47%;
@@ -224,17 +246,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin: 0%;
 	text-align: left;
 }
-.list-with-comment ul
-{
-	margin: 0%;
-	padding: 0%;
-}
 
-.list-with-comment ul li
-{
-	list-style: none;
-	text-align: left;
-}
 .list-with-comment p.comment
 {
 	margin: 0%;
@@ -247,20 +259,42 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .ranking {}
 
-.multiple-opt ul
-{
-	margin: 0%;
-	padding: 0%;
-}
-.multiple-opt li
-{
-	margin: 0%;
-	padding: 0% 0% 0.5em 0%;
-	list-style: none;
-	text-align: left;
-}
+/* DEFINED ABOVE UNDER "General list styles" - - - - -
+.multiple-opt
+*/
+
 .language {}
-.multiple-opt-comments {}
+/*
+.multiple-opt-comments li
+{
+	position: relative;
+}
+.multiple-opt-comments li label.answertext
+{
+	display: block;
+	margin-top: -1.5em;
+	margin-left: 2.5em;
+}
+.multiple-opt-comments li input.text
+{
+	display: block;
+	margin-left: 2em;
+	margin-top: 0.2em;
+}
+.multiple-opt-comments li.other label.answertext
+{
+	display: inline;
+	margin-top: 0%;
+	margin-left: 2.5em;
+}
+.multiple-opt-comments li.other input.text.other
+{
+	display: inline;
+	margin-left: 0%;
+}
+*/
+
+
 .multiple-short-txt {}
 .numeric-multi {}
 .numeric {}
