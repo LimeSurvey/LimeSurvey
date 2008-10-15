@@ -714,11 +714,16 @@ function setup_columns($columns, $answer_count)
  * Really there is no perfect solution to columns at the moment.
  *
  * -  Using Tables is problematic semanticly.
- * -  Using inline or float, the order of the answers flows
- *    horizontally, not vertically so that's not ideal visually
+ * -  Using inline or float to create columns, causes the answers
+ *    flows horizontally, not vertically which is not ideal visually.
+ * -  Using CSS3 columns is also a problem because of browser support
+ *    and also because if you have answeres split across two or more
+ *    lines, and those answeres happen to fall at the bottom of a
+ *    column, the answer might be split across columns as well as
+ *    lines.
  * -  Using nested unordered list with the first level of <LI>s
  *    floated is the same as using tables and so is bad semantically
- *    for the same reason tables are bad
+ *    for the same reason tables are bad.
  * -  Breaking the unordered lists into consecutive floated unordered
  *    lists is not great semantically but probably not as bad as
  *    using tables.
@@ -728,14 +733,16 @@ function setup_columns($columns, $answer_count)
  * LimeSurvey up on their server.
  *
  * There are four options:
- *     'css'   using one of the various CSS only methods for
- *             rendering columns.
- *     'ul'    using multiple floated unordered lists. (DEFAULT)
- *     'table' using conventional tables based layout.
- *     NULL    blocks the use of columns
+ *    'css'   using one of the various CSS only methods for
+ *            rendering columns.
+ *            (Check the CSS file for your chosen template to see
+ *             how columns are defined.)
+ *    'ul'    using multiple floated unordered lists. (DEFAULT)
+ *    'table' using conventional tables based layout.
+ *     NULL   blocks the use of columns
  *
  * 'ul' is the default because it's the best possible compromise
- * between semantic and visual layout.
+ * between semantic markup and visual layout.
  */
 
 	$colstyle = COLSTYLE;
@@ -828,8 +835,8 @@ function do_boilerplate($ia)
 	return array($answer, $inputnames);
 }
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_5pointchoice($ia)
 {
 	global $shownoanswer, $clang;
@@ -862,8 +869,8 @@ function do_5pointchoice($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_date($ia)
 {
 	global $clang;
@@ -1016,8 +1023,8 @@ function do_date($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_language($ia)
 {
 	global $dbprefix, $surveyid, $clang;
@@ -1050,8 +1057,8 @@ function do_language($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_list_dropdown($ia)
 {
 	global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
@@ -1189,8 +1196,8 @@ function do_list_dropdown($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_list_flexible_dropdown($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
@@ -1326,8 +1333,8 @@ function do_list_flexible_dropdown($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_list_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
@@ -1505,8 +1512,8 @@ function do_list_radio($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_list_flexible_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
@@ -1690,8 +1697,8 @@ function do_list_flexible_radio($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_listwithcomment($ia)
 {
 	global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
@@ -1854,8 +1861,8 @@ function do_listwithcomment($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_ranking($ia)
 {
 	global $dbprefix, $imagefiles, $clang;
@@ -2070,8 +2077,8 @@ function do_ranking($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_multiplechoice($ia)
 {
 	global $dbprefix, $clang, $connect;
@@ -2345,32 +2352,32 @@ function do_multiplechoice($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($othertexts=arraySearchByKey("other_replace_text", $qidattributes, "attribute", 1))
+	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
 	}
 	else
 	{
-		$othertext=$clang->gT("Other");
+		$othertext=$clang->gT('Other');
 	}
 	// Check if the max_answers attribute is set
 	$maxansw=0;
-	$callmaxanswscriptcheckbox = "";
-	$callmaxanswscriptcheckbox2 = "";
-	$callmaxanswscriptother = "";
-	$maxanswscript = "";
-	if ($maxanswattr=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+	$callmaxanswscriptcheckbox = '';
+	$callmaxanswscriptcheckbox2 = '';
+	$callmaxanswscriptother = '';
+	$maxanswscript = '';
+	if ($maxanswattr=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
 	{
 		$maxansw=$maxanswattr['value'];
 		$callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
 		$callmaxanswscriptcheckbox2= "limitmaxansw_{$ia[0]}";
-		$callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
+		$callmaxanswscriptother = "onkeyup=\"limitmaxansw_{$ia[0]}(this)\"";
 
 		$maxanswscript = "\t\t\t<script type='text/javascript'>\n"
 			. "\t\t\t<!--\n"
@@ -2381,10 +2388,6 @@ function do_multiplechoice_withcomments($ia)
 			. "\t\t\t\t\tif (max == 0) { return count; }\n";
 	}
 
-	$answer  = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td>&nbsp;</td>\n"
-	. "\t\t\t\t\t<td align='left'>\n";
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2395,26 +2398,26 @@ function do_multiplechoice_withcomments($ia)
 	}
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount()*2;
-	$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n"
-	. "\t\t\t\t\t\t<table class='question'>\n";
+
+	$answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n"
+		. "<ul>\n";
 	$fn = 1;
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$myfname = $ia[1].$ansrow['code'];
 		$myfname2 = $myfname."comment";
-		$answer .= "\t\t\t\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t\t\t\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
+		$answer .= "\t<li>\n"
+		. "\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
 		if (isset($_SESSION[$myfname]))
 		{
-			if ($_SESSION[$myfname] == "Y")
+			if ($_SESSION[$myfname] == 'Y')
 			{
-				$answer .= " checked='checked'";
+				$answer .= CHECKED;
 			}
 		}
 		elseif ($ansrow['default_value'] == 'Y')
 		{
-			$answer .= " checked='checked'";
+			$answer .= CHECKED;
 		}
 		$answer .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
   				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />"
@@ -2423,64 +2426,57 @@ function do_multiplechoice_withcomments($ia)
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
-		$answer.= "\t\t\t\t\t\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		$answer.= "\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n"
-		. "\t\t\t\t\t\t\t\t</td>\n";
+		$answer .= "' />\n";
 		$fn++;
-		$answer .= "\t\t\t\t\t\t\t\t<td>\n"
-		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname2'>"
-		."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+		$answer .= "\t\t<label for='answer$myfname2'>\n"
+		."\t\t\t<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
 		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "'  onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' /></label>\n"
-		
-		. "\t\t\t\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t\t\t</tr>\n";
+		$answer .= "'  onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t\t</label>\n"
+
+		. "\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$fn++;
 		$inputnames[]=$myfname;
 		$inputnames[]=$myfname2;
 	}
-	if ($other == "Y")
+	if ($other == 'Y')
 	{
-		$myfname = $ia[1]."other";
-		$myfname2 = $myfname."comment";
+		$myfname = $ia[1].'other';
+		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
-		$answer .= "\t\t\t\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t\t\t\t<td class='answertext'>\n"
-		. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname' class='answertext'>".$othertext.":</label><input class='text' type='text' name='$myfname' id='answer$myfname' title='".$clang->gT("Other")."' size='10'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) {$answer .= " value='".htmlspecialchars($_SESSION[$myfname],ENT_QUOTES)."'";}
+		$answer .= "\t<li class=\"other\">\n"
+		. "\t\t<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>\n\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
+		{
+			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
+		}
 		$fn++;
 		// --> START NEW FEATURE - SAVE
-		$answer .= "  $callmaxanswscriptother/>\n"
-		. "\t\t\t\t\t\t\t\t</td>\n"
-		. "\t\t\t\t\t\t\t\t<td valign='bottom'><label for='answer$myfname2'>\n"
-		. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' size='40' name='$myfname2' id='answer$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+		$answer .= "  $callmaxanswscriptother />\n"
+		. "\t\t<label for=\"answer$myfname2\">\n"
+		. '		<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
 		// --> END NEW FEATURE - SAVE
 
 		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "'  onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))'  />\n";
+		$answer .= '"  onKeyUp="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
 
 		if ($maxansw > 0)
 		{
 			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
 		}
 
-		$answer .= "\t\t\t\t\t\t\t\t</label></td>\n"
-		. "\t\t\t\t\t\t\t</tr>\n";
+		$answer .= "\t\t</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$inputnames[]=$myfname;
 		$inputnames[]=$myfname2;
 	}
-	$answer .= "\t\t\t\t\t\t</table>\n"
-	. "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t\t<td>&nbsp;</td>\n"
-	. "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
+	$answer .= "</ul>\n";
 
 	if ( $maxansw > 0 )
 	{
@@ -2512,8 +2508,8 @@ function do_multiplechoice_withcomments($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
@@ -2586,8 +2582,8 @@ function do_multipleshorttext($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_multiplenumeric($ia)
 {
 	global $dbprefix, $clang, $js_header_includes;
@@ -2942,8 +2938,8 @@ function do_multiplenumeric($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_numerical($ia)
 {
 	global $clang;
@@ -2992,8 +2988,8 @@ function do_numerical($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -3037,8 +3033,8 @@ function do_shortfreetext($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -3104,8 +3100,8 @@ function do_longfreetext($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -3168,8 +3164,8 @@ function do_hugefreetext($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_yesno($ia)
 {
 	global $shownoanswer, $clang;
@@ -3210,8 +3206,8 @@ function do_yesno($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_gender($ia)
 {
 	global $shownoanswer, $clang;
@@ -3278,8 +3274,8 @@ function do_gender($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
@@ -3394,8 +3390,8 @@ function do_array_5point($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_array_10point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
@@ -3495,8 +3491,8 @@ function do_array_10point($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_array_yesnouncertain($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
@@ -3609,8 +3605,9 @@ function do_array_yesnouncertain($ia)
 	$answer .= "\t\t\t</table>\n";
 	return array($answer, $inputnames);
 }
-
-/*function do_slider($ia)
+/*
+// ---------------------------------------------------------------
+function do_slider($ia)
 {
 	global $shownoanswer;
 	global $dbprefix;
@@ -3716,10 +3713,7 @@ var s = new Slider(document.getElementById(\"slider-$myfname\"),
 	return array($answer, $inputnames);
 }*/
 
-
-
 // ---------------------------------------------------------------
-
 function do_array_increasesamedecrease($ia)
 {
 	global $dbprefix, $thissurvey, $clang;
@@ -3825,8 +3819,8 @@ function do_array_increasesamedecrease($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_array_flexible($ia)
 {
 	global $dbprefix, $connect, $thissurvey, $clang;
@@ -3997,8 +3991,8 @@ function do_array_flexible($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function do_array_multitext($ia)
 {
 	global $dbprefix, $connect, $thissurvey, $clang;
@@ -4164,6 +4158,8 @@ function do_array_multitext($ia)
 	return array($answer, $inputnames);
 }
 
+
+// ---------------------------------------------------------------
 function do_array_multiflexi($ia)
 {
 	global $dbprefix, $connect, $thissurvey, $clang;
@@ -4384,9 +4380,7 @@ function do_array_multiflexi($ia)
 }
 
 
-
 // ---------------------------------------------------------------
-
 function do_array_flexiblecolumns($ia)
 {
 	global $dbprefix;
@@ -4508,9 +4502,7 @@ function do_array_flexiblecolumns($ia)
 }
 
 
-
 // ---------------------------------------------------------------
-
 function do_array_flexible_dual($ia)
 {
 	global $dbprefix, $connect, $thissurvey, $clang;
@@ -5084,8 +5076,8 @@ function do_array_flexible_dual($ia)
 
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function answer_replace($text)
 {
 	while (strpos($text, "{INSERTANS:") !== false)
@@ -5099,8 +5091,8 @@ function answer_replace($text)
 }
 
 
-// ---------------------------------------------------------------
 
+// ---------------------------------------------------------------
 function labelset_exists($labelid,$language)
 {
 
