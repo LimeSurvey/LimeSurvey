@@ -1568,12 +1568,27 @@ function returnquestiontitlefromfieldcode($fieldcode)
     $aname='';
 	if (isset($details['aid']) && $details['aid']) //Add answer if necessary (array type questions)
 	{
+	    if($details['type'] == ":" || $details['type'] == ";")
+	    {
+		    list($details['aid'], $lidcode) = explode("_", $details['aid']);
+		}
 		$qq = "SELECT answer FROM ".db_table_name('answers')." WHERE qid=$fqid AND code='{$details['aid']}' AND language='".$_SESSION['s_lang']."'";
 		$qr = db_execute_assoc($qq) or safe_die ("ERROR: ".$connect->ErrorMsg()."<br />$qq"); //Checked
 		while($qrow=$qr->FetchRow())
 		{
 			$aname=$qrow['answer'];
 		}
+		if (isset($lidcode) && isset($details['lid'])) 
+		{
+		   //Add the Labelset Title to the answer info
+		   $qq = "SELECT title FROM ".db_table_name('labels')." WHERE lid = {$details['lid']} AND code='$lidcode' AND language='".$_SESSION['s_lang']."'";
+		   $qr = db_execute_assoc($qq) or safe_die ("ERROR: ".$connect->ErrorMsg()."<br />$qq"); 
+		   while ($qrow=$qr->FetchRow())
+		   {
+		     $aname .= "] [".$qrow['title'];
+		   }
+		}
+		unset($lidcode);
 	}
 	if (substr($fieldcode, -5) == 'other')
 	{
@@ -1948,7 +1963,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		elseif ($arow['type'] == ":" || $arow['type'] == ";")
 		{
 		    //MULTI FLEXI
-			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other\n"
+			$abquery = "SELECT ".db_table_name('answers').".*, ".db_table_name('questions').".other, ".db_table_name('questions').".lid\n"
 			." FROM ".db_table_name('answers').", ".db_table_name('questions')
 			." WHERE sid=$surveyid AND ".db_table_name('answers').".qid=".db_table_name('questions').".qid "
 			. "AND ".db_table_name('questions').".language='".$s_lang."'"
@@ -1974,7 +1989,13 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			{
 			    foreach($lset as $ls)
 			    {
-				  $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']."_".$ls['code']);
+				  $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", 
+				                    "type"=>$arow['type'], 
+									"sid"=>$surveyid, 
+									"gid"=>$arow['gid'], 
+									"qid"=>$arow['qid'], 
+									"aid"=>$abrow['code']."_".$ls['code'],
+									"lid"=>$abrow['lid']);
 				  if ($abrow['other']=="Y") {$alsoother="Y";}
 				  if ($style == "full")
 			  	  {
