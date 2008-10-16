@@ -1384,7 +1384,9 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		
 		// For Labelset Questions show the label set and warn if there is no label set configured
-		if (($qrrow['type'] == "1" || $qrrow['type'] == "F" ||  $qrrow['type'] == "H" || $qrrow['type'] == "W" ||  $qrrow['type'] == "Z"))
+		if (($qrrow['type'] == "1" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || 
+		     $qrrow['type'] == "W" || $qrrow['type'] == "Z" || $qrrow['type'] == ":" ||
+			 $qrrow['type'] == ";" ))
 		{
 			$questionsummary .= "<tr ><td align='right'><strong>". $clang->gT("Label Set").":</strong></td>";
 			if (!$qrrow['lid'])
