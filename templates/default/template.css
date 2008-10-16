@@ -140,8 +140,8 @@ background-color:#A7A9D1;
 ,.list-with-comment ul
 ,.multiple-opt ul
 ,.multiple-opt-comments ul
+,.multiple-short-txt ul
 {
-	text-align: center;
 	margin-left: 0%;
 	padding-left: 0%;
 }
@@ -152,10 +152,11 @@ background-color:#A7A9D1;
 ,.list-with-comment li
 ,.multiple-opt li
 ,.multiple-opt-comments li
+,.multiple-short-txt li
 {
 	list-style-type: none;
 	text-align: left;
-	margin: 0% 0% 0.5em 0%;
+	margin: 0% 0% 0.5em 0.5em;
 }
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
@@ -200,7 +201,7 @@ background-color:#A7A9D1;
 , ul.cols-8 , table.cols-8
 {
 	width: 98%;
-	margin: 0% auto;
+	margin: 0% auto 0% auto;
 }
 
   ul.cols-2 li , ul.cols-2-ul
@@ -264,11 +265,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 */
 
 .language {}
-/*
-.multiple-opt-comments li
+.multiple-opt-comments input.text
 {
-	position: relative;
+	width: 20em;
 }
+.multiple-opt-comments input.text.other
+{
+	width: 7em;
+}
+/*
 .multiple-opt-comments li label.answertext
 {
 	display: block;
@@ -295,7 +300,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 */
 
 
-.multiple-short-txt {}
+.multiple-short-txt li input.text
+{
+	margin-left: 0.5em;
+	width: 20em;
+}
+.multiple-short-txt ul.numbers-only li input.text
+{
+	width: 10em;
+}
 .numeric-multi {}
 .numeric {}
 .text-short {}
@@ -312,6 +325,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .slider {}
 .array-multi-flexi {}
 .array-flexible-duel-scale {}
+
 /* Jquery CSS
  */
 /** UI Base **/
