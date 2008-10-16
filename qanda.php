@@ -756,6 +756,7 @@ function setup_columns($columns, $answer_count)
 		$columns = $answer_count;
 	};
 
+	$class_first = '';
 	if($columns > 1 && $colstyle != null)
 	{
 		if($colstyle == 'ul')
@@ -766,6 +767,7 @@ function setup_columns($columns, $answer_count)
 		{
 			$ul = '';
 		}
+		$class_first = ' class="cols-'.$columns . $ul.' first"';
 		$class = ' class="cols-'.$columns . $ul.'"';
 		$class_last_ul = ' class="cols-'.$columns . $ul.' last"';
 		$class_last_table = ' class="cols-'.$columns.' last"';
@@ -777,7 +779,7 @@ function setup_columns($columns, $answer_count)
 		$class_last_table = '';
 	};
 
-	$wrapper['whole-start']	= "\n<ul$class>\n";
+	$wrapper['whole-start']	= "\n<ul$class_first>\n";
 	$wrapper['whole-end']	= "</ul>\n";
 	$wrapper['col-devide']	= '';
 	$wrapper['col-devide-last'] = '';
@@ -798,14 +800,14 @@ function setup_columns($columns, $answer_count)
 		case 'table':	$table_cols = '';
 				for($cols = $columns ; $cols > 0 ; --$cols)
 				{
-					if($cols == 1)
+					switch($cols)
 					{
-						$table_cols .= "\t<col class=\"cols-$columns last\" />\n";
-					}
-					else
-					{
-						$table_cols .= "\t<col$class />\n";
-					}
+						case $columns:	$table_cols .= "\t<col$class_first />\n";
+								break;
+						case 1:		$table_cols .= "\t<col$class_last_table />\n";
+								break;
+						default:	$table_cols .= "\t<col$class />\n";
+					};
 				};
 
 				if($columns > 1)
@@ -2514,69 +2516,89 @@ function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-    if (arraySearchByKey("numbers_only", $qidattributes, "attribute", 1)) {
-        $numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
-    } else {
-        $numbersonly = "";
-    }
-    if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
-    {
-        $maxsize=$maxchars['value'];
-    } else {
-        $maxsize=255;
-    }
-	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+
+	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
 	{
-	    $prefix = $prefix['value'];
-	} else {
-	    $prefix = "";
+		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+		$class_num_only = ' class="numbers-only"';
 	}
-	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	else
 	{
-	    $suffix = $suffix['value'];
-	} else {
-	    $suffix = "";
+		$numbersonly = '';
+		$class_num_only = '';
 	}
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
+	{
+		$maxsize=$maxchars['value'];
+	}
+	else
+	{
+		$maxsize=255;
+	}
+
+	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
+	{
+		$prefix = $prefix['value'];
+	}
+	else
+	{
+		$prefix = '';
+	}
+
+	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
+	{
+		$suffix = $suffix['value'];
+	}
+	else
+	{
+		$suffix = '';
+	}
+
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
+
 	$ansresult = db_execute_assoc($ansquery);    //Checked
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
-    $answer = keycontroljs();
-	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
+
+	$answer = keycontroljs();
+	$answer .= "\n<ul$class_num_only>\n";
 	if ($anscount==0) 
-	   {
-		  $inputnames=array();
-		  $answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
-	   }
-    else 
-    {
+	{
+		$inputnames=array();
+		$answer .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+	}
+	else
+	{
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t\t\t\t\t\t\t<tr>\n"
-			. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
-			. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
-			. "\t\t\t\t\t\t\t\t</td>\n"
-			. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-			. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='40' name='$myfname' id='answer$myfname' value='";
-			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+			$answer .= "\t<li>"
+			. "\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
+			. '		'.$prefix.'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+			if (isset($_SESSION[$myfname]))
+			{
+				$answer .= $_SESSION[$myfname];
+			}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
-			. "\t\t\t\t\t\t\t\t</td>\n"
-			. "\t\t\t\t\t\t\t</tr>\n";
+			$answer .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n"
+			. "\t</li>\n";
 			// --> END NEW FEATURE - SAVE
 	
 			$fn++;
 			$inputnames[]=$myfname;
 		}
 	}
-	$answer .= "\t\t\t\t\t\t</table>\n";
+	$answer .= "</ul>\n";
 	return array($answer, $inputnames);
 }
 
@@ -2588,36 +2610,43 @@ function do_multiplenumeric($ia)
 {
 	global $dbprefix, $clang, $js_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
+
 	//Must turn on the "numbers only javascript"
 	$numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
-	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
-	} else {
+	}
+	else
+	{
 		$maxsize=255;
 	}
-	if ($equalvalue=arraySearchByKey("equals_num_value", $qidattributes, "attribute", 1))
+	if ($equalvalue=arraySearchByKey('equals_num_value', $qidattributes, 'attribute', 1))
 	{
 		$equals_num_value=$equalvalue['value'];
-		$numbersonlyonblur[]="calculateValue".$ia[1]."(3)";
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
 		$calculateValue[]=3;
-	} else {
+	}
+	else
+	{
 		$equals_num_value[]=0;
 	}
-	if ($minvalue=arraySearchByKey("min_num_value", $qidattributes, "attribute", 1))
+	if ($minvalue=arraySearchByKey('min_num_value', $qidattributes, 'attribute', 1))
 	{
 		$min_num_value=$minvalue['value'];
-		$numbersonlyonblur[]="calculateValue".$ia[1]."(2)";
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
 		$calculateValue[]=2;
 	} else {
 		$min_num_value=0;
 	}
-	if ($maxvalue=arraySearchByKey("max_num_value", $qidattributes, "attribute", 1))
+	if ($maxvalue=arraySearchByKey('max_num_value', $qidattributes, 'attribute', 1))
 	{
 		$max_num_value = $maxvalue['value'];
-		$numbersonlyonblur[]="calculateValue".$ia[1]."(1)"; 
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(1)'; 
 		$calculateValue[]=1;
-	} else {
+	}
+	else
+	{
 		$max_num_value = 0;
 	}
 	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
@@ -2634,8 +2663,8 @@ function do_multiplenumeric($ia)
 	}
 	if(!empty($numbersonlyonblur))
 	{
-		$numbersonly .= " onblur=\"".implode(";", $numbersonlyonblur)."\"";
-		$numbersonly_slider = implode(";", $numbersonlyonblur);
+		$numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
+		$numbersonly_slider = implode(';', $numbersonlyonblur);
 	}
 	else
 	{
