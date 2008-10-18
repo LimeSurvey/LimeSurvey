@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-simplified language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2007-11-03 22:54+0800\n"
-"Last-Translator: xsmile <lishuang1000@gmail.com>\n"
+"PO-Revision-Date: 2008-10-18 11:57+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,9 +30,7 @@ msgstr "对不起，找不到相应的调查。"
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
+msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "此调查尚未启用，您将不能保存回答。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
@@ -45,8 +43,7 @@ msgstr "未保存"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "此调查尚未开始，您的回答没有保存。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
@@ -85,47 +82,42 @@ msgstr "关闭窗口"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:330
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:120
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:174
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "请在此填写您的回答:"
+msgstr "点击此处打印你的答案。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:505
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:313
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:402
-#, fuzzy
 msgid "Date is not valid!"
-msgstr "邮件地址不是有效的。"
+msgstr "日期格式不正确！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:76
 msgid "Albanian"
 msgstr "阿尔巴尼亚语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:81
-#, fuzzy
 msgid "Arabic"
-msgstr "Windows 阿拉伯语"
+msgstr "Windows 阿拉伯语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:86
 msgid "Basque"
 msgstr "巴斯克语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:91
-#, fuzzy
 msgid "Bosnian"
-msgstr "罗马尼亚语"
+msgstr "罗马尼亚语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:96
 msgid "Bulgarian"
 msgstr "保加利亚语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:101
-#, fuzzy
 msgid "Catalan"
-msgstr "意大利语"
+msgstr "意大利语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:106
 msgid "Welsh"
-msgstr ""
+msgstr "威尔士"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:111
 msgid "Chinese (Simplified)"
@@ -136,9 +128,8 @@ msgid "Chinese (Traditional - Hong Kong)"
 msgstr "中文(繁体-香港)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:121
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
-msgstr "中文(繁体-香港)"
+msgstr "中文(繁体-香港) "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:126
 msgid "Croatian"
@@ -161,9 +152,8 @@ msgid "English"
 msgstr "英语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:151
-#, fuzzy
 msgid "Estonian"
-msgstr "罗马尼亚语"
+msgstr "罗马尼亚语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:156
 msgid "Finnish"
@@ -199,11 +189,11 @@ msgstr "匈牙利语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:197
 msgid "Icelandic"
-msgstr ""
+msgstr "冰岛"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:202
 msgid "Indonesian"
-msgstr ""
+msgstr "印尼"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:207
 msgid "Italian"
@@ -214,37 +204,32 @@ msgid "Japanese"
 msgstr "日语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:217
-#, fuzzy
 msgid "Korean"
-msgstr "挪威语"
+msgstr "挪威语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:222
 msgid "Lithuanian"
 msgstr "立陶宛语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:227
-#, fuzzy
 msgid "Latvian"
-msgstr "克罗地亚语"
+msgstr "克罗地亚语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:232
 msgid "Macedonian"
-msgstr ""
+msgstr "马其顿"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:237
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "挪威语"
+msgstr "挪威语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:242
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "挪威语"
+msgstr "挪威语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:247
-#, fuzzy
 msgid "Persian"
-msgstr "版本"
+msgstr "波斯"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:252
 msgid "Polish"
@@ -267,9 +252,8 @@ msgid "Romanian"
 msgstr "罗马尼亚语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:278
-#, fuzzy
 msgid "Slovak"
-msgstr "斯洛文尼亚语"
+msgstr "斯洛文尼亚语 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:283
 msgid "Slovenian"
@@ -304,9 +288,7 @@ msgid "Vietnamese"
 msgstr "越南语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "警告：您还在用默认的密码'password'，请修改密码并重新登陆。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
@@ -335,9 +317,8 @@ msgstr "创建/编辑组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:275
-#, fuzzy
 msgid "Show System Summary"
-msgstr "LimeSurvey系统简报"
+msgstr "显示系统情况"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:284
@@ -437,9 +418,8 @@ msgid "None"
 msgstr "无"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:768
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Array (多选)"
+msgstr "多项的标签（单选）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:769
 msgid "5 Point Choice"
@@ -482,9 +462,8 @@ msgid "Language Switch"
 msgstr "语言转换"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:779
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "数值选项"
+msgstr "数值选项 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:780
 msgid "List (Radio)"
@@ -517,14 +496,12 @@ msgid "Ranking"
 msgstr "排序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:787
-#, fuzzy
 msgid "Short Free Text"
-msgstr "简短的文本"
+msgstr "简短的文本 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:788
-#, fuzzy
 msgid "Long Free Text"
-msgstr "长文本"
+msgstr "长文本 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:789
 msgid "Huge Free Text"
@@ -1209,13 +1186,8 @@ msgid "Comment"
 msgstr "评语"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"注意：您的浏览器不允许使用JavaScript。您可能不能回答问卷中所有的题目，请修改"
-"您的浏览器参数。"
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "注意：您的浏览器不允许使用JavaScript。您可能不能回答问卷中所有的题目，请修改您的浏览器参数。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1234,9 +1206,8 @@ msgstr "此问卷中包括{NUMBEROFQUESTIONS}个问题。"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:172
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1308
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2422
-#, fuzzy
 msgid "Submit"
-msgstr "提交"
+msgstr "提交 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
 msgid "A Note On Privacy"
@@ -1247,21 +1218,8 @@ msgid "This survey is anonymous."
 msgstr "本调查为匿名方式。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"保存您问卷答案的记录不会包含任何关于您的识别信息，除非问卷中问了您特定的问"
-"题。如果您参与一个需要使用识别操作码访问的调查，您可以完全确定这个识别操作码"
-"不会和您的答案保存在一起。它是在一个单独的数据库中管理，只是用来识别你已经"
-"（或者没有）完成这个调查。没有办法把这个调查中的问卷答案和识别操作码匹配起"
-"来。"
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "保存您问卷答案的记录不会包含任何关于您的识别信息，除非问卷中问了您特定的问题。如果您参与一个需要使用识别操作码访问的调查，您可以完全确定这个识别操作码不会和您的答案保存在一起。它是在一个单独的数据库中管理，只是用来识别你已经（或者没有）完成这个调查。没有办法把这个调查中的问卷答案和识别操作码匹配起来。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
@@ -1279,7 +1237,7 @@ msgstr "加载没有结束的问卷。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2273
 msgid "Resume Later"
-msgstr ""
+msgstr "一会重新开始"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "Thank You!"
@@ -1294,13 +1252,8 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "现在点“提交”完成问卷，并保存您的回答。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"如果您想检查您所做的回答，并且/或者修改它们，您可以通过点击 [<< prev]按钮来实"
-"现并浏览您的回答。"
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "如果您想检查您所做的回答，并且/或者修改它们，您可以通过点击 [<< prev]按钮来实现并浏览您的回答。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1320,17 +1273,11 @@ msgid "Enter a name and password for this survey and click save below."
 msgstr "为本问卷输入一个用户名和密码并点下面的保存。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"您的问卷已经用这个名字和密码保存了，以后您可以用同样的名字和密码登陆并完成问"
-"卷。"
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "您的问卷已经用这个名字和密码保存了，以后您可以用同样的名字和密码登陆并完成问卷。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
+msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "如果您提供一个邮件地址，将会发给您一封包含详细资料的邮件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
@@ -1410,11 +1357,8 @@ msgid "You may register for this survey if you wish to take part."
 msgstr "如果您想参加，可以注册这个调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"在下面填写您的详细资料，然后一封包含参加这个调查的连接的邮件会立刻发送。"
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "在下面填写您的详细资料，然后一封包含参加这个调查的连接的邮件会立刻发送。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1581,9 +1525,7 @@ msgid "The answer to the security question is incorrect"
 msgstr "安全题目的回答错误"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
+msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "这个名字在这个调查中已经被使用，您必须使用一个唯一的名字。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
@@ -1593,52 +1535,25 @@ msgstr "已保存的调查的详细资料"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-#, fuzzy
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"您，或者其他人用您的邮件地址，保存了一个进行中的项目。下面的详细资料可以用来"
-"返回到这个问卷，并从您离开的地方继续。"
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "您，或者其他人用您的邮件地址，保存了一个进行中的项目。下面的详细资料可以用来返回到这个问卷，并从您离开的地方继续。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-#, fuzzy
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
-msgstr "点击下面的URL重新加载您的问卷："
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
+msgstr "点击下面的URL重新加载您的问卷： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
 msgid "Cannot submit results - there are none to submit."
 msgstr "不能提交结果 - 没有可提交的内容。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"您已经提交了回答并按了浏览器上的“刷新”，就会出现这个错误。这种情况下，您的回"
-"答已经保存了。 "
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "您已经提交了回答并按了浏览器上的“刷新”，就会出现这个错误。这种情况下，您的回答已经保存了。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"如果您在完成一份问卷的过程中看到这个信息，您应该选择您的浏览器上的 '<- 后"
-"退'并刷新/从新加载前面的页面。这样你会丢失最后一页的答案，而其他的依然存在。"
-"这个问题在服务器超负荷或者过度使用的时候会发生。非常抱歉。If you receive "
-"this message in the middle of completing a survey, you should choose '<- "
-"BACK' on your browser and then refresh/reload the previous page. While you "
-"will lose answers from the last page all your others will still exist. This "
-"problem can occur if the webserver is suffering from overload or excessive "
-"use. We apologise for this problem."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "如果您在完成一份问卷的过程中看到这个信息，您应该选择您的浏览器上的 '<- 后退'并刷新/从新加载前面的页面。这样你会丢失最后一页的答案，而其他的依然存在。这个问题在服务器超负荷或者过度使用的时候会发生。非常抱歉。If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:203
@@ -1647,9 +1562,8 @@ msgid "ERROR"
 msgstr "错误"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:175
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "也许你没有权限。"
+msgstr "也许你没有权限。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:176
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:205
@@ -1658,9 +1572,9 @@ msgstr "也许你没有权限。"
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:400
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:325
-#, fuzzy, php-format
+#, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "以获得进一步帮助"
+msgstr "请联系%s ( %s )以获得进一步帮助"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
@@ -1669,16 +1583,12 @@ msgstr "很抱歉您的session已经过期。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-#, fuzzy
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr "如果不是您长时间没有活动，就是您的网络连接有问题。"
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "如果不是您长时间没有活动，就是您的网络连接有问题。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
-#, fuzzy
 msgid "No available surveys"
-msgstr "没有匹配的调查"
+msgstr "没有匹配的调查 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:324
@@ -1687,9 +1597,8 @@ msgstr "您没有提供调查编号"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:326
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "下面的问卷应该被删除"
+msgstr "存在的问卷："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:379
 msgid "This survey is no longer available."
@@ -1709,26 +1618,22 @@ msgstr "您没有提供密码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
-#, fuzzy
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr "这是封闭式调查，您必须提供一个有效的操作代码"
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "这是封闭式调查，您必须提供一个有效的操作代码 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "您提供的操作代码无效，或已经被使用过。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1682
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1718
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1874
-#, fuzzy, php-format
+#, php-format
 msgid "For further information contact %s"
-msgstr "更多资讯，请联系"
+msgstr "更多资讯，请联系%s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:630
 msgid "Survey Saved"
@@ -1740,9 +1645,9 @@ msgstr "这没有相应的保存的问卷"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:739
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:879
-#, fuzzy, php-format
+#, php-format
 msgid "%s %% complete"
-msgstr "完成"
+msgstr "%s %% 完成"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1400
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:585
@@ -1751,11 +1656,9 @@ msgstr "完成"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1763,8 +1666,7 @@ msgid ""
 msgstr ""
 "您好 {FIRSTNAME},\n"
 "\n"
-"这封邮件是为了确认您已经完成了名为{SURVEYNAME}的调查，您的回答已经被保存。感"
-"谢参与。\n"
+"这封邮件是为了确认您已经完成了名为{SURVEYNAME}的调查，您的回答已经被保存。感谢参与。\n"
 "\n"
 "如果您对这封邮件有任何问题，请 通过{ADMINEMAIL}联系 {ADMINNAME}.\n"
 "\n"
@@ -1772,9 +1674,8 @@ msgstr ""
 "{ADMINNAME}"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1419
-#, fuzzy
 msgid "Answer Submission for Survey"
-msgstr "提交您的问卷."
+msgstr "提交您的问卷. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1421
 msgid "Survey Submitted"
@@ -1805,12 +1706,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "出现意外的错误，无法保存您的回答。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"您的回答并没有丢失，已经e-mail给此项调查的管理人员，将在晚些时候被录入到数据"
-"库。"
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "您的回答并没有丢失，已经e-mail给此项调查的管理人员，将在晚些时候被录入到数据库。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -1837,10 +1734,8 @@ msgid "Try to submit again"
 msgstr "请重试提交"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "请回答下面的问题以开始进行调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
@@ -1850,50 +1745,37 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "这是个受限制的调查，只有有操作代码的人才能参加此项调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-#, fuzzy
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr "如果您有操作代码，请将它输入到下面的文本框内，再点击继续。"
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "如果您有操作代码，请将它输入到下面的文本框内，再点击继续。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "如果您有操作代码，请将它输入到下面的文本框内，再点击继续。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-#, fuzzy
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr "如果您有操作代码，请将它输入到下面的文本框内，再点击继续。"
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "如果您有操作代码，请将它输入到下面的文本框内，再点击继续。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "此问卷还没有设计任何题目，不能测试。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
-#, fuzzy
 msgid "Previous"
-msgstr "预览："
+msgstr "上一题"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2180
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:494
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:570
-#, fuzzy
 msgid "Next"
-msgstr "下一题"
+msgstr "下一题 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2572
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2585
-#, fuzzy
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "错误：您必须为这个调查输入一个标题。"
+msgstr "对不起，你的回答已经超出了我们的一项限制。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:64
 msgid "The email you used is not valid. Please try again."
@@ -1908,13 +1790,8 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "感谢您注册参与这个调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"一封包含访问这个调查详细信息的邮件已经发送到您提供的邮件地址。请追随邮件中的"
-"连接继续。An email has been sent to the address you provided with access "
-"details for this survey. Please follow the link in that email to proceed."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "一封包含访问这个调查详细信息的邮件已经发送到您提供的邮件地址。请追随邮件中的连接继续。An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -1925,9 +1802,8 @@ msgstr "调查管理员"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:308
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:316
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:324
-#, fuzzy
 msgid "Choose one of the following answers"
-msgstr "请只选择一个答案"
+msgstr "请只选择一个答案 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:337
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:362
@@ -1936,9 +1812,9 @@ msgstr "请选择所有符合的选项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:342
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:367
-#, fuzzy, php-format
+#, php-format
 msgid "Check at most %d answers"
-msgstr "至少选一项"
+msgstr "最多可以有%d答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:352
 msgid "Choose your language"
@@ -1963,9 +1839,8 @@ msgid "Please complete all parts"
 msgstr "请完成所有部分"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:502
-#, fuzzy
 msgid "Please check the items"
-msgstr "请至少选择一项"
+msgstr "请检查各项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:504
 msgid "Please rank all items"
@@ -1978,94 +1853,83 @@ msgstr "请至少选择一项"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
 #, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr ""
+msgstr "选择 '%s' 则必须提供描述。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "您不能继续进行，除非您在一个题目或者更多题目中输入一些文本。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "部分必答题目尚未回答，完成以后才可以继续。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"一个或者更多的题目没有用有效的方式回答，除非这些回答有效，否则你无法继续"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "一个或者更多的题目没有用有效的方式回答，除非这些回答有效，否则你无法继续"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
-msgstr ""
+msgstr "日期"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:639
-#, fuzzy
 msgid "Month"
-msgstr "计数"
+msgstr "月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:640
-#, fuzzy
 msgid "Jan"
-msgstr "和"
+msgstr "1月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:641
 msgid "Feb"
-msgstr ""
+msgstr "2月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:642
 msgid "Mar"
-msgstr ""
+msgstr "3月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:643
 msgid "Apr"
-msgstr ""
+msgstr "4月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:644
 msgid "May"
-msgstr ""
+msgstr "5月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:645
 msgid "Jun"
-msgstr ""
+msgstr "6月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:646
 msgid "Jul"
-msgstr ""
+msgstr "7月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:647
 msgid "Aug"
-msgstr ""
+msgstr "8月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:648
 msgid "Sep"
-msgstr ""
+msgstr "9月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:649
 msgid "Oct"
-msgstr ""
+msgstr "10月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:650
-#, fuzzy
 msgid "Nov"
-msgstr "否"
+msgstr "11月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:651
-#, fuzzy
 msgid "Dec"
-msgstr "刪除"
+msgstr "12月"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:659
-#, fuzzy
 msgid "Year"
-msgstr "清除"
+msgstr "年"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:695
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "请完成所有部分"
+msgstr "请完成日期的所有部分"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:709
 msgid "Format: YYYY-MM-DD"
@@ -2104,8 +1968,7 @@ msgstr "请选择"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
+msgid "Error: The labelset used for this question is not available in this language."
 msgstr "错误：此题目的标签集在这种语言下不能使用。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
@@ -2144,17 +2007,14 @@ msgid "Your Ranking"
 msgstr "您的排序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
-#, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
-msgstr "点击每一项右边的剪刀"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "点击每一项右边的剪刀 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1918
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
-msgstr ""
+msgstr "最多可以选择'%d' 个答案：问题 \"%s\"。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1862
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1889
@@ -2170,45 +2030,41 @@ msgid "Error: This question has no answers."
 msgstr "错误：这个问题没有回答。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2118
-#, fuzzy
 msgid "Only numbers may be entered in these fields"
-msgstr "这里只能输入数字"
+msgstr "这里只能输入数字："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2122
 #, php-format
 msgid "Total of all entries must not exceed %d"
-msgstr ""
+msgstr "所有项必须不能超过 %d"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2126
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "所有项必须相等"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2130
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Total of all entries must be at least "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2135
-#, fuzzy
 msgid "Total: "
-msgstr "总计"
+msgstr "总计："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2138
-#, fuzzy
 msgid "Remaining: "
-msgstr "排序"
+msgstr "剩下："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2168
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "答案不存在"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "答案不存在。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2217,27 +2073,22 @@ msgstr "这里只能输入数字"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "错误：此题目的标签集在这种语言下不能使用或者不存在。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
-#, fuzzy
 msgid "Error: There are no answers defined for this question."
-msgstr "请为本题增加选项"
+msgstr "错误：没有为这个问题定义答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:133
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:83
-#, fuzzy
 msgid "PDF Export"
-msgstr "导出"
+msgstr "导出PDF"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:290
-#, fuzzy
 msgid "Survey Name (ID)"
-msgstr "调查id："
+msgstr "调查名称(ID)："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:500
@@ -2267,9 +2118,8 @@ msgstr "问题"
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:292
-#, fuzzy
 msgid "Your Answer"
-msgstr "没有答案"
+msgstr "您的答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:53
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:457
@@ -2296,7 +2146,7 @@ msgstr "保存时间"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1965
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:320
 msgid "Action"
-msgstr "动作"
+msgstr "操作"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:100
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:76
@@ -2337,8 +2187,7 @@ msgstr "数据一致性检查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
+msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "如果出现错误，可能是您重复执行了这个脚本。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
@@ -2346,9 +2195,8 @@ msgid "No matching Cqid"
 msgstr "没有匹配的Cqid"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:60
-#, fuzzy
 msgid "No matching CFIELDNAME Group!"
-msgstr "没有匹配的CFIELDNAME组"
+msgstr "没有匹配的CFIELDNAME组 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:64
 msgid "No \"CFIELDNAME\" field set!"
@@ -2542,9 +2390,8 @@ msgid "Error: You have to enter a name for this label set."
 msgstr "错误：您必须为这个标签集输入一个名字。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
-#, fuzzy
 msgid "Create or Import New Label Set"
-msgstr "建立或导入新调查"
+msgstr "创建或者导入新的标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
 msgid "Create New Label Set"
@@ -2581,11 +2428,8 @@ msgid "Remove"
 msgstr "移除"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-#, fuzzy
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr "您不能移除这些条目，因为在一个标签集中至少需要一个语言包。"
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "您不能移除这些条目，因为在一个标签集中至少需要一个语言包。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2609,7 +2453,7 @@ msgstr "选择CSV文件："
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:73
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:182
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "转换的资源链接？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:253
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:666
@@ -2670,9 +2514,8 @@ msgstr "次序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:388
-#, fuzzy
 msgid "Label:"
-msgstr "标签"
+msgstr "标签："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:359
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:821
@@ -2721,9 +2564,8 @@ msgid "Add new label"
 msgstr "添加新的标签"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:394
-#, fuzzy
 msgid "Fix Order"
-msgstr "次序"
+msgstr "修正顺序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
@@ -2754,12 +2596,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr "插入新的标签必须在第一个语言包中完成。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"您不能在这个标签集中更改编号，增加或者删除条目，因为该标签集正被一个启用的调"
-"查使用。"
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "您不能在这个标签集中更改编号，增加或者删除条目，因为该标签集正被一个启用的调查使用。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2774,34 +2612,32 @@ msgstr "请选择一个文件导入！"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2589
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "PHP不支持ZIP库，ZIP被禁用。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:461
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2598
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "上传资源管理"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2605
-#, fuzzy
 msgid "Browse Uploaded Resources"
-msgstr "浏览保存的回答"
+msgstr "浏览上传的资源"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2606
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "导出ZIP资源文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:470
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2607
-#, fuzzy
 msgid "Select ZIP File:"
-msgstr "选择CSV文件："
+msgstr "选择ZIP文件："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:472
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2609
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "导入ZIP资源"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:489
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:830
@@ -2809,13 +2645,8 @@ msgid "Fix Sort"
 msgstr "修正排序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"目前有问卷在使用这套标签集。在这套标签集中修改编号，增加或者删除条目可能产生"
-"无法预料的后果。"
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "目前有问卷在使用这套标签集。在这套标签集中修改编号，增加或者删除条目可能产生无法预料的后果。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
@@ -2830,9 +2661,7 @@ msgid "Update of Label Set failed"
 msgstr "更新标签集失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "无法删除标签集-有题目使用到它。你必须先删除这些题目。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
@@ -2852,12 +2681,8 @@ msgid "Failed to insert label"
 msgstr "插入标签失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"在这个标签集中这个标签编码已经被使用。请选其他编码或者重新命名已经存在的编"
-"码。"
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "在这个标签集中这个标签编码已经被使用。请选其他编码或者重新命名已经存在的编码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2886,9 +2711,7 @@ msgstr "导入组"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
 msgstr "上传文件时出错。可能是因为您的%s目录不正确的权限设置导致的。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
@@ -2944,9 +2767,8 @@ msgid "Main Admin Screen"
 msgstr "主管理页面"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:39
-#, fuzzy
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "未提供调查编号，无法导入题目。"
+msgstr "未提供调查编号，无法导入题目。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:54
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:651
@@ -2991,22 +2813,16 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "此文件不是LimeSurvey題目組档案文件，导入失败。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
+msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr "您不能导入不支持当前调查的基础语言的组。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
+msgid "You can't import a question which doesn't support the current survey's base language."
 msgstr "您不能导入不支持当前调查的基础语言的题目。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
+msgid "You can't import label sets which don't support the current survey's base language"
 msgstr "您不能导入不支持当前调查的基础语言的标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
@@ -3014,9 +2830,7 @@ msgid "Import partially successful."
 msgstr "导入操作部分成功。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "在这个组中下面的语言没有被导入，因为这个调查没有包含这样一个语言："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
@@ -3029,7 +2843,7 @@ msgstr "题目组导入摘要"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1226
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1255
 msgid "Groups"
-msgstr "组"
+msgstr "问题分组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:657
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:497
@@ -3057,9 +2871,8 @@ msgid "Conditions"
 msgstr "条件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:671
-#, fuzzy
 msgid "Question Attributes: "
-msgstr "题目属性："
+msgstr "题目属性： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:674
 msgid "Import of group is completed."
@@ -3284,7 +3097,7 @@ msgstr "替换存在的记录。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "导入为最终的答案？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:95
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2199
@@ -3313,18 +3126,16 @@ msgid "Reading file.."
 msgstr "文件读取中."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:258
-#, fuzzy, php-format
+#, php-format
 msgid "Import Failed on Record %d because [%s]"
-msgstr "记录导入错误"
+msgstr "导入失败（记录:%d,因为[%s]）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
 msgid "Important Note:"
 msgstr "重要注释："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr "不要刷新此页面，因为这样会重新导入文件，产生重复记录。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
@@ -3406,7 +3217,7 @@ msgstr "和"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:111
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:144
 msgid "Group"
-msgstr "组"
+msgstr "问题分组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:490
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:521
@@ -3424,9 +3235,8 @@ msgid "Filter incomplete answers:"
 msgstr "筛选不完整的答案："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1269
-#, fuzzy
 msgid "Enabled"
-msgstr "开启"
+msgstr "开启 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1270
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:615
@@ -3436,15 +3246,12 @@ msgid "Disabled"
 msgstr "无效的"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
-msgstr ""
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
+msgstr "不考虑没有完成的调查问卷"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
-#, fuzzy
 msgid "Show Graphs"
-msgstr "显示最后一页.."
+msgstr "显示图形"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1282
 msgid "View Stats"
@@ -3569,18 +3376,17 @@ msgid "Null values are ignored in calculations"
 msgstr "空值在计算中忽略了"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2221
-#, fuzzy, php-format
+#, php-format
 msgid "Q1 and Q3 calculated using %s"
-msgstr "计算了Q1和Q3"
+msgstr "Q1和Q4使用%s计算"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2221
 msgid "minitab method"
 msgstr "minitab 方法"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2236
-#, fuzzy
 msgid "Not enough values for calculation"
-msgstr "空值在计算中忽略了"
+msgstr "没有足够的数据进行计算"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2592
 msgid "Percentage"
@@ -3684,24 +3490,14 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "本调查的操作代码还未初始化。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
-"如果您初始化本调查的操作代码，本调查将会只能由分配了操作代码的用户访问。"
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "如果您初始化本调查的操作代码，本调查将会只能由分配了操作代码的用户访问。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-#, fuzzy
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"如果您设定一个调查为匿名的，回答加上时间标记并且创建一张操作代码表，"
-"LimeSurvey只会用'Y'标志您已经完成的操作代码而不是日期/时间来确定您参与的匿名"
-"性。"
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "如果您设定一个调查为匿名的，回答加上时间标记并且创建一张操作代码表，调查系统只会用'Y'标志您已经完成的操作代码而不是日期/时间来确定您参与的匿名性。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
@@ -3750,7 +3546,7 @@ msgstr "属性2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:416
 msgid "Show Token Summary"
-msgstr ""
+msgstr "显示Token概况"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1742
@@ -3778,9 +3574,8 @@ msgid "Export Tokens to CSV file"
 msgstr "导出操作代码为CSV文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:448
-#, fuzzy
 msgid "Edit Email Templates"
-msgstr "导出模板"
+msgstr "编辑邮件模版"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:450
 msgid "Send email invitation"
@@ -3816,9 +3611,8 @@ msgid "Total Surveys Completed"
 msgstr "所有完成的调查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:542
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "编辑标签集"
+msgstr "编辑标签集 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:555
 msgid "Invitation Email Subject:"
@@ -3914,8 +3708,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3936,8 +3729,7 @@ msgstr ""
 "\n"
 "最近我们邀请您参加一个调查。\n"
 "\n"
-"我们注意到您还没有完成这个调查，希望提示您这个调查还在进行，希望您愿意参"
-"加。\n"
+"我们注意到您还没有完成这个调查，希望提示您这个调查还在进行，希望您愿意参加。\n"
 "\n"
 "调查的名为：\n"
 "\"{SURVEYNAME}\"\n"
@@ -3954,9 +3746,8 @@ msgstr ""
 "{SURVEYURL}"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:577
-#, fuzzy
 msgid "Confirmation Email Subject:"
-msgstr "确认邮件标题"
+msgstr "确认邮件标题 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:579
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1204
@@ -3965,9 +3756,8 @@ msgid "Confirmation of completed survey"
 msgstr "完成问卷的确认"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:582
-#, fuzzy
 msgid "Confirmation Email:"
-msgstr "确认邮件"
+msgstr "确认邮件 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:584
 msgid "Confirmation Email"
@@ -3994,16 +3784,13 @@ msgstr "开放式注册电子邮件："
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "您好 {FIRSTNAME},\n"
 "\n"
@@ -4013,13 +3800,11 @@ msgstr ""
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"如果您有其他问题，或者您没有注册参与并认为这封邮件有误，请通过{ADMINEMAIL}联"
-"系{ADMINNAME}。"
+"如果您有其他问题，或者您没有注册参与并认为这封邮件有误，请通过{ADMINEMAIL}联系{ADMINNAME}。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
-#, fuzzy
 msgid "Token Email Settings have been saved."
-msgstr "全部操作代码条目已经删除。"
+msgstr "全部操作代码条目已经删除。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:649
 msgid "All token entries have been deleted."
@@ -4138,9 +3923,8 @@ msgstr "邮件地址"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:823
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1614
-#, fuzzy
 msgid "Email Status"
-msgstr "状态"
+msgstr "邮件状态"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:833
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1639
@@ -4161,7 +3945,7 @@ msgstr "问卷完成？"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:858
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:133
 msgid "Actions"
-msgstr "管理动作"
+msgstr "管理操作"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:883
 msgid "Edit Token Entry"
@@ -4197,15 +3981,11 @@ msgid "Delete Tokens Table"
 msgstr "删除操作代码表"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
+msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "如果您删除这个表，访问这个调查将不再要求操作代码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "如果您继续，将会备份这个表，您的系统管理员可以访问这个表。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
@@ -4213,15 +3993,11 @@ msgid "Delete Tokens"
 msgstr "删除操作代码"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "操作代表表已经被移除，访问这个问卷的时候不再需要操作代码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "这个表的副本已经完成并可以被您的系统管理员访问。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
@@ -4247,15 +4023,13 @@ msgstr "信息"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1095
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1116
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1365
-#, fuzzy
 msgid "Sending to Token ID"
-msgstr "发送到 TID 号:"
+msgstr "发送到 TID 号: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
-#, fuzzy
 msgid "Bypass token with failing email addresses"
-msgstr "带有无效电子邮件地址的记录被移除了"
+msgstr "带有无效电子邮件地址的记录被移除了 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1105
 msgid "Send Invitations"
@@ -4271,15 +4045,12 @@ msgstr "邀请发送到："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr "发给 {FIRSTNAME} {LASTNAME} ({EMAIL})的邮件失败"
+msgstr "发给 {FIRSTNAME} {LASTNAME} ({EMAIL})的邮件失败。错误信息："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "未发送的邮件超过一次能发送的量，点击下面的按钮继续发送。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
@@ -4288,32 +4059,24 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "还有 {EMAILCOUNT} 封邮件需要发送。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"没有合格的邮件地址可以发。可能是没有满足任何以下一条标准-拥有邮件地址，还没有"
-"被发送邀请，已经完成问卷和拥有操作代码。"
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "没有合格的邮件地址可以发。可能是没有满足任何以下一条标准-拥有邮件地址，还没有被发送邀请，已经完成问卷和拥有操作代码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
 msgstr "邮件提醒"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1311
-#, fuzzy
 msgid "Reminder Email:"
-msgstr "管理员邮件地址："
+msgstr "管理员邮件地址： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1322
-#, fuzzy
 msgid "Start at Token ID:"
-msgstr "开始的操作代码编号："
+msgstr "开始的操作代码编号： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1330
-#, fuzzy
 msgid "Stop at Token ID:"
-msgstr "开始的操作代码编号："
+msgstr "开始的操作代码编号： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1340
 msgid "Send Reminders"
@@ -4324,33 +4087,24 @@ msgid "Sending Reminders"
 msgstr "正在发送提示"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1364
-#, fuzzy
 msgid "From Token ID"
-msgstr "操作代码识别号"
+msgstr "操作代码识别号 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1446
 msgid "Reminder sent to:"
 msgstr "提示邮件发送到:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"没有合格的邮件地址可以发。可能是没有满足任何以下一条标准 - 拥有邮件地址，已经"
-"被发送了邀请，但是还没有完成问卷。"
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "没有合格的邮件地址可以发。可能是没有满足任何以下一条标准 - 拥有邮件地址，已经被发送了邀请，但是还没有完成问卷。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
 msgstr "建立操作代码"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"点击 '是'  将会为所有在清单中但没有获得操作代码的人生成操作代码。确认吗？"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "点击 '是'  将会为所有在清单中但没有获得操作代码的人生成操作代码。确认吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4369,18 +4123,15 @@ msgstr "加载中，请稍后。"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1588
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1712
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1764
-#, fuzzy
 msgid "Add or Edit Token Entry"
-msgstr "新增或编辑操作代码"
+msgstr "新增或编辑操作代码 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1592
 msgid "Auto"
 msgstr "本身"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "您可以不填写，用”生成操作代码“按钮自动生成操作代码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
@@ -4404,15 +4155,12 @@ msgstr "失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
-#, fuzzy
 msgid "Show this token entry"
-msgstr "新增操作代码录入框"
+msgstr "新增操作代码录入框 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1788
 msgid "Added New Token"
@@ -4429,31 +4177,19 @@ msgid "Note:"
 msgstr "注释："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-#, fuzzy
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
-"文件应该是一个标准的数值用双引号括起来的CSV（逗号分割）文件（默认的openoffice"
-"和excel格式）。第一行应该包含头信息（会被移除）。数据的应按\"名,姓,邮件,[操作"
-"代码],[语言编号],[属性1],[属性2]\"的格式。"
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "文件应该是一个标准的数值用双引号括起来的CSV（逗号分割）文件（默认的openoffice和excel格式）。第一行应该包含头信息（会被移除）。数据的应按\"名,姓,邮件,[操作代码],[语言编号],[属性1],[属性2]\"的格式。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
 msgid "Upload LDAP entries"
 msgstr "上传LDAP条目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP查询被管理员在config-ldap.php文件中定义。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
+msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "找不到上传的文件。请检查文件上传目录和你的权限。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
@@ -4493,9 +4229,8 @@ msgid "Uploading LDAP Query"
 msgstr "正在上传LDAP查询"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2157
-#, fuzzy
 msgid "Results from LDAP Query"
-msgstr "从LDAP查询中导入操作代码"
+msgstr "从LDAP查询中导入操作代码 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2165
 msgid "Can't bind to the LDAP directory"
@@ -4512,13 +4247,12 @@ msgstr "选择要上传的csv文件："
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2200
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2234
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Filter blank email addresses:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2201
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2235
-#, fuzzy
 msgid "Filter duplicate records:"
-msgstr "重复的记录被移除"
+msgstr "重复的记录被移除 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2202
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:723
@@ -4551,9 +4285,8 @@ msgid "You have not selected a survey for data-entry."
 msgstr "您没有选择录入数据的调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:111
-#, fuzzy
 msgid "The token you have provided is not valid or has already been used."
-msgstr "您提供的操作代码无效，或已经被使用过。"
+msgstr "您提供的操作代码无效，或已经被使用过 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
@@ -4569,9 +4302,8 @@ msgid "Edit this entry"
 msgstr "编辑此条目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:124
-#, fuzzy
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr "这个调查使用匿名形式，您不能更新答案"
+msgstr "这个调查使用匿名形式，您不能更新答案。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:151
 msgid "Try again"
@@ -4604,11 +4336,8 @@ msgid "Start Language:"
 msgstr "默认语言："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "你的调查结果已成功保存.你会收到我们的一封确认邮件。请确认您已经保存好您的密码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
@@ -4708,86 +4437,77 @@ msgstr "本调查没有启用，无法保存您的答案。"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:98
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:112
 msgid "Firstname from token"
-msgstr ""
+msgstr "Firstname from token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:84
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:99
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:113
 msgid "Lastname from token"
-msgstr ""
+msgstr "Lastname from token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:85
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:94
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:114
 msgid "Email from the token"
-msgstr ""
+msgstr "Email from the token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:86
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:102
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:115
-#, fuzzy
 msgid "Attribute_1 from token"
-msgstr "属性1"
+msgstr "属性1 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:116
-#, fuzzy
 msgid "Attribute_2 from token"
-msgstr "属性1"
+msgstr "属性2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:95
 msgid "Token code for this participant"
-msgstr ""
+msgstr "Token code for this participant"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:100
-#, fuzzy
 msgid "Name of the survey"
-msgstr "没有匹配的调查"
+msgstr "调查名称"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:101
-#, fuzzy
 msgid "Description of the survey"
-msgstr "这个问卷的回答"
+msgstr "本调查描述"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:104
-#, fuzzy
 msgid "Name of the survey administrator"
-msgstr "调查管理员"
+msgstr "本调查管理员的名字"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:105
-#, fuzzy
 msgid "Email address of the survey administrator"
-msgstr "邮件地址已经存在。"
+msgstr "该调查的管理员的邮件地址"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:106
-#, fuzzy
 msgid "URL of the survey"
-msgstr "没有匹配的调查"
+msgstr "该调查网址"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:403
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "该项没有可替代的值"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:410
-#, fuzzy
 msgid "Standard Fields"
-msgstr "标准文件"
+msgstr "标准项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:422
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "上一页答案项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:451
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:457
-#, fuzzy
 msgid "Some Question have been disabled"
-msgstr "全部操作代码条目已经删除。"
+msgstr "部分问题不能回答"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #, php-format
 msgid "Survey Format is %s:"
-msgstr ""
+msgstr "调查格式为%s:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2235
@@ -4798,12 +4518,12 @@ msgstr "全部都在一页"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "仅上一布的结果存在"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #, php-format
 msgid "Survey mode is set to %s:"
-msgstr ""
+msgstr "调查模式设置为 %s:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2232
@@ -4813,9 +4533,8 @@ msgstr "按组分页"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:42
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:317
-#, fuzzy
 msgid "Survey List Page"
-msgstr "提交页面"
+msgstr "调查列表页"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:43
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:264
@@ -4857,35 +4576,33 @@ msgstr "保存页面"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:50
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:479
-#, fuzzy
 msgid "Print Answers Page"
-msgstr "编辑选项"
+msgstr "打印答案页"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:130
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:258
-#, fuzzy, php-format
+#, php-format
 msgid "Failed to copy %s to new template directory."
-msgstr "到新的模板目录。 "
+msgstr "复制到新的模版目录%s失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:136
-#, fuzzy, php-format
+#, php-format
 msgid "Directory with the name `%s` already exists - choose another name"
-msgstr "已经存在-选择另一个名字"
+msgstr "目前`%s`已经存在-请另外选择名字"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:138
-#, fuzzy, php-format
+#, php-format
 msgid "Unable to create directory `%s`."
-msgstr "无法创建目录"
+msgstr "无法创建目录`%s`."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:138
-#, fuzzy
 msgid "Please check the directory permissions."
-msgstr "请至少选择一项"
+msgstr "请检查目录权限"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:146
-#, fuzzy, php-format
+#, php-format
 msgid "Directory could not be renamed to `%s`."
-msgstr "目录无法更名为"
+msgstr "目录无法更名为`%s`"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:146
 msgid "Maybe you don't have permission."
@@ -4999,8 +4716,7 @@ msgid "Preview:"
 msgstr "预览："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "从一个以前的调查表中导入答案到活动的调查中"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
@@ -5020,13 +4736,8 @@ msgid "Export database"
 msgstr "导出数据库"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"数据库导出只对mysql数据库有效。其他类型的数据库请使用相应的备份机制来实现一个"
-"数据库转储。"
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "数据库导出只对mysql数据库有效。其他类型的数据库请使用相应的备份机制来实现一个数据库转储。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5044,34 +4755,20 @@ msgid "You are about to delete this survey"
 msgstr "您要删除这个调查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
 msgstr "这个过程将要删除调查及所有相关的题目组、题目选项和条件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
 msgstr "建议您在删除调查之前在住管理页面导出整个调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"本调查已启用，结果表已存在。如果你想删除这个调查，所有的数据也会被删除。建议"
-"您在删除调查之前导出所有的数据。"
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "本调查已启用，结果表已存在。如果你想删除这个调查，所有的数据也会被删除。建议您在删除调查之前导出所有的数据。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"本调查有相关的操作代码表。如果你删除本调查，相应的操作代码表也会被删除。建议"
-"您在删除调查之前备份操作代码表。"
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "本调查有相关的操作代码表。如果你删除本调查，相应的操作代码表也会被删除。建议您在删除调查之前备份操作代码表。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5106,22 +4803,19 @@ msgstr "新增用户组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "设置模版"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
-#, fuzzy
 msgid "Template Name"
-msgstr "风格模板："
+msgstr "模板名称"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
-#, fuzzy
 msgid "Allowed"
-msgstr "允许保存吗？"
+msgstr "允许"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:152
-#, fuzzy
 msgid "Save Settings"
-msgstr "设定"
+msgstr "保存设定"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:183
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:468
@@ -5159,9 +4853,8 @@ msgid "Set User Rights"
 msgstr "设定会员权限"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:259
-#, fuzzy
 msgid "SuperAdministrator"
-msgstr "调查管理员"
+msgstr "超级管理员"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2894
@@ -5193,14 +4886,12 @@ msgid "Manage Labels"
 msgstr "管理标签"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:365
-#, fuzzy
 msgid "Setting as Administrator Child"
-msgstr "调查管理员"
+msgstr "设置为管理员"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:366
-#, fuzzy
 msgid "Set Parent successful."
-msgstr "导入操作部分成功。"
+msgstr "导入操作部分成功。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:379
 msgid "User Control"
@@ -5217,13 +4908,12 @@ msgstr "编辑用户"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:535
 msgid "Take Ownership"
-msgstr ""
+msgstr "获取所有权"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:544
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:617
-#, fuzzy
 msgid "Set Template Rights"
-msgstr "设定会员权限"
+msgstr "设定会员权限 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:568
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:573
@@ -5326,9 +5016,8 @@ msgid "To:"
 msgstr "到："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:787
-#, fuzzy
 msgid "Email not sent!"
-msgstr "邮件没有发送！"
+msgstr "邮件没有发送！ "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:811
 msgid "Edit User Group Successfully!"
@@ -5394,14 +5083,11 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "本文件不是LimeSurvey的題目档案，导入失败。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
 msgstr "抱歉，导入题目只限于同一版本。导入失败。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
+msgid "You can't import a question which doesn't support the current survey's base language"
 msgstr "您不能导入不支持当前调查的基础语言的题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
@@ -5422,14 +5108,13 @@ msgid "Question Attributes:"
 msgstr "题目属性："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:512
-#, fuzzy
 msgid "Question import is complete."
-msgstr "题目导入完成"
+msgstr "题目导入完成。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr ""
+msgstr "演示模式：上传文件不允许。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:36
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:59
@@ -5442,98 +5127,90 @@ msgid "Back"
 msgstr "退回"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:52
-#, fuzzy
 msgid "Import Survey Resources"
-msgstr "导入调查"
+msgstr "导入调查资源"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:237
 #, php-format
 msgid "Incorrect permissions in your %s folder."
-msgstr ""
+msgstr "文件股夹%s是不正确的权限设置"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:82
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:261
-#, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr "这个文件不是LimeSurvey类型的标签集文件，导入失败。"
+msgstr "这个文件不是LimeSurvey类型的标签集文件，导入失败。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:282
-#, fuzzy
 msgid "Copy failed"
-msgstr "完成的"
+msgstr "复制失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:112
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:291
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:122
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:301
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "不允许的扩展"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:146
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:165
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:325
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:344
 msgid "Imported Files List"
-msgstr ""
+msgstr "导入的文件列表"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
-#, fuzzy
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr "不是LimeSurvey的调查档，无法导入。"
+msgstr "不是LimeSurvey的调查档，无法导入。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
+msgstr "我们不支持带有子目录的ZIP压缩文件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:160
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:339
 msgid "Partial"
-msgstr ""
+msgstr "部分"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:164
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:172
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:343
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:351
 msgid "Error Files List"
-msgstr ""
+msgstr "错误列表"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:175
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:354
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "导入回答"
+msgstr "导入资源为"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:177
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:356
-#, fuzzy
 msgid "Resources Import Summary"
-msgstr "调查导入摘要"
+msgstr "资源导入摘要："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:178
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:357
-#, fuzzy
 msgid "Total Imported files"
-msgstr "总导入记录数："
+msgstr "总导入记录数： "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:179
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:358
 msgid "Total Errors"
-msgstr ""
+msgstr "错误总数"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:183
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:189
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:362
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:368
-#, fuzzy
 msgid "File"
-msgstr "文件："
+msgstr "文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:43
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:393
@@ -5545,9 +5222,8 @@ msgid "Date Created"
 msgstr "创建日期"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:45
-#, fuzzy
 msgid "Owner"
-msgstr "其它"
+msgstr "所有者"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:46
 msgid "Access"
@@ -5563,19 +5239,16 @@ msgid "Status"
 msgstr "状态"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:49
-#, fuzzy
 msgid "Full Responses"
-msgstr "全部回答"
+msgstr "全部回答 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:50
-#, fuzzy
 msgid "Partial Responses"
-msgstr "清除答案"
+msgstr "清除答案 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:51
-#, fuzzy
 msgid "Total Responses"
-msgstr "导出答案"
+msgstr "调查反馈总计"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:63
 msgid "Anonymous"
@@ -5658,23 +5331,23 @@ msgstr "现在使用的语言"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:296
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "较喜欢的HTML编辑器模式"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:299
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "默认的HTML编辑器模式"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:300
 msgid "No HTML editor"
-msgstr ""
+msgstr "文本编辑器"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:301
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "内联的HTML编辑器"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:302
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "弹出的HTML编辑器"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:310
 msgid "Users"
@@ -5702,9 +5375,7 @@ msgstr "显示PHP配置信息"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "调查不能启用，不是您没有权限就是问卷没有题目。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
@@ -5746,14 +5417,12 @@ msgstr "删除当前调查"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:615
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:617
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:22
-#, fuzzy
 msgid "Reset Survey Logic"
-msgstr "删除调查"
+msgstr "重置调查逻辑"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:612
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "本调查还没有启用"
+msgstr "本调查有问题没有条件限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:630
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:631
@@ -5763,16 +5432,14 @@ msgstr "修改组顺序"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:638
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:639
-#, fuzzy
 msgid "Disabled - Change Group Order"
-msgstr "修改组顺序"
+msgstr "修改组顺序 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:647
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:648
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1924
-#, fuzzy
 msgid "Export Survey Structure"
-msgstr "导出调查"
+msgstr "导出调查 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:661
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:662
@@ -5781,9 +5448,8 @@ msgstr "设定评价规则"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:674
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:675
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "设置调查权限"
+msgstr "设置调查条件限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:688
@@ -5798,9 +5464,8 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "启用/编辑这个调查的操作代码"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
-msgstr ""
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "添加或编辑不能使用，因为调查正在进行中。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
 msgid "Add New Group to Survey"
@@ -5808,27 +5473,23 @@ msgstr "增加新的题目组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:750
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:751
-#, fuzzy
 msgid "Hide details of this Survey"
-msgstr "隐藏项目的详细资料"
+msgstr "隐藏调查的详细资料"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:753
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:754
-#, fuzzy
 msgid "Show details of this survey"
-msgstr "显示项目的详细资料"
+msgstr "显示调查的详细资料"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:758
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:759
-#, fuzzy
 msgid "Close this survey"
-msgstr "关闭此调查"
+msgstr "关闭此调查！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:789
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2465
-#, fuzzy
 msgid "Answers to this survey are anonymized."
-msgstr "导入调查失败"
+msgstr "调查结果为匿名可参加。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:790
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2464
@@ -5974,9 +5635,7 @@ msgid "Edit Current Group"
 msgstr "编辑当前题目组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "删除本题目组同时会删除组能的所有题目及选项。您确认要继续吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
@@ -5985,9 +5644,7 @@ msgid "Delete Current Group"
 msgstr "删除当前题目组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "不能删除此组，因为至少有一个题目的条件和此组相关"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
@@ -6025,9 +5682,7 @@ msgid "Edit Current Question"
 msgstr "编辑当前题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr "删除本题目同时会删除本题目的所有选项。您确认要继续吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
@@ -6035,15 +5690,12 @@ msgid "Delete Current Question"
 msgstr "删除当前题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
 msgstr "不能删除此题，因为至少有一个题目的条件和此题相关"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
-#, fuzzy
 msgid "Disabled - Delete Current Question"
-msgstr "删除当前题目"
+msgstr "停止-删除当前题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1185
 msgid "Export this Question"
@@ -6141,24 +5793,20 @@ msgid "You need to add answers to this question"
 msgstr "请为本题增加选项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1346
-#, fuzzy
 msgid "You need to choose a label set for this question!"
-msgstr "请为本题选择一个标签集"
+msgstr "请为本题选择一个标签集！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1366
-#, fuzzy
 msgid "Second Label Set"
-msgstr "编辑标签集"
+msgstr "第二标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1370
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "请为本题选择一个标签集"
+msgstr "请为本题选择第二标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1384
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "编辑/添加标签集"
+msgstr "编辑/添加第二标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1396
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:107
@@ -6184,7 +5832,7 @@ msgstr "编辑选项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1490
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr ""
+msgstr "错误：使用了同样的答案编码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1546
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1588
@@ -6194,9 +5842,8 @@ msgstr "默认"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1573
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1629
-#, fuzzy
 msgid "Answer:"
-msgstr "答案"
+msgstr "答案："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1617
 msgid "New Answer"
@@ -6208,9 +5855,7 @@ msgid "Add new Answer"
 msgstr "添加新的选项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
 msgstr "你不能增加此题型的选项或更改选项码号，因为此调查已开始。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
@@ -6264,16 +5909,15 @@ msgstr "浏览回答"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1929
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "系统调查文件(*.csv)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1933
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML调查XML格式（*.xml）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1942
-#, fuzzy
 msgid "Export To File"
-msgstr "导出模板"
+msgstr "导出到文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1961
 msgid "Survey Security"
@@ -6297,9 +5941,8 @@ msgstr "编辑问卷-第一步（共2步）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2159
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2851
-#, fuzzy
 msgid "General"
-msgstr "性別"
+msgstr "普通"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2884
@@ -6308,14 +5951,13 @@ msgstr "管理员邮件地址："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2211
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2886
-#, fuzzy
 msgid "Bounce Email:"
-msgstr "你的邮件"
+msgstr "你的邮件："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2899
 msgid "Presentation & Navigation"
-msgstr ""
+msgstr "样式和导航"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2902
@@ -6328,9 +5970,8 @@ msgid "Question by Question"
 msgstr "按题分页"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2258
-#, fuzzy
 msgid "Template Preview:"
-msgstr "风格模板："
+msgstr "模板预览："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2926
@@ -6343,15 +5984,13 @@ msgid "Show [<< Prev] button"
 msgstr "显示[<< 前一页]按纽 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2288
-#, fuzzy
 msgid "Participants may print answers?"
-msgstr "参加者可以保存部分已经完成的问卷"
+msgstr "参加者可以保存部分已经完成的问卷 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2300
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2953
-#, fuzzy
 msgid "List survey publicly:"
-msgstr "列出调查"
+msgstr "公开的列出调查："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2314
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2963
@@ -6366,7 +6005,7 @@ msgstr "问卷完成时，自动加载URL？"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2333
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2983
 msgid "Publication & Access control"
-msgstr ""
+msgstr "发布和参与控制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2338
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2986
@@ -6386,7 +6025,7 @@ msgstr "允许开放式注册吗？"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2372
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3013
 msgid "Use CAPTCHA for"
-msgstr ""
+msgstr "使用验证码："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2380
@@ -6396,9 +6035,8 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3016
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3017
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3019
-#, fuzzy
 msgid "Survey Access"
-msgstr "成功"
+msgstr "调查权限"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2380
@@ -6408,9 +6046,8 @@ msgstr "成功"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3016
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3018
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3020
-#, fuzzy
 msgid "Registration"
-msgstr "管理"
+msgstr "注册"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2384
@@ -6420,9 +6057,8 @@ msgstr "管理"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3017
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3018
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3021
-#, fuzzy
 msgid "Save & Load"
-msgstr "现在保存"
+msgstr "保存&重新加载"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2407
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3026
@@ -6432,18 +6068,16 @@ msgstr "操作代码属性名："
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2414
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3031
 msgid "Use HTML format for token emails?"
-msgstr ""
+msgstr "使用HTML格式的邮件？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "如果你选择了邮件模式，你必须查看你的邮件模版并调整好它。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
 msgid "Notification & Data Management"
-msgstr ""
+msgstr "提示和数据管理"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2435
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3046
@@ -6456,10 +6090,8 @@ msgid "Anonymous answers?"
 msgstr "匿名回答？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
-msgstr ""
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
+msgstr "你不能使用匿名调查，因为开启了基于令牌的调查设置。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2490
@@ -6510,15 +6142,14 @@ msgstr "被访者提交的URL将记入日志。"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3093
 msgid "Enable Token-based answers persistence?"
-msgstr ""
+msgstr "开始基于令牌的调查？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2561
 msgid "This option can't be set if Anonymous answers are used"
-msgstr ""
+msgstr "在进行匿名调查的情况下，该选项不能进行设置"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "所有和移除语言相关的 题目，选项等都会丢失。确定吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
@@ -6539,10 +6170,7 @@ msgid "Current survey has questions with conditions outside their own group"
 msgstr "当前的问卷中有题目的条件在他们所在的组之外"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "重新排序组要先确保有条件基于的题目不能排到有条件的题目的后面"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
@@ -6550,23 +6178,21 @@ msgid "The following groups are concerned"
 msgstr "下面的组是相关的"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2771
-#, fuzzy, php-format
+#, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "注意这些带有标记的条件"
+msgstr "组%s依赖于组%s，请查看标记的条件:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2775
-#, fuzzy
 msgid "QID"
-msgstr "识别号"
+msgstr "识别号 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2841
 msgid "Error: You have to enter a title for this survey."
 msgstr "错误：您必须为这个调查输入一个标题。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2845
-#, fuzzy
 msgid "Create or Import Survey"
-msgstr "建立或导入新调查"
+msgstr "建立或导入新调查 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2868
 msgid "This setting cannot be changed later!"
@@ -6577,9 +6203,8 @@ msgid "(This field is mandatory.)"
 msgstr "（这个字段必须回答。）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2945
-#, fuzzy
 msgid "Participiants may print answers?"
-msgstr "参加者可以保存部分已经完成的问卷"
+msgstr "参加者可以保存部分已经完成的问卷。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2992
 msgid "Date Format"
@@ -6597,7 +6222,7 @@ msgstr "选择 csv/sql 文件："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3121
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "转换资源链接和INSERTANS？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:44
@@ -6627,21 +6252,16 @@ msgid "Export Responses"
 msgstr "导出答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:42
-#, fuzzy
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "您要删除这个调查"
+msgstr "您要删除这个调查的所有条件？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-#, fuzzy
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr "建议您在删除调查之前在住管理页面导出整个调查。"
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "建议您在删除调查之前在住管理页面导出整个调查。 "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
-#, fuzzy
 msgid "All conditions in this survey have been deleted."
-msgstr "全部操作代码条目已经删除。"
+msgstr "所有关于这个调查的限制条件都已删除。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:146
@@ -6649,9 +6269,8 @@ msgid "if you answered"
 msgstr "如果您回答了"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:144
-#, fuzzy
 msgid "if you have NOT answered"
-msgstr "如果您回答了"
+msgstr "如果你没有回答"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:244
 msgid "or"
@@ -6662,9 +6281,9 @@ msgid "to question"
 msgstr "问题"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:257
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question %s"
-msgstr "仅回答此问题"
+msgstr "仅回答此问题%s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:290
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:291
@@ -6691,9 +6310,8 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "请为每一项按喜好排名从1到"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:449
-#, fuzzy
 msgid "Please number each box in order of preference from 1 to "
-msgstr "请为每一项按喜好排名从1到"
+msgstr "请为每一项按喜好排名从1到%d"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:470
@@ -6719,9 +6337,8 @@ msgstr "请选择所有符合的选项并说明理由:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:542
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:543
-#, fuzzy
 msgid "answers and provide a comment:"
-msgstr "请选择所有符合的选项并说明理由:"
+msgstr "回答并提交评论："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:572
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:573
@@ -6773,9 +6390,9 @@ msgstr "请将您完成的问卷传真到："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:974
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:975
-#, fuzzy, php-format
+#, php-format
 msgid "Please submit by %s"
-msgstr "请按提交"
+msgstr "请按提交%s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:189
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:190
@@ -6813,28 +6430,19 @@ msgid "Total"
 msgstr "总计"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"如果你为当前选定的调查，在这页建立任何评价，这个评论会在调查的结束，提交之后"
-"显示。"
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "如果你为当前选定的调查，在这页建立任何评价，这个评论会在调查的结束，提交之后显示。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
-#, fuzzy
 msgid "SID"
 msgstr "识别号"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:69
-#, fuzzy
 msgid "The defined LimeSurvey database does not exist"
-msgstr "设定的surveyor数据库不存在"
+msgstr "设定的调查数据库不存在！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "您选择的数据库尚为建立，或者访问有问题。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
@@ -6851,24 +6459,23 @@ msgstr "找不到对应的调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:161
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:385
-#, fuzzy
 msgid "Date Started"
-msgstr "保存时间"
+msgstr "开始时间"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:386
 msgid "Date Last Action"
-msgstr ""
+msgstr "最后的操作时间"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:232
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:443
 msgid "1. scale"
-msgstr ""
+msgstr "1.尺度范围"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:237
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:448
 msgid "2. scale"
-msgstr ""
+msgstr "2.尺度范围"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:290
 msgid "Delete this entry"
@@ -6888,24 +6495,23 @@ msgid "Close"
 msgstr "关闭"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:681
-#, fuzzy
 msgid "Edit this token"
 msgstr "编辑此条目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:714
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses for this survey"
-msgstr "这个问卷的回答"
+msgstr "这个调查回答的%d"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:715
-#, fuzzy, php-format
+#, php-format
 msgid "%d full responses"
-msgstr "全部回答"
+msgstr "%d全部回答"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:716
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses not completely filled out"
-msgstr "回答没有全部填写"
+msgstr "%d回答没有全部填写"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -6917,9 +6523,8 @@ msgid "You are not allowed to import a survey!"
 msgstr "您没有导入调查的权限！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/cmdline_importsurvey.php:80
-#, fuzzy
 msgid "User name and password do not match!"
-msgstr "用户名/密码不匹配！"
+msgstr "用户名和密码不匹配！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpquestion.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpgroup.php:38
@@ -6942,28 +6547,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "请在继续之前仔细阅读"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
+msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "已经启用的调查会建立一个表来存储所有输入的记录。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"当你关闭一个调查在初始表中的所有数据会被移到其他的表中，当您再次启用调查的时"
-"候，这个表会是空的。你不能再通过LimeSurvey来访问这些数据。"
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "当你关闭一个调查在初始表中的所有数据会被移到其他的表中，当您再次启用调查的时候，这个表会是空的。你不能再通过LimeSurvey来访问这些数据。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"失效的调查数据只能由系统管理员使用数据库访问工具比如phpmyadmin来访问。如果您"
-"的调查使用操作代码，这个表也会被改名并只能被系统管理员访问。"
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "失效的调查数据只能由系统管理员使用数据库访问工具比如phpmyadmin来访问。如果您的调查使用操作代码，这个表也会被改名并只能被系统管理员访问。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -6986,9 +6579,7 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "该调查的结果不能通过LimeSurvey访问。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
+msgid "You should note the name of this table in case you need to access this information later."
 msgstr "您应该记下表名，方便您以后访问相关的信息。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
@@ -7008,21 +6599,15 @@ msgid "This question requires a Labelset, but none is set."
 msgstr "本题目需要一个标签集，但是没有设定标签集。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
-#, fuzzy
 msgid "This question requires a second Labelset, but none is set."
-msgstr "本题目需要一个标签集，但是没有设定标签集。"
+msgstr "本题目需要一个标签集，但是没有设定。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-#, fuzzy
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr "这个题目用到的标签集缺少一个翻译。"
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "这个题目用到的标签集缺一个翻译。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "本题有个条件设定，但是这个条件却基于一个后面的题目。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
@@ -7038,9 +6623,7 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "除非这些问题解决，否则不能启用该调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "当您确定问卷设定已经完成，不需要再进行更改的情况才能启用调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
@@ -7072,9 +6655,7 @@ msgid "Edit (change) your group names"
 msgstr "编辑（更改）您的组名称"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
 msgstr "新增，移除或者编辑预定义的题目选项（除了多选题目）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
@@ -7082,13 +6663,8 @@ msgid "Change survey name or description"
 msgstr "更改调查的名字或描述"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"一旦有数据输入到这份问卷，当你想增加或者删除题目组或者题目的时候，你需要关闭"
-"此调查，已经录入的数据会被移动到一个独立的存档表中。"
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "一旦有数据输入到这份问卷，当你想增加或者删除题目组或者题目的时候，你需要关闭此调查，已经录入的数据会被移动到一个独立的存档表中。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7099,8 +6675,7 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "问卷已经启用。已经成功创建结果表。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A token table must also be created."
 msgstr "这个调查允许公众注册。必须创建一个操作代码表。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
@@ -7116,9 +6691,7 @@ msgid "No invitation code is needed to complete the survey."
 msgstr "不需要邀请码就可以完成这个调查。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "您可以通过下面的按钮初始化一张操作代码表来转换到封闭状态。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
@@ -7148,23 +6721,18 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "文件内不包含正确格式的LimeSurvey的数据。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "调查的导入停止。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
-#, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
-msgstr "没有导入，因为题目类型未知"
+#, php-format
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgstr "题目\"%s-%s\"没有被导入，因为问题的类型不支持。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
-msgstr ""
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "问题 \"%s - %s\"导入成功，但是类型被设置为 '%s'。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1249
@@ -7173,16 +6741,13 @@ msgstr "调查导入摘要"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "导入标签集"
+msgstr "没有导入的标签集"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "（标签设置不会被导放，因为你没有权限）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
@@ -7191,7 +6756,7 @@ msgstr "题目属性"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1237
 msgid "Quotas"
-msgstr ""
+msgstr "限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1239
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1264
@@ -7199,9 +6764,8 @@ msgid "Import of Survey is completed."
 msgstr "调查导入完成。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1240
-#, fuzzy
 msgid "Go to survey"
-msgstr "没有匹配的调查"
+msgstr "进行调查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1241
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1265
@@ -7210,9 +6774,13 @@ msgstr "警告信息"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
-msgstr "无法添加组。\\n\\n在下面的语言中缺少组名"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr ""
+"无法添加组。\\n"
+"\\n"
+"在下面的语言中缺少组名"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
 msgid "Error: The database reported the following error:"
@@ -7229,10 +6797,9 @@ msgid "Group could not be deleted"
 msgstr "无法删除组"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
-#, fuzzy, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr "不能添加选项，您必须在必须填写的字段中插入码号"
+#, php-format
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "不能添加选项，您必须在必须填写的字段中插入码号(%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -7241,14 +6808,8 @@ msgid "Question could not be created."
 msgstr "无法创建题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"无法更新题目。有其他题目的条件基于此题目的答案，更改类型会出问题。必须在您更"
-"改此题类型之前删除这些条件。"
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "无法更新题目。有其他题目的条件基于此题目的答案，更改类型会出问题。必须在您更改此题类型之前删除这些条件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7260,9 +6821,7 @@ msgid "Answers can't be deleted"
 msgstr "不能删除选项"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "这个题目依赖于其他题目的答案，不能移动到组之上："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
@@ -7276,24 +6835,17 @@ msgid "See conditions:"
 msgstr "出现的条件："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "一些题目依赖于这个题目的答案。您不能把这个题目移动到组之下："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
+msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "不能添加题目，您必须在必须填写的字段中插入码号"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"无法删除题目，有其他题目的条件基于此题。请在删除此题之前，删除这些条件。"
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "无法删除题目，有其他题目的条件基于此题。请在删除此题之前，删除这些条件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7318,9 +6870,7 @@ msgid "Failed to update answers"
 msgstr "更新选项失败"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "选项编码为0或者空是不允许的，也不会保存。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
@@ -7356,9 +6906,8 @@ msgid "Survey could not be created"
 msgstr "无法创建调查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:26
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "错误：您必须为这个标签集输入一个名字。"
+msgstr "错误：您必须为这个题目输入一个代码。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:30
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:36
@@ -7375,29 +6924,25 @@ msgstr "标签集："
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:274
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:497
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "标签集："
+msgstr "设置第二标签："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:133
-#, fuzzy
 msgid "Position:"
-msgstr "在适当的位置"
+msgstr "位置"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:136
-#, fuzzy
 msgid "At end"
-msgstr "发送"
+msgstr "最后"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:137
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:759
 msgid "At beginning"
-msgstr ""
+msgstr "开始"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:140
-#, fuzzy
 msgid "After"
-msgstr "其它"
+msgstr "然后"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:180
 msgid "Select CSV File"
@@ -7431,14 +6976,12 @@ msgid "Edit Question"
 msgstr "编辑题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:456
-#, fuzzy
 msgid "Question Type:"
-msgstr "题目："
+msgstr "题目类型："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:467
-#, fuzzy
 msgid "Cannot be modified (Survey is active)"
-msgstr "不能修改"
+msgstr "不能修改(调查正在进行中…)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:520
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:521
@@ -7455,10 +6998,7 @@ msgid "Current group is using conditional questions"
 msgstr "当前组正使用有条件的题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "重新排序这个组内的题目要确保条件基于的题目不能排到有条件的题目的后面"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
@@ -7466,64 +7006,56 @@ msgid "See the conditions marked on the following questions"
 msgstr "看下面题目上标记的条件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:754
-#, fuzzy
 msgid "Place after.."
-msgstr "请等待..."
+msgstr "请等待.."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:815
-#, fuzzy
 msgid "View Question"
-msgstr "编辑题目"
+msgstr "查看题目"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "未提供LID，无法清除标签集。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:106
-#, fuzzy
 msgid "Export results"
 msgstr "导出结果"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:108
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "把结果导出为一个SPSS的命令文件"
+msgstr "导出调查结果到SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:109
-#, fuzzy
 msgid "Export SPSS syntax file"
-msgstr "导出一个VV调查文件"
+msgstr "导出为SPSS语法的文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:110
-#, fuzzy
 msgid "Export SPSS data file"
-msgstr "导出数据库"
+msgstr "导出为SPSS数据文件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:111
 msgid "Instructions for the impatient"
-msgstr ""
+msgstr "详细说明"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:113
 msgid "Download the data and the syntax file."
-msgstr ""
+msgstr "下载数据和语法文件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:114
 msgid "Open the syntax file in SPSS in Unicode mode"
-msgstr ""
+msgstr "以 Unicode模式打开 SPSS的语法文件。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
-msgstr ""
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
+msgstr " 编辑第四行同时完成该文件名。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
 msgid "Choose 'Run/All' from the menu to run the import."
-msgstr ""
+msgstr "从菜单中选择并开始导入。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:118
 msgid "Your data should be imported now."
-msgstr ""
+msgstr "你的数据将被导入。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:676
 msgid "Record ID"
@@ -7628,23 +7160,16 @@ msgstr "您不能导入题目！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-#, fuzzy
 msgid "Security Alert"
-msgstr "安全設定"
+msgstr "安全警告"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "似乎有人在攻击系统，请与系统管理员联系。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "似乎有人在攻击系统，请与系统管理员联系。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -7698,18 +7223,16 @@ msgid "You logged in successfully."
 msgstr "成功登陆。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "系统是基于服务器认证的，您好像并没有得到许可！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
-msgstr ""
+msgstr "请与系统管理员联系"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:256
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "自动导入用户失败！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:307
 msgid "Logout successful."
@@ -7725,9 +7248,9 @@ msgid "Username was not supplied."
 msgstr "没有输入用户名。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:358
-#, fuzzy, php-format
+#, php-format
 msgid "You were signed in on the site %s"
-msgstr "您已在站点上注册"
+msgstr "你已经登录了站点%s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:367
 msgid "Login here"
@@ -7742,9 +7265,8 @@ msgid "Username and/or email address already exists."
 msgstr "用户名和/或者邮件地址已经存在。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:412
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
-msgstr "管理员无法删除！"
+msgstr "不能删除超级管理员！"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:488
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:512
@@ -7769,149 +7291,130 @@ msgid "You are not allowed to change your own rights!"
 msgstr "您没有修改您自己权限的权限。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:637
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "成功更新您的权限"
+msgstr "成功更新用户自定义的模版。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:643
 msgid "Error while updating usertemplates."
-msgstr ""
+msgstr "在上传自定义模版时发生错误。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:37
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:45
-#, fuzzy
 msgid "HTML Editor"
-msgstr "模板编辑器"
+msgstr "HTML编辑器"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:53
-#, fuzzy
 msgid "Close Editor"
-msgstr "模板编辑器"
+msgstr "关闭编辑器"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:86
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:136
-#, fuzzy
 msgid "Editing"
 msgstr "编辑"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
-msgstr ""
+msgstr "你要保存当前的更改么？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:252
 msgid "Modify Quota"
-msgstr ""
+msgstr "修改限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:256
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:315
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:599
-#, fuzzy
 msgid "Quota Name"
-msgstr "设定名字"
+msgstr "限制名字"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:605
 msgid "Quota Limit"
-msgstr ""
+msgstr "限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:268
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:317
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:611
-#, fuzzy
 msgid "Quota Action"
-msgstr "动作"
+msgstr "操作"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:341
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:614
-#, fuzzy
 msgid "Terminate Survey"
-msgstr "建立调查"
+msgstr "中止调查"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:276
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:343
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:615
 msgid "Terminate Survey With Warning"
-msgstr ""
+msgstr "终止调查，并提示警告"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:281
-#, fuzzy
 msgid "Update Quota"
-msgstr "更新题目"
+msgstr "更改限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:312
-#, fuzzy
 msgid "Survey Quotas"
-msgstr "调查"
+msgstr "调查条件限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:318
 msgid "Limit"
-msgstr ""
+msgstr "限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:335
-#, fuzzy
 msgid "Not Active"
-msgstr "活动的"
+msgstr "没有激活"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:351
-#, fuzzy
 msgid "Modify"
-msgstr "正在修改用户资料"
+msgstr "修改"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:373
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
-#, fuzzy
 msgid "Add Answer"
-msgstr "添加新的选项"
+msgstr "添加答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:416
-#, fuzzy
 msgid "No quotas have been set for this survey"
-msgstr "已经为此调查创建了操作代码表。"
+msgstr "没有为这个调查设置相关限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:422
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:620
-#, fuzzy
 msgid "Add New Quota"
-msgstr "新增的操作代码"
+msgstr "添加新的限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
-#, fuzzy
 msgid "Question Selection"
-msgstr "按题分页"
+msgstr "问题选择"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:455
-#, fuzzy
 msgid "Sorry there are no supported question types in this survey."
-msgstr "这个项目中没有题目"
+msgstr "对不起，在这个调查中没有可用的题目类型"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
-#, fuzzy
 msgid "Survey Quota"
-msgstr "调查"
+msgstr "调查条件限制"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:475
-#, fuzzy
 msgid "Select Question"
-msgstr "安全题"
+msgstr "选择问题"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:531
 msgid "All answers are already selected in this quota."
-msgstr ""
+msgstr "在该限制下的所有答案。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:551
-#, fuzzy
 msgid "Select Answer"
-msgstr "正在删除回答"
+msgstr "选择答案"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:595
 msgid "New Quota"
-msgstr ""
+msgstr "所有限制条件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:35
 msgid "You have to enter user name and email."
@@ -7951,13 +7454,8 @@ msgid "You have not selected a Question."
 msgstr "您没有选择一个题目。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"您的条件不能被增加！它没有包含条件基于的题目并且/或者选项。请确认您已经选择一"
-"个题目和一个选项。"
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "您的条件不能被增加！它没有包含条件基于的题目并且/或者选项。请确认您已经选择一个题目和一个选项。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -7977,14 +7475,13 @@ msgstr "显示题目 {QID}仅当"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:772
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:992
-#, fuzzy
 msgid "Less than"
-msgstr "数值小于"
+msgstr "小于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:773
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:993
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "小于或等于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:774
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:994
@@ -7993,25 +7490,23 @@ msgstr "等于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:775
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:995
-#, fuzzy
 msgid "Not Equal to"
 msgstr "不等于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:776
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:996
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "大于或等于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:777
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:997
-#, fuzzy
 msgid "Greater than"
-msgstr "数值大于"
+msgstr "大于"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:778
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:998
 msgid "Regular Expression"
-msgstr ""
+msgstr "正规的表述"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:901
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
@@ -8027,9 +7522,7 @@ msgid "copy to"
 msgstr "复制到"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "您确认想要将这些条件复制到您选择的题目上吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
@@ -8038,14 +7531,12 @@ msgid "Add Condition"
 msgstr "增加条件"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
-msgstr ""
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
+msgstr "注意：如果你定义了回答问题的条件，只有达到条件的问卷才会被接受。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "常量或者正则表达式"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:133
 msgid "Export Results"
@@ -8092,21 +7583,20 @@ msgid "Microsoft Word (Latin charset)"
 msgstr "微软Word (拉丁字符集)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:202
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "微软Excel (拉丁字符集)"
+msgstr "微软Excel (拉丁字符)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:205
 msgid "(Iconv Library not installed)"
-msgstr ""
+msgstr "（ICONV库没有安装）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:215
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "CSV文件（所有字符集）"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:220
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:229
 msgid "Export Data"
@@ -8121,13 +7611,8 @@ msgid "Choose Columns"
 msgstr "选择列"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"您的调查包含超过255列的答案。制表软件比如excel限制载入列不超过255。在下边的列"
-"表中选择你想导出的列。"
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "您的调查包含超过255列的答案。制表软件比如excel限制载入列不超过255。在下边的列表中选择你想导出的列。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
@@ -8138,15 +7623,12 @@ msgid "Choose Token Fields"
 msgstr "选择操作代码字段"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"您的调查可以随每份数据导出相关的操作代码数据。选择任何你想导出的附加字段。"
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "您的调查可以随每份数据导出相关的操作代码数据。选择任何你想导出的附加字段。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
-msgstr ""
+msgstr "语言的一般问题："
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:561
@@ -8155,9 +7637,8 @@ msgid "Time Submitted"
 msgstr "提交的时间"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:861
-#, fuzzy
 msgid "New Record"
-msgstr "检视本记录"
+msgstr "新记录"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:893
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:898
@@ -8174,7 +7655,7 @@ msgstr "N/A"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1255
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1256
 msgid "Tokens problem - token table missing"
-msgstr ""
+msgstr "令牌问题-令牌表丢失"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
@@ -8186,9 +7667,7 @@ msgid "Return to Labels Admin"
 msgstr "返回标签管理界面"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
 msgstr "存在一个重复的标签集，所以这个集不能导入。重复的集会被替代使用。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
@@ -8201,11 +7680,11 @@ msgstr "标签集导入完成。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "将HTML编辑器编出的新的窗口"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr ""
+msgstr "将焦点写信在弹出的HTML编辑器。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:34
 msgid "Welcome to LimeSurvey Setup!"
@@ -8241,8 +7720,7 @@ msgid "A database named \"%s\" already exists."
 msgstr "名为%s的数据库已经存在。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "您想在这个数据库中创建必要的表吗？"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8255,9 +7733,7 @@ msgid "Database `%s` has been successfully populated."
 msgstr "数据库`%s`已成功安装。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
+msgid "Database Information not provided. This script must be run from admin.php only."
 msgstr "未提供数据库信息，这个脚本只能在通过admin.php执行。"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
@@ -8278,123 +7754,85 @@ msgstr "未提供调查编号，不能删除调查"
 
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "您确定要删除这个条目吗。"
-
 #~ msgid "Failed to copy"
 #~ msgstr "复制失败"
-
 #~ msgid "Directory with the name"
 #~ msgstr "这个名字的目录"
-
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "CSV文件(UTF-8 字符集 - 用于非拉丁语言)"
-
 #~ msgid "Responses"
 #~ msgstr "答案"
-
 #~ msgid "Export Current Survey"
 #~ msgstr "导出当前调查"
-
 #~ msgid "depends on group"
 #~ msgstr "取决于组"
-
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr "上传的文件比在php.ini设定的最大上传文件大小大"
-
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "文件只是部分的上传了"
-
 #~ msgid "No file was uploaded"
 #~ msgstr "没有上传文件"
-
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "文件转换错误。您必须选一个csv文件"
-
 #~ msgid "You need to upload the file"
 #~ msgstr "您需要上传一个csv格式的文件"
-
 #~ msgid "You must upload a CSV file"
 #~ msgstr "您必须上传一个csv格式文件"
-
 #~ msgid "Upload CSV file"
 #~ msgstr "上传csv格式文件"
-
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "无法上传CSV格式之外的文件"
-
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "无法上传一个空文件"
-
 #~ msgid "Uploading CSV file"
 #~ msgstr "正在上传csv格式文件"
-
 #~ msgid "Visualization:"
 #~ msgstr "使可见："
-
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "请选择您的答案的字段号："
-
 #~ msgid "Move User"
 #~ msgstr "移动用户"
-
 #~ msgid "was imported, but the type was set to \""
 #~ msgstr "被导入，但是类型被设置为\""
-
 #~ msgid "type"
 #~ msgstr "类型"
-
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", 因为是最近的一个"
-
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr "您不能导入不支持当前调查的基础语言的标签集。"
-
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr "无法新增选项。已经有一个选项用这个编码。"
-
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr "无法更新选项。已经有一个选项使用这个编码。"
-
 #~ msgid "Select all"
 #~ msgstr "选择所有"
-
 #~ msgid "Proceed"
 #~ msgstr "继续"
-
 #~ msgid "Question List"
 #~ msgstr "题目列表"
-
 #~ msgid "Like"
 #~ msgstr "相似"
-
 #~ msgid "Filter Conditions"
 #~ msgstr "筛选条件"
-
 #~ msgid "Numerical"
 #~ msgstr "数值的"
-
 #~ msgid "Huge free text"
 #~ msgstr "长的自由文本"
-
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "用新的字段更新操作代码表"
-
 #~ msgid "to TokenID No"
 #~ msgstr "操作代码编号"
-
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "创建了{TOKENCOUNT}条记录"
-
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "您提供的操作代码不是有效的。"
-
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "您的问卷回答已经被成功的保存"
-
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -8402,86 +7840,60 @@ msgstr "未提供调查编号，不能删除调查"
 #~ msgstr ""
 #~ "您，或者其他人用您的邮件地址，或者管理员保存了一个进行中的问卷。下面的详细"
 #~ "信息可以用来返回这个问卷，并从你离开的地方继续。"
-
 #~ msgid "Email address ist not valid."
 #~ msgstr "邮件地址无效。"
-
 #~ msgid "Please contact"
 #~ msgstr "请联系"
-
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr "这是个封闭式的调查，您需要有效的操作代码来参加。"
-
 #~ msgid "prev"
 #~ msgstr "上一题"
-
 #~ msgid "last"
 #~ msgstr "完成"
-
 #~ msgid "answers"
 #~ msgstr "选项"
-
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "移除您的排名列表中的最后一项"
-
 #~ msgid "Please choose at most"
 #~ msgstr "请至少选择一项"
-
 #~ msgid "answer(s) for question"
 #~ msgstr "题目的选项"
-
 #~ msgid "Check Settings"
 #~ msgstr "检查设定"
-
 #~ msgid "Save Survey and Return"
 #~ msgstr "保存问卷并返回"
-
 #~ msgid "CSV Comma Delimited"
 #~ msgstr "CSV 逗号分隔"
-
 #~ msgid "Visibility"
 #~ msgstr "可见性"
-
 #~ msgid "Private"
 #~ msgstr "私人的"
-
 #~ msgid "Public"
 #~ msgstr "公共的"
-
 #~ msgid "Cannot Activate this Survey"
 #~ msgstr "不能启用此调查"
-
 #~ msgid "Number of groups in survey"
 #~ msgstr "问卷中组的个数："
-
 #~ msgid "Survey is not currently active."
 #~ msgstr "调查尚未启用。"
-
 #~ msgid "Setting new Parent"
 #~ msgstr "设定新的上级"
-
 #~ msgid "This is not an anonymous survey. A token table must also be created."
 #~ msgstr "这不是一个匿名的调查，必须建立操作代码表。"
-
 #~ msgid ""
 #~ "You should export your responses before de-activating. Click \"Cancel\" "
 #~ "to return to the main admin screen without de-activating this survey."
 #~ msgstr ""
 #~ "您应该在关闭之前导出您的答案。点\"取消\" 不关闭调查，返回到主管理界面。"
-
 #~ msgid "De-Activate Survey"
 #~ msgstr "使问卷不活动"
-
 #~ msgid "Admin"
 #~ msgstr "管理"
-
 #~ msgid "Tokens"
 #~ msgstr "操作代码"
-
 #~ msgid "Accept"
 #~ msgstr "接受"
-
 #~ msgid ""
 #~ "<strong>Thank You<br ><br >You have completed answering the questions in "
 #~ "this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the "
@@ -8489,53 +7901,38 @@ msgstr "未提供调查编号，不能删除调查"
 #~ msgstr ""
 #~ "<strong>非常感谢！<br ><br >您已经回答了此问卷的所有问题。<strong><br "
 #~ "><br >请点击[-._SUBMIT.-]完成调查并保存答案。"
-
 #~ msgid "Please choose <strong>only one<strong> of the following:"
 #~ msgstr "请选择<strong>一个<strong>答案:"
-
 #~ msgid "Sets"
 #~ msgstr "集"
-
 #~ msgid "Activate Security"
 #~ msgstr "启动安全设定"
-
 #~ msgid "Delete Entire Survey"
 #~ msgstr "刪除整个调查"
-
 #~ msgid "Backup results table as SQL file"
 #~ msgstr "把结果表备份为sql文件"
-
 #~ msgid "URL Descrip:"
 #~ msgstr "URL 地址说明："
-
 #~ msgid "Turn Off Security"
 #~ msgstr "关闭安全设定"
-
 #~ msgid "Add Survey"
 #~ msgstr "新增调查"
-
 #~ msgid "None-); as in -Do not display anything-, -or none chosen"
 #~ msgstr "沒有： 意思是什么都不显示，或什么都没有选中"
-
 #~ msgid "Creating default htaccess file"
 #~ msgstr "正在创建默认的htaccess文件"
-
 #~ msgid ""
 #~ "Couldn't create htaccess file. Check your config.php for $homedir "
 #~ "setting, and that you have write permission in the correct directory."
 #~ msgstr ""
 #~ "不能创建htaccess文件，请检查您config.php中$homedir的设定，并确认您在相应的"
 #~ "目录有写权限。"
-
 #~ msgid "Security Levels are now set up!"
 #~ msgstr "安全级别已设定。"
-
 #~ msgid "Updating users table"
 #~ msgstr "正在更新用户表"
-
 #~ msgid "Error occurred creating htpasswd file"
 #~ msgstr "创建htpasswd文件的过程中出现错误"
-
 #~ msgid ""
 #~ "If you are using a windows server it is recommended that you copy the "
 #~ "apache htpasswd.exe file into your admin folder for this function to work "
@@ -8544,19 +7941,14 @@ msgstr "未提供调查编号，不能删除调查"
 #~ "如果您使用的是windows系统的服务器，建议您复制apache的htpasswd.exe文件到你"
 #~ "的admin目录下，来保证这个功能正常运行。这个文件一般是在apache的"
 #~ "groupapachebin目录下。"
-
 #~ msgid "Removing security settings"
 #~ msgstr "删除安全设定"
-
 #~ msgid "Access file, password file and user database deleted"
 #~ msgstr "通行文件，密码文件和用户数据库已删除"
-
 #~ msgid "Could not add user. Username andor password were not supplied"
 #~ msgstr "不能新增用户，用户名和/或密码无效"
-
 #~ msgid "Could not modify user. Username andor password were not supplied"
 #~ msgstr "不能修改用户资料，用户名和/或密码无效"
-
 #~ msgid ""
 #~ "<p>You have not yet initialised security settings for your survey system "
 #~ "and subsequently there are no restrictions on access.<p>nIf you click on "
@@ -8568,20 +7960,16 @@ msgstr "未提供调查编号，不能删除调查"
 #~ "您的调查没有启动安全设定，这表示你的调查可以无限制的访问。<p>n如果你点击启"
 #~ "动安全设定按钮，就会在管理目下的脚本中加入  标准的APACHE安全设定。这样你就"
 #~ "需要使用默认的用户名和密码来访问管理和数据录入的界面。"
-
 #~ msgid ""
 #~ "It is highly recommended that once your security system has been "
 #~ "initialised you change this default password."
 #~ msgstr "强烈建议你启动安全设定之后，马上更改默认的密码。"
-
 #~ msgid "Initialise Security"
 #~ msgstr "启动安全设定"
-
 #~ msgid ""
 #~ "No users exist in your table. We recommend you 'turn off' security. You "
 #~ "can then 'turn it on' again."
 #~ msgstr "您的资料表中没有用户，建议您关闭安全设定。您可以再次启动它。"
-
 #~ msgid ""
 #~ "Once a survey is activated you can no longer:<ul><li>Add or delete "
 #~ "groups<li><li>Add or remove answers to Multiple Answer "
@@ -8589,7 +7977,6 @@ msgstr "未提供调查编号，不能删除调查"
 #~ msgstr ""
 #~ "问卷一经启用，您就不能在:<ul><li>新增或者删除题目组别<li><li>新增或者删除"
 #~ "多选题目题目的答案<li><li>新增或删除题目<li><ul>"
-
 #~ msgid ""
 #~ "However you can still:<ul><li>Edit (change) your questions code, text or "
 #~ "type<li><li>Edit (change) your group names<li><li>Add, Remove or Edit pre-"
@@ -8599,23 +7986,17 @@ msgstr "未提供调查编号，不能删除调查"
 #~ "但是您仍可以︰<ul><li>编辑 (修改)题目的编号、描述或者类型<li><li>编辑 (修"
 #~ "改) 题目组别的名称<li><li>新增、删除或者编辑预定义的题目选项(多选题的除外)"
 #~ "<li><li>更改调查的名称或者描述<li><ul>"
-
 #~ msgid "De-Activate"
 #~ msgstr "关闭"
-
 #~ msgid "Checking to ensure all tables exist"
 #~ msgstr "正在检查所有表是否都存在"
-
 #~ msgid "Checking to ensure all fields exist"
 #~ msgstr "正在检查是否所有的字段都存在"
-
 #~ msgid "Field Created"
 #~ msgstr "字段已建立"
-
 #~ msgid ""
 #~ "Answer could not be updated. You must include both a Code and an Answer"
 #~ msgstr "无法更新选项。必须同时设定编码和描述。"
-
 #~ msgid ""
 #~ "Answer could not be updated. You have changed the answer code, but there "
 #~ "are conditions to other questions which are dependant upon the old answer "
@@ -8624,7 +8005,6 @@ msgstr "未提供调查编号，不能删除调查"
 #~ msgstr ""
 #~ "无法更新选项。您更改了该选项的编码，但是有其他题目的条件和此题该选项的旧的"
 #~ "编码有关联。再你更新该选项的编码之前请删除这些条件。"
-
 #~ msgid ""
 #~ "Answer could not be deleted. There are conditions for other questions "
 #~ "that rely on this answer. You cannot delete this answer until those "
@@ -8632,25 +8012,20 @@ msgstr "未提供调查编号，不能删除调查"
 #~ msgstr ""
 #~ "无法删除选项。有其他题目的条件基于这个选项。再你删除这个选项之前要先删除这"
 #~ "些条件。"
-
 #~ msgid "Survey could not be deleted"
 #~ msgstr "无法删除调查"
-
 #~ msgid "Import of this group file failed"
 #~ msgstr "题目组导入失败"
-
 #~ msgid "Inserting Data"
 #~ msgstr "插入数据"
-
 #~ msgid "About to delete tokens table for this survey."
 #~ msgstr "将删除本调查的操作代码表。"
-
 #~ msgid ""
 #~ "Invitation Template cannot be found. This file must exist in the default "
 #~ "template folder."
 #~ msgstr "找不到邀请模板。本文件必须保存在默认的摸板目录下。"
-
 #~ msgid ""
 #~ "Reminder Template cannot be found. This file must exist in the default "
 #~ "template folder."
 #~ msgstr "找不到提示单的模板。本文件必须保存在默认的摸板目录下。"
+
