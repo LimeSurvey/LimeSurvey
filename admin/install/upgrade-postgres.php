@@ -18,24 +18,22 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-
-    if ($oldversion < 125) {
-	}
+global $modifyoutput;
 
 	if ($oldversion < 127) {
-        modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput; 
-        modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [assessments_idx3] on [prefix_assessments] ([gid])"); echo $modifyoutput; 
-        modify_database("","create index [conditions_idx2] on [prefix_conditions] ([qid])"); echo $modifyoutput; 
-        modify_database("","create index [conditions_idx3] on [prefix_conditions] ([cqid])"); echo $modifyoutput; 
-        modify_database("","create index [groups_idx2] on [prefix_groups] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [question_attributes_idx2] on [prefix_question_attributes] ([qid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx2] on [prefix_questions] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx3] on [prefix_questions] ([gid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx4] on [prefix_questions] ([type])"); echo $modifyoutput; 
-        modify_database("","create index [quota_idx2] on [prefix_quota] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput; 
+        modify_database("","create index answers_idx2 on prefix_answers (sortorder)"); echo $modifyoutput;  flush();
+        modify_database("","create index assessments_idx2 on prefix_assessments (sid)"); echo $modifyoutput;  flush();
+        modify_database("","create index assessments_idx on prefix_assessments (gid)"); echo $modifyoutput;  flush();
+        modify_database("","create index conditions_idx2 on prefix_conditions (qid)"); echo $modifyoutput;  flush();
+        modify_database("","create index conditions_idx3 on prefix_conditions (cqid)"); echo $modifyoutput;  flush();
+        modify_database("","create index groups_idx2 on prefix_groups (sid)"); echo $modifyoutput;  flush();
+        modify_database("","create index question_attributes_idx2 on prefix_question_attributes (qid)"); echo $modifyoutput;  flush();
+        modify_database("","create index questions_idx2 on prefix_questions (sid)"); echo $modifyoutput;  flush();
+        modify_database("","create index questions_idx3 on prefix_questions (gid)"); echo $modifyoutput;  flush();
+        modify_database("","create index questions_idx4 on prefix_questions (type)"); echo $modifyoutput;  flush();
+        modify_database("","create index quota_idx2 on prefix_quota (sid)"); echo $modifyoutput;  flush();
+        modify_database("","create index saved_control_idx2 on prefix_saved_control (sid)"); echo $modifyoutput;  flush();
+        modify_database("","create index user_in_groups_idx1 on prefix_user_in_groups (ugid, uid)"); echo $modifyoutput;  flush();
         modify_database("","update prefix_settings_global set stg_value='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
@@ -53,7 +51,6 @@ function db_upgrade($oldversion) {
 
     return true;
 }
-
 
 
 ?>
