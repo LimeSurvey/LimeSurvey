@@ -2564,7 +2564,7 @@ function do_multipleshorttext($ia)
 	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
 	{
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
-		$class_num_only = ' class="numbers-only"';
+		$class_num_only = ' numbers-only';
 	}
 	else
 	{
@@ -2675,7 +2675,7 @@ function do_multipleshorttext($ia)
 	}
 	if (!empty($numbersonly))
 	{
-		$class_num_only = ' numbers-only"';
+		$class_num_only = ' numbers-only';
 		if($label_width > 30)
 		{
 			$label_width = 'X-large';
@@ -3012,7 +3012,7 @@ function do_multiplenumeric($ia)
 		}
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$class_computed = ' computed"';
+			$class_computed = ' computed';
 			if($label_width > 20)
 			{
 				$label_width = 'X-large';
@@ -3042,7 +3042,7 @@ function do_multiplenumeric($ia)
 
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$answer_computed  = "<dl id=\"multiplenumerichelp\">\n";
+			$answer_computed  = "<dl class=\"multiplenumerichelp\">\n";
 			$answer_computed .= "\t<dt>".$clang->gT('Total: ')."</dt>\n\t\t<dd>$prefix<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
 			if ($equalvalue)
 			{
