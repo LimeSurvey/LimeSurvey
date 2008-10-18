@@ -970,7 +970,7 @@ function do_date($ia)
 */
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			<input type="hidden" name="qattribute_answer'.$ia[1].'" />
-			<script type=\"text/javascript\">
+			<script type="text/javascript">
 '
 		. "function dateUpdater(val) {\n"
 		. "  label='answer'+val;\n"
@@ -1785,7 +1785,7 @@ function do_listwithcomment($ia)
 <p class="comment">
 	<label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
 
-	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="30" >';
+	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
 		// --> END NEW FEATURE - SAVE
 		if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
 		{
@@ -2151,7 +2151,7 @@ function do_multiplechoice($ia)
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-//	echo $ansquery;
+
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount();
 
@@ -2159,9 +2159,7 @@ function do_multiplechoice($ia)
 
 	$wrapper = setup_columns($dcols, $anscount);
 
-	$answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount.'" />
-
-'.$wrapper['whole-start'];
+	$answer = '<input type="hidden" name="MULTI'.$ia[1].'" value="'.$anscount."\" />\n\n".$wrapper['whole-start'];
 
 	$fn = 1;
 	if (!isset($multifields))
@@ -2581,8 +2579,8 @@ function do_multipleshorttext($ia)
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t<li>"
-			. "\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
+			$answer .= "\t<li>\n"
+			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
 			. '		'.$prefix.'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 			if (isset($_SESSION[$myfname]))
 			{
@@ -2612,15 +2610,16 @@ function do_multiplenumeric($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 	//Must turn on the "numbers only javascript"
-	$numbersonly = "onkeypress=\"return goodchars(event,'0123456789.')\"";
+	$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
 	}
 	else
 	{
-		$maxsize=255;
+		$maxsize = 255;
 	}
+
 	if ($equalvalue=arraySearchByKey('equals_num_value', $qidattributes, 'attribute', 1))
 	{
 		$equals_num_value=$equalvalue['value'];
@@ -2631,14 +2630,18 @@ function do_multiplenumeric($ia)
 	{
 		$equals_num_value[]=0;
 	}
+
 	if ($minvalue=arraySearchByKey('min_num_value', $qidattributes, 'attribute', 1))
 	{
 		$min_num_value=$minvalue['value'];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
 		$calculateValue[]=2;
-	} else {
+	}
+	else
+	{
 		$min_num_value=0;
 	}
+
 	if ($maxvalue=arraySearchByKey('max_num_value', $qidattributes, 'attribute', 1))
 	{
 		$max_num_value = $maxvalue['value'];
@@ -2649,18 +2652,25 @@ function do_multiplenumeric($ia)
 	{
 		$max_num_value = 0;
 	}
-	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+
+	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
 	{
 		$prefix = $prefix['value'];
-	} else {
+	}
+	else
+	{
 		$prefix = "";
 	}
-	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+
+	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
 	{
 		$suffix = $suffix['value'];
-	} else {
-		$suffix = "";
 	}
+	else
+	{
+		$suffix = '';
+	}
+
 	if(!empty($numbersonlyonblur))
 	{
 		$numbersonly .= ' onblur="'.implode(';', $numbersonlyonblur).'"';
@@ -2670,7 +2680,7 @@ function do_multiplenumeric($ia)
 	{
 		$numbersonly_slider = "";
 	}
-	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
 		$tiwidth=$maxchars['value'];
 	}
@@ -2678,11 +2688,11 @@ function do_multiplenumeric($ia)
 	{
 		$tiwidth=10;
 	}
-	if (arraySearchByKey("slider_layout", $qidattributes, "attribute", 1))
+	if (arraySearchByKey('slider_layout', $qidattributes, 'attribute', 1))
 	{
 		$slider_layout=true;
 
-		$slider_accuracy=arraySearchByKey("slider_accuracy", $qidattributes, "attribute", 1);
+		$slider_accuracy=arraySearchByKey('slider_accuracy', $qidattributes, 'attribute', 1);
 		if (isset($slider_accuracy['value']))
 		{
 			//$slider_divisor = 1 / $slider_accuracy['value'];
@@ -2697,7 +2707,7 @@ function do_multiplenumeric($ia)
 			$slider_stepping = 1;
 		}
 
-		$slider_min=arraySearchByKey("slider_min", $qidattributes, "attribute", 1);
+		$slider_min=arraySearchByKey('slider_min', $qidattributes, 'attribute', 1);
 		if (isset($slider_min['value']))
 		{
 			$slider_min = $slider_min['value'] * $slider_divisor;
@@ -2706,7 +2716,7 @@ function do_multiplenumeric($ia)
 		{
 			$slider_min = 0;
 		}
-		$slider_max=arraySearchByKey("slider_max", $qidattributes, "attribute", 1);
+		$slider_max=arraySearchByKey('slider_max', $qidattributes, 'attribute', 1);
 		if (isset($slider_max['value']))
 		{
 			$slider_max = $slider_max['value'] * $slider_divisor;
@@ -2721,51 +2731,65 @@ function do_multiplenumeric($ia)
 		$slider_layout = false;
 	}
 
-	if ($hidetip=arraySearchByKey("hide_tip", $qidattributes, "attribute", 1))
+	if ($hidetip=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 	{
 		$hidetip=$hidetip['value'];
-	} elseif ($slider_layout === true) { // auto hide tip when using sliders
-		 $hidetip=1;
-	} else {
+	}
+	elseif
+	(
+		$slider_layout === true) { // auto hide tip when using sliders
+		$hidetip=1;
+	}
+	else
+	{
 		$hidetip=0;
 	}
 
-	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-	} else {
+	}
+	else
+	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
-	$ansresult = db_execute_assoc($ansquery);       //Checked
+
+	$ansresult = db_execute_assoc($ansquery);	//Checked
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
 	$answer = keycontroljs();
-	$answer .= "\t\t\t\t\t\t<table class='question'>\n";
+	if ($maxvalue || $equalvalue || $minvalue)
+	{
+		$class_computed = ' class="computed"';
+	}
+	else
+	{
+		$class_computed = '';
+	}
+	$answer .= "<ul$class_computed>\n";
 	if ($anscount==0) 
 	{
 		$inputnames=array();
-		$answer.="<tr><td class='answertext'>".$clang->gT("Error: This question has no answers.")."</td></tr>\n";
+		$answer.="\t<li>".$clang->gT("Error: This question has no answers.")."</li>\n";
 	}
 	else 
 	{
 		while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t\t\t\t\t\t\t<tr>\n"
-				. "\t\t\t\t\t\t\t\t<td align='right' class='answertext'>\n"
-				. "\t\t\t\t\t\t\t\t\t<label for='answer$myfname'>{$ansrow['answer']}</label>\n"
-				. "\t\t\t\t\t\t\t\t</td>\n";
+			$answer .= "\t<li>\n\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n";
 
 			if ($slider_layout === false)
 			{
-				$answer .= ""
-					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-					. "\t\t\t\t\t\t\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$myfname' id='answer$myfname' value='";
-				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+				$answer .= '		'.$prefix.'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+				if (isset($_SESSION[$myfname]))
+				{
+					$answer .= $_SESSION[$myfname];
+				}
 
 				// --> START NEW FEATURE - SAVE
-				$answer .= "' onchange='checkconditions(this.value, this.name, this.type);' $numbersonly maxlength='$maxsize'/>$suffix\n"
-					. "\t\t\t\t\t\t\t\t</td>\n";
+				$answer .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n\t</li>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			else
@@ -2823,66 +2847,69 @@ function do_multiplenumeric($ia)
 				{
 					$slider_startvalue = 'NULL';
 				}
-				$answer .= ""
-					. "\t\t\t\t\t\t\t\t<td align='left'>\n"
-					. "\t\t\t\t\t\t\t\t\t<div id='container-$myfname' class='multinum-slider'>\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-min-$myfname' value='$slider_min' style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-max-$myfname' value='$slider_max' style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-stepping-$myfname' value='$slider_stepping' style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-divisor-$myfname' value='$slider_divisor' style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-param-startvalue-$myfname' value='$slider_startvalue' style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-onchange-js-$myfname' value=\"$numbersonly_slider\" style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-prefix-$myfname' value=\"$prefix\" style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<input type='text' id='slider-suffix-$myfname' value=\"$suffix\" style='display: none;' />\n"
-					. "\t\t\t\t\t\t\t\t\t\t<div id='slider-$myfname' class='ui-slider-1'>\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t<div class='slider_callout' id='slider-callout-$myfname'></div>\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t<div class='ui-slider-handle' id='slider-handle-$myfname'></div>\n"
-					. "\t\t\t\t\t\t\t\t\t\t</div>\n"
-					. "\t\t\t\t\t\t\t\t\t</div>\n"
-					. "\t\t\t\t\t\t\t\t\t<input class='text' type='text' name='$myfname' id='answer$myfname' style='display: none;' value='";
+				$answer .= "\t\t<div id='container-$myfname' class='multinum-slider'>\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-param-divisor-$myfname\" value=\"$slider_divisor\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-param-startvalue-$myfname\" value='$slider_startvalue' style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
+					. "\t\t\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
+					. "\t\t\t<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
+					. "\t\t\t\t<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
+					. "\t\t\t\t<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
+					. "\t\t\t</div>\n"
+					. "\t\t</div>\n"
+					. "\t\t<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" style=\"display: none;\" value=\"";
 				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-				$answer .= "'/>\n"
-					. "\t\t\t\t\t\t\t\t</td>\n";
+				$answer .= "\"/>\n"
+					. "\t</li>\n";
 			}
 
-			$answer .= "\t\t\t\t\t\t\t</tr>\n";
+//			$answer .= "\t\t\t\t\t\t\t</tr>\n";
 
 			$fn++;
 			$inputnames[]=$myfname;
 		}
+		$question_tip = '';
 		if($hidetip == 0) 
 		{
-			$answer .= "<br />\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in these fields")."</i></font>\n";
+			$question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
 		}
 		if ($maxvalue)
 		{
-			$answer .= "\t\t\t<div id='max_num_value_{$ia[1]}'><font size='1'><i>".sprintf($clang->gT("Total of all entries must not exceed %d"), $max_num_value)."</i></font></div>\n";
+			$question_tip .= '<p id="max_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must not exceed %d'), $max_num_value)."</p>\n";
 		}
 		if ($equalvalue)
 		{
-			$answer .= "\t\t\t<div id='equals_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must equal ").$equals_num_value."</i></font></div>\n";
+			$question_tip .= '<p id="equals_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must equal ').$equals_num_value."</p>\n";
 		}
 		if ($minvalue)
 		{
-			$answer .= "\t\t\t<div id='min_num_value_{$ia[1]}'><font size='1'><i>".$clang->gT("Total of all entries must be at least ").$min_num_value."</i></font></div>\n";
+			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must be at least ').$min_num_value."</p>\n";
 		}
+
+		$answer = $question_tip.$answer;
+
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$answer .= "\t\t\t\t\t\t<tr><td colspan='2'><div id='multiplenumerichelp'><table class='question' style='border: 1px solid #111111'>\n";
-			$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Total: ")."</td><td>$prefix<input type='text' id='totalvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+			$answer_computed  = "<dl id=\"multiplenumerichelp\">\n";
+			$answer_computed .= "\t<dt>".$clang->gT('Total: ')."</dt>\n\t\t<dd>$prefix<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
 			if ($equalvalue)
 			{
-				$answer .= "<tr><td align='right' class='answertext'>".$clang->gT("Remaining: ")."</td><td>$prefix<input type='text' id='remainingvalue_{$ia[1]}' disabled style='border: 0px' size='$tiwidth'>$suffix</td></tr>\n";
+				$answer_computed .= "\n\t<dt>".$clang->gT('Remaining: ')."</dt>\n\t\t<dd>$prefix<input type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
 			}
-			$answer .= "</table></div></td></tr>\n";
+			$answer_computed .= "</dl>\n";
 		}
 	}
-	$answer .= "\t\t\t\t\t\t</table>\n";
+	$answer_computed = isset($answer_computed)?$answer_computed:'';
+	$answer .= "</ul>\n".$answer_computed;
 
 	if ($maxvalue || $equalvalue || $minvalue) 
 	{ //Do value validation
-		$answer .= "<input type='hidden' name='qattribute_answer[]' value='".$ia[1]."'>\n";
-		$answer .= "<input type='hidden' name='qattribute_answer".$ia[1]."'>\n";
+		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
+		$answer .= '<input type="hidden" name="qattribute_answer'.$ia[1]."\" />\n";
 
 		$answer .= "<script type='text/javascript'>\n";
 		$answer .= "    function calculateValue".$ia[1]."(method) {\n";
