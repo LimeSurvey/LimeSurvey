@@ -2399,42 +2399,56 @@ function do_multiplechoice_withcomments($ia)
 	$ansresult = db_execute_assoc($ansquery);  //Checked
 	$anscount = $ansresult->RecordCount()*2;
 
-	$answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n"
-		. "<ul>\n";
+	$answer = "<input type='hidden' name='MULTI$ia[1]' value='$anscount' />\n";
+	$answer_main = '';
+
 	$fn = 1;
+	if($other == 'Y')
+	{
+		$label_width = 25;
+	}
+	else
+	{
+		$label_width = 0;
+	}
+
 	while ($ansrow = $ansresult->FetchRow())
 	{
+		if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+		{
+			$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+		}
+
 		$myfname = $ia[1].$ansrow['code'];
 		$myfname2 = $myfname."comment";
-		$answer .= "\t<li>\n"
-		. "\t\t<input class='checkbox' type='checkbox' name='$myfname' id='answer$myfname' value='Y'";
+		$answer_main .= "\t<li>\n\t\t<label for=\"answer$myfname\" class=\"answertext\">\n"
+		. "\t\t\t<input class=\"checkbox\" type=\"checkbox\" name=\"myfname\" id=\"answer$myfname\" value=\"Y\"";
 		if (isset($_SESSION[$myfname]))
 		{
 			if ($_SESSION[$myfname] == 'Y')
 			{
-				$answer .= CHECKED;
+				$answer_main .= CHECKED;
 			}
 		}
 		elseif ($ansrow['default_value'] == 'Y')
 		{
-			$answer .= CHECKED;
+			$answer_main .= CHECKED;
 		}
-		$answer .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
-  				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />"
-				. "<label for='answer$myfname' class='answertext'>"
-				. $ansrow['answer']."</label>\n";
+		$answer_main .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
+				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
+				. $ansrow['answer']."\t\t</label>\n";
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
-		$answer.= "\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		$answer_main .= "\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n";
+		$answer_main .= "' />\n";
 		$fn++;
-		$answer .= "\t\t<label for='answer$myfname2'>\n"
+		$answer_main .= "\t\t<label for='answer$myfname2' class=\"answer-comment\">\n"
 		."\t\t\t<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
-		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
+		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= "'  onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t\t</label>\n"
+		$answer_main .= "'  onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t\t</label>\n"
 
 		. "\t</li>\n";
 		// --> END NEW FEATURE - SAVE
@@ -2448,35 +2462,67 @@ function do_multiplechoice_withcomments($ia)
 		$myfname = $ia[1].'other';
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
-		$answer .= "\t<li class=\"other\">\n"
-		. "\t\t<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>\n\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		$answer_main .= "\t<li class=\"other\">\n"
+		. "\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t".$othertext.":\n\t\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
-			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
+			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
 		}
 		$fn++;
 		// --> START NEW FEATURE - SAVE
-		$answer .= "  $callmaxanswscriptother />\n"
-		. "\t\t<label for=\"answer$myfname2\">\n"
-		. '		<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
+		$answer_main .= "  $callmaxanswscriptother />\n\t\t</label>\n"
+		. "\t\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
+		. '			<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
 		// --> END NEW FEATURE - SAVE
 
 		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer .= '"  onKeyUp="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
+		$answer_main .= '"  onKeyUp="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
 
 		if ($maxansw > 0)
 		{
 			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
 		}
 
-		$answer .= "\t\t</label>\n\t</li>\n";
+		$answer_main .= "\t\t</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$inputnames[]=$myfname;
 		$inputnames[]=$myfname2;
 	}
-	$answer .= "</ul>\n";
+	$label_width = round($label_width * 0.5);
+	if($label_width < 2) $label_width = 2;
+	switch($label_width / 2)
+	{
+		case 1: 
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:	$label_width = $label_width;
+				break;
+		default:	++$label_width;
+	}
+	if($label_width > 20)
+	{
+		$label_width = 'X-large';
+	}
+	else
+	{
+		$label_width = 'X'.$label_width;
+	}
+
+	$answer .= '<ul class="'.$label_width."\">\n".$answer_main."</ul>\n";
+
 
 	if ( $maxansw > 0 )
 	{
@@ -2568,27 +2614,36 @@ function do_multipleshorttext($ia)
 	$fn = 1;
 
 	$answer = keycontroljs();
-	$answer .= "\n<ul$class_num_only>\n";
+	$answer_main = '';
+
+	$label_width = 0;
+
 	if ($anscount==0) 
 	{
 		$inputnames=array();
-		$answer .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
+		$answer_main .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
 	}
 	else
 	{
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t<li>\n"
+			$answer_main .= "\t<li>\n"
 			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
 			. '		'.$prefix.'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+
+			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+			{
+				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+			}
+
 			if (isset($_SESSION[$myfname]))
 			{
-				$answer .= $_SESSION[$myfname];
+				$answer_main .= $_SESSION[$myfname];
 			}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n"
+			$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n"
 			. "\t</li>\n";
 			// --> END NEW FEATURE - SAVE
 	
@@ -2596,7 +2651,52 @@ function do_multipleshorttext($ia)
 			$inputnames[]=$myfname;
 		}
 	}
-	$answer .= "</ul>\n";
+	$label_width = round($label_width * 0.6);
+	if($label_width < 2) $label_width = 2;
+	switch($label_width / 2)
+	{
+		case 1: 
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:	$label_width = $label_width;
+				break;
+		default:	++$label_width;
+	}
+	if (!empty($numbersonly))
+	{
+		$class_num_only = ' numbers-only"';
+		if($label_width > 30)
+		{
+			$label_width = 'X-large';
+		}
+	}
+	else
+	{
+		if($label_width > 20)
+		{
+			$label_width = 'X-large';
+		}
+		$class_num_only = '';
+	}
+
+	if($label_width != 'X-large')
+	{
+		$label_width = 'X'.$label_width;
+	}
+
+	$answer .= '<ul class="'.$label_width.$class_num_only."\">\n".$answer_main."</ul>\n";
+
 	return array($answer, $inputnames);
 }
 
@@ -2659,7 +2759,7 @@ function do_multiplenumeric($ia)
 	}
 	else
 	{
-		$prefix = "";
+		$prefix = '';
 	}
 
 	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
@@ -2735,9 +2835,8 @@ function do_multiplenumeric($ia)
 	{
 		$hidetip=$hidetip['value'];
 	}
-	elseif
-	(
-		$slider_layout === true) { // auto hide tip when using sliders
+	elseif ($slider_layout === true) // auto hide tip when using sliders
+	{
 		$hidetip=1;
 	}
 	else
@@ -2759,37 +2858,36 @@ function do_multiplenumeric($ia)
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
 	$answer = keycontroljs();
-	if ($maxvalue || $equalvalue || $minvalue)
-	{
-		$class_computed = ' class="computed"';
-	}
-	else
-	{
-		$class_computed = '';
-	}
-	$answer .= "<ul$class_computed>\n";
+
+	$answer_main = '';
+
 	if ($anscount==0) 
 	{
 		$inputnames=array();
-		$answer.="\t<li>".$clang->gT("Error: This question has no answers.")."</li>\n";
+		$answer_main .= '	<li>'.$clang->gT('Error: This question has no answers.')."</li>\n";
 	}
 	else 
 	{
+		$label_width = 0;
 		while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
-			$answer .= "\t<li>\n\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n";
+			$answer_main .= "\t<li>\n\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n";
+			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+			{
+				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+			}
 
 			if ($slider_layout === false)
 			{
-				$answer .= '		'.$prefix.'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+				$answer_main .= '		'.$prefix.'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 				if (isset($_SESSION[$myfname]))
 				{
-					$answer .= $_SESSION[$myfname];
+					$answer_main .= $_SESSION[$myfname];
 				}
 
 				// --> START NEW FEATURE - SAVE
-				$answer .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n\t</li>\n";
+				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n\t</li>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			else
@@ -2847,7 +2945,7 @@ function do_multiplenumeric($ia)
 				{
 					$slider_startvalue = 'NULL';
 				}
-				$answer .= "\t\t<div id='container-$myfname' class='multinum-slider'>\n"
+				$answer_main .= "\t\t<div id='container-$myfname' class='multinum-slider'>\n"
 					. "\t\t\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
 					. "\t\t\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
 					. "\t\t\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
@@ -2862,8 +2960,8 @@ function do_multiplenumeric($ia)
 					. "\t\t\t</div>\n"
 					. "\t\t</div>\n"
 					. "\t\t<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" style=\"display: none;\" value=\"";
-				if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-				$answer .= "\"/>\n"
+				if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
+				$answer_main .= "\"/>\n"
 					. "\t</li>\n";
 			}
 
@@ -2890,7 +2988,57 @@ function do_multiplenumeric($ia)
 			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must be at least ').$min_num_value."</p>\n";
 		}
 
-		$answer = $question_tip.$answer;
+		$label_width = round($label_width * 0.6);
+		if($label_width < 2) $label_width = 2;
+		switch($label_width / 2)
+		{
+			case 1: 
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+			case 15:	$label_width = $label_width;
+					break;
+			default:	++$label_width;
+		}
+		if ($maxvalue || $equalvalue || $minvalue)
+		{
+			$class_computed = ' computed"';
+			if($label_width > 20)
+			{
+				$label_width = 'X-large';
+			}
+		}
+		else
+		{
+			if($label_width > 30)
+			{
+				$label_width = 'X-large';
+			}
+			$class_computed = '';
+		}
+
+		if ($slider_layout)
+		{
+			$label_width = 'slider';
+		}
+		else
+		{
+			if($label_width != 'X-large')
+			{
+				$label_width = 'X'.$label_width;
+			}
+		}
+		$answer .= $question_tip.'<ul class="'.$label_width.$class_computed."\">\n".$answer_main."</ul>\n";
 
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
@@ -2904,7 +3052,7 @@ function do_multiplenumeric($ia)
 		}
 	}
 	$answer_computed = isset($answer_computed)?$answer_computed:'';
-	$answer .= "</ul>\n".$answer_computed;
+	$answer .= $answer_computed;
 
 	if ($maxvalue || $equalvalue || $minvalue) 
 	{ //Do value validation
