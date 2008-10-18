@@ -452,27 +452,27 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	margin-top: 1em;
 }
-.numeric-multi dl#multiplenumerichelp
+.numeric-multi dl.multiplenumerichelp
 {
 	width: 16em;
 	float: right;
 	padding: 0%;
 	margin: -3.5em 0% 0% 0%;
 }
-.numeric-multi dl#multiplenumerichelp dt
+.numeric-multi dl.multiplenumerichelp dt
 {
 	text-align: right;
 	width: 5em;
 	padding: 0% 2em 0% 0%;
 	margin: 0% 0% -1.2em 0%;
 }
-.numeric-multi dl#multiplenumerichelp dd
+.numeric-multi dl.multiplenumerichelp dd
 {
 	text-align: left;
 	margin: 0% 0% 0.5em 9em;
 	padding: 0% 0% 0% 1em;
 }
-.numeric-multi dl#multiplenumerichelp dd input
+.numeric-multi dl.multiplenumerichelp dd input
 {
 	border: 0.1em solid #ccc;
 	background-color: #fff;
