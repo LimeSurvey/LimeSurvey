@@ -141,6 +141,7 @@ background-color:#A7A9D1;
 ,.multiple-opt ul
 ,.multiple-opt-comments ul
 ,.multiple-short-txt ul
+,.numeric-multi ul
 {
 	margin-left: 0%;
 	padding-left: 0%;
@@ -153,6 +154,7 @@ background-color:#A7A9D1;
 ,.multiple-opt li
 ,.multiple-opt-comments li
 ,.multiple-short-txt li
+,.numeric-multi li
 {
 	list-style-type: none;
 	text-align: left;
@@ -309,7 +311,50 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	width: 10em;
 }
-.numeric-multi {}
+
+.numeric-multi p.tip
+{
+	font-size: 80%;
+	font-style: italic;
+}
+.numeric-multi ul.computed
+{
+	margin-right: 12em;
+}
+.numeric-multi div#multinum-slider
+{
+	margin-top: 1em;
+}
+.numeric-multi dl#multiplenumerichelp
+{
+	width: 16em;
+	float: right;
+	padding: 0%;
+	margin: -3.5em 0% 0% 0%;
+}
+.numeric-multi dl#multiplenumerichelp dt
+{
+	text-align: right;
+	width: 5em;
+	padding: 0% 2em 0% 0%;
+	margin: 0% 0% -1.2em 0%;
+}
+.numeric-multi dl#multiplenumerichelp dd
+{
+	text-align: left;
+	margin: 0% 0% 0.5em 9em;
+	padding: 0% 0% 0% 1em;
+}
+.numeric-multi dl#multiplenumerichelp dd input
+{
+	border: 0.1em solid #ccc;
+	background-color: #fff;
+	color: #000;
+	padding: 0.2em 0.5em;
+	width: 7em;
+}
+
+
 .numeric {}
 .text-short {}
 .text-long {}
