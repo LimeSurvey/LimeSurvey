@@ -183,6 +183,11 @@
 	    $supportedLanguages['el']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
 	    $supportedLanguages['el']['rtl'] = false;
 
+  	    // Hindi
+	    $supportedLanguages['hi']['description'] = $clang->gT('Hindi');
+	    $supportedLanguages['hi']['nativedescription'] = '&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;';
+	    $supportedLanguages['hi']['rtl'] = false;
+
 	    // Hebrew
 	    $supportedLanguages['he']['description'] = $clang->gT('Hebrew');
 	    $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
