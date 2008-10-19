@@ -17,3 +17,11 @@ $(document).ready(function(){
          }
      })
 });
+
+function showhidefilters(value) {
+ if(value == true) {
+   hide('filterchoices');
+ } else {
+   show('filterchoices');
+ }
+}

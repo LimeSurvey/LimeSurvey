@@ -126,11 +126,11 @@ deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
 
 //headline with all icons for available statistic options
-$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
+//$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
+//."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
-$statisticsoutput .= browsemenubar();
-$statisticsoutput .= "</table>\n"
+$statisticsoutput .= browsemenubar($clang->gT("Quick Statistics"))
+
 
 //second row below options -> filter settings headline
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
@@ -1843,15 +1843,6 @@ $statisticsoutput .= "\t\t\t</table>\n"
 
 $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."<script type='text/javascript'>
-   function showhidefilters(value) {
-     if(value == true) {
-       hide('filterchoices');
-     } else {
-	   show('filterchoices');
-	 }
-   }
-</script>"
 ."<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
 ."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
@@ -4310,14 +4301,13 @@ function showSpeaker($hinttext)
 	
 	if(!isset($max))
 	{
-		$max = 12;
+		$max = 13;
 	}
 	
 	if(strlen($hinttext) > ($max))
 	{
 		$shortstring = strip_tags($hinttext);
 		
-		//create short string
 		$shortstring = substr($hinttext, 0, $max);
 		
 		//output with hoover effect
