@@ -4131,13 +4131,13 @@ if (isset($summary) && $summary)
                     {
                      $gheight=$gheight+(10*($counter-15));
 					}
-                    $Test = new pChart(640,$gheight); 
+                    $Test = new pChart(690,$gheight); 
                      
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
-                    $Test->drawFilledRoundedRectangle(7,7,633,$gheight-7,5,240,240,240);  
-                    $Test->drawRoundedRectangle(5,5,635,$gheight-5,5,230,230,230);  
+                    $Test->drawFilledRoundedRectangle(7,7,683,$gheight-7,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,685,$gheight-5,5,230,230,230);  
                     $Test->drawGraphArea(255,255,255,TRUE);  
                     $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
