@@ -799,9 +799,9 @@ if  ($subaction=='dlstructure')
 					    if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					    if ($i == ($num_results-1))
 					    {
-						    echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
+						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
 					    } else {
-						    echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row['answer'],0,$length_vallabel))."\"\n";
+						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row['answer'],0,$length_vallabel))."\"\n";
 					    }
 				    }
 			    }
@@ -824,9 +824,9 @@ if  ($subaction=='dlstructure')
 					    if ($displayvaluelabel == 0) $displayvaluelabel = 1;
 					    if ($i == ($num_results-1))
 					    {
-						    echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
+						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
 					    } else {
-						    echo "\"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
+						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
 
 					    }
 				    }
@@ -861,46 +861,46 @@ if  ($subaction=='dlstructure')
             {
 			    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";  //Beginning of the line
 			    if ($displayvaluelabel == 0) $displayvaluelabel = 1; //Now do the rest of the line
-			    echo "$i \"$i\".\n";
+			    echo " $i \"$i\".\n";
 			}
 		}
 		    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT('Yes')."\"\n";
-			    echo "0 \"".$clang->gT('Not Selected')."\".\n";
+			    echo " 1 \"".$clang->gT('Yes')."\"\n";
+			    echo " 0 \"".$clang->gT('Not Selected')."\".\n";
 		    }
 		    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT("Yes")."\"\n";
-			    echo "0 \"".$clang->gT('Not Selected')."\".\n";
+			    echo " 1 \"".$clang->gT("Yes")."\"\n";
+			    echo " 0 \"".$clang->gT('Not Selected')."\".\n";
 		    }
 		    if ($field['LStype'] == "G" && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT('Female')."\"\n";
-			    echo "2 \"".$clang->gT("Male")."\".\n";
+			    echo " 1 \"".$clang->gT('Female')."\"\n";
+			    echo " 2 \"".$clang->gT("Male")."\".\n";
 		    }
 		    if ($field['LStype'] == "Y" && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT('Yes')."\"\n";
-			    echo "2 \"".$clang->gT("No")."\".\n";
+			    echo " 1 \"".$clang->gT('Yes')."\"\n";
+			    echo " 2 \"".$clang->gT("No")."\".\n";
 		    }
 		    if ($field['LStype'] == "C" && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT('Yes')."\"\n";
-			    echo "2 \"".$clang->gT('No')."\".\n";
-			    echo "3 \"".$clang->gT('Uncertain')."\".\n";
+			    echo " 1 \"".$clang->gT('Yes')."\"\n";
+			    echo " 2 \"".$clang->gT('No')."\".\n";
+			    echo " 3 \"".$clang->gT('Uncertain')."\".\n";
 		    }
 		    if ($field['LStype'] == "E" && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo "1 \"".$clang->gT('Increase')."\"\n";
-			    echo "2 \"".$clang->gT('Same')."\".\n";
-			    echo "3 \"".$clang->gT('Decrease')."\".\n";
+			    echo " 1 \"".$clang->gT('Increase')."\"\n";
+			    echo " 2 \"".$clang->gT('Same')."\".\n";
+			    echo " 3 \"".$clang->gT('Decrease')."\".\n";
 		    }
 	    }
     } 
