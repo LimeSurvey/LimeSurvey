@@ -448,7 +448,6 @@ if ($pluscon !== null)
 	$conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
 	$conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 }
-
 //Build an array containing the conditions that apply for this page
 $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 if ($plus_conditions)
@@ -616,7 +615,14 @@ else
 				$man_class = '';
 			}
 
-			if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+// Fixed by lemeur: can't rely on javascript checkconditions with 
+// question-by-question display to hide/show conditionnal questions 
+// as conditions are evaluated with php code
+// Let's use result from previous condition eval instead 
+// (note there is only 1 question, $conditionforthisquestion is the result from
+// condition eval in php)
+//			if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+			if ($conditionforthisquestion != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
 			echo '
 	<!-- NEW QUESTION -->
