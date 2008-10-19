@@ -731,6 +731,7 @@ if ($subaction == "browse" || $subaction == "search")
 	if ($last <0) {$last=0;}
 	if ($next >= $tkcount) {$next=$tkcount-$limit;}
 	if ($end < 0) {$end=0;}
+	$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
 	$tokenoutput .= "\t<tr><td colspan='3' height='4'><strong>"
@@ -898,7 +899,11 @@ if ($subaction == "browse" || $subaction == "search")
 			."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='D' title='"
 //			.$clang->gT("Delete Token Entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order', '_top')\" />";
 			.$clang->gT("Delete Token Entry")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."\" />";
-			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token']) {$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$brow['language']."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";}
+			if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
+			{
+				$toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
+				$tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='S' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
+			}
 			$tokenoutput .= "\n\t\t</td>\n";
 		}
 		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")

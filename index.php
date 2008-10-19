@@ -613,6 +613,8 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 	{
 		$_SESSION['srid'] = $srrow['id'];
 	}
+	buildsurveysession();
+	loadanswers();
 }
 
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
@@ -1949,24 +1951,24 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			while ($abrow = $abresult->FetchRow())
 			{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); 
 
 				$alsoother = "";
 				if ($abrow['other'] == "Y") {$alsoother = "Y";}
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); 
 				}
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname."othercomment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); 
 				}
 			}
 		}
@@ -2032,14 +2034,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				if ($abmultiscalecount>0)
 				{
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#0";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#0" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#0" => $fieldname)); 
 						$alsoother = "";
 						
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
 							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
 						}
 
 				}
@@ -2056,14 +2058,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				if ($abmultiscalecount>0)
 				{
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#1";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#1" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#1" => $fieldname)); 
 						$alsoother = "";
 						
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
 							$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
 						}
 				}
 		
@@ -2071,11 +2073,11 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname."othercomment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."othercomment" => $fieldname)); 
 				}
 			}
 		}
@@ -2100,7 +2102,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			for ($i=1; $i<=$abcount; $i++)
 			{
 				$_SESSION['insertarray'][] = "$fieldname".$i;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."$i" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."$i" => $fieldname)); 
 			}
 		}
 
@@ -2119,25 +2121,25 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			while ($abrow = $abresult->FetchRow())
 			{
 				$_SESSION['insertarray'][] = $fieldname.$abrow['code'];
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code'] => $fieldname)); 
 			}
 		}
 		elseif ($arow['type'] == "O")	// List With Comment
 		{
 			$_SESSION['insertarray'][] = $fieldname;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
 			$fn2 = $fieldname."comment";
 			$_SESSION['insertarray'][] = $fn2;
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); 
 		}
 		elseif ($arow['type'] == "L" || $arow['type'] == "!" || $arow['type'] == "Z" || $arow['type'] == "L")	// List (Radio) - List (Dropdown)
 		{
 			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
 			if ($arow['other'] == "Y") 
 			{
 				$_SESSION['insertarray'][] = $fieldname."other";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); // TIBO
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."other" => $fieldname)); 
 			}
 
 		//go through answers, and if there is a default, register it now so that conditions work properly the first time
@@ -2160,12 +2162,12 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		{
 			$totalBoilerplatequestions++;
 			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
 		}
 		else
 		{
 			$_SESSION['insertarray'][] = $fieldname;
-			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); // TIBO
+			$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname => $fieldname)); 
 		}
 
 
