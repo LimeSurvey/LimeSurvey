@@ -3150,26 +3150,33 @@ function do_numerical($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
 	{
-	    $prefix = $prefix['value'];
-	} else {
-	    $prefix = "";
+		$prefix = $prefix['value'];
 	}
-	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	else
 	{
-	    $suffix = $suffix['value'];
-	} else {
-	    $suffix = "";
+		$prefix = '';
 	}
-	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
+	{
+		$suffix = $suffix['value'];
+	}
+	else 
+	{
+		$suffix = '';
+	}
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
-        if ($maxsize>20) {$maxsize=20;}
+		if ($maxsize>20)
+		{
+			$maxsize=20;
+		}
 	}
 	else
 	{
 		$maxsize=20;  // The field length for numerical fields is 20
 	}
-	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
 		$tiwidth=$maxchars['value'];
 	}
@@ -3179,10 +3186,10 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = keycontroljs()
-	. "\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$ia[1]' "
-	. "id='answer{$ia[1]}' value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='checkconditions(this.value, this.name, this.type)'"
-	. "maxlength='$maxsize' />$suffix<br />\n"
-	. "\t\t\t<font size='1'><i>".$clang->gT("Only numbers may be entered in this field")."</i></font>\n";
+	. "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='checkconditions(this.value, this.name, this.type)'"
+	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n"
+	. "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
@@ -3197,7 +3204,7 @@ function do_numerical($ia)
 function do_shortfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
 	}
@@ -3205,7 +3212,7 @@ function do_shortfreetext($ia)
 	{
 		$maxsize=255;
 	}
-	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
 		$tiwidth=$maxchars['value'];
 	}
@@ -3213,22 +3220,26 @@ function do_shortfreetext($ia)
 	{
 		$tiwidth=50;
 	}
-	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
+	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
 	{
-	    $prefix = $prefix['value'];
-	} else {
-	    $prefix = "";
+		$prefix = $prefix['value'];
 	}
-	if ($suffix=arraySearchByKey("suffix", $qidattributes, "attribute", 1))
+	else 
 	{
-	    $suffix = $suffix['value'];
-	} else {
-	    $suffix = "";
+		$prefix = '';
+	}
+	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
+	{
+		$suffix = $suffix['value'];
+	}
+	else
+	{
+		$suffix = '';
 	}
 	// --> START NEW FEATURE - SAVE
-	$answer = "\t\t\t$prefix<input class='text' type='text' size='$tiwidth' name='$ia[1]' id='answer$ia[1]' value=\""
+	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength='$maxsize' onkeyup='checkconditions(this.value, this.name, this.type)'/>$suffix\n";
+	."\" maxlength='\"maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
@@ -3242,7 +3253,7 @@ function do_shortfreetext($ia)
 function do_longfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
 	}
@@ -3252,7 +3263,7 @@ function do_longfreetext($ia)
 	}
 
 	// --> START ENHANCEMENT - DISPLAY ROWS
-	if ($displayrows=arraySearchByKey("display_rows", $qidattributes, "attribute", 1))
+	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
 	{
 		$drows=$displayrows['value'];
 	}
@@ -3263,7 +3274,7 @@ function do_longfreetext($ia)
 	// <-- END ENHANCEMENT - DISPLAY ROWS
 
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
-	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
 		$tiwidth=$maxchars['value'];
 	}
@@ -3287,8 +3298,8 @@ function do_longfreetext($ia)
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= "<textarea class='textarea' name='{$ia[1]}' id='answer{$ia[1]}' "
-	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize); checkconditions(this.value, this.name, this.type)\">";
+	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
@@ -3309,7 +3320,7 @@ function do_longfreetext($ia)
 function do_hugefreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxchars=arraySearchByKey("maximum_chars", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
 	}
@@ -3319,7 +3330,7 @@ function do_hugefreetext($ia)
 	}
 
 	// --> START ENHANCEMENT - DISPLAY ROWS
-	if ($displayrows=arraySearchByKey("display_rows", $qidattributes, "attribute", 1))
+	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
 	{
 		$drows=$displayrows['value'];
 	}
@@ -3330,7 +3341,7 @@ function do_hugefreetext($ia)
 	// <-- END ENHANCEMENT - DISPLAY ROWS
 
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
-	if ($maxchars=arraySearchByKey("text_input_width", $qidattributes, "attribute", 1))
+	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
 		$tiwidth=$maxchars['value'];
 	}
@@ -3352,8 +3363,8 @@ function do_hugefreetext($ia)
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= "<textarea class='display' name='{$ia[1]}' id='answer$ia[1]' "
-	."rows='{$drows}' cols='{$tiwidth}' onkeyup=\"textLimit('answer".$ia[1]."', $maxsize); checkconditions(this.value, this.name, this.type)\">";
+	$answer .= '<textarea class=\"display\" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', $maxsize); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
@@ -3373,37 +3384,39 @@ function do_hugefreetext($ia)
 function do_yesno($ia)
 {
 	global $shownoanswer, $clang;
-	$answer = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td align='left'>\n"
-	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]Y' value='Y'";
-	if ($_SESSION[$ia[1]] == "Y") {$answer .= " checked='checked'";}
-	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]Y' class='answertext'>".$clang->gT("Yes")."</label><br />\n"
-	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]N' value='N'";
-	// --> END NEW FEATURE - SAVE
+	$answer = "<ul>\n"
+	. "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
-	if ($_SESSION[$ia[1]] == "N") {$answer .= " checked='checked'";}
-	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]N' class='answertext'>".$clang->gT("No")."</label><br />\n";
-	// --> END NEW FEATURE - SAVE
-
-	if ($ia[6] != "Y" && $shownoanswer == 1)
+	if ($_SESSION[$ia[1]] == 'Y')
 	{
-		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "")
+		$answer .= CHECKED;
+	}
+	// --> START NEW FEATURE - SAVE
+	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t\t\t".$clang->gT('Yes')."\n\t\t</label>\n\t</li>\n"
+	. "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
+	// --> END NEW FEATURE - SAVE
+
+	if ($_SESSION[$ia[1]] == 'N')
+	{
+		$answer .= CHECKED;
+	}
+	// --> START NEW FEATURE - SAVE
+	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer{$ia[1]}N\" class=\"answertext\" />\n\t\t\t".$clang->gT('No')."\n\t\t</label>\n\t</li>\n";
+	// --> END NEW FEATURE - SAVE
+
+	if ($ia[6] != 'Y' && $shownoanswer == 1)
+	{
+		$answer .= "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
+		if ($_SESSION[$ia[1]] == '')
 		{
-			$answer .= " checked='checked'";
+			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label><br />\n";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t\t\t".$clang->gT('No answer')."\n\t\t</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 	}
-    
-	$answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
-	. "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
+
+	$answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
@@ -3417,7 +3430,9 @@ function do_gender($ia)
 	global $shownoanswer, $clang;
 	
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+
+/* This can (and should) now be done by CSS rather than using tables.
+	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
 	{
 		$dcols=$displaycols['value'];
 	}
@@ -3425,53 +3440,66 @@ function do_gender($ia)
 	{
 		$dcols=0;
 	}
-	
-	$answer = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td align='left'>\n"
-	. "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]F' value='F'";
-	if ($_SESSION[$ia[1]] == "F") {$answer .= " checked='checked'";}
+*/
+	$answer = "<ul>\n"
+	. "\t<li>\n"
+	. '		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
+	if ($_SESSION[$ia[1]] == 'F')
+	{
+		$answer .= CHECKED;
+	}
 	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' />"
-	. "<label for='answer$ia[1]F' class='answertext'>".$clang->gT("Female")."</label>\n";
+	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+	. '		<label for="answer'.$ia[1].'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
+/* columns now done by CSS
 	if ($dcols > 1 ) //Break into columns - don't need any detailed calculations becauase there's only ever 2 possible columns
 	{
-	    $answer .= "\n</td><td>\n";
-    } else {
-	    $answer .= "<br />\n";
-	}	
-	$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1]M' value='M'";
-	// --> END NEW FEATURE - SAVE
-
-	if ($_SESSION[$ia[1]] == "M") {$answer .= " checked='checked'";}
-	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1]M' class='answertext'>".$clang->gT("Male")."</label>\n";
-	// --> END NEW FEATURE - SAVE
-
-	if ($ia[6] != "Y" && $shownoanswer == 1)
+		$answer .= "\n</td><td>\n";
+	}
+	else
 	{
-        if ($dcols > 2)
-        {
-		  $answer .= "\n</td><td>\n";
-		} elseif ($dcols > 1) {
-		  $answer .= "\n</td></tr><tr><td colspan='2' align='center'>\n";
-		} else {
-		  $answer .= "<br />";
-		}
-		$answer .= "\t\t\t\t\t\t<input class='radio' type='radio' name='$ia[1]' id='answer$ia[1] ' value=''";
-		if ($_SESSION[$ia[1]] == "")
+		$answer .= "<br />\n";
+	}
+*/
+	$answer .= "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
+	// --> END NEW FEATURE - SAVE
+
+	if ($_SESSION[$ia[1]] == 'M')
+	{
+		$answer .= CHECKED;
+	}
+	// --> START NEW FEATURE - SAVE
+	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer$ia[1]M\" class=\"answertext\">".$clang->gT('Male')."</label>\n\t</li>\n";
+	// --> END NEW FEATURE - SAVE
+
+	if ($ia[6] != 'Y' && $shownoanswer == 1)
+	{
+/* columns now done by CSS
+		if ($dcols > 2)
 		{
-			$answer .= " checked='checked'";
+			$answer .= "\n</td><td>\n";
+		}
+		elseif ($dcols > 1)
+		{
+			$answer .= "\n</td></tr><tr><td colspan='2' align='center'>\n";
+		}
+		else
+		{
+			$answer .= "<br />";
+		}
+*/
+		$answer .= "\t<li>\n\t\t<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
+		if ($_SESSION[$ia[1]] == '')
+		{
+			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)' /><label for='answer$ia[1] ' class='answertext'>".$clang->gT("No answer")."</label>\n";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer$ia[1]\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 	}
-	$answer .= "\t\t\t\t<input type='hidden' name='java$ia[1]' id='java$ia[1]' value='{$_SESSION[$ia[1]]}' />\n"
-	. "\t\t\t\t\t</td>\n"
-	. "\t\t\t\t</tr>\n"
-	. "\t\t\t</table>\n";
+	$answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
