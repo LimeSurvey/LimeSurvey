@@ -5016,5 +5016,15 @@ function get_quotaCompletedCount($surveyid, $quotaid)
 	return $result;
 }
 
+function fix_FCKeditor_text($str)
+{
+	$str = str_replace('<br type="_moz" />','',$str);
+	if ($str == "<br />" || $str == " ")
+	{
+		$str = "";
+	}
+	return $str;
+}
+
 
 ?>
