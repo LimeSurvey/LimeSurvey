@@ -4314,7 +4314,7 @@ function showSpeaker($hinttext)
 		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
            ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/downarrow.png' align='bottom' alt='$hinttext' title='$hinttext' "
+           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
            ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
 	}
 	else

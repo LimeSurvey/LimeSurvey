@@ -1083,7 +1083,7 @@ if ($subaction == "email" &&
 
 			$subject=Replacefields($thissurvey['email_invite_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_invite'], $fieldsarray);
-
+            if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
 	    	$tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
 	    	if ($language==$baselang) 
 	        {
@@ -1332,6 +1332,7 @@ if ($subaction == "remind" &&
 
 			$subject=Replacefields($thissurvey['email_remind_subj'], $fieldsarray);
 			$textarea=Replacefields($thissurvey['email_remind'], $fieldsarray);
+            if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
 
 			$tokenoutput .= "\t\t<td><input type='text' size='83' name='subject_$language' value=\"$subject\" /></td>\n"
 				."\t</tr>\n";

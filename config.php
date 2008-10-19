@@ -51,6 +51,5 @@ $defaultpass        =   'password';       // This is the default password for th
 $siteadminemail     =   'your@email.org'; // The default email address of the site administrator
 $siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   'Your Name';      // The name of the site administrator
-$debug=2;
 
 ?>
