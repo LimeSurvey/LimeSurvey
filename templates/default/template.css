@@ -19,7 +19,7 @@ font-size:10px;
 font-size:11px;
 }
 
-.answertextright {
+.answertext {
 text-align:left;
 }
 
@@ -142,6 +142,8 @@ background-color:#A7A9D1;
 ,.multiple-opt-comments ul
 ,.multiple-short-txt ul
 ,.numeric-multi ul
+,.yes-no ul
+,.gender ul
 {
 	margin-left: 0%;
 	padding-left: 0%;
@@ -155,6 +157,8 @@ background-color:#A7A9D1;
 ,.multiple-opt-comments li
 ,.multiple-short-txt li
 ,.numeric-multi li
+,.yes-no li
+,.gender li
 {
 	list-style-type: none;
 	text-align: left;
@@ -168,11 +172,15 @@ background-color:#A7A9D1;
 .boilerplate {}
 */
 
-.choice-5-pt-radio ul
+ .choice-5-pt-radio ul
+,.yes-no ul
+,.gender ul
 {
 	text-align: center;
 }
-.choice-5-pt-radio ul li
+ .choice-5-pt-radio ul li
+,.yes-no ul li
+,.gender ul li
 {
 	display: inline;
 	padding: 0% 1em;
@@ -488,9 +496,14 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .text-huge {}
 .yes-no {}
 .gender {}
-.array-5-pt {}
-.array-10-pt {}
-.array-yes-uncertain-no {}
+
+ .array-5-pt td.answertext
+,.array-10-pt td.answertext
+,.array-yes-uncertain-no td.answertext
+{
+	text-align: right;
+}
+
 .array-increase-same-decrease {}
 .array-flexible-row {}
 .array-flexible-column {}
