@@ -45,6 +45,7 @@ $tpldir="$publicdir/templates";
 @session_start();
 
 
+
 // First check if survey is active
 // if not: copy some vars from the admin session 
 // to a new user session
@@ -60,6 +61,34 @@ if ($surveyid)
 	}
 }
 
+if ($clienttoken != '' && isset($_SESSION['token']) && 
+		$clienttoken != $_SESSION['token'])
+{
+	require_once(dirname(__FILE__).'/classes/core/language.php');
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$clang = new limesurvey_lang($baselang);
+	// Let's first regenerate a session id
+	if (session_regenerate_id() === false) { safe_die("Error Regenerating Session Id");}
+	session_unset();
+	session_destroy();
+	// The following should EXPIRE the client cookie, but isn't used by mode browsers
+	setcookie(session_name(),"EXPIRED",time()-120);
+	// Let's redirect the client to the same URL after having reseted the session
+	header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
+	sendcacheheaders();
+	doHeader();
+
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo "\t\t<center><br />\n"
+		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("TOKEN MISMATCH")."</strong></font><br />\n"
+		."\t\t\t".$clang->gT("Then token you provided doesn't match the one in your session.")."<br /><br />\n"
+		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."\t\t</center><br />\n";
+
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	doFooter();
+	exit;
+}
 
 if ($surveyid && 
 	$issurveyactive===false && 
