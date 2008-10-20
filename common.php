@@ -2845,6 +2845,9 @@ function questionAttributes()
 	//				"help"=>"The ")
 
 	*/
+	$qattributes[]=array("name"=>"category_separator",
+	"types"=>"!",
+	"help"=>"Category Separator");
 
 	//This builds a more useful array (don't modify)
 	foreach($qattributes as $qa)

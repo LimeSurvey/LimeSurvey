@@ -1076,6 +1076,16 @@ function do_list_dropdown($ia)
 		$othertext=$clang->gT('Other');
 	}
 
+	if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+	{
+		$optCategorySeparator = $optCategorySeparator['value'];
+	}
+	else
+	{
+		unset($optCategorySeparator);
+	}
+
+
 	$answer='';
 
 	if (isset($defexists)) {unset ($defexists);}
@@ -1092,23 +1102,92 @@ function do_list_dropdown($ia)
 	}
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
 
-	while ($ansrow = $ansresult->FetchRow())
+	if (!isset($optCategorySeparator))
 	{
-		if ($_SESSION[$ia[1]] == $ansrow['code'])
+		while ($ansrow = $ansresult->FetchRow())
 		{
-			$opt_select = SELECTED;
+			if ($_SESSION[$ia[1]] == $ansrow['code'])
+			{
+				$opt_select = SELECTED;
+			}
+			elseif ($ansrow['default_value'] == 'Y')
+			{
+				$opt_select = SELECTED; 
+				$defexists = 'Y';
+			}
+			else
+			{
+				$opt_select = '';
+			}
+			$answer .= '					<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['answer'].'</option>
+				';
 		}
-		elseif ($ansrow['default_value'] == 'Y')
+	}
+	else
+	{
+		while ($ansrow = $ansresult->FetchRow())
 		{
-			$opt_select = SELECTED; 
-			$defexists = 'Y';
+			// Let's sort answers in an array indexed by subcategories
+			list ($categorytext, $answertext) = explode($optCategorySeparator,$ansrow['answer']);
+			// The blank category is left at the end outside optgroups
+			if ($categorytext == '')
+			{ 
+				$defaultopts[] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $ansrow['default_value']);
+			}
+			else
+			{
+				$optgroups[$categorytext][] = array ( 'code' => $ansrow['code'], 'answer' => $answertext, 'default_value' => $ansrow['default_value']);
+			}
+
+
 		}
-		else
+
+		foreach ($optgroups as $categoryname => $optionlistarray)
 		{
-			$opt_select = '';
+			$answer .= '                                   <optgroup class="dropdowncategory" label="'.$categoryname.'"> 
+                                ';
+
+			foreach ($optionlistarray as $optionarray)
+			{
+				if ($_SESSION[$ia[1]] == $optionarray['code'])
+				{
+					$opt_select = SELECTED;
+				}
+				elseif ($optionarray['default_value'] == 'Y')
+				{
+					$opt_select = SELECTED; 
+					$defexists = 'Y';
+				}
+				else
+				{
+					$opt_select = '';
+				}
+
+				$answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+					';
+			}
+
+			$answer .= '                                   </optgroup>';
 		}
-		$answer .= '					<option value="'.$ansrow['code'].'"'.$opt_select.'>'.$ansrow['answer'].'</option>
-';
+		foreach ($defaultopts as $optionarray)
+		{
+			if ($_SESSION[$ia[1]] == $optionarray['code'])
+			{
+				$opt_select = SELECTED;
+			}
+			elseif ($optionarray['default_value'] == 'Y')
+			{
+				$opt_select = SELECTED; 
+				$defexists = 'Y';
+			}
+			else
+			{
+				$opt_select = '';
+			}
+
+			$answer .= '     					<option value="'.$optionarray['code'].'"'.$opt_select.'>'.$optionarray['answer'].'</option>
+				';
+		}
 	}
 
 	if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
