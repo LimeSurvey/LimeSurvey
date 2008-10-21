@@ -502,10 +502,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	}
 
 	$answer .= "\n\t\t\t<input type='hidden' name='display$ia[1]' id='display$ia[0]' value='";
-	if ($thissurvey['format'] == 'S')
-	{
-		$answer .= 'on'; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
-	}
+	$answer .= 'on'; //Ifthis is single format, then it must be showing. Needed for checking conditional mandatories
 	$answer .= "' />\n"; //for conditional mandatory questions
 
 	if ($ia[6] == 'Y')
