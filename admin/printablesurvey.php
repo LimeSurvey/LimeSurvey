@@ -376,6 +376,16 @@ while ($degrow = $degresult->FetchRow())
 			{
 				$dcols=0;
 			}
+
+			if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+			{
+				$optCategorySeparator = $optCategorySeparator['value'];
+			}
+			else
+			{
+				unset($optCategorySeparator);
+			}
+
 			$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose *only one* of the following:")."</u><br />\n";
             if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 			$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -391,6 +401,19 @@ while ($degrow = $degresult->FetchRow())
 				$printablesurveyoutput .="<table class='question'><tr>\n <td valign='top' width='$width%' nowrap='nowrap'>";
 				while ($dearow = $dearesult->FetchRow())
 				{
+					if (isset($optCategorySeparator))
+					{
+						list ($category, $answer) = explode($optCategorySeparator,$dearow['answer']);
+						if ($category != '')
+						{
+							$dearow['answer'] = "($category) $answer";
+						}
+						else
+						{
+							$dearow['answer'] = $answer;
+						}
+					}
+
 					if ($upto == $maxrows)
 					{
 						$printablesurveyoutput .=$divider;
@@ -412,6 +435,19 @@ while ($degrow = $degresult->FetchRow())
 			{
 				while ($dearow = $dearesult->FetchRow())
 				{
+					if (isset($optCategorySeparator))
+					{
+						list ($category, $answer) = explode($optCategorySeparator,$dearow['answer']);
+						if ($category != '')
+						{
+							$dearow['answer'] = "($category) $answer";
+						}
+						else
+						{
+							$dearow['answer'] = $answer;
+						}
+					}
+
 					$printablesurveyoutput .="\t\t\t<input type='checkbox' name='$fieldname' value='{$dearow['code']}' readonly='readonly' />{$dearow['answer']}<br />\n";
                     if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}
 				}

@@ -818,6 +818,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
+					$qidattributes=getQuestionAttributes($fnames[$i][7]);
+					if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+					{
+						$optCategorySeparator = $optCategorySeparator['value'];
+					}
+					else
+					{
+						unset($optCategorySeparator);
+					}
+
 					if (substr($fnames[$i][0], -5) == "other")
 					{
 						$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
@@ -832,12 +842,52 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
 						$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
 
-						while ($llrow = $lresult->FetchRow())
+						if (!isset($optCategorySeparator))
 						{
-							$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
-							if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
-							$dataentryoutput .= ">{$llrow['answer']}</option>\n";
+							while ($llrow = $lresult->FetchRow())
+							{
+								$dataentryoutput .= "\t\t\t\t<option value='{$llrow['code']}'";
+								if ($idrow[$fnames[$i][0]] == $llrow['code']) {$dataentryoutput .= " selected='selected'";}
+								$dataentryoutput .= ">{$llrow['answer']}</option>\n";
+							}
 						}
+						else
+						{
+							$defaultopts = array();
+							$optgroups = array();
+							while ($llrow = $lresult->FetchRow())
+							{
+								list ($categorytext, $answertext) = explode($optCategorySeparator,$llrow['answer']);
+								if ($categorytext == '')
+								{
+									$defaultopts[] = array ( 'code' => $llrow['code'], 'answer' => $answertext, 'default_value' => $llrow['default_value']);
+								}
+								else
+								{
+									 $optgroups[$categorytext][] = array ( 'code' => $llrow['code'], 'answer' => $answertext, 'default_value' => $llrow['default_value']);
+								}
+							}
+
+							foreach ($optgroups as $categoryname => $optionlistarray)
+							{
+								$dataentryoutput .= "\t\t\t\t<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+								foreach ($optionlistarray as $optionarray)
+								{
+									$dataentryoutput .= "\t\t\t\t\t<option value='{$optionarray['code']}'";
+									if ($idrow[$fnames[$i][0]] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+									$dataentryoutput .= ">{$optionarray['answer']}</option>\n";
+								}
+								$dataentryoutput .= "\t\t\t\t</optgroup>\n";
+							}
+							foreach ($defaultopts as $optionarray)
+							{
+								$dataentryoutput .= "\t\t\t\t<option value='{$optionarray['code']}'";
+								if ($idrow[$fnames[$i][0]] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
+								$dataentryoutput .= ">{$optionarray['answer']}</option>\n";
+							}
+
+						}
+
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$fnames[$i][7]} AND ".db_table_name("questions").".language = '{$language}'";
 						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
 						while($orow = $oresult->FetchRow())
@@ -2065,17 +2115,65 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case "L": //LIST drop-down/radio-button list
 					case "!":
+						
+						$qidattributes=getQuestionAttributes($deqrow['qid']);
+						if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+						{
+							$optCategorySeparator = $optCategorySeparator['value'];
+						}
+						else
+						{
+							unset($optCategorySeparator);
+						}
 						$defexists="";
 						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t\t\t<select name='$fieldname'>\n";
 						$datatemp='';
-						while ($dearow = $dearesult->FetchRow())
-						{
-							$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
-							if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
-							$datatemp .= ">{$dearow['answer']}</option>\n";
+						if (!isset($optCategorySeparator))
+						{						
+							while ($dearow = $dearesult->FetchRow())
+							{
+								$datatemp .= "\t\t\t\t<option value='{$dearow['code']}'";
+								if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
+								$datatemp .= ">{$dearow['answer']}</option>\n";
+							}
 						}
+						else
+						{
+							$defaultopts = array();
+							$optgroups = array();
+							while ($dearow = $dearesult->FetchRow())
+							{
+								list ($categorytext, $answertext) = explode($optCategorySeparator,$dearow['answer']);
+								if ($categorytext == '')
+								{
+									$defaultopts[] = array ( 'code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['default_value']);
+								}
+								else
+								{
+									$optgroups[$categorytext][] = array ( 'code' => $dearow['code'], 'answer' => $answertext, 'default_value' => $dearow['default_value']);
+								}	
+							}
+							foreach ($optgroups as $categoryname => $optionlistarray)
+							{
+								$datatemp .= "\t\t\t\t<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
+								foreach ($optionlistarray as $optionarray)
+								{
+									$datatemp .= "\t\t\t\t\t<option value='{$optionarray['code']}'";
+									if ($optionarray['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
+									$datatemp .= ">{$optionarray['answer']}</option>\n";
+								}
+								$datatemp .= "\t\t\t\t</optgroup>\n";
+							}
+							foreach ($defaultopts as $optionarray)
+							{
+								$datatemp .= "\t\t\t\t\t<option value='{$optionarray['code']}'";
+								if ($optionarray['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
+								$datatemp .= ">{$optionarray['answer']}</option>\n";
+							}
+						}
+
 						if ($defexists=="") {$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
 						else {$dataentryoutput .=$datatemp;}
 
