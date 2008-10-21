@@ -4301,14 +4301,14 @@ function showSpeaker($hinttext)
 	
 	if(!isset($max))
 	{
-		$max = 13;
+		$max = 15;
 	}
 	
 	if(strlen($hinttext) > ($max))
 	{
 		$shortstring = strip_tags($hinttext);
 		
-		$shortstring = substr($hinttext, 0, $max);
+		$shortstring = mb_substr($hinttext, 0, $max);
 		
 		//output with hoover effect
 		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
