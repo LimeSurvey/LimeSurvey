@@ -244,7 +244,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action;
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
         $adminmenu  .="\t<div class='menubar-title'>\n"
@@ -376,6 +376,17 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "\t\t\t</div>\n"
                         . "\t\t</div>\n";
             $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+            if (count(getsurveylist(true)==0) && $action=='') {
+                $adminmenu.= '<div style="width:500px;margin:0 auto;">'
+                             .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
+                             .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
+                             .'<ol>'
+                             .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
+                             .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
+                             .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
+                             .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
+                             .'</ol></p><br />&nbsp;</div>';
+            }
                         
             }                 
         return $adminmenu;
@@ -539,7 +550,7 @@ function db_tables_exist($table)
 * @return string This string is returned containing <option></option> formatted list of existing surveys
 *
 */
-function getsurveylist()
+function getsurveylist($returnarray=false)
     {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
     $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, "
@@ -556,7 +567,11 @@ function getsurveylist()
 	}
 
 	$surveyidquery .= " order by active DESC, surveyls_title";
-
+    if ($returnarray===true)
+    {
+        $surveyidresult = $connect->GetAll($surveyidquery);  //Checked
+        return $surveyidresult;
+    }
     $surveyidresult = db_execute_num($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
