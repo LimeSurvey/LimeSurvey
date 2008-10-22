@@ -322,7 +322,7 @@ else
 			switch($arow['type'])
 			{
 				case "N":  //NUMERICAL
-				$createsurvey .= " C(20)";
+				$createsurvey .= " F";
 				break;
 				case "S":  //SHORT TEXT
 				if ($databasetype=='mysql')	{$createsurvey .= " X";}
