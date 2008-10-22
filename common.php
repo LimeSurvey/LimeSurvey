@@ -49,6 +49,11 @@ if (!function_exists('mb_convert_encoding'))
 if ($dieoutput!='') die($dieoutput);
 
 
+// The following forces sessions to be saved to a directory within the LimeSurvey install
+if(isset($session_save_path) && $session_save_path == true)
+{
+    ini_set( 'session.save_path' ,  $_SERVER['DOCUMENT_ROOT'] . '/tmp/sessions/' ); // resets the path to where sessions are actually saved.
+};
 
 
 ##################################################################################

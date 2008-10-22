@@ -90,6 +90,16 @@ $memorylimit       =  '32M';    // This sets how much memory LimeSurvey can acce
                                 
 $sessionlifetime    =   3600;   // How long until a survey session expires in seconds
 
+// SESSION PATH
+// Sometimes hosting deals can have issues with sessions.
+// ie: You can't login because the session isn't saved or even worse, respondents can't complete surveys.
+// If this is the case, you should contact your hosting company to let them know and ask them to fix it.
+// If you get no joy from your hosting company, you can try the changing $session_save_path to TRUE
+//    NOTE:  you may have to change the permissions on
+//           ./tmp/sessions so it's world writable.
+$session_save_path = false; // use only as a LAST resort if hosting won't fix.
+
+
 // Email Settings
 // These settings determine how LimeSurvey will send emails
 
