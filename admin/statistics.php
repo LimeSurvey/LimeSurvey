@@ -2638,14 +2638,14 @@ if (isset($summary) && $summary)
 				if ($connect->databaseType == 'odbc_mssql')
                 { 
                 	//no NULL/empty values please
-                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE ' ')"; 
+                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE 0)"; 
                 }
                 
                 //other databases (MySQL, Postgres)
                 else
                 { 
                 	//no NULL/empty values please
-                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != ' ')"; 
+                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != 0)"; 
                 }
 				
                 //filter incomplete answers if set
@@ -2676,7 +2676,7 @@ if (isset($summary) && $summary)
 				//CALCULATE QUARTILES
 				
 				//get data
-				$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
+				$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
 				
 				//filtering enabled?
 				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
@@ -2687,7 +2687,7 @@ if (isset($summary) && $summary)
 				//execute query
 				$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 				
-				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != ' '";
+				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
 				
 				//filtering enabled?
 				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null";}                     
