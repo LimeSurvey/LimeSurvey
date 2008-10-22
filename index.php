@@ -80,8 +80,8 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 
 	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("TOKEN MISMATCH")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("Then token you provided doesn't match the one in your session.")."<br /><br />\n"
+		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
+		."\t\t\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
 		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		."\t\t</center><br />\n";
 

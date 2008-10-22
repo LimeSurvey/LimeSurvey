@@ -129,7 +129,7 @@ $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"
 //$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
 //."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
-$statisticsoutput .= browsemenubar($clang->gT("Quick Statistics"))
+$statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
 
 
 //second row below options -> filter settings headline
@@ -137,7 +137,7 @@ $statisticsoutput .= browsemenubar($clang->gT("Quick Statistics"))
 ." cellspacing='0'>\n"
 ."<tr><td align='center' class='settingcaption' height='22'>"
 ."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-."<font size='3'><strong>".$clang->gT("Filter Settings")."</strong></font>"
+."<font size='3'><strong>".$clang->gT("Filter settings")."</strong></font>"
 ."</td></tr>\n"
 ."</table>\n"
 
@@ -235,7 +235,7 @@ $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than
 ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
 $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n"
-."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
+."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
 ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
 $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /><br />\n";
@@ -479,7 +479,7 @@ foreach ($filters as $flt)
 
 		    //check number input using JS
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-		    ."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
+		    ."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		    if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
@@ -523,7 +523,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= " />&nbsp;<strong>";
 		    $statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))
 			."</strong><br />\n"
-			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
+			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 			if (isset($_POST[$myfield2]))
 			{$statisticsoutput .= $_POST[$myfield2];}
@@ -553,7 +553,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
 		."</strong><br />\n"
-		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
+		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 		."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
 		
 		if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
@@ -576,7 +576,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= " />&nbsp;<strong>"
 		."&nbsp;".showSpeaker($niceqtext)
 		."</strong><br />\n"
-		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n"
+		."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 		
 		if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
@@ -598,7 +598,7 @@ foreach ($filters as $flt)
 		if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
 		
 		$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-		."\t\t\t\t\t".$clang->gT("Number Less Than").":<br />\n"
+		."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		
 		if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
@@ -974,7 +974,7 @@ foreach ($filters as $flt)
 			    .showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
 			    ."</strong><br />\n";
 			    //$statisticsoutput .= $fquery;
-				$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Responses Containing").":</font><br />\n";
+				$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n";
 			    $statisticsoutput .= "\t\t\t\t<input type='text' name='{$myfield2}' value='";
 				if(isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 				$statisticsoutput .= "' />\n\t\t\t\t</td>\n";
@@ -1847,7 +1847,7 @@ $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
 ."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
-$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show Graphs")."</label></td></tr>\n"
+$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label></td></tr>\n"
 ."<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
@@ -1875,7 +1875,7 @@ $statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NO
 
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
-."\t\t\t<input type='submit' value='".$clang->gT("View Stats")."' />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("View stats")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<br />&nbsp;\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1901,7 +1901,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	$prb->frame['top'] = 	80;	// Frame position from top
 	$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
 	$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
-	$prb->addButton('btn1',$clang->gT('Go Back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
+	$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
 
 	//progress bar starts with 35%
 	$process_status = 35;
@@ -1916,7 +1916,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	
 	// 1: Get list of questions with answers chosen
 	//"Getting Questions and Answers ..." is shown above the bar
-	$prb->setLabelValue('txt1',$clang->gT('Getting Questions and Answers ...'));
+	$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
 	$prb->moveStep(5);
 	
 	// creates array of post variable names
@@ -2090,7 +2090,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	
 	// 2: Do SQL query
 	//"Getting Result Count ..." is shown above the progress bar
-	$prb->setLabelValue('txt1',$clang->gT('Getting Result Count ...'));
+	$prb->setLabelValue('txt1',$clang->gT('Getting result count ...'));
 	$prb->moveStep(35);
 	
 	//count number of answers
@@ -2288,7 +2288,7 @@ $process_status = 40;
 if (isset($summary) && $summary)
 {
 	//"Generating Summaries ..." is shown above the progress bar
-	$prb->setLabelValue('txt1',$clang->gT('Generating Summaries ...'));
+	$prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
 	$prb->moveStep($process_status);
 	
 	//check if pchart should be used
@@ -2595,7 +2595,7 @@ if (isset($summary) && $summary)
 				
 				//outputting headline
 				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field Summary for")." $qtitle:</strong>"
+				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field summary for")." $qtitle:</strong>"
 				."</td></tr>\n"
 				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
 				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
@@ -2662,7 +2662,7 @@ if (isset($summary) && $summary)
 				{
 					//put translation of mean and calculated data into $showem array
 					$showem[]=array($clang->gT("Sum"), $row['sum']);
-					$showem[]=array($clang->gT("Standard Deviation"), round($row['stdev'],2));
+					$showem[]=array($clang->gT("Standard deviation"), round($row['stdev'],2));
 					$showem[]=array($clang->gT("Average"), round($row['average'],2));
 					$showem[]=array($clang->gT("Minimum"), $row['minimum']);
 					
@@ -2736,7 +2736,7 @@ if (isset($summary) && $summary)
 						
 						if ($q1total < $minimum) {$q1total=$minimum;}
 						
-						$showem[]=array($clang->gT("1st Quartile (Q1)"), $q1total);
+						$showem[]=array($clang->gT("1st quartile (Q1)"), $q1total);
 					}
 					else
 					{
@@ -2770,7 +2770,7 @@ if (isset($summary) && $summary)
 							$row=$result->FetchRow()) {$total=$total+$row[$fieldname];
 						}
 						
-						$showem[]=array($clang->gT("2nd Quartile (Median)"), $total/2);
+						$showem[]=array($clang->gT("2nd quartile (Median)"), $total/2);
 					}
 					
 					else
@@ -2813,7 +2813,7 @@ if (isset($summary) && $summary)
 						
 						if ($q3total < $maximum) {$q1total=$maximum;}
 						
-						$showem[]=array($clang->gT("3rd Quartile (Q3)"), $q3total);
+						$showem[]=array($clang->gT("3rd quartile (Q3)"), $q3total);
 					}
 					
 					else
@@ -3279,7 +3279,7 @@ if (isset($summary) && $summary)
 			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//headline
-			.$clang->gT("Field Summary for")." $qtitle:</strong>"
+			.$clang->gT("Field summary for")." $qtitle:</strong>"
 			."</td></tr>\n"
 			."\t<tr><td colspan='4' align='center'><strong>"
 			
@@ -3989,7 +3989,7 @@ if (isset($summary) && $summary)
             		}            		
             		
             		//calculate standard deviation
-			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic Mean")." | ".$clang->gT("Standard Deviation")."</td>";	//German: "Fallzahl"
+			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic mean")." | ".$clang->gT("Standard deviation")."</td>";	//German: "Fallzahl"
 			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
 			        //there has to be a whitespace within the table cell to display correctly
 			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";

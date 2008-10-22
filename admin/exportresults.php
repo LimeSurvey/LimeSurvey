@@ -159,9 +159,9 @@ if (!$style)
 	."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 	."\t<tr><td colspan='2' height='4'>"
 	."<strong>"
-	.$clang->gT("Export Responses");
-	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from Statistics Script");}
-	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single Response");}
+	.$clang->gT("Export responses");
+	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from statistics script");}
+	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single response");}
 
 	if (incompleteAnsFilterstate() === true)
 	{
@@ -187,11 +187,11 @@ if (!$style)
 	.$clang->gT("Full headings")."</label><br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='headcodes' id='headcodes'>"
 	."<label for='headcodes'>"
-	.$clang->gT("Question Codes")."</label><br />\n"
+	.$clang->gT("Question codes")."</label><br />\n"
 	
 	."\t\t\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous'>"
 	."<font size='1'><label for='convertspacetous'>"
-	.$clang->gT("Convert Spaces in Question Text to Underscores")."</label><br />"
+	.$clang->gT("Convert spaces in question text to underscores")."</label><br />"
 	
 	."\t\t\t&nbsp ".$clang->gT("Filter incomplete answers")." <select name='filterinc'>\n"
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
