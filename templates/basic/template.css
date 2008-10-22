@@ -230,8 +230,12 @@ ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
 ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
+
+.list-dropdown-flexible p.question
+{
+	margin-left: 1em;
+}
 /* STYLES NOT YET DEFINED - - - - -
-.list-dropdown-flexible {}
 .list-dropdown {}
 */
 .list-with-comment div.list
@@ -483,6 +487,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-flexible-duel-scale td.answertext
 {
 	text-align: right;
+}
+.array-flexible-row td.answertextright
+{
+	text-align: left;
 }
  .array-5-pt th
 ,.array-10-pt th
