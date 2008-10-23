@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-22 21:08+0100\n"
-"PO-Revision-Date: 2008-10-22 21:11+0100\n"
+"POT-Creation-Date: 2008-10-24 01:16+0100\n"
+"PO-Revision-Date: 2008-10-24 01:16+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -369,9 +369,9 @@ msgid "Preset"
 msgstr "Voreinstellung"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1563
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1698
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1821
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1833
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1726
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1849
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1861
 msgid "Token"
 msgstr "Schlüsselwort"
 
@@ -399,33 +399,33 @@ msgstr "Referrer-URL"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1959
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2073
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2083
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:597
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1073
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1291
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1459
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1529
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1607
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1714
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2172
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2443
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2542
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:601
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1077
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1299
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1467
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1537
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1615
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1722
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2180
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2451
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2550
 msgid "Other"
 msgstr "Sonstiges"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1730
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1736
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1752
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3471
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3827
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3873
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3479
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3861
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3913
 msgid "Yes"
 msgstr "Ja"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1737
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1753
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3480
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3829
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3885
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3488
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3863
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3931
 msgid "No"
 msgstr "Nein"
 
@@ -433,67 +433,67 @@ msgstr "Nein"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1746
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4523
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4528
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:861
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1211
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1354
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1563
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1748
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1846
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1913
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3491
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3573
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3622
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3681
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3735
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3784
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3832
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3899
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4056
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4113
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4188
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4206
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4275
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4713
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4714
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4976
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5003
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5110
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5307
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5355
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:865
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1215
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1362
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1571
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1756
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1854
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1921
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3499
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3581
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3630
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3704
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3757
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3818
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3866
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3951
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4108
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4165
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4240
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4258
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4327
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4765
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4766
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5028
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5055
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5162
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5359
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5407
 msgid "No answer"
 msgstr "Keine Antwort"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1744
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3548
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3556
 msgid "Male"
 msgstr "Männlich"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1745
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3529
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3537
 msgid "Female"
 msgstr "Weiblich"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1754
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3828
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3878
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3862
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3921
 msgid "Uncertain"
 msgstr "Unsicher"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1760
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4051
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4089
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4103
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4141
 msgid "Increase"
 msgstr "Zunahme"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1761
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4053
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4100
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4105
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4152
 msgid "Decrease"
 msgstr "Abnahme"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1762
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4052
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4094
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4104
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4146
 msgid "Same"
 msgstr "Unverändert"
 
@@ -518,7 +518,7 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2317
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2303
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2331
 msgid "Submit"
 msgstr "Absenden"
 
@@ -581,10 +581,10 @@ msgstr "Diese Umfrage neu starten"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:133
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:165
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:567
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1740
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1776
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1934
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:323
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1768
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1804
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1962
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:352
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:158
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:113
 msgid "Close this Window"
@@ -632,9 +632,9 @@ msgstr "Ihre E-Mail"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2512
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2532
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2583
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1656
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1703
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1841
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1684
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1731
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1869
 msgid "Security Question"
 msgstr "Sicherheitsfrage"
 
@@ -687,9 +687,9 @@ msgid "Email Address"
 msgstr "Email-Addresse"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2608
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1659
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1706
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1844
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1687
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1734
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1872
 msgid "Continue"
 msgstr "Weiter"
 
@@ -740,40 +740,40 @@ msgid "Save your responses so far"
 msgstr "Bisherige Antworten speichern"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:105
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1565
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:294
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1593
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:323
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:74
 msgid "Did Not Save"
 msgstr "Wurde nicht gespeichert"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:106
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:295
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:324
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:75
 msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Ihre Antworten wurden nicht gespeichert. Diese Umfrage ist noch nicht aktiv."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:107
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:296
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:325
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:76
 msgid "Clear Responses"
 msgstr "Antworten verwerfen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:130
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:162
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:320
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:349
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:110
 msgid "Thank you"
 msgstr "Vielen Dank"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:131
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:163
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:321
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:350
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:111
 msgid "Your survey responses have been recorded."
 msgstr "Ihre Antworten wurden gespeichert."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:172
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:330
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:359
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:120
 msgid "Click here to print your answers."
 msgstr "Klicken Sie hier um Ihre Antworten auszudrucken"
@@ -785,15 +785,15 @@ msgid "Sorry. There is no matching survey."
 msgstr "Es gibt leider keine passende Umfrage."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:255
-#: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:851
+#: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:858
 #: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:91
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:654
-#: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:689
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:683
+#: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:700
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Diese Umfrage ist momentan nicht aktiv. Sie werden sie nicht abschließen können."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/group.php:399
-#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:506
+#: D:\web\TechPlat\apache\htdocs\limesurvey/question.php:535
 #: D:\web\TechPlat\apache\htdocs\limesurvey/survey.php:316
 msgid "Date is not valid!"
 msgstr "Datum ist nicht gültig!"
@@ -874,8 +874,8 @@ msgid "You did not provide a password"
 msgstr "Sie haben kein Passwort angegeben"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:512
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1639
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1805
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1667
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1833
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:57
 #: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:232
 msgid "The answer to the security question is incorrect"
@@ -886,15 +886,15 @@ msgid "This is a closed-access survey, so you must supply a valid token.  Please
 msgstr "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis, daher müssen Sie einen Zugangsschlüssel angeben. Bitte kontaktieren Sie den Administrator für weitere Informationen."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:563
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1736
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1772
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1764
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1800
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von ihnen angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:564
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1737
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1773
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1931
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1765
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1801
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1959
 #, php-format
 msgid "For further information contact %s"
 msgstr "Um weitere Informationen zu erhalten, kontaktieren Sie bitte %s"
@@ -912,106 +912,106 @@ msgstr "Es gibt keine entsprechende Umfrage."
 msgid "%s %% complete"
 msgstr "%s %%  vollständig"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1474
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1502
 msgid "Answer Submission for Survey"
 msgstr "Antwort Absendung für Umfrage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1476
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1504
 msgid "Survey Submitted"
 msgstr "Umfrage wurde ausgefüllt"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1477
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1505
 msgid "A new response was entered for your survey"
 msgstr "Es sind neue Daten in Ihrer Umfrage vorhanden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1480
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1508
 msgid "Click the following link to reload the survey:"
 msgstr "Klicken Sie auf den folgenden Link um den Fragebogen neu zu laden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1484
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1512
 msgid "Click the following link to see the individual response:"
 msgstr "Klicken Sie hier, um die einzelnen Antworten zu sehen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1487
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1515
 msgid "Click the following link to edit the individual response:"
 msgstr "Klicken Sie auf den folgenden Link um die Antwortdaten direkt zu editieren:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1490
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1518
 msgid "View statistics by clicking here:"
 msgstr "Klicken Sie hier, um die Gesamtstatistik zu sehen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1566
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1594
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Ihre Antworten können leider nicht gespeichert werden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1569
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1597
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Ihre Antworten sind nicht verloren gegangen. Sie wurden per eMail an den Administrator dieser Umfrage geschickt und werden zu einem späteren Zeitpunkt manuell in die Datenbank eingepflegt."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1570
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1598
 msgid "An error occurred saving a response to survey id"
 msgstr "Beim Speichern Ihrer Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1571
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1599
 msgid "DATA TO BE ENTERED"
 msgstr "EINZUGEBENDE DATEN"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1576
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1604
 msgid "SQL CODE THAT FAILED"
 msgstr "FEHLERHAFTE SQL ANWEISUNG"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1578
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1606
 msgid "ERROR MESSAGE"
 msgstr "FEHLERMELDUNG"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1580
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1608
 msgid "Error saving results"
 msgstr "Fehler beim Speichern der Ergebnisse"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1588
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1616
 msgid "Try to submit again"
 msgstr "Versuchen Sie das Abschicken erneut"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1642
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1670
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugang zur Umfrage indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1690
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1735
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1771
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1808
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1718
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1763
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1799
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1836
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigen Sie einen passenden Zugangsschlüssel."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1691
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1719
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1813
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1841
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Falls Sie ein Schlüsselwort erhalten haben, geben Sie es bitte in das untenstehende Feld ein und klicken Sie auf 'Weiter'."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1825
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1853
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bitte bestätigen Sie den Zugangsschlüssel, indem Sie die Sicherheitsfrage unten beantworten und auf Weiter klicken."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1930
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1958
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2282
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2640
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2310
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2668
 msgid "Previous"
 msgstr "Zurück"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2287
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2293
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2298
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2315
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2321
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2326
 msgid "Next"
 msgstr "Weiter"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2626
-#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2639
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2654
+#: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:2667
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
@@ -1049,260 +1049,260 @@ msgstr "Frage"
 msgid "Your Answer"
 msgstr "Ihre Antwort"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:361
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:369
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:377
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:385
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:393
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:365
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:373
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:381
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:389
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:397
 msgid "Choose one of the following answers"
 msgstr "Bitte wählen Sie eine der folgenden Antworten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:406
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:431
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:410
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:435
 msgid "Check any that apply"
 msgstr "Bitte wählen Sie einen oder mehrere Punkte aus der Liste aus."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:411
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:436
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:415
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:440
 #, php-format
 msgid "Check at most %d answers"
 msgstr "Bitte wählen Sie maximal %d Antworten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:421
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:425
 msgid "Choose your language"
 msgstr "Wählen Sie Ihre Sprache"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:514
 msgid "*"
 msgstr "*"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:543
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:547
 msgid "This question must be answered correctly"
 msgstr "Diese Frage muss korrekt beantwortet werden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:562
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:566
 msgid "This question is mandatory"
 msgstr "Bitte beantworten Sie diese Frage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:574
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:578
 msgid "Please complete all parts"
 msgstr "Bitte beantworten Sie alle Bereiche/Teile der Frage(n)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:577
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:581
 msgid "Please check the items"
 msgstr "Bitte überprüfen Sie die Einträge"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:580
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:584
 msgid "Please rank all items"
 msgstr "Bitte bringen Sie alle Elemente in eine Rangfolge"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:584
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:588
 msgid "Please check at least one item"
 msgstr "Bitte machen Sie mindestens ein Kreuz"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:599
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:603
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Wenn Sie '%s' wählen, müssen sie eine Beschreibung angeben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:620
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:624
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Sie können nicht fortfahren, bevor Sie etwas Text für ein oder mehrere Frage eingegeben haben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:624
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:628
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Eine oder mehrere Pflichtfragen sind nicht beantwortet worden. Bitte beantworten Sie diese, um fortzufahren!"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:647
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:651
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Ein oder mehrere Fragen sind nicht korrekt beantwortet worden. Sie können nicht fortfahren, bevor Sie dies nicht getan haben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:890
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:894
 msgid "Day"
 msgstr "Tag"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:907
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:911
 msgid "Month"
 msgstr "Monat"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:910
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:914
 msgid "Jan"
 msgstr "Jan"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:911
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:915
 msgid "Feb"
 msgstr "Feb"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:912
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:916
 msgid "Mar"
 msgstr "Mär"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:913
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:917
 msgid "Apr"
 msgstr "Apr"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:914
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:918
 msgid "May"
 msgstr "Mai"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:915
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:919
 msgid "Jun"
 msgstr "Jun"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:916
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:920
 msgid "Jul"
 msgstr "Jul"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:917
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:921
 msgid "Aug"
 msgstr "Aug"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:918
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:922
 msgid "Sep"
 msgstr "Sep"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:919
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:923
 msgid "Oct"
 msgstr "Okt"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:920
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:924
 msgid "Nov"
 msgstr "Nov"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:921
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:925
 msgid "Dec"
 msgstr "Dez"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:938
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:942
 msgid "Year"
 msgstr "Jahr"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:988
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:992
 msgid "Please complete all parts of the date"
 msgstr "Bitte setzen Sie alle Teile des Datums"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1002
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1006
 msgid "Format: YYYY-MM-DD"
 msgstr "Format: JJJJ-MM-TT"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1003
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1007
 msgid "(eg: 2003-12-25 for Christmas day)"
 msgstr "(z.B.: 2005-12-24 für Heiligabend)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1033
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1192
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1336
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5287
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5335
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1037
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1196
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1344
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5339
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5387
 msgid "Please choose"
 msgstr "Bitte wählen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1360
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1687
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1368
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1695
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1800
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1808
 msgid "Please choose one of the following"
 msgstr "Bitte wählen Sie eine Antwort aus"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1801
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:1809
 msgid "Please enter your comment here"
 msgstr "Bitte geben Sie hier Ihren Kommentar ein"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2078
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2086
 msgid "Remove this item"
 msgstr "Entfernen Sie bitte dieses Element"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2119
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2127
 msgid "Click on an item in the list on the left, starting with your"
 msgstr "Klicken Sie in der Liste links bitte zuerst das am höchsten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2120
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2128
 msgid "highest ranking item, moving through to your lowest ranking item."
 msgstr "bewertete Element an und machen Sie weiter bis zum niedrigsten."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2125
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2133
 msgid "Your Choices"
 msgstr "Ihre Auswahl"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2134
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2140
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2142
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2148
 msgid "Your Ranking"
 msgstr "Ihre Rangfolge"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2148
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2156
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Klicken Sie auf die Schere rechts von jedem Element, um den letzten Eintrag in der Rangliste zu entfernen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2394
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2607
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2402
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2615
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
 msgstr "Bitte wählen Sie maximal '%d' Antworten für die die Frage \"%s\""
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2524
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2551
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2532
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2559
 msgid "Make a comment on your choice here:"
 msgstr "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2700
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2943
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3839
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5169
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2708
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:2951
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3875
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5221
 msgid "Error: This question has no answers."
 msgstr "Fehler: Diese Frage hat keine Antworten."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3052
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3060
 msgid "Only numbers may be entered in these fields"
 msgstr "In diese Felder dürfen nur Ziffern eingetragen werden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3056
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3064
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Summe aller Einträge darf nicht größer als %d sein."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3060
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3068
 msgid "Total of all entries must equal "
 msgstr "Summe aller Einträge muss gleich sein zu"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3064
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3072
 msgid "Total of all entries must be at least "
 msgstr "Summe aller Einträge müssen größer sein als"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3122
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3130
 msgid "Total: "
 msgstr "Gesamt:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3125
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3133
 msgid "Remaining: "
 msgstr "Verbleibend:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3156
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3162
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3192
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3201
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3164
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3170
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3200
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3209
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Antwort ist ungültig. Die Summer aller Einträge sollte nicht größer sein als"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3173
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3179
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3181
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3187
 msgid "Answer is invalid. The total of all entries should add up to at least "
 msgstr "Antwort ist ungültig. Die Summe aller Einträge muss mindenstens so gross sein wie"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3268
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3276
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4294
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4463
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4684
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4806
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5378
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4346
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4515
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4736
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4858
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:5430
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4799
+#: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:4851
 msgid "Error: There are no answers defined for this question."
 msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
 
@@ -1573,7 +1573,7 @@ msgstr "Die Umfrage konnte nicht aktiviert werden."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:108
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:122
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:49
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2880
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2892
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:59
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:65
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deactivate.php:67
@@ -1705,7 +1705,7 @@ msgid "Actions"
 msgstr "Aktionen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/assessments.php:162
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1036
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1056
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/deletesurvey.php:62
 msgid "Delete"
 msgstr "Löschen"
@@ -1908,111 +1908,117 @@ msgstr "Sie haben keine Frage ausgewählt."
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:148
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:150
 msgid "Did not copy questions"
 msgstr "Fragen wurden nicht kopiert"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:151
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:153
 msgid "No condition selected to copy from"
 msgstr "Keine Bedingung zum Kopieren ausgewählt"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:155
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:157
 msgid "No question selected to copy condition to"
 msgstr "Keine Zielfrage zum Kopieren der Bedingung ausgewählt"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:916
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:918
 msgid "Only show question {QID} IF"
 msgstr "Zeige die Frage {QID} nur, WENN"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:939
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1159
-msgid "Less than"
-msgstr "Weniger als"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:940
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1160
-msgid "Less than or Equal to"
-msgstr "Kleiner oder gleich zu"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:941
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1161
-msgid "Equals"
-msgstr "Ergibt"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:942
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1162
-msgid "Not Equal to"
-msgstr "Ungleich"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:943
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1163
-msgid "Greater than or Equal to"
-msgstr "Größer oder gleich zu"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:944
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1164
-msgid "Greater than"
-msgstr "Größer als"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:945
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1165
-msgid "Regular Expression"
-msgstr "Regulärer Ausdruck"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:968
-msgid "and"
-msgstr "und"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:975
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1923
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1955
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:937
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:995
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1844
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1933
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1965
 msgid "OR"
 msgstr "ODER"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1027
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1967
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:959
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1188
+msgid "Less than"
+msgstr "Weniger als"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:960
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1189
+msgid "Less than or Equal to"
+msgstr "Kleiner oder gleich zu"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:961
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1190
+msgid "Equals"
+msgstr "Ergibt"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:962
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1191
+msgid "Not Equal to"
+msgstr "Ungleich"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:963
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1192
+msgid "Greater than or Equal to"
+msgstr "Größer oder gleich zu"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:964
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1193
+msgid "Greater than"
+msgstr "Größer als"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:965
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1194
+msgid "Regular Expression"
+msgstr "Regulärer Ausdruck"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:988
+msgid "and"
+msgstr "und"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1047
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1977
 msgid "No Answer"
 msgstr "Keine Antwort"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1068
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1099
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1091
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1122
 msgid "Copy Conditions"
 msgstr "Bedingung kopieren"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1073
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1096
 msgid "Condition"
 msgstr "Bedingung"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1086
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1109
 msgid "copy to"
 msgstr "kopieren nach"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1099
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1122
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "Sind sie sicher, dass sie diese Bedingung zu den gewählten Fragen kopieren wollen?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1117
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1186
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1140
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1215
 msgid "Add Condition"
 msgstr "Bedingung hinzufügen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1127
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1145
+msgid "Scenario"
+msgstr "Szenario"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1153
 msgid "Answer"
 msgstr "Antwort"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1167
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1196
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr "Achtung: Wenn sie eine vor-definierte Antwort als Bedingung nutzen, dann können Sie nur gleich/ungleich Bedingungen nutzen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1178
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1207
 msgid "Constant Value or Regular Expression"
 msgstr "Konstante oder Regulärer Ausdruck"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1185
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1214
 msgid "Clear"
 msgstr "Löschen"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1202
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/conditions.php:1231
 msgid "Close Window"
 msgstr "Fenster schließen"
 
@@ -2361,27 +2367,27 @@ msgstr "Nochmal versuchen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:155
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1484
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2824
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2836
 msgid "Identifier:"
 msgstr "Name:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:157
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2826
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2838
 msgid "Password:"
 msgstr "Passwort:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:159
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2828
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2840
 msgid "Confirm Password:"
 msgstr "Passwort bestätigen:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:161
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2830
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2842
 msgid "Email:"
 msgstr "E-Mail"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:163
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2832
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2844
 msgid "Start Language:"
 msgstr "Start-Sprache"
 
@@ -2428,12 +2434,12 @@ msgid "Update Entry"
 msgstr "Eintrag aktualisieren"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1478
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2814
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2826
 msgid "Finalize response submission"
 msgstr "Datensatz als vollständig in der Datenbank ablegen"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1480
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2820
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2832
 msgid "Save for further completion by survey user"
 msgstr "Für weitere Bearbeitung durch Umfrage-Teilnehmer abspeichern"
 
@@ -2461,29 +2467,29 @@ msgstr "Zeitstempel"
 msgid "IP-Address"
 msgstr "IP-Adresse protokollieren?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1844
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1946
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1852
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1956
 msgid "AND"
 msgstr "UND"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1963
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1968
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1973
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1978
 msgid "to question {QUESTION}, you answered {ANSWER}"
 msgstr "Die Frage {QUESTION} haben sie mit {ANSWER} beantwortet"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1977
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1989
 msgid "Only answer this if the following conditions are met:"
 msgstr "Beantworten Sie diese Frage nur, wenn folgende Bedingungen erfüllt sind:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:1999
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2011
 msgid "Help about this question"
 msgstr "Hilfe zu dieser Frage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2869
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2881
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Diese Umfrage ist noch nicht aktiviert. Ihre Antwort kann nicht abgespeichert werden"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2879
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/dataentry.php:2891
 msgid "The survey you selected does not exist"
 msgstr "Die ausgewählte Umfrage existiert nicht."
 
@@ -2614,8 +2620,8 @@ msgstr "Spalten"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1073
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:664
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:506
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1230
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1259
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1234
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1263
 msgid "Questions"
 msgstr "Fragen"
 
@@ -2642,8 +2648,8 @@ msgstr "Unvollständige Antworten filtern"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:203
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:667
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:509
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1231
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1260
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1235
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1264
 msgid "Answers"
 msgstr "Antworten"
 
@@ -3237,8 +3243,8 @@ msgstr "Hinzufügen/Bearbeiten von Probanden nicht möglich, da die Umfrage nich
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:735
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2116
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:661
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1229
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1258
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1233
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1262
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -4166,8 +4172,8 @@ msgid "Group Import Summary"
 msgstr "Gruppen-Import übersicht"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:670
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1232
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1261
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1236
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1265
 msgid "Conditions"
 msgstr "Bedingungen"
 
@@ -4212,14 +4218,14 @@ msgstr "Beschriftung-Set Import Zusammenfassung"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importlabel.php:202
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:512
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1233
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1262
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1237
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1266
 msgid "Label Sets"
 msgstr "Beschriftung-Sets"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importlabel.php:204
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1227
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1256
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1231
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1260
 msgid "Languages"
 msgstr "Sprachen"
 
@@ -4327,41 +4333,41 @@ msgstr "Frage \"%s - %s\" wurde NICHT importiert, da der Fragetyp unbekannt ist.
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "Frage \"%s - %s\" wurde importiert, aber der Typ wurde konvertiert auf '%s', da dies der ähnlichste Typ ist."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1223
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1252
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1227
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1256
 msgid "Survey Import Summary"
 msgstr "Umfragen-Import übersicht"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1236
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1263
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1240
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1267
 msgid "Not imported Label Sets"
 msgstr "Nicht importierte Beschriftung-Sets"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1236
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1263
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1240
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1267
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Beschriftungs-Sets wurden nicht importiert, da Sie nicht die Berechtigung haben neue Beschriftungs-Sets anzulegen.)"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1238
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1264
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1242
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1268
 msgid "Question Attributes"
 msgstr "Fragen-Attribute:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1240
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1244
 msgid "Quotas"
 msgstr "Umfrage Quoten"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1242
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1267
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1246
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1271
 msgid "Import of Survey is completed."
 msgstr "Import der Umfrage abgeschlossen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1243
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1247
 msgid "Go to survey"
 msgstr "Gehe zur Umfrage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1244
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1268
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1248
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:1272
 msgid "Warnings"
 msgstr "Warnungen"
 
@@ -4792,133 +4798,88 @@ msgstr "Anmelden"
 msgid "Forgot Your Password?"
 msgstr "Haben Sie Ihr Passwort vergessen?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:141
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:145
-msgid "if you answered"
-msgstr "falls ihre Antwort "
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:143
-msgid "if you have NOT answered"
-msgstr "wenn Sie nicht geantwortet haben"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:243
-msgid "or"
-msgstr "oder"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:250
-msgid "to question"
-msgstr " war bei der Frage"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:256
-#, php-format
-msgid "Only answer this question %s"
-msgstr "Bitte beantworten Sie diese Frage nur, %s"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:289
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:290
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:305
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:308
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:322
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:323
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:389
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:390
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:462
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:463
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:655
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:658
-msgid "Please choose *only one* of the following:"
-msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:300
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:302
-msgid "Please enter a date:"
-msgstr "Bitte ein Datum eingeben:"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:483
-msgid "Please number each box in order of preference from 1 to"
-msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnen mit 1 bis"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:484
-msgid "Please number each box in order of preference from 1 to "
-msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnend von 1 bis"
-
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:504
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:505
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:514
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:515
 msgid "Please choose *all* that apply:"
 msgstr "Bitte wählen Sie alle Punkte aus, die zutreffen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:509
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:510
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:577
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:578
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:519
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:520
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:587
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:588
 msgid "Please choose *at most* "
 msgstr "Bitte wählen Sie *maximal*"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:509
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:519
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:520
 msgid "answers:"
 msgstr "Antworten:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:572
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:573
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:582
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:583
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen Kommentar dazu:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:577
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:578
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:587
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:588
 msgid "answers and provide a comment:"
 msgstr "Antworten und geben Sie einen Kommentar ein:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:607
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:608
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:617
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:618
 msgid "Please write your answer(s) here:"
 msgstr "Bitte Ihre Antwort(en) hierher schreiben"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:624
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:626
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:630
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:632
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:639
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:641
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:648
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:650
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:634
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:636
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:640
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:642
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:649
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:651
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:658
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:660
 msgid "Please write your answer here:"
 msgstr "Bitte schreiben Sie Ihre Antwort hier"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:665
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:667
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:699
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:701
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:725
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:727
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:750
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:752
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:925
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:934
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:999
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1000
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1094
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1095
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:668
+msgid "Please choose *only one* of the following:"
+msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
+
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:675
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:677
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:709
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:711
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:735
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:737
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:760
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:762
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:935
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:944
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1009
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1010
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1104
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1105
 msgid "Please choose the appropriate response for each item:"
 msgstr "Bitte wählen Sie die zutreffende Antwort aus"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1147
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1149
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1157
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1159
 msgid "Submit Your Survey."
 msgstr "Übermittlung Ihres ausgefüllten Fragebogens:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1148
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1149
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1158
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1159
 msgid "Thank you for completing this survey."
 msgstr "Vielen Dank für die Beantwortung des Fragebogens."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1152
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1153
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1162
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1163
 msgid "Please fax your completed survey to:"
 msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1158
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1159
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1168
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1169
 #, php-format
 msgid "Please submit by %s"
 msgstr "Bitte übermitteln bis %s"
@@ -6986,6 +6947,26 @@ msgstr "Thailändisch"
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
+#~ msgid "if you answered"
+#~ msgstr "falls ihre Antwort "
+#~ msgid "if you have NOT answered"
+#~ msgstr "wenn Sie nicht geantwortet haben"
+#~ msgid "or"
+#~ msgstr "oder"
+#~ msgid "to question"
+#~ msgstr " war bei der Frage"
+#~ msgid "Only answer this question %s"
+#~ msgstr "Bitte beantworten Sie diese Frage nur, %s"
+#~ msgid "Please enter a date:"
+#~ msgstr "Bitte ein Datum eingeben:"
+#~ msgid "Please number each box in order of preference from 1 to"
+#~ msgstr ""
+#~ "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, "
+#~ "beginnen mit 1 bis"
+#~ msgid "Please number each box in order of preference from 1 to "
+#~ msgstr ""
+#~ "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, "
+#~ "beginnend von 1 bis"
 #~ msgid "TOKEN MISMATCH"
 #~ msgstr "Unterschiedliche Zugangsschlüssel "
 
