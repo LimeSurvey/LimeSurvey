@@ -357,7 +357,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 
 
         if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
-	        {
+	    {
 	        $adminmenu .= "\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
                         . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
                         . "title=\"".$clang->gTview("Logout")."\" "
@@ -376,7 +376,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "\t\t\t</div>\n"
                         . "\t\t</div>\n";
             $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            if (count(getsurveylist(true)==0) && $action=='') {
+            if (count(getsurveylist(true)==0) && $action=='' && $surveyid==0) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
                              .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
@@ -388,7 +388,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                              .'</ol></p><br />&nbsp;</div>';
             }
                         
-            }                 
+        }                 
         return $adminmenu;
         }
 
