@@ -86,18 +86,31 @@ $allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg
 $debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
                                 // then please check your error-logs - either in your hosting provider admin panel or in some /logs dir.
                                 // LimeSurvey developers set this to 2.   
-$memorylimit       =  '32M';    // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
-                                
-$sessionlifetime    =   3600;   // How long until a survey session expires in seconds
+$memorylimit        =  '32M';   // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
 
-// SESSION PATH
-// Sometimes hosting deals can have issues with sessions.
-// ie: You can't login because the session isn't saved or even worse, respondents can't complete surveys.
-// If this is the case, you should contact your hosting company to let them know and ask them to fix it.
-// If you get no joy from your hosting company, you can try the changing $session_save_path to TRUE
-//    NOTE:  you may have to change the permissions on
-//           ./tmp/sessions so it's world writable.
-$session_save_path = false; // use only as a LAST resort if hosting won't fix.
+$sessionlifetime    =  3600;    // How long until a survey session expires in seconds
+
+
+
+/**
+ * SESSION SAVE PATH  -  Use only as LAST resort.
+ *
+ * NOTE: Setting session_save path to TRUE is a significant security
+ *       risk, but may be temporarily necessary.
+ *       Putting session details within the limesurvey setup and
+ *       making them world readable is very bad.
+ *
+ * Sometimes hosting deals can have issues with sessions. ie: You
+ * can't login because the session isn't saved or even worse,
+ * respondents can't complete surveys.
+ * If this is the case, you should CONTACT YOUR HOSTING COMPANY to
+ * let them know and ask them to fix it.
+ * If you get no joy from your hosting company, you can try the
+ * changing $session_save_path to TRUE.
+ */
+$session_save_path = false; // use only as a LAST resort if hosting company won't fix session problem.
+
+
 
 
 // Email Settings
@@ -108,7 +121,7 @@ $siteadminbounce    =   'your@email.org'; // The default email address used for 
 $siteadminname      =   'Your Name';      // The name of the site administrator
 
 $emailmethod        =   'mail';           // The following values can be used:
-									                        // mail      -  use internal PHP Mailer
+                                          // mail      -  use internal PHP Mailer
                                           // sendmail  -  use Sendmail Mailer
                                           // qmail     -  use Qmail MTA
                                           // smtp      -  use SMTP relaying
