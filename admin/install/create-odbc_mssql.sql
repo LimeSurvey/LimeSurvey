@@ -72,6 +72,7 @@ CREATE TABLE [prefix_assessments] (
 CREATE TABLE [prefix_conditions] (
   [cid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
+  [scenario] INT NOT NULL default '1',
   [cqid] INT NOT NULL default '0',
   [cfieldname] VARCHAR(50) NOT NULL default '',
   [method] char(2) NOT NULL default '',
@@ -354,7 +355,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '129');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '130');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --

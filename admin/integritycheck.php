@@ -38,7 +38,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         //  $query = "SELECT {$dbprefix}questions.sid, {$dbprefix}conditions.* "
         //          ."FROM {$dbprefix}conditions, {$dbprefix}questions "
         //          ."WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
-        //          ."ORDER BY qid, cqid, cfieldname, value";
+        //          ."ORDER BY qid, scenario, cqid, cfieldname, value";
         $query = "SELECT * FROM {$dbprefix}conditions ORDER BY cid";
         $result = db_execute_assoc($query) or safe_die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())

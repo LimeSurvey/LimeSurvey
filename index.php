@@ -197,14 +197,14 @@ if ($surveyid &&
 		//A nice exit
 		sendcacheheaders();
 		doHeader();
-	
+
 		echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
 		echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
 		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
 		."\t\t</center><br />\n";
-	
+
 		echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
 		doFooter();
 		exit;
@@ -333,9 +333,9 @@ if (!$surveyid)
 	sendcacheheaders();
 	doHeader();
 	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/startpage.pstpl"));
-	
+
 	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/surveylist.pstpl"));
-	
+
 	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/endpage.pstpl"));
 	doFooter();
 	exit;
@@ -512,7 +512,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
 	    }
     }
-	
+
 	// Load session before loading the values from the saved data
 	if (isset($_GET['loadall']))
 	{
@@ -806,7 +806,7 @@ function makelanguagechanger()
 {
   global $relativeurl;
   if (!isset($surveyid)) 
-  {	
+  {
     $surveyid=returnglobal('sid');
   }
   if (isset($surveyid)) 
@@ -914,143 +914,154 @@ function checkgroupfordisplay($gid)
 		//be displayed.
 		foreach ($QuestionsWithConditions as $cc)
 		{
-			$totalands=0;
-			$query = "SELECT * FROM ".db_table_name('conditions')."\n"
-				."WHERE qid=$cc[0] ORDER BY cqid";
-			$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
-
-			$andedMultipleCqidCount=0; // count of multiple cqids for type Q or K
-			while($row=$result->FetchRow())
+			$scenario=1;
+			while($scenario>0)
 			{
-				//Iterate through each condition for this question and check if it is met.
-				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-					." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-				$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
-				while($row2=$result2->FetchRow())
-				{
-					$cq_gid=$row2['gid'];
-					//Find out the "type" of the question this condition uses
-					$thistype=$row2['type'];
-				}
+				$totalands=0;
+				$query = "SELECT * FROM ".db_table_name('conditions')."\n"
+					."WHERE qid=$cc[0] AND scenario=$scenario ORDER BY cqid";
+				$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
 
-				if ($thistype == 'K' || $thistype == 'Q')
+				$andedMultipleCqidCount=0; // count of multiple cqids for type Q or K
+				$conditionsfoundforthisscenario=0;
+				while($row=$result->FetchRow())
 				{
-					// will be used as an index for Multiple conditions
-					// on type Q or K so that there will be ANDed and 
-					// not ORed
-					$andedMultipleCqidCount++;
-				}
-
-				if ($gid == $cq_gid)
-				{
-					//Don't do anything - this cq is in the current group
-				}
-				elseif ($thistype == "M" || $thistype == "P")
-				{
-					// For multiple choice type questions, the "answer" value will be "Y"
-					// if selected, the fieldname will have the answer code appended.
-					$fieldname=$row['cfieldname'].$row['value'];
-					$cvalue="Y";     
-					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
-				}
-				elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
-					isset($_SESSION[$targetconditionfieldname[1]]) )
-				{ 
-					// If value uses @SIDXGIDXQID@ codes i
-					// then try to replace them with a 
-					// value recorded in SESSION if any
-					$cvalue=$_SESSION[$targetconditionfieldname[1]];
-					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
-				}
-				else
-				{
-					//For all other questions, the "answer" value will be the answer code.
-					if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
-					$cvalue=$row['value'];
-				}
-
-				if ($row['method'] != 'RX')
-				{
-					if (trim($row['method'])=='') 
-                    {
-                        $row['method']='==';
-                    }
-                    if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+					$conditionsfoundforthisscenario=0;
+					//Iterate through each condition for this question and check if it is met.
+					$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+						." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+					$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
+					while($row2=$result2->FetchRow())
 					{
-						$conditionMatches=true;
-						//This condition is met
+						$cq_gid=$row2['gid'];
+						//Find out the "type" of the question this condition uses
+						$thistype=$row2['type'];
+					}
+
+					if ($thistype == 'K' || $thistype == 'Q')
+					{
+						// will be used as an index for Multiple conditions
+						// on type Q or K so that there will be ANDed and 
+						// not ORed
+						$andedMultipleCqidCount++;
+					}
+
+					if ($gid == $cq_gid)
+					{
+						//Don't do anything - this cq is in the current group
+					}
+					elseif ($thistype == "M" || $thistype == "P")
+					{
+						// For multiple choice type questions, the "answer" value will be "Y"
+						// if selected, the fieldname will have the answer code appended.
+						$fieldname=$row['cfieldname'].$row['value'];
+						$cvalue="Y";     
+						if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+					}
+					elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
+						isset($_SESSION[$targetconditionfieldname[1]]) )
+					{ 
+						// If value uses @SIDXGIDXQID@ codes i
+						// then try to replace them with a 
+						// value recorded in SESSION if any
+						$cvalue=$_SESSION[$targetconditionfieldname[1]];
+						if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
 					}
 					else
 					{
-						$conditionMatches=false;
+						//For all other questions, the "answer" value will be the answer code.
+						if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
+						$cvalue=$row['value'];
 					}
-				}
-				else
-				{
-					if (ereg(trim($cvalue),trim($cfieldname)))
-					{
-						$conditionMatches=true;
 
-					}
-					else
+					if ($row['method'] != 'RX')
 					{
-						$conditionMatches=false;
-					}
-				}
-
-				if ($conditionMatches === true)
-				{
-					if ($thistype != 'Q' && $thistype != 'K')
-					{
-						//This condition is met
-						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+						if (trim($row['method'])=='') 
+	                    {
+	                        $row['method']='==';
+	                    }
+	                    if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
 						{
-							$distinctcqids[$row['cqid']]=1;
+							$conditionMatches=true;
+							//This condition is met
 						}
-					}
-					else
-					{ //$andedMultipleCqidCount
-						if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"])  || $distinctcqids[$row['cqid']] == 0)
+						else
 						{
-							$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=1;
-						}
-					
-					}
-				}
-				else
-				{
-					if ($thistype != 'Q' && $thistype != 'K')
-					{
-						if (!isset($distinctcqids[$row['cqid']]))
-						{
-							$distinctcqids[$row['cqid']]=0;
+							$conditionMatches=false;
 						}
 					}
 					else
 					{
-						if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]))
+						if (ereg(trim($cvalue),trim($cfieldname)))
 						{
-							$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=0;
+							$conditionMatches=true;
+
+						}
+						else
+						{
+							$conditionMatches=false;
 						}
 					}
 
+					if ($conditionMatches === true)
+					{
+						if ($thistype != 'Q' && $thistype != 'K')
+						{
+							//This condition is met
+							if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
+							{
+								$distinctcqids[$row['cqid']]=1;
+							}
+						}
+						else
+						{ //$andedMultipleCqidCount
+							if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"])  || $distinctcqids[$row['cqid']] == 0)
+							{
+								$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=1;
+							}
+
+						}
+					}
+					else
+					{
+						if ($thistype != 'Q' && $thistype != 'K')
+						{
+							if (!isset($distinctcqids[$row['cqid']]))
+							{
+								$distinctcqids[$row['cqid']]=0;
+							}
+						}
+						else
+						{
+							if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]))
+							{
+								$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=0;
+							}
+						}
+
+					}
+				} // while
+				if ($conditionsfoundforthisscenario == 1) {
+					foreach($distinctcqids as $key=>$val)
+					{
+						//Because multiple cqids are treated as "AND", we only check
+						//one condition per conditional qid (cqid). As long as one
+						//match is found for each distinct cqid, then the condition is met.
+						$totalands=$totalands+$val;
+					}
+					if ($totalands >= count($distinctcqids))
+					{
+						//The number of matches to conditions exceeds the number of distinct
+						//conditional questions, therefore a condition has been met.
+						//As soon as any condition for a question is met, we MUST show the group.
+						return true;
+					}
+					$scenario++;
+				} else {
+					$scenario=0;
 				}
-			} // while
-			foreach($distinctcqids as $key=>$val)
-			{
-				//Because multiple cqids are treated as "AND", we only check
-				//one condition per conditional qid (cqid). As long as one
-				//match is found for each distinct cqid, then the condition is met.
-				$totalands=$totalands+$val;
+				unset($distinctcqids);
 			}
-			if ($totalands >= count($distinctcqids))
-			{
-				//The number of matches to conditions exceeds the number of distinct
-				//conditional questions, therefore a condition has been met.
-				//As soon as any condition for a question is met, we MUST show the group.
-				return true;
-			}
-			unset($distinctcqids);
 		}
 		//Since we made it this far, there mustn't have been any conditions met.
 		//Therefore the group should not be displayed.
@@ -1068,73 +1079,92 @@ function checkconfield($value)
 	{
 		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 		{
-			$currentcfield="";
-			$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
-			. "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
-			. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
-			. "AND ".db_table_name('conditions').".qid=$sfa[0] "
-			. "ORDER BY ".db_table_name('conditions').".qid";
-			$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
-			while($rows = $result->FetchRow()) //Go through the condition on this field
-			{
-				if($rows['type'] == "M" || $rows['type'] == "P")
+			$scenario=1;
+			$matchfound=0;
+			while ($scenario > 0) {
+				$currentcfield="";
+				$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
+				. "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
+				. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
+				. "AND ".db_table_name('conditions').".qid=$sfa[0] "
+				. "ORDER BY ".db_table_name('conditions').".qid";
+				$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
+				while($rows = $result->FetchRow()) //Go through the condition on this field
 				{
-					$matchfield=$rows['cfieldname'].$rows['value'];
-                    $matchmethod=$rows['method'];
-					$matchvalue="Y";
-				}
-				else
-				{
-					$matchfield=$rows['cfieldname'];
-                    $matchmethod=$rows['method'];
-					$matchvalue=$rows['value'];
-				}
-				$cqval[]=array("cfieldname"=>$rows['cfieldname'],
-				"value"=>$rows['value'],
-				"type"=>$rows['type'],
-				"matchfield"=>$matchfield,
-				"matchvalue"=>$matchvalue,
-                "matchmethod"=>$matchmethod
-                );
-				if ($rows['cfieldname'] != $currentcfield)
-				{
-					$container[]=$rows['cfieldname'];
-				}
-				$currentcfield=$rows['cfieldname'];
-			}
-			//At least one match must be found for each "$container"
-			$total=0;
-			foreach($container as $con)
-			{
-				$addon=0;
-				foreach($cqval as $cqv)
-				{//Go through each condition
-					// Replace @SGQA@ condition values
-					// By corresponding value
-					if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
+					if($rows['type'] == "M" || $rows['type'] == "P")
 					{
-						$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+						$matchfield=$rows['cfieldname'].$rows['value'];
+						$matchmethod=$rows['method'];
+						$matchvalue="Y";
 					}
-					// Use == as default operator
-					if (trim($cqv['matchmethod'])=='') {$cqv['matchmethod']='==';}
-					if($cqv['cfieldname'] == $con)
+					else
 					{
-						if ($cqv['matchmethod'] != "RX")
-						{
-							if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
-							{//plug successful matches into appropriate container
-								$addon=1;
+						$matchfield=$rows['cfieldname'];
+						$matchmethod=$rows['method'];
+						$matchvalue=$rows['value'];
+					}
+					$cqval[]=array("cfieldname"=>$rows['cfieldname'],
+						"value"=>$rows['value'],
+						"type"=>$rows['type'],
+						"matchfield"=>$matchfield,
+						"matchvalue"=>$matchvalue,
+						"matchmethod"=>$matchmethod
+	                		);
+					if ($rows['cfieldname'] != $currentcfield)
+					{
+						$container[]=$rows['cfieldname'];
+					}
+					$currentcfield=$rows['cfieldname'];
+				}
+				if ($conditionsfound) {
+					//At least one match must be found for each "$container"
+					$total=0;
+					foreach($container as $con)
+					{
+						$addon=0;
+						foreach($cqval as $cqv)
+						{//Go through each condition
+							// Replace @SGQA@ condition values
+							// By corresponding value
+							if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
+							{
+								$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+							}
+							// Use == as default operator
+							if (trim($cqv['matchmethod'])=='') {$cqv['matchmethod']='==';}
+							if($cqv['cfieldname'] == $con)
+							{
+								if ($cqv['matchmethod'] != "RX")
+								{
+									if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
+									{//plug successful matches into appropriate container
+										$addon=1;
+									}
+								}
+								elseif (ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+								{
+										$addon=1;
+								}
 							}
 						}
-						elseif (ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
-						{
-								$addon=1;
-						}
+						if($addon==1){$total++;}
 					}
+					if($total==count($container))
+					{
+						$matchfound=1;
+						$scenario=0; // Don't look for other scenario's.
+					}
+					else
+					{
+						$scenario++;
+					}
+					unset($cqval);
+					unset($container);
+				} else {
+					$scenario=0;
 				}
-				if($addon==1){$total++;}
-			}
-			if($total<count($container))
+			} // while ($scenario > 0)
+			if($matchfound==0)
 			{
 			    //If this is not a "moveprev" then
 				// Reset the value in SESSION
@@ -1144,8 +1174,6 @@ function checkconfield($value)
 				$fieldisdisplayed=false;
 				//}
 			}
-			unset($cqval);
-			unset($container);
 		}
 	}
 	return $fieldisdisplayed;
@@ -1608,7 +1636,7 @@ function buildsurveysession()
 	{
 		$templang=$thissurvey['language'];
 	}
-	
+
 	$totalBoilerplatequestions = 0;
 
 	//This function builds all the required session variables when a survey is first started.
@@ -1629,7 +1657,7 @@ function buildsurveysession()
 			sendcacheheaders();
 			doHeader();
 			// No or bad answer to required security question
-	
+
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	        //echo makedropdownlist();
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
@@ -1648,7 +1676,7 @@ function buildsurveysession()
 					        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
 
 
-			echo "			
+			echo "
 				        </td>
 			        </tr>";
 	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
@@ -1660,7 +1688,7 @@ function buildsurveysession()
 		        </table>
 		        </form>
 		        <br />&nbsp;</center>";
-	
+
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			exit;
 		}
@@ -1763,9 +1791,9 @@ function buildsurveysession()
 				sendcacheheaders();
 				doHeader();
 				//TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-	
+
 				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	
+
 				echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 				echo "\t<center><br />\n"
 				."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -1774,7 +1802,7 @@ function buildsurveysession()
 				."(<a href='mailto:{$thissurvey['adminemail']}'>"
 				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 				."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-	
+
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				exit;
 			}
@@ -1786,7 +1814,7 @@ function buildsurveysession()
 			sendcacheheaders();
 			doHeader();
 			// No or bad answer to required security question
-	
+
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 	        //echo makedropdownlist();
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
@@ -1833,7 +1861,7 @@ function buildsurveysession()
 			echo	        $clang->gT("Token").":</td><td align='left' valign='middle'>&nbsp;$gettoken<input type='hidden' name='token' value='$gettoken'>";
 			}
 
-			echo "			
+			echo "
 				        </td>
 			        </tr>";
 	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
@@ -1846,7 +1874,7 @@ function buildsurveysession()
 		        </form>
 		        <br />&nbsp;</center>";
 			}
-	
+
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			exit;
 		}
@@ -2065,7 +2093,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#0";
 				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#0" => $fieldname)); 
 						$alsoother = "";
-						
+
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
@@ -2089,7 +2117,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 						$_SESSION['insertarray'][] = $fieldname.$abrow['code']."#1";
 				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."#1" => $fieldname)); 
 						$alsoother = "";
-						
+
 						if ($abrow['other'] == "Y") {$alsoother = "Y";}
 						if ($arow['type'] == "P")
 						{
@@ -2097,7 +2125,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
 						}
 				}
-		
+
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
 			{
@@ -2274,8 +2302,8 @@ function surveymover()
 	{
 		$surveymover = "<input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" />";
 	}
-	
-	
+
+
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
 	{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' << "
@@ -2339,11 +2367,11 @@ function doAssessment($surveyid)
 			$fieldmap=createFieldMap($surveyid, "full");
 			$i=0;
 			$total=0;
-			
+
 			// I added this condition : if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y"))
 			// because the internal representation of the answer of multiple Options type questions is Y, not the answer code
 			// for this type of questions I use $field['aid'] insted of $_SESSION[$field['fieldname']]
-			
+
 			foreach($fieldmap as $field)
 			{
 				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "startdate") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
@@ -2524,7 +2552,7 @@ function check_quota($checkaction,$surveyid)
 					$fields_query = array();
 					$select_query = " (";
 					foreach($member['fieldnames'] as $fieldname)
-					{			
+					{
 						$fields_list[] = $fieldname;
 						$fields_query[] = db_quote_id($fieldname)." = '{$member['value']}'";
 						// Check which quota fields and codes match in session, for later use.
@@ -2556,10 +2584,10 @@ function check_quota($checkaction,$surveyid)
 				}
 
 				// A field was submitted that is part of the quota
-				
+
 				if ($matched_fields == true)
 				{
-					
+
 					// Check the status of the quota, is it full or not
 					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
 
@@ -2570,7 +2598,7 @@ function check_quota($checkaction,$surveyid)
 					{
 						// Now we have to check if the quota matches in the current session
 						// This will let us know if this person is going to exceed the quota
-						
+
 						$counted_matches = 0;
 						foreach($quota_info[$x]['members'] as $member)
 						{
@@ -2580,7 +2608,7 @@ function check_quota($checkaction,$surveyid)
 						{
 							// They are going to exceed the quota if data is submitted
 							$quota_info[$x]['status']="matched";
-							
+
 						} else 
 						{
 							$quota_info[$x]['status']="notmatched";
@@ -2601,7 +2629,7 @@ function check_quota($checkaction,$surveyid)
 	{
 		return false;
 	}
-	
+
 	// Now we have all the information we need about the quotas and their status.
 	// Lets see what we should do now
 	if ($checkaction == 'return')
@@ -2628,7 +2656,7 @@ function check_quota($checkaction,$surveyid)
 				doFooter();
 				exit;
 			}
-			
+
 			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "2"))
 			{
 
@@ -2646,13 +2674,13 @@ function check_quota($checkaction,$surveyid)
 				exit;
 			}
 		}
-		
-			
+
+
 	} else {
 		// Unknown value
 		return false;
 	}
-	
+
 }
 
 
