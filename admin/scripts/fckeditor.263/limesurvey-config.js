@@ -132,7 +132,7 @@ FCKConfig.ToolbarSets["Basic"] = [
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
 //	['FitWindow','Source','Templates'],
-	['Source','Templates'],
+	['LimeFitWin','-','Source','Templates'],
 	['Cut','Copy','Paste','PasteText','PasteWord'],
 	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
 	'/',
@@ -143,7 +143,7 @@ FCKConfig.ToolbarSets["LimeSurveyToolbarfull"] = [
 	['Image','Flash','Table','Rule','Smiley','SpecialChar','PageBreak'],
 	'/',
 	['Style','FontFormat','FontName','FontSize'],
-	['TextColor','BGColor','About', 'LimeReplacementFields', 'LimeFitWin']
+	['TextColor','BGColor','About', 'LimeReplacementFields']
 ] ;
 
 FCKConfig.ToolbarSets["LimeSurveyToolbarfullPopup"] = [
