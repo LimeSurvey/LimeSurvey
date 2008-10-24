@@ -1836,7 +1836,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 				$explanation = ""; //reset conditions explanation
 				$s=0;
-				$scenarioquery="SELECT DISTINCT scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY scenario"
+				$scenarioquery="SELECT DISTINCT scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
 				$scenarioresult=db_execute_assoc($scenarioquery);
 				while ($scenariorow=$scenarioresult->FetchRow())
 				{
