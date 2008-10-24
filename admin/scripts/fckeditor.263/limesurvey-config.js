@@ -42,7 +42,8 @@ FCKConfig.StartupShowBlocks = false ;
 FCKConfig.Debug = false ;
 FCKConfig.AllowQueryStringDebug = true ;
 
-FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/default/' ;
+FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/limesurvey/' ;
+//FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/default/' ;
 //FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
 //FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/silver/' ;
 //FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/Office2007Real/' ;
