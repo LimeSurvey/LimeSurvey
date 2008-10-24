@@ -112,7 +112,8 @@ body, .BackColor
 .PopupTabEmptyArea
 {
 	padding-left: 10px ;
-	border-bottom: #cec6b5 1px solid;
+	border-bottom: #F8F8FF 1px solid;
+	background-color: #DEDEDE;
 }
 
 .PopupTab, .PopupTabSelected
@@ -127,7 +128,7 @@ body, .BackColor
 .PopupTab
 {
 	margin-top: 1px;
-	border-bottom: #cec6b5 1px solid;
+	border-bottom: #EAF2FF 1px solid;
 	cursor: pointer;
 	cursor: hand;
 }
