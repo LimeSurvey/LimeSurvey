@@ -132,7 +132,7 @@ while ($degrow = $degresult->FetchRow())
 		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$s=0;
-		$scenarioquery="SELECT DISTINCT ".db_table_name("conditions").".scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$d
+		$scenarioquery="SELECT DISTINCT ".db_table_name("conditions").".scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']}";
 		$scenarioresult=db_execute_assoc($scenarioquery);
 		while ($scenariorow=$scenarioresult->FetchRow())
         		{
