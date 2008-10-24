@@ -579,7 +579,7 @@ for ($i=0;$i<count($conditions);$i++)
 	// Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
 	if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7])
 	{	// We have a new scenario, so "or" the scenario.
-	       $java .= ")) || ((";
+	       $newjava .= ")) || ((";
 	}
 	elseif ($cqcount > 1 && $oldcq ==$cd[2])
 	{	// Multiple values for the same question will be ORed.
