@@ -39,6 +39,7 @@ global $modifyoutput;
 
 	if ($oldversion < 128) {
 		//128
+		upgrade_token_tables128();
 	    modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
@@ -48,9 +49,31 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys ADD usestartdate char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
 	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
+	
+	if ($oldversion < 130)
+	{
+		modify_database("","ALTER TABLE prefix_conditions ADD scenario integer NOT NULL default '1'"); echo $modifyoutput; flush();
+		modify_database("","UPDATE prefix_conditions SET scenario=1 where (scenario is null) or scenario=0"); echo $modifyoutput; flush();
+	    modify_database("","update prefix_settings_global set stg_value='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
 
     return true;
 }
 
+function upgrade_token_tables128()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."tokens%");
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+		while ( $sv = $surveyidresult->FetchRow() )
+		{
+			modify_database("","ALTER TABLE ".$sv[0]." ADD remindersent VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+			modify_database("","ALTER TABLE ".$sv[0]." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
+		}
+	}
+}
 
 ?>
