@@ -110,6 +110,29 @@ $sessionlifetime    =  3600;    // How long until a survey session expires in se
  */
 $session_save_path = false; // use only as a LAST resort if hosting company won't fix session problem.
 
+/**
+ * SESSION_DIR
+ * If you must use your own session directory, it's best if you place
+ * it in a directory above the web root that way it is not accessible
+ * from a browser.
+ * Unfortunately this is not always possible on commercial hosts. To
+ * make it as hard as possible for people to see your sensitive
+ * session details give your session directory a long, randomly
+ * generated name.
+ *
+ * Make sure SESSION_DIR ends with a slash '/'
+ * All paths must be relative to the LimeSurvey directory.
+ * Only use letters (a-z A-Z), numbers (0-9), hyphens, underscores
+ * and full stops ( - _ . ) in your directory name.
+ *
+ * If you have access to the directory above the web root:
+ * use something like this:
+ *       '../ao32rpskdfnp9328hr/' for your session dir.
+ * otherwise, leave blank and 
+ * By default LimeSurvey will create a randomly generated directory
+ * name.
+ */
+$session_dir = ''; // make sure you have a trailing slash.
 
 
 
@@ -305,6 +328,35 @@ $addTitleToLinks = false;
 
 $demoModeOnly = false;
 
+/** -----------------------------------------------------
+ * Because columns are tricky things, in terms of balancing visual
+ * layout against semantic markup. The choice has been left to the
+ * system administrator or designer. (Who ever cares most.)
+ *
+ * $column_style defines how columns are rendered for survey answers.
+ * There are four possible options:
+ *     'css'   using one of the various CSS only methods for creating
+               columns (see template style sheet for details).
+ *     'ul'    using multiple floated unordered lists. (DEFAULT)
+ *     'table' using conventional tables based layout.
+ *     NULL    blocks the use of columns
+ */
+$column_style = 'ul';
+
+/**
+ * Use FireBug Lite for JavaScript and template development and testing.
+ * This allows you to use all the features of Firebug in any browser.
+ * see http://getfirebug.com/lite.html for more info.
+ */
+$use_firebug_lite = false;
+
+/*
+ * When activated there are additional values like arithmetic mean and standard deviation at statistics.
+ * This only affects question types "A" (5 point array) and "5" (5 point choice).
+ * Furthermore data is aggregated to get a faster overview. 
+ */
+
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
@@ -351,26 +403,5 @@ $relativeurl= isset($parsedurl['path']) ? $parsedurl['path'] : "";
 
 
 
-/** -----------------------------------------------------
- * Because columns are tricky things, in terms of balancing visual
- * layout against semantic markup. The choice has been left to the
- * system administrator or designer. (Who ever cares most.)
- *
- * $column_style defines how columns are rendered for survey answers.
- * There are four possible options:
- *     'css'   using one of the various CSS only methods for creating
-               columns (see template style sheet for details).
- *     'ul'    using multiple floated unordered lists. (DEFAULT)
- *     'table' using conventional tables based layout.
- *     NULL    blocks the use of columns
- */
-$column_style = 'ul';
-
-
-/*
- * When activated there are additional values like arithmetic mean and standard deviation at statistics.
- * This only affects question types "A" (5 point array) and "5" (5 point choice).
- * Furthermore data is aggregated to get a faster overview. 
- */
 $showaggregateddata = 1;
 ?>

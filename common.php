@@ -52,9 +52,61 @@ if ($dieoutput!='') die($dieoutput);
 // The following forces sessions to be saved to a directory within the LimeSurvey install
 if(isset($session_save_path) && $session_save_path == true)
 {
+/**
+ * The following generates a randomly string to be used for directory name which will in turn be to used for storing session files.
+ * It then creates a directory and writes the directory path to the config-defaults.php
+ */
+/*
+    if(empty($session_dir) || !is_dir($session_dir))
+    {
+        function generate_random_string($length = 16 , $possible_chars = 'abcdefghijklmnopqrstuvwxyz_012345679-ABCDEFGHIJKLMNOPQRSTUVWXYZ.' )
+        {
+            $char_count = strlen($possible_chars); 
+            for( $c = 1 ; $c < $length ; ++$c )
+            {
+                srand((double)microtime()*1000000);
+                $random_num = rand( 1 , $char_count); 
+                $random_string .= substr($possible_chars, $random_num, 1);
+            };
+            return $random_string;
+        };
+
+        $session_dir_path .=  '../'.generate_random_string().'/';
+
+        while(is_dir(session_dir_path))
+        {
+            $session_dir_path .=  '../'.generate_random_string().'/';
+        };
+
+        mkdir($session_dir_path)
+
+        $update_config_defaults = file_get_contents('config-defaults.php');
+        $update_config_defaults = preg_replace(
+                                               '/\$session_dir[ \t\n\r]*=[ \t\n\r]*\'[^\']*\';/',
+                                               '$session_dir = \''.$session_dir_path.'\';',
+                                               $update_config_defaults
+                                              );
+
+        file_put_contents('config-defaults.php' , $update_config_defaults);
+    };
+*/
     ini_set( 'session.save_path' ,  $_SERVER['DOCUMENT_ROOT'] . '/tmp/sessions/' ); // resets the path to where sessions are actually saved.
 };
 
+// The following function (when called) includes FireBug Lite if true 
+define('FIREBUG' , $use_firebug_lite);
+
+function use_firebug()
+{
+
+    if(FIREBUG == true)
+    {
+//        return '		<script language="javascript" type="text/javascript" src="/scripts/firebug-lite.js"></script>
+//';
+	return '		<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
+';
+    };
+};
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -2241,9 +2293,9 @@ function templatereplace($line)
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
-			"<script type=\"text/javascript\" src=\"$rooturl/scripts/surveyRuntime.js\">\n"
-			."</script>\n"
-			."</head>", $line);
+			"\t\t<script type=\"text/javascript\" src=\"$rooturl/scripts/surveyRuntime.js\"></script>\n"
+			.use_firebug()
+			."\t</head>", $line);
 	}
 
 
@@ -2952,21 +3004,22 @@ function getHeader()
 	if ( !$embedded )
 	{
 		$header=  "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
-        		. "<html ";
+        		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
         if (getLanguageRTL($surveylanguage))
         {
             $header.=" dir=\"rtl\" ";
         }
-        $header.= "><head>\n"
-//        		. "<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
-        		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />"
-//        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
-//        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
-//        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
-        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
-        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
-        		. "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
+        $header.= ">\n\t<head>\n"
+//        		. "\t\t<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
+        		. "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
+//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
+//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
+//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
+        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
+        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
+        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
 			. $js_header;
+			
         return $header;        
     }
 
@@ -3047,28 +3100,29 @@ function getAdminHeader($meta=false)
         {
         $strAdminHeader.=$meta;
         }
-	$strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n";
+	$strAdminHeader.="\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+	. "\t\t<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+	. "\t\t<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
+    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
+    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
+    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n";
     if (getLanguageRTL($_SESSION['adminlang']))
     {
-    $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
+    $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
     }
     else
     {
-    $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
+    $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
     }
-	$strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
-	. "</head>\n<body>\n"
-	. "<div class=\"maintitle\">\n"
-	. "\t\t$sitename\n"
-	. "</div>\n";
+	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
+	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
+	. "\t\t<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
+	. use_firebug()
+	. "\t</head>\n\t<body>\n"
+	. "\t\t<div class=\"maintitle\">\n"
+	. "\t\t\t$sitename\n"
+	. "\t\t</div>\n";
 	return $strAdminHeader;
 }
 
