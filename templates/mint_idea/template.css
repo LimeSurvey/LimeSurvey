@@ -333,7 +333,7 @@ select
 /* STYLES NOT YET DEFINED - - - - -
 .boilerplate {}
 */
-
+/*
  .choice-5-pt-radio ul
 ,.yes-no ul
 ,.gender ul
@@ -347,6 +347,7 @@ select
 	display: inline;
 	padding: 0% 1em;
 }
+*/
 
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
