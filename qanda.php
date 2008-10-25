@@ -890,7 +890,7 @@ function do_date($ia)
 		$answer = keycontroljs();
 		$answer .= '
 			<p class="question">
-				<select id="day'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\';" class="day">
+				<select id="day'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="day">
 					<option value="">'.$clang->gT('Day').'</option>
 ';
 		for ($i=1; $i<=31; $i++) {
@@ -907,7 +907,7 @@ function do_date($ia)
 		}
 
 		$answer .= '				</select>
-				<select id="month'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\');" class="month">
+				<select id="month'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="month">
 					<option value="">'.$clang->gT('Month').'</option>
 ';
 		$montharray=array(
@@ -938,7 +938,7 @@ function do_date($ia)
 		}
 
 		$answer .= '				</select>
-				<select id="year'.$ia[1].'" onChange="dateUpdater(\''.$ia[1].'\');" class="year">
+				<select id="year'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="year">
 					<option value="">'.$clang->gT('Year').'</option>
 ';
 
@@ -999,7 +999,7 @@ function do_date($ia)
 	$answer = keycontroljs()
 		. "
 			<p class=\"question\">
-				<input class=\"text\" type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" onBlur=\"ValidDate(this)\" />
+				<input class=\"text\" type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" onblur=\"ValidDate(this)\" />
 				<button type=\"reset\" id=\"f_trigger_{$ia[1]}\">...</button>
 			</p>
 			<p class=\"tip\">
@@ -2066,7 +2066,7 @@ function do_ranking($ia)
 				}
 			}
 		}
-		$ranklist .= "\t\t\t\t\t\t\t<tr><td align=right>&nbsp;<label for='RANK_{$ia[0]}$i'>"
+		$ranklist .= "\t\t\t\t\t\t\t<tr><td style=\"text-align:right;\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
 		."$i:&nbsp;</label></td><td><input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
@@ -2074,7 +2074,7 @@ function do_ranking($ia)
 			$ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
 			$ranklist .= "'";
 		}
-		$ranklist .= " onFocus=\"this.blur()\" />\n";
+		$ranklist .= " onfocus=\"this.blur()\" />\n";
 		$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname' id='fvalue_{$ia[0]}$i' value='";
 		$chosen[]=""; //create array
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
@@ -2143,7 +2143,7 @@ function do_ranking($ia)
 	}
 	else
 	{
-		$answer .= "\t\t\t\t\t<td align='left' width='250' class='rank' nowrap>\n"
+		$answer .= "\t\t\t\t\t<td style=\"text-align:left; width:250px; white-space:nowrap;\" class=\"rank\">\n"
 		. "\t\t\t\t\t\t\t<table border='0' cellspacing='1' cellpadding='0'>\n"
 		. "\t\t\t\t\t\t\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
 	}
@@ -3485,7 +3485,7 @@ function do_yesno($ia)
 		$answer .= CHECKED;
 	}
 	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer{$ia[1]}N\" class=\"answertext\" />\n\t\t\t".$clang->gT('No')."\n\t\t</label>\n\t</li>\n";
+	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t\t\t".$clang->gT('No')."\n\t\t</label>\n\t</li>\n";
 	// --> END NEW FEATURE - SAVE
 
 	if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -4488,7 +4488,7 @@ function do_array_multitext($ia)
 				$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
 				$answer .= "<input type='text' name='$myfname2' id='answer{$myfname2}' title='"
 					. html_escape($labelans[$thiskey])."'";
-				$answer .= " onChange='checkconditions(this.value, this.name, this.type)' size='$inputwidth' "
+				$answer .= " onchange='checkconditions(this.value, this.name, this.type)' size='$inputwidth' "
 				    . "value='".str_replace ("\"", "'", str_replace("\\", "", $myfname2value))."' />\n";
 				$inputnames[]=$myfname2;
 				$answer .= "</label></td>\n";
@@ -4676,7 +4676,7 @@ function do_array_multiflexi($ia)
 					$answer .= "<input type='hidden' name='java{$myfname2}' id='java{$myfname2}' />\n";
 					$answer .= "<select class='multiflexiselect' name='$myfname2' id='answer{$myfname2}' title='"
 						. html_escape($labelans[$thiskey])."'";
-					$answer .= " onChange='checkconditions(this.value, this.name, this.type)'>\n";
+					$answer .= " onchange='checkconditions(this.value, this.name, this.type)'>\n";
 					$answer .= "<option value=''>...</option>\n";
 					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
 						$answer .= "<option value='$ii'";
