@@ -1,0 +1,7 @@
+/* The following styles are for all versions of IE */
+
+.numeric-multi dl.multiplenumerichelp dt
+{
+	margin-right: 10em;
+	margin-bottom: -1.6em;
+}
