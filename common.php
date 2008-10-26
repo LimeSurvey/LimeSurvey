@@ -3010,11 +3010,7 @@ function getHeader()
             $header.=" dir=\"rtl\" ";
         }
         $header.= ">\n\t<head>\n"
-//        		. "\t\t<link type=\"text/css\" rel=\"StyleSheet\" href=\"".$rooturl."/scripts/slider/swing.css\" />\n"
         		. "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/range.js\"></script>\n"
-//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/timer.js\"></script>\n"
-//        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/slider/slider.js\"></script>\n"
         		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
         		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
         		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
