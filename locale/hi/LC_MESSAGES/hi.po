@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-10 10:51+0200\n"
-"PO-Revision-Date: 2008-10-25 17:39-0600\n"
+"PO-Revision-Date: 2008-10-26 14:09-0600\n"
 "Last-Translator: \n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -93,72 +93,58 @@ msgid "Date is not valid!"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:76
-#, fuzzy
 msgid "Albanian"
 msgstr "अल्बानियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:81
-#, fuzzy
 msgid "Arabic"
 msgstr "अरबी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:86
-#, fuzzy
 msgid "Basque"
 msgstr "बास्क"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:91
-#, fuzzy
 msgid "Bosnian"
 msgstr "बोस्नियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:96
-#, fuzzy
 msgid "Bulgarian"
 msgstr "बल्गेरियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:101
-#, fuzzy
 msgid "Catalan"
 msgstr "कॅटलन"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:106
-#, fuzzy
 msgid "Welsh"
 msgstr "वेल्श"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:111
-#, fuzzy
 msgid "Chinese (Simplified)"
 msgstr "चीनी (सरलीकृत)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:116
-#, fuzzy
 msgid "Chinese (Traditional - Hong Kong)"
 msgstr "चीनी (पारंपरिक - हांगकांग)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:121
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
 msgstr "	चीनी (पारंपरिक - ताइवान)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:126
-#, fuzzy
 msgid "Croatian"
 msgstr "	क्रोएशियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:131
-#, fuzzy
 msgid "Czech"
 msgstr "चेक़"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:136
-#, fuzzy
 msgid "Danish"
 msgstr "	डैनिश"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:141
-#, fuzzy
 msgid "Dutch"
 msgstr "डच"
 
@@ -167,172 +153,138 @@ msgid "English"
 msgstr "अंग्रेज़ी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:151
-#, fuzzy
 msgid "Estonian"
 msgstr "एस्टोनियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:156
-#, fuzzy
 msgid "Finnish"
 msgstr "फ़िनिश"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:162
-#, fuzzy
 msgid "French"
 msgstr "	फ़्रेंच"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:167
-#, fuzzy
 msgid "Galician"
 msgstr "गेलिकाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:172
-#, fuzzy
 msgid "German"
 msgstr "जर्मन"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:177
-#, fuzzy
 msgid "German informal"
 msgstr "जर्मन अनौपचारिक"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:182
-#, fuzzy
 msgid "Greek"
 msgstr "यूनानी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:187
-#, fuzzy
 msgid "Hebrew"
 msgstr "	हिब्रू"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:192
-#, fuzzy
 msgid "Hungarian"
 msgstr "	हंगरियन"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:197
-#, fuzzy
 msgid "Icelandic"
 msgstr "आइसलैंडिक"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:202
-#, fuzzy
 msgid "Indonesian"
 msgstr "	इंडोनेशियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:207
-#, fuzzy
 msgid "Italian"
 msgstr "इतालवी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:212
-#, fuzzy
 msgid "Japanese"
 msgstr "जापानी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:217
-#, fuzzy
 msgid "Korean"
 msgstr "	कोरियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:222
-#, fuzzy
 msgid "Lithuanian"
 msgstr "लिथुआनियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:227
-#, fuzzy
 msgid "Latvian"
 msgstr "	लातवियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:232
-#, fuzzy
 msgid "Macedonian"
 msgstr "मकदूनियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:237
-#, fuzzy
 msgid "Norwegian (Bokmal)"
 msgstr "नार्वेजियन (Bokmål)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:242
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
 msgstr "	नार्वेजियन (नायनोर्स्क)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:247
-#, fuzzy
 msgid "Persian"
 msgstr "फारसी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:252
-#, fuzzy
 msgid "Polish"
 msgstr "	पोलिश"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:257
-#, fuzzy
 msgid "Portuguese"
 msgstr "पुर्तगाली"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:262
-#, fuzzy
 msgid "Portuguese (Brazilian)"
 msgstr "पुर्तगाली (ब्राज़ीली)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:268
-#, fuzzy
 msgid "Russian"
 msgstr "रूसी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:273
-#, fuzzy
 msgid "Romanian"
 msgstr "रोमानी"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:278
-#, fuzzy
 msgid "Slovak"
 msgstr "	स्लोवाक"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:283
-#, fuzzy
 msgid "Slovenian"
 msgstr "स्लोवेनियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:288
-#, fuzzy
 msgid "Serbian"
 msgstr "सर्बियाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:293
-#, fuzzy
 msgid "Spanish"
 msgstr "	स्पैनिश"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:298
-#, fuzzy
 msgid "Spanish (Mexico)"
 msgstr "स्पैनिश (मेक्सिको)"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:303
-#, fuzzy
 msgid "Swedish"
 msgstr "स्वीडिश"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:308
-#, fuzzy
 msgid "Turkish"
 msgstr "तुर्की"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:313
-#, fuzzy
 msgid "Thai"
 msgstr "थाई"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:319
-#, fuzzy
 msgid "Vietnamese"
 msgstr "वियतनामी"
 
@@ -428,7 +380,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/common.php:580
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:83
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:333
-#, fuzzy
 msgid "Active"
 msgstr "सक्रिय"
 
@@ -455,7 +406,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:485
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:506
 msgid "Please Choose..."
-msgstr ""
+msgstr "कृपया चुनें ..."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:589
 #: /var/lib/limesurvey-svn/subversion1x/common.php:863
@@ -464,7 +415,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3578
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3617
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:733
-#, fuzzy
 msgid "None"
 msgstr "कोई नहीं"
 
@@ -489,7 +439,6 @@ msgid "Array (Yes/No/Uncertain)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:774
-#, fuzzy
 msgid "Date"
 msgstr "तिथि"
 
@@ -502,7 +451,6 @@ msgid "Array (Flexible Labels)"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:777
-#, fuzzy
 msgid "Gender"
 msgstr "लिंग"
 
@@ -511,7 +459,6 @@ msgid "Array (Flexible Labels) by Column"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:779
-#, fuzzy
 msgid "Language Switch"
 msgstr "	भाषा बदलें"
 
@@ -688,7 +635,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:52
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/createdb.php:84
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_structure_csv.php:47
-#, fuzzy
 msgid "Error"
 msgstr "त्रुटि"
 
@@ -741,7 +687,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:49
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:182
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:288
-#, fuzzy
 msgid "Cancel"
 msgstr "रद्द करें"
 
@@ -808,7 +753,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:592
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:593
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1076
-#, fuzzy
 msgid "Token"
 msgstr "टोकन"
 
@@ -827,7 +771,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:617
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:618
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1052
-#, fuzzy
 msgid "Date Started"
 msgstr "प्रारंभ तिथि "
 
@@ -908,7 +851,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1182
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1183
 msgid "Other"
-msgstr ""
+msgstr "अन्य"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1689
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1695
@@ -1142,7 +1085,6 @@ msgstr "नहीं"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:738
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:762
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:799
-#, fuzzy
 msgid "No answer"
 msgstr "कोई जवाब नहीं"
 
@@ -1205,7 +1147,6 @@ msgstr "मादा"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:388
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1302
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1303
-#, fuzzy
 msgid "Uncertain"
 msgstr "अनिश्चित"
 
@@ -1263,14 +1204,12 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:393
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1314
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1315
-#, fuzzy
 msgid "Same"
 msgstr "सदृश"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1934
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2095
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:190
-#, fuzzy
 msgid "Comment"
 msgstr "टिप्पणी"
 
@@ -1288,35 +1227,33 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2239
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr ""
+msgstr "वहाँ {NUMBEROFQUESTIONS} इस सर्वेक्षण में सवाल कर रहे हैं."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2269
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2252
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:172
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1434
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2686
-#, fuzzy
 msgid "Submit"
 msgstr "जमा करें"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2288
 msgid "A Note On Privacy"
-msgstr ""
+msgstr "गोपनीयता के बारे में एक नोट"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2288
 msgid "This survey is anonymous."
-msgstr ""
+msgstr "इस सर्वेक्षण अनाम है."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2288
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr ""
+msgstr "जब तक इस सर्वेक्षण में एक विशिष्ट सवाल इस के लिए कहा है यह रिकार्ड अपने सर्वेक्षण प्रतिक्रियाओं की आप की पहचान के बारे में कोई जानकारी शामिल नहीं है रखा. अगर आपको लगता है कि आप इस सर्वेक्षण का उपयोग करने की अनुमति देने के लिए एक की पहचान टोकन का उपयोग किया एक सर्वेक्षण के प्रतिक्रिया व्यक्त की है, तो आप यह है कि पहचान टोकन आपकी प्रतिक्रियाओं के साथ रखा नहीं है आश्वासन दिया आराम कर सकते हैं. यह एक अलग डेटाबेस में, और प्रबंधित की जा रही है कि सिर्फ आप ही है का संकेत करने के लिये अद्यतन किया जाएगा (या नहीं) इस सर्वेक्षण पूरा कर लिया है. इस सर्वेक्षण में सर्वेक्षण प्रतिक्रियाओं के साथ पहचान टोकन मिलान का कोई तरीका नहीं है."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2298
 msgid "Are you sure you want to clear all your responses?"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2299
-#, fuzzy
 msgid "Exit and Clear Survey"
 msgstr "बाहर निकलें और स्पष्ट सर्वेक्षण"
 
@@ -1327,12 +1264,10 @@ msgid "Load Unfinished Survey"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2331
-#, fuzzy
 msgid "Resume Later"
 msgstr "बाद में फिर से शुरू"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2390
-#, fuzzy
 msgid "Thank You!"
 msgstr "धन्यवाद!"
 
@@ -1354,7 +1289,6 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2424
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2431
-#, fuzzy
 msgid "Restart this Survey"
 msgstr "प्रारंभ करने के लिए इस सर्वेक्षण के ऊपर"
 
@@ -1375,7 +1309,6 @@ msgid "If you give an email address, an email containing the details will be sen
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2445
-#, fuzzy
 msgid "Return To Survey"
 msgstr "सर्वेक्षण पर लौटें"
 
@@ -1383,7 +1316,6 @@ msgstr "सर्वेक्षण पर लौटें"
 #: /var/lib/limesurvey-svn/subversion1x/save.php:307
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:453
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:812
-#, fuzzy
 msgid "Name"
 msgstr "नाम"
 
@@ -1397,7 +1329,6 @@ msgstr "नाम"
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:505
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:508
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:90
-#, fuzzy
 msgid "Password"
 msgstr "पासवर्ड"
 
@@ -1406,7 +1337,6 @@ msgid "Repeat Password"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2459
-#, fuzzy
 msgid "Your Email"
 msgstr "आपका ईमेल"
 
@@ -1423,7 +1353,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1867
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1920
-#, fuzzy
 msgid "Save Now"
 msgstr "अब सहेजें"
 
@@ -1468,7 +1397,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:582
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:583
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1064
-#, fuzzy
 msgid "First Name"
 msgstr "प्रथम नाम"
 
@@ -1481,7 +1409,6 @@ msgstr "प्रथम नाम"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:577
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:578
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1067
-#, fuzzy
 msgid "Last Name"
 msgstr "अंतिम नाम"
 
@@ -1558,7 +1485,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:612
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:639
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:645
-#, fuzzy
 msgid "Continue"
 msgstr "जारी रखें"
 
@@ -1579,7 +1505,6 @@ msgid "Visit our website!"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2970
-#, fuzzy
 msgid "Version"
 msgstr "संस्करण"
 
@@ -1743,7 +1668,6 @@ msgid "For further information contact %s"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:630
-#, fuzzy
 msgid "Survey Saved"
 msgstr "सर्वेक्षण सहेजे गए"
 
@@ -1762,7 +1686,6 @@ msgid "Answer Submission for Survey"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1425
-#, fuzzy
 msgid "Survey Submitted"
 msgstr "सर्वेक्षण प्रेषित"
 
@@ -1847,7 +1770,6 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2231
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2589
-#, fuzzy
 msgid "Previous"
 msgstr "	पिछले"
 
@@ -1856,7 +1778,6 @@ msgstr "	पिछले"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2247
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:494
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:570
-#, fuzzy
 msgid "Next"
 msgstr "अगला"
 
@@ -1891,7 +1812,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:394
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:402
 msgid "Choose one of the following answers"
-msgstr ""
+msgstr "एक निम्न जवाब के चुनें"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:415
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:440
@@ -2052,7 +1973,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2441
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2461
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2568
-#, fuzzy
 msgid "Please choose"
 msgstr "कृपया चुनें"
 
@@ -2515,7 +2435,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1224
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1253
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:204
-#, fuzzy
 msgid "Languages"
 msgstr "भाषाओं"
 
@@ -2600,7 +2519,6 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:314
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1533
-#, fuzzy
 msgid "Code"
 msgstr "कोड"
 
@@ -2612,13 +2530,11 @@ msgstr "कोड"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1086
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2698
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2887
-#, fuzzy
 msgid "Title"
 msgstr "शीर्षक"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1542
-#, fuzzy
 msgid "Order"
 msgstr "आदेश"
 
@@ -2783,7 +2699,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2713
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:181
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:612
-#, fuzzy
 msgid "Save"
 msgstr "बचाना"
 
@@ -2903,7 +2818,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:40
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:42
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:200
-#, fuzzy
 msgid "Success"
 msgstr "	सफलता"
 
@@ -3842,7 +3756,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1292
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1203
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1418
-#, fuzzy
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4007,7 +3920,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:325
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:663
 msgid "Show previous..."
-msgstr ""
+msgstr "दिखाएँ पिछले ..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:749
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:329
@@ -4073,7 +3986,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1699
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1088
-#, fuzzy
 msgid "Language"
 msgstr "भाषा"
 
@@ -4159,13 +4071,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1091
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1301
-#, fuzzy
 msgid "From"
 msgstr "से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1095
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1305
-#, fuzzy
 msgid "Subject"
 msgstr "विषय"
 
@@ -4578,7 +4488,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:196
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:379
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:519
-#, fuzzy
 msgid "Back"
 msgstr "पीछे"
 
@@ -4607,7 +4516,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1897
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditions.php:1027
 msgid "No Answer"
-msgstr ""
+msgstr "कोई जवाब नहीं"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1907
 msgid "Only answer this if the following conditions are met:"
@@ -5048,7 +4957,6 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:187
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:384
-#, fuzzy
 msgid "Full name"
 msgstr "पूरा नाम"
 
@@ -5526,12 +5434,10 @@ msgid "Database Name"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:272
-#, fuzzy
 msgid "Default Language"
 msgstr "डिफ़ॉल्ट भाषा"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:280
-#, fuzzy
 msgid "Current Language"
 msgstr "भाषा वर्तमान"
 
@@ -5956,12 +5862,10 @@ msgid "Code:"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1317
-#, fuzzy
 msgid "Mandatory Question"
 msgstr "अनिवार्य प्रश्न"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1318
-#, fuzzy
 msgid "Optional Question"
 msgstr "वैकल्पिक प्रश्न"
 
@@ -6684,7 +6588,6 @@ msgid "Showing Filtered Results"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:372
-#, fuzzy
 msgid "Close"
 msgstr "बंद करना"
 
@@ -7265,7 +7168,6 @@ msgid "Completion Date"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/spss.php:680
-#, fuzzy
 msgid "Start Language"
 msgstr "शुरू भाषा"
 
@@ -7283,7 +7185,6 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:324
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:330
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:381
-#, fuzzy
 msgid "Help"
 msgstr "मदद"
 
@@ -7414,7 +7315,6 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:149
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:289
-#, fuzzy
 msgid "Welcome {NAME}"
 msgstr "आपका स्वागत {NAME}"
 
@@ -7822,12 +7722,10 @@ msgid "PDF"
 msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:270
-#, fuzzy
 msgid "from"
 msgstr "से"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:271
-#, fuzzy
 msgid "to"
 msgstr "को"
 
