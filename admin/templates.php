@@ -276,8 +276,8 @@ $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname="Group 1: The first lot of questions";
 $groupdescription="This group description is fairly vacuous, but quite important.";
-$navigator="<input class='submit' type='submit' value=' next >> ' name='move' />";
-if ($screenname != $clang->gT("Welcome Page")) {$navigator = "<input class='submit' type='submit' value=' << prev ' name='move' />\n".$navigator;}
+$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" next &gt;&gt; \" name=\"move\" />\n";
+if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; prev\" name=\"move\" />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
