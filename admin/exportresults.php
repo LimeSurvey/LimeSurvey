@@ -866,8 +866,6 @@ else
 }
 
 
-// TIBO
-//MM
 //calculate interval because the second argument at SQL "limit" 
 //is the number of records not the ending point
 $from_record = sanitize_int($_POST['export_from']) - 1;

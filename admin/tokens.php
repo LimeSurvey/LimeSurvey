@@ -878,8 +878,6 @@ if ($subaction == "browse" || $subaction == "search")
 		{
 			if ($a =='email' && $brow['emailstatus'] != 'OK')
 			{
-				// TIBO Add here tooltip with $brow['emailstatus']
-//				$tokenoutput .= "\t\t<td class='$bgc'><span class='invalidemail'>"
 				$tokenoutput .= "\t\t<td class='$bgc'>"
 				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".javascript_escape($brow['emailstatus'])."');return false;\" "
 				."onmouseout=\"hideTooltip()\">$brow[$a]</a></td>\n";

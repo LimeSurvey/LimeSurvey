@@ -2263,7 +2263,7 @@ if ($action == "editsurvey")
 			. "<span class='settingentry'><input type='text' size='50' name='faxto' value=\"{$esrow['faxto']}\" /></span></div>\n";
 
 		// End General TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 //		$editsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$editsurvey .= "</div>\n";
 
@@ -2374,7 +2374,7 @@ if ($action == "editsurvey")
 
 
 		// End Presention and navigation TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 //		$editsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$editsurvey .= "</div>\n";
 
@@ -2483,7 +2483,7 @@ if ($action == "editsurvey")
         . "</select></span>\n</div>\n";
 
 		// End Publication and access control TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 //		$editsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$editsurvey .= "</div>\n";
 
@@ -2958,7 +2958,7 @@ if ($action == "newsurvey")
 
 
 		// End General TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
         
 		$newsurvey .= "</div>\n";
@@ -3043,7 +3043,7 @@ if ($action == "newsurvey")
 		. "</select></span></div>";
 
 		// End Presention and navigation TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$newsurvey .= "</div>\n";
 
@@ -3113,7 +3113,7 @@ if ($action == "newsurvey")
         . "</select></span>\n</div>\n";
 
 		// End Publication and access control TAB
-		// Create Survey Button TIBO
+		// Create Survey Button 
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$newsurvey .= "</div>\n";
 

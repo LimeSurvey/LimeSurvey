@@ -474,7 +474,6 @@ elseif ($action == 'replacementfields')
 	. "<!--\n"
 	. "\tfor(i=0; i<document.forms.length; i++)\n"
 	. "\t{\n"
-//	. "\t\talert('TIBO formname=' + document.forms[i].name + '\\nformaction=' + document.forms[i].action);\n"
 	. "\t\tvar el = document.createElement('input');\n"
 	. "\t\tel.type = 'hidden';\n"
 	. "\t\tel.name = 'checksessionbypost';\n"
@@ -640,7 +639,6 @@ function get2post($url)
 	foreach ($aqueryitems as $queryitem)
 	{
 		list($paramname, $value) = explode ('=', $queryitem);
-		//error_log("TIBO URL=$url Form Action=$calledscript, param=$paramname, value=$value");
 		$arrayParam[] = "'".$paramname."'";
 		$arrayVal[] = "'".$value."'";
 	}
@@ -649,7 +647,6 @@ function get2post($url)
 	$Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
 	$Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
 	$callscript = "sendPost('$calledscript','".$_SESSION['checksessionpost']."',$Paramlist,$Valuelist);";
-	//error_log("TIBO = $callscript");
 	return $callscript;
 }
   

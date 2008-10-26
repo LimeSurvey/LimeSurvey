@@ -79,7 +79,8 @@ $clang = new limesurvey_lang($_SESSION['adminlang']);
 // get user rights
 if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 	
-// TIBO check wrong GET request
+// check that requests that modify the DB are using POST
+// and not GET requests
 $dangerousActionsArray = Array
 	(
 		'changelang' => Array(),
@@ -178,7 +179,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&
 	{
 		foreach ($dangerousActionsArray[$_GET['action']] as $key => $arrayparams)
 		{
-			//error_log("TIBO trying dangerous-subparams number $key");
 			$totalparamcount=count($arrayparams);
 			$matchparamcount=0;
 			foreach ($arrayparams as $param => $val)
@@ -187,7 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&
 					$_GET[$param] == $val)
 				{
 					$matchparamcount++;
-					//error_log("TIBO match param=$param val=$val count=$matchparamcount/$totalparamcount");
 				}
 			}
 			if ($matchparamcount == $totalparamcount)

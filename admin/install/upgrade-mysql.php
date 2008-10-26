@@ -277,7 +277,6 @@ function upgrade_token_tables125()
 }
 
 // Add the reminders tracking fields
-// TIBO
 function upgrade_token_tables128()
 {
     global $modifyoutput,$dbprefix;

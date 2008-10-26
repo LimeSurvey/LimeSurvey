@@ -418,7 +418,6 @@ if ($questionscount > 0)
 				if ($rows['type'] == 'A' ||
 						$rows['type'] == 'B')
 				{
-					// TIBO TIBO
 					$rows['acode']=$arows['code']; // let's add the answer code data
 					$numquestions[]=$rows; // This is a numerical question type
 
@@ -440,7 +439,6 @@ if ($questionscount > 0)
 							}
 						}
 					}
-					// END TIBO
 				}
 
 			} //while
@@ -581,7 +579,6 @@ if ($questionscount > 0)
 
 				if ($rows['type'] == 'K')
 				{
-					// TIBO TIBO
 					$rows['acode']=$arows['code']; // let's add the answer code data
 					$numquestions[]=$rows; // This is a numerical question type
 
@@ -603,7 +600,6 @@ if ($questionscount > 0)
 							}
 						}
 					}
-					// END TIBO
 				}
 
 			} //while
@@ -670,7 +666,6 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
-// TIBO TIBO
 				$numquestions[]=$rows; // This is a numerical question type
 
 				foreach ($numquestions as $numq)
@@ -690,7 +685,6 @@ if ($questionscount > 0)
 						}
 					}
 				}
-// END TIBO
 				break;
 				case "W": // List Flexibel Label Dropdown
 				case "Z": // List Flexible Radio Button
@@ -713,7 +707,6 @@ if ($questionscount > 0)
 				break;
 
 				case "N": // Simple Numerical questions
-// TIBO TIBO
 				$numquestions[]=$rows; // This is a numerical question type
 
 				foreach ($numquestions as $numq)
@@ -739,7 +732,6 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
-// END TIBO
 				break;
 				default:
 				$aquery="SELECT * "

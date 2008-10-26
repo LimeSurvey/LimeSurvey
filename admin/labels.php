@@ -858,7 +858,6 @@ function update_labelcodes_in_conditions($labelid,$oldcode,$newcode)
 		// If question is Dualscale then check if it uses the modified label as lid or lid1 and check 
 		$query = "UPDATE ".db_table_name('conditions')." AS c INNER JOIN ".db_table_name('questions')." AS q ON  c.cqid=q.qid SET value=$newcode WHERE c.value=$oldcode AND ( (q.type <> 1 AND q.lid=$labelid) OR (q.type = 1 AND q.lid=$labelid AND c.cfieldname like '%#0') OR (q.type = 1 AND q.lid1=$labelid AND c.cfieldname like '%#1') )";
 		$result=$connect->Execute($query) or safe_die($connect->ErrorMsg());
-		//error_log("TIBO=$query");
 	}
 }
 
