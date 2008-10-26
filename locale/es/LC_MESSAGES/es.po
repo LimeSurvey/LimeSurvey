@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-22 23:11+0200\n"
-"PO-Revision-Date: 2008-10-26 12:59-0600\n"
+"PO-Revision-Date: 2008-10-26 13:30-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <cmartin@una.ac.cr>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr "Guardar las respuestas realizadas hasta ahora"
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:182
 #: /var/lib/limesurvey-svn/subversion1x/group.php:230
 msgid "Sorry. There is no matching survey."
-msgstr "Lo sentimos. No hay ningún cuestionario que coincida con lo especificado."
+msgstr "Lo sentimos. No hay ninguna encuesta que coincida con lo especificado."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:91
 #: /var/lib/limesurvey-svn/subversion1x/question.php:654
@@ -35,7 +35,7 @@ msgstr "Lo sentimos. No hay ningún cuestionario que coincida con lo especificad
 msgid ""
 "This survey is not currently active. You will not be able to save your "
 "responses."
-msgstr "Este cuestionario aún no está activo. No podrá guardar sus respuestas."
+msgstr "Esta encuesta aún no está activa. No podrá guardar sus respuestas."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:294
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:74
@@ -48,9 +48,7 @@ msgstr "No se guardó"
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:75
 #: /var/lib/limesurvey-svn/subversion1x/group.php:106
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"Sus respuestas no han sido guardadas porque el cuestionario aún no está "
-"activo."
+msgstr "Sus respuestas no han sido guardadas porque la encuesta aún no está activa."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:296
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:76
@@ -752,7 +750,7 @@ msgstr "Mostrar las últimas 50 Contestaciones"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:540
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:541
 msgid "Dataentry Screen for Survey"
-msgstr "Pantalla de Entrada de Datos para el Cuestionario"
+msgstr "Pantalla de Entrada de Datos para la encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1455
 msgid "Get statistics from these responses"
@@ -785,7 +783,7 @@ msgstr "Importar un archivo de encuestas VV"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1488
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:46
 msgid "Export a VV survey file"
-msgstr "Exportar un archivo de cuestionario VV"
+msgstr "Exportar un archivo de encuesta VV"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1562
 msgid "Preset"
@@ -1305,7 +1303,7 @@ msgstr "Nota sobre la privacidad"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2336
 msgid "This survey is anonymous."
-msgstr "Este cuestionario es anónimo."
+msgstr "Esta encuesta es anónima."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2336
 msgid ""
@@ -1318,13 +1316,12 @@ msgid ""
 "this survey. There is no way of matching identification tokens with survey "
 "responses in this survey."
 msgstr ""
-"Los registros que contienen sus respuestas al cuestionario no contienen "
+"Los registros que contienen sus respuestas a la encuesta no contienen "
 "ninguna identificación suya a menos que una pregunta específicamente así lo "
-"haga. Si responde a este cuestionario utilizando una contraseña que le da "
+"haga. Si responde a esta encuesta utilizando una contraseña que le da "
 "acceso al cuestionario, puede estar seguro que la misma no se asocia a "
 "ninguna de sus respuestas. Ésto se administra en una tabla de datos "
-"separada, que sólo se actualiza para indicar que ha completado o no el "
-"cuestionario, pero sin establecer vínculo alguno con la tabla donde se "
+"separada, que sólo se actualiza para indicar que ha completado o no la encuesta, pero sin establecer vínculo alguno con la tabla donde se "
 "almacenan sus respuestas, por lo que no hay manera de asociar una respuesta "
 "con la persona que la hizo."
 
@@ -1340,7 +1337,7 @@ msgstr "Salir y reiniciar la encuesta"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:530
 #: /var/lib/limesurvey-svn/subversion1x/index.php:534
 msgid "Load Unfinished Survey"
-msgstr "Recuperar un cuestionario no terminado"
+msgstr "Recuperar una encuesta no terminada"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2379
 msgid "Resume Later"
@@ -1665,7 +1662,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/save.php:304
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:450
 msgid "Saved Survey Details"
-msgstr "Detalles del cuestionario guardado"
+msgstr "Detalles de la encuesta guardada"
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:305
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:451
@@ -1710,8 +1707,8 @@ msgid ""
 "exist. This problem can occur if the webserver is suffering from overload or "
 "excessive use. We apologise for this problem."
 msgstr ""
-"Si recibe este error en el medio del proceso de respuesta de un "
-"cuestionario, debería utilizar el botón '<- Regresar' de su navegador y "
+"Si recibe este error en el medio del proceso de respuesta de una "
+"encuesta, debería utilizar el botón '<- Regresar' de su navegador y "
 "recién refrescar/recargar la página anterior. Si bien perderá las respuestas "
 "de la última pagina, se mantendrán las respuestas anteriores. Esta situación "
 "puede deberse a que el servidor esté sobrecargado. Le pedimos nos disculpe "
@@ -1772,7 +1769,7 @@ msgstr "No hay encuestas disponibles"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:324
 msgid "You have not provided a survey identification number"
-msgstr "No ha proporcionado el número de identificación del cuestionario "
+msgstr "No ha proporcionado el número de identificación de la encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:328
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:326
@@ -1781,7 +1778,7 @@ msgstr "Las siguientes encuestas están disponibles:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:411
 msgid "This survey is no longer available."
-msgstr "Este cuestionario ya no está disponible."
+msgstr "Esta encuesta ya no está disponible."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:428
 msgid "This survey is not yet started."
@@ -1789,7 +1786,7 @@ msgstr "Esta encuesta no ha comenzado aún."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:448
 msgid "You have already completed this survey."
-msgstr "Ya ha completado este cuestionario."
+msgstr "Ya ha completado esta encuesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:496
 msgid "You did not provide a name"
@@ -1824,7 +1821,7 @@ msgstr "Para más información contactar con %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:681
 msgid "Survey Saved"
-msgstr "Cuestionario guardado"
+msgstr "Encuesta guardada"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:714
 msgid "There is no matching saved survey"
@@ -1842,15 +1839,15 @@ msgstr "Envío de respuestas de la Encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1476
 msgid "Survey Submitted"
-msgstr "Cuestionario enviado"
+msgstr "Encuesta enviada"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1477
 msgid "A new response was entered for your survey"
-msgstr "Se añadió una nueva respuesta a su cuestionario "
+msgstr "Se añadió una nueva respuesta a su encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1480
 msgid "Click the following link to reload the survey:"
-msgstr "Pulse en el siguiente enlace para recuperar el cuestionario:"
+msgstr "Pulse en el siguiente enlace para volver a la encuesta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1484
 msgid "Click the following link to see the individual response:"
@@ -1872,16 +1869,11 @@ msgstr "Ha ocurrido un error inesperado y sus respuestas no han podido ser guard
 msgid ""
 "Your responses have not been lost and have been emailed to the survey "
 "administrator and will be entered into our database at a later point."
-msgstr ""
-"Sus respuestas no se han perdido, han sido enviadas por correo electrónico "
-"al administrador del cuestionario para su posterior incorporación a nuestra "
-"base de datos."
+msgstr "Sus respuestas no se han perdido, han sido enviadas por correo electrónico a el/la administrador/a de la encuesta para su posterior incorporación a nuestra base de datos."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1570
 msgid "An error occurred saving a response to survey id"
-msgstr ""
-"Ha sucedido un error al guardar la respuesta del cuestionario identificado "
-"por el ID"
+msgstr "Ha sucedido un error al guardar la respuesta de la encuesta identificada por el ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1571
 msgid "DATA TO BE ENTERED"
@@ -1948,9 +1940,7 @@ msgstr ""
 msgid ""
 "This survey does not yet have any questions and cannot be tested or "
 "completed."
-msgstr ""
-"Este cuestionario  todavía no tiene preguntas y no puede ser probado ni "
-"completado."
+msgstr "Este cuestionario  todavía no tiene preguntas y no puede ser probado ni completado."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2282
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2640
@@ -1982,16 +1972,13 @@ msgstr "La dirección de correo electrónico que indicó ya fue registrada previ
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:156
 msgid "Thank you for registering to participate in this survey."
-msgstr "Gracias por inscribirse para participar en este cuestionario."
+msgstr "Gracias por inscribirse para participar en esta encuesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:156
 msgid ""
 "An email has been sent to the address you provided with access details for "
 "this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Se le ha enviado un mensaje de correo electrónico con los datos de acceso a "
-"este cuestionario. Por favor, pulse en el enlace que se encuentra en dicho "
-"correo para realizar la encuesta."
+msgstr "Se le ha enviado un mensaje de correo electrónico con los datos de acceso a esta encuesta. Por favor, pulse en el enlace que se encuentra en dicho correo para realizarla."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:156
 msgid "Survey Administrator"
@@ -3596,7 +3583,7 @@ msgstr "Número de elementos en esta consulta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2156
 msgid "Total records in survey"
-msgstr "Total de elementos en este cuestionario"
+msgstr "Total de elementos en esta encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2162
 msgid "Percentage of total"
@@ -3799,7 +3786,7 @@ msgstr "No ha seleccionado una encuesta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:211
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2879
 msgid "The survey you selected does not exist"
-msgstr "El cuestionario que seleccionó no existe"
+msgstr "La encuesta que seleccionó no existe"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:277
 msgid "Token table could not be created."
@@ -4119,7 +4106,7 @@ msgid ""
 msgstr ""
 "Estimado/a {FIRSTNAME} {LASTNAME}:\n"
 "\n"
-"Este correo es para confirmarle que ha completado el cuestionario titulado "
+"Este correo es para confirmarle que ha completado la encuesta titulada "
 "\"{SURVEYNAME}\" y sus respuestas han quedado correctamente guardadas.\n"
 "\n"
 " ¡Muchas gracias por su participación!.\n"
@@ -4166,7 +4153,7 @@ msgstr ""
 "Estimado/a {FIRSTNAME} {LASTNAME}:\n"
 "\n"
 "Usted, o alguien utilizando su dirección de correo electrónico, se ha "
-"registrado para participar en un cuestionario en línea titulado \n"
+"registrado para participar en una encuesta en línea titulada \n"
 "\n"
 "«{SURVEYNAME}»\n"
 "\n"
@@ -4176,7 +4163,7 @@ msgstr ""
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Si tiene cualquier duda con respecto al cuestionario, o si no se registró "
+"Si tiene cualquier duda con respecto a la encuesta, o si no se registró "
 "para participar y cree que este correo es un error, por favor, póngase en "
 "contacto con {ADMINNAME} en {ADMINEMAIL}."
 
@@ -4529,7 +4516,7 @@ msgstr ""
 "No hay direcciones de candidatos elegibles para enviar. Esto fue causado "
 "porque no se cumplió alguna de las siguientes condiciones: tener una "
 "dirección de correo electrónico, haber recibido una invitación y no haber "
-"completado el cuestionario aún."
+"completado la encuesta aún."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1599
 msgid "Create Tokens"
@@ -4775,7 +4762,7 @@ msgstr "Editar esta entrada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:124
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr "Este cuestionario es anónimo, no puede actualizar esta respuesta."
+msgstr "Esta encuesta es anónima, no puede actualizar esta respuesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:151
 msgid "Try again"
@@ -4819,7 +4806,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:441
 msgid "A token entry for the saved survey has been created too."
-msgstr "Se ha creado también un/a encuestado/a para el cuestionario guardado."
+msgstr "También se ha creado un/a encuestado/a para la encuesta guardada."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:463
 msgid "An email has been sent with details about your saved survey"
@@ -4864,7 +4851,7 @@ msgstr "Terminar envío de respuestas"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1480
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2820
 msgid "Save for further completion by survey user"
-msgstr "Guardar el cuestionario para completarlo posteriormente."
+msgstr "Guardar la encuesta para completarla posteriormente."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1669
 msgid "Record has been updated."
@@ -4926,7 +4913,7 @@ msgstr "Ayuda sobre esta pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2869
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Este cuestionario no ha sido activado. Sus respuestas no serán almacenadas."
+msgstr "Esta encuesta no ha sido activada. Sus respuestas no serán almacenadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:117
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:135
@@ -5273,7 +5260,7 @@ msgstr "Eliminar Encuesta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:28
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:28
 msgid "You have not selected a survey to delete"
-msgstr "No seleccionó el cuestionario a borrar."
+msgstr "No seleccionó la encuesta que deseaba eliminar."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:42
 msgid "You are about to delete this survey"
@@ -6786,9 +6773,7 @@ msgstr "Descripción de la URL:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2834
 msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
-"El presente cuestionario tiene preguntas con condiciones fuera de su propio "
-"grupo."
+msgstr "El presente cuestionario tiene preguntas con condiciones fuera de su propio grupo."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2834
 msgid ""
@@ -7013,7 +6998,7 @@ msgstr "Gracias por completar esta encuesta."
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1152
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1153
 msgid "Please fax your completed survey to:"
-msgstr "Por favor, envíe un fax con su cuestionario relleno a:"
+msgstr "Por favor, envíe un fax con su encuesta rellena a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1158
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1159
@@ -7062,7 +7047,7 @@ msgid ""
 "survey, the assessment will be performed at the end of the survey after "
 "submission"
 msgstr ""
-"Si crea alguna evaluación en esta página para el cuestionario seleccionado, "
+"Si crea alguna evaluación en esta página para la encuesta seleccionada, "
 "la evaluación será realizada tras el envío de las respuestas por parte de la "
 "persona encuestada"
 
@@ -7181,7 +7166,7 @@ msgstr "No se indicó un QID. No se pueden exportar la pregunta."
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:44
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:124
 msgid "Deactivate Survey"
-msgstr "Desactivar cuestionario"
+msgstr "Desactivar la encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:246
@@ -7190,7 +7175,7 @@ msgstr "LEA CUIDADOSAMENTE ESTAS INSTRUCCIONES ANTES DE CONTINUAR"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:34
 msgid "In an active survey, a table is created to store all the data-entry records."
-msgstr "En un cuestionario activo, se crea una tabla para almacenar las respuestas."
+msgstr "En una encuesta activa, se crea una tabla para almacenar las respuestas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:35
 msgid ""
@@ -7198,7 +7183,7 @@ msgid ""
 "be moved elsewhere, and when you activate the survey again, the table will "
 "be empty. You will not be able to access this data using LimeSurvey any more."
 msgstr ""
-"Cuando desactiva un cuestionario todos los datos introducidos se copian en "
+"Cuando desactiva una encuesta, todos los datos introducidos se copian en "
 "otra tabla, y cuando se vuelve a activar nuevamente, la tabla estará vacía. "
 "Ya no tendrá acceso a estos datos por medio de LimeSurvey, aunque exista un "
 "respaldo en la base de datos."
@@ -7212,7 +7197,7 @@ msgid ""
 msgstr ""
 "Las respuestas de una encuesta que ha sido desactivada sólo pueden ser "
 "vistos por quien adminiistra el gestor de la base de datos (a través de una "
-"herramienta de sistema como phpMyAdmin). Si su cuestionario utiliza una "
+"herramienta de sistema como phpMyAdmin). Si su encuesta utiliza una "
 "tabla de encuestados/as, esta tabla también será renombrada e igualmente, "
 "sólo será accesible para el/la administrador/a de la base de datos."
 
@@ -7222,13 +7207,11 @@ msgstr "La tabla de respuestas será renombrada a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:38
 msgid "Also you should export your responses before deactivating."
-msgstr ""
-"También le sugerimos que exporte las respuestas antes de desactivar el "
-"cuestionario."
+msgstr "También le sugerimos que exporte las respuestas antes de desactivar la encuesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
-msgstr "El cuestionario ha sido desactivado"
+msgstr "La encuesta ha sido desactivada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:132
 msgid "The responses table has been renamed to: "
@@ -7236,7 +7219,7 @@ msgstr "La tabla de respuestas ha sido renombrada a: "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:133
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr "Las respuestas a este cuestionario ya no están disponibles para LimeSurvey."
+msgstr "Las respuestas a esta encuesta ya no están disponibles utilizando LimeSurvey."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:134
 msgid ""
@@ -7248,7 +7231,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "La tabla de encuestados/as asociada al cuestionario ha sido renombrada a: "
+msgstr "La tabla de encuestados/as asociada a la encuesta ha sido renombrada a: "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:86
 msgid "This question is a multiple answer type question but has no answers."
@@ -7288,7 +7271,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:221
 msgid "Survey does not pass consistency check"
-msgstr "El cuestionario no pasó la revisión de consistencia"
+msgstr "La encuesta no pasó la revisión de consistencia"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:226
 msgid "The following problems have been found:"
@@ -7296,21 +7279,19 @@ msgstr "Se han encontrado los siguientes problemas:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:233
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr ""
-"El cuestionario no podrá ser activado hasta que se hayan resuelto todos los "
-"problemas"
+msgstr "La encuesta no podrá ser activada hasta que se hayan resuelto todos los problemas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:252
 msgid ""
 "You should only activate a survey when you are absolutely certain that your "
 "survey setup is finished and will not need changing."
 msgstr ""
-"Debe activar un cuestionario sólo cuando esté absolutamente seguro(a) de que "
-"la configuración del mismo es correcta y que no habrá más cambios."
+"Debe activar una encuesta sólo cuando esté absolutamente seguro(a) de que "
+"la configuración de la misma es correcta y que no habrá más cambios."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:253
 msgid "Once a survey is activated you can no longer:"
-msgstr "Una vez activado el cuestionario no se le permitirá:"
+msgstr "Una vez activada la encuesta no se le permitirá:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:253
 msgid "Add or delete groups"
@@ -7346,7 +7327,7 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:254
 msgid "Change survey name or description"
-msgstr "Cambiar el nombre o descripción del cuestionario"
+msgstr "Cambiar el nombre o descripción de la encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:255
 msgid ""
@@ -7354,31 +7335,24 @@ msgid ""
 "groups or questions, you will need to de-activate this survey, which will "
 "move all data that has already been entered into a separate archived table."
 msgstr ""
-"Una vez que el cuestionario haya sido contestado al menos una vez, si desea "
-"agregar o borrar grupos o preguntas individuales deberá desactivarlo, lo "
+"Una vez que la encuesta haya sido contestada al menos una vez, si desea agregar o borrar grupos o preguntas individuales deberá desactivarlo, lo "
 "cual trasladará toda las respuestas ya existentes a una tabla aparte."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:521
 msgid "Survey could not be actived."
-msgstr "El cuestionario no pudo ser activado."
+msgstr "La encuesta no pudo ser activada."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:553
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr ""
-"El cuestionario ha sido activado. La tabla de respuestas ha sido creada con "
-"éxito."
+msgstr "La encuesta ha sido activada. La tabla de respuestas ha sido creada con éxito."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:567
 msgid "This survey allows public registration. A token table must also be created."
-msgstr ""
-"Este cuestionario admite suscripción pública. Es necesario crear una tabla "
-"de encuestados/as."
+msgstr "Esta encuesta admite suscripción pública. Es igualmente necesario crear una tabla de encuestados/as."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:573
 msgid "This survey is now active, and responses can be recorded."
-msgstr ""
-"El cuestionario ha sido activado, y ahora las respuestas pueden ser "
-"guardadas."
+msgstr "La encuesta ha sido activada y ahora las respuestas pueden ser guardadas."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:574
 msgid "Open-access mode"
@@ -7638,7 +7612,7 @@ msgstr "No se pudo establecer la opción por defecto"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1153
 msgid "Survey could not be updated"
-msgstr "No se pudo actualizar el cuestionario."
+msgstr "No se pudo actualizar la encuesta."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1168
 msgid "ERROR deleting Survey id"
@@ -7870,7 +7844,7 @@ msgstr "¡Usted no puede eliminar la encuesta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:52
 msgid "You are not allowed to add new questions for this survey!"
-msgstr "¡Usted no puede agregar una nueva pregunta al cuestionario!"
+msgstr "¡Usted no tiene el permiso necesario para poder agregar nuevas preguntas al cuestionario!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:57
 msgid "You are not allowed to activate this survey!"
@@ -7882,11 +7856,11 @@ msgstr "¡Usted no puede desactivar la encuesta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:67
 msgid "You are not allowed to add a group to this survey!"
-msgstr "¡Usted no puede agregar un nuevo grupo al cuestionario!"
+msgstr "¡Usted no tiene el permiso necesario para poder agregar nuevos grupos de preguntas al cuestionario!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
-msgstr "¡Usted no puede ordenar los grupos del cuestionario!"
+msgstr "¡Usted no tiene el permiso necesario para poder reordenar los grupos del cuestionario!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:77
 msgid "You are not allowed to edit this survey!"
@@ -7894,7 +7868,7 @@ msgstr "¡Usted no puede editar la configuración de la encuesta!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:82
 msgid "You are not allowed to edit groups in this survey!"
-msgstr "¡Usted no puede editar los grupos del cuestionario!"
+msgstr "¡Usted no tiene el permiso necesario para poder editar los grupos del cuestionario!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
@@ -8443,7 +8417,7 @@ msgid ""
 "applications such as Excel are limited to loading no more than 255. Select "
 "the columns you wish to export in the list below."
 msgstr ""
-"Su cuestionario contiene más de 255 columnas de respuestas. Las aplicaciones "
+"Su encuesta contiene más de 255 columnas de respuestas. Las aplicaciones "
 "de Hojas de Cálculo, como Excel, tienen un limite de 255 columnas. "
 "Seleccione las columnas a exportar de la siguiente lista."
 
