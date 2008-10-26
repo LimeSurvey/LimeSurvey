@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.72(+)!
+Welcome to LimeSurvey v1.80RC1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -50,7 +50,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.72(+)
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 ---------------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -72,6 +72,30 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.72(+)
 12. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.72 to 1.80RC1 (build 5885)  (2008/10/07)
+New features:
+- [Question Types] New question types: Array Multi Flexible (Numbers & Text) (jcleeland + lemeur)
+- [Statistics] Change Layout order of Dual Scale Matrix in statistics (Mazi)
+- [Import / Export] No Export for Date Started & Date Last Action (jcleeland)
+- [Survey at Runtime] Adding a start date to the surveys (c_schmitz)
+- [Survey Design] Develop Slider Questions (lemeur)
+- [Survey at Runtime] Fancy URL (c_schmitz)
+- [Survey Design] Improved Admin Login (c_schmitz)
+- [Import / Export] Possibility to split up the amount of exported responses at one time (Problem with max_execution_time) (lemeur)
+- [Security] Improve user registration email (c_schmitz)
+- [Statistics] Replace jpgraph with pChart (c_schmitz)
+- [Survey Design] Rename parameter "List survey publicly" and add rooturl-link (lemeur)
+- [Survey Design] Add direct link to imported question after question import (lemeur)
+- [Tokens] Add a column in invitation for recall date (lemeur)
+- [Survey Design] Expiry-Date Tag for E-Mails, Welcome Page,... (lemeur)
+- [Survey Design] Implementation of jQuery for design purposes (c_schmitz)
+- [Survey Design] Due skin change in FCKEditor not all buttons are accessable (lemeur)
+- [Survey Design] limit possible answers for rank questions (jcleeland)
+- [Survey at Runtime] having many 'Exclude all others' (jcleeland)
+- [Installation] Database Performance Enhancement (bobc55) 
+- [Import / Export] When importing bad tokens; you don't know who's bad (jcleeland)
 
 Changes from 1.71 to 1.72 (build 5737)  (2008/10/07)
 
