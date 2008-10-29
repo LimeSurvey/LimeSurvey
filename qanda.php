@@ -1122,6 +1122,8 @@ function do_list_dropdown($ia)
 	}
 	else
 	{
+		$defaultopts = Array();
+		$optgroups = Array();
 		while ($ansrow = $ansresult->FetchRow())
 		{
 			// Let's sort answers in an array indexed by subcategories
