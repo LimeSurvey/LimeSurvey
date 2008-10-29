@@ -130,15 +130,19 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		{
 			$thistype=$ccrows['type'];
 		}
-		// In case thistype = Q or K, then multiple conditions are ANDed
+		// In case thistype != M or P, then multiple conditions are ANDed
 		// and thus  must match
 		// ==> increase $cqidcount to the number of conditions
 		// avoiding the 'distinct' keyword in the SQL above
 		// (which is used for type M or P questions whose conditions
 		//  are ORed)
-		if ($thistype =="Q" || $thistype =="K")
+		// Special note for Array of checkboxes: this is a layout of multiflexi num
+		// and is implmented as if it weren't multiple choice questions
+		// so conditions on array of checkboxes are in the form SGQAlabel = Y
+		// and thus is not implemented the same way as M or P
+		if ($thistype !="P" && $thistype !="M")
 		{
-			$cquery2="SELECT cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+			$cquery2="SELECT cid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 			$cresult2=db_execute_assoc($cquery2) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg()); //Checked
 			$cqidcount2=$cresult2->RecordCount();
 			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
@@ -170,14 +174,14 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			}
 			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
 			if (!isset($_SESSION[$conditionfieldname]) || 
-				$_SESSION[$conditionfieldname] == '' || 
-				$_SESSION[$conditionfieldname] == ' ')
+					$_SESSION[$conditionfieldname] == '' || 
+					$_SESSION[$conditionfieldname] == ' ')
 			{
-			    if($thistype == "K")
-			    {
-			      $currentvalue = 0;
-			    } else {
-				  $currentvalue="NULL";
+				if($thistype == "K")
+				{
+					$currentvalue = 0;
+				} else {
+					$currentvalue="NULL";
 				}
 			} 
 			else 
@@ -187,7 +191,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 
 			if ( $cqrows['method'] != 'RX')
 			{
-			
+
 				if (eval('if ($currentvalue'. $cqrows['method'].'$conditionvalue) return true; else return false;'))
 				{
 					$amatchhasbeenfound="Y";
@@ -200,19 +204,21 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 					$amatchhasbeenfound="Y";
 				}
 			}
-			if ( ($thistype =="Q" || $thistype =="K") &&
-				$amatchhasbeenfound=="Y")
+			if ( ($thistype !="P"  &&  $thistype !="M") &&
+					$amatchhasbeenfound=="Y")
 			{ 
-				// For type Q/K questions each match is counted
+				// For questions that are not multiple choice
+				// each match is counted
 				// because this is an AND condition
 				$cqidmatches++;
 				// then we reset matchfound switch in order
-				// to check the next condition
+				// to check the next condition and have the 
+				// opportunity to check further conditions
 				$amatchhasbeenfound="N";
 			}
 		}
 		if ($amatchhasbeenfound == "Y" && 
-			($thistype !="Q" && $thistype !="K") )
+				($thistype =="M" || $thistype =="P") )
 		{
 			// For all other question type than Q and K, 
 			// conditions on same Question are ORed (type M or P)
@@ -236,13 +242,13 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			{
 				$ia=$_SESSION['fieldarray'][$currentquestion];
 			}
-            if ($_SESSION['step']>=$_SESSION['totalsteps']) 
-            {
-                $move="movesubmit"; 
-		submitanswer(); // complete this answer (submitdate)
-                break;       
-            }
-            $_SESSION['step']++;
+			if ($_SESSION['step']>=$_SESSION['totalsteps']) 
+			{
+				$move="movesubmit"; 
+				submitanswer(); // complete this answer (submitdate)
+				break;       
+			}
+			$_SESSION['step']++;
 			foreach ($_SESSION['grouplist'] as $gl)
 			{
 				if ($gl[0] == $ia[5])
