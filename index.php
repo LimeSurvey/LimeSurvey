@@ -933,10 +933,10 @@ function checkgroupfordisplay($gid)
 					$thistype=$row2['type'];
 				}
 
-				if ($thistype == 'K' || $thistype == 'Q')
+				if ($thistype != 'M' && $thistype != 'P')
 				{
 					// will be used as an index for Multiple conditions
-					// on type Q or K so that there will be ANDed and 
+					// on type other than M or P so that there will be ANDed and 
 					// not ORed
 					$andedMultipleCqidCount++;
 				}
@@ -1000,7 +1000,7 @@ function checkgroupfordisplay($gid)
 
 				if ($conditionMatches === true)
 				{
-					if ($thistype != 'Q' && $thistype != 'K')
+					if ($thistype == 'M' || $thistype == 'P')
 					{
 						//This condition is met
 						if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
@@ -1019,7 +1019,7 @@ function checkgroupfordisplay($gid)
 				}
 				else
 				{
-					if ($thistype != 'Q' && $thistype != 'K')
+					if ($thistype == 'M' || $thistype == 'P')
 					{
 						if (!isset($distinctcqids[$row['cqid']]))
 						{
@@ -1149,7 +1149,6 @@ function checkconfield($value)
 		}
 	}
 	return $fieldisdisplayed;
-
 }
 
 function checkmandatorys($move, $backok=null)
