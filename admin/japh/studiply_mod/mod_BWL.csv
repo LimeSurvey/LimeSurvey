@@ -1,0 +1,43 @@
+# LimeSurvey Group Dump
+# DBVersion 130
+# This is a dumped group from the LimeSurvey Script
+# http://www.limesurvey.org/
+# Do not change this header!
+
+#
+# GROUPS TABLE
+#
+"gid","sid","group_name","group_order","description","language"
+"41","10","Student BWL","4","Fragemodul für BWL Studenten<br />","de"
+
+#
+# QUESTIONS TABLE
+#
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
+"213","10","41","L","1","Wieviel ist Ihr Auto noch wert?<br />","","","N","N","0","0","1","de"
+
+#
+# ANSWERS TABLE
+#
+"qid","code","answer","default_value","sortorder","language"
+"213","1","nicht mehr als 1000€","N","1","de"
+"213","2","nicht mehr als 10.000€","N","2","de"
+"213","3","nicht mehr als 30.000€","N","3","de"
+"213","4","keine Ahnung, hab ich von Papa","N","4","de"
+"213","5","das Auto gehört zum Chauffeuerdienst","N","5","de"
+
+#
+# CONDITIONS TABLE
+#
+
+#
+# LABELSETS TABLE
+#
+
+#
+# LABELS TABLE
+#
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#
