@@ -36,9 +36,7 @@ if(isset($_GET['wsdl']))
 	$wsdlString = str_replace("{japhlocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
 	file_put_contents("japh.wsdl",$wsdlString);
 	header('Content-type: text/wsdl');
-	header('Content-Disposition: attachment; filename=japh.wsdl');
-	//echo file_get_contents("japh_new.wsdl");
-	
+	header('Content-Disposition: attachment; filename=japh.wsdl');	
 }
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
