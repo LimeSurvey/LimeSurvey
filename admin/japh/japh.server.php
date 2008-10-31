@@ -24,8 +24,11 @@ include_once("japh.config.php");
 // functions helping japhService to do some things with Limesurvey (import, activation, checks)
 include("japh.helper.php");
 
-
-
+if(isset($_GET['wsdl']))
+{
+	//server will generate the wsdl with correct url in the future
+	
+}
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
 	
@@ -63,7 +66,7 @@ $server->handle();
  *	Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
  *
 */
-function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where) //XXX
+function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') //XXX
 {
 	include("japh.config.php");
 	$japhHelper = new japhHelper();
@@ -74,14 +77,14 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where) //XXX
 		exit;
 	}
 	
-	return $japhHelper->changeTable($table, $key, $value, $where);
+	return $japhHelper->changeTable($table, $key, $value, $where, $mode);
 }
 
 /**
  *	Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
  *	$iVid= Survey ID
  *	$dStart = datetime
- *	$dEnd = datetime
+ *	$dE = datetime
  *	$sUser = have to be an existing admin or superadmin in limesurvey
  *	$sPass = password have to be the right one for the existing user in limesurvey
 */

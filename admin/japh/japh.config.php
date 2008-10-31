@@ -43,7 +43,7 @@ $sslCert='cacert.pem';
 //$relativeurl		=   "/limesource/limesurvey"; //default: "/limesurvey" //TODO: delete if no errors occure while commented
 
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
-$wsdl= $homedir."/japh/japh.wsdl"; //default: $homedir."/japh.wsdl";
+$wsdl= $homedir."/japh/japh.wsdl"; //default: $homedir."/japh/japh.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 

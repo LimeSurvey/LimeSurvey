@@ -20,7 +20,7 @@ if($wsdl=='')
 $limeUrl='https://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all
-$user ="admin";
+$user ="rakete";
 $pass ="password";
 
 // fixed certificate, if U use some... you need this if you have an own trusted certificate.
@@ -61,6 +61,11 @@ a:visited{
 a:hover{
 	color:green;
 	fontweight:bold;
+}
+p{
+	border-top:solid 1px white;
+	margin-bottom:0.5em;
+	margin-top:0.2em;
 }
 -->
 </style>
@@ -299,11 +304,12 @@ while(list($key, $value) = each($_REQUEST))
 		$key = $_REQUEST['key'];
 		$value = $_REQUEST['value'];
 		$where = $_REQUEST['whereKey'];
+		$mode = $_REQUEST['mode'];
 		//$whereValue = $_REQUEST['whereValue'];
 		 
 		try
 		{
-			$sReturn = $client->sChangeSurvey($user, "password", $table, $key, $value, $where );
+			$sReturn = $client->sChangeSurvey($user, "password", $table, $key, $value, $where, $mode);
 		}
 		catch (SoapFault $fault)
 		{
@@ -383,9 +389,9 @@ if(!isset($sOutput))
 		
 		foreach($funcs as $func)
 		{
-			echo '<font style="font-size:small;line-height:16pt;" >';
+			echo '<p><font style="font-family:tahoma, arial;font-size:small;" >';
 			print_r($func);
-			echo '</font><br/>';
+			echo '</font></p>';
 		}
 	}
 }
@@ -442,7 +448,7 @@ Message is left blank):</b> <br />
 <div style='float: left;  margin-bottom: 5px'>
 <h3>sActivateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
-	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
+	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
 <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
@@ -516,9 +522,11 @@ for($n=1;$n<10;++$n)
 
 <div style='float: left;  margin-bottom: 5px'>
 <h3>sChangeSurvey function</h3>
-( this is not part of the japh, it just shows the power of it )
-<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b>Table
-to change</b> <br />
+( this is not part of the japh, it just shows the power of it, <br/>it has to be activated in server.php on line ~49 )
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
+<input type="radio" name="mode" value="0" selected='selected' > update
+<input type="radio" name="mode" value="1"> insert<br/>
+<b>Table to change</b> <br />
 <input type='text' name='table' size='30' maxlength='150' /> <br />
 <b>Key</b><br />
 <input type='text' name='key' size='30' maxlength='150' value='' /> <br />
@@ -533,7 +541,7 @@ to change</b> <br />
 </div>
 <div style='float:left;  margin-bottom: 5px'><?php 
 echo "<h3>sInsertToken function</h3>";
-echo "<p>Makes the Survey closed. Means: It's only available to people who have an unused token</p>";
+echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' size='5' maxlength='5' value='".$iVid."'/>";

@@ -133,7 +133,9 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
         <part name="sTable" type="xsd:string"></part>
   	<part name="sKey" type="xsd:string"></part>
   	<part name="sValue" type="xsd:string"></part>
-  	<part name="sWhere" type="xsd:string"></part>
+  	<part name="sWhere" type="xsd:string"></part>
+
+  	<part name="mode" type="xsd:string"></part>
   </message>
   
   <message name="sChangeSurveyResponse">
