@@ -170,15 +170,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sImportGroupFault">
   	<part name="fault" type="xsd:string"></part>
   </message>
-  <message name="aAvailableModulesRequest">
+  <message name="sAvailableModulesRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
   	<part name="mode" type="xsd:string"></part>
   </message>
-  <message name="aAvailableModulesResponse">
+  <message name="sAvailableModulesResponse">
   	<part name="return" type="xsd:string"></part>
   </message>
-  <message name="aAvailableModulesFault">
+  <message name="sAvailableModulesFault">
   	<part name="fault" type="xsd:string"></part>
   </message>
   <message name="sImportQuestionRequest">
@@ -253,10 +253,10 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     	<output name="sImportGroupResponse" message="tns:sImportGroupResponse"></output>
             <fault name="sImportGroupFault" message="tns:sImportGroupFault"></fault>
         </operation>
-    <operation name="aAvailableModules">
-    	<input name="aAvailableModulesRequest" message="tns:aAvailableModulesRequest"></input>
-    	<output name="aAvailableModulesResponse" message="tns:aAvailableModulesResponse"></output>
-            <fault name="aAvailableModulesFault" message="tns:aAvailableModulesFault"></fault>
+    <operation name="sAvailableModules">
+    	<input name="sAvailableModulesRequest" message="tns:sAvailableModulesRequest"></input>
+    	<output name="sAvailableModulesResponse" message="tns:sAvailableModulesResponse"></output>
+            <fault name="sAvailableModulesFault" message="tns:sAvailableModulesFault"></fault>
         </operation>
     <operation name="sImportQuestion">
     	<input name="sImportQuestionRequest" message="tns:sImportQuestionRequest"></input>
@@ -305,18 +305,18 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
       </fault>
     </operation>
 	
-	<operation name="aAvailableModules">
+	<operation name="sAvailableModules">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
-      <input name="aAvailableModulesRequest">
+      <input name="sAvailableModulesRequest">
         <soap:body use="encoded" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
-      <output name="aAvailableModulesResponse">
+      <output name="sAvailableModulesResponse">
         <soap:body use="encoded" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
-      <fault name="aAvailableModulesFault">
-        <soap:fault name="aAvailableModulesFault" use="encoded" namespace="urn:japhNamespace"
+      <fault name="sAvailableModulesFault">
+        <soap:fault name="sAvailableModulesFault" use="encoded" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>

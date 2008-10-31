@@ -146,14 +146,14 @@ else
 if($file!=FALSE)
 {
 	try
-	{	$mods = $client->aAvailableModules($user, "password", "mod");}
+	{	$mods = $client->sAvailableModules($user, "password", "mod");}
 	catch (SoapFault $fault)
 	{	$mods .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }
 if($file!=FALSE)
 {
 	try
-	{	$cores = $client->aAvailableModules($user, "password", "core");}
+	{	$cores = $client->sAvailableModules($user, "password", "core");}
 	catch (SoapFault $fault)
 	{	$cores .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }

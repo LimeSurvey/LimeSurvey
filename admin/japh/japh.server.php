@@ -53,7 +53,7 @@ $server->addFunction("sInsertToken");
 $server->addFunction("sTokenReturn");
 $server->addFunction("sInsertParticipants");
 $server->addFunction("sImportGroup");
-$server->addFunction("aAvailableModules");
+$server->addFunction("sAvailableModules");
 $server->addFunction("sImportQuestion");
 $server->addFunction("sImportMatrix");
 // handle the soap request!
@@ -644,7 +644,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
  * String $mode ("mod" or "core")
  * @return commma seperated list of available Modules (groups)
  */
-function aAvailableModules($sUser, $sPass, $mode='mod')
+function sAvailableModules($sUser, $sPass, $mode='mod')
 {
 	include("japh.config.php");
 	$japhHelper = new japhHelper();
