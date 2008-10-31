@@ -661,7 +661,7 @@ function aAvailableModules($sUser, $sPass, $mode='mod')
 		$n=0;
 		while(false !== ($file = readdir($mDir))) 
 		{
-			if($file!='.' && $file!='..' && substr($file,0,4)=="mod_")
+			if($file!='.' && $file!='..' && substr($file,0,4)=="mod_" && substr($file,-4,4)==".csv")
 			{
 				$file = basename ($file, ".csv");
 				$file = str_replace("mod_", "", $file);
@@ -686,7 +686,7 @@ function aAvailableModules($sUser, $sPass, $mode='mod')
 		$n=0;
 		while(false !== ($file = readdir($cDir))) 
 		{
-			if($file!='.' && $file!='..')
+			if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
 			{
 				$file = basename ($file, ".csv");
 				//$file = str_replace("mod_", "", $file);
@@ -694,6 +694,7 @@ function aAvailableModules($sUser, $sPass, $mode='mod')
 				{
 					$return = $file;
 					$n=1;
+					
 				}
 				else
 				{
