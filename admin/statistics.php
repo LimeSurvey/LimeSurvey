@@ -1518,6 +1518,12 @@ else
 
 
 // ------------------------ BEGINN CROSS QUERY
+
+	//This section contains the first lines of a new function which might be implemented
+	//by HIS GmbH (Germany) later. 
+	
+	//Commented out because not used yet. Mazi 30.10.2008
+
 /*
  * supported question types:
  * 	G - Gender 
@@ -1531,7 +1537,7 @@ else
 	! - List (Dropdown)
  * 
  */
-
+/*
 //check if this option is set
 if(isset($showcombinedresults) && $showcombinedresults == 1)
 {	
@@ -1549,7 +1555,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 	///...and show 4 questions in each row
 	$crcounter = 0;
 	
-	/*
+	
 	 * let's go through the filter array which contains
 	 * 	['qid'],
 		['gid'],
@@ -1559,7 +1565,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		['question'],
 		['lid'],
 	    ['lid1']);
-	 */
+	 
 	foreach ($filters as $flt)
 	{		
 			
@@ -1570,7 +1576,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 		$niceqtext = FlattenText($flt[5]);
 
 			
-		/*
+		
 		 * Check question type: This question types will be used (all others are separated in the if clause)
 		 * 	G - Gender  
 			L - List (Radio) 
@@ -1579,7 +1585,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			P - Multiple Options With Comments 
 			Y - Yes/No 
 			! - List (Dropdown))
-		 */
+		 
 		if ($flt[2] != "A" && $flt[2] != "B" && $flt[2] != "C" && $flt[2] != "E" && 
 		    $flt[2] != "F" && $flt[2] != "H" && $flt[2] != "T" && $flt[2] != "U" && 
 			$flt[2] != "S" && $flt[2] != "D" && $flt[2] != "R" && $flt[2] != "Q" &&  
@@ -1636,7 +1642,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			}
 			
 			
-			/*
+			
 			 * one of these conditions has to be true
 			 * 1. SGQ can be found within the summary array
 			 * 2. M-SGQ can be found within the summary array (M = multiple options)
@@ -1646,7 +1652,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			 * due to the if ouside this section!
 			 * 
 			 * Auto-check the question types mentioned above
-			 */
+			 
 			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			{
 				$cr_statisticsoutput .= " checked='checked'";
@@ -1770,14 +1776,14 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 			break;        
 	        
 	        
-	        /*
+	        
 	         * This question types use the default settings:
 	         * 	L - List (Radio) 
 				M - Multiple Options 
 				O - List With Comment 
 				P - Multiple Options With Comments 
 				! - List (Dropdown) 
-	         */
+	         
 			//default:
 			case "L":
 			case "M":
@@ -1829,7 +1835,7 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 	$statisticsoutput .= $cr_statisticsoutput;
 	
 }	//end if -> option crossquery set?
-
+*/
 
 // --------------------------------------- END CROSS QUERY ------------------------------------
 
@@ -3367,7 +3373,7 @@ if (isset($summary) && $summary)
 				while ($row=$result->FetchRow())                   
 				{
 					//increase counter
-                    $TotalCompleted += $row[0];
+                    $TotalCompleted += $row[0];                    
                     
                     //"no answer" handling
 					if ($al[0] == "")
@@ -3404,8 +3410,7 @@ if (isset($summary) && $summary)
 					
 					//check if aggregated results should be shown
 					elseif ($showaggregateddata == 1 && isset($showaggregateddata))
-					{
-							
+					{	
 						if(!isset($showheadline) || $showheadline != false)
 						{
 							if($qtype == "5" || $qtype == "A")
@@ -3525,6 +3530,7 @@ if (isset($summary) && $summary)
 					//only add this if we don't handle question type "5"/"A"
 					if(!isset($justadded))
 					{
+						//XXX Hier evtl?
 						//put absolute data into array
 						$grawdata[]=$row[0];
 					}
@@ -3547,7 +3553,7 @@ if (isset($summary) && $summary)
                 
 			}	//end foreach -> loop through answer data
 
-			//no filtering of incomplete answers and no multiple option questions
+			//no filtering of incomplete answers and NO multiple option questions
             if ((incompleteAnsFilterstate() === false) and ($qtype != "M") and ($qtype != "P"))
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
@@ -3574,7 +3580,7 @@ if (isset($summary) && $summary)
 			
 				//noncompleted is NOT checked
 	            else
-	            {
+	            {     
 	            	//calculate total number of incompleted records
 	                $TotalIncomplete = $results - $TotalCompleted;
 	                
@@ -3648,25 +3654,24 @@ if (isset($summary) && $summary)
                 	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
                 	
                 	//percentage = 0
-                    $statisticsoutput .= $gdata[$i];
+                    $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%"; 
                     $gdata[$i] = 0;
                     
                     //check if we have to adjust ouput due to $showaggregateddata setting
                     if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                     {
                     	$statisticsoutput .= "\t\t</td><td>";
-                }
+                	}
                 }
                 
                 //data available
                 else
-                {                        	
+                {               	
                 	//check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                 	{
                 		//mark that we have done soemthing special here
                 		$aggregated = true; 
-                		
                 		
                 		//just calculate everything once. the data is there in the array      
                 		if($itemcounter == 1)
@@ -3679,11 +3684,9 @@ if (isset($summary) && $summary)
                 			}
                 		}
                 		
-                		
                 		//"no answer" & items 2 / 4 - nothing special to do here, just adjust output
 	                	if($gdata[$i] <= 100)
-	                	{
-	                		
+	                	{	                		
 	                		if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
@@ -3723,18 +3726,13 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 	                		
 	                		//adjust output
-	                		if($qtype == "5" || $qtype == "A")
-	                		{
-	                		$statisticsoutput .= "\t\t</td><td>";
-	                	}
-	                		else
-	                		{
-	                			$statisticsoutput .= "\t\t ";
-	                		}
+	                		$statisticsoutput .= "\t\t</td><td>";	                		
 	                	}
 	                	
 	                	//item 3 - just show results twice
-	                	if($gdata[$i] >= 400)
+	                	//old: if($gdata[$i] >= 400)
+	                	//trying to fix bug #2583:
+	                	if($gdata[$i] >= 400 && $i != 0)
 	                	{         		
 	                		//remove "400" which was added before
 	                		$gdata[$i] -= 400;	                		
@@ -3769,8 +3767,10 @@ if (isset($summary) && $summary)
 	                	}
 	                	
 	                	//FIRST value -> add percentage of item 1 + item 2
-	                	if($gdata[$i] >= 300 && $gdata[$i] < 400)
-	                	{   
+	                	//old: if($gdata[$i] >= 300 && $gdata[$i] < 400)
+	                	//trying to fix bug #2583:
+	                	if(($gdata[$i] >= 300 && $gdata[$i] < 400) || ($i == 0 && $gdata[$i] <= 400))
+	                	{                				   
 	                		//remove "300" which was added before
 	                		$gdata[$i] -= 300;
 	                		
@@ -3827,8 +3827,7 @@ if (isset($summary) && $summary)
 	                			else
 	                			{
 	                				$percentage = 0;
-	                				$percentage2 = 0;
-	                		
+	                				$percentage2 = 0;	                		
 	                			}	                			
 	                		}
 	                		else
