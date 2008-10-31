@@ -2969,8 +2969,8 @@ if ($action == "newsurvey")
 
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Format:")."</span>\n"
 		. "<span class='settingentry'><select name='format'>\n"
-		. "<option value='S' selected='selected'>".$clang->gT("Question by Question")."</option>\n"
-		. "<option value='G'>".$clang->gT("Group by Group")."</option>\n"
+		. "<option value='S'>".$clang->gT("Question by Question")."</option>\n"
+		. "<option value='G' selected='selected'>".$clang->gT("Group by Group")."</option>\n"
 		. "<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "</select></span>\n"
 		. "</div>\n";
