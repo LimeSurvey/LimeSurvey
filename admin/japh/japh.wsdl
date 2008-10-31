@@ -148,9 +148,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
   	<part name="iVid" type="xsd:int"></part>
-        <part name="sUseStart" type="xsd:string"></part>
-        <part name="dStart" type="xsd:date"></part>
-  	<part name="sUseEnd" type="xsd:string"></part>
+        <part name="dStart" type="xsd:date"></part>
   	<part name="dEnd" type="xsd:date"></part>  	  </message>
   <message name="sActivateSurveyResponse">
   	<part name="return" type="xsd:string"></part>

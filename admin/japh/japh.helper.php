@@ -737,10 +737,6 @@ class japhHelper {
 			$surveylsrowdata['surveyls_welcometext']	= $sVwel;
 			$surveylsrowdata['surveyls_urldescription'] = $sUbes;
 			
-			if($sVwel=='')
-			{
-				$surveylsrowdata['surveyls_welcometext']	= "Herzlich Willkommen zur Evaluation von \"".$sVtit."\"";
-			}
 			
 		    // translate internal links
 		    $surveylsrowdata['surveyls_title']=translink('survey', $surveyid, $newsid, $surveylsrowdata['surveyls_title']);

@@ -80,13 +80,12 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where) //XXX
 /**
  *	Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
  *	$iVid= Survey ID
- *	$sUseStart= 'Y' or 'N'
  *	$dStart = datetime
- *	$sUseEnd
+ *	$dEnd = datetime
  *	$sUser = have to be an existing admin or superadmin in limesurvey
  *	$sPass = password have to be the right one for the existing user in limesurvey
 */
-function sActivateSurvey($sUser, $sPass, $iVid, $sUseStart, $dStart,  $sUseEnd, $dEnd)
+function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 {
 	include("japh.config.php");
 	$japhHelper = new japhHelper();
@@ -118,13 +117,13 @@ function sActivateSurvey($sUser, $sPass, $iVid, $sUseStart, $dStart,  $sUseEnd, 
 		exit;
 	}
 	
-	if($sUseStart=='Y' && $dStart!='')
+	if($dStart!='')
 	{
 		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
 		$japhHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
 		$japhHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
-	if($sUseEnd=='Y' && $dEnd!='')
+	if($dEnd!='')
 	{
 		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
 		$japhHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
@@ -151,33 +150,37 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	$japhHelper = new japhHelper();
 	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 	
-	// check for appropriate rights
+	
+	if($sVwel=='')
+	{//if no welcometext is given, set this one
+		$sVwel	= "Herzlich Willkommen zur Evaluation von \"".$sVtit."\"";
+	}
+	
 	if(!$japhHelper->checkUser($sUser, $sPass))
-	{
+	{// check for appropriate rights
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
 	
-	// Check if all mandatory parameters are present, else abort...
 	if((!is_int($iVid) || $iVid==0) || $sVtit=='' || $sVbes=='')
-	{
+	{// Check if mandatory parameters are empty, if so-> abort
 		throw new SoapFault("Server: ", "Mandatory Parameters missing");
 		exit;
 	}
 	
-	// Check if the survey to create already exists. If so, abort with Fault.
 	if($japhHelper->surveyExists($iVid))
-	{
+	{// Check if the survey to create already exists. If so, abort with Fault.
 		throw new SoapFault("Database: ", "Survey already exists");
 		exit;
 	}
 	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
 	
-	// if import of survey went ok it returns true, else nothing
+	
 	if($japhHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
-	{
+	{// if import of survey went ok it returns true, else nothing
 		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", nach import OK ");
 		
+		//get the optional data into db
 		if($sMail!='')
 		{
 			$japhHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iVid'");
@@ -197,7 +200,6 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	}
 	
 }//end of function sCreateSurvey
- 
 
 /**
  *	Function to insert Tokens to an existing Survey, makes it "closed"
@@ -582,7 +584,7 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 }
 
 /**
- * function to import a five scale Matrix question and its items
+ * function to import a five scale Matrix question and set 1 to n items
  *
  * @param unknown_type $sUser
  * @param unknown_type $sPass

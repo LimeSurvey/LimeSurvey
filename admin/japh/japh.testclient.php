@@ -259,7 +259,7 @@ while(list($key, $value) = each($_REQUEST))
 
 		try
 		{
-			$sReturn = $client->sActivateSurvey($user, $pass, $iVid, $sUseStart, $dStart,  $sUseEnd, $dEnd);
+			$sReturn = $client->sActivateSurvey($user, $pass, $iVid, $dStart, $dEnd);
 		}
 		catch (SoapFault $fault)
 		{
