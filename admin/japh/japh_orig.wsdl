@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions name="japhService"
+targetNamespace="urn:japhNamespace"
+xmlns:tns="urn:japhNamespace"
+xmlns="http://schemas.xmlsoap.org/wsdl/"
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:typens="japhSchema"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
+      
+  <message name="sCreateSurveyRequest">
+    <documentation>Function to start Surveys in LimeSurvey...</documentation>
+        <part name="sUser" type="xsd:string">
+      <documentation>Admin or Superadmin Account in Limesurvey needed
+      </documentation>
+    </part>
+        <part name="sPass" type="xsd:string">
+      <documentation>Correct password for the Superadmin in Limesurvey
+      </documentation>
+    </part>
+        <part name="iVid" type="xsd:int" >
+      <documentation>This is the &quot;VeranstaltungsID&quot; similar to the SurveyID...
+ Integer expected... 
+      </documentation>
+    </part>
+        <part name="sVtit" type="xsd:string">
+        	<documentation>titel of the event, put together from NR and NAME from LSF. veranstaltung</documentation></part>
+        <part name="sVbes" type="xsd:string" >
+      <documentation>This is the &quot;Veranstaltungsbeschreibung&quot;, the Surveydescription.
+      String expected. Put together from TYP, DOZENTEN- TITLE, -NAME,
+      </documentation>
+    </part>    <part name="sVwel" type="xsd:string"></part><part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>    <part name="sName" type="xsd:string"><documentation>The Name of the Administrator, resp. the Person whos email Adress was given
+      </documentation></part>    <part name="sUrl" type="xsd:string"><documentation>The URL to wich will be redirected when completing the Survey
+      </documentation></part>    <part name="sUbes" type="xsd:string"><documentation>The text for the Link, if not loaded automatically</documentation></part>        <part name="sVtyp" type="xsd:string"></part></message>
+  
+  <message name="sCreateSurveyResponse">
+      <part name="vid" type="xsd:string">
+      <documentation>This is the return Value of sCreateSurvey, if everything went fine it's the sid(SurveyID) resp. vid(VeranstaltungsID) of the newly imported Survey
+      </documentation>
+      </part>
+  </message>
+  
+  <message name="sInsertTokenRequest">
+        <part name="sUser" type="xsd:string">
+      <documentation>Admin or Superadmin Account in Limesurvey needed
+      </documentation>
+    </part>
+        <part name="sPass" type="xsd:string">
+      <documentation>Correct password for the Superadmin in Limesurvey
+      </documentation>
+    </part>
+        <part name="iVid" type="xsd:int">
+       <documentation>SurveyID of existing Survey, which gets the Token table 
+       </documentation>
+    </part>
+    <part name="sToken" type="xsd:string">
+      <documentation>String of tokens seperated by a comma (default)... You have the possibility to change the desired seperator in LimeSurveys config.php
+       </documentation>
+    </part>
+  </message> 
+  <message name="sInsertTokenResponse">
+     <part name="return" type="xsd:string" >
+       <documentation>This is the return Value of InsertToken, if everything went fine it's "Token table populated successfully"
+       </documentation>
+     </part>
+  </message>
+  
+   <message name="sInsertParticipantsRequest">
+        <part name="sUser" type="xsd:string">
+      <documentation>Admin or Superadmin Account in Limesurvey needed
+      </documentation>
+    </part>
+        <part name="sPass" type="xsd:string">
+      <documentation>Correct password for the Superadmin in Limesurvey
+      </documentation>
+    </part>
+        <part name="iVid" type="xsd:int">
+       <documentation>SurveyID of existing Survey, which gets the Token table 
+       </documentation>
+    </part>
+    <part name="sParticipantData" type="xsd:string">
+      <documentation>Data for Participant expected in this format:  [Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de] and so on... seperate the Datasets with :: and the Datafields in the Sets with ;
+       </documentation>
+    </part>
+  </message> 
+  <message name="sInsertParticipantsResponse">
+     <part name="return" type="xsd:string" >
+       <documentation>This is the return Value of sInsertParticipants, if everything went fine it's "Token table populated successfully"
+       </documentation>
+     </part>
+  </message>
+    
+  <message name="sTokenReturnRequest">
+        <part name="sUser" type="xsd:string">
+      <documentation>Admin or Superadmin Account in Limesurvey needed
+      </documentation>
+    </part>
+        <part name="sPass" type="xsd:string">
+      <documentation>Correct password for the Superadmin in Limesurvey
+      </documentation>
+    </part>
+        <part name="iVid" type="xsd:int">
+       <documentation>SurveyID of existing Survey, which has a Token table 
+       </documentation>
+    </part>
+  </message> 
+  <message name="sTokenReturnResponse">
+     <part name="iVid" type="xsd:int">
+       <documentation>SurveyID of existing Survey, which has a Token table 
+       </documentation>
+     </part>
+     <part name="return" type="xsd:string" >
+       <documentation>String of unused Tokens seperated by comma 
+       </documentation>
+     </part>
+  </message>
+   
+  <message name="sCreateSurveyFault">
+    <part name="fault" type="xsd:string" />
+  </message>
+  <message name="sInsertTokenFault">
+     <part name="fault" type="xsd:string"  />
+  </message>
+  <message name="sInsertParticipantsFault">
+     <part name="fault" type="xsd:string"  />
+  </message>
+  <message name="sTokenReturnFault">
+     <part name="fault" type="xsd:string"  />
+  </message>
+
+  <message name="sChangeSurveyRequest">
+        <part name="sUser" type="xsd:string"></part>
+        <part name="sPass" type="xsd:string"></part>
+        <part name="sTable" type="xsd:string"></part>
+  	<part name="sKey" type="xsd:string"></part>
+  	<part name="sValue" type="xsd:string"></part>
+  	<part name="sWhere" type="xsd:string"></part>
+
+  	<part name="mode" type="xsd:string"></part>
+  </message>
+  
+  <message name="sChangeSurveyResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  
+  <message name="sChangeSurveyFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+
+  <message name="sActivateSurveyRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+        <part name="dStart" type="xsd:date"></part>
+  	<part name="dEnd" type="xsd:date"></part>  	  </message>
+  <message name="sActivateSurveyResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sActivateSurveyFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+  <message name="sImportGroupRequest">
+        <part name="sUser" type="xsd:string"></part>
+        <part name="sPass" type="xsd:string"></part>
+        <part name="iVid" type="xsd:int"></part>
+  	<part name="sMod" type="xsd:string"></part>
+  </message>
+  <message name="sImportGroupResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sImportGroupFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+  <message name="sAvailableModulesRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="mode" type="xsd:string"></part>
+  </message>
+  <message name="sAvailableModulesResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sAvailableModulesFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+  <message name="sImportQuestionRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+  	<part name="sMod" type="xsd:string"></part>
+  	<part name="sTitle" type="xsd:string"></part>
+  	<part name="sQuestion" type="xsd:string"></part>
+  	<part name="sHelp" type="xsd:string"></part>
+  	<part name="sMandatory" type="xsd:string"></part>
+  </message>
+  <message name="sImportQuestionResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sImportQuestionFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+  <message name="sImportMatrixRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+  	<part name="sMod" type="xsd:string"></part>
+  	<part name="sTitle" type="xsd:string"></part>
+  	<part name="sQuestion" type="xsd:string"></part>
+  	<part name="sItems" type="xsd:string"></part>
+  	<part name="sMandatory" type="xsd:string"></part>
+  </message>
+  <message name="sImportMatrixResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sImportMatrixFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
+  <portType name="JaphPortType">
+    <operation name="sCreateSurvey" >
+    <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
+      <input name="sCreateSurveyRequest" message="tns:sCreateSurveyRequest" />
+      <output name="sCreateSurveyResponse" message="tns:sCreateSurveyResponse" />
+      <fault name="sCreateSurveyFault" message="tns:sCreateSurveyFault"/>
+    </operation>
+    <operation name="sInsertToken" >
+    <documentation>Create Token-Table and populate it for closed LimeSurvey Surveys</documentation>
+      <input name="sInsertTokenRequest" message="tns:sInsertTokenRequest" />
+      <output name="sInsertTokenResponse" message="tns:sInsertTokenResponse" />
+      <fault name="sInsertTokenFault" message="tns:sInsertTokenFault"/>
+    </operation>
+    <operation name="sInsertParticipants" >
+    <documentation>Create Token-Table and populate it with personal data for closed Surveys</documentation>
+      <input name="sInsertParticipantsRequest" message="tns:sInsertParticipantsRequest" />
+      <output name="sInsertParticipantsResponse" message="tns:sInsertParticipantsResponse" />
+      <fault name="sInsertParticipantsFault" message="tns:sInsertParticipantsFault"/>
+    </operation>
+    <operation name="sTokenReturn" >
+    <documentation>Returns unused Tokens from closed LimeSurvey Surveys</documentation>
+      <input name="sTokenReturnRequest" message="tns:sTokenReturnRequest" />
+      <output name="sTokenReturnResponse" message="tns:sTokenReturnResponse" />
+      <fault name="sTokenReturnFault" message="tns:sTokenReturnFault"/>
+    </operation>
+    <operation name="sChangeSurvey">
+    	<input name="sChangeSurveyRequest" message="tns:sChangeSurveyRequest"></input>
+    	<output name="sChangeSurveyResponse" message="tns:sChangeSurveyResponse"></output>
+            <fault name="sChangeSurveyFault" message="tns:sChangeSurveyFault"></fault>
+        </operation>
+    <operation name="sActivateSurvey">
+    	<input name="sActivateSurveyRequest" message="tns:sActivateSurveyRequest"></input>
+    	<output name="sActivateSurveyResponse" message="tns:sActivateSurveyResponse"></output>
+            <fault name="sActivateSurveyFault" message="tns:sActivateSurveyFault"></fault>
+        </operation>
+    <operation name="sImportGroup">
+    	<input name="sImportGroupRequest" message="tns:sImportGroupRequest"></input>
+    	<output name="sImportGroupResponse" message="tns:sImportGroupResponse"></output>
+            <fault name="sImportGroupFault" message="tns:sImportGroupFault"></fault>
+        </operation>
+    <operation name="sAvailableModules">
+    	<input name="sAvailableModulesRequest" message="tns:sAvailableModulesRequest"></input>
+    	<output name="sAvailableModulesResponse" message="tns:sAvailableModulesResponse"></output>
+            <fault name="sAvailableModulesFault" message="tns:sAvailableModulesFault"></fault>
+        </operation>
+    <operation name="sImportQuestion">
+    	<input name="sImportQuestionRequest" message="tns:sImportQuestionRequest"></input>
+    	<output name="sImportQuestionResponse" message="tns:sImportQuestionResponse"></output>
+            <fault name="sImportQuestionFault" message="tns:sImportQuestionFault"></fault>
+        </operation>
+    <operation name="sImportMatrix">
+    	<input name="sImportMatrixRequest" message="tns:sImportMatrixRequest"></input>
+    	<output name="sImportMatrixResponse" message="tns:sImportMatrixResponse"></output>
+            <fault name="sImportMatrixFault" message="tns:sImportMatrixFault"></fault>
+        </operation>
+  </portType>
+  
+  <binding name="JaphBinding" type="tns:JaphPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+
+	<operation name="sImportMatrix">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sImportMatrixRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sImportMatrixResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sImportMatrixFault">
+        <soap:fault name="sImportMatrixFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+	
+	<operation name="sImportQuestion">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sImportQuestionRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sImportQuestionResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sImportQuestionFault">
+        <soap:fault name="sImportQuestionFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+	
+	<operation name="sAvailableModules">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sAvailableModulesRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sAvailableModulesResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sAvailableModulesFault">
+        <soap:fault name="sAvailableModulesFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+
+	<operation name="sImportGroup">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sImportGroupRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sImportGroupResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sImportGroupFault">
+        <soap:fault name="sImportGroupFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    
+	<operation name="sActivateSurvey">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sActivateSurveyRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sActivateSurveyResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sActivateSurveyFault">
+        <soap:fault name="sActivateSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+	
+    <operation name="sChangeSurvey">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sChangeSurveyRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sChangeSurveyResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sChangeSurveyFault">
+        <soap:fault name="sChangeSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    
+    <operation name="sCreateSurvey">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sCreateSurveyRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sCreateSurveyResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sCreateSurveyFault">
+        <soap:fault name="sCreateSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    
+    <operation name="sInsertToken">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sInsertTokenRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sInsertTokenResponse" >
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sInsertTokenFault">
+        <soap:fault name="sInsertTokenFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    
+    <operation name="sInsertParticipants">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sInsertParticipantsRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sInsertParticipantsResponse" >
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sInsertParticipantsFault">
+        <soap:fault name="sInsertParticipantsFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    
+    <operation name="sTokenReturn">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sTokenReturnRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sTokenReturnResponse" >
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sTokenReturnFault">
+        <soap:fault name="sTokenReturnFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+  </binding>
+  
+  <service name="JaphService">
+    <documentation>This is the JaphService 
+    for remote starting surveys and registering tokens in LimeSurvey. 
+    Make sure to modify the soap:address to the current Location of the japhserver.php
+    It has to be like this: 'http://servername/[limesurveydir]/japhservice/japhserver.php'
+    NOTE: http for normal mode, begin the url with https for a SSL Webservice, it's just that easy.
+    </documentation>
+    <port name="JaphPort" binding="tns:JaphBinding">
+      <soap:address location="{japhlocation}" />
+    </port>
+  </service>
+
+</definitions>

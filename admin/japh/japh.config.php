@@ -26,8 +26,8 @@ ini_set("soap.wsdl_cache_enabled", "0");
 
 ### Security
 // enable for ssl connections 
-// IMPORTANT NOTE: You have to change the url to the japh.server.php in the japh.wsdl manually, too!)
-//$japhOverSSL=true; //default: false
+// this is for wsdl generation, on true the url to the server in the wsdl beginns with https instead of http
+$japhOverSSL=true; //default: false
 
 // enable if you use a certificate for the Connections
 // IMPORTANT NOTE: your Client need the same certificate to connect with.

@@ -26,7 +26,18 @@ include("japh.helper.php");
 
 if(isset($_GET['wsdl']))
 {
+	if($japhOverSSL)
+		$http = "https://";
+	else
+		$http = "http://";
+		
 	//server will generate the wsdl with correct url in the future
+	$wsdlString = file_get_contents("japh_orig.wsdl");
+	$wsdlString = str_replace("{japhlocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
+	file_put_contents("japh.wsdl",$wsdlString);
+	header('Content-type: text/wsdl');
+	header('Content-Disposition: attachment; filename=japh.wsdl');
+	//echo file_get_contents("japh_new.wsdl");
 	
 }
 //we initiate a SoapServer Objekt
