@@ -3530,7 +3530,6 @@ if (isset($summary) && $summary)
 					//only add this if we don't handle question type "5"/"A"
 					if(!isset($justadded))
 					{
-						//XXX Hier evtl?
 						//put absolute data into array
 						$grawdata[]=$row[0];
 					}
@@ -4022,81 +4021,26 @@ if (isset($summary) && $summary)
 				//that contain the values, and labels for the data we are about
 				//to send to pchart.
 				
-				/*
-				 * Multiple options = bar charts
-				 * 
-				 * M = multiple options
-				 * P = multiple options with comments
-				 */
-				if ($qtype == "M" || $qtype == "P") 
-				{ 
-					//TODO: adapt size depending on the number of answers
-					
-					//(TODO): improve colors/styles e.g. floating color (blue -> white)
-					
-					//(TODO): put absolute number on top of bar and don't use decimal numbers
-					
-					//TODO: show answer title (legend) left/right beside the chart
-					//		by turning it 90 degrees
-					
-					//TODO: order by absolute number decreasing (only seems suitable when using answer title instead of ocde)
-									
-					//TODO: Ranking type: Use charts like this to compare rankings: 
-					//		http://www.aditus.nu/jpgraph/img/gallery/mulyaxis.png (just one axis needed)
-					
-					//we always use the same size
-					//$graph = new Graph(640,320,'png');
-					
-					//MM: file size depending on number of answers
-					//there are about 500px to place the bars
-					
-					//get number of options
-					$totaloptions = count($grawdata);
-					
-					if($totaloptions <= 10)
-					{
-						$width = $totaloptions * 70;
-					}
-					if($totaloptions > 10 && $totaloptions <= 25)
-					{
-						$width = $totaloptions * 40;
-					}
-					if($totaloptions > 20 && $totaloptions <= 50)
-					{
-						$width = $totaloptions * 20;
-					}
-					if($totaloptions > 50 && $totaloptions <= 100)
-					{
-						$width = $totaloptions * 10;
-					}
-					
-					if($totaloptions > 100)
-					{
-						$width = $totaloptions * 8;
-					}
+                $i = 0;
+                foreach ($gdata as $data)
+                {
+                    if ($data != 0){$i++;}
+                }	
+				$totallines=$i;
+				if ($totallines>15) 
+				{
+					$gheight=320+(6.7*($totallines-15));
+					$fontsize=7;
+					$legendtop=0.01;
+					$setcentrey=0.5/(($gheight/320));
 				} 
-				
-                    $i = 0;
-                    foreach ($gdata as $data)
-                    {
-                        if ($data != 0){$i++;}
-                    }	
-					$totallines=$i;
-					if ($totallines>15) {
-						$gheight=320+(6.7*($totallines-15));
-						$fontsize=7;
-						$legendtop=0.01;
-						$setcentrey=0.5/(($gheight/320));
-					} else {
-						$gheight=320;
-						$fontsize=8;
-						$legendtop=0.07;
-						$setcentrey=0.5;
-					}
-
-				//Mazi: Commented out the following line to fix bug #2541
-				//}	//end else -> pie charts
-				
+				else 
+				{
+					$gheight=320;
+					$fontsize=8;
+					$legendtop=0.07;
+					$setcentrey=0.5;
+				}				
 				
 				// Create bar chart for multiple options
 				if ($qtype == "M" || $qtype == "P") 
@@ -4141,17 +4085,17 @@ if (isset($summary) && $summary)
                     $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
-                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
-                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
+                    $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
 
-                     // Draw the bar graph
-                     $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
-                     //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
-                     // Finish the graph
-                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
-                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
-                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
-//Todo:                     $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+                    // Draw the bar graph
+                    $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                    //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
+                    // Finish the graph
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
+                    $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
+//Todo:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
 				}	//end if (bar chart)
 				
 				//Pie Chart
@@ -4179,8 +4123,8 @@ if (isset($summary) && $summary)
 					
 					
                     $Test = new pChart(640,$gheight);  
-//                    $Test->drawFilledRoundedRectangle(7,7,293,193,5,240,240,240);  
-                          //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
+					//$Test->drawFilledRoundedRectangle(7,7,293,193,5,240,240,240);  
+                    //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
 					
                     // Draw the pie chart  
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",11);  
@@ -4204,12 +4148,7 @@ if (isset($summary) && $summary)
 				
 				//add graph to output
 				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
-				
 			}
-			
-			
-			
-			
 			
 			//close table/output
 			$statisticsoutput .= "</table><br /> \n";
