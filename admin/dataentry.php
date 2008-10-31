@@ -1894,6 +1894,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 									case "D": $conditions[]=$blang->gT("Decrease"); break;
 									case "S": $conditions[]=$blang->gT("Same"); break;
 								}
+								break;
 							case "F":
 							case "H":
 							default:
