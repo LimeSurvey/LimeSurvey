@@ -5311,6 +5311,10 @@ function do_array_flexible_dual($ia)
 						$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '>";$hiddenanswers="<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' /><input type='hidden' name='tbdisp$myfname1' id='tbdisp$myfname1' value='on' />";
 					}
 				}
+				else
+				{
+					$hiddenanswers="";
+				}
 
 				$answer .= "\t\t\t\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
 				. "\t\t\t\t\t\t\t\t<td align='right' width='$answerwidth%' class='answertext'>\n"
