@@ -4223,7 +4223,7 @@ function do_array_flexible($ia)
 		$fn=1;
 		$answer = "\t\t\t<table class='question'><thead>\n"
 		. "\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td class='array1' width='$answerwidth%'>&nbsp;</td>\n";
+		. "\t\t\t\t\t<td class='array1' >&nbsp;</td>\n";
 		foreach ($labelans as $ld)
 		{
 			$answer .= "\t\t\t\t\t<th class='array1' width='$cellwidth%'><font size='1'>".$ld."</font></th>\n";
@@ -4261,6 +4261,7 @@ function do_array_flexible($ia)
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
+			if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
