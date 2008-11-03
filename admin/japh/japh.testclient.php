@@ -235,7 +235,6 @@ while(list($key, $value) = each($_REQUEST))
 	{
 		$iVid = $_REQUEST['sid'];
 		$sMod = $_REQUEST['mod'];
-		$user = $_REQUEST['user'];
 		try
 		{
 			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod);
