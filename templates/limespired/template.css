@@ -126,7 +126,7 @@ input.submit:hover{background:#c2f9ff;border:1px solid #00677d;}
 .survey-question-help img {padding: 0 5px 10px 25px;}
 .radio {}
 table.question {background:#fafeff}
-.answertextright {text-align:left;}
+.answertextright {text-align:left;font-weight:normal;font-size:0.9em;}
 .textarea {background:#f5feff;color: #00677d;width:96%;border:1px solid #3c9aae;padding:4px;margin:0 10px 0 10px;}
 .textarea:focus {background:white;color:#004554;}
 .array1 {background-color: #cbeff2;text-align: center;}
@@ -145,7 +145,7 @@ a.imglink {text-decoration:none;border:0}
 .kullogo {border:0;margin:10px 0 -10px 0}
 .warningjs {font-weight:bold;color:red;}
 .survey-question-space {height:5px;}
-.answertext {color: #000;font-weight:normal;font-size:0.9em}
+.answertext {color: #000;font-weight:normal;font-size:0.9em;}
 .nosurveyid {font-size:1.2em;font-weight:bold;text-align:center;padding:20px 10px 20px 10px; margin:20px 0 20px 0;border:1px solid #3c9aae;background-color:#e0fbff}
 
 
