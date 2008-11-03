@@ -501,7 +501,7 @@ foreach ($filters as $flt)
 		//new section
 		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 		
-		//get answers
+		//get answers//XXX
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
@@ -2470,7 +2470,7 @@ if (isset($summary) && $summary)
 			}
 			
 			//get answers
-		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
 		    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
 		    
 		    //loop through answer data
