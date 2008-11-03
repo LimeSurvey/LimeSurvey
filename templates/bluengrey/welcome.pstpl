@@ -1,11 +1,11 @@
 {CHECKJAVASCRIPT}
-<div id='welcome'>
+<div id="welcome">
    <font style="font-family: Verdana; font-size: 14px;">
    <b>{SURVEYNAME}</b>
    </font><br />
  {SURVEYDESCRIPTION}
 </div>
-<div id='welcometext'>
+<div id="welcometext">
 			<p>{WELCOME}</p>
-			<font color='#333333'>{THEREAREXQUESTIONS}</font>
+			<font color="#333333">{THEREAREXQUESTIONS}</font>
 </div>

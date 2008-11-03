@@ -1,6 +1,6 @@
-<table width='100%' align='center'>
+<table width="100%" align="center">
 	<tr>
-		<td align='center'>
+		<td align="center">
 			<font>{NAVIGATOR}</font><br />
 			{CLEARALL}
 			{SAVE}

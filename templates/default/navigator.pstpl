@@ -1,12 +1,12 @@
-<table width='100%' align='center' bgcolor='#EEF6FF'>
+<table width="100%" align="center" bgcolor="#EEF6FF">
 	<tr>
-		<td align='left' >
+		<td align="left" >
 			{SAVE}
 		</td>
-		<td align='center'>
+		<td align="center">
 			{NAVIGATOR}
 		</td>
-		<td align='right'>
+		<td align="right">
 			{CLEARALL}
 		</td>
 	</tr>

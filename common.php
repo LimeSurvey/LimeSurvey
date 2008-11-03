@@ -3133,7 +3133,7 @@ function getFooter()
 
 	if ( !$embedded )
 	{
-		return "</html>\n";
+		return "\n\n\t</body>\n</html>\n";
 	}
 
 	global $embedded_footerfunc;

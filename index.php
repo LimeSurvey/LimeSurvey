@@ -566,6 +566,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		doFooter();
 		exit;
 	}
 }
@@ -1661,6 +1662,7 @@ function buildsurveysession()
 		        <br />&nbsp;</center>";
 	
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+			doFooter();
 			exit;
 		}
 	}
@@ -1709,6 +1711,7 @@ function buildsurveysession()
 		}
 
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		doFooter();
 		exit;
 	}
 	// TOKENS REQUIRED, A TOKEN PROVIDED
@@ -1739,6 +1742,7 @@ function buildsurveysession()
 			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+			doFooter();
 			exit;
 		}
 	}
@@ -1775,6 +1779,7 @@ function buildsurveysession()
 				."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 	
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+				doFooter();
 				exit;
 			}
 		}
@@ -1847,6 +1852,7 @@ function buildsurveysession()
 			}
 	
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+			doFooter();
 			exit;
 		}
 	}
@@ -1933,6 +1939,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		doFooter();
 		exit;
 	}
 

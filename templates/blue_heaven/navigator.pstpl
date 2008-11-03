@@ -1,10 +1,10 @@
-<table width='100%' align='center' bgcolor='#E5F9FF'>
+<table width="100%" align="center" bgcolor="#E5F9FF">
  <tr>
-  <td align='left' valign='middle' height='40'>
+  <td align="left" valign="middle" height="40">
   {CLEARALL}
   </td>
   <td align="center" nowrap width="33%">{SAVE}</td>
-  <td align='right' valign='middle'>
+  <td align="right" valign="middle">
   {NAVIGATOR}
   </td>
  </tr>

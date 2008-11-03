@@ -1,6 +1,6 @@
 <center>
-<font color='red'>{LOADERROR}</font>
-<strong><font size='+1'>{LOADHEADING}</font></strong><br /><br />
+<font color="red">{LOADERROR}</font>
+<strong><font size="+1">{LOADHEADING}</font></strong><br /><br />
 {LOADMESSAGE}<br />
 {LOADFORM}<br />
 {RETURNTOSURVEY}

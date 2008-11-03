@@ -1,7 +1,7 @@
 <br />
-<table align='center' width='75%' border='1' style='border-collapse: collapse'>
+<table align="center" width="75%" border="1" style="border-collapse: collapse">
  <tr>
-  <td bgcolor='#CCCCCC' align='center'><font size='2'>
+  <td bgcolor="#CCCCCC" align="center"><font size="2">
    <strong>{ASSESSMENT_HEADING}</strong></font>
   </td>
  </tr>

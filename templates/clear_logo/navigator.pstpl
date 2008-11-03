@@ -1,4 +1,4 @@
-<table width='100%' align='center' bgcolor='#efe5ca' border='0' cellspacing='0' cellpadding='8'>
+<table width="100%" align="center" bgcolor="#efe5ca" border="0" cellspacing="0" cellpadding="8">
 	<tr>
 		<td align="left" nowrap width="33%">{CLEARALL}</td>
                 <td align="center" nowrap width="33%">{SAVE}</td>

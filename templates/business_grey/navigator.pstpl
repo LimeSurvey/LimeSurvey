@@ -1,6 +1,6 @@
-<table width='100%' align='center' bgcolor='#E1E1E1'>
+<table width="100%" align="center" bgcolor="#E1E1E1">
 	<tr>
-		<td align='center'>
+		<td align="center">
 			{NAVIGATOR}<br />
 			{CLEARALL}
 			{SAVE}

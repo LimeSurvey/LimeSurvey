@@ -1,9 +1,9 @@
-<table width='100%' cellspacing='0' cellpadding='0' class='question' border='1'>
+<table width="100%" cellspacing="0" cellpadding="0" class="question" border="1">
 	<tr>
-		<td align='left'>
-			<table width='100%' cellspacing='0' cellpadding='8' border='0'>
+		<td align="left">
+			<table width="100%" cellspacing="0" cellpadding="8" border="0">
 				<tr><td class="be">{QUESTION}</td></tr>
-                                <!--<tr><td><font size='-1'><i>{QUESTIONHELPPLAINTEXT}</i></font></td></tr>-->
+                                <!--<tr><td><font size="-1"><i>{QUESTIONHELPPLAINTEXT}</i></font></td></tr>-->
 				<tr>
 					<td width="100%">{ANSWER}</td>
 				</tr>
@@ -12,4 +12,4 @@
 		</td>
 	</tr>
 </table>
-<table cellspacing='0' cellpadding='0'><tr><td height='24'></td></tr></table>
+<table cellspacing="0" cellpadding="0"><tr><td height="24"></td></tr></table>
