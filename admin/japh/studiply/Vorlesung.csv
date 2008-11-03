@@ -1,5 +1,5 @@
 # LimeSurvey Survey Dump
-# DBVersion 126
+# DBVersion 129
 # This is a dumped survey from the LimeSurvey Script
 # http://www.limesurvey.org/
 # Do not change this header!
@@ -7,101 +7,101 @@
 #
 # SURVEYS TABLE
 #
-"sid","owner_id","admin","active","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","autonumber_start","autoredirect","allowprev","printanswers","ipaddr","useexpiry","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
-"75897","1","Tim Wahrendorff (HIS)","N","","wahrendorff@his.de","N","","G","default","http://localhost/ls153/admin/admin.php","de","","Y","Y","2","N","","","Y","0","N","Y","N","Y","N","Y","2008-01-23","N","N","N","N","wahrendorff@his.de"
+"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
+"75897","1","Tim Wahrendorff (HIS)","N","1980-01-01","1980-01-01","wahrendorff@his.de","Y","","G","default","http://his.de","de","","N","Y","2","N","","","Y","N","0","N","Y","Y","N","N","Y","2008-01-23","N","N","N","N","wahrendorff@his.de"
 
 #
 # GROUPS TABLE
 #
 "gid","sid","group_name","group_order","description","language"
-"23","75897","Veranstaltung BASICS","0","Hier werden allgemeine Daten zu Veranstaltungen erhoben.","de"
-"24","75897","Student BASIC","1","Diese Frage dienen der Erfassung der Einstellung der Studenten","de"
-"25","75897","DOZENT aktiv","2","Dieser Fragenblock bezieht sich auf Veranstaltungen, die aktiv von Dozenten und Tutoren gestaltet werden wie Vorlesungen, Übungen und Tutorien.","de"
-"26","75897","DOZENT passiv","3","Diese Fragen beziehen sich auf Veranstaltungen wie Seminare, in denen die Studierenden den größten Teil des Inhaltes beitragen.","de"
+"25","75897","Veranstaltung BASICS","0","Hier werden allgemeine Daten zu Veranstaltungen erhoben.","de"
+"26","75897","Student BASIC","1","Diese Frage dienen der Erfassung der Einstellung der Studenten","de"
+"27","75897","DOZENT aktiv","2","Dieser Fragenblock bezieht sich auf Veranstaltungen, die aktiv von Dozenten und Tutoren gestaltet werden wie Vorlesungen, Übungen und Tutorien.","de"
+"28","75897","DOZENT passiv","3","Diese Fragen beziehen sich auf Veranstaltungen wie Seminare, in denen die Studierenden den größten Teil des Inhaltes beitragen.","de"
 
 #
 # QUESTIONS TABLE
 #
 "qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
-"112","75897","23","Z","Engagement","Wie engagiert wirkte der Dozent auf Sie?","","","N","Y","1","0","1","de"
-"113","75897","23","5","Aktualität","Wie aktuell waren die Inhalte der Vorlesung?","","Bitte wählen Sie eine Bewertung zwischen 1=sehr aktuell und 5=nicht aktuell.","N","Y","0","0","2","de"
-"114","75897","23","5","Verständlichkeit","Wie verständlich konnte der Dozent die Inhalte vermitteln?","","Bitte wählen Sie eine Bewertung zwischen 1=sehr verständlich und 5=unverständlich. ","N","N","0","0","3","de"
-"115","75897","23","5","Schwierigkeit","Wie kompliziert fanden Sie die Inhalte?","","Bitte wählen Sie eine Bewertung zwischen 1=nicht kompliziert und 5=sehr kompliziert. ","N","Y","0","0","4","de"
-"116","75897","23","M","Platzverhältnisse","Wie beurteilen Sie die Räumlichkeiten, in denen die Veranstaltung stattfand?","","","N","N","0","0","5","de"
-"117","75897","23","W","Veranstaltungsart","Um was für eine Veranstaltung handelte es sich?","","Waren Sie als Studierender aktiv (Seminar) oder eher passiv (Vorlesung) beteiligt?","N","Y","2","0","6","de"
-"118","75897","24","N","Anwesenheit Prozent","Bei wie viel Prozent der Termine waren Sie anwesend?","/^((100)|(\d{0,2}))$/","Bitte geben Sie eine Zahl zwischen 0 und 100 ein.","N","Y","0","0","1","de"
-"119","75897","24","M","Abwesenheitsgründe","Sollten Sie eine oder mehrere Veranstaltungen verpasst haben, nennen Sie bitte hier ihre Gründe:","","","Y","N","0","0","2","de"
-"120","75897","24","T","Anmerkungen","Hier können Sie Lob, Kritik und Verbessungsvorschläge äußern.","","","N","N","0","0","4","de"
-"121","75897","24","5","Lernerfolg","Wie schätzen Sie Ihren Lernerfolg bei dieser Veranstaltung ein. Bitte wählen Sie einen Wert zwischen 1=sehr viel gelernt und 5=gar nichts gelernt.","","","N","N","0","0","3","de"
-"122","75897","25","5","Fachkenntnisse","Wie beurteilen Sie die Fachkompetenz des Dozenten? Bitte wählen Sie einen Wert zwischen 1=sehr kompetent und 5=nicht kompetent.","","","N","N","0","0","1","de"
-"123","75897","25","5","Gliederung","Wie beurteilen Sie die Gliederung der Veranstaltung? Bitte wählen Sie einen Wert zwischen 1=sehr klare struktur und 5=schlecht gegliedert.","","","N","N","0","0","2","de"
-"124","75897","25","5","Lernziele","Wurden bei der Veranstaltung alle Lernziele erreicht? Bitte wählen Sie einen Wert zwischen 1=alle Lernziele erreicht und 5=kein Lernziel erreicht.","","","N","Y","0","0","3","de"
-"125","75897","25","5","Tempo","Wie schnell ging der Dozent bei der Vermittlung des Stoffes vor? Bitte wählen Sie einen Wert zwischen 1=nicht zu schnell und 5=viel zu schnell.","","","N","N","0","0","4","de"
-"126","75897","25","Y","Einbeziehung","Wurden die Studenten bei der Veranstaltung mit einbezogen?","","","N","Y","0","0","5","de"
-"127","75897","25","M","Studentenbeteiligung","Auf welche Weise wurden die Studierenden bei der Veranstaltung einbezogen?","","Wählen Sie alle Antworten, die auf die Veranstaltung zutreffen.","Y","N","0","0","6","de"
-"128","75897","26","5","Interesse","Waren die Inhalte der Veranstaltung aus Ihrer Sicht interessant? Bitte wählen Sie einen Wert zwischen 1=alles sehr interessant und 5=völlig uninteressant.","","","N","N","0","0","1","de"
-"129","75897","26","5","Themenstruktur","Waren die behandelten Themen in sich stringent? Bitte wählen Sie einen Wert zwischen 1=inhaltlich stringent und 5=völlig zusammenhangslos.","","","N","N","0","0","2","de"
-"130","75897","26","A","Hilfe durch Dozenten","Welche Hilfestellungen gab der Dozent den Studierenden?","","Bitte wählen Sie für jedes Merkmal dessen Ausprägung aus, wobei 1=""intensiv angeboten"" und 5=""gar nicht angeboten"" bedeutet","N","Y","0","0","3","de"
-"131","75897","26","Y","Diskussion","Gab es in den Veranstaltungen Raum für Diskussionen?","","","N","N","0","0","4","de"
-"132","75897","26","5","Benotung","Halten Sie die Benotung durch den Dozenten für angemessen? Bitte wählen Sie einen Wert zwischen 1=sehr faire Benotung und 5=absolut unfaire Benotung.","","","N","Y","0","0","5","de"
+"125","75897","25","Z","Engagement","Wie engagiert wirkte der Dozent auf Sie?","","","N","Y","5","0","0","de"
+"126","75897","25","5","Aktualität","Wie aktuell waren die Inhalte der Vorlesung?","","Bitte wählen Sie eine Bewertung zwischen 1=sehr aktuell und 5=nicht aktuell.","N","Y","0","0","1","de"
+"127","75897","25","5","Verständlichkeit","Wie verständlich konnte der Dozent die Inhalte vermitteln?","","Bitte wählen Sie eine Bewertung zwischen 1=sehr verständlich und 5=unverständlich. ","N","N","0","0","2","de"
+"128","75897","25","5","Schwierigkeit","Wie kompliziert fanden Sie die Inhalte?","","Bitte wählen Sie eine Bewertung zwischen 1=nicht kompliziert und 5=sehr kompliziert. ","N","Y","0","0","3","de"
+"129","75897","25","M","Platzverhältnisse","Wie beurteilen Sie die Räumlichkeiten, in denen die Veranstaltung stattfand?","","","N","N","0","0","4","de"
+"130","75897","25","W","Veranstaltungsart","Um was für eine Veranstaltung handelte es sich?","","Waren Sie als Studierender aktiv (Seminar) oder eher passiv (Vorlesung) beteiligt?","N","Y","6","0","5","de"
+"131","75897","26","N","Anwesenheit Prozent","Bei wie viel Prozent der Termine waren Sie anwesend?","/^((100)|(\d{0,2}))$/","Bitte geben Sie eine Zahl zwischen 0 und 100 ein.","N","Y","0","0","0","de"
+"132","75897","26","M","Abwesenheitsgründe","Sollten Sie eine oder mehrere Veranstaltungen verpasst haben, nennen Sie bitte hier ihre Gründe:","","","Y","N","0","0","1","de"
+"133","75897","26","T","Anmerkungen","Hier können Sie Lob, Kritik und Verbessungsvorschläge äußern.","","","N","N","0","0","3","de"
+"134","75897","26","5","Lernerfolg","Wie schätzen Sie Ihren Lernerfolg bei dieser Veranstaltung ein. Bitte wählen Sie einen Wert zwischen 1=sehr viel gelernt und 5=gar nichts gelernt.","","","N","N","0","0","2","de"
+"135","75897","27","5","Fachkenntnisse","Wie beurteilen Sie die Fachkompetenz des Dozenten? Bitte wählen Sie einen Wert zwischen 1=sehr kompetent und 5=nicht kompetent.","","","N","N","0","0","0","de"
+"136","75897","27","5","Gliederung","Wie beurteilen Sie die Gliederung der Veranstaltung? Bitte wählen Sie einen Wert zwischen 1=sehr klare struktur und 5=schlecht gegliedert.","","","N","N","0","0","1","de"
+"137","75897","27","5","Lernziele","Wurden bei der Veranstaltung alle Lernziele erreicht? Bitte wählen Sie einen Wert zwischen 1=alle Lernziele erreicht und 5=kein Lernziel erreicht.","","","N","Y","0","0","2","de"
+"138","75897","27","5","Tempo","Wie schnell ging der Dozent bei der Vermittlung des Stoffes vor? Bitte wählen Sie einen Wert zwischen 1=nicht zu schnell und 5=viel zu schnell.","","","N","N","0","0","3","de"
+"139","75897","27","Y","Einbeziehung","Wurden die Studenten bei der Veranstaltung mit einbezogen?","","","N","Y","0","0","4","de"
+"140","75897","27","M","Studentenbeteiligung","Auf welche Weise wurden die Studierenden bei der Veranstaltung einbezogen?","","Wählen Sie alle Antworten, die auf die Veranstaltung zutreffen.","Y","N","0","0","5","de"
+"141","75897","28","5","Interesse","Waren die Inhalte der Veranstaltung aus Ihrer Sicht interessant? Bitte wählen Sie einen Wert zwischen 1=alles sehr interessant und 5=völlig uninteressant.","","","N","N","0","0","0","de"
+"142","75897","28","5","Themenstruktur","Waren die behandelten Themen in sich stringent? Bitte wählen Sie einen Wert zwischen 1=inhaltlich stringent und 5=völlig zusammenhangslos.","","","N","N","0","0","1","de"
+"143","75897","28","A","Hilfe durch Dozenten","Welche Hilfestellungen gab der Dozent den Studierenden?","","Bitte wählen Sie für jedes Merkmal dessen Ausprägung aus, wobei 1=""intensiv angeboten"" und 5=""gar nicht angeboten"" bedeutet","N","Y","0","0","2","de"
+"144","75897","28","Y","Diskussion","Gab es in den Veranstaltungen Raum für Diskussionen?","","","N","N","0","0","3","de"
+"145","75897","28","5","Benotung","Halten Sie die Benotung durch den Dozenten für angemessen? Bitte wählen Sie einen Wert zwischen 1=sehr faire Benotung und 5=absolut unfaire Benotung.","","","N","Y","0","0","4","de"
 
 #
 # ANSWERS TABLE
 #
 "qid","code","answer","default_value","sortorder","language"
-"116","1","es war reichlich Platz vorhanden","N","1","de"
-"116","2","es war ausreichend Platz vorhanden","N","2","de"
-"116","3","es ging einigermaßen","N","3","de"
-"116","4","das Platzangebot war miserabel","N","4","de"
-"119","1","Ich hatte keine Lust","N","1","de"
-"119","2","Der Termin war einfach zu früh (da schlafe ich sonst noch)","N","2","de"
-"119","3","Ich kannte den Inhakt schon","N","3","de"
-"119","4","Ich habe den Termin vergessen","N","4","de"
-"119","5","Der Dozent langweilt mich","N","5","de"
-"119","6","Ich hatte einen wichtigen Termin","N","6","de"
-"119","7","Ich wusste nicht, wann die Veranstaltung beginnt","N","7","de"
-"127","1","Die Studierenden konnten Fragen stellen","N","1","de"
-"127","2","Der Dozent richtete Fragen an die Studierenden","N","2","de"
-"127","3","Die Studierenden konnten/sollten ihre eigenen Lösungen präsentieren","N","3","de"
-"127","4","Der Dozent ließ Aufgaben durch Gruppenarbeit lösen","N","4","de"
-"127","5","Der Dozent verteilte Aufgaben an einzelne Studierende","N","5","de"
-"130","1","Vorversionen von Ausarbeitungen konnten zur Begutachtung abgegeben werden","N","1","de"
-"130","2","Das Inhaltsverzeichnis einer Ausarbeitung/Präsentation konnte mit dem Dozenten abgestimmt werden","N","2","de"
-"130","3","Der Dozent sah sich im Vorfeld eine Präsentation an und gab Ratschläge","N","3","de"
-"130","4","Der Dozent bot Hilfe in seiner Sprechstunde an","N","4","de"
-"130","5","Fragen wurden durch den Dozenten per Mail beantwortet","N","5","de"
-"130","6","Der Dozent stellte Vorlagen und Vergleichsarbeiten als Orientierung zur Verfügung","N","6","de"
+"143","1","Vorversionen von Ausarbeitungen konnten zur Begutachtung abgegeben werden","N","1","de"
+"143","2","Das Inhaltsverzeichnis einer Ausarbeitung/Präsentation konnte mit dem Dozenten abgestimmt werden","N","2","de"
+"143","3","Der Dozent sah sich im Vorfeld eine Präsentation an und gab Ratschläge","N","3","de"
+"143","4","Der Dozent bot Hilfe in seiner Sprechstunde an","N","4","de"
+"143","5","Fragen wurden durch den Dozenten per Mail beantwortet","N","5","de"
+"143","6","Der Dozent stellte Vorlagen und Vergleichsarbeiten als Orientierung zur Verfügung","N","6","de"
+"140","1","Die Studierenden konnten Fragen stellen","N","1","de"
+"140","2","Der Dozent richtete Fragen an die Studierenden","N","2","de"
+"140","3","Die Studierenden konnten/sollten ihre eigenen Lösungen präsentieren","N","3","de"
+"140","4","Der Dozent ließ Aufgaben durch Gruppenarbeit lösen","N","4","de"
+"140","5","Der Dozent verteilte Aufgaben an einzelne Studierende","N","5","de"
+"132","1","Ich hatte keine Lust","N","1","de"
+"132","2","Der Termin war einfach zu früh (da schlafe ich sonst noch)","N","2","de"
+"132","3","Ich kannte den Inhakt schon","N","3","de"
+"132","4","Ich habe den Termin vergessen","N","4","de"
+"132","5","Der Dozent langweilt mich","N","5","de"
+"132","6","Ich hatte einen wichtigen Termin","N","6","de"
+"132","7","Ich wusste nicht, wann die Veranstaltung beginnt","N","7","de"
+"129","1","es war reichlich Platz vorhanden","N","1","de"
+"129","2","es war ausreichend Platz vorhanden","N","2","de"
+"129","3","es ging einigermaßen","N","3","de"
+"129","4","das Platzangebot war miserabel","N","4","de"
 
 #
 # CONDITIONS TABLE
 #
 "cid","qid","cqid","cfieldname","method","value"
-"6","127","126","75897X25X126","==","Y"
+"5","140","139","75897X27X139","==","Y"
 
 #
 # LABELSETS TABLE
 #
 "lid","label_name","languages"
-"1","Engagement","de"
-"2","Veranstaltungsarten (aktiv/passiv)","de"
+"5","Engagement","de"
+"6","Veranstaltungsarten (aktiv/passiv)","de"
 
 #
 # LABELS TABLE
 #
 "lid","code","title","sortorder","language"
-"1","1","sehr engagiert","1","de"
-"1","2","engagiert","2","de"
-"1","3","wenig engagiert","3","de"
-"1","4","gar nicht engagiert","4","de"
-"1","5","keine Bewertung","5","de"
-"2","1","Studenten waren aktiv (Haben im Seminar ihre Arbeiten vorgestellt o. ä.)","1","de"
-"2","2","Studenten waren passiv (Haben Vorlesungen zugehört oder in Übungen die Lösung von Aufgaben verfolgt)","2","de"
+"6","1","Studenten waren aktiv (Haben im Seminar ihre Arbeiten vorgestellt o. ä.)","1","de"
+"6","2","Studenten waren passiv (Haben Vorlesungen zugehört oder in Übungen die Lösung von Aufgaben verfolgt)","2","de"
+"5","5","keine Bewertung","5","de"
+"5","4","gar nicht engagiert","4","de"
+"5","1","sehr engagiert","1","de"
+"5","2","engagiert","2","de"
+"5","3","wenig engagiert","3","de"
 
 #
 # QUESTION_ATTRIBUTES TABLE
 #
 "qaid","qid","attribute","value"
-"6","118","maximum_chars","3"
+"26","131","maximum_chars","3"
 
 #
 # ASSESSMENTS TABLE
@@ -111,5 +111,13 @@
 # SURVEYS_LANGUAGESETTINGS TABLE
 #
 "surveyls_survey_id","surveyls_language","surveyls_title","surveyls_description","surveyls_welcometext","surveyls_urldescription","surveyls_email_invite_subj","surveyls_email_invite","surveyls_email_remind_subj","surveyls_email_remind","surveyls_email_register_subj","surveyls_email_register","surveyls_email_confirm_subj","surveyls_email_confirm"
-"75897","de","Studiply Test","Diese Umfrage dient der Vorlesungsevaluation","Herzlichen willkommen zur ersten Testumfrage von Studiply.","Limesurvey Adminfenster","Einladung zur ersten Studiply-Testumfrage","Hallo {FIRSTNAME},\n\nHiermit möchten wir Sie zu einer kurzen Testumfrage einladen.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n{SURVEYURL}","Erinnerung an Teilnahme der Studiply Testumfrage","Hallo {FIRSTNAME},\n\nVor kurzem haben wir Sie zu einer Umfrage eingeladen.\n\nZu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgefüllt haben. Wir möchten Ihnen mitteilen, dass die Umfrage noch aktiv ist und würden uns freuen, wenn Sie teilnehmen könnten.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n{SURVEYURL}","Registrierungsbestätigung für Teilnahmeumfrage","Hallo {FIRSTNAME},\n\nSie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.\n\n{SURVEYURL}\n\nWenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.","Abschlussbestätigung der Studiply-Testumfrage","Hallo {FIRSTNAME},\n\nVielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.\n\nMit freundlichen Grüßen,\n\n{ADMINNAME}"
+"75897","de","Studiply Test","Diese Umfrage dient nur zu Demonstrationszwecken","Herzlichen willkommen zur ersten Testumfrage von Studiply.","HIS GmbH","Einladung zur ersten Studiply-Testumfrage","Hallo {FIRSTNAME},\n\nHiermit möchten wir Sie zu einer kurzen Testumfrage einladen.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n{SURVEYURL}","Erinnerung an Teilnahme der Studiply Testumfrage","Hallo {FIRSTNAME},\n\nVor kurzem haben wir Sie zu einer Umfrage eingeladen.\n\nZu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgefüllt haben. Wir möchten Ihnen mitteilen, dass die Umfrage noch aktiv ist und würden uns freuen, wenn Sie teilnehmen könnten.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.\n\n{SURVEYURL}","Registrierungsbestätigung für Teilnahmeumfrage","Hallo {FIRSTNAME},\n\nSie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.\n\nUm an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.\n\n{SURVEYURL}\n\nWenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.","Abschlussbestätigung der Studiply-Testumfrage","Hallo {FIRSTNAME},\n\nVielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.\n\nMit freundlichen Grüßen,\n\n{ADMINNAME}"
+
+#
+# QUOTA TABLE
+#
+
+#
+# QUOTA_MEMBERS TABLE
+#
 
