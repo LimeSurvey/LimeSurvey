@@ -3611,8 +3611,20 @@ function do_array_5point($ia)
 	$anscount = $ansresult->RecordCount();
 
 	$fn = 1;
-	$answer = "\n<table class=\"question\">\n";
-	$answer .= "\t<thead>\n\t\t<tr>\n"
+	$answer = "\n<table class=\"question\">\n"
+	. "\t<col class=\"col-answers\" />\n"
+	. "\t<colgroup class=\"col-responses\">\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n";
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
+	{
+		$answer .= "\t\t<col class=\"col-no-answer even\" />\n";
+	}
+	$answer .= "\t</colgroup>\n"
+	. "\t<thead>\n\t\t<tr>\n"
 	. "\t\t\t<td class=\"array1\" width=\"$answerwidth%\"></td>\n";
 	for ($xc=1; $xc<=5; $xc++)
 	{
@@ -3740,6 +3752,23 @@ function do_array_10point($ia)
 
 	$fn = 1;
 	$answer = "\t\t\t<table class=\"question\">\n"
+	. "\t<col class=\"col-answers\" />\n"
+	. "\t<colgroup class=\"col-responses\">\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n";
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
+	{
+		$answer .= "\t\t<col class=\"col-no-answer odd\" />\n";
+	}
+	$answer .= "\t</colgroup>\n"
 	. "\t<thead>\n\t\t<tr>\n"
 	. "\t\t\t<td class=\"array1\" width=\"$answerwidth%\"></td>\n";
 	for ($xc=1; $xc<=10; $xc++)
@@ -3850,6 +3879,16 @@ function do_array_yesnouncertain($ia)
 	$anscount = $ansresult->RecordCount();
 	$fn = 1;
 	$answer = "\n<table class=\"question\">\n"
+	. "\t<col class=\"col-answers\" />\n"
+	. "\t<colgroup class=\"col-responses\">\n"
+	. "\t\t<col class=\"col-1 odd\" />\n"
+	. "\t\t<col class=\"col-2 even\" />\n"
+	. "\t\t<col class=\"col-3 odd\" />\n";
+	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
+	{
+		$answer .= "\t\t<col class=\"col-no-answer even\" />\n";
+	}
+	$answer .= "\t</colgroup>\n"
 	. "\t<thead>\n\t\t<tr>\n"
 	. "\t\t\t<td class=\"array1\" width=\"$answerwidth%\"></td>\n"
 	. "\t\t\t\t\t<th class=\"array1\">".$clang->gT('Yes')."</th>\n"
@@ -4076,13 +4115,13 @@ function do_array_increasesamedecrease($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);   //Checked
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
+	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1)) {
 		$answerwidth=$answerwidth['value'];
 	} else {
 		$answerwidth=20;
 	}
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
-    if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
+    if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1)) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	} else {
 	    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
@@ -4091,17 +4130,30 @@ function do_array_increasesamedecrease($ia)
 	$anscount = $ansresult->RecordCount();
 
 	$fn = 1;
-	$answer = "\t\t\t<table class='question'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td class='array1' width='$answerwidth%'></td>\n"
-	. "\t\t\t\t\t<td class='array1'>".$clang->gT("Increase")."</td>\n"
-	. "\t\t\t\t\t<td class='array1'>".$clang->gT("Same")."</td>\n"
-	. "\t\t\t\t\t<td class='array1'>".$clang->gT("Decrease")."</td>\n";
+	$answer = "\n<table class='question'>\n"
+	. "\t<col class=\"col-answers\" />\n"
+	. "\t<colgroup class=\"col-responses\">\n"
+	. "\t\t<col class=\"odd\" />\n"
+	. "\t\t<col class=\"even\" />\n"
+	. "\t\t<col class=\"odd\" />\n";
+	if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+	{
+		$answer .= "\t\t<col class=\"col-no-answer even\" />\n";
+	}
+
+	$answer .= "\t</colgroup>\n"
+	. "\t<thead>\n"
+	. "\t\t<tr>\n"
+	. "\t\t\t<td width=\"$answerwidth%\">&nbsp;</td>\n"
+	. "\t\t\t<th>".$clang->gT('Increase')."</th>\n"
+	. "\t\t\t<th>".$clang->gT('Same')."</th>\n"
+	. "\t\t\t<th>".$clang->gT('Decrease')."</th>\n";
 	if ($ia[6] != "Y" && $shownoanswer == 1) //Question is not mandatory
 	{
-		$answer .= "\t\t\t\t\t<td class='array1'>".$clang->gT("No answer")."</td>\n";
+		$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
 	}
-	$answer .= "\t\t\t\t</tr>\n";
+	$answer .= "\t\t</tr>\n"
+	."\t</thead>\n";
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		$myfname = $ia[1].$ansrow['code'];
@@ -4110,64 +4162,72 @@ function do_array_increasesamedecrease($ia)
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
 		if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
-			$answertext = "<span class='errormandatory'>{$answertext}</span>";
+			$answertext = "<span class=\"errormandatory\">{$answertext}</span>";
 		}
 		if (!isset($trbc) || $trbc == "array1") {$trbc = "array2";} else {$trbc = "array1";}
-		$htmltbody2 = "";
-		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
+		$htmltbody2 = "\n\t<tbody>\n";
+		if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 		{
-			$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-		} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
+			$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+		}
+		else if
+		(($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: none'><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-				$_SESSION[$myfname] = "";
+				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style='\"isplay: none\">\n\t\t<input type=\"hidden\" name='\"bdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+				$_SESSION[$myfname] = '';
 			} else
 			{
-				$htmltbody2 = "<tbody id='javatbd$myfname' style='display: '><input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
+				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 			}
 		}
-		$answer .= "\t\t\t\t$htmltbody2<tr class='$trbc'>\n"
-		. "\t\t\t\t\t<td align='right' class='answertext'>$answertext</td>\n"
-		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-I'>"
-		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-I' value='I' title='".$clang->gT("Increase")."'";
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "I") {$answer .= " checked='checked'";}
+		$answer .= "$htmltbody2\t\t<tr class=\"$trbc\">\n"
+		. "\t\t\t<td class=\"answertext\">$answertext</td>\n"
+		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-I\">\n"
+		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title='\"".$clang->gT("Increase")."\"";
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
+		{
+			$answer .= CHECKED;
+		}
 
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)'  /></label></td>\n"
-		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-S'>"
-		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-S' value='S' title='".$clang->gT("Same")."'";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n"
+		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-S\">\n"
+		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name='\"myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT("Same")."\"";
 
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "S") {$answer .= " checked='checked'";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'S') {$answer .= CHECKED;}
 
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)'  /></label></td>\n"
-		. "\t\t\t\t\t\t<td align='center'><label for='answer$myfname-D'>"
-		."<input class='radio' type='radio' name='$myfname' id='answer$myfname-D' value='D' title='".$clang->gT("Decrease")."'";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n"
+		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-D\">\n"
+		."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT("Decrease")."\"";
 		// --> END NEW FEATURE - SAVE
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == "D") {$answer .= " checked='checked'";}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'D')
+		{
+			$answer .= CHECKED;
+		}
 
-		$answer .= " onclick='checkconditions(this.value, this.name, this.type)'  /></label>\n"
-		. "\t\t\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
+		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n"
+		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
 		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' /></td>\n";
+		$answer .= "\" />\n\t\t\t</td>\n";
 
-		if ($ia[6] != "Y" && $shownoanswer == 1)
+		if ($ia[6] != 'Y' && $shownoanswer == 1)
 		{
-			$answer .= "\t\t\t\t\t<td align='center'><label for='answer$myfname-'>"
-			."<input class='radio' type='radio' name='$myfname' id='answer$myfname-' value='' title='".$clang->gT("No answer")."'";
-			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
+			$answer .= "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-\">\n"
+			."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT("No answer")."\"";
+			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
 			{
-				$answer .= " checked='checked'";
+				$answer .= CHECKED;
 			}
-			$answer .= " onclick='checkconditions(this.value, this.name, this.type)'  /></label></td>\n";
+			$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n";
 		}
-		$answer .= "\t\t\t\t</tr>\n";
+		$answer .= "\t\t</tr>\n";
 		$inputnames[]=$myfname;
 		$fn++;
 	}
-	$answer .= "\t\t\t</table>\n";
+	$answer .= "\t</tbody>\n</table>\n";
 	return array($answer, $inputnames);
 }
 
