@@ -451,7 +451,7 @@ else
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 			while ($abrow = $abresult->FetchRow())
 			{
-				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(20),\n";
+				$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` F,\n";
 			}
 		} //End if ($arow['type'] == "K")
 /*		elseif ($arow['type'] == "J")
