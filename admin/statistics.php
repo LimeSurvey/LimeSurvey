@@ -614,33 +614,37 @@ foreach ($filters as $flt)
 		
 		
 		/*
-		 * DON'T show any filter options for date questions
+		 * DON'T show any statistics for date questions
 		 * because there aren't any statistics implemented yet!
+		 * 
+		 * Only filtering by date is possible.
 		 * 
 		 * See bug report #2539 and
 		 * feature request #2620
 		 */
-		/*case "D": // Date
+		case "D": // Date
 		
-		
+		/*
 		 * - input name
 		 * - date equals
 		 * - date less than
 		 * - date greater than
-		 
+		 */
 		$myfield2="D$myfield";
 		$myfield3="$myfield2=";
 		$myfield4="$myfield2<"; 
         $myfield5="$myfield2>";
-		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>"
+		$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 		
-		."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+		//no statistics available yet!
+		//."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
 		
-		if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
-		{$statisticsoutput .= " checked='checked'";}
+		//if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
+		//{$statisticsoutput .= " checked='checked'";}
 		
-		$statisticsoutput .= " /><strong>"
-		.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]))
+		//$statisticsoutput .= " /><strong>"
+		$statisticsoutput .= "<strong>"
+		.showSpeaker($niceqtext)
 		."</strong><br />\n"
 		
 		."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
@@ -663,7 +667,7 @@ foreach ($filters as $flt)
         $allfields[]=$myfield3;
         $allfields[]=$myfield4;
         $allfields[]=$myfield5;
-		break;*/
+		break;
 		
 		
 		
