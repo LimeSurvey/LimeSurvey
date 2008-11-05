@@ -58,7 +58,7 @@ $showcombinedresults = 0;
  * this variable is used in the function shortencode() which cuts off a question/answer title
  * after $maxchars and shows the rest as tooltip
  */
-$maxchars = 10;
+$maxchars = 13;
 
 
 
@@ -4251,18 +4251,18 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 
 function showSpeaker($hinttext)
 {
-	global $clang, $imagefiles, $max;
+	global $clang, $imagefiles, $maxchars;
 	
-	if(!isset($max))
+	if(!isset($maxchars))
 	{
-		$max = 15;
+		$maxchars = 15;
 	}
 	
-	if(strlen($hinttext) > ($max))
+	if(strlen($hinttext) > ($maxchars))
 	{
 		$shortstring = strip_tags($hinttext);
 		
-		$shortstring = mb_substr($hinttext, 0, $max);
+		$shortstring = mb_substr($hinttext, 0, $maxchars);
 		
 		//output with hoover effect
 		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
