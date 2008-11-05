@@ -31,6 +31,28 @@ class japhHelper {
 	}
 	
 	/**
+	 * function to get the id of the surveyowner
+	 *
+	 * @param unknown_type $iVid
+	 * @return unknown
+	 */
+	function getSurveyOwner($iVid)
+	{
+		global $connect ;
+		global $dbprefix ;
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		include("japh.config.php");
+		$japhHelper= new JaphHelper();
+		if($japhHelper->surveyExists($iVid))
+		{
+			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=$iVid";
+			$rs = db_execute_assoc($query2num);
+			return $rs->FetchRow();
+			
+		}else{return false;}
+	}
+	
+	/**
 	 * This function changes data in LS-DB, its very sensitive, because every table can be changed.
 	 *
 	 * @param unknown_type $table

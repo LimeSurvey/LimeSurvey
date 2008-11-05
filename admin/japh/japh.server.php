@@ -55,8 +55,8 @@ else{
 }
 
 //adds the functions to the SoapServer Object, 
-//the sChangeSurvey function should be commented out for productive Use
-//$server->addFunction("sChangeSurvey");
+//the sChangeSurvey and sDeleteSurvey function should be commented out for productive Use
+$server->addFunction("sChangeSurvey");
 $server->addFunction("sDeleteSurvey");
 $server->addFunction("sActivateSurvey");
 $server->addFunction("sCreateSurvey");
@@ -82,6 +82,12 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 	if(!$japhHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	//check for Surveyowner. Only owners and superadmins can change and activate surveys
+	if(!$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Databasetables");
 		exit;
 	}
 	
@@ -119,6 +125,13 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 	if(!$japhHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey you want to activate does not exists");
+		exit;
+	}
+	
+	//check for Surveyowner. Only owners and superadmins can change and activate surveys
+	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
 	
@@ -481,6 +494,7 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
 		throw new SoapFault("Database: ", "Survey does not exists");
 		exit;
 	}
+		
 	// check if the token table exists, else throw fault message
 	if(db_tables_exist($dbprefix."tokens_".$iVid))
 	{		
@@ -536,6 +550,14 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		throw new SoapFault("Authentication: ", "User or Password wrong");
 		exit;
 	}
+	
+	//check for Surveyowner
+	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
+		exit;
+	}
+	
 	if(!is_file($modDir."mod_".$sMod.".csv"))
 	{
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
@@ -579,6 +601,14 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
+	
+	//check for Surveyowner
+	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
+		exit;
+	}
+	
 	if(is_array($lastId))
 	{
 		$japhHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
@@ -620,6 +650,12 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 	if(!$japhHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	//check for surveyOwner
+	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
 	
@@ -735,6 +771,12 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	if(!$japhHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to delete Surveys from other people");
 		exit;
 	}
 	
