@@ -613,15 +613,21 @@ foreach ($filters as $flt)
 		break;
 		
 		
-		
-		case "D": // Date
-		
 		/*
+		 * DON'T show any filter options for date questions
+		 * because there aren't any statistics implemented yet!
+		 * 
+		 * See bug report #2539 and
+		 * feature request #2620
+		 */
+		/*case "D": // Date
+		
+		
 		 * - input name
 		 * - date equals
 		 * - date less than
 		 * - date greater than
-		 */
+		 
 		$myfield2="D$myfield";
 		$myfield3="$myfield2=";
 		$myfield4="$myfield2<"; 
@@ -657,7 +663,7 @@ foreach ($filters as $flt)
         $allfields[]=$myfield3;
         $allfields[]=$myfield4;
         $allfields[]=$myfield5;
-		break;
+		break;*/
 		
 		
 		
@@ -1941,7 +1947,7 @@ if (isset($_POST['display']) && $_POST['display'])
 			$firstletter=substr($pv,0,1);
 			
 			/*
-			 * check for some question types:
+			 * these question types WON'T be handled here:
 			 * M = Multiple Options
 			 * T - Long Free Text 
 			 * Q - Multiple Short Text 
@@ -2877,7 +2883,13 @@ if (isset($summary) && $summary)
 		//is there some "id", "datestamp" or "D" within the type?
  		elseif (substr($rt, 0, 2) == "id" || substr($rt, 0, 9) == "datestamp" || ($firstletter == "D"))
 		{
-			//don't do anything
+			/*
+			 * DON'T show anything for date questions
+			 * because there aren't any statistics implemented yet!
+			 * 
+			 * See bug report #2539 and
+			 * feature request #2620
+			 */
 		}
 		
 		
