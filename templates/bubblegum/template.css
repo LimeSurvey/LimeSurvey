@@ -137,6 +137,36 @@ background-color:#A7A9D1;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
+/* ==============================
+   Full list of question classes
+ .numeric
+,.choice-5-pt-radio
+,.yes-no
+,.gender
+,.date
+,.numeric-multi
+,.numeric
+,.list-with-comment
+,.list-dropdown-flexible
+,.ranking
+,.numeric-multi
+,.language
+,.multiple-opt-comments
+,.multiple-short-txt
+,.text-short
+,.text-long
+,.numeric-multi
+,.array-5-pt
+,.array-10-pt
+,.array-yes-uncertain-no
+,.array-increase-same-decrease 
+,.array-flexible-row 
+,.array-flexible-column 
+,.slider 
+,.array-multi-flexi 
+,.array-flexible-duel-scale 
+*/
+
 /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
  .choice-5-pt-radio ul
@@ -486,6 +516,20 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .gender {}
 */
 
+ .array-5-pt thead th
+,.array-10-pt thead th
+,.array-yes-uncertain-no thead th
+,.array-increase-same-decrease thead th
+,.array-flexible-row thead th
+,.array-increase-same-decrease thead th
+,.array-flexible-row thead th
+,.array-multi-flexi thead th
+,.array-flexible-duel-scale thead th
+,.array-flexible-column thead th
+{
+	vertical-align: bottom;
+}
+
  .array-5-pt td , .array-5-pt th
 ,.array-10-pt td , .array-10-pt th
 ,.array-yes-uncertain-no td , .array-yes-uncertain-no th
@@ -495,6 +539,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-flexible-row td , .array-flexible-row th
 ,.array-multi-flexi td , .array-multi-flexi th
 ,.array-flexible-duel-scale td , .array-flexible-duel-scale th
+,.array-flexible-column td , .array-flexible-column th
 {
 	text-align: center;
 }
@@ -507,6 +552,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-flexible-row td.answertext
 ,.array-multi-flexi td.answertext
 ,.array-flexible-duel-scale td.answertext
+,.array-flexible-column td.arraycaptionleft
 {
 	text-align: right;
 }
@@ -542,6 +588,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	text-align: left;
 }
 
+.array-flexible-column col.odd
+{
+	background-color: #eee;
+}
 
 
 /* Jquery CSS
