@@ -12,7 +12,6 @@ font-family:verdana;
 .text {
 background-color:#CCF;
 color:maroon;
-font-size:9pt;
 font-family:verdana;
 }
 
@@ -21,6 +20,7 @@ color:#03C;
 }
 
 .answertextright {
+color:#03C;
 text-align:left;
 }
 
@@ -58,7 +58,6 @@ font-style:italic;
 
 .questiontext{
 font-family:verdana;
-font-size:12px;
 font-weight:bold;
 }
 
@@ -139,7 +138,6 @@ direction: ltr;
 
 .innergraph,.question {
 font-family:verdana;
-font-size:10pt;
 }
 
 .errormandatory,.warningjs {
