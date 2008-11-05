@@ -267,7 +267,7 @@ if (isset($datestamp) && $datestamp == "Y") {
 	."\t\t\t\t\t&nbsp;&nbsp;".$clang->gT("OR between").":<br />\n"
 	."\t\t\t\t\t<input name='$myfield4' value='";
 	if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
-	$statisticsoutput .= "' type='text' /> ".$clang->gT("and")." <input  name='$myfield5' value='";
+	$statisticsoutput .= "' type='text' /> <br />".$clang->gT("and")."<br /> <input  name='$myfield5' value='";
 	if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 	$statisticsoutput .= "' type='text' /></font></td>\n";
 	$allfields[]=$myfield2;
@@ -648,8 +648,8 @@ foreach ($filters as $flt)
 		
 		if (isset($_POST[$myfield4])) {$statisticsoutput .= $_POST[$myfield4];}
 		
-		$statisticsoutput .= "' type='text' /> "
-		                   .$clang->gT("and")." <input  name='$myfield5' value='";
+		$statisticsoutput .= "' type='text' /> <br />"
+		                   .$clang->gT("and")."<br /> <input  name='$myfield5' value='";
 		
 		if (isset($_POST[$myfield5])) {$statisticsoutput .= $_POST[$myfield5];}
 		
