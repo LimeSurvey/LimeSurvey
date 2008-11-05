@@ -459,8 +459,9 @@ foreach ($filters as $flt)
 		    $myfield3="K{$myfield}".$row[0]."L";
 			if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 			
-			//question short code
-			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'><strong>$flt[3]-".$row[0]."</strong>";
+			//start new TD
+			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
+			
 			//checkbox
 			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
 			
@@ -479,7 +480,7 @@ foreach ($filters as $flt)
 
 		    //check number input using JS
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-		    ."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
+		    ."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
 		    ."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		    if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
 		    $statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n";
@@ -598,7 +599,7 @@ foreach ($filters as $flt)
 		if (isset($_POST[$myfield2])){$statisticsoutput .= $_POST[$myfield2];}
 		
 		$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789.,')\" /><br />\n"
-		."\t\t\t\t\t".$clang->gT("Number less than").":<br />\n"
+		."\t\t\t\t\t<font size='1'>".$clang->gT("Number less than").":</font><br />\n"
 		."\t\t\t\t\t<input type='text' name='$myfield3' value='";
 		
 		if (isset($_POST[$myfield3])) {$statisticsoutput .= $_POST[$myfield3];}
