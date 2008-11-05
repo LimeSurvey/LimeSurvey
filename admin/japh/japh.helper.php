@@ -1,5 +1,18 @@
 <?php
-
+/*
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id: japh.helper.php 5922 2008-11-03 13:32:26Z wahrendorff $
+* 
+*/
 class japhHelper {
 	
 	/**
@@ -2690,5 +2703,74 @@ class japhHelper {
 		    return array(gid=>$newgid,qid=>$myQid);
 		    //return $newgid;
 	}
+	
+	/**
+	 * function to delete a Survey with all questions and answers....
+	 *
+	 * @param int $surveyid
+	 * @return boolean
+	 */
+	function deleteSurvey($surveyid)
+	{
+		global $connect ;
+		global $dbprefix ;
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		include("japh.config.php");
+		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
+		
+		$tablelist = $connect->MetaTables();
+		$dict = NewDataDictionary($connect);
+	
+		if (in_array("{$dbprefix}survey_$surveyid", $tablelist)) //delete the survey_$surveyid table
+		{			
+			$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
+			//$dict->ExecuteSQLArray($sqlarray);		
+			$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+		}
+	
+		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
+		{
+			$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
+			$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+		}
+	
+		$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
+		$dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
+		while ($dsrow = $dsresult->FetchRow())
+		{
+			$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
+			$asres = $connect->Execute($asdel);
+			$cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
+			$cdres = $connect->Execute($cddel) or die();
+			$qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
+			$qares = $connect->Execute($qadel);
+		}
+	
+		$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$surveyid";
+		$qres = $connect->Execute($qdel);
+	
+		$scdel = "DELETE FROM {$dbprefix}assessments WHERE sid=$surveyid";
+		$scres = $connect->Execute($scdel);
+	
+		$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid";
+		$gres = $connect->Execute($gdel);
+		
+		$slsdel = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
+	    $slsres = $connect->Execute($slsdel);
+	
+	    $srdel = "DELETE FROM {$dbprefix}surveys_rights WHERE sid=$surveyid";
+		$srres = $connect->Execute($srdel);
+	
+	    $srdel = "DELETE FROM {$dbprefix}saved_control WHERE sid=$surveyid";
+		$srres = $connect->Execute($srdel);
+	
+		$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+		$sres = $connect->Execute($sdel);
+		$surveyid=false;
+		
+		return true;
+		
+	}
+		
 }
 ?>

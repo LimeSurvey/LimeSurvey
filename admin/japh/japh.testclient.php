@@ -1,4 +1,18 @@
 <?php
+/*
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+* 
+* $Id: japh.testclient.php 5922 2008-11-03 13:32:26Z wahrendorff $
+* 
+*/
 $wsdl = $_REQUEST['wsdl'];
 #####################################################################
 ## Configuration Parameters
@@ -172,6 +186,22 @@ $iVid = $_REQUEST['sid'];
 reset($_REQUEST);
 while(list($key, $value) = each($_REQUEST))
 {
+	if(substr($key,0,9)=="delsurvey")
+	{
+		$iVid = $_REQUEST['sid'];
+		//$sMod = $_REQUEST['mod'];
+		try
+		{
+			$sReturn = $client->sDeleteSurvey($user, $pass, $iVid);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+	}
+	
 	if(substr($key,0,9)=="impMatrix")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -308,7 +338,7 @@ while(list($key, $value) = each($_REQUEST))
 		 
 		try
 		{
-			$sReturn = $client->sChangeSurvey($user, "password", $table, $key, $value, $where, $mode);
+			$sReturn = $client->sChangeSurvey($user, $pass , $table, $key, $value, $where, $mode);
 		}
 		catch (SoapFault $fault)
 		{
@@ -456,6 +486,16 @@ Message is left blank):</b> <br />
 <b>Enddate (YYYY-MM-DD):</b> <br />
 <input type='text' name='end' size='30' maxlength='150' /> <br />
 <input type='submit' name='activate' value='Start Survey!' /></form>
+</div>
+
+<div style='float: left;  margin-bottom: 5px; margin-left: 5px'>
+<h3>sDeleteSurvey function</h3>(attention: no safetyquestion is asked!)<br/>
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
+	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
+<br />
+<input type='text' name='sid' size='5' maxlength='5'
+	value='<?php echo $iVid ?>' /> <br />
+<input type='submit' name='delsurvey' value='Delete Survey!' /></form>
 </div>
 
 <div style='float: right;  margin-bottom: 5px'>

@@ -213,6 +213,17 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sImportMatrixFault">
   	<part name="fault" type="xsd:string"></part>
   </message>
+  <message name="sDeleteSurveyRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:string"></part>
+  </message>
+  <message name="sDeleteSurveyResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sDeleteSurveyFault">
+  	<part name="fault" type="xsd:string"></part>
+  </message>
   <portType name="JaphPortType">
     <operation name="sCreateSurvey" >
     <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
@@ -268,10 +279,31 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     	<output name="sImportMatrixResponse" message="tns:sImportMatrixResponse"></output>
             <fault name="sImportMatrixFault" message="tns:sImportMatrixFault"></fault>
         </operation>
+    <operation name="sDeleteSurvey">
+    	<input name="sDeleteSurveyRequest" message="tns:sDeleteSurveyRequest"></input>
+    	<output name="sDeleteSurveyResponse" message="tns:sDeleteSurveyResponse"></output>
+            <fault name="sDeleteSurveyFault" message="tns:sDeleteSurveyFault"></fault>
+        </operation>
   </portType>
   
   <binding name="JaphBinding" type="tns:JaphPortType">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+	
+	<operation name="sDeleteSurvey">
+      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <input name="sDeleteSurveyRequest">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sDeleteSurveyResponse">
+        <soap:body use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sDeleteSurveyFault">
+        <soap:fault name="sDeleteSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
 
 	<operation name="sImportMatrix">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />

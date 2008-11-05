@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
@@ -10,12 +10,8 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
- 
-// Name:			japh.server.php
-// Author:			Tim Wahrendorff
-// last modified: 	12:06 15.10.2008 tw
-// Usage:    		Web Service for registering and starting Surveys in LimeSurvey and more...
-// License: 		Everything I write and do is always under Public GNU (GPLv2 or later)...
+* $Id: japh.server.php 5922 2008-11-03 13:32:26Z wahrendorff $
+* 
 */
 
 // include the japh.config.php
@@ -24,6 +20,9 @@ include_once("japh.config.php");
 // functions helping japhService to do some things with Limesurvey (import, activation, checks)
 include("japh.helper.php");
 
+/**
+ * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
+ */
 if(isset($_GET['wsdl']))
 {
 	if($japhOverSSL)
@@ -31,7 +30,6 @@ if(isset($_GET['wsdl']))
 	else
 		$http = "http://";
 		
-	//server will generate the wsdl with correct url in the future
 	$wsdlString = file_get_contents("japh_orig.wsdl");
 	$wsdlString = str_replace("{japhlocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
 	file_put_contents("japh.wsdl",$wsdlString);
@@ -59,6 +57,7 @@ else{
 //adds the functions to the SoapServer Object, 
 //the sChangeSurvey function should be commented out for productive Use
 //$server->addFunction("sChangeSurvey");
+$server->addFunction("sDeleteSurvey");
 $server->addFunction("sActivateSurvey");
 $server->addFunction("sCreateSurvey");
 $server->addFunction("sInsertToken");
@@ -719,4 +718,36 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
 		return $return;	
 	}
 }
+
+/**
+ * function to delete a survey
+ *
+ * @param unknown_type $sUser
+ * @param unknown_type $sPass
+ * @param unknown_type $iVid
+ */
+function sDeleteSurvey($sUser, $sPass, $iVid)
+{
+	include("japh.config.php");
+	$japhHelper = new japhHelper();
+	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
+	
+	if(!$japhHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	if($japhHelper->deleteSurvey($iVid))
+	{
+		return "Survey $iVid deleted";
+	}
+	else
+	{
+		return "Survey $iVid was not deleted";
+	}
+	
+	
+}
+
 ?>
