@@ -93,7 +93,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
                                 <tr>
                                     <td>".$clang->gT("Language")."</td>
                                     <td>
-                                    <select name='lang' style='width:210px;' onchange='loginlang.value=this.value;'>\n";
+                                    <select name='lang' style='width:216px;' onchange='loginlang.value=this.value;'>\n";
                                     $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
                                     foreach (getlanguagedata() as $langkey=>$languagekind)
                                     {
