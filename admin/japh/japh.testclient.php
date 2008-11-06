@@ -34,7 +34,7 @@ if($wsdl=='')
 $limeUrl='https://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all
-$user ="rakete";
+$user ="admin";
 $pass ="password";
 
 // fixed certificate, if U use some... you need this if you have an own trusted certificate.
