@@ -2535,7 +2535,7 @@ function do_multiplechoice_withcomments($ia)
 		$myfname = $ia[1].$ansrow['code'];
 		$myfname2 = $myfname."comment";
 		$answer_main .= "\t<li>\n\t\t<label for=\"answer$myfname\" class=\"answertext\">\n"
-		. "\t\t\t<input class=\"checkbox\" type=\"checkbox\" name=\"myfname\" id=\"answer$myfname\" value=\"Y\"";
+		. "\t\t\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 		if (isset($_SESSION[$myfname]))
 		{
 			if ($_SESSION[$myfname] == 'Y')
