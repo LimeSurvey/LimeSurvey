@@ -485,10 +485,11 @@ if ($surveyid)
             $icontext=$clang->gT("Execute This Survey");
             $icontext2=$clang->gTview("Execute This Survey");
             }
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 		{
 			$surveysummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('"
-			. $publicurl."/index.php?sid=$surveyid&amp;newtest=Y', '_blank')\" "
+			. $publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=$baselang', '_blank')\" "
 			. "onmouseout=\"hideTooltip()\" "
 			. "title=\"".$icontext2."\" "
 			. "onmouseover=\"showTooltip(event,'$icontext');return false\">"
@@ -505,7 +506,6 @@ if ($surveyid)
 			. "name='DoSurvey' alt='$icontext' /></a>\n";
 			
 			$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-			$baselang = GetBaseLanguageFromSurveyID($surveyid);
 			$tmp_survlangs[] = $baselang;
 			rsort($tmp_survlangs);
 			// Test Survey Language Selection Popup
