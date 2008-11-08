@@ -3477,7 +3477,7 @@ function do_hugefreetext($ia)
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', $maxsize); checkconditions(this.value, this.name, this.type)">';
+	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
