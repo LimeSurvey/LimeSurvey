@@ -502,6 +502,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 	}
 
 	// if security question answer is incorrect
+	// Not called if scid is set in GET params (when using email save/reload reminder URL)
     if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
     {
 	    if ( (!isset($_POST['loadsecurity']) || 
@@ -1604,7 +1605,7 @@ function buildsurveysession()
 	global $totalBoilerplatequestions;
 	global $templang;
 
-	if (!isset($templang) || $templang='')
+	if (!isset($templang) || $templang=='')
 	{
 		$templang=$thissurvey['language'];
 	}
@@ -1646,7 +1647,16 @@ function buildsurveysession()
 					        <td align='right' valign='middle'>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 					        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
-
+			// In case we this is a direct Reload previous answers URL, then add hiddent fields
+			if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
+			{
+				echo "
+						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
+						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
+						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
+						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+			}
 
 			echo "			
 				        </td>
@@ -1697,6 +1707,20 @@ function buildsurveysession()
 			        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 			        <input type='hidden' name='tokenSEC' value='1' id='sid' />"
 			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
+				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
+
+			// In case we this is a direct Reload previous answers URL, then add hiddent fields
+			if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
+			{
+				echo "
+					<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
+					<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
+					<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
+					<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+			}
+
+			echo "
 			        </td>
 		        </tr>";
                 if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
@@ -1820,7 +1844,17 @@ function buildsurveysession()
 				        <tr>
 					        <td align='right' valign='middle'>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='tokenSEC' value='1' id='sid' />";
+					        <input type='hidden' name='tokenSEC' value='1' id='sid' />
+						<input type='hidden' name='lang' value='".$templang."' id='lang' />";
+			if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
+			{
+				echo "
+						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
+						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
+						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
+						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+			}
 
 			echo	        $clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>";
 			}
@@ -1832,7 +1866,17 @@ function buildsurveysession()
 				        <tr>
 					        <td align='right' valign='middle'>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='tokenSEC' value='1' id='sid' />";
+					        <input type='hidden' name='tokenSEC' value='1' id='sid' />
+						<input type='hidden' name='lang' value='".$templang."' id='lang' />";
+			if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
+			{
+				echo "
+						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
+						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
+						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
+						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+			}
 
 			echo	        $clang->gT("Token").":</td><td align='left' valign='middle'>&nbsp;$gettoken<input type='hidden' name='token' value='$gettoken'>";
 			}
