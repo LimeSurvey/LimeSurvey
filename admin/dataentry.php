@@ -341,6 +341,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				$col_name .= ", datestamp\n";
 				$insertqr .= ", '{$_POST['datestamp']}'";
+				$col_name .= ", startdate\n";
+				$insertqr .= ", '{$_POST['datestamp']}'";
 			}
 			if (isset($_POST['ipaddr']) && $_POST['ipaddr']) //handle datestamp if needed
 			{
@@ -479,7 +481,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 		$dataentryoutput .= $errormsg;
 		$dataentryoutput .= "\t\t\t</font><br />[<a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;language=".$_POST['language']."'>".$clang->gT("Add Another Record")."</a>]<br />\n";
-		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a><br />\n";
+		$dataentryoutput .= "[<a href='$scriptname?sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]<br />\n";
 		if (isset($thisid))
 		{
 			$dataentryoutput .= "\t\t\t[<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$thisid'>".$clang->gT("View This Record")."</a>]<br />\n";
