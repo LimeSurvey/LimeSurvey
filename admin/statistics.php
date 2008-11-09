@@ -4141,12 +4141,12 @@ if (isset($summary) && $summary)
 					
 					
                     $Test = new pChart(690,$gheight);  
-					$Test->drawFilledRoundedRectangle(7,7,688,$gheight-2,5,240,240,240);  
-                    $Test->drawRoundedRectangle(5,5,690,$gheight,5,230,230,230);  
+					$Test->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					
                     // Draw the pie chart  
-                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",11);  
-                    $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),220,round($gheight/2),170,TRUE,TRUE,50,20,5);  
+                    $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);  
+                    $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",9);  
                     $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
 					
