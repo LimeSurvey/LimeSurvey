@@ -278,7 +278,11 @@ if ($sourcefrom == "admin")
 }
 
 //SET LOCAL TIME
-if (substr($timeadjust,1,1)!='-' && substr($timeadjust,1,1)!='+') {$timeadjust='+'.$timeadjust.' hours';}
+if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
+if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
+{
+  $timeadjust=$timeadjust.' hours';  
+}
 
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
