@@ -432,7 +432,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "\t\t\t</div>\n"
                         . "\t\t</div>\n";
             $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            if (count(getsurveylist(true)==0) && $action=='' && $surveyid==0) {
+            if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
                              .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'

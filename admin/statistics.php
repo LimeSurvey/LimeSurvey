@@ -4066,17 +4066,18 @@ if (isset($summary) && $summary)
 
                     $DataSet = new pData;  
                     $counter=0;
-                    $maxvalue=0;
+                    $maxyvalue=0;
                     foreach ($grawdata as $datapoint)
                     {
                         $DataSet->AddPoint(array($datapoint),"Serie$counter");  
                         $DataSet->AddSerie("Serie$counter");
 
                         $counter++;
-                        if ($datapoint>$maxvalue) $maxvalue=$datapoint;
+                        if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
                     }
 //                    $DataSet->AddPoint($justcode,"LabelX");
-//                    $DataSet->SetAbsciseLabelSerie("LabelX");  
+//                    $DataSet->SetAbsciseLabelSerie("LabelX");
+                    if ($maxyvalue<10) {++$maxyvalue;}
                     $counter=0;
                     foreach ($lbl as $label)
                     {
@@ -4099,7 +4100,7 @@ if (isset($summary) && $summary)
                     $Test->drawFilledRoundedRectangle(7,7,683,$gheight-7,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,685,$gheight-5,5,230,230,230);  
                     $Test->drawGraphArea(255,255,255,TRUE);  
-                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE);  
+                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",6);
@@ -4139,9 +4140,9 @@ if (isset($summary) && $summary)
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
 					
-                    $Test = new pChart(640,$gheight);  
-					//$Test->drawFilledRoundedRectangle(7,7,293,193,5,240,240,240);  
-                    //$Test->drawRoundedRectangle(5,5,295,195,5,230,230,230);  
+                    $Test = new pChart(690,$gheight);  
+					$Test->drawFilledRoundedRectangle(7,7,688,$gheight-2,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,690,$gheight,5,230,230,230);  
 					
                     // Draw the pie chart  
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",11);  

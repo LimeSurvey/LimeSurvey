@@ -453,7 +453,7 @@
          if ( $this->VMax >= 0 ) { $this->VMax++; }
          else { $this->VMin--; }
         }
-
+       if ($this->VMax==1)  {$this->VMax++;}
        $DataRange = $this->VMax - $this->VMin;
        if ( $DataRange == 0 ) { $DataRange = .1; }
 
