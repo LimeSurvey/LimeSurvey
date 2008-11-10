@@ -2891,7 +2891,7 @@ function do_multiplenumeric($ia)
 	}
 	else
 	{
-		$numbersonly_slider = "";
+		$numbersonly_slider = '';
 	}
 	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
 	{
@@ -3101,7 +3101,7 @@ function do_multiplenumeric($ia)
 			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must be at least ').$min_num_value."</p>\n";
 		}
 
-		$label_width = round($label_width * 0.6);
+		$label_width = round($label_width * 0.8);
 		if($label_width < 2) $label_width = 2;
 		switch($label_width / 2)
 		{
@@ -3155,7 +3155,7 @@ function do_multiplenumeric($ia)
 
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$answer_computed  = "<dl class=\"multiplenumerichelp\">\n";
+			$answer_computed  = "\n<dl class=\"multiplenumerichelp $label_width\">\n";
 			$answer_computed .= "\t<dt>".$clang->gT('Total: ')."</dt>\n\t\t<dd>$prefix<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
 			if ($equalvalue)
 			{
@@ -5010,7 +5010,7 @@ function do_array_multiflexi($ia)
 						$setmyvalue = '';
 					}
 					$answer .= "\" />\n";
-					$answer .= "\t\t\t\t\<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue onclick=\"if(this.checked) {document.getElementById('answer{$myfname2}').value='1';} else {document.getElementById('answer{$myfname2}').value='0';}; return true;\" />\n";
+					$answer .= "\t\t\t\t\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue onclick=\"if(this.checked) {document.getElementById('answer{$myfname2}').value='1';} else {document.getElementById('answer{$myfname2}').value='0';}; return true;\" />\n";
 					$inputnames[]=$myfname2;
 					$answer .= "\t\t\t\t</label>\n"
 					. "\t\t\t</td>\n";
