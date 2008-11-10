@@ -162,11 +162,11 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 	echo "\n<br />\n";
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	doFooter();
-	if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-    {
-      session_unset();
-      session_destroy();
-    }
+	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+	if($thissurvey['printanswers'] != 'Y')
+	{
+		killSession();
+	}
 	exit;
 }
 
