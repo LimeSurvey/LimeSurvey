@@ -361,13 +361,15 @@ function createinsertquery()
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
                 // therefore if no date was chosen in a date question the insert value has to be NULL
-                if ($_SESSION[$value]=='' && $fieldexists['type']=='D')      
+                if (($_SESSION[$value]=='' && $fieldexists['type']=='D'))      
                 {                        
                     $values[]='NULL';
                 }
-                  else  {
-                		$values[]=strip_tags($connect->qstr($myFilter->process($_SESSION[$value])));
-                        }
+                else  
+                {
+                	$values[]=strip_tags($connect->qstr($myFilter->process($_SESSION[$value])));
+                }
+
             }
         }
             
@@ -475,7 +477,7 @@ function createinsertquery()
 					foreach ($hiddenfields as $hiddenfield)
 					{
 						$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
-						if ($fieldinfo['type']=='D')
+						if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
 						{
 							$query .= db_quote_id($hiddenfield)." = NULL,";
 						}
@@ -499,7 +501,8 @@ function createinsertquery()
 					{
 						$fieldinfo = arraySearchByKey($field, $fieldmap, "fieldname", 1);
 						if (!isset($_POST[$field])) {$_POST[$field]='';}
-						if ($_POST[$field]=='' && $fieldinfo['type']=='D')      
+						//fixed numerical question fields. They have to be NULL instead of '' to avoid database errors
+						if (($_POST[$field]=='' && $fieldinfo['type']=='D') || ($_POST[$field]=='' && $fieldinfo['type']=='N') || ($_POST[$field]=='' && $fieldinfo['type']=='K'))      
 						{                        
 							$query .= db_quote_id($field)." = NULL,";
 						}
