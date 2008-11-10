@@ -67,12 +67,12 @@
 .numeric-multi ul.X30 input.text { margin-left: 33.5em; }
 
 .numeric-multi dl.multiplenumerichelp
-{
+{/*
 	position: relative;
 	float: right;
 	margin: -4em -15em 0% 0%;
-}
+*/}
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin: 0% 0% -1.2em 0%;
+	margin: 0% 0% -0.8em 0%;
 }

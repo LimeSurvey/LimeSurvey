@@ -30,7 +30,7 @@ width:90%;
 }
 
 
-#questionhelp
+div.questionhelp
 {
 font-size: 10px; 
 font-style: italic;
@@ -38,19 +38,20 @@ line-height:30px;
 vertical-align:middle;
 }
 
-#questionhelp img
+div.questionhelp img
 {
    margin:5px;
 }
-#question
+div.question
 {
 outline: 1px solid #444;
 background-color:#fff;
 width:97%;
-margin:20px 0%;
+margin:20px auto;
+padding: 0.5em;
 }
 
-#questiontext
+div.questiontext
 {
 font-weight:bold;
 }
@@ -527,7 +528,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
 ,.multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label
 {
-	margin-bottom: -1.4em;
+	margin-bottom: -1.1em;
 	display: block;
 }
  .multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2  input.text , .numeric-multi ul.X2  input.text
@@ -610,15 +611,32 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	position: absolute;
 	width: 16em;
-	bottom: 0.5em;
-	right: 4.5em;
+	bottom: 0.2em;
 }
+.numeric-multi dl.multiplenumerichelp.slider { left: 15em; }
+.numeric-multi dl.multiplenumerichelp.X2 { left: 8em; }
+.numeric-multi dl.multiplenumerichelp.X4 { left: 10em; }
+.numeric-multi dl.multiplenumerichelp.X6 { left: 12em; }
+.numeric-multi dl.multiplenumerichelp.X8 { left: 14em; }
+.numeric-multi dl.multiplenumerichelp.X10 { left: 16em; }
+.numeric-multi dl.multiplenumerichelp.X12 { left: 18em; }
+.numeric-multi dl.multiplenumerichelp.X14 { left: 20em; }
+.numeric-multi dl.multiplenumerichelp.X16 { left: 22em; }
+.numeric-multi dl.multiplenumerichelp.X18 { left: 24em; }
+.numeric-multi dl.multiplenumerichelp.X20 { left: 26em; }
+.numeric-multi dl.multiplenumerichelp.X22 { left: 28em; }
+.numeric-multi dl.multiplenumerichelp.X24 { left: 30em; }
+.numeric-multi dl.multiplenumerichelp.X26 { left: 32em; }
+.numeric-multi dl.multiplenumerichelp.X28 { left: 34em; }
+.numeric-multi dl.multiplenumerichelp.X30 { left: 36em; }
+.numeric-multi dl.multiplenumerichelp.X-large { display: static; }
+
 .numeric-multi dl.multiplenumerichelp dt
 {
 	text-align: right;
 	width: 7em;
 	padding: 0%;
-	margin: 0% 0% -1.8em 0%;
+	margin: 0% 0% -1.5em 0%;
 }
 .numeric-multi dl.multiplenumerichelp dd
 {

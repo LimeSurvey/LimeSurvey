@@ -1,8 +1,8 @@
-<div id="question">
- <div id="questiontext">
+<div class="question">
+ <div class="questiontext">
  {QUESTION_CODE}: {QUESTION} 
  </div>
-<div id="answers">
+<div class="answers">
 <table style="margin:0">
   <tr>
   <td style="text-align:left;">
@@ -11,7 +11,7 @@
 </tr>
 </table> 
  </div>
- <div id="questionhelp">
+ <div class="questionhelp">
 {QUESTIONHELP}
 </div>
 </div>
