@@ -567,8 +567,8 @@ elseif ($subaction == "all")
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
 	$tableheader = "<!-- DATA TABLE -->";
-	if ($fncount < 10) {$tableheader .= "<table width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555' class='menu2columns'>\n";}
-	else {$fnwidth = (($fncount-1)*180); $tableheader .= "<table width='$fnwidth' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	else {$tableheader .= "<table class='browsetable' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<tr valign='top'>\n"
 	. "\t\t<td  class='evenrow' width='$cellwidth'><strong>id</strong></td>\n";
 	foreach ($fnames as $fn)
@@ -686,12 +686,12 @@ elseif ($subaction == "all")
 	}
 
 	$browseoutput .=("\t\t</td>\n"
-	."\t\t<td align='left' valign='center'>\n"
+	."\t\t<td align='left'>\n"
 	."\t\t<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-	."\t\t\t&nbsp&nbsp ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-	."\t\t\t&nbsp&nbsp ".$clang->gT("Filter incomplete answers:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Filter incomplete answers:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
 	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
 	."\t\t\t</select>\n"
@@ -748,9 +748,9 @@ elseif ($subaction == "all")
 
 		for ($i; $i<$fncount; $i++)
 		{
-			$browseoutput .= "\t\t<td align='center'><font size='1' face='verdana'>"
-			. htmlspecialchars($dtrow[$fnames[$i][0]])
-			."</font></td>\n";
+            $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
+            if (trim($browsedatafield=='')) $browsedatafield='&nbsp;';
+			$browseoutput .= "\t\t<td align='center'><font size='1' face='verdana'>$browsedatafield</font></td>\n";
 		}
 		$browseoutput .= "\t</tr>\n";
 	}

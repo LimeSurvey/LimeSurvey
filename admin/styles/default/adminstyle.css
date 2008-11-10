@@ -13,6 +13,9 @@ ul,ol {
 	font-size: 10pt;
 	color: #000;
 }
+p {
+    clear: left;
+}
 .boxstyle {
 	border-color: #9C0;
 	border-style: solid;
@@ -370,9 +373,7 @@ span.settingcaption {
 th.admincell {
 	background-color: #F8BDB5;
 }
-p {
-	clear: left;
-}
+
 form.token label {
 	margin-top: 1em;
 	width: 40%;
@@ -420,24 +421,33 @@ form.token select, form.token input {
 	float: left;
 }
 table.alertbox {
-  width: 450px;
-  margin-left:auto; 
-  margin-right:auto;
-  border: 1px solid;
-  border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
- text-align: left;  
+    width: 450px;
+    margin-left:auto; 
+    margin-right:auto;
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    text-align: left;  
 }
 
 .menubar tr {
- text-align:left;
+    text-align:left;
 }
 
 div.menubar input {
-margin-left:-5px;
-vertical-align:top;
+    margin-left:-5px;
+    vertical-align:top;
 }
-}
+
 a.invalidemail {
 	font-weight: 700;
 	color: red;
+}
+
+.browsetable td {
+    width:140px;     
+    min-width:140px;
+}
+
+.browsetable td:first-child {
+    min-width:50px;
 }
