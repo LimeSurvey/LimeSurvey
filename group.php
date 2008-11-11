@@ -24,9 +24,10 @@ if (!isset($gl)) {$gl=array('null');}
 if (isset($move) && $move == 'moveprev') {$_SESSION['step'] = $thisstep-1;}
 if (isset($move) && $move == 'movenext') {$_SESSION['step'] = $thisstep+1;}
 
-// This prevents the user from going back to the question pages and keeps him on the final page
-// That way his session can be kept so he can still print his answers until he closes the browser
-if (isset($_SESSION['finished'])) {$move='movesubmit'; }
+// We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
+// Previously we used to keep the session and redirect the user to the
+// submit page.
+//if (isset($_SESSION['finished'])) {$move='movesubmit'; }
 
 
 

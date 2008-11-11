@@ -68,11 +68,7 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
 	// Let's first regenerate a session id
-	if (session_regenerate_id() === false) { safe_die("Error Regenerating Session Id");}
-	session_unset();
-	session_destroy();
-	// The following should EXPIRE the client cookie, but isn't used by mode browsers
-	setcookie(session_name(),"EXPIRED",time()-120);
+	killSession();
 	// Let's redirect the client to the same URL after having reseted the session
 	header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
 	sendcacheheaders();
@@ -82,6 +78,30 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
+		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."\t\t</center><br />\n";
+
+	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	doFooter();
+	exit;
+}
+
+if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
+{
+	require_once(dirname(__FILE__).'/classes/core/language.php');
+	$baselang = GetBaseLanguageFromSurveyID($surveyid);
+	$clang = new limesurvey_lang($baselang);
+	// Let's first regenerate a session id
+	killSession();
+	// Let's redirect the client to the same URL after having reseted the session
+	header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
+	sendcacheheaders();
+	doHeader();
+
+	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo "\t\t<center><br />\n"
+		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
+		."\t\t\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
 		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		."\t\t</center><br />\n";
 
@@ -417,7 +437,7 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	exit;
 }
 
-//MAKE SURE SURVEY HASN'T EXPIRED
+//MAKE SURE SURVEY IS ALREADY VALID
 if ($thissurvey['startdate'] > date("Y-m-d") && $thissurvey['usestartdate'] == "Y")
 {
     sendcacheheaders();
