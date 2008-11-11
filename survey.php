@@ -73,8 +73,13 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 		}
 
 		$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
-		. $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n"
-		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		. $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
+		if ($thissurvey['printanswers'] == 'Y')
+		{ 
+			// ClearAll link is only relevant for survey with printanswers enabled
+			// in other cases the session is cleared at submit time
+			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
+		}
 	}
 	else
 	{
