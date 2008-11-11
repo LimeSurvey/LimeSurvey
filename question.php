@@ -288,6 +288,12 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
     //COMMIT CHANGES TO DATABASE
     if ($thissurvey['active'] != "Y")
     {
+	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+	if($thissurvey['printanswers'] != 'Y')
+	{
+		killSession();
+	}    
+
         sendcacheheaders();
         doHeader();
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
@@ -372,6 +378,12 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             header("Location: {$url}");
         }
 
+	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+	if($thissurvey['printanswers'] != 'Y')
+	{
+		killSession();
+	}    
+
         doHeader();
         if (isset($content)) {echo $content;}
 
@@ -382,11 +394,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
     echo "\n<br />\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
-    //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-    if($thissurvey['printanswers'] != 'Y')
-    {
-	killSession();
-    }    
     exit;
 }
 

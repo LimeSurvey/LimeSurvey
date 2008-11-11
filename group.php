@@ -91,6 +91,12 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 	//COMMIT CHANGES TO DATABASE
 	if ($thissurvey['active'] != "Y")
 	{
+		//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+		if($thissurvey['printanswers'] != 'Y')
+		{
+			killSession();
+		}    
+
 		sendcacheheaders();
 		doHeader();
 
@@ -209,20 +215,21 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 		}
 
 
+		//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+		if($thissurvey['printanswers'] != 'Y')
+		{
+			killSession();
+		}    
+
 		doHeader();
 		echo $content;
 
 	}
 
 	echo templatereplace(file_get_contents("$thistpl/completed.pstpl"));
-    echo "\n<br />\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-    doFooter();
-    //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-    if($thissurvey['printanswers'] != 'Y')
-    {
-	killSession();
-    }    
+	echo "\n<br />\n";
+	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+	doFooter();
 	exit;
 }
 
