@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Portuguese-Br language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-10 19:18+0100\n"
-"PO-Revision-Date: 2008-11-10 19:18+0100\n"
+"POT-Creation-Date: 2008-11-11 10:50+0100\n"
+"PO-Revision-Date: 2008-11-11 10:50+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -99,36 +99,35 @@ msgid "Show Help"
 msgstr "Mostrar Ajuda"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:437
-#, fuzzy, php-format
+#, php-format
 msgid "Welcome to %s!"
-msgstr "Bem-vindo(a):"
+msgstr "Bem-vindo(a) %s!:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:438
 msgid "Some piece-of-cake steps to create your very own first survey:"
-msgstr ""
+msgstr "Algumas dicas importantes para criar seu primeiro questionário"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:440
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
-msgstr ""
+msgstr "Crie um novo questionário clicando no ícone %s acima a direita"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:440
-#, fuzzy
 msgid "Add survey"
-msgstr "Adicionar usuário"
+msgstr "Adicionar questionário"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:441
 msgid "Create a new group inside your survey."
-msgstr ""
+msgstr "Criar um novo grupo dentro do seu questionário"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:442
 msgid "Create one or more question inside the new group."
-msgstr ""
+msgstr "Criar uma ou mais questões dentro do novo grupo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:443
 #, php-format
 msgid "Done. Test your survey using the %s icon."
-msgstr ""
+msgstr "Concluido. Teste seu questionário usando o ícone %s."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:443
 #, fuzzy
@@ -754,7 +753,7 @@ msgstr "Visite nosso site!"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3181
 msgid "Email was not sent because demo-mode is activated."
-msgstr ""
+msgstr "O Email não foi enviado porque o modo de demonstração está ativado."
 
 # D:\xampp\xampp\htdocs\phpsurveyor/common.php:2600
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:3321
@@ -846,7 +845,7 @@ msgstr "Data  inválida."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:83
 msgid "Token mismatch"
-msgstr ""
+msgstr "Tokem não coincide"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:84
 #, fuzzy
@@ -855,7 +854,7 @@ msgstr "O código de acesso informadao não é válido ou já foi usado."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:85
 msgid "Please wait to begin with a new session."
-msgstr ""
+msgstr "Favor aguardar para iniciar uma nova sessão"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/index.php:69
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:203
@@ -1095,14 +1094,12 @@ msgid "Date Stamp"
 msgstr "Data de referência"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:255
-#, fuzzy
 msgid "First Scale"
-msgstr "Nome"
+msgstr "Primeira Escala"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:256
-#, fuzzy
 msgid "Second Scale"
-msgstr "Segundo conjunto de legendas"
+msgstr "Segunda Escala"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:300
 #: D:\web\TechPlat\apache\htdocs\limesurvey/printanswers.php:302
@@ -2005,13 +2002,12 @@ msgid "%d responses not completely filled out"
 msgstr "%d respostas não preenchidas totalmente"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:776
-#, fuzzy
 msgid "Are you really sure you want to set all answers to not completed?"
-msgstr "Tem certeza de que deseja reiniciar todos os registros de convites para NÃO?"
+msgstr "Tem certeza de que deseja configurar todos as respostas como não concluidas?"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/browse.php:776
 msgid "Set all answers to not completed"
-msgstr ""
+msgstr "Configurar todas as respostas como não concluídas"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -2820,7 +2816,7 @@ msgstr "Códigos da pergunta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:194
 msgid "Convert spaces in question text to underscores"
-msgstr ""
+msgstr "Converta espaços no texto de pergunta a sublinha"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/database.php:692
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:196
@@ -2841,7 +2837,7 @@ msgstr "Códigos das respostas"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:213
 msgid "Convert Y to 1"
-msgstr ""
+msgstr "Converta Y em 1"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:218
 msgid "Full Answers"
@@ -2880,9 +2876,8 @@ msgstr "De"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1621
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:271
-#, fuzzy
 msgid "to"
-msgstr "Automático"
+msgstr "Para"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/exportresults.php:280
 msgid "Export Data"
@@ -3011,19 +3006,19 @@ msgstr "Atributo 2 do código de acesso"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:144
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:157
 msgid "Survey expiration date (YYYY-MM-DD)"
-msgstr ""
+msgstr "Data de expiração de pesquisa (YYYY-MM-DD)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:123
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:145
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:158
 msgid "Survey expiration date (DD-MM-YYYY)"
-msgstr ""
+msgstr "Data de expiração de pesquisa (DD-MM-YYYY)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:124
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:146
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:159
 msgid "Survey expiration date (MM-DD-YYYY)"
-msgstr ""
+msgstr "Data de expiração de pesquisa (YYYY-DD-MM)"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/fck_LimeReplacementFields.php:132
 msgid "Token code for this participant"
@@ -3228,9 +3223,8 @@ msgid "Expired"
 msgstr "Expirado"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:85
-#, fuzzy
 msgid "Not yet active"
-msgstr "Inativo"
+msgstr "Ainda não ativo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:132
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:430
@@ -3343,9 +3337,8 @@ msgstr "O questionário não pode ser ativado. Verifique se já foram criadas pe
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:437
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:439
-#, fuzzy
 msgid "This survey is active but has a start date."
-msgstr "O questionário está ativo, mas expirado."
+msgstr "O questionário está ativo, mas tem data de início."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:470
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:472
@@ -3414,9 +3407,8 @@ msgstr "Mudar a ordem dos grupos"
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2255
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:650
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:651
-#, fuzzy
 msgid "Disabled - Change Group Order"
-msgstr "Mudar a ordem dos grupos"
+msgstr "Desabilitar - Mudar a Ordem dos Grupos"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:659
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:660
@@ -3480,9 +3472,8 @@ msgstr "Mostrar detalhes do questionário"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:770
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:771
-#, fuzzy
 msgid "Close this survey"
-msgstr "Fechar questionário"
+msgstr "Fechar este questionário"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:801
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2525
@@ -3590,9 +3581,8 @@ msgstr "Fax para:"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:876
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2393
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3058
-#, fuzzy
 msgid "Start date:"
-msgstr "Idioma inicial:"
+msgstr "Data de iníciol:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:887
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2405
@@ -3715,9 +3705,8 @@ msgid "Impossible to delete this question because  there is at least one questio
 msgstr "Não é possíve apagar a pergunta, pois há, pelo menos, uma outra pergunta que depende de seu conteúdo."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1205
-#, fuzzy
 msgid "Disabled - Delete Current Question"
-msgstr "Apagar pergunta"
+msgstr "Desabilitar - Deletar Pergunta Corrente"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:1216
 msgid "Export this Question"
@@ -4076,7 +4065,7 @@ msgstr "Controle de publicação e acesso"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:2386
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/html.php:3055
 msgid "Timed start?"
-msgstr ""
+msgstr "Partida determinada?"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:1884
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/html.php:2125
@@ -4471,9 +4460,8 @@ msgid "Import of group is completed."
 msgstr "A importação do grupo foi concluída."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importgroup.php:682
-#, fuzzy
 msgid "Go to group"
-msgstr "Grupo não encontrado"
+msgstr "Ir para Grupo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importlabel.php:23
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:231
@@ -4568,7 +4556,7 @@ msgstr "Não é possível importar uma pergunta que não atenda ao idioma base d
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:465
 msgid "Faulty line in import - fields and data don't match"
-msgstr ""
+msgstr "Importação de linha defeituosa - campos e dados não combina"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:505
 msgid "Question Import Summary"
@@ -4583,9 +4571,8 @@ msgid "Question import is complete."
 msgstr "A importação da pergunta foi concluída."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importquestion.php:522
-#, fuzzy
 msgid "Go to question"
-msgstr "para a pergunta"
+msgstr "Ir para a pergunta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:51
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/importsurvey.php:59
@@ -4662,7 +4649,7 @@ msgstr "Avisos"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:35
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr ""
+msgstr "Somente Modo Demo: Transferência de arquivo esta desabilitado neste sistema."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/import_resources_zip.php:52
 msgid "Import Survey Resources"
@@ -5518,43 +5505,40 @@ msgid "Export results"
 msgstr "Exportar resultados"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:108
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "Exportar resultado para um arquivo de comandos SPSS"
+msgstr "Exportar dados do resultado para  SPSS"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:109
-#, fuzzy
 msgid "Export SPSS syntax file"
-msgstr "Exportar um arquivo de questionário VV"
+msgstr "Exportar arquivo de sintaxe SPSS"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:110
-#, fuzzy
 msgid "Export SPSS data file"
-msgstr "Exportar banco de dados"
+msgstr "Exportar arquivo  de dados SPSS"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:111
 msgid "Instructions for the impatient"
-msgstr ""
+msgstr "Instruções para os  impacientes"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:113
 msgid "Download the data and the syntax file."
-msgstr ""
+msgstr "Baixar os dados e o arquivo de sintaxe."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:114
 msgid "Open the syntax file in SPSS in Unicode mode"
-msgstr ""
+msgstr "Abra o arquivo de sintaxe em SPSS no modo Unicode"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:115
 msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
-msgstr ""
+msgstr "Edite a 4ª linha e conclua o nome de arquivo com um caminho completo para ele baixar o arquivo de dados."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:116
 msgid "Choose 'Run/All' from the menu to run the import."
-msgstr ""
+msgstr "Selecione 'Rodar/Todos' do menu para carregar a importação."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:118
 msgid "Your data should be imported now."
-msgstr ""
+msgstr "Os seus dados devem ser importados agora."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/spss.php:676
 msgid "Record ID"
@@ -5584,9 +5568,8 @@ msgid "Filter settings"
 msgstr "Opções de filtro"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:224
-#, fuzzy
 msgid "General Filters"
-msgstr "Geral"
+msgstr "Filtros Gerais"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:234
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:477
@@ -5636,7 +5619,7 @@ msgstr "Mostrar gráficos"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1891
 msgid "Don't consider NON completed responses"
-msgstr ""
+msgstr "Não considere nenuma rsposta incompleta"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:1895
 #, fuzzy
@@ -5776,11 +5759,11 @@ msgstr "Incompleto"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:3901
 msgid "Number of cases"
-msgstr ""
+msgstr "Número de casos"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/statistics.php:4007
 msgid "Arithmetic mean"
-msgstr ""
+msgstr "Significado aritimético"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:215
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/templates.php:274
@@ -6543,7 +6526,7 @@ msgstr "Parar no código de acesso de número:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1377
 msgid "Min time between reminders"
-msgstr ""
+msgstr "Tempo em minuto entre lembranças"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:1380
 #, fuzzy
@@ -6702,9 +6685,8 @@ msgid "Duplicate records removed"
 msgstr "Registros duplicados removidos"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2075
-#, fuzzy
 msgid "List"
-msgstr "Limite"
+msgstr "Lista"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/tokens.php:1406
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/tokens.php:2090
@@ -6855,26 +6837,25 @@ msgstr "Nome de usuário não informado."
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:358
 #, php-format
 msgid "Hello %s,"
-msgstr ""
+msgstr "Olá %s,"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:359
 #, php-format
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
-msgstr ""
+msgstr "isto é um email automatizado para notificar que um usuário foi criado para você no site '%s'."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:360
 msgid "You can use now the following credentials to log into the site:"
-msgstr ""
+msgstr "Você pode usar agora as seguintes credenciais para entrar no site:"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:368
-#, fuzzy
 msgid "Click here to log in."
-msgstr "Clique aqui para imprimir suas respostas."
+msgstr "Clique aqui para se conectar."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:369
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
-msgstr ""
+msgstr "Se você tiver alguma pergunta quanto a este email por favor não hesite em contatar com o administrador de site em %s. Agradecemos a gentileza!"
 
 # D:\xampp\xampp\htdocs\phpsurveyor/admin/usercontrol.php:207
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/usercontrol.php:378
@@ -7157,9 +7138,8 @@ msgid "Adding User to group"
 msgstr "Adicionando usuário ao grupo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvexport.php:60
-#, fuzzy
 msgid "File Extension"
-msgstr "Extensão não permitida"
+msgstr "Extensão de Arquivo"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/vvexport.php:65
 msgid "Export Responses"
