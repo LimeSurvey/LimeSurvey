@@ -3625,11 +3625,7 @@ function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
 	
-	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
-	$ansresult = db_execute_assoc($ansquery);   //Checked
-	if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
-	// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-
+	
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
 	{
@@ -3646,6 +3642,11 @@ function do_array_5point($ia)
 	}
 	$cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
+	$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+	$ansresult = db_execute_assoc($ansquery);   //Checked
+	if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
+	// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
+	
 
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
@@ -3679,7 +3680,7 @@ function do_array_5point($ia)
 	{
 		$answer .= "\t\t\t<th>$xc</th>\n";
 	}
-	if ($right_exists) {$answer .= "\t\t\t<td>&nbsp;</td>\n";} 
+	if ($right_exists) {$answer .= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";} 
 	if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
 	{
 		$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
@@ -4373,9 +4374,9 @@ function do_array_flexible($ia)
 
 //		$cellwidth=sprintf('%02d', $cellwidth);
 		
-		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
+		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%' ";
 		$ansresult = db_execute_assoc($ansquery);  //Checked
-		if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
+		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 		if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 		{
@@ -4423,7 +4424,7 @@ function do_array_flexible($ia)
 		{
 			$answer .= "\t\t\t<th>".$ld."</th>\n";
 		}
-		if ($right_exists) {$answer .= "\t\t\t<td>&nbsp;</td>\n";} 
+		if ($right_exists) {$answer .= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";} 
 		if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 		{
 			$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
@@ -4523,7 +4524,7 @@ function do_array_flexible($ia)
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class='answertextright'>&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class='answertextright' width='$answerwidth%'>&nbsp;</td>\n";
 			}
 
 			if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -4610,6 +4611,7 @@ function do_array_multitext($ia)
 		if ($ansresult->RecordCount()>0)
 		{
 			$right_exists=true;
+			$answerwidth=$answerwidth/2;
 		}
 		else
 		{
@@ -4633,7 +4635,7 @@ function do_array_multitext($ia)
 
 		$answer_head = "\n\t<thead>\n"
 		. "\t\t<tr>\n"
-		. "\t\t\t<td>&nbsp;</td>\n";
+		. "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";
 
 		$odd_even = '';
 		foreach ($labelans as $ld)
@@ -4742,11 +4744,11 @@ function do_array_multitext($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td class=\"answertextright\">$answertext</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" width='$answerwidth%'>$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" width='$answerwidth%'>&nbsp;</td>\n";
 			}
 			$answer .= "\t\t</tr>\n";
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
@@ -4839,7 +4841,7 @@ function do_array_multiflexi($ia)
 		
 		$ansquery = "SELECT answer FROM {$dbprefix}answers WHERE qid=".$ia[0]." AND answer like '%|%'";
 		$ansresult = db_execute_assoc($ansquery);
-		if ($ansresult->RecordCount()>0) {$right_exists=true;} else {$right_exists=false;} 
+		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 		if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 		{
@@ -4858,7 +4860,7 @@ function do_array_multiflexi($ia)
 
 		$myheader = "\n\t<thead>\n"
 		. "\t\t<tr>\n"
-		. "\t\t\t<td>&nbsp;</td>\n";
+		. "\t\t\t<td >&nbsp;</td>\n";
 
 		$odd_even = '';
 		foreach ($labelans as $ld)
@@ -4871,7 +4873,7 @@ function do_array_multiflexi($ia)
 		{
 			$myheader .= "\t\t\t<td>&nbsp;</td>";
 			$odd_even = alternation($odd_even);
-			$mycols .= "\t\t<col class=\"answertextright $odd_even\" width=\"$cellwidth%\" />\n";
+			$mycols .= "\t\t<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
 		}
 		$myheader .= "\t\t</tr>\n"
 		. "\t</thead>\n";
@@ -4953,7 +4955,7 @@ function do_array_multiflexi($ia)
 
 			$trbc = alternation($trbc , 'row');
 			$answer .= $htmltbody2 . "\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\">\n"
+			. "\t\t\t<td class=\"answertext\" width=\"$answerwidth%\">\n"
 			. "\t\t\t\t$answertext\n"
 			. "\t\t\t\t" . $first_hidden_field
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5020,11 +5022,11 @@ function do_array_multiflexi($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td class=\"answertextright\">$answertext</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" width=\"$answerwidth%\">$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" width=\"$answerwidth%\">&nbsp;</td>\n";
 			}
 
 			$answer .= "\t\t</tr>\n";
