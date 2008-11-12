@@ -3749,11 +3749,11 @@ function do_array_5point($ia)
 		if (strpos($answertext2,'|')) 
 		{
 			$answertext2=substr($answertext2,strpos($answertext2,'|')+1);
-			$answer_t_content .= "\t\t\t<td class=\"answertextright\" width=\"$answerwidth%\">$answertext2</td>\n";
+			$answer_t_content .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext2</td>\n";
 		}
 		elseif ($right_exists)
 		{
-			$answer_t_content .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
+			$answer_t_content .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
 		}
 
 		
@@ -4520,11 +4520,11 @@ function do_array_flexible($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td>$answertext</td>\n";
+				$answer .= "\t\t\t<td style='text-align:left;' width='$answerwidth%'>$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class='answertextright' width='$answerwidth%'>&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class='answertextright' style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
 			}
 
 			if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -4720,7 +4720,7 @@ function do_array_multitext($ia)
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 			$trbc = alternation($trbc , 'row');
 			$answer .= $htmltbody2."\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\">\n"
+			. "\t\t\t<td class=\"answertext\"  style='text-align:right;'>\n"
 			. "\t\t\t\t$answertext\n"
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
@@ -4744,11 +4744,11 @@ function do_array_multitext($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td class=\"answertextright\" width='$answerwidth%'>$answertext</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class=\"answertextright\" width='$answerwidth%'>&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
 			}
 			$answer .= "\t\t</tr>\n";
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
@@ -5022,11 +5022,11 @@ function do_array_multiflexi($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td class=\"answertextright\" width=\"$answerwidth%\">$answertext</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class=\"answertextright\" width=\"$answerwidth%\">&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
 			}
 
 			$answer .= "\t\t</tr>\n";
