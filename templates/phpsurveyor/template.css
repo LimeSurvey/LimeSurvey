@@ -216,6 +216,7 @@ background-color:#A7A9D1;
 .date p.question select.month {}
 .date p.question select.year {}
 
+
  .date p.tip
 ,.numeric-multi p.tip
 ,.numeric p.tip
@@ -268,6 +269,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .list-dropdown-flexible p.question
 {
 	margin-left: 1em;
+	text-align: left;
 }
 /* STYLES NOT YET DEFINED - - - - -
 .list-dropdown {}
@@ -388,73 +390,73 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin-bottom: -1.5em;
 	display: block;
 }
- .multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2  input.text , .numeric-multi ul.X2  input.text
-,.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4  input.text , .numeric-multi ul.X4  input.text
-,.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6  input.text , .numeric-multi ul.X6  input.text
-,.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8  input.text , .numeric-multi ul.X8  input.text
-,.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 input.text
-,.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 input.text
-,.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 input.text
-,.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 input.text
-,.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 input.text
-,.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 input.text
-,.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 input.text
-,.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 input.text
-,.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 input.text
-,.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 input.text
-,.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 input.text
-,.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large input.text
+ .multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2  input.text , .numeric-multi ul.X2  div.input
+,.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4  input.text , .numeric-multi ul.X4  div.input
+,.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6  input.text , .numeric-multi ul.X6  div.input
+,.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8  input.text , .numeric-multi ul.X8  div.input
+,.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input
+,.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input
+,.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input
+,.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input
+,.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input
+,.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input
+,.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input
+,.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input
+,.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input
+,.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input
+,.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input
+,.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input
 {
 	display: block;
 }
 
 .multiple-opt-comments ul.X2 label.answertext , .multiple-short-txt ul.X2 label , .numeric-multi ul.X2 label { width: 2.5em;}
-.multiple-opt-comments ul.X2 label.answer-comment , .multiple-short-txt ul.X2 input.text , .numeric-multi ul.X2 input.text { margin-left: 3em; }
+.multiple-opt-comments ul.X2 label.answer-comment , .multiple-short-txt ul.X2 input.text , .numeric-multi ul.X2 div.input { margin-left: 3em; }
 
 .multiple-opt-comments ul.X4 label.answertext , .multiple-short-txt ul.X4 label , .numeric-multi ul.X4 label { width: 4.5em;}
-.multiple-opt-comments ul.X4 label.answer-comment , .multiple-short-txt ul.X4 input.text , .numeric-multi ul.X4 input.text { margin-left: 5em; }
+.multiple-opt-comments ul.X4 label.answer-comment , .multiple-short-txt ul.X4 input.text , .numeric-multi ul.X4 div.input { margin-left: 5em; }
 
 .multiple-opt-comments ul.X6 label.answertext , .multiple-short-txt ul.X6 label , .numeric-multi ul.X6 label { width: 6.5em;}
-.multiple-opt-comments ul.X6 label.answer-comment , .multiple-short-txt ul.X6 input.text , .numeric-multi ul.X6 input.text { margin-left: 7em; }
+.multiple-opt-comments ul.X6 label.answer-comment , .multiple-short-txt ul.X6 input.text , .numeric-multi ul.X6 div.input { margin-left: 7em; }
 
 .multiple-opt-comments ul.X8 label.answertext , .multiple-short-txt ul.X8 label , .numeric-multi ul.X8 label { width: 8.5em;}
-.multiple-opt-comments ul.X8 label.answer-comment , .multiple-short-txt ul.X8 input.text , .numeric-multi ul.X8 input.text { margin-left: 9em; }
+.multiple-opt-comments ul.X8 label.answer-comment , .multiple-short-txt ul.X8 input.text , .numeric-multi ul.X8 div.input { margin-left: 9em; }
 
 .multiple-opt-comments ul.X10 label.answertext , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label { width: 10.5em;}
-.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 input.text { margin-left: 11em; }
+.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input { margin-left: 11em; }
 
 .multiple-opt-comments ul.X12 label.answertext , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label { width: 12.5em;}
-.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 input.text { margin-left: 13em; }
+.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input { margin-left: 13em; }
 
 .multiple-opt-comments ul.X14 label.answertext , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label { width: 14.5em;}
-.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 input.text { margin-left: 15em; }
+.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input { margin-left: 15em; }
 
 .multiple-opt-comments ul.X16 label.answertext , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label { width: 16.5em;}
-.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 input.text { margin-left: 17em; }
+.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input { margin-left: 17em; }
 
 .multiple-opt-comments ul.X18 label.answertext , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label { width: 18.5em;}
-.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 input.text { margin-left: 19em; }
+.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input { margin-left: 19em; }
 
 .multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label { width: 20.5em;}
-.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 input.text { margin-left: 21em; }
+.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input { margin-left: 21em; }
 
 .multiple-opt-comments ul.X22 label.answertext , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label { width: 22.5em;}
-.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 input.text { margin-left: 23em; }
+.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input { margin-left: 23em; }
 
 .multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label { width: 24.5em;}
-.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 input.text { margin-left: 25em; }
+.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input { margin-left: 25em; }
 
 .multiple-opt-comments ul.X26 label.answertext , .multiple-short-txt ul.X26 label , .numeric-multi ul.X26 label { width: 26.5em;}
-.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 input.text { margin-left: 27em; }
+.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input { margin-left: 27em; }
 
 .multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label { width: 28.5em;}
-.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 input.text { margin-left: 29em; }
+.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input { margin-left: 29em; }
 
 .multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 30.5em;}
-.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 input.text { margin-left: 31em; }
+.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input { margin-left: 31em; }
 
 .multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large input.text { margin-left: 2em; }
+.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input { margin-left: 2em; }
 
 .numeric-multi div.multinum-slider
 {
@@ -462,32 +464,50 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 }
 .numeric-multi dl.multiplenumerichelp
 {
-	width: 16em;
-	float: right;
-	padding: 0%;
-	margin: -4.2em 0% 0% 0%;
 	position: relative;
-	left: -3em;
+	width: 16em;
+	margin-top: -4.0em;
+	margin-bottom: 0%:
+	padding: 0.3em;
 }
+.numeric-multi dl.multiplenumerichelp.slider { left: 21em; }
+.numeric-multi dl.multiplenumerichelp.X2  { left: 13em; }
+.numeric-multi dl.multiplenumerichelp.X4  { left: 15em; }
+.numeric-multi dl.multiplenumerichelp.X6  { left: 17em; }
+.numeric-multi dl.multiplenumerichelp.X8  { left: 19em; }
+.numeric-multi dl.multiplenumerichelp.X10 { left: 21em; }
+.numeric-multi dl.multiplenumerichelp.X12 { left: 23em; }
+.numeric-multi dl.multiplenumerichelp.X14 { left: 25em; }
+.numeric-multi dl.multiplenumerichelp.X16 { left: 27em; }
+.numeric-multi dl.multiplenumerichelp.X18 { left: 29em; }
+.numeric-multi dl.multiplenumerichelp.X20 { left: 31em; }
+.numeric-multi dl.multiplenumerichelp.X22 { left: 33em; }
+.numeric-multi dl.multiplenumerichelp.X24 { left: 35em; }
+.numeric-multi dl.multiplenumerichelp.X26 { left: 37em; }
+.numeric-multi dl.multiplenumerichelp.X28 { left: 39em; }
+.numeric-multi dl.multiplenumerichelp.X30 { left: 41em; }
+.numeric-multi dl.multiplenumerichelp.X-large { display: static; }
+
 .numeric-multi dl.multiplenumerichelp dt
 {
 	text-align: right;
-	width: 7em;
+	width: 8em;
 	padding: 0%;
-	margin: 0% 0% -1.8em 0%;
+	margin: 0% 0% -1.5em 0%;
+	font-size: 90%;
 }
 .numeric-multi dl.multiplenumerichelp dd
 {
 	text-align: left;
-	margin: 0% 0% 1em 7em;
-	padding: 0% 0% 0% 1em;
+	margin: 0% 0% 0.5em 8em;
+	padding: 0%;
 }
 .numeric-multi dl.multiplenumerichelp dd input
 {
-	border: 0.1em solid #ccc;
+	border: none;
 	background-color: #fff;
-	color: #000;
-	padding: 0.2em 0.5em;
+	color: #222;
+	padding: 0%;
 	width: 7em;
 }
 
@@ -517,16 +537,16 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	vertical-align: bottom;
 }
 
- .array-5-pt td , .array-5-pt th
-,.array-10-pt td , .array-10-pt th
-,.array-yes-uncertain-no td , .array-yes-uncertain-no th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-multi-flexi td , .array-multi-flexi th
-,.array-flexible-duel-scale td , .array-flexible-duel-scale th
-,.array-flexible-column td , .array-flexible-column th
+ .array-5-pt td td , .array-5-pt th
+,.array-10-pt td td , .array-10-pt th
+,.array-yes-uncertain-no td td , .array-yes-uncertain-no th
+,.array-increase-same-decrease td td , .array-increase-same-decrease th
+,.array-flexible-row td td , .array-flexible-row th
+,.array-increase-same-decrease td td , .array-increase-same-decrease th
+,.array-flexible-row td td , .array-flexible-row th
+,.array-multi-flexi td td , .array-multi-flexi th
+,.array-flexible-duel-scale td td , .array-flexible-duel-scale th
+,.array-flexible-column td td , .array-flexible-column th
 {
 	text-align: center;
 }
@@ -549,30 +569,30 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	text-align: left;
 }
 
- .date td td
-,.choice-5-pt-radio td td
-,.list-with-comment td td
-,.ranking td td
-,.language td td
-,.multiple-opt td td
-,.multiple-opt-comments td td
-,.multiple-short-txt td td
-,.numeric-multi td td
-,.numeric td td
-,.text-short td td
-,.text-long td td
-,.text-huge td td
-,.yes-no td td
-,.gender td td
-,.array-5-pt td.answertext td td
-,.array-10-pt td.answertext td td
-,.array-yes-uncertain-no td td
-,.array-increase-same-decrease td td
-,.array-flexible-row td td
-,.array-flexible-column td td
-,.slider td td
-,.array-multi-flexi td td
-,.array-flexible-duel-scale td td
+ .date td
+,.choice-5-pt-radio td
+,.list-with-comment td
+,.ranking td
+,.language td
+,.multiple-opt td
+,.multiple-opt-comments td
+,.multiple-short-txt td
+,.numeric-multi td
+,.numeric td
+,.text-short td
+,.text-long td
+,.text-huge td
+,.yes-no td
+,.gender td
+,.array-5-pt td.answertext td 
+,.array-10-pt td.answertext td
+,.array-yes-uncertain-no td
+,.array-increase-same-decrease td
+,.array-flexible-row td
+,.array-flexible-column td
+,.slider td
+,.array-multi-flexi td
+,.array-flexible-duel-scale td
 {
 	text-align: left;
 }

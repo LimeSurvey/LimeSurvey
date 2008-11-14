@@ -827,25 +827,44 @@ function alternation($alternate = '' , $type = 'col')
  * even string used in as column and row classes for array type
  * questions.
  *
- * Accespt:
- *	$alternate	(default = empty)
- *	$type		(default = 'col')
- *			'col'
+ * Accepts:
+ *	$alternate =	'' (empty) (default)
+ *			'array2'
+ *			'array1'
+ *			'odd'
+ *			'even'
+ *
+ *	$type	  =	'col' (default)
  *			'row'
  *
  * Returns the other.
  */
+ /*
+// The following allows type to be left blank for row in subsequent
+// function calls.
+// It has been left out because 'row' must be defined the first time
+// alternation() is called. Since it is only ever written once for each
+// while statement within a function, 'row' is always defined.
+	if(!empty($alternate) && $type != 'row')
+	{	if($alternate == ('array2' || 'array1'))
+		{
+			$type = 'row';
+		};
+	};
+// It has been left in case it becomes useful but probably should be
+// removed.
+*/
 	if($type == 'row')
 	{
-		$odd  = 'array2';
-		$even = 'array1';
+		$odd  = 'array2'; // should be row_odd
+		$even = 'array1'; // should be row_even
 	}
 	else
 	{
-		$odd  = 'odd';
-		$even = 'even';
+		$odd  = 'odd';	// should be col_odd
+		$even = 'even';	// should be col_even
 	};
-	if(!isset($alternate) || $alternate == $odd)
+	if($alternate == $odd)
 	{
 		$alternate = $even;
 	}
@@ -2993,14 +3012,14 @@ function do_multiplenumeric($ia)
 
 			if ($slider_layout === false)
 			{
-				$answer_main .= '		'.$prefix.'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+				$answer_main .= "\t\t<div class=\"input\">\n\t\t\t".$prefix."\n\t\t\t<input class=\"text\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 				if (isset($_SESSION[$myfname]))
 				{
 					$answer_main .= $_SESSION[$myfname];
 				}
 
 				// --> START NEW FEATURE - SAVE
-				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n\t</li>\n";
+				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t\t\t".$suffix."\n\t\t</div>\n\t</li>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			else
@@ -3129,6 +3148,27 @@ function do_multiplenumeric($ia)
 			if($label_width > 20)
 			{
 				$label_width = 'X-large';
+				$comp_width = $label_width;
+			}
+			else
+			{
+				$comp_width = $label_width;
+				if( isset($prefix) && !empty($prefix) )
+				{
+					$comp_width = $comp_width + round(strlen($prefix) * 0.8);
+				};
+				if(isset($suffix) && !empty($suffix))
+				{
+					$comp_width = $comp_width + round(strlen($suffix) * 0.8);
+				}
+				if($comp_width > 20)
+				{
+					$comp_width = 'X-large';
+				}
+				else
+				{
+					$comp_width = 'X'.$comp_width;
+				}
 			}
 		}
 		else
@@ -3143,6 +3183,7 @@ function do_multiplenumeric($ia)
 		if ($slider_layout)
 		{
 			$label_width = 'slider';
+			$comp_width = $label_width;
 		}
 		else
 		{
@@ -3155,7 +3196,7 @@ function do_multiplenumeric($ia)
 
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$answer_computed  = "\n<dl class=\"multiplenumerichelp $label_width\">\n";
+			$answer_computed  = "\n<dl class=\"multiplenumerichelp $comp_width\">\n";
 			$answer_computed .= "\t<dt>".$clang->gT('Total: ')."</dt>\n\t\t<dd>$prefix<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
 			if ($equalvalue)
 			{
@@ -4401,36 +4442,22 @@ function do_array_flexible($ia)
 		}
 		$cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-		$answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\">\n"
-		. "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n"
-		. "\t<colgroup class=\"col-responses\">\n";
-
-		$odd_even = '';
-		for($c = 1 ; $c < $numrows ; ++$c )
-		{
-			$odd_even = alternation($odd_even);
-			$answer .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-		}
-		if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
-		{
-			$odd_even = alternation($odd_even);
-			$answer .= "\t\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-		}
-		$answer .= "\t</colgroup>\n"
-		. "\t<thead>\n"
+		$answer_start = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\">\n";
+		$answer_head = "\t<thead>\n"
 		. "\t\t<tr>\n"
 		. "\t\t\t<td>&nbsp;</td>\n";
 		foreach ($labelans as $ld)
 		{
-			$answer .= "\t\t\t<th>".$ld."</th>\n";
+			$answer_head .= "\t\t\t<th>".$ld."</th>\n";
 		}
-		if ($right_exists) {$answer .= "\t\t\t<td width='$answerwidth%'>&nbsp;</td>\n";} 
+		if ($right_exists) {$answer_head .= "\t\t\t<td>&nbsp;</td>\n";} 
 		if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 		{
-			$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
+			$answer_head .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
 		}
-		$answer .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+		$answer_head .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 
+		$answer = '';
 		$trbc = '';
 		while ($ansrow = $ansresult->FetchRow())
 		{
@@ -4458,7 +4485,9 @@ function do_array_flexible($ia)
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
+			$answer .= "\n\n<!-- =========================\n    line 4446: \$answerwidth = $answerwidth\n";
 			if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
+			$answer .= "    line 4448: \$answerwidth = $answerwidth\n========================= -->\n";
 			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
 				$answertext = '<span class="errormandatory">'.$answertext.'</span>';
 			}
@@ -4520,11 +4549,11 @@ function do_array_flexible($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td style='text-align:left;' width='$answerwidth%'>$answertext</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\">$answertext</td>\n";
 			}
 			elseif ($right_exists)
 			{
-				$answer .= "\t\t\t<td class='answertextright' style='text-align:left;' width='$answerwidth%'>&nbsp;</td>\n";
+				$answer .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
 			}
 
 			if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -4545,7 +4574,29 @@ function do_array_flexible($ia)
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
 			$fn++;
 		}
-		$answer .= "\t</tbody>\n</table>\n";
+
+		$answer_cols = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n"
+		. "\t<colgroup class=\"col-responses\">\n";
+
+		$odd_even = '';
+		foreach ($labelans as $c)
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+		}
+		if ($right_exists)
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+		}
+		if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+		}
+		$answer_cols .= "\t</colgroup>\n";
+
+		$answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
 	}
 	else
 	{
@@ -5104,6 +5155,7 @@ function do_array_flexiblecolumns($ia)
 				$answers[]=answer_replace($ansrow['answer']);
 			}
 			$trbc = '';
+			$odd_even = '';
 			foreach ($answers as $ld)
 			{
 				$myfname = $ia[1].$ansrow['code'];
@@ -5115,7 +5167,8 @@ function do_array_flexiblecolumns($ia)
 				{
 					$ld = "<span class=\"errormandatory\">{$ld}</span>";
 				}
-				$answer .= "\t\t\t<th>$ld</th>\n";
+				$odd_even = alternation($odd_even);
+				$answer .= "\t\t\t<th class=\"$odd_even\">$ld</th>\n";
 			}
 			unset($trbc);
 			$answer .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";

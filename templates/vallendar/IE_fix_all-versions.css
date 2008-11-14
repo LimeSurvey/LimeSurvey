@@ -18,15 +18,17 @@
 ,.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label
 ,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
 ,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
-,.multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label
 {
 	margin-bottom: -1.5em;
 	display: block;
 }
 
-
+.numeric-multi dl.multiplenumerichelp
+{
+	margin-top: -7.0em;
+}
 .numeric-multi dl.multiplenumerichelp dt
 {
 	margin-right: 10em;
-	margin-bottom: -1.8em;
+	margin-bottom: -2em;
 }

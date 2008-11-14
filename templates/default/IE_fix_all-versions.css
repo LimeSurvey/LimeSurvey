@@ -1,5 +1,9 @@
 /* The following styles are for all versions of IE */
-
+.multiple-short-txt ul
+{
+	margin-top: 0.4em;
+	margin-bottom: -0.8em;
+}
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
 ,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
 ,.multiple-opt-comments ul.X6  label.answertext , .multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label
@@ -22,8 +26,18 @@
 }
 
 
+.numeric-multi dl.multiplenumerichelp
+{
+	margin-top: -5.3em;
+	margin-bottom: 2em;
+}
 .numeric-multi dl.multiplenumerichelp dt
 {
 	margin-right: 10em;
-	margin-bottom: -2em;
+	margin-bottom: -1.8em;
 }
+.numeric-multi dl.multiplenumerichelp dd
+{
+	margin: 0% 0% 0.5em 7em;
+}
+

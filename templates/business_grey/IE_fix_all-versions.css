@@ -24,10 +24,14 @@
 
 .numeric-multi dl.multiplenumerichelp
 {
-	margin-top: -5.6em;
+	margin-top: -4.6em;
 }
 .numeric-multi dl.multiplenumerichelp dt
 {
 	margin-right: 10em;
-	margin-bottom: -1.6em;
+	margin-bottom: -1.5em;
+}
+.numeric-multi dl.multiplenumerichelp dd input
+{
+	background-color: #e1e1e1;
 }

@@ -22,6 +22,10 @@
 }
 
 
+.numeric-multi dl.multiplenumerichelp
+{
+	margin-top: -5em;
+}
 .numeric-multi dl.multiplenumerichelp dt
 {
 	margin-right: 10em;
