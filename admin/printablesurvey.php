@@ -78,8 +78,9 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 $printablesurveyoutput .="<table width='100%' cellspacing='0'>\n";
 if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$notsupportlanguages))
 {
-    $printablesurveyoutput .="<form action='$scriptname?action=showprintablesurvey&sid=".$surveyid."&lang=".$surveyprintlang."' method='post'>\n";
-    $printablesurveyoutput .="<tr><td colspan='3' align='center'><input type='submit' value='".$clang->gT("PDF Export")."'/>";
+    $printablesurveyoutput .="<tr><td colspan='3' align='center'>"
+                            ."<form action='$scriptname?action=showprintablesurvey&amp;sid=".$surveyid."&amp;lang=".$surveyprintlang."' method='post'>\n";
+    $printablesurveyoutput .="<input type='submit' value='".$clang->gT("PDF Export")."'/>";
     $printablesurveyoutput .="<input type='hidden' name='checksessionbypost' value='".$_SESSION['checksessionpost']."'/>";
     $printablesurveyoutput .="<input type='hidden' name='printableexport' value='true'/>";
     $printablesurveyoutput .="</form>";
