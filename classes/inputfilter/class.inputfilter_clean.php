@@ -18,8 +18,8 @@ class InputFilter {
 	var $tagBlacklist = array('applet', 'body', 'bgsound', 'base', 'basefont', 'embed', 'frame', 'frameset', 'head', 'html', 'id', 'iframe', 'ilayer', 'layer', 'link', 'meta', 'name', 'object', 'script', 'style', 'title', 'xml');
 	var $attrBlacklist = array('action', 'background', 'codebase', 'dynsrc', 'lowsrc');
 	function inputFilter($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1) {		
-		if (is_array($tagsArray)) {for ($i = 0; $i < count($tagsArray); $i++) $tagsArray[$i] = strtolower($tagsArray[$i]);}
-		if (is_array($tagsArray)) {for ($i = 0; $i < count($attrArray); $i++) $attrArray[$i] = strtolower($attrArray[$i]);}
+		if (is_array($tagsArray)) {for ($i = 0; $i < count($tagsArray); $i++) $tagsArray[$i] = $tagsArray[$i];}
+		if (is_array($tagsArray)) {for ($i = 0; $i < count($attrArray); $i++) $attrArray[$i] = $attrArray[$i];}
 		$this->tagsArray = (array) $tagsArray;
 		$this->attrArray = (array) $attrArray;
 		$this->tagsMethod = $tagsMethod;
@@ -124,7 +124,7 @@ class InputFilter {
              * OR no tagname
              * OR remove if xssauto is on and tag is blacklisted
              */
-            if ((!preg_match("/^[a-z][a-z0-9]*$/i", $tagName)) || (!$tagName) || ((in_array(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto)))
+            if ((!preg_match("/^[a-z][a-z0-9]*$/i", $tagName)) || (!$tagName) || (($this->in_array_nocase(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto)))
             {
                 $postTag        = substr($postTag, ($tagLength +2));
                 $tagOpen_start    = strpos($postTag, '<');
@@ -373,6 +373,13 @@ class InputFilter {
          }  
          return $output;  
      }
+    function in_array_nocase($search, &$array) {
+      $search = strtolower($search);
+      foreach ($array as $item)
+        if (strtolower($item) == $search)
+          return TRUE;
+      return FALSE;
+    }
 
     function RemoveXSS($val) {
        // remove all non-printable characters. CR(0a) and LF(0b) and TAB(9) are allowed
