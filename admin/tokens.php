@@ -306,10 +306,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		return;
 	}
 	elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') && 
-	($sumrows5['edit_survey_property'] || 
-		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-	)
+	($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 	{
 		$query = db_rename_table(returnglobal('oldtable') , db_table_name("tokens_$surveyid"));
 		$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
@@ -521,21 +518,21 @@ $tokenoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing=
 
 
 
+if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+{
+    $ishtml=true;
+}
+else
+{
+    $ishtml=false;
+}    
+
 
 if ($subaction == "emailsettings") 
 {
-
 	$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($grplangs,$baselang);
-	if (getEmailFormat($surveyid) == 'html')
-	{
-		$ishtml=true;
-	}
-	else
-	{
-		$ishtml=false;
-	}    
 
 	$tokenoutput .= PrepareEditorScript();
 	$tokenoutput .="<tr><td align='center'>"
@@ -1546,33 +1543,33 @@ if ($subaction == "remind" &&
 					}
 					$lasttid = $emrow['tid'];
 				}
-				if ($ctcount > $emcount)
+            }
+			if ($ctcount > $emcount)
+			{
+				$lefttosend = $ctcount-$maxemails;
+				$tokenoutput .= "\t\t</td>\n"
+					."\t</tr>\n"
+					."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+					."\t\t<td align='center'>\n"
+					."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
+					.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
+					.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
+					."<br />\n"
+					."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+					."\t\t</td>\n"
+					."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+					."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
+					."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+					."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+				foreach ($surveylangs as $language)
 				{
-					$lefttosend = $ctcount-$maxemails;
-					$tokenoutput .= "\t\t</td>\n"
-						."\t</tr>\n"
-						."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
-						."\t\t<td align='center'>\n"
-						."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
-						.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
-						.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
-						."<br />\n"
-						."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
-						."\t\t</td>\n"
-						."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-						."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
-						."\t<input type='hidden' name='action' value=\"tokens\" />\n"
-						."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
-					foreach ($surveylangs as $language)
-					{
-						$message = html_escape($_POST['message_'.$language]);
-						$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
-							."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
-							."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
-					}
-					$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
-						."\t</form>\n";
+					$message = html_escape($_POST['message_'.$language]);
+					$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+						."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+						."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
 				}
+				$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
+					."\t</form>\n";
 			}
 		}
 		else
