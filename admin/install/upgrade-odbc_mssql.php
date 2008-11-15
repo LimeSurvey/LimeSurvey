@@ -78,14 +78,14 @@ echo str_pad('Loading... ',4096)."<br />\n";
            $toreplace=str_replace('vn','vi',$toreplace);
            modify_database("","update [prefix_surveys] set [additional_languages`='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();
         }
-        modify_database("","update [prefix_settings_global] set [stg_value`='111' where stg_name='DBVersion'"); echo $modifyoutput;
+        modify_database("","update [prefix_settings_global] set [stg_value]='111' where stg_name='DBVersion'"); echo $modifyoutput;
 
     }
 
     if ($oldversion < 112) {
         //The size of the users_name field is now 64 char (20 char before version 112)
         modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [users_name] VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
-        modify_database("","update [prefix_settings_global] set [stg_value`='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
     if ($oldversion < 113) {
@@ -209,18 +209,19 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","create index [quota_idx2] on [prefix_quota] ([sid])"); echo $modifyoutput; 
         modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput; 
         modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput; 
-        modify_database("","update `prefix_settings_global` set `stg_value`='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 }
 
 	if ($oldversion < 128) {
 		upgrade_token_tables128();
-	        modify_database("","update `prefix_settings_global` set `stg_value`='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
+	
 	if ($oldversion < 129) {
 		//128
         modify_database("","ALTER TABLE [prefix_surveys] ADD [startdate] DATETIME"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usestartdate] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-	    modify_database("","update `prefix_settings_global` set `stg_value`='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
     return true;
 }

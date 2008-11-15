@@ -25,21 +25,13 @@ How it used to work
 
 Why change this feature?
 ------------------------
-1. If a user did not complete a survey, ALL their answers were lost since no submit (database insert) was performed.
+ If a user did not complete a survey, ALL their answers were lost since no submit (database insert) was performed.
 
-2. The old save design did allow for a person to reload their saved survey, but it did not support
-multiple users working on the same survey at the same time.  Issues included saving only at the end, or
-when a user clicked the "Save so far" button.  During this save/update ALL the answers were updated, not
-just the ones modified.  This would cause the 'last one to save' wins issue.  It also did not reload
-answers between pages (group by group), so if someone else was working on the same survey instance you
-did not see their updates on your instance.
 
 Save Feature redesign
 ---------------------
 Benefits
-1. Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save so far clicked at least once).
-2. Multiple users can work on same survey instance at same time.
-3. Answers are reloaded after each page save, so if other people are changing them the current user will see updates.
+Partial survey answers are saved (provided at least Next/Prev/Last/Submit/Save so far clicked at least once).
 
 Details.
 1. The answers are saved in the "survey_x" table only.  The "saved" table is no longer used.
@@ -508,7 +500,7 @@ function createinsertquery()
 						}
 						else
 						{
-							$query .= db_quote_id($field)." = '".auto_escape(strip_tags($myFilter->process($_POST[$field])))."',";
+							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
 						}
 					}
 				}
