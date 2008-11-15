@@ -384,6 +384,7 @@ if  ($subaction=='dldata')
                 {
                     $strTmp = strip_tags_full($row[$fieldno]);
                     $len = mb_strlen($strTmp);
+                    echo "'$strTmp'";                    
                     if($len > $fields[$fieldno]['size']){
                         $fields[$fieldno]['size'] = $len;
                     }
