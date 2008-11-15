@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-11 23:48+0100\n"
-"PO-Revision-Date: 2008-11-11 23:50+0100\n"
+"POT-Creation-Date: 2008-11-15 19:52+0100\n"
+"PO-Revision-Date: 2008-11-15 19:53+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -292,7 +292,7 @@ msgstr "LimeSurvey Einrichten"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:1250
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:4592
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:467
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:544
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:536
 msgid "Error"
 msgstr "Fehler"
 
@@ -611,13 +611,13 @@ msgid "Return To Survey"
 msgstr "Zur Umfrage zurückkehren"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2555
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:307
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:299
 msgid "Name"
 msgstr "Name"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2558
 #: D:\web\TechPlat\apache\htdocs\limesurvey/common.php:2584
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:308
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:300
 msgid "Password"
 msgstr "Passwort"
 
@@ -886,7 +886,7 @@ msgstr "Sie haben kein Passwort angegeben"
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1660
 #: D:\web\TechPlat\apache\htdocs\limesurvey/index.php:1853
 #: D:\web\TechPlat\apache\htdocs\limesurvey/register.php:57
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:232
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:224
 msgid "The answer to the security question is incorrect"
 msgstr "Die Antwort zur Sicherheitabfrage ist falsch."
 
@@ -1272,12 +1272,14 @@ msgid "Total of all entries must not exceed %d"
 msgstr "Summe aller Einträge darf nicht größer als %d sein."
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3097
-msgid "Total of all entries must equal "
-msgstr "Summe aller Einträge muss gleich sein zu"
+#, php-format
+msgid "Total of all entries must equal %d"
+msgstr "Summe aller Einträge muss gleich %d sein"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3101
-msgid "Total of all entries must be at least "
-msgstr "Summe aller Einträge müssen größer sein als"
+#, php-format
+msgid "Total of all entries must be at least %d"
+msgstr "Summe aller Einträge muss größer als %d sein"
 
 #: D:\web\TechPlat\apache\htdocs\limesurvey/qanda.php:3159
 msgid "Total: "
@@ -1335,47 +1337,47 @@ msgstr "Eine Email wurde gerade an Ihre Emailadresse versandt - in dieser finden
 msgid "Survey Administrator"
 msgstr "Umfrage-Administrator"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:179
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:171
 msgid "Please try again."
 msgstr "Bitte versuchen Sie es erneut."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:221
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:213
 msgid "You must supply a name for this saved session."
 msgstr "Sie müssen einen Namen angeben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:222
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:214
 msgid "You must supply a password for this saved session."
 msgstr "Sie müssen ein Passwort angeben."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:224
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:216
 msgid "Your passwords do not match."
 msgstr "Die Passwörter stimmen nicht überein."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:248
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:240
 msgid "This name has already been used for this survey. You must use a unique save name."
 msgstr "Dieser Name ist leider schon in Benutzung. Bitte benutzen Sie einen anderen Namen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:304
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:296
 msgid "Saved Survey Details"
 msgstr "Details Ihrer gespeicherten Umfrage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:305
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:297
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
 msgstr "Danke, dass sie Ihre Antworten zwischengespeichert haben. Die folgenden Angaben können Sie dazu verwenden, um zu dieser Umfrage zurückzukehren und das Ausfülllen der Umfrage fortzuführen. Bitte bewahren Sie diese Email gut auf, da es sonst keine andere Möglichkeit gibt auf diese Antworten zuzugreifen."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:309
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:301
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Rufen Sie die Umfrage auf, indem Sie auf folgende URL klicken (oder den Link manuell in Ihrem Browser eingeben):"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:545
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:537
 msgid "Cannot submit results - there are none to submit."
 msgstr "Kann keine Ergebnisse abschicken, da keine vorhanden sind."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:546
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:538
 msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
 msgstr "Diese Fehler kann auftreten, wenn Sie Ihre Antworten schon abgesendet haben und in Ihrem Browser auf 'Aktualisieren' geklickt haben. In diesem Fall sind Ihre Antworten schon gespeichert worden. "
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:546
+#: D:\web\TechPlat\apache\htdocs\limesurvey/save.php:538
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "Wenn Sie diese Nachricht während einer Umfrage erhalten, sollten Sie den 'Zurück'-Button in Ihrem Browser nutzen and dann die vorherige Seite neu laden. Obwohl Sie Antworten von der letzten Seite verlieren könnten, werden Ihre anderen vorherigen Antworten noch vorhanden sein. Dieses Problem kann auftauchen, wenn der Server überlastet ist. Wir bitten um Entschuldigung."
 
@@ -4801,133 +4803,133 @@ msgstr "Anmelden"
 msgid "Forgot Your Password?"
 msgstr "Haben Sie Ihr Passwort vergessen?"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:141
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:145
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:142
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:146
 msgid "if you answered"
 msgstr "falls ihre Antwort "
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:143
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:144
 msgid "if you have NOT answered"
 msgstr "wenn Sie nicht geantwortet haben"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:243
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:244
 msgid "or"
 msgstr "oder"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:250
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:251
 msgid "to question"
 msgstr " war bei der Frage"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:256
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:257
 #, php-format
 msgid "Only answer this question %s"
 msgstr "Bitte beantworten Sie diese Frage nur, %s"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:289
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:290
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:305
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:308
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:322
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:291
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:306
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:309
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:323
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:389
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:324
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:390
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:462
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:391
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:463
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:655
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:658
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:464
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:656
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:659
 msgid "Please choose *only one* of the following:"
 msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:300
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:302
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:301
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:303
 msgid "Please enter a date:"
 msgstr "Bitte ein Datum eingeben:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:483
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:484
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnen mit 1 bis"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:484
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:485
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnend von 1 bis"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:504
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:505
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:506
 msgid "Please choose *all* that apply:"
 msgstr "Bitte wählen Sie alle Punkte aus, die zutreffen:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:509
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:510
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:577
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:511
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:578
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:579
 msgid "Please choose *at most* "
 msgstr "Bitte wählen Sie *maximal*"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:509
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:510
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:511
 msgid "answers:"
 msgstr "Antworten:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:572
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:573
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:574
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen Kommentar dazu:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:577
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:578
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:579
 msgid "answers and provide a comment:"
 msgstr "Antworten und geben Sie einen Kommentar ein:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:607
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:608
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:609
 msgid "Please write your answer(s) here:"
 msgstr "Bitte Ihre Antwort(en) hierher schreiben"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:624
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:626
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:630
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:632
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:639
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:641
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:648
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:650
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:625
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:627
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:631
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:633
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:640
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:642
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:649
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:651
 msgid "Please write your answer here:"
 msgstr "Bitte schreiben Sie Ihre Antwort hier"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:665
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:667
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:699
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:701
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:725
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:727
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:750
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:752
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:925
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:934
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:999
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:666
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:668
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:700
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:702
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:726
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:728
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:751
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:753
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:926
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:935
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1000
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1094
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1001
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1095
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1096
 msgid "Please choose the appropriate response for each item:"
 msgstr "Bitte wählen Sie die zutreffende Antwort aus"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1147
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1149
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1148
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1150
 msgid "Submit Your Survey."
 msgstr "Übermittlung Ihres ausgefüllten Fragebogens:"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1148
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1149
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1150
 msgid "Thank you for completing this survey."
 msgstr "Vielen Dank für die Beantwortung des Fragebogens."
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1152
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1153
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1154
 msgid "Please fax your completed survey to:"
 msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 
-#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1158
 #: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1159
+#: D:\web\TechPlat\apache\htdocs\limesurvey/admin/printablesurvey.php:1160
 #, php-format
 msgid "Please submit by %s"
 msgstr "Bitte übermitteln bis %s"

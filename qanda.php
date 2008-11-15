@@ -3113,11 +3113,11 @@ function do_multiplenumeric($ia)
 		}
 		if ($equalvalue)
 		{
-			$question_tip .= '<p id="equals_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must equal ').$equals_num_value."</p>\n";
+			$question_tip .= '<p id="equals_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must equal %d'),$equals_num_value)."</p>\n";
 		}
 		if ($minvalue)
 		{
-			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.$clang->gT('Total of all entries must be at least ').$min_num_value."</p>\n";
+			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %d'),$min_num_value)."</p>\n";
 		}
 
 		$label_width = round($label_width * 0.8);
