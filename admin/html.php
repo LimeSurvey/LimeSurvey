@@ -3010,7 +3010,7 @@ if ($action == "newsurvey")
 		. "</div>\n";
 
         //Result printing
-        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Participiants may print answers?")."</span>\n"
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Participants may print answers?")."</span>\n"
         . "<span class='settingentry'><select name='printanswers'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
