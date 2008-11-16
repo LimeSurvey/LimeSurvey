@@ -1033,6 +1033,7 @@ function do_date($ia)
 		. "  {\n"
 		. "    document.getElementById(label).value=document.getElementById(yearlabel).value+'-'+document.getElementById(monthlabel).value+'-'+document.getElementById(daylabel).value;\n"
 		. "    ValidDate(document.getElementById(label));\n"
+		. "    checkconditions(document.getElementById(label).value, document.getElementById(label).name, document.getElementById(label).type);\n"
 		. "    bob.value='';\n"
 		. "  } else if (document.getElementById(yearlabel).value == '' && document.getElementById(monthlabel).value == '' && document.getElementById(daylabel).value == '') {\n"
 		. "    document.getElementById(label).value='';\n"
