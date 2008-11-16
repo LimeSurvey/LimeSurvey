@@ -26,3 +26,11 @@
 	margin-right: 10em;
 	margin-bottom: -1.6em;
 }
+
+/* The following is a dirty hack because I can't work out what's causing the problem.
+ See http://bugs.limesurvey.org/view.php?id=2631 for the problem.*/
+ .list-radio-flexible li:first-child
+,.list-radio li:first-child
+{
+	text-indent: -1.5em;
+}
