@@ -511,7 +511,7 @@ END;
       {
 		$idname2 = "java".$comparedfieldname[1];
 	    }
-		if (in_array($cd[4],array("A","B","K","N","5")))
+		if (in_array($cd[4],array("A","B","K","N","5",":")))
 		{ // Numerical questions
 			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
 		}
@@ -529,7 +529,7 @@ END;
         }
         else
         {
-		if (in_array($cd[4],array("A","B","K","N","5")))
+		if (in_array($cd[4],array("A","B","K","N","5",":")))
 		{ // Numerical questions
 			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 		}

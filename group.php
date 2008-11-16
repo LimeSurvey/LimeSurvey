@@ -654,7 +654,7 @@ for ($i=0;$i<count($conditions);$i++)
 
 				$newjava .= "(document.getElementById('" . $idname2 . "').value != '') && ";
 				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
-				if (in_array($cd[4],array("A","B","K","N","5")))
+				if (in_array($cd[4],array("A","B","K","N","5",":")))
 				{ // Numerical questions
 					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
@@ -677,7 +677,14 @@ for ($i=0;$i<count($conditions);$i++)
 			}
 			else
 			{
-				$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+				if (in_array($cd[4],array("A","B","K","N","5",":")))
+				{ // Numerical questions
+					$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
+				}
+				else
+				{
+					$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+				}
 			}
 		}
 	}
