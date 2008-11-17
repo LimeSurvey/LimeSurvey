@@ -796,42 +796,7 @@ if (isset($qanda) && is_array($qanda))
 {
 	foreach ($qanda as $qa)
 	{
-		switch($qa[8])
-		{	// I think this is a bad solution to adding classes to question
-			// DIVs but I can't think of a better solution. (eric_t_cruiser)
-
-			case 'X': $q_class = 'boilerplate' ; break; //BOILERPLATE QUESTION
-			case '5': $q_class = 'choice-5-pt-radio' ; break; //5 POINT CHOICE radio-buttons
-			case 'D': $q_class = 'date' ; break; //DATE
-			case 'Z': $q_class = 'list-radio-flexible' ; break; //LIST Flexible drop-down/radio-button list
-			case 'L': $q_class = 'list-radio' ; break; //LIST drop-down/radio-button list
-			case 'W': $q_class = 'list-dropdown-flexible' ; break; // (flexible label)
-			case '!': $q_class = 'list-dropdown' ; break; //List - dropdown
-			case 'O': $q_class = 'list-with-comment' ; break; // drop-down/radio-button list + textarea
-			case 'R': $q_class = 'ranking' ; break; //RANKING STYLE
-			case 'M': $q_class = 'multiple-opt' ; break; //MULTIPLE OPTIONS checkbox
-			case 'I': $q_class = 'language' ; break; //Language Question
-			case 'P': $q_class = 'multiple-opt-comments' ; break; //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
-			case 'Q': $q_class = 'multiple-short-txt' ; break; // TEXT
-			case 'K': $q_class = 'numeric-multi' ; break; //MULTIPLE NUMERICAL QUESTION
-			case 'N': $q_class = 'numeric' ; break; //NUMERICAL QUESTION TYPE
-			case 'S': $q_class = 'text-short' ; break; //SHORT FREE TEXT
-			case 'T': $q_class = 'text-long' ; break; //LONG FREE TEXT
-			case 'U': $q_class = 'text-huge' ; break; //HUGE FREE TEXT
-			case 'Y': $q_class = 'yes-no' ; break; //YES/NO radio-buttons
-			case 'G': $q_class = 'gender' ; break; //GENDER drop-down list
-			case 'A': $q_class = 'array-5-pt' ; break; //ARRAY (5 POINT CHOICE) radio-buttons
-			case 'B': $q_class = 'array-10-pt' ; break; //ARRAY (10 POINT CHOICE) radio-buttons
-			case 'C': $q_class = 'array-yes-uncertain-no' ; break; //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-			case 'E': $q_class = 'array-increase-same-decrease' ; break; //ARRAY (Increase/Same/Decrease) radio-buttons
-			case 'F': $q_class = 'array-flexible-row' ; break; //ARRAY (Flexible) - Row Format
-			case 'H': $q_class = 'array-flexible-column' ; break; //ARRAY (Flexible) - Column Format
-//			case '^': $q_class = 'slider' ; break; //SLIDER CONTROL
-			case ':': $q_class = 'array-multi-flexi' ; break; //ARRAY (Multi Flexi) 1 to 10
-			case ";": $q_class = 'array-multi-flexi-text' ; break;
-			case "1": $q_class = 'array-flexible-duel-scale' ; break; //Array (Flexible Labels) dual scale
-			default:  $q_class = 'generic_question' ; break; //Should have a default fallback
-		}
+		$q_class = question_class($qa[8]); // render question class (see common.php)
 
 		if ($qa[9] == 'Y')
 		{
