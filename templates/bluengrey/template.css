@@ -705,6 +705,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease thead th
 ,.array-flexible-row thead th
 ,.array-multi-flexi thead th
+,.array-multi-flexi-text thead th
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
 {
@@ -733,6 +734,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease td.answertext
 ,.array-flexible-row td.answertext
 ,.array-multi-flexi td.answertext
+,.array-multi-flexi-text td.answertext
 ,.array-flexible-duel-scale td.answertext
 ,.array-flexible-column td.arraycaptionleft
 {
