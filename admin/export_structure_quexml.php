@@ -102,17 +102,17 @@ function fixed_array($array)
 
 function create_fixed($qlid,$rotate=false,$labels=true)
 {
-	global $dom, $connect;
+	global $dom;
 	global $dbprefix;
 	if ($labels)
 		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $qlid ORDER BY sortorder ASC";
 	else
 		$Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qlid ORDER BY sortorder ASC";
-	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 
 	$fixed = $dom->create_element("fixed");
 	
-	while ($Row = $QueryResult->FetchRow())
+	while ($Row = mysql_fetch_assoc($QueryResult))
 	{
 	    $category = $dom->create_element("category");
 	    
@@ -133,14 +133,30 @@ function create_fixed($qlid,$rotate=false,$labels=true)
 	return $fixed;
 }
 
+function get_length($qid,$attribute,$default)
+{
+	global $dom;
+	global $dbprefix;
+	$Query = "SELECT value FROM {$dbprefix}question_attributes WHERE qid = $qid AND attribute = '$attribute'";
+	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+
+	$Row = mysql_fetch_assoc($QueryResult);
+	if ($Row)
+		return $Row['value'];
+	else
+		return $default;
+
+}
+
+
 function create_multi(&$question,$qid,$varname)
 {
-	global $dom, $connect;
+	global $dom;
 	global $dbprefix;
 	$Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
-	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 
-	while ($Row = $QueryResult->FetchRow())
+	while ($Row = mysql_fetch_assoc($QueryResult))
 	{
 	    $response = $dom->create_element("response");
 	    $fixed = $dom->create_element("fixed");
@@ -169,12 +185,12 @@ function create_multi(&$question,$qid,$varname)
 
 function create_subQuestions(&$question,$qid,$varname)
 {
-	global $dom, $connect;
+	global $dom;
 	global $dbprefix;
 	$Query = "SELECT * FROM {$dbprefix}answers WHERE qid = $qid ORDER BY sortorder ASC";
-	$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+	$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 
-	while ($Row = $QueryResult->FetchRow())
+	while ($Row = mysql_fetch_assoc($QueryResult))
 	{
 	    $subQuestion = $dom->create_element("subQuestion");
             $text = $dom->create_element("text");
@@ -197,8 +213,8 @@ $title = $dom->create_element("title");
 
 $baselang=GetBaseLanguageFromSurveyID($surveyid);
 $Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$baselang."'";
-$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
-$Row = $QueryResult->FetchRow();
+$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+$Row = mysql_fetch_assoc($QueryResult);
 $questionnaire->set_attribute("id", $Row['sid']);
 $title->set_content(cleanup($Row['surveyls_title']));
 $questionnaire->append_child($title);
@@ -214,49 +230,54 @@ $questionnaire->append_child($investigator);
 $questionnaire->append_child($dataCollector);
 
 //questionnaireInfo == welcome
-$questionnaireInfo = $dom->create_element("questionnaireInfo");
-$position = $dom->create_element("position");
-$text = $dom->create_element("text");
-$administration = $dom->create_element("administration");
-
-$position->set_content("before");
-$text->set_content(cleanup($Row['surveyls_welcometext']));
-$administration->set_content("self");
-$questionnaireInfo->append_child($position);
-$questionnaireInfo->append_child($text);
-$questionnaireInfo->append_child($administration);
-$questionnaire->append_child($questionnaireInfo);
+if (!empty($Row['surveyls_welcometext']))
+{
+	$questionnaireInfo = $dom->create_element("questionnaireInfo");
+	$position = $dom->create_element("position");
+	$text = $dom->create_element("text");
+	$administration = $dom->create_element("administration");
+	$position->set_content("before");
+	$text->set_content(cleanup($Row['surveyls_welcometext']));
+	$administration->set_content("self");
+	$questionnaireInfo->append_child($position);
+	$questionnaireInfo->append_child($text);
+	$questionnaireInfo->append_child($administration);
+	$questionnaire->append_child($questionnaireInfo);
+}
 
 //section == group
 
 
 $Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid order by group_order ASC";
-$QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
+$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 //for each section
-while ($Row = $QueryResult->FetchRow())
+while ($Row = mysql_fetch_assoc($QueryResult))
 {
 	$gid = $Row['gid'];
 	
 	$section = $dom->create_element("section");
-	$sectionInfo = $dom->create_element("sectionInfo");	
-	$position = $dom->create_element("position");
-	$text = $dom->create_element("text");
-	$administration = $dom->create_element("administration");
 
-	$position->set_content("title");
-	$text->set_content(cleanup($Row['description']));
-	$administration->set_content("self");
-	$sectionInfo->append_child($position);
-	$sectionInfo->append_child($text);
-	$sectionInfo->append_child($administration);
+	if (!empty($Row['group_name']))
+	{
+		$sectionInfo = $dom->create_element("sectionInfo");	
+		$position = $dom->create_element("position");
+		$text = $dom->create_element("text");
+		$administration = $dom->create_element("administration");
+		$position->set_content("title");
+		$text->set_content(cleanup($Row['group_name']));
+		$administration->set_content("self");
+		$sectionInfo->append_child($position);
+		$sectionInfo->append_child($text);
+		$sectionInfo->append_child($administration);
+		$section->append_child($sectionInfo);
+	}
 
-	$section->append_child($sectionInfo);
 	$section->set_attribute("id", $gid);
 	
 	//boilerplate questions convert to sectionInfo elements
 	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X' ORDER BY question_order ASC";
-	$QR = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
-	while ($RowQ = $QR->FetchRow())
+	$QR = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+	while ($RowQ = mysql_fetch_assoc($QR))
 	{
 		$sectionInfo = $dom->create_element("sectionInfo");	
 		$position = $dom->create_element("position");
@@ -277,8 +298,8 @@ while ($Row = $QueryResult->FetchRow())
 	
 	//foreach question
 	$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type NOT LIKE 'X' ORDER BY question_order ASC";
-	$QR = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg());
-	while ($RowQ = $QR->FetchRow())
+	$QR = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
+	while ($RowQ = mysql_fetch_assoc($QR))
 	{
 		$question = $dom->create_element("question");
 		$type = $RowQ['type'];
@@ -340,34 +361,50 @@ while ($Row = $QueryResult->FetchRow())
 			    $question->append_child($response);		            
 		            break;
 		        case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-		            //Not yet implemented		            
+			    $response->append_child(create_fixed($qid,false,false));
+			    $question->append_child($response);		            
+				//no comment - this should be a separate question
 		            break;
 		        case "R": //RANKING STYLE
-		            //Not yet implemented
+			    create_subQuestions(&$question,$qid,$RowQ['title']);
+			    $Query = "SELECT LENGTH(COUNT(*)) as sc FROM {$dbprefix}labels WHERE lid = $lid";
+			    $QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
+    			    $QROW = mysql_fetch_assoc($QRE);
+			    $response->append_child(create_free("integer",$QROW['sc'],""));
+			    $question->append_child($response);		
 		            break;
 		        case "M": //MULTIPLE OPTIONS checkbox
 		            create_multi(&$question,$qid,$RowQ['title']);
 		            break;
 		        case "P": //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
       		            //Not yet implemented
-			    break;
+			    create_multi(&$question,$qid,$RowQ['title']);    
+				//no comments added
+   			    break;
 		        case "Q": //MULTIPLE SHORT TEXT
-		            //Not yet implemented		            
+			    create_subQuestions(&$question,$qid,$RowQ['title']);
+    			    $response->append_child(create_free("text",get_length($qid,"maximum_chars","10"),""));
+			    $question->append_child($response);					
 		            break;
-		        case "N": //NUMERICAL QUESTION TYPE
-			    $response->append_child(create_free("integer","10",""));
+		        case "K": //MULTIPLE NUMERICAL
+			    create_subQuestions(&$question,$qid,$RowQ['title']);
+    			    $response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
+			    $question->append_child($response);					
+		            break;
+       		        case "N": //NUMERICAL QUESTION TYPE
+			    $response->append_child(create_free("integer",get_length($qid,"maximum_chars","10"),""));
 			    $question->append_child($response);
 		            break;
 		        case "S": //SHORT FREE TEXT
-			    $response->append_child(create_free("text","24",""));
+			    $response->append_child(create_free("text",get_length($qid,"text_input_width","240"),""));
 			    $question->append_child($response);
 		            break;
 		        case "T": //LONG FREE TEXT
-			    $response->append_child(create_free("text","240",""));
+			    $response->append_child(create_free("longtext",get_length($qid,"display_rows","1024"),""));
 			    $question->append_child($response);
 		            break;
 		        case "U": //HUGE FREE TEXT
-			    $response->append_child(create_free("longtext","8",""));
+			    $response->append_child(create_free("longtext",get_length($qid,"display_rows","2048"),""));
 			    $question->append_child($response);         		            
 		            break;
 		        case "Y": //YES/NO radio-buttons
@@ -410,8 +447,21 @@ while ($Row = $QueryResult->FetchRow())
 			    $response->append_child(create_fixed($lid,true));
 			    $question->append_child($response);			    
 	                    break;
-//			case "^": //SLIDER CONTROL
-		            //Not yet implemented
+			case "1": //Dualscale multi-flexi array
+			    //select subQuestions from answers table where QID 
+			    create_subQuestions(&$question,$qid,$RowQ['title']);
+			    $response->append_child(create_fixed($lid,false));
+			    $response2 = $dom->create_element("response");		
+			    $response2->set_attribute("varName",cleanup($RowQ['title']) . "_2");
+			    $response2->append_child(create_fixed($RowQ['lid1'],false));
+			    $question->append_child($response);
+			    $question->append_child($response2);			    
+			    break;
+			case "^": //SLIDER CONTROL
+   		        case ":": //multi-flexi array numbers - not supported
+		        case ";": //multi-flexi array text - not supported
+			    $response->append_child(fixed_array(array("NOT SUPPORTED" => 1)));
+			    $question->append_child($response);		            
 			    break;
 		} //End Switch
 
