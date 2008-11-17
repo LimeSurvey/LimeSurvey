@@ -115,16 +115,16 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   </message>
    
   <message name="sCreateSurveyFault">
-    <part name="fault" type="xsd:string" />
+    <part name="fault" element="xsd:string" />
   </message>
   <message name="sInsertTokenFault">
-     <part name="fault" type="xsd:string"  />
+     <part name="fault" element="xsd:string"  />
   </message>
   <message name="sInsertParticipantsFault">
-     <part name="fault" type="xsd:string"  />
+     <part name="fault" element="xsd:string"  />
   </message>
   <message name="sTokenReturnFault">
-     <part name="fault" type="xsd:string"  />
+     <part name="fault" element="xsd:string"  />
   </message>
 
   <message name="sChangeSurveyRequest">
@@ -143,7 +143,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   </message>
   
   <message name="sChangeSurveyFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
 
   <message name="sActivateSurveyRequest">
@@ -156,7 +156,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sActivateSurveyFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sImportGroupRequest">
         <part name="sUser" type="xsd:string"></part>
@@ -168,7 +168,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sImportGroupFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sAvailableModulesRequest">
   	<part name="sUser" type="xsd:string"></part>
@@ -179,7 +179,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sAvailableModulesFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sImportQuestionRequest">
   	<part name="sUser" type="xsd:string"></part>
@@ -195,7 +195,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sImportQuestionFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sImportMatrixRequest">
   	<part name="sUser" type="xsd:string"></part>
@@ -211,7 +211,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sImportMatrixFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sDeleteSurveyRequest">
   	<part name="sUser" type="xsd:string"></part>
@@ -222,7 +222,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sDeleteSurveyFault">
-  	<part name="fault" type="xsd:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
   <portType name="JaphPortType">
     <operation name="sCreateSurvey" >
@@ -292,15 +292,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sDeleteSurvey">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sDeleteSurveyRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sDeleteSurveyResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sDeleteSurveyFault">
-        <soap:fault name="sDeleteSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sDeleteSurveyFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -308,15 +308,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sImportMatrix">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sImportMatrixRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportMatrixResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportMatrixFault">
-        <soap:fault name="sImportMatrixFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sImportMatrixFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -324,15 +324,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sImportQuestion">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sImportQuestionRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportQuestionResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportQuestionFault">
-        <soap:fault name="sImportQuestionFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sImportQuestionFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -340,15 +340,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sAvailableModules">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sAvailableModulesRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sAvailableModulesResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sAvailableModulesFault">
-        <soap:fault name="sAvailableModulesFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sAvailableModulesFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -356,15 +356,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sImportGroup">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sImportGroupRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportGroupResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportGroupFault">
-        <soap:fault name="sImportGroupFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sImportGroupFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -372,15 +372,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 	<operation name="sActivateSurvey">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sActivateSurveyRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sActivateSurveyResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sActivateSurveyFault">
-        <soap:fault name="sActivateSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sActivateSurveyFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -388,15 +388,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <operation name="sChangeSurvey">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sChangeSurveyRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sChangeSurveyResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sChangeSurveyFault">
-        <soap:fault name="sChangeSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sChangeSurveyFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -404,15 +404,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <operation name="sCreateSurvey">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sCreateSurveyRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sCreateSurveyResponse">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sCreateSurveyFault">
-        <soap:fault name="sCreateSurveyFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sCreateSurveyFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -420,15 +420,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <operation name="sInsertToken">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sInsertTokenRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sInsertTokenResponse" >
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sInsertTokenFault">
-        <soap:fault name="sInsertTokenFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sInsertTokenFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -436,15 +436,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <operation name="sInsertParticipants">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sInsertParticipantsRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sInsertParticipantsResponse" >
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sInsertParticipantsFault">
-        <soap:fault name="sInsertParticipantsFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sInsertParticipantsFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
@@ -452,15 +452,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <operation name="sTokenReturn">
       <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
       <input name="sTokenReturnRequest">
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sTokenReturnResponse" >
-        <soap:body use="encoded" namespace="urn:japhNamespace"
+        <soap:body namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sTokenReturnFault">
-        <soap:fault name="sTokenReturnFault" use="encoded" namespace="urn:japhNamespace"
+        <soap:fault name="sTokenReturnFault" namespace="urn:japhNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>

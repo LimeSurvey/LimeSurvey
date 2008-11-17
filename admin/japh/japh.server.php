@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: japh.server.php 5922 2008-11-03 13:32:26Z wahrendorff $
+* $Id: japh.server.php  $
 * 
 */
 
@@ -56,7 +56,7 @@ else{
 
 //adds the functions to the SoapServer Object, 
 //the sChangeSurvey and sDeleteSurvey function should be commented out for productive Use
-$server->addFunction("sChangeSurvey");
+//$server->addFunction("sChangeSurvey");
 $server->addFunction("sDeleteSurvey");
 $server->addFunction("sActivateSurvey");
 $server->addFunction("sCreateSurvey");
