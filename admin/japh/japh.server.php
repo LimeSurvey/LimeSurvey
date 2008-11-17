@@ -779,6 +779,12 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 		throw new SoapFault("Authentication: ", "You have no right to delete Surveys from other people");
 		exit;
 	}
+	// check if the Survey exists, else -> Fault
+	if(!$japhHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey $iVid does not exists");
+		exit;
+	}
 	
 	if($japhHelper->deleteSurvey($iVid))
 	{
@@ -786,7 +792,8 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	}
 	else
 	{
-		return "Survey $iVid was not deleted";
+		throw new SoapFault("Server: ", "Survey $iVid was not deleted");
+		exit;
 	}
 	
 	
