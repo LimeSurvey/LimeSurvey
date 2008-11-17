@@ -31,77 +31,77 @@ h5 { font-size:100%; }
   margin:0 auto; 
   text-align:left; 
 }
-  #container { 
-  padding-top: 12px;
-  }
+#container { 
+padding-top: 12px;
+}
 
-  	/* header ------------------------------------------------------------------ */
-  	#header { position:relative; padding-left: 7px;}
+/* header ------------------------------------------------------------------ */
+#header { position:relative; padding-left: 7px;}
   
-      #logo {
-        font-family: Impact, 'Techno CE', sans-serif;
-        font-weight: normal;
-        color: #fff;
-        position: relative; 
-        overflow: hidden; 
-        height: 110px;
-        font-size:260%;
-        margin: 0;
-        line-height: 130px;
-      }
-      #logo a{
-        color: #fff;
-        text-decoration: none;
-      }
-      
-      #logo .leaf {
-        position: absolute; 
-        left: 0; top: 20px; 
-        z-index: 1; 
-        width: 120px; height: 80px;
-        background: url('Logo_LimeSurvey_transparent_25x25.png') 60px 5px no-repeat; 
-        cursor: pointer;
-      }
-      
-      #logo .light {
-        color: #3f576e;
-      }
-        
-    .content {
-      margin-left:auto; 
-      margin-right:auto; 
-      padding: 0 0 0 0;
-      width:570px;
-      z-index: 10;
-    }
-    .content .in{
-      padding: 0 0 0 10px;
-    }
-  
-  	/* columns ----------------------------------------------------------------- */
-  	#panel-left { float:left; width:200px; }
-  	.panel .in { padding: 10px; }
-    
-    #panel-left span  { color: #515f6a; }
-    
-    #panel-left p  { margin-top: 5px; }
-  
-  	/* footer ----------------------------------------------------------------- */
-  	#footer {
-      clear:both;
-      height: 30px;
-      margin-top: 20px;
-      border-top: 1px solid #324455;
-      padding:10px 3px;
-      color: #a0a9b0;
-      font-size: 90%;
-    }
-    
-    #footer a {
-      color: #a0a9b0;
-    }
-    
-      #footer p { margin:0; padding-top:10px; }
+#logo {
+font-family: Impact, 'Techno CE', sans-serif;
+font-weight: normal;
+color: #fff;
+position: relative; 
+overflow: hidden; 
+height: 110px;
+font-size:260%;
+margin: 0;
+line-height: 130px;
+}
+#logo a{
+color: #fff;
+text-decoration: none;
+}
+
+#logo .leaf {
+position: absolute; 
+left: 0; top: 20px; 
+z-index: 1; 
+width: 120px; height: 80px;
+background: url('Logo_LimeSurvey_transparent_25x25.png') 60px 5px no-repeat; 
+cursor: pointer;
+}
+
+#logo .light {
+color: #3f576e;
+}
+	
+.content {
+  margin-left:auto; 
+  margin-right:auto; 
+  padding: 0 0 0 0;
+  width:570px;
+  z-index: 10;
+}
+.content .in{
+  padding: 0 0 0 10px;
+}
+
+/* columns ----------------------------------------------------------------- */
+#panel-left { float:left; width:200px; }
+.panel .in { padding: 10px; }
+
+#panel-left span  { color: #515f6a; }
+
+#panel-left p  { margin-top: 5px; }
+
+/* footer ----------------------------------------------------------------- */
+#footer {
+  clear:both;
+  height: 30px;
+  margin-top: 20px;
+  border-top: 1px solid #324455;
+  padding:10px 3px;
+  color: #a0a9b0;
+  font-size: 90%;
+}
+
+#footer a {
+  color: #a0a9b0;
+}
+
+  #footer p { margin:0; padding-top:10px; }
 
 
 
@@ -752,8 +752,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .array-flexible-column col.odd
 ,.array-flexible-column th.odd
 {
-	color: #192d40;
-	background-color: #eee;
+	background-color: #0c1c2b;
 	padding: 0% 0.3em;
 }
 
