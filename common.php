@@ -890,6 +890,51 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	}
 }
 
+function question_class($input)
+{
+/**
+ * question_class() returns a class name for a given question type to allow custom styling for each question type.
+ *
+ * @param string containing unique character representing each question type.
+ * @returns string containing the class name for a given question type.
+ */
+	switch($input)
+	{	// I think this is a bad solution to adding classes to question
+		// DIVs but I can't think of a better solution. (eric_t_cruiser)
+
+		case 'X': return 'boilerplate';		//	BOILERPLATE QUESTION
+		case '5': return 'choice-5-pt-radio';	//	5 POINT CHOICE radio-buttons
+		case 'D': return 'date';		//	DATE
+		case 'Z': return 'list-radio-flexible';	//	LIST Flexible radio-button
+		case 'L': return 'list-radio';		//	LIST radio-button
+		case 'W': return 'list-dropdown-flexible'; //	LIST drop-down (flexible label)
+		case '!': return 'list-dropdown';	//	List - dropdown
+		case 'O': return 'list-with-comment';	//	LIST radio-button + textarea
+		case 'R': return 'ranking';		//	RANKING STYLE
+		case 'M': return 'multiple-opt';	//	MULTIPLE OPTIONS checkbox
+		case 'I': return 'language';		//	Language Question
+		case 'P': return 'multiple-opt-comments'; //	MULTIPLE OPTIONS WITH COMMENTS checkbox + text
+		case 'Q': return 'multiple-short-txt';	//	TEXT
+		case 'K': return 'numeric-multi';	//	MULTIPLE NUMERICAL QUESTION
+		case 'N': return 'numeric';		//	NUMERICAL QUESTION TYPE
+		case 'S': return 'text-short';		//	SHORT FREE TEXT
+		case 'T': return 'text-long';		//	LONG FREE TEXT
+		case 'U': return 'text-huge';		//	HUGE FREE TEXT
+		case 'Y': return 'yes-no';		//	YES/NO radio-buttons
+		case 'G': return 'gender';		//	GENDER drop-down list
+		case 'A': return 'array-5-pt';		//	ARRAY (5 POINT CHOICE) radio-buttons
+		case 'B': return 'array-10-pt';		//	ARRAY (10 POINT CHOICE) radio-buttons
+		case 'C': return 'array-yes-uncertain-no'; //	ARRAY (YES/UNCERTAIN/NO) radio-buttons
+		case 'E': return 'array-increase-same-decrease'; // ARRAY (Increase/Same/Decrease) radio-buttons
+		case 'F': return 'array-flexible-row';	//	ARRAY (Flexible) - Row Format
+		case 'H': return 'array-flexible-column'; //	ARRAY (Flexible) - Column Format
+//		case '^': return 'slider';			//	SLIDER CONTROL
+		case ':': return 'array-multi-flexi';	//	ARRAY (Multi Flexi) 1 to 10
+		case ";": return 'array-multi-flexi-text';
+		case "1": return 'array-flexible-duel-scale'; //	Array (Flexible Labels) dual scale
+		default:  return 'generic_question';	//	Should have a default fallback
+	};
+};
 
 /**
 * getNotificationlist() returns different options for notifications

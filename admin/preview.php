@@ -37,28 +37,34 @@ $clang = new limesurvey_lang($language);
 $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='{$language}'";
 $qresult = db_execute_assoc($qquery);
 $qrows = $qresult->FetchRow();
-
 $ia = array(0 => $qid, 1 => "FIELDNAME", 2 => $qrows['title'], 3 => $qrows['question'], 4 => $qrows['type'], 5 => $qrows['gid'],
 6 => $qrows['mandatory'], 7 => $qrows['other']);
 $answers = retrieveAnswers($ia);
 $thistpl="$publicdir/templates";
 doHeader();
 //echo "\t\t\t\t<div id='question'";
-echo "<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-	<script type='text/javascript'>
-	<!--
-		function checkconditions(value, name, type)
-			{
-			}
-	//-->
-	</script>";
-echo "<form method='post' action='index.php' id='limesurvey' name='limesurvey'>\n";
+$form_start = '
+		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+		<script type="text/javascript">
+<!--
+function checkconditions(value, name, type)
+{
+}
+//-->
+		</script>
+		<form method="post" action="index.php" id="limesurvey" name="limesurvey">
+';
+
+
+
 $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
-echo templatereplace(file_get_contents("$thistpl/preview.pstpl"));
-echo "</form>\n";
+$content = templatereplace(file_get_contents("$thistpl/preview.pstpl"));
+$content = str_replace('{FORM_START}' , $form_start , $content);
+$content = str_replace('{QUESTION_CLASS}' , question_class($ia[2]) , $content);
+echo $content;
 echo "</html>\n";
 
 

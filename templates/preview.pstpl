@@ -1,98 +1,18 @@
-<title>{SURVEYNAME}</title>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />   
-        <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-<style type='text/css'>
-body.default
-    {
-    font-family: verdana;
-    font-size: 11px;
-    }
-.question
-    {
-    font-family: verdana;
-    font-size: 11px;
-    }
-.questionhelp
-    {
-    font-size: 10px;
-    }        
-.clearall
-    {
-    font-size: 11px;
-    }
-.answertext
-    {
-    font-family: verdana;
-    font-size: 11px;
-    }
-.answertextright
-    {
-	text-align:left;
-    }    
-.array1
-    {
-    font-family: verdana;
-    font-size: 11px;
-    text-align:center;
-    background-color: #ffffff;
-    }
-.array2
-    {
-    font-family: verdana;
-    font-size: 11px;
-    text-align:center;
-    background-color: #eeeeee;
-    }
+		<title>Question Preview (based on default template)</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />   
+		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+<!--[if IE]>
+			<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+<![endif]-->
+<!--[if lt IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
+<![endif]-->
+	</head>
 
-.arraycaptionleft
-    {
-    text-align:right;
-    }
-    
-.errormandatory 
-    {
-    font-size:12px;
-    font-weight:bold;
-    color:RED;
-    }
-.warningjs
-    {
-    font-size:12px;
-    font-weight:bold;
-    color:RED;
-    }
-
-.saveall
-    {
-    font-size:10px;
-    font-weight:normal;
-    color:black;
-    background-color:#999999;
-    }
-.asterisk
-    {
-    color: #FF0000;
-    font-size: 9pt;
-    font-family: verdana;
-    }
-table.question tr.array1:hover
-    {
-    background-color: #A7A9D1;
-    }
-table.question tr.array2:hover
-    {
-    background-color: #A7A9D1;
-    }
-.ui-wrapper { border: 1px solid #50A029; }
-.ui-wrapper input, .ui-wrapper textarea { border: 0; }
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../images/slider-handle.gif);  }
-.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
-</style>
-</head>
-<body class='default'>
+	<body class="default">
+		{FORM_START}
+			<div class="{QUESTION_CLASS}">
 <table width='75%' align='center' border='1' style='border-collapse: collapse; border-color: #111111' bgcolor='white'>
 	<tr>
 		<td align='center'>
@@ -122,4 +42,6 @@ table.question tr.array2:hover
 		<td height='1'></td>
 	</tr>
 </table>
-</body>
+			</div>
+		</form>
+	</body>
