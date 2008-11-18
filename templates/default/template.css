@@ -546,6 +546,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease thead th
 ,.array-flexible-row thead th
 ,.array-multi-flexi thead th
+,.array-multi-flexi-text thead th
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
 {
@@ -560,6 +561,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease td td td , .array-increase-same-decrease th
 ,.array-flexible-row td td td , .array-flexible-row th
 ,.array-multi-flexi td td td , .array-multi-flexi th
+,.array-multi-flexi-text td td td , .array-multi-flexi-text th
 ,.array-flexible-duel-scale td td td , .array-flexible-duel-scale th
 ,.array-flexible-column td td td , .array-flexible-column th
 {
@@ -573,6 +575,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease td.answertext
 ,.array-flexible-row td.answertext
 ,.array-multi-flexi td.answertext
+,.array-multi-flexi-text td.answertext
 ,.array-flexible-duel-scale td.answertext
 ,.array-flexible-column td.arraycaptionleft
 {
@@ -615,15 +618,16 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.text-long td td
 ,.text-huge td td
 ,.numeric-multi td td
-,.array-5-pt td td
-,.array-10-pt td td
-,.array-yes-uncertain-no td td
-,.array-increase-same-decrease td td 
-,.array-flexible-row  td td
-,.array-flexible-column  td td
-,.slider  td td
-,.array-multi-flexi  td td
-,.array-flexible-duel-scale  td td
+,.array-5-pt td
+,.array-10-pt td
+,.array-yes-uncertain-no td
+,.array-increase-same-decrease td
+,.array-flexible-row  td
+,.array-flexible-column  td
+,.slider  td
+,.array-multi-flexi  td
+,.array-multi-flexi-text  td
+,.array-flexible-duel-scale  td
 {
 	text-align: left;
 }
