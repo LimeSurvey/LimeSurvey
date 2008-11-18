@@ -63,7 +63,15 @@ $help=$answers[0][2];
 $questioncode=$answers[0][5];
 $content = templatereplace(file_get_contents("$thistpl/preview.pstpl"));
 $content = str_replace('{FORM_START}' , $form_start , $content);
-$content = str_replace('{QUESTION_CLASS}' , question_class($qrows['type']) , $content);
+if($qrows['mandatory'] == 'Y')
+{
+	$mandatory = ' mandatory';
+}
+else
+{
+	$mandatory = '';
+}
+$content = str_replace('{QUESTION_CLASS}' , question_class($qrows['type']) . $mandatory , $content);
 echo $content;
 echo "</html>\n";
 
