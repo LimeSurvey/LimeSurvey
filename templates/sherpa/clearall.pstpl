@@ -3,5 +3,6 @@
     <span style="color:red; font-weight:bold;">{ANSWERSCLEARED}</span>
 	<br /><br />
 	{RESTART}<br />
+	{CLOSEWINDOW}
 </div>
 <br />
