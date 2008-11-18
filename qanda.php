@@ -4271,6 +4271,7 @@ function do_array_increasesamedecrease($ia)
 	$anscount = $ansresult->RecordCount();
 
 	$fn = 1;
+
 	$answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - Increase/Same/Decrease Likert scale array\">\n"
 	. "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n"
 	. "\t<colgroup class=\"col-responses\">\n";
@@ -4298,7 +4299,7 @@ function do_array_increasesamedecrease($ia)
 	}
 	$answer .= "\t\t</tr>\n"
 	."\t</thead>\n";
-	$answers = '';
+	$answer_body = '';
 	$trbc = '';
 	while ($ansrow = $ansresult->FetchRow())
 	{
@@ -4307,79 +4308,92 @@ function do_array_increasesamedecrease($ia)
 		/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 		containing a list of unanswered questions, the current question must be in the array,
 		and there must be no answer available for the item in this session. */
-		if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
+		if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") )
+		{
 			$answertext = "<span class=\"errormandatory\">{$answertext}</span>";
 		}
+
 		$trbc = alternation($trbc , 'row');
-		$htmltbody2 = "\n\t<tbody>\n";
-		if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+
+		$htmltbody2 = "\t<tbody>\n";
+		if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 		{
-			$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+			$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 		}
-		else if
-		(($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+		elseif(	($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
 			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style='\"isplay: none\">\n\t\t<input type=\"hidden\" name='\"bdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+				$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />\n";
 				$_SESSION[$myfname] = '';
 			}
 			else
 			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+				$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />";
 			}
 		}
-		$answers .= "\t\t<tr class=\"$trbc\">\n"
-		. "\t\t\t<td class=\"answertext\">$answertext</td>\n"
-		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-I\">\n"
-		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
+		$answer_body .= "\t\t<tr class=\"$trbc\">\n"
+		. "\t\t\t<td class=\"answertex\">$answertext</td>\n"
+		. "\t\t\t<td>\n"
+		. "\t\t\t\t<label for=\"answer$myfname-I\">\n"
+		."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
 		{
-			$answers .= CHECKED;
+			$answer_body .= CHECKED;
 		}
 
-		$answers .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n"
-		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-S\">\n"
-		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT("Same")."\"";
+		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		. "\t\t\t\t</label>\n"
+		. "\t\t\t</td>\n"
+		. "\t\t\t<td>\n"
+		. "\t\t\t\t<label for=\"answer$myfname-S\">\n"
+		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
 
-		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'S') {$answers .= CHECKED;}
+		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'S')
+		{
+			$answer_body .= CHECKED;
+		}
 
-		$answers .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n"
-		. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-D\">\n"
-		."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT("Decrease")."\"";
+		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		. "\t\t\t\t</label>\n"
+		. "\t\t\t</td>\n"
+		. "\t\t\t<td>\n"
+		. "\t\t\t\t<label for=\"answer$myfname-D\">\n"
+		. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
 		// --> END NEW FEATURE - SAVE
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'D')
 		{
-			$answers .= CHECKED;
+			$answer_body .= CHECKED;
 		}
 
-		$answers .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n"
+		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		. "\t\t\t\t</label>\n"
 		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
-		if (isset($_SESSION[$myfname])) {$answers .= $_SESSION[$myfname];}
-		$answers .= "\" />\n\t\t\t</td>\n";
+		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		$answer_body .= "\" />\n\t\t\t</td>\n";
 
 		if ($ia[6] != 'Y' && $shownoanswer == 1)
 		{
-			$answers .= "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-\">\n"
-			."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT("No answer")."\"";
+			$answer_body .= "\t\t\t<td>\n"
+			. "\t\t\t\t<label for=\"answer$myfname-\">\n"
+			. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
 			if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
 			{
-				$answers .= CHECKED;
+				$answer_body .= CHECKED;
 			}
-			$answers .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t\t\t\t</label>\n\t\t\t</td>\n";
+			$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+			. "\t\t\t\t</label>\n"
+			. "\t\t\t</td>\n";
 		}
-		$answers .= "\t\t</tr>\n";
+		$answer_body .= "\t\t</tr>\n";
 		$inputnames[]=$myfname;
 		$fn++;
 	}
-	$answer .= $htmltbody2.$answers."\t</tbody>\n</table>\n";
+	$answer .= $htmltbody2 . $answer_body . "\t</tbody>\n</table>\n";
 	return array($answer, $inputnames);
 }
-
-
-
 
 // ---------------------------------------------------------------
 function do_array_flexible($ia)
