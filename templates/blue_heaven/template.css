@@ -560,22 +560,24 @@ multiple-opt-comments ul.X2  label.answertext     , .multiple-short-txt ul.X2 la
 ,.array-increase-same-decrease thead th
 ,.array-flexible-row thead th
 ,.array-multi-flexi thead th
+,.array-multi-flexi-text thead th
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
 {
 	vertical-align: bottom;
 }
 
- .array-5-pt td , .array-5-pt th
-,.array-10-pt td , .array-10-pt th
-,.array-yes-uncertain-no td , .array-yes-uncertain-no th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-multi-flexi td , .array-multi-flexi th
-,.array-flexible-duel-scale td , .array-flexible-duel-scale th
-,.array-flexible-column td , .array-flexible-column th
+ .array-5-pt td td , .array-5-pt th
+,.array-10-pt td td , .array-10-pt th
+,.array-yes-uncertain-no td td , .array-yes-uncertain-no th
+,.array-increase-same-decrease td td , .array-increase-same-decrease th
+,.array-flexible-row td td , .array-flexible-row th
+,.array-increase-same-decrease td td , .array-increase-same-decrease th
+,.array-flexible-row td td , .array-flexible-row th
+,.array-multi-flexi td td, .array-multi-flexi th
+,.array-multi-flexi-text td td, .array-multi-flexi-text th
+,.array-flexible-duel-scale td td , .array-flexible-duel-scale th
+,.array-flexible-column td td , .array-flexible-column th
 {
 	text-align: center;
 }
@@ -587,6 +589,7 @@ multiple-opt-comments ul.X2  label.answertext     , .multiple-short-txt ul.X2 la
 ,.array-increase-same-decrease td.answertext
 ,.array-flexible-row td.answertext
 ,.array-multi-flexi td.answertext
+,.array-multi-flexi-text td.answertext
 ,.array-flexible-duel-scale td.answertext
 ,.array-flexible-column td.arraycaptionleft
 {
@@ -612,15 +615,16 @@ multiple-opt-comments ul.X2  label.answertext     , .multiple-short-txt ul.X2 la
 ,.text-huge td td
 ,.yes-no td td
 ,.gender td td
-,.array-5-pt td.answertext td td
-,.array-10-pt td.answertext td td
-,.array-yes-uncertain-no td td
-,.array-increase-same-decrease td td
-,.array-flexible-row td td
-,.array-flexible-column td td
-,.slider td td
-,.array-multi-flexi td td
-,.array-flexible-duel-scale td td
+,.array-5-pt td.answertext td
+,.array-10-pt td.answertext td
+,.array-yes-uncertain-no td
+,.array-increase-same-decrease td
+,.array-flexible-row td
+,.array-flexible-column td
+,.slider td
+,.array-multi-flexi td
+,.array-multi-flexi-text td
+,.array-flexible-duel-scale td
 {
 	text-align: left;
 }
