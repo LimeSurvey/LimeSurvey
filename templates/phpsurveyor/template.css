@@ -531,6 +531,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease thead th
 ,.array-flexible-row thead th
 ,.array-multi-flexi thead th
+,.array-multi-flexi-text thead th
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
 {
@@ -545,6 +546,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease td td , .array-increase-same-decrease th
 ,.array-flexible-row td td , .array-flexible-row th
 ,.array-multi-flexi td td , .array-multi-flexi th
+,.array-multi-flexi-text td td , .array-multi-flexi-text th
 ,.array-flexible-duel-scale td td , .array-flexible-duel-scale th
 ,.array-flexible-column td td , .array-flexible-column th
 {
@@ -558,6 +560,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-increase-same-decrease td.answertext
 ,.array-flexible-row td.answertext
 ,.array-multi-flexi td.answertext
+,.array-multi-flexi-text td.answertext
 ,.array-flexible-duel-scale td.answertext
 ,.array-flexible-column td.arraycaptionleft
 {
@@ -584,14 +587,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.text-huge td
 ,.yes-no td
 ,.gender td
-,.array-5-pt td.answertext td 
-,.array-10-pt td.answertext td
+,.array-5-pt td.answertext
+,.array-10-pt td.answertext
 ,.array-yes-uncertain-no td
 ,.array-increase-same-decrease td
 ,.array-flexible-row td
 ,.array-flexible-column td
 ,.slider td
 ,.array-multi-flexi td
+,.array-multi-flexi-text td
 ,.array-flexible-duel-scale td
 {
 	text-align: left;
