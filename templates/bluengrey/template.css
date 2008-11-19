@@ -71,7 +71,7 @@ font-weight:bold;
   margin:0 auto;
 outline: 1px solid #444444;
 background-color:#E9E9E9;
-padding:5px 0;
+padding: 0% 0% 0.5em 0%;
 }
 
 #welcometext
@@ -119,7 +119,9 @@ border-color:#FFF;
 border-width:1px;
 }
 
-.answertext{
+ .answertext
+,.answertextright
+{
 font-size: 12px;
 }
 .answertextright {
@@ -264,9 +266,11 @@ font-weight:bold;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
-/* ==============================
-   Full list of question classes
- .numeric
+/* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
 ,.choice-5-pt-radio
 ,.yes-no
 ,.gender
@@ -282,6 +286,7 @@ font-weight:bold;
 ,.multiple-short-txt
 ,.text-short
 ,.text-long
+,.text-huge
 ,.numeric-multi
 ,.array-5-pt
 ,.array-10-pt
@@ -291,6 +296,7 @@ font-weight:bold;
 ,.array-flexible-column 
 ,.slider 
 ,.array-multi-flexi 
+,.array-multi-flexi-text
 ,.array-flexible-duel-scale 
 */
 
