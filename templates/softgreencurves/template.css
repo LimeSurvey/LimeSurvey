@@ -150,9 +150,11 @@ background-color:#A7A9D1;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
-/* ==============================
-   Full list of question classes
- .numeric
+/* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
 ,.choice-5-pt-radio
 ,.yes-no
 ,.gender
@@ -168,6 +170,7 @@ background-color:#A7A9D1;
 ,.multiple-short-txt
 ,.text-short
 ,.text-long
+,.text-huge
 ,.numeric-multi
 ,.array-5-pt
 ,.array-10-pt
@@ -177,6 +180,7 @@ background-color:#A7A9D1;
 ,.array-flexible-column 
 ,.slider 
 ,.array-multi-flexi 
+,.array-multi-flexi-text
 ,.array-flexible-duel-scale 
 */
 
@@ -609,28 +613,34 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	text-align: left;
 }
 
- .date td td
+ .boilerplate td td
+,.numeric td td
 ,.choice-5-pt-radio td td
-,.list-with-comment td td
-,.language td td
-,.multiple-opt td td
-,.multiple-opt-comments td td
-,.multiple-short-txt td td
+,.yes-no td td
+,.gender td td
+,.date td td
 ,.numeric-multi td td
 ,.numeric td td
+,.list-with-comment td td
+,.list-dropdown-flexible td td
+,.ranking td td
+,.numeric-multi td td
+,.language td td
+,.multiple-opt-comments td td
+,.multiple-short-txt td td
 ,.text-short td td
 ,.text-long td td
 ,.text-huge td td
-,.yes-no td td
-,.gender td td
+,.numeric-multi td td
+,.array-5-pt td
+,.array-10-pt td
 ,.array-yes-uncertain-no td
 ,.array-increase-same-decrease td
 ,.array-flexible-row td
 ,.array-flexible-column td
-,.slider td
 ,.array-multi-flexi td
 ,.array-multi-flexi-text td
-,.array-flexible-duel-scale td
+,.array-flexible-duel-scale td 
 {
 	text-align: left;
 }

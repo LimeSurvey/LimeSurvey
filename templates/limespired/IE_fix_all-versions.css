@@ -34,3 +34,15 @@
 {
 	text-indent: -1.5em;
 }
+
+  .list-radio-flexible ul.cols-2 li:first-child , .list-radio ul.cols-2 li:first-child
+, .list-radio-flexible ul.cols-3 li:first-child , .list-radio ul.cols-3 li:first-child
+, .list-radio-flexible ul.cols-4 li:first-child , .list-radio ul.cols-4 li:first-child
+, .list-radio-flexible ul.cols-5 li:first-child , .list-radio ul.cols-5 li:first-child
+, .list-radio-flexible ul.cols-6 li:first-child , .list-radio ul.cols-6 li:first-child
+, .list-radio-flexible ul.cols-7 li:first-child , .list-radio ul.cols-7 li:first-child
+, .list-radio-flexible ul.cols-8 li:first-child , .list-radio ul.cols-8 li:first-child
+{
+	text-indent: 1.5em;
+}
+

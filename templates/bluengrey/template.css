@@ -17,8 +17,6 @@ width:90%;
 }
 
 
-
-
 #completed
 {
    width:75%;
@@ -50,7 +48,10 @@ width:97%;
 margin:20px auto;
 padding: 0.5em;
 }
-
+div.question div.answers table
+{
+	width: 100%;
+}
 div.questiontext
 {
 font-weight:bold;
@@ -406,13 +407,13 @@ font-weight:bold;
 	white-space: normal
 }
 
-ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; }
-ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30.5%; }
-ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 23%; }
-ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19%; }
-ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
-ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
-ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
+ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 47%; }
+ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30%; }
+ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 22%; }
+ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 17%; }
+ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15.5%; }
+ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 12%; }
+ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 
 .list-dropdown-flexible p.question
 {

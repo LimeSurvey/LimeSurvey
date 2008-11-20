@@ -1,16 +1,24 @@
-    <title> {SURVEYNAME} </title>
-    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />	
-    <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+		<title> {SURVEYNAME} </title>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />	
+		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+		<script type="text/javascript">
+			var ie = false;
+		</script>
+
 <!--[if IE]>
-  <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+		<script type="text/javascript">
+			var ie = true;
+		</script>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->
 <!--[if lt IE 7]>
-  <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
 <![endif]-->
-</head>
+	</head>
 
-<body bgcolor="#C0C0C0">
+	<body bgcolor="#C0C0C0">
 <table width="75%" align="center" style="border-collapse: collapse; border-color:#333333" bgcolor="#EDEDED" border="1" cellspacing="0">
 	<tr>
 		<td>

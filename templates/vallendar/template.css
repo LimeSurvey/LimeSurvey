@@ -133,9 +133,11 @@ background-color:#A7A9D1;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
-/* ==============================
-   Full list of question classes
- .numeric
+/* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
 ,.choice-5-pt-radio
 ,.yes-no
 ,.gender
@@ -151,6 +153,7 @@ background-color:#A7A9D1;
 ,.multiple-short-txt
 ,.text-short
 ,.text-long
+,.text-huge
 ,.numeric-multi
 ,.array-5-pt
 ,.array-10-pt
@@ -160,6 +163,7 @@ background-color:#A7A9D1;
 ,.array-flexible-column 
 ,.slider 
 ,.array-multi-flexi 
+,.array-multi-flexi-text
 ,.array-flexible-duel-scale 
 */
 
