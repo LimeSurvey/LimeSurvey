@@ -212,8 +212,19 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
 					{
-						$col_name .= db_quote_id($fieldname).", \n";
-						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+						if ($irow['type'] == 'D' && $_POST[$fieldname] == "")
+						{ // can't add '' in Date column
+							// Do nothing
+						}
+						elseif ($irow['type'] == 'N' && $_POST[$fieldname] == "")
+						{ // can't add '' to numerical column
+							// Do nothing
+						}
+						else
+						{
+							$col_name .= db_quote_id($fieldname).", \n";
+							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+						}
 					}
 				}
 				elseif ($irow['type'] == "O")
@@ -307,8 +318,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 						if (isset($_POST[$fieldname]))
 						{
-							$col_name .= db_quote_id($fieldname).", \n";
-							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+							if ($irow['type'] == 'K' && $_POST[$fieldname] == "")
+							{ // can't add '' in a numerical column
+								// Do nothing
+							} 
+							else
+							{	
+								$col_name .= db_quote_id($fieldname).", \n";
+								$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+							}
+
 							if ($irow['type'] == "P")
 							{
 								$fieldname2 = $fieldname."comment";
@@ -326,6 +345,17 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				}
 			}
 
+			$stripCommaColName = false;
+			if ($col_name == "")
+			{ // if cold_name is empty, set a flag so that we delete the beginning ","
+				$stripCommaColName = true;
+			}
+			$stripCommaInsertqr = false;
+			if ($insertqr =="")
+			{ // if insertqr is empty, set a flag so that we delete the beginning ","
+				$stripCommaInsertqr = true;
+			}
+			
 			$col_name = substr($col_name, 0, -3); //Strip off the last comma-space
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 
@@ -367,6 +397,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$insertqr .= ", '{$_POST['closedate']}'";
 				}
 			}
+
+			if ($stripCommaColName === true)
+			{
+				$col_name=substr($col_name, 1);
+			}
+			if ($stripCommaInsertqr === true)
+			{
+				$insertqr=substr($insertqr, 1);
+			}
+
 			//		$dataentryoutput .= "\t\t\t<strong>Inserting data</strong><br />\n"
 			//			."SID: $surveyid, ($surveytable)<br /><br />\n";
 			$SQL = "INSERT INTO $surveytable
