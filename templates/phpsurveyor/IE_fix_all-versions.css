@@ -52,3 +52,8 @@
 	margin-bottom: -1.7em;
 	position: static;
 }
+.innergraph img {
+height:14px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}

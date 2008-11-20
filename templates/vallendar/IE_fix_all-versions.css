@@ -32,3 +32,7 @@
 	margin-right: 10em;
 	margin-bottom: -2em;
 }
+.innergraph img {
+height:16px;
+vertical-align:top;
+}

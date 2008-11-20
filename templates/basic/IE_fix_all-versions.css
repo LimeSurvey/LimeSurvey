@@ -29,3 +29,9 @@
 .numeric-multi dl.multiplenumerichelp.X28 { left: 38em; }
 .numeric-multi dl.multiplenumerichelp.X30 { left: 40em; }
 .numeric-multi dl.multiplenumerichelp.X-large { display: static; }
+
+.innergraph img {
+height:17px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}

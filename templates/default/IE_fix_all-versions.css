@@ -25,7 +25,6 @@
 	display: block;
 }
 
-
 .numeric-multi dl.multiplenumerichelp
 {
 	margin-top: -5.3em;
@@ -41,3 +40,8 @@
 	margin: 0% 0% 0.5em 7em;
 }
 
+.innergraph img {
+height:16px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}

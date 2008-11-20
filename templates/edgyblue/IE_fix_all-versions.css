@@ -64,3 +64,9 @@
 }
 /*	END: dirty hack.
 ----------------------------------------------------------- */
+
+.innergraph img {
+height:14px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}
