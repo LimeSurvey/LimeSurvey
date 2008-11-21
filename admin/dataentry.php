@@ -1581,7 +1581,18 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
-				$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
+				if ($irow['type'] == 'D' && $thisvalue == "")
+				{
+					$updateqr .= db_quote_id($fieldname)." = NULL, \n";
+				}
+				elseif ( $irow['type'] == 'N' && $thisvalue == "")
+				{
+					$updateqr .= db_quote_id($fieldname)." = NULL, \n";
+				}
+				else
+				{
+					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
+				}
 				unset($thisvalue);
 				// handle ! other
 				if (($irow['type'] == "!" || $irow['type'] == "W" || $irow['type'] == "Z" || $irow['type'] == "L") && $irow['other'] == "Y")
@@ -1675,7 +1686,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
-					$updateqr .= db_quote_id($fieldname)." = '" . $thisvalue . "', \n";
+					if ($irow['type'] == 'K' && $thisvalue  == "")
+					{
+						$updateqr .= db_quote_id($fieldname)." = NULL, \n";
+					}
+					else
+					{
+						$updateqr .= db_quote_id($fieldname)." = '" . $thisvalue . "', \n";
+					}
 					if ($i2row['other'] == "Y") {$otherexists = "Y";}
 					if ($irow['type'] == "P")
 					{
