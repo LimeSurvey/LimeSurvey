@@ -2512,10 +2512,10 @@ function templatereplace($line)
                else  {
                    $templateurl="$publicurl/templates/{$defaulttemplate}/";
                }                        
-               if (file_exists($templatedir.'/help.png'))
+               if (file_exists($templatedir.'/help.gif'))
               {
                 
-                  $helpicon=$templateurl.'/help.png';    
+                  $helpicon=$templateurl.'/help.gif';    
               }
               elseif (file_exists($templatedir.'/help.png'))
               {
@@ -2524,7 +2524,7 @@ function templatereplace($line)
               }
               else 
               {
-                  $helpicon=$imagefiles."/help.png";
+                  $helpicon=$imagefiles."/help.gif";
               }
            }
            $line=str_replace("{QUESTIONHELP}", "<img src='$helpicon' alt='Help' align='left' />".$help, $line);
@@ -3108,7 +3108,7 @@ function getAdminFooter($url, $explanation)
    }
 
 	$strHTMLFooter = "<div class='footer'>\n"
-	. "\t\t\t<div style='float:left;width:110px;text-align:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/help.png' "
+	. "\t\t\t<div style='float:left;width:110px;text-align:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/docs.png' "
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
 	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
