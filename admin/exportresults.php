@@ -321,13 +321,13 @@ if (!$style)
 	."\t\t</font></strong>";
 	if ($afieldcount > 255)
 	{
-		$exportoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t\t\t<img src='$imagefiles/help.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 		.$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
 		."\")'>";
 	}
 	else
 	{
-		$exportoutput .= "\t\t\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+		$exportoutput .= "\t\t\t<img src='$imagefiles/help.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 		.$clang->gT("Choose the columns you wish to export.","js")
 		."\")'>";
 	}
@@ -378,7 +378,7 @@ if (!$style)
 			."\t</tr>\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>"
-			."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
+			."<img src='$imagefiles/help.png' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
 			."\")' /><br /><br />\n"
 			."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name'>"
