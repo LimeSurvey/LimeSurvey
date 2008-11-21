@@ -137,16 +137,21 @@ background-color:#A7A9D1;
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
 
-/* ==============================
-   Full list of question classes
- .numeric
+/* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
 ,.choice-5-pt-radio
 ,.yes-no
 ,.gender
 ,.date
 ,.numeric-multi
 ,.numeric
+,.list-radio
+,.list-radio-flexible
 ,.list-with-comment
+,.list-dropdown
 ,.list-dropdown-flexible
 ,.ranking
 ,.numeric-multi

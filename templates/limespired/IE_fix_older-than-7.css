@@ -1,82 +1,68 @@
 /* The following styles are for versions of IE older than 7 */
 
- .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
-,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
-,.multiple-opt-comments ul.X6  label.answertext , .multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label
-,.multiple-opt-comments ul.X8  label.answertext , .multiple-short-txt ul.X8  label , .numeric-multi ul.X8  label
-,.multiple-opt-comments ul.X10 label.answertext , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label
-,.multiple-opt-comments ul.X12 label.answertext , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label
-,.multiple-opt-comments ul.X14 label.answertext , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label
-,.multiple-opt-comments ul.X16 label.answertext , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label
-,.multiple-opt-comments ul.X18 label.answertext , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label
-,.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
-,.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
-,.multiple-opt-comments ul.X22 label.answertext , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label
-,.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label
-,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
-,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
-,.multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label
+ .multiple-opt-comments ul.X2  label.answertext
+,.multiple-opt-comments ul.X4  label.answertext
+,.multiple-opt-comments ul.X6  label.answertext
+,.multiple-opt-comments ul.X8  label.answertext
+,.multiple-opt-comments ul.X10 label.answertext
+,.multiple-opt-comments ul.X12 label.answertext
+,.multiple-opt-comments ul.X14 label.answertext
+,.multiple-opt-comments ul.X16 label.answertext
+,.multiple-opt-comments ul.X18 label.answertext
+,.multiple-opt-comments ul.X20 label.answertext
+,.multiple-opt-comments ul.X20 label.answertext
+,.multiple-opt-comments ul.X22 label.answertext
+,.multiple-opt-comments ul.X24 label.answertext
+,.multiple-opt-comments ul.X28 label.answertext
+,.multiple-opt-comments ul.X30 label.answertext
 {
-	margin-bottom: -1.3em;
-	display: block;
+	margin-bottom: -2.7em;
 }
 
-.numeric-multi ul.X2 label { width: 3em;}
-.numeric-multi ul.X2 input.text { margin-left: 3.5em; }
+ .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
+,.multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
+,.multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label
+,.multiple-short-txt ul.X8  label , .numeric-multi ul.X8  label
+,.multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label
+,.multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label
+,.multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label
+,.multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label
+,.multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label
+,.multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
+,.multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
+,.multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label
+,.multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label
+,.multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
+,.multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
+{
+	margin-bottom: -1.8em;
+}
 
-.numeric-multi ul.X4 label { width: 5em;}
-.numeric-multi ul.X4 input.text { margin-left: 5.5em; }
-
-.numeric-multi ul.X6 label { width: 7em;}
-.numeric-multi ul.X6 input.text { margin-left: 7.5em; }
-
-.numeric-multi ul.X8 label { width: 9em;}
-.numeric-multi ul.X8 input.text { margin-left: 9.5em; }
-
-.numeric-multi ul.X10 label { width: 11em;}
-.numeric-multi ul.X10 input.text { margin-left: 11.5em; }
-
-.numeric-multi ul.X12 label { width: 13em;}
-.numeric-multi ul.X12 input.text { margin-left: 13.5em; }
-
-.numeric-multi ul.X14 label { width: 15em;}
-.numeric-multi ul.X14 input.text { margin-left: 15.5em; }
-
-.numeric-multi ul.X16 label { width: 17em;}
-.numeric-multi ul.X16 input.text { margin-left: 17.5em; }
-
-.numeric-multi ul.X18 label { width: 19em;}
-.numeric-multi ul.X18 input.text { margin-left: 19.5em; }
-
-.numeric-multi ul.X20 label { width: 21em;}
-.numeric-multi ul.X20 input.text { margin-left: 21.5em; }
-
-.numeric-multi ul.X22 label { width: 23em;}
-.numeric-multi ul.X22 input.text { margin-left: 23.5em; }
-
-.numeric-multi ul.X24 label { width: 25em;}
-.numeric-multi ul.X24 input.text { margin-left: 25.5em; }
-
-.numeric-multi ul.X26 label { width: 27em;}
-.numeric-multi ul.X26 input.text { margin-left: 27.5em; }
-
-.numeric-multi ul.X28 label { width: 29em;}
-.numeric-multi ul.X28 input.text { margin-left: 29.5em; }
-
-.numeric-multi ul.X30 label { width: 31em;}
-.numeric-multi ul.X30 input.text { margin-left: 31.5em; }
 
 .numeric-multi dl.multiplenumerichelp
 {
-	margin: -5em -3em 0% 0%;
+	margin-top: -5em;
 }
+.numeric-multi dl.multiplenumerichelp.slider { left: 22em; }
+.numeric-multi dl.multiplenumerichelp.X2  { left: 10em; }
+.numeric-multi dl.multiplenumerichelp.X4  { left: 12em; }
+.numeric-multi dl.multiplenumerichelp.X6  { left: 18em; }
+.numeric-multi dl.multiplenumerichelp.X8  { left: 16em; }
+.numeric-multi dl.multiplenumerichelp.X10 { left: 18em; }
+.numeric-multi dl.multiplenumerichelp.X12 { left: 20em; }
+.numeric-multi dl.multiplenumerichelp.X14 { left: 22em; }
+.numeric-multi dl.multiplenumerichelp.X16 { left: 24em; }
+.numeric-multi dl.multiplenumerichelp.X18 { left: 26em; }
+.numeric-multi dl.multiplenumerichelp.X20 { left: 28em; }
+.numeric-multi dl.multiplenumerichelp.X22 { left: 30em; }
+.numeric-multi dl.multiplenumerichelp.X24 { left: 32em; }
+.numeric-multi dl.multiplenumerichelp.X26 { left: 34em; }
+.numeric-multi dl.multiplenumerichelp.X28 { left: 36em; }
+.numeric-multi dl.multiplenumerichelp.X30 { left: 38em; }
+.numeric-multi dl.multiplenumerichelp.X-large { display: static; }
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin: 0% 0% -1.4em 0%;
-}
-.numeric-multi dl.multiplenumerichelp dd
-{
-	margin-bottom: 1em;
+	margin-bottom: -1.6em;
 }
 
 .survey-question

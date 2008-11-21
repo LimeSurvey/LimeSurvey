@@ -15,66 +15,16 @@
 ,.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label
 ,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
 ,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
-,.multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label
 {
-	margin-bottom: -1.3em;
-	display: block;
+	margin-bottom: -1.6em;
 }
-
-.numeric-multi ul.X2 label { width: 3em;}
-.numeric-multi ul.X2 input.text { margin-left: 3.5em; }
-
-.numeric-multi ul.X4 label { width: 5em;}
-.numeric-multi ul.X4 input.text { margin-left: 5.5em; }
-
-.numeric-multi ul.X6 label { width: 7em;}
-.numeric-multi ul.X6 input.text { margin-left: 7.5em; }
-
-.numeric-multi ul.X8 label { width: 9em;}
-.numeric-multi ul.X8 input.text { margin-left: 9.5em; }
-
-.numeric-multi ul.X10 label { width: 11em;}
-.numeric-multi ul.X10 input.text { margin-left: 11.5em; }
-
-.numeric-multi ul.X12 label { width: 13em;}
-.numeric-multi ul.X12 input.text { margin-left: 13.5em; }
-
-.numeric-multi ul.X14 label { width: 15em;}
-.numeric-multi ul.X14 input.text { margin-left: 15.5em; }
-
-.numeric-multi ul.X16 label { width: 17em;}
-.numeric-multi ul.X16 input.text { margin-left: 17.5em; }
-
-.numeric-multi ul.X18 label { width: 19em;}
-.numeric-multi ul.X18 input.text { margin-left: 19.5em; }
-
-.numeric-multi ul.X20 label { width: 21em;}
-.numeric-multi ul.X20 input.text { margin-left: 21.5em; }
-
-.numeric-multi ul.X22 label { width: 23em;}
-.numeric-multi ul.X22 input.text { margin-left: 23.5em; }
-
-.numeric-multi ul.X24 label { width: 25em;}
-.numeric-multi ul.X24 input.text { margin-left: 25.5em; }
-
-.numeric-multi ul.X26 label { width: 27em;}
-.numeric-multi ul.X26 input.text { margin-left: 27.5em; }
-
-.numeric-multi ul.X28 label { width: 29em;}
-.numeric-multi ul.X28 input.text { margin-left: 29.5em; }
-
-.numeric-multi ul.X30 label { width: 31em;}
-.numeric-multi ul.X30 input.text { margin-left: 31.5em; }
 
 .numeric-multi dl.multiplenumerichelp
 {
-	margin: -5em -3em 0% 0%;
+	margin-top: -5em;
 }
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin: 0% 0% -1.4em 0%;
+	margin-bottom: -1.5em;
 }
-.numeric-multi dl.multiplenumerichelp dd
-{
-	margin-bottom: 1em;
-}
+

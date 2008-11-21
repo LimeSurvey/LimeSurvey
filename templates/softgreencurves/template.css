@@ -161,7 +161,10 @@ background-color:#A7A9D1;
 ,.date
 ,.numeric-multi
 ,.numeric
+,.list-radio
+,.list-radio-flexible
 ,.list-with-comment
+,.list-dropdown
 ,.list-dropdown-flexible
 ,.ranking
 ,.numeric-multi
@@ -297,8 +300,10 @@ ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
 ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
-.list-dropdown-flexible p.question
+ .list-dropdown p.question
+,.list-dropdown-flexible p.question
 {
+	text-align: left;
 	margin-left: 1em;
 }
 /* STYLES NOT YET DEFINED - - - - -

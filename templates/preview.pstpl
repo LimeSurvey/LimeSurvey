@@ -3,7 +3,7 @@
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
 <!--[if IE]>
-			<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->
 <!--[if lt IE 7]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
@@ -13,23 +13,23 @@
 	<body class="default">
 		{FORM_START}
 			<div class="{QUESTION_CLASS}">
-<table width='75%' align='center' border='1' style='border-collapse: collapse; border-color: #111111' bgcolor='white'>
+<table width="75%" align="center" border="1" style="border-collapse: collapse; border-color: #111111" bgcolor="white">
 	<tr>
-		<td align='center'>
+		<td align="center">
             {CHECKJAVASCRIPT}
-			<table width='100%' cellspacing='0'>
+			<table width="100%" cellspacing="0">
 				<tr>
-					<td align='center' bgcolor='#EEEEEE'>
-						<font size='2'>{QUESTION}
+					<td align="center" bgcolor="#EEEEEE">
+						<font size="2">{QUESTION}
 					</font></td>
 				</tr>
 				<tr>
-					<td align='center'>
+					<td align="center">
 						{ANSWER}
 					</td>
 				</tr>
 				<tr>
-					<td class='questionhelp' align='center' bgcolor='#EEEEEE'>
+					<td class="questionhelp" align="center" bgcolor="#EEEEEE">
 						{QUESTIONHELP}
 					</td>
 				</tr>
@@ -39,7 +39,7 @@
 </table>
 <table>
 	<tr>
-		<td height='1'></td>
+		<td height="1"></td>
 	</tr>
 </table>
 			</div>
