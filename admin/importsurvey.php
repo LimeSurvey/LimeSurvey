@@ -859,22 +859,35 @@ if (isset($grouparray) && $grouparray) {
 					if ($type == "F" || $type == "H" || $type == "W" || 
 					    $type == "Z" || $type == "1" || $type == ":" ||
 						$type == ";" ) 
-                    {//IF this is a flexible label array, update the lid entry
+					{//IF this is a flexible label array, update the lid entry
 						if (isset($labelreplacements)) {
+							// We only replace once in each question label
+							// otherwise could lead to double substitution
+							// if a new lid collides with an older one
+							$already_replaced_label = false;
+							$already_replaced_label1 = false;
 							foreach ($labelreplacements as $lrp) {
 								if ($lrp[0] == $questionrowdata["lid"]) 
-                                {
-									$questionrowdata["lid"]=$lrp[1];
-                                }
-                                if ($lrp[0] == $questionrowdata["lid1"]) 
-                                {
-                                    $questionrowdata["lid1"]=$lrp[1];
-                                }
+								{
+									if (!$already_replaced_label)
+									{
+										$questionrowdata["lid"]=$lrp[1];
+										$already_replaced_label = true;
+									}
+								}
+								if ($lrp[0] == $questionrowdata["lid1"]) 
+								{
+									if (!$already_replaced_label1)
+									{
+										$questionrowdata["lid1"]=$lrp[1];
+										$already_replaced_label1 = true;
+									}
+								}
 							}
 						}
-                    }
+					}
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
-					$other = $questionrowdata["other"]; //Get 'other' field value
+		    $other = $questionrowdata["other"]; //Get 'other' field value
 
     		// translate internal links
 		    $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
