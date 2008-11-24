@@ -992,7 +992,8 @@ function do_date($ia)
 					<option value="">'.$clang->gT('Year').'</option>
 ';
 
-		for ($i=date('Y'); $i>=(date('Y')-115); $i--) {
+		//Maziminke (2008-11-24): Extend year range to 1900 - 2100
+		for ($i=2100; $i>=1900; $i--) {
 			if ($i == $currentyear)
 			{
 				$i_date_selected = SELECTED;
