@@ -1,20 +1,21 @@
-<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
+		<title>{SURVEYNAME} &ndash; {GROUPNAME}</title>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
 <!--[if IE]>
-  <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->
 <!--[if lt IE 7]>
-  <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
 <![endif]-->
-</head>
-<body id="page_bg">
-<div id="wrapper2">
-	<div id="wrapper">
-		<div id="header">
-			<div class="rk-1">
-				<div class="rk-2">
-					<a href="http://ppw.kuleuven.be/dos/" class="nounder" title="Ga naar de homepagina van DOS"><img src="http://www.limesurvey.org/images/blank.png" border="0" alt="" id="logo" /></a>
+	</head>
+	<body id="page_bg">
+		<div id="wrapper2">
+			<div id="wrapper">
+				<div id="header">
+					<div class="rk-1">
+						<div class="rk-2">
+							<a href="http://ppw.kuleuven.be/dos/" class="nounder" title="Ga naar de homepagina van DOS"><img src="http://www.limesurvey.org/images/blank.png" border="0" alt="" id="logo" /></a>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-<div class="surveyname">{SURVEYNAME}</div>
-<div class="survey-main">
+				<div class="surveyname">{SURVEYNAME}</div>
+				<div class="survey-main">

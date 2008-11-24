@@ -3208,7 +3208,20 @@ function do_multiplenumeric($ia)
 	}
 	$answer_computed = isset($answer_computed)?$answer_computed:'';
 	$answer .= $answer_computed;
-
+//just added these here so its easy to change in one place
+	$errorClass = 'tip error';
+	$goodClass = ' tip good';
+/* ==================================
+Style to be applied to all templates.
+.numeric-multi p.tip.error
+{
+	color: #f00;
+}
+.numeric-multi p.tip.good
+{
+	color: #0f0;
+}
+*/
 	if ($maxvalue || $equalvalue || $minvalue) 
 	{ //Do value validation
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
@@ -3227,40 +3240,50 @@ function do_multiplenumeric($ia)
 		$answer .= implode(" + ", $javainputnames);
 		$answer .= ")/1000;\n";
 		$answer .= "       document.getElementById('totalvalue_{$ia[1]}').value=parseFloat(totalvalue_{$ia[1]});\n";
+		$answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
+		$answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
 		$answer .= "       switch(method)\n";
 		$answer .= "       {\n";
 		$answer .= "       case 1:\n";
 		$answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
-		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
-		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
+//		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
+//		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
+		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
+		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-		$answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
+//		$answer .= "                 document.getElementById('totalvalue_{$ia[1]}').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
 		$answer .= "               }\n";
-		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
+//		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='black';\n";
+		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $goodClass . "');\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 2:\n";
 		$answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
-		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
+//		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+//		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
+		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+//		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
 		$answer .= "               }\n";
-		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
+//		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='black';\n";
+		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
 		$answer .= "             }\n";
 		$answer .= "          break;\n";
 		$answer .= "       case 3:\n";
@@ -3271,15 +3294,19 @@ function do_multiplenumeric($ia)
 		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
-		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
-		$answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
+//		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
+//		$answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').style.color='black';\n";
+		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
+		$answer .= "                 document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $goodClass . "');\n";
 		$answer .= "               }\n";
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
 		$answer .= "             bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$equals_num_value."';\n";
-		$answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
-		$answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
+//		$answer .= "             document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
+//		$answer .= "             document.getElementById('equals_num_value_".$ia[1]."').style.color='red';\n";
+		$answer .= "             document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
+		$answer .= "             document.getElementById('equals_num_value_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
 		$answer .= "             }\n";
 		$answer .= "             break;\n";
 		$answer .= "       }\n";
@@ -3294,6 +3321,7 @@ function do_multiplenumeric($ia)
 
 	return array($answer, $inputnames);
 }
+
 
 
 
@@ -4334,7 +4362,7 @@ function do_array_increasesamedecrease($ia)
 			}
 		}
 		$answer_body .= "\t\t<tr class=\"$trbc\">\n"
-		. "\t\t\t<td class=\"answertex\">$answertext</td>\n"
+		. "\t\t\t<td class=\"answertext\">$answertext</td>\n"
 		. "\t\t\t<td>\n"
 		. "\t\t\t\t<label for=\"answer$myfname-I\">\n"
 		."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';

@@ -248,7 +248,19 @@ background-color:#A7A9D1;
 	line-height: 150%;
 }
 
+ .numeric-multi p.tip.error
+,.numeric-multi input.tip.error
+{
+	color: #f70;
+	font-weight: bold;
+}
+ .numeric-multi p.tip.good
+,.numeric-multi input.tip.good
 
+{
+	color: #090;
+	font-weight: bold;
+}
 
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .list-radio-flexible
