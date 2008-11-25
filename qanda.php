@@ -992,8 +992,32 @@ function do_date($ia)
 					<option value="">'.$clang->gT('Year').'</option>
 ';
 
-		//Maziminke (2008-11-24): Extend year range to 1900 - 2100
-		for ($i=2100; $i>=1900; $i--) {
+		/*
+		 * Maziminke (2008-11-25): New question attributes used only if question attribute
+		 * "dropdown_dates" is used (see IF(...) above).
+		 * 
+		 * yearmin = Minimum year value for dropdown list, if not set default is 1900
+		 * yearmax = Maximum year value for dropdown list, if not set default is 2020
+		 */
+		if($yearmin = arraySearchByKey('dropdown_dates_year_min', $qidattributes, 'attribute', 1))
+		{
+			$yearmin = $yearmin['value'];
+		}
+		else
+		{
+			$yearmin = 1900;
+		}
+		
+		if($yearmax = arraySearchByKey('dropdown_dates_year_max', $qidattributes, 'attribute', 1))
+		{
+			$yearmax = $yearmax['value'];
+		}
+		else
+		{
+			$yearmax = 2020;
+		}
+		
+		for ($i=$yearmax; $i>=$yearmin; $i--) {
 			if ($i == $currentyear)
 			{
 				$i_date_selected = SELECTED;
@@ -1009,17 +1033,7 @@ function do_date($ia)
 				<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
 			</p>
 ';
-/* Can't see the reason for this so am commenting it out. (Eric_T_Cruiser 2008-10-01)
-		$answer .= '
-			<table class="question">
-				<tr>
-					<td>
-						</font>
-					</td>
-				</tr>
-			</table>
-';
-*/
+
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			<input type="hidden" name="qattribute_answer'.$ia[1].'" />
 			<script type="text/javascript">

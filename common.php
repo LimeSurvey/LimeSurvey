@@ -2839,7 +2839,7 @@ function questionAttributes()
 {
 	//For each question attribute include a key:
 	// name - the display name
-	// types - a string with one character representing each question typ to which the attribute applies
+	// types - a string with one character representing each question typy to which the attribute applies
 	// help - a short explanation
 
     $qattributes[]=array("name"=>"answer_width",
@@ -2907,9 +2907,17 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"suffix",
 	"types"=>"KNSQ",
 	"help"=>"Add a suffix to the answer field");
+	
 	$qattributes[]=array("name"=>"dropdown_dates",
 	"types"=>"D",
 	"help"=>"Use dropdown dates layout instead of calendar popup");
+	$qattributes[]=array("name"=>"dropdown_dates_year_min",
+	"types"=>"D",
+	"help"=>"Minimum year value for dropdown list");
+	$qattributes[]=array("name"=>"dropdown_dates_year_max",
+	"types"=>"D",
+	"help"=>"Maximum year value for dropdown list");
+	
 	$qattributes[]=array("name"=>"exclude_all_others",
 	"types"=>"M",
 	"help"=>"Excludes all other options if this is selected");
