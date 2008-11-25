@@ -39,6 +39,7 @@ if(isset($_GET['wsdl']))
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
 	
+	// I don't know for sure how this works... no developerdocumentation on this.
 	$context["ssl"]["local_cert"] = $sslCert;
 	$context["ssl"]["verify_peer"] = FALSE;
 	$context["ssl"]["allow_self_signed"] = TRUE;
@@ -214,6 +215,8 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 			$japhHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
 		if($sUrl!='')
 			$japhHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
+			
+		$japhHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
 		return $iVid;
 	}
