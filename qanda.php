@@ -2973,6 +2973,15 @@ function do_multiplenumeric($ia)
 		{
 			$slider_max = 100 * $slider_divisor;
 		}
+		$slider_default=arraySearchByKey('slider_default', $qidattributes, 'attribute', 1);
+		if (isset($slider_default['value']))
+		{
+			$slider_default = $slider_default['value'];
+		}
+		else
+		{
+			$slider_default = '';
+		}
 	}
 	else
 	{
@@ -3040,45 +3049,6 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
-/*************
-				$runtime_jqueryheader .= ""
-					. "\t\t\t\t\t\t\t\t\t<script language=\"javascript\" type=\"text/javascript\">\n"
-					//					. "\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").hide();\n"
-					. "\t\t\t\t\t\t\t\t\t$(document).ready(function() {\n"
-					. "\t\t\t\t\t\t\t\t\t$(\"#slider-$myfname\").slider({\n"
-//					. "\t\t\t\t\t\t\t\t\t\tanimate: true,\n"
-					. "\t\t\t\t\t\t\t\t\t\tmin: $slider_min,\n"
-					. "\t\t\t\t\t\t\t\t\t\tmax: $slider_max,\n";
-				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '') {$runtime_jqueryheader .= "\t\t\t\t\t\t\t\t\t\tstartValue: ".$_SESSION[$myfname] * $slider_divisor.",\n";}
-				$runtime_jqueryheader .= ""
-//					. "\t\t\t\t\t\t\t\t\t\tstart: function(e, ui) {\n"
-					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").fadeIn('fast');\n"
-//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
-//					. "\t\t\t\t\t\t\t\t\t\t},\n"
-					. "\t\t\t\t\t\t\t\t\t\tslide: function(e, ui) {\n"
-					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text(Math.round(ui.value));\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
-					. "\t\t\t\t\t\t\t\t\t\t},\n"
-					//					. "\t\t\t\t\t\t\t\t\t\tstop: function(e, ui) {\n"
-					//					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").fadeOut('fast');\n"
-					//					. "\t\t\t\t\t\t\t\t\t\t},\n"
-					. "\t\t\t\t\t\t\t\t\t\tchange: function(e, ui) {\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#answer$myfname\").val(ui.value / $slider_divisor);\n"
-					. "\t\t\t\t\t\t\t\t\t\t\tcheckconditions(ui.value / $slider_divisor,\"#answer$myfname\",\"text\");\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', ui.handle.css('left')).text('$prefix' + ui.value / $slider_divisor + '$suffix');\n"
-					. "\t\t\t\t\t\t\t\t\t\t\t$numbersonly_slider;\n"
-					. "\t\t\t\t\t\t\t\t\t\t}\n"
-					. "\t\t\t\t\t\t\t\t\t});\n";
-
-				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '') {
-					$runtime_jqueryheader .= "\t\t\t\t\t\t\t\t\t$(\"#slider-callout-$myfname\").css('left', $(\"#slider-handle-$myfname\").css('left')).text('$prefix' + $(\"#slider-$myfname\").slider('value') / $slider_divisor + '$suffix');\n";
-				}
-
-				$runtime_jqueryheader .= ""
-					. "\t\t\t\t\t\t\t\t\t});\n"
-					. "\t\t\t\t\t\t\t\t\t</script>\n";
-***************/
-
 				$js_header_includes[] = '/scripts/jquery/jquery.js';
 				$js_header_includes[] = '/scripts/jquery/jquery-ui-core-1.6rc2.min.js';
 				$js_header_includes[] = '/scripts/jquery/jquery-ui-slider-1.6rc2.min.js';
@@ -3089,6 +3059,10 @@ function do_multiplenumeric($ia)
 				{
 					$slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
 				} 
+				elseif ($slider_default != "")
+				{
+					$slider_startvalue = $slider_default * $slider_divisor;
+				}
 				else 
 				{
 					$slider_startvalue = 'NULL';
@@ -3108,7 +3082,14 @@ function do_multiplenumeric($ia)
 					. "\t\t\t</div>\n"
 					. "\t\t</div>\n"
 					. "\t\t<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" style=\"display: none;\" value=\"";
-				if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
+				if (isset($_SESSION[$myfname]))
+				{
+					$answer_main .= $_SESSION[$myfname];
+				}
+				elseif ($slider_default != "")
+				{
+					$answer_main .= $slider_default;
+				}
 				$answer_main .= "\"/>\n"
 					. "\t</li>\n";
 			}

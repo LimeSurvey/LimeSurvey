@@ -2900,6 +2900,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"slider_accuracy",
 	"types"=>"K",
 	"help"=>"Slider accuracy");
+	$qattributes[]=array("name"=>"slider_default",
+	"types"=>"K",
+	"help"=>"Slider initial value");
 
 	$qattributes[]=array("name"=>"prefix",
 	"types"=>"KNSQ",
