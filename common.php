@@ -2888,9 +2888,6 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"slider_layout",
 	"types"=>"K",
 	"help"=>"Use slider layout");
-	$qattributes[]=array("name"=>"slider_decimal",
-	"types"=>"K",
-	"help"=>"How many decimal number we should use");
 	$qattributes[]=array("name"=>"slider_min",
 	"types"=>"K",
 	"help"=>"Slider min value");
