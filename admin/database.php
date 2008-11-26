@@ -98,7 +98,7 @@ if(isset($surveyid))
 	}
 	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
-		if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
+		if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
 		{
 			$query = "UPDATE ".db_table_name('question_attributes')."
 					  SET value='{$_POST['attribute_value']}' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
