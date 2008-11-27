@@ -349,11 +349,11 @@ function createinsertquery()
 				$colnames_hidden[]=$value;
 			}
 		}
-                //Only create column name and data entry if there is actually data!
+                //Only create column name and data entry if there is actually data! 
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
                 // therefore if no date was chosen in a date question the insert value has to be NULL
-                if (($_SESSION[$value]=='' && $fieldexists['type']=='D'))      
+                if (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))      
                 {                        
                     $values[]='NULL';
                 }
