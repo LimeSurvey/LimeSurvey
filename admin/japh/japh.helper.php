@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: japh.helper.php 5922 2008-11-03 13:32:26Z wahrendorff $
+* $Id$
 * 
 */
 class japhHelper {
