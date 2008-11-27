@@ -2589,7 +2589,7 @@ function do_multiplechoice_withcomments($ia)
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
 		$answer_main .= "\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
 		$answer_main .= "' />\n";
 		$fn++;
 		$answer_main .= "\t\t<label for='answer$myfname2' class=\"answer-comment\">\n"
@@ -2623,7 +2623,7 @@ function do_multiplechoice_withcomments($ia)
 		. '			<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
 		// --> END NEW FEATURE - SAVE
 
-		if (isset($_SESSION[$myfname2])) {$answer .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
+		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
 		$answer_main .= '"  onKeyUp="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
 
