@@ -127,7 +127,7 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 			$copyfile=$copydirname."/".$file;
 			$newfile=$newdirname."/".$file;
 			if (!copy($copyfile, $newfile)) {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang-gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
 			}
 		}
 		$templates[]=array("name"=>$newname, "dir"=>$newdirname);
@@ -255,7 +255,7 @@ foreach ($files as $file) {
 		$copyfile="$tpldir/default/".$file['name'];
 		$newfile=$thisfile;
 		if (!@copy($copyfile, $newfile)) {
-            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang-gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
 		}
 	}
 }

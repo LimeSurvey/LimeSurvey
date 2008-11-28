@@ -1165,7 +1165,7 @@ if(isset($surveyid))
 		}
 		else
 		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang-gT("ERROR deleting Survey id","js")." ($surveyid)!\n$error\")\n //-->\n</script>\n";
+			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("ERROR deleting Survey id","js")." ($surveyid)!\n$error\")\n //-->\n</script>\n";
 
 		}
 	}
