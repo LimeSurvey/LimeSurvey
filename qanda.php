@@ -108,8 +108,8 @@ function create_mandatorylist($ia)
 				break;
 			case ':':
 			case ';':
-				$thismandatory = setman_multiflex($ia);
-				break;
+			    $thismandatory = setman_multiflex($ia);
+			    break;
 			case '1':
 				$thismandatory = setman_questionandcode_multiscale($ia);
 				break;
@@ -202,7 +202,18 @@ function setman_questionandcode($ia)
 
 function setman_multiflex($ia)
 {
+    //The point of these functions (setman) is to return an array containing two arrays. 
+	// The first ($mandatorys) is an array containing question, so they can all be checked
+	// The second ($mandatoryfns) is an arry containing the fieldnames of every question
+	// What's the difference? The difference arises from multiple option questions, and came
+	// about when trying to distinguish between answering just one option (which satisfies
+	// the mandatory requirement, and answering them all). The "mandatorys" input contains the
+	// actual specific response items that could be filled in.. ie: in a multiple option
+	// question, there will be a unique one for every possible answer. The "mandatoryfns" array
+	// contains the generic question fieldname for the question as a whole (it will be repeated
+	// for multiple option qeustions, but won't contain unique items.
 	global $dbprefix, $connect;
+	
 	$qq="SELECT lid FROM {$dbprefix}questions WHERE qid={$ia[0]}";
 	$qr=db_execute_assoc($qq);
 
@@ -237,11 +248,12 @@ function setman_multiflex($ia)
 			else
 			{
 				//This one's not hidden. so add it to the mandatory list
-				foreach($lset as $ls)
-				{
-					$mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
-					$mandatoryfns[]=$ia[1];
-				}
+			}
+		} else { //There is no array_filter option, so we should definitely add to the mandatory list here!
+			foreach($lset as $ls)
+			{
+				$mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
+				$mandatoryfns[]=$ia[1];
 			}
 		}
 	}
