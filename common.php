@@ -23,8 +23,9 @@ $buildnumber = "";
 
 
 
-if ($debug>0) {
-        error_reporting(E_ALL); //For debug purposes - switch on in config.phh  
+if ($debug>0) {//For debug purposes - switch on in config.php
+        @ini_set("display_errors", 1);
+        error_reporting(E_ALL); 
         }
 
 if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
