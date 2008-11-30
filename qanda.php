@@ -37,6 +37,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 * $condition[n][4] => type of question
 * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
 * $condition[n][6] => method used to evaluate *NEW*
+* $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
 function retrieveConditionInfo($ia)
@@ -48,20 +49,22 @@ function retrieveConditionInfo($ia)
 	if ($ia[7] == "Y")
 	{	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
 		$cquery =	"SELECT {$dbprefix}conditions.qid, "
-				."{$dbprefix}conditions.cqid, "
-				."{$dbprefix}conditions.cfieldname, "
-				."{$dbprefix}conditions.value, "
-				."{$dbprefix}questions.type, "
-				."{$dbprefix}questions.sid, "
-				."{$dbprefix}questions.gid, "
-				."{$dbprefix}conditions.method "
+				      ."{$dbprefix}conditions.scenario, "
+				      ."{$dbprefix}conditions.cqid, "
+				      ."{$dbprefix}conditions.cfieldname, "
+				      ."{$dbprefix}conditions.value, "
+				      ."{$dbprefix}questions.type, "
+				      ."{$dbprefix}questions.sid, "
+				      ."{$dbprefix}questions.gid, "
+				      ."{$dbprefix}conditions.method "
 				."FROM {$dbprefix}conditions, "
-				."{$dbprefix}questions "
+				     ."{$dbprefix}questions "
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
 				."AND {$dbprefix}conditions.qid=$ia[0] "
 				."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
-				."ORDER BY {$dbprefix}conditions.cqid, "
-				."{$dbprefix}conditions.cfieldname";
+				."ORDER BY {$dbprefix}conditions.scenario, "
+					 ."{$dbprefix}conditions.cqid, "
+					 ."{$dbprefix}conditions.cfieldname";
 		$cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 		while ($crow = $cresult->FetchRow())
 		{
@@ -71,7 +74,8 @@ function retrieveConditionInfo($ia)
 						$crow['value'],
 						$crow['type'],
 						$crow['sid']."X".$crow['gid']."X".$crow['cqid'],
-						$crow['method']);
+						$crow['method'],
+						$crow['scenario']);
 		}
 		return $conditions;
 	}
@@ -1346,10 +1350,14 @@ function do_list_dropdown($ia)
 		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
+		$answer .= "' onchange='checkconditions(this.value, this.name, this.type);'";
+		$thisfieldname="$ia[1]other";
+		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		$answer .= ' />
 			</p>
 ';
 		// --> END NEW FEATURE - SAVE
+		$inputnames[]=$ia[1]."other";
 	}
 
 	$inputnames[]=$ia[1];

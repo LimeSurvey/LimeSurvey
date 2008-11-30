@@ -497,6 +497,7 @@ END;
  * $condition[n][4] => type of question
  * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
  * $condition[n][6] => method used to evaluate *NEW*
+ * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
  */
 
 for ($i=0;$i<count($conditions);$i++)
@@ -517,7 +518,7 @@ for ($i=0;$i<count($conditions);$i++)
 		$newjava_runonce = true;
 		$newjava ="";
 
-		$newjava .= "\n\tif ((";
+		$newjava .= "\n\tif (((";
     
 	}
 
@@ -588,14 +589,20 @@ for ($i=0;$i<count($conditions);$i++)
 		$idname="java".$cd[2];
 	}
 
-	if ($cqcount > 1 && $oldcq ==$cd[2])
-	{
+	// Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
+	if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7])
+	{	// We have a new scenario, so "or" the scenario.
+	       $newjava .= ")) || ((";
+	}
+	elseif ($cqcount > 1 && $oldcq ==$cd[2])
+	{	// Multiple values for the same question will be ORed.
 		$newjava .= " || ";
 	}
 	elseif ($cqcount >1 && $oldcq != $cd[2])
-	{
+	{	// DIffent questions within the same scenario will be ANDed.
 		$newjava .= ") && (";
 	}
+	$oldscenario=$cd[7];
 
 // The [3] element is for the value used to be compared with
 	// If it is '' (empty) means not answered
@@ -690,7 +697,7 @@ for ($i=0;$i<count($conditions);$i++)
 	}
 	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
 	{
-		$endzone = "))\n";
+		$endzone = ")))\n";
 		$endzone .= "\t{\n";
 		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
 		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='on';\n";

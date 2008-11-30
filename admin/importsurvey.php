@@ -1209,6 +1209,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             {
                 $conditionrowdata["method"]='==';
             }
+            if (!isset($conditionrowdata["scenario"]) || trim($conditionrowdata["scenario"])=='') 
+            {
+                $conditionrowdata["scenario"]=1;
+            }
             $newvalues=array_values($conditionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 

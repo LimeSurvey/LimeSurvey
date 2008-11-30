@@ -55,7 +55,7 @@ $markcidarray=Array();
 if (isset($_GET['markcid']))
 {
 	$markcidarray=explode("-",$_GET['markcid']);
-	
+
 }
 
 //ADD NEW ENTRY IF THIS IS AN ADD
@@ -78,15 +78,15 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "insertcondition")
 //      $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, value) VALUES "
 //      . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '$ca')";
 // Modified
-         $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
-         . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '$ca')";
+         $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
+         . "('{$_POST['qid']}', '{$_POST['scenario']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '$ca')";
          $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
       }
     }
     if (isset($_POST['ValOrRegEx']) && $_POST['ValOrRegEx']) //Remmember: '', ' ', 0 are evaluated as FALSE
     { //here is saved the textarea for constants or regex
-      $query = "INSERT INTO {$dbprefix}conditions (qid, cqid, cfieldname, method, value) VALUES "
-      . "('{$_POST['qid']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '{$_POST['ValOrRegEx']}')";
+      $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
+      . "('{$_POST['qid']}', '{$_POST['scenario']}', '{$_POST['cqid']}', '{$_POST['cquestions']}', '{$_POST['method']}', '{$_POST['ValOrRegEx']}')";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
@@ -113,7 +113,8 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 		$result = db_execute_assoc($query) or safe_die("Couldn't get conditions for copy<br />$query<br />".$connect->ErrorMsg());
 		while($row=$result->FetchRow())
 		{
-			$proformaconditions[]=array("cqid"=>$row['cqid'],
+			$proformaconditions[]=array("scenario"=>$row['scenario'],
+			"cqid"=>$row['cqid'],
 			"cfieldname"=>$row['cfieldname'],
 			"method"=>$row['method'],
 			"value"=>$row['value']);
@@ -126,6 +127,7 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 				//First lets make sure there isn't already an exact replica of this condition
 				$query = "SELECT * FROM {$dbprefix}conditions\n"
 				."WHERE qid='$newqid'\n"
+				."AND scenario='".$pfc['scenario']."'\n"
 				."AND cqid='".$pfc['cqid']."'\n"
 				."AND cfieldname='".$pfc['cfieldname']."'\n"
 				."AND method='".$pfc['method']."'\n"
@@ -134,8 +136,8 @@ if (isset($_POST['subaction']) && $_POST['subaction'] == "copyconditions")
 				$count = $result->RecordCount();
 				if ($count == 0) //If there is no match, add the condition.
 				{
-					$query = "INSERT INTO {$dbprefix}conditions ( qid,cqid,cfieldname,method,value) \n"
-					."VALUES ( '$newqid', '".$pfc['cqid']."',"
+					$query = "INSERT INTO {$dbprefix}conditions ( qid,scenario,cqid,cfieldname,method,value) \n"
+					."VALUES ( '$newqid', '".$pfc['scenario']."', '".$pfc['cqid']."',"
 					."'".$pfc['cfieldname']."', '".$pfc['method']."',"
 					."'".$pfc['value']."')";
 					$result=$connect->Execute($query) or safe_die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
@@ -497,7 +499,7 @@ if ($questionscount > 0)
         			}
 				}
 			}
-		
+
 		} //if A,B,C,E,F,H
 		elseif ($rows['type'] == "1") //Multi Scale
 		{
@@ -911,141 +913,162 @@ $conditionsoutput .= "\t\t\t<strong>$onlyshow</strong>\n"
 ."\t</tr>\n";
 
 //3: Get other conditions currently set for this question
-$query = "SELECT {$dbprefix}conditions.cid, "
-               ."{$dbprefix}conditions.cqid, "
-               ."{$dbprefix}conditions.cfieldname, "
-               ."{$dbprefix}conditions.method, "
-               ."{$dbprefix}conditions.value, "
-               ."{$dbprefix}questions.type "
-          ."FROM {$dbprefix}conditions, "
-               ."{$dbprefix}questions "
-         ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-           ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-           ."AND {$dbprefix}conditions.qid=$qid\n"
-      ."ORDER BY {$dbprefix}conditions.cfieldname";
-$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
-$conditionscount=$result->RecordCount();
-
-// this array will be used soon,
-// to explain wich conditions is used to evaluate the question
-$method = array( "<"  => $clang->gT("Less than"),
-                 "<=" => $clang->gT("Less than or Equal to"),
-                 "==" => $clang->gT("Equals"),
-                 "!=" => $clang->gT("Not Equal to"),
-                 ">=" => $clang->gT("Greater than or Equal to"),
-                 ">"  => $clang->gT("Greater than"),
-                 "RX" => $clang->gT("Regular Expression")
-                );
-
-if ($conditionscount > 0)
+$conditionscount=0;
+$s=0;
+$scenarioquery = "SELECT DISTINCT {$dbprefix}conditions.scenario "
+                          ."FROM {$dbprefix}conditions "
+                         ."WHERE {$dbprefix}conditions.qid=$qid\n"
+                      ."ORDER BY {$dbprefix}conditions.scenario";
+$scenarioresult = db_execute_assoc($scenarioquery) or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />".$connect->Error);
+$scenariocount=$scenarioresult->RecordCount();
+if ($scenariocount > 0)
 {
-	while ($rows=$result->FetchRow())
+	while ($scenarionr=$scenarioresult->FetchRow())
 	{
-		if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
-		if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
-			array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
-			// === required cause key 0 would otherwise be interpreted as FALSE
-		{
-			$markcidstyle="";
-		}
-		else {
-			$markcidstyle="background-color: #5670A1;";
-		}
+		if ($s == 0 && $scenariocount > 1) { $conditionsoutput .= " <tr><td>-------- <i>Scenario {$scenarionr['scenario']}</i> --------</td></tr>";}
+		if ($s > 0) { $conditionsoutput .= " <tr><td>-------- <i>".$clang->gT("OR")." Scenario {$scenarionr['scenario']}</i> --------</td></tr>";}
+		unset($currentfield);
 
-		if (isset($currentfield) && $currentfield != $rows['cfieldname'])
-		{
-			$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
-			."\t\t\t\t\t<td valign='middle' align='center'>\n"
-			."<font size='1'><strong>"
-			.$clang->gT("and")."</strong></font>";
-		}
-		elseif (isset($currentfield))
-		{
-			$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
-			."\t\t\t\t\t<td valign='top' align='center'>\n"
-			."<font size='1'><strong>"
-			.$clang->gT("OR")."</strong></font>";
-		}
-		$conditionsoutput .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
-		                  ."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
-                          ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
-                          ."\t\t\t<tr>\n"
-                          ."\t\t\t\t<td valign='middle' align='right' width='40%'>\n"
-                          ."\t\t\t\t\t<font size='1' face='verdana'>\n";
-		//BUILD FIELDNAME?
-		foreach ($cquestions as $cqn)
-		{
-			if ($cqn[3] == $rows['cfieldname'])
-			{
-				$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
-				$conditionsList[]=array("cid"=>$rows['cid'],
-				"text"=>$cqn[0]." ({$rows['value']})");
-			}
-			else
-			{
-				//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
-			}
-		}
+		$query = "SELECT {$dbprefix}conditions.cid, "
+		               ."{$dbprefix}conditions.scenario, "
+		               ."{$dbprefix}conditions.cqid, "
+		               ."{$dbprefix}conditions.cfieldname, "
+		               ."{$dbprefix}conditions.method, "
+		               ."{$dbprefix}conditions.value, "
+		               ."{$dbprefix}questions.type "
+		          ."FROM {$dbprefix}conditions, "
+		               ."{$dbprefix}questions "
+		         ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+		           ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+		           ."AND {$dbprefix}conditions.qid=$qid "
+		           ."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
+		      ."ORDER BY {$dbprefix}conditions.cfieldname";
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+		$conditionscount=$result->RecordCount();
 
-        $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-                          ."\t\t\t\t\t<td align='center' valign='middle' width='20%'>\n"
-                          ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
-                          .$method[$rows['method']]
-                          ."\t\t\t\t\t\t</font>\n"
-                          ."\t\t\t\t\t</td>\n"
-                          ."\n"
-		                  ."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
-		                  ."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
-        // Here will be searched the conditional answer for this question
-        // this conditional part is the labeled one
-        // But there is another kind of condition
-        // the specified in ValOrRegEx and is in $rows['value']
-        $bHasAnswer = false;
-	    foreach ($canswers as $can)
-	    {
-	        //$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
-		    //$conditionsoutput .= $can[1];
-            if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
-		    {
-                $conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
-                $bHasAnswer = true;
-            }
-	    }
-        if (!$bHasAnswer)
-        {
-            if ($rows['value'] == ' ' ||
-                $rows['value'] == '')
-            {
-                $conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No Answer")."\n";
-            } 
-            else
-            {
-                $conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
-            }
-	    }
-	    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
-	                      ."\t\t\t\t\t<td align='right' valign='middle' width='10%'>\n"
-	                      ."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
-		                  ."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
-		                  ."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
-		                  ."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		                  ."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
-		                  ."\t\t\t\t\t</td>\n"
-		                  ."\t</table></form>\n"
-		                  ."\t</tr>\n";
-		$currentfield=$rows['cfieldname'];
+		// this array will be used soon,
+		// to explain wich conditions is used to evaluate the question
+		$method = array( "<"  => $clang->gT("Less than"),
+		                 "<=" => $clang->gT("Less than or Equal to"),
+		                 "==" => $clang->gT("Equals"),
+		                 "!=" => $clang->gT("Not Equal to"),
+		                 ">=" => $clang->gT("Greater than or Equal to"),
+		                 ">"  => $clang->gT("Greater than"),
+		                 "RX" => $clang->gT("Regular Expression")
+		                );
+
+		if ($conditionscount > 0)
+		{
+			while ($rows=$result->FetchRow())
+			{
+				if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
+				if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
+					array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
+					// === required cause key 0 would otherwise be interpreted as FALSE
+				{
+					$markcidstyle="";
+				}
+				else {
+					$markcidstyle="background-color: #5670A1;";
+				}
+
+				if (isset($currentfield) && $currentfield != $rows['cfieldname'])
+				{
+					$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
+					."\t\t\t\t\t<td valign='middle' align='center'>\n"
+					."<font size='1'><strong>"
+					.$clang->gT("and")."</strong></font>";
+				}
+				elseif (isset($currentfield))
+				{
+					$conditionsoutput .= "\t\t\t\t<tr class='evenrow'>\n"
+					."\t\t\t\t\t<td valign='top' align='center'>\n"
+					."<font size='1'><strong>"
+					.$clang->gT("OR")."</strong></font>";
+				}
+				$conditionsoutput .= "\t<tr class='oddrow' style='$markcidstyle'>\n"
+				                  ."\t<td><form style='margin-bottom:0;' name='del{$rows['cid']}' id='del{$rows['cid']}' method='post' action='$scriptname?action=conditions'>\n"
+		                          ."\t\t<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
+		                          ."\t\t\t<tr>\n"
+		                          ."\t\t\t\t<td valign='middle' align='right' width='40%'>\n"
+		                          ."\t\t\t\t\t<font size='1' face='verdana'>\n";
+				//BUILD FIELDNAME?
+				foreach ($cquestions as $cqn)
+				{
+					if ($cqn[3] == $rows['cfieldname'])
+					{
+						$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
+						$conditionsList[]=array("cid"=>$rows['cid'],
+						"text"=>$cqn[0]." ({$rows['value']})");
+					}
+					else
+					{
+						//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+					}
+				}
+
+		        $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
+		                          ."\t\t\t\t\t<td align='center' valign='middle' width='20%'>\n"
+		                          ."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
+		                          .$method[$rows['method']]
+		                          ."\t\t\t\t\t\t</font>\n"
+		                          ."\t\t\t\t\t</td>\n"
+		                          ."\n"
+				                  ."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
+				                  ."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
+		        // Here will be searched the conditional answer for this question
+		        // this conditional part is the labeled one
+		        // But there is another kind of condition
+		        // the specified in ValOrRegEx and is in $rows['value']
+		        $bHasAnswer = false;
+			    foreach ($canswers as $can)
+			    {
+			        //$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
+				    //$conditionsoutput .= $can[1];
+		            if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
+				    {
+		                $conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
+		                $bHasAnswer = true;
+		            }
+			    }
+		        if (!$bHasAnswer)
+		        {
+		            if ($rows['value'] == ' ' ||
+		                $rows['value'] == '')
+		            {
+		                $conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No Answer")."\n";
+		            } 
+		            else
+		            {
+		                $conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
+		            }
+			    }
+			    $conditionsoutput .= "\t\t\t\t\t</font></td>\n"
+			                      ."\t\t\t\t\t<td align='right' valign='middle' width='10%'>\n"
+			                      ."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' />\n"
+				                  ."\t\t\t\t\t<input type='hidden' name='subaction' value='delete' />\n"
+				                  ."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
+				                  ."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+				                  ."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n"
+				                  ."\t\t\t\t\t</td>\n"
+				                  ."\t</table></form>\n"
+				                  ."\t</tr>\n";
+				$currentfield=$rows['cfieldname'];
+			}
+			$conditionsoutput .= "\t<tr>\n"
+			                  ."\t\t<td height='3'>\n"
+			                  ."\t\t</td>\n"
+			                  ."\t</tr>\n";
+		}
+		else
+		{
+			$conditionsoutput .= "\t<tr>\n"
+			."\t\t<td colspan='3' height='3'>\n"
+			."\t\t</td>\n"
+			."\t</tr>\n";
+		}
+	$s++;
 	}
-	$conditionsoutput .= "\t<tr>\n"
-	                  ."\t\t<td height='3'>\n"
-	                  ."\t\t</td>\n"
-	                  ."\t</tr>\n";
-}
-else
-{
-	$conditionsoutput .= "\t<tr>\n"
-	."\t\t<td colspan='3' height='3'>\n"
-	."\t\t</td>\n"
-	."\t</tr>\n";
 }
 
 $conditionsoutput .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
@@ -1105,15 +1128,18 @@ $qcount=isset($cquestions) ? count($cquestions) : 0;
 $conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
 $conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
 $conditionsoutput .= "\t<tr class='settingcaption'>\n"
-."\t\t<td colspan='3' align='center'>\n"
+."\t\t<td colspan='4' align='center'>\n"
 ."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
 ."\t\t</td>\n"
 ."\t</tr>\n"
 ."\t<tr bgcolor='#EFEFEF'>\n"
+."\t\t<th width='20%'>\n"
+."\t\t\t<strong>".$clang->gT("Scenario")."</strong>\n" // The word Scenario needs to be added to the dictionary.
+."\t\t</th>\n"
 ."\t\t<th width='40%'>\n"
 ."\t\t\t<strong>".$clang->gT("Question")."</strong>\n"
 ."\t\t</th>\n"
-."\t\t<th width='20%'>\n"
+."\t\t<th width='10%'>\n"
 ."\t\t</th>\n"
 ."\t\t<th width='40%'>\n"
 ."\t\t\t<strong>".$clang->gT("Answer")."</strong>\n"
@@ -1121,7 +1147,10 @@ $conditionsoutput .= "\t<tr class='settingcaption'>\n"
 ."\t</tr>\n"
 ."\t<tr>\n"
 ."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:250px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
+."\t\t\t<input type='text' name='scenario' value='1' size='2'/>\n"
+."\t\t</td>\n"
+."\t\t<td valign='top' align='center'>\n"
+."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:450px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
 if (isset($cquestions))
 {
 	foreach ($cquestions as $cqn)
@@ -1173,7 +1202,7 @@ $conditionsoutput .= "</div>"
 ."\t\t</td>"
 ."\t</tr>\n"
 ."\t<tr>\n"
-."\t\t<td colspan='3' align='center'>\n"
+."\t\t<td colspan='4' align='center'>\n"
 ."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -1185,16 +1214,16 @@ $conditionsoutput .= "</div>"
 ."</table>\n"
 ."</form>\n"
 ."<table width='100%'  border='0'>\n";
-$conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
+$conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"
 ."\t<tr bgcolor='#555555'>\n"
-."\t\t<td height='5' colspan='3'>\n"
+."\t\t<td height='5' colspan='4'>\n"
 ."\t\t</td>\n";
-$conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=3 height='10'></td></tr>\n"
-."\t\t<tr><td colspan='3' align='center'>\n"
+$conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=4 height='10'></td></tr>\n"
+."\t\t<tr><td colspan='4' align='center'>\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onclick=\"window.close()\"  />\n"
 ."\t\t</td>\n"
 ."\t</tr>\n";
-$conditionsoutput .= "\t<tr><td colspan='3'></td></tr>\n"
+$conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"
 ."</table><br />&nbsp;\n";
 
 /*
@@ -1214,19 +1243,19 @@ function showSpeakerORIG($hinttext)
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
-	
+
 	if(!isset($max))
 	{
 		$max = 12;
 	}
-	
+
 	if(strlen($hinttext) > ($max))
 	{
 		$shortstring = strip_tags($hinttext);
-		
+
 		//create short string
 		$shortstring = substr($hinttext, 0, $max);
-		
+
 		//output with hoover effect
 		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
@@ -1236,9 +1265,9 @@ function showSpeaker($hinttext)
 	}
 	else
 	{
-		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";
 	}
-	
+
   return $reshtml; 
   
 }

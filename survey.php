@@ -414,6 +414,7 @@ END;
     * $condition[n][4] => type of question
     * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
     * $condition[n][6] => method used to evaluate *NEW*
+    * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
     */
 	
 	foreach ($conditions as $cd)
@@ -424,7 +425,7 @@ END;
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
-      $java .= "\n   if ((";
+      $java .= "\n   if (((";
     }
 
     if (!isset($oldcq) || !$oldcq)
@@ -477,14 +478,24 @@ END;
         $idname="java".$cd[2];
     }
 
-    if ($cqcount > 1 && $oldcq ==$cd[2])
+    // Addition of "scenario" by Ron L.J. van den Burg.
+    // Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
+    if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7]) // We have an new scenario, so "or" the scenario.
     {
-        $java .= " || ";
+	$java .= ")) || ((";
     }
-    elseif ($cqcount >1 && $oldcq != $cd[2])
+    else
     {
-        $java .= ") && (";
+	    if ($cqcount > 1 && $oldcq ==$cd[2])
+	    {
+	        $java .= " || ";
+	    }
+	    elseif ($cqcount >1 && $oldcq != $cd[2])
+	    {
+	        $java .= ") && (";
+	    }
     }
+    $oldscenario = $cd[7];
 
     if ($cd[3] == '' || $cd[3] == ' ')
     {
@@ -543,7 +554,7 @@ END;
 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 		{
-			$endzone = "))\n"
+			$endzone = ")))\n"
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='';\n"
       . "    document.getElementById('display$cd[0]').value='on';\n"

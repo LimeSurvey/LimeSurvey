@@ -54,6 +54,7 @@ CREATE TABLE prefix_assessments (
 CREATE TABLE prefix_conditions (
     cid serial,
     qid integer DEFAULT 0 NOT NULL,
+    scenario integer DEFAULT 1 NOT NULL,
     cqid integer DEFAULT 0 NOT NULL,
     cfieldname character varying(50) DEFAULT ''::character varying NOT NULL,
     method character(2) DEFAULT ''::bpchar NOT NULL,
@@ -491,7 +492,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '129');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '130');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

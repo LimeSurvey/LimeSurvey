@@ -1895,50 +1895,58 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 				$explanation = ""; //reset conditions explanation
-				$x=0;
-				$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY cqid";
-				$distinctresult=db_execute_assoc($distinctquery);
-		
-				while ($distinctrow=$distinctresult->FetchRow())
+				$s=0;
+				$scenarioquery="SELECT DISTINCT scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
+				$scenarioresult=db_execute_assoc($scenarioquery);
+				while ($scenariorow=$scenarioresult->FetchRow())
 				{
-					if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
-					$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']}";
-					$conresult=db_execute_assoc($conquery);
-					while ($conrow=$conresult->FetchRow())
+					if ($s == 0 && $scenarioresult->RecordCount() > 1) { $explanation .= " <br>-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
+					if ($s > 0) { $explanation .= " <br>-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
+
+					$x=0;
+					$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} ORDER BY cqid";
+					$distinctresult=db_execute_assoc($distinctquery);
+
+					while ($distinctrow=$distinctresult->FetchRow())
 					{
-						switch($conrow['type'])
+						if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
+						$conquery="SELECT cid, cqid, cfieldname, ".db_table_name("questions").".title, ".db_table_name("questions").".lid, ".db_table_name("questions").".question, value, ".db_table_name("questions").".type FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']} AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}";
+						$conresult=db_execute_assoc($conquery);
+						while ($conrow=$conresult->FetchRow())
 						{
-							case "Y":
-								switch ($conrow['value'])
-								{
-									case "Y": $conditions[]=$blang->gT("Yes"); break;
-									case "N": $conditions[]=$blang->gT("No"); break;
-								}
+							switch($conrow['type'])
+							{
+								case "Y":
+									switch ($conrow['value'])
+									{
+										case "Y": $conditions[]=$blang->gT("Yes"); break;
+										case "N": $conditions[]=$blang->gT("No"); break;
+									}
 								break;
-							case "G":
-								switch($conrow['value'])
-								{
-									case "M": $conditions[]=$blang->gT("Male"); break;
-									case "F": $conditions[]=$blang->gT("Female"); break;
-								} // switch
+								case "G":
+									switch($conrow['value'])
+									{
+										case "M": $conditions[]=$blang->gT("Male"); break;
+										case "F": $conditions[]=$blang->gT("Female"); break;
+									} // switch
 								break;
-							case "A":
-							case "B":
-								$conditions[]=$conrow['value'];
+								case "A":
+									case "B":
+									$conditions[]=$conrow['value'];
 								break;
-							case "C":
-								switch($conrow['value'])
-								{
-									case "Y": $conditions[]=$blang->gT("Yes"); break;
-									case "U": $conditions[]=$blang->gT("Uncertain"); break;
-									case "N": $conditions[]=$blang->gT("No"); break;
-								} // switch
+								case "C":
+									switch($conrow['value'])
+									{
+										case "Y": $conditions[]=$blang->gT("Yes"); break;
+										case "U": $conditions[]=$blang->gT("Uncertain"); break;
+										case "N": $conditions[]=$blang->gT("No"); break;
+									} // switch
 								break;
-							case "1":								
-								$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
+								case "1":								
+									$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
-								. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
-								. "AND code='{$conrow['value']}'";
+									. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
+									. "AND code='{$conrow['value']}'";
 								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
 								while($frow=$fresult->FetchRow())
 								{
@@ -1947,35 +1955,35 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								} // while
 								break;
 
-							case "E":
-								switch($conrow['value'])
-								{
-									case "I": $conditions[]=$blang->gT("Increase"); break;
-									case "D": $conditions[]=$blang->gT("Decrease"); break;
-									case "S": $conditions[]=$blang->gT("Same"); break;
-								}
+								case "E":
+									switch($conrow['value'])
+									{
+										case "I": $conditions[]=$blang->gT("Increase"); break;
+										case "D": $conditions[]=$blang->gT("Decrease"); break;
+										case "S": $conditions[]=$blang->gT("Same"); break;
+									}
 								break;
-							case "F":
-							case "H":
-							default:
-								$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
-								. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
-								. "AND code='{$conrow['value']}'";
-								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
-								while($frow=$fresult->FetchRow())
-								{
-									$postans=$frow['title'];
-									$conditions[]=$frow['title'];
-								} // while
-								break;
-						} // switch
-						$answer_section="";
-						switch($conrow['type'])
-						{
-							
-							case "1":
-								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
+								case "F":
+									case "H":
+								default:
+									$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
+									$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+										. "WHERE lid='{$conrow['lid']}'\n and language='$language' "
+										. "AND code='{$conrow['value']}'";
+									$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".$connect->ErrorMsg());
+									while($frow=$fresult->FetchRow())
+									{
+										$postans=$frow['title'];
+										$conditions[]=$frow['title'];
+									} // while
+									break;
+							} // switch
+							$answer_section="";
+							switch($conrow['type'])
+							{
+
+								case "1":
+									$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
 								$ansresult=db_execute_assoc($ansquery);
 								while ($ansrow=$ansresult->FetchRow())
 								{
@@ -1984,16 +1992,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$operator=$clang->gT("OR");
 								if (isset($conditions)) $conditions = array_unique($conditions);
 								break;
-						
-							case "A":
-							case "B":
-							case "C":
-							case "E":
-							case "F":
-							case "H":
-							case ":":
-							case ";":
-								$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+
+								case "A":
+									case "B":
+									case "C":
+									case "E":
+									case "F":
+									case "H":
+									case ":":
+									case ";":
+									$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$language}'";
 								$ansresult=db_execute_assoc($ansquery);
 								$i=0;
@@ -2006,7 +2014,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								}
 								$operator=$blang->gT("AND");	// this is a dirty, DIRTY fix but it works since only array questions seem to be ORd
 								break;
-							default:
+								default:
 								$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$language}'";
 								$ansresult=db_execute_assoc($ansquery);
 								while ($ansrow=$ansresult->FetchRow())
@@ -2016,21 +2024,23 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 								$operator=$blang->gT("OR");
 								if (isset($conditions)) $conditions = array_unique($conditions);
 								break;
+							}
 						}
+						if (isset($conditions) && count($conditions) > 1)
+						{
+							$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
+							$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
+						}
+						else
+						{
+							if(empty($conditions[0])) $conditions[0] = $blang->gT("No Answer");
+							$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
+						}
+						unset($conditions);
+						$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
+						$x++;
 					}
-					if (isset($conditions) && count($conditions) > 1)
-					{
-						$conanswers = "'".implode("' ".$operator." '", $conditions)."'";
-						$explanation .= " -" . str_replace("{ANSWER}", $conanswers, $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
-					}
-					else
-					{
-						if(empty($conditions[0])) $conditions[0] = $blang->gT("No Answer");
-						$explanation .= " -" . str_replace("{ANSWER}", "'{$conditions[0]}'", $blang->gT("to question {QUESTION}, you answered {ANSWER}"));
-					}
-					unset($conditions);
-					$explanation = str_replace("{QUESTION}", "'{$distinctrow['title']}$answer_section'", $explanation);
-					$x++;
+					$s++;
 				}
 				if ($explanation)
 				{

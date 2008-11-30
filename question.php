@@ -119,7 +119,28 @@ $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
 {
-	$cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
+     $csquery="SELECT distinct scenario FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
+     $csresult=db_execute_assoc($csquery) or safe_die("Couldn't count scenarios<br />$csquery<br />".$connect->ErrorMsg());  //Checked
+     $onewholescenariomatches=0;
+     $prevscenario=-1;
+     while ($csrows=$csresult->FetchRow())//Go through each condition for this current question AND this scenario
+     {
+        $thisscenario=$csrows['scenario'];
+        if ($thisscenario != $prevscenario && $prevscenario != -1) // We processed all conditions for the previous scenario. Let's check whether we're done.
+        {
+                if ($cqidmatches == $cqidcount)
+                {
+                        //a match has been found in ALL distinct cqids for the previous scenario. The question WILL be displayed.
+                        $conditionforthisquestion="N";
+                        break;
+                }
+                else
+                {
+                        // The previous scenario did not have ALL distinct cqids matched. So try a new (this) scenario.
+                }
+        }
+        $cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} and scenario={$thisscenario}";
+        $prevscenario=$thisscenario;
 	$cresult=db_execute_assoc($cquery) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg());  //Checked
 	$cqidcount=$cresult->RecordCount();
 	$cqidmatches=0;
@@ -149,7 +170,7 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			$cqidcount2=$cresult2->RecordCount();
 			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
 		}
-		$cqquery = "SELECT cfieldname, value, cqid, method FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
+		$cqquery = "SELECT cfieldname, value, cqid, method, scenario FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
 		$cqresult = db_execute_assoc($cqquery) or safe_die("Couldn't get conditions for this question/cqid<br />$cquery<br />".$connect->ErrorMsg()); //Checked
 		$amatchhasbeenfound="N";
 		while ($cqrows=$cqresult->FetchRow()) //Check each condition
@@ -228,6 +249,13 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			$cqidmatches++;
 		}
 	}
+    } // End of while more scenario's
+    if ($conditionforthisquestion=="N") {
+	// We apparently broke out of the while-scenario-loop because the previous scenario was completely matched. The question WILL de displayed.
+    }
+    else
+    {
+	// The while-scenario-loop ended with no previous scenario's matched. Let's see the result of the LAST scenario.
 	if ($cqidmatches == $cqidcount)
 	{
 		//a match has been found in ALL distinct cqids. The question WILL be displayed
@@ -270,7 +298,8 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		}
 		$conditionforthisquestion=$ia[7];
 	}
-}
+    } // End of while more scenario's
+} // End of while conditionforthisquestion=="Y"
 
 //SUBMIT
 if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ))   
