@@ -936,9 +936,15 @@ function checkgroupfordisplay($gid)
 		//be displayed.
 		foreach ($QuestionsWithConditions as $cc)
 		{
-			$scenario=1;
-			while($scenario>0)
+			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
+				." WHERE ".db_table_name("conditions").".qid=$cc[0] ORDER BY scenario";
+			$scenarioresult=db_execute_assoc($scenarioquery);
+				
+			//$scenario=1;
+			//while($scenario>0)
+			while ($scenariorow=$scenarioresult->FetchRow())
 			{
+				$scenario = $scenariorow['scenario'];
 				$totalands=0;
 				$query = "SELECT * FROM ".db_table_name('conditions')."\n"
 					."WHERE qid=$cc[0] AND scenario=$scenario ORDER BY cqid";
@@ -1063,7 +1069,7 @@ function checkgroupfordisplay($gid)
 
 					}
 				} // while
-				if ($conditionsfoundforthisscenario == 1) {
+				if ($conditionsfoundforthisscenario > 0) {
 					foreach($distinctcqids as $key=>$val)
 					{
 						//Because multiple cqids are treated as "AND", we only check
@@ -1078,14 +1084,18 @@ function checkgroupfordisplay($gid)
 						//As soon as any condition for a question is met, we MUST show the group.
 						return true;
 					}
-					$scenario++;
+					//$scenario++;
 				}
 				else
 				{
-					$scenario=0;
+					//Curious there is no condition for this question in this scenario
+					// this is not a normal behaviour, but I propose to defaults to a
+					// condition-matched state in this case
+					//$scenario=0;
+					return true;
 				}
 				unset($distinctcqids);
-			}
+			} // end while scenario
 		}
 		//Since we made it this far, there mustn't have been any conditions met.
 		//Therefore the group should not be displayed.
@@ -1150,7 +1160,7 @@ function checkconfield($value)
 					}
 					$currentcfield=$rows['cfieldname'];
 				}
-				if ($conditionsfound) {
+				if ($conditionsfound > 0) {
 					//At least one match must be found for each "$container"
 					$total=0;
 					foreach($container as $con)
@@ -1191,6 +1201,10 @@ function checkconfield($value)
 					unset($cqval);
 					unset($container);
 				} else {
+					//Curious there is no condition for this question in this scenario
+					// this is not a normal behaviour, but I propose to defaults to a
+					// condition-matched state in this case
+					$matchfound=1;
 					$evalNextScenario=false;
 				}
 			} // while ($scenario)
