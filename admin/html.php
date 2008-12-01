@@ -624,7 +624,7 @@ if ($surveyid)
 				$surveysummary .= "<a href=\"#\" onclick=\"alert('".$clang->gT("This survey's questions don't use conditions", "js")."');\" "
 				. "onmouseout=\"hideTooltip()\" "
 				. "title=\"".$clang->gTview("Reset Survey Logic")."\" "
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")." - ".$clang->gT("Disabled", "js")."');return false\">"
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Reset Survey Logic", "js")." (".$clang->gT("disabled", "js").")"."');return false\">"
 				. "<img src='$imagefiles/resetsurveylogic_disabled.png' title='' name='ResetSurveyLogic' "
 				. "alt='".$clang->gT("Reset Survey Logic")."' /></a>\n";
 			}
@@ -647,8 +647,8 @@ if ($surveyid)
             $surveysummary .= "<a href=\"#\""
             . "onmouseout=\"hideTooltip()\" "
             . "title=\"".$clang->gTview("Disabled - Change Group Order")."\" "
-            . "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled - Change Group Order", "js")."');return false\">"
-            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Disabled - Change Group Order")."' name='ordergroups' /></a>";
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")." (".$clang->gT("disabled", "js").")"."');return false\">"
+            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." (".$clang->gT("disbled").")"."' name='ordergroups' /></a>";
 		}
 
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
@@ -1238,7 +1238,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$questionsummary .= "<a href='#'" .
 				"onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Copy Current Question")."\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Copy Current Question", "js")."');return false\" onclick=\"alert('".$clang->gT("Copy question is not possible in an Active survey","js")."')\">" .
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Current Question", "js")." (".$clang->gT("disabled","js").")"."');return false\" onclick=\"alert('".$clang->gT("Copy question is not possible in an Active survey","js")."')\">" .
 				"<img src='$imagefiles/copy_disabled.png' title='' alt='' name='CopyQuestion' /></a>\n"
 				. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 			}
