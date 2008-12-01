@@ -1075,7 +1075,7 @@ $conditionsoutput .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
 //TIBO
 if (isset($_GET['copyconditions']) && $conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0)
 {
-	$conditionsoutput .= "<tr class='table2columns''><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
+	$conditionsoutput .= "<tr class='table2columns''><td colspan='3'><form action='$scriptname?action=conditions&amp;copyconditions=yes' name='copyconditions' id='copyconditions' method='post'>\n";
 
 	$conditionsoutput .= "\t<table width='100%' cellpadding='0' cellspacing='0'><tr>\n"
 	."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
@@ -1224,7 +1224,20 @@ $conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"
 ."\t\t</td>\n";
 $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=4 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='4' align='center'>\n"
-."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onclick=\"window.close()\"  />\n"
+."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onclick=\"window.close()\"  />\n";
+
+if (isset($_GET['copyconditions']))
+{
+	$conditionsoutput .= ""
+		."\t\t\t<input type='button' value='".$clang->gT("Switch to Add Mode")."' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=500, width=800, scrollbars=yes, resizable=yes, left=50, top=50')\"  />\n";
+}
+else
+{
+	$conditionsoutput .= ""
+		."\t\t\t<input type='button' value='".$clang->gT("Switch to Copy Mode")."' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;copyconditions=yes', 'conditions', 'menubar=no, location=no, status=no, height=500, width=800, scrollbars=yes, resizable=yes, left=50, top=50')\"  />\n";
+}
+
+$conditionsoutput .= ""
 ."\t\t</td>\n"
 ."\t</tr>\n";
 $conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"

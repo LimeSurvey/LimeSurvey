@@ -1253,15 +1253,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Set Conditions for this Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
-			. "<img src='$imagefiles/conditions.png' title='' alt=''  name='SetQuestionConditions' /></a>\n";
-
-			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;copyconditions=yes', 'conditions', 'menubar=no, location=no, status=no, height=500, width=800, scrollbars=yes, resizable=yes, left=50, top=50')\""
-			. "onmouseout=\"hideTooltip()\""
-			. "title=\"".$clang->gTview("Copy Conditions to questions")."\""
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Copy Conditions to questions", "js")."');return false\">"
-			. "<img src='$imagefiles/copyconditions.png' title='' alt=''  name='SetQuestionConditions' /></a>\n";
-
-			$questionsummary .= ""
+			. "<img src='$imagefiles/conditions.png' title='' alt=''  name='SetQuestionConditions' /></a>\n"
 			. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 		}
 		else
