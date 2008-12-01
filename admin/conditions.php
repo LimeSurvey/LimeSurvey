@@ -1072,8 +1072,8 @@ if ($scenariocount > 0)
 }
 
 $conditionsoutput .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
-
-if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0)
+//TIBO
+if (isset($_GET['copyconditions']) && $conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 0)
 {
 	$conditionsoutput .= "<tr class='table2columns''><td colspan='3'><form action='$scriptname?action=conditions' name='copyconditions' id='copyconditions' method='post'>\n";
 
@@ -1125,95 +1125,99 @@ if ($conditionscount > 0 && isset($postquestionscount) && $postquestionscount > 
 
 $conditionsoutput .= "</table>\n";
 $qcount=isset($cquestions) ? count($cquestions) : 0;
-$conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
-$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
-$conditionsoutput .= "\t<tr class='settingcaption'>\n"
-."\t\t<td colspan='4' align='center'>\n"
-."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
-."\t\t</td>\n"
-."\t</tr>\n"
-."\t<tr bgcolor='#EFEFEF'>\n"
-."\t\t<th width='20%'>\n"
-."\t\t\t<strong>".$clang->gT("Scenario")."</strong>\n" // The word Scenario needs to be added to the dictionary.
-."\t\t</th>\n"
-."\t\t<th width='40%'>\n"
-."\t\t\t<strong>".$clang->gT("Question")."</strong>\n"
-."\t\t</th>\n"
-."\t\t<th width='10%'>\n"
-."\t\t</th>\n"
-."\t\t<th width='40%'>\n"
-."\t\t\t<strong>".$clang->gT("Answer")."</strong>\n"
-."\t\t</th>\n"
-."\t</tr>\n"
-."\t<tr>\n"
-."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<input type='text' name='scenario' value='1' size='2'/>\n"
-."\t\t</td>\n"
-."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:450px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
-if (isset($cquestions))
+//TIBO
+if (!isset($_GET['copyconditions']))
 {
-	foreach ($cquestions as $cqn)
+	$conditionsoutput .= "<form action='$scriptname?action=conditions' name='addconditions' id='addconditions' method='post'>\n";
+	$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
+	$conditionsoutput .= "\t<tr class='settingcaption'>\n"
+		."\t\t<td colspan='4' align='center'>\n"
+		."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."\t<tr bgcolor='#EFEFEF'>\n"
+		."\t\t<th width='20%'>\n"
+		."\t\t\t<strong>".$clang->gT("Scenario")."</strong>\n" // The word Scenario needs to be added to the dictionary.
+		."\t\t</th>\n"
+		."\t\t<th width='40%'>\n"
+		."\t\t\t<strong>".$clang->gT("Question")."</strong>\n"
+		."\t\t</th>\n"
+		."\t\t<th width='10%'>\n"
+		."\t\t</th>\n"
+		."\t\t<th width='40%'>\n"
+		."\t\t\t<strong>".$clang->gT("Answer")."</strong>\n"
+		."\t\t</th>\n"
+		."\t</tr>\n"
+		."\t<tr>\n"
+		."\t\t<td valign='top' align='center'>\n"
+		."\t\t\t<input type='text' name='scenario' value='1' size='2'/>\n"
+		."\t\t</td>\n"
+		."\t\t<td valign='top' align='center'>\n"
+		."\t\t\t<select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:450px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
+	if (isset($cquestions))
 	{
-		$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"$cqn[0]\"";
-		if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
-			$conditionsoutput .= " selected";
+		foreach ($cquestions as $cqn)
+		{
+			$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"$cqn[0]\"";
+			if (isset($_POST['cquestions']) && $cqn[3] == $_POST['cquestions']) {
+				$conditionsoutput .= " selected";
+			}
+			$conditionsoutput .= ">$cqn[0]</option>\n";
 		}
-		$conditionsoutput .= ">$cqn[0]</option>\n";
 	}
+	$conditionsoutput .= "\t\t\t</select>\n"
+		."\t\t</td>\n"
+		."\t\t<td align='center' valign='top'>\n";
+	// Originally was planned to do that:
+	//$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
+	//$conditionsoutput .= "\t\t\t\t<option value='='>Equals</option>\n";
+	//$conditionsoutput .= "\t\t\t\t<option value='!'>Does not equal</option>\n";
+	//$conditionsoutput .= "\t\t\t</select>\n";
+	// ----------------------------------------
+	// Perhaps was leaved for this time with
+	//$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
+	// Here I go
+	$conditionsoutput .= "\t\t\t<br /><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n";
+	// This is not really necessary. The note beffore must be self explanatory.
+	//$conditionsoutput .= "<option selected='selected'>".$clang->gT("Select Condition")."</option>\n";
+	$conditionsoutput .= "<option value='<'>".$clang->gT("Less than")."</option>\n";
+	$conditionsoutput .= "<option value='<='>".$clang->gT("Less than or Equal to")."</option>\n";
+	$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n";
+	$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal to")."</option>\n";
+	$conditionsoutput .= "<option value='>='>".$clang->gT("Greater than or Equal to")."</option>\n";
+	$conditionsoutput .= "<option value='>'>".$clang->gT("Greater than")."</option>\n";
+	$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expression")."</option>\n";
+	$conditionsoutput .= "\t\t\t</select>\n";
+	$conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply.")."</small>\n";
+	$conditionsoutput .= "\t\t</td>\n"
+		."\t\t<td valign='top' align='center'>\n"
+		."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; min-width:250px;' size='6'>\n";
+	$conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
+	// Some one request to hidde this if it is not necesary
+	// It will be showed when answers array is empty
+	// on HTML�s JS code. I fixed that enclosing it in a div called
+	// CONST_RGX and it will be showed or not.
+	//$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
+	$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
+		."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
+		."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
+	$conditionsoutput .= "</div>"
+		."\t\t</td>"
+		."\t</tr>\n"
+		."\t<tr>\n"
+		."\t\t<td colspan='4' align='center'>\n"
+		."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
+		."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
+		."<input type='hidden' name='sid' value='$surveyid' />\n"
+		."<input type='hidden' name='qid' value='$qid' />\n"
+		."<input type='hidden' name='subaction' value='insertcondition' />\n"
+		."<input type='hidden' name='cqid' id='cqid' value='' />\n"
+		."\t\t</td>\n"
+		."\t</tr>\n"
+		."</table>\n"
+		."</form>\n";
 }
-$conditionsoutput .= "\t\t\t</select>\n"
-."\t\t</td>\n"
-."\t\t<td align='center' valign='top'>\n";
-// Originally was planned to do that:
-//$conditionsoutput .= "\t\t\t<select name='method' id='method' style='font-family:verdana; font-size:10'>\n";
-//$conditionsoutput .= "\t\t\t\t<option value='='>Equals</option>\n";
-//$conditionsoutput .= "\t\t\t\t<option value='!'>Does not equal</option>\n";
-//$conditionsoutput .= "\t\t\t</select>\n";
-// ----------------------------------------
-// Perhaps was leaved for this time with
-//$conditionsoutput .= "\t\t\t".$clang->gT("Equals")."\n"
-// Here I go
-$conditionsoutput .= "\t\t\t<br /><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n";
-// This is not really necessary. The note beffore must be self explanatory.
-//$conditionsoutput .= "<option selected='selected'>".$clang->gT("Select Condition")."</option>\n";
-$conditionsoutput .= "<option value='<'>".$clang->gT("Less than")."</option>\n";
-$conditionsoutput .= "<option value='<='>".$clang->gT("Less than or Equal to")."</option>\n";
-$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n";
-$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal to")."</option>\n";
-$conditionsoutput .= "<option value='>='>".$clang->gT("Greater than or Equal to")."</option>\n";
-$conditionsoutput .= "<option value='>'>".$clang->gT("Greater than")."</option>\n";
-$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expression")."</option>\n";
-$conditionsoutput .= "\t\t\t</select>\n";
-$conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply.")."</small>\n";
-$conditionsoutput .= "\t\t</td>\n"
-."\t\t<td valign='top' align='center'>\n"
-."\t\t\t<select name='canswers[]' multiple id='canswers' style='font-family:verdana; font-size:10; min-width:250px;' size='6'>\n";
-$conditionsoutput .= "\t\t\t</select><br />\n\t\t\t\n";
-// Some one request to hidde this if it is not necesary
-// It will be showed when answers array is empty
-// on HTML�s JS code. I fixed that enclosing it in a div called
-// CONST_RGX and it will be showed or not.
-//$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
-$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
-."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
-."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
-$conditionsoutput .= "</div>"
-."\t\t</td>"
-."\t</tr>\n"
-."\t<tr>\n"
-."\t\t<td colspan='4' align='center'>\n"
-."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
-."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
-."<input type='hidden' name='sid' value='$surveyid' />\n"
-."<input type='hidden' name='qid' value='$qid' />\n"
-."<input type='hidden' name='subaction' value='insertcondition' />\n"
-."<input type='hidden' name='cqid' id='cqid' value='' />\n"
-."\t\t</td>\n"
-."\t</tr>\n"
-."</table>\n"
-."</form>\n"
-."<table width='100%'  border='0'>\n";
+$conditionsoutput .= "<table width='100%'  border='0'>\n";
 $conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"
 ."\t<tr bgcolor='#555555'>\n"
 ."\t\t<td height='5' colspan='4'>\n"
