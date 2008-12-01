@@ -1103,16 +1103,26 @@ function checkconfield($value)
 	{
 		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 		{
-			$scenario=1;
+			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
+				." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
+			$scenarioresult=db_execute_assoc($scenarioquery);
 			$matchfound=0;
-			while ($scenario > 0) {
+			//$scenario=1;
+			//while ($scenario > 0)
+			$evalNextScenario = true;
+			while ($evalNextScenario === true && $scenariorow=$scenarioresult->FetchRow())
+			{
+				$scenario = $scenariorow['scenario'];
 				$currentcfield="";
 				$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
 				. "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
 				. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
 				. "AND ".db_table_name('conditions').".qid=$sfa[0] "
+				. "AND ".db_table_name('conditions').".scenario=$scenario "
 				. "ORDER BY ".db_table_name('conditions').".qid";
 				$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
+
+				$conditionsfound = $result->RecordCount();
 				while($rows = $result->FetchRow()) //Go through the condition on this field
 				{
 					if($rows['type'] == "M" || $rows['type'] == "P")
@@ -1176,18 +1186,14 @@ function checkconfield($value)
 					if($total==count($container))
 					{
 						$matchfound=1;
-						$scenario=0; // Don't look for other scenario's.
-					}
-					else
-					{
-						$scenario++;
+						$evalNextScenario=false; // Don't look for other scenario's.
 					}
 					unset($cqval);
 					unset($container);
 				} else {
-					$scenario=0;
+					$evalNextScenario=false;
 				}
-			} // while ($scenario > 0)
+			} // while ($scenario)
 			if($matchfound==0)
 			{
 			    //If this is not a "moveprev" then
