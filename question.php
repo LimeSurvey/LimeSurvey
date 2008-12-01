@@ -122,11 +122,12 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
      $csquery="SELECT distinct scenario FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
      $csresult=db_execute_assoc($csquery) or safe_die("Couldn't count scenarios<br />$csquery<br />".$connect->ErrorMsg());  //Checked
      $onewholescenariomatches=0;
-     $prevscenario=-1;
+     //$prevscenario=-1;
+     unset($prevscenario);
      while ($csrows=$csresult->FetchRow())//Go through each condition for this current question AND this scenario
      {
         $thisscenario=$csrows['scenario'];
-        if ($thisscenario != $prevscenario && $prevscenario != -1) // We processed all conditions for the previous scenario. Let's check whether we're done.
+        if (isset($prevscenario) && $thisscenario != $prevscenario) // We processed all conditions for the previous scenario. Let's check whether we're done.
         {
                 if ($cqidmatches == $cqidcount)
                 {
