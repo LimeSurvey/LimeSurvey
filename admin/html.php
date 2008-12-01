@@ -648,7 +648,7 @@ if ($surveyid)
             . "onmouseout=\"hideTooltip()\" "
             . "title=\"".$clang->gTview("Disabled - Change Group Order")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")." (".$clang->gT("disabled", "js").")"."');return false\">"
-            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." (".$clang->gT("disbled").")"."' name='ordergroups' /></a>";
+            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." (".$clang->gT("disabled").")"."' name='ordergroups' /></a>";
 		}
 
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
