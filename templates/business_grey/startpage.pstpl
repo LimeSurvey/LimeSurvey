@@ -1,9 +1,9 @@
 	<title>
 	A SURVEY: {SURVEYNAME}
 	</title>
-    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
+    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-       <m eta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+       <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 <!--[if IE]>
   <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->

@@ -694,7 +694,7 @@ function validation_popup($ia, $notvalidated=null)
 		//POPUP WARNING
 		if (!isset($validationpopup))
 		{
-			$vpopup = "<script type\"text/javascript\">\n<!--\n alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid", "js")."\")\n //-->\n</script>\n";
+			$vpopup = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid", "js")."\")\n //-->\n</script>\n";
 			$validationpopup="Y";
 		}
 		return array($validationpopup, $vpopup);
