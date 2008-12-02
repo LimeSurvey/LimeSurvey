@@ -411,20 +411,42 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			break;
 		case 'R': //RANKING STYLE
 			$values=do_ranking($ia);
+			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
+			{
+				if ($minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
+				{
+					$qtitle .= "<br />\n<font class = \"questionhelp\">"
+					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</font>";
+				
+				}
+			}
 			break;
 		case 'M': //MULTIPLE OPTIONS checkbox
 			$values=do_multiplechoice($ia);
 			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				if (!$maxansw=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
+				$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1);
+				$minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1);
+				if (!($maxansw || $minansw))
 				{
 					$qtitle .= "<br />\n<font class = \"questionhelp\">"
 					. $clang->gT('Check any that apply').'</font>';
 				}
 				else
 				{
-					$qtitle .= "<br />\n<font class = \"questionhelp\">"
-					. sprintf($clang->gT('Check at most %d answers'), $maxansw['value']).'</font>';
+					if ($maxansw && $minansw)
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</font>";
+					} elseif ($maxansw) 
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+					} else 
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</font>";
+					}
 				}
 			}
 			break;
@@ -441,15 +463,28 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values=do_multiplechoice_withcomments($ia);
 			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				if (!$maxansw=arraySearchByKey('max_answers', $qidattributes, 'attribute', 1))
+				$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1);
+				$minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1);
+				if (!($maxansw || $minansw))
 				{
 					$qtitle .= "<br />\n<font class = \"questionhelp\">"
 					. $clang->gT('Check any that apply').'</font>';
 				}
 				else
 				{
-					$qtitle .= "<br />\n<font class = \"questionhelp\">"
-					. sprintf($clang->gT('Check at most %d answers'), $maxansw['value']).'</font>';
+					if ($maxansw && $minansw)
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</font>";
+					} elseif ($maxansw) 
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+					} else 
+					{
+						$qtitle .= "<br />\n<font class = \"questionhelp\">"
+						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</font>";
+					}
 				}
 			}
 			break;
@@ -2242,6 +2277,32 @@ function do_ranking($ia)
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t</table>\n";
 
+	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
+	{
+		$minansw=$minanswattr['value'];
+		$minanswscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+			. "\t\t\t\tfunction ensureminansw_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tcount={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
+			. "\t\t\t\t\tif (count < {$minansw}){\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please rank at least '%d' item(s) for question \"%s\"","js"),  
+				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t} else {\n"	
+			. "\t\t\t\t\t\tif (oldonsubmit_{$ia[0]}){\n"
+			. "\t\t\t\t\t\t\treturn oldonsubmit_{$ia[0]}();\n"
+			. "\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t\treturn true;\n"
+			. "\t\t\t\t\t}\n"	
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+			. "\t\t\t\t-->\n"
+			. "\t\t\t</script>\n";
+		$answer = $minanswscript . $answer;
+	}
+
 	return array($answer, $inputnames);
 }
 
@@ -2307,6 +2368,22 @@ function do_multiplechoice($ia)
 			. "\t\t\t\t\tmax=$maxansw\n"
 			. "\t\t\t\t\tcount=0;\n"
 			. "\t\t\t\t\tif (max == 0) { return count; }\n";
+	}
+
+
+	// Check if the min_answers attribute is set
+	$minansw=0;
+	$minanswscript = "";
+	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
+	{
+		$minansw=$minanswattr['value'];
+		$minanswscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+			. "\t\t\t\tfunction ensureminansw_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tcount=0;\n"
+			;		
 	}
 
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
@@ -2387,6 +2464,7 @@ function do_multiplechoice($ia)
 		// --> END NEW FEATURE - SAVE
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+		if ($minansw > 0) {$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
 		++$fn;
 		$answer .= '		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="'; 
@@ -2453,6 +2531,7 @@ function do_multiplechoice($ia)
 			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
 		}
 
+
 		if (isset($_SESSION[$myfname]))
 		{
 			$answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);
@@ -2498,6 +2577,28 @@ function do_multiplechoice($ia)
 			. "\t\t\t</script>\n";
 		$answer = $maxanswscript . $answer;  
 	}
+	
+	
+	if ( $minansw > 0 )
+	{
+		$minanswscript .= 		
+			"\t\t\t\t\tif (count < {$minansw}){\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
+				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t} else {\n"	
+			. "\t\t\t\t\t\tif (oldonsubmit_{$ia[0]}){\n"
+			. "\t\t\t\t\t\t\treturn oldonsubmit_{$ia[0]}();\n"
+			. "\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t\treturn true;\n"
+			. "\t\t\t\t\t}\n"	
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+			. "\t\t\t\t-->\n"
+			. "\t\t\t</script>\n";
+		$answer = $minanswscript . $answer;
+	}
+	
 	if (count($excludeallothers)>0)
 	{
 		$excludeallotherscript .= "
@@ -2556,6 +2657,21 @@ function do_multiplechoice_withcomments($ia)
 			. "\t\t\t\t\tif (max == 0) { return count; }\n";
 	}
 
+	// Check if the min_answers attribute is set
+	$minansw=0;
+	$minanswscript = "";
+	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
+	{
+		$minansw=$minanswattr['value'];
+		$minanswscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+			. "\t\t\t\tfunction ensureminansw_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tcount=0;\n"
+			;		
+	}
+
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -2607,6 +2723,7 @@ function do_multiplechoice_withcomments($ia)
 				. $ansrow['answer']."\t\t</label>\n";
 
 		if ($maxansw > 0) {$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
+		if ($minansw > 0) {$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
 		$answer_main .= "\t\t<input type='hidden' name='java$myfname' id='java$myfname' value='";
 		if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
@@ -2715,6 +2832,26 @@ function do_multiplechoice_withcomments($ia)
 			. "\t\t\t//-->\n"
 			. "\t\t\t</script>\n";
 		$answer = $maxanswscript . $answer;
+	}
+
+	if ( $minansw > 0 )
+	{
+		$minanswscript .= 		
+			"\t\t\t\t\tif (count < {$minansw}){\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
+				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t} else {\n"	
+			. "\t\t\t\t\t\tif (oldonsubmit_{$ia[0]}){\n"
+			. "\t\t\t\t\t\t\treturn oldonsubmit_{$ia[0]}();\n"
+			. "\t\t\t\t\t\t}\n"
+			. "\t\t\t\t\t\treturn true;\n"
+			. "\t\t\t\t\t}\n"	
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+			. "\t\t\t\t-->\n"
+			. "\t\t\t</script>\n";
+		$answer = $minanswscript . $answer;
 	}
 
 	return array($answer, $inputnames);

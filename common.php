@@ -2864,6 +2864,9 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"max_answers",
 	"types"=>"MPR",
 	"help"=>"Limit the number of possible answers");
+	$qattributes[]=array("name"=>"min_answers",
+	"types"=>"MPR",
+	"help"=>"Ensure a minimum number of possible answers");
     $qattributes[]=array("name"=>"maximum_chars",
     "types"=>"STUNQK",
     "help"=>"Maximum Characters Allowed");
