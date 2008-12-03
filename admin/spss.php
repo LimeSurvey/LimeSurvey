@@ -893,14 +893,14 @@ if  ($subaction=='dlstructure')
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
 			    echo " 1 \"".$clang->gT('Yes')."\"\n";
-			    echo " 2 \"".$clang->gT('No')."\".\n";
+			    echo " 2 \"".$clang->gT('No')."\"\n";
 			    echo " 3 \"".$clang->gT('Uncertain')."\".\n";
 		    }
 		    if ($field['LStype'] == "E" && $field['size'] > 0)
 		    {
 			    echo "VALUE LABELS ".$field['id']."\n";
 			    echo " 1 \"".$clang->gT('Increase')."\"\n";
-			    echo " 2 \"".$clang->gT('Same')."\".\n";
+			    echo " 2 \"".$clang->gT('Same')."\"\n";
 			    echo " 3 \"".$clang->gT('Decrease')."\".\n";
 		    }
 	    }
