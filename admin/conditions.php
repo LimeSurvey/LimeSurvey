@@ -1274,15 +1274,15 @@ function showSpeaker($hinttext)
 		$shortstring = substr($hinttext, 0, $max);
 
 		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
+		$reshtml= "<span style='cursor: hand' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
            ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
-           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
+           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />";
 	}
 	else
 	{
-		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";
+		$reshtml= "<span alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\"> \"$hinttext\"</span>";
 	}
 
   return $reshtml; 
