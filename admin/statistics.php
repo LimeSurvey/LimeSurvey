@@ -51,7 +51,7 @@
 	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
  */
 
-//split up results to extend statistics -> NOT WORKING YET! DO NET ENABLE THIS!
+//split up results to extend statistics -> NOT WORKING YET! DO NOT ENABLE THIS!
 $showcombinedresults = 0;
 
 /*
