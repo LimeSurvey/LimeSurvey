@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Swedish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-01 22:10+0100\n"
-"PO-Revision-Date: 2008-12-01 22:11+0100\n"
+"POT-Creation-Date: 2008-12-08 21:17+0100\n"
+"PO-Revision-Date: 2008-12-08 22:16+0100\n"
 "Last-Translator: Max Zomborszki <max@kth.se>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-Country: SWEDEN\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
+"X-Poedit-Bookmarks: 436,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-SearchPath-0: /Users/max/src/limesurvey\n"
 
 #: /Users/max/src/limesurvey/common.php:306
@@ -140,10 +141,10 @@ msgstr "Inaktiv"
 #: /Users/max/src/limesurvey/common.php:990
 #: /Users/max/src/limesurvey/common.php:1015
 #: /Users/max/src/limesurvey/common.php:1058
-#: /Users/max/src/limesurvey/common.php:3700
-#: /Users/max/src/limesurvey/common.php:3734
-#: /Users/max/src/limesurvey/common.php:3773
-#: /Users/max/src/limesurvey/common.php:3809
+#: /Users/max/src/limesurvey/common.php:3703
+#: /Users/max/src/limesurvey/common.php:3737
+#: /Users/max/src/limesurvey/common.php:3776
+#: /Users/max/src/limesurvey/common.php:3812
 msgid "Please Choose..."
 msgstr "Välj..."
 
@@ -151,8 +152,8 @@ msgstr "Välj..."
 #: /Users/max/src/limesurvey/common.php:991
 #: /Users/max/src/limesurvey/common.php:1016
 #: /Users/max/src/limesurvey/common.php:1059
-#: /Users/max/src/limesurvey/common.php:3735
-#: /Users/max/src/limesurvey/common.php:3774
+#: /Users/max/src/limesurvey/common.php:3738
+#: /Users/max/src/limesurvey/common.php:3777
 msgid "None"
 msgstr "Ingen"
 
@@ -289,7 +290,7 @@ msgid "LimeSurvey Setup"
 msgstr "LimeSurvey inställningar"
 
 #: /Users/max/src/limesurvey/common.php:1296
-#: /Users/max/src/limesurvey/common.php:4646
+#: /Users/max/src/limesurvey/common.php:4649
 #: /Users/max/src/limesurvey/index.php:467
 #: /Users/max/src/limesurvey/save.php:536
 msgid "Error"
@@ -317,12 +318,12 @@ msgid "Display Responses"
 msgstr "Visa svar"
 
 #: /Users/max/src/limesurvey/common.php:1534
-#: /Users/max/src/limesurvey/common.php:5011
+#: /Users/max/src/limesurvey/common.php:5014
 msgid "Please select a language:"
 msgstr "Välj ett språk:"
 
 #: /Users/max/src/limesurvey/common.php:1539
-#: /Users/max/src/limesurvey/common.php:5027
+#: /Users/max/src/limesurvey/common.php:5030
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -398,101 +399,101 @@ msgstr "Hänvisande URL"
 #: /Users/max/src/limesurvey/common.php:2062
 #: /Users/max/src/limesurvey/common.php:2176
 #: /Users/max/src/limesurvey/common.php:2186
-#: /Users/max/src/limesurvey/qanda.php:612
-#: /Users/max/src/limesurvey/qanda.php:1159
-#: /Users/max/src/limesurvey/qanda.php:1383
-#: /Users/max/src/limesurvey/qanda.php:1551
-#: /Users/max/src/limesurvey/qanda.php:1621
-#: /Users/max/src/limesurvey/qanda.php:1699
-#: /Users/max/src/limesurvey/qanda.php:1806
-#: /Users/max/src/limesurvey/qanda.php:2264
-#: /Users/max/src/limesurvey/qanda.php:2535
-#: /Users/max/src/limesurvey/qanda.php:2634
+#: /Users/max/src/limesurvey/qanda.php:647
+#: /Users/max/src/limesurvey/qanda.php:1194
+#: /Users/max/src/limesurvey/qanda.php:1418
+#: /Users/max/src/limesurvey/qanda.php:1586
+#: /Users/max/src/limesurvey/qanda.php:1656
+#: /Users/max/src/limesurvey/qanda.php:1734
+#: /Users/max/src/limesurvey/qanda.php:1841
+#: /Users/max/src/limesurvey/qanda.php:2325
+#: /Users/max/src/limesurvey/qanda.php:2636
+#: /Users/max/src/limesurvey/qanda.php:2751
 msgid "Other"
 msgstr "Annat"
 
 #: /Users/max/src/limesurvey/common.php:1833
 #: /Users/max/src/limesurvey/common.php:1839
 #: /Users/max/src/limesurvey/common.php:1855
-#: /Users/max/src/limesurvey/qanda.php:3594
-#: /Users/max/src/limesurvey/qanda.php:4060
-#: /Users/max/src/limesurvey/qanda.php:4113
+#: /Users/max/src/limesurvey/qanda.php:3731
+#: /Users/max/src/limesurvey/qanda.php:4197
+#: /Users/max/src/limesurvey/qanda.php:4250
 msgid "Yes"
 msgstr "Ja"
 
 #: /Users/max/src/limesurvey/common.php:1840
 #: /Users/max/src/limesurvey/common.php:1856
-#: /Users/max/src/limesurvey/qanda.php:3603
-#: /Users/max/src/limesurvey/qanda.php:4062
-#: /Users/max/src/limesurvey/qanda.php:4131
+#: /Users/max/src/limesurvey/qanda.php:3740
+#: /Users/max/src/limesurvey/qanda.php:4199
+#: /Users/max/src/limesurvey/qanda.php:4268
 msgid "No"
 msgstr "Nej"
 
 #: /Users/max/src/limesurvey/common.php:1841
 #: /Users/max/src/limesurvey/common.php:1849
-#: /Users/max/src/limesurvey/common.php:4632
-#: /Users/max/src/limesurvey/common.php:4637
-#: /Users/max/src/limesurvey/qanda.php:931
-#: /Users/max/src/limesurvey/qanda.php:1299
-#: /Users/max/src/limesurvey/qanda.php:1446
-#: /Users/max/src/limesurvey/qanda.php:1655
-#: /Users/max/src/limesurvey/qanda.php:1840
-#: /Users/max/src/limesurvey/qanda.php:1938
-#: /Users/max/src/limesurvey/qanda.php:2005
-#: /Users/max/src/limesurvey/qanda.php:3614
-#: /Users/max/src/limesurvey/qanda.php:3696
-#: /Users/max/src/limesurvey/qanda.php:3772
-#: /Users/max/src/limesurvey/qanda.php:3849
-#: /Users/max/src/limesurvey/qanda.php:3929
-#: /Users/max/src/limesurvey/qanda.php:3991
-#: /Users/max/src/limesurvey/qanda.php:4065
-#: /Users/max/src/limesurvey/qanda.php:4151
-#: /Users/max/src/limesurvey/qanda.php:4342
-#: /Users/max/src/limesurvey/qanda.php:4425
-#: /Users/max/src/limesurvey/qanda.php:4515
-#: /Users/max/src/limesurvey/qanda.php:4535
-#: /Users/max/src/limesurvey/qanda.php:4621
-#: /Users/max/src/limesurvey/qanda.php:5180
-#: /Users/max/src/limesurvey/qanda.php:5181
-#: /Users/max/src/limesurvey/qanda.php:5466
-#: /Users/max/src/limesurvey/qanda.php:5532
-#: /Users/max/src/limesurvey/qanda.php:5654
-#: /Users/max/src/limesurvey/qanda.php:5885
-#: /Users/max/src/limesurvey/qanda.php:5939
+#: /Users/max/src/limesurvey/common.php:4635
+#: /Users/max/src/limesurvey/common.php:4640
+#: /Users/max/src/limesurvey/qanda.php:966
+#: /Users/max/src/limesurvey/qanda.php:1334
+#: /Users/max/src/limesurvey/qanda.php:1481
+#: /Users/max/src/limesurvey/qanda.php:1690
+#: /Users/max/src/limesurvey/qanda.php:1875
+#: /Users/max/src/limesurvey/qanda.php:1973
+#: /Users/max/src/limesurvey/qanda.php:2040
+#: /Users/max/src/limesurvey/qanda.php:3751
+#: /Users/max/src/limesurvey/qanda.php:3833
+#: /Users/max/src/limesurvey/qanda.php:3909
+#: /Users/max/src/limesurvey/qanda.php:3986
+#: /Users/max/src/limesurvey/qanda.php:4066
+#: /Users/max/src/limesurvey/qanda.php:4128
+#: /Users/max/src/limesurvey/qanda.php:4202
+#: /Users/max/src/limesurvey/qanda.php:4288
+#: /Users/max/src/limesurvey/qanda.php:4479
+#: /Users/max/src/limesurvey/qanda.php:4562
+#: /Users/max/src/limesurvey/qanda.php:4652
+#: /Users/max/src/limesurvey/qanda.php:4672
+#: /Users/max/src/limesurvey/qanda.php:4758
+#: /Users/max/src/limesurvey/qanda.php:5317
+#: /Users/max/src/limesurvey/qanda.php:5318
+#: /Users/max/src/limesurvey/qanda.php:5603
+#: /Users/max/src/limesurvey/qanda.php:5669
+#: /Users/max/src/limesurvey/qanda.php:5791
+#: /Users/max/src/limesurvey/qanda.php:6022
+#: /Users/max/src/limesurvey/qanda.php:6076
 msgid "No answer"
 msgstr "Inget svar"
 
 #: /Users/max/src/limesurvey/common.php:1847
-#: /Users/max/src/limesurvey/qanda.php:3671
+#: /Users/max/src/limesurvey/qanda.php:3808
 msgid "Male"
 msgstr "Man"
 
 #: /Users/max/src/limesurvey/common.php:1848
-#: /Users/max/src/limesurvey/qanda.php:3652
+#: /Users/max/src/limesurvey/qanda.php:3789
 msgid "Female"
 msgstr "Kvinna"
 
 #: /Users/max/src/limesurvey/common.php:1857
-#: /Users/max/src/limesurvey/qanda.php:4061
-#: /Users/max/src/limesurvey/qanda.php:4121
+#: /Users/max/src/limesurvey/qanda.php:4198
+#: /Users/max/src/limesurvey/qanda.php:4258
 msgid "Uncertain"
 msgstr "Vet ej"
 
 #: /Users/max/src/limesurvey/common.php:1863
-#: /Users/max/src/limesurvey/qanda.php:4337
-#: /Users/max/src/limesurvey/qanda.php:4384
+#: /Users/max/src/limesurvey/qanda.php:4474
+#: /Users/max/src/limesurvey/qanda.php:4521
 msgid "Increase"
 msgstr "Öka"
 
 #: /Users/max/src/limesurvey/common.php:1864
-#: /Users/max/src/limesurvey/qanda.php:4339
-#: /Users/max/src/limesurvey/qanda.php:4407
+#: /Users/max/src/limesurvey/qanda.php:4476
+#: /Users/max/src/limesurvey/qanda.php:4544
 msgid "Decrease"
 msgstr "Minska"
 
 #: /Users/max/src/limesurvey/common.php:1865
-#: /Users/max/src/limesurvey/qanda.php:4338
-#: /Users/max/src/limesurvey/qanda.php:4395
+#: /Users/max/src/limesurvey/qanda.php:4475
+#: /Users/max/src/limesurvey/qanda.php:4532
 msgid "Same"
 msgstr "Samma"
 
@@ -696,40 +697,40 @@ msgstr "Fortsätt"
 msgid "Your Assessment"
 msgstr "Din utvärdering"
 
-#: /Users/max/src/limesurvey/common.php:3111
+#: /Users/max/src/limesurvey/common.php:3114
 msgid "Version"
 msgstr "Version"
 
-#: /Users/max/src/limesurvey/common.php:3120
+#: /Users/max/src/limesurvey/common.php:3123
 msgid "Online Manual"
 msgstr "Manual på internet"
 
-#: /Users/max/src/limesurvey/common.php:3123
+#: /Users/max/src/limesurvey/common.php:3126
 msgid "Support this project - Donate to "
 msgstr "Stöd detta projekt - Donera till"
 
-#: /Users/max/src/limesurvey/common.php:3126
+#: /Users/max/src/limesurvey/common.php:3129
 msgid "Visit our website!"
 msgstr "Besök vår hemsida!"
 
-#: /Users/max/src/limesurvey/common.php:3235
+#: /Users/max/src/limesurvey/common.php:3238
 msgid "Email was not sent because demo-mode is activated."
 msgstr "E-post skickas inte eftersom systemet kör i  demonstrationsläge."
 
-#: /Users/max/src/limesurvey/common.php:3375
+#: /Users/max/src/limesurvey/common.php:3378
 msgid "Local Submission"
 msgstr "Lokalt inlägg"
 
-#: /Users/max/src/limesurvey/common.php:3584
-#: /Users/max/src/limesurvey/common.php:3589
+#: /Users/max/src/limesurvey/common.php:3587
+#: /Users/max/src/limesurvey/common.php:3592
 msgid "Executing"
 msgstr "Bearbetar"
 
-#: /Users/max/src/limesurvey/common.php:3584
+#: /Users/max/src/limesurvey/common.php:3587
 msgid "Failed! Reason: "
 msgstr "Misslyckades! Orsak:"
 
-#: /Users/max/src/limesurvey/common.php:3589
+#: /Users/max/src/limesurvey/common.php:3592
 msgid "Success!"
 msgstr "Lyckades!"
 
@@ -1010,7 +1011,7 @@ msgstr "Denna enkät har ännu inga frågor och kan inte testas eller färdigst�
 #: /Users/max/src/limesurvey/index.php:2402
 #: /Users/max/src/limesurvey/index.php:2760
 msgid "Previous"
-msgstr "Föregående:"
+msgstr "Föregående"
 
 #: /Users/max/src/limesurvey/index.php:2407
 #: /Users/max/src/limesurvey/index.php:2413
@@ -1065,254 +1066,282 @@ msgstr "Ditt svar"
 msgid "Choose one of the following answers"
 msgstr "Välj ett av följande svar"
 
-#: /Users/max/src/limesurvey/qanda.php:422
-#: /Users/max/src/limesurvey/qanda.php:447
+#: /Users/max/src/limesurvey/qanda.php:419
+#, php-format
+msgid "Rank at least %d items"
+msgstr "Rangordna åtminstone %d svarsalternativ"
+
+#: /Users/max/src/limesurvey/qanda.php:433
+#: /Users/max/src/limesurvey/qanda.php:471
 msgid "Check any that apply"
 msgstr "Välj vilka som stämmer"
 
-#: /Users/max/src/limesurvey/qanda.php:427
-#: /Users/max/src/limesurvey/qanda.php:452
+#: /Users/max/src/limesurvey/qanda.php:440
+#: /Users/max/src/limesurvey/qanda.php:478
+#, php-format
+msgid "Check between %d and %d answers"
+msgstr "Välj %d till %d svarsalternativ"
+
+#: /Users/max/src/limesurvey/qanda.php:444
+#: /Users/max/src/limesurvey/qanda.php:482
 #, php-format
 msgid "Check at most %d answers"
 msgstr "Välj högst %d svar"
 
-#: /Users/max/src/limesurvey/qanda.php:437
+#: /Users/max/src/limesurvey/qanda.php:448
+#: /Users/max/src/limesurvey/qanda.php:486
+#, php-format
+msgid "Check at least %d answers"
+msgstr "Välj åtminstone %d svarsalternativ"
+
+#: /Users/max/src/limesurvey/qanda.php:459
 msgid "Choose your language"
 msgstr "Välj språk"
 
-#: /Users/max/src/limesurvey/qanda.php:525
+#: /Users/max/src/limesurvey/qanda.php:560
 msgid "*"
 msgstr "*"
 
-#: /Users/max/src/limesurvey/qanda.php:558
+#: /Users/max/src/limesurvey/qanda.php:593
 msgid "This question must be answered correctly"
 msgstr "Den här frågan måste besvaras korrekt"
 
-#: /Users/max/src/limesurvey/qanda.php:577
+#: /Users/max/src/limesurvey/qanda.php:612
 msgid "This question is mandatory"
 msgstr "Denna fråga är obligatorisk"
 
-#: /Users/max/src/limesurvey/qanda.php:589
+#: /Users/max/src/limesurvey/qanda.php:624
 msgid "Please complete all parts"
 msgstr "Du måste fylla i alla delar"
 
-#: /Users/max/src/limesurvey/qanda.php:592
+#: /Users/max/src/limesurvey/qanda.php:627
 msgid "Please check the items"
 msgstr "Var vänlig ange följande"
 
-#: /Users/max/src/limesurvey/qanda.php:595
+#: /Users/max/src/limesurvey/qanda.php:630
 msgid "Please rank all items"
 msgstr "Rangordna alla alternativen"
 
-#: /Users/max/src/limesurvey/qanda.php:599
+#: /Users/max/src/limesurvey/qanda.php:634
 msgid "Please check at least one item"
 msgstr "Välj minst ett objekt"
 
-#: /Users/max/src/limesurvey/qanda.php:614
+#: /Users/max/src/limesurvey/qanda.php:649
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Om du väljer \"%s\" måste du ge en beskrivning."
 
-#: /Users/max/src/limesurvey/qanda.php:635
+#: /Users/max/src/limesurvey/qanda.php:670
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Du kan inte fortsätta förrän du fyllt i text för en eller flera frågor."
 
-#: /Users/max/src/limesurvey/qanda.php:639
+#: /Users/max/src/limesurvey/qanda.php:674
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "En eller flera obligatoriska frågor har inte besvarats. Du kan inte fortsätta innan de är besvarade"
 
-#: /Users/max/src/limesurvey/qanda.php:662
+#: /Users/max/src/limesurvey/qanda.php:697
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "En eller flera frågor har inte besvarats på rätt sätt. Du kan inte fortsätta fürrän dessa svar är korrekta"
 
-#: /Users/max/src/limesurvey/qanda.php:960
+#: /Users/max/src/limesurvey/qanda.php:995
 msgid "Day"
 msgstr "Dag"
 
-#: /Users/max/src/limesurvey/qanda.php:977
+#: /Users/max/src/limesurvey/qanda.php:1012
 msgid "Month"
 msgstr "Månad"
 
-#: /Users/max/src/limesurvey/qanda.php:980
+#: /Users/max/src/limesurvey/qanda.php:1015
 msgid "Jan"
 msgstr "Jan"
 
-#: /Users/max/src/limesurvey/qanda.php:981
+#: /Users/max/src/limesurvey/qanda.php:1016
 msgid "Feb"
 msgstr "Feb"
 
-#: /Users/max/src/limesurvey/qanda.php:982
+#: /Users/max/src/limesurvey/qanda.php:1017
 msgid "Mar"
 msgstr "Mar"
 
-#: /Users/max/src/limesurvey/qanda.php:983
+#: /Users/max/src/limesurvey/qanda.php:1018
 msgid "Apr"
 msgstr "Apr"
 
-#: /Users/max/src/limesurvey/qanda.php:984
+#: /Users/max/src/limesurvey/qanda.php:1019
 msgid "May"
 msgstr "Maj"
 
-#: /Users/max/src/limesurvey/qanda.php:985
+#: /Users/max/src/limesurvey/qanda.php:1020
 msgid "Jun"
 msgstr "Jun"
 
-#: /Users/max/src/limesurvey/qanda.php:986
+#: /Users/max/src/limesurvey/qanda.php:1021
 msgid "Jul"
 msgstr "Jul"
 
-#: /Users/max/src/limesurvey/qanda.php:987
+#: /Users/max/src/limesurvey/qanda.php:1022
 msgid "Aug"
 msgstr "Aug"
 
-#: /Users/max/src/limesurvey/qanda.php:988
+#: /Users/max/src/limesurvey/qanda.php:1023
 msgid "Sep"
 msgstr "Sep"
 
-#: /Users/max/src/limesurvey/qanda.php:989
+#: /Users/max/src/limesurvey/qanda.php:1024
 msgid "Oct"
 msgstr "Okt"
 
-#: /Users/max/src/limesurvey/qanda.php:990
+#: /Users/max/src/limesurvey/qanda.php:1025
 msgid "Nov"
 msgstr "Nov"
 
-#: /Users/max/src/limesurvey/qanda.php:991
+#: /Users/max/src/limesurvey/qanda.php:1026
 msgid "Dec"
 msgstr "Dec"
 
-#: /Users/max/src/limesurvey/qanda.php:1008
+#: /Users/max/src/limesurvey/qanda.php:1043
 msgid "Year"
 msgstr "År"
 
-#: /Users/max/src/limesurvey/qanda.php:1074
+#: /Users/max/src/limesurvey/qanda.php:1109
 msgid "Please complete all parts of the date"
 msgstr "Du måste fylla i alla delar av datumet"
 
-#: /Users/max/src/limesurvey/qanda.php:1088
+#: /Users/max/src/limesurvey/qanda.php:1123
 msgid "Format: YYYY-MM-DD"
 msgstr "Format: åååå-MM-DD"
 
-#: /Users/max/src/limesurvey/qanda.php:1089
+#: /Users/max/src/limesurvey/qanda.php:1124
 msgid "(eg: 2003-12-25 for Christmas day)"
 msgstr "(tex: 2004-12-24 för Julafton)"
 
-#: /Users/max/src/limesurvey/qanda.php:1119
-#: /Users/max/src/limesurvey/qanda.php:1280
-#: /Users/max/src/limesurvey/qanda.php:1428
-#: /Users/max/src/limesurvey/qanda.php:5865
-#: /Users/max/src/limesurvey/qanda.php:5919
+#: /Users/max/src/limesurvey/qanda.php:1154
+#: /Users/max/src/limesurvey/qanda.php:1315
+#: /Users/max/src/limesurvey/qanda.php:1463
+#: /Users/max/src/limesurvey/qanda.php:6002
+#: /Users/max/src/limesurvey/qanda.php:6056
 msgid "Please choose"
 msgstr "Välj"
 
-#: /Users/max/src/limesurvey/qanda.php:1452
-#: /Users/max/src/limesurvey/qanda.php:1779
+#: /Users/max/src/limesurvey/qanda.php:1487
+#: /Users/max/src/limesurvey/qanda.php:1814
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Fel: Etikettsamlingen som används i frågan är inte tillgänglig för detta språk."
 
-#: /Users/max/src/limesurvey/qanda.php:1892
+#: /Users/max/src/limesurvey/qanda.php:1927
 msgid "Please choose one of the following"
 msgstr "Välj ett av de följande"
 
-#: /Users/max/src/limesurvey/qanda.php:1893
+#: /Users/max/src/limesurvey/qanda.php:1928
 msgid "Please enter your comment here"
 msgstr "Skriv din kommentar här"
 
-#: /Users/max/src/limesurvey/qanda.php:2170
+#: /Users/max/src/limesurvey/qanda.php:2205
 msgid "Remove this item"
 msgstr "Ta bort detta objekt"
 
-#: /Users/max/src/limesurvey/qanda.php:2211
+#: /Users/max/src/limesurvey/qanda.php:2246
 msgid "Click on an item in the list on the left, starting with your"
 msgstr "Klicka på ett objekt i listan till vänster, börja med ditt"
 
-#: /Users/max/src/limesurvey/qanda.php:2212
+#: /Users/max/src/limesurvey/qanda.php:2247
 msgid "highest ranking item, moving through to your lowest ranking item."
 msgstr "högst rankade objekt, upprepa tills ditt lägst rankade objekt."
 
-#: /Users/max/src/limesurvey/qanda.php:2217
+#: /Users/max/src/limesurvey/qanda.php:2252
 msgid "Your Choices"
 msgstr "Dina val"
 
-#: /Users/max/src/limesurvey/qanda.php:2226
-#: /Users/max/src/limesurvey/qanda.php:2232
+#: /Users/max/src/limesurvey/qanda.php:2261
+#: /Users/max/src/limesurvey/qanda.php:2267
 msgid "Your Ranking"
 msgstr "Din rangordning"
 
-#: /Users/max/src/limesurvey/qanda.php:2240
+#: /Users/max/src/limesurvey/qanda.php:2275
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Klicka på saxen till höger om det senast gjorda valet för att ta bort det ur din rangordnade lista."
 
-#: /Users/max/src/limesurvey/qanda.php:2486
-#: /Users/max/src/limesurvey/qanda.php:2699
+#: /Users/max/src/limesurvey/qanda.php:2290
+#, php-format
+msgid "Please rank at least '%d' item(s) for question \"%s\""
+msgstr "Rangordna åtminstone '%d' svarsalternativ för fråga \"%s\""
+
+#: /Users/max/src/limesurvey/qanda.php:2565
+#: /Users/max/src/limesurvey/qanda.php:2816
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
 msgstr "Välj som mest %d svar för fråga \"%s\""
 
-#: /Users/max/src/limesurvey/qanda.php:2616
-#: /Users/max/src/limesurvey/qanda.php:2643
+#: /Users/max/src/limesurvey/qanda.php:2586
+#: /Users/max/src/limesurvey/qanda.php:2841
+#, php-format
+msgid "Please choose at least '%d' answer(s) for question \"%s\""
+msgstr "Välj åtminstone %d svarsalternativ för fråga \"%s\""
+
+#: /Users/max/src/limesurvey/qanda.php:2733
+#: /Users/max/src/limesurvey/qanda.php:2760
 msgid "Make a comment on your choice here:"
 msgstr "Kommentera dina val här:"
 
-#: /Users/max/src/limesurvey/qanda.php:2792
-#: /Users/max/src/limesurvey/qanda.php:3044
-#: /Users/max/src/limesurvey/qanda.php:4074
-#: /Users/max/src/limesurvey/qanda.php:5713
+#: /Users/max/src/limesurvey/qanda.php:2929
+#: /Users/max/src/limesurvey/qanda.php:3181
+#: /Users/max/src/limesurvey/qanda.php:4211
+#: /Users/max/src/limesurvey/qanda.php:5850
 msgid "Error: This question has no answers."
 msgstr "Fel: Frågan har inga svar."
 
-#: /Users/max/src/limesurvey/qanda.php:3125
+#: /Users/max/src/limesurvey/qanda.php:3262
 msgid "Only numbers may be entered in these fields"
 msgstr "Endast siffror kan skrivas i dessa fält"
 
-#: /Users/max/src/limesurvey/qanda.php:3129
+#: /Users/max/src/limesurvey/qanda.php:3266
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Den sammanlagda summan av alla poster får inte överstiga %d"
 
-#: /Users/max/src/limesurvey/qanda.php:3133
+#: /Users/max/src/limesurvey/qanda.php:3270
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Summan av alla poster måste vara lika med %d"
 
-#: /Users/max/src/limesurvey/qanda.php:3137
+#: /Users/max/src/limesurvey/qanda.php:3274
 #, php-format
 msgid "Total of all entries must be at least %d"
 msgstr "Summan av alla poster måste vara minst %d"
 
-#: /Users/max/src/limesurvey/qanda.php:3217
+#: /Users/max/src/limesurvey/qanda.php:3354
 msgid "Total: "
 msgstr "Summa:"
 
-#: /Users/max/src/limesurvey/qanda.php:3220
+#: /Users/max/src/limesurvey/qanda.php:3357
 msgid "Remaining: "
 msgstr "Kvar:"
 
-#: /Users/max/src/limesurvey/qanda.php:3266
-#: /Users/max/src/limesurvey/qanda.php:3274
-#: /Users/max/src/limesurvey/qanda.php:3310
-#: /Users/max/src/limesurvey/qanda.php:3321
+#: /Users/max/src/limesurvey/qanda.php:3403
+#: /Users/max/src/limesurvey/qanda.php:3411
+#: /Users/max/src/limesurvey/qanda.php:3447
+#: /Users/max/src/limesurvey/qanda.php:3458
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Svaret är ogiltigt. Summan av alla poster får inte bli mer än"
 
-#: /Users/max/src/limesurvey/qanda.php:3287
-#: /Users/max/src/limesurvey/qanda.php:3295
+#: /Users/max/src/limesurvey/qanda.php:3424
+#: /Users/max/src/limesurvey/qanda.php:3432
 msgid "Answer is invalid. The total of all entries should add up to at least "
 msgstr "Svaret är ogiltigt. Summan av alla poster måste bli minst"
 
-#: /Users/max/src/limesurvey/qanda.php:3391
+#: /Users/max/src/limesurvey/qanda.php:3528
 msgid "Only numbers may be entered in this field"
 msgstr "Endast siffror kan skrivas i detta fält"
 
-#: /Users/max/src/limesurvey/qanda.php:4662
-#: /Users/max/src/limesurvey/qanda.php:4871
-#: /Users/max/src/limesurvey/qanda.php:5150
-#: /Users/max/src/limesurvey/qanda.php:5294
-#: /Users/max/src/limesurvey/qanda.php:5965
+#: /Users/max/src/limesurvey/qanda.php:4799
+#: /Users/max/src/limesurvey/qanda.php:5008
+#: /Users/max/src/limesurvey/qanda.php:5287
+#: /Users/max/src/limesurvey/qanda.php:5431
+#: /Users/max/src/limesurvey/qanda.php:6102
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fel: Etikettsamlingen som används i frågan är inte tillgänglig för detta språk och/eller finns inte."
 
-#: /Users/max/src/limesurvey/qanda.php:5288
+#: /Users/max/src/limesurvey/qanda.php:5425
 msgid "Error: There are no answers defined for this question."
 msgstr "Fel: Inga svarsalternativ har definierats för denna fråga."
 
@@ -1943,37 +1972,37 @@ msgid "OR"
 msgstr "ELLER"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:951
-#: /Users/max/src/limesurvey/admin/conditions.php:1180
+#: /Users/max/src/limesurvey/admin/conditions.php:1183
 msgid "Less than"
 msgstr "Mindre än"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:952
-#: /Users/max/src/limesurvey/admin/conditions.php:1181
+#: /Users/max/src/limesurvey/admin/conditions.php:1184
 msgid "Less than or Equal to"
 msgstr "Mindre än eller lika med"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:953
-#: /Users/max/src/limesurvey/admin/conditions.php:1182
+#: /Users/max/src/limesurvey/admin/conditions.php:1185
 msgid "Equals"
 msgstr "Är lika med"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:954
-#: /Users/max/src/limesurvey/admin/conditions.php:1183
+#: /Users/max/src/limesurvey/admin/conditions.php:1186
 msgid "Not Equal to"
 msgstr "Inte lika med"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:955
-#: /Users/max/src/limesurvey/admin/conditions.php:1184
+#: /Users/max/src/limesurvey/admin/conditions.php:1187
 msgid "Greater than or Equal to"
 msgstr "Större än eller lika med"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:956
-#: /Users/max/src/limesurvey/admin/conditions.php:1185
+#: /Users/max/src/limesurvey/admin/conditions.php:1188
 msgid "Greater than"
 msgstr "Större än"
 
 #: /Users/max/src/limesurvey/admin/conditions.php:957
-#: /Users/max/src/limesurvey/admin/conditions.php:1186
+#: /Users/max/src/limesurvey/admin/conditions.php:1189
 msgid "Regular Expression"
 msgstr "Reguljärt uttryck"
 
@@ -2003,34 +2032,42 @@ msgstr "kopiera till"
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "Är det säkert att du vill kopiera villkor(en) till frågan du har valt?"
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1132
-#: /Users/max/src/limesurvey/admin/conditions.php:1207
+#: /Users/max/src/limesurvey/admin/conditions.php:1135
+#: /Users/max/src/limesurvey/admin/conditions.php:1210
 msgid "Add Condition"
 msgstr "Lägg till beroenden"
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1137
+#: /Users/max/src/limesurvey/admin/conditions.php:1140
 msgid "Scenario"
 msgstr ""
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1145
+#: /Users/max/src/limesurvey/admin/conditions.php:1148
 msgid "Answer"
 msgstr "Svar"
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1188
+#: /Users/max/src/limesurvey/admin/conditions.php:1191
 msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr "NOTERA: Om du använder fördefinierade svar som villkor kommer bara villkoren lika-med och inte-lika-med att användas."
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1199
+#: /Users/max/src/limesurvey/admin/conditions.php:1202
 msgid "Constant Value or Regular Expression"
 msgstr "Konstant värde eller reguljärt uttryck"
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1206
+#: /Users/max/src/limesurvey/admin/conditions.php:1209
 msgid "Clear"
 msgstr "Rensa"
 
-#: /Users/max/src/limesurvey/admin/conditions.php:1223
+#: /Users/max/src/limesurvey/admin/conditions.php:1227
 msgid "Close Window"
 msgstr "Stäng fönster"
+
+#: /Users/max/src/limesurvey/admin/conditions.php:1232
+msgid "Switch to Add Mode"
+msgstr "Byt till läget \"Lägg till\""
+
+#: /Users/max/src/limesurvey/admin/conditions.php:1237
+msgid "Switch to Copy Mode"
+msgstr "Byt till läget \"Kopiera\""
 
 #: /Users/max/src/limesurvey/admin/database.php:120
 msgid ""
@@ -5296,72 +5333,94 @@ msgid "View stats"
 msgstr "Visa statistik"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:1919
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1595
 msgid "Please wait ..."
 msgstr "Vänta..."
 
 #: /Users/max/src/limesurvey/admin/statistics.php:1921
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1597
 msgid "Go back"
 msgstr "Tillbaka"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:1936
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1612
 msgid "Getting questions and answers ..."
 msgstr "Hämtar frågor och svar..."
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2110
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1796
 msgid "Getting result count ..."
 msgstr "Hämtar antal resultat..."
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2169
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1856
 msgid "Results"
 msgstr "Resultat"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2172
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1859
 msgid "No of records in this query"
 msgstr "Antal poster i denna fråga"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2173
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1860
 msgid "Total records in survey"
 msgstr "Summa poster i denna enkät"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2179
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1866
 msgid "Percentage of total"
 msgstr "Procent av sammanlagt"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2197
 #: /Users/max/src/limesurvey/admin/statistics.php:3402
 #: /Users/max/src/limesurvey/admin/statistics.php:3418
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1884
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3093
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3109
 msgid "Browse"
 msgstr "Bläddra"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2308
+#: /Users/max/src/limesurvey/admin/statistics_user.php:1995
 msgid "Generating summaries ..."
 msgstr "Skapar sammanfattning..."
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2615
 #: /Users/max/src/limesurvey/admin/statistics.php:3305
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2306
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2996
 msgid "Field summary for"
 msgstr "Sammanfattning av fält för"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2619
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2310
 msgid "Calculation"
 msgstr "Beräkning"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2621
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2312
 msgid "Result"
 msgstr "Resultat"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2681
 #: /Users/max/src/limesurvey/admin/statistics.php:3442
 #: /Users/max/src/limesurvey/admin/statistics.php:3895
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2372
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3133
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3586
 msgid "Sum"
 msgstr "Summa"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2682
 #: /Users/max/src/limesurvey/admin/statistics.php:4007
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2373
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3698
 msgid "Standard deviation"
 msgstr "Standardavvikelse"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2683
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2374
 msgid "Average"
 msgstr "Genomsnittlig"
 
@@ -5369,53 +5428,70 @@ msgstr "Genomsnittlig"
 #: /Users/max/src/limesurvey/admin/statistics.php:3438
 #: /Users/max/src/limesurvey/admin/statistics.php:3452
 #: /Users/max/src/limesurvey/admin/statistics.php:3523
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2410
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3129
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3143
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3214
 msgid "Count"
 msgstr "Antal"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2756
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2447
 msgid "1st quartile (Q1)"
 msgstr "Första kvartil (Q1)"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2790
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2481
 msgid "2nd quartile (Median)"
 msgstr "Andra kvartil  (median)"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2833
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2524
 msgid "3rd quartile (Q3)"
 msgstr "Trejde kvartil (Q3)"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2863
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2554
 msgid "Null values are ignored in calculations"
 msgstr "Tomma (null) värden ignoreras i beräkningarna."
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2864
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2555
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 och Q3 beräknade med %s"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2864
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2555
 msgid "minitab method"
 msgstr "Minitab-metod"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:2879
+#: /Users/max/src/limesurvey/admin/statistics_user.php:2570
 msgid "Not enough values for calculation"
 msgstr "Inte tillräckligt med värden för beräkning"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:3440
 #: /Users/max/src/limesurvey/admin/statistics.php:3454
 #: /Users/max/src/limesurvey/admin/statistics.php:3525
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3131
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3145
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3216
 msgid "Percentage"
 msgstr "Procent"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:3604
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3295
 msgid "Non completed"
 msgstr "Inte färdig"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:3901
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3592
 msgid "Number of cases"
 msgstr "Antal fall"
 
 #: /Users/max/src/limesurvey/admin/statistics.php:4007
+#: /Users/max/src/limesurvey/admin/statistics_user.php:3698
 msgid "Arithmetic mean"
 msgstr "Aritmetiskt medelvärde"
 
@@ -5592,7 +5668,6 @@ msgid "Upload a File"
 msgstr "Ladda upp fil"
 
 #: /Users/max/src/limesurvey/admin/templates.php:723
-#: /Users/max/src/limesurvey/admin/tokens.php:2313
 msgid "Upload"
 msgstr "Ladda upp"
 
@@ -5601,150 +5676,187 @@ msgid "Preview:"
 msgstr "Förhandsvisning:"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:45
+#: /Users/max/src/limesurvey/admin/vvimport.php:21
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armenisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:46
+#: /Users/max/src/limesurvey/admin/vvimport.php:22
 msgid "US ASCII"
 msgstr "US ASCII"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:47
+#: /Users/max/src/limesurvey/admin/vvimport.php:23
 msgid "Automatic"
 msgstr "Automatisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:48
+#: /Users/max/src/limesurvey/admin/vvimport.php:24
 msgid "Big5 Traditional Chinese"
 msgstr "Big5 Kinesisk traditionell"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:49
+#: /Users/max/src/limesurvey/admin/vvimport.php:25
 msgid "Binary pseudo charset"
 msgstr "Binär pseudo-textkodning"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:50
+#: /Users/max/src/limesurvey/admin/vvimport.php:26
 msgid "Windows Central European"
 msgstr "Windows Centraleuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:51
+#: /Users/max/src/limesurvey/admin/vvimport.php:27
 msgid "Windows Cyrillic"
 msgstr "Windows Kyrillisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:52
+#: /Users/max/src/limesurvey/admin/vvimport.php:28
 msgid "Windows Arabic"
 msgstr "Windows Arabisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:53
+#: /Users/max/src/limesurvey/admin/vvimport.php:29
 msgid "Windows Baltic"
 msgstr "Windows Baltisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:54
+#: /Users/max/src/limesurvey/admin/vvimport.php:30
 msgid "DOS West European"
 msgstr "DOS Västeuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:55
+#: /Users/max/src/limesurvey/admin/vvimport.php:31
 msgid "DOS Central European"
 msgstr "DOS Centraleuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:56
+#: /Users/max/src/limesurvey/admin/vvimport.php:32
 msgid "DOS Russian"
 msgstr "DOS Ryska"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:57
+#: /Users/max/src/limesurvey/admin/vvimport.php:33
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS för Windows Japansk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:58
+#: /Users/max/src/limesurvey/admin/vvimport.php:34
 msgid "DEC West European"
 msgstr "DEC Västeuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:59
+#: /Users/max/src/limesurvey/admin/vvimport.php:35
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS för Windows Japansk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:60
+#: /Users/max/src/limesurvey/admin/vvimport.php:36
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Koreansk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:61
+#: /Users/max/src/limesurvey/admin/vvimport.php:37
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Kinesisk förenklad"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:62
+#: /Users/max/src/limesurvey/admin/vvimport.php:38
 msgid "GBK Simplified Chinese"
 msgstr "GBK Kinesisk förenklad"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:63
+#: /Users/max/src/limesurvey/admin/vvimport.php:39
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Georgisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:64
+#: /Users/max/src/limesurvey/admin/vvimport.php:40
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Grekisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:65
+#: /Users/max/src/limesurvey/admin/vvimport.php:41
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebreisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:66
+#: /Users/max/src/limesurvey/admin/vvimport.php:42
 msgid "HP West European"
 msgstr "HP Västeuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:67
+#: /Users/max/src/limesurvey/admin/vvimport.php:43
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Tjeckisk-Slovakisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:68
+#: /Users/max/src/limesurvey/admin/vvimport.php:44
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Rysk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:69
+#: /Users/max/src/limesurvey/admin/vvimport.php:45
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainsk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:70
+#: /Users/max/src/limesurvey/admin/vvimport.php:46
 msgid "cp1252 West European"
 msgstr "cp1252 Västeuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:71
+#: /Users/max/src/limesurvey/admin/vvimport.php:47
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Centraleuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:72
+#: /Users/max/src/limesurvey/admin/vvimport.php:48
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Turkisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:73
+#: /Users/max/src/limesurvey/admin/vvimport.php:49
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:74
+#: /Users/max/src/limesurvey/admin/vvimport.php:50
 msgid "Mac Central European"
 msgstr "Mac Centraleuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:75
+#: /Users/max/src/limesurvey/admin/vvimport.php:51
 msgid "Mac West European"
 msgstr "Mac Västeuropeisk"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:76
+#: /Users/max/src/limesurvey/admin/vvimport.php:52
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japanska"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:77
+#: /Users/max/src/limesurvey/admin/vvimport.php:53
 msgid "7bit Swedish"
 msgstr "7bitars Svenska"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:78
+#: /Users/max/src/limesurvey/admin/vvimport.php:54
 msgid "TIS620 Thai"
 msgstr "TIS620 Thai"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:79
+#: /Users/max/src/limesurvey/admin/vvimport.php:55
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:80
+#: /Users/max/src/limesurvey/admin/vvimport.php:56
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japanska"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:81
+#: /Users/max/src/limesurvey/admin/vvimport.php:57
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
@@ -6152,6 +6264,8 @@ msgid "Token has been deleted."
 msgstr "Behörighetskoden har raderats."
 
 #: /Users/max/src/limesurvey/admin/tokens.php:1644
+#: /Users/max/src/limesurvey/admin/usercontrol.php:157
+#: /Users/max/src/limesurvey/admin/usercontrol.php:297
 msgid "Reloading Screen. Please wait."
 msgstr "Laddar om sidan. Var vänlig vänta."
 
@@ -6288,6 +6402,7 @@ msgid "Choose the CSV file to upload:"
 msgstr "Välj en CSV-fil att ladda upp:"
 
 #: /Users/max/src/limesurvey/admin/tokens.php:2310
+#: /Users/max/src/limesurvey/admin/vvimport.php:95
 msgid "Character set of the file:"
 msgstr "Filens textkodning:"
 
