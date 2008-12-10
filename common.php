@@ -2955,6 +2955,12 @@ function questionAttributes()
 	$qattributes[]=array("name"=>"other_replace_text",
 	"types"=>"LMPWZ!",
 	"help"=>"Replaces the 'other' label with text");
+	
+	$qattributes[]=array("name"=>"public_statistics",
+	"types"=>"15ABCEFGHKLMNOPRWYZ!:",
+	"help"=>"Show statistics of a certain question to the user");
+	
+	
 	/* -- > Commented out since not yet used
     $qattributes[]=array("name"=>"permission",
     "types"=>"5DGL!OMPQNRSTUYABCEFHWZ",
