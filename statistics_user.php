@@ -17,7 +17,8 @@
 /*
  * Created 12-2008 by Maziminke (maziminke@web.de)
  * 
- * This file handles the "Show results to users" option.
+ * This file handles the "Show results to users" option:
+ * Survey Settings -> Presentation & navigation -> "Public statistics?"
  * 
  * The admin can set a question attribute "public_statistics" for each question
  * to determine whether the results of a certain question should be shown to the user
@@ -38,8 +39,8 @@ require_once(dirname(__FILE__).'/classes/core/language.php');
 require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 
-//XXX don't forget to DELETE THIS LATER
-$usejpgraph = 0;
+//XXX enable/disable this for testing
+//$usejpgraph = 0;
 
 
 $surveyid=returnglobal('sid');
@@ -559,424 +560,53 @@ foreach ($rows as $row)
 $summary = $allfields;
 
 
-//XXX END CLEANUP PART I
 
-//---------- CREATE STATISTICS ----------
-// DISPLAY RESULTS
-//if (isset($_POST['display']) && $_POST['display'])
-//{
-	// Create progress bar which is shown while creating the results
-	$prb = new ProgressBar();
-	$prb->pedding = 2;	// Bar Pedding
-	$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
 
-	$prb->setFrame();	// set ProgressBar Frame
-	$prb->frame['left'] = 50;	// Frame position from left
-	$prb->frame['top'] = 	80;	// Frame position from top
-	$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
-	$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
-	$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
+			//---------- CREATE STATISTICS ----------
 
-	//progress bar starts with 35%
-	$process_status = 35;
-	$prb->show();	// show the ProgressBar
-	
-	
-	// 1: Get list of questions with answers chosen
-	//"Getting Questions and Answers ..." is shown above the bar
-	$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
-	$prb->moveStep(5);
-	
-	// creates array of post variable names
-	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
 
-	/*
-	 * Iterate through postvars to create "nice" data for SQL later.
-	 * 
-	 * Remember there might be some filters applied which have to be put into an SQL statement
-	 */
-/*	foreach ($postvars as $pv)
-	{
-		//Only do this if there is actually a value for the $pv
+//some progress bar stuff	
 
-		/*
-		 * TODO: Check which questions have to be filtered
-		 * 
-		 * Instead of checking which questions and filters a user set at the filter screen
-		 * we have to query the database to limit the SQL statement to those questions
-		 * the admin has set to "show to users".
-		 * 
-		 * /
-		
-		if (in_array($pv, $allfields)) 
-		{
-			$firstletter=substr($pv,0,1);
-			
-			
-			 * these question types WON'T be handled here:
-			 * M = Multiple Options
-			 * T - Long Free Text 
-			 * Q - Multiple Short Text 
-			 * D - Date 
-			 * N - Numerical Input 
-			 * K - Multiple Numerical Input 
-			 
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" && 
-			    $firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" &&
-				$pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
-			{
-				//put together some SQL here
-				$thisquestion = db_quote_id($pv)." IN (";
-				
-				foreach ($_POST[$pv] as $condition)
-				{
-					$thisquestion .= "'$condition', ";
-				}
-				
-				$thisquestion = substr($thisquestion, 0, -2)
-				. ")";
-				
-				//we collect all the to be selected data in this array
-				$selects[]=$thisquestion;
-			}
-			
-			//M - Multiple Options 
-			elseif ($firstletter == "M")
-			{
-				//create a list out of the $pv array
-				list($lsid, $lgid, $lqid) = explode("X", $pv);
-				
-				$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-				$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
-				
-				// go through every possible answer
-				while ($arow=$aresult->FetchRow()) 
-				{
-					// only add condition if answer has been chosen
-					if (in_array($arow[0], $_POST[$pv])) 
-					{
-						$mselects[]=db_quote_id(substr($pv, 1, strlen($pv)).$arow[0])." = 'Y'";
-					}
-				}
-				if ($mselects)
-				{
-					$thismulti=implode(" OR ", $mselects);
-					$selects[]="($thismulti)";
-				}
-			}
-			
-			//N - Numerical Input 
-			//K - Multiple Numerical Input 
-			elseif ($firstletter == "N" || $firstletter == "K")
-			{
-				//value greater than
-				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-				{					
-					$selects[]=db_quote_id(substr($pv, 1, -1))." > ".sanitize_int($_POST[$pv]);
-				}
-				
-				//value less than
-				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-				{
-                    $selects[]=db_quote_id(substr($pv, 1, -1))." < ".sanitize_int($_POST[$pv]);
-				}
-			}
-			
-			//"id" is a built in field, the unique database id key of each response row
-			elseif (substr($pv, 0, 2) == "id")
-			{
-				if (substr($pv, strlen($pv)-1, 1) == "G" && $_POST[$pv] != "")
-				{
-                    $selects[]=db_quote_id(substr($pv, 0, -1))." > '".$_POST[$pv]."'";
-				}
-				if (substr($pv, strlen($pv)-1, 1) == "L" && $_POST[$pv] != "")
-				{
-                    $selects[]=db_quote_id(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
-				}
-				if (substr($pv, strlen($pv)-1, 1) == "=" && $_POST[$pv] != "")
-				{
-                    $selects[]=db_quote_id(substr($pv, 0, -1))." = '".$_POST[$pv]."'";
-				}
-			}
-			
-			//T - Long Free Text 
-			//Q - Multiple Short Text 
-			elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
-			{
-                $selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '%".$_POST[$pv]."%'";
-			}
-			
-			//D - Date 
-			elseif ($firstletter == "D" && $_POST[$pv] != "")
-			{
-				//Date equals
-				if (substr($pv, -1, 1) == "=")
-				{
-                    $selects[]=db_quote_id(substr($pv, 1, strlen($pv)-2))." = '".$_POST[$pv]."'";
-				}
-				else
-				{
-					//date less than
-					if (substr($pv, -1, 1) == "<")
-					{
-						$selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " > '".$_POST[$pv]."'";
-					}
-					
-					//date greater than
-					if (substr($pv, -1, 1) == ">")
-					{
-                        $selects[]= db_quote_id(substr($pv, 1, strlen($pv)-2)) . " < '".$_POST[$pv]."'";
-					}
-				}
-			}
-			
-			//check for datestamp of given answer
-			elseif (substr($pv, 0, 9) == "datestamp")
-			{
-				//timestamp equals
-				if (substr($pv, -1, 1) == "=" && !empty($_POST[$pv]))
-				{
-					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
-				}
-				else
-				{
-					//timestamp less than
-					if (substr($pv, -1, 1) == "<" && !empty($_POST[$pv]))
-					{
-						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
-					}
-					
-					//timestamp greater than
-					if (substr($pv, -1, 1) == ">" && !empty($_POST[$pv]))
-					{
-						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
-					}
-				}
-			}
-		} 
-		
-		else 
-		{
-			$statisticsoutput .= "<!-- $pv DOES NOT EXIST IN ARRAY -->";
-		}
-		
-	}*/	//end foreach -> loop through filter options to create SQL
-	
-	
-	
-	
-	
-	// 2: Do SQL query
-	//"Getting Result Count ..." is shown above the progress bar
-	$prb->setLabelValue('txt1',$clang->gT('Getting result count ...'));
-	$prb->moveStep(35);
-	
-	//count number of answers
-/*	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
-	
-	//if incompleted answers should be filtert submitdate has to be not null
-	//this setting is taken from config-defaults.php
-	if ($filterout_incomplete_answers == true) {$query .= " WHERE submitdate is not null";}
-	$result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
-	
-	//$total = total number of answers
-	while ($row=$result->FetchRow()) {$total=$row[0];}
-	*/
-	//are there any filters that have to be taken care of?
-/*	if (isset($selects) && $selects)
-	{
-		//filter incomplete answers?
-		if (incompleteAnsFilterstate() === true) {$query .= " AND ";}		
-		
-		else {$query .= " WHERE ";}
-		
-		//add filter criteria to SQL
-		$query .= implode(" AND ", $selects);
-	}
-	
-	//$_POST['sql'] is a post field that is sent from the statistics script to the export script in order
-	// to export just those results filtered by this statistics script. It can also be passed to the statistics
-	// script to filter from external scripts.
-	if (!empty($_POST['sql']) && !isset($_POST['id=']))
-	{
-		$newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
-		
-		//for debugging only
-		//$query = $_POST['sql'];
-		
-		//filter incomplete answers?
-		if ($filterout_incomplete_answers == true) {$query .= " AND ".$newsql;}
+// Create progress bar which is shown while creating the results
+$prb = new ProgressBar();
+$prb->pedding = 2;	// Bar Pedding
+$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
 
-		else {$query .= " WHERE ".$newsql;}
-	}*/
-	
-	//echo "<br><br> Q2".$query;
-	
-	//get me some data Scotty
-/*	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
-	
-	//put all results into $results
-	while ($row=$result->FetchRow()) 
-	{
-		$results=$row[0];
-	}*/
+$prb->setFrame();	// set ProgressBar Frame
+$prb->frame['left'] = 50;	// Frame position from left
+$prb->frame['top'] = 	80;	// Frame position from top
+$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
+$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
+$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
 
-	
-	// 3: Present results including option to view those rows
-	
-	//put everything into this table
-	
-	//show some main data at the beginnung
-	$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
-	."cellpadding='2' cellspacing='0' >\n"
-	."\t<tr><td colspan='2' align='center'><strong>"
-	.$clang->gT("Total records in survey").": $totalrecords</strong></td></tr>\n";
-	//."\t<tr><td colspan='2' align='center'>"
-	
-	//XXX no need for this because there are no filters ."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
-	//.$clang->gT("Total records in survey").": $total<br />\n";
-	
-	//only calculate percentage if $total is set
-/*	if ($total)
-	{
-		$percent=sprintf("%01.2f", ($results/$total)*100);
-		$statisticsoutput .= $clang->gT("Percentage of total")
-		.": $percent%<br />";
-	}
-	//$statisticsoutput .= "\n\t\t</td></tr>\n";
-	
-	//put everything from $selects array into a string connected by AND
-	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}	
-	
-	elseif (!empty($newsql)) {$sql = $newsql;}
-	
-	if (!isset($sql) || !$sql) {$sql="NULL";}
-	
-	
-	
-	//only continue if we have something to output
-	if ($total > 0)
-	{
-		//add two buttons to browse results and export results
-	// XXX no need for this
- 		$statisticsoutput .= "\t<tr>"
-		."\t\t<td align='right' width='50%'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
-		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
-		."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-		."\t\t</form></td>\n"
-		."\t\t<td width='50%'><form action='$scriptname?action=exportresults' method='post' target='_blank'>\n"
-		."\t\t<input type='submit' value='".$clang->gT("Export")."'  />\n"
-		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n";
-		
+//progress bar starts with 35%
+$process_status = 35;
+$prb->show();	// show the ProgressBar
 
-		
-		
-		
-		 
-		///XXX do we need this at all?
-		//Add the fieldnames
-		if (isset($filters) && $filters)
-		{
-			//The summary array contains the fields that have been selected from the filter screen
-			//  to be displayed in the results page. So we're iterating through them one at a time
-			foreach($filters as $viewfields)
-			{
-				echo $viewfields[2]."<br>";
-				
-				//We're checking the first letter of each of the selected-to-be-displayed fields
-				//  in order to deal with the special types (usually those with multiple files per question)
-				switch($viewfields[2])
-				{
-					
-					 * some special treatment for
-					 * 
-					 * N - Numerical Input 
-					 * T - Long Free Text 
-					 * K - Multiple Numerical Input 
-					 
-					case "N":
-					case "T":
-					case "K":
-					
-					echo '<script language="javascript" type="text/javascript">alert("SWITCH");</script>';
-						
-					// Now we remove the first character from the fieldname, and so are left
-					//   with just the actual SGQ code for this field/answer.
-					$field = substr($viewfields, 1, strlen($viewfields)-1);
-					//$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-					break;
-					
-					
-					//M - Multiple Options 
-					case "M":
-					
-					//create a SGQ identifier
-					$lsid = $surveyid;
-					$lgid = $viewfields[1];
-					$lqid = $viewfields[0];
-					
-					//we need all the answer codes. 
-					//there might be more than one because it's a multiple options question
-					$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-					$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
-					
-					// go through every possible answer
-					while ($arow=$aresult->FetchRow()) 
-					{
-						//XXX raus
-						echo '<script language="javascript" type="text/javascript">alert("WHILE");</script>';
-						
-						$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-					}
-					
-					//check data of "other" field
-					$aquery = "SELECT other FROM ".db_table_name("questions")." WHERE qid=$lqid AND language='{$language}'";
-					$aresult = db_execute_num($aquery);					
-					
-					while($arow = $aresult->FetchRow())
-					{
-						//"other" answer set?
-						if ($arow[0] == "Y") {
-							
-							//some debugging output
-							//$statisticsoutput .= $arow[0];
-							
-							$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
-							$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						}
-						
-					} // while
-					
-					break;
-					
-					//default treatment for all the other question types
-					default:
-					$field = $viewfields;
-					$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-					break;
-				}
-				
-			}	//end foreach
-			
-		}	//end if (summary)
 
-		//close form
-		$statisticsoutput .= "\t\t</form></td>\n\t</tr>\n";*/
-	
-	//}	//end if (results available?)
+// 1: Get list of questions with answers chosen
+//"Getting Questions and Answers ..." is shown above the bar
+$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
+$prb->moveStep(5);
 
-	//close table
-	$statisticsoutput .= "</table><br />\n";
-//}
+// creates array of post variable names
+for (reset($_POST); $key=key($_POST); next($_POST)) 
+{ 
+	$postvars[]=$key;
+}
+
+//show some main data at the beginnung
+$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
+."cellpadding='2' cellspacing='0' >\n"
+."\t<tr><td colspan='2' align='center'><strong>"
+.$clang->gT("Total records in survey").": $totalrecords</strong></td></tr>\n";
+
+//close table
+$statisticsoutput .= "</table><br />\n";
+
 
 //push progress bar from 35 to 40
 $process_status = 40;
-
-
 
 
 
@@ -988,11 +618,7 @@ if (isset($summary) && $summary)
 	//"Generating Summaries ..." is shown above the progress bar
 	$prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
 	$prb->moveStep($process_status);
-	
-	
-	//TODO: Check if there is a question which is set to use graphs
-	//True -> include
-	//False -> forget about charts
+
 	//check if pchart should be used
 	if (isset($usejpgraph) && $usejpgraph == 1)  
 	{
@@ -1002,8 +628,6 @@ if (isset($summary) && $summary)
 
 	//let's run through the survey
 	$runthrough=$summary;
-
-	//START Chop up fieldname and find matching questions
 	
 	//GET LIST OF LEGIT QIDs FOR TESTING LATER	
 	$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; 
@@ -1024,8 +648,7 @@ if (isset($summary) && $summary)
 		if ($process_status < 100) $process_status++;		
 		$prb->moveStep($process_status);
 		
-		$firstletter = substr($rt, 0, 1);
-		// 1. Get answers for question ##############################################################
+		$firstletter = substr($rt, 0, 1);##
 				
 		//M - Multiple Options, therefore multiple fields
 		if ($firstletter == "M") 
@@ -1115,19 +738,19 @@ if (isset($summary) && $summary)
 		    if($firstletter == "K")
 		    { 
 		    	// This is a multiple numerical question so we need to strip of the answer id to find the question title
-                    $tmpqid=substr($qqid, 0, strlen($qqid)-1);
+                $tmpqid=substr($qqid, 0, strlen($qqid)-1);
                     
-                    //did we get a valid ID?
-                    while (!in_array ($tmpqid,$legitqids)) 
-                    $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
+                //did we get a valid ID?
+                while (!in_array ($tmpqid,$legitqids)) 
+                $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
                     
-                    //check lenght of ID
-                    $qidlength=strlen($tmpqid);
+                //check lenght of ID
+                $qidlength=strlen($tmpqid);
                     
-                    //get answer ID from qid
-                    $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
-                    
-                    //get question details from DB
+                //get answer ID from qid
+                $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
+                   
+                //get question details from DB
 		        $nquery = "SELECT title, type, question, qid, lid 
 						   FROM ".db_table_name("questions")." 
 						   WHERE qid='".substr($qqid, 0, $qidlength)."' 
@@ -1208,7 +831,8 @@ if (isset($summary) && $summary)
 			
 			//max
 			$query .= ", MAX(".db_quote_id($fieldname)."*1) as maximum";
-            //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
+
+			//Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
                 
 			//special treatment for MS SQL databases
 			if ($connect->databaseType == 'odbc_mssql')
@@ -1247,11 +871,8 @@ if (isset($summary) && $summary)
 				$maximum=$row['maximum']; 
 				$minimum=$row['minimum'];
 			}
-
-
 			
-			//CALCULATE QUARTILES
-			
+			//CALCULATE QUARTILES			
 			//get data
 			$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
 			
@@ -1276,9 +897,6 @@ if (isset($summary) && $summary)
 
 			//put the total number of records at the beginning of this array
 			array_unshift($showem, array($clang->gT("Count"), $medcount));
-
-			
-			//no more comment from Mazi regarding the calculation
 			
 			// Calculating only makes sense with more than one result
 			if ($medcount>1)   
@@ -1361,8 +979,7 @@ if (isset($summary) && $summary)
 					}
 				}
 				
-				$total=0;
-				
+				$total=0;				
 				
 				//3RD QUARTILE (Q3)
 				$q3=(3/4)*($medcount+1);
@@ -1449,17 +1066,6 @@ if (isset($summary) && $summary)
 		{
 			//get database fields for this survey
 			$fieldmap=createFieldMap($surveyid, "full");
-			
-			//XXX raus
-			foreach($fieldmap as $temp)
-			{
-				foreach($temp as $temp2 => $v2)
-				{
-					 //echo "<br>--------------------- $temp2 - $v2 ------------------<br>";
-				}
-				
-			}
-			
 			
 			//search for key
 			$fielddata=arraySearchByKey($rt, $fieldmap, "fieldname", 1);
@@ -1581,31 +1187,8 @@ if (isset($summary) && $summary)
 				$qquestion .= "<br />\n[".$atext."]";
 				$qtitle .= "($qanswer)";
 				break;
-				
-				
-				case ";": //Array (Multi Flexi) (Text)
-				list($qacode, $licode)=explode("_", $qanswer);
-				
-				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
-				//echo $qquery."<br />";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
-				
-				while ($qrow=$qresult->FetchRow())
-				{
-				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-					$fresult = db_execute_assoc($fquery);
-					while ($frow=$fresult->FetchRow())
-					{
-						$alist[]=array($frow['code'], $frow['title']);
-						$ltext=$frow['title'];
-					}
-					$atext=$qrow[1];
-				}
 
-				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
-				$qtitle .= "($qanswer)";
-				break;
-
+				
 
 				case ":": //Array (Multiple Flexi) (Numbers)
             	$qidattributes=getQuestionAttributes($qiqid);
@@ -1663,6 +1246,8 @@ if (isset($summary) && $summary)
 				$qtitle .= "($qanswer)";
 				break;
 				
+				
+				
 				case "F": //Array of Flexible
 				case "H": //Array of Flexible by Column
 				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qanswer' AND language='{$language}' ORDER BY sortorder, answer";
@@ -1706,16 +1291,6 @@ if (isset($summary) && $summary)
 				
 				
 				
-				case "I": //Language
-				// Using previously defined $survlangs array of language codes
-				foreach ($survlangs as $availlang)
-				{
-					$alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
-				}
-				break;
-				
-				
-				
 				case "5": //5 Point (just 1 item to rank!)
 				for ($i=1; $i<=5; $i++)
 				{
@@ -1725,8 +1300,7 @@ if (isset($summary) && $summary)
 
 
 			
-				case "W":	//List felixble labels (dropdown)
-					
+				case "W":	//List felixble labels (dropdown)					
 				case "Z":	//List flexible labels (radio)
 					
 				//get labels
@@ -1744,8 +1318,7 @@ if (isset($summary) && $summary)
 				{
 					$alist[]=array($clang->gT("Other"),$clang->gT("Other"),$fielddata['fieldname'].'other');
 				}
-				break;
-				
+				break;				
 				
 				
 				
@@ -1814,8 +1387,7 @@ if (isset($summary) && $summary)
                 $qquestion  = $qastring .$labelheader;
                 break;
                 
-                
-                
+                                
                 
 				default:	//default handling
 				
@@ -1917,8 +1489,6 @@ if (isset($summary) && $summary)
                     //"no answer" handling
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
-
-					
 					
 					//check if aggregated results should be shown
 					elseif ($showaggregateddata == 1 && isset($showaggregateddata))
@@ -2028,14 +1598,10 @@ if (isset($summary) && $summary)
 						$fname="$al[1] ($al[0])";
 					}
 					
-					//are there some results to play with?
-					
-					//XXX alt if ($totalrecords > 0)
+					//are there some results to play with?					
 					if ($totalrecords > 0)
 					{
 						//calculate percentage
-						//XXX alt $gdata[] = ($row[0]/$totalrecords)*100;
-						
 						$gdata[] = ($row[0]/$totalrecords)*100;
 					} 
 					//no results
@@ -2070,6 +1636,7 @@ if (isset($summary) && $summary)
                 
 			}	//end foreach -> loop through answer data
 
+			
 			//no filtering of incomplete answers and NO multiple option questions
             if (($filterout_incomplete_answers == false) and ($qtype != "M") and ($qtype != "P"))
             {
@@ -2247,8 +1814,6 @@ if (isset($summary) && $summary)
 	                	}
 	                	
 	                	//item 3 - just show results twice
-	                	//old: if($gdata[$i] >= 400)
-	                	//trying to fix bug #2583:
 	                	if($gdata[$i] >= 400 && $i != 0)
 	                	{         		
 	                		//remove "400" which was added before
@@ -2284,8 +1849,6 @@ if (isset($summary) && $summary)
 	                	}
 	                	
 	                	//FIRST value -> add percentage of item 1 + item 2
-	                	//old: if($gdata[$i] >= 300 && $gdata[$i] < 400)
-	                	//trying to fix bug #2583:
 	                	if(($gdata[$i] >= 300 && $gdata[$i] < 400) || ($i == 0 && $gdata[$i] <= 400))
 	                	{                				   
 	                		//remove "300" which was added before
@@ -2365,7 +1928,6 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 	                		$statisticsoutput .= "\t\t";
 	                		
-	                		//NEW: create new row "sum"
 	                		//calculate sum of items 1-5
 	                		$sumitems = $grawdata[$i] 
 	                		+ $grawdata[$i-1] 
@@ -2444,30 +2006,17 @@ if (isset($summary) && $summary)
             		//calculate arithmetic mean
             		if(isset($sumitems) && $sumitems > 0)
             		{
-            			
-            			
             			//calculate and round results
             			//there are always 5 items
             			for($x = 0; $x < 5; $x++)
             			{
             				//create product of item * value
             				$am += (($x+1) * $stddevarray[$x]);
-            }
+            			}
 
             			$am = round($am / array_sum($stddevarray),2);
             			
             			//calculate standard deviation -> loop through all data
-            			/*
-            			 * four steps to calculate the standard deviation
-            			 * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
-            			 * 2 = create sqaure value of difference
-            			 * 3 = sum up square values
-            			 * 4 = multiply result with 1 / (number of items)
-            			 * 5 = get root
-            			 */
-            			
-            			
-            			
             			for($j = 0; $j < 5; $j++)
             			{            				
             				//1 = calculate difference between item and arithmetic mean
@@ -2518,7 +2067,6 @@ if (isset($summary) && $summary)
             //-------------------------- PCHART OUTPUT ----------------------------
             
             //PCHART has to be enabled and we need some data
-            //TODO: Check if THIS question should be shown at results
 			if (isset($usejpgraph) && $usejpgraph == 1  && array_sum($gdata)>0) 
 			{
 				$graph = "";
@@ -2546,6 +2094,7 @@ if (isset($summary) && $summary)
                     if ($data != 0){$i++;}
                 }	
 				$totallines=$i;
+				
 				if ($totallines>15) 
 				{
 					$gheight=320+(6.7*($totallines-15));
@@ -2592,7 +2141,7 @@ if (isset($summary) && $summary)
                     $gheight=320;
                     if ($counter>15) 
                     {
-                     $gheight=$gheight+(10*($counter-15));
+                    	$gheight=$gheight+(10*($counter-15));
 					}
                     $Test = new pChart(690,$gheight); 
                      
@@ -2615,7 +2164,7 @@ if (isset($summary) && $summary)
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",8);
                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                     $Test->setFontProperties("../classes/pchart/fonts/tahoma.ttf",10);
-//Todo:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+//TODO:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
 				}	//end if (bar chart)
 				
 				//Pie Chart
@@ -2760,35 +2309,6 @@ function deleteNotPattern($dir, $matchpattern, $pattern = "")
 }
 
 
-/*XXX not used because there is no filter screen
- * function showSpeaker($hinttext)
-{
-	global $clang, $imagefiles, $maxchars;
-	
-	if(!isset($maxchars))
-	{
-		$maxchars = 15;
-	}
-	
-	if(strlen($hinttext) > ($maxchars))
-	{
-		$shortstring = strip_tags($hinttext);
-		
-		$shortstring = mb_substr($hinttext, 0, $maxchars);
-		
-		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
-           ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
-           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
-	}
-	else
-	{
-		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
-	}	
-  return $reshtml; 
-}*/
 
 //simple function to square a value
 function square($number)
