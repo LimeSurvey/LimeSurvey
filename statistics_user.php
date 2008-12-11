@@ -15,57 +15,20 @@
 */
 
 /*
- * This file handles the "Show results to users" option
- */
-
-
-/* 
- * We need this later:
- *  1 - Array (Flexible Labels) Dual Scale ),
-	5 - 5 Point Choice 
-	A - Array (5 Point Choice) 
-	B - Array (10 Point Choice) 
-	C - Array (Yes/No/Uncertain) 
-	D - Date 
-	E - Array (Increase, Same, Decrease) 
-	F - Array (Flexible Labels) 
-	G - Gender 
-	H - Array (Flexible Labels) by Column 
-	I - Language Switch 
-	K - Multiple Numerical Input 
-	L - List (Radio) 
-	M - Multiple Options 
-	N - Numerical Input 
-	O - List With Comment 
-	P - Multiple Options With Comments 
-	Q - Multiple Short Text 
-	R - Ranking 
-	S - Short Free Text 
-	T - Long Free Text 
-	U - Huge Free Text 
-	W - List (Flexible Labels) (Dropdown) 
-	X - Boilerplate Question 
-	Y - Yes/No 
-	Z - List (Flexible Labels) (Radio) 
-	! - List (Dropdown)
-	: - Array (Flexible Labels) multiple drop down
-	; - Array (Flexible Labels) multiple texts
-
-
-	Debugging help:
-	echo '<script language="javascript" type="text/javascript">alert("HI");</script>';
+ * Created 12-2008 by Maziminke (maziminke@web.de)
+ * 
+ * This file handles the "Show results to users" option.
+ * 
+ * The admin can set a question attribute "public_statistics" for each question
+ * to determine whether the results of a certain question should be shown to the user
+ * after he/she has submitted the survey.
+ * 
+ * See http://docs.limesurvey.org/tiki-index.php?page=Question+attributes#public_statistics
  */
 
 //don't call this script directly!
-//XXX how to prevent evil people from accessing the statistics?
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
-//XXX this has to be replaced with the setting in config.php
-//$usegraph = 1;
-
-//some includes, the progressbar is used to show a progressbar while generating the graphs
-//XXX no login check needed 
-//include_once("login_check.php");
 
 require_once(dirname(__FILE__).'/admin/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/startup.php');  
@@ -73,6 +36,11 @@ require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
+
+
+//XXX don't forget to DELETE THIS LATER
+$usejpgraph = 0;
+
 
 $surveyid=returnglobal('sid');
 if (!$surveyid){
@@ -110,11 +78,9 @@ $statisticsoutput ='';
 
 
 //for creating graphs we need some more scripts which are included here
-
-//TODO: Check if there is a question which is set to use graphs
 //True -> include
 //False -> forget about charts
-if (isset($usegraph) && $usegraph == 1) 
+if (isset($usejpgraph) && $usejpgraph == 1) 
 {
     require_once('classes/pchart/pchart/pChart.class');
     require_once('classes/pchart/pchart/pData.class');
@@ -135,7 +101,6 @@ if (isset($usegraph) && $usegraph == 1)
 }
 
 
-
 // Set language for questions and labels to base language of this survey
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
@@ -147,32 +112,8 @@ $clang = SetSurveyLanguage($surveyid, $language);
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
 
-
-		// 1: Get list of questions from survey
-		
 /*
- * We want to have the following data
- * a) "questions" -> all table namens, e.g.
- * qid
- * sid
- * gid
- * type
- * title
- * question
- * preg
- * help
- * other
- * mandatory
- * lid
- * lid1
- * question_order
- * language
- * 
- * b) "groups" -> group_name + group_order * 
- */
-
-/*
- * XXX new: only show questions where question attribute public_statistics is set to "1"
+ * only show questions where question attribute "public_statistics" is set to "1"
  */
 $query = "SELECT DISTINCT(".db_table_name("questions").".qid), ".db_table_name("questions").".*, group_name, group_order\n"
 ."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("survey_$surveyid").", ".db_table_name("question_attributes")."\n"
@@ -190,7 +131,7 @@ if ($filterout_incomplete_answers == true)
 	$query .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
 }
 	
-
+//execute query
 $result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
 
 //store all the data in $rows
@@ -201,14 +142,35 @@ $rows = $result->GetRows();
 usort($rows, 'CompareGroupThenTitle');
 
 
-//XXX raus
-echo "<br><br><br><br><br><br><br><br><br>";
+//number of records fpr this survey
+$totalrecords = 0;
 
-//this is the array which we need later
+//count number of answers
+$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
+
+//if incompleted answers should be filtert submitdate has to be not null
+//this setting is taken from config-defaults.php
+if ($filterout_incomplete_answers == true) 
+{
+	$query .= " WHERE ".db_table_name("survey_$surveyid").".submitdate is not null";
+}
+$result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
+
+//$totalrecords = total number of answers
+while ($row=$result->FetchRow()) 
+{
+	$totalrecords=$row[0];
+}
+
+
+//this is the array which we need later...
 $summary = array();
-//this is the array from copy/paste which we don't want to replace
+//...while this is the array from copy/paste which we don't want to replace because we are all lazy
 $allfields = array();
-    
+
+
+		//---------- CREATE SGQA OF ALL QUESTIONS WHICH ARE SET TO "PUBLIC_STATISTICS" ----------
+
 //put the question information into the filter array
 foreach ($rows as $row)
 {
@@ -224,32 +186,21 @@ foreach ($rows as $row)
     $row['lid1']);
     
     
-    //to use the copy/pasted code from /admin/statistics.php we du some renaming
+    //to use the copy/pasted code from /admin/statistics.php some files have to be renamed
     $flt[0] = $row['qid'];    
     $flt[6] = $row['lid'];
-    $flt[7] = $row['lid1'];
-    
-    
+    $flt[7] = $row['lid1'];   
     
     
     //$myfield normally looks like the SGQ identifier
     $myfield = "{$surveyid}X{$row['gid']}X{$row['qid']}";
-    
-    
-        
-    echo "<br><br>Type: ".$row['type'];
-    echo "<br>qid: ".$row['qid'];
-    echo "<br>title: ".$row['title'];
-    
-    echo "<br>SGQA: ".$myfield;
-    
-    
+  
     
     //switch through the different question types to create a valid SGQ(A) identifier    
     switch($row['type'])
 	{	
 		/*
-		 * these question types are ignored at this script:
+		 * keep in mind that some question types are ignored at this script:
 		 * "D": // Date
 		 * "Q": // Multiple Short Text
 		 * "S": // Short free text
@@ -257,7 +208,10 @@ foreach ($rows as $row)
 		 * "U": // Huge free text
 		 * "I": // Language
 		 * ";":  //ARRAY (Multi Flex) (Text)
-		 * "X": //Boilerplate question			
+		 * "X": //Boilerplate question
+		 * ...
+		 * there might be some more, check the docs for details:
+		 * http://docs.limesurvey.org/tiki-index.php?page=Question+attributes#public_statistics
 		 */
 		
 		
@@ -273,35 +227,39 @@ foreach ($rows as $row)
 		//go through all the (multiple) answers
 		while ($row=$result->FetchRow())
 		{
-			/*
-			 * filter form for numerical input
-			 * - checkbox
-			 * - greater than
-			 * - less than
-			 */
+			//mark this question type by adding a special character to the beginning
+			//...and adding the answer code
 		    $myfield1="K".$myfield.$row[0];
-		   /* $myfield2="K{$myfield}".$row[0]."G";
-		    $myfield3="K{$myfield}".$row[0]."L";*/
 
-
-			
 			//add fields to array which contains all fields names
 			$allfields[]=$myfield1;
-/*		    $allfields[]=$myfield2;
-		    $allfields[]=$myfield3;*/
 		}
 		break;
 
 
 		
+		case "M": //Multiple Options
+		case "P": //Multiple Options with Comments
+		
+		//mark this question type by adding a special character to the beginning
+		$myfield = "M$myfield";
+		
+		//put field names into array
+		$allfields[]=$myfield;
+		
+		break;
 		
 		
 		
-
+		case "N": // Numerical
 		
+		//mark this question type by adding a special character to the beginning
+		$myfield = "N$myfield";
 		
+		//put field names into array
+		$allfields[]=$myfield;
 		
-
+		break;
 		
 		
 		
@@ -316,20 +274,8 @@ foreach ($rows as $row)
 		//check all the results
 		while ($row=$result->FetchRow())
 		{
+			//array = multiple options -> add the answer code
 			$myfield2 = $myfield.$row[0];
-			
-			//there are always exactly 5 values which have to be listed
-			//XXX do we need this? don't think so
-/*			for ($i=1; $i<=5; $i++)
-			{
-				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
-				
-				//pre-select
-				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-				if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
-				
-				$statisticsoutput .= ">$i</option>\n";
-			}*/
 			
 			//add this to all the other fields
 			$allfields[]=$myfield2;
@@ -346,18 +292,8 @@ foreach ($rows as $row)
 
 		while ($row=$result->FetchRow())
 		{
-			$myfield2 = $myfield . "$row[0]";
-			
-			//here we loop through 10 entries to create a larger output form
-			//XXX do we need this? No!?
-/*			for ($i=1; $i<=10; $i++)
-			{
-				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
-				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-				if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
-				$statisticsoutput .= ">$i</option>\n";
-			}*/
-			
+			//array = multiple options -> add the answer code
+			$myfield2 = $myfield . "$row[0]";			
 			$allfields[]=$myfield2;
 		}
 		
@@ -374,7 +310,8 @@ foreach ($rows as $row)
 		
 		//loop answers
 		while ($row=$result->FetchRow())
-		{
+		{			
+			//array = multiple options -> add the answer code
 			$myfield2 = $myfield . "$row[0]";
 			
 			//add to array
@@ -393,6 +330,7 @@ foreach ($rows as $row)
 		
 		while ($row=$result->FetchRow())
 		{
+			//array = multiple options -> add the answer code
 			$myfield2 = $myfield . "$row[0]";
 			
 			//add to array
@@ -401,8 +339,160 @@ foreach ($rows as $row)
 		
 		break;
 
+		
+		
+		/*
+		 * For question type "F" and "H" you can use labels. 
+		 * The only difference is that the labels are applied to column heading 
+		 * or rows respectively
+		 */
+		case "F": // ARRAY OF Flexible QUESTIONS
+		case "H": // ARRAY OF Flexible Questions (By Column)
+		
+		//Get answers. We always use the answer code because the label might be too long elsewise 
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		
+		//check all the answers
+		while ($row=$result->FetchRow())
+		{
+			//array = multiple options -> add the answer code
+			$myfield2 = $myfield . "$row[0]";
+			
+			//add fields to main array
+			$allfields[]=$myfield2;
+		}
+		
+		break;
+		
+		
+		
+		//----------------------- SPECIAL STUFF --------------------------
+		
+		case "R": //RANKING
+		
+		//get some answers
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//get number of answers
+		$count = $result->RecordCount();
+		
+		//lets put the answer code and text into the answers array
+		while ($row = $result->FetchRow())
+		{
+			$answers[]=array($row['code'], $row['answer']);
+		}
+		
+		
+		//loop through all answers. if there are 3 items to rate there will be 3 statistics
+		for ($i=1; $i<=$count; $i++)
+		{
+			//ranking questions use a special SGQA!
+			$myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+			
+			//add averything to main array
+			$allfields[]=$myfield2;
+		}
 				
-		case ":":  //ARRAY (Multi Flex) (Numbers)
+		unset($answers);
+		
+		break;		
+		
+		
+		
+        case "1": // MULTI SCALE
+        $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+                
+        //get answers
+        $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+        $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+                        
+        //loop through answers
+         while ($row=$result->FetchRow())
+         {
+         	
+         	//----------------- LABEL 1 ---------------------
+          	//dual scale questions use a special SGQA!
+            $myfield2 = $myfield . "$row[0]#0";
+                
+             //check if there is a dualscale_headerA/B
+            $dshquery = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerA'";
+            $dshresult = db_execute_num($dshquery) or safe_die ("Couldn't get dualscale header!<br />$dshquery<br />".$connect->ErrorMsg());
+         
+            //get header
+            while($dshrow=$dshresult->FetchRow())
+            {
+            	$dualscaleheadera = $dshrow[0];
+            }
+            
+            if(isset($dualscaleheadera) && $dualscaleheadera != "")
+            {
+            	$labeltitle = $dualscaleheadera;
+            }
+            else
+            {
+	            //get label text
+	            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
+	            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$lquery<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while ($lrow=$lresult->FetchRow())
+	            {
+	            	$labeltitle = $lrow[0];
+	            }
+            }
+                
+            //add averything to main array
+            $allfields[]=$myfield2;  
+
+                
+                
+                
+             //----------------- LABEL 2 ---------------------           
+             
+            //dual scale questions use a special SGQA!
+            $myfield2 = $myfield . "$row[0]#1";
+              
+            
+            //check if there is a dualsclae_headerA/B
+            $dshquery2 = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerB'";
+            $dshresult2 = db_execute_num($dshquery2) or safe_die ("Couldn't get dualscale header!<br />$dshquery2<br />".$connect->ErrorMsg());
+         
+            //get header
+            while($dshrow2=$dshresult2->FetchRow())
+            {
+            	$dualscaleheaderb = $dshrow2[0];
+            }
+            
+            if(isset($dualscaleheaderb) && $dualscaleheaderb != "")
+            {
+            	$labeltitle2 = $dualscaleheaderb;
+            }
+            else
+            {
+	            //get label text
+	            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
+	            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$lquery2<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while($lrow2=$lresult2->FetchRow())
+	            {
+	            	$labeltitle2 = $lrow2[0];
+	            }
+            }
+
+            //add averything to main array
+            $allfields[]=$myfield2;
+            
+        }	//end WHILE -> loop through all answers of dual scale question
+                   
+        break;
+        
+
+        
+        case ":":  //ARRAY (Multi Flex) (Numbers)
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		$counter2=0;
@@ -446,507 +536,32 @@ foreach ($rows as $row)
 			{
 			    $myfield2 = $myfield . $row[0] . "_" . $frow['code'];
 			    
+			    //add averything to main array
 				$allfields[]=$myfield2;
 			}
 		}
 		break;
 		
 		
-		/*
-		 * For question type "F" and "H" you can use labels. 
-		 * The only difference is that the labels are applied to column heading 
-		 * or rows respectively
-		 */
-		case "F": // ARRAY OF Flexible QUESTIONS
-		case "H": // ARRAY OF Flexible Questions (By Column)
-		
-		//Get answers. We always use the answer code because the label might be too long elsewise 
-		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		$counter2=0;
-		
-		//check all the answers
-		while ($row=$result->FetchRow())
-		{
-			$myfield2 = $myfield . "$row[0]";
-/*			
-			
-			 * when hoovering the speaker symbol we show the whole question
-			 * 
-			 * flt[6] is the label ID
-			 * 
-			 * table "labels" contains
-			 * - lid
-			 * - code
-			 * - title
-			 * - sortorder
-			 * - language
-			 
-			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
-			$fresult = db_execute_assoc($fquery);
-				
-			
-			//creating form
-			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
-			
-			//loop through all possible answers
-			while ($frow = $fresult->FetchRow())
-			{
-				$statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
-				
-				//pre-select
-				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-				
-				$statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
-			}
-			
-			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
-			$counter2++;*/
-			
-			//add fields to main array
-			$allfields[]=$myfield2;
-		}
-		
-		break;
-		
-		
-		case "R": //RANKING
-		
-		//get some answers
-		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
-		//get number of answers
-		$count = $result->RecordCount();
-		
-		//lets put the answer code and text into the answers array
-		while ($row = $result->FetchRow())
-		{
-			$answers[]=array($row['code'], $row['answer']);
-		}
-		
-		
-		//loop through all answers. if there are 3 items to rate there will be 3 statistics
-		for ($i=1; $i<=$count; $i++)
-		{
-			//myfield is the SGQ identifier
-			//myfield2 is just used as comment in HTML like "R40X34X1721-1"
-			$myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-			$myfield3 = $myfield . $i;
-			
-			//output lists of ranking items
-			//XXX do we need this?
-/*			foreach ($answers as $ans)
-			{
-				$statisticsoutput .= "\t\t\t\t\t<option value='$ans[0]'";
-				
-				//pre-select
-				if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {$statisticsoutput .= " selected";}
-				
-				$statisticsoutput .= ">$ans[1]</option>\n";
-			}*/
-			
-			//add averything to main array
-			$allfields[]=$myfield2;
-		}
-		
-		unset($answers);
-		break;
-				
-		
-		//Dropdown and radio lists
-		case "W":
-		case "Z":
-	
-		$allfields[]=$myfield;
-		
-		//get labels (code and title)
-		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
-		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
-		//loop through all the labels
-		while($row=$result->FetchRow())
-		{
-			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
-			
-			//pre-check
-			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
-			
-			$statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
-            
-		} // while
-		
-		break;
-		
-		
-		
-		
-        case "1": // MULTI SCALE
-        $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
-                
-        //get answers
-        $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-        $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-                        
-        //loop through answers
-         while ($row=$result->FetchRow())
-         {
-         	
-         	//----------------- LABEL 1 ---------------------
-          	//myfield2 = answer code.
-            $myfield2 = $myfield . "$row[0]#0";
-                
-             //check if there is a dualscale_headerA/B
-            $dshquery = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerA'";
-            $dshresult = db_execute_num($dshquery) or safe_die ("Couldn't get dualscale header!<br />$dshquery<br />".$connect->ErrorMsg());
-         
-            //get header
-            while($dshrow=$dshresult->FetchRow())
-            {
-            	$dualscaleheadera = $dshrow[0];
-            }
-            
-            if(isset($dualscaleheadera) && $dualscaleheadera != "")
-            {
-            	$labeltitle = $dualscaleheadera;
-            }
-            else
-            {
-	            //get label text
-	            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
-	            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$lquery<br />".$connect->ErrorMsg());
-	         
-	            //get title
-	            while ($lrow=$lresult->FetchRow())
-	            {
-	            	$labeltitle = $lrow[0];
-	            }
-            }
-            
-			
-            /* get labels
-             * table "labels" contains
-             * - lid
-             * - code
-             * - title
-             * - sortorder
-             * - language
-             */
-
-            //XXX do we need this?
-/*            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
-            $fresult = db_execute_assoc($fquery);
-   
-            //list answers
-            while ($frow = $fresult->FetchRow())
-            {
-                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
-                    
-                //pre-check
-                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                    
-                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
-                
-            }*/
-                
-            $allfields[]=$myfield2;  
-
-                
-                
-                
-             //----------------- LABEL 2 ---------------------           
-             
-            //myfield2 = answer code
-            $myfield2 = $myfield . "$row[0]#1";
-              
-            
-            //check if there is a dualsclae_headerA/B
-            $dshquery2 = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerB'";
-            $dshresult2 = db_execute_num($dshquery2) or safe_die ("Couldn't get dualscale header!<br />$dshquery2<br />".$connect->ErrorMsg());
-         
-            //get header
-            while($dshrow2=$dshresult2->FetchRow())
-            {
-            	$dualscaleheaderb = $dshrow2[0];
-            }
-            
-            if(isset($dualscaleheaderb) && $dualscaleheaderb != "")
-            {
-            	$labeltitle2 = $dualscaleheaderb;
-            }
-            else
-            {
-	            //get label text
-	            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
-	            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$lquery2<br />".$connect->ErrorMsg());
-	         
-	            //get title
-	            while($lrow2=$lresult2->FetchRow())
-	            {
-	            	$labeltitle2 = $lrow2[0];
-	            }
-            }
-            
-            //XXX do we need this?
-/*            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[7]} AND language='{$language}' ORDER BY sortorder, code";
-            $fresult = db_execute_assoc($fquery);
-                
-            //list answers
-            while ($frow = $fresult->FetchRow())
-            {
-                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
-                    
-                //pre-check
-                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
-                   
-                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
-                
-            }*/
-            
-            $allfields[]=$myfield2;
-            
-        }	//end WHILE -> loop through all answers
-                   
-        break;
-        
-        case "M": // Numerical
-		case "P":
-			
-		$myfield = "M$myfield";
-		
-		//put field names into array
-		$allfields[]=$myfield;
-		
-		break;
-		
-		
-		
-        case "N": // Numerical
-		
-		$myfield = "N$myfield";
-		
-		//put field names into array
-		$allfields[]=$myfield;
-		
-		break;
-
-				//case "5": // 5 point choice			
-			
-		//XXX is there any special treatment needed? Don't think so...
-		//we need a list of 5 entries
-/*		for ($i=1; $i<=5; $i++)
-		{
-			$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
-			
-			//pre-select values which were marked before
-			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield]))
-			{$statisticsoutput .= " selected";}
-			
-			$statisticsoutput .= ">$i</option>\n";
-		}
-		
-		//End the select which starts before the CASE statement (around line 411)
-		$statisticsoutput .="\t\t\t\t</select>\n";*/
-		//break;
-		
-		
-		
-/*		case "G": // Gender
-			
-		//XXX is there any special treatment needed? Don't think so...
-			
-			
-		$statisticsoutput .= "\t\t\t\t\t<option value='F'";
-		
-		//pre-select values which were marked before
-		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {$statisticsoutput .= " selected";}
-		
-		$statisticsoutput .= ">".$clang->gT("Female")."</option>\n";
-		$statisticsoutput .= "\t\t\t\t\t<option value='M'";
-		
-		//pre-select values which were marked before
-		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$statisticsoutput .= " selected";}
-		
-		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select>\n";
-		break;*/
-		
-		
-		
-/*		case "Y": // Yes\No
-			
-		//XXX is there any special treatment needed? Don't think so...
-			
-			
-		$statisticsoutput .= "\t\t\t\t\t<option value='Y'";
-		
-		//pre-select values which were marked before
-		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {$statisticsoutput .= " selected";}
-		
-		$statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
-		."\t\t\t\t\t<option value='N'";
-		
-		//pre-select values which were marked before
-		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$statisticsoutput .= " selected";}
-		
-		$statisticsoutput .= ">".$clang->gT("No")."</option></select>\n";
-		break;*/
-		
-        /*
-         * This question types use the default settings:
-         * 	L - List (Radio) 
-			O - List With Comment 
-			! - List (Dropdown) 
-         */
-        
-		
+		//--------------- DEFAULT --------------
 		default:
-			
-		//get answers
-/*		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
-		//loop through answers
-		while ($row=$result->FetchRow())
-		{
-			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
-			
-			//pre-check
-			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
-			
-			$statisticsoutput .= ">$row[1]</option>\n";
-		}*/
 		
 		$allfields[] = $myfield;
 			
-		break;
+		break;	
 		
-		
-		
-	}	//end switch -> check question types and create filter forms
-  
-   
-    
-	//renaming arrays with all needed data to be processed later
-	//$summary = $allfields;
-    
-/*
-	foreach($summary as $temp)
-    {
-    	echo "<br> $temp";
-    }*/
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    //P = Multiple Options with Comments
-    //M = Multiple Options
-    if($row['type'] == "P" || $row['type'] == "M")
-    {    	
-    	$summary[]=array("M{$surveyid}X{$row['gid']}X{$row['qid']}");
-    	
-    	echo " ------ M{$surveyid}X{$row['gid']}X{$row['qid']}";
-    }
-    
-    //N = Numerical
-    elseif($row['type'] == "N")
-    {
-    	$summary[]=array("N{$surveyid}X{$row['gid']}X{$row['qid']}");
-    	
-    	echo " ------ N{$surveyid}X{$row['gid']}X{$row['qid']}";
-    }
-    
-    //K = Multiple Numerical
-    //XXX doesn't work yet due to wrong SGQ identifier
-	elseif($row['type'] == "K")
-    {
-    	$summary[]=array("K{$surveyid}X{$row['gid']}X{$row['qid']}");
-    	
-    	echo " ------ K{$surveyid}X{$row['gid']}X{$row['qid']}";
-    }
-    
- 	//R = Ranking
- 	//XXX doesn't work yet due to wrong SGQ identifier
-	elseif($row['type'] == "R")
-    {
-    	$summary[]=array("R{$surveyid}X{$row['gid']}X{$row['qid']}");
-    	
-    	echo " ------ R{$surveyid}X{$row['gid']}X{$row['qid']}-1";
-    }
-    
-    elseif($row['type'] == "F" || $row['type'] == "H")
-    {
-    	$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$row['qid']."' AND language='{$language}' ORDER BY sortorder, answer";
-		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
-		//check all the answers
-		while ($row2=$result->FetchRow())
-		{
-			//$myfield2 = $myfield . "$row[0]";
-			$summary[]=array("{$surveyid}X{$row['gid']}X{$row['qid']}".$row2[0]);
-			
-			echo "______ {$surveyid}X{$row['gid']}X{$row['qid']}.$row2[0]";
-		}
-    }
-    
-    
-    
-    else
-    {
-    	$summary[]=array("{$surveyid}X{$row['gid']}X{$row['qid']}");
-    	
-    	echo " ------ {$surveyid}X{$row['gid']}X{$row['qid']}";
-    }
-    
-    echo "<br><br>TYPE: ".$row['type'];
-    echo "<br>title: ".$row['title'];
-    echo "<br>question: ".$row['question'];
-    echo "<br>qid: ".$row['qid'];*/
-}
+	}	//end switch -> check question types and create SGQA
+
+}	//end foreach -> loop through all questions with "public_statistics" enabled
 
 
- foreach($allfields as $temp)
-    {
-    	//echo "<br> $temp";
-    }
-
-
+//rename the array which contains all the data we need later
 $summary = $allfields;
 
-//number of retrieved questions
-$totalrecords = 0;
 
-//count number of answers
-$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
+//XXX END CLEANUP PART I
 
-//if incompleted answers should be filtert submitdate has to be not null
-//this setting is taken from config-defaults.php
-if ($filterout_incomplete_answers == true) 
-{
-	$query .= " WHERE ".db_table_name("survey_$surveyid").".submitdate is not null";
-}
-$result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
-
-//$totalrecords = total number of answers
-while ($row=$result->FetchRow()) 
-{
-	$totalrecords=$row[0];
-}
-
-
-	
-
-// ----------------------------------- END FILTER FORM ---------------------------------------
-
-
+//---------- CREATE STATISTICS ----------
 // DISPLAY RESULTS
 //if (isset($_POST['display']) && $_POST['display'])
 //{
@@ -1379,7 +994,7 @@ if (isset($summary) && $summary)
 	//True -> include
 	//False -> forget about charts
 	//check if pchart should be used
-	if (isset($usegraph)) 
+	if (isset($usejpgraph) && $usejpgraph == 1)  
 	{
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
@@ -1411,10 +1026,7 @@ if (isset($summary) && $summary)
 		
 		$firstletter = substr($rt, 0, 1);
 		// 1. Get answers for question ##############################################################
-		
-		
-		echo "<br>RT: ".$rt." - FL: $firstletter";
-		
+				
 		//M - Multiple Options, therefore multiple fields
 		if ($firstletter == "M") 
 		{
@@ -2907,7 +2519,7 @@ if (isset($summary) && $summary)
             
             //PCHART has to be enabled and we need some data
             //TODO: Check if THIS question should be shown at results
-			if (isset($usegraph) && array_sum($gdata)>0) 
+			if (isset($usejpgraph) && $usejpgraph == 1  && array_sum($gdata)>0) 
 			{
 				$graph = "";
 				$p1 = "";
