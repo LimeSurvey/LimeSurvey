@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: statistics.php 5959 2008-11-09 23:32:56Z c_schmitz $
+* $Id$
 * 
 */
 
