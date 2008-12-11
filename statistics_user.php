@@ -99,30 +99,6 @@ if (isset($_POST['usegraph']))
 	}
 }
 
-// This gets all the 'to be shown questions' from the POST and puts these into an array 
-//XXX there is no $_POST with this data
-//$summary=returnglobal('summary');
-
-//XXX no need for this, we take everything from DB
-//if $summary isn't an array we create one
-/*if (isset($summary) && !is_array($summary)) {
-	$summary = explode("+", $summary);
-}*/
-
-//no survey ID? -> come and get one
-//XXX not available in this way
-/*if (!isset($surveyid)) 
-{
-	$surveyid=returnglobal('sid');
-}
-
-//still no survey ID -> error
-if (!$surveyid)
-{
-	//need to have a survey id
-	$statisticsoutput .= "<center>You have not selected a survey!</center>";
-	exit;
-}*/
 
 //XXX new: try to get the surveyID
 @session_start();
@@ -144,46 +120,6 @@ $clang = SetSurveyLanguage($surveyid, $language);
 //Delete any stats files from the temp directory that aren't from today.
 deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 
-//hide/show the filter
-//filtersettings by default aren't shown when showing the results
-
-//XXX no filter for users
-/*$statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
-
-//headline with all icons for available statistic options
-//$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-//."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
-//Get the menubar
-$statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
-
-
-//second row below options -> filter settings headline
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
-." cellspacing='0'>\n"
-."<tr><td align='center' class='settingcaption' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-."<font size='3'><strong>".$clang->gT("Filter settings")."</strong></font>"
-."</td></tr>\n"
-."</table>\n"
-
-//we need a form which can pass the selected data later
-."<form method='post' name='formbuilder' action='$scriptname?action=statistics'>\n"
-
-//table which holds all the filter forms
-."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-
-
-//Select public language file
-$query = "SELECT datestamp FROM {$dbprefix}surveys WHERE sid=$surveyid";
-$result = db_execute_assoc($query) or safe_die("Error selecting language: <br />".$query."<br />".$connect->ErrorMsg());       
-
-
- * check if there is a datestamp available for this survey
- * yes -> $datestamp="Y"
- * no -> $datestamp="N"
- 
-while ($row=$result->FetchRow()) {$datestamp=$row['datestamp'];}
-*/
 
 
 		// 1: Get list of questions from survey
@@ -222,6 +158,7 @@ $query = "SELECT DISTINCT(".db_table_name("questions").".qid), ".db_table_name("
 ."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n"
 ."AND ".db_table_name("question_attributes").".value='1'\n";
 
+//check filter setting in config file
 if ($filterout_incomplete_answers == true) 
 {
 	$query .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
@@ -241,11 +178,17 @@ usort($rows, 'CompareGroupThenTitle');
 //XXX raus
 echo "<br><br><br><br><br><br><br><br><br>";
 
+//this is the array which we need later
+$summary = array();
+//this is the array from copy/paste which we don't want to replace
+$allfields = array();
+    
 //put the question information into the filter array
 foreach ($rows as $row)
 {
 	//store some column names in $filters array
-	$filters[]=array($row['qid'],
+	$filters[]=array(
+	$row['qid'],
 	$row['gid'],
 	$row['type'],
 	$row['title'],
@@ -254,6 +197,630 @@ foreach ($rows as $row)
 	$row['lid'],
     $row['lid1']);
     
+    
+    //to use the copy/pasted code from /admin/statistics.php we du some renaming
+    $flt[0] = $row['qid'];    
+    $flt[6] = $row['lid'];
+    $flt[7] = $row['lid1'];
+    
+    
+    
+    
+    //$myfield normally looks like the SGQ identifier
+    $myfield = "{$surveyid}X{$row['gid']}X{$row['qid']}";
+    
+    
+        
+    echo "<br><br>Type: ".$row['type'];
+    echo "<br>qid: ".$row['qid'];
+    echo "<br>title: ".$row['title'];
+    
+    echo "<br>SGQA: ".$myfield;
+    
+    
+    
+    //switch through the different question types to create a valid SGQ(A) identifier    
+    switch($row['type'])
+	{	
+		/*
+		 * these question types are ignored at this script:
+		 * "D": // Date
+		 * "Q": // Multiple Short Text
+		 * "S": // Short free text
+		 * "T": // Long free text
+		 * "U": // Huge free text
+		 * "I": // Language
+		 * ";":  //ARRAY (Multi Flex) (Text)
+		 * "X": //Boilerplate question			
+		 */
+		
+		
+		
+		//----------- MULTIPLE OPTIONS -------------
+		
+		case "K": // Multiple Numerical
+			
+		//get answers
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language = '{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//go through all the (multiple) answers
+		while ($row=$result->FetchRow())
+		{
+			/*
+			 * filter form for numerical input
+			 * - checkbox
+			 * - greater than
+			 * - less than
+			 */
+		    $myfield1="K".$myfield.$row[0];
+		   /* $myfield2="K{$myfield}".$row[0]."G";
+		    $myfield3="K{$myfield}".$row[0]."L";*/
+
+
+			
+			//add fields to array which contains all fields names
+			$allfields[]=$myfield1;
+/*		    $allfields[]=$myfield2;
+		    $allfields[]=$myfield3;*/
+		}
+		break;
+
+
+		
+		
+		
+		
+
+		
+		
+		
+
+		
+		
+		
+		//----------------------- ARRAYS --------------------------
+		
+		case "A": // ARRAY OF 5 POINT CHOICE QUESTIONS			
+		
+		//get answers
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//check all the results
+		while ($row=$result->FetchRow())
+		{
+			$myfield2 = $myfield.$row[0];
+			
+			//there are always exactly 5 values which have to be listed
+			//XXX do we need this? don't think so
+/*			for ($i=1; $i<=5; $i++)
+			{
+				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
+				
+				//pre-select
+				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+				if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
+				
+				$statisticsoutput .= ">$i</option>\n";
+			}*/
+			
+			//add this to all the other fields
+			$allfields[]=$myfield2;
+		}
+		
+		break;
+		
+		
+		
+		//just like above only a different loop
+		case "B": // ARRAY OF 10 POINT CHOICE QUESTIONS
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+
+		while ($row=$result->FetchRow())
+		{
+			$myfield2 = $myfield . "$row[0]";
+			
+			//here we loop through 10 entries to create a larger output form
+			//XXX do we need this? No!?
+/*			for ($i=1; $i<=10; $i++)
+			{
+				$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
+				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($i, $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+				if (isset($_POST[$myfield2]) && $_POST[$myfield2] == $i) {$statisticsoutput .= " selected";}
+				$statisticsoutput .= ">$i</option>\n";
+			}*/
+			
+			$allfields[]=$myfield2;
+		}
+		
+		break;
+		
+		
+		
+		case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
+		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+		
+		//get answers
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//loop answers
+		while ($row=$result->FetchRow())
+		{
+			$myfield2 = $myfield . "$row[0]";
+			
+			//add to array
+			$allfields[]=$myfield2;
+		}
+		
+		break;
+		
+		
+		
+		//similiar to the above one
+		case "E": // ARRAY OF Increase/Same/Decrease QUESTIONS
+		
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		while ($row=$result->FetchRow())
+		{
+			$myfield2 = $myfield . "$row[0]";
+			
+			//add to array
+			$allfields[]=$myfield2;		
+		}
+		
+		break;
+
+				
+		case ":":  //ARRAY (Multi Flex) (Numbers)
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		
+		//Get qidattributes for this question
+    	$qidattributes=getQuestionAttributes($flt[0]);
+    	
+    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+    		$maxvalue=$maxvalue['value'];
+    	} 
+    	else {
+    		$maxvalue=10;
+    	}
+    	
+    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+    		$minvalue=$minvalue['value'];
+    	} 
+    	else {
+    		$minvalue=1;
+    	}
+    	
+    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+    		$stepvalue=$stepvalue['value'];
+    	} 
+    	else {
+    		$stepvalue=1;
+    	}
+    	
+    	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+    		$minvalue=0;
+    		$maxvalue=1;
+    		$stepvalue=1;
+    	}
+    	
+		while ($row=$result->FetchRow())
+		{
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+			
+			while ($frow = $fresult->FetchRow())
+			{
+			    $myfield2 = $myfield . $row[0] . "_" . $frow['code'];
+			    
+				$allfields[]=$myfield2;
+			}
+		}
+		break;
+		
+		
+		/*
+		 * For question type "F" and "H" you can use labels. 
+		 * The only difference is that the labels are applied to column heading 
+		 * or rows respectively
+		 */
+		case "F": // ARRAY OF Flexible QUESTIONS
+		case "H": // ARRAY OF Flexible Questions (By Column)
+		
+		//Get answers. We always use the answer code because the label might be too long elsewise 
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		$counter2=0;
+		
+		//check all the answers
+		while ($row=$result->FetchRow())
+		{
+			$myfield2 = $myfield . "$row[0]";
+/*			
+			
+			 * when hoovering the speaker symbol we show the whole question
+			 * 
+			 * flt[6] is the label ID
+			 * 
+			 * table "labels" contains
+			 * - lid
+			 * - code
+			 * - title
+			 * - sortorder
+			 * - language
+			 
+			$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+			$fresult = db_execute_assoc($fquery);
+				
+			
+			//creating form
+			$statisticsoutput .= "\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
+			
+			//loop through all possible answers
+			while ($frow = $fresult->FetchRow())
+			{
+				$statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+				
+				//pre-select
+				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+				
+				$statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+			}
+			
+			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
+			$counter2++;*/
+			
+			//add fields to main array
+			$allfields[]=$myfield2;
+		}
+		
+		break;
+		
+		
+		case "R": //RANKING
+		
+		//get some answers
+		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//get number of answers
+		$count = $result->RecordCount();
+		
+		//lets put the answer code and text into the answers array
+		while ($row = $result->FetchRow())
+		{
+			$answers[]=array($row['code'], $row['answer']);
+		}
+		
+		
+		//loop through all answers. if there are 3 items to rate there will be 3 statistics
+		for ($i=1; $i<=$count; $i++)
+		{
+			//myfield is the SGQ identifier
+			//myfield2 is just used as comment in HTML like "R40X34X1721-1"
+			$myfield2 = "R" . $myfield . $i . "-" . strlen($i);
+			$myfield3 = $myfield . $i;
+			
+			//output lists of ranking items
+			//XXX do we need this?
+/*			foreach ($answers as $ans)
+			{
+				$statisticsoutput .= "\t\t\t\t\t<option value='$ans[0]'";
+				
+				//pre-select
+				if (isset($_POST[$myfield3]) && is_array($_POST[$myfield3]) && in_array("$ans[0]", $_POST[$myfield3])) {$statisticsoutput .= " selected";}
+				
+				$statisticsoutput .= ">$ans[1]</option>\n";
+			}*/
+			
+			//add averything to main array
+			$allfields[]=$myfield2;
+		}
+		
+		unset($answers);
+		break;
+				
+		
+		//Dropdown and radio lists
+		case "W":
+		case "Z":
+	
+		$allfields[]=$myfield;
+		
+		//get labels (code and title)
+		$query = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder";
+		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//loop through all the labels
+		while($row=$result->FetchRow())
+		{
+			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+			
+			//pre-check
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
+			
+			$statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
+            
+		} // while
+		
+		break;
+		
+		
+		
+		
+        case "1": // MULTI SCALE
+        $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+                
+        //get answers
+        $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+        $result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+                        
+        //loop through answers
+         while ($row=$result->FetchRow())
+         {
+         	
+         	//----------------- LABEL 1 ---------------------
+          	//myfield2 = answer code.
+            $myfield2 = $myfield . "$row[0]#0";
+                
+             //check if there is a dualscale_headerA/B
+            $dshquery = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerA'";
+            $dshresult = db_execute_num($dshquery) or safe_die ("Couldn't get dualscale header!<br />$dshquery<br />".$connect->ErrorMsg());
+         
+            //get header
+            while($dshrow=$dshresult->FetchRow())
+            {
+            	$dualscaleheadera = $dshrow[0];
+            }
+            
+            if(isset($dualscaleheadera) && $dualscaleheadera != "")
+            {
+            	$labeltitle = $dualscaleheadera;
+            }
+            else
+            {
+	            //get label text
+	            $lquery = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[6]}";
+	            $lresult = db_execute_num($lquery) or safe_die ("Couldn't get label title!<br />$lquery<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while ($lrow=$lresult->FetchRow())
+	            {
+	            	$labeltitle = $lrow[0];
+	            }
+            }
+            
+			
+            /* get labels
+             * table "labels" contains
+             * - lid
+             * - code
+             * - title
+             * - sortorder
+             * - language
+             */
+
+            //XXX do we need this?
+/*            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[6]} AND language='{$language}' ORDER BY sortorder, code";
+            $fresult = db_execute_assoc($fquery);
+   
+            //list answers
+            while ($frow = $fresult->FetchRow())
+            {
+                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+                    
+                //pre-check
+                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+                    
+                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                
+            }*/
+                
+            $allfields[]=$myfield2;  
+
+                
+                
+                
+             //----------------- LABEL 2 ---------------------           
+             
+            //myfield2 = answer code
+            $myfield2 = $myfield . "$row[0]#1";
+              
+            
+            //check if there is a dualsclae_headerA/B
+            $dshquery2 = "SELECT value FROM ".db_table_name("question_attributes")." WHERE qid={$flt[0]} AND attribute='dualscale_headerB'";
+            $dshresult2 = db_execute_num($dshquery2) or safe_die ("Couldn't get dualscale header!<br />$dshquery2<br />".$connect->ErrorMsg());
+         
+            //get header
+            while($dshrow2=$dshresult2->FetchRow())
+            {
+            	$dualscaleheaderb = $dshrow2[0];
+            }
+            
+            if(isset($dualscaleheaderb) && $dualscaleheaderb != "")
+            {
+            	$labeltitle2 = $dualscaleheaderb;
+            }
+            else
+            {
+	            //get label text
+	            $lquery2 = "SELECT label_name FROM ".db_table_name("labelsets")." WHERE lid={$flt[7]}";
+	            $lresult2 = db_execute_num($lquery2) or safe_die ("Couldn't get label title!<br />$lquery2<br />".$connect->ErrorMsg());
+	         
+	            //get title
+	            while($lrow2=$lresult2->FetchRow())
+	            {
+	            	$labeltitle2 = $lrow2[0];
+	            }
+            }
+            
+            //XXX do we need this?
+/*            $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$flt[7]} AND language='{$language}' ORDER BY sortorder, code";
+            $fresult = db_execute_assoc($fquery);
+                
+            //list answers
+            while ($frow = $fresult->FetchRow())
+            {
+                $statisticsoutput .= "\t\t\t\t\t<option value='{$frow['code']}'";
+                    
+                //pre-check
+                if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
+                   
+                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                
+            }*/
+            
+            $allfields[]=$myfield2;
+            
+        }	//end WHILE -> loop through all answers
+                   
+        break;
+        
+        case "M": // Numerical
+		case "P":
+			
+		$myfield = "M$myfield";
+		
+		//put field names into array
+		$allfields[]=$myfield;
+		
+		break;
+		
+		
+		
+        case "N": // Numerical
+		
+		$myfield = "N$myfield";
+		
+		//put field names into array
+		$allfields[]=$myfield;
+		
+		break;
+
+				//case "5": // 5 point choice			
+			
+		//XXX is there any special treatment needed? Don't think so...
+		//we need a list of 5 entries
+/*		for ($i=1; $i<=5; $i++)
+		{
+			$statisticsoutput .= "\t\t\t\t\t<option value='$i'";
+			
+			//pre-select values which were marked before
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($i, $_POST[$myfield]))
+			{$statisticsoutput .= " selected";}
+			
+			$statisticsoutput .= ">$i</option>\n";
+		}
+		
+		//End the select which starts before the CASE statement (around line 411)
+		$statisticsoutput .="\t\t\t\t</select>\n";*/
+		//break;
+		
+		
+		
+/*		case "G": // Gender
+			
+		//XXX is there any special treatment needed? Don't think so...
+			
+			
+		$statisticsoutput .= "\t\t\t\t\t<option value='F'";
+		
+		//pre-select values which were marked before
+		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("F", $_POST[$myfield])) {$statisticsoutput .= " selected";}
+		
+		$statisticsoutput .= ">".$clang->gT("Female")."</option>\n";
+		$statisticsoutput .= "\t\t\t\t\t<option value='M'";
+		
+		//pre-select values which were marked before
+		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$statisticsoutput .= " selected";}
+		
+		$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select>\n";
+		break;*/
+		
+		
+		
+/*		case "Y": // Yes\No
+			
+		//XXX is there any special treatment needed? Don't think so...
+			
+			
+		$statisticsoutput .= "\t\t\t\t\t<option value='Y'";
+		
+		//pre-select values which were marked before
+		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("Y", $_POST[$myfield])) {$statisticsoutput .= " selected";}
+		
+		$statisticsoutput .= ">".$clang->gT("Yes")."</option>\n"
+		."\t\t\t\t\t<option value='N'";
+		
+		//pre-select values which were marked before
+		if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("N", $_POST[$myfield])) {$statisticsoutput .= " selected";}
+		
+		$statisticsoutput .= ">".$clang->gT("No")."</option></select>\n";
+		break;*/
+		
+        /*
+         * This question types use the default settings:
+         * 	L - List (Radio) 
+			O - List With Comment 
+			! - List (Dropdown) 
+         */
+        
+		
+		default:
+			
+		//get answers
+/*		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//loop through answers
+		while ($row=$result->FetchRow())
+		{
+			$statisticsoutput .= "\t\t\t\t\t\t<option value='{$row[0]}'";
+			
+			//pre-check
+			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
+			
+			$statisticsoutput .= ">$row[1]</option>\n";
+		}*/
+		
+		$allfields[] = $myfield;
+			
+		break;
+		
+		
+		
+	}	//end switch -> check question types and create filter forms
+  
+   
+    
+	//renaming arrays with all needed data to be processed later
+	//$summary = $allfields;
+    
+/*
+	foreach($summary as $temp)
+    {
+    	echo "<br> $temp";
+    }*/
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
     //P = Multiple Options with Comments
     //M = Multiple Options
     if($row['type'] == "P" || $row['type'] == "M")
@@ -272,6 +839,7 @@ foreach ($rows as $row)
     }
     
     //K = Multiple Numerical
+    //XXX doesn't work yet due to wrong SGQ identifier
 	elseif($row['type'] == "K")
     {
     	$summary[]=array("K{$surveyid}X{$row['gid']}X{$row['qid']}");
@@ -280,12 +848,29 @@ foreach ($rows as $row)
     }
     
  	//R = Ranking
-	elseif($row['type'] == "K")
+ 	//XXX doesn't work yet due to wrong SGQ identifier
+	elseif($row['type'] == "R")
     {
-    	$summary[]=array("K{$surveyid}X{$row['gid']}X{$row['qid']}");
+    	$summary[]=array("R{$surveyid}X{$row['gid']}X{$row['qid']}");
     	
-    	echo " ------ K{$surveyid}X{$row['gid']}X{$row['qid']}";
+    	echo " ------ R{$surveyid}X{$row['gid']}X{$row['qid']}-1";
     }
+    
+    elseif($row['type'] == "F" || $row['type'] == "H")
+    {
+    	$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$row['qid']."' AND language='{$language}' ORDER BY sortorder, answer";
+		$result = db_execute_num($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+		
+		//check all the answers
+		while ($row2=$result->FetchRow())
+		{
+			//$myfield2 = $myfield . "$row[0]";
+			$summary[]=array("{$surveyid}X{$row['gid']}X{$row['qid']}".$row2[0]);
+			
+			echo "______ {$surveyid}X{$row['gid']}X{$row['qid']}.$row2[0]";
+		}
+    }
+    
     
     
     else
@@ -298,14 +883,20 @@ foreach ($rows as $row)
     echo "<br><br>TYPE: ".$row['type'];
     echo "<br>title: ".$row['title'];
     echo "<br>question: ".$row['question'];
-    echo "<br>qid: ".$row['qid'];
+    echo "<br>qid: ".$row['qid'];*/
 }
 
 
+ foreach($allfields as $temp)
+    {
+    	//echo "<br> $temp";
+    }
 
+
+$summary = $allfields;
 
 //number of retrieved questions
-$total = 0;
+$totalrecords = 0;
 
 //count number of answers
 $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
@@ -318,10 +909,10 @@ if ($filterout_incomplete_answers == true)
 }
 $result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 
-//$total = total number of answers
+//$totalrecords = total number of answers
 while ($row=$result->FetchRow()) 
 {
-	$total=$row[0];
+	$totalrecords=$row[0];
 }
 
 
@@ -604,7 +1195,7 @@ while ($row=$result->FetchRow())
 	$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
 	."cellpadding='2' cellspacing='0' >\n"
 	."\t<tr><td colspan='2' align='center'><strong>"
-	.$clang->gT("Total records in survey").": $total</strong></td></tr>\n";
+	.$clang->gT("Total records in survey").": $totalrecords</strong></td></tr>\n";
 	//."\t<tr><td colspan='2' align='center'>"
 	
 	//XXX no need for this because there are no filters ."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
@@ -798,17 +1389,17 @@ if (isset($summary) && $summary)
 		if ($process_status < 100) $process_status++;		
 		$prb->moveStep($process_status);
 		
-		$firstletter = substr($rt[0], 0, 1);
+		$firstletter = substr($rt, 0, 1);
 		// 1. Get answers for question ##############################################################
 		
 		
-		echo "<br>RT0: ".$rt[0]." - FL: $firstletter";
+		echo "<br>RT: ".$rt." - FL: $firstletter";
 		
 		//M - Multiple Options, therefore multiple fields
 		if ($firstletter == "M") 
 		{
 			//get SGQ data
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt[0], 1, strlen($rt[0])), 3);
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 			
 			//select details for this question
 			$nquery = "SELECT title, type, question, lid, other FROM ".db_table_name("questions")." WHERE language='{$language}' and qid='$qqid'";
@@ -831,7 +1422,7 @@ if (isset($summary) && $summary)
 			//loop through multiple answers
 			while ($row=$result->FetchRow())
 			{
-				$mfield=substr($rt[0], 1, strlen($rt[0]))."$row[0]";
+				$mfield=substr($rt, 1, strlen($rt))."$row[0]";
 				
 				//create an array containing answer code, answer and fieldname(??)
 				$alist[]=array("$row[0]", "$row[1]", $mfield);
@@ -840,141 +1431,21 @@ if (isset($summary) && $summary)
 			//check "other" field. is it set?
 			if ($qother == "Y")
 			{
-				$mfield=substr($rt[0], 1, strlen($rt[0]))."other";
+				$mfield=substr($rt, 1, strlen($rt))."other";
 				
 				//create an array containing answer code, answer and fieldname(??)
 				$alist[]=array($clang->gT("Other"), $clang->gT("Other"), $mfield);
 			}
 		}
-		
-		
-		//S - Short Free Text 
-		//T - Long Free Text 		
-		elseif ($firstletter == "T" || $firstletter == "S") //Short and long text
-		{
-			$fieldmap=createFieldMap($surveyid, "full");
-			
-			//search for key
-			$fielddata=arraySearchByKey(substr($rt[0], 1, strlen($rt[0])), $fieldmap, "fieldname", 1);
-			
-			//get SGQA IDs
-			$qsid=$fielddata['sid'];
-			$qgid=$fielddata['gid'];
-			$qqid=$fielddata['qid'];
-			
-		
-			list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
-			//get SGQ data
-			//list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
-			
-			
-			//get question data
-			$nquery = "SELECT title, type, question, other, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
-			
-			//loop through question data
-			while ($nrow=$nresult->FetchRow())
-			{
-				$qtitle=strip_tags($nrow[0]); 
-				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
-				$nlid=$nrow[4];
-			}			
-			
-			if(!empty($qanswer)) {
-	  		  	$nquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qqid' AND language = '{$language}' AND code='$qanswer' ORDER BY sortorder, answer";
-			  	$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question answer<br />$nquery<br />".$connect->ErrorMsg());
-    			while ($nrow=$nresult->FetchRow())
-    			{
-    			    $qtitle .= " [".$nrow['answer']."]";
-    			}
-			}
 
-			if(!empty($qlid)) {
-			    $nquery = "SELECT code, title FROM ".db_table_name("labels")." WHERE lid={$nlid} AND code='$qlid' AND language='{$language}' ORDER BY sortorder, code";
-				$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get labelset for text question<br />$nquery<br />".$connect->ErrorMsg());
-				while ($nrow = $nresult->FetchRow())
-				{
-    			    $qtitle .= " [".$nrow['title']."]";
-				}
-			}
-			
-			$mfield=substr($rt[0], 1, strlen($rt[0]));
-			
-			//Text questions either have an answer, or they don't. There's no other way of quantising the results.
-			// So, instead of building an array of predefined answers like we do with lists & other types,
-			// we instead create two "types" of possible answer - either there is a response.. or there isn't.
-			// This question type then can provide a % of the question answered in the summary.
-			$alist[]=array("Answers", $clang->gT("Answer"), $mfield);
-			$alist[]=array("NoAnswer", $clang->gT("No answer"), $mfield);
-		}
-		
-		
-		//Multiple short text
-		elseif ($firstletter == "Q") 
-		{
-			//get SGQ data
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt[0], 1, strlen($rt[0])), 3);
-            
-			//separating another ID
-			$tmpqid=substr($qqid, 0, strlen($qqid)-1);
-            
-			//check if we have legid QIDs. if not create them by substringing
-			while (!in_array ($tmpqid,$legitqids)) $tmpqid=substr($tmpqid, 0, strlen($tmpqid)-1); 
-            
-			//length of QID
-			$qidlength=strlen($tmpqid);
-			
-			//we somehow get the answer code (see SQL later) from the $qqid 
-            $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
-			
-            //get some question data
-            $nquery = "SELECT title, type, question, other FROM ".db_table_name("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND language='{$language}'";
-			$nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
-			
-			//more substrings
-			$count = substr($qqid, strlen($qqid)-1);
-			
-			//loop through question data
-			while ($nrow=$nresult->FetchRow())
-			{
-				$qtitle=strip_tags($nrow[0]).'-'.$count; 
-				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
-			}
-			
-			//get answers
-		    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-		    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
-		    
-		    //loop through answer data
-		    while ($qrow=$qresult->FetchRow())
-	    	{
-	    		//store each answer here
-		    	$atext=$qrow[1];
-		    }
-		    
-		    //add this to the question title
-		    $qtitle .= " [$atext]";
-		    
-		    //even more substrings...
-			$mfield=substr($rt[0], 1, strlen($rt[0]));
-			
-			//Text questions either have an answer, or they don't. There's no other way of quantising the results.
-			// So, instead of building an array of predefined answers like we do with lists & other types,
-			// we instead create two "types" of possible answer - either there is a response.. or there isn't.
-			// This question type then can provide a % of the question answered in the summary.
-			$alist[]=array("Answers", $clang->gT("Answer"), $mfield);
-			$alist[]=array("NoAnswer", $clang->gT("No answer"), $mfield);
-		}
 		
 		
 		//RANKING OPTION THEREFORE CONFUSING
 		elseif ($firstletter == "R") 
 		{
 			//getting the needed IDs somehow
-			$lengthofnumeral=substr($rt[0], strpos($rt[0], "-")+1, 1);
-			list($qsid, $qgid, $qqid) = explode("X", substr($rt[0], 1, strpos($rt[0], "-")-($lengthofnumeral+1)), 3);
+			$lengthofnumeral=substr($rt, strpos($rt, "-")+1, 1);
+			list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
 			
 			//get question data
 			$nquery = "SELECT title, type, question FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
@@ -983,9 +1454,9 @@ if (isset($summary) && $summary)
 			//loop through question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]). " [".substr($rt[0], strpos($rt[0], "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qtitle=strip_tags($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt[0], strpos($rt[0], "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 			}
 			
 			//get answers
@@ -996,7 +1467,7 @@ if (isset($summary) && $summary)
 			while ($row=$result->FetchRow())
 			{
 				//create an array containing answer code, answer and fieldname(??)
-				$mfield=substr($rt[0], 1, strpos($rt[0], "-")-1);
+				$mfield=substr($rt, 1, strpos($rt, "-")-1);
 				$alist[]=array("$row[0]", "$row[1]", $mfield);
 			}
 		}	
@@ -1005,22 +1476,13 @@ if (isset($summary) && $summary)
 		//K = multiple numerical input
 		elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
 		{
-			echo '<script language="javascript" type="text/javascript">alert("N - K");</script>';
+			//create SGQ identifier
+	        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 			
-			//check last character, greater/less/equals don't need special treatment
-			if (substr($rt[0], -1) == "G" ||  substr($rt[0], -1) == "L" || substr($rt[0], -1) == "=")
-			{
-				//DO NOTHING
-			}
-			else
-			{
-				//create SGQ identifier
-		        list($qsid, $qgid, $qqid) = explode("X", $rt[0], 3);
-				
-		        //multiple numerical input
-			    if($firstletter == "K")
-			    { 
-			    	// This is a multiple numerical question so we need to strip of the answer id to find the question title
+	        //multiple numerical input
+		    if($firstletter == "K")
+		    { 
+		    	// This is a multiple numerical question so we need to strip of the answer id to find the question title
                     $tmpqid=substr($qqid, 0, strlen($qqid)-1);
                     
                     //did we get a valid ID?
@@ -1034,333 +1496,320 @@ if (isset($summary) && $summary)
                     $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
                     
                     //get question details from DB
-			        $nquery = "SELECT title, type, question, qid, lid 
-							   FROM ".db_table_name("questions")." 
-							   WHERE qid='".substr($qqid, 0, $qidlength)."' 
-							   AND language='{$language}'";
-			        $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
-				} 
-				
-				//probably question type "N" = numerical input
-				else 
-				{
-					//we can use the qqid without any editing
-				    $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
-				    $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
-				}
-				
-				//loop through results
-				while ($nrow=$nresult->FetchRow()) 
-				{				
-				    $qtitle=strip_tags($nrow[0]); //clean up title
-					$qtype=$nrow[1]; 
-					$qquestion=strip_tags($nrow[2]); //clean up question
-					$qiqid=$nrow[3]; 
-					$qlid=$nrow[4];
-				}
-				
-				//Get answer texts for multiple numerical
-				if(substr($rt[0], 0, 1) == "K")
-				{
-					//get answer data
-				    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
-				    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
-				    
-				    //handle answer
-				    while ($qrow=$qresult->FetchRow())
-			    	{
-				    	$atext=$qrow[1];
-				    }
-				    //put single items in brackets at output
-				    $qtitle .= " [$atext]";
-				}
-				
-				//outputting headline
-				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field summary for")." $qtitle:</strong>"
-				."</td></tr>\n"
-				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
-				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Calculation")."</strong></td>\n"
-				."\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Result")."</strong></td>\n"
-				."\t</tr>\n";
-				
-				//this field is queried using mathematical functions
-				$fieldname=substr($rt[0], 1, strlen($rt[0]));
-				
-				//special treatment for MS SQL databases
-                if ($connect->databaseType == 'odbc_mssql')
-                { 
-                	//standard deviation
-                	$query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev"; 
-                }
+		        $nquery = "SELECT title, type, question, qid, lid 
+						   FROM ".db_table_name("questions")." 
+						   WHERE qid='".substr($qqid, 0, $qidlength)."' 
+						   AND language='{$language}'";
+		        $nresult = db_execute_num($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+			} 
+			
+			//probably question type "N" = numerical input
+			else 
+			{
+				//we can use the qqid without any editing
+			    $nquery = "SELECT title, type, question, qid, lid FROM ".db_table_name("questions")." WHERE qid='$qqid' AND language='{$language}'";
+			    $nresult = db_execute_num($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+			}
+			
+			//loop through results
+			while ($nrow=$nresult->FetchRow()) 
+			{				
+			    $qtitle=strip_tags($nrow[0]); //clean up title
+				$qtype=$nrow[1]; 
+				$qquestion=strip_tags($nrow[2]); //clean up question
+				$qiqid=$nrow[3]; 
+				$qlid=$nrow[4];
+			}
+			
+			//Get answer texts for multiple numerical
+			if(substr($rt, 0, 1) == "K")
+			{
+				//get answer data
+			    $qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qaid' AND language='{$language}' ORDER BY sortorder, answer";
+			    $qresult=db_execute_num($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+			    
+			    //handle answer
+			    while ($qrow=$qresult->FetchRow())
+		    	{
+			    	$atext=$qrow[1];
+			    }
+			    //put single items in brackets at output
+			    $qtitle .= " [$atext]";
+			}
+			
+			//outputting headline
+			$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
+			."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field summary for")." $qtitle:</strong>"
+			."</td></tr>\n"
+			."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
+			."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
+			.$clang->gT("Calculation")."</strong></td>\n"
+			."\t\t<td width='50%' align='center' ><strong>"
+			.$clang->gT("Result")."</strong></td>\n"
+			."\t</tr>\n";
+			
+			//this field is queried using mathematical functions
+			$fieldname=substr($rt, 1, strlen($rt));
+			
+			//special treatment for MS SQL databases
+            if ($connect->databaseType == 'odbc_mssql')
+            { 
+                //standard deviation
+                $query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev"; 
+            }
                     
+            //other databases (MySQL, Postgres)
+            else
+            { 
+                //standard deviation
+                $query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev"; 
+            }
+
+            //sum
+			$query .= ", SUM(".db_quote_id($fieldname)."*1) as sum";
+			
+			//average
+			$query .= ", AVG(".db_quote_id($fieldname)."*1) as average";
+			
+			//min
+			$query .= ", MIN(".db_quote_id($fieldname)."*1) as minimum";
+			
+			//max
+			$query .= ", MAX(".db_quote_id($fieldname)."*1) as maximum";
+            //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
+                
+			//special treatment for MS SQL databases
+			if ($connect->databaseType == 'odbc_mssql')
+                { 
+                //no NULL/empty values please
+                $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE 0)"; 
+                }
+                
                 //other databases (MySQL, Postgres)
                 else
                 { 
-                	//standard deviation
-                	$query = "SELECT STDDEV(".db_quote_id($fieldname).") as stdev"; 
+                //no NULL/empty values please
+                $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != 0)"; 
                 }
 
-                //sum
-				$query .= ", SUM(".db_quote_id($fieldname)."*1) as sum";
+			
+			//filter incomplete answers?
+			if ($filterout_incomplete_answers == true) 
+			{
+				$query .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
+			}
+	
+            //execute query
+            $result=db_execute_assoc($query) or safe_die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
+			
+            //get calculated data
+            while ($row=$result->FetchRow())
+			{
+				//put translation of mean and calculated data into $showem array
+				$showem[]=array($clang->gT("Sum"), $row['sum']);
+				$showem[]=array($clang->gT("Standard deviation"), round($row['stdev'],2));
+				$showem[]=array($clang->gT("Average"), round($row['average'],2));
+				$showem[]=array($clang->gT("Minimum"), $row['minimum']);
 				
-				//average
-				$query .= ", AVG(".db_quote_id($fieldname)."*1) as average";
+				//Display the maximum and minimum figures after the quartiles for neatness
+				$maximum=$row['maximum']; 
+				$minimum=$row['minimum'];
+			}
+
+
+			
+			//CALCULATE QUARTILES
+			
+			//get data
+			$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
+			
+			//filter incomplete answers?
+			if ($filterout_incomplete_answers == true) 
+			{
+				$query .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
+			}
+			
+			//execute query
+			$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
+			
+			$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
+			
+			//filter incomplete answers?
+			if ($filterout_incomplete_answers == true) 
+			{
+				$querystarter .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
+			}
+			//we just count the number of records returned
+			$medcount=$result->RecordCount();
+
+			//put the total number of records at the beginning of this array
+			array_unshift($showem, array($clang->gT("Count"), $medcount));
+
+			
+			//no more comment from Mazi regarding the calculation
+			
+			// Calculating only makes sense with more than one result
+			if ($medcount>1)   
+			{
+				//1ST QUARTILE (Q1)
+				$q1=(1/4)*($medcount+1);
+				$q1b=(int)((1/4)*($medcount+1));
+				$q1c=$q1b-1;
+				$q1diff=$q1-$q1b;
+				$total=0;
 				
-				//min
-				$query .= ", MIN(".db_quote_id($fieldname)."*1) as minimum";
+				// fix if there are too few values to evaluate.
+				if ($q1c<1) {$q1c=1;$lastnumber=0;}  
 				
-				//max
-				$query .= ", MAX(".db_quote_id($fieldname)."*1) as maximum";
-                //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
-                
-				//special treatment for MS SQL databases
-				if ($connect->databaseType == 'odbc_mssql')
-                { 
-                	//no NULL/empty values please
-                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE 0)"; 
-                }
-                
-                //other databases (MySQL, Postgres)
-                else
-                { 
-                	//no NULL/empty values please
-                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != 0)"; 
-                }
-				
-                //filter incomplete answers if set
-                if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
-				
-                //$sql was set somewhere before
-                if ($sql != "NULL") {$query .= " AND $sql";}
-				
-                //execute query
-                $result=db_execute_assoc($query) or safe_die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
-				
-                //get calculated data
-                while ($row=$result->FetchRow())
+				if ($q1 != $q1b)
 				{
-					//put translation of mean and calculated data into $showem array
-					$showem[]=array($clang->gT("Sum"), $row['sum']);
-					$showem[]=array($clang->gT("Standard deviation"), round($row['stdev'],2));
-					$showem[]=array($clang->gT("Average"), round($row['average'],2));
-					$showem[]=array($clang->gT("Minimum"), $row['minimum']);
+					//ODD NUMBER
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+					$result=db_select_limit_assoc($query, $q1c, 2) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
 					
-					//Display the maximum and minimum figures after the quartiles for neatness
-					$maximum=$row['maximum']; 
-					$minimum=$row['minimum'];
+					while ($row=$result->FetchRow())
+					{
+						if ($total == 0)    {$total=$total-$row[$fieldname];}
+						
+						else                {$total=$total+$row[$fieldname];}
+						
+						$lastnumber=$row[$fieldname];
+					}
+					
+					$q1total=$lastnumber-(1-($total*$q1diff));
+					
+					if ($q1total < $minimum) {$q1total=$minimum;}
+					
+					$showem[]=array($clang->gT("1st quartile (Q1)"), $q1total);
 				}
-
-
-				
-				//CALCULATE QUARTILES
-				
-				//get data
-				$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
-				
-				//filtering enabled?
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
-				
-				//if $sql values have been passed to the statistics script from another script, incorporate them
-				if ($sql != "NULL") {$query .= " AND $sql";}
-				
-				//execute query
-				$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
-				
-				$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
-				
-				//filtering enabled?
-				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null";}                     
-				
-				//if $sql values have been passed to the statistics script from another script, incorporate them
-				if ($sql != "NULL") {$querystarter .= " AND $sql";}
-				
-				//we just count the number of records returned
-				$medcount=$result->RecordCount();
-
-				//put the total number of records at the beginning of this array
-				array_unshift($showem, array($clang->gT("Count"), $medcount));
-
-				
-				//no more comment from Mazi regarding the calculation
-				
-				// Calculating only makes sense with more than one result
-				if ($medcount>1)   
-				{
-					//1ST QUARTILE (Q1)
-					$q1=(1/4)*($medcount+1);
-					$q1b=(int)((1/4)*($medcount+1));
-					$q1c=$q1b-1;
-					$q1diff=$q1-$q1b;
-					$total=0;
-					
-					// fix if there are too few values to evaluate.
-					if ($q1c<1) {$q1c=1;$lastnumber=0;}  
-					
-					if ($q1 != $q1b)
-					{
-						//ODD NUMBER
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query, $q1c, 2) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
-						
-						while ($row=$result->FetchRow())
-						{
-							if ($total == 0)    {$total=$total-$row[$fieldname];}
-							
-							else                {$total=$total+$row[$fieldname];}
-							
-							$lastnumber=$row[$fieldname];
-						}
-						
-						$q1total=$lastnumber-(1-($total*$q1diff));
-						
-						if ($q1total < $minimum) {$q1total=$minimum;}
-						
-						$showem[]=array($clang->gT("1st quartile (Q1)"), $q1total);
-					}
-					else
-					{
-						//EVEN NUMBER
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,1, $q1c) or safe_die ("1st Quartile query failed<br />".$connect->ErrorMsg());
-						
-						while ($row=$result->FetchRow()) 
-						{
-							$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);
-						}
-					}					
-					
-					$total=0;
-					
-					
-					//MEDIAN (Q2)
-					$median=(1/2)*($medcount+1);
-					$medianb=(int)((1/2)*($medcount+1));
-					$medianc=$medianb-1;
-					$mediandiff=$median-$medianb;
-					
-					if ($median != (int)((($medcount+1)/2)-1))
-					{
-						//remainder
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,2, $medianc) or safe_die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
-						
-						while
-						(
-							$row=$result->FetchRow()) {$total=$total+$row[$fieldname];
-						}
-						
-						$showem[]=array($clang->gT("2nd quartile (Median)"), $total/2);
-					}
-					
-					else
-					{
-						//EVEN NUMBER
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result=db_select_limit_assoc($query,1, $medianc) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
-						
-						while ($row=$result->FetchRow()) 
-						{
-							$showem[]=array("Median Value", $row[$fieldname]);
-						}
-					}
-					
-					$total=0;
-					
-					
-					//3RD QUARTILE (Q3)
-					$q3=(3/4)*($medcount+1);
-					$q3b=(int)((3/4)*($medcount+1));
-					$q3c=$q3b-1;
-					$q3diff=$q3-$q3b;
-					
-					if ($q3 != $q3b)
-					{
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-						$result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
-						
-						$lastnumber='';
-						
-						while ($row=$result->FetchRow())
-						{
-							if ($total == 0)    {$total=$total-$row[$fieldname];}
-							
-							else                {$total=$total+$row[$fieldname];}
-							
-							if (!$lastnumber) {$lastnumber=$row[$fieldname];}
-						}
-						$q3total=$lastnumber+($total*$q3diff);
-						
-						if ($q3total < $maximum) {$q1total=$maximum;}
-						
-						$showem[]=array($clang->gT("3rd quartile (Q3)"), $q3total);
-					}
-					
-					else
-					{
-						$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
-						$result = db_select_limit_assoc($query,1, $q3c) or safe_die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
-						
-						while ($row=$result->FetchRow()) 
-						{
-							$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);
-						}
-					}
-					
-					$total=0;
-					
-					$showem[]=array($clang->gT("Maximum"), $maximum);
-					
-					//output results
-					foreach ($showem as $shw)
-					{
-						$statisticsoutput .= "\t<tr>\n"
-						."\t\t<td align='center' >$shw[0]</td>\n"
-						."\t\t<td align='center' >$shw[1]</td>\n"
-						."\t</tr>\n";
-					}
-					
-					//footer of question type "N"
-					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
-					."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
-					."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
-					."</font>\n"
-					."\t\t</td>\n"
-					."\t</tr>\n</table>\n";
-					
-					//clean up
-					unset($showem);
-					
-				}	//end if (enough results?)
-				
-				//not enough (<1) results for calculation
 				else
 				{
-					//output
-					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
-					."\t</tr>\n</table><br />\n";
-					unset($showem);
+					//EVEN NUMBER
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+					$result=db_select_limit_assoc($query,1, $q1c) or safe_die ("1st Quartile query failed<br />".$connect->ErrorMsg());
+					
+					while ($row=$result->FetchRow()) 
+					{
+						$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);
+					}
+				}					
+				
+				$total=0;
+				
+				
+				//MEDIAN (Q2)
+				$median=(1/2)*($medcount+1);
+				$medianb=(int)((1/2)*($medcount+1));
+				$medianc=$medianb-1;
+				$mediandiff=$median-$medianb;
+				
+				if ($median != (int)((($medcount+1)/2)-1))
+				{
+					//remainder
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+					$result=db_select_limit_assoc($query,2, $medianc) or safe_die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
+					
+					while
+					(
+						$row=$result->FetchRow()) {$total=$total+$row[$fieldname];
+					}
+					
+					$showem[]=array($clang->gT("2nd quartile (Median)"), $total/2);
 				}
 				
-			}	//end else -> check last character, greater/less/equals don't need special treatment
+				else
+				{
+					//EVEN NUMBER
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+					$result=db_select_limit_assoc($query,1, $medianc) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
+					
+					while ($row=$result->FetchRow()) 
+					{
+						$showem[]=array("Median Value", $row[$fieldname]);
+					}
+				}
+				
+				$total=0;
+				
+				
+				//3RD QUARTILE (Q3)
+				$q3=(3/4)*($medcount+1);
+				$q3b=(int)((3/4)*($medcount+1));
+				$q3c=$q3b-1;
+				$q3diff=$q3-$q3b;
+				
+				if ($q3 != $q3b)
+				{
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
+					$result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
+					
+					$lastnumber='';
+					
+					while ($row=$result->FetchRow())
+					{
+						if ($total == 0)    {$total=$total-$row[$fieldname];}
+						
+						else                {$total=$total+$row[$fieldname];}
+						
+						if (!$lastnumber) {$lastnumber=$row[$fieldname];}
+					}
+					$q3total=$lastnumber+($total*$q3diff);
+					
+					if ($q3total < $maximum) {$q1total=$maximum;}
+					
+					$showem[]=array($clang->gT("3rd quartile (Q3)"), $q3total);
+				}
+				
+				else
+				{
+					$query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
+					$result = db_select_limit_assoc($query,1, $q3c) or safe_die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
+					
+					while ($row=$result->FetchRow()) 
+					{
+						$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);
+					}
+				}
+				
+				$total=0;
+				
+				$showem[]=array($clang->gT("Maximum"), $maximum);
+				
+				//output results
+				foreach ($showem as $shw)
+				{
+					$statisticsoutput .= "\t<tr>\n"
+					."\t\t<td align='center' >$shw[0]</td>\n"
+					."\t\t<td align='center' >$shw[1]</td>\n"
+					."\t</tr>\n";
+				}
+				
+				//footer of question type "N"
+				$statisticsoutput .= "\t<tr>\n"
+				."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
+				."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
+				."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
+				."</font>\n"
+				."\t\t</td>\n"
+				."\t</tr>\n</table>\n";
+				
+				//clean up
+				unset($showem);
+				
+			}	//end if (enough results?)
+			
+			//not enough (<1) results for calculation
+			else
+			{
+				//output
+				$statisticsoutput .= "\t<tr>\n"
+				."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
+				."\t</tr>\n</table><br />\n";
+				unset($showem);
+			}
+				
 			
 		}	//end else-if -> multiple numerical types
-		
-		//is there some "id", "datestamp" or "D" within the type?
- 		elseif (substr($rt[0], 0, 2) == "id" || substr($rt[0], 0, 9) == "datestamp" || ($firstletter == "D"))
-		{
-			/*
-			 * DON'T show anything for date questions
-			 * because there aren't any statistics implemented yet!
-			 * 
-			 * See bug report #2539 and
-			 * feature request #2620
-			 */
-		}
 		
 		
 		// NICE SIMPLE SINGLE OPTION ANSWERS
@@ -1369,9 +1818,20 @@ if (isset($summary) && $summary)
 			//get database fields for this survey
 			$fieldmap=createFieldMap($surveyid, "full");
 			
-			//search for key
-			$fielddata=arraySearchByKey($rt[0], $fieldmap, "fieldname", 1);
+			//XXX raus
+			foreach($fieldmap as $temp)
+			{
+				foreach($temp as $temp2 => $v2)
+				{
+					 //echo "<br>--------------------- $temp2 - $v2 ------------------<br>";
+				}
+				
+			}
 			
+			
+			//search for key
+			$fielddata=arraySearchByKey($rt, $fieldmap, "fieldname", 1);
+						
 			//get SGQA IDs
 			$qsid=$fielddata['sid'];
 			$qgid=$fielddata['gid'];
@@ -1663,7 +2123,7 @@ if (isset($summary) && $summary)
                 $qidattributes=getQuestionAttributes($qqid);
                 
                 //check last character -> label 1
-                if (substr($rt[0],-1,1) == 0)
+                if (substr($rt,-1,1) == 0)
                 {
                     //get label 1
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
@@ -1752,12 +2212,9 @@ if (isset($summary) && $summary)
 			
 		}	//end else -> single option answers 
 
-		//foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
+		//foreach ($alist as $al) {echo "<br> 0: ".$al[0]." - 1: ".$al[1]."<br><br>";} //debugging line
 		//foreach ($fvalues as $fv) {$statisticsoutput .= "$fv | ";} //debugging line
-		
-		
-		
-		
+				
 		
 		//2. Collect and Display results #######################################################################
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
@@ -1791,38 +2248,14 @@ if (isset($summary) && $summary)
 						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
 						$query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
 					}
-					
-					/*
-					 * text questions:
-					 * 
-					 * U = huge free text
-					 * T = long free text
-					 * S = short free text
-					 * Q = multiple short text
-					 */
 
-					elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q" || $qtype == ";")
-					{
-						//free text answers
-						if($al[0]=="Answers")
-						{
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
-						}
-						//"no answer" handling
-						elseif($al[0]=="NoAnswer")
-						{
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE (".db_quote_id($al[2])." IS NULL OR ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
-						}
-					}
 					// all other question types
 					else
 					{
 						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
 						
 						//ranking question?
-						if (substr($rt[0], 0, 1) == "R")
+						if (substr($rt, 0, 1) == "R")
 						{
 							$query .= " '$al[0]'";
 						}
@@ -1835,21 +2268,13 @@ if (isset($summary) && $summary)
 				}	//end if -> alist set
 				
 				else
-				{ 
+				{
 					//get more data                          
-					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt[0])." = '$al[0]'";
+					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
-				
-				//check filter option
-			/* XXX	if ($filterout_incomplete_answers == true) {$query .= " AND submitdate is not null";}                     
-				
-				//check for any "sql" that has been passed from another script
-				if ($sql != "NULL") {$query .= " AND $sql";}
-				*/
+
 				//get data
 				$result=db_execute_num($query) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
-				
-				// $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
                 
 				// this just extracts the data, after we present
 				while ($row=$result->FetchRow())                   
@@ -1860,35 +2285,7 @@ if (isset($summary) && $summary)
                     //"no answer" handling
 					if ($al[0] == "")
 					{$fname=$clang->gT("No answer");}
-					
-					//"other" handling				
-					//"Answers" means that we show an option to list answer to "other" text field
-				/*	XXX we do not want to show these details to the users
-				 * elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
-					*/
-					/*
-					 * text questions:
-					 * 
-					 * U = huge free text
-					 * T = long free text
-					 * S = short free text
-					 * Q = multiple short text
-					 */
-					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
-					{
-						//show free text answers
-						if ($al[0] == "Answers")
-						{
-							$fname= "$al[1] <input type='submit' value='"
-							. $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
-							. urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
-						}
-						elseif ($al[0] == "NoAnswer")
-						{
-							$fname= "$al[1]";
-						}
-					}
+
 					
 					
 					//check if aggregated results should be shown
@@ -1955,7 +2352,9 @@ if (isset($summary) && $summary)
 							{													
 								//HACK: add three times the total number of results to the value
 								//This way we get a 300 + X percentage which can be checked later
-								$row[0] += (3*$results);
+								
+								$row[0] += (3*$totalrecords);
+								
 							}
 							
 							//the third value should be shown twice later -> mark it
@@ -1963,7 +2362,7 @@ if (isset($summary) && $summary)
 							{
 								//HACK: add four times the total number of results to the value
 								//This way there should be a 400 + X percentage which can be checked later
-								$row[0] += (4*$results);
+								$row[0] += (4*$totalrecords);
 							}
 							
 							//the last value aggregates the data of item 4 + item 5 later
@@ -1971,7 +2370,7 @@ if (isset($summary) && $summary)
 							{							
 								//HACK: add two times the total number of results to the value
 								//This way there should be a 200 + X percentage which can be checked later
-								$row[0] += (2*$results);
+								$row[0] += (2*$totalrecords);
 							}
 							
 						}	//end if -> question type = "5"/"A"
@@ -1999,13 +2398,13 @@ if (isset($summary) && $summary)
 					
 					//are there some results to play with?
 					
-					//XXX alt if ($results > 0)
-					if ($total > 0)
+					//XXX alt if ($totalrecords > 0)
+					if ($totalrecords > 0)
 					{
 						//calculate percentage
-						//XXX alt $gdata[] = ($row[0]/$results)*100;
+						//XXX alt $gdata[] = ($row[0]/$totalrecords)*100;
 						
-						$gdata[] = ($row[0]/$total)*100;
+						$gdata[] = ($row[0]/$totalrecords)*100;
 					} 
 					//no results
 					else
@@ -2068,16 +2467,16 @@ if (isset($summary) && $summary)
 	            else
 	            {     
 	            	//calculate total number of incompleted records
-	                $TotalIncomplete = $results - $TotalCompleted;
+	                $TotalIncomplete = $totalrecords - $TotalCompleted;
 	                
 	                //output
 	                $fname=$clang->gT("Non completed");
 	                
 	                //we need some data
-	                if ($results > 0)
+	                if ($totalrecords > 0)
 	                {
 	                	//calculate percentage
-	                    $gdata[] = ($TotalIncomplete/$results)*100;
+	                    $gdata[] = ($TotalIncomplete/$totalrecords)*100;
 	                } 
 	                
 	                //no data :(
@@ -2176,10 +2575,10 @@ if (isset($summary) && $summary)
 	                		if($itemcounter == 2 && $label[$i+4] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
-	                			if(($results - $grawdata[$i+4]) > 0)
+	                			if(($totalrecords - $grawdata[$i+4]) > 0)
 	                			{
 	                				//re-calculate percentage
-	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+4])) * 100;
+	                				$percentage = ($grawdata[$i] / ($totalrecords - $grawdata[$i+4])) * 100;
 	                			}
 	                			else
 	                			{
@@ -2190,10 +2589,10 @@ if (isset($summary) && $summary)
 	                		elseif($itemcounter == 4 && $label[$i+2] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
-	                			if(($results - $grawdata[$i+2]) > 0)
+	                			if(($totalrecords - $grawdata[$i+2]) > 0)
 	                			{
 	                				//re-calculate percentage
-	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+2])) * 100;
+	                				$percentage = ($grawdata[$i] / ($totalrecords - $grawdata[$i+2])) * 100;
 	                			}
 	                			else
 	                			{
@@ -2226,10 +2625,10 @@ if (isset($summary) && $summary)
 	                		if($itemcounter == 3 && $label[$i+3] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
-	                			if(($results - $grawdata[$i+3]) > 0)
+	                			if(($totalrecords - $grawdata[$i+3]) > 0)
 	                			{
 	                				//re-calculate percentage
-	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+3])) * 100;
+	                				$percentage = ($grawdata[$i] / ($totalrecords - $grawdata[$i+3])) * 100;
 	                			}
 	                			else
 	                			{
@@ -2263,11 +2662,11 @@ if (isset($summary) && $summary)
 	                		if($itemcounter == 1 && $label[$i+5] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
-	                			if(($results - $grawdata[$i+5]) > 0)
+	                			if(($totalrecords - $grawdata[$i+5]) > 0)
 	                			{
 	                				//re-calculate percentage
-	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+5])) * 100;
-	                				$percentage2 = ($grawdata[$i + 1] / ($results - $grawdata[$i+5])) * 100;
+	                				$percentage = ($grawdata[$i] / ($totalrecords - $grawdata[$i+5])) * 100;
+	                				$percentage2 = ($grawdata[$i + 1] / ($totalrecords - $grawdata[$i+5])) * 100;
 	                			}
 	                			else
 	                			{
@@ -2304,11 +2703,11 @@ if (isset($summary) && $summary)
 	                		if($itemcounter == 5 && $label[$i+1] == $clang->gT("No answer"))
 	                		{
 	                			//prevent division by zero
-	                			if(($results - $grawdata[$i+1]) > 0)
+	                			if(($totalrecords - $grawdata[$i+1]) > 0)
 	                			{
 	                				//re-calculate percentage
-	                				$percentage = ($grawdata[$i] / ($results - $grawdata[$i+1])) * 100;
-	                				$percentage2 = ($grawdata[$i - 1] / ($results - $grawdata[$i+1])) * 100;
+	                				$percentage = ($grawdata[$i] / ($totalrecords - $grawdata[$i+1])) * 100;
+	                				$percentage2 = ($grawdata[$i - 1] / ($totalrecords - $grawdata[$i+1])) * 100;
 	                			}
 	                			else
 	                			{
