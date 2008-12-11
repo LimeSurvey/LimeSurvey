@@ -226,6 +226,7 @@ CREATE TABLE `prefix_surveys` (
   `usestartdate` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
+  `publicstatistics` char(1) default 'N',
   `listpublic` char(1) default 'N',
   `htmlemail` char(1) default 'N',
   `tokenanswerspersistence` char(1) default 'N',

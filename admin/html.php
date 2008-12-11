@@ -2321,7 +2321,7 @@ if ($action == "editsurvey")
 			. "</select></span>\n"
 			. "</div>\n";
 
-			//ALLOW PREV
+			//Show Prev Button
 			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Show [<< Prev] button")."</span>\n"
 			. "<span class='settingentry'><select name='allowprev'>\n"
 			. "<option value='Y'";
@@ -2345,6 +2345,18 @@ if ($action == "editsurvey")
             . "</select></span>\n"
             . "</div>\n";
 
+            //Public statistics 
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public statistics?")."</span>\n"
+            . "<span class='settingentry'><select name='publicstatistics'>\n"
+            . "<option value='Y'";
+            if (!isset($esrow['publicstatistics']) || !$esrow['publicstatistics'] || $esrow['publicstatistics'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select></span>\n"
+            . "</div>\n";
+            
             //Public Surveys
             $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("List survey publicly:")."</span>\n"
             . "<span class='settingentry'><select name='public'>\n"
@@ -3017,7 +3029,15 @@ if ($action == "newsurvey")
         . "</select></span>\n"
         . "</div>\n";
 
-        //Public Surveys
+        //Public statistics
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public statistics:")."</span>\n"
+        . "<span class='settingentry'><select name='publicstatistics'>\n"
+        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "</select></span>\n"
+        . "</div>\n";
+
+        //List survey publicly
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("List survey publicly:")."</span>\n"
         . "<span class='settingentry'><select name='public'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
@@ -3032,7 +3052,7 @@ if ($action == "newsurvey")
 		. "<span class='settingentry'><input type='text' size='50' name='url' value='http://";
 		if (isset($esrow)) {$newsurvey .= $esrow['url'];}
 		$newsurvey .= "' /></span></div>\n"
-		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
+		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL description:")."</span>\n"
 		. "<span class='settingentry'><input type='text' maxlength='255' size='50' name='urldescrip' value='";
 		if (isset($esrow)) {$newsurvey .= $esrow['surveyls_urldescription'];}
 		$newsurvey .= "' /></span></div>\n"

@@ -70,8 +70,39 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 require_once(dirname(__FILE__).'/admin/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/startup.php');  
 require_once(dirname(__FILE__).'/config-defaults.php');
-require_once(dirname(__FILE__).'/config.php');
 require_once(dirname(__FILE__).'/common.php');
+require_once(dirname(__FILE__).'/classes/core/language.php');
+require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
+
+$surveyid=returnglobal('sid');
+if (!$surveyid){
+        //This next line ensures that the $surveyid value is never anything but a number.
+        safe_die('You have to provide a valid survey ID.');
+     }
+
+     
+if ($surveyid)
+{
+    $issurveyactive=false;
+    $actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
+    $actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
+    if ($actresult->RecordCount() == 0) { safe_die('You have to provide a valid survey ID.'); }
+    else 
+    {
+        $surveyinfo=getSurveyInfo($surveyid);
+       if ($surveyinfo['publicstatistics']!='Y')
+       {
+          safe_die('The public statistics for this survey are deactivated.'); 
+       }
+    }
+}
+
+
+     
+//DEFAULT SETTINGS FOR TEMPLATES
+if (!$publicdir) {$publicdir=".";}
+$tpldir="$publicdir/templates";
+
 
 
 //we collect all the output within this variable
@@ -102,15 +133,6 @@ if (isset($usegraph) && $usegraph == 1)
 		$currentuser="standard";
 	}
 }
-
-
-//XXX new: try to get the surveyID
-@session_start();
-if (isset($_SESSION['sid'])) 
-{
-	$surveyid=$_SESSION['sid'];
-}  
-else die(); 
 
 
 
@@ -944,12 +966,6 @@ while ($row=$result->FetchRow())
 	$process_status = 35;
 	$prb->show();	// show the ProgressBar
 	
-	//don't show any output, we just want to watch the bar growing
-	$statisticsoutput .= "<script type='text/javascript'>
-    <!--
-     hide('filtersettings');
-    //-->
-    </script>\n";
 	
 	// 1: Get list of questions with answers chosen
 	//"Getting Questions and Answers ..." is shown above the bar

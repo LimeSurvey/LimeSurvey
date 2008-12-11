@@ -1080,7 +1080,7 @@ if(isset($surveyid))
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
-        . "printanswers='{$_POST['printanswers']}',\n"
+        . "printanswers='{$_POST['printanswers']}', publicstatistics='{$_POST['publicstatistics']}',\n"   
 		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}',\n"
 		. "listpublic='{$_POST['public']}', htmlemail='{$_POST['htmlemail']}',\n"
 		. "tokenanswerspersistence='{$_POST['tokenanswerspersistence']}', usecaptcha='{$_POST['usecaptcha']}'\n"
@@ -1251,7 +1251,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "(sid, owner_id, admin, active, useexpiry, expires, usestartdate, startdate,"
 		. "adminemail, bounce_email, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic,htmlemail,tokenanswerspersistence,usecaptcha)\n"
+		. "allowsave, autoredirect, allowprev, printanswers, "
+        . "datecreated, listpublic, htmlemail, tokenanswerspersistence, usecaptcha, publicstatistics)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}','{$_POST['expires']}'," 
@@ -1263,7 +1264,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
         . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n'"
-		. date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', '{$_POST['usecaptcha']}')";
+		. date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', \n'"
+        . "'{$_POST['usecaptcha']}', '{$_POST['publicstatistics']}')";
 
 		$isresult = $connect->Execute($isquery);
 

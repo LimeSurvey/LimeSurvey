@@ -229,7 +229,11 @@ echo str_pad('Loading... ',4096)."<br />\n";
 		modify_database("","UPDATE [prefix_conditions] SET [scenario]=1 where ( [scenario] is null) or [scenario]='' or [scenario]=0"); echo $modifyoutput; flush();
 	    	modify_database("","update `prefix_settings_global` set `stg_value`='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
-    return true;
+    if ($oldversion < 131)
+    {
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [publicstatistics] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("","update `prefix_settings_global` set `stg_value`='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }    return true;
 }
 
 

@@ -241,6 +241,7 @@ CREATE TABLE prefix_surveys (
     refurl character(1) DEFAULT 'N'::bpchar,
     datecreated date,
     listpublic character(1) DEFAULT 'N'::bpchar,
+    publicstatistics character(1) DEFAULT 'N'::bpchar,
     htmlemail character(1) DEFAULT 'N'::bpchar,
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,

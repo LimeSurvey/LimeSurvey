@@ -231,6 +231,7 @@ CREATE TABLE [prefix_surveys] (
   [refurl] char(1) default 'N',
   [datecreated] DATETIME default NULL,
   [listpublic] char(1) default 'N',
+  [publicstatistics] char(1) default 'N',
   [htmlemail] char(1) default 'N',
   [tokenanswerspersistence] char(1) default 'N',
   [usecaptcha] char(1) default 'N',

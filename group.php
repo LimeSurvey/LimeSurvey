@@ -181,11 +181,23 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
          {
             $completed .= "<br /><br />"
             ."<a class='printlink' href='printanswers.php'  target='_blank'>"
-            .$clang->gT("Click here to print your answers.")
+            .$clang->gT("Print your answers.")
             ."</a><br />\n";
          }
         //*****************************************
+        
+        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
 
+         // Link to Public statistics  **********
+         if ($thissurvey['publicstatistics']=='Y')
+         {
+            $completed .= "<br /><br />"
+            ."<a class='printlink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+            .$clang->gT("View the statistics for this survey.")
+            ."</a><br />\n";
+         }
+        //*****************************************        
+        
         $_SESSION['finished']=true; 
         $_SESSION['sid']=$surveyid;
 
