@@ -192,7 +192,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
          if ($thissurvey['publicstatistics']=='Y')
          {
             $completed .= "<br /><br />"
-            ."<a class='printlink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
             .$clang->gT("View the statistics for this survey.")
             ."</a><br />\n";
          }
