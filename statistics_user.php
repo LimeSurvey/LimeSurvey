@@ -60,13 +60,17 @@
 //XXX how to prevent evil people from accessing the statistics?
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
+//XXX this has to be replaced with the setting in config.php
+//$usegraph = 1;
+
 //some includes, the progressbar is used to show a progressbar while generating the graphs
-//XXX no lgin check needed 
+//XXX no login check needed 
 //include_once("login_check.php");
 
 require_once(dirname(__FILE__).'/admin/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/startup.php');  
 require_once(dirname(__FILE__).'/config-defaults.php');
+require_once(dirname(__FILE__).'/config.php');
 require_once(dirname(__FILE__).'/common.php');
 
 
@@ -79,10 +83,10 @@ $statisticsoutput ='';
 //TODO: Check if there is a question which is set to use graphs
 //True -> include
 //False -> forget about charts
-if (isset($_POST['usegraph'])) 
+if (isset($usegraph) && $usegraph == 1) 
 {
-    require_once('../classes/pchart/pchart/pChart.class');
-    require_once('../classes/pchart/pchart/pData.class');
+    require_once('classes/pchart/pchart/pChart.class');
+    require_once('classes/pchart/pchart/pData.class');
 
 	//$currentuser is created as prefix for pchart files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
@@ -1359,7 +1363,7 @@ if (isset($summary) && $summary)
 	//True -> include
 	//False -> forget about charts
 	//check if pchart should be used
-	if (isset($_POST['usegraph'])) 
+	if (isset($usegraph)) 
 	{
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
@@ -2887,7 +2891,7 @@ if (isset($summary) && $summary)
             
             //PCHART has to be enabled and we need some data
             //TODO: Check if THIS question should be shown at results
-			if (isset($_POST['usegraph']) && array_sum($gdata)>0) 
+			if (isset($usegraph) && array_sum($gdata)>0) 
 			{
 				$graph = "";
 				$p1 = "";
