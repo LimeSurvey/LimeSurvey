@@ -599,13 +599,14 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					      <tr><th colspan='4' height='10'></th></tr>\n";
 	$editquestion .= "\t\t\t</table></form>\n";
 	
+    $attributetranslations=questionAttributes(true);
 	foreach ($qidattributes as $qa)
 	{
 		$editquestion .= "\t\t\t<table class='attributetable' width='90%' border='0' cellspacing='0'>"
 		."<tr><td width='85%'>"
 		."<form action='$scriptname' method='post'>"
-		."<table width='100%'><tr><td width='65%'>"
-		.$qa['attribute']."</td>
+		."<table width='100%'><tr><td width='65%'><span title='".$attributetranslations[$qa['attribute']]['help']."'>"
+		.$attributetranslations[$qa['attribute']]['caption']."</span></td>
 					   <td align='center' width='25%'><input type='text' name='attribute_value' value='"
 		.$qa['value']."' maxlength='20' /></td>
 					   <td ><input type='submit' value='"
@@ -834,12 +835,16 @@ function questionjavascript($type, $qattributes)
     $jc=0;
     $newquestionoutput .= "\t\t\tvar qtypes = new Array();\n";
     $newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
+    $newquestionoutput .= "\t\t\tvar qhelp = new Array();\n\n";
+    $newquestionoutput .= "\t\t\tvar qcaption = new Array();\n\n";
     foreach ($qattributes as $key=>$val)
     {
-        foreach ($val as $vl)
+        foreach ($val as $vl)                                                  
         {
             $newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
             $newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
+            $newquestionoutput .= "\t\t\tqhelp[$jc]='".javascript_escape($vl['help'],false,true)."';\n";
+            $newquestionoutput .= "\t\t\tqcaption[$jc]='".javascript_escape($vl['caption'],false,true)."';\n";
             $jc++;
         }
     }
@@ -855,7 +860,7 @@ function questionjavascript($type, $qattributes)
                     if (qtypes[i] == type)
                         {
                         document.getElementById('QTattributes').style.display='';
-                        document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qnames[i], qnames[i]);
+                        document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qcaption[i]+' - '+qnames[i], qnames[i]);
                         }
                     }
                 }";
