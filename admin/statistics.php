@@ -3051,59 +3051,60 @@ if (isset($summary) && $summary)
 
 
 				case ":": //Array (Multiple Flexi) (Numbers)
-            	$qidattributes=getQuestionAttributes($qiqid);
-            	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-            		$maxvalue=$maxvalue['value'];
-            	} 
-            	else {
-            		$maxvalue=10;
-            	}
-				
-            	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-            		$minvalue=$minvalue['value'];
-            	} 
-            	else {
-            		$minvalue=1;
-            	}
-            	
-            	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-            		$stepvalue=$stepvalue['value'];
-            	} 
-            	else {
-            		$stepvalue=1;
-            	}
-            	
-				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-					$minvalue=0;
-					$maxvalue=1;
-					$stepvalue=1;
-				}
-				
-				list($qacode, $licode)=explode("_", $qanswer);
-				
-				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
-				//echo $qquery."<br />";
-				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
-				
-				while ($qrow=$qresult->FetchRow())
-				{
-				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
-					$fresult = db_execute_assoc($fquery);
-					while ($frow=$fresult->FetchRow())
-					{
-						//$alist[]=array($frow['code'], $frow['title']);
-						$ltext=$frow['title'];
-					}
-					$atext=$qrow[1];
-				}
-				
-				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) 
-				{
-				    $alist[]=array($i, $i);
-				}
-				
-				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
-				$qtitle .= "($qanswer)";
+                	$qidattributes=getQuestionAttributes($qiqid);
+                	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
+                		$maxvalue=$maxvalue['value'];
+                	} 
+                	else {
+                		$maxvalue=10;
+                	}
+    				
+                	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
+                		$minvalue=$minvalue['value'];
+                	} 
+                	else {
+                		$minvalue=1;
+                	}
+                	
+                	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
+                		$stepvalue=$stepvalue['value'];
+                	} 
+                	else {
+                		$stepvalue=1;
+                	}
+                	
+    				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+    					$minvalue=0;
+    					$maxvalue=1;
+    					$stepvalue=1;
+    				}
+    				
+    				list($qacode, $licode)=explode("_", $qanswer);
+    				
+    				$qquery = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$qiqid' AND code='$qacode' AND language='{$language}' ORDER BY sortorder, answer";
+    				//echo $qquery."<br />";
+    				$qresult=db_execute_num($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+    				
+    				while ($qrow=$qresult->FetchRow())
+    				{
+    				    $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+    					$fresult = db_execute_assoc($fquery);
+    					while ($frow=$fresult->FetchRow())
+    					{
+    						//$alist[]=array($frow['code'], $frow['title']);
+    						$ltext=$frow['title'];
+    					}
+    					$atext=$qrow[1];
+    				}
+    				
+    				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) 
+    				{
+    				    $alist[]=array($i, $i);
+    				}
+    				
+    				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
+    				list($myans, $mylabel)=explode("_", $qanswer);
+    				$qtitle .= "[$myans][$mylabel]";
 				break;
 				
 				case "F": //Array of Flexible
