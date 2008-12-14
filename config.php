@@ -22,7 +22,6 @@
 *  All settings in config.php overwrite the default values from config-defaults.php
 */
 
-
 // Basic Setup
 
 $databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
@@ -51,5 +50,3 @@ $defaultpass        =   'password';       // This is the default password for th
 $siteadminemail     =   'your@email.org'; // The default email address of the site administrator
 $siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   'Your Name';      // The name of the site administrator
-
-?>

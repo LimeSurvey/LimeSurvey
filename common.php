@@ -3017,12 +3017,12 @@ function questionAttributes($returnByName=false)
 	$qattributes["dualscale_header"]=array(
 	"types"=>"1",
 	"help"=>$clang->gT('Header for scale A'),
-    "caption"=>$clang->gT('Header Scale A'));
+    "caption"=>$clang->gT('Header scale A'));
     
 	$qattributes["dualscale_headerB"]=array(
 	"types"=>"1",
 	"help"=>$clang->gT('Header for scale B'),
-    "caption"=>$clang->gT('Header Scale B'));
+    "caption"=>$clang->gT('Header scale B'));
     
 	$qattributes["dropdown_separators"]=array(
 	"types"=>"1",
