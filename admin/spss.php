@@ -49,7 +49,7 @@ $typeMap = array(
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
-'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'DATETIME'),
+'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
 'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
