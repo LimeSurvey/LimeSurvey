@@ -13,6 +13,41 @@
 * $Id$
 */
 
+/* 
+ * We need this later:
+ *  1 - Array (Flexible Labels) Dual Scale 
+    5 - 5 Point Choice 
+    A - Array (5 Point Choice) 
+    B - Array (10 Point Choice) 
+    C - Array (Yes/No/Uncertain) 
+    D - Date 
+    E - Array (Increase, Same, Decrease) 
+    F - Array (Flexible Labels) 
+    G - Gender 
+    H - Array (Flexible Labels) by Column 
+    I - Language Switch 
+    K - Multiple Numerical Input 
+    L - List (Radio) 
+    M - Multiple Options 
+    N - Numerical Input 
+    O - List With Comment 
+    P - Multiple Options With Comments 
+    Q - Multiple Short Text 
+    R - Ranking 
+    S - Short Free Text 
+    T - Long Free Text 
+    U - Huge Free Text 
+    W - List (Flexible Labels) (Dropdown) 
+    X - Boilerplate Question 
+    Y - Yes/No 
+    Z - List (Flexible Labels) (Radio) 
+    ! - List (Dropdown)
+    : - Array (Flexible Labels) multiple drop down
+    ; - Array (Flexible Labels) multiple texts
+
+
+ */
+
 include_once("login_check.php");
 $language = $_SESSION['adminlang'];
 //RL: set language for questions and labels to current admin language for browsing responses
@@ -32,7 +67,7 @@ $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." 
 $actsurresult = db_execute_assoc($actsurquery) or safe_die($connect->ErrorMsg());
 $actsurrows = $actsurresult->FetchRow();
 
-if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
+if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 {
 
 	$surveyoptions = browsemenubar($clang->gT("Browse Responses"));
@@ -825,7 +860,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if (substr($fnames[$i][0], -5) == "other")
 						{
 							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 						}
 						else
 						{
@@ -873,7 +908,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					if (substr($fnames[$i][0], -5) == "other")
 					{
 						$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
-						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
+						.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 					}
 					else
 					{
@@ -1090,7 +1125,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$ranklist .= "style='display:none'";
 						}
-						$ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"></font><br />\n\n";
+						$ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editsurvey.RANK_$thisqid$j.value, document.editsurvey.d$myfname$j.value, document.editsurvey.RANK_$thisqid$j.id, this.id)\"><br />\n\n";
 					}
 
 					if (!isset($choicelist)) {$choicelist="";}
@@ -1109,10 +1144,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					."\t\t\t\t\t\t<strong>"
 					.$clang->gT("Your Choices").":</strong><br />\n"
 					.$choicelist
-					."\t\t\t\t\t</font></td>\n"
+					."\t\t\t\t\t</td>\n"
 					."\t\t\t\t\t<td align='left'>\n"
 					."\t\t\t\t\t\t<strong>"
-					.$clang->gT("Your Ranking").":</strong></font><br />\n"
+					.$clang->gT("Your Ranking").":</strong><br />\n"
 					.$ranklist
 					."\t\t\t\t\t</td>\n"
 					."\t\t\t\t</tr>\n"
@@ -1146,13 +1181,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if (substr($fnames[$i][0], -5) == "other")
 						{
 							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font>\n";
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' />\n";
 						}
 						else
 						{
 							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='{$fnames[$i][0]}' value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " />{$fnames[$i][6]}</font><br />\n";
+							$dataentryoutput .= " />{$fnames[$i][6]}<br />\n";
 						}
 						if ($i<$nfncount)
 						{
@@ -1218,7 +1253,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if (substr($thefieldname, -7) == "comment")
 						{
 							$dataentryoutput .= "\t\t<td><input type='text' name='{$fnames[$i][0]}' size='50' value='"
-							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></font></td>\n"
+							.htmlspecialchars($idrow[$fnames[$i][0]], ENT_QUOTES) . "' /></td>\n"
 							."\t</tr>\n";
 						}
 						elseif (substr($fnames[$i][0], -5) == "other")
@@ -1240,7 +1275,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$dataentryoutput .= "\t<tr>\n"
 							."\t\t<td><input type='checkbox' class='checkboxbtn' name=\"{$fnames[$i][0]}\" value='Y'";
 							if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " />{$fnames[$i][6]}</font></td>\n";
+							$dataentryoutput .= " />{$fnames[$i][6]}</td>\n";
 						}
 						$i++;
 					}
@@ -1283,7 +1318,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</td>\n"
 						."\t\t<td>\n";
 						for ($j=1; $j<=5; $j++)
 						{
@@ -1291,7 +1326,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
-						$dataentryoutput .= "\t\t</font></td>\n"
+						$dataentryoutput .= "\t\t</td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
@@ -1305,7 +1340,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</td>\n"
 						."\t\t<td>\n";
 						for ($j=1; $j<=10; $j++)
 						{
@@ -1313,7 +1348,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							if ($idrow[$fnames[$i][0]] == $j) {$dataentryoutput .= " checked";}
 							$dataentryoutput .= " />$j&nbsp;\n";
 						}
-						$dataentryoutput .= "\t\t</font></td>\n"
+						$dataentryoutput .= "\t\t</td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
@@ -1327,7 +1362,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</td>\n"
 						."\t\t<td>\n"
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='Y'";
 						if ($idrow[$fnames[$i][0]] == "Y") {$dataentryoutput .= " checked";}
@@ -1338,7 +1373,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='N'";
 						if ($idrow[$fnames[$i][0]] == "N") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />".$clang->gT("No")."&nbsp;\n"
-						."\t\t</font></td>\n"
+						."\t\t</td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
@@ -1352,7 +1387,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						$dataentryoutput .= "\t<tr>\n"
-						."\t\t<td align='right'>{$fnames[$i][6]}</font></td>\n"
+						."\t\t<td align='right'>{$fnames[$i][6]}</td>\n"
 						."\t\t<td>\n"
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='I'";
 						if ($idrow[$fnames[$i][0]] == "I") {$dataentryoutput .= " checked";}
@@ -1363,7 +1398,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						."\t\t\t<input type='radio' class='radiobtn' name='{$fnames[$i][0]}' value='D'";
 						if ($idrow[$fnames[$i][0]] == "D") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />Decrease&nbsp;\n"
-						."\t\t</font></td>\n"
+						."\t\t</td>\n"
 						."\t</tr>\n";
 						$i++;
 					}
@@ -1379,7 +1414,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 							$dataentryoutput .= "\t<tr>\n"
-							."\t\t<td align='right' valign='top'>{$fnames[$i][6]}</font></td>\n";
+							."\t\t<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
 							$fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$fnames[$i][8]}' and language='$language' order by sortorder, code";
 							$fresult = db_execute_assoc($fquery);
 							$dataentryoutput .= "\t\t<td>\n";
@@ -1394,7 +1429,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                             if ($idrow[$fnames[$i][0]] == '') {$dataentryoutput .= " checked";}
                             $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
                             
-							$dataentryoutput .= "\t\t</font></td>\n"
+							$dataentryoutput .= "\t\t</td>\n"
 							."\t</tr>\n";
 							$i++;
 						}
@@ -1429,7 +1464,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    {
 						   $fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						   $dataentryoutput .= "\t<tr>\n"
-						                     . "\t\t<td align='right' valign='top'>{$fnames[$i][6]}</font></td>\n";
+						                     . "\t\t<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
 							$dataentryoutput .= "\t\t<td>\n";
 							$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n";
 							for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
@@ -1438,7 +1473,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							   if($idrow[$fnames[$i][0]] == $ii) {$dataentryoutput .= " selected";}
 							   $dataentryoutput .= ">$ii</option>\n";
 							}
-							$dataentryoutput .= "\t\t</font></td>\n"
+							$dataentryoutput .= "\t\t</td>\n"
 							."\t</tr>\n";
 						   $i++;
 						}
@@ -1452,11 +1487,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    {
 						   $fieldn = substr($fnames[$i][0], 0, strlen($fnames[$i][0]));
 						   $dataentryoutput .= "\t<tr>\n"
-						                     . "\t\t<td align='right' valign='top'>{$fnames[$i][6]}</font></td>\n";
+						                     . "\t\t<td align='right' valign='top'>{$fnames[$i][6]}</td>\n";
 							$dataentryoutput .= "\t\t<td>\n";
 							$dataentryoutput .= "\t\t\t<input type='text' name='{$fnames[$i][0]}' value='";
 							if(!empty($idrow[$fnames[$i][0]])) {$dataentryoutput .= $idrow[$fnames[$i][0]];}
-							$dataentryoutput .= "' />\t\t</font></td>\n"
+							$dataentryoutput .= "' />\t\t</td>\n"
 							."\t</tr>\n";
 						   $i++;
 						}
@@ -1748,7 +1783,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		$dataentryoutput .= "\t<tr>\n";
 		$delresult = $connect->Execute($delquery) or safe_die ("Couldn't delete record $id<br />\n".$connect->ErrorMsg());
 		$dataentryoutput .= "\t\t<td align='center'><br /><strong>".$clang->gT("Record Deleted")." (ID: $id)</strong><br /><br />\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a></font>\n"
+		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
@@ -1804,8 +1839,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		$dataentryoutput .= $surveyoptions
 		."<table><tr><td></td></tr></table>";
 
-		$dataentryoutput .= "<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
+		$dataentryoutput .= "<form action='$scriptname?action=dataentry' name='addsurvey' method='post' id='addsurvey'>\n"
+		."<table width='100%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='3' height='4' class='header'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr>\n"
@@ -1813,7 +1848,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0) {$dataentryoutput.=$langlistbox;}
 		$dataentryoutput .= "</td><td colspan='2' align='center'>\n"
 		."\t\t\t<strong>".$thissurvey['name']."</strong>\n"
-		."\t\t\t<br />".$thissurvey['description']."</font>\n"
+		."\t\t\t<br />".$thissurvey['description']."\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
@@ -1821,7 +1856,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
-			."\t\t<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></font></td>\n"
+			."\t\t<td valign='top' align='right' width='30%'><font color='red'>*</font><strong>".$blang->gT("Token").":</strong></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);'/>\n"
 			."\t\t</td>\n"
@@ -1849,7 +1884,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'><strong>"
-			.$blang->gT("Datestamp").":</strong></font></td>\n"
+			.$blang->gT("Datestamp").":</strong></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='datestamp' value='$localtimedate' />\n"
 			."\t\t</td>\n"
@@ -1860,7 +1895,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
 			."\t\t<td valign='top' align='right' width='30%'><strong>"
-			.$blang->gT("IP-Address").":</strong></font></td>\n"
+			.$blang->gT("IP-Address").":</strong></td>\n"
 			."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n"
 			."\t\t\t<input type='text' name='ipaddr' value='NULL' />\n"
 			."\t\t</td>\n"
@@ -1875,7 +1910,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$deqquery = "SELECT * FROM ".db_table_name("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$language}'";
 			$deqresult = db_execute_assoc($deqquery);
 			$dataentryoutput .= "\t<tr>\n"
-			."\t\t<td colspan='3' align='center'><strong>{$degrow['group_name']}</strong></font></td>\n"
+			."\t\t<td colspan='3' align='center'><strong>{$degrow['group_name']}</strong></td>\n"
 			."\t</tr>\n";
 			$gid = $degrow['gid'];
 
@@ -1984,14 +2019,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 								case "1":
 									$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
-								$ansresult=db_execute_assoc($ansquery);
-								while ($ansrow=$ansresult->FetchRow())
-								{
-									$conditions[]=$ansrow['answer'];
-								}
-								$operator=$clang->gT("OR");
-								if (isset($conditions)) $conditions = array_unique($conditions);
-								break;
+								    $ansresult=db_execute_assoc($ansquery);
+								    while ($ansrow=$ansresult->FetchRow())
+								    {
+									    $conditions[]=$ansrow['answer'];
+								    }
+								    $operator=$clang->gT("OR");
+								    if (isset($conditions)) $conditions = array_unique($conditions);
+								    break;
 
 								case "A":
 									case "B":
@@ -2046,7 +2081,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				{
                     if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";} //Do no alternate on explanation row
 					$explanation = "<font size='1'>[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
-					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$explanation</font></td></tr>\n";
+					$dataentryoutput .= "<tr bgcolor='#FFEEEE'><td colspan='3' align='left'>$explanation</td></tr>\n";
 				}
 
 				//END OF GETTING CONDITIONS
@@ -2054,11 +2089,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$qid = $deqrow['qid'];
 				$fieldname = "$surveyid"."X"."$gid"."X"."$qid";
 				$dataentryoutput .= "\t<tr class='$bgc'>\n"
-				."\t\t<td valign='top' width='1%'><font size='1'>{$deqrow['title']}</font></font></td>\n"
+				."\t\t<td valign='top' width='1%'><font size='1'>{$deqrow['title']}</font></td>\n"
 				."\t\t<td valign='top' align='right' width='30%'>";
 				if ($deqrow['mandatory']=="Y") //question is mandatory
 				{
-					$dataentryoutput .= "<font color='red'>*</font></font>";
+					$dataentryoutput .= "<font color='red'>*</font>";
 				}
 				$dataentryoutput .= "<strong>{$deqrow['question']}</strong></td>\n"
 				."\t\t<td valign='top'  align='left' style='padding-left: 20px'>\n";
@@ -2100,7 +2135,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					{
 						$dataentryoutput .= "\t\t\t\t<tr><td align='right'>"
 						.$dearow['answer']
-						."</font></td>\n"
+						."</td>\n"
 						."\t\t\t\t\t<td><input type='text' name='$fieldname{$dearow['code']}' /></td>\n"
 						."\t\t\t\t</tr>\n";
 					}
@@ -2132,38 +2167,41 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
-							.$blang->gT("Other").":</font>"
+							.$blang->gT("Other").":"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 						break;
 					case "1": // multi scale^
 						$deaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY sortorder, answer";
 						$dearesult = db_execute_assoc($deaquery);
-                        $dataentryoutput .= "\t\t\t</tr>\n\t\t\t<tr>";
+                        $dataentryoutput .='<table><tr><td></td><th>'.$clang->gT('Label 1').'</th><th>'.$clang->gT('Label 2').'</th></tr>';
+
 						while ($dearow = $dearesult->FetchRow())
 						{
 							// first scale
 							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
-							$dataentryoutput .= "\t\t\t<td></td><td><b>{$dearow['answer']}</b><br>Label 1<br><select name='$fieldname{$dearow['code']}#0'>\n";
-							$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
+							$dataentryoutput .= "<tr><td>{$dearow['answer']}</td><td>";
+                            $dataentryoutput .= "<select name='$fieldname{$dearow['code']}#0'>\n";
+							$dataentryoutput .= "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
-								$dataentryoutput .= "\t\t\t\t<option value='{$delrow['code']}'";
+								$dataentryoutput .= "<option value='{$delrow['code']}'";
 								$dataentryoutput .= ">{$delrow['title']}</option>\n";
 							}
 							// second scale
-                            $dataentryoutput .= "\t\t\t</select></td>\n";
+                            $dataentryoutput .= "</select></td>\n";
 							$delquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid1']} ORDER BY sortorder, lid, code";
 							$delresult = db_execute_assoc($delquery);
-							$dataentryoutput .= "\t\t\t<td><br>Label 2<br><select name='$fieldname{$dearow['code']}#1'>\n";
-							$dataentryoutput .= "\t\t\t\t<option selected='selected' value=''>".$clang->gT("Please choose")."..</option>\n";
+							$dataentryoutput .= "<td>";
+                            $dataentryoutput .="<select name='$fieldname{$dearow['code']}#1'>\n";
+							$dataentryoutput .= "<option selected='selected' value=''>".$clang->gT("Please choose...")."</option>\n";
 							while ($delrow = $delresult->FetchRow())
 							{
-								$dataentryoutput .= "\t\t\t\t<option value='{$delrow['code']}'";
+								$dataentryoutput .= "<option value='{$delrow['code']}'";
 								$dataentryoutput .= ">{$delrow['title']}</option>\n";
 							}
-                            $dataentryoutput .= "\t\t\t</select></td></tr>\n"; 
+                            $dataentryoutput .= "</select></td></tr>\n"; 
 						}
 						$oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$baselang}'";
 						$oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />".$connect->ErrorMsg());
@@ -2179,10 +2217,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
-							.$clang->gT("Other").":</font>"
+							.$clang->gT("Other").":"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
-                        // $dataentryoutput .= "</tr>"; 
+                         $dataentryoutput .= "</tr></table>"; 
 						break;
 					case "L": //LIST drop-down/radio-button list
 					case "!":
@@ -2262,7 +2300,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						if ($fother == "Y")
 						{
 							$dataentryoutput .= "\t\t\t"
-							.$blang->gT("Other").":</font>"
+							.$blang->gT("Other").":"
 							."<input type='text' name='{$fieldname}other' value='' />\n";
 						}
 						break;
@@ -2435,14 +2473,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					."\t\t\t\t<tr>\n"
 					."\t\t\t\t\t<td align='left' valign='top' width='200'>\n"
 					."\t\t\t\t\t\t<strong>"
-					.$blang->gT("Your Choices").":</strong></font><br />\n"
+					.$blang->gT("Your Choices").":</strong><br />\n"
 					.$choicelist
 					."\t\t\t\t\t</td>\n"
 					."\t\t\t\t\t<td align='left'>\n"
 					."\t\t\t\t\t\t<strong>"
 					.$blang->gT("Your Ranking").":</strong><br />\n"
 					.$ranklist
-					."\t\t\t\t\t</font></td>\n"
+					."\t\t\t\t\t</td>\n"
 					."\t\t\t\t</tr>\n"
 					."\t\t\t</table>\n"
 					."\t\t\t<input type='hidden' name='multi' value='$anscount' />\n"
@@ -2483,7 +2521,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							}
 							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
+							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
 							$upto++;
 						}
 						if ($deqrow['other'] == "Y")
@@ -2500,7 +2538,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						{
 							$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' id='answer$fieldname{$mearow['code']}' value='Y'";
 							if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
-							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label></font><br />\n";
+							$dataentryoutput .= " /><label for='$fieldname{$mearow['code']}'>{$mearow['answer']}</label><br />\n";
 						}
 						if ($deqrow['other'] == "Y")
 						{
@@ -2538,7 +2576,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$dataentryoutput .= "\t\t\t<input type='checkbox' class='checkboxbtn' name='$fieldname{$mearow['code']}' value='Y'";
 						if ($mearow['default_value'] == "Y") {$dataentryoutput .= " checked";}
 						$dataentryoutput .= " />{$mearow['answer']}\n";
-						$dataentryoutput .= "\t\t</font></td>\n";
+						$dataentryoutput .= "\t\t</td>\n";
 						//This is the commments field:
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname{$mearow['code']}comment' size='50' />\n";
@@ -2548,7 +2586,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					if ($deqrow['other'] == "Y")
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$blang->gT("Other").":</font></td>\n";
+						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$blang->gT("Other").":</td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
 						$dataentryoutput .= "\t\t</td>\n";
@@ -2582,7 +2620,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
@@ -2591,7 +2629,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$dataentryoutput .= "\t\t\t\t<option value='$i'>$i</option>\n";
 						}
 						$dataentryoutput .= "\t\t\t</select>\n";
-						$dataentryoutput .= "\t\t</font></td>\n";
+						$dataentryoutput .= "\t\t</td>\n";
 						$dataentryoutput .= "\t</tr>\n";
 					}
 					$dataentryoutput .= "</table>\n";
@@ -2603,7 +2641,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
@@ -2624,7 +2662,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
@@ -2644,7 +2682,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					while ($mearow = $mearesult->FetchRow())
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</font></td>\n";
+						$dataentryoutput .= "\t\t<td align='right'>{$mearow['answer']}</td>\n";
 						$dataentryoutput .= "\t\t<td>\n";
 						$dataentryoutput .= "\t\t\t<select name='$fieldname{$mearow['code']}'>\n";
 						$dataentryoutput .= "\t\t\t\t<option value=''>".$blang->gT("Please choose")."..</option>\n";
@@ -2688,6 +2726,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					    {
 						  $lid=$data['lid'];
 						}
+                        $labelcodes=array();
 						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid=$lid and language='$language' ORDER BY sortorder, title";
 						$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
 					    while ($data=$lresult->FetchRow())
@@ -2725,7 +2764,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     							   $dataentryoutput .= "\t\t\t\t<option value='$ii'";
     							   $dataentryoutput .= ">$ii</option>\n";
     							}
-    							$dataentryoutput .= "\t\t</select></font></td>\n";
+    							$dataentryoutput .= "\t\t</select></td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
 						   $i++;
@@ -2744,7 +2783,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
 						$lquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid=$lid and language='$language' ORDER BY sortorder, title";
 						$lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />".htmlspecialchars($connect->ErrorMsg()));
-					    while ($data=$lresult->FetchRow())
+					    $labelcodes=array();
+                        while ($data=$lresult->FetchRow())
 					    {
 					      $dataentryoutput .= "    <th>{$data['title']}</th>\n";
 					      $labelcodes[]=$data['code'];
@@ -2773,7 +2813,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							{
     							$dataentryoutput .= "\t\t<td>\n";
     							$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname{$mearow['code']}_$ld' />";
-    							$dataentryoutput .= "\t\t</font></td>\n";
+    							$dataentryoutput .= "\t\t</td>\n";
     						}
 							$dataentryoutput .= "\t</tr>\n";
 						   $i++;
@@ -2915,7 +2955,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
                       
 
 				$dataentryoutput .= "</table>\n";
-				$dataentryoutput .= "\t\t</font></td>\n";
+				$dataentryoutput .= "\t\t</td>\n";
 				$dataentryoutput .= "\t</tr>\n";
 			}
 			$dataentryoutput .= "\t<tr>\n";
@@ -2930,7 +2970,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				$dataentryoutput .= " />\n";
 			}
-			$dataentryoutput .= "\t\t</font></td>\n";
+			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 		}
 		elseif ($thissurvey['active'] == "N")
@@ -2938,7 +2978,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("This survey is not yet active. Your response cannot be saved")."\n";
-			$dataentryoutput .= "\t\t</strong></font></font></td>\n";
+			$dataentryoutput .= "\t\t</strong></font></td>\n";
 			$dataentryoutput .= "\t</tr>\n";
 		}
 		else
@@ -2947,7 +2987,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "\t<tr>\n";
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong></font><br />\n";
-			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."</font><br /><br />\n";
+			$dataentryoutput .= "\t\t\t".$clang->gT("The survey you selected does not exist")."<br /><br />\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
 			$dataentryoutput .= "\t\t</td>\n";
 			$dataentryoutput .= "\t</tr>\n";
