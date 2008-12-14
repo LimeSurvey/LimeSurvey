@@ -220,6 +220,10 @@ if(isset($surveyid))
 	elseif ($action == "delgroupnone" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 		if (!isset($gid)) $gid=returnglobal('gid');
+
+        $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
+        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
+        
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
 		
@@ -259,6 +263,9 @@ if(isset($surveyid))
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
 			}
 		}
+        $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
+        $result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
+        
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg()) ;
 		if ($result)
