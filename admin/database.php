@@ -1270,8 +1270,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
 		. "'{$_POST['attribute1']}', '{$_POST['attribute2']}', \n"
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
-        . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n'"
-		. date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', \n'"
+        . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n"
+		. "'".date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', \n"
         . "'{$_POST['usecaptcha']}', '{$_POST['publicstatistics']}')";
 
 		$isresult = $connect->Execute($isquery);

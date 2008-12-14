@@ -887,12 +887,12 @@ if (isset($grouparray) && $grouparray) {
 						}
 					}
                     if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;} 
-		    $other = $questionrowdata["other"]; //Get 'other' field value
+		            $other = $questionrowdata["other"]; //Get 'other' field value
 
-    		// translate internal links
-		    $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
-		    $questionrowdata['question']=translink('survey', $surveyid, $newsid, $questionrowdata['question']);
-		    $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
+    		        // translate internal links
+		            $questionrowdata['title']=translink('survey', $surveyid, $newsid, $questionrowdata['title']);
+		            $questionrowdata['question']=translink('survey', $surveyid, $newsid, $questionrowdata['question']);
+		            $questionrowdata['help']=translink('survey', $surveyid, $newsid, $questionrowdata['help']);
 
                     $newvalues=array_values($questionrowdata);
                     if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
@@ -900,12 +900,12 @@ if (isset($grouparray) && $grouparray) {
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 
-					$qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+			        $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
                     if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 		            if ($newquestion)
-				{
-				 	$newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
-				}
+			        {
+				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
+			        }
 					
 					$newrank=0;
 					$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
