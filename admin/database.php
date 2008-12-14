@@ -450,6 +450,14 @@ if(isset($surveyid))
 			$_POST['other']='N';
 		}
 
+        // These are the questions types that have no validation - so zap it accordingly
+        
+        if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || $_POST['type']== "W" || $_POST['type']== "Z" || 
+            $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" || $_POST['type']== "S" || $_POST['type']== "T" || 
+            $_POST['type']== "U" || $_POST['type']== "N" || $_POST['type']== "K" || $_POST['type']== "X" || $_POST['type']== "")
+        {
+            $_POST['preg']='';
+        }
         
         
         
