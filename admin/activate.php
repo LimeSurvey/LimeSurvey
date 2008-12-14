@@ -305,7 +305,7 @@ else
 	." AND ".db_table_name('questions').".sid={$postsid} "
 	." AND ".db_table_name('groups').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
 	." AND ".db_table_name('questions').".language='".GetbaseLanguageFromSurveyid($postsid). "' "
-	." ORDER BY ".db_table_name('groups').".group_order, title";
+	." ORDER BY group_order, question_order";
 	$aresult = db_execute_assoc($aquery);
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{

@@ -2022,7 +2022,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	.db_table_name('questions').".sid=$surveyid AND "
 	.db_table_name('questions').".language='{$s_lang}' AND "
 	.db_table_name('groups').".language='{$s_lang}' "
-	." ORDER BY {$dbprefix}groups.group_order, title";
+	." ORDER BY group_order, question_order";
 	$aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 	while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
 	{
