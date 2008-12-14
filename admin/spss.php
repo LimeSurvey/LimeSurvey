@@ -613,8 +613,9 @@ if  ($subaction=='dlstructure')
 			    if ($fields[$fieldno]['code'] == 'other')
 			    {
 				    $strTmp = strip_tags_full($row[$fieldno]);
+                    $len = mb_strlen($strTmp); 
 				    if($len > $fields[$fieldno]['size']){
-					    $fields[$fieldno]['size'] = mb_strlen($strTmp);
+					    $fields[$fieldno]['size'] = $len;
 				    }
                     if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
                     {
