@@ -1280,7 +1280,7 @@ if ($subaction == "email" &&
 }
 
 
-if ($subaction == "remind" && 
+if ($subaction == "remind" && //XXX
 	($sumrows5['edit_survey_property'] || 
 		$sumrows5['activate_survey'] ||
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
@@ -1296,7 +1296,7 @@ if ($subaction == "remind" &&
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselang);
-
+		
 		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
 		foreach ($surveylangs as $language)
 		{
@@ -1390,16 +1390,18 @@ if ($subaction == "remind" &&
 	}
 	else
 	{
+		
 		$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
 
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselanguage);
-
+		
 		foreach ($surveylangs as $language)
 		{
 			$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 			$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+			
 		}
 
 		if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
@@ -1453,7 +1455,7 @@ if ($subaction == "remind" &&
 		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 		// TLR change to put date into sent
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent<>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
@@ -1463,7 +1465,7 @@ if ($subaction == "remind" &&
 		$tokenoutput .= "<table width='500' align='center' >\n"
 			."\t<tr>\n"
 			."\t\t<td><font size='1'>\n";
-
+		
 
 
 		if ($emcount > 0)
@@ -1479,7 +1481,7 @@ if ($subaction == "remind" &&
 				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
-
+				
 				$emrow['language']=trim($emrow['language']);
 				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 				$found = array_search($emrow['language'], $surveylangs);
@@ -1495,8 +1497,8 @@ if ($subaction == "remind" &&
 				{
 					$ishtml=false;
 				}
-
-				if ($ishtml === false)
+				
+				if ($ishtml == false)
 				{
 					if ( $modrewrite ) 
 					{
@@ -1518,12 +1520,14 @@ if ($subaction == "remind" &&
 						$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
 						$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
 					}
-
+				}
+				
 					$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 					$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-
+					
 					if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
 					{
+						
 						// Put date into remindersent
 						$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 						$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
@@ -1542,7 +1546,7 @@ if ($subaction == "remind" &&
 
 					}
 					$lasttid = $emrow['tid'];
-				}
+				
             }
 			if ($ctcount > $emcount)
 			{
