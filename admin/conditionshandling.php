@@ -83,11 +83,11 @@ $conditionsoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing
 if (!isset($surveyid) || !$surveyid)
 {
 	$conditionsoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
-	.$clang->gT("Conditions Manager").":</strong></font></td></tr>\n"
+	.$clang->gT("Conditions manager").":</strong></font></td></tr>\n"
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a survey")."<br /><br />"
 	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
+	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -97,11 +97,11 @@ if (!isset($surveyid) || !$surveyid)
 if (!isset($qid) || !$qid)
 {
 	$conditionsoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
-	.$clang->gT("Conditions Manager").":</strong></font></td></tr>\n"
+	.$clang->gT("Conditions manager").":</strong></font></td></tr>\n"
 	."\t<tr><td align='center'><br /><font color='red'><strong>"
 	.$clang->gT("Error")."</strong></font><br />".$clang->gT("You have not selected a question")."<br /><br />"
 	."<input type='submit' value='"
-	.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
+	.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br /></td></tr>\n"
 	."</table>\n"
 	."</body>\n</html>";
 	return;
@@ -109,7 +109,7 @@ if (!isset($qid) || !$qid)
 
 	$conditionsoutput .= "\t<div class='menubar'>"
     ."<div class='menubar-title'>"
-	."<strong>".$clang->gT("Conditions Designer").":</strong> "
+	."<strong>".$clang->gT("Conditions designer").":</strong> "
 	."</div>\n";
 
 $extraGetParams ="";
@@ -121,18 +121,18 @@ if (isset($qid) && isset($gid))
 $conditionsoutput .= "\t<div class='menubar-main'>\n"
 ."\t\t<div class='menubar-left'>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid$extraGetParams', '_top')\" onmouseout=\"hideTooltip()\""
-."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
+."onmouseover=\"showTooltip(event,'".$clang->gT("Return to survey administration", "js")."');return false\">" .
 "<img name='HomeButton' src='$imagefiles/home.png' alt='' /></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
-."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show Conditions for this question", "js")."');return false\" >" 
+."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show conditions for this question", "js")."');return false\" >" 
 ."<img name='SummaryButton' src='$imagefiles/summary.png' title='' alt='' /></a>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=editconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
-."onmouseover=\"showTooltip(event,'".$clang->gT("Add and Edit Conditions", "js")."');return false\">" 
+."onmouseover=\"showTooltip(event,'".$clang->gT("Add and edit conditions", "js")."');return false\">" 
 ."<img name='ViewAllButton' src='$imagefiles/document.png' title='' alt='' /></a>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
-."onmouseover=\"showTooltip(event,'".$clang->gT("Copy Conditions", "js")."');return false\">" 
+."onmouseover=\"showTooltip(event,'".$clang->gT("Copy conditions", "js")."');return false\">" 
 ."<img name='ViewAllButton' src='$imagefiles/document.png' title='' alt='' /></a>\n";
 
 
@@ -143,10 +143,10 @@ $conditionsoutput .="\t\t\t</div><div class='menubar-right'>\n"
 		."<img hspace=\"0\" border=\"0\" alt=\"\" src=\"$imagefiles/seperator.gif\"/>\n"
 		."<a href=\"#\" onclick=\"showhelp('show')\"" 
 		."onmouseout=\"hideTooltip()\"" 
-		."title=\"".$clang->gTview("Show Help")."\"" 
-		."onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">" 
+		."title=\"".$clang->gTview("Show help")."\"" 
+		."onmouseover=\"showTooltip(event,'".$clang->gT("Show help", "js")."');return false\">" 
 		."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-		."alt='". $clang->gT("Show Help")."' /></a>";
+		."alt='". $clang->gT("Show help")."' /></a>";
 
 
 $conditionsoutput .= "\t</div></div></div>\n"
@@ -1103,7 +1103,7 @@ $conditionsoutput .= "\t\t\tvar Keys = new Array();\n"
 ."\t\t\t\t\t\tif (document.getElementById('method').value == 'RX')\n"
 ."\t\t\t\t\t\t\t{\n"
 ."\t\t\t\t\t\t\tdocument.getElementById('method').value = '==';\n"
-."\t\t\t\t\t\t\t$('#ValOrRegExLabel').text('".$clang->gT("Constant Value or @SGQA@ code")."');\n"
+."\t\t\t\t\t\t\t$('#ValOrRegExLabel').text('".$clang->gT("Constant value or @SGQA@ code")."');\n"
 ."\t\t\t\t\t\t\t$('#conditiontarget > ul').tabs('enable', 0);\n"
 ."\t\t\t\t\t\t\t}\n"
 ."\t\t\t\t\t\t$('#conditiontarget > ul').tabs('select', '#CANSWERSTAB');\n"
@@ -1125,11 +1125,11 @@ $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[docume
 ."\t{\n"
 ."\t\t$('#conditiontarget > ul').tabs('select', '#CONST_RGX');\n"
 ."\t\t$('#conditiontarget > ul').tabs('disable', 0);\n"
-."\t\t$('#ValOrRegExLabel').text('".$clang->gT("Regular Expression")."');\n"
+."\t\t$('#ValOrRegExLabel').text('".$clang->gT("Regular expression")."');\n"
 ."\t}\n"
 ."\telse {\n"
 ."\t\t$('#conditiontarget > ul').tabs('enable', 0);\n"
-."\t\t$('#ValOrRegExLabel').text('".$clang->gT("Constant Value or @SGQA@ code")."');\n"
+."\t\t$('#ValOrRegExLabel').text('".$clang->gT("Constant value or @SGQA@ code")."');\n"
 ."\t}\n"
 ."}\n"
 ."//-->\n"
@@ -1179,10 +1179,10 @@ if ($subaction=='' ||
 			."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t<input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />\n";
 
-		$conditionsoutput .= "\t\t<input type='submit' id='deleteallconditionsbtn' value='".$clang->gT("Delete All Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')\" />\n";
+		$conditionsoutput .= "\t\t<input type='submit' id='deleteallconditionsbtn' value='".$clang->gT("Delete all conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')\" />\n";
 		if ($scenariocount > 1)
 		{
-			$conditionsoutput .= "\t\t<input type='submit' id='renumberscenariosbtn' value='".$clang->gT("Renumber Scenarios")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; return true;} else {return false;}\"/>\n";
+			$conditionsoutput .= "\t\t<input type='submit' id='renumberscenariosbtn' value='".$clang->gT("Renumber scenarios")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; return true;} else {return false;}\"/>\n";
 		}
 	}
 	else
@@ -1231,7 +1231,7 @@ if ($subaction=='' ||
 				."<input type='hidden' name='sid' value='$surveyid' />\n"
 				."<input type='hidden' name='qid' value='$qid' />\n"
 				."<input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;\n"
-				."<input type='submit' name='scenarioupdated' value='".$clang->gT("Update Scenario")."' />\n"
+				."<input type='submit' name='scenarioupdated' value='".$clang->gT("Update scenario")."' />\n"
 				."<input type='button' name='cancel' value='".$clang->gT("Cancel")."' onclick=\"$('#editscenario{$scenarionr['scenario']}').hide('slow');document.getElementById('editscenariobtn{$scenarionr['scenario']}').disabled=false;\"/>\n"
 				."</form></td>\n"
 				. "<td width='10%' valign='middle' align='right'><form id='deletescenario{$scenarionr['scenario']}' action='$scriptname?action=conditions' method='post' name='deletescenario{$scenarionr['scenario']}' style='margin-bottom:0;'>\n";
@@ -1241,8 +1241,8 @@ if ($subaction=='' ||
 					$subaction == "renumberscenarios" || $subaction == "updatescenario" ||
 					$subaction == "deletescenario" || $subaction == "delete") )
 			{
-				$conditionsoutput .= "\t<input type='submit' value='".$clang->gT("Delete Scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')\" />\n";
-				$conditionsoutput .= "\t<input type='button' id='editscenariobtn{$scenarionr['scenario']}' value='".$clang->gT("Edit Scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"$('#editscenario{$scenarionr['scenario']}').show('slow');this.disabled=true;\" />\n";
+				$conditionsoutput .= "\t<input type='submit' value='".$clang->gT("Delete scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')\" />\n";
+				$conditionsoutput .= "\t<input type='button' id='editscenariobtn{$scenarionr['scenario']}' value='".$clang->gT("Edit scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"$('#editscenario{$scenarionr['scenario']}').show('slow');this.disabled=true;\" />\n";
 			}
 
 			$conditionsoutput .= "\t<input type='hidden' name='scenario' value='{$scenarionr['scenario']}' />\n"
@@ -1273,12 +1273,12 @@ if ($subaction=='' ||
 			// this array will be used soon,
 			// to explain wich conditions is used to evaluate the question
 			$method = array( "<"  => $clang->gT("Less than"),
-					"<=" => $clang->gT("Less than or Equal to"),
-					"==" => $clang->gT("Equals"),
-					"!=" => $clang->gT("Not Equal to"),
-					">=" => $clang->gT("Greater than or Equal to"),
+					"<=" => $clang->gT("Less than or equal to"),
+					"==" => $clang->gT("equals"),
+					"!=" => $clang->gT("Not equal to"),
+					">=" => $clang->gT("Greater than or equal to"),
 					">"  => $clang->gT("Greater than"),
-					"RX" => $clang->gT("Regular Expression")
+					"RX" => $clang->gT("Regular expression")
 				       );
 
 			if ($conditionscount > 0)
@@ -1380,7 +1380,7 @@ if ($subaction=='' ||
 						if ($rows['value'] == ' ' ||
 								$rows['value'] == '')
 						{
-							$conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No Answer")."\n";
+							$conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No answer")."\n";
 							$bIsPredefinedAnswer = true;
 						} 
 						else
@@ -1473,7 +1473,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 	$conditionsoutput .= "\t<table width='100%' cellpadding='5' cellspacing='0'><tr>\n"
 		."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
 		."\t\t<strong>"
-		.$clang->gT("Copy Conditions")."</strong>\n"
+		.$clang->gT("Copy conditions")."</strong>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
@@ -1513,7 +1513,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 			."\t</tr>\n";
 
 		$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
-			."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" />"
+			."<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" />"
 			."\t\t\n";
 
 		$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
@@ -1563,11 +1563,11 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='5'>\n";
 	if ($subaction == "editthiscondition" &&  isset($p_cid))
 	{
-		$mytitle = $clang->gT("Edit Condition");
+		$mytitle = $clang->gT("Edit condition");
 	}
 	else
 	{
-		$mytitle = $clang->gT("Add Condition");
+		$mytitle = $clang->gT("Add condition");
 	}
 
 	$conditionsoutput .= "\t<tr class='settingcaption'>\n"
@@ -1583,7 +1583,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	if (isset($scenariocount) && $scenariocount == 1)
 	{
 		$scenarioAddBtn = "\t\t\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\"><img width='14' heigth='14' border='0' src='$imagefiles/add.png' /></a>\n";
-		$scenarioTxt = "<span id='defaultscenariotxt'>".$clang->gT("Default Scenario")."</span>";
+		$scenarioTxt = "<span id='defaultscenariotxt'>".$clang->gT("Default scenario")."</span>";
 		$scenarioInputStyle = "style = 'display: none;'";
 	}
 	else
@@ -1594,7 +1594,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 
 	$conditionsoutput .= "\t<tr class='conditiontbl'>\n"
-		. "\t\t<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</td>\n"
+		. "\t\t<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("scenario")."</td>\n"
 		. "\t\t<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		. "$scenarioTxt</td>\n"
 		. "\t</tr>\n"
@@ -1640,10 +1640,10 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n"
 		. "\t\t\t<option value='<'>".$clang->gT("Less than")."</option>\n"
 		. "\t\t\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
-		. "\t\t\t<option selected='selected' value='!='>".$clang->gT("Not Equal to")."</option>\n"	
-		. "\t\t\t<option selected='selected' value='>='>".$clang->gT("Greater than or Equal to")."</option>\n"
+		. "\t\t\t<option selected='selected' value='!='>".$clang->gT("Not equal to")."</option>\n"	
+		. "\t\t\t<option selected='selected' value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
 		. "\t\t\t<option selected='selected' value='>'>".$clang->gT("Greater than")."</option>\n"
-		. "\t\t\t<option selected='selected' value='RX'>".$clang->gT("Regular Expression")."</option>\n"
+		. "\t\t\t<option selected='selected' value='RX'>".$clang->gT("Regular expression")."</option>\n"
 		. "\t\t</select></td>\n"
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
@@ -1671,7 +1671,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t</div>\n\t\t\t\n";
 	$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
 		."\t\t<textarea name='ValOrRegEx' id='ValOrRegEx' cols='113' rows='5'></textarea>\n"
-		."\t\t<br /><span id='ValOrRegExLabel'>".$clang->gT("Constant Value or @SGQA@ code")."</span>\n"
+		."\t\t<br /><span id='ValOrRegExLabel'>".$clang->gT("Constant value or @SGQA@ code")."</span>\n"
 		."\t\t</div>\n"
 		."\t\t</div>\n";
 
@@ -1690,13 +1690,13 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{
-		$submitLabel = $clang->gT("Update Condition");
+		$submitLabel = $clang->gT("Update condition");
 		$submitSubaction = "updatecondition";
 		$submitcid = sanitize_int($p_cid);
 	}
 	else
 	{
-		$submitLabel = $clang->gT("Add Condition");
+		$submitLabel = $clang->gT("Add condition");
 		$submitSubaction = "insertcondition";
 		$submitcid = "";
 	}

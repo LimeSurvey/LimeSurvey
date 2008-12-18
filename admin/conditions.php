@@ -30,14 +30,14 @@ if (empty($surveyid)) {die("No SID provided.");}
 
 $conditionsoutput .= "<table width='100%' border='0' bgcolor='#555555' cellspacing='0' cellpadding='0'>\n"
 ."\t<tr><td align='center'><font color='white'><strong>"
-.$clang->gT("Condition Designer")."</strong></font></td></tr>\n"
+.$clang->gT("Condition designer")."</strong></font></td></tr>\n"
 ."</table>\n";
 
 
 if (!isset($surveyid))
 {
 	$conditionsoutput .= "<br /><center><strong>"
-	.$clang->gT("You have not selected a Survey.")." ".$clang->gT("You cannot run this script directly.")
+	.$clang->gT("You have not selected a survey.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
 	return;
@@ -45,7 +45,7 @@ if (!isset($surveyid))
 if (!isset($_GET['qid']) && !isset($_POST['qid']))
 {
 	$conditionsoutput .= "<br /><center><strong>"
-	.$clang->gT("You have not selected a Question.")." ".$clang->gT("You cannot run this script directly.")
+	.$clang->gT("You have not selected a question.")." ".$clang->gT("You cannot run this script directly.")
 	."</strong></center>\n"
 	."</body></html>\n";
 	return;
@@ -949,12 +949,12 @@ if ($scenariocount > 0)
 		// this array will be used soon,
 		// to explain wich conditions is used to evaluate the question
 		$method = array( "<"  => $clang->gT("Less than"),
-		                 "<=" => $clang->gT("Less than or Equal to"),
+		                 "<=" => $clang->gT("Less than or equal to"),
 		                 "==" => $clang->gT("Equals"),
-		                 "!=" => $clang->gT("Not Equal to"),
-		                 ">=" => $clang->gT("Greater than or Equal to"),
+		                 "!=" => $clang->gT("Not equal to"),
+		                 ">=" => $clang->gT("Greater than or equal to"),
 		                 ">"  => $clang->gT("Greater than"),
-		                 "RX" => $clang->gT("Regular Expression")
+		                 "RX" => $clang->gT("Regular expression")
 		                );
 
 		if ($conditionscount > 0)
@@ -1036,7 +1036,7 @@ if ($scenariocount > 0)
 		            if ($rows['value'] == ' ' ||
 		                $rows['value'] == '')
 		            {
-		                $conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No Answer")."\n";
+		                $conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No answer")."\n";
 		            } 
 		            else
 		            {
@@ -1080,7 +1080,7 @@ if (isset($_GET['copyconditions']) && $conditionscount > 0 && isset($postquestio
 	$conditionsoutput .= "\t<table width='100%' cellpadding='0' cellspacing='0'><tr>\n"
 	."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
 	."\t\t<strong>"
-	.$clang->gT("Copy Conditions")."</strong>\n"
+	.$clang->gT("Copy conditions")."</strong>\n"
 	."\t\t</td>\n"
 	."\t</tr>\n";
 
@@ -1111,7 +1111,7 @@ if (isset($_GET['copyconditions']) && $conditionscount > 0 && isset($postquestio
 	."\t</tr>\n";
 
 	$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
-	."<input type='submit' value='".$clang->gT("Copy Conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')\" />"
+	."<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')\" />"
 	."\t\t\n";
 
 	$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
@@ -1132,7 +1132,7 @@ if (!isset($_GET['copyconditions']))
 	$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0' style='border-style: solid; border-width: 1; border-color: #555555'>\n";
 	$conditionsoutput .= "\t<tr class='settingcaption'>\n"
 		."\t\t<td colspan='4' align='center'>\n"
-		."\t\t\t<strong>".$clang->gT("Add Condition")."</strong>\n"
+		."\t\t\t<strong>".$clang->gT("Add condition")."</strong>\n"
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."\t<tr bgcolor='#EFEFEF'>\n"
@@ -1181,12 +1181,12 @@ if (!isset($_GET['copyconditions']))
 	// This is not really necessary. The note beffore must be self explanatory.
 	//$conditionsoutput .= "<option selected='selected'>".$clang->gT("Select Condition")."</option>\n";
 	$conditionsoutput .= "<option value='<'>".$clang->gT("Less than")."</option>\n";
-	$conditionsoutput .= "<option value='<='>".$clang->gT("Less than or Equal to")."</option>\n";
+	$conditionsoutput .= "<option value='<='>".$clang->gT("Less than or equal to")."</option>\n";
 	$conditionsoutput .= "<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n";
-	$conditionsoutput .= "<option value='!='>".$clang->gT("Not Equal to")."</option>\n";
-	$conditionsoutput .= "<option value='>='>".$clang->gT("Greater than or Equal to")."</option>\n";
+	$conditionsoutput .= "<option value='!='>".$clang->gT("Not equal to")."</option>\n";
+	$conditionsoutput .= "<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n";
 	$conditionsoutput .= "<option value='>'>".$clang->gT("Greater than")."</option>\n";
-	$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular Expression")."</option>\n";
+	$conditionsoutput .= "<option value='RX'>".$clang->gT("Regular expression")."</option>\n";
 	$conditionsoutput .= "\t\t\t</select>\n";
 	$conditionsoutput .= "\t\t\t<small><br />".$clang->gT("NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply.")."</small>\n";
 	$conditionsoutput .= "\t\t</td>\n"
@@ -1199,7 +1199,7 @@ if (!isset($_GET['copyconditions']))
 	// CONST_RGX and it will be showed or not.
 	//$conditionsoutput .= "<div id='CONST_RGX' style='display: none'>"
 	$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
-		."\t\t".$clang->gT("Constant Value or Regular Expression")."<br />\n"
+		."\t\t".$clang->gT("Constant value or regular expression")."<br />\n"
 		."\t\t<textarea name='ValOrRegEx' cols='40' rows='5'></textarea>\n";
 	$conditionsoutput .= "</div>"
 		."\t\t</td>"
@@ -1207,7 +1207,7 @@ if (!isset($_GET['copyconditions']))
 		."\t<tr>\n"
 		."\t\t<td colspan='4' align='center'>\n"
 		."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
-		."\t\t\t<input type='submit' value='".$clang->gT("Add Condition")."' />\n"
+		."\t\t\t<input type='submit' value='".$clang->gT("Add condition")."' />\n"
 		."<input type='hidden' name='sid' value='$surveyid' />\n"
 		."<input type='hidden' name='qid' value='$qid' />\n"
 		."<input type='hidden' name='subaction' value='insertcondition' />\n"
@@ -1224,7 +1224,7 @@ $conditionsoutput .= "\t<tr><td colspan='4'></td></tr>\n"
 ."\t\t</td>\n";
 $conditionsoutput .= "\t<tr bgcolor='#CDCDCD'><td colspan=4 height='10'></td></tr>\n"
 ."\t\t<tr><td colspan='4' align='center'>\n"
-."\t\t\t<input type='submit' value='".$clang->gT("Close Window")."' onclick=\"window.close()\"  />\n";
+."\t\t\t<input type='submit' value='".$clang->gT("Close window")."' onclick=\"window.close()\"  />\n";
 
 if (isset($_GET['copyconditions']))
 {
