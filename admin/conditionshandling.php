@@ -1590,9 +1590,9 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 
 	$conditionsoutput .= "\t<tr class='conditiontbl'>\n"
-		. "\t\t<td align='right' valign='middle'>".$clang->gT("Scenario")."</td>\n"
-		. "\t\t<td><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
-		. "$scenarioTxt $scenarioAddBtn</td>\n"
+		. "\t\t<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</td>\n"
+		. "\t\t<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
+		. "$scenarioTxt</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
@@ -1632,7 +1632,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	$conditionsoutput .= "\t\t\t</select>\n"
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
-		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparizon operator")."</td>\n"
+		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
 		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n"
 		. "\t\t\t<option value='<'>".$clang->gT("Less than")."</option>\n"
 		. "\t\t\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
