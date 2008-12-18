@@ -162,7 +162,7 @@ if ($action == 'activate')
     }
 elseif ($action == 'conditions')
 {
-    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('conditions.php');}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('conditionshandling.php');}
         else { include('access_denied.php');}    
     }    
 elseif ($action == 'importsurvresources') 

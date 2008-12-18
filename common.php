@@ -130,6 +130,10 @@ if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami"
 // Array of JS scripts to include in header
 // is updated by questions in qanda.php
 $js_header_includes = Array();
+// JS scripts and CSS to include in admin header
+// updated by admin scripts. Caution this is a string not an array
+$js_adminheader_includes = "";
+
 
 /*
 * $sourcefrom variable checks the location of the current script against
@@ -1606,8 +1610,10 @@ function returnglobal($stringname)
 		{
 		if ($stringname == "sid" || $stringname == "gid" || 
 			$stringname == "qid" || $stringname == "tid" || 
-			$stringname == "lid" || $stringname == "ugid"|| $stringname == "thisstep" || 
-            $stringname == "qaid" || $stringname == "scid")
+			$stringname == "lid" || $stringname == "ugid"|| 
+			$stringname == "thisstep" || $stringname == "scenario" ||
+			$stringname == "cqid" || $stringname == "cid" || 
+			$stringname == "qaid" || $stringname == "scid")
 		{
 			return sanitize_int($_REQUEST[$stringname]);
 		}
@@ -1615,7 +1621,9 @@ function returnglobal($stringname)
         {
             return sanitize_languagecode($_REQUEST[$stringname]);
         }
-        elseif ($stringname =="htmleditormode")
+        elseif ($stringname =="htmleditormode" || 
+		$stringname =="canswers" || $stringname =="subaction" ||
+		$stringname =="cquestions")
         {
             return sanitize_paranoid_string($_REQUEST[$stringname]);    
         }
@@ -3230,7 +3238,7 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-	global $sitename, $admintheme, $rooturl, $defaultlang;
+	global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html ";
@@ -3263,6 +3271,12 @@ function getAdminHeader($meta=false)
     {
     $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
     }
+
+    if (isset($js_adminheader_includes))
+    {
+	$strAdminHeader .= $js_adminheader_includes;
+    }
+
 	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
 	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
 	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"

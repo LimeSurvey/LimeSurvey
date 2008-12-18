@@ -126,6 +126,11 @@ $dangerousActionsArray = Array
 			0 => Array('subaction' => 'insertcondition'),
 			1 => Array('subaction' => 'delete'),
 			2 => Array('subaction' => 'copyconditions'),
+			3 => Array('subaction' => 'updatecondition'),
+			4 => Array('subaction' => 'deletescenario'),
+			5 => Array('subaction' => 'updatescenario'),
+			6 => Array('subaction' => 'deleteallconditions'),
+			7 => Array('subaction' => 'renumberscenarios')
 			),
 		'insertlabelset' => Array(),
 		'importlabels' => Array(),

@@ -1133,7 +1133,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 				{
 					//$groupsummary .= "[QID: ".$depqid."]"; 
 					$listcid=implode("-",$depcid);
-					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>"; 
+					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>"; 
 				}
 			}
 			$groupsummary .= "</td></tr>";
@@ -1249,7 +1249,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', 'conditions', 'menubar=no, location=no, status=no, height=500, width=800, scrollbars=yes, resizable=yes, left=50, top=50')\""
+			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Set Conditions for this Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
@@ -1465,7 +1465,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			foreach ($condarray[$qid] as $depqid => $depcid)
 			{
 				$listcid=implode("-",$depcid);
-				$questionsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">[QID: ".$depqid."]</a>";
+				$questionsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>";
 			}	
            $questionsummary .= "</td></tr>";        
 		}
@@ -2852,7 +2852,7 @@ if ($action == "ordergroups")
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
 					$listcid=implode("-",$depqrow);
-					$ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
+					$ordergroups .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\"> [".$clang->gT("QID").": ".$depqid."]</a>";
 				}
 				$ordergroups .= "</li>\n";
 			}

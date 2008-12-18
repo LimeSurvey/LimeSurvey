@@ -720,7 +720,7 @@ if (!is_null($questdepsarray))
 			$listcid=implode("-",$targcid);
 			$question=arraySearchByKey($depqid, $oqarray, "qid", 1);
 
-			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."')\">".$question['title'].": ".$question['question']. " [QID: ".$depqid."] </a> ";
+			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".$question['question']. " [QID: ".$depqid."] </a> ";
 		}
 		$orderquestions .= "</li>\n";
 	}
