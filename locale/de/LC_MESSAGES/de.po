@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-18 20:44+0100\n"
-"PO-Revision-Date: 2008-12-18 20:44+0100\n"
+"POT-Creation-Date: 2008-12-18 21:06+0100\n"
+"PO-Revision-Date: 2008-12-18 21:06+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2483,6 +2483,7 @@ msgid "Add condition"
 msgstr "Bedingung hinzufügen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditions.php:1140
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1597
 msgid "Scenario"
 msgstr "Szenario"
 
@@ -2627,10 +2628,6 @@ msgstr "Bedingung bearbeiten"
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1586
 msgid "Default scenario"
 msgstr "Standard Szenario"
-
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1597
-msgid "scenario"
-msgstr "Szenario"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1639
 msgid "Comparison operator"
@@ -7589,6 +7586,9 @@ msgstr "Thailändisch"
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:324
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
+
+#~ msgid "scenario"
+#~ msgstr "Szenario"
 
 #, fuzzy
 #~ msgid "Conditions Designer"
