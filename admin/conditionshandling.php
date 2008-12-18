@@ -1005,11 +1005,11 @@ foreach ($postrows as $row)
 		$question=strip_tags($row['question']);
 		if (strlen($question)<35)
 		{
-			$questionselecter .= $question;
+			$questionselecter = $question;
 		}
 		else
 		{
-			$questionselecter .= substr($question, 0, 35)."..";
+			$questionselecter = substr($question, 0, 35)."..";
 		}
 		$conditionsoutput .=  ""
 		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: $questionselecter</option>\").appendTo(\"#questionNav\");\n";
