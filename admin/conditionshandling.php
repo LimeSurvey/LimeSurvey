@@ -130,10 +130,10 @@ $conditionsoutput .= "\t<div class='menubar-main'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=editconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Add and edit conditions", "js")."');return false\">" 
-."<img name='ViewAllButton' src='$imagefiles/document.png' title='' alt='' /></a>\n"
+."<img name='ViewAllButton' src='$imagefiles/conditions_add.png' title='' alt='' /></a>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Copy conditions", "js")."');return false\">" 
-."<img name='ViewAllButton' src='$imagefiles/document.png' title='' alt='' /></a>\n";
+."<img name='ViewAllButton' src='$imagefiles/conditions_copy.png' title='' alt='' /></a>\n";
 
 
 $conditionsoutput .="\t\t\t</div><div class='menubar-right'>\n"
@@ -1582,7 +1582,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	if (isset($scenariocount) && $scenariocount == 1)
 	{
-		$scenarioAddBtn = "\t\t\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\"><img width='14' heigth='14' border='0' src='$imagefiles/add.png' /></a>\n";
+		$scenarioAddBtn = "\t\t\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\"><img border='0' src='$imagefiles/plus.png' /></a>\n";
 		$scenarioTxt = "<span id='defaultscenariotxt'>".$clang->gT("Default scenario")."</span>";
 		$scenarioInputStyle = "style = 'display: none;'";
 	}
@@ -1594,7 +1594,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 
 	$conditionsoutput .= "\t<tr class='conditiontbl'>\n"
-		. "\t\t<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("scenario")."</td>\n"
+		. "\t\t<td align='right' valign='bottom'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</td>\n"
 		. "\t\t<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		. "$scenarioTxt</td>\n"
 		. "\t</tr>\n"
