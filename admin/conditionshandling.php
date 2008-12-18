@@ -962,11 +962,11 @@ $conditionsoutput .= "<script type='text/javascript'>\n"
 	."<!--\n";
 if (strlen($questiontext)<35)
 {
-	$questiontextshort .= $questiontext;
+	$questiontextshort = $questiontext;
 }
 else
 {
-	$questiontextshort .= substr($questiontext, 0, 35)."..";
+	$questiontextshort = substr($questiontext, 0, 35)."..";
 }
 
 $conditionsoutput .= "\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=conditions' selected='selected'>$questiontitle: $questiontextshort</option>\").appendTo(\"#questionNav\");\n"; 
@@ -977,11 +977,11 @@ foreach ($theserows as $row)
 		$question=strip_tags($row['question']);
 		if (strlen($question)<35)
 		{
-			$questionselecter .= $question;
+			$questionselecter = $question;
 		}
 		else
 		{
-			$questionselecter .= substr($question, 0, 35)."..";
+			$questionselecter = substr($question, 0, 35)."..";
 		}
 		$conditionsoutput .=  ""
 		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: $questionselecter</option>\").appendTo(\"#questionNav\");\n";
