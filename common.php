@@ -1622,7 +1622,7 @@ function returnglobal($stringname)
             return sanitize_languagecode($_REQUEST[$stringname]);
         }
         elseif ($stringname =="htmleditormode" || 
-		$stringname =="canswers" || $stringname =="subaction" ||
+		$stringname =="subaction" ||
 		$stringname =="cquestions")
         {
             return sanitize_paranoid_string($_REQUEST[$stringname]);    

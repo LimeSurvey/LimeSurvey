@@ -34,9 +34,19 @@ if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
 if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
-if (!isset($p_canswers)) {$p_canswers=returnglobal('canswers');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
 
+if (!isset($p_canswers))
+{
+	
+	if (isset($_POST['canswers']) && is_array($_POST['canswers']))
+	{
+		foreach ($_POST['canswers'] as $key => $val)
+		{
+			$p_canswers[$key]=sanitize_paranoid_string($val);
+		}
+	}
+}
 if (isset($_POST['method']))
 {
 	if (!in_array($_POST['method'], array('<','<=','>','>=','==','!=','RX')))
@@ -1574,7 +1584,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 	else
 	{
-		$scenarioAdd = "";
+		$scenarioAddBtn = "";
 		$scenarioTxt = "";
 		$scenarioInputStyle = "style = ''";
 	}
