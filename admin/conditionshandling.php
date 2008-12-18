@@ -112,11 +112,15 @@ if (!isset($qid) || !$qid)
 	."<strong>".$clang->gT("Conditions Designer").":</strong> "
 	."</div>\n";
 
-
+$extraGetParams ="";
+if (isset($qid) && isset($gid))
+{
+	$extraGetParams="&amp;gid=$gid&amp;qid=$qid";
+}
 // If we made it this far, then lets develop the menu items
 $conditionsoutput .= "\t<div class='menubar-main'>\n"
 ."\t\t<div class='menubar-left'>\n"
-."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\""
+."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid$extraGetParams', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
 "<img name='HomeButton' src='$imagefiles/home.png' alt='' /></a>\n"
 ."\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' />\n"

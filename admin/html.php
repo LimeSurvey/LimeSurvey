@@ -1249,7 +1249,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid', '_top')\""
+			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid', '_top')\""
 			. "onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Set Conditions for this Question")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Set Conditions for this Question", "js")."');return false\">"
