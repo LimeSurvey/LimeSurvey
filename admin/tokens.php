@@ -1908,7 +1908,7 @@ if ($subaction == "import" &&
 	."\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t\t<font size='1'><strong>".$clang->gT("Note:")."</strong><br />\n"
-	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\".")."\n"
+	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname\", \"lastname\", \"email\", \"[emailstatus]\", \"[token]\", \"[language code]\", \"[attribute1]\", \"[attribute2]\". Values in parentheses [] are optional.")."\n"
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"  
