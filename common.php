@@ -1068,9 +1068,9 @@ function getgrouplistlang($gid, $language)
 
 function getuserlist($outputformat='fullinfoarray')
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $databasetype;
 	global $usercontrolSameGroupPolicy;
-
+	
     if (isset($_SESSION['loginID']))
 		{
 			$myuid=sanitize_int($_SESSION['loginID']);
@@ -1082,20 +1082,25 @@ function getuserlist($outputformat='fullinfoarray')
 		if (isset($myuid))
 		{
 			/*
-			 * XXX this query made errors with postgres DB. The new one is not fully tested, 
+			 * TODO: this query made errors with postgres DB. The new one is not fully tested, 
 			 * therefore I leave the Original, until someone decides that the new one does as well as the old one with mysql and mssql.
-			 *
-			 *	$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, 
-			 *			".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb 
-			 *			WHERE u.uid=$myuid OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) 
-			 *			GROUP BY u.uid";
-			*/
-						
-			// List users from same group as me + all my childs			
-			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u "
-					. "INNER JOIN ".db_table_name('user_in_groups')." AS uig "
-					. "ON u.uid=uig.uid "
-					. "WHERE  u.uid=$myuid OR (u.uid!=$myuid AND u.parent_id=$myuid) ";
+			 */
+			// List users from same group as me + all my childs	
+			 	$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, 
+			 			".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb 
+			 			WHERE u.uid=$myuid OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) 
+			 			GROUP BY u.uid";
+					
+			//this is the new query, but not fully tested, 
+			//just a workaround for pg and ms until someone have the time to think well of this query
+			// and for what it is needed...
+			if($databasetype == 'postgres' || $databasetype == 'mssql')	
+			{	
+				$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u "
+						. "INNER JOIN ".db_table_name('user_in_groups')." AS uig "
+						. "ON u.uid=uig.uid "
+						. "WHERE  u.uid=$myuid OR (u.uid!=$myuid AND u.parent_id=$myuid) ";
+			}
 		}
 		else
 		{
