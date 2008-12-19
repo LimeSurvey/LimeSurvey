@@ -1092,8 +1092,8 @@ function getuserlist($outputformat='fullinfoarray')
 			*/
 						
 			// List users from same group as me + all my childs			
-			$uquery = "SELECT u.* FROM lime_users AS u "
-					. "INNER JOIN lime_user_in_groups AS uig "
+			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u "
+					. "INNER JOIN ".db_table_name('user_in_groups')." AS uig "
 					. "ON u.uid=uig.uid "
 					. "WHERE  u.uid=$myuid OR (u.uid!=$myuid AND u.parent_id=$myuid) ";
 		}
