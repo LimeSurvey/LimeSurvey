@@ -1081,8 +1081,21 @@ function getuserlist($outputformat='fullinfoarray')
 	{
 		if (isset($myuid))
 		{
-			// List users from same group as me + all my childs
-			$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb WHERE u.uid=$myuid OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) GROUP BY u.uid";
+			/*
+			 * XXX this query made errors with postgres DB. The new one is not fully tested, 
+			 * therefore I leave the Original, until someone decides that the new one does as well as the old one with mysql and mssql.
+			 *
+			 *	$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, 
+			 *			".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb 
+			 *			WHERE u.uid=$myuid OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) 
+			 *			GROUP BY u.uid";
+			*/
+						
+			// List users from same group as me + all my childs			
+			$uquery = "SELECT u.* FROM lime_users AS u "
+					. "INNER JOIN lime_user_in_groups AS uig "
+					. "ON u.uid=uig.uid "
+					. "WHERE  u.uid=$myuid OR (u.uid!=$myuid AND u.parent_id=$myuid) ";
 		}
 		else
 		{
