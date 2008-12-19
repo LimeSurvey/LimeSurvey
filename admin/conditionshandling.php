@@ -1585,7 +1585,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t<th width='75%'></th>\n"
 		."\t</tr>\n";
 
-	if (isset($scenariocount) && $scenariocount == 1)
+	if (isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0))
 	{
 		$scenarioAddBtn = "\t\t\t<a id='scenarioaddbtn' href='#' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\"><img border='0' src='$imagefiles/plus.png' /></a>\n";
 		$scenarioTxt = "<span id='defaultscenariotxt'>".$clang->gT("Default scenario")."</span>";
