@@ -452,7 +452,7 @@ for($n=0;$n<count($aCores);++$n)
 </select> <? //print_r($cores);?> <br />
 <b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
 <br />
-<input type='text' name='sid' size='5' maxlength='5' /> <br />
+<input type='text' name='sid' size='8' maxlength='11' /> <br />
 <b><font color='red'>* </font>Veranstaltungs Titel / Survey Title (used
 as part of the welcome message, if welcome Message is left blank):</b> <br />
 <input type='text' name='stit' size='30' maxlength='150' /> <br />
