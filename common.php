@@ -1081,26 +1081,54 @@ function getuserlist($outputformat='fullinfoarray')
 	{
 		if (isset($myuid))
 		{
-			/*
-			 * TODO: this query made errors with postgres DB. The new one is not fully tested, 
-			 * therefore I leave the Original, until someone decides that the new one does as well as the old one with mysql and mssql.
-			 */
 			// List users from same group as me + all my childs	
 			 	$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, 
 			 			".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb 
-			 			WHERE u.uid=$myuid OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) 
-			 			GROUP BY u.uid";
-					
-			//this is the new query, but not fully tested, 
-			//just a workaround for pg and ms until someone have the time to think well of this query
-			// and for what it is needed...
-			if($databasetype == 'postgres' || $databasetype == 'mssql')	
-			{	
-				$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u "
-						. "INNER JOIN ".db_table_name('user_in_groups')." AS uig "
-						. "ON u.uid=uig.uid "
-						. "WHERE  u.uid=$myuid OR (u.uid!=$myuid AND u.parent_id=$myuid) ";
-			}
+			 			WHERE u.uid=$myuid 
+			 			OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) ) 
+			 			GROUP BY u.uid, u.users_name, u.password, u.full_name, u.parent_id, u.lang,
+			 			u.email, u.create_survey, u.create_user, u.delete_user, u.superadmin,
+			 			u.configurator, u.manage_template, u.manage_label, u.htmleditormode ";
+
+ 			/*
+ 			 * the above query made errors with postgres, 
+ 			 * before entering all fields of table users in the group by clause... 
+ 			 * this is why I tried to make a new one, which is simpler and better to understand...
+ 			 * 
+ 			 * this function (or query) is used:
+ 			 *  	two times in html.php: 
+ 			 * 			once to list all surveys I have any rights on.
+ 			 * 			once to list all groups and users I can add to surveysecurity
+ 			 * 
+ 			 * 		one time in usercontrol: 
+ 			 * 			to get a list of all users when a new user is added to the system
+ 			 * 		
+ 			 * 		tree times in userrighthandling.php:
+ 			 * 			to get a list of all users, to change their rights to manage a certain template
+ 			 * 			to get a list of all users for whom I can change Survey rights
+ 			 * 			to get a list of all users I can edit
+ 			 * 
+ 			 * And this is what I suspect to do the job better than the old query.
+ 			 * 
+ 			 * 
+ 			 */
+			 			
+//			if($databasetype == 'postgres' || $databasetype == 'mssql')	
+//			{		
+//				//get the groups I am into	
+//				$ugidquery = "SELECT ugid FROM ".db_table_name('user_in_groups')." "
+//						  . "WHERE uid = $myuid ";	
+//						  	
+//				$ugidresult = db_execute_assoc($ugidquery);
+//				$myugid = $ugidresult->FetchRow();
+//				
+//				// get all users that are me, in my group or children of mine
+//				$uquery = "SELECT u.* FROM ".db_table_name('users')." AS u, "
+//						. db_table_name('user_in_groups')." AS uig "
+//						. "WHERE u.parent_id=$myuid "
+//						. "OR uig.ugid = ".$myugid['ugid']." "
+//						. "OR u.uid = $myuid ";
+//			}	
 		}
 		else
 		{
