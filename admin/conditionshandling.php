@@ -409,6 +409,7 @@ foreach ($qrows as $qrow) //Go through each question until we reach the current 
 }
 
 $theserows=array();
+$postrows=array();
 
 if (isset($questionlist) && is_array($questionlist))
 {

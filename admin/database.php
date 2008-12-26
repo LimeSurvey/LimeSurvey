@@ -25,8 +25,7 @@ $postqid=returnglobal('qid');
 $postqaid=returnglobal('qaid');    
 
 if (get_magic_quotes_gpc())
-    {$_POST  = array_map('stripslashes', $_POST);}
-
+    {$_POST  = array_map('recursive_stripslashes', $_POST);}
 
 /*
  * Return a sql statement for renaming a table

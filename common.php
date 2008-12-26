@@ -5312,3 +5312,18 @@ function fix_FCKeditor_text($str)
 	return $str;
 }
 
+
+function recursive_stripslashes($array_or_string)
+{
+	if (is_array($array_or_string))
+	{
+		return array_map('recursive_stripslashes', $array_or_string);
+	}
+	else
+	{
+		return stripslashes($array_or_string);
+	}
+}
+
+
+
