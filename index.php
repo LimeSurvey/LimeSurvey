@@ -896,6 +896,173 @@ function makelanguagechanger()
 }
 
 
+function checkquestionfordisplay($qid, $gid=null)
+{ 
+	//This function checks if a given question should be displayed or not
+	//If the optionnal gid parameter is set, then we are in a group/group survey
+	// and thus we can't evaluate conditions using answers on the same page 
+	// (this will be done by javascript): in this case we disregard conditions on 
+	// answers from same page
+	global $dbprefix, $connect;
+
+	$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
+		." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
+	$scenarioresult=db_execute_assoc($scenarioquery);
+
+	while ($scenariorow=$scenarioresult->FetchRow())
+	{
+		$scenario = $scenariorow['scenario'];
+		$totalands=0;
+		$query = "SELECT * FROM ".db_table_name('conditions')."\n"
+			."WHERE qid=$qid AND scenario=$scenario ORDER BY cqid,cfieldname";
+		$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
+
+		$conditionsfoundforthisscenario=0;
+		while($row=$result->FetchRow())
+		{
+			// Conditions on the same question are Anded together
+			// (for instance conditions on several multiple-numerical lines)
+			// However, if they are related to the same cfieldname
+			// they are Ored. Conditions on the same cfieldname can be either:
+			// * conditions on the same 'simple question': 
+			//   - for instance several possible answers on the same radio-button question
+			// * conditions on the same 'multiple choice question': 
+			//   - this case is very specific. In fact each checkbox corresponds to a different
+			//     cfieldname (1X1X1a, 1X1X1b, ...), but the condition uses only the base 
+			//     'SGQ' cfieldname and the expected answers codes as values
+			//   - then, in the following lines for questions M or P, we transform the
+			//     condition SGQ='a' to SGQa='Y'
+			//  ==> This explains why conditions on multiple choice answers are ORed even if
+			//      in reality they use a different cfieldname for each checkbox
+			//
+			// In order to implement this we build an array storing the result
+			// of condition evaluations for this group and scenario
+			// This array is processed as follow:
+			// * it is indexed by cfieldname,
+			// * each 'cfieldname' row is added at the first condition eval on this fieldname
+			// * each row is updated only if the condition evaluation is successful
+			//   ==> this way if only 1 condition for a cfieldname is successful, the set of
+			//       conditions for this cfieldname is assumed to be met (Ored conditions)
+
+			$conditionsfoundforthisscenario++;
+			//Iterate through each condition for this question and check if it is met.
+			$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+			$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
+			while($row2=$result2->FetchRow())
+			{
+				$cq_gid=$row2['gid'];
+				//Find out the "type" of the question this condition uses
+				$thistype=$row2['type'];
+			}
+
+
+			if ( !is_null($gid) && $gid == $cq_gid)
+			{
+				//Don't do anything - this cq is in the current group
+			}
+			elseif ($thistype == "M" || $thistype == "P")
+			{
+				// For multiple choice type questions, the "answer" value will be "Y"
+				// if selected, the fieldname will have the answer code appended.
+				$fieldname=$row['cfieldname'].$row['value'];
+				$cvalue="Y";     
+				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+			}
+			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
+					isset($_SESSION[$targetconditionfieldname[1]]) )
+			{ 
+				// If value uses @SIDXGIDXQID@ codes i
+				// then try to replace them with a 
+				// value recorded in SESSION if any
+				$cvalue=$_SESSION[$targetconditionfieldname[1]];
+				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+			}
+			else
+			{
+				//For all other questions, the "answer" value will be the answer code.
+				if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
+				$cvalue=$row['value'];
+			}
+
+			if ($row['method'] != 'RX')
+			{
+				if (trim($row['method'])=='') 
+				{
+					$row['method']='==';
+				}
+				if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+				{
+					$conditionMatches=true;
+					//This condition is met
+				}
+				else
+				{
+					$conditionMatches=false;
+				}
+			}
+			else
+			{
+				if (ereg(trim($cvalue),trim($cfieldname)))
+				{
+					$conditionMatches=true;
+
+				}
+				else
+				{
+					$conditionMatches=false;
+				}
+			}
+
+			if ($conditionMatches === true)
+			{
+				// Let's store this positive result in the distinctcqids array
+				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
+				// while conditions on different cfieldnames (either different conditions
+				// or conditions on different cfieldnames inside the same question)
+				if (!isset($distinctcqids[$row['cfieldname']]) || $distinctcqids[$row['cfieldname']] == 0)
+				{
+					$distinctcqids[$row['cfieldname']] = 1;
+				}
+			}
+			else
+			{
+				// Let's store this negative result in the distinctcqids array
+				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
+				// while conditions on different cfieldnames (either different conditions
+				// or conditions on different cfieldnames inside the same question)
+				if (!isset($distinctcqids[$row['cfieldname']]))
+				{
+					$distinctcqids[$row['cfieldname']] = 0;
+				}
+			}
+		} // while
+		if ($conditionsfoundforthisscenario > 0) {
+			foreach($distinctcqids as $key=>$val)
+			{
+				// Let's count the number of conditions that are met, and then compare
+				// it to the total number of stored results
+				$totalands=$totalands+$val;
+			}
+			if ($totalands >= count($distinctcqids))
+			{
+				// if all stored results are positive then we MUST show the group
+				// because at least this question is displayed
+				return true;
+			}
+		}
+		else
+		{
+			//Curious there is no condition for this question in this scenario
+			// this is not a normal behaviour, but I propose to defaults to a
+			// condition-matched state in this case
+			return true;
+		}
+		unset($distinctcqids);
+	} // end while scenario
+	return false;
+}
+
 function checkgroupfordisplay($gid)
 {
 	//This function checks all the questions in a group to see if they have
@@ -936,166 +1103,10 @@ function checkgroupfordisplay($gid)
 		//be displayed.
 		foreach ($QuestionsWithConditions as $cc)
 		{
-			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
-				." WHERE ".db_table_name("conditions").".qid=$cc[0] ORDER BY scenario";
-			$scenarioresult=db_execute_assoc($scenarioquery);
-				
-			//$scenario=1;
-			//while($scenario>0)
-			while ($scenariorow=$scenarioresult->FetchRow())
+			if (checkquestionfordisplay($cc[0], $gid) === true)
 			{
-				$scenario = $scenariorow['scenario'];
-				$totalands=0;
-				$query = "SELECT * FROM ".db_table_name('conditions')."\n"
-					."WHERE qid=$cc[0] AND scenario=$scenario ORDER BY cqid";
-				$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
-
-				$andedMultipleCqidCount=0; // count of multiple cqids for type other than M or P
-				$conditionsfoundforthisscenario=0;
-				while($row=$result->FetchRow())
-				{
-					$conditionsfoundforthisscenario++;
-					//Iterate through each condition for this question and check if it is met.
-					$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-						." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-					$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
-					while($row2=$result2->FetchRow())
-					{
-						$cq_gid=$row2['gid'];
-						//Find out the "type" of the question this condition uses
-						$thistype=$row2['type'];
-					}
-
-					if ($thistype != 'M' && $thistype != 'P')
-					{
-						// will be used as an index for Multiple conditions
-						// on type other than M or P so that there will be ANDed and 
-						// not ORed
-						$andedMultipleCqidCount++;
-					}
-
-					if ($gid == $cq_gid)
-					{
-						//Don't do anything - this cq is in the current group
-				}
-				elseif ($thistype == "M" || $thistype == "P")
-				{
-					// For multiple choice type questions, the "answer" value will be "Y"
-					// if selected, the fieldname will have the answer code appended.
-					$fieldname=$row['cfieldname'].$row['value'];
-					$cvalue="Y";     
-					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
-				}
-				elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
-						isset($_SESSION[$targetconditionfieldname[1]]) )
-				{ 
-					// If value uses @SIDXGIDXQID@ codes i
-					// then try to replace them with a 
-					// value recorded in SESSION if any
-					$cvalue=$_SESSION[$targetconditionfieldname[1]];
-					if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
-				}
-					else
-					{
-						//For all other questions, the "answer" value will be the answer code.
-						if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
-						$cvalue=$row['value'];
-					}
-
-					if ($row['method'] != 'RX')
-					{
-						if (trim($row['method'])=='') 
-						{
-							$row['method']='==';
-						}
-						if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
-						{
-							$conditionMatches=true;
-							//This condition is met
-						}
-						else
-						{
-							$conditionMatches=false;
-						}
-					}
-					else
-					{
-						if (ereg(trim($cvalue),trim($cfieldname)))
-						{
-							$conditionMatches=true;
-
-						}
-						else
-						{
-							$conditionMatches=false;
-						}
-					}
-
-					if ($conditionMatches === true)
-					{
-						if ($thistype == 'M' || $thistype == 'P')
-						{
-							//This condition is met
-							if (!isset($distinctcqids[$row['cqid']])  || $distinctcqids[$row['cqid']] == 0)
-							{
-								$distinctcqids[$row['cqid']]=1;
-							}
-						}
-						else
-						{ //$andedMultipleCqidCount
-							if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"])  || $distinctcqids[$row['cqid']] == 0)
-							{
-								$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=1;
-							}
-
-						}
-					}
-					else
-					{
-						if ($thistype == 'M' || $thistype == 'P')
-						{
-							if (!isset($distinctcqids[$row['cqid']]))
-							{
-								$distinctcqids[$row['cqid']]=0;
-							}
-						}
-						else
-						{
-							if (!isset($distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]))
-							{
-								$distinctcqids[$row['cqid']."-$andedMultipleCqidCount"]=0;
-							}
-						}
-
-					}
-				} // while
-				if ($conditionsfoundforthisscenario > 0) {
-					foreach($distinctcqids as $key=>$val)
-					{
-						//Because multiple cqids are treated as "AND", we only check
-						//one condition per conditional qid (cqid). As long as one
-						//match is found for each distinct cqid, then the condition is met.
-						$totalands=$totalands+$val;
-					}
-					if ($totalands >= count($distinctcqids))
-					{
-						//The number of matches to conditions exceeds the number of distinct
-						//conditional questions, therefore a condition has been met.
-						//As soon as any condition for a question is met, we MUST show the group.
-						return true;
-					}
-					//$scenario++;
-				}
-				else
-				{
-					//Curious there is no condition for this question in this scenario
-					// this is not a normal behaviour, but I propose to defaults to a
-					// condition-matched state in this case
-					//$scenario=0;
-					return true;
-				}
-				unset($distinctcqids);
-			} // end while scenario
+				return true;
+			}
 		}
 		//Since we made it this far, there mustn't have been any conditions met.
 		//Therefore the group should not be displayed.
@@ -1129,7 +1140,7 @@ function checkconfield($value)
 				. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
 				. "AND ".db_table_name('conditions').".qid=$sfa[0] "
 				. "AND ".db_table_name('conditions').".scenario=$scenario "
-				. "ORDER BY ".db_table_name('conditions').".qid";
+				. "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
 				$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
 
 				$conditionsfound = $result->RecordCount();

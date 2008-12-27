@@ -118,153 +118,14 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
 while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
-{
-     $csquery="SELECT distinct scenario FROM {$dbprefix}conditions WHERE qid={$ia[0]}";
-     $csresult=db_execute_assoc($csquery) or safe_die("Couldn't count scenarios<br />$csquery<br />".$connect->ErrorMsg());  //Checked
-     $onewholescenariomatches=0;
-     //$prevscenario=-1;
-     unset($prevscenario);
-     while ($csrows=$csresult->FetchRow())//Go through each condition for this current question AND this scenario
-     {
-        $thisscenario=$csrows['scenario'];
-        if (isset($prevscenario) && $thisscenario != $prevscenario) // We processed all conditions for the previous scenario. Let's check whether we're done.
-        {
-                if ($cqidmatches == $cqidcount)
-                {
-                        //a match has been found in ALL distinct cqids for the previous scenario. The question WILL be displayed.
-                        $conditionforthisquestion="N";
-                        break;
-                }
-                else
-                {
-                        // The previous scenario did not have ALL distinct cqids matched. So try a new (this) scenario.
-                }
-        }
-        $cquery="SELECT distinct cqid FROM {$dbprefix}conditions WHERE qid={$ia[0]} and scenario={$thisscenario}";
-        $prevscenario=$thisscenario;
-	$cresult=db_execute_assoc($cquery) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg());  //Checked
-	$cqidcount=$cresult->RecordCount();
-	$cqidmatches=0;
-	while ($crows=$cresult->FetchRow())//Go through each condition for this current question
-	{
-		//Check if the condition is multiple type
-		$ccquery="SELECT type FROM {$dbprefix}questions WHERE qid={$crows['cqid']} AND language='".$_SESSION['s_lang']."' ";
-		$ccresult=db_execute_assoc($ccquery) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
-		while($ccrows=$ccresult->FetchRow())
-		{
-			$thistype=$ccrows['type'];
-		}
-		// In case thistype != M or P, then multiple conditions are ANDed
-		// and thus  must match
-		// ==> increase $cqidcount to the number of conditions
-		// avoiding the 'distinct' keyword in the SQL above
-		// (which is used for type M or P questions whose conditions
-		//  are ORed)
-		// Special note for Array of checkboxes: this is a layout of multiflexi num
-		// and is implmented as if it weren't multiple choice questions
-		// so conditions on array of checkboxes are in the form SGQAlabel = Y
-		// and thus is not implemented the same way as M or P
-		if ($thistype !="P" && $thistype !="M")
-		{
-			$cquery2="SELECT cid FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-			$cresult2=db_execute_assoc($cquery2) or safe_die("Couldn't count cqids<br />$cquery<br />".$connect->ErrorMsg()); //Checked
-			$cqidcount2=$cresult2->RecordCount();
-			$cqidcount += $cqidcount2 - 1; // substract 1 as it has been already counted once by $cquery
-		}
-		$cqquery = "SELECT cfieldname, value, cqid, method, scenario FROM {$dbprefix}conditions WHERE qid={$ia[0]} AND cqid={$crows['cqid']}";
-		$cqresult = db_execute_assoc($cqquery) or safe_die("Couldn't get conditions for this question/cqid<br />$cquery<br />".$connect->ErrorMsg()); //Checked
-		$amatchhasbeenfound="N";
-		while ($cqrows=$cqresult->FetchRow()) //Check each condition
-		{
-			$currentcqid=$cqrows['cqid'];
-			$conditionfieldname=$cqrows['cfieldname'];
-			if (!$cqrows['value'] || $cqrows['value'] == ' ')
-			{
-				$conditionvalue="NULL";
-			} 
-			else
-			{
-				$conditionvalue=$cqrows['value'];
-			}
-			if ($thistype == "M" || $thistype == "P") //Adjust conditionfieldname for multiple option type questions
-			{
-				$conditionfieldname .= $conditionvalue;
-				$conditionvalue = "Y";
-			}
-			// If condition value is @SIDXGIDXQID[aid]@ field
-			if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$conditionvalue, $targetconditionfieldname))
-			{
-				$conditionvalue = $_SESSION[$targetconditionfieldname[1]];
-			}
-			if (trim($cqrows['method'])=='') {$cqrows['method']='==';}
-			if (!isset($_SESSION[$conditionfieldname]) || 
-					$_SESSION[$conditionfieldname] == '' || 
-					$_SESSION[$conditionfieldname] == ' ')
-			{
-				if($thistype == "K")
-				{
-					$currentvalue = 0;
-				} else {
-					$currentvalue="NULL";
-				}
-			} 
-			else 
-			{
-				$currentvalue=$_SESSION[$conditionfieldname];
-			}
-
-			if ( $cqrows['method'] != 'RX')
-			{
-
-				if (eval('if ($currentvalue'. $cqrows['method'].'$conditionvalue) return true; else return false;'))
-				{
-					$amatchhasbeenfound="Y";
-				}
-			}
-			else
-			{
-				if (ereg($conditionvalue,$currentvalue))
-				{
-					$amatchhasbeenfound="Y";
-				}
-			}
-			if ( ($thistype !="P"  &&  $thistype !="M") &&
-					$amatchhasbeenfound=="Y")
-			{ 
-				// For questions that are not multiple choice
-				// each match is counted
-				// because this is an AND condition
-				$cqidmatches++;
-				// then we reset matchfound switch in order
-				// to check the next condition and have the 
-				// opportunity to check further conditions
-				$amatchhasbeenfound="N";
-			}
-		}
-		if ($amatchhasbeenfound == "Y" && 
-				($thistype =="M" || $thistype =="P") )
-		{
-			// For all other question type than Q and K, 
-			// conditions on same Question are ORed (type M or P)
-			// so increment counter at least one of the conditions matches
-			$cqidmatches++;
-		}
-	}
-    } // End of while more scenario's
-    if ($conditionforthisquestion=="N") {
-	// We apparently broke out of the while-scenario-loop because the previous scenario was completely matched. The question WILL de displayed.
+{ // this is a while, not an IF because if we skip the question we loop on the next question, see below
+    if (checkquestionfordisplay($ia[0]) === true)
+    { // question will be displayed
+	// we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
+	$conditionforthisquestion="N";
     }
     else
     {
-	// The while-scenario-loop ended with no previous scenario's matched. Let's see the result of the LAST scenario.
-	if ($cqidmatches == $cqidcount)
-	{
-		//a match has been found in ALL distinct cqids. The question WILL be displayed
-		$conditionforthisquestion="N";
-	}
-	else
-	{
-		//matches have not been found in ALL distinct cqids. The question WILL NOT be displayed
 		$questionsSkipped++;
 		if (returnglobal('move') == "movenext")
 		{
@@ -297,9 +158,10 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 			$ia=$_SESSION['fieldarray'][$currentquestion];
 			$_SESSION['step']--;
 		}
+		// because we skip this question, we need to loop on the same condition 'check-block'
+		//  with the new question (we have overwritten $ia)
 		$conditionforthisquestion=$ia[7];
-	}
-    } // End of while more scenario's
+    }
 } // End of while conditionforthisquestion=="Y"
 
 //SUBMIT
