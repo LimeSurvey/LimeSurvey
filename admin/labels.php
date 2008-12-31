@@ -236,7 +236,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		//$query = "SELECT * FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid";
 		//NOTE: OK, we're back to "what the hell is Tom up to?". SQL Server complains if the selected columns aren't either aggregated
 		// part of the GROUP BY clause. This should work for both databases.
-		$query = "SELECT qid, sid, gid FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W') AND lid='$lid' GROUP BY qid, sid, gid";		
+		$query = "SELECT qid, sid, gid FROM ".db_table_name('questions')." WHERE type IN ('F','H','Z','W','1',':',';') AND lid='$lid' OR lid1='$lid' GROUP BY qid, sid, gid";		
 		$result = db_execute_assoc($query);
 		$totaluse=$result->RecordCount();
 		while($row=$result->FetchRow())
