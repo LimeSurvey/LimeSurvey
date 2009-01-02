@@ -1167,7 +1167,7 @@ if ($subaction=='' ||
 
 	$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0'>\n"
 		."\t<tr bgcolor='#E1FFE1'>\n"
-		."\t\t<td><table align='center'><tr>\n";
+		."\t\t<td><table align='center' width='100%' cellspacing='0' cellpading='0'><tr>\n";
 	$showreplace="$questiontitle". showSpeaker($questiontext);
 	$onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 
@@ -1180,15 +1180,27 @@ if ($subaction=='' ||
 	{
 		$conditionsoutput .= "\t\t\t<td align='center' width='90%'><strong>$onlyshow</strong>\n"
 			."\t\t</td>\n"
-			."\t\t<td width='10%'><form id='deleteallconditions' action='$scriptname?action=conditions' method='post' name='deleteallconditions' style='margin-bottom:0;'>\n"
+			."\t\t<td width='10%' align='right' valign='middle'><form id='deleteallconditions' action='$scriptname?action=conditions' method='post' name='deleteallconditions' style='margin-bottom:0;'>\n"
 			."\t\t<input type='hidden' name='qid' value='$qid' />\n"
 			."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t<input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />\n";
 
-		$conditionsoutput .= "\t\t<input type='submit' id='deleteallconditionsbtn' value='".$clang->gT("Delete all conditions")."' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')\" />\n";
+
+		$conditionsoutput .= "\t\t<a href='#' "
+			. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
+			." title='".$clang->gT("Delete all conditions")."'"
+			." onmouseover=\"showTooltip(event,'".$clang->gT("Delete all conditions","js")."');return false\""
+			." onmouseout=\"hideTooltip()\">"
+			." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteAllConditions' title='' /></a>\n";
+
 		if ($scenariocount > 1)
 		{
-			$conditionsoutput .= "\t\t<input type='submit' id='renumberscenariosbtn' value='".$clang->gT("Renumber scenarios")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; return true;} else {return false;}\"/>\n";
+		$conditionsoutput .= "\t\t<a href='#' "
+			. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}\""
+			." title='".$clang->gT("Renumber scenario automatically")."'"
+			." onmouseover=\"showTooltip(event,'".$clang->gT("Renumber scenario automatically","js")."');return false\""
+			." onmouseout=\"hideTooltip()\">"
+			." <img src='$imagefiles/labelssmall.png'  alt='' name='renumberscenarios' title='' /></a>\n";
 		}
 	}
 	else
@@ -1229,7 +1241,7 @@ if ($subaction=='' ||
 			}
 
 			$conditionsoutput .= "<tr><td>\n"
-				."<table><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
+				."<table width='100%' cellspacing='0' cellpading='0'><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
 				."<form action='$scriptname?action=conditions' method='post' id='editscenario{$scenarionr['scenario']}' style='display: none'>\n"
 				."<label>".$clang->gT("New scenario number").":&nbsp;\n"
 				."<input type='text' name='newscenarionum' size='3'/></label>\n"
@@ -1238,7 +1250,7 @@ if ($subaction=='' ||
 				."<input type='hidden' name='qid' value='$qid' />\n"
 				."<input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;\n"
 				."<input type='submit' name='scenarioupdated' value='".$clang->gT("Update scenario")."' />\n"
-				."<input type='button' name='cancel' value='".$clang->gT("Cancel")."' onclick=\"$('#editscenario{$scenarionr['scenario']}').hide('slow');document.getElementById('editscenariobtn{$scenarionr['scenario']}').disabled=false;\"/>\n"
+				."<input type='button' name='cancel' value='".$clang->gT("Cancel")."' onclick=\"$('#editscenario{$scenarionr['scenario']}').hide('slow');\"/>\n"
 				."</form></td>\n"
 				. "<td width='10%' valign='middle' align='right'><form id='deletescenario{$scenarionr['scenario']}' action='$scriptname?action=conditions' method='post' name='deletescenario{$scenarionr['scenario']}' style='margin-bottom:0;'>\n";
 
@@ -1247,8 +1259,21 @@ if ($subaction=='' ||
 					$subaction == "renumberscenarios" || $subaction == "updatescenario" ||
 					$subaction == "deletescenario" || $subaction == "delete") )
 			{
-				$conditionsoutput .= "\t<input type='submit' value='".$clang->gT("Delete scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')\" />\n";
-				$conditionsoutput .= "\t<input type='button' id='editscenariobtn{$scenarionr['scenario']}' value='".$clang->gT("Edit scenario")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"$('#editscenario{$scenarionr['scenario']}').show('slow');this.disabled=true;\" />\n";
+				$conditionsoutput .= "\t<a href='#' "
+						." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) {document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
+						." title='".$clang->gT("Delete all conditions for this scenario")."'"
+						." onmouseover=\"showTooltip(event,'".$clang->gT("Delete all conditions for this scenario","js")."');return false\""
+						." onmouseout=\"hideTooltip()\">"
+						." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
+
+				$conditionsoutput .= "\t<a href='#' "
+						." id='editscenariobtn{$scenarionr['scenario']}'" 
+						." onclick=\"$('#editscenario{$scenarionr['scenario']}').toggle('slow');\""
+						." title='".$clang->gT("Edit scenario")."'"
+						." onmouseover=\"showTooltip(event,'".$clang->gT("Edit scenario","js")."');return false\""
+						." onmouseout=\"hideTooltip()\">"
+						." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
+
 			}
 
 			$conditionsoutput .= "\t<input type='hidden' name='scenario' value='{$scenarionr['scenario']}' />\n"
@@ -1404,10 +1429,19 @@ if ($subaction=='' ||
 						$subaction == "updatescenario" ||
 						$subaction == "deletescenario" || $subaction == "delete")
 					{
-						//TIBO
 						$conditionsoutput .= ""
-							."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Delete")."' style='font-family: verdana; font-size: 8; height:15' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')\" />\n"
-							."\t\t\t\t\t\t<input type='submit' value='".$clang->gT("Edit")."' onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";' style='font-family: verdana; font-size: 8; height:15' />\n"
+							."\t\t\t\t\t\t<a href='#' "
+							." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {document.getElementById('conditionaction{$rows['cid']}').submit();}\""
+							." title='".$clang->gT("Delete this condition")."'"
+							." onmouseover=\"showTooltip(event,'".$clang->gT("Delete this condition","js")."');return false\"" 
+							." onmouseout=\"hideTooltip()\">"
+							." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
+							."\t\t\t\t\t\t<a href='#' "
+							." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'"
+							." title='".$clang->gT("Edit this condition")."'"
+							." onmouseover=\"showTooltip(event,'".$clang->gT("Edit this condition","js")."');return false\"" 
+							." onmouseout=\"hideTooltip()\">"
+							." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
 							."\t\t\t\t\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
 							."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
@@ -1486,24 +1520,6 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 	if (isset($conditionsList) && is_array($conditionsList))
 	{
 
-/***
-		$conditionsoutput .= "\t<tr bgcolor='#EFEFEF'>\n"
-			."\t\t<th width='40%'>".$clang->gT("Condition")."</th><th width='200'></th><th width='40%'>".$clang->gT("Question")."</th>\n"
-			."\t</tr>\n";
-****/
-
-		$conditionsoutput .= "\t<tr>\n";
-/*****
-		$conditionsoutput .= "";
-			."\t\t<td align='center'>\n"
-			."\t\t<select name='copyconditionsfrom[]' multiple style='font-family:verdana; font-size:10; width:220; background-color: #E1FFE1' size='4' >\n";
-		foreach ($conditionsList as $cl)
-		{
-			$conditionsoutput .= "<option value='".$cl['cid']."'>".$cl['text']."</option>\n";
-		}
-		$conditionsoutput .= "\t\t</select>\n"
-			."\t\t</td>\n";
-****/
 		$conditionsoutput .= ""
 			."\t\t<td align='center' style='text-align: center' width='250'>\n"
 			."\t\t".$clang->gT("Copy the selected conditions to").":\n"
