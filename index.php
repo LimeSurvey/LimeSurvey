@@ -657,7 +657,7 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 {
 	// load previous answers if any (dataentry with nosubmit)
 	$srquery="SELECT id FROM {$thissurvey['tablename']}"
-		. " WHERE {$thissurvey['tablename']}.token='".$token."'\n";
+		. " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."'\n";
 
 	$result = db_execute_assoc($srquery) or safe_die ("Error loading results<br />$query<br />".$connect->ErrorMsg());   //Checked 
 	while ($srrow = $result->FetchRow() )

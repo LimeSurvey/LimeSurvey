@@ -1192,7 +1192,7 @@ if ($subaction=='' ||
 				. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
 				." onmouseover=\"showTooltip(event,'".$clang->gT("Delete all conditions","js")."');return false\""
 				." onmouseout=\"hideTooltip()\">"
-				." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteAllConditions' title='' /></a>\n";
+				." <img src='$imagefiles/conditions_deleteall.png'  alt='' name='DeleteAllConditions' title='' /></a>\n";
 		}
 
 		if ($scenariocount > 1)
@@ -1433,12 +1433,12 @@ if ($subaction=='' ||
 							." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {document.getElementById('conditionaction{$rows['cid']}').submit();}\""
 							." onmouseover=\"showTooltip(event,'".$clang->gT("Delete this condition","js")."');return false\"" 
 							." onmouseout=\"hideTooltip()\">"
-							." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
+							." <img src='$imagefiles/conditions_delete.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
 							."\t\t\t\t\t\t<a href='#' "
 							." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'"
 							." onmouseover=\"showTooltip(event,'".$clang->gT("Edit this condition","js")."');return false\"" 
 							." onmouseout=\"hideTooltip()\">"
-							." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
+							." <img src='$imagefiles/conditions_edit.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
 							."\t\t\t\t\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
 							."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
