@@ -19,6 +19,67 @@ if(isset($usepdfexport) && $usepdfexport == 1)
 {
     require_once(dirname(__FILE__).$pdfexportdir."/extensiontcpdf.php");
 }
+// function for condition check, only shoing the questions, where conditions met
+function conditionCheck($id,$qid, $surveyid)
+	{
+		$conditionCheckValue = array();
+		$condCheckQuery = "SELECT qid, cqid, cfieldname, method, value FROM ".db_table_name("conditions")." WHERE qid=$qid ";
+		$condCheckResult = db_execute_assoc($condCheckQuery);
+		$condAnzahl = $condCheckResult->RecordCount();
+		if($condAnzahl==0 || $condAnzahl==FALSE)
+		{
+			//echo $condAnzahl;
+			return true;
+			exit;
+		}
+		else
+		{
+			//echo $condAnzahl;
+		}
+		while ($condRow = $condCheckResult->FetchRow())
+		{	
+			//conditionCheck();
+			$condCheckQuery2 = " SELECT * FROM ".db_table_name("survey_{$surveyid}")." WHERE id=$id ";
+			$condCheckResult2 = db_execute_assoc($condCheckQuery2);
+			
+			$condValue = $condCheckResult2->FetchRow();
+
+			switch ($condRow['method']) {
+				case "==":
+				    if($condRow['value'] == $condValue[$condRow['cfieldname']])
+				    {
+				    	echo $condValue;
+				    	$conditionCheckValue[] = true;
+				    }
+					else
+				    {
+				    	$conditionCheckValue[] = false;
+				    }
+				break;
+				case "!=":
+			 		if($condRow['value']!= $condValue[$condRow['cfieldname']])
+				    {
+				    	$conditionCheckValue[] = true;
+				    }
+				    else
+				    {
+				    	$conditionCheckValue[] = false;
+				    }
+				break;				
+				
+			}
+		}
+		foreach($conditionCheckValue as $value)
+		{
+			if($value==false)
+			{
+				return false;
+				exit;
+			}
+		}
+		return true;
+		exit;
+	}
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
@@ -176,113 +237,119 @@ if (isset($_SESSION['s_lang']))
 	{
 		$fnames[] = array("refurl", "refurl", $clang->gT("Referring URL"));
 	}
+	
 	foreach ($fnrows as $fnrow)
 	{
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" ||
-		$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
-		$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
-		$fnrow['type'] == "F" || $fnrow['type'] == "H" ||
-		$fnrow['type'] == "J" || $fnrow['type'] == "K" ||     
-		$fnrow['type'] == "P" || $fnrow['type'] == "^")
+		
+		if(conditionCheck($id, $fnrow['qid'], $surveyid))
 		{
-			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
-			$fnrresult = db_execute_assoc($fnrquery);  //Checked   
-			while ($fnrrow = $fnrresult->FetchRow())
+			if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" ||
+			$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
+			$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
+			$fnrow['type'] == "F" || $fnrow['type'] == "H" ||
+			$fnrow['type'] == "J" || $fnrow['type'] == "K" ||     
+			$fnrow['type'] == "P" || $fnrow['type'] == "^")
 			{
-				$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
-				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
+				
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND	language='{$language}' ORDER BY sortorder, answer";
+				$fnrresult = db_execute_assoc($fnrquery);  //Checked   
+				while ($fnrrow = $fnrresult->FetchRow())
+				{
+					$fnames[] = array("$field{$fnrrow['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']})");
+					if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."comment", "$ftitle"."comment", "{$fnrow['question']} (comment)");}
+				}
+				if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
+				{
+					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+				}
 			}
-			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
+			elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
 			{
-				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+			   $fnrquery = "SELECT *
+			                FROM ".db_table_name('answers')." 
+						    WHERE qid={$fnrow['qid']}
+							AND language='{$language}' 
+							ORDER BY sortorder, answer";
+				$fnrresult = db_execute_assoc($fnrquery);
+				$fnr2query = "SELECT *
+				              FROM ".db_table_name('labels')."
+				              WHERE lid={$fnrow['lid']}
+				              AND language = '{$language}'
+				              ORDER BY sortorder, title";
+				$fnr2result = db_execute_assoc($fnr2query);
+				while( $fnr2row = $fnr2result->FetchRow())
+				{
+				  $lset[]=$fnr2row;
+				}
+				while ($fnrrow = $fnrresult->FetchRow())
+				{
+				    foreach($lset as $ls)
+				    {
+					    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']}: {$ls['title']})");
+	                }
+				}
 			}
-		}
-		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
-		{
-		   $fnrquery = "SELECT *
-		                FROM ".db_table_name('answers')." 
-					    WHERE qid={$fnrow['qid']}
-						AND language='{$language}' 
-						ORDER BY sortorder, answer";
-			$fnrresult = db_execute_assoc($fnrquery);
-			$fnr2query = "SELECT *
-			              FROM ".db_table_name('labels')."
-			              WHERE lid={$fnrow['lid']}
-			              AND language = '{$language}'
-			              ORDER BY sortorder, title";
-			$fnr2result = db_execute_assoc($fnr2query);
-			while( $fnr2row = $fnr2result->FetchRow())
+			elseif ($fnrow['type'] == "R")
 			{
-			  $lset[]=$fnr2row;
+				$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
+				language='{$language}'
+				ORDER BY sortorder, answer";
+				$fnrresult = $connect->Execute($fnrquery); //Checked   
+				$fnrcount = $fnrresult->RecordCount();
+				for ($i=1; $i<=$fnrcount; $i++)
+				{
+					$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
+				}
 			}
-			while ($fnrrow = $fnrresult->FetchRow())
+	        elseif ($fnrow['type'] == "1") //Dual Scale
+	        {
+	            $qidattributes=getQuestionAttributes($fnrow['qid']);
+	            $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
+	            $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
+	            $fquestion = $fnrow['question'];
+	
+	            $aquery="SELECT * "
+	                ."FROM {$dbprefix}answers "
+	                ."WHERE qid={$fnrow['qid']} "
+	                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+	                ."ORDER BY sortorder, "
+	                ."answer";
+	            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
+	            $header1=$clang->gT('First Scale');
+	            $header2=$clang->gT('Second Scale');
+	            if ($thisheader=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))      
+	            {
+	               $header1=$thisheader['value'];
+	            }
+	            if ($thisheader=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))      
+	            {
+	               $header2=$thisheader['value'];
+	            }
+	            while ($arows = $aresult->FetchRow())
+	            {
+	                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header1);                
+	                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#1", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header2);
+	            } //while
+	        }
+	        
+			elseif ($fnrow['type'] == "O")
 			{
-			    foreach($lset as $ls)
-			    {
-				    $fnames[] = array("$field{$fnrrow['code']}_{$ls['code']}", "$ftitle ({$fnrrow['code']})", "{$fnrow['question']} ({$fnrrow['answer']}: {$ls['title']})");
-                }
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+				$field2 = $field."comment";
+				$ftitle2 = $ftitle."[Comment]";
+				$longtitle = "{$fnrow['question']}<br />[Comment]";
+				$fnames[] = array("$field2", "$ftitle2", "$longtitle");
 			}
-		}
-		elseif ($fnrow['type'] == "R")
-		{
-			$fnrquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$fnrow['qid']} AND
-			language='{$language}'
-			ORDER BY sortorder, answer";
-			$fnrresult = $connect->Execute($fnrquery); //Checked   
-			$fnrcount = $fnrresult->RecordCount();
-			for ($i=1; $i<=$fnrcount; $i++)
+			else
 			{
-				$fnames[] = array("$field$i", "$ftitle ($i)", "{$fnrow['question']} ($i)");
-			}
-		}
-        elseif ($fnrow['type'] == "1") //Dual Scale
-        {
-            $qidattributes=getQuestionAttributes($fnrow['qid']);
-            $field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
-            $ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
-            $fquestion = $fnrow['question'];
-
-            $aquery="SELECT * "
-                ."FROM {$dbprefix}answers "
-                ."WHERE qid={$fnrow['qid']} "
-                ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
-                ."ORDER BY sortorder, "
-                ."answer";
-            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
-            $header1=$clang->gT('First Scale');
-            $header2=$clang->gT('Second Scale');
-            if ($thisheader=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))      
-            {
-               $header1=$thisheader['value'];
-            }
-            if ($thisheader=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))      
-            {
-               $header2=$thisheader['value'];
-            }
-            while ($arows = $aresult->FetchRow())
-            {
-                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header1);                
-                $fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#1", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header2);
-            } //while
-        }
-        
-		elseif ($fnrow['type'] == "O")
-		{
-			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-			$field2 = $field."comment";
-			$ftitle2 = $ftitle."[Comment]";
-			$longtitle = "{$fnrow['question']}<br />[Comment]";
-			$fnames[] = array("$field2", "$ftitle2", "$longtitle");
-		}
-		else
-		{
-			$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
-			if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
-			{
-				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+				$fnames[] = array("$field", "$ftitle", "{$fnrow['question']}");
+				if (($fnrow['type'] == "L" || $fnrow['type'] == "!") && $fnrow['other'] == "Y")
+				{
+					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+				}
 			}
 		}
 	}
