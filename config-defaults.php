@@ -314,7 +314,8 @@ $usercontrolSameGroupPolicy = true;
 // If this option is set to true, then LimeSurvey will add 'title' html element
 // to all links used in menus. This will help screen reader to analyse the
 // menus. Only set this to true if you're using a screen reader because
-// it overlaps with tooltips.
+// it overlaps with tooltips. This option shouldn't be required anymore
+// for new releases of screen readers.
 $addTitleToLinks = false;
 
 // $demoModeOnly
