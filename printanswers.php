@@ -97,6 +97,7 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$clang = new limesurvey_lang($baselang);
 	//A nice exit
+
 	sendcacheheaders();
 	doHeader();
 
@@ -190,7 +191,7 @@ if (isset($_SESSION['s_lang']))
     $printoutput = '';
     if(isset($usepdfexport) && $usepdfexport == 1)
     {
-        $printoutput .= "<form action='printanswers.php' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+        $printoutput .= "<form action='printanswers.php?printableexport=pdf' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
     }
     if(isset($_POST['printableexport']))
     {
@@ -390,15 +391,64 @@ if (isset($_SESSION['s_lang']))
     $printoutput .= "</table>\n";
     if(isset($_POST['printableexport']))
     {
-        $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
+    	// IE6 Header-Cache fix
+		// Wenn der IE 6 das pdf file nicht erkennt, liegts am IE6 Nutzer
+		//(zu doof, der Browser kennt keine pdf's oder kein reader ist installiert) 
+		// oder daran das man multipleIE verwendet.
+		
+//		header('Cache-Control: no-cache, must-revalidate'); //Adjust maxage appropriately
+//		header('Pragma: public');
+//	
+//		// Wir werden eine PDF Datei ausgeben 
+//		// \n\n bewirkt eine korrektes erkennen des Content-type im IE
+//		
+//		header('Content-Disposition: attachment; filename="'.$clang->gT($surveyname).'-'.$surveyid.'.pdf"');
+//		header('Content-type: application/pdf');
+//	
+//		header('Content-Transfer-Encoding: binary');
+//		//header('Content-Length: '. filesize($filename)); 
+
+		
+	    //session_cache_limiter('private');
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		
+		if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
+		{
+			header("Content-type: application/file");
+			header("Content-Transfer-Encoding: binary");
+			
+			//header("Content-Length: ". filesize($clang->gT($surveyname)."-".$surveyid.".pdf"));
+			header("Content-Disposition: Attachment; filename=\"". $clang->gT($surveyname)."-".$surveyid.".pdf\"");
+			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf", "S");
+			//readfile(($clang->gT($surveyname)."-".$surveyid.".pdf"));
+			//$pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
+		}
+		else
+		{
+			
+			header("Content-Type: application/pdf");
+			//header("Content-Length: ". $size);
+			$pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
+		}
+		
+		
+		
+		
+		
+        
     }
 
 
 //tadaaaaaaaaaaa : display the page with the answers of user
-sendcacheheaders();
-doHeader();
-echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-echo templatereplace(file_get_contents("$thistpl/printanswers.pstpl"));
-echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-echo "</html>";
+    if(!isset($_POST['printableexport']))
+    {
+		sendcacheheaders();
+		doHeader();
+    
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		echo templatereplace(file_get_contents("$thistpl/printanswers.pstpl"));
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+		echo "</body></html>";
+    }
 ?>
