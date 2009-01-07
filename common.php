@@ -2516,7 +2516,13 @@ function templatereplace($line)
 		{
 			// Find out if the user has any saved data
 			
-			if (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
+            if ($thissurvey['format']=='A')
+            {
+                $saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>"
+                          ."<input type='button' name='saveallbtn' value='".$clang->gT("Resume Later")."' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";  // Show Save So Far button
+                
+            }
+			elseif (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
 			{
 				$saveall = "<input type='submit' name='loadall' value='".$clang->gT("Load Unfinished Survey")."' class='saveall' ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") ."/>";
 			}
