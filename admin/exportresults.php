@@ -20,7 +20,7 @@ include_once("login_check.php");
 	
 if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-if (!isset($style)) {$style=returnglobal('style');}
+if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
@@ -42,7 +42,7 @@ include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 $exportoutput="";
 
-if (!$style)
+if (!$exportstyle)
 {
     // Get info about the survey
     $thissurvey=getSurveyInfo($surveyid);
@@ -179,13 +179,13 @@ if (!$style)
 	.$clang->gT("Questions")."</strong></font></td></tr>\n"
 	."\t<tr>\n"
 	."\t\t<td>\n"
-	."\t\t\t<input type='radio' class='radiobtn' name='style' value='abrev' id='headabbrev'>"
+	."\t\t\t<input type='radio' class='radiobtn' name='exportstyle' value='abrev' id='headabbrev'>"
 	."<font size='1'><label for='headabbrev'>"
 	.$clang->gT("Abbreviated headings")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='full' id='headfull'>"
+	."\t\t\t<input type='radio' class='radiobtn' checked name='exportstyle' value='full' id='headfull'>"
 	."<label for='headfull'>"
 	.$clang->gT("Full headings")."</label><br />\n"
-	."\t\t\t<input type='radio' class='radiobtn' checked name='style' value='headcodes' id='headcodes'>"
+	."\t\t\t<input type='radio' class='radiobtn' checked name='exportstyle' value='headcodes' id='headcodes'>"
 	."<label for='headcodes'>"
 	.$clang->gT("Question codes")."</label><br />\n"
 	
@@ -643,7 +643,7 @@ for ($i=0; $i<$fieldcount; $i++)
 		$fsid=$fielddata['sid'];
 		$fgid=$fielddata['gid'];
 		$faid=$fielddata['aid'];
-		if ($style == "abrev")
+		if ($exportstyle == "abrev")
 		{
 			$qq = "SELECT question FROM {$dbprefix}questions WHERE qid=$fqid and language='$explang'";
 			$qr = db_execute_assoc($qq);
@@ -663,7 +663,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$separator";
 		}
-		elseif ($style == "headcodes")
+		elseif ($exportstyle == "headcodes")
 		{
 		    $qname=$fieldinfo;
 			$firstline .= "$qname";
@@ -675,7 +675,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			$qr = db_execute_assoc($qq) or safe_die ("ERROR:<br />".$qq."<br />".$connect->ErrorMsg());
 			while ($qrow=$qr->FetchRow())
 			{
-				if ($style == "headcodes"){$fquest=$qrow['title'];}
+				if ($exportstyle == "headcodes"){$fquest=$qrow['title'];}
 				else {$fquest=$qrow['question'];}
 			}
 			switch ($ftype)
