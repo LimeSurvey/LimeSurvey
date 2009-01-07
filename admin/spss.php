@@ -703,7 +703,7 @@ if  ($subaction=='dlstructure')
 				    }
 			    }
 			    #Lookup the answer
-			if($field['ftype'] == ":")
+			if($field['LStype'] == ":")
 			{
 			    //get the lid
 			    $query = "SELECT lid FROM {$dbprefix}questions WHERE qid='".$field["qid"]."'";
@@ -781,7 +781,7 @@ if  ($subaction=='dlstructure')
     {
 	    if ($field['qid']!=0)
 	    {
-		if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E' && $field['ftype'] != ':')
+		if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E' && $field['LStype'] != ':')
 		    {
 			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
