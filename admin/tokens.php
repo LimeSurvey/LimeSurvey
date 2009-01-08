@@ -1371,7 +1371,7 @@ if ($subaction == "remind" && //XXX
 			."\t\t\t\t<option value='N'>".$clang->gT("No")."</option>\n"
 			."\t\t\t</select></td></tr>\n"
 			. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
-			. $clang->gT("Min time between reminders").":&nbsp;</strong>\n"
+			. $clang->gT("Min days between reminders").":&nbsp;</strong>\n"
 			."\t\t\t<td><input type='text' value='' name='minreminderdelay' id='minreminderdelay' /></td></tr>\n"
 			. "\t\t<tr><td align='right' width='150' valign='top'><strong>\n"
 			. $clang->gT("Max reminders").":&nbsp;</strong>\n"
