@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id: questionquota.php 3571 2007-12-19 10:32:25Z machaven $
+* $Id$
 */
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly

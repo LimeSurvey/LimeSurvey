@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: import_resources_zip.php 3685 2007-11-22 04:53:18Z jcleeland $
+* $Id$
 */
 
 

@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: resetsurveylogic.php 3571 2007-11-02 20:43:25Z leochaton $
+* $Id$
 */
 
 //Ensure script is not run directly, avoid path disclosure

@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: conditions.php 3736 2007-11-30 16:13:55Z lemeur $
+* $Id$
 */
 
 include_once("login_check.php");
