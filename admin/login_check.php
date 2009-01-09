@@ -84,7 +84,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 							<table>
 								<tr>
 									<td>".$clang->gT("Username")."</td>
-									<td><input name='user' id='user' type='text' id='user' size='40' maxlength='40' value='' /></td>
+									<td><input name='user' id='user' type='text' size='40' maxlength='40' value='' /></td>
 								</tr>
 								<tr>
 									<td>".$clang->gT("Password")."</td>

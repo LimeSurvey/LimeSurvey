@@ -1201,7 +1201,7 @@ if ($subaction=='' ||
 			. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}\""
 			." onmouseover=\"showTooltip(event,'".$clang->gT("Renumber scenario automatically","js")."');return false\""
 			." onmouseout=\"hideTooltip()\">"
-			." <img src='$imagefiles/labelssmall.png'  alt='' name='renumberscenarios' title='' /></a>\n";
+			." <img src='$imagefiles/scenario_renumber.png'  alt='' name='renumberscenarios' title='' /></a>\n";
 		}
 	}
 	else
@@ -1262,16 +1262,16 @@ if ($subaction=='' ||
 			{
 				$conditionsoutput .= "\t<a href='#' "
 						." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) {document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
-						." onmouseover=\"showTooltip(event,'".$clang->gT("Delete all conditions for this scenario","js")."');return false\""
+						." onmouseover=\"showTooltip(event,'".$clang->gT("Delete this scenario","js")."');return false\""
 						." onmouseout=\"hideTooltip()\">"
-						." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
+						." <img src='$imagefiles/scenario_delete.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
 
 				$conditionsoutput .= "\t<a href='#' "
 						." id='editscenariobtn{$scenarionr['scenario']}'" 
 						." onclick=\"$('#editscenario{$scenarionr['scenario']}').toggle('slow');\""
 						." onmouseover=\"showTooltip(event,'".$clang->gT("Edit scenario","js")."');return false\""
 						." onmouseout=\"hideTooltip()\">"
-						." <img src='$imagefiles/labelssmall.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
+						." <img src='$imagefiles/scenario_edit.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n";
 
 			}
 
