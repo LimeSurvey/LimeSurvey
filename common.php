@@ -5013,7 +5013,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		if (strcmp($description,$qentry['description']) !=0 )
 		{
 			// Update Field
-			$sqlupdate = "UPDATE {$dbprefix}groups SET description='".$description."' WHERE gid=$gid AND language='$language'";
+			$sqlupdate = "UPDATE {$dbprefix}groups SET description='".auto_escape($description)."' WHERE gid=$gid AND language='$language'";
 			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in groups<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
 		} // Enf if modified
 	} // end while qentry
@@ -5041,7 +5041,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 				strcmp($help,$qentry['help']) !=0)
 		{
 			// Update Field
-			$sqlupdate = "UPDATE {$dbprefix}questions SET question='".$question."', help='".$help."' WHERE qid=$qid AND language='$language'";
+			$sqlupdate = "UPDATE {$dbprefix}questions SET question='".auto_escape($question)."', help='".auto_escape($help)."' WHERE qid=$qid AND language='$language'";
 			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in question<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
 		} // Enf if modified
 	} // end while qentry
@@ -5068,7 +5068,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		if (strcmp($answer,$qentry['answer']) !=0)
 		{
 			// Update Field
-			$sqlupdate = "UPDATE {$dbprefix}answers SET answer='".$answer."' WHERE qid=$qid AND code='$code' AND language='$language'";
+			$sqlupdate = "UPDATE {$dbprefix}answers SET answer='".auto_escape($answer)."' WHERE qid=$qid AND code='$code' AND language='$language'";
 			$updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in answers<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
 		} // Enf if modified
 	} // end while qentry

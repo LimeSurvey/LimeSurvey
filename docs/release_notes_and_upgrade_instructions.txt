@@ -70,7 +70,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.80RC3 (build 6238) to 1.80RC2 (build 6082) [2009/01/09]. Legend: + = new features, # = update, - = bug fix
+Changes from 1.80RC3 (build 6239) to 1.80RC2 (build 6082) [2009/01/09]. Legend: + = new features, # = update, - = bug fix
 
 #Updated Language: German (c_schmitz)
 #Updated Language: German translation (c_schmitz)
@@ -140,6 +140,7 @@ Changes from 1.80RC3 (build 6238) to 1.80RC2 (build 6082) [2009/01/09]. Legend: 
 -Fixed: upgrade bug with mssql (thanks to lynchmv ) (c_schmitz)
 -Fixed: Now debug should ouput information also on systems with display_errors on off (c_schmitz)
 -Fixed export structure in quexml format: now working with adoDB instead of mysql only (wahrendorff)
+-Fixed 02766: Crash on converting INSERTANS on survey import. Many thanks to lynchmv (lemeur)
 
 Changes from 1.80RC1 (build 5885) to 1.80RC2 6082 (2008/11/25). Legend: + = new features, # = update, - = bug fix
 
