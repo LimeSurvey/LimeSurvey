@@ -379,7 +379,7 @@ if(isset($surveyid))
 		."FROM ".db_table_name('questions')." as a, ".db_table_name('groups')."\n"
 		."WHERE a.gid=".db_table_name('groups').".gid\n"
 		."AND a.sid=$surveyid\n"
-		."group BY a.gid, a.qid\n"
+        ."GROUP BY a.gid, a.qid, ".db_table_name('groups').".group_order, question_order\n"
 		."ORDER BY ".db_table_name('groups').".group_order, question_order";
 		$gresult=db_execute_assoc($gselect) or safe_die ("Error: ".$connect->ErrorMsg());
 		$grows = array(); //Create an empty array in case FetchRow does not return any rows
