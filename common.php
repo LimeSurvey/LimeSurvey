@@ -2941,7 +2941,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display rows'));
     
 	$qattributes["hide_tip"]=array(
-	"types"=>"!LMOPWZK",
+	"types"=>"!LMOPRWZK",
 	"help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
   
