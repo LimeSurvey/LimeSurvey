@@ -133,7 +133,7 @@ while ($degrow = $degresult->FetchRow())
 		//GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 		$explanation = ""; //reset conditions explanation
 		$s=0;
-		$scenarioquery="SELECT DISTINCT ".db_table_name("conditions").".scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']}";
+		$scenarioquery="SELECT DISTINCT ".db_table_name("conditions").".scenario FROM ".db_table_name("conditions")." WHERE ".db_table_name("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
 		$scenarioresult=db_execute_assoc($scenarioquery);
 		while ($scenariorow=$scenarioresult->FetchRow())
         		{
@@ -160,7 +160,9 @@ while ($degrow = $degresult->FetchRow())
 				."FROM ".db_table_name("conditions").", ".db_table_name("questions")."\n"
 				."WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid\n"
 				."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
-				."AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND language='{$surveyprintlang}'";
+				."AND ".db_table_name("conditions").".qid={$deqrow['qid']} \n"
+				."AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} \n"
+				."AND language='{$surveyprintlang}'";
 				$conresult=db_execute_assoc($conquery) or safe_die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
 				$conditions=array();
 				while ($conrow=$conresult->FetchRow())
