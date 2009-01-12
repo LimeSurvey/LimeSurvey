@@ -3075,7 +3075,7 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
     "caption"=>$clang->gT('Prefix|Suffix'));
     
-	$qattributes["dualscale_header"]=array(
+	$qattributes["dualscale_headerA"]=array(
 	"types"=>"1",
 	"help"=>$clang->gT('Header for scale A'),
     "caption"=>$clang->gT('Header scale A'));
