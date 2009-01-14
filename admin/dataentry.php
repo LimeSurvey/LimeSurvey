@@ -1789,33 +1789,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."</table>\n"
 		."</body>\n";
 	}
-	elseif ($subaction == "unfinalizeanswers")
-	{
-		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td align='center'>\n";
-
-		// First delete incomplete answers
-		$updateqr = "DELETE from $surveytable WHERE submitdate IS NULL;\n";
-		$updateres = $connect->Execute($updateqr) or safe_die("Delete Uncomplete answers failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
-
-		// Then set all remaining answers to incomplete state
-		$updateqr = "UPDATE $surveytable SET submitdate=NULL;\n";
-
-		$updateres = $connect->Execute($updateqr) or safe_die("UnFinilize answers failed:<br />\n" . $connect->ErrorMsg() . "<br />$updateqr");
-		$thissurvey=getSurveyInfo($surveyid);
-		while (ob_get_level() > 0) {
-			ob_end_flush();
-		}
-		$dataentryoutput .= "<font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
-		.$clang->gT("All answers have been set to not completed.")."<br /><br />\n"
-		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;'>".$clang->gT("Back")."</a>\n<br />\n"
-		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all'>".$clang->gT("Browse Responses")."</a><br />\n"
-		."</td></tr></table>\n"
-		."</body>\n";
-	}
 	else
 	{
 		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);

@@ -142,11 +142,13 @@ $dangerousActionsArray = Array
 		'assessmentadd' => Array(),
 		'assessmentedit' => Array(),
 		'assessmentdelete' => Array(),
+		'iteratesurvey' => Array(
+			0 => Array('subaction' => 'unfinalizeanswers')
+			),
 		'dataentry' => Array(
 			0 => Array('subaction' => 'delete'),
 			1 => Array('subaction' => 'update'),
 			2 => Array('subaction' => 'insert'),
-			3 => Array('subaction' => 'unfinalizeanswers'),
 			),
 		'tokens' => Array(
 			0 => Array('subaction' => 'updatetoken'),

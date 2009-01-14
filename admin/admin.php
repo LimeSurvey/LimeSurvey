@@ -285,6 +285,11 @@ elseif ($action == 'tokens')
     if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; include('tokens.php');}               
         else { include('access_denied.php'); }    
     }    
+elseif ($action == 'iteratesurvey')
+    {
+    if( ($surrows['browse_response'] && $surrows['activate_survey']) || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('iterate_survey.php');}               
+        else { include('access_denied.php');}    
+    }    
 elseif ($action=='showprintablesurvey')  
     { 
         include('printablesurvey.php'); //No special right needed to show the printable survey
@@ -361,7 +366,7 @@ elseif ($action == 'replacementfields')
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) &&
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&    
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && 
      (isset($surveyid) || $action=='listurveys' || $action=='changelang' ||  $action=='changehtmleditormode' || $action=='checksettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
       $action=='newsurvey' || $action=='listsurveys' ||   
@@ -399,7 +404,7 @@ elseif ($action == 'replacementfields')
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources)) 
+      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput)) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -447,6 +452,7 @@ elseif ($action == 'replacementfields')
   if (isset($deactivateoutput)) {$adminoutput.= $deactivateoutput;} 	
   if (isset($tokenoutput)) {$adminoutput.= $tokenoutput;} 	
   if (isset($browseoutput)) {$adminoutput.= $browseoutput;} 	
+  if (isset($iteratesurveyoutput)) {$adminoutput.= $iteratesurveyoutput;} 	
   if (isset($dataentryoutput)) {$adminoutput.= $dataentryoutput;} 	
   if (isset($statisticsoutput)) {$adminoutput.= $statisticsoutput;} 	
   if (isset($exportoutput)) {$adminoutput.= $exportoutput;} 	

@@ -1543,7 +1543,9 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 
 function browsemenubar($title='')
 {
-	global $surveyid, $scriptname, $imagefiles, $homeurl, $clang, $sumrows5;
+	global $surveyid, $scriptname, $imagefiles, $homeurl, $clang, $sumrows5, $surrows;
+
+	$thissurvey=getSurveyInfo($surveyid);
 	//BROWSE MENU BAR
 	$browsemenubar = "<div class='menubar'>\n"
 	. "\t<div class='menubar-title'>\n"
@@ -1638,6 +1640,21 @@ function browsemenubar($title='')
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 		" title=\"".$clang->gTview("Export a VV survey file")."\" " .
 		" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
+		"<img src='$imagefiles/exportvv.png' title='' alt='' /></a>\n";
+	}
+	if (
+		( ($surrows['browse_response'] && $surrows['activate_survey']) || 
+			$_SESSION['USER_RIGHT_SUPERADMIN'] == 1
+		) &&
+		(
+			$thissurvey['private'] == 'N' &&
+			$thissurvey['tokenanswerspersistence'] == 'Y'
+		)
+	)
+	{ //TIBO
+		$browsemenubar .= "\t\t\t<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
+		" title=\"".$clang->gTview("Iterate Surevey")."\" " .
+		" onmouseover=\"showTooltip(event,'".$clang->gT("Iterate Survey", "js")."')\">" .
 		"<img src='$imagefiles/exportvv.png' title='' alt='' /></a>\n";
 	}
 	$browsemenubar .= "\t\t</div>\n"
