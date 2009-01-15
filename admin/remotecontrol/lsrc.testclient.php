@@ -28,7 +28,7 @@ if($wsdl=='')
 	// give full uri of the wsdl from the webservice you want to connect to...
 	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
 	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl='https://localhost/limesource/limesurvey/admin/japh/japh.server.php?wsdl';
+	$wsdl='https://localhost/limesource/limesurvey/admin/remotecontrol/lsrc.server.php?wsdl';
 }
 //set this to your limesurvey installation path for the "test survey" link to work
 $limeUrl='https://localhost/limesource/limesurvey';
@@ -561,7 +561,7 @@ for($n=1;$n<10;++$n)
 
 <div style='float: left;  margin-bottom: 5px'>
 <h3>sChangeSurvey function</h3>
-( this is not part of the japh, it just shows the power of it, <br/>it has to be activated in server.php on line ~49 )
+( this is not part of the lsrc, it just shows the power of it, <br/>it has to be activated in server.php on line ~49 )
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
 <input type="radio" name="mode" value="0" selected='selected' > update
 <input type="radio" name="mode" value="1"> insert<br/>

@@ -14,27 +14,27 @@
 * 
 */
 
-// include the japh.config.php
-include_once("japh.config.php");
+// include the lsrc.config.php
+include_once("lsrc.config.php");
 
-// functions helping japhService to do some things with Limesurvey (import, activation, checks)
-include("japh.helper.php");
+// functions helping lsrcService to do some things with Limesurvey (import, activation, checks)
+include("lsrc.helper.php");
 
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
  */
 if(isset($_GET['wsdl']))
 {
-	if($japhOverSSL)
+	if($lsrcOverSSL)
 		$http = "https://";
 	else
 		$http = "http://";
 		
-	$wsdlString = file_get_contents("japh_orig.wsdl");
-	$wsdlString = str_replace("{japhlocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
-	file_put_contents("japh.wsdl",$wsdlString);
+	$wsdlString = file_get_contents("lsrc_orig.wsdl");
+	$wsdlString = str_replace("{lsrclocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
+	file_put_contents("lsrc.wsdl",$wsdlString);
 	header('Content-type: text/wsdl');
-	header('Content-Disposition: attachment; filename=japh.wsdl');	
+	header('Content-Disposition: attachment; filename=lsrc.wsdl');	
 }
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
@@ -77,10 +77,10 @@ $server->handle();
 */
 function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') //XXX
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
 	// check for appropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -92,7 +92,7 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 		exit;
 	}
 	
-	return $japhHelper->changeTable($table, $key, $value, $where, $mode);
+	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
 }
 
 /**
@@ -105,11 +105,11 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 */
 function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK "); 
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK "); 
 	// check for apropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -123,20 +123,20 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 	}
 	
 	// Check if the survey to create already exists. If not, abort with Fault.
-	if(!$japhHelper->surveyExists($iVid))
+	if(!$lsrcHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey you want to activate does not exists");
 		exit;
 	}
 	
 	//check for Surveyowner. Only owners and superadmins can change and activate surveys
-	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
 	
-	if(!$japhHelper->activateSurvey($iVid))
+	if(!$lsrcHelper->activateSurvey($iVid))
 	{
 		throw new SoapFault("Server: ", "Activation went wrong somehow");
 		exit;
@@ -144,18 +144,18 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 	
 	if($dStart!='')
 	{
-		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
-		$japhHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
-		$japhHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
+		$lsrcHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
+		$lsrcHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
 	if($dEnd!='')
 	{
-		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
-		$japhHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
-		$japhHelper->changeTable('surveys','expires',$dEnd,'sid='.$iVid);
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
+		$lsrcHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
+		$lsrcHelper->changeTable('surveys','expires',$dEnd,'sid='.$iVid);
 	}
 	
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", aktivierung OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", aktivierung OK ");
 	return $iVid;
 }
 
@@ -171,9 +171,9 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 */
 function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp ) //XXX
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 	
 	
 	if($sVwel=='')
@@ -181,7 +181,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 		$sVwel	= "Herzlich Willkommen zur Evaluation von \"".$sVtit."\"";
 	}
 	
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{// check for appropriate rights
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -193,30 +193,30 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 		exit;
 	}
 	
-	if($japhHelper->surveyExists($iVid))
+	if($lsrcHelper->surveyExists($iVid))
 	{// Check if the survey to create already exists. If so, abort with Fault.
 		throw new SoapFault("Database: ", "Survey already exists");
 		exit;
 	}
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",vor import OK ");
 	
 	
-	if($japhHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
+	if($lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
 	{// if import of survey went ok it returns true, else nothing
-		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", nach import OK ");
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", nach import OK ");
 		
 		//get the optional data into db
 		if($sMail!='')
 		{
-			$japhHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iVid'");
-			$japhHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys", "adminemail", $sMail, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys", "bounce_email", $sMail, "sid='$iVid'");
 		}
 		if($sName!='')
-			$japhHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
 		if($sUrl!='')
-			$japhHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
 			
-		$japhHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
+		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
 		return $iVid;
 	}
@@ -240,12 +240,12 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken) //XXX
 	global $connect ;
 	global $dbprefix ;
 	//$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 
 	// check for apropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -259,17 +259,17 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken) //XXX
 	}
 	
 	// check if the Survey we want to populate with tokens already exists, else -> Fault
-	if(!$japhHelper->surveyExists($iVid))
+	if(!$lsrcHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey does not exists");
 		exit;
 	}
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", ckecks ueberstanden ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", ckecks ueberstanden ");
 	
 	// check if the Token table already exists, if not, create it...
 	if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
 	{
-		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", TOken Table existiert nicht ");
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", TOken Table existiert nicht ");
 		$createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
 		. "firstname C(40) ,\n "
@@ -305,18 +305,18 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken) //XXX
 		$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 		$dict->ExecuteSQLArray($createtokentableindex, false);
 	}
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token tabelle sollte erstellt sein ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token tabelle sollte erstellt sein ");
 	#################
 	
-	//if the japhSeperator is not set, set the default seperator, a comma...
-	if($sJaphSeparator=='')
+	//if the lsrcSeperator is not set, set the default seperator, a comma...
+	if($sLsrcSeparator=='')
 	{
-		$sJaphSeparator = ",";
+		$sLsrcSeparator = ",";
 	}
 	
 	// prepare to fill the table lime_tokens_*
 	// this is sensitiv, if the Seperator is not the defined one, almost everything could happen, BE AWARE OF YOUR SEPERATOR!...
-	$asTokens = explode($sJaphSeparator, $sToken);
+	$asTokens = explode($sLsrcSeparator, $sToken);
 	$givenTokenCount = count($asTokens);
 	// write the tokens in the token_table
 	$insertedTokenCount=0;
@@ -354,10 +354,10 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
 	// check for appropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -371,7 +371,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
 	}
 	
 	// check if the Survey we want to populate with data and tokens already exists, else -> Fault
-	if(!$japhHelper->surveyExists($iVid))
+	if(!$lsrcHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey does not exists");
 		exit;
@@ -380,7 +380,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
 	// check if the Token table already exists, if not, create it...
 	if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
 	{
-		$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
 		$createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
 		. "firstname C(40) ,\n "
@@ -416,9 +416,9 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
 		$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 		$dict->ExecuteSQLArray($createtokentableindex, false);
 	}
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token tabelle sollte erstellt sein ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token tabelle sollte erstellt sein ");
 	
-	//set the Seperators to default if nothing is set in the japh.config.php
+	//set the Seperators to default if nothing is set in the lsrc.config.php
 	if(!isset($sDatasetSeperator) || $sDatasetSeperator=='')
 	{$sDatasetSeperator = "::";}
 	if(!isset($sDatafieldSeperator) || $sDatafieldSeperator=='')
@@ -473,12 +473,12 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 	
 	// check for appropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -492,7 +492,7 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
 	}
 	
 	// check if the Survey exists, else -> Fault
-	if(!$japhHelper->surveyExists($iVid))
+	if(!$lsrcHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey does not exists");
 		exit;
@@ -544,18 +544,18 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
  */
 function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 	
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or Password wrong");
 		exit;
 	}
 	
 	//check for Surveyowner
-	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
@@ -566,7 +566,7 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
 		exit;
 	}
-	$checkImport = $japhHelper->importGroup($iVid,"mod_".$sMod);
+	$checkImport = $lsrcHelper->importGroup($iVid,"mod_".$sMod);
 	if(is_array($checkImport))
 	{
 		return "Import OK";
@@ -593,20 +593,20 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
  */
 function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, $mandatory='N')
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
-	$lastId = $japhHelper->importGroup($iVid,$sMod);
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
 	
 	// check for appropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
 	
 	//check for Surveyowner
-	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
@@ -614,10 +614,10 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 	
 	if(is_array($lastId))
 	{
-		$japhHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
-		$japhHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
-		$japhHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
-		$japhHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
 		return "OK";
 	}
 	else
@@ -644,38 +644,38 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-	include("japh.config.php");
+	include("lsrc.config.php");
 	
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
 	
 	// check for appropriate rights
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
 	//check for surveyOwner
-	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
 	
-	$lastId = $japhHelper->importGroup($iVid,$sMod);
+	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
 	if(is_array($lastId))
 	{
-		$japhHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
-		$japhHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
 		if($mandatory==''){$mandatory='N';}
-		$japhHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
 		
 		$aItems = explode(",", $sItems);
 		$n=0;
 		foreach($aItems as $item)
 		{
 			++$n;
-			$japhHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".$_SESSION['lang']."' " , "", 1);
+			$lsrcHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".$_SESSION['lang']."' " , "", 1);
 		}
 		return "OK";
 	}
@@ -698,11 +698,11 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
  */
 function sAvailableModules($sUser, $sPass, $mode='mod')
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
 	
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
@@ -767,29 +767,29 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
  */
 function sDeleteSurvey($sUser, $sPass, $iVid)
 {
-	include("japh.config.php");
-	$japhHelper = new japhHelper();
-	$japhHelper->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
 	
-	if(!$japhHelper->checkUser($sUser, $sPass))
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
 	
-	if($japhHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
 		throw new SoapFault("Authentication: ", "You have no right to delete Surveys from other people");
 		exit;
 	}
 	// check if the Survey exists, else -> Fault
-	if(!$japhHelper->surveyExists($iVid))
+	if(!$lsrcHelper->surveyExists($iVid))
 	{
 		throw new SoapFault("Database: ", "Survey $iVid does not exists");
 		exit;
 	}
 	
-	if($japhHelper->deleteSurvey($iVid))
+	if($lsrcHelper->deleteSurvey($iVid))
 	{
 		return "Survey $iVid deleted";
 	}

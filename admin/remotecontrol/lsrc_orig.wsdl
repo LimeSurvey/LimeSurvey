@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<definitions name="japhService"
-targetNamespace="urn:japhNamespace"
-xmlns:tns="urn:japhNamespace"
+<definitions name="lsrcService"
+targetNamespace="urn:lsrcNamespace"
+xmlns:tns="urn:lsrcNamespace"
 xmlns="http://schemas.xmlsoap.org/wsdl/"
 xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-xmlns:typens="japhSchema"
+xmlns:typens="lsrcSchema"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
       
   <message name="sCreateSurveyRequest">
@@ -28,9 +28,15 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
       <documentation>This is the &quot;Veranstaltungsbeschreibung&quot;, the Surveydescription.
       String expected. Put together from TYP, DOZENTEN- TITLE, -NAME,
       </documentation>
-    </part>    <part name="sVwel" type="xsd:string"></part><part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>    <part name="sName" type="xsd:string"><documentation>The Name of the Administrator, resp. the Person whos email Adress was given
-      </documentation></part>    <part name="sUrl" type="xsd:string"><documentation>The URL to wich will be redirected when completing the Survey
-      </documentation></part>    <part name="sUbes" type="xsd:string"><documentation>The text for the Link, if not loaded automatically</documentation></part>        <part name="sVtyp" type="xsd:string"></part></message>
+    </part>
+    <part name="sVwel" type="xsd:string"></part><part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>
+    <part name="sName" type="xsd:string"><documentation>The Name of the Administrator, resp. the Person whos email Adress was given
+      </documentation></part>
+    <part name="sUrl" type="xsd:string"><documentation>The URL to wich will be redirected when completing the Survey
+      </documentation></part>
+    <part name="sUbes" type="xsd:string"><documentation>The text for the Link, if not loaded automatically</documentation></part>
+    
+    <part name="sVtyp" type="xsd:string"></part></message>
   
   <message name="sCreateSurveyResponse">
       <part name="vid" type="xsd:string">
@@ -55,7 +61,9 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <part name="sToken" type="xsd:string">
       <documentation>String of tokens seperated by a comma (default)... You have the possibility to change the desired seperator in LimeSurveys config.php
        </documentation>
-    </part>
+    </part>
+
+
   </message> 
   <message name="sInsertTokenResponse">
      <part name="return" type="xsd:string" >
@@ -80,7 +88,9 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     <part name="sParticipantData" type="xsd:string">
       <documentation>Data for Participant expected in this format:  [Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de] and so on... seperate the Datasets with :: and the Datafields in the Sets with ;
        </documentation>
-    </part>
+    </part>
+
+
   </message> 
   <message name="sInsertParticipantsResponse">
      <part name="return" type="xsd:string" >
@@ -101,7 +111,9 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
         <part name="iVid" type="xsd:int">
        <documentation>SurveyID of existing Survey, which has a Token table 
        </documentation>
-    </part>
+    </part>
+
+
   </message> 
   <message name="sTokenReturnResponse">
      <part name="iVid" type="xsd:int">
@@ -150,15 +162,21 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
   	<part name="iVid" type="xsd:int"></part>
-        <part name="dStart" type="xsd:date"></part>
-  	<part name="dEnd" type="xsd:date"></part>  	  </message>
+        <part name="dStart" type="xsd:date"></part>
+
+  	<part name="dEnd" type="xsd:date"></part>
+
+  	
+  </message>
   <message name="sActivateSurveyResponse">
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sActivateSurveyFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
-  <message name="sImportGroupRequest">
+  <message name="sImportGroupRequest">
+
+
         <part name="sUser" type="xsd:string"></part>
         <part name="sPass" type="xsd:string"></part>
         <part name="iVid" type="xsd:int"></part>
@@ -224,7 +242,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sDeleteSurveyFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
-  <portType name="JaphPortType">
+  <portType name="LsrcPortType">
     <operation name="sCreateSurvey" >
     <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
       <input name="sCreateSurveyRequest" message="tns:sCreateSurveyRequest" />
@@ -286,195 +304,195 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
         </operation>
   </portType>
   
-  <binding name="JaphBinding" type="tns:JaphPortType">
+  <binding name="LsrcBinding" type="tns:LsrcPortType">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
 	
 	<operation name="sDeleteSurvey">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sDeleteSurveyRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sDeleteSurveyResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sDeleteSurveyFault">
-        <soap:fault name="sDeleteSurveyFault" namespace="urn:japhNamespace"
+        <soap:fault name="sDeleteSurveyFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
 
 	<operation name="sImportMatrix">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sImportMatrixRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportMatrixResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportMatrixFault">
-        <soap:fault name="sImportMatrixFault" namespace="urn:japhNamespace"
+        <soap:fault name="sImportMatrixFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
 	
 	<operation name="sImportQuestion">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sImportQuestionRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportQuestionResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportQuestionFault">
-        <soap:fault name="sImportQuestionFault" namespace="urn:japhNamespace"
+        <soap:fault name="sImportQuestionFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
 	
 	<operation name="sAvailableModules">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sAvailableModulesRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sAvailableModulesResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sAvailableModulesFault">
-        <soap:fault name="sAvailableModulesFault" namespace="urn:japhNamespace"
+        <soap:fault name="sAvailableModulesFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
 
 	<operation name="sImportGroup">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sImportGroupRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sImportGroupResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sImportGroupFault">
-        <soap:fault name="sImportGroupFault" namespace="urn:japhNamespace"
+        <soap:fault name="sImportGroupFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
     
 	<operation name="sActivateSurvey">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sActivateSurveyRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sActivateSurveyResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sActivateSurveyFault">
-        <soap:fault name="sActivateSurveyFault" namespace="urn:japhNamespace"
+        <soap:fault name="sActivateSurveyFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
 	
     <operation name="sChangeSurvey">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sChangeSurveyRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sChangeSurveyResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sChangeSurveyFault">
-        <soap:fault name="sChangeSurveyFault" namespace="urn:japhNamespace"
+        <soap:fault name="sChangeSurveyFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
     
     <operation name="sCreateSurvey">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sCreateSurveyRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sCreateSurveyResponse">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sCreateSurveyFault">
-        <soap:fault name="sCreateSurveyFault" namespace="urn:japhNamespace"
+        <soap:fault name="sCreateSurveyFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
     
     <operation name="sInsertToken">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sInsertTokenRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sInsertTokenResponse" >
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sInsertTokenFault">
-        <soap:fault name="sInsertTokenFault" namespace="urn:japhNamespace"
+        <soap:fault name="sInsertTokenFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
     
     <operation name="sInsertParticipants">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sInsertParticipantsRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sInsertParticipantsResponse" >
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sInsertParticipantsFault">
-        <soap:fault name="sInsertParticipantsFault" namespace="urn:japhNamespace"
+        <soap:fault name="sInsertParticipantsFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
     
     <operation name="sTokenReturn">
-      <soap:operation soapAction="urn:japhNamespaceAction" style="rpc" />
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sTokenReturnRequest">
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </input>
       <output name="sTokenReturnResponse" >
-        <soap:body namespace="urn:japhNamespace"
+        <soap:body namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </output>
       <fault name="sTokenReturnFault">
-        <soap:fault name="sTokenReturnFault" namespace="urn:japhNamespace"
+        <soap:fault name="sTokenReturnFault" namespace="urn:lsrcNamespace"
         encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </fault>
     </operation>
   </binding>
   
-  <service name="JaphService">
-    <documentation>This is the JaphService 
+  <service name="LsrcService">
+    <documentation>This is the LsrcService 
     for remote starting surveys and registering tokens in LimeSurvey. 
-    Make sure to modify the soap:address to the current Location of the japhserver.php
-    It has to be like this: 'http://servername/[limesurveydir]/japhservice/japhserver.php'
+    Make sure to modify the soap:address to the current Location of the lsrcserver.php
+    It has to be like this: 'http://servername/[limesurveydir]/lsrcservice/lsrcserver.php'
     NOTE: http for normal mode, begin the url with https for a SSL Webservice, it's just that easy.
     </documentation>
-    <port name="JaphPort" binding="tns:JaphBinding">
-      <soap:address location="{japhlocation}" />
+    <port name="LsrcPort" binding="tns:LsrcBinding">
+      <soap:address location="{lsrclocation}" />
     </port>
   </service>
 

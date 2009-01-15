@@ -25,8 +25,8 @@ require_once(dirname(__FILE__).'/../../common.php');
 error_reporting(E_ALL);
 
 //specialized debug option, true for own debuglog
-$japhDebug = true;
-$japhDebugLog = "japh.log";
+$lsrcDebug = true;
+$lsrcDebugLog = "lsrc.log";
 
 // error log enabled, hint(.../apache/logs/error.log) this is very handy while developing, since SOAP does not echo php error messages to the client
 // it's also recommended to set this in productive environment
@@ -42,7 +42,7 @@ ini_set("soap.wsdl_cache_enabled", "0");
 ### Security
 // enable for ssl connections 
 // this is for wsdl generation, on true the url to the server in the wsdl beginns with https instead of http
-$japhOverSSL=true; //default: false
+$lsrcOverSSL=true; //default: false
 
 // enable if you use a certificate for the Connections
 // IMPORTANT NOTE: your Client need the same certificate to connect with.
@@ -53,12 +53,12 @@ $sslCert='cacert.pem';
 
 ### Variables
 // Since this variable isn't per default in Limesurveys config.php any more, we need to set it ourselfs 
-//(the setting in LS config-defaults.php is not working for japh... no idea why) 
+//(the setting in LS config-defaults.php is not working for lsrc... no idea why) 
 // set the LS installation Dir relative to document root
 //$relativeurl		=   "/limesource/limesurvey"; //default: "/limesurvey" //TODO: delete if no errors occure while commented
 
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
-$wsdl= $homedir."/japh/japh.wsdl"; //default: $homedir."/japh/japh.wsdl";
+$wsdl= $homedir."/lsrc/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 
@@ -70,7 +70,7 @@ $modDir = "./studiply_mod/";
 
 
 //seperator for Tokens in sInsertToken function
-$sJaphSeparator = ","; //default: ","
+$sLsrcSeparator = ","; //default: ","
 
 //set the Seperators for Participant Datasets in sInsertParticipants 
 $sDatasetSeperator = "::"; //default: "::"
