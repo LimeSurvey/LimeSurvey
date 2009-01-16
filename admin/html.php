@@ -1593,7 +1593,7 @@ if (returnglobal('viewanswer'))
 			if ($row['default_value'] == 'Y') 
             {     
                 $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
-  			                       ."<input type='hidden' name='default_answer' value=\"{$row['sortorder']}\" />";
+  			                       ."<input type='hidden' name='default_answer_{$row['sortorder']}' value=\"Y\" />";
             }
 
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 

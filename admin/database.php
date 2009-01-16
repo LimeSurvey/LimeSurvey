@@ -945,7 +945,7 @@ if(isset($surveyid))
         		$defaultanswerset='N';
             $langid=substr($sortorderid,0,strrpos($sortorderid,'_')); 
         		$orderid=substr($sortorderid,strrpos($sortorderid,'_')+1,20);
-        		if (isset($_POST['default_answer']) && $_POST['default_answer']==$orderid) 
+        		if (isset($_POST['default_answer_'.$codeids[$count]]) && $_POST['default_answer_'.$codeids[$count]]=="Y") 
         		{
         		 $defaultanswerset='Y';
             }
