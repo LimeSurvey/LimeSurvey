@@ -1666,6 +1666,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
 		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n"
 		. "\t\t\t<option value='<'>".$clang->gT("Less than")."</option>\n"
+		. "\t\t\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
 		. "\t\t\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
 		. "\t\t\t<option value='!='>".$clang->gT("Not equal to")."</option>\n"	
 		. "\t\t\t<option value='>='>".$clang->gT("Greater than or equal to")."</option>\n"
