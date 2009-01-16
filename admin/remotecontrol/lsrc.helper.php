@@ -13,19 +13,19 @@
 * $Id$
 * 
 */
-class japhHelper {
+class LsrcHelper {
 	
 	/**
 	 * simple debug function to make life a bit easier
 	 *
 	 * @param unknown_type $text
 	 */
-	function debugJaph($text)
+	function debugLsrc($text)
 	{
-		include("japh.config.php");
-		if($japhDebug)
+		include("lsrc.config.php");
+		if($lsrcDebug)
 		{
-			error_log("\n".date("Y-m-d H:i:s")." ".$text, 3 , $japhDebugLog); 
+			error_log("\n".date("Y-m-d H:i:s")." ".$text, 3 , $lsrcDebugLog); 
 		}
 		return;
 	}
@@ -41,9 +41,9 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
-		$japhHelper= new JaphHelper();
-		if($japhHelper->surveyExists($iVid))
+		include("lsrc.config.php");
+		$lsrcHelper= new LsrcHelper();
+		if($lsrcHelper->surveyExists($iVid))
 		{
 			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=$iVid";
 			$rs = db_execute_assoc($query2num);
@@ -67,15 +67,15 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
+		include("lsrc.config.php");
 		if($mode=='' || !isset($mode) || $mode=='0')
 		{
 			$where = str_replace("\\","",$where);
 			$query2num = "SELECT {$key} FROM {$dbprefix}{$table} WHERE {$where}";
-			$this->debugJaph("wir sind in Line ".__LINE__.", OK ($query2num)"); 		
+			$this->debugLsrc("wir sind in Line ".__LINE__.", OK ($query2num)"); 		
 			$query2update = "update ".$dbprefix.$table." set ".$key."='".$value."' where ".$where."";
 			$rs = db_execute_assoc($query2num);
-			$this->debugJaph("wir sind in Line ".__LINE__.", OK ($query2update)");   
+			$this->debugLsrc("wir sind in Line ".__LINE__.", OK ($query2update)");   
 			
 			if($connect->Execute($query2update)){
 				return $rs->RecordCount()." Rows changed";
@@ -87,10 +87,10 @@ class japhHelper {
 		if($mode==1 || $mode=='1')
 		{
 			$query2insert = "INSERT INTO ".$dbprefix.$table." (".$key.") VALUES (".$value.");";
-			$this->debugJaph("wir sind in Line ".__LINE__.", inserting ($query2insert)");   
+			$this->debugLsrc("wir sind in Line ".__LINE__.", inserting ($query2insert)");   
 			if($connect->Execute($query2insert))
 			{
-				$this->debugJaph("wir sind in Line ".__LINE__.", inserting OK");
+				$this->debugLsrc("wir sind in Line ".__LINE__.", inserting OK");
 				return true;
 				 
 			}
@@ -104,7 +104,7 @@ class japhHelper {
 	}
 	 
 	/**
-	 * loginCheck for Japh, checks if the user with given password exists in LS Database and 
+	 * loginCheck for Lsrc, checks if the user with given password exists in LS Database and 
 	 * sets the SESSION rights for this user
 	 * @param String $sUser
 	 * @param String $sPass
@@ -115,7 +115,7 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
+		include("lsrc.config.php");
 		require($homedir."/classes/core/sha256.php"); 
 		
 		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name='".$sUser."' ";
@@ -156,7 +156,7 @@ class japhHelper {
 	}
 	 
 	/**
-	 * Japh checks the existence of Surveys more than one time, so this makes sense to be DRY
+	 * Lsrc checks the existence of Surveys more than one time, so this makes sense to be DRY
 	 *
 	 * @param int $sid
 	 * @return boolean
@@ -166,7 +166,7 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
+		include("lsrc.config.php");
 		
 		$query="SELECT * FROM {$dbprefix}surveys WHERE sid = ".$sid;
 		// echo $query;
@@ -194,12 +194,12 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
-		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
+		include("lsrc.config.php");
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
 		// HINT FOR IMPORTERS: go to Line 714 to manipulate the Survey, while it's imported 
 		
 		    $the_full_file_path = $coreDir.$sVtyp.".csv";
-		 $this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.",the_full_file_path ='$the_full_file_path' OK ");    
+		 $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",the_full_file_path ='$the_full_file_path' OK ");    
 		//$_SERVER['SERVER_NAME'] = "";				// just to avoid notices
 		//$_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
 		//require_once(dirname(__FILE__).'/../config-defaults.php'); 
@@ -919,7 +919,7 @@ class japhHelper {
 				$labelreplacements[]=array($oldlid, $newlid);
 			}
 		}
-		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		$importwarning = "";	// used to save the warnings while processing questions
 		$qtypes = getqtypelist("" ,"array");
 		
@@ -1193,7 +1193,7 @@ class japhHelper {
 				}
 			}
 		}
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		   // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
 		   //fixsortorderGroups(); //XXX changed: commented out
 		   //fixsortorderGroups() in full length (using global vars, i cannot work with such things) - rakete
@@ -1207,7 +1207,7 @@ class japhHelper {
 				$position++;
 			}
 		
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		   //... and for the questions inside the groups
 		   // get all group ids and fix questions inside each group
@@ -1236,7 +1236,7 @@ class japhHelper {
 					}
 		        	
 		        }
-		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		        
 		//We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
 		//and one containing the old 'extended fieldname' and its new equivalent.  These are needed to import conditions and question_attributes.
@@ -1458,20 +1458,20 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
+		include("lsrc.config.php");
 		$_GET['sid'] = $surveyid;
 		$_POST['sid'] = $surveyid;
 		//$postsid = $surveyid;
 		//$activateoutput='';
 		
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			if (isset($_GET['fixnumbering']) && $_GET['fixnumbering'])
 			{
-				$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				//Fix a question id - requires renumbering a question
 				$oldqid = $_GET['fixnumbering'];
 				$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
@@ -1486,7 +1486,7 @@ class japhHelper {
 				//Now conditions based upon this question
 				$query = "SELECT cqid, cfieldname FROM {$dbprefix}conditions WHERE cqid=$oldqid";
 				$result = db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());
-				$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				while ($row=$result->FetchRow())
 				{
 					$switcher[]=array("cqid"=>$row['cqid'], "cfieldname"=>$row['cfieldname']);
@@ -1502,7 +1502,7 @@ class japhHelper {
 						$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
 					}
 				}
-				$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				//Now question_attributes
 				$query = "UPDATE {$dbprefix}question_attributes SET qid=$newqid WHERE qid=$oldqid";
 				$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -1525,7 +1525,7 @@ class japhHelper {
 			//  # "1" -> MULTI SCALE
 			
 		
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', ':', '1')";
 			$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
@@ -1548,7 +1548,7 @@ class japhHelper {
 				//$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
 			}
 		
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			
 		
 			//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
@@ -1564,13 +1564,13 @@ class japhHelper {
 			while($chkrow = $chkresult->FetchRow()){
 			//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
 			} // while
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			
 			// XXX rakete Changed: This was making errors, for we dont have additional languages and this script throws an error when there are none.
 				
 			//NOW check that all used labelsets have all necessary languages
 	//		$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid > 0) AND (lid is not null)";
-	//		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", $chkquery ");
+	//		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $chkquery ");
 	//		$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
 	//		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
 	//		$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1588,7 +1588,7 @@ class japhHelper {
 	//				}  //foreach
 	//		} //while 
 			
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 			//A: Make an array of all the qids in order of appearance
 			//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$surveyid} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
@@ -1691,10 +1691,10 @@ class japhHelper {
 				//$activateoutput .= "\t\t</td>\n";
 				//$activateoutput .= "\t</tr>\n";
 				//$activateoutput .= "</table><br />&nbsp;\n";
-				$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", NICHT ERWARTET "); 
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", NICHT ERWARTET "); 
 				return;
 			}
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 			//$activateoutput .= "<br />\n<table class='alertbox'>\n";
 			//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></td></tr>\n";
 			//$activateoutput .= "\t<tr>\n";
@@ -1720,14 +1720,14 @@ class japhHelper {
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "</table><br />&nbsp;\n";
 			
-			//XXX Changed rakete, set Post var for japh, no else
+			//XXX Changed rakete, set Post var for lsrc, no else
 			$_POST['ok'] = "Y";
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		}
 		
 		if (isset($_POST['ok']) || $_POST['ok'])
 		{
-			$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 			//Create the survey responses table
 			$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
 			$createsurvey .= " submitdate T,\n";
@@ -2013,10 +2013,10 @@ class japhHelper {
 				//$activateoutput .= "<br />\n<table class='alertbox'>\n";
 				//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
 				//$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
-				$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+				$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 				$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
 				$acresult = $connect->Execute($acquery);
-				$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", FERTIG ");  
+				$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", FERTIG ");  
 			}
 		
 		}
@@ -2092,14 +2092,14 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
+		include("lsrc.config.php");
 		$newsid = $surveyid;
 		
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		$the_full_file_path = $modDir.$sMod.".csv";
 		
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
 		
 		$handle = fopen($the_full_file_path, "r");
 		while (!feof($handle))
@@ -2144,7 +2144,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//QUESTIONS
 		if (array_search("# ANSWERS TABLE\n", $bigarray))
 		{
@@ -2164,7 +2164,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//ANSWERS
 		if (array_search("# CONDITIONS TABLE\n", $bigarray))
 		{
@@ -2184,7 +2184,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//CONDITIONS
 		if (array_search("# LABELSETS TABLE\n", $bigarray))
 		{
@@ -2204,7 +2204,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//LABELSETS
 		if (array_search("# LABELS TABLE\n", $bigarray))
 		{
@@ -2224,7 +2224,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//LABELS
 		if (array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray))
 		{
@@ -2244,7 +2244,7 @@ class japhHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//LAST LOT (now question_attributes)
 		if (!isset($noconditions) || $noconditions != "Y")
 		{
@@ -2280,7 +2280,7 @@ class japhHelper {
 		$countquestion_attributes = 0;
 		$countanswers = 0;
 		
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		// first check that imported group, questions and labels support the 
 		// current survey's baselang
 		$langcode = GetBaseLanguageFromSurveyID($newsid);
@@ -2300,7 +2300,7 @@ class japhHelper {
 				return "Group does not support Surveys Baselanguage ($langcode)";
 			}
 		}
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		if (isset($questionarray))
 		{
 			$langfieldnum = array_search("language", $questionfieldnames);
@@ -2317,7 +2317,7 @@ class japhHelper {
 			}
 		}
 		
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		if (isset($labelsetsarray))
 		{
 		    $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
@@ -2335,7 +2335,7 @@ class japhHelper {
 		}
 		
 		$newlids = array(); // this array will have the "new lid" for the label sets, the key will be the "old lid"
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 		if (isset($labelsetsarray) && $labelsetsarray) {
 		    $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
@@ -2429,7 +2429,7 @@ class japhHelper {
 		        $newlids[$oldlid] = $newlid;
 		    }
 		}
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//these arrays will aloud to insert correctly groups an questions multi languague survey imports correctly, and will eliminate the need to "searh" the imported data
 		//$newgids = array(); // this array will have the "new gid" for the groups, the kwy will be the "old gid"    <-- not needed when importing groups
 		$newqids = array(); // this array will have the "new qid" for the questions, the kwy will be the "old qid"
@@ -2573,7 +2573,7 @@ class japhHelper {
 		        }
 		    }
 		    // QESTIONS is DONE
-		    $this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		    // do ANSWERS
 		    if (isset($answerarray) && $answerarray) 
 		    {
@@ -2606,7 +2606,7 @@ class japhHelper {
 		        }
 		    }
 		    // ANSWERS is DONE
-		$this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		   // Fix Group sortorder 
 		   //fixsortorderGroups(); //XXX commented out by rakete... and written in full length
 			$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2646,7 +2646,7 @@ class japhHelper {
 					}
 		        }
 		   } 
-		    $this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		    // do ATTRIBUTES
 		    if (isset($question_attributesarray) && $question_attributesarray) 
 		    {
@@ -2673,7 +2673,7 @@ class japhHelper {
 		        }
 		    }
 		    // ATTRIBUTES is DONE
-		    $this->debugJaph("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		    // do CONDITIONS
 		    if (isset($conditionsarray) && $conditionsarray) 
 		    {
@@ -2720,7 +2720,7 @@ class japhHelper {
 		            $countconditions++;
 		        }
 		    }
-		    $this->debugJaph("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
+		    $this->debugLsrc("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
 		    // CONDITIONS is DONE
 		    return array(gid=>$newgid,qid=>$myQid);
 		    //return $newgid;
@@ -2737,8 +2737,8 @@ class japhHelper {
 		global $connect ;
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
-		include("japh.config.php");
-		$this->debugJaph("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
+		include("lsrc.config.php");
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
 		
 		$tablelist = $connect->MetaTables();
 		$dict = NewDataDictionary($connect);

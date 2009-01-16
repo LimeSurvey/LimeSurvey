@@ -34,7 +34,7 @@ if(isset($_GET['wsdl']))
 	$wsdlString = str_replace("{lsrclocation}",$http.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'],$wsdlString);
 	file_put_contents("lsrc.wsdl",$wsdlString);
 	header('Content-type: text/wsdl');
-	header('Content-Disposition: attachment; filename=lsrc.wsdl');	
+	header('Content-Disposition: attachment; filename=lsrc.wsdl');
 }
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){

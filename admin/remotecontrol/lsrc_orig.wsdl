@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<definitions name="lsrcService"
+<definitions name="LsrcService"
 targetNamespace="urn:lsrcNamespace"
 xmlns:tns="urn:lsrcNamespace"
 xmlns="http://schemas.xmlsoap.org/wsdl/"

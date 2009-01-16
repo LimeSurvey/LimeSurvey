@@ -50,7 +50,7 @@ $pass ="password";
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Japh.Service Testclient</title>
+<title>LimeSurvey RC Testclient</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <style type='text/css'>
 <!--
