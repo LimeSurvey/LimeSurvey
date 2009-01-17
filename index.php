@@ -985,32 +985,40 @@ function checkquestionfordisplay($qid, $gid=null)
 				$cvalue=$row['value'];
 			}
 
-			if ($row['method'] != 'RX')
+			if ( !is_null($gid) && $gid == $cq_gid)
 			{
-				if (trim($row['method'])=='') 
-				{
-					$row['method']='==';
-				}
-				if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
-				{
-					$conditionMatches=true;
-					//This condition is met
-				}
-				else
-				{
-					$conditionMatches=false;
-				}
+				//Don't do anything - this cq is in the current group
+				$conditionMatches=true;
 			}
 			else
 			{
-				if (ereg(trim($cvalue),trim($cfieldname)))
+				if ($row['method'] != 'RX')
 				{
-					$conditionMatches=true;
-
+					if (trim($row['method'])=='') 
+					{
+						$row['method']='==';
+					}
+					if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+					{
+						$conditionMatches=true;
+						//This condition is met
+					}
+					else
+					{
+						$conditionMatches=false;
+					}
 				}
 				else
 				{
-					$conditionMatches=false;
+					if (ereg(trim($cvalue),trim($cfieldname)))
+					{
+						$conditionMatches=true;
+
+					}
+					else
+					{
+						$conditionMatches=false;
+					}
 				}
 			}
 
