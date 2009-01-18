@@ -3607,7 +3607,7 @@ function getArrayFiltersForGroup($surveyid,$gid)
 			{
 				if ($avalue['title'] == $val[0])
 				{
-					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid']);
+					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
 					array_push($attrmach,$filter);
 				}
 			}

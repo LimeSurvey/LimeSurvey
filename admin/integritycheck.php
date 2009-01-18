@@ -96,7 +96,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All question_attributes meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<strong>".$clang->gT("All question attributes meet consistency standards")."</strong><br />\n";
         }
     
         // Check assessments
