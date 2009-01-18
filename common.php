@@ -2856,7 +2856,11 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 			}
 	
 			//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
-			if ((isset($additional_languages) && strpos($additional_languages, $language) === false) or (isset($default_language) && $default_language == $language) or !isset($language)) {
+			if (!isset($language)
+                 or ($language=='') 
+                 or (isset($additional_languages) && strpos($additional_languages, $language) === false) 
+                 or (isset($default_language) && $default_language == $language) 
+             ) {
 				// Language not supported, or default language for survey, fall back to survey's default language
 				$_SESSION['s_lang'] = $default_language;
 				//echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
