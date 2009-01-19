@@ -563,8 +563,8 @@ for($n=1;$n<10;++$n)
 <h3>sChangeSurvey function</h3>
 ( this is not part of the lsrc, it just shows the power of it, <br/>it has to be activated in server.php on line ~60 )
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
-<input type="radio" name="mode" value="0" selected='selected' > update
-<input type="radio" name="mode" value="1"> insert<br/>
+<input type="radio" name="mode" value="0" checked='checked' /> update
+<input type="radio" name="mode" value="1" /> insert<br/>
 <b>Table to change</b> <br />
 <input type='text' name='table' size='30' maxlength='150' /> <br />
 <b>Key</b><br />
