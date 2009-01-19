@@ -221,7 +221,7 @@ while ($chrow = $chresult->FetchRow())
 	$tokenoutput .= "\t<div class='menubar'>"
     ."<div class='menubar-title'>"
 	."<strong>".$clang->gT("Token control").":</strong> "
-	."{$chrow['surveyls_title']}</div>\n";
+	.htmlspecialchars($chrow['surveyls_title'])."</div>\n";
 	$surveyprivate = $chrow['private'];
 }
 
@@ -876,7 +876,7 @@ if ($subaction == "browse" || $subaction == "search")
 			if ($a =='email' && $brow['emailstatus'] != 'OK')
 			{
 				$tokenoutput .= "\t\t<td class='$bgc'>"
-				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".javascript_escape($brow['emailstatus'])."');return false;\" "
+				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".$clang->gT('Invalid email address:','js').javascript_escape($brow['emailstatus'])."');return false;\" "
 				."onmouseout=\"hideTooltip()\">$brow[$a]</a></td>\n";
 			}
 			elseif ($a != 'emailstatus')
@@ -1818,6 +1818,9 @@ if ($subaction == "updatetoken" &&
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
 	{
+        $udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid={$tokenid} and email='".sanitize_email($_POST['email'])."'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
+
+
 		// Using adodb Execute with blinding method so auto-dbquote is done
 		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
 		. "lastname=?, email=?, emailstatus=?, "

@@ -120,7 +120,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
   							`action` int(2) default NULL,
   							`active` int(1) NOT NULL default '1',
   							PRIMARY KEY  (`id`)
-							)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+							)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE `prefix_quota_members` (
    		 				   `id` int(11) NOT NULL auto_increment,
 						   `sid` int(11) default NULL,
@@ -129,7 +129,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
   						   `code` varchar(5) collate utf8_unicode_ci default NULL,
   						   PRIMARY KEY  (`id`),
   						   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-						   )   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+						   )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 
        // Rename Norwegian language code from NO to NB
        $oldnewlanguages=array('no'=>'nb');
@@ -169,12 +169,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
 						   `folder` varchar(255) NOT NULL,
 						   `use` int(1) NOT NULL,
 						   PRIMARY KEY  (`uid`,`folder`)
-						   ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+						   ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE `prefix_templates` (
 						   `folder` varchar(255) NOT NULL,
 						   `creator` int(11) NOT NULL,
 						   PRIMARY KEY  (`folder`)
-						   ) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+						   ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
 					   
         //123
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();

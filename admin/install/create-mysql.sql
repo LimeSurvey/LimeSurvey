@@ -10,7 +10,7 @@ CREATE TABLE `prefix_answers` (
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`code`,`language`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -29,7 +29,7 @@ CREATE TABLE `prefix_assessments` (
   `message` text NOT NULL,
   `link` text NOT NULL,
   PRIMARY KEY  (`id`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -46,7 +46,7 @@ CREATE TABLE `prefix_conditions` (
   `method` char(2) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -61,7 +61,7 @@ CREATE TABLE `prefix_groups` (
   `description` text,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`gid`,`language`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE `prefix_labels` (
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `prefix_labelsets` (
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
   PRIMARY KEY  (`lid`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -104,7 +104,7 @@ CREATE TABLE `prefix_question_attributes` (
   `attribute` varchar(50) default NULL,
   `value` varchar(20) default NULL,
   PRIMARY KEY  (`qaid`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE `prefix_quota` (
   `action` int(2) default NULL,
   `active` int(1) NOT NULL default '1',
   PRIMARY KEY  (`id`)
-)  TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
@@ -131,7 +131,7 @@ CREATE TABLE `prefix_quota_members` (
   `code` varchar(5) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-)   TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+)   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -154,7 +154,7 @@ CREATE TABLE `prefix_questions` (
   `question_order` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`language`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -176,7 +176,7 @@ CREATE TABLE `prefix_saved_control` (
   `saved_date` datetime NOT NULL,
   `refurl` text,
   PRIMARY KEY  (`scid`)
-) TYPE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -188,7 +188,7 @@ CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`stg_name`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -233,7 +233,7 @@ CREATE TABLE `prefix_surveys` (
   `usecaptcha` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   PRIMARY KEY  (`sid`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -276,7 +276,7 @@ CREATE TABLE `prefix_surveys_rights` (
 	`delete_survey` tinyint(1) NOT NULL default '0',
 	`activate_survey` tinyint(1) NOT NULL default '0',
 	PRIMARY KEY (sid, uid)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
@@ -285,14 +285,14 @@ CREATE TABLE `prefix_user_groups` (
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL,
 	`owner_id` int(10) unsigned NOT NULL
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
 CREATE TABLE `prefix_user_in_groups` (
 	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table `users`
@@ -314,7 +314,7 @@ CREATE TABLE `prefix_users` (
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default'
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
@@ -324,14 +324,14 @@ CREATE TABLE `prefix_templates_rights` (
   `folder` varchar(255) NOT NULL,
   `use` int(1) NOT NULL,
   PRIMARY KEY  (`uid`,`folder`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 CREATE TABLE `prefix_templates` (
   `folder` varchar(255) NOT NULL,
   `creator` int(11) NOT NULL,
   PRIMARY KEY  (`folder`)
-) TYPE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 --
