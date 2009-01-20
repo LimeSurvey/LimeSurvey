@@ -138,8 +138,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 		}
         /* Here I must study the possibility to branch if the questionnarie were
            completed or not */
-		$completed = "<br /><font size='2'><font color='green'><strong>"
-		           . $clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+		$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
 		           . $clang->gT("Your survey responses have been recorded.")."<br />\n"
 			       . "<a href='javascript:window.close()'>"
 			       . $clang->gT("Close this Window")."</a></font><br /><br />\n";
@@ -170,8 +169,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 
 		}
 
-		$completed = "<br /><font size='2'><font color='green'><strong>"
-		.$clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+        $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
 		. $clang->gT("Your survey responses have been recorded.")."<br />\n"
 		. "<a href='javascript:window.close()'>"
 		.$clang->gT("Close this Window")."</a></font><br /><br />\n";

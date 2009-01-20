@@ -131,8 +131,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             $connect->Execute($subquery);   // Checked
         }
 		//Create text for use in later print section
-		$completed = "<br /><strong><font size='2'><font color='green'>"
-		. $clang->gT("Thank you")."</strong></font><br /><br />\n\n"
+        $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n"
 		. $clang->gT("Your survey responses have been recorded.")."<br />\n"
 		. "<a href='javascript:window.close()'>"
 		. $clang->gT("Close this Window")."</a></font><br /><br />\n";
