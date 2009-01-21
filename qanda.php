@@ -3950,13 +3950,13 @@ function do_array_5point($ia)
 			$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 		}
 		$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
-		. "\t\t\t<td class=\"answertext\" width=\"$answerwidth%\">\n\t\t\t\t$answertext\n"
+		. "\t\t\t<th class=\"answertext\" width=\"$answerwidth%\">\n\t\t\t\t$answertext\n"
 		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 		if (isset($_SESSION[$myfname]))
 		{
 			$answer_t_content .= $_SESSION[$myfname];
 		}
-		$answer_t_content .= "\" />\n\t\t\t</td>\n";
+		$answer_t_content .= "\" />\n\t\t\t</th>\n";
 		for ($i=1; $i<=5; $i++)
 		{
 			$answer_t_content .= "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-$i\">"
@@ -4101,13 +4101,13 @@ function do_array_10point($ia)
 			$htmltbody2 = "\t</thead>\n\n\t<tbody id='javatbd$myfname' style='display: '>\n\t\t<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />\n";
 		}
 		$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
-		. "\t\t\t<td class=\"answertext\">\n\t\t\t\t$answertext\n"
+		. "\t\t\t<th class=\"answertext\">\n\t\t\t\t$answertext\n"
 		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 		if (isset($_SESSION[$myfname]))
 		{
 			$answer_t_content .= $_SESSION[$myfname];
 		}
-		$answer_t_content .= "\" />\n\t\t\t</td>\n";
+		$answer_t_content .= "\" />\n\t\t\t</th>\n";
 
 		for ($i=1; $i<=10; $i++)
 		{
@@ -4245,7 +4245,7 @@ function do_array_yesnouncertain($ia)
 				$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 			}
 			$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\">$answertext</td>\n"
+			. "\t\t\t<th class=\"answertext\">$answertext</th>\n"
 			. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-Y\">\n"
 			. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'Y')
@@ -4515,7 +4515,7 @@ function do_array_increasesamedecrease($ia)
 			}
 		}
 		$answer_body .= "\t\t<tr class=\"$trbc\">\n"
-		. "\t\t\t<td class=\"answertext\">$answertext</td>\n"
+		. "\t\t\t<th class=\"answertext\">$answertext</th>\n"
 		. "\t\t\t<td>\n"
 		. "\t\t\t\t<label for=\"answer$myfname-I\">\n"
 		."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
@@ -4697,17 +4697,17 @@ function do_array_flexible($ia)
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
 				{
-					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<td class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 					$_SESSION[$myfname] = "";
 				}
 				else
 				{
-					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: \" class=\"$trbc\">\n\t\t\t<td class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: \" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 				}
 			}
 			else 
 			{
-				$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" class=\"$trbc\">\n\t\t\t<td class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+				$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 			}
 			if (strpos($answertext,'|'))
 			{
@@ -4722,7 +4722,7 @@ function do_array_flexible($ia)
 				$answer .= $_SESSION[$myfname];
 			}
 			$answer .= "\" />\n"
-			. "\t\t\t</td>\n";
+			. "\t\t\t</th>\n";
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
@@ -4745,7 +4745,7 @@ function do_array_flexible($ia)
 			if (strpos($answertextsave,'|')) 
 			{
 				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-				$answer .= "\t\t\t<td class=\"answertextright\">$answertext</td>\n";
+				$answer .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
 			}
 			elseif ($right_exists)
 			{
@@ -4967,11 +4967,11 @@ function do_array_multitext($ia)
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 			$trbc = alternation($trbc , 'row');
 			$answer .= $htmltbody2."\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\"  style='text-align:right;'>\n"
+			. "\t\t\t<th class=\"answertext\">\n"
 			. "\t\t\t\t$answertext\n"
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-			$answer .= "\" />\n\t\t\t</td>\n";
+			$answer .= "\" />\n\t\t\t</th>\n";
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
@@ -5202,7 +5202,7 @@ function do_array_multiflexi($ia)
 
 			$trbc = alternation($trbc , 'row');
 			$answer .= $htmltbody2 . "\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\" width=\"$answerwidth%\">\n"
+			. "\t\t\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
 			. "\t\t\t\t$answertext\n"
 			. "\t\t\t\t" . $first_hidden_field
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -5210,7 +5210,7 @@ function do_array_multiflexi($ia)
 			{
 				$answer .= $_SESSION[$myfname];
 			}
-			$answer .= "\" />\n\t\t\t</td>\n";
+			$answer .= "\" />\n\t\t\t</th>\n";
 			$first_hidden_field = '';
 			$thiskey=0;
 			foreach ($labelcode as $ld)
@@ -5379,7 +5379,7 @@ function do_array_flexiblecolumns($ia)
 			foreach($labels as $ansrow)
 			{
 				$answer .= "\t\t<tr>\n"
-				. "\t\t\t<td class=\"arraycaptionleft\">{$ansrow['answer']}</td>\n";
+				. "\t\t\t<th class=\"arraycaptionleft\">{$ansrow['answer']}</th>\n";
 				foreach ($anscode as $ld)
 				{
 					//if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
@@ -5713,10 +5713,10 @@ function do_array_flexible_dual($ia)
 			array_push($inputnames,$myfname);
 			$answer .= $htmltbody2
 			. "\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<td class=\"answertext\">\n\t\t\t\t$answertext\n"
+			. "\t\t\t<th class=\"answertext\">\n\t\t\t\t$answertext\n"
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-			$answer .= "\" />\n\t\t\t\t$hiddenanswers\n\t\t\t</td>\n";
+			$answer .= "\" />\n\t\t\t\t$hiddenanswers\n\t\t\t</th>\n";
 			$hiddenanswers='';
 			$thiskey=0;
 
@@ -5983,9 +5983,9 @@ function do_array_flexible_dual($ia)
 				}
 
 				$answer .= $htmltbody2."\t\t<tr class=\"$trbc\">\n"
-				. "\t\t\t<td class=\"answertext\">\n"
+				. "\t\t\t<th class=\"answertext\">\n"
 				. "\t\t\t\t<label for=\"answer$rowname\">$answertext</label>\n"
-				. "\t\t\t</td>\n";
+				. "\t\t\t</th>\n";
 
 				// Label0
 

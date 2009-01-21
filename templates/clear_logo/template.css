@@ -565,41 +565,45 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
 {
+	text-align: center;
 	vertical-align: bottom;
+	font-weight: normal;
 }
 
- .array-5-pt td , .array-5-pt th
-,.array-10-pt td , .array-10-pt th
-,.array-yes-uncertain-no td , .array-yes-uncertain-no th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-increase-same-decrease td , .array-increase-same-decrease th
-,.array-flexible-row td , .array-flexible-row th
-,.array-multi-flexi td , .array-multi-flexi th
-,.array-multi-flexi-text td , .array-multi-flexi-text th
-,.array-flexible-duel-scale td , .array-flexible-duel-scale th
-,.array-flexible-column td , .array-flexible-column th
+ .array-5-pt td
+,.array-10-pt td
+,.array-yes-uncertain-no td
+,.array-increase-same-decrease td
+,.array-flexible-row td
+,.array-increase-same-decrease td
+,.array-flexible-row td
+,.array-multi-flexi td
+,.array-multi-flexi-text td
+,.array-flexible-duel-scale td
+,.array-flexible-column td
 {
 	text-align: center;
 }
- .array-5-pt td.answertext
-,.array-10-pt td.answertext
-,.array-yes-uncertain-no td.answertext
-,.array-increase-same-decrease td.answertext
-,.array-flexible-row td.answertext
-,.array-increase-same-decrease td.answertext
-,.array-flexible-row td.answertext
-,.array-multi-flexi td.answertext
-,.array-multi-flexi-text td.answertext
-,.array-flexible-duel-scale td.answertext
-,.array-flexible-column td.arraycaptionleft
+ .array-5-pt tbody th.answertext
+,.array-10-pt tbody th.answertext
+,.array-yes-uncertain-no tbody th.answertext
+,.array-increase-same-decrease tbody th.answertext
+,.array-flexible-row tbody th.answertext
+,.array-increase-same-decrease tbody th.answertext
+,.array-flexible-row tbody th.answertext
+,.array-multi-flexi tbody th.answertext
+,.array-multi-flexi-text tbody th.answertext
+,.array-flexible-duel-scale tbody th.answertext
+,.array-flexible-column tbody th.arraycaptionleft
 {
 	text-align: right;
+	font-weight: normal;
 }
- .array-flexible-row td.answertextright
-,.array-flexible-duel-scale td.answertextright
+ .array-flexible-row tbody th.answertextright
+,.array-flexible-duel-scale tbody th.answertextright
 {
 	text-align: left;
+	font-weight: normal;
 }
 /*
 .array-increase-same-decrease {}
