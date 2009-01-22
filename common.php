@@ -605,9 +605,15 @@ function db_tables_exist($table)
 
 /**
 * getsurveylist() Queries the database (survey table) for a list of existing surveys
+* 
+* @param mixed $returnarray   boolean - if set to true an array instead of an HTML option list is given back
+* 
 * @global string $surveyid
 * @global string $dbprefix
 * @global string $scriptname
+* @global string $connect
+* @global string $clang
+* 
 * @return string This string is returned containing <option></option> formatted list of existing surveys
 *
 */

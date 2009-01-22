@@ -319,12 +319,8 @@ if (!$surveyid)
 			  AND surveyls_language=a.language 
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
-			  AND ((a.expires >= '".date("Y-m-d")."'
-			        AND a.useexpiry = 'Y') OR
-			        (a.useexpiry = 'N'))
-              AND ((a.startdate <= '".date("Y-m-d")."'
-                    AND a.usestartdate = 'Y') OR
-                    (a.usestartdate = 'N'))
+			  AND ((a.expires >= '".date("Y-m-d")."' AND a.useexpiry = 'Y') OR (a.useexpiry = 'N'))
+              AND ((a.startdate <= '".date("Y-m-d")."' AND a.usestartdate = 'Y') OR (a.usestartdate = 'N'))
 			  ORDER BY surveyls_title";
 	$result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked 
 	$list=array();
@@ -332,10 +328,15 @@ if (!$surveyid)
 	{
 		while($rows = $result->FetchRow())
 		{
-      $link = "<li class='surveytitle'><a href='$relativeurl/index.php?sid=".$rows['sid'];
-    if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
-		$link .= "' >".$rows['surveyls_title']."</a></li>\n";
-		$list[]=$link;
+            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
+            if ($result2->RecordCount()) {
+                $languagedetails=$result2->FetchRow();
+                $rows['surveyls_title']=$languagedetails['surveyls_title'];
+            }
+            $link = "<li class='surveytitle'><a href='$relativeurl/index.php?sid=".$rows['sid'];
+            if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
+            $link .= "' >".$rows['surveyls_title']."</a></li>\n";
+            $list[]=$link;
 	    }
 	}
 	if(count($list) < 1)
