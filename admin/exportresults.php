@@ -663,13 +663,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			if ($type == "csv") {$firstline .= "\"";}
 			$firstline .= "$separator";
 		}
-		elseif ($exportstyle == "headcodes")
-		{
-		    $qname=$fieldinfo;
-			$firstline .= "$qname";
-			$firstline .= "$separator";
-		}
-		else
+		else    //headcode or full answer
 		{
 			$qq = "SELECT question, type, other, title FROM {$dbprefix}questions WHERE qid=$fqid AND language='$explang' ORDER BY gid, title"; //get the question
 			$qr = db_execute_assoc($qq) or safe_die ("ERROR:<br />".$qq."<br />".$connect->ErrorMsg());
@@ -1390,7 +1384,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			$exportoutput .= "$separator";
 			$ftype = "";
 		}
-		
+		$exportoutput=substr($exportoutput,0,-1);
         IF ($type=='xls')
         {
             $rowarray=explode($separator, $exportoutput);
