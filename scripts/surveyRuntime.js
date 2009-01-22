@@ -52,7 +52,7 @@ function match_regex(testedstring,str_regexp)
 	return pattern.test(testedstring)
 }
 
-function cellAdapter(src)
+function cellAdapter(evt,src)
 {
 	var eChild = null, eChildren = src.getElementsByTagName('INPUT');
 	var curCount = eChildren.length;
@@ -78,12 +78,15 @@ function cellAdapter(src)
 	{
 		eChild.checked = true;
 		//Make sure the change propagates to the conditions handling mechanism
-		if(eChild.onclick) eChild.onclick();
-		if(eChild.onchange) eChild.onchange();
+		if(eChild.onclick) eChild.onclick(evt);
+		if(eChild.onchange) eChild.onchange(evt);
 	}
 	else if (eChild && eChild.type == 'checkbox')
 	{
 		eChild.checked = !eChild.checked;
+		//Make sure the change propagates to the conditions handling mechanism
+		if(eChild.onclick) eChild.onclick(evt);
+		if(eChild.onchange) eChild.onchange(evt);
 	}
 }
 
@@ -105,8 +108,8 @@ function prepCellAdapters()
 				{
 					foundTD = true;
 					ptr.onclick = 
-						function(){
-							return cellAdapter(this);
+						function(evt){
+							return cellAdapter(evt,this);
 						};
 					continue;
 				}
@@ -124,3 +127,13 @@ function addHiddenField(theform,thename,thevalue)
 	theform.appendChild(myel);
 	myel.value = thevalue;
 }
+
+function cancelBubbleThis(eventObject)
+{
+	if (!eventObject) var eventObject = window.event;
+	eventObject.cancelBubble = true;
+	if (eventObject && eventObject.stopPropagation) {
+		eventObject.stopPropagation();
+	}
+}
+

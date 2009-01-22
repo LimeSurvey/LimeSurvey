@@ -5244,24 +5244,34 @@ function do_array_multiflexi($ia)
 				else
 				{
 					$myfname2=$myfname."_$ld";
-					$answer .= "\t\t\t<td>\n"
-					. "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
-					. "\t\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-					. "\t\t\t\t\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"";
 					if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == '1')
 					{
-						$answer .= '1';
+						$myvalue = '1';
 						$setmyvalue = CHECKED;
 					}
 					else
 					{
-						$answer .= '0';
+						$myvalue = '0';
 						$setmyvalue = '';
 					}
-					$answer .= "\" />\n";
-					$answer .= "\t\t\t\t\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue onclick=\"if(this.checked) {document.getElementById('answer{$myfname2}').value='1';} else {document.getElementById('answer{$myfname2}').value='0';}; return true;\" />\n";
+					$answer .= "\t\t\t<td>\n"
+//					. "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
+					. "\t\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
+					. "\t\t\t\t\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
+					$answer .= "\t\t\t\t\t<input type=\"checkbox\" name=\"cbox_$myfname2\" id=\"cbox_$myfname2\" $setmyvalue "
+					. " onclick=\"cancelBubbleThis(event); "
+					. " aelt=document.getElementById('answer{$myfname2}');"
+					. " jelt=document.getElementById('java{$myfname2}');"
+					. " if(this.checked) {"
+					. "  aelt.value=1;jelt.value=1;checkconditions(1,'answer{$myfname2}',aelt.type);"
+					. " } else {" 
+					. "  aelt.value=0;jelt.value=0;checkconditions(0,'answer{$myfname2}',aelt.type);"
+					. " }; return true;\" "
+//					. " onchange=\"checkconditions(this.value, this.name, this.type)\" "
+					. " />\n";
 					$inputnames[]=$myfname2;
-					$answer .= "\t\t\t\t</label>\n"
+//					$answer .= "\t\t\t\t</label>\n"
+					$answer .= ""
 					. "\t\t\t</td>\n";
 					$thiskey++;
 				}
