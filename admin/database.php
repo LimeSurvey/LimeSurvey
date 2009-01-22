@@ -281,6 +281,7 @@ if(isset($surveyid))
 
 	elseif ($action == "insertnewquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
+        $baselang = GetBaseLanguageFromSurveyID($postsid);    
 		if (strlen($_POST['title']) < 1)
 		{
 			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
@@ -291,7 +292,6 @@ if(isset($surveyid))
 		{
 			if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
 			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
-			$baselang = GetBaseLanguageFromSurveyID($postsid);	
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
 			   $question_order=(sanitize_int($_POST['questionposition'])+1);
@@ -308,25 +308,25 @@ if(isset($surveyid))
 	   			require_once("../classes/inputfilter/class.inputfilter_clean.php");
 			    $myFilter = new InputFilter('','',1,1,1); 
 				$_POST['title']=$myFilter->process($_POST['title']);
-				$_POST['question']=$myFilter->process($_POST['question']);
-				$_POST['help']=$myFilter->process($_POST['help']);
+				$_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
+				$_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
 			}	
                    else
                           {
                             $_POST['title'] = html_entity_decode_php4($_POST['title'], ENT_QUOTES, "UTF-8");
-                            $_POST['question'] = html_entity_decode_php4($_POST['question'], ENT_QUOTES, "UTF-8");
-                            $_POST['help'] = html_entity_decode_php4($_POST['help'], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$baselang] = html_entity_decode_php4($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$baselang] = html_entity_decode_php4($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
                           }
             
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=fix_FCKeditor_text($_POST['title']);
-            $_POST['question']=fix_FCKeditor_text($_POST['question']);
-            $_POST['help']=fix_FCKeditor_text($_POST['help']);
+            $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
+            $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
             
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
 			." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
-			." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
+			." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$baselang}')";
 			$result = $connect->Execute($query);
 			// Get the last inserted questionid for other languages
 			$qid=$connect->Insert_ID(db_table_name_nq('questions'),"qid");
@@ -341,7 +341,7 @@ if(isset($surveyid))
 					{	
 						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 						." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
-						." '{$_POST['question']}', '{$_POST['preg']}', '{$_POST['help']}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$alang}')";
+						." '{$_POST['question_'.$alang]}', '{$_POST['preg']}', '{$_POST['help_'.$alang]}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$alang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
 						$result2 = $connect->Execute($query);
 						if (!$result2)
