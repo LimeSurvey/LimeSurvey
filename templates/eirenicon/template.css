@@ -557,58 +557,30 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .gender {}
 */
 
- .array-5-pt thead th
-,.array-10-pt thead th
-,.array-yes-uncertain-no thead th
-,.array-increase-same-decrease thead th
-,.array-flexible-row thead th
-,.array-increase-same-decrease thead th
-,.array-flexible-row thead th
-,.array-multi-flexi thead th
-,.array-multi-flexi-text thead th
-,.array-flexible-duel-scale thead th
-,.array-flexible-column thead th
+#limesurvey table.question thead th
 {
 	text-align: center;
 	vertical-align: bottom;
 	font-weight: normal;
 }
-
- .array-5-pt td td
-,.array-10-pt td td
-,.array-yes-uncertain-no td td
-,.array-increase-same-decrease td td
-,.array-flexible-row td td
-,.array-increase-same-decrease td td
-,.array-flexible-row td td
-,.array-multi-flexi td td
-,.array-multi-flexi-text td td
-,.array-flexible-duel-scale td td
-,.array-flexible-column td td
+#limesurvey table.question tbody td
 {
 	text-align: center;
 }
- .array-5-pt tbody th.answertext
-,.array-10-pt tbody th.answertext
-,.array-yes-uncertain-no tbody th.answertext
-,.array-increase-same-decrease tbody th.answertext
-,.array-flexible-row tbody th.answertext
-,.array-increase-same-decrease tbody th.answertext
-,.array-flexible-row tbody th.answertext
-,.array-multi-flexi tbody th.answertext
-,.array-multi-flexi-text tbody th.answertext
-,.array-flexible-duel-scale tbody th.answertext
-,.array-flexible-column tbody th.arraycaptionleft
+ #limesurvey table.question tbody th.answertext
+,#limesurvey table.question tbody th.arraycaptionleft
 {
 	text-align: right;
 	font-weight: normal;
 }
-
- .array-flexible-row tbody th.answertextright
-,.array-flexible-duel-scale tbody th.answertextright
+#limesurvey table.question tbody th.answertextright
 {
 	text-align: left;
 	font-weight: normal;
+}
+.array-flexible-column col.odd
+{
+	background-color: #eee;
 }
 
  .boilerplate td td
@@ -643,10 +615,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	text-align: left;
 }
 
-.array-flexible-column col.odd
-{
-	background-color: #eee;
-}
+
 
 
 /* Jquery CSS

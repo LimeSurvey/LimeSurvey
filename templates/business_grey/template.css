@@ -87,7 +87,6 @@ direction: ltr;
 .array1 {
 background-color:#D1D1D1;
 color:#777;
-text-align:left;
 }
 
 .array2 {
@@ -623,17 +622,17 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 	font-weight: normal;
 }
 
- .array-5-pt td
-,.array-10-pt td
-,.array-yes-uncertain-no td
-,.array-increase-same-decrease td
-,.array-flexible-row td
-,.array-increase-same-decrease td
-,.array-flexible-row td
-,.array-multi-flexi td
-,.array-multi-flexi-text td
-,.array-flexible-duel-scale td
-,.array-flexible-column td
+ .array-5-pt .question td
+,.array-10-pt .question td
+,.array-yes-uncertain-no .question td
+,.array-increase-same-decrease .question td
+,.array-flexible-row .question td
+,.array-increase-same-decrease .question td
+,.array-flexible-row .question td
+,.array-multi-flexi .question td
+,.array-multi-flexi-text .question td
+,.array-flexible-duel-scale .question td
+,.array-flexible-column .question td
 {
 	text-align: center;
 }

@@ -8,7 +8,7 @@
                                        </td>
 				</tr>
 				<tr>
-					<td>
+					<td class="answer">
 						{ANSWER}
 					</td>
 				</tr>
