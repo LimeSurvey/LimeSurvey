@@ -2727,7 +2727,7 @@ class LsrcHelper {
 	}
 	
 	/**
-	 * function to delete a Survey with all questions and answers....
+	 * function to delete a Survey with all questions and answersand Tokentable....
 	 *
 	 * @param int $surveyid
 	 * @return boolean
@@ -2747,7 +2747,7 @@ class LsrcHelper {
 		{			
 			$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");	
 			//$dict->ExecuteSQLArray($sqlarray);		
-			$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+			$dsresult = $dict->ExecuteSQLArray($dsquery);
 		}
 	
 		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
