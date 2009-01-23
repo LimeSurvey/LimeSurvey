@@ -788,7 +788,7 @@ for ($i=0; $i<$fieldcount; $i++)
 				case "1": // multi scale Headline				
                 $flid=$fielddata['lid']; 
 		        $flid1=$fielddata['lid1'];
-                if (substr($fieldinfo,-1) == '0')
+                if (mb_substr($fieldinfo,-1) == '0')
                 {
                     $strlabel = "1";
         		    $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
@@ -1110,7 +1110,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 				}
 				break;
 				case "1":
-                    if (substr($fieldinfo,-1) == 0) 
+                    if (mb_substr($fieldinfo,-1) == 0) 
                     {
 					$lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
                     }
@@ -1336,7 +1336,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
                 case "1": //dual scale
                 $flid=$fielddata['lid']; 
                 $flid1=$fielddata['lid1'];
-                if (substr($fieldinfo,-1) == '0')
+                if (mb_substr($fieldinfo,-1) == '0')
                 {
                     $strlabel = "1";
                     $lq = "select title from {$dbprefix}labels as l where l.lid = $flid AND l.language='$surveybaselang'";
@@ -1384,7 +1384,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			$exportoutput .= "$separator";
 			$ftype = "";
 		}
-		$exportoutput=substr($exportoutput,0,-1);
+		$exportoutput=mb_substr($exportoutput,0,-1);
         IF ($type=='xls')
         {
             $rowarray=explode($separator, $exportoutput);
