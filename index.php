@@ -236,7 +236,7 @@ if (isset($_SESSION['srid']))
 	$saved_id = $_SESSION['srid'];
 }
 
-if (!isset($_SESSION['refurl'])  && (isset($move)) )
+if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 // geez ... a session time out! RUN! 
 {
     if (isset($_REQUEST['rootdir'])) {safe_die('You cannot start this script directly');}

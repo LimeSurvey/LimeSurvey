@@ -41,7 +41,7 @@ if ($action == "copyquestion")
         {
             $editquestion .= "(".$clang->gT("Base Language").")</h2>"
         	. "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-        	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20' name='title' value='' /> ".$clang->gT("Note: You MUST enter a new question code!")."\n"
+        	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20' id='title' name='title' value='' /> ".$clang->gT("Note: You MUST enter a new question code!")."\n"
         	. "\t</span></div>\n";
         }
     	else {
@@ -230,7 +230,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
 	if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</td></tr></table>\n"
-	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
+	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post'>\n"
 	. '<div class="tab-pane" id="tab-pane-1">';
 	
     if (!$adding)
@@ -257,7 +257,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$eqrow  = array_map('htmlspecialchars', $eqrow);
 	$editquestion .= '</h2>';
 	$editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20'  name='title' value=\"{$eqrow['title']}\" />\n"
+	. "\t\t<span class='settingentry'><input type='text' size='20' maxlength='20'  id='title' name='title' value=\"{$eqrow['title']}\" />\n"
 	. "\t</span></div>\n";
 	$editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
 	. "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
@@ -315,12 +315,15 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
             . "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
             . "\t\t<span class='settingentry'>&nbsp;\n"
             . "\t</span></div>\n";
-            $editquestion .= '</div><br />';
+            $editquestion .= '</div>';
         }            
     }
 		
+        
+        
+        
  		//question type:
-  		$editquestion .= "\t<table><tr>\n"
+  		$editquestion .= "\t<div id='questionbottom'><table><tr>\n"
   		. "\t\t<td align='right'><strong>".$clang->gT("Question Type:")."</strong></td>\n";
   		if ($activated != "Y")
   		{
@@ -482,7 +485,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         $editquestion .= "\t<tr>\n"
         . "\t\t<td align='right'></td><td align='left'>";        
         $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Add question")."' />\n"
-        . "\t<input type='hidden' name='action' value='insertnewquestion' />\n";   
+        . "\t<input type='hidden' name='action' value='insertnewquestion' /><br/><br/>&nbsp;\n";   
     }
     else
     {
@@ -545,8 +548,40 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		    . "</td></tr></table>\n"
 		    . "</form>\n</table>";
 	    }
-        $editquestion .= "</td></tr></table>";
     }
+    if ($adding)
+    {
+        // Import dialogue
+
+        $editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
+        $editquestion .=$clang->gT("...or import a question");
+        $editquestion .= "</td></tr></table>\n"
+        . "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "<table width='100%' border='0' >\n\t"
+        . "\t<tr>"
+        . "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
+        . "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
+        . "\t\t<tr>\t\t<td align='right' width='35%'>".$clang->gT("Convert resources links?")."</td>\n"
+        . "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" /></td></tr>\n"
+        . "\t<tr><td colspan='2' align='center'><input type='button' "
+        . "value='".$clang->gT("Import Question")."' onclick=\"$('#importquestion').submit();\"/>\n"
+        . "\t<input type='hidden' name='action' value='importquestion' />\n"
+        . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
+        . "\t<input type='hidden' name='gid' value='$gid' />\n"
+        . "\t</td></tr></table></form>\n\n"
+        ."<script type='text/javascript'>\n"
+        ."<!--\n"
+        ."document.getElementById('title').focus();\n"
+        ."//-->\n"
+        ."</script>\n";
+          
+    }
+    else
+    {
+        
+        $editquestion .= "</td></tr></table><div>";
+    }
+    
 	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
 }
 
