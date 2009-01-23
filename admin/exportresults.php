@@ -1384,7 +1384,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			$exportoutput .= "$separator";
 			$ftype = "";
 		}
-		$exportoutput=mb_substr($exportoutput,0,-1);
+		$exportoutput=mb_substr($exportoutput,0,-(strlen($separator)));
         IF ($type=='xls')
         {
             $rowarray=explode($separator, $exportoutput);
