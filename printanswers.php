@@ -245,8 +245,7 @@ if (isset($_SESSION['s_lang']))
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
 		
-		if(conditionCheck($id, $fnrow['qid'], $surveyid))
-		{
+
 			if ($fnrow['type'] == "Q" || $fnrow['type'] == "M" ||
 			$fnrow['type'] == "A" || $fnrow['type'] == "B" ||
 			$fnrow['type'] == "C" || $fnrow['type'] == "E" ||
@@ -352,7 +351,7 @@ if (isset($_SESSION['s_lang']))
 					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
 				}
 			}
-		}
+
 	}
 
 	$nfncount = count($fnames)-1;
