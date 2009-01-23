@@ -1623,10 +1623,15 @@ function browsemenubar($title='')
 		. "<img name='Export' src='$imagefiles/export.png' "
 		. "title='' alt='' /></a>\n"
 		. "\t\t\t<a href='$scriptname?action=exportspss&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-		. "title=\"".$clang->gTview("Export result to a SPSS command file")."\" "
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export result to a SPSS command file", "js")."')\">"
+		. "title=\"".$clang->gTview("Export results to an SPSS command file")."\" "
+		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a SPSS command file", "js")."')\">"
 		. "<img src='$imagefiles/exportspss.png' "
-		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n";
+		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n"
+        . "\t\t\t<a href='$scriptname?action=exportr&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
+        . "title=\"".$clang->gTview("Export result to a SPSS command file")."\" "
+        . "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a R data file", "js")."')\">"
+        . "<img src='$imagefiles/exportr.png' "
+        . "title='' border='0' alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
 	}
 	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
 	. " title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" "

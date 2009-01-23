@@ -262,7 +262,12 @@ elseif ($action == 'exportresults')
     }    
 elseif ($action == 'exportspss')
     {
-    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('spss.php');}
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_data_spss.php');}
+        else { include('access_denied.php');}    
+    }    
+elseif ($action == 'exportr')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_data_r.php');}
         else { include('access_denied.php');}    
     }    
 elseif ($action == 'statistics')
@@ -365,7 +370,7 @@ elseif ($action == 'replacementfields')
 
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
-     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) &&
+     !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && 
      (isset($surveyid) || $action=='listurveys' || $action=='changelang' ||  $action=='changehtmleditormode' || $action=='checksettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
@@ -401,7 +406,7 @@ elseif ($action == 'replacementfields')
   
   // For some output we dont want to have the standard admin menu bar
   if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) && 
-      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&
+      !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
       !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput)) 
@@ -464,6 +469,7 @@ elseif ($action == 'replacementfields')
   if (isset($vvoutput)) {$adminoutput.= $vvoutput;} 	
   if (isset($dumpdboutput)) {$adminoutput.= $dumpdboutput;}  
   if (isset($exportspssoutput)) {$adminoutput.= $exportspssoutput;}  
+  if (isset($exportroutput)) {$adminoutput.= $exportroutput;}  
                                                                         
   
   if (!isset($printablesurveyoutput) && ($subaction!='export'))
