@@ -356,3 +356,4 @@ FCKConfig.BackgroundBlockerColor = '#ffffff' ;
 FCKConfig.BackgroundBlockerOpacity = 0.50 ;
 
 FCKConfig.MsWebBrowserControlCompat = false ;
+FCKConfig.FirefoxSpellChecker = true ;
