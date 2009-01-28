@@ -2070,7 +2070,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+		."\t<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		doFooter();
