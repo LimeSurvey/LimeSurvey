@@ -110,8 +110,8 @@ if  (!isset($subaction))
     $exportroutput = browsemenubar($clang->gT('Export results'));
     $exportroutput .= "<br />\n";
     $exportroutput .= "<div class='header'>".$clang->gT("Export result data to R")."</div>\n";
-    $exportroutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export R syntax file")."</a></li><li>"
-                        ."<a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export .csv data file")."</a></li></ul></p><br />\n"
+    $exportroutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export R syntax file")."</a></li><li>"
+                        ."<a href='$scriptname?action=exportr&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export .csv data file")."</a></li></ul></p><br />\n"
                         ."<h3>".$clang->gT("Instructions for the impatient")."</h3>"
                             ."<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
                         ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
