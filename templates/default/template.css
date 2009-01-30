@@ -1,3 +1,7 @@
+*{
+	font-size:100%;	
+}
+
 a:link,a:visited {
 color:#819d26;
 text-decoration:none;
@@ -5,14 +9,14 @@ text-decoration:none;
 
 body.default {
 background-color:#FFF;
-font-size:11px;
+font-size:0.6em;
 line-height:150%;
 font-family:Arial,Helvetica,sans-serif;
 color:#1d2d45;
 }
 
 .questionhelp {
-font-size:10px;
+font-size:0.5em;
 }
 
 .success {
@@ -21,7 +25,7 @@ font-size:10px;
 }
 
 .clearall {
-font-size:11px;
+font-size:0.6em;
 }
 
 .answertext {
@@ -30,14 +34,14 @@ text-align:left;
 
 .array1 {
 font-family:verdana;
-font-size:11px;
+font-size:0.6em;
 text-align:center;
 background-color:#fff;
 }
 
 .array2 {
 font-family:verdana;
-font-size:11px;
+font-size:0.6em;
 text-align:center;
 background-color:#eee;
 }
@@ -62,18 +66,18 @@ direction: ltr;
 }
 
 .innergraph img {
-height:12px;
+height:0.7em;
 vertical-align:top;
 }
 
 .innergraph table {
-height:12px;
+height:0.7em;
 border:1px solid #000;
 table-layout:fixed !important;
 }
 
 .innergraph td {
-height:12px;
+height:0.7em;
 }
 
 .printouttable {
@@ -90,14 +94,14 @@ border-width:1px;
 background-color:#ddf;
 font-weight:700;
 text-align:right;
-padding-right:5px;
-padding-left:5px;
+padding-right:0.3em;
+padding-left:0.3em;
 }
 
 .printouttitle {
-padding-right:5px;
-padding-left:5px;
-font-size:18px;
+padding-right:0.3em;
+padding-left:0.3em;
+font-size:1.1em;
 }
 
 .surveytitle {
@@ -111,26 +115,26 @@ color:#819d26;
 }
 
 .languagechanger {
-font-size:1em;
+font-size:0.5em;
 }
 
 .question,.answertext {
 font-family:verdana;
-/* font-size:11px; */
+/* font-size:0.6em; */
 }
 
 .questiontext {
 font-family:verdana;
-font-size:12px;
+font-size:0.7em;
 font-weight:bold;
 }
 
 .questionhelp img {
-padding-right:5px;
+padding-right:0.3em;
 }
 
 .errormandatory,.warningjs {
-font-size:12px;
+font-size:0.7em;
 font-weight:700;
 color:RED;
 }
@@ -237,7 +241,7 @@ background-color:#A7A9D1;
 /* STYLES NOT YET DEFINED - - - - -
 .date {}
 */
-.date p.question { margin-left: 1em; }
+.date p.question { margin-left: 0.1em; }
 .date p.question select.day {}
 .date p.question select.month {}
 .date p.question select.year {}
@@ -300,7 +304,7 @@ ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .list-dropdown-flexible p.question {
-	margin-left: 1em;
+	margin-left: 0.1em;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -345,7 +349,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .language {}
 .multiple-opt-comments input.text {
-	width: 20em;
+	width: 1em;
 }
 
 .multiple-opt-comments label.answertext input.checkbox {
@@ -354,7 +358,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 }
 
 .multiple-opt-comments input.text.other {
-	width: 7em;
+	width: 0.5em;
 	display: inline;
 }
 /*
@@ -386,16 +390,16 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .multiple-short-txt li input.text {
 	margin-left: 0.5em;
-	width: 20em;
+	width: 1.2em;
 }
 
 .multiple-short-txt ul.numbers-only li input.text {
-	width: 10em;
+	width: 0.5em;
 }
 
 
 .numeric-multi ul.computed {
-	margin-right: 12em;
+	margin-right: 0.7em;
 }
 
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
@@ -437,53 +441,53 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin-bottom: 0.7em;
 }
 
-.multiple-opt-comments ul.X2 label.answertext , .multiple-short-txt ul.X2 label , .numeric-multi ul.X2 label { width: 2em;}
-.multiple-opt-comments ul.X2 label.answer-comment , .multiple-short-txt ul.X2 input.text , .numeric-multi ul.X2 div.input { margin-left: 2.5em; }
+.multiple-opt-comments ul.X2 label.answertext , .multiple-short-txt ul.X2 label , .numeric-multi ul.X2 label { width: 0.125em;}
+.multiple-opt-comments ul.X2 label.answer-comment , .multiple-short-txt ul.X2 input.text , .numeric-multi ul.X2 div.input { margin-left: 0.15em; }
 
-.multiple-opt-comments ul.X4 label.answertext , .multiple-short-txt ul.X4 label , .numeric-multi ul.X4 label { width: 4em;}
-.multiple-opt-comments ul.X4 label.answer-comment , .multiple-short-txt ul.X4 input.text , .numeric-multi ul.X4 div.input { margin-left: 4.5em; }
+.multiple-opt-comments ul.X4 label.answertext , .multiple-short-txt ul.X4 label , .numeric-multi ul.X4 label { width: 0.25em;}
+.multiple-opt-comments ul.X4 label.answer-comment , .multiple-short-txt ul.X4 input.text , .numeric-multi ul.X4 div.input { margin-left: 0.26em; }
 
-.multiple-opt-comments ul.X6 label.answertext , .multiple-short-txt ul.X6 label , .numeric-multi ul.X6 label { width: 6em;}
-.multiple-opt-comments ul.X6 label.answer-comment , .multiple-short-txt ul.X6 input.text , .numeric-multi ul.X6 div.input { margin-left: 6.5em; }
+.multiple-opt-comments ul.X6 label.answertext , .multiple-short-txt ul.X6 label , .numeric-multi ul.X6 label { width: 0.375em;}
+.multiple-opt-comments ul.X6 label.answer-comment , .multiple-short-txt ul.X6 input.text , .numeric-multi ul.X6 div.input { margin-left: 0.38em; }
 
-.multiple-opt-comments ul.X8 label.answertext , .multiple-short-txt ul.X8 label , .numeric-multi ul.X8 label { width: 8em;}
-.multiple-opt-comments ul.X8 label.answer-comment , .multiple-short-txt ul.X8 input.text , .numeric-multi ul.X8 div.input { margin-left: 8.5em; }
+.multiple-opt-comments ul.X8 label.answertext , .multiple-short-txt ul.X8 label , .numeric-multi ul.X8 label { width: 0.5em;}
+.multiple-opt-comments ul.X8 label.answer-comment , .multiple-short-txt ul.X8 input.text , .numeric-multi ul.X8 div.input { margin-left: 0.52em; }
 
-.multiple-opt-comments ul.X10 label.answertext , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label { width: 10em;}
-.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input { margin-left: 10.5em; }
+.multiple-opt-comments ul.X10 label.answertext , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label { width: 0.6em;}
+.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input { margin-left: 0.625em; }
 
-.multiple-opt-comments ul.X12 label.answertext , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label { width: 12em;}
-.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input { margin-left: 12.5em; }
+.multiple-opt-comments ul.X12 label.answertext , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label { width: 0.7em;}
+.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input { margin-left: 0.725em; }
 
-.multiple-opt-comments ul.X14 label.answertext , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label { width: 14em;}
-.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input { margin-left: 14.5em; }
+.multiple-opt-comments ul.X14 label.answertext , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label { width: 0.02em;}
+.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input { margin-left: 0.025em; }
 
-.multiple-opt-comments ul.X16 label.answertext , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label { width: 16em;}
-.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input { margin-left: 16.5em; }
+.multiple-opt-comments ul.X16 label.answertext , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label { width: 1em;}
+.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input { margin-left: 1.025em; }
 
-.multiple-opt-comments ul.X18 label.answertext , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label { width: 18em;}
-.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input { margin-left: 18.5em; }
+.multiple-opt-comments ul.X18 label.answertext , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label { width: 1.125em;}
+.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input { margin-left: 1.25em; }
 
-.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label { width: 20em;}
-.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input { margin-left: 20.5em; }
+.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label { width: 1.25em;}
+.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input { margin-left: 1.3em; }
 
-.multiple-opt-comments ul.X22 label.answertext , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label { width: 22em;}
-.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input { margin-left: 22.5em; }
+.multiple-opt-comments ul.X22 label.answertext , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label { width: 1.375em;}
+.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input { margin-left: 1.38em; }
 
-.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label { width: 24em;}
-.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input { margin-left: 24.5em; }
+.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label { width: 1.5em;}
+.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input { margin-left: 1.525; }
 
-.multiple-opt-comments ul.X26 label.answertext , .multiple-short-txt ul.X26 label , .numeric-multi ul.X26 label { width: 26em;}
-.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input { margin-left: 26.5em; }
+.multiple-opt-comments ul.X26 label.answertext , .multiple-short-txt ul.X26 label , .numeric-multi ul.X26 label { width: 1.625em;}
+.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input { margin-left: 1.63em; }
 
-.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label { width: 28em;}
-.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input { margin-left: 28.5em; }
+.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label { width: 1.75em;}
+.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input { margin-left: 1.775em; }
 
-.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 30em;}
-.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input { margin-left: 30.5em; }
+.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 1.875em;}
+.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input { margin-left: 1.9em; }
 
 .multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input { margin-left: 2em; }
+.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input { margin-left: 0.2em; }
 
 .numeric-multi div.multinum-slider {
 	margin-top: 1.5em;
@@ -498,11 +502,11 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 }
 
 .numeric-multi dl.multiplenumerichelp.slider { left: 22em; }
-.numeric-multi dl.multiplenumerichelp.X2  { left: 10em; }
-.numeric-multi dl.multiplenumerichelp.X4  { left: 12em; }
-.numeric-multi dl.multiplenumerichelp.X6  { left: 18em; }
+.numeric-multi dl.multiplenumerichelp.X2  { left: 0.5em; }
+.numeric-multi dl.multiplenumerichelp.X4  { left: 0.7em; }
+.numeric-multi dl.multiplenumerichelp.X6  { left: 1.125em; }
 .numeric-multi dl.multiplenumerichelp.X8  { left: 16em; }
-.numeric-multi dl.multiplenumerichelp.X10 { left: 18em; }
+.numeric-multi dl.multiplenumerichelp.X10 { left: 1.125em; }
 .numeric-multi dl.multiplenumerichelp.X12 { left: 20em; }
 .numeric-multi dl.multiplenumerichelp.X14 { left: 22em; }
 .numeric-multi dl.multiplenumerichelp.X16 { left: 24em; }
@@ -517,14 +521,14 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .numeric-multi dl.multiplenumerichelp dt {
 	text-align: right;
-	width: 6em;
+	width: 0.3em;
 	padding: 0%;
 	margin: 0% 0% -1.7em 0%;
 	font-size: 90%;
 }
 .numeric-multi dl.multiplenumerichelp dd {
 	text-align: left;
-	margin: 0% 0% 0.5em 6em;
+	margin: 0% 0% 0.5em 0.3em;
 	padding: 0%;
 }
 
@@ -608,11 +612,11 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 /* Jquery CSS
  */
 /** UI Base **/
-.ui-wrapper { border: 1px solid #50A029; }
+.ui-wrapper { border: 1em solid #50A029; }
 .ui-wrapper input, .ui-wrapper textarea { border: 0; }
 /** UI Slider **/
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../../images/slider-handle.gif);  }
+.ui-slider-handle { position: absolute; height: 1.44em; width: 0.7em; top: 0em; left: 0em; background-image: url(../../images/slider-handle.gif);  }
 .ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
+.ui-slider-1 { width: 12.5em; height: 1.44em; padding: 1em; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
+.ui-slider-2 { width: 12.5em; height: 1.44em; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
+.slider_callout { no-repeat; height: 1.25em; width: 6.25em; overflow: hidden; position: absolute; top: -1em; margin-left:+0.9em; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
