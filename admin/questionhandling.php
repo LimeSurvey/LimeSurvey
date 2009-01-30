@@ -456,12 +456,13 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         $oqresult = db_execute_assoc($oqquery);
         if ($oqresult->RecordCount())
         {
+        	// select questionposition
             $editquestion .= "\t<tr id='questionposition'>\n"
             . "\t\t<td align='right'><strong>".$clang->gT("Position:")."</strong></td>\n"
             . "\t\t<td align='left'>\n"
             . "\t\t\t<select name='questionposition'>\n"
             . "\t\t\t\t<option value=''>".$clang->gT("At end")."</option>\n"
-            . "\t\t\t\t<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+            . "\t\t\t\t<option value='0'>".$clang->gT("At beginning")."</option>\n";
             while ($oq = $oqresult->FetchRow())
             {
                 $editquestion .= "<option value='".$oq['question_order']."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
