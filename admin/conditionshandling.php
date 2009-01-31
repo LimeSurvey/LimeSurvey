@@ -30,11 +30,13 @@ include_once("login_check.php");
 //BEGIN Sanitizing POSTed data
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
+if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
 if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
+error_log("TIBO qid=$qid gid=$gid");
 
 if (!isset($p_canswers))
 {
@@ -1182,6 +1184,7 @@ if ($subaction=='' ||
 			."\t\t</td>\n"
 			."\t\t<td width='10%' align='right' valign='middle'><form id='deleteallconditions' action='$scriptname?action=conditions' method='post' name='deleteallconditions' style='margin-bottom:0;'>\n"
 			."\t\t<input type='hidden' name='qid' value='$qid' />\n"
+			."\t\t<input type='hidden' name='gid' value='$gid' />\n"
 			."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t<input type='hidden' id='toplevelsubaction' name='subaction' value='deleteallconditions' />\n";
 
@@ -1248,6 +1251,7 @@ if ($subaction=='' ||
 				."<input type='text' name='newscenarionum' size='3'/></label>\n"
 				."<input type='hidden' name='scenario' value='{$scenarionr['scenario']}'/>\n"
 				."<input type='hidden' name='sid' value='$surveyid' />\n"
+				."<input type='hidden' name='gid' value='$gid' />\n"
 				."<input type='hidden' name='qid' value='$qid' />\n"
 				."<input type='hidden' name='subaction' value='updatescenario' />&nbsp;&nbsp;\n"
 				."<input type='submit' name='scenarioupdated' value='".$clang->gT("Update scenario")."' />\n"
@@ -1445,6 +1449,7 @@ if ($subaction=='' ||
 							."\t\t\t\t\t<input type='hidden' name='cquestions' value='{$rows['cfieldname']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='method' value='{$rows['method']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
+							."\t\t\t\t\t<input type='hidden' name='gid' value='$gid' />\n"
 							."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n";
 						if ($bIsPredefinedAnswer === true)
 						{ // Add canswers[]
@@ -1517,20 +1522,32 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 			."\t\t</td>\n"
 			."\t\t<td align='left'>\n"
 			."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:600px' size='4'>\n";
-		foreach ($pquestions as $pq)
+		if (isset($pquestions) && count($pquestions) != 0)
 		{
-			$conditionsoutput .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+			foreach ($pquestions as $pq)
+			{
+				$conditionsoutput .= "<option value='{$pq['fieldname']}'>".$pq['text']."</option>\n";
+			}
 		}
 		$conditionsoutput .= "\t\t</select>\n";
 		$conditionsoutput .= "\t\t</td>\n"
 			."\t</tr>\n";
 
+		if ( !isset($pquestions) || count($pquestions) == 0)
+		{
+			$disableCopyCondition=" disabled='disabled'";
+		}
+		else
+		{
+			$disableCopyCondition=" ";
+		}
 		$conditionsoutput .= "\t<tr><td colspan='3' align='center'>\n"
-			."<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" />"
+			."<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>"
 			."\t\t\n";
 
 		$conditionsoutput .= "<input type='hidden' name='subaction' value='copyconditions' />\n"
 			."<input type='hidden' name='sid' value='$surveyid' />\n"
+			."<input type='hidden' name='gid' value='$gid' />\n"
 			."<input type='hidden' name='qid' value='$qid' />\n";
 
 		$conditionsoutput .= "<script type=\"text/javascript\">\n"
@@ -1737,6 +1754,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
 		."\t\t\t<input type='submit' value='".$submitLabel."' />\n"
 		."<input type='hidden' name='sid' value='$surveyid' />\n"
+		."<input type='hidden' name='gid' value='$gid' />\n"
 		."<input type='hidden' name='qid' value='$qid' />\n"
 		."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
 		."<input type='hidden' name='cqid' id='cqid' value='' />\n"
