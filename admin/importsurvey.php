@@ -963,6 +963,19 @@ if (isset($grouparray) && $grouparray) {
 									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
 								}
+								elseif ($type == ":" || $type == ";" ) {
+									// read all label codes from $questionrowdata["lid"]
+									// for each one (as L) set SGQA_L
+									$labelq="SELECT DISTINCT code FROM {$dbprefix}labels WHERE lid=".$questionrowdata["lid"];
+									$labelqresult=db_execute_num($labelq) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+									while ($labelqrow=$labelqresult->FetchRow())
+									{
+										$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
+												"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0],
+												"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code."_".$labelqrow[0],
+												"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code."_".$labelqrow[0]);
+									}
+								}
 								elseif ($type == "R") {
 									$newrank++;
 								}
