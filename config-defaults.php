@@ -399,7 +399,7 @@ $pdforientation = 'P';                     // Set L for Landscape or P for portr
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.
 // $relativeurl  is now automatically computed from $rooturl
-if(!$cmd_install==true)
+if(!isset($cmd_install) || !$cmd_install==true)
 {
 	$parsedurl = parse_url($rooturl);
 	$relativeurl= isset($parsedurl['path']) ? $parsedurl['path'] : "";
