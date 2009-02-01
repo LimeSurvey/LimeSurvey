@@ -36,7 +36,6 @@ if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
-error_log("TIBO qid=$qid gid=$gid");
 
 if (!isset($p_canswers))
 {

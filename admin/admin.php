@@ -311,6 +311,7 @@ elseif ($action == 'replacementfields')
 		case 'labels':
 			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL']==1)
 			{
+				$_SESSION['FileManagerContext']="edit:label:$lid";
 				include('fck_LimeReplacementFields.php');exit;
 			}
 			else
@@ -331,6 +332,7 @@ elseif ($action == 'replacementfields')
 		case 'updatesurvey':
 			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['edit_survey_property'])
 			{
+				$_SESSION['FileManagerContext']="edit:survey:$surveyid";
 				include('fck_LimeReplacementFields.php');exit;
 			}
 			else
@@ -341,20 +343,43 @@ elseif ($action == 'replacementfields')
 		case 'tokens': // email
 			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['activate_survey'])
 			{
+				$_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";
 				include('fck_LimeReplacementFields.php');exit;
 			}
 			else
 			{
 				include('access_denied.php');
 			}
+		break;
 		case 'editquestion':
 		case 'copyquestion':
-		case 'editgroup':
 		case 'addquestion':
+			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['define_questions'])
+			{
+				$_SESSION['FileManagerContext']="edit:question:$surveyid";
+				include('fck_LimeReplacementFields.php');exit;
+			}
+			else
+			{
+				include('access_denied.php');
+			}
+		break;
+		case 'editgroup':
 		case 'addgroup':
+			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['define_questions'])
+			{
+				$_SESSION['FileManagerContext']="edit:group:$surveyid";
+				include('fck_LimeReplacementFields.php');exit;
+			}
+			else
+			{
+				include('access_denied.php');
+			}
+		break;
 		case 'editanswer':
 			if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $surrows['define_questions'])
 			{
+				$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 				include('fck_LimeReplacementFields.php');exit;
 			}
 			else
