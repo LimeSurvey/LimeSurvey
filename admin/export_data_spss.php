@@ -67,6 +67,8 @@ $typeMap = array(
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
 'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F'),
+';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -450,7 +452,7 @@ if  ($subaction=='dlstructure')
     sendcacheheaders();
 
     # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid);
+    $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
     //echo "FieldMap:";
     //print_r($fieldmap);
@@ -907,6 +909,21 @@ if  ($subaction=='dlstructure')
 		    }
 	    }
     } 
+    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
+	foreach ($fields as $field){
+		if (isset($field['sql_name'])) {
+			if (substr_count($field['sql_name'],"X") >= 2) {
+				$fielddata=arraySearchByKey($field['sql_name'], $fieldmap, 'fieldname', 1);
+				$sReplace = $fielddata['title'];
+				//If it exists, add the optional code
+				if ($field['code'] > "") $sReplace .= "_" . $field['code'];	
+			} else {
+				//We have a system field, use 'sql_name' instead of title
+				$sReplace = $field['sql_name'];
+			}
+			echo "RENAME VARIABLE ( " . $field['id'] . " = " . $sReplace . " ).\n";
+		}
+	}
     exit;          
 }
 
