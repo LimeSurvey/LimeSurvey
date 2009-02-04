@@ -40,7 +40,15 @@ require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 
 //XXX enable/disable this for testing
-//$usejpgraph = 0;
+//$usejpgraph = 1;
+//$showaggregateddata = 1;
+
+/*
+ * In the original /admin/statistics.php file there is a filter screen before running the statistics.
+ * Because this filter doesn't exist for public statistics we manually set some parameters.
+ * $filterout_incomplete_answers is set to FALSE to prevents bugs as shown in bug report #2836
+ */
+$filterout_incomplete_answers = false;
 
 
 $surveyid=returnglobal('sid');
@@ -1416,7 +1424,7 @@ if (isset($summary) && $summary)
 			
 		}	//end else -> single option answers 
 
-		//foreach ($alist as $al) {echo "<br> 0: ".$al[0]." - 1: ".$al[1]."<br><br>";} //debugging line
+		//foreach ($alist as $al) {echo "<br> 0: ".$al[0]." - 1: ".$al[1]."<br>";} //debugging line
 		//foreach ($fvalues as $fv) {$statisticsoutput .= "$fv | ";} //debugging line
 				
 		
@@ -1639,7 +1647,7 @@ if (isset($summary) && $summary)
 			
 			//no filtering of incomplete answers and NO multiple option questions
             if (($filterout_incomplete_answers == false) and ($qtype != "M") and ($qtype != "P"))
-            {
+            {            	
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
                 if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
                 {
@@ -1750,7 +1758,7 @@ if (isset($summary) && $summary)
                 
                 //data available
                 else
-                {               	
+                {        	
                 	//check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                 	{
@@ -2257,11 +2265,12 @@ if (isset($prb))
 }
 
 
-//XXX new: output everything:
+//output everything:
 echo $statisticsoutput;
 
-//XXX new: Delete all Session Data
+//Delete all Session Data
 $_SESSION['finished'] = true;
+
 
 
 //delete old images
