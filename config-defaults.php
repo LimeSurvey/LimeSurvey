@@ -356,6 +356,7 @@ $use_firebug_lite = false;
  * This only affects question types "A" (5 point array) and "5" (5 point choice).
  * Furthermore data is aggregated to get a faster overview. 
  */
+$showaggregateddata = 1;
 
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
@@ -408,8 +409,4 @@ else
 {
 	// commandline installation, no relativeurl needed 
 }
-
-
-
-$showaggregateddata = 1;
 ?>
