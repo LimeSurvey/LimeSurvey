@@ -3953,8 +3953,16 @@ if (isset($summary) && $summary)
             				//create product of item * value
             				$am += (($x+1) * $stddevarray[$x]);
             }
-
-            			$am = round($am / array_sum($stddevarray),2);
+            			
+            			//prevent division by zero
+            			if(isset($stddevarray) && array_sum($stddevarray) > 0)
+            			{
+            				$am = round($am / array_sum($stddevarray),2);
+            			}
+            			else
+            			{
+            				$am = 0;
+            			}
             			
             			//calculate standard deviation -> loop through all data
             			/*
