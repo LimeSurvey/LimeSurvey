@@ -158,7 +158,7 @@ $emailsmtpssl       =   '';               // Set this to 'ssl' or 'tls' to use S
 
 $maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-$emailcharset = "UTF-8";                 // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
+$emailcharset = "UTF-8";                  // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
 
 
 // Support for Fancy URLs
@@ -378,7 +378,7 @@ require_once(dirname(__FILE__).'/config.php');
     $publicurl      =   "$rooturl";        // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
     $imagefiles     =   "$rooturl/images"; // Location of button bar files for admin script
-	$tpldir         =   "$rootdir/templates"; // Location of the templates
+  	$tpldir         =   "$rootdir/templates"; // Location of the templates
     $homedir        =   "$rootdir/admin";  // The physical disk location of the admin scripts
     $publicdir      =   "$rootdir";        // The physical disk location of the public scripts
     $tempdir        =   "$rootdir/tmp";    // The physical location where LimeSurvey can store temporary files
