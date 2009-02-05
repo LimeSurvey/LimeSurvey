@@ -2998,7 +2998,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum answers'));
     
     $qattributes["numbers_only"]=array(
-    "types"=>"Q",
+    "types"=>"Q;",
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
 

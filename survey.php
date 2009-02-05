@@ -534,8 +534,12 @@ END;
       {
 		$idname2 = "java".$comparedfieldname[1];
 	    }
-		if (in_array($cd[4],array("A","B","K","N","5",":")))
+
+	$cqidattributes = getQuestionAttributes($cd[1]);
+
+		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
+
 			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
 		}
 		else
@@ -552,7 +556,8 @@ END;
         }
         else
         {
-		if (in_array($cd[4],array("A","B","K","N","5",":")))
+		$cqidattributes = getQuestionAttributes($cd[1]);
+		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
 			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 		}

@@ -671,7 +671,8 @@ for ($i=0;$i<count($conditions);$i++)
 
 				$newjava .= "(document.getElementById('" . $idname2 . "').value != '') && ";
 				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
-				if (in_array($cd[4],array("A","B","K","N","5",":")))
+				$cqidattributes = getQuestionAttributes($cd[1]);
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 				{ // Numerical questions
 					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
@@ -694,7 +695,8 @@ for ($i=0;$i<count($conditions);$i++)
 			}
 			else
 			{
-				if (in_array($cd[4],array("A","B","K","N","5",":")))
+				$cqidattributes = getQuestionAttributes($cd[1]);
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 				{ // Numerical questions
 					$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
 				}

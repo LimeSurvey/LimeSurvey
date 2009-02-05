@@ -4821,6 +4821,19 @@ function do_array_multitext($ia)
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
+
+
+        if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
+        {
+                $numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+                $class_num_only = ' numbers-only';
+        }
+        else
+        {
+                $numbersonly = '';
+                $class_num_only = '';
+        }
+
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1))
 	{
 		$answerwidth=$answerwidth['value'];
@@ -4904,7 +4917,7 @@ function do_array_multitext($ia)
 		. "\t</thead>\n"
 		. "\n\t<tbody>\n";
 
-		$answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
+		$answer = "\n" . keycontroljs() . "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
 
 		$trbc = '';
 		while ($ansrow = $ansresult->FetchRow())
@@ -4983,10 +4996,12 @@ function do_array_multitext($ia)
 				. "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 				. "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
 				. html_escape($labelans[$thiskey]).'" '
-				. 'onchange="checkconditions(this.value, this.name, this.type)" size="'.$inputwidth.'" '
-				. 'value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
+				. "onchange=\"getElementById('java{$myfname2}').value=this.value;checkconditions(this.value, this.name, this.type)\" size=\"$inputwidth\" "
+				. $numbersonly 
+				. ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
 				$inputnames[]=$myfname2;
 				$answer .= "\t\t\t\t</label>\n\t\t\t</td>\n";
+				$thiskey += 1;
 			}
 			if (strpos($answertextsave,'|')) 
 			{

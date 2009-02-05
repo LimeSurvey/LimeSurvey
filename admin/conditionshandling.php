@@ -612,7 +612,7 @@ if ($questionscount > 0)
 				}
 
 			} //while
-		} elseif ($rows['type'] == ":") { // Multiflexi
+		} elseif ($rows['type'] == ":" || $rows['type'] == ";") { // Multiflexi
 			//Get question attribute for $canswers
 			$qidattributes=getQuestionAttributes($rows['qid']);
         	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
@@ -663,10 +663,13 @@ if ($questionscount > 0)
 				foreach($lids as $key=>$val) 
 				{
 				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
-        			for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
-        			{
-        			    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
-        			}
+				if ($rows['type'] == ":")
+				{
+					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
+					{
+						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
+					}
+				}
 				}
 			}
 
