@@ -501,7 +501,7 @@ if (isset($postquestionscount) && $postquestionscount > 0) //Build the select bo
 {
 	foreach ($postrows as $pr)
 	{
-		$pquestions[]=array("text"=>$pr['title'].": ".substr($pr['question'], 0, 30),
+		$pquestions[]=array("text"=>$pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
 		"fieldname"=>$pr['sid']."X".$pr['gid']."X".$pr['qid']);
 	}
 }
@@ -1518,7 +1518,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 	if (isset($conditionsList) && is_array($conditionsList))
 	{
 
-		$conditionsoutput .= ""
+		$conditionsoutput .= "\t<tr bgcolor='#EFEFEF'>\n"
 			."\t\t<td align='center' style='text-align: center' width='250'>\n"
 			."\t\t".$clang->gT("Copy the selected conditions to").":\n"
 			."\t\t</td>\n"
