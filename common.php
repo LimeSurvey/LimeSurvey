@@ -2942,6 +2942,11 @@ function questionAttributes($returnByName=false)
 	// types - a string with one character representing each question typy to which the attribute applies
 	// help - a short explanation
 
+    $qattributes["alphasort"]=array(
+    "types"=>"!LOWZ",
+    "help"=>$clang->gT("Sort answers alphabetically"),
+    "caption"=>$clang->gT('Sort answers alphabetically'));
+    
     $qattributes["answer_width"]=array(
     "types"=>"ABCEF1:;",
     "help"=>$clang->gT('The percentage width of the answer column'),

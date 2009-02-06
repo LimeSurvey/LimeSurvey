@@ -1210,14 +1210,25 @@ function do_list_dropdown($ia)
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$result = db_execute_assoc($query);      //Checked
 	while($row = $result->FetchRow()) {$other = $row['other'];}
+	
+	//question attribute random order set?
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
+	
+	//question attribute alphasort set?
+	elseif(arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+	}		
+		
+	//no question attributes -> order by sortorder
 	else
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
+	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
 
 	if (!isset($optCategorySeparator))
@@ -1436,14 +1447,25 @@ function do_list_flexible_dropdown($ia)
 		}
 	}
 	$filter .= '%';
+	
+	//question attribute random order set?
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
+	
+	//question attribute alphasort set?
+	elseif(arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
+	}
+	
+	//no question attributes -> order by sortorder
 	else
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
+	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());//Checked
 
 	if (labelset_exists($lid,$_SESSION['s_lang']))
@@ -1560,14 +1582,25 @@ function do_list_radio($ia)
 	{
 		$other = $row['other'];
 	}
+	
+	//question attribute random order set?
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
+	
+	//question attribute alphasort set?
+	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+	}	
+	
+	//no question attributes -> order by sortorder
 	else 
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
+	
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 
@@ -1761,14 +1794,25 @@ function do_list_flexible_radio($ia)
 		}
 	}
 	$filter .= '%';
+	
+	//question attribute random order set?
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
+	
+	//question attribute alphasort set?
+	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
+	}
+	
+	//no question attributes -> order by sortorder
 	else
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	}
+	
 	$ansresult = db_execute_assoc($ansquery) or safe_die("Couldn't get answers<br />$ansquery<br />".$connect->ErrorMsg());    //Checked
 	$anscount = $ansresult->RecordCount();
 
@@ -1917,13 +1961,23 @@ function do_listwithcomment($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
+	//question attribute random order set?
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1)) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
+	
+	//question attribute alphasort set?
+	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1)) 
+	{
+		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
+	}
+	
+	//no question attributes -> order by sortorder
 	else
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
+	
 	$ansresult = db_execute_assoc($ansquery);      //Checked
 	$anscount = $ansresult->RecordCount();
 
@@ -5861,10 +5915,14 @@ function do_array_flexible_dual($ia)
 		. " </script>\n";
 
 		// Get Answers
+		
+		//question atribute random_order set?
 		if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 		{
 			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
-		}
+		}		
+		
+		//no question attributes -> order by sortorder
 		else
 		{
 			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
