@@ -1168,7 +1168,7 @@ function do_language($ia)
 	}
 	$answer .= "\t\t\t\t</select>\n";
 	$answer .= "\t\t\t\t<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
-
+	
 	$inputnames[]=$ia[1];
 	$answer .= "\n\t\t\t\t<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n\t\t\t</p>\n";
 
@@ -1388,11 +1388,14 @@ function do_list_dropdown($ia)
 		$answer .= "' onchange='checkconditions(this.value, this.name, this.type);'";
 		$thisfieldname="$ia[1]other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
-		$answer .= ' />
-			</p>
-';
+		$answer .= ' />';
+		$answer .= "</p>";
 		// --> END NEW FEATURE - SAVE
 		$inputnames[]=$ia[1]."other";
+	}
+	else
+	{
+		$answer .= "</p>";
 	}
 
 	$inputnames[]=$ia[1];
