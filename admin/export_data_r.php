@@ -10,7 +10,6 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-
 * $Id$
 */
 
@@ -53,7 +52,7 @@ $typeMap = array(
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
-'D'=>Array('name'=>'Date','size'=>null,'SPSStype'=>'SDATE'),
+'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
 'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
@@ -71,6 +70,8 @@ $typeMap = array(
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
 'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F'),
+';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -143,7 +144,7 @@ if  ($subaction=='dldata')
     sendcacheheaders();
 
     # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid);
+    $fieldmap=createFieldMap($surveyid); // $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
     //echo 'FieldMap:';
     //print_r($fieldmap);
@@ -418,7 +419,6 @@ if  ($subaction=='dldata')
                         $fields[$fieldno]['size'] = $len;
                     }
                     $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
-//					$strTemp=str_replace(array("'"),array("''"),trim($strTmp));
                     echo "'$strTemp'";
                 }
                 else
@@ -436,27 +436,8 @@ if  ($subaction=='dldata')
 }
 
 
-
 if  ($subaction=='dlstructure') 
 {
-    header("Content-Type: application/download; charset=utf-8");
-    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_syntax_file.R");
-    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: no-cache');
-
-    // Get Base Language:
-
-    $language = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = new limesurvey_lang($language);
-
-    sendcacheheaders();
-
-    # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid);
-
-
     header("Content-Type: application/download; charset=utf-8");
     header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -470,6 +451,9 @@ if  ($subaction=='dlstructure')
     $clang = new limesurvey_lang($language);
 
     sendcacheheaders();
+
+    # Build array that has to be returned
+     $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
     # Build array that has to be returned
     $fieldmap=createFieldMap($surveyid);
@@ -689,11 +673,11 @@ if  ($subaction=='dlstructure')
 
 echo "#Define Variable Properties.\n";//minni"<br />";
 foreach ($fields as $field){
-	if (	$field["id"] == "fname" OR
-	$field["id"]=="lname" OR
-	$field["id"]=="email" OR
-	$field["id"]=="attr1" OR
-	$field["id"]=="attr2"){
+	if (	$field['id'] == 'fname' OR
+	    $field['id']=='lname' OR
+	    $field['id']=='email' OR
+	    $field['id']=='attr1' OR
+	    $field['id']=='attr2'){
 		echo "attributes(data)\$variable.labels[which(names(data)==\"".$field["id"]."\")]=\"".mb_substr(strip_tags_full($field["fname"]), 0, $length_varlabel)."\"\n";
 	} elseif ($field["name"]=="id") {
 		echo " data[,which(names(data)==\"".$field["id"]."\")]=as.numeric(data[,which(names(data)==\"".$field["id"]."\")])\n attributes(data)\$variable.labels[which(names(data)==\"".$field["id"]."\")]=\"".$clang->gT("Record ID")."\"\n";//minni"<br />";
@@ -728,7 +712,7 @@ foreach ($fields as $field){
 				    }
 			    }
 			    #Lookup the answer
-			if($field['ftype'] == ":")
+			if($field['LStype'] == ":")
 			{
 			    //get the lid
 			    $query = "SELECT lid FROM {$dbprefix}questions WHERE qid='".$field["qid"]."'";
@@ -759,8 +743,10 @@ foreach ($fields as $field){
     				for ($i=0; $i < $num_results; $i++) {
     					$row = $result->FetchRow();
     					foreach($labels as $label) {
-    					    echo "attributes(data)\$variable.labels[which(names(data)==\"".$field["id"]."\")]=\"".
-							mb_substr(strip_tags_full($question_text), 0, $length_varlabel)." [".mb_substr(strip_tags_full($row["answer"]), 0, $length_varlabel)."]\"\n";
+							echo "attributes(data)\$variable.labels[which(names(data)==\"".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".
+							mb_substr(strip_tags_full($row["answer"]." [".$label."]"), 0, $length_varlabel)."'.\n";//minni"<br />";
+    					    //echo "attributes(data)\$variable.labels[which(names(data)==\"".$field["id"]."\")]=\"".
+							//mb_substr(strip_tags_full($question_text), 0, $length_varlabel)." [".mb_substr(strip_tags_full($row["answer"]), 0, $length_varlabel)."]\"\n";
     				    }
 					}
     			}
@@ -826,12 +812,7 @@ if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T
 
 					    if ($displayvaluelabel == 0) echo "data$".$field["id"]."=factor(data$".$field["id"].")\n";  
 					    if ($displayvaluelabel == 0) $displayvaluelabel = 1;
-					    if ($i == ($num_results-1))
-					    {
-						    echo "levels(data$".$field["id"].")[which(levels(data$".$field["id"].")==\"".$field['ftype'].$row["code"]."\")]=\"" .strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n"; // put . at end
-					    } else {
-						    echo "levels(data$".$field["id"].")[which(levels(data$".$field["id"].")==\"".$row["code"]."\")]=\"" .strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n"; // put . at end
-					    }
+						    echo "levels(data$".$field["id"].")[which(levels(data$".$field["id"].")==\"".$field['ftype'].$row["code"]."\")]=\"" .strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\"\n"; 
 				    }
 			    }
 		    }
@@ -913,26 +894,23 @@ if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T
 		    }
 	    }
     }
-	
-echo "\n convert.from.html<-function(data){
-for(i in 1:dim(data)[2]){levels(data[,i])=.cleanhtml(levels(data[,i]))}
-attributes(data)\$variable.labels=.cleanhtml(attributes(data)\$variable.labels)
-return(data)\n}
-.cleanhtml<-function(X){
-X=gsub(\"''\",\"'\",X)
-X=gsub(\"&apos;\",\"'\",X)
-X=gsub(\"â€™\",\"'\",X)
-X=gsub(\"Ã²\",\"ò\",X)
-X=gsub(\"Ã¨\",\"é\",X)
-X=gsub(\"Ã©\",\"è\",X)
-X=gsub(\"Ã\",\"à\",X)
-X=gsub(\"à¹\",\"ù\",X)
-X=gsub(\"Â\",\"\",X)
-return(X)}
-data=convert.from.html(data)
-rm(convert.from.html)
-print(str(data))";
-
+    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
+	echo "v.names=c(";
+	foreach ($fields as $field){
+		if (isset($field['sql_name'])) {
+			if (substr_count($field['sql_name'],"X") >= 2) {
+				$fielddata=arraySearchByKey($field['sql_name'], $fieldmap, 'fieldname', 1);
+				$sReplace = $fielddata['title'];
+				//If it exists, add the optional code
+				if ($field['code'] > "") $sReplace .= "_" . $field['code'];	
+			} else {
+				//We have a system field, use 'sql_name' instead of title
+				$sReplace = $field['sql_name'];
+			}
+			echo "\"". $sReplace . "\",";
+		}
+	}
+    echo "NA); names(data)= v.names[-length(v.names)]\nprint(str(data))";
     exit;          
 }
 
@@ -942,8 +920,9 @@ function strip_tags_full($string) {
 	$string = str_replace(array("\r\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp 
     $string = str_replace("'|\\\\'", "&apos;", $string);
-	//The ' must be replaced by '' for  read.table R function
+	///////The ' must be replaced by '' for  read.table R function
 	$string = str_replace("'", "''", $string);
+	
     return strip_tags($string);
 }
 
