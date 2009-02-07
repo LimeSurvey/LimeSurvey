@@ -359,6 +359,40 @@ if ($isInstertansEnabled===true)
 	
 	      } //while
 	    } //if A,B,C,E,F,H
+	    elseif ($rows['type'] == ":" || $rows['type'] == ";") // Multiflexi
+	    {
+		    //Get the LIDs
+		    $fquery = "SELECT * "
+			    ."FROM {$dbprefix}labels "
+			    ."WHERE lid={$rows['lid']} "
+			    ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			    ."ORDER BY sortorder, code ";
+		    $fresult = db_execute_assoc($fquery);
+		    while ($frow=$fresult->FetchRow())
+		    {
+			    $lids[$frow['code']]=$frow['title'];
+		    }
+		    //Now cycle through the answers
+		    $aquery="SELECT * "
+			    ."FROM {$dbprefix}answers "
+			    ."WHERE qid={$rows['qid']} "
+			    ."AND {$dbprefix}answers.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+			    ."ORDER BY sortorder, "
+			    ."answer";
+		    $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
+
+		    while ($arows = $aresult->FetchRow())
+		    {
+			    $shortanswer = strip_tags($arows['answer']);
+
+			    $shortanswer .= " [{$arows['code']}]";
+			    foreach($lids as $key=>$val) 
+			    {
+				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key,$rows['previouspage']);
+			    }
+		    }
+
+	    } //TIBO
 	    elseif ($rows['type'] == "R") //Answer Ranking
 			{
 	      $aquery="SELECT * "
