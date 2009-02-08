@@ -86,18 +86,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 			// in other cases the session is cleared at submit time
 			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		}
-
-        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
-
-         // Link to Public statistics  **********
-         if ($thissurvey['publicstatistics']=='Y')
-         {
-            $completed .= "<br /><br />"
-            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
-            .$clang->gT("View the statistics for this survey.")
-            ."</a><br />\n";
-         }
-        //*****************************************        
 		
 	}
 	else
@@ -146,6 +134,18 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
          }
         //*****************************************
 
+        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
+
+         // Link to Public statistics  **********
+         if ($thissurvey['publicstatistics']=='Y')
+         {
+            $completed .= "<br /><br />"
+            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+            .$clang->gT("View the statistics for this survey.")
+            ."</a><br />\n";
+         }
+        //*****************************************              
+        
 		//Update the token if needed and send a confirmation email
 		if (isset($clienttoken) && $clienttoken)
 		{
