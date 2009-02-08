@@ -50,50 +50,6 @@ if (!function_exists('mb_convert_encoding'))
 if ($dieoutput!='') die($dieoutput);
 
 
-// The following forces sessions to be saved to a directory within the LimeSurvey install
-if(isset($session_save_path) && $session_save_path == true)
-{
-/**
- * The following generates a randomly string to be used for directory name which will in turn be to used for storing session files.
- * It then creates a directory and writes the directory path to the config-defaults.php
- */
-/*
-    if(empty($session_dir) || !is_dir($session_dir))
-    {
-        function generate_random_string($length = 16 , $possible_chars = 'abcdefghijklmnopqrstuvwxyz_012345679-ABCDEFGHIJKLMNOPQRSTUVWXYZ.' )
-        {
-            $char_count = strlen($possible_chars); 
-            for( $c = 1 ; $c < $length ; ++$c )
-            {
-                srand((double)microtime()*1000000);
-                $random_num = rand( 1 , $char_count); 
-                $random_string .= substr($possible_chars, $random_num, 1);
-            };
-            return $random_string;
-        };
-
-        $session_dir_path .=  '../'.generate_random_string().'/';
-
-        while(is_dir(session_dir_path))
-        {
-            $session_dir_path .=  '../'.generate_random_string().'/';
-        };
-
-        mkdir($session_dir_path)
-
-        $update_config_defaults = file_get_contents('config-defaults.php');
-        $update_config_defaults = preg_replace(
-                                               '/\$session_dir[ \t\n\r]*=[ \t\n\r]*\'[^\']*\';/',
-                                               '$session_dir = \''.$session_dir_path.'\';',
-                                               $update_config_defaults
-                                              );
-
-        file_put_contents('config-defaults.php' , $update_config_defaults);
-    };
-*/
-    ini_set( 'session.save_path' ,  $_SERVER['DOCUMENT_ROOT'] . '/tmp/sessions/' ); // resets the path to where sessions are actually saved.
-};
-
 // The following function (when called) includes FireBug Lite if true 
 define('FIREBUG' , $use_firebug_lite);
 
@@ -108,6 +64,8 @@ function use_firebug()
 ';
     };
 };
+
+define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for mssql
 
 ##################################################################################
 ## DO NOT EDIT BELOW HERE
@@ -1666,7 +1624,7 @@ function browsemenubar($title='')
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
 		" title=\"".$clang->gTview("Iterate surevey")."\" " .
 		" onmouseover=\"showTooltip(event,'".$clang->gT("Iterate survey", "js")."')\">" .
-		"<img src='$imagefiles/exportvv.png' title='' alt='' /></a>\n";
+		"<img src='$imagefiles/iterate.png' title='' alt='' /></a>\n";
 	}
 	$browsemenubar .= "\t\t</div>\n"
     . "\t</div>\n"
