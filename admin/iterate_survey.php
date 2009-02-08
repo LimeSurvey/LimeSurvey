@@ -24,9 +24,9 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 if  (!isset($subaction))
 { // subaction is not set, then display instructions
-    $iteratesurveyoutput = browsemenubar($clang->gT('Iterate Survey'));
+    $iteratesurveyoutput = browsemenubar($clang->gT('Iterate survey'));
     $iteratesurveyoutput .= "<br />\n";
-    $iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate Survey")."</div>\n";
+    $iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
     $iteratesurveyoutput .=  "<h3>".$clang->gT("Important Instructions")."</h3>"
 			. "<p style='width:80%;'>\n"
 //			. $clang->gT("Click on the following button if you want to run again this survey for the same set of participants so that they will be able to retrieve their previously given answers, and if required, modify their answers.")."<br />\n"
@@ -42,7 +42,7 @@ if  (!isset($subaction))
 
 if  ($subaction=='unfinalizeanswers') 
 {
-	$iteratesurveyoutput = browsemenubar($clang->gT('Iterate Survey'));
+	$iteratesurveyoutput = browsemenubar($clang->gT('Iterate survey'));
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$surveytable = db_table_name("survey_$surveyid");
 	// First delete incomplete answers that correspond to a token for which a completed answers is already recorded
@@ -59,7 +59,7 @@ if  ($subaction=='unfinalizeanswers')
 	$updateqr="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0, completed='N'";
 	$updateres=$connect->Execute($updateqr) or safe_die ("Couldn't reset token completed state<br />$updateqr<br />".$connect->ErrorMsg());
 	$iteratesurveyoutput .= "<br />\n";
-	$iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate Survey")."</div>\n";
+	$iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
 	$iteratesurveyoutput .=  "<p style='width:100%;'>\n"
 		. "<font class='successtitle'>".$clang->gT("Success")."</font><br />\n"
 		. $clang->gT("Answers and Tokens have been re-opened.")."<br />\n"

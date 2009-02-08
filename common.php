@@ -1664,8 +1664,8 @@ function browsemenubar($title='')
 	)
 	{ //TIBO
 		$browsemenubar .= "\t\t\t<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-		" title=\"".$clang->gTview("Iterate Surevey")."\" " .
-		" onmouseover=\"showTooltip(event,'".$clang->gT("Iterate Survey", "js")."')\">" .
+		" title=\"".$clang->gTview("Iterate surevey")."\" " .
+		" onmouseover=\"showTooltip(event,'".$clang->gT("Iterate survey", "js")."')\">" .
 		"<img src='$imagefiles/exportvv.png' title='' alt='' /></a>\n";
 	}
 	$browsemenubar .= "\t\t</div>\n"
