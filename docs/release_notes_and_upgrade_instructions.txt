@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.80RC3!
+Welcome to LimeSurvey v1.80RC4!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -70,7 +70,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.80RC3 (build 6239) to 1.80RC4 (build 6352) [2009/02/08]. Legend: + = new features, # = update, - = bug fix
+Changes from 1.80RC3 (build 6239) to 1.80RC4 (build 6354) [2009/02/08]. Legend: + = new features, # = update, - = bug fix
 
 #Updated Language: French. (b00z00)
 #Updated Language: Swedish (maxz)
