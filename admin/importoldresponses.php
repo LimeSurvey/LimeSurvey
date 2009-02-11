@@ -25,12 +25,23 @@ if (!$subaction == "import")
 {
 	// show UI for choosing old table
 
-	$query = db_select_tables_like("{$dbprefix}old\_survey_{$surveyid}\_%");
+	$query = db_select_tables_like("{$dbprefix}old\_survey\_%");
 	$result = db_execute_num($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 	$optionElements = '';
+	$queryCheckColumnsActive = "SELECT * FROM {$dbprefix}survey_{$surveyid} ";
+	$resultActive = db_execute_num($queryCheckColumnsActive) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+	$countActive = $resultActive->FieldCount(); 
+	
 	while ($row = $result->FetchRow())
 	{
-		$optionElements .= "\t\t\t<option value='{$row[0]}'>{$row[0]}</option>\n";
+		$queryCheckColumnsOld = "SELECT * FROM {$row[0]} ";
+		
+		$resultOld = db_execute_num($queryCheckColumnsOld) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+		
+		if($countActive== $resultOld->FieldCount())
+		{
+			$optionElements .= "\t\t\t<option value='{$row[0]}'>{$row[0]}</option>\n";
+		}
 	}
 
     //Get the menubar
@@ -60,13 +71,25 @@ if (!$subaction == "import")
  	 	  <input type='hidden' name='subaction' value='import'>
 		 </td>
 		</tr>
+		<tr>
+			<td colspan='2' align='center'>
+			<font style='color:red;font-weight:bold;'>".$clang->gT("Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey.")."</font>
+			</td>
+		</tr>
 		</form>
 		</table><br />&nbsp;";
 }
 elseif (isset($surveyid) && $surveyid && isset($oldtable))
 {
-	if($databasetype=="postgres")
-	{
+	/*
+	 * TODO:
+	 * - mysql fit machen
+	 * -- quotes für mysql beachten --> ` 
+	 * - warnmeldung mehrsprachig
+	 * - testen
+	 */
+//	if($databasetype=="postgres")
+//	{
 		$activetable = "{$dbprefix}survey_$surveyid";
 		
 		//Fields we don't want to import
@@ -76,40 +99,83 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 		
 		// fields we can import
 		$importablefields = array();
-
-		$query = "SELECT column_name as field FROM information_schema.columns WHERE table_name ='{$activetable}' ";
+		if($databasetype=="postgres")
+		{
+			$query = "SELECT column_name as field FROM information_schema.columns WHERE table_name = '{$activetable}' ";
+		}
+		else
+		{
+			$query = "SHOW COLUMNS FROM {$activetable}";
+		}
+		
 		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 
 		while ($row = $result->FetchRow())
 		{
-			if (!in_array($row['field'],$dontimportfields))
+			if($databasetype=="postgres")
 			{
-				$importablefields[] = $row['field'];
+				if (!in_array($row['field'],$dontimportfields))
+				{
+					$importablefields[] = $row['field'];
+				}
 			}
+			else
+			{
+			if (!in_array($row['Field'],$dontimportfields))
+				{
+					$importablefields[] = $row['Field'];
+				}
+			}
+		}
+		foreach ($importablefields as $field => $value)
+		{
+			$fields2insert[] = "\"".$value."\"";
 		}
 		
 		//fields we can supply //fields in the old database
 		$availablefields = array();
 
-		$query = "SELECT column_name as field FROM information_schema.columns WHERE table_name ='{$oldtable}' ";
+		if($databasetype=="postgres")
+		{
+			$query = "SELECT column_name as field FROM information_schema.columns WHERE table_name = '{$oldtable}' ";
+		}
+		else
+		{
+			$query = "SHOW COLUMNS FROM {$oldtable}";
+		}
 		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 		
 		while ($row = $result->FetchRow())
 		{
-
-			if (!in_array($row['field'],$dontimportfields))
+			if($databasetype=="postgres")
 			{
-				$availablefields[] = $row['field'];
+				if (!in_array($row['field'],$dontimportfields))
+				{
+					$availablefields[] = $row['field'];
+				}
+			}
+			else
+			{
+				if (!in_array($row['Field'],$dontimportfields))
+				{
+					$availablefields[] = $row['Field'];
+				}
 			}
 
 		}
 		
 		foreach ($availablefields as $field => $value)
 		{
-			if (in_array($value,$importablefields))
-			{
-				$fields2import[] = "\"".$value."\"";
-			}
+			$fields2import[] = "\"".$value."\"";
+		}
+		
+		if(count($fields2insert)!=count($fields2import))
+		{ // nicht mehr gebraucht, da nur alte Datenbanken mit gleicher Spaltenanzahl angezeigt werden
+			print_r($fields2insert);
+			print_r($fields2import);
+			echo "Entschuldigung, die Spaltenanzahl stimmt nicht überein. Bitte im Browser \"zurück\" klicken.";
+			echo "Sorry, a count of columns mismatch prevents the old Responses from importing.";
+			exit;
 		}
 		
 		$queryOldValues = "SELECT ".implode(", ",$fields2import)." "
@@ -132,81 +198,80 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 					else
 						$values2import[] = "".$fieldValue."";
 				}
-
 			}	
 	
-			$insertOldValues = "INSERT INTO {$activetable} ( ".implode(", ",$fields2import).") "
+			$insertOldValues = "INSERT INTO {$activetable} ( ".implode(", ",$fields2insert).") "
 							 . "VALUES( ".implode(", ",$values2import)."); ";		 
 			$result = $connect->Execute($insertOldValues) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
 		}
 
-	}
-	else
-	{
-		// options (UI not implemented)
-	
-		$dontimportfields = array(
-		'id' //,'otherfield'
-		);
-		$presetfields = array( // quote all strings so we can allow NULL
-		//'4X13X951'=>"'Y'"
-		//'id' => "NULL"
-		);
-		$importidrange = false; //array('first'=>3,'last'=>10);
-	
-		$activetable = "{$dbprefix}survey_$surveyid";
-	
-		// fields we can import
-		$importablefields = array();
-		$query = "SHOW COLUMNS FROM {$activetable}";
-		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
-		while ($row = $result->FetchRow())
-		{
-			if (!in_array($row['Field'],$dontimportfields))
-			{
-				$importablefields[] = $row['Field'];
-			}
-		}
-	
-		// fields we can supply
-		$availablefields = array();
-		$query = "SHOW COLUMNS FROM {$oldtable}";
-		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
-		while ($row = $result->FetchRow())
-		{
-			$availablefields[] = $row['Field'];
-		}
-		foreach ($presetfields as $field => $value)
-		{
-			if (!in_array($field,$availablefields))
-			{
-				$availablefields[] = $field;
-			}
-		}
-	
-		$fieldstoimport = array_intersect($importablefields,$availablefields);
-	
-		// data sources for each field (field of oldtable or preset value)
-		$sourcefields = array();
-		foreach ($fieldstoimport as $field)
-		{
-			$sourcefields[] = array_key_exists($field,$presetfields)?
-			$presetfields[$field]
-			: ($oldtable.'.`'.$field.'`');
-			$fieldstoimport2[] = '`'.$field.'`'; 
-		}
-	
-		$query = "INSERT INTO {$activetable} (\n\t".join("\t, ",$fieldstoimport2)."\n) "
-		."SELECT\n\t".join("\t,",$sourcefields)."\n"
-		."FROM {$oldtable}";
-		if (is_array($importidrange))
-		{
-			$query .= " WHERE {$oldtable}.id >= {$importidrange['first']} "
-			." AND {$oldtable}.id <= {$importidrange['last']}";
-		}
-	
-		$result = $connect->Execute($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
-	}
+//	}
+//	else
+//	{
+//		// options (UI not implemented)
+//	
+//		$dontimportfields = array(
+//		'id' //,'otherfield'
+//		);
+//		$presetfields = array( // quote all strings so we can allow NULL
+//		//'4X13X951'=>"'Y'"
+//		//'id' => "NULL"
+//		);
+//		$importidrange = false; //array('first'=>3,'last'=>10);
+//	
+//		$activetable = "{$dbprefix}survey_$surveyid";
+//	
+//		// fields we can import
+//		$importablefields = array();
+//		$query = "SHOW COLUMNS FROM {$activetable}";
+//		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+//		while ($row = $result->FetchRow())
+//		{
+//			if (!in_array($row['Field'],$dontimportfields))
+//			{
+//				$importablefields[] = $row['Field'];
+//			}
+//		}
+//	
+//		// fields we can supply
+//		$availablefields = array();
+//		$query = "SHOW COLUMNS FROM {$oldtable}";
+//		$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+//		while ($row = $result->FetchRow())
+//		{
+//			$availablefields[] = $row['Field'];
+//		}
+//		foreach ($presetfields as $field => $value)
+//		{
+//			if (!in_array($field,$availablefields))
+//			{
+//				$availablefields[] = $field;
+//			}
+//		}
+//	
+//		$fieldstoimport = array_intersect($importablefields,$availablefields);
+//	
+//		// data sources for each field (field of oldtable or preset value)
+//		$sourcefields = array();
+//		foreach ($fieldstoimport as $field)
+//		{
+//			$sourcefields[] = array_key_exists($field,$presetfields)?
+//			$presetfields[$field]
+//			: ($oldtable.'.`'.$field.'`');
+//			$fieldstoimport2[] = '`'.$field.'`'; 
+//		}
+//	
+//		$query = "INSERT INTO {$activetable} (\n\t".join("\t, ",$fieldstoimport2)."\n) "
+//		."SELECT\n\t".join("\t,",$sourcefields)."\n"
+//		."FROM {$oldtable}";
+//		if (is_array($importidrange))
+//		{
+//			$query .= " WHERE {$oldtable}.id >= {$importidrange['first']} "
+//			." AND {$oldtable}.id <= {$importidrange['last']}";
+//		}
+//	
+//		$result = $connect->Execute($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+//	}
 	header("Location: $scriptname?action=browse&sid=$surveyid");
 }
 
