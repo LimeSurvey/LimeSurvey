@@ -1,4 +1,4 @@
-<table width="100%" align="center" bgcolor="#EEF6FF">
+<table width="100%" align="center" bgcolor="#F2F7F8">
 	<tr>
 		<td align="left" >
 			{SAVE}
@@ -7,7 +7,8 @@
 			{NAVIGATOR}
 		</td>
 		<td align="right">
-			{CLEARALL}
+			{CLEARALL} <a href="http://www.his.de" target="_blank" width="105px"><div id="hislogo"> </div></a>
+
 		</td>
 	</tr>
 </table>

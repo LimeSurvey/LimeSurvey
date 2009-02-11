@@ -1,14 +1,15 @@
 <table align="center" width="100%" cellpadding="25" cellspacing="0" border="0" style="border-color: #111111">
+{CHECKJAVASCRIPT}
 	<tr>
-		<td align="center" bgcolor="#eef6ff">
-        	{CHECKJAVASCRIPT}
-			<font face="verdana" size="4" color="#328639"><strong>{SURVEYNAME}</strong></font><br />
-			<font size="2" color="#1d2d45">{SURVEYDESCRIPTION}</font>
+		<td align="left" bgcolor="#F2F7F8" style="background-image:url(templates/hisnone/hisinone_banner.jpg); background-position:top left; background-repeat:no-repeat;">
+        	<br /><br /><br />
+			<font face="verdana" size="4" color="#006AB2"><strong>{SURVEYNAME}</strong></font><br />
+			<font size="2" color="#000">{SURVEYDESCRIPTION}</font>
 		</td>
 	</tr>
 	<tr>
 		<td align="center" bgcolor="#FFFFFF">
-			<font face="verdana" size="2" color="#1d2d45">{WELCOME}<br /><br />
+			<font face="verdana" size="2" color="#000">{WELCOME}<br /><br />
 			<i>{THEREAREXQUESTIONS}</i>
 		</font></td>
 	</tr>
