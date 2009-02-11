@@ -359,7 +359,7 @@ function createinsertquery()
                 }
                 else  
                 {
-                	$values[]=strip_tags($connect->qstr($myFilter->process($_SESSION[$value]),get_magic_quotes_gpc()));
+                	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
                 }
 
             }
