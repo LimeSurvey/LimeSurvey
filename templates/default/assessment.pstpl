@@ -1,0 +1,13 @@
+<br />
+<table align="center" width="75%" border="1" style="border-collapse: collapse; border-color: #111111" >
+ <tr>
+  <td bgcolor="#EEf6ff" align="center"><font size="2">
+   <strong>{ASSESSMENT_HEADING}</strong></font>
+  </td>
+ </tr>
+ <tr>
+  <td bgcolor="#FFFFFF">
+   {ASSESSMENTS}
+  </td>
+ </tr>
+</table>

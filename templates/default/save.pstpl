@@ -1,0 +1,11 @@
+<table width="100%" align="center" cellspacing="0" bgcolor="#FFFFFF">
+	<tr>
+		<td align="center" bgcolor="#eef6ff">
+<strong><font size="+1">{SAVEHEADING}</font></strong></td></tr>
+<tr><td align="center"><br /><font color="red">{SAVEERROR}</font>
+{SAVEMESSAGE}<br />
+{SAVEFORM}<br />
+{RETURNTOSURVEY}<br />
+</td>
+</tr>
+</table>

@@ -1,0 +1,13 @@
+<table width="100%" align="center" bgcolor="#EEF6FF">
+	<tr>
+		<td align="left" >
+			{SAVE}
+		</td>
+		<td align="center">
+			{NAVIGATOR}
+		</td>
+		<td align="right">
+			{CLEARALL}
+		</td>
+	</tr>
+</table>

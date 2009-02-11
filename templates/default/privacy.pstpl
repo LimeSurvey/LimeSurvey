@@ -1,0 +1,8 @@
+<table align="center" bgcolor="#FFFFFF" width="100%" border="0">
+	<tr>
+		<td width="15%" ></td><td align="center" bgcolor="#eef6ff"><font size="1">
+		{PRIVACYMESSAGE}</font>
+		</td><td width="15%" ></td>
+	</tr>
+<tr><td><br /> </td></tr>
+</table>

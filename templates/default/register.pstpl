@@ -1,0 +1,10 @@
+<table width="100%" align="center" cellspacing="0" bgcolor="#ffffff">
+	<tr>
+		<td>
+<center>
+<font color="red"><strong>{REGISTERERROR}</strong></font>
+<p><strong>{REGISTERMESSAGE1}</strong></p>
+<p>{REGISTERMESSAGE2}</p>
+{REGISTERFORM}<br />
+</center>
+</td></tr></table>

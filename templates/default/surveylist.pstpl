@@ -1,0 +1,36 @@
+<table width="100%" align="center" cellspacing="0">
+    <tr>
+            <td align="center" bgcolor="#FFFFFF">
+             <p><font face="verdana" size="4" color="#328639"><strong>{SITENAME}</strong></font></p>
+            </td>
+    </tr>
+	<tr>
+		<td align="center" bgcolor="#FFFFFF">
+             <strong>{SURVEYLISTHEADING}</strong>
+         </td>
+    </tr>
+	<tr>
+		<td align="center" bgcolor="#FFFFFF">
+             <table align="center">
+               <tr>
+                <td>
+                <ul>{SURVEYLIST}</ul>
+                </td>
+               </tr>
+             </table>
+		</td>
+	</tr>
+      <tr>
+            <td align="center" bgcolor="#FFFFFF">
+             {SURVEYCONTACT}
+            </td>
+      </tr>
+      <tr>
+            <td align="center" height="100px" bgcolor="#FFFFFF" valign="bottom">
+             <p>{LANGUAGECHANGER}</p>
+             <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
+             <a href="http://www.limesurvey.org" target="_blank"><font color="#000000">The Online Survey Tool</font></a> - Free & Open Source<br />
+            </td>
+      </tr>
+</table>
+<body style="background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);">
