@@ -1,8 +1,0 @@
-<table align="center" bgcolor="#FFFFFF" width="100%" border="0">
-	<tr>
-		<td width="15%" ></td><td style="padding:5px; border:1px solid #006AB2; align="center" bgcolor="#F2F7F8"><font size="1">
-		{PRIVACYMESSAGE}</font>
-		</td><td width="15%" ></td>
-	</tr>
-<tr><td><br /> </td></tr>
-</table>
