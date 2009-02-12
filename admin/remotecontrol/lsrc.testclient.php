@@ -470,6 +470,7 @@ Message is left blank):</b> <br />
 <input type='text' name='sUrl' size='30' maxlength='150' /> <br />
 <b>Url Description:</b> <br />
 <input type='text' name='sUdes' size='30' maxlength='150' /> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='submit' value='Create Survey!' /></form>
 </div>
 
@@ -485,6 +486,7 @@ Message is left blank):</b> <br />
 <input type='text' name='start' size='30' maxlength='150' /> <br />
 <b>Enddate (YYYY-MM-DD):</b> <br />
 <input type='text' name='end' size='30' maxlength='150' /> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='activate' value='Start Survey!' /></form>
 </div>
 
@@ -495,6 +497,7 @@ Message is left blank):</b> <br />
 <br />
 <input type='text' name='sid' size='5' maxlength='5'
 	value='<?php echo $iVid ?>' /> <br />
+	<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='delsurvey' value='Delete Survey!' /></form>
 </div>
 
@@ -514,6 +517,7 @@ for($n=0;$n<count($aMods);++$n)
 {echo "<option value='".$aMods[$n]."'>".$aMods[$n]."</option>";}
 ?>
 </select> <? //print_r($mods);?> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>
 
@@ -532,6 +536,7 @@ for($n=0;$n<count($aMods);++$n)
 <textarea name='quest' cols='50' rows='3'></textarea> <br />
 <b>Helptext:</b> <br />
 <textarea name='help' cols='50' rows='3'></textarea> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impQuest' value='Create Question!' /></form>
 </div>
 
@@ -555,6 +560,7 @@ for($n=1;$n<10;++$n)
 }
 ?> <b>Helptext:</b> <br />
 <textarea name='help' cols='50' rows='3'></textarea> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impMatrix' value='Create Question!' /></form>
 </div>
 
@@ -575,6 +581,7 @@ for($n=1;$n<10;++$n)
 <input type='text' name='whereKey' size='30' maxlength='150' /> <br />
 <!-- <b>where Value</b> <br />
 <input type='text' name='whereValue' size='30' maxlength='150'/>
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
@@ -589,6 +596,7 @@ echo "<b>Tokens seperated by comma (,) :</b> <br />";
 echo "<input type='text' name='token' size='50' maxlength='110'/>";
 echo "<br />";
 echo "<input type='submit' name='tokens' value='Insert Token!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form>";
 echo "</div>";
 
@@ -599,6 +607,7 @@ echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
 echo "<input type='submit' name='tokRet' value='Check for unused Tokens!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
 
 echo "<div style='clear:both;margin-bottom:5px'>";
@@ -612,7 +621,7 @@ echo "<b><font color='red'>* </font>Data in this Format [params in square bracke
 echo "<textarea name='sParticipantData' cols='50' rows='3'>";
 echo "</textarea> ";
 echo "<br />";
-
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "<input type='submit' name='insPar' value='Insert Personal Data!'/>";
 echo "</form>";
 echo "</div>";
