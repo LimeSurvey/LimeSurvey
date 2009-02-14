@@ -180,11 +180,11 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
     //COMMIT CHANGES TO DATABASE
     if ($thissurvey['active'] != "Y")
     {
-	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-	if($thissurvey['printanswers'] != 'Y')
-	{
-		killSession();
-	}    
+    	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+    	if($thissurvey['printanswers'] != 'Y')
+    	{
+    		killSession();
+    	}    
 
         sendcacheheaders();
         doHeader();
@@ -207,18 +207,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             	$completed .= "<a href='".$_SERVER['PHP_SELF']."?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
     	}
 
-        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
-
-         // Link to Public statistics  **********
-         if ($thissurvey['publicstatistics']=='Y')
-         {
-            $completed .= "<br /><br />"
-            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
-            .$clang->gT("View the statistics for this survey.")
-            ."</a><br />\n";
-         }
-        //*****************************************        
-	
     }
     else
     {
@@ -255,6 +243,19 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
             ."</a><br />\n";
          }
         //*****************************************
+
+        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
+
+         // Link to Public statistics  **********
+         if ($thissurvey['publicstatistics']=='Y')
+         {
+            $completed .= "<br /><br />"
+            ."<a class='publicstatisticslink' href='statistics_user.php?sid=$surveyid' target='_blank'>"
+            .$clang->gT("View the statistics for this survey.")
+            ."</a><br />\n";
+         }
+        //*****************************************        
+
 
         //Update the token if needed and send a confirmation email
         if (isset($clienttoken) && $clienttoken)
