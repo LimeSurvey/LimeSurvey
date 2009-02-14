@@ -557,13 +557,13 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         $editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
         $editquestion .=$clang->gT("...or import a question");
         $editquestion .= "</td></tr></table>\n"
-        . "\t<form enctype='multipart/form-data' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "<table width='100%' border='0' >\n\t"
         . "\t<tr>"
         . "\t\t<td align='right' width='35%'><strong>".$clang->gT("Select CSV File").":</strong></td>\n"
         . "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
         . "\t\t<tr>\t\t<td align='right' width='35%'>".$clang->gT("Convert resources links?")."</td>\n"
-        . "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" /></td></tr>\n"
+        . "\t\t<td><input name='translinksfields' type='checkbox' checked='checked'/></td></tr>\n"
         . "\t<tr><td colspan='2' align='center'><input type='button' "
         . "value='".$clang->gT("Import Question")."' onclick=\"$('#importquestion').submit();\"/>\n"
         . "\t<input type='hidden' name='action' value='importquestion' />\n"
