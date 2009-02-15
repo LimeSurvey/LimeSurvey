@@ -783,7 +783,7 @@ if ($subaction == "browse" || $subaction == "search")
 		. "OR email LIKE '%$searchstring%' "
 		. "OR emailstatus LIKE '%$searchstring%' "
 		. "OR token LIKE '%$searchstring%'";
-		if ($bfieldcount == 11)
+		if ($bfieldcount > 10)
 		{
 			$bquery .= " OR attribute_1 like '%$searchstring%' "
 			. "OR attribute_2 like '%$searchstring%'";
@@ -848,7 +848,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n";
-	if ($bfieldcount == 11)
+	if ($bfieldcount > 10)
 	{
 		$tokenoutput .= "\t\t<th align='left' valign='top' class='settingcaption'>"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=attribute_1&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
