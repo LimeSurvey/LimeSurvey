@@ -153,7 +153,7 @@ if(isset($surveyid))
                     $first=false;
                   }
                   else{
-                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','{$postsid}', '{$_POST['group_name_'.$grouplang]}', '{$_POST['description_'.$grouplang]}',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                        $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
                         if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('groups')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('groups')." OFF;";
                         $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
                      }
