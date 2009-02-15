@@ -35,7 +35,11 @@ function codeCheck(prefix, elementcount, helperMsg)
 
  for (i=0; i<=elementcount; i++) {
    j = document.getElementById(prefix+i);
-   if (j != undefined) {X.push(j.value);}
+   if (j != undefined) 
+   {
+       j.value=trim(j.value);
+       X.push(j.value);
+   }
  }   
  if (arrHasDupes(X))
  {
@@ -109,3 +113,7 @@ function goodchars(e, goods)
    return false;
 }
 
+
+function trim(stringToTrim) {
+    return stringToTrim.replace(/^\s+|\s+$/g,"");
+}

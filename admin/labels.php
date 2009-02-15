@@ -286,13 +286,19 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		
 		$labelsoutput.= PrepareEditorScript("editlabel");
 
+        $maxquery = "SELECT max(sortorder) as maxsortorder FROM ".db_table_name('labels')." WHERE lid=$lid and language='{$lslanguages[0]}'";
+        $maxresult = db_execute_assoc($maxquery) or safe_die($connect->ErrorMsg());
+        $msorow=$maxresult->FetchRow();
+        $maxsortorder=$msorow['maxsortorder']+1;        
+        
 		$labelsoutput.= "\t<table width='100%'>\n"
 		."<tr>\n"
 		."\t<td colspan='4' class='header'><strong>\n"
 		.$clang->gT("Labels")
 		."\t</strong></td>\n"
 		."</tr>\n"
-        ."\t<tr><td colspan='4'>\n"        ."<form method='post' action='admin.php'>\n"
+        ."\t<tr><td colspan='4'>\n"        
+        ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."');\">\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
 		."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
@@ -313,15 +319,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         		."\t<td width='25%' align='right' class='settingcaption'><strong>\n"
         		.$clang->gT("Code")
         		."\t</strong></td>\n"
-//        		."\t<td width='35%' class='settingcaption'><strong>\n"
         		."\t<td class='settingcaption'><strong>\n"
         		.$clang->gT("Title")
         		."\t</strong></td>\n"
-//        		."\t<td width='15%' class='settingcaption'><strong>\n"
         		."\t<td class='settingcaption'><strong>\n"
         		.$clang->gT("Action")
         		."\t</strong></td>\n"
-//        		."\t<td width='25%' align='center' class='settingcaption'><strong>\n"
         		."\t<td align='center' class='settingcaption'><strong>\n"
         		.$clang->gT("Order")
         		."\t</strong></td>\n"
@@ -345,7 +348,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			else
     			{
     				$labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n"; 
-    				$labelsoutput.= "\t<input type='text' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
+    				$labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
     			}
     			
     			$labelsoutput.= "\t</td>\n"
@@ -850,13 +853,27 @@ function fixorder($lid) //Function rewrites the sortorder for a group of answers
 
 function update_labelcodes_in_conditions($labelid,$oldcode,$newcode)
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $databasetype, $connect;
 
 	if ($oldcode != $newcode)
 	{
 		// If question type is not dual scale, then update only if: value is old label code AND question uses the modified label
 		// If question is Dualscale then check if it uses the modified label as lid or lid1 and check 
-		$query = "UPDATE ".db_table_name('conditions')." AS c INNER JOIN ".db_table_name('questions')." AS q ON  c.cqid=q.qid SET value=$newcode WHERE c.value=$oldcode AND ( (q.type <> 1 AND q.lid=$labelid) OR (q.type = 1 AND q.lid=$labelid AND c.cfieldname like '%#0') OR (q.type = 1 AND q.lid1=$labelid AND c.cfieldname like '%#1') )";
+        if ($databasetype=='odbc_mssql')
+        {
+            $query = "UPDATE   ".db_table_name('conditions')
+                    ."SET value = $newcode"
+                    ."FROM ".db_table_name('conditions')." AS c INNER JOIN"
+                    .db_table_name('questions')." AS q ON c.cqid = q.qid CROSS JOIN ".db_table_name('conditions')
+                    ."WHERE     (q.type <> 1) AND (q.lid = 3) AND (c.value = $oldcode) OR"
+                    ."(q.type = 1) AND (q.lid = $labelid) AND (c.value = $oldcode) AND (c.cfieldname LIKE '%#0') OR"
+                    ."(q.type = 1) AND (q.lid1 = $labelid) AND (c.value = $oldcode) AND (c.cfieldname LIKE '%#1')";
+        }        
+        else
+        {        
+            $query = "UPDATE ".db_table_name('conditions')." AS c INNER JOIN ".db_table_name('questions')." AS q ON  c.cqid=q.qid SET value=$newcode "
+                    ."WHERE c.value=$oldcode AND ( (q.type <> 1 AND q.lid=$labelid) OR (q.type = 1 AND q.lid=$labelid AND c.cfieldname like '%#0') OR (q.type = 1 AND q.lid1=$labelid AND c.cfieldname like '%#1') )";
+        }
 		$result=$connect->Execute($query) or safe_die($connect->ErrorMsg());
 	}
 }
