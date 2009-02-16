@@ -109,7 +109,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 					
 					if(!$connect->Execute($command,false))
 					{
-						print ("\n".$clang->gT("Executing").".....".$command."...".$clang->gT("Failed! Reason:\n ").$connect->ErrorMsg()."\n\n");
+						print ("\n".$clang->gT("Executing").".....".$command."...".$clang->gT('Failed! Reason:')."\n".$connect->ErrorMsg()."\n\n");
 						$success=1;
 					}
 					
