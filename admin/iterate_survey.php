@@ -27,9 +27,8 @@ if  (!isset($subaction))
     $iteratesurveyoutput = browsemenubar($clang->gT('Iterate survey'));
     $iteratesurveyoutput .= "<br />\n";
     $iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
-    $iteratesurveyoutput .=  "<h3>".$clang->gT("Important Instructions")."</h3>"
+    $iteratesurveyoutput .=  "<h3>".$clang->gT("Important instructions")."</h3>"
 			. "<p style='width:80%;'>\n"
-//			. $clang->gT("Click on the following button if you want to run again this survey for the same set of participants so that they will be able to retrieve their previously given answers, and if required, modify their answers.")."<br />\n"
 			. "<div align='center'>".$clang->gT("Click on the following button if you want to").":<br /></div>\n"
 			. "<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
 			. "<li>".$clang->gT("Delete all incomplete answers that correspond to a token for which a completed answers is already recorded")."</li>"
@@ -62,7 +61,7 @@ if  ($subaction=='unfinalizeanswers')
 	$iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
 	$iteratesurveyoutput .=  "<p style='width:100%;'>\n"
 		. "<font class='successtitle'>".$clang->gT("Success")."</font><br />\n"
-		. $clang->gT("Answers and Tokens have been re-opened.")."<br />\n"
+		. $clang->gT("Answers and tokens have been re-opened.")."<br />\n"
 		. "</p>\n"
 		. "<table><tr><td>";
 }
