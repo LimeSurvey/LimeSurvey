@@ -1523,7 +1523,7 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 			."\t\t".$clang->gT("Copy the selected conditions to").":\n"
 			."\t\t</td>\n"
 			."\t\t<td align='left'>\n"
-			."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:600px' size='4'>\n";
+			."\t\t<select name='copyconditionsto[]' multiple style='font-family:verdana; font-size:10; width:600px' size='10'>\n";
 		if (isset($pquestions) && count($pquestions) != 0)
 		{
 			foreach ($pquestions as $pq)
