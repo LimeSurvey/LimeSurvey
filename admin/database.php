@@ -1259,6 +1259,26 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		if (!isset($_POST['template'])) {$_POST['template']='default';}		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
+		// insert base language into surveys_language_settings
+     	if ($filterxsshtml)
+     	{
+	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); 	
+
+	    	$_POST['surveyls_title']=$myFilter->process($_POST['surveyls_title']);
+		    $_POST['description']=$myFilter->process($_POST['description']);
+		    $_POST['welcome']=$myFilter->process($_POST['welcome']);
+		    $_POST['urldescrip']=$myFilter->process($_POST['urldescrip']);	
+		}
+        else
+              {
+                $_POST['surveyls_title'] = html_entity_decode_php4($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
+                $_POST['description'] = html_entity_decode_php4($_POST['description'], ENT_QUOTES, "UTF-8");
+                $_POST['welcome'] = html_entity_decode_php4($_POST['welcome'], ENT_QUOTES, "UTF-8");
+                $_POST['urldescrip'] = html_entity_decode_php4($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
+              }
+
+
 		$_POST  = array_map('db_quote', $_POST);
 
 		$isquery = "INSERT INTO {$dbprefix}surveys\n"
@@ -1283,24 +1303,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 		$isresult = $connect->Execute($isquery);
 
-		// insert base language into surveys_language_settings
-     	if ($filterxsshtml)
-     	{
-	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
-		    $myFilter = new InputFilter('','',1,1,1); 	
 
-	    	$_POST['surveyls_title']=$myFilter->process($_POST['surveyls_title']);
-		    $_POST['description']=$myFilter->process($_POST['description']);
-		    $_POST['welcome']=$myFilter->process($_POST['welcome']);
-		    $_POST['urldescrip']=$myFilter->process($_POST['urldescrip']);	
-		}
-        else
-              {
-                $_POST['surveyls_title'] = html_entity_decode_php4($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
-                $_POST['description'] = html_entity_decode_php4($_POST['description'], ENT_QUOTES, "UTF-8");
-                $_POST['welcome'] = html_entity_decode_php4($_POST['welcome'], ENT_QUOTES, "UTF-8");
-                $_POST['urldescrip'] = html_entity_decode_php4($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
-              }
                 
         // Fix bug with FCKEditor saving strange BR types
         $_POST['surveyls_title']=fix_FCKeditor_text($_POST['surveyls_title']);
