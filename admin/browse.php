@@ -96,6 +96,14 @@ if ($actcount > 0)
 	while ($actrow = $actresult->FetchRow())
 	{
 		$surveytable = db_table_name("survey_".$actrow['sid']);
+		/*
+		 * DO NEVER EVER PUT VARIABLES AND FUNCTIONS WHICH GIVE BACK DIFFERENT QUOTES 
+		 * IN DOUBLE QUOTED(' and " and \" is used) JAVASCRIPT/HTML CODE!!! (except for: you know what you are doing)
+		 * 
+		 * Used for deleting a record, fix quote bugs..
+		 */
+		$surveytableNq = db_table_name_nq("survey_".$surveyid);
+		
 		$surveyname = "{$actrow['surveyls_title']}";
 		if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
 		{
@@ -312,9 +320,11 @@ if ($subaction == "id") // Looking at a SINGLE entry
 //		$browseoutput .=  "\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable'" .
 //			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
 //		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\" /></a>\n";
+		
 		$browseoutput .=  "\t\t\t<a href='#'" .
 			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
-		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid=$surveyid&amp;surveytable=$surveytable")."}\" /></a>\n";
+		."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid.'&amp;surveytable='.$surveytableNq)."}\" /></a>\n";
+		//echo get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id=$id&amp;sid='.$surveyid.'&amp;surveytable='.$surveytable);
 	}
 	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
 		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
