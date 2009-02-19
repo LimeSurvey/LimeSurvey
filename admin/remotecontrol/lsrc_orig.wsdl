@@ -115,11 +115,7 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
 
 
   </message> 
-  <message name="sTokenReturnResponse">
-     <part name="iVid" type="xsd:int">
-       <documentation>SurveyID of existing Survey, which has a Token table 
-       </documentation>
-     </part>
+  <message name="sTokenReturnResponse">
      <part name="return" type="xsd:string" >
        <documentation>String of unused Tokens seperated by comma 
        </documentation>
