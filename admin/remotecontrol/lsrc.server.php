@@ -525,8 +525,8 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
 		}  
 		// return Response: array([iVid],[return]) on the client side, you get this as an Array resp. list
 		// the keys in the array, containing the values, are named as defined in the wsdl under the response Message, in this case: array(iVid =>$iVid, return=>$sReturn)
-		// closing database connection
-		return array($iVid, $sReturn);
+
+		return $sReturn;
 		exit;	
 	}
 	else
