@@ -13,6 +13,8 @@ color:#1d2d45;
 
 .questionhelp {
 font-size:10px;
+background-color:#eef6ff;
+text-align: center;
 }
 
 .success {
@@ -24,7 +26,7 @@ font-size:10px;
 font-size:11px;
 }
 
-.answertext {
+.answertext, .answer {
 text-align:left;
 }
 
@@ -123,6 +125,8 @@ font-family:verdana;
 font-family:verdana;
 font-size:12px;
 font-weight:bold;
+background-color: #eef6ff;
+text-align: left;
 }
 
 .questionhelp img {

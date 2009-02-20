@@ -3,9 +3,9 @@
 		<td align="center">
 			<table width="100%" cellspacing="0">
 				<tr>
-					<td bgcolor="#eef6ff">
-						<font class="questiontext">{QUESTION}	</font>
-                                       </td>
+					<td class="questiontext">
+						{QUESTION}
+					</td>
 				</tr>
 				<tr>
 					<td class="answer">
@@ -13,7 +13,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="questionhelp" align="center" bgcolor="#eef6ff">
+					<td class="questionhelp">
 						{QUESTIONHELP}
 					</td>
 				</tr>
