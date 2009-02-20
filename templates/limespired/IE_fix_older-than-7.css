@@ -16,7 +16,7 @@
 ,.multiple-opt-comments ul.X28 label.answertext
 ,.multiple-opt-comments ul.X30 label.answertext
 {
-	margin-bottom: -2.7em;
+	margin-bottom: -1.7em;
 }
 
  .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
@@ -35,13 +35,13 @@
 ,.multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
 ,.multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
 {
-	margin-bottom: -1.8em;
+	margin-bottom: -1.3em;
 }
 
 
 .numeric-multi dl.multiplenumerichelp
 {
-	margin-top: -5em;
+	margin-top: -4em;
 }
 .numeric-multi dl.multiplenumerichelp.slider { left: 22em; }
 .numeric-multi dl.multiplenumerichelp.X2  { left: 10em; }
@@ -62,7 +62,7 @@
 .numeric-multi dl.multiplenumerichelp.X-large { display: static; }
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin-bottom: -1.6em;
+	margin-bottom: -1.3em;
 }
 
 .survey-question

@@ -1,5 +1,9 @@
 /* The following styles are for all versions of IE */
 
+.multiple-opt-comments ul , .multiple-short-txt ul , .numeric-multi ul
+{
+	margin-top:0.5em;
+}
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
 ,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
 ,.multiple-opt-comments ul.X6  label.answertext , .multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label

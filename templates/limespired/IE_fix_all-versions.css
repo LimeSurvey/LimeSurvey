@@ -21,10 +21,14 @@
 }
 
 
+.numeric-multi dl.multiplenumerichelp
+{
+	margin-top: -4em;
+}
 .numeric-multi dl.multiplenumerichelp dt
 {
 	margin-right: 10em;
-	margin-bottom: -1.6em;
+	margin-bottom: -1.3em;
 }
 
 /* The following is a dirty hack because I can't work out what's causing the problem.

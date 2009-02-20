@@ -5,9 +5,9 @@
 	margin-bottom: -1.3em;
 }
 
-.multiple-short-txt ul
+.multiple-opt-comments ul , .multiple-short-txt ul , .numeric-multi ul
 {
-	margin-top: 1em;
+	margin-top: 0.8em;
 }
 
 .innergraph img {

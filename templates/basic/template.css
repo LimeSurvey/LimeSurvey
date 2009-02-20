@@ -362,12 +362,12 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 */
 
 
-.multiple-short-txt li input.text
+.multiple-short-txt li span
 {
 	margin-left: 0.5em;
 	width: 20em;
 }
-.multiple-short-txt ul.numbers-only li input.text
+.multiple-short-txt ul.numbers-only li span
 {
 	width: 10em;
 }
@@ -402,73 +402,73 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin-bottom: -1.4em;
 	display: block;\
 }
- .multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2  input.text , .numeric-multi ul.X2  div.input
-,.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4  input.text , .numeric-multi ul.X4  div.input
-,.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6  input.text , .numeric-multi ul.X6  div.input
-,.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8  input.text , .numeric-multi ul.X8  div.input
-,.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input
-,.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input
-,.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input
-,.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input
-,.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input
-,.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input
-,.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input
-,.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input
-,.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input
-,.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input
-,.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input
-,.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input
+ .multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2  span , .numeric-multi ul.X2  div.input
+,.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4  span , .numeric-multi ul.X4  div.input
+,.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6  span , .numeric-multi ul.X6  div.input
+,.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8  span , .numeric-multi ul.X8  div.input
+,.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 span , .numeric-multi ul.X10 div.input
+,.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 span , .numeric-multi ul.X12 div.input
+,.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 span , .numeric-multi ul.X14 div.input
+,.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 span , .numeric-multi ul.X16 div.input
+,.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 span , .numeric-multi ul.X18 div.input
+,.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 span , .numeric-multi ul.X20 div.input
+,.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 span , .numeric-multi ul.X22 div.input
+,.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 span , .numeric-multi ul.X24 div.input
+,.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 span , .numeric-multi ul.X26 div.input
+,.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 span , .numeric-multi ul.X28 div.input
+,.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 span , .numeric-multi ul.X30 div.input
+,.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large span , .numeric-multi ul.X-large div.input
 {
 	display: block;
 }
 
 .multiple-opt-comments ul.X2  label.answertext     , .multiple-short-txt ul.X2 label      , .numeric-multi ul.X2 label       { width:       2em;}
-.multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2 input.text , .numeric-multi ul.X2 div.input   { margin-left: 2.5em; }
+.multiple-opt-comments ul.X2  label.answer-comment , .multiple-short-txt ul.X2 span , .numeric-multi ul.X2 div.input   { margin-left: 2.5em; }
 
 .multiple-opt-comments ul.X4  label.answertext     , .multiple-short-txt ul.X4 label      , .numeric-multi ul.X4 label       { width:       4em;}
-.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4 input.text , .numeric-multi ul.X4 div.input   { margin-left: 4.5em; }
+.multiple-opt-comments ul.X4  label.answer-comment , .multiple-short-txt ul.X4 span , .numeric-multi ul.X4 div.input   { margin-left: 4.5em; }
 
 .multiple-opt-comments ul.X6  label.answertext     , .multiple-short-txt ul.X6 label      , .numeric-multi ul.X6 label       { width:       6em;}
-.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6 input.text , .numeric-multi ul.X6 div.input   { margin-left: 6.5em; }
+.multiple-opt-comments ul.X6  label.answer-comment , .multiple-short-txt ul.X6 span , .numeric-multi ul.X6 div.input   { margin-left: 6.5em; }
 
 .multiple-opt-comments ul.X8  label.answertext     , .multiple-short-txt ul.X8 label      , .numeric-multi ul.X8 label       { width:       8em;}
-.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8 input.text , .numeric-multi ul.X8 div.input   { margin-left: 8.5em; }
+.multiple-opt-comments ul.X8  label.answer-comment , .multiple-short-txt ul.X8 span , .numeric-multi ul.X8 div.input   { margin-left: 8.5em; }
 
 .multiple-opt-comments ul.X10 label.answertext     , .multiple-short-txt ul.X10 label      , .numeric-multi ul.X10 label     { width:       10em;}
-.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 input.text , .numeric-multi ul.X10 div.input { margin-left: 10.5em; }
+.multiple-opt-comments ul.X10 label.answer-comment , .multiple-short-txt ul.X10 span , .numeric-multi ul.X10 div.input { margin-left: 10.5em; }
 
 .multiple-opt-comments ul.X12 label.answertext     , .multiple-short-txt ul.X12 label      , .numeric-multi ul.X12 label     { width:       12em;}
-.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 input.text , .numeric-multi ul.X12 div.input { margin-left: 12.5em; }
+.multiple-opt-comments ul.X12 label.answer-comment , .multiple-short-txt ul.X12 span , .numeric-multi ul.X12 div.input { margin-left: 12.5em; }
 
 .multiple-opt-comments ul.X14 label.answertext     , .multiple-short-txt ul.X14 label      , .numeric-multi ul.X14 label     { width:       14em;}
-.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 input.text , .numeric-multi ul.X14 div.input { margin-left: 14.5em; }
+.multiple-opt-comments ul.X14 label.answer-comment , .multiple-short-txt ul.X14 span , .numeric-multi ul.X14 div.input { margin-left: 14.5em; }
 
 .multiple-opt-comments ul.X16 label.answertext     , .multiple-short-txt ul.X16 label      , .numeric-multi ul.X16 label     { width:       16em;}
-.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 input.text , .numeric-multi ul.X16 div.input { margin-left: 16.5em; }
+.multiple-opt-comments ul.X16 label.answer-comment , .multiple-short-txt ul.X16 span , .numeric-multi ul.X16 div.input { margin-left: 16.5em; }
 
 .multiple-opt-comments ul.X18 label.answertext     , .multiple-short-txt ul.X18 label      , .numeric-multi ul.X18 label     { width:       18em;}
-.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 input.text , .numeric-multi ul.X18 div.input { margin-left: 18.5em; }
+.multiple-opt-comments ul.X18 label.answer-comment , .multiple-short-txt ul.X18 span , .numeric-multi ul.X18 div.input { margin-left: 18.5em; }
 
 .multiple-opt-comments ul.X20 label.answertext     , .multiple-short-txt ul.X20 label      , .numeric-multi ul.X20 label     { width:       20em;}
-.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 input.text , .numeric-multi ul.X20 div.input { margin-left: 20.5em; }
+.multiple-opt-comments ul.X20 label.answer-comment , .multiple-short-txt ul.X20 span , .numeric-multi ul.X20 div.input { margin-left: 20.5em; }
 
 .multiple-opt-comments ul.X22 label.answertext     , .multiple-short-txt ul.X22 label      , .numeric-multi ul.X22 label     { width:       22em;}
-.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 input.text , .numeric-multi ul.X22 div.input { margin-left: 22.5em; }
+.multiple-opt-comments ul.X22 label.answer-comment , .multiple-short-txt ul.X22 span , .numeric-multi ul.X22 div.input { margin-left: 22.5em; }
 
 .multiple-opt-comments ul.X24 label.answertext     , .multiple-short-txt ul.X24 label      , .numeric-multi ul.X24 label     { width:       24em;}
-.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 input.text , .numeric-multi ul.X24 div.input { margin-left: 24.5em; }
+.multiple-opt-comments ul.X24 label.answer-comment , .multiple-short-txt ul.X24 span , .numeric-multi ul.X24 div.input { margin-left: 24.5em; }
 
 .multiple-opt-comments ul.X26 label.answertext     , .multiple-short-txt ul.X26 label      , .numeric-multi ul.X26 label     { width:       26em;}
-.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 input.text , .numeric-multi ul.X26 div.input { margin-left: 26.5em; }
+.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 span , .numeric-multi ul.X26 div.input { margin-left: 26.5em; }
 
 .multiple-opt-comments ul.X28 label.answertext     , .multiple-short-txt ul.X28 label      , .numeric-multi ul.X28 label     { width:       28em;}
-.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 input.text , .numeric-multi ul.X28 div.input { margin-left: 28.5em; }
+.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 span , .numeric-multi ul.X28 div.input { margin-left: 28.5em; }
 
 .multiple-opt-comments ul.X30 label.answertext     , .multiple-short-txt ul.X30 label      , .numeric-multi ul.X30 label     { width:       30em;}
-.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 input.text , .numeric-multi ul.X30 div.input { margin-left: 30.5em; }
+.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 span , .numeric-multi ul.X30 div.input { margin-left: 30.5em; }
 
 .multiple-opt-comments ul.X-large label.answertext     , .multiple-short-txt ul.X-large label      , .numeric-multi ul.X-large label     { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large input.text , .numeric-multi ul.X-large div.input { margin-left: 2em; }
+.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large span , .numeric-multi ul.X-large div.input { margin-left: 2em; }
 
 .numeric-multi div.multinum-slider
 {

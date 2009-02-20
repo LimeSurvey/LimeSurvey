@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
 <![endif]-->
 </head>
-<body class="default">
+<body class="default">{SITENAME}
 <table width="75%" align="center" style="border-collapse: collapse" border="1" cellspacing="0">
     <tr>
         <td>

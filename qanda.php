@@ -2992,7 +2992,7 @@ function do_multipleshorttext($ia)
 			$myfname = $ia[1].$ansrow['code'];
 			$answer_main .= "\t<li>\n"
 			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
-			. '		'.$prefix.'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{
@@ -3005,7 +3005,7 @@ function do_multipleshorttext($ia)
 			}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'.$suffix."\n"
+			$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
 			. "\t</li>\n";
 			// --> END NEW FEATURE - SAVE
 	
