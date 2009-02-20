@@ -417,13 +417,24 @@ if (isset($_SESSION['s_lang']))
 		
 		if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
 		{
-			header("Content-type: application/file");
+			/*
+			 *  $dateiname = $InternalReferenceNumber.'.pdf'; 
+				$pdf->Output($dateiname, 'F'); 
+				header('Content-type: application/pdf'); 
+				header('Content-Disposition: attachment; filename="'.basename($dateiname).'"'); 
+				readfile($dateiname);
+			 */
+			
+			header("Content-type: application/pdf");
 			header("Content-Transfer-Encoding: binary");
 			
-			//header("Content-Length: ". filesize($clang->gT($surveyname)."-".$surveyid.".pdf"));
+			
 			header("Content-Disposition: Attachment; filename=\"". $clang->gT($surveyname)."-".$surveyid.".pdf\"");
-			$pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf", "S");
-			//readfile(($clang->gT($surveyname)."-".$surveyid.".pdf"));
+			
+			$pdf->Output("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
+			header("Content-Length: ". filesize("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf"));
+			readfile("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
+			unlink("tmp/".$clang->gT($surveyname)."-".$surveyid.".pdf");
 			//$pdf->write_out($clang->gT($surveyname)."-".$surveyid.".pdf");
 		}
 		else
