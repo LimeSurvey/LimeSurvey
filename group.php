@@ -505,7 +505,7 @@ END;
  * $condition[n][3] => value to be evaluated on answers labeled. 
  *                     *NEW* tittle of questions to evaluate.
  * $condition[n][4] => type of question
- * $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
+ * $condition[n][5] => full SGQ code of question [1]
  * $condition[n][6] => method used to evaluate *NEW*
  * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
  */
@@ -555,7 +555,15 @@ for ($i=0;$i<count($conditions);$i++)
 	}
 	if ($cd[4] == "R")
 	{
-		$idname="java$cd[2]";  
+		if ($sourceQuestionGid[1] == $gid)
+		{
+			ereg("[0-9]+X[0-9]+X(.*)",$cd[2],$rankcode);
+			$idname="fvalue_".$rankcode[1];
+		}
+		else
+		{
+			$idname="java$cd[2]";  
+		}
 	}
 	elseif ($cd[4] == "5" ||
 			$cd[4] == "A" ||
