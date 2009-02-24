@@ -2184,33 +2184,32 @@ if (isset($summary) && $summary)
                     
                     //$DataSet->SetAbsciseLabelSerie();  
 
-                    $gheight=320;
-				 	if ($counter>7) 
-                    {
-                     $gheight=$gheight+(20*($counter-7));
-					}
-                 	$Test = new pChart(690,$gheight); 
+                    $Test = new pChart(1,1); 
+                    
+                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);
+                    $legendsize=$Test->getLegendBoxSize($DataSet->GetDataDescription());
                      
+                    if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
+                    $Test = new pChart(690+$legendsize[0],$gheight); 
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                     $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
-                    $Test->drawFilledRoundedRectangle(7,7,683,$gheight-7,5,240,240,240);  
-                    $Test->drawRoundedRectangle(5,5,685,$gheight-5,5,230,230,230);  
+                    $Test->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
+                    $Test->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
                     $Test->drawGraphArea(255,255,255,TRUE);  
                     $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
-                    $Test->setFontProperties("/classes/pchart/fonts/tahoma.ttf",6);
+                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",6);
                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                     // Draw the bar graph
                     $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                     //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
                     // Finish the graph
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",8);
-                    $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                     $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);
-//Todo:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+                    $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                    // $Test->drawTitle(50,22,"Example ".$legendsize[0].'x'.$legendsize[1],50,50,50,585);
 				}	//end if (bar chart)
 				
 				//Pie Chart
