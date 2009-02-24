@@ -40,16 +40,23 @@ require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 
 //XXX enable/disable this for testing
-//$usejpgraph = 1;
+$publicgraphs = 1;
 //$showaggregateddata = 1;
 
 /*
- * In the original /admin/statistics.php file there is a filter screen before running the statistics.
- * Because this filter doesn't exist for public statistics we manually set some parameters.
- * $filterout_incomplete_answers is set to FALSE to prevents bugs as shown in bug report #2836
+ * List of important settings:
+ * - publicstatistics: General survey setting which determines if public statistics for this survey 
+ * 	 should be shown at all.
+ * 
+ * - publicgraphs: General survey setting which determines if public statistics for this survey 
+ * 	 should include graphs or only show a tabular overview.
+ * 
+ * - public_statistics: Question attribute which has to be applied to each question so that 
+ * 	 its statistics will be shown to the user. If not set no statistics for this question will be shown.
+ * 
+ * - filterout_incomplete_answers: Setting taken from config-defaults.php which determines if 
+ * 	 not completed answers will be filtered.
  */
-$filterout_incomplete_answers = false;
-
 
 $surveyid=returnglobal('sid');
 if (!$surveyid){
@@ -60,7 +67,6 @@ if (!$surveyid){
      
 if ($surveyid)
 {
-    $issurveyactive=false;
     $actquery="SELECT * FROM ".db_table_name('surveys')." WHERE sid=$surveyid and active='Y'";
     $actresult=db_execute_assoc($actquery) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());      //Checked
     if ($actresult->RecordCount() == 0) { safe_die('You have to provide a valid survey ID.'); }
@@ -70,6 +76,12 @@ if ($surveyid)
        if ($surveyinfo['publicstatistics']!='Y')
        {
           safe_die('The public statistics for this survey are deactivated.'); 
+       }
+       
+       //check if graphs should be shown for this survey
+       if ($surveyinfo['publicgraphs']=='Y')
+       {
+          $publicgraphs = 1;
        }
     }
 }
@@ -89,7 +101,7 @@ $statisticsoutput ='';
 //for creating graphs we need some more scripts which are included here
 //True -> include
 //False -> forget about charts
-if (isset($usejpgraph) && $usejpgraph == 1) 
+if (isset($publicgraphs) && $publicgraphs == 1) 
 {
     require_once('classes/pchart/pchart/pChart.class');
     require_once('classes/pchart/pchart/pData.class');
@@ -151,7 +163,7 @@ $rows = $result->GetRows();
 usort($rows, 'CompareGroupThenTitle');
 
 
-//number of records fpr this survey
+//number of records for this survey
 $totalrecords = 0;
 
 //count number of answers
@@ -174,11 +186,11 @@ while ($row=$result->FetchRow())
 
 //this is the array which we need later...
 $summary = array();
-//...while this is the array from copy/paste which we don't want to replace because we are all lazy
+//...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
 $allfields = array();
 
 
-		//---------- CREATE SGQA OF ALL QUESTIONS WHICH ARE SET TO "PUBLIC_STATISTICS" ----------
+		//---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
 
 //put the question information into the filter array
 foreach ($rows as $row)
@@ -628,7 +640,7 @@ if (isset($summary) && $summary)
 	$prb->moveStep($process_status);
 
 	//check if pchart should be used
-	if (isset($usejpgraph) && $usejpgraph == 1)  
+	if (isset($publicgraphs) && $publicgraphs == 1)  
 	{
 		//Delete any old temp image files
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
@@ -1484,6 +1496,13 @@ if (isset($summary) && $summary)
 					//get more data                          
 					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
+				
+				//check filter option
+				if ($filterout_incomplete_answers == true) {$query .= " AND submitdate is not null";}                     
+				
+				//check for any "sql" that has been passed from another script
+				//if ($sql != "NULL") {$query .= " AND $sql";}
+				
 
 				//get data
 				$result=db_execute_num($query) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
@@ -2022,6 +2041,7 @@ if (isset($summary) && $summary)
             				$am += (($x+1) * $stddevarray[$x]);
             			}
 
+            			//prevent division by zero
             			if(isset($stddevarray) && array_sum($stddevarray) > 0)
             			{
             				$am = round($am / array_sum($stddevarray),2);
@@ -2031,8 +2051,18 @@ if (isset($summary) && $summary)
             				$am = 0;
             			}
             			
-            			
             			//calculate standard deviation -> loop through all data
+            			/*
+            			 * four steps to calculate the standard deviation
+            			 * 1 = calculate difference between item and arithmetic mean and multiply with the number of elements
+            			 * 2 = create sqaure value of difference
+            			 * 3 = sum up square values
+            			 * 4 = multiply result with 1 / (number of items)
+            			 * 5 = get root
+            			 */
+            			
+            			
+            			
             			for($j = 0; $j < 5; $j++)
             			{            				
             				//1 = calculate difference between item and arithmetic mean
@@ -2083,7 +2113,7 @@ if (isset($summary) && $summary)
             //-------------------------- PCHART OUTPUT ----------------------------
             
             //PCHART has to be enabled and we need some data
-			if (isset($usejpgraph) && $usejpgraph == 1  && array_sum($gdata)>0) 
+			if (isset($publicgraphs) && $publicgraphs == 1  && array_sum($gdata)>0) 
 			{
 				$graph = "";
 				$p1 = "";
@@ -2155,11 +2185,11 @@ if (isset($summary) && $summary)
                     //$DataSet->SetAbsciseLabelSerie();  
 
                     $gheight=320;
-                    if ($counter>15) 
+				 	if ($counter>7) 
                     {
-                    	$gheight=$gheight+(10*($counter-15));
+                     $gheight=$gheight+(20*($counter-7));
 					}
-                    $Test = new pChart(690,$gheight); 
+                 	$Test = new pChart(690,$gheight); 
                      
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                     $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",8);  
@@ -2170,7 +2200,7 @@ if (isset($summary) && $summary)
                     $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",6);
+                    $Test->setFontProperties("/classes/pchart/fonts/tahoma.ttf",6);
                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                     // Draw the bar graph
@@ -2180,7 +2210,7 @@ if (isset($summary) && $summary)
                     $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",8);
                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                     $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);
-//TODO:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
+//Todo:             $Test->drawTitle(50,22,"Example 12",50,50,50,585);
 				}	//end if (bar chart)
 				
 				//Pie Chart
@@ -2232,7 +2262,7 @@ if (isset($summary) && $summary)
 				$Test->Render($tempdir."/".$gfilename);
 				
 				//add graph to output
-				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='1'></td></tr>";
+				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='0'></td></tr>";
 			}
 			
 			//close table/output
