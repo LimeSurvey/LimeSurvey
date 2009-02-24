@@ -4097,9 +4097,9 @@ if (isset($summary) && $summary)
                     //$DataSet->SetAbsciseLabelSerie();  
 
                     $gheight=320;
-                    if ($counter>15) 
+                    if ($counter>7) 
                     {
-                     $gheight=$gheight+(10*($counter-15));
+                     $gheight=$gheight+(20*($counter-7));
 					}
                     $Test = new pChart(690,$gheight); 
                      
