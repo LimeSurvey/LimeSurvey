@@ -1,5 +1,6 @@
 <?php
 /*
+/*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
@@ -79,32 +80,9 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 function renderDataList($fieldArr){
 	global $headerComment, $surveyid;
-	global $headerComment, $surveyid;
 	echo $headerComment;
-
-   echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";
-    
+	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 if  (!isset($subaction))
 {
@@ -144,7 +122,7 @@ if  ($subaction=='dldata')
     sendcacheheaders();
 
     # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid); // $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
+    $fieldmap=createFieldMap($surveyid); 
 
     //echo 'FieldMap:';
     //print_r($fieldmap);
@@ -455,8 +433,6 @@ if  ($subaction=='dlstructure')
     # Build array that has to be returned
      $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
-    # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid);
     //echo "FieldMap:";
     //print_r($fieldmap);
 
@@ -560,6 +536,7 @@ if  ($subaction=='dlstructure')
 		    $fsid=$fielddata['sid'];
 		    $fgid=$fielddata['gid'];
 		    $code=$fielddata['aid'];
+			
 		    if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
 	    }
         
