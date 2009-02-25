@@ -1858,13 +1858,32 @@ if(isset($showcombinedresults) && $showcombinedresults == 1)
 $statisticsoutput .= "\t\t\t</table>\n"
 ."\t\t</td></tr>\n";
 
+$grapherror='';
+if (!function_exists("gd_info")) {
+    $grapherror.='<br />'.$clang->gT('You do not have the GD Library installed. Showing charts requires the GD library to function properly.');
+    $grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+}
+elseif (!function_exists("imageftbbox")) {
+    $grapherror.='<br />'.$clang->gT('You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly.');
+    $grapherror.='<br />'.$clang->gT('visit http://us2.php.net/manual/en/ref.image.php for more information').'<br />';
+}
+if ($grapherror!='')  
+{
+    unset($_POST['usegraph']);
+}
+ 
 $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
 ."<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
 ." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
 ."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
-$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label></td></tr>\n"
+$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br>";
+if ($grapherror!='')  
+{
+    $viewalltext.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";
+}
+$viewalltext.="</td></tr>\n"
 ."<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
 ."<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
 ."<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"

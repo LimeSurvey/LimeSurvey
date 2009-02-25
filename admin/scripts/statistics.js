@@ -16,6 +16,13 @@ $(document).ready(function(){
              $('#vertical_slide').slideDown('normal'); 
          }
      })
+     $('#usegraph').click( function(){
+        if ($('#grapherror').length>0)
+        { 
+            $('#grapherror').show();
+            $('#usegraph').attr('checked',false);
+        }
+     })
 });
 
 function showhidefilters(value) {
