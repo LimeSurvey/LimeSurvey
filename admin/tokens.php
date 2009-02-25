@@ -116,7 +116,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	$tokenoutput .= "firstname, lastname, email, emailstatus, token, language code, invite sent, reminder sent, reminder count, completed, attribute1, attribute2, tid\n";
+	$tokenoutput .= "firstname, lastname, email, emailstatus, token, language code, attribute1, attribute2, tid\n";
 	while ($brow = $bresult->FetchRow())
 	{
 		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
@@ -124,11 +124,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 		$tokenoutput .= '"'.trim($brow['email'])."\",";
 		$tokenoutput .= '"'.trim($brow['emailstatus'])."\",";
 		$tokenoutput .= '"'.trim($brow['token'])."\",";
-		$tokenoutput .= '"'.trim($brow['language'])."\",";
-		$tokenoutput .= '"'.trim($brow['sent'])."\",";
-		$tokenoutput .= '"'.trim($brow['remindersent'])."\",";
-		$tokenoutput .= '"'.trim($brow['remindercount'])."\",";
-		$tokenoutput .= '"'.trim($brow['completed'])."\"";
+		$tokenoutput .= '"'.trim($brow['language'])."\"";
 		if($bfieldcount > 8)
 		{
 			$tokenoutput .= ",";
