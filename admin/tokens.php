@@ -1231,7 +1231,7 @@ if ($subaction == "email" &&
 					."SET sent='$today' WHERE tid={$emrow['tid']}";
 					//
 					$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-					$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+					$tokenoutput .= "[".$clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 				}
 				else
 				{
@@ -1534,7 +1534,8 @@ if ($subaction == "remind" && //XXX
 							."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
 						//
 						$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-						$tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+						//orig: $tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+						$tokenoutput .= "\t\t\t({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 					}
 					else
 					{
