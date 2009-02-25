@@ -1999,7 +1999,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 	{
 		if ($prow['private'] == "N")
 		{
-			$fieldmap[]=array("fieldname"=>"token", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"token", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']="";
@@ -2010,7 +2010,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		}
 		if ($prow['datestamp'] == "Y")
 		{
-			$fieldmap[]=array("fieldname"=>"datestamp", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"datestamp", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']="";
@@ -2021,7 +2021,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		}
 		if ($prow['datestamp'] == "Y")
 		{
-			$fieldmap[]=array("fieldname"=>"startdate", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"startdate", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']="";
@@ -2032,7 +2032,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		}
 		if ($prow['ipaddr'] == "Y")
 		{
-			$fieldmap[]=array("fieldname"=>"ipaddr", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"ipaddr", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']="";
@@ -2044,7 +2044,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		// Add 'refurl' to fieldmap.
 		if ($prow['refurl'] == "Y")
 		{
-			$fieldmap[]=array("fieldname"=>"refurl", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"refurl", "type"=>"", "sid"=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']="";
@@ -2073,7 +2073,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 		$arow['type'] != "^" && $arow['type'] != ":" && $arow['type'] != "1" &&
 		$arow['type'] != ";")
 		{
-			$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
+			$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}", "type"=>"{$arow['type']}", "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
 			if ($style == "full")
 			{
 				$fieldmap[$counter]['title']=$arow['title'];
@@ -2089,7 +2089,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				case "Z":  //FLEXIBLE RADIO LIST
 				if ($arow['other'] == "Y")
 				{
-					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other",
+					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other",
 					"type"=>$arow['type'],
 					"sid"=>$surveyid,
 					"gid"=>$arow['gid'],
@@ -2106,7 +2106,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				}
 				break;
 				case "O": //DROPDOWN LIST WITH COMMENT
-				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment",
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment",
 				"type"=>$arow['type'],
 				"sid"=>$surveyid,
 				"gid"=>$arow['gid'],
@@ -2152,7 +2152,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			{
 			    foreach($lset as $ls)
 			    {
-				  $fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", 
+				  $fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}_{$ls['code']}", 
 				                    "type"=>$arow['type'], 
 									"sid"=>$surveyid, 
 									"gid"=>$arow['gid'], 
@@ -2163,7 +2163,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				  if ($style == "full")
 			  	  {
 					$fieldmap[$counter]['title']=$arow['title'];
-					$fieldmap[$counter]['question']=$arow['question']."[".$abrow['answer']."]";
+					$fieldmap[$counter]['question']=$arow['question']."[".$ls['title']."] [".$abrow['answer']."]";
 					$fieldmap[$counter]['group_name']=$arow['group_name'];
 				  }
 				  $counter++;
@@ -2186,7 +2186,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (case M/A/B/C/E/F/H/P)<br />$abquery<br />".$connect->ErrorMsg());  //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
-				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
 				if ($abrow['other']=="Y") {$alsoother="Y";}
 				if ($style == "full")
 				{
@@ -2197,7 +2197,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$counter++;
 				if ($arow['type'] == "P")
 				{
-					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
+					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}comment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"comment");
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];
@@ -2209,7 +2209,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			}
 			if ((isset($alsoother) && $alsoother=="Y") && ($arow['type']=="M" || $arow['type']=="P"))
 			{
-				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}other", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"other");
 				if ($style == "full")
 				{
 					$fieldmap[$counter]['title']=$arow['title'];
@@ -2219,7 +2219,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$counter++;
 				if ($arow['type']=="P")
 				{
-					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
+					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}othercomment", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"othercomment");
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];
@@ -2241,7 +2241,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get list of answers in createFieldMap function (type Q)<br />$abquery<br />".$connect->ErrorMsg()); //Checked
 			while ($abrow=$abresult->FetchRow())
 			{
-				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code']);
 				if ($style == "full")
 				{
 					$fieldmap[$counter]['title']=$arow['title'];
@@ -2274,7 +2274,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				//if ($abmultiscalecount>0)
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 					{
- 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
+ 					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#0", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
      					if ($style == "full")
 						{
 							$fieldmap[$counter]['title']=$arow['title'];
@@ -2297,7 +2297,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 				$abmultiscalecount=$abmultiscaleresult->RecordCount();
 				if ($abmultiscaleresultrow=$abmultiscaleresult->FetchRow())
 				{
- 					$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
+ 					$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}#1", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['code'], "lid"=>$abmultiscaleresultrow["lid"], "lid1"=>$arow["lid1"]);
 					if ($style == "full")
 					{
 						$fieldmap[$counter]['title']=$arow['title'];
@@ -2324,7 +2324,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 			$abcount=$abresult->RecordCount();
 			for ($i=1; $i<=$abcount; $i++)
 			{
-				$fieldmap[]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
+				$fieldmap[$counter]=array("fieldname"=>"{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i", "type"=>$arow['type'], "sid"=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$i);
 				if ($style == "full")
 				{
 					$fieldmap[$counter]['title']=$arow['title'];

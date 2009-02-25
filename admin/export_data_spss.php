@@ -30,7 +30,6 @@
 * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
 */
 
-
 $length_data = '255'; // Set the max text length of Text Data
 $length_varlabel = '255'; // Set the max text length of Variable Labels
 $length_vallabel = '120'; // Set the max text length of Value Labels
@@ -73,36 +72,6 @@ $typeMap = array(
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
-function renderDataList($fieldArr){
-	global $headerComment, $surveyid;
-	echo $headerComment;
-
-   echo "SET UNICODE=ON.\n"
-       ."GET DATA\n"
-       ."/TYPE=TXT\n"
-       ."/FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
-       ."/DELCASE=LINE\n"
-       ."/DELIMITERS=\",\"\n"
-       ."/QUALIFIER=\"'\"\n"
-       ."/ARRANGEMENT=DELIMITED\n"
-       ."/FIRSTCASE=1\n"
-       ."/IMPORTCASE=ALL\n"
-       ."/VARIABLES=";    
-	$i=0;
-	foreach ($fieldArr as $field){
-        echo "\n";
-		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-        if($field['LStype'] == 'N' || $field['LStype']=='K') {
-            $field['size'].='.'.($field['size']-1);
-        }
-		echo " {$field['id']} {$field['SPSStype']}{$field['size']}";
-		$i++;
-	}
-	echo ".\n"
-        ."CACHE.\n"
-        ."EXECUTE.\n";
-}
-
 if  (!isset($subaction))
 {
     $exportspssoutput = browsemenubar($clang->gT('Export results'));
@@ -119,177 +88,31 @@ if  (!isset($subaction))
                         ."</ol><br />"
                         .$clang->gT("Your data should be imported now.")
                         ."<table><tr><td>";
-                        
-                        
-                                                                                        
-  
-} 
+} else {
+	// Get Base Language:
 
-if  ($subaction=='dldata') 
-{
+    $language = GetBaseLanguageFromSurveyID($surveyid);
+    $clang = new limesurvey_lang($language); 
+}
+
+
+
+if  ($subaction=='dldata') {
     header("Content-Type: application/download; charset=utf-8");
     header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_data_file.dat");
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: no-cache');
-    
-    
-  // Get Base Language:
-
-    $language = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = new limesurvey_lang($language);
 
     sendcacheheaders();
+    
+    // Build array that has to be returned    
+    $fields = spss_fieldmap();
 
-    # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid);
-
-    //echo 'FieldMap:';
-    //print_r($fieldmap);
-
-    #See if tokens are being used
-    $tablelist = $connect->MetaTables() or safe_die ('Error getting table list<br />'.$connect->ErrorMsg());
-    foreach ($tablelist as $tbl)
-    {
-        if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist =  1;}
-    }
-
-    #Lookup the names of the attributes
-    $query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
-    $num_results = $result->RecordCount();
-    $num_fields = $num_results;
-    # Build array that has to be returned
-    for ($i=0; $i < $num_results; $i++) {
-        $row = $result->FetchRow();
-        if ($row['attribute1']) {$attr1_name = $row['attribute1'];} else {$attr1_name = $clang->gT('Attribute 1');}
-        if ($row['attribute2']) {$attr2_name = $row['attribute2'];} else {$attr2_name = $clang->gT('Attribute 2');}
-        $surveyprivate=$row['private'];
-        $language=$row['language'];
-    }
-
-    $fieldno=0;
-
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
-
-        $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
-        foreach ($tablefieldnames as $tokenfieldname) {
-            $token_fields[]=$tokenfieldname;
-        }
-        if (in_array('firstname', $token_fields)) {
-            $fields[$fieldno++]=array('id'=>'fname','name'=>$clang->gT('First Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
-        }
-        if (in_array('lastname', $token_fields)) {
-            $fields[$fieldno++]=array('id'=>'lname','name'=> $clang->gT('Last Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
-        }
-        if (in_array('email', $token_fields)) {
-            $fields[$fieldno++]=array('id'=>'email','name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-        }
-        if (in_array('attribute_1', $token_fields)) {
-            $fields[$fieldno++]=array('id'=>'attr1','name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-        }
-        if (in_array('attribute_2', $token_fields)) {
-            $fields[$fieldno++]=array('id'=>'attr2','name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-        }
-    } else {
-        $fields=array();
-    }
-
-    $tempArray = array();
-    $fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
-    $num_results = count($fieldnames);
-    $num_fields = $num_results;
-    # Build array that has to be returned
-    for ($i=0; $i < $num_results; $i++) {
-        #Conditions for SPSS fields:
-        # - Length may not be longer than 8 characters
-        # - Name may not begin with a digit
-        $fieldname = $fieldnames[$i];
-        $fieldtype = '';
-        $val_size = 1;
-        //echo $fieldname.' - ';
-        
-        #Determine field type
-        if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
-            $fieldtype = 'DATETIME23.2';
-            $ftype = 'DATETIME';
-        } elseif ($fieldname=='startlanguage') {
-            $fieldtype = 'A';
-            $val_size = 19;
-        } elseif ($fieldname=='token') {
-            $fieldtype = 'A';
-            $ftype = 'VARCHAR';
-            $val_size = 16;
-        } elseif ($fieldname=='id') {
-            $fieldtype = 'F'; 
-            $ftype = 'ID'; 
-            $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-        } elseif ($fieldname == 'ipaddr') {
-            $fieldtype = 'A';
-            $ftype = 'IP'; 
-            $val_size = '15';
-        } elseif ($fieldname == 'refurl') {
-            $fieldtype = 'A';
-            $ftype = 'REFURL'; 
-            $val_size = 255;
-        }
-        
-        #Get qid (question id)
-        $code='';
-        $noQID = Array('id', 'token', 'stamp', 'submitdate', 'startdate', 'attribute_1', 'attribute_2', 'startlanguage', 'ipaddr', 'refurl');
-        if (in_array($fieldname, $noQID)){
-            $qid = 0;
-        } else{
-            //GET FIELD DATA
-            $fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
-            $qid=$fielddata['qid'];
-            $ftype=$fielddata['type'];
-            $fsid=$fielddata['sid'];
-            $fgid=$fielddata['gid'];
-            $code=$fielddata['aid'];
-            if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-        }
-        
-        $tempArray = array($fieldno++ =>array('id'=>'d'.$fieldno,
-                'name'=>mb_substr($fieldname, 0, 8),
-                'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,
-                'LStype'=>$ftype,'LSlong'=>isset($typeMap[$ftype]['name'])?$typeMap[$ftype]['name']:$ftype,'ValueLabels'=>'',
-                'VariableLabel'=>'','sql_name'=>$fieldname,'size'=>$val_size));
-            $fields = $fields + $tempArray;
-        }
-
-    /**
-     * Code that prints out the actual data
-     * Refactoring this into a function is impractical at this point, as it relies heavily on global variables.
-     */
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
-        $query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
-               {$dbprefix}tokens_$surveyid.lastname    ,
-               {$dbprefix}tokens_$surveyid.email";
-        if (in_array('attribute_1', $token_fields)) {
-            $query .= ",\n        {$dbprefix}tokens_$surveyid.attribute_1";
-        }
-        if (in_array('attribute_2', $token_fields)) {
-            $query .= ",\n        {$dbprefix}tokens_$surveyid.attribute_2";
-        }
-        $query .= ",\n           {$dbprefix}survey_$surveyid.*
-        FROM {$dbprefix}survey_$surveyid
-        LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
-        if (incompleteAnsFilterstate() === true)
-        {
-            $query .= " WHERE {$dbprefix}survey_$surveyid.submitdate is not null ";
-        }
-    } else {
-        $query = "SELECT *
-        FROM {$dbprefix}survey_$surveyid";
-        if (incompleteAnsFilterstate() === true)
-        {
-            $query .= ' WHERE submitdate is not null ';
-        }
-    }
-
-
+	//Now get the query string with all fields to export 
+    $query = spss_getquery();
+    
     $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
     $num_results = $result->RecordCount();
     $num_fields = $result->FieldCount();
@@ -364,15 +187,7 @@ if  ($subaction=='dldata')
                 if ($fields[$fieldno]['code'] == 'other')
                 {
                     $strTmp = strip_tags_full($row[$fieldno]);
-                    $len = mb_strlen($strTmp);
                     echo "'$strTmp'";
-                    if($len > $fields[$fieldno]['size']){
-                        $fields[$fieldno]['size'] = $len;
-                    }
-                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
-                    {
-                        $fields[$fieldno]['SPSStype']='A';
-                    }
                 }  else if ($row[$fieldno] == 'Y')
                 {
                     echo("'1'");
@@ -385,11 +200,7 @@ if  ($subaction=='dldata')
                 if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
                 {
                     $strTmp = strip_tags_full($row[$fieldno]);
-                    $len = mb_strlen($strTmp);
                     echo "'$strTmp'";                    
-                    if($len > $fields[$fieldno]['size']){
-                        $fields[$fieldno]['size'] = $len;
-                    }
                 } else if ($row[$fieldno] == 'Y')
                 {
                     echo("'1'");
@@ -399,24 +210,7 @@ if  ($subaction=='dldata')
                 }
             } else {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-                $len = mb_strlen($strTmp);
-        
-                if($len > $fields[$fieldno]['size']){
-                    $fields[$fieldno]['size'] = $len;
-                    //echo "max length changed\n";
-                }
-
-                if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
-
                 if (trim($strTmp) != ''){
-                    if (($fields[$fieldno]['SPSStype']=='F' && my_is_numeric($strTmp)===false) || $fields[$fieldno]['size']>16)
-                    {
-                        $fields[$fieldno]['SPSStype']='A';
-                    }
-                    $len = mb_strlen($strTmp); //Don't count the quotes
-                    if($len > $fields[$fieldno]['size']){
-                        $fields[$fieldno]['size'] = $len;
-                    }
                     $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
                     echo "'$strTemp'";
                 }
@@ -435,8 +229,7 @@ if  ($subaction=='dldata')
 }
 
 
-if  ($subaction=='dlstructure') 
-{
+if  ($subaction=='dlstructure') {
     header("Content-Type: application/download; charset=utf-8");
     header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -444,342 +237,78 @@ if  ($subaction=='dlstructure')
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: no-cache');
 
-    // Get Base Language:
-
-    $language = GetBaseLanguageFromSurveyID($surveyid);
-    $clang = new limesurvey_lang($language);
-
     sendcacheheaders();
 
-    # Build array that has to be returned
-    $fieldmap=createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
+    // Build array that has to be returned    
+    $fields = spss_fieldmap();
 
-    //echo "FieldMap:";
-    //print_r($fieldmap);
-
-    #See if tokens are being used
-    $tablelist = $connect->MetaTables() or safe_die ("Error getting table list<br />".$connect->ErrorMsg());
-    foreach ($tablelist as $tbl)
-    {
-	    if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist =  1;}
-    }
-
-    #Lookup the names of the attributes
-    $query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
-    $num_results = $result->RecordCount();
-    $num_fields = $num_results;
-    # Build array that has to be returned
-    for ($i=0; $i < $num_results; $i++) {
-	    $row = $result->FetchRow();
-	    if ($row['attribute1']) {$attr1_name = $row['attribute1'];} else {$attr1_name = $clang->gT('Attribute 1');}
-	    if ($row['attribute2']) {$attr2_name = $row['attribute2'];} else {$attr2_name = $clang->gT('Attribute 2');}
-	    $surveyprivate=$row['private'];
-	    $language=$row['language'];
-    }
-
-    $fieldno=0;
-
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
-
-        $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
-	    foreach ($tablefieldnames as $tokenfieldname) {
-		    $token_fields[]=$tokenfieldname;
-	    }
-	    if (in_array('firstname', $token_fields)) {
-		    $fields[$fieldno++]=array('id'=>'fname','name'=>$clang->gT('First Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
-	    }
-	    if (in_array('lastname', $token_fields)) {
-		    $fields[$fieldno++]=array('id'=>'lname','name'=> $clang->gT('Last Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
-	    }
-	    if (in_array('email', $token_fields)) {
-		    $fields[$fieldno++]=array('id'=>'email','name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-	    }
-	    if (in_array('attribute_1', $token_fields)) {
-		    $fields[$fieldno++]=array('id'=>'attr1','name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-	    }
-	    if (in_array('attribute_2', $token_fields)) {
-		    $fields[$fieldno++]=array('id'=>'attr2','name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-	    }
-    } else {
-	    $fields=array();
-    }
-
-    $tempArray = array();
-    $fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
-    $num_results = count($fieldnames);
-    $num_fields = $num_results;
-    # Build array that has to be returned
-    for ($i=0; $i < $num_results; $i++) {
-	    #Conditions for SPSS fields:
-	    # - Length may not be longer than 8 characters
-	    # - Name may not begin with a digit
-	    $fieldname = $fieldnames[$i];
-	    $fieldtype = '';
-	    $val_size = 1;
-	    //echo $fieldname." - ";
-	    
-	    #Determine field type
-	    if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
-		    $fieldtype = 'DATETIME23.2';
-		    $ftype = 'DATETIME';
-	    } elseif ($fieldname=='startlanguage') {
-		    $fieldtype = 'A';
-		    $val_size = 19;
-	    } elseif ($fieldname=='token') {
-		    $fieldtype = 'A';
-		    $ftype = 'VARCHAR';
-		    $val_size = 16;
-	    } elseif ($fieldname=='id') {
-		    $fieldtype = 'F'; 
-            $ftype = 'ID'; 
-		    $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
-	    } elseif ($fieldname == 'ipaddr') {
-		    $fieldtype = 'A';
-            $ftype = 'IP'; 
-		    $val_size = '15';
-	    } elseif ($fieldname == 'refurl') {
-		    $fieldtype = 'A';
-            $ftype = 'REFURL'; 
-		    $val_size = 255;
-	    }
-	    
-	    #Get qid (question id)
-	    $code='';
-	    $noQID = Array('id', 'token', 'stamp', 'submitdate', 'startdate', 'attribute_1', 'attribute_2', 'startlanguage', 'ipaddr', 'refurl');
-	    if (in_array($fieldname, $noQID)){
-		    $qid = 0;
-	    } else{
-		    //GET FIELD DATA
-		    $fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
-		    $qid=$fielddata['qid'];
-		    $ftype=$fielddata['type'];
-		    $fsid=$fielddata['sid'];
-		    $fgid=$fielddata['gid'];
-		    $code=$fielddata['aid'];
-			if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
-		    if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-	    }
-        
-	    $tempArray = array($fieldno++ =>array('id'=>'d'.$fieldno,
-			    'name'=>mb_substr($fieldname, 0, 8),
-			    'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,
-			    'LStype'=>$ftype,"LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
-			    "VariableLabel"=>"","sql_name"=>$fieldname,"size"=>$val_size));
-	        $fields = $fields + $tempArray;
-        }
-
-
-
-    /**
-     * Code that prints out the actual data
-     * Refactoring this into a function is impractical at this point, as it relies heavily on global variables.
-     */
-    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
-	    $query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
-	           {$dbprefix}tokens_$surveyid.lastname    ,
-	           {$dbprefix}tokens_$surveyid.email";
-	    if (in_array('attribute_1', $token_fields)) {
-		    $query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_1";
-	    }
-	    if (in_array('attribute_2', $token_fields)) {
-		    $query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_2";
-	    }
-	    $query .= ",\n	       {$dbprefix}survey_$surveyid.*
-	    FROM {$dbprefix}survey_$surveyid
-	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
-	    if (incompleteAnsFilterstate() === true)
-	    {
-		    $query .= " WHERE {$dbprefix}survey_$surveyid.submitdate is not null ";
-	    }
-    } else {
-	    $query = "SELECT *
-	    FROM {$dbprefix}survey_$surveyid";
-	    if (incompleteAnsFilterstate() === true)
-	    {
-		    $query .= ' WHERE submitdate is not null ';
-	    }
-    }
-
+	//Now get the query string with all fields to export 
+    $query = spss_getquery();
 
     $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
     $num_results = $result->RecordCount();
     $num_fields = $result->FieldCount();
 
+    //Now we check if we need to adjust the size of the field or the type of the field
     for ($i=0; $i < $num_results; $i++) {
 	    $row = $result->FetchRow();
 	    $fieldno = 0;
 	    while ($fieldno < $num_fields)
 	    {
-		    if ($fields[$fieldno]['LStype'] == 'M') 
-		    {
-			    if ($fields[$fieldno]['code'] == 'other')
-			    {
-				    $strTmp = strip_tags_full($row[$fieldno]);
-                    $len = mb_strlen($strTmp); 
-				    if($len > $fields[$fieldno]['size']){
-					    $fields[$fieldno]['size'] = $len;
-				    }
+	    	$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+		    $len = mb_strlen($strTmp);    
+		    if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
+
+		    if (trim($strTmp) != ''){			    	
                     if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
                     {
                         $fields[$fieldno]['SPSStype']='A';
                     }
-			    } 
-		    } else if ($fields[$fieldno]['LStype'] == 'P') 
-		    {
-			    if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
-			    {
-				    $strTmp = strip_tags_full($row[$fieldno]);
-				    $len = mb_strlen($strTmp);
-				    if($len > $fields[$fieldno]['size']){
-					    $fields[$fieldno]['size'] = $len;
-				    }
-			    } 
-		    } else {
-			    $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-			    $len = mb_strlen($strTmp);
-	    
-			    if($len > $fields[$fieldno]['size']){
-				    $fields[$fieldno]['size'] = $len;
-			    }
-
-			    if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
-
-			    if (trim($strTmp) != ''){
-                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
-                    {
-                        $fields[$fieldno]['SPSStype']='A';
-                    }
-				    $len = mb_strlen($strTmp); //Don't count the quotes
-				    if($len > $fields[$fieldno]['size']){
-					    $fields[$fieldno]['size'] = $len;
-				    }
-			    }
 		    }
 		    $fieldno++;
-	    }
-	    #Conditions for SPSS fields:
-	    # - Length may not be longer than 8 charac
+	    }	    
     }
+
     /**
      * End of DATA print out
      *
      * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
      * be sent to the client.
      */
-    renderDataList($fields);
-
-    echo "*Define Variable Properties.\n";//minni"<br />";
-    foreach ($fields as $field){
-	    if (	$field['id'] == 'fname' OR
-	    $field['id']=='lname' OR
-	    $field['id']=='email' OR
-	    $field['id']=='attr1' OR
-	    $field['id']=='attr2'){
-		    echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($field['name']), 0, $length_varlabel)."'.\n";//minni"<br />";
-	    } elseif ($field['name']=='id') {
-		    echo "VARIABLE LABELS ".$field["id"]." '".$clang->gT('Record ID')."'.\n";//minni"<br />";
-	    } elseif ($field['name']=='submitda') {
-		    echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Completion Date')."'.\n";//minni"<br />";
-	    } elseif ($field['name']=='startlan') {
-		    echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Start Language')."'.\n";//minni"<br />";
-	    } elseif ($field['name']=='token') {
-		    echo 'VARIABLE LABELS '.$field['id']." '".$clang->gT('Token')."'.\n";
-	    }else{
-		    #If a split question
-		    if ($field['code'] != ''){
-			    #Lookup the question
-
-			    $query = "SELECT question, title 
-			    FROM {$dbprefix}questions WHERE sid='".$surveyid."' AND language='".$language."' 
-			    AND qid='".$field["qid"]."'";
-			    
-			    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
-			    $num_results = $result->RecordCount();
-			    $num_fields = $num_results;
-			    if ($num_results >0){
-				    # Build array that has to be returned
-				    for ($i=0; $i < $num_results; $i++) {
-					    $row = $result->FetchRow();
-					    $question_text = $row['question'];
-					    $question_title = $row['title'];
-				    }
-			    }
-			    #Lookup the answer
-			if($field['LStype'] == ":")
-			{
-			    //get the lid
-			    $query = "SELECT lid FROM {$dbprefix}questions WHERE qid='".$field["qid"]."'";
-			    $result = db_execute_assoc($query) or die("Couldnt!<br />$query<br />".$connect->ErrorMsg());
-			    $row=$result->FetchRow();
-			    $lid=$row['lid'];
-			    list($ac, $lc)=explode("_", $field["code"]);
-    			$query = "SELECT title FROM {$dbprefix}labels WHERE
-    			lid='$lid' AND code='$lc' and language='".$language."'";
-    			$result=db_execute_assoc($query) or die("Couldnt!<br />$query<br />".$connect->ErrorMsg());
-    			$num_results = $result->RecordCount();
-    			if ($num_results > 0)
-    			{
-				    for($i=0; $i<$num_results; $i++)
-				    {
-					  $row=$result->FetchRow();
-					  $labels[]=$row['title'];
-					}
-				}
-    			
-				$query = "SELECT answer FROM {$dbprefix}answers WHERE 
-    			qid='".$field["qid"]."' and language='".$language."' AND code ='$ac'";
-    			$result=db_execute_assoc($query) or die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());
-    			$num_results = $result->RecordCount();
-    			$num_fields = $num_results;
-    			if ($num_results >0){
-    				# Build array that has to be returned
-    				for ($i=0; $i < $num_results; $i++) {
-    					$row = $result->FetchRow();
-    					foreach($labels as $label) {
-    					    echo "VARIABLE LABELS ".$field["id"]." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row["answer"]." [".$label."]"), 0, $length_varlabel)."'.\n";//minni"<br />";
-    				    }
-					}
-    			}
-    			unset($labels);
-			} else {
-				$query = "SELECT answer FROM {$dbprefix}answers WHERE 
-				qid='".$field["qid"]."' and language='".$language."' AND code ='".$field["code"]."'";
-				$result=db_execute_assoc($query) or safe_die("Couldn't lookup answer<br />$query<br />".$connect->ErrorMsg());  //Checked
-				$num_results = $result->RecordCount();
-				$num_fields = $num_results;
-				if ($num_results >0){
-				    # Build array that has to be returned
-					for ($i=0; $i < $num_results; $i++) {
-						$row = $result->FetchRow();
-						echo "VARIABLE LABELS ".$field['id']." '".mb_substr(strip_tags_full($question_title), 0, $length_varlabel)." - ".mb_substr(strip_tags_full($row['answer']), 0, $length_varlabel)."'.\n";//minni"<br />";
-					}
-				}
-				if (mb_substr($field['sql_name'], -5)=='other') {
-					echo "VARIABLE LABELS ".$field["id"]." '".
-					mb_substr(strip_tags_full($question_text), 0, $length_varlabel-8)." - OTHER'.\n";
-				}
-				if (mb_substr($field['sql_name'], -7)=='comment') {
-					echo "VARIABLE LABELS ".$field['id']." '".
-					mb_substr(strip_tags_full($question_text), 0, $length_varlabel-10)." - COMMENT'.\n";
-				}
-	        }
-		    }else{
-			    $test=explode ("X", $field['name']);
-			    $query = "SELECT question FROM {$dbprefix}questions 
-			    WHERE sid ='".$surveyid."' AND language='".$language."' 
-			    AND qid='".$field['qid']."'";
-			    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg()); //Checked
-			    $row = $result->FetchRow();
-			    echo "VARIABLE LABELS ".$field['id']." '".
-			    mb_substr(strip_tags_full($row["question"]), 0, $length_varlabel)."'.\n";
-		    }
-	    }
+	echo $headerComment;
+	echo "SET UNICODE=ON.\n"
+       ."GET DATA\n"
+       ."/TYPE=TXT\n"
+       ."/FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
+       ."/DELCASE=LINE\n"
+       ."/DELIMITERS=\",\"\n"
+       ."/QUALIFIER=\"'\"\n"
+       ."/ARRANGEMENT=DELIMITED\n"
+       ."/FIRSTCASE=1\n"
+       ."/IMPORTCASE=ALL\n"
+       ."/VARIABLES=";    
+	$i=0;
+	foreach ($fields as $field){
+        echo "\n";
+		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
+        if($field['LStype'] == 'N' || $field['LStype']=='K') {
+            $field['size'].='.'.($field['size']-1);
+        }
+		echo " {$field['id']} {$field['SPSStype']}{$field['size']}";
+		$i++;
+	}
+	echo ".\n"
+        ."CACHE.\n"
+        ."EXECUTE.\n";
+    
+    //Create the variable labels:
+    echo "*Define Variable Properties.\n";
+    foreach ($fields as $field) {
+    	echo "VARIABLE LABELS " . $field['id'] . " \"" . strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel)) . "\".\n";
     }
 
     // Create our Value Labels!
     echo "*Define Value labels.\n";
-    reset($fields);
     foreach ($fields as $field)
     {
 	    if ($field['qid']!=0)
@@ -866,8 +395,13 @@ if  ($subaction=='dlstructure')
             {
 			    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";  //Beginning of the line
 			    if ($displayvaluelabel == 0) $displayvaluelabel = 1; //Now do the rest of the line
-			    echo " $i \"$i\".\n";
+			    if ($i == $maxvalue) {
+			    	echo " $i \"$i\".\n";
+			    } else {
+			    	echo " $i \"$i\"\n";
+			    }
 			}
+			
 		}
 		    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
 		    {
@@ -909,19 +443,17 @@ if  ($subaction=='dlstructure')
 		    }
 	    }
     } 
+
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 	foreach ($fields as $field){
 		if (isset($field['sql_name'])) {
-			if (substr_count($field['sql_name'],"X") >= 2) {
-				$fielddata=arraySearchByKey($field['sql_name'], $fieldmap, 'fieldname', 1);
-				$sReplace = $fielddata['title'];
-				//If it exists, add the optional code
-				if ($field['code'] > "") $sReplace .= "_" . $field['code'];	
-			} else {
-				//We have a system field, use 'sql_name' instead of title
-				$sReplace = $field['sql_name'];
+			$ftitle = $field['title'];
+			if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
+				$ftitle = "q_" . $ftitle;
 			}
-			echo "RENAME VARIABLE ( " . $field['id'] . " = " . $sReplace . " ).\n";
+			$ftitle = str_replace(array("-",":",";","!"), array("_hyph_","_dd_","_dc_","_excl_"), $ftitle);
+			if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+			echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
 		}
 	}
     exit;          
@@ -930,7 +462,7 @@ if  ($subaction=='dlstructure')
 function strip_tags_full($string) {
 	$string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
 	//combining these into one mb_ereg_replace call ought to speed things up
-	$string = str_replace(array("\r\n",'-oth-'), '', $string);
+	$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp 
     $string = str_replace("'|\\\\'", "&apos;", $string);
     return strip_tags($string);
@@ -939,7 +471,167 @@ function strip_tags_full($string) {
 function my_is_numeric($value)  {
     $american = preg_match ("/^(-){0,1}([0-9]+)(,[0-9][0-9][0-9])*([.][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
     $world = preg_match ("/^(-){0,1}([0-9]+)(.[0-9][0-9][0-9])*([,][0-9]){0,1}([0-9]*)$/" ,$value) == 1;
-   return ($american or $world);
+    return ($american or $world);
 }
-       
+
+function spss_fieldmap() {
+	/*
+	 * Function creates a fieldmap with all information necessary to output the fields
+	 */
+	global $surveyid, $dbprefix, $typeMap, $connect, $clang;
+	global $tokensexist, $surveyprivate, $token_fields;
+	
+	$fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
+	
+    #See if tokens are being used
+    $tablelist = $connect->MetaTables() or safe_die ("Error getting table list<br />".$connect->ErrorMsg());
+    foreach ($tablelist as $tbl)
+    {
+	    if ($tbl == "{$dbprefix}tokens_$surveyid") {$tokensexist =  1;}
+    }
+
+    #Lookup the names of the attributes
+    $query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
+    $num_results = $result->RecordCount();
+    $num_fields = $num_results;
+    # Build array that has to be returned
+    for ($i=0; $i < $num_results; $i++) {
+	    $row = $result->FetchRow();
+	    if ($row['attribute1']) {$attr1_name = $row['attribute1'];} else {$attr1_name = $clang->gT('Attribute 1');}
+	    if ($row['attribute2']) {$attr2_name = $row['attribute2'];} else {$attr2_name = $clang->gT('Attribute 2');}
+	    $surveyprivate=$row['private'];
+	    $language=$row['language'];
+    }
+
+    $fieldno=0;
+
+    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
+
+        $tablefieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
+	    foreach ($tablefieldnames as $tokenfieldname) {
+		    $token_fields[]=$tokenfieldname;
+	    }
+	    if (in_array('firstname', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'fname','name'=>$clang->gT('First Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
+	    }
+	    if (in_array('lastname', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'lname','name'=> $clang->gT('Last Name'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>40);
+	    }
+	    if (in_array('email', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'email','name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
+	    }
+	    if (in_array('attribute_1', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'attr1','name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
+	    }
+	    if (in_array('attribute_2', $token_fields)) {
+		    $fields[$fieldno++]=array('id'=>'attr2','name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
+	    }
+    } else {
+	    $fields=array();
+    }
+
+    $tempArray = array();
+    $fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
+    $num_results = count($fieldnames);
+    $num_fields = $num_results;
+    # Build array that has to be returned
+    for ($i=0; $i < $num_results; $i++) {
+	    #Conditions for SPSS fields:
+	    # - Length may not be longer than 8 characters
+	    # - Name may not begin with a digit
+	    $fieldname = $fieldnames[$i];
+	    $fieldtype = '';
+	    $val_size = 1;
+	    
+	    #Determine field type
+	    if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
+		    $fieldtype = 'DATETIME23.2';
+		    $ftype = 'DATETIME';
+	    } elseif ($fieldname=='startlanguage') {
+		    $fieldtype = 'A';
+		    $val_size = 19;
+	    } elseif ($fieldname=='token') {
+		    $fieldtype = 'A';
+		    $ftype = 'VARCHAR';
+		    $val_size = 16;
+	    } elseif ($fieldname=='id') {
+		    $fieldtype = 'F'; 
+            $ftype = 'ID'; 
+		    $val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
+	    } elseif ($fieldname == 'ipaddr') {
+		    $fieldtype = 'A';
+            $ftype = 'IP'; 
+		    $val_size = '15';
+	    } elseif ($fieldname == 'refurl') {
+		    $fieldtype = 'A';
+            $ftype = 'REFURL'; 
+		    $val_size = 255;
+	    }
+	    
+	    #Get qid (question id)
+	    $code='';
+	    $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'attribute_1', 'attribute_2', 'startlanguage', 'ipaddr', 'refurl');
+	    if (in_array($fieldname, $noQID)){
+		    $qid = 0;
+		    $varlabel = $fieldname;
+		    $ftitle = $fieldname;
+	    } else{
+		    //GET FIELD DATA
+		    $fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
+		    $qid=$fielddata['qid'];
+		    $ftype=$fielddata['type'];
+		    $fsid=$fielddata['sid'];
+		    $fgid=$fielddata['gid'];
+		    $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
+		    $varlabel=$fielddata['question'];
+		    $ftitle=$fielddata['title'];
+		    if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
+			if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
+		    if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
+	    }
+        
+	    $tempArray = array($fieldno++ =>array('id'=>'d'.$fieldno,
+			    'name'=>mb_substr($fieldname, 0, 8),
+			    'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,
+			    'LStype'=>$ftype,"LSlong"=>isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype,"ValueLabels"=>"",
+			    'VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,'title'=>$ftitle));
+	        $fields = $fields + $tempArray;
+    }
+    return $fields;       
+}
+
+function spss_getquery() {
+	/*
+	 * Create a query string with all fields for the export	
+	 */
+	global $tokensexist, $surveyprivate, $dbprefix, $surveyid, $token_fields;
+	
+    if (isset($tokensexist) && $tokensexist == 1 && $surveyprivate == 'N') {
+	    $query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
+	           {$dbprefix}tokens_$surveyid.lastname    ,
+	           {$dbprefix}tokens_$surveyid.email";
+	    if (in_array('attribute_1', $token_fields)) {
+		    $query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_1";
+	    }
+	    if (in_array('attribute_2', $token_fields)) {
+		    $query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_2";
+	    }
+	    $query .= ",\n	       {$dbprefix}survey_$surveyid.*
+	    FROM {$dbprefix}survey_$surveyid
+	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
+	    if (incompleteAnsFilterstate() === true)
+	    {
+		    $query .= " WHERE {$dbprefix}survey_$surveyid.submitdate is not null ";
+	    }
+    } else {
+	    $query = "SELECT *
+	    FROM {$dbprefix}survey_$surveyid";
+	    if (incompleteAnsFilterstate() === true)
+	    {
+		    $query .= ' WHERE submitdate is not null ';
+	    }
+    }	
+	return $query;
+}
 ?>
