@@ -2585,7 +2585,41 @@ function do_multiplechoice($ia)
 
 		if ($maxansw > 0)
 		{
-			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
+		//TODO: implement the other_comment_mandatory attribute 
+		// and a new db field for other cbox
+		//
+		// For multiplechoice question there is no DB field for the other Checkbox
+		// so in fact I need to assume that other_comment_mandatory is set to true
+		// otherwise, the min/max asnwer script will conflict with the 
+		// MANDATORY status of the question
+		// ==> hence the 1==1
+			if (1==1 ||$other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+			{
+				$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
+			}
+			else
+			{
+				$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
+			}
+		}
+		if ($minansw > 0)
+		{ 
+		//TODO: implement the other_comment_mandatory attribute 
+		// and a new db field for other cbox
+		//
+		// For multiplechoice question there is no DB field for the other Checkbox
+		// so in fact I need to assume that other_comment_mandatory is set to true
+		// otherwise, the min/max asnwer script will conflict with the 
+		// MANDATORY status of the question
+		// ==> hence the 1==1
+			if (1==1 || $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+			{
+				$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
+			}
+			else
+			{
+				$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
+			}
 		}
 
 
@@ -2823,7 +2857,26 @@ function do_multiplechoice_withcomments($ia)
 
 		if ($maxansw > 0)
 		{
-			$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
+			if ($other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+			{
+				$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n"; 
+			}
+			else
+			{
+				$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
+			}
+		}
+
+		if ($minansw > 0)
+		{
+			if ($other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+			{
+				$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n"; 
+			}
+			else
+			{
+				$minanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '') { count += 1; }\n"; 
+			}
 		}
 
 		$answer_main .= "\t\t</label>\n\t</li>\n";
