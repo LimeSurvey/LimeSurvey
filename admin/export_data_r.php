@@ -81,7 +81,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 function renderDataList($fieldArr){
 	global $headerComment, $surveyid;
 	echo $headerComment;
-	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";
+	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"\\\"\", na.strings=\"\")\n";
 }
 
 if  (!isset($subaction))
@@ -285,58 +285,58 @@ if  ($subaction=='dldata')
                     list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
                     if ($year != '' && (int)$year >= 1970) 
                     {
-                        echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
+                        echo "\"".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."\"";
                     } else 
                     {
-                        echo ("''");
+                        echo ("\"\"");
                     }
                 }  else 
                     {
-                        echo (  "''");
+                        echo (  "\"\"");
                     }  
             } else if ($fields[$fieldno]['LStype'] == 'Y') 
             {
                 if ($row[$fieldno] == 'Y')    // Yes/No Question Type
                 {
-                    echo( "'1'");
+                    echo( "\"1\"");
                 } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
+                    echo( "\"2\"");
                 } else {
-                    echo( "''");
+                    echo( "\"\"");
                 }     
             } else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
             {
                 if ($row[$fieldno] == 'F')
                 {
-                    echo( "'1'");
+                    echo( "\"1\"");
                 } else if ($row[$fieldno] == 'M'){
-                    echo( "'2'");
+                    echo( "\"2\"");
                 } else {
-                    echo( "''");
+                    echo( "\"\"");
                 }                        
             } else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
             {     
                 if ($row[$fieldno] == 'Y')
                 {
-                    echo( "'1'");
+                    echo( "\"1\"");
                 } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
+                    echo( "\"2\"");
                 } else if ($row[$fieldno] == 'U'){
-                    echo( "'3'");
+                    echo( "\"3\"");
                 } else {
-                    echo( "''");
+                    echo( "\"\"");
                 }                        
             } else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
             {             
                 if ($row[$fieldno] == 'I')
                 {
-                    echo( "'1'");
+                    echo( "\"1\"");
                 } else if ($row[$fieldno] == 'S'){
-                    echo( "'2'");
+                    echo( "\"2\"");
                 } else if ($row[$fieldno] == 'D'){
-                    echo( "'3'");
+                    echo( "\"3\"");
                 } else {
-                    echo( "''");
+                    echo( "\"\"");
                 }           
             }elseif ($fields[$fieldno]['LStype'] == 'M') 
             {
@@ -344,7 +344,7 @@ if  ($subaction=='dldata')
                 {
                     $strTmp = strip_tags_full($row[$fieldno]);
                     $len = mb_strlen($strTmp);
-                    echo "'$strTmp'";
+                    echo "\"$strTmp\"";
                     if($len > $fields[$fieldno]['size']){
                         $fields[$fieldno]['size'] = $len;
                     }
@@ -354,10 +354,10 @@ if  ($subaction=='dldata')
                     }
                 }  else if ($row[$fieldno] == 'Y')
                 {
-                    echo("'1'");
+                    echo("\"1\"");
                 } else
                 {
-                   echo("'0'");
+                   echo("\"0\"");
                 }
             } else if ($fields[$fieldno]['LStype'] == 'P') 
             {
@@ -365,16 +365,16 @@ if  ($subaction=='dldata')
                 {
                     $strTmp = strip_tags_full($row[$fieldno]);
                     $len = mb_strlen($strTmp);
-                    echo "'$strTmp'";                    
+                    echo "\"$strTmp\"";                    
                     if($len > $fields[$fieldno]['size']){
                         $fields[$fieldno]['size'] = $len;
                     }
                 } else if ($row[$fieldno] == 'Y')
                 {
-                    echo("'1'");
+                    echo("\"1\"");
                 } else
                 {
-                   echo("'0'");
+                   echo("\"0\"");
                 }
             } else {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
@@ -397,11 +397,11 @@ if  ($subaction=='dldata')
                         $fields[$fieldno]['size'] = $len;
                     }
                     $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
-                    echo "'$strTemp'";
+                    echo "\"$strTemp\"";
                 }
                 else
                 {  
-                    echo "''";
+                    echo "\"\"";
                 }
             }
             $fieldno++;
@@ -898,7 +898,14 @@ function strip_tags_full($string) {
 	//The backslashes must be escaped twice, once for php, and again for the regexp 
     $string = str_replace("'|\\\\'", "&apos;", $string);
 	///////The ' must be replaced by '' for  read.table R function
-	$string = str_replace("'", "''", $string);
+	//$string = str_replace("\"", "\"\"", $string);
+	///////latin accents
+	$string = str_replace("Ã¹", "ù", $string);
+	$string = str_replace("Ã²", "ò", $string);
+	$string = str_replace("Ã¬", "ì", $string);
+	$string = str_replace("Ã©", "é", $string);
+	$string = str_replace("Ã¨", "è", $string);	
+    $string = str_replace("Ã ", "à", $string);	
 	
     return strip_tags($string);
 }
