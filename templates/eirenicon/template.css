@@ -18,13 +18,6 @@ font-family:verdana;
 color:#FFF;
 }
 
-.graph {
-border:solid;
-background-color:#DDD;
-border-color:#042455;
-border-width:1px;
-}
-
 .questionhelp {
 font-size:10px;
 font-style:italic;
@@ -48,6 +41,53 @@ font-size:9pt;
 font-family:verdana;
 }
 
+td.graph
+{
+	background-color: #999;
+	padding: 0.2em 0%;
+	border: 1px solid #042455;
+}
+#progress-graph
+{
+	line-height: 1.5em;
+	width: 17em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.2em;
+	padding: 0.5em 0.5em 0.4em 1em;
+	text-align: left;
+	background-color:#DDD;
+	border: 1px solid maroon;
+}
+.hide
+{
+	font-weight: normal;
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+}
+#progress-graph div.zero
+{
+	width: 2.6em;
+	margin-right: 0%;
+}
+#progress-graph div.graph
+{
+	width: 10em;
+	height: 1.5em;
+	border: 1px solid maroon;
+	margin-top: -1.7em;
+	margin-left: 2.6em;
+	margin-right: 0%;
+}
+#progress-graph div.cent
+{
+	width: 3em;
+	margin-top: -1.5em;
+	margin-left: 13.3em;
+	margin-right: 0%;	
+}
+/*
 .innergraph img {
 height:12px;
 vertical-align:top;
@@ -63,7 +103,7 @@ table-layout:fixed !important;
 height:12px;
 }
 
-.printouttable {
+*/.printouttable {
 width:100%;
 }
 

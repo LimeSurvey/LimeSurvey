@@ -8,6 +8,9 @@
 <!--[if lt IE 7]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
 <![endif]-->
+		<style type="text/css" media="aural tty">
+progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+		</style>
 	</head>
 	<body bgcolor="#0099CC" link="#000080" vlink="#000080" alink="#FFFF00">
 <table width="95%" align="center" style="border-collapse: collapse; border-color:#0A47FF" bgcolor="#E5F9FF" border="1" cellspacing="0">

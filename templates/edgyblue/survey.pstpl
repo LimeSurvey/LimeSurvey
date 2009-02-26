@@ -16,7 +16,7 @@
 		<td width="10"><img src="{TEMPLATEURL}head_botright.gif"></td>
 	</tr>
 	<tr>
-		<td align="center" align="center" colspan="3">
+		<td class="graph" colspan="3">
 			{PERCENTCOMPLETE}
 		</td>
 	</tr>

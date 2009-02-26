@@ -6,7 +6,7 @@
 		</font></td>
 	</tr>
 	<tr>
-    <td align="center" bgcolor="#E1E1E1">
+    <td class="graph">
       {PERCENTCOMPLETE}
     </td>
   </tr>

@@ -1,11 +1,7 @@
 <table width="100%" align="center" bgcolor="#17479E">
 	<tr>
-		<td align="left" > 		{SAVE}	</td>		<td align="left" > 	{PERCENTCOMPLETE}
-		</td>
-		<td align="right" height="12" valign="top">
-			{NAVIGATOR}
-
-
-		</td>
+		<td align="left" width="33.3%">{SAVE}</td>
+		<td align="left" width="33.3%">{PERCENTCOMPLETE}</td>
+		<td align="right" height="12" width="33.3%">{NAVIGATOR}</td>
 	</tr>
 </table>

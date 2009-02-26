@@ -29,7 +29,7 @@
 		<td colspan="2">
 			<table cellspacing="0" cellpadding="0" border="0" align="center">
 				<tr>
-					<td align="center">
+					<td class="graph">
 						{PERCENTCOMPLETE}
 					</td>
 				</tr>

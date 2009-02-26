@@ -1,5 +1,10 @@
 /* The following styles are for all versions of IE */
 
+td.graph
+{
+	text-align: left;
+}
+
 .numeric-multi dl.multiplenumerichelp
 {
 	margin-top: -4.5em;

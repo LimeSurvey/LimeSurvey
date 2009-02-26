@@ -59,9 +59,47 @@ font-size:12px;
 font-weight:bold;
 }
 
+
+#progress-graph
+{
+	line-height: 1.5em;
+	width: 14em;
+	font-weight: bold;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.2em;
+}
+.hide
+{
+	font-weight: normal;
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+}
+#progress-graph div.zero
+{
+	width: 2.1em;
+	margin-right: 0%;
+}
+#progress-graph div.graph
+{
+	width: 8em;
+	height: 1.5em;
+	border: 1px solid #000;
+	margin-top: -1.7em;
+	margin-left: 2.1em;
+	margin-right: 0%;
+	text-align: left;
+}
+#progress-graph div.cent
+{
+	width: 3em;
+	margin-top: -1.5em;
+	margin-left: 10.9em;
+	margin-right: 0%;	
+}
+/*
 .innergraph {
-font-family:verdana;
-font-size:10pt;
 direction: ltr;
 }
 
@@ -79,6 +117,7 @@ table-layout:fixed !important;
 .innergraph td {
 height:12px;
 }
+*/
 
 .surveytitle {
 font-size:1.2em;
