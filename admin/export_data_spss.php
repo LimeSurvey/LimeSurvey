@@ -309,65 +309,44 @@ if  ($subaction=='dlstructure') {
 
     // Create our Value Labels!
     echo "*Define Value labels.\n";
-    foreach ($fields as $field)
+	foreach ($fields as $field)
     {
-	    if ($field['qid']!=0)
-	    {
-		if ($field['LStype'] != 'K' && $field['LStype'] != 'S' && $field['LStype'] != 'T' && $field['LStype'] != 'Q' && $field['LStype'] != 'U' && $field['LStype'] != 'A' && $field['LStype'] != 'B' && $field['LStype'] != 'F' && $field['LStype'] != 'M' && $field['LStype'] != 'P' && $field['LStype'] != 'C' && $field['LStype'] != 'E' && $field['LStype'] != ':')
-		    {
-			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
-			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
-			    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-			    and {$dbprefix}questions.qid='".$field['qid']."'";
-			    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
-			    $num_results = $result->RecordCount();
-			    if ($num_results > 0)
-			    {
-				    $displayvaluelabel = 0;
-				    # Build array that has to be returned
-				    for ($i=0; $i < $num_results; $i++)
-				    {
-					    $row = $result->FetchRow();
-
-					    if ($displayvaluelabel == 0) echo 'VALUE LABELS '.$field['id']."\n";
-					    if ($displayvaluelabel == 0) $displayvaluelabel = 1;
-					    if ($i == ($num_results-1))
-					    {
-						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["answer"],0,$length_vallabel))."\".\n"; // put .
-					    } else {
-						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row['answer'],0,$length_vallabel))."\"\n";
-					    }
-				    }
-			    }
-		    }
-		    if ($field['LStype'] == 'F' || $field['LStype'] == 'W' || $field['LStype'] == 'Z')
+    	$answers=array();
+    	if (strpos("!LO",$field['LStype']) !== false) {
+		    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
+		    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
+		    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+		    and {$dbprefix}questions.qid='".$field['qid']."'";
+		    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
+		    $num_results = $result->RecordCount();
+		    if ($num_results > 0)
 		    {
 			    $displayvaluelabel = 0;
-			    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
-			    {$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
-			    {$dbprefix}questions.language='".$language."' and 
-			    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
-			    $result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
-			    $num_results = $result->RecordCount();
-			    if ($num_results > 0)
+			    # Build array that has to be returned
+			    for ($i=0; $i < $num_results; $i++)
 			    {
-				    for ($i=0; $i < $num_results; $i++)
-				    {
-					    $row = $result->FetchRow();
-					    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field['id']."\n";
-					    if ($displayvaluelabel == 0) $displayvaluelabel = 1;
-					    if ($i == ($num_results-1))
-					    {
-						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\".\n"; // put . at end
-					    } else {
-						    echo " \"" . $row['code']."\" \"".strip_tags_full(mb_substr($row["title"],0,$length_vallabel))."\"\n";
-
-					    }
-				    }
+				    $row = $result->FetchRow();
+					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
 			    }
 		    }
-		if ($field['LStype'] == ':')
-		{
+	    }
+	    if (strpos("FWZWH1",$field['LStype']) !== false) {
+		    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
+		    {$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
+		    {$dbprefix}questions.language='".$language."' and 
+		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
+		    $result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
+		    $num_results = $result->RecordCount();
+		    if ($num_results > 0)
+		    {
+			    for ($i=0; $i < $num_results; $i++)
+			    {			    	
+				    $row = $result->FetchRow();
+					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["title"],0,$length_vallabel)));
+			    }
+		    }
+	    }
+		if ($field['LStype'] == ':') {
 			$displayvaluelabel = 0;
 			//Get the labels that could apply!
 			$qidattributes=getQuestionAttributes($field["qid"]);
@@ -386,64 +365,68 @@ if  ($subaction=='dlstructure') {
         	} else {
         		$stepvalue=1;
         	}
-		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-			$minvalue=0;
-			$maxvalue=1;
-			$stepvalue=1;
-		}
+			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+				$minvalue=0;
+				$maxvalue=1;
+				$stepvalue=1;
+			}
             for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
             {
-			    if ($displayvaluelabel == 0) echo "VALUE LABELS ".$field["id"]."\n";  //Beginning of the line
-			    if ($displayvaluelabel == 0) $displayvaluelabel = 1; //Now do the rest of the line
-			    if ($i == $maxvalue) {
-			    	echo " $i \"$i\".\n";
-			    } else {
-			    	echo " $i \"$i\"\n";
-			    }
-			}
-			
+				$answers[] = array('code'=>$i, 'value'=>$i);
+			}				
 		}
-		    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT('Yes')."\"\n";
-			    echo " 0 \"".$clang->gT('Not Selected')."\".\n";
-		    }
-		    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT("Yes")."\"\n";
-			    echo " 0 \"".$clang->gT('Not Selected')."\".\n";
-		    }
-		    if ($field['LStype'] == "G" && $field['size'] > 0)
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT('Female')."\"\n";
-			    echo " 2 \"".$clang->gT("Male")."\".\n";
-		    }
-		    if ($field['LStype'] == "Y" && $field['size'] > 0)
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT('Yes')."\"\n";
-			    echo " 2 \"".$clang->gT("No")."\".\n";
-		    }
-		    if ($field['LStype'] == "C" && $field['size'] > 0)
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT('Yes')."\"\n";
-			    echo " 2 \"".$clang->gT('No')."\"\n";
-			    echo " 3 \"".$clang->gT('Uncertain')."\".\n";
-		    }
-		    if ($field['LStype'] == "E" && $field['size'] > 0)
-		    {
-			    echo "VALUE LABELS ".$field['id']."\n";
-			    echo " 1 \"".$clang->gT('Increase')."\"\n";
-			    echo " 2 \"".$clang->gT('Same')."\"\n";
-			    echo " 3 \"".$clang->gT('Decrease')."\".\n";
-		    }
+	    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
+	    {
+			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+	    }
+	    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
+	    {
+			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
+	    }
+	    if ($field['LStype'] == "G" && $field['size'] > 0)
+	    {
+	    	$answers[] = array('code'=>1, 'value'=>$clang->gT('Female'));
+		    $answers[] = array('code'=>2, 'value'=>$clang->gT('Male'));
+	    }
+	    if ($field['LStype'] == "Y" && $field['size'] > 0)
+	    {
+			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+		    $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+	    }
+	    if ($field['LStype'] == "C" && $field['size'] > 0)
+	    {
+	    	$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
+		    $answers[] = array('code'=>2, 'value'=>$clang->gT('No'));
+		    $answers[] = array('code'=>3, 'value'=>$clang->gT('Uncertain'));
+	    }
+	    if ($field['LStype'] == "E" && $field['size'] > 0)
+	    {
+	    	$answers[] = array('code'=>1, 'value'=>$clang->gT('Increase'));
+	    	$answers[] = array('code'=>2, 'value'=>$clang->gT('Same'));
+	    	$answers[] = array('code'=>3, 'value'=>$clang->gT('Decrease'));
+	    }
+	    if (count($answers)>0) {
+	    	//print out the value labels!
+	    	echo "VALUE LABELS  {$field['id']}\n";
+	    	$i=0;
+	    	foreach ($answers as $answer) {
+	    		$i++;
+	    		if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
+	    			$str = "{$answer['code']}";
+	    		} else {
+	    			$str = "\"{$answer['code']}\"";
+	    		}
+	    		if ($i < count($answers)) {
+	    			echo " $str \"{$answer['value']}\"\n";
+	    		} else {
+	    			echo " $str \"{$answer['value']}\".\n";
+	    		}
+	    	}
 	    }
     } 
-
+    
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 	foreach ($fields as $field){
 		if (isset($field['sql_name'])) {
