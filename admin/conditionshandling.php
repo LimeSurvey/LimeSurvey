@@ -1807,6 +1807,9 @@ $conditionsoutput .= "</table>\n";
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
+	$hinttext=strip_tags($hinttext);
+	$hinttext=str_replace("\r","",$hinttext);
+	$hinttext=str_replace("\n","",$hinttext);
 
 	if(!isset($max))
 	{
