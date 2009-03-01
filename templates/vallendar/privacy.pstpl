@@ -1,7 +1,6 @@
 <table align="center" bgcolor="#EEEEEE" width="75%">
 	<tr>
-		<td align="center"><font size="1">
-		<b><i>A note on privacy</i></b><br />
+		<td align="center">
 		{PRIVACYMESSAGE}
 		</td>
 	</tr>

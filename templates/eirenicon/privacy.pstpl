@@ -1,7 +1,5 @@
 <table align="center" bgcolor="#EEEEEE" width="75%">
 	<tr>
-		<td style="text-align: center; font-size: 100%;">
-		{PRIVACYMESSAGE}
-		</td>
+		<td style="text-align: center; font-size: 100%;">{PRIVACYMESSAGE}</td>
 	</tr>
 </table>

@@ -1,7 +1,5 @@
 <table align="center" width="75%">
 	<tr>
-		<td align="center"><font style="font-family: Verdana; font-size: 12px;">
-		{PRIVACYMESSAGE}
-		</td>
+		<td align="center"><font style="font-family: Verdana; font-size: 12px;">{PRIVACYMESSAGE}</font></td>
 	</tr>
 </table>
