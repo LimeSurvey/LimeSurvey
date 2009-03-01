@@ -658,8 +658,8 @@ if(isset($surveyid))
             $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
 			$_POST  = array_map('db_quote', $_POST);
-			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
-                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
+			$query = "INSERT INTO {$dbprefix}questions (sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language) 
+                      VALUES ({$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$baselang]."', '{$_POST['preg']}', '".$_POST['help_'.$baselang]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$max,".db_quoteall($baselang).")";
 			$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());
 			$newqid = $connect->Insert_ID("{$dbprefix}questions","qid");
 			if (!$result)
