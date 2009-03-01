@@ -664,6 +664,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 ,.array-multi-flexi-text thead th
 ,.array-flexible-duel-scale thead th
 ,.array-flexible-column thead th
+,table.question .repeat th
+
 {
 	text-align: center;
 	vertical-align: bottom;

@@ -4771,7 +4771,7 @@ function do_array_flexible($ia)
 			{
 				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
 				{
-					$answer .= "\t\t<tr class=\"array1 repeat headings\">\n"
+					$answer .= "\t\t<tr class=\"repeat headings\">\n"
 					. "\t\t\t<td>&nbsp;</td>\n";
 					foreach ($labelans as $ld)
 					{
@@ -4779,7 +4779,7 @@ function do_array_flexible($ia)
 					}
 					if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 					{
-						$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
+						$answer .= "\t\t\t<td>&nbsp;</td>\n\t\t\t<th>".$clang->gT('No answer')."</th>\n";
 					}
 					$answer .= "\t\t</tr>\n";
 				}
@@ -4791,9 +4791,9 @@ function do_array_flexible($ia)
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
-			$answer .= "\n\n<!-- =========================\n    line 4446: \$answerwidth = $answerwidth\n";
+
 			if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
-			$answer .= "    line 4448: \$answerwidth = $answerwidth\n========================= -->\n";
+
 			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
 				$answertext = '<span class="errormandatory">'.$answertext.'</span>';
 			}
@@ -5037,7 +5037,7 @@ function do_array_multitext($ia)
 				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
 				{
 					$trbc = alternation($trbc , 'row');
-					$answer .= "\t\t<tr class=\"$trbc\">\n"
+					$answer .= "\t\t<tr class=\"$trbc repeat\">\n"
 					. "\t\t\t<td>&nbsp;</td>\n";
 					foreach ($labelans as $ld)
 					{
@@ -5261,7 +5261,7 @@ function do_array_multiflexi($ia)
 				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
 				{
 					$trbc = alternation($trbc , 'row');
-					$answer .= "\t\t<tr class=\"$trbc\">\n"
+					$answer .= "\t\t<tr class=\"$trbc repeat\">\n"
 					. "\t\t\t<td>&nbsp;</td>\n";
 					foreach ($labelans as $ld)
 					{
@@ -5784,7 +5784,7 @@ function do_array_flexible_dual($ia)
 			{
 				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
 				{
-					$answer .= "\t\t\t\t<tr  class='array1'>\n"
+					$answer .= "\t\t\t\t<tr  class=\"repeat\">\n"
 					. "\t\t\t<td>&nbsp;</td>\n";
 					foreach ($labelans as $ld)
 					{
@@ -5800,7 +5800,7 @@ function do_array_flexible_dual($ia)
 					}
 					if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 					{
-//						$answer .= "\t\t\t<td>&nbsp;</td>\n";		// separator	
+						$answer .= "\t\t\t<td>&nbsp;</td>\n";		// separator	
 						$answer .= "\t\t\t<th>".$clang->gT('No answer')."</th>\n";
 					}
 					$answer .= "\t\t</tr>\n";

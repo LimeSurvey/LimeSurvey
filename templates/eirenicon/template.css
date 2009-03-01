@@ -597,7 +597,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .gender {}
 */
 
-#limesurvey table.question thead th
+ #limesurvey table.question thead th
+,#limesurvey table.question .repeat th
 {
 	text-align: center;
 	vertical-align: bottom;
@@ -622,6 +623,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	background-color: #eee;
 }
+
+
 
  .boilerplate td td
 ,.numeric td td

@@ -618,7 +618,8 @@ multiple-opt-comments ul.X2  label.answertext     , .multiple-short-txt ul.X2 la
 .gender {}
 */
 
-#limesurvey table.question thead th
+ #limesurvey table.question thead th
+,#limesurvey table.question .repeat th
 {
 	vertical-align: bottom;
 	text-align: center;

@@ -588,7 +588,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .gender {}
 */
 
-#limesurvey table.question thead th
+ #limesurvey table.question thead th
+,#limesurvey table.question .repeat th
 {
 	vertical-align: bottom;
 	text-align: center;
