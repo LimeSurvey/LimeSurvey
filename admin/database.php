@@ -1090,7 +1090,8 @@ if(isset($surveyid))
 		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
 		. "url='{$_POST['url']}', \n"
 		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n"
-		. "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}', refurl='{$_POST['refurl']}',\n"
+		. "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}',"
+        ." refurl='{$_POST['refurl']}', publicgraphs='{$_POST['publicgraphs']}',\n"
 		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
 		. "allowregister='{$_POST['allowregister']}', attribute1='{$_POST['attribute1']}',\n"
 		. "attribute2='{$_POST['attribute2']}', allowsave='{$_POST['allowsave']}',\n"
@@ -1285,8 +1286,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "(sid, owner_id, admin, active, useexpiry, expires, usestartdate, startdate,"
 		. "adminemail, bounce_email, private, faxto, format, template, url, "
 		. "language, datestamp, ipaddr, refurl, usecookie, notification, allowregister, attribute1, attribute2, "
-		. "allowsave, autoredirect, allowprev, printanswers, "
-        . "datecreated, listpublic, htmlemail, tokenanswerspersistence, usecaptcha, publicstatistics)\n"
+		. "allowsave, autoredirect, allowprev, printanswers, datecreated, listpublic, "
+        . "htmlemail, tokenanswerspersistence, usecaptcha, publicstatistics, publicgraphs)\n"
 		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
 		. "'{$_POST['admin']}', 'N', \n"
 		. "'{$_POST['useexpiry']}','{$_POST['expires']}'," 
@@ -1299,7 +1300,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
         . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', \n"
 		. "'".date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', \n"
-        . "'{$_POST['usecaptcha']}', '{$_POST['publicstatistics']}')";
+        . "'{$_POST['usecaptcha']}', '{$_POST['publicstatistics']}','{$_POST['publicgraphs']}')";
 
 		$isresult = $connect->Execute($isquery);
 

@@ -2214,7 +2214,7 @@ if ($action == "editsurvey")
 
 			// Additional languages listbox
 			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Additional Languages").":</span>\n"
-			. "<span class='settingentry'><table><tr><td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
+			. "<table><tr><td align='left'><select multiple='multiple' style='min-width:250px;'  size='5' id='additional_languages' name='additional_languages'>";
 			$jsX=0;
 			$jsRemLang ="<script type=\"text/javascript\">\nvar mylangs = new Array() \n";
 
@@ -2246,7 +2246,7 @@ if ($action == "editsurvey")
 				}
 			}
 			$editsurvey .= "</select></td>"
-			. " </tr></table></span></div>\n";
+			. " </tr></table></div>\n";
 
 			$editsurvey .= "";
 
@@ -2305,7 +2305,7 @@ if ($action == "editsurvey")
             . "</div>\n";
             
             $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template Preview:")."</span>\n"
-            . "<span class='settingentry'><img id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png'>\n"
+            . "<span class='settingentry'><img id='preview' src='$publicurl/templates/{$esrow['template']}/preview.png' />\n"
             . "</span>\n"
             . "</div>\n";
 
@@ -2353,6 +2353,18 @@ if ($action == "editsurvey")
             $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
             . "<option value='N'";
             if (isset($esrow['publicstatistics']) && $esrow['publicstatistics'] == "N") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select></span>\n"
+            . "</div>\n";
+
+            //Public statistics 
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Show graphs in public statistics?")."</span>\n"
+            . "<span class='settingentry'><select name='publicgraphs'>\n"
+            . "<option value='Y'";
+            if (!isset($esrow['publicgraphs']) || !$esrow['publicgraphs'] || $esrow['publicgraphs'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if (isset($esrow['publicgraphs']) && $esrow['publicgraphs'] == "N") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></span>\n"
             . "</div>\n";
@@ -3030,13 +3042,22 @@ if ($action == "newsurvey")
         . "</div>\n";
 
         //Public statistics
-        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public statistics:")."</span>\n"
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Public statistics?")."</span>\n"
         . "<span class='settingentry'><select name='publicstatistics'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "</select></span>\n"
         . "</div>\n";
 
+        //Public statistics graphs
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Show graphs in public statistics?")."</span>\n"
+        . "<span class='settingentry'><select name='publicgraphs'>\n"
+        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "</select></span>\n"
+        . "</div>\n";
+        
+        
         //List survey publicly
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("List survey publicly:")."</span>\n"
         . "<span class='settingentry'><select name='public'>\n"

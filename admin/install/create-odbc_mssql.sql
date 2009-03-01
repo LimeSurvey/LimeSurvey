@@ -232,6 +232,7 @@ CREATE TABLE [prefix_surveys] (
   [datecreated] DATETIME default NULL,
   [listpublic] char(1) default 'N',
   [publicstatistics] char(1) default 'N',
+  [publicgraphs] char(1) default 'N',
   [htmlemail] char(1) default 'N',
   [tokenanswerspersistence] char(1) default 'N',
   [usecaptcha] char(1) default 'N',
@@ -356,7 +357,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '131');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '132');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --

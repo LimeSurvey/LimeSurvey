@@ -61,6 +61,11 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys ADD publicstatistics char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }
+    if ($oldversion < 132)
+    {
+        modify_database("","ALTER TABLE prefix_surveys ADD publicgraphs char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }
     return true;
 }
 
