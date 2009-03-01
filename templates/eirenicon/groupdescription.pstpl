@@ -1,1 +1,1 @@
-			<br /><font face='verdana' size='2'>{GROUPDESCRIPTION}</font><br /><br />
+			<p style="font-family: verdana, arial, helvetica, sans-serif;">{GROUPDESCRIPTION}</p>

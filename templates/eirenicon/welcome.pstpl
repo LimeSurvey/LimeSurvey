@@ -2,14 +2,14 @@
 {CHECKJAVASCRIPT}
 	<tr>
 		<td align="center" bgcolor="#042455">
-			<font size="4" color="#E5E5E5"><b>{SURVEYNAME}</b></font><br />
-			<font size="2" color="#CCCCCC">{SURVEYDESCRIPTION}</font>
+			<span style="font-size: 110%; color: #E5E5E5; font-weight: bold;">{SURVEYNAME}</span><br />
+			<span style="font-size: 90%; color: #ccc;">{SURVEYDESCRIPTION}</span>
 		</td>
 	</tr>
 	<tr>
-		<td align="center" bgcolor="#E5E5E5">
-			<font size="2">{WELCOME}<br /><br />
-			<i>{THEREAREXQUESTIONS}</i></font>
+		<td style="font-size: 90%; text-align: center; background-color: #E5E5E5;">
+			<p>{WELCOME}<p>
+			<em>{THEREAREXQUESTIONS}</em>
 		</td>
 	</tr>
 </table>

@@ -1,8 +1,8 @@
 <table width="100%" align="center" cellspacing="0">
 	<tr>
 		<td align="center" bgcolor="#042455">
-			<font color="white"><b>{SURVEYNAME}</b></font><br />
-			<font size="2" color="#CCCCCC">{SURVEYDESCRIPTION}</font>
+			<strong style="color: #fff;">{SURVEYNAME}</strong><br />
+			<span style="font-size: 120%; color: #ccc;">{SURVEYDESCRIPTION}</span>
 		</td>
 	</tr>
 	<tr>

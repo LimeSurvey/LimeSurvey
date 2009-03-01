@@ -1,6 +1,6 @@
 <table align="center" bgcolor="#EEEEEE" width="75%">
 	<tr>
-		<td align="center"><font size="2">
+		<td style="text-align: center; font-size: 100%;">
 		{PRIVACYMESSAGE}
 		</td>
 	</tr>

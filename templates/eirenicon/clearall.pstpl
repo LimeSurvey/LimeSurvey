@@ -1,11 +1,10 @@
 <br />
  <table align="center" cellpadding="30">
   <tr>
-   <td align="center" bgcolor="FFFFFF">
-    <font face="arial" size="2">
-    <font color="red"><strong>{ANSWERSCLEARED}</strong></font><br /><br />
-	{RESTART}<br />
-	{CLOSEWINDOW}</font>
+   <td align="center" bgcolor="FFFFFF" style="background-color: #fff; font-family: arial, helvetica, sans-serif; font-size: 90%; text-align: center;">
+    <p style="font-weight: bold; color: #f00;">{ANSWERSCLEARED}</p>
+    <p>{RESTART}<br />
+    {CLOSEWINDOW}</p>
    </td>
   </tr>
  </table>

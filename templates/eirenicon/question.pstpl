@@ -3,9 +3,7 @@
 		<td align="center">
 			<table width="100%" cellspacing="0">
 				<tr>
-					<td align="center" bgcolor="#cccccc">
-						<font size="2"><b>{QUESTION}</b></font>
-					</td>
+					<td style="font-size: 120%; font-weight: bold; text-align: center; background-color: #ccc;">{QUESTION}</td>
 				</tr>
 				<tr>
 					<td>
@@ -13,8 +11,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="center" bgcolor="#E5E5E5">
-						<font size="2">{QUESTIONHELP}</font>
+					<td style="text-align: center; background-color: #e5e5e5">
+						{QUESTIONHELP}
 					</td>
 				</tr>
 			</table>

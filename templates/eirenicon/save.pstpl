@@ -1,7 +1,11 @@
-<center>
-<font color="red">{SAVEERROR}</font>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
-{SAVEMESSAGE}<br /><br />
-{SAVEFORM}<br />
-{RETURNTOSURVEY}
-</center>
+<div class="save">
+	<p class="error">{SAVEERROR}</p>
+
+	<h3>{SAVEHEADING}</h3>
+
+	<p>{SAVEMESSAGE}</p>
+
+	<p>{SAVEFORM}</p>
+
+	<p>{RETURNTOSURVEY}</p>
+</div>

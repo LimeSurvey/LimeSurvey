@@ -2,4 +2,6 @@
 <table width="98%" align="center" border="0">
 	<tr>
 		<td align="center">
-			<font face="verdana" size="2" color="#000080"><b>{GROUPNAME}</b></font>
+			<span style="font-family: verdana, arial, helvetica, sans-serif; font-size: 120%; font-weight: bold; color: #000080;">
+			{GROUPNAME}
+			</span>
