@@ -983,9 +983,10 @@ $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clan
 foreach ($theserows as $row)
 {
 		$question=$row['question'];
-		$question=strip_tags($question);
-		$question=str_replace("\r\n","",$question);
+		$question=str_replace("\r","",$question);
 		$question=str_replace("\n","",$question);
+		$question=str_replace("'", "`", $question);
+		$question=strip_tags($question);
 		if (strlen($question)<35)
 		{
 			$questionselecter = $question;
@@ -1000,9 +1001,10 @@ foreach ($theserows as $row)
 $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("Current","js")."'>\").appendTo(\"#questionNav\");\n";
-$question=strip_tags($questiontext);
-$question=str_replace("\r\n","",$question);
+$question=str_replace("'", "`", $questiontext);
+$question=str_replace("\r","",$question);
 $question=str_replace("\n","",$question);
+$question=strip_tags($question);
 if (strlen($question)<35)
 {
 	$questiontextshort = $question;
@@ -1019,9 +1021,10 @@ $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\").appendTo(\"#questionNav\");\n";
 foreach ($postrows as $row)
 {
-		$question=strip_tags($question);
-		$question=str_replace("\r\n","",$question);
+		$question=str_replace("'", "`", $question);
+		$question=str_replace("\r","",$question);
 		$question=str_replace("\n","",$question);
+		$question=strip_tags($question);
 		if (strlen($question)<35)
 		{
 			$questionselecter = $question;
@@ -1131,9 +1134,11 @@ $conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
 $conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
 ."\t\t\t\t}\n"
 . "\t\t\tif (document.getElementById('canswers').options.length > 0){\n"                                                                         
-. "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
+//. "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
+. "\t\t\t\t$('#conditiontarget > ul').tabs('select', '#CANSWERSTAB');}\n"
 . "\t\t\telse {\n"                                                                         
-. "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
+//. "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
+. "\t\t\t\t$('#conditiontarget > ul').tabs('select', 'CONST_RGX');}\n"
 ."\t\t}\n"
 ."function evaluateLabels(val)\n"
 ."{\n"
@@ -1408,15 +1413,18 @@ if ($subaction=='' ||
 					// the specified in ValOrRegEx and is in $rows['value']
 					$bHasAnswer = false;
 					$bIsPredefinedAnswer = false;
-					foreach ($canswers as $can)
+					if (isset($canswers))
 					{
-						//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
-						//$conditionsoutput .= $can[1];
-						if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
+						foreach ($canswers as $can)
 						{
-							$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
-							$bHasAnswer = true;
-							$bIsPredefinedAnswer = true;
+							//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
+							//$conditionsoutput .= $can[1];
+							if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
+							{
+								$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
+								$bHasAnswer = true;
+								$bIsPredefinedAnswer = true;
+							}
 						}
 					}
 					if (!$bHasAnswer)
@@ -1807,9 +1815,10 @@ $conditionsoutput .= "</table>\n";
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
-	$hinttext=strip_tags($hinttext);
+	$hinttext=str_replace("'", "`", $hinttext);
 	$hinttext=str_replace("\r","",$hinttext);
 	$hinttext=str_replace("\n","",$hinttext);
+	$hinttext=strip_tags($hinttext);
 
 	if(!isset($max))
 	{
