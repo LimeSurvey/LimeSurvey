@@ -25,6 +25,8 @@ h3 { font-size:120%; margin-top: 25px; font-family: 'Trebuchet MS', 'Geneva CE',
 h4 { font-size:120%; }
 h5 { font-size:100%; }
 
+
+
 /* layout ---------------------------------------------------------------------- */
 #layout { 
   width:790px; 
@@ -407,6 +409,11 @@ select
 	margin: 0% 0% 0.5em 0.5em;
 }
 
+
+.list-dropdown optgroup option
+{
+	margin-left: 1.5em;
+}
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
 
