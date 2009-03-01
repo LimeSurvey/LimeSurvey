@@ -40,7 +40,7 @@ require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 
 //XXX enable/disable this for testing
-$publicgraphs = 1;
+//$publicgraphs = 1;
 //$showaggregateddata = 1;
 
 /*
