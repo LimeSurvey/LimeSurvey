@@ -511,7 +511,7 @@ END;
 
     if ($cd[3] == '' || $cd[3] == ' ')
     {
-      $java .= "document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value";
+      $java .= "document.getElementById('$idname') != null && ( document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value )";
     }
 	elseif($cd[4] == "M" || $cd[4] == "P")
 	{
@@ -540,11 +540,11 @@ END;
 		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
 
-			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+			$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
 		}
 		else
 		{
-			$java .= "document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
+			$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
 		}
 	
       }
@@ -552,18 +552,18 @@ END;
       {
         if ($cd[6] == 'RX')
         {
-            $java .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
+            $java .= "document.getElementById('$idname') != null  && match_regex(document.getElementById('$idname').value,'$cd[3]')";
         }
         else
         {
 		$cqidattributes = getQuestionAttributes($cd[1]);
 		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
-			$java .= "parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
+			$java .= "document.getElementById('$idname') != null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 		}
 		else
 		{
-            $java .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+            $java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '$cd[3]'";
         }
       }
     }

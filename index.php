@@ -954,6 +954,7 @@ function checkquestionfordisplay($qid, $gid=null)
 			//       conditions for this cfieldname is assumed to be met (Ored conditions)
 
 			$conditionsfoundforthisscenario++;
+			$conditionCanBeEvaluated=true;
 			//Iterate through each condition for this question and check if it is met.
 			$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
 				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
@@ -978,19 +979,42 @@ function checkquestionfordisplay($qid, $gid=null)
 				$cvalue="Y";     
 				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
 			}
-			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname) &&
-					isset($_SESSION[$targetconditionfieldname[1]]) )
+			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname))
 			{ 
-				// If value uses @SIDXGIDXQID@ codes i
-				// then try to replace them with a 
-				// value recorded in SESSION if any
-				$cvalue=$_SESSION[$targetconditionfieldname[1]];
-				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+				if (isset($_SESSION[$targetconditionfieldname[1]]) )
+				{
+					// If value uses @SIDXGIDXQID@ codes i
+					// then try to replace them with a 
+					// value recorded in SESSION if any
+					$cvalue=$_SESSION[$targetconditionfieldname[1]];
+					if (isset($_SESSION[$fieldname]))
+					{ 
+						$cfieldname=$_SESSION[$fieldname]; 
+					} 
+					else 
+					{ 
+						$conditionCanBeEvaluated=false;
+						//$cfieldname=' ';
+					}
+				}
+				else
+				{ // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
+					$conditionCanBeEvaluated=false;
+					//$cfieldname=' ';
+				}
 			}
 			else
 			{
 				//For all other questions, the "answer" value will be the answer code.
-				if (isset($_SESSION[$row['cfieldname']])) {$cfieldname=$_SESSION[$row['cfieldname']];} else {$cfieldname=' ';}
+				if (isset($_SESSION[$row['cfieldname']]))
+				{
+					$cfieldname=$_SESSION[$row['cfieldname']];
+				} 
+				else 
+				{
+					//$cfieldname=' ';
+					$conditionCanBeEvaluated=false;
+				}
 				$cvalue=$row['value'];
 			}
 
@@ -998,6 +1022,11 @@ function checkquestionfordisplay($qid, $gid=null)
 			{
 				//Don't do anything - this cq is in the current group
 				$conditionMatches=true;
+			}
+			elseif ($conditionCanBeEvaluated === false)
+			{
+				// condition can't be evaluated, so let's assume FALSE
+				$conditionMatches=false;
 			}
 			else
 			{
@@ -1193,6 +1222,7 @@ function checkconfield($value)
 					$total=0;
 					foreach($container as $con)
 					{
+						$conditionCanBeEvaluated=true;
 						$addon=0;
 						foreach($cqval as $cqv)
 						{//Go through each condition
@@ -1200,11 +1230,18 @@ function checkconfield($value)
 							// By corresponding value
 							if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
 							{
-								$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+								if (isset($_SESSION[$targetconditionfieldname[1]]))
+								{
+									$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+								}
+								else
+								{
+									$conditionCanBeEvaluated=false;
+								}
 							}
 							// Use == as default operator
 							if (trim($cqv['matchmethod'])=='') {$cqv['matchmethod']='==';}
-							if($cqv['cfieldname'] == $con)
+							if($cqv['cfieldname'] == $con && $conditionCanBeEvaluated === true)
 							{
 								if ($cqv['matchmethod'] != "RX")
 								{
@@ -1213,7 +1250,7 @@ function checkconfield($value)
 										$addon=1;
 									}
 								}
-								elseif (ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+								elseif ( isset($_SESSION[$cqv["matchfield"]]) && ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
 								{
 										$addon=1;
 								}

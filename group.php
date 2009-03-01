@@ -633,11 +633,11 @@ for ($i=0;$i<count($conditions);$i++)
 	{
 		if ($cd[6] == '==')
 		{
-			$newjava .= "document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
 		} else 
 		{
 			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
-			$newjava .= "document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname') != null && document.getElementById('$idname').value";
 		}
 	}
 	elseif ($cd[4] == "M" || 
@@ -646,7 +646,7 @@ for ($i=0;$i<count($conditions);$i++)
 		//                $cd[4] == "!")
 	{
 		//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
-		$newjava .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'"; // 
+		$newjava .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] 'Y'"; // 
 	} else
 	{
 		/* NEW
@@ -675,9 +675,9 @@ for ($i=0;$i<count($conditions);$i++)
 				$idname2 = "java".$auxqtitle;
 			}
 
-			$newjava .= "(document.getElementById('" . $idname . "').value != '') && ";
+			$newjava .= "( document.getElementById('" . $idname . "') != null && document.getElementById('" . $idname . "').value != '') && ";
 
-				$newjava .= "(document.getElementById('" . $idname2 . "').value != '') && ";
+				$newjava .= "( document.getElementById('" . $idname2 . "') != null && document.getElementById('" . $idname2 . "').value != '') && ";
 				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
 				$cqidattributes = getQuestionAttributes($cd[1]);
 				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
@@ -685,14 +685,14 @@ for ($i=0;$i<count($conditions);$i++)
 					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 				}
 				else
-			    {
-				    $newjava .= "(document.getElementById('answer" . $titlejsid[$auxqtitle] . "').value != '') && ";
-				    $newjava .= "(document.getElementById('answer" . $cd[2] . "').value $cd[6] document.getElementById('answer".$titlejsid[$auxqtitle]."').value)";
+			    { 
+				    $newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
 			    }
 
 //			}
 		} else
 		{
+			$newjava .= "document.getElementById('$idname') != null &&";
 			if ($cd[3]) //Well supose that we are comparing a non empty value
 			{
 				$newjava .= "document.getElementById('$idname').value != '' && ";
@@ -784,7 +784,7 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$dtbody = "tbdisp".$qbase.$fansrows['code'];
 				$tbodyae = $qbase.$fansrows['code'];
                 $appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
+                $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
 				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
