@@ -1,4 +1,5 @@
 #
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian Nynorsk language file\n"
