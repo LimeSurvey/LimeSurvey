@@ -982,7 +982,10 @@ $conditionsoutput .= "<script type='text/javascript'>\n"
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("Before","js")."'>\").appendTo(\"#questionNav\");\n";
 foreach ($theserows as $row)
 {
-		$question=strip_tags($row['question']);
+		$question=$row['question'];
+		$question=strip_tags($question);
+		$question=str_replace("\r\n","",$question);
+		$question=str_replace("\n","",$question);
 		if (strlen($question)<35)
 		{
 			$questionselecter = $question;
@@ -997,13 +1000,16 @@ foreach ($theserows as $row)
 $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("Current","js")."'>\").appendTo(\"#questionNav\");\n";
-if (strlen($questiontext)<35)
+$question=strip_tags($questiontext);
+$question=str_replace("\r\n","",$question);
+$question=str_replace("\n","",$question);
+if (strlen($question)<35)
 {
-	$questiontextshort = $questiontext;
+	$questiontextshort = $question;
 }
 else
 {
-	$questiontextshort = substr($questiontext, 0, 35)."..";
+	$questiontextshort = substr($question, 0, 35)."..";
 }
 
 $conditionsoutput .= "\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=conditions' selected='selected'>$questiontitle: $questiontextshort</option>\").appendTo(\"#questionNav\");\n"; 
@@ -1013,7 +1019,9 @@ $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\").appendTo(\"#questionNav\");\n";
 foreach ($postrows as $row)
 {
-		$question=strip_tags($row['question']);
+		$question=strip_tags($question);
+		$question=str_replace("\r\n","",$question);
+		$question=str_replace("\n","",$question);
 		if (strlen($question)<35)
 		{
 			$questionselecter = $question;
