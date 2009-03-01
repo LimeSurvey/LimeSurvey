@@ -246,6 +246,16 @@ background-color:#A7A9D1;
 	text-align: left;
 	margin: 0% 0% 0.5em 0.5em;
 }
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+,.yes-no li
+,.gender li
+{
+	margin-left: 2em;
+	text-indent: -2.2em;
+}
 
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
@@ -482,6 +492,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	display: block;
 	margin-bottom: 1em;
+	white-space: nowrap;
 }
 
 .multiple-opt-comments ul.X2 label.answertext , .multiple-short-txt ul.X2 label , .numeric-multi ul.X2 label { width: 2em;}

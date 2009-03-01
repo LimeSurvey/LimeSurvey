@@ -1,23 +1,4 @@
 /* The following styles are for versions of IE older than 7 */
- .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
-,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
-,.multiple-opt-comments ul.X6  label.answertext , .multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label
-,.multiple-opt-comments ul.X8  label.answertext , .multiple-short-txt ul.X8  label , .numeric-multi ul.X8  label
-,.multiple-opt-comments ul.X10 label.answertext , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label
-,.multiple-opt-comments ul.X12 label.answertext , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label
-,.multiple-opt-comments ul.X14 label.answertext , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label
-,.multiple-opt-comments ul.X16 label.answertext , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label
-,.multiple-opt-comments ul.X18 label.answertext , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label
-,.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
-,.multiple-opt-comments ul.X20 label.answertext , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label
-,.multiple-opt-comments ul.X22 label.answertext , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label
-,.multiple-opt-comments ul.X24 label.answertext , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label
-,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
-,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
-,.multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label
-{
-	margin-bottom: -1.8em;
-}
 
 .numeric-multi dl.multiplenumerichelp
 {

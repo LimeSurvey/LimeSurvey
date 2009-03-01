@@ -1,4 +1,8 @@
 /* The following styles are for all versions of IE */
+.multiple-opt-comments ul  li , .multiple-short-txt ul  li , .numeric-multi ul  li
+{
+	height: 3em;
+}
 
 .numeric-multi dl.multiplenumerichelp dt
 {

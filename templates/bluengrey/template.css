@@ -378,6 +378,17 @@ font-weight:bold;
 	text-align: left;
 	margin: 0% 0% 0.5em 0.5em;
 }
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+,.yes-no li
+,.gender li
+{
+	margin-left: 2em;
+	text-indent: -1.7em;
+}
+
 
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */

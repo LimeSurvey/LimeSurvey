@@ -248,6 +248,14 @@ background-color:#A7A9D1;
 	text-align: left;
 	margin: 0% 0% 0.5em 0.5em;
 }
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+{
+	margin-left: 2.5em;
+	text-indent: -1.8em;
+}
 
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
@@ -536,7 +544,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin-left: 2em;
 	margin-bottom: 0.5em;
 }
-
+.multiple-short-txt ul span
+{
+	white-space: nowrap;
+}
 .numeric-multi div.multinum-slider
 {
 	margin-top: 1.5em;

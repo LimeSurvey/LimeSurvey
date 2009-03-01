@@ -1,5 +1,13 @@
 /* The following styles are for all versions of IE */
 
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+{
+	text-indent: -2.2em;
+}
+
  .multiple-opt-comments ul
 ,.multiple-short-txt ul { margin-top: 1em; )
 

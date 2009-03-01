@@ -434,6 +434,14 @@ color:RED;
 	text-align: left;
 	margin: 0% 0% 0.5em 0.5em;
 }
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+{
+	margin-left: 2em;
+	text-indent: -1.8em;
+}
 
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
@@ -689,7 +697,6 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.multiple-opt-comments ul.X26 label.answer-comment , .multiple-short-txt ul.X26 span , .numeric-multi ul.X26 div.input
 ,.multiple-opt-comments ul.X28 label.answer-comment , .multiple-short-txt ul.X28 span , .numeric-multi ul.X28 div.input
 ,.multiple-opt-comments ul.X30 label.answer-comment , .multiple-short-txt ul.X30 span , .numeric-multi ul.X30 div.input
-,.multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large span , .numeric-multi ul.X-large div.input
 {
 	position: relative;
 	display: block;
@@ -744,6 +751,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .multiple-opt-comments ul.X-large label.answertext , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
 .multiple-opt-comments ul.X-large label.answer-comment , .multiple-short-txt ul.X-large span , .numeric-multi ul.X-large div.input { margin-left: 2em; }
 
+.multiple-short-txt ul span
+{
+	white-space: nowrap;
+}
 .numeric-multi div.multinum-slider
 {
 	margin-top: 1.5em;

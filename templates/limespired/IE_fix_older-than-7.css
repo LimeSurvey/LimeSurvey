@@ -1,5 +1,12 @@
 /* The following styles are for versions of IE older than 7 */
 
+ .list-radio-flexible li
+,.list-radio li
+{
+	margin-left: 0.5em;
+	text-indent: 0em;
+}
+
  .multiple-opt-comments ul.X2  label.answertext
 ,.multiple-opt-comments ul.X4  label.answertext
 ,.multiple-opt-comments ul.X6  label.answertext
