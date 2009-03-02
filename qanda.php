@@ -373,40 +373,40 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values = do_list_flexible_radio($ia);
 			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</span>';
 			}
 			break;
 		case 'L': //LIST drop-down/radio-button list
 			$values = do_list_radio($ia);
 			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</span>';
 			}
 			break;
 		case 'W': //List - dropdown
 			$values=do_list_flexible_dropdown($ia);
 			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</span>';
 			}
 			break;
 		case '!': //List - dropdown
 			$values=do_list_dropdown($ia);
 			if (!$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</span>';
 			}
 			break;
 		case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
 			$values=do_listwithcomment($ia);
 			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose one of the following answers').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose one of the following answers').'</span>';
 			}
 			break;
 		case 'R': //RANKING STYLE
@@ -415,8 +415,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				if ($minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
 				{
-					$qtitle .= "<br />\n<font class = \"questionhelp\">"
-					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</font>";
+					$qtitle .= "<br />\n<span class=\"questionhelp\">"
+					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</span>";
 				
 				}
 			}
@@ -429,23 +429,23 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				$minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1);
 				if (!($maxansw || $minansw))
 				{
-					$qtitle .= "<br />\n<font class = \"questionhelp\">"
-					. $clang->gT('Check any that apply').'</font>';
+					$qtitle .= "<br />\n<span class=\"questionhelp\">"
+					. $clang->gT('Check any that apply').'</span>';
 				}
 				else
 				{
 					if ($maxansw && $minansw)
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
 					} elseif ($maxansw) 
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
 					} else 
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
 					}
 				}
 			}
@@ -455,8 +455,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values=do_language($ia);
 			if (count($values[1]) > 1)
 			{
-				$qtitle .= "<br />\n<font class = \"questionhelp\">"
-				. $clang->gT('Choose your language').'</font>';
+				$qtitle .= "<br />\n<span class=\"questionhelp\">"
+				. $clang->gT('Choose your language').'</span>';
 			}
 			break;
 		case 'P': //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
@@ -467,23 +467,23 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				$minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1);
 				if (!($maxansw || $minansw))
 				{
-					$qtitle .= "<br />\n<font class = \"questionhelp\">"
-					. $clang->gT('Check any that apply').'</font>';
+					$qtitle .= "<br />\n<span class=\"questionhelp\">"
+					. $clang->gT('Check any that apply').'</span>';
 				}
 				else
 				{
 					if ($maxansw && $minansw)
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
 					} elseif ($maxansw) 
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
 					} else 
 					{
-						$qtitle .= "<br />\n<font class = \"questionhelp\">"
-						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</font>";
+						$qtitle .= "<br />\n<span class=\"questionhelp\">"
+						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
 					}
 				}
 			}
@@ -588,7 +588,7 @@ function validation_message($ia)
 			$helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
 			while ($helprow=$helpresult->FetchRow())
 			{
-				$help=' <font class = "questionhelp">('.$helprow['help'].')</font>';
+				$help=' <span class="questionhelp">('.$helprow['help'].')</span>';
 			}
 			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').' '.$help.'</span><br />
 ';
@@ -6238,7 +6238,7 @@ function do_array_flexible_dual($ia)
 	}
 	else
 	{
-		$answer = "<font color=red>".$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</font>";
+		$answer = '<span class="error" style="color:#f00">'.$clang->gT('Error: The labelset used for this question is not available in this language and/or does not exist.')."</span>";
 		$inputnames="";
 	}
 	return array($answer, $inputnames);
