@@ -1194,10 +1194,20 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		$oldcfieldname=$conditionrowdata["cfieldname"];
 		$oldcqid=$conditionrowdata["cqid"];
 		$thisvalue=$conditionrowdata["value"];
+		$newvalue=$thisvalue;
 		
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 			if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
+		}
+		if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
+		{
+			foreach ($substitutions as $subs) {
+				if ($targetcfieldname[1]==$subs[0])  {$targetcfieldname[1]=$subs[3];}
+				if ($targetcfieldname[2]==$subs[1])  {$targetcfieldname[2]=$subs[4];}
+				if ($targetcfieldname[3]==$subs[2])  {$targetcfieldname[3]=$subs[5];}
+			}
+			$newvalue='@'.$targetcfieldname[1].'X'.$targetcfieldname[2].'X'.$targetcfieldname[3].'@';
 		}
 		foreach($fieldnames as $fns) {
 			//if the $fns['oldcfieldname'] is not the same as $fns['oldfieldname'] then this is a multiple type question
@@ -1215,6 +1225,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		unset($conditionrowdata["cid"]);
 		$conditionrowdata["qid"]=$newqid;
 		$conditionrowdata["cfieldname"]=$newcfieldname;
+		$conditionrowdata["value"]=$newvalue;
 		
 		if (isset($newcqid)) {
 			$conditionrowdata["cqid"]=$newcqid;
