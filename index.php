@@ -987,9 +987,9 @@ function checkquestionfordisplay($qid, $gid=null)
 					// then try to replace them with a 
 					// value recorded in SESSION if any
 					$cvalue=$_SESSION[$targetconditionfieldname[1]];
-					if (isset($_SESSION[$fieldname]))
+					if (isset($_SESSION[$row['cfieldname']]))
 					{ 
-						$cfieldname=$_SESSION[$fieldname]; 
+						$cfieldname=$_SESSION[$row['cfieldname']]; 
 					} 
 					else 
 					{ 
