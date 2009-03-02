@@ -1,18 +1,14 @@
-#
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Norwegian Nynorsk language file\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: Guttorm Flatabø <dittaeva@yahoo.com>\n"
 "POT-Creation-Date: 2008-09-15 01:44+0200\n"
-"PO-Revision-Date: 2008-09-23 21:15+0100\n"
+"PO-Revision-Date: 2009-02-16 19:00+0100\n"
 "Last-Translator: Guttorm Flatabø <dittaeva@yahoo.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Bookmarks: -1,-1,-1,-1,-1,1268,-1,-1,-1,-1\n"
-"X-Poedit-Language: Norwegian Nynorsk\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:34
 #: /var/lib/limesurvey-svn/subversion1x/group.php:37
@@ -1212,7 +1208,7 @@ msgstr "Det er {NUMBEROFQUESTIONS} spørsmål i denne undersøkinga."
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1308
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2422
 msgid "Submit"
-msgstr "Send inn svar"
+msgstr "Lever svar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2230
 msgid "A Note On Privacy"
@@ -1273,23 +1269,23 @@ msgstr "Start undersøkinga på nytt"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2375
 msgid "Save Your Unfinished Survey"
-msgstr ""
+msgstr "Lagre uferdig svar"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2376
 msgid "Enter a name and password for this survey and click save below."
-msgstr ""
+msgstr "Skriv inn namn og passord for denne undersøkinga og klikk på lagre under."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2376
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr ""
+msgstr "Det uferdige svaret ditt blir lagra og kan seinare fullførast ved å logge inn med same namn og passord."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2376
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr ""
+msgstr "Dersom du skriv inn e-postadresse vil ein e-post med nødvendige opplysningar bli sendt til deg."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2384
 msgid "Return To Survey"
-msgstr "Tilbake til undersøking"
+msgstr "Tilbake til undersøkinga"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2389
 #: /var/lib/limesurvey-svn/subversion1x/save.php:307
@@ -1313,11 +1309,11 @@ msgstr "Passord"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2395
 msgid "Repeat Password"
-msgstr ""
+msgstr "Gjenta passord"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2398
 msgid "Your Email"
-msgstr "E-postadressa di"
+msgstr "E-postadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2403
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2423
@@ -1326,14 +1322,14 @@ msgstr "E-postadressa di"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1648
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1786
 msgid "Security Question"
-msgstr "Tryggleiksspørsmål"
+msgstr "Kontrollspørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2406
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1852
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1905
 msgid "Save Now"
-msgstr "Lagra no"
+msgstr "Lagra"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2411
 msgid "Load A Previously Saved Survey"
@@ -1341,7 +1337,7 @@ msgstr "Last inn ei tidlegare lagra undersøking"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2412
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr ""
+msgstr "Her kan du hente inn eit tidligare lagra svar til denne undersøkinga."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2412
 msgid "Type in the 'name' you used to save the survey, and the password."
@@ -1349,11 +1345,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2415
 msgid "Saved name"
-msgstr ""
+msgstr "Namn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2428
 msgid "Load Now"
-msgstr ""
+msgstr "Hent inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2433
 msgid "You must be registered to complete this survey"
@@ -1609,7 +1605,7 @@ msgstr "Du har ikkje oppgjeve noko undersøkings-id"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:296
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:326
 msgid "The following surveys are available:"
-msgstr "Du kan ta ei av følgjande undersøkingar:"
+msgstr "Du kan delta i ei av følgjande undersøkingar:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:379
 msgid "This survey is no longer available."
@@ -1665,30 +1661,18 @@ msgstr "%s %% ferdig"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:585
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1420
-msgid ""
-"Dear {FIRSTNAME},\n"
-"\n"
-"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
-"\n"
-"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
-"\n"
-"Sincerely,\n"
-"\n"
-"{ADMINNAME}"
-msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1419
 msgid "Answer Submission for Survey"
-msgstr "Send inn undersøkinga."
+msgstr "Svar levert for undersøkinga:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1421
 msgid "Survey Submitted"
 msgstr "Undersøkingssvaret er sendt"
 
-# Eller "Eit nytt svar har blitt sendt inn frå undersøkinga di"?
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1422
 msgid "A new response was entered for your survey"
-msgstr "Eit nytt svar vart gjeve for undersøkinga di"
+msgstr "Det har komme inn eit nytt svar på undersøkinga di:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1425
 msgid "Click the following link to reload the survey:"
@@ -2027,7 +2011,7 @@ msgstr "Klikk på saksa til høgre for siste alternativfor å fjerna det siste a
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1922
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
-msgstr ""
+msgstr "Vel maksimum '%d' svar for spørsmål «%s»"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1866
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1893
@@ -3630,13 +3614,11 @@ msgstr ""
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:498
 msgid "Total Invitations Sent"
-msgstr ""
+msgstr "Invitasjonar sendt"
 
-# Undersøkinga er ferdig?
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:503
-#, fuzzy
 msgid "Total Surveys Completed"
-msgstr "Undersøking ferdig"
+msgstr "Innleverte svar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:542
 msgid "Edit Email Settings"
@@ -3651,7 +3633,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1200
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1415
 msgid "Invitation to participate in survey"
-msgstr ""
+msgstr "Invitasjon til å delta i spørjeundersøkinga: {SURVEYNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:558
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:564
@@ -3662,13 +3644,13 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:591
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:597
 msgid "Use default"
-msgstr ""
+msgstr "Bruk standard"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:560
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:562
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1087
 msgid "Invitation Email:"
-msgstr ""
+msgstr "Invitasjons-epost"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:563
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1046
@@ -3695,6 +3677,21 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Hei {FIRSTNAME} {LASTNAME},\n"
+"\n"
+"Du har blitt invitert til å delta i spørjeundersøkinga «{SURVEYNAME}».\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Klikk på lenkja under for å delta.\n"
+"\n"
+"Helsing,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Klikk på lenkja for å delta i spørjeundersøkinga:\n"
+"{SURVEYURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:566
 msgid "Email Reminder Subject:"
@@ -3704,7 +3701,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1202
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1417
 msgid "Reminder to participate in survey"
-msgstr ""
+msgstr "Påminning om å delta i spørjeundersøkinga: {SURVEYNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:571
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:573
@@ -3737,6 +3734,23 @@ msgid ""
 "Click here to do the survey:\n"
 "{SURVEYURL}"
 msgstr ""
+"Hei {FIRSTNAME} {LASTNAME},\n"
+"\n"
+"For ei stund sidan inviterte me deg til å delta i spørjeundersøkinga «{SURVEYNAME}».\n"
+"\n"
+"Me ser at du ikkje har fullført undersøkinga enno og vil berre minna deg på at undersøkinga framleis er open dersom du ynskjer å delta.\n"
+"\n"
+"\"{SURVEYDESCRIPTION}\"\n"
+"\n"
+"Klikk på lenkja under for å delta.\n"
+"\n"
+"Helsing,\n"
+"\n"
+"{ADMINNAME} ({ADMINEMAIL})\n"
+"\n"
+"----------------------------------------------\n"
+"Klikk på lenkja for å delta i spørjeundersøkinga:\n"
+"{SURVEYURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:577
 msgid "Confirmation Email Subject:"
@@ -3748,15 +3762,37 @@ msgstr "Stadfestingsepost-emne:"
 msgid "Confirmation of completed survey"
 msgstr "Stadfesting på fullført undersøking"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:582
-#, fuzzy
+#: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:581
 msgid "Confirmation Email:"
-msgstr "Stadfestingsepost-adresse:"
+msgstr "Stadfestings-epost:"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:583
+msgid "Confirmation Email"
+msgstr "Stadfesting:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:584
-#, fuzzy
-msgid "Confirmation Email"
-msgstr "Stadfestingsepost-adresse:"
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1135
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1320
+msgid ""
+"Dear {FIRSTNAME},\n"
+"\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
+"\n"
+"Sincerely,\n"
+"\n"
+"{ADMINNAME}"
+msgstr ""
+"Hei {FIRSTNAME} {LASTNAME}!\n"
+"\n"
+"Dette er ei automatisk stadfesting på at du har fullført undersøkinga {SURVEYNAME} og at svaret ditt har blitt lagra. Takk for at du tok deg tid til å delta.\n"
+"\n"
+"Dersom du har spørsmål eller kommentarar kan du kontakta {ADMINNAME} på e-postadresse {ADMINEMAIL}.\n"
+"\n"
+"Med helsing\n"
+"\n"
+"{ADMINNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:588
 msgid "Public registration Email Subject:"
@@ -4575,7 +4611,7 @@ msgstr "Skriv ut svar"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:258
 #, php-format
 msgid "Failed to copy %s to new template directory."
-msgstr "Mislukkast i å kopiere %s til ny malmappe."
+msgstr "Kopieringa av %s til ny malmappe mislukkast."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:136
 #, php-format
@@ -7778,62 +7814,3 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_structure_csv.php:48
 msgid "No SID has been provided. Cannot dump survey"
 msgstr ""
-
-#~ msgid "Please contact"
-#~ msgstr "Ta kontakt med"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this entry."
-#~ msgstr "Er du sikker på at du vil fjerna alle svara dine?"
-#~ msgid "Failed to copy"
-#~ msgstr "Mislukkast i å kopiere"
-#~ msgid "Directory with the name"
-#~ msgstr "Mappe med namnet"
-
-#, fuzzy
-#~ msgid "Export Current Survey"
-#~ msgstr "Avbryt og tøm undersøkinga"
-
-#, fuzzy
-#~ msgid "The token you have provided is not valid."
-#~ msgstr ""
-#~ "Nøkkelen du skreiv inn er anten ugyldig, eller har allereie blitt brukt."
-
-#, fuzzy
-#~ msgid "Your survey responses have been saved succesfully"
-#~ msgstr "Svara dine har blitt lagra."
-
-#, fuzzy
-#~ msgid ""
-#~ "This is a closed-access survey. You need a valid token to participate."
-#~ msgstr ""
-#~ "Beklagar, dette er ei tilgangsavgrensa undersøking. Du treng ein nøkkel "
-#~ "for å delta."
-#~ msgid "prev"
-#~ msgstr "Førre"
-#~ msgid "next"
-#~ msgstr "Neste"
-#~ msgid "answers"
-#~ msgstr "svar"
-#~ msgid "to remove the last entry in your ranked list"
-#~ msgstr "for å fjerna det siste elementet i rangeringslista di"
-
-#, fuzzy
-#~ msgid "Please choose at most"
-#~ msgstr "Velj"
-
-#, fuzzy
-#~ msgid "answer(s) for question"
-#~ msgstr "Du skal berre svara på dette spørsmålet"
-#~ msgid "last"
-#~ msgstr "siste"
-#~ msgid ""
-#~ "<strong>Thank You<br ><br >You have completed answering the questions in "
-#~ "this survey.<strong><br ><br >Click on [-._SUBMIT.-] now to complete the "
-#~ "process and save your answers."
-#~ msgstr ""
-#~ "<strong>Takk<br ><br >Du har no svart på alle spørsmåla i undersøkinga."
-#~ "<strong><br ><br >Trykk [-._SUBMIT.-] for å fullføra og lagra svara dine."
-#~ msgid "Please choose <strong>only one<strong> of the following:"
-#~ msgstr "Velj <strong>berre ein<strong> av følgjande:"
-

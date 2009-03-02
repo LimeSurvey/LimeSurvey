@@ -1,21 +1,14 @@
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: LimeSurvey Norwegian language file\n"
+"Project-Id-Version: LimeSurvey Norwegian Bokmål language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-12-01 20:17+0100\n"
-"PO-Revision-Date: 2008-12-01 23:15+0100\n"
-"Last-Translator: Reidar Øksnevad <reidar.oksnevad@freecode.no>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2009-02-16 19:00+0100\n"
+"Last-Translator: Guttorm Flatabø <dittaeva@yahoo.com>\n"
+"Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Basepath: C:\\eclipse\\workspace\\limesurvey-sourceforge\n"
-"X-Poedit-Language: norwegian\n"
-"X-Poedit-Country: norwegian\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
-"X-Poedit-SearchPath-0: C:\\eclipse\\workspace\\limesurvey-sourceforge\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:36
 #: /var/lib/limesurvey-svn/subversion1x/group.php:36
@@ -1291,7 +1284,7 @@ msgstr "Det er {NUMBEROFQUESTIONS} spørsmål i denne undersøkelsen."
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1544
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2923
 msgid "Submit"
-msgstr "Send"
+msgstr "Lever besvarelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2439
 msgid "A Note On Privacy"
@@ -1350,19 +1343,19 @@ msgstr "Start denne undersøkelsen på nytt"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2587
 msgid "Save Your Unfinished Survey"
-msgstr "Lagre din uferdige undersøkelse"
+msgstr "Lagre uferdig besvarelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2588
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Oppgi et navn og passord til denne undersøkelsen og klikk på Lagre under."
+msgstr "Oppgi et navn og passord for denne undersøkelsen og klikk på Lagre under."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2588
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr "Din undersøkelse vil bli lagret med dette navnet/passordet og kan fullføres senere ved å logge inn med brukernavnet/passordet."
+msgstr "Din besvarelse vil bli lagret og kan fullføres senere ved å logge inn med samme navn og passord."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2588
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr "Hvis du oppgir en e-postadresse vil en e-post sendes deg med detaljer."
+msgstr "Hvis du oppgir en e-postadresse vil en e-post med nødvendige opplysninger bli sendt til deg."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2596
 msgid "Return To Survey"
@@ -1394,7 +1387,7 @@ msgstr "Gjenta passord"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2610
 msgid "Your Email"
-msgstr "Din e-postadresse"
+msgstr "E-postadresse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2615
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2635
@@ -1403,14 +1396,14 @@ msgstr "Din e-postadresse"
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1798
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1959
 msgid "Security Question"
-msgstr "Sikkerhetsspørsmål"
+msgstr "Kontrollspørsmål"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2618
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1901
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1954
 msgid "Save Now"
-msgstr "Lagre nå"
+msgstr "Lagre"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2623
 msgid "Load A Previously Saved Survey"
@@ -1418,7 +1411,7 @@ msgstr "Last inn en tidligere lagret undersøkelse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2624
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Du kan laste inn en undersøkelse du tidligere har lagret, fra dette skjermbildet."
+msgstr "Her kan du hente inn en tidligere lagret besvarelse på denne undersøkelsen."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2624
 msgid "Type in the 'name' you used to save the survey, and the password."
@@ -1426,11 +1419,11 @@ msgstr "Skriv inn brukernavnet og passordet du brukte da du lagret undersøkelse
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2627
 msgid "Saved name"
-msgstr "Lagret navn"
+msgstr "Navn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2640
 msgid "Load Now"
-msgstr "Last inn nå"
+msgstr "Hent inn"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2645
 msgid "You must be registered to complete this survey"
@@ -1765,7 +1758,7 @@ msgstr "%s %% gjennomført"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1545
 msgid "Answer Submission for Survey"
-msgstr "Send svar på undersøkelse"
+msgstr "Svar levert for undersøkelsen:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1547
 msgid "Survey Submitted"
@@ -1785,7 +1778,7 @@ msgstr "Klikk på lenken under for å se individuelle besvarelser:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1558
 msgid "Click the following link to edit the individual response:"
-msgstr "Klikk på lenken under for å redigere individuelle besvarelser:"
+msgstr "Klikk på lenken under for å redigere besvarelsen:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:1561
 msgid "View statistics by clicking here:"
@@ -3878,7 +3871,7 @@ msgstr "Emnefelt for e-postpåminnelse:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1132
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1317
 msgid "Reminder to participate in survey"
-msgstr "Påminnelse om å delta i undersøkelse"
+msgstr "Påminnelse om å delta i undersøkelsen: {SURVEYNAME}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:570
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:572
