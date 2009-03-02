@@ -2492,7 +2492,7 @@ function do_multiplechoice($ia)
 			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick='";
+		$answer .= " onclick='cancelBubbleThis(event);";
 		if(in_array($ansrow['code'], $excludeallothers))
 		{
 			$answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
@@ -2573,7 +2573,7 @@ function do_multiplechoice($ia)
 		{
 			$answer .= CHECKED;
 		}
-		$answer .= " onclick='".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
+		$answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
 		<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>
 		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
 		if (isset($_SESSION[$myfname]))
@@ -2809,7 +2809,7 @@ function do_multiplechoice_withcomments($ia)
 		{
 			$answer_main .= CHECKED;
 		}
-		$answer_main .=" onclick='".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
+		$answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
 				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
 				. $ansrow['answer']."\t\t</label>\n";
 

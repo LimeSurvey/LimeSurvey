@@ -83,10 +83,10 @@ function cellAdapter(evt,src)
 	}
 	else if (eChild && eChild.type == 'checkbox')
 	{
-//		eChild.checked = !eChild.checked;
+		eChild.checked = !eChild.checked;
 		//Make sure the change propagates to the conditions handling mechanism
-//		if(eChild.onclick) eChild.onclick(evt);
-//		if(eChild.onchange) eChild.onchange(evt);
+		if(eChild.onclick) eChild.onclick(evt);
+		if(eChild.onchange) eChild.onchange(evt);
 	}
 }
 
