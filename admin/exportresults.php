@@ -789,20 +789,21 @@ for ($i=0; $i<$fieldcount; $i++)
                 $flid=$fielddata['lid']; 
 		        $flid1=$fielddata['lid1'];
                 if (mb_substr($fieldinfo,-1) == '0')
-                {
+                { //TIBO
                     $strlabel = "1";
-        		    $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  group by l.lid";
+        		    $lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid AND a.language='$surveybaselang'  AND t.lid=$flid group by l.lid";
                 }
                 else 
                 {
                     $strlabel = "2";
-                   $lq = "select a.*, l.* from {$dbprefix}answers as a, {$dbprefix}labels as l where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  group by l.lid";
+                   $lq = "select a.*, l.*, t.label_name as labeltitle from {$dbprefix}answers as a, {$dbprefix}labels as l, {$dbprefix}labelsets as t where a.code='$faid' and qid=$fqid AND l.lid = $flid1 AND a.language='$surveybaselang'  AND t.lid=$flid1 group by l.lid";
                 }
 				$lr = db_execute_assoc($lq);
 				$j=0;	
 				while ($lrow=$lr->FetchRow())
 				{
-                    $fquest .= " [".strip_tags_full($lrow['answer'])."][".strip_tags_full($strlabel).". label]";
+					$strlabel = $strlabel."-".$lrow['labeltitle'];
+                    $fquest .= " [".strip_tags_full($lrow['answer'])."][".strip_tags_full($strlabel)."]";
 					$j++;
 				}
 			
