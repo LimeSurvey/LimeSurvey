@@ -1738,7 +1738,7 @@ function buildsurveysession()
 	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg, $clang;
 	global $totalBoilerplatequestions;
-	global $templang;
+	global $templang, $move;
 
 	if (!isset($templang) || $templang=='')
 	{
@@ -1943,7 +1943,7 @@ function buildsurveysession()
 			}
 		}
 		// IF CAPTCHA ANSWER IS NOT CORRECT
-		else
+        else if (!isset($move) || is_null($move))
 		{
 			$gettoken = $clienttoken;
 			sendcacheheaders();
