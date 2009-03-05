@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 * 
-* $Id: export_data_r 6330 2009-02-02 12:23:12Z el-matador-69 $
+* $Id$
 */
 
 // Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
