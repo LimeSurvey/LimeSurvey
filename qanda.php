@@ -667,11 +667,17 @@ function mandatory_popup($ia, $notanswered=null)
 		//POPUP WARNING
 		if (!isset($mandatorypopup) && ($ia[4] == 'T' || $ia[4] == 'S' || $ia[4] == 'U'))
 		{
-			$popup="<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("You cannot proceed until you enter some text for one or more questions.", "js")."\")\n //-->\n</script>\n";
+            $popup="<script type=\"text/javascript\">\n
+                    <!--\n $(document).ready(function(){
+                        alert(\"".$clang->gT("You cannot proceed until you enter some text for one or more questions.", "js")."\");});\n //-->\n
+                    </script>\n";
 			$mandatorypopup="Y";
 		}else
 		{
-			$popup="<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed", "js")."\")\n //-->\n</script>\n";
+			$popup="<script type=\"text/javascript\">\n
+                    <!--\n $(document).ready(function(){
+                        alert(\"".$clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed", "js")."\");});\n //-->\n
+                    </script>\n";
 			$mandatorypopup="Y";
 		}
 		return array($mandatorypopup, $popup);
@@ -694,7 +700,10 @@ function validation_popup($ia, $notvalidated=null)
 		//POPUP WARNING
 		if (!isset($validationpopup))
 		{
-			$vpopup = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid", "js")."\")\n //-->\n</script>\n";
+            $vpopup="<script type=\"text/javascript\">\n
+                    <!--\n $(document).ready(function(){
+                        alert(\"".$clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid", "js")."\");});\n //-->\n
+                    </script>\n";
 			$validationpopup="Y";
 		}
 		return array($validationpopup, $vpopup);
@@ -3316,7 +3325,6 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
-				$js_header_includes[] = '/scripts/jquery/jquery.js';
 				$js_header_includes[] = '/scripts/jquery/jquery-ui-core-1.6rc2.min.js';
 				$js_header_includes[] = '/scripts/jquery/jquery-ui-slider-1.6rc2.min.js';
 				$js_header_includes[] = '/scripts/jquery/lime-slider.js';

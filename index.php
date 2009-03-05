@@ -701,7 +701,7 @@ switch ($thissurvey['format'])
 
 if (isset($_POST['saveall']))
 {
-	print "<script language='JavaScript'> alert('".$clang->gT("Survey Saved","js")."'); </script>";
+	print "<script language='JavaScript'> $(document).ready( function() {alert('".$clang->gT("Survey Saved","js")."');}) </script>";
 }
 
 function loadanswers()

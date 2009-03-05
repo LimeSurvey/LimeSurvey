@@ -1,11 +1,11 @@
 var DOM1;
-window.onload = function()
+$(document).ready(function()
 {
 	DOM1 = (typeof document.getElementsByTagName!='undefined');
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepCellAdapters();
-}
+});
 
 Array.prototype.push = function()
 {
