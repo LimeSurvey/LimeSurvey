@@ -1034,7 +1034,7 @@ function setup_columns($columns, $answer_count)
 			,'item-start'	=> "\t<li>\n"
 			,'item-end'	=> "\t</li>\n"
 			,'maxrows'	=> ceil($answer_count/$columns) //Always rounds up to nearest whole number
-			,'cols'		=> $columns;
+			,'cols'		=> $columns
 	);
 
 	switch($colstyle)
