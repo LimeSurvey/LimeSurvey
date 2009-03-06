@@ -298,14 +298,14 @@ if  ($subaction=='dlstructure') {
 				break;
 			 
 		}
-		echo " data[,which(names(data)==\"{$field['id']}\")]=as.$type(data[,which(names(data)==\"{$field['id']}\")])\n";
+		echo " data[,which(names(data)==\"V" . substr($field['id'],1) . "\")]=as.$type(data[,which(names(data)==\"V" . substr($field['id'],1) . "\")])\n";
 		$i++;
 	}
     
     //Create the variable labels:
     echo "#Define Variable Properties.\n";
     foreach ($fields as $field) {
-    	echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel)) . '"' . "\n";
+    	echo 'attributes(data)$variable.labels[which(names(data)=="V' . substr($field['id'],1) . '")]="' . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . '"' . "\n";
     }
 
     // Create our Value Labels!
@@ -411,7 +411,7 @@ if  ($subaction=='dlstructure') {
 	    if (count($answers)>0) {
 	    	//print out the value labels!
 	    	// data$V14=factor(data$V14,levels=c(1,2,3),labels=c("Yes","No","Uncertain"))
-	    	echo 'data$' . $field["id"] . '=factor(data$' . $field["id"] . ',levels=c(';
+	    	echo 'data$V' . substr($field["id"],1) . '=factor(data$V' . substr($field["id"],1) . ',levels=c(';
 	    	$str="";
 	    	foreach ($answers as $answer) {
 	    		if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
