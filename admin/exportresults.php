@@ -1113,17 +1113,17 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 				case "1":
                     if (mb_substr($fieldinfo,-1) == 0) 
                     {
-					$lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
+					$lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid AND a.language='$explang' AND l.code = ? group by l.lid";
                     }
                     else
                     {
-                     $lq = "select a.*, l.*, l.code as lcode from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
+                     $lq = "select a.*, l.*, l.code as lcode, l.title as ltitle from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=$fqid AND l.lid =$flid1 AND a.language='$explang' AND l.code = ? group by l.lid";
                     }
 					$lr = db_execute_assoc($lq, array($drow[$i])) or safe_die($lq."<br />ERROR:<br />".$connect->ErrorMsg());
 					while ($lrow = $lr->FetchRow())
 					{
-						$exportoutput .= strip_tags_full($lrow['lcode']);
-                        if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['lcode']));}
+						$exportoutput .= strip_tags_full($lrow['ltitle']);
+                        if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['ltitle']));}
 					}
 				break;
 				case "L": //DROPDOWN LIST
