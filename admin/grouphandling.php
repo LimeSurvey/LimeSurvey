@@ -71,7 +71,7 @@ if ($action == "addgroup")
     . "\t\t<td><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
     . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
     . "\t\t<tr>\t\t<td>".$clang->gT("Convert resources links?")."</td>\n"
-    . "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" /></td></tr>\n"
+    . "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></td></tr>\n"
     . "\t<tr><td colspan='2'class='centered'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
     . "\t<input type='hidden' name='action' value='importgroup' />\n"
     . "\t<input type='hidden' name='sid' value='$surveyid' />\n"

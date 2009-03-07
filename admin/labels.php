@@ -216,7 +216,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."\t<tr>\n"
 			."<td align='right'><strong>"
 			.$clang->gT("Convert resources links?")."</strong></td>\n"
-			."<td><input name=\"translinksfields\" type=\"checkbox\" />\n"
+			."<td><input name=\"translinksfields\" type=\"checkbox\" checked=\"checked\" />\n"
 			."</td></tr>\n"
 			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
 			."\t<input type='hidden' name='action' value='importlabels' /></td>\n"
