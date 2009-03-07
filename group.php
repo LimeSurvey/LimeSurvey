@@ -656,8 +656,7 @@ for ($i=0;$i<count($conditions);$i++)
 		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 		{
 			//$auxqtitle = substr($cd[3],1,strlen($cd[3])-2);
-			$auxqtitle = $comparedfieldname;
-			$newjava .= "(document.getElementById('answer" . $cd[2] . "').value != '') && ";
+			$auxqtitle = $comparedfieldname[1];
 
 			// Let's determin the idname of this second question field
 			ereg("[0-9]+X([0-9]+)X.*",$auxqtitle,$sourceQuestionGid2);
