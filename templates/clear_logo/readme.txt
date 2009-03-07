@@ -11,8 +11,8 @@ Date: 2007/05/31
 Use your own logo
 -----------------
 
-To use your own logo, replace the logo.png file.
-Different sizes are OK.  The example logo is 200 x 35 pixels, 
+To use your own logo, replace the Logo-LimeSurvey.jpg file.
+Different sizes are OK.  The example logo is 100 x 133 pixels, 
 but there is plenty of space to use a logo of any size.
 
 If your logo has a different image format (e.g., .gif),
