@@ -1436,7 +1436,10 @@ if ($subaction == "remind" && //XXX
 					date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
 					"Y-m-d H:i",
 					$timeadjust);
-			$SQLreminderdelaycondition = " AND remindersent < '".$compareddate."'";
+			$SQLreminderdelaycondition = " AND ( "
+				. " (remindersent = 'N' AND sent < '".$compareddate."') "
+				. " OR "
+				. " (remindersent < '".$compareddate."'))";
 		}
 		else
 		{
