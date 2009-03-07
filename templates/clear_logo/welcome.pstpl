@@ -6,7 +6,7 @@
 
 <table align="center" width="100%" cellpadding="25" cellspacing="0">
 	<tr>
-		<td width="100%" valign="bottom"><img src="{TEMPLATEURL}logo.png" alt="Logo"></td>
+		<td width="100%" valign="bottom"><img src="{TEMPLATEURL}Logo-LimeSurvey.jpg" alt="Logo"></td>
 		<td nowrap valign="bottom"><strong>{SURVEYNAME}</strong></td>
 	</tr>
 	<tr>
