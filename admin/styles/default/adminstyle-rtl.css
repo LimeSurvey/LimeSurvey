@@ -277,6 +277,11 @@ font-size:10px;
 color:#E00;
 }
 
+.errortitle {
+        font-weight: 700;
+        color: #FF0F0F;
+}
+
 .warningtitle {
 font-weight:700;
 color:#FFA07A;

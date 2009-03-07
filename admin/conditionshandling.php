@@ -308,8 +308,28 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 					."'".$pfc['cfieldname']."', '".$pfc['method']."',"
 					."'".$pfc['value']."')";
 					$result=$connect->Execute($query) or safe_die ("Couldn't insert query<br />$query<br />".$connect->ErrorMsg());
+					$conditionCopied=true;
+				}
+				else
+				{
+					$conditionDuplicated=true;
 				}
 			}
+		}
+		if (isset($conditionCopied) && $conditionCopied === true)
+		{
+			if (isset($conditionDuplicated) && $conditionDuplicated ==true)
+			{
+				$CopyConditionsMessage = "<font class='warningtitle'>(".$clang->gT("Conditions successfully copied (some were skipped because they were duplicates)").")</font>";
+			}
+			else
+			{
+				$CopyConditionsMessage = "<font class='successtitle'>(".$clang->gT("Conditions successfully copied").")</font>)";
+			}
+		}
+		else
+		{
+				$CopyConditionsMessage = "<font class='errortitle'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</font>";
 		}
 	}
 	else
@@ -1527,7 +1547,14 @@ if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 	$conditionsoutput .= "\t<table width='100%' cellpadding='5' cellspacing='0'><tr>\n"
 		."\t\t<td colspan='3' align='center' class='settingcaption'>\n"
 		."\t\t<strong>"
-		.$clang->gT("Copy conditions")."</strong>\n"
+		.$clang->gT("Copy conditions")."</strong>";
+
+	if (isset ($CopyConditionsMessage))
+	{
+		$conditionsoutput .= " $CopyConditionsMessage";
+	}
+	//CopyConditionsMessage
+	$conditionsoutput .=  "\n"
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
