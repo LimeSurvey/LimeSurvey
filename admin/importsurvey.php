@@ -1242,8 +1242,8 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
             $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 			$result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		} else {
-			$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
-			if ($importingfrom != "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";
+			$importsurvey .= "<font size=1>".sprintf($clang->gT("Condition for %d skipped (%d does not exist)"),$oldqid,$oldcqid)."</font><br />";
+			if ($importingfrom != "http") echo sprintf($clang->gT("Condition for %d skipped (%d does not exist)"),$oldqid,$oldcqid)."\n";
 		}
 		unset($newcqid);
 	}
