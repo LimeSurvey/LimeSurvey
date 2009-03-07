@@ -324,7 +324,7 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 			}
 			else
 			{
-				$CopyConditionsMessage = "<font class='successtitle'>(".$clang->gT("Conditions successfully copied").")</font>)";
+				$CopyConditionsMessage = "<font class='successtitle'>(".$clang->gT("Conditions successfully copied").")</font>";
 			}
 		}
 		else

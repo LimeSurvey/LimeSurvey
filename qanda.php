@@ -2129,7 +2129,7 @@ function do_ranking($ia)
 	. "\t\t\t</table>\n";
 
 	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
-	{
+	{ 
 		$minansw=$minanswattr['value'];
 		$minanswscript = "<script type='text/javascript'>\n"
 			. "\t\t\t<!--\n"
@@ -2137,7 +2137,7 @@ function do_ranking($ia)
 			. "\t\t\t\tfunction ensureminansw_{$ia[0]}()\n"
 			. "\t\t\t\t{\n"
 			. "\t\t\t\t\tcount={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
-			. "\t\t\t\t\tif (count < {$minansw}){\n"
+			. "\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please rank at least '%d' item(s) for question \"%s\"","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
@@ -2467,7 +2467,7 @@ function do_multiplechoice($ia)
 	if ( $minansw > 0 )
 	{
 		$minanswscript .= 		
-			"\t\t\t\t\tif (count < {$minansw}){\n"
+			"\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
@@ -2741,7 +2741,7 @@ function do_multiplechoice_withcomments($ia)
 	if ( $minansw > 0 )
 	{
 		$minanswscript .= 		
-			"\t\t\t\t\tif (count < {$minansw}){\n"
+			"\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
