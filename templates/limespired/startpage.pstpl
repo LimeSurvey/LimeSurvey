@@ -1,5 +1,5 @@
 		<title>{SURVEYNAME} &ndash; {GROUPNAME}</title>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css">
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
 <!--[if IE]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->
