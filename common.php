@@ -943,6 +943,8 @@ function setup_columns($columns, $answer_count)
  *                                column
  *    $wrapper['item-start']    = opening wrapper tag for individual
  *                                option
+ *    $wrapper['item-start-other'] = opening wrapper tag for other
+ *                                option
  *    $wrapper['item-end']      = closing wrapper tag for individual
  *                                option
  *    $wrapper['maxrows']       = maximum number of rows in each
@@ -1032,6 +1034,7 @@ function setup_columns($columns, $answer_count)
 			,'col-devide'	=> ''
 			,'col-devide-last' => ''
 			,'item-start'	=> "\t<li>\n"
+			,'item-start-other' => "\t<li class=\"other\">\n"
 			,'item-end'	=> "\t</li>\n"
 			,'maxrows'	=> ceil($answer_count/$columns) //Always rounds up to nearest whole number
 			,'cols'		=> $columns
@@ -1127,6 +1130,73 @@ function alternation($alternate = '' , $type = 'col')
 	};
 	return $alternate;
 }
+
+
+function longest_string( $new_string , $longest_length )
+{
+/**
+ * longest_string() returns the length of the longest string past to it.
+ * @peram string $new_string
+ * @peram integer $longest_length length of the longest string passed to it.
+ *
+ * usage should look like this: $longest_length = longest_string( $new_string , $longest_length );
+ *
+ */
+	if($longest_length < strlen(trim(strip_tags($new_string))))
+	{
+		$longest_length = strlen(trim(strip_tags($new_string)));
+	};
+	return $longest_length;	
+};
+
+function label_class_width( $longest_length , $type = 'text' )
+{
+	if($type == 'numeric')
+	{ // numeric input box is generally smaller than so the label can afford to be longer
+		$too_long = 30;
+	}
+	else
+	{
+		$too_long = 20;
+	};
+	if($type == 'checkbox')
+	{ // if a other is being used for a single option list question, there is a preceeding radio button, pushing the label text over by about 3ems
+		$longest_length = $longest_length + 2;
+	}
+	
+	$longest_length = round($longest_length * 0.6);
+	if($longest_length < 2) $longest_length = 2;
+	switch($longest_length / 2)
+	{
+		case 1: 
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:	$longest_length = $longest_length;
+				break;
+		default:	++$longest_length;
+	}
+	if($longest_length > $too_long)
+	{
+		$label_width = 'X-large';
+	}
+	else
+	{
+		$label_width = 'X'.$longest_length;
+	};
+	return $label_width;
+};
+
 
 /**
 * getNotificationlist() returns different options for notifications
