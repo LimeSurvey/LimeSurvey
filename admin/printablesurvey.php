@@ -1,4 +1,4 @@
-<?php include('../../../includes/debug.inc.php');debug('start');
+<?php include
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -1579,7 +1579,6 @@ if(isset($_POST['printableexport']))
 	$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 }
 
-debug('end');
 echo populate_template( 'survey' , $survey_output ); 
 
 exit;
