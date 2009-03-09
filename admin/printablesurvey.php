@@ -1,4 +1,4 @@
-<?php include
+<?php
 /*
 * LimeSurvey
 * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
@@ -1012,9 +1012,11 @@ while ($degrow = $degresult->FetchRow())
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 				$pdfoutput = array();
 				$j=0;
+				$rowclass = 'array1';
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
+					$rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1055,9 +1057,12 @@ while ($degrow = $degresult->FetchRow())
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 				$pdfoutput=array();
 				$j=0;
+				$rowclass = 'array1';
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
+					$rowclass = alternation($rowclass,'row');
 
 					$pdfoutput[$j][0]=$mearow['answer'];
 					for ($i=1; $i<=10; $i++)
@@ -1093,9 +1098,12 @@ while ($degrow = $degresult->FetchRow())
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 				$pdfoutput = array();
 				$j=0;
+
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Yes"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Uncertain"))."</td>\n";
@@ -1104,6 +1112,7 @@ while ($degrow = $degresult->FetchRow())
 					
 					$pdfoutput[$j]=array($mearow['answer']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
 					$j++;
+					$rowclass = alternation($rowclass,'row');
 				}
 				$question['ANSWER'] .= "\t</tbody>\n</table>\n";
 				if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
@@ -1129,9 +1138,11 @@ while ($degrow = $degresult->FetchRow())
 				if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 				$pdfoutput = array();
 				$j=0;
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['answer']}</th>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Increase"))."</td>\n";
 					$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$clang->gT("Same"))."</td>\n";
@@ -1139,6 +1150,7 @@ while ($degrow = $degresult->FetchRow())
 					$question['ANSWER'] .= "\t\t</tr>\n";
 					$pdfoutput[$j]=array($mearow['answer'].":"," o ".$clang->gT("Increase")," o ".$clang->gT("Same")," o ".$clang->gT("Decrease"));
 					$j++;
+					$rowclass = alternation($rowclass,'row');
 			}
 				$question['ANSWER'] .= "\t</tbody>\n</table>\n";
 				if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
@@ -1208,9 +1220,13 @@ while ($degrow = $degresult->FetchRow())
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$a=1; //Counter for pdfoutput
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t<tr>\n";
+					$question['ANSWER'] .= "\t<tr class=\"$rowclass\">\n";
+					$rowclass = alternation($rowclass,'row');
+
 					$answertext=$mearow['answer'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1269,9 +1285,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n<tbody>\n";
 				$a=1;
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
+				$rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1328,9 +1347,12 @@ while ($degrow = $degresult->FetchRow())
 					$i++;
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$counter = 1;
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
+				$rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1438,9 +1460,13 @@ while ($degrow = $degresult->FetchRow())
 				$question['ANSWER'] .= $myheader . "\t\t</tr>\n\n\t\t<tr>\n";
 				$question['ANSWER'] .= $printablesurveyoutput2;
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
+				
+				$rowclass = 'array1';
+
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
+					$rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1490,9 +1516,13 @@ while ($degrow = $degresult->FetchRow())
 				}
 				$question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 				$a=1;
+				$rowclass = 'array1';
+
+				
 				while ($mearow = $mearesult->FetchRow())
 				{
-					$question['ANSWER'] .= "\t\t<tr>\n";
+					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
+					$rowclass = alternation($rowclass,'row');
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['title']}</th>\n";
 					//$printablesurveyoutput .="\t\t\t\t\t<td>";
 					$pdfoutput[$a][0]=$mearow['title'];
