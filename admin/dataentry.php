@@ -788,7 +788,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$dataentryoutput .= "\t<tr>\n"
 				."\t\t<td valign='top' align='right' width='25%'>"
 				."\n";
-				$dataentryoutput .= "\t\t\t<strong>{$fnames[$i][2]}</strong>\n";
+				$dataentryoutput .= "\t\t\t<strong>".strip_javascript($question)."</strong>\n";
 				$dataentryoutput .= "\t\t</font></td>\n"
 				."\t\t<td valign='top' align='left'>\n";
 				//$dataentryoutput .= "\t\t\t-={$fnames[$i][3]}=-"; //Debugging info

@@ -349,7 +349,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		{
 			$browseoutput .= "\t<tr>\n"
 			."\t\t<td bgcolor='#EFEFEF' valign='top' align='right' width='33%' style='padding-right: 5px'>"
-			."{$fnames[$i][2]}</font></td>\n"
+			.strip_tags(strip_javascript($fnames[$i][2]))."</font></td>\n"
 			."\t\t<td valign='top' align='left' style='padding-left: 5px'>"
 			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES)
 			."</font></td>\n"
@@ -591,7 +591,7 @@ elseif ($subaction == "all")
 			else {$gbc = "oddrow";}
 		}
 		$tableheader .= "\t\t<td class='$gbc' width='$cellwidth'><strong>"
-		. strip_tags("$fn[2]")
+		. strip_tags(strip_javascript("$fn[2]"))
 		. "</strong></td>\n";
 	}
 	$tableheader .= "\t</tr>\n\n";

@@ -1158,6 +1158,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 	while ($qrrow = $qrresult->FetchRow())
 	{
+        $qrrow = array_map('strip_javascript', $qrrow);
         $qrrow = array_map('strip_tags', $qrrow);
 		//$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "<div class='menubar-title'>\n"

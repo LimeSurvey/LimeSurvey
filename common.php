@@ -5623,3 +5623,14 @@ function recursive_stripslashes($array_or_string)
 
 
 
+function strip_javascript($content){
+  
+$search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+               '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
+/*               ,'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+               '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
+               */
+);
+$text = preg_replace($search, '', $content);
+return $text;
+} 
