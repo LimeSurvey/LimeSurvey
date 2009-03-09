@@ -70,7 +70,48 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.80RC4 (build 6354) to 1.80 (build 6504) [2009/03/09]. Legend: + = new features, # = update, - = bug fix
+
+New Feature of 1.80 (build 6505) [2009/03/09]
+
+New question types and new questions attributes:
+ New question types: Array Multi Flexible (Numbers & Text) (jcleeland)
+ New question Slider: developped as a variant of multiple numbers question
+ New question Array of checkboxes: implemented as a variant of Array Multi Flexible (Numbers) (lemeur)
+ Questions updates: limit possible answers for rank questions (jcleeland)
+ Questions updates: having many 'Exclude all others' (jcleeland)
+ New Feature: Added min_answer feature for the following question types: Multiple options, multiple options with comments and ranking question - patch was kindly provided by F.Markham (c_schmitz)
+ New Feature: Question attribute "alphasort" to sort a list of radiobuttons or a dropdown list alphabetically. (maziminke)
+ New Feature: Question attributes dropdown_dates_year_max and dropdown_dates_year_min for question type date using dropdown layout (maziminke)
+ New Feature #2832: Enable numbers_only attribute for Array (Multi Flexible Text) adapted from a patch by user level420. (lemeur)
+ Question update: Dropdown list options can be grouped by categories
+ Question update: Change Layout order of Dual Scale Matrix in statistics (Mazi)
+
+New management features:
+ LimeSurvey Remote Control (Soap gateway to remotely control LimeSurvey) (wahrendorff)
+ Support of ORed questions in conditions (adapted from Ron L.J. van den Burg's patch). (lemeur)
+ New condition designer interface (lemeur)
+ Added new setting 'public statistics' to survey settings, Added link appearing at the end of a survey when 'public settings' is switched on (c_schmitz)
+ Improve user registration email (c_schmitz)
+ 'Iterate Survey' icon available in the browse answers screen (only available for non anonymous surveys with allow persistence for token answers set to yes.) (lemeur)
+ New options in Token reminder management to limit the numbers of sent emails to participants (max number, min delay between emails)
+ Adding a start date to the surveys (c_schmitz)
+ Added result export to R (patch provided by Livio) (c_schmitz)
+ Add direct link to imported question/group/survey after import (lemeur)
+ Improved Admin Login (c_schmitz)
+ Possibility to split up the amount of exported responses at one time (Problem with max_execution_time) (lemeur)
+ Question Attribute "public_stats" to filter which question statistics should be shown to the user (maziminke)
+ Expiry-Date Tag for E-Mails, Welcome Page,... (lemeur)
+
+Translations:
+  New Language: Dutch informal. By Gert Mensing <gertmensing@gmail.com> (kadejo)
+  New Feature: Added translation for question attributes (c_schmitz)
+
+Core Changes:
+  Replace jpgraph with pChart (c_schmitz)
+  Database Performance Enhancement (bobc55)
+  Fancy URL (c_schmitz)
+
+Changes from 1.80RC4 (build 6354) to 1.80 (build 6505) [2009/03/09]. Legend: + = new features, # = update, - = bug fix
 
 +New Language: Dutch informal. By Gert Mensing <gertmensing@gmail.com> (kadejo)
 
