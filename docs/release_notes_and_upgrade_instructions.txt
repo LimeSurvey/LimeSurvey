@@ -70,7 +70,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.80RC4 (build 6354) to 1.80 (build 6503) [2009/03/09]. Legend: + = new features, # = update, - = bug fix
+Changes from 1.80RC4 (build 6354) to 1.80 (build 6504) [2009/03/09]. Legend: + = new features, # = update, - = bug fix
 
 +New Language: Dutch informal. By Gert Mensing <gertmensing@gmail.com> (kadejo)
 
@@ -94,7 +94,6 @@ Changes from 1.80RC4 (build 6354) to 1.80 (build 6503) [2009/03/09]. Legend: + =
 #Updated Feature: LimeSurvey remote interfaces now handles sTokenReturn (wahrendorff)
 #Updated Feature: new wsdl definiton for lsrc (wahrendorff)
 #Updated Feature: updated XSS filter with a better replacement algorithm - thank you to the TikiWiki project. (c_schmitz)
-#Updated Feature: Export tokens now exports all fields of the token table. (maziminke)
 #Updated Feature: upgrade printablesurvey.php to be fully templated and with XHTML/CSS markup. It has been tested on IE6, IE7, Firefox 3 & Safari 3.1 (windows) and all seems to be fine. I would recommend NOT including these modifications in the 1.8 release as they have only been tested by me. Also the style sheets could do with some flare. The current look and feel is somewhat basic. (eric_t_cruiser)
 #Updated Feature: upgrade printablesurvey.php to be fully templated and with XHTML/CSS markup. It has been tested on IE6, IE7, Firefox 3 & Safari 3.1 (windows) and all seems to be fine. I would recommend NOT including these modifications in the 1.8 release as they have only been tested by me. Also the style sheets could do with some flare. The current look and feel is somewhat basic. (eric_t_cruiser)
 #Updated Feature: added a screen reader only CSS and content to help non visual users read how far they've progressed along the survey. (eric_t_cruiser)
