@@ -4167,7 +4167,8 @@ if (isset($summary) && $summary)
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
 					
-                    $Test = new pChart(690,$gheight);  
+                    $Test = new pChart(690,$gheight); 
+                    $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
 					$Test->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					
