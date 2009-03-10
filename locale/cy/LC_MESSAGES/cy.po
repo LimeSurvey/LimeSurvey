@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-04-16 10:27-0000\n"
-"Last-Translator: Menna Davies <menna.davies@powys.gov.uk>\n"
+"PO-Revision-Date: 2009-02-24 15:28+0100\n"
+"Last-Translator: Sion Pennant <sionp@powys.gov.uk>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,12 +30,8 @@ msgstr "Mae'n ddrwg gennym. Nid oes arolwg yn cyfateb i hyn."
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr ""
-"Nid yw'r holiadur yn fyw ar hyn o bryd. Ni fyddwch yn gallu arbed eich "
-"atebion."
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Nid yw'r holiadur yn fyw ar hyn o bryd. Ni fyddwch yn gallu arbed eich atebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:74
@@ -47,10 +43,8 @@ msgstr "Heb arbed"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"Nid yw eich atebion wedi cael eu cofnodi. Nid yw'r holiadur yn un byw eto."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Nid yw eich atebion wedi cael eu cofnodi. Nid yw'r holiadur yn un byw eto."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
@@ -88,47 +82,42 @@ msgstr "Cau'r Ffenestr"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:330
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:120
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:174
-#, fuzzy
 msgid "Click here to print your answers."
-msgstr "Ysgrifennwch eich ateb/atebion yma:"
+msgstr "Cliciwch yma i argraffu eich hatebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:505
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:313
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:402
-#, fuzzy
 msgid "Date is not valid!"
-msgstr "Nid yw'r cyfeiriad e-bost yn ddilys."
+msgstr "Nid yw'r dydiad yn ddilys."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:76
 msgid "Albanian"
 msgstr "Albaniad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:81
-#, fuzzy
 msgid "Arabic"
-msgstr "Windows Arabic"
+msgstr "Arabic"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:86
 msgid "Basque"
 msgstr "Basgiad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:91
-#, fuzzy
 msgid "Bosnian"
-msgstr "Rwmanaidd"
+msgstr "Bosnian"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:96
 msgid "Bulgarian"
 msgstr "Bwlgaraidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:101
-#, fuzzy
 msgid "Catalan"
-msgstr "Eidalaidd"
+msgstr "Catalan"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:106
 msgid "Welsh"
-msgstr ""
+msgstr "Cymraeg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:111
 msgid "Chinese (Simplified)"
@@ -139,9 +128,8 @@ msgid "Chinese (Traditional - Hong Kong)"
 msgstr "Tsieineaidd (Traddodiadol - Hong Kong)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:121
-#, fuzzy
 msgid "Chinese (Traditional - Taiwan)"
-msgstr "Tsieineaidd (Traddodiadol - Hong Kong)"
+msgstr "Tsieineaidd (Traddodiadol - Taiwan)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:126
 msgid "Croatian"
@@ -164,9 +152,8 @@ msgid "English"
 msgstr "Saesneg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:151
-#, fuzzy
 msgid "Estonian"
-msgstr "Rwmanaidd"
+msgstr "Estonian"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:156
 msgid "Finnish"
@@ -217,37 +204,32 @@ msgid "Japanese"
 msgstr "Siapaneaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:217
-#, fuzzy
 msgid "Korean"
-msgstr "Norwyaidd"
+msgstr "Korean"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:222
 msgid "Lithuanian"
 msgstr "Lithwanaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:227
-#, fuzzy
 msgid "Latvian"
-msgstr "Croataidd"
+msgstr "Latfiaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:232
 msgid "Macedonian"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:237
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "Norwyaidd"
+msgstr "Norwyaidd (Bokmal)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:242
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "Norwyaidd"
+msgstr "Norwyaidd (Nynorsk)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:247
-#, fuzzy
 msgid "Persian"
-msgstr "Fersiwn"
+msgstr "Persiaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:252
 msgid "Polish"
@@ -270,9 +252,8 @@ msgid "Romanian"
 msgstr "Rwmanaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:278
-#, fuzzy
 msgid "Slovak"
-msgstr "Slofenaidd"
+msgstr "Slovak"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:283
 msgid "Slovenian"
@@ -287,9 +268,8 @@ msgid "Spanish"
 msgstr "Sbaeneg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:298
-#, fuzzy
 msgid "Spanish (Mexico)"
-msgstr "Sbaeneg"
+msgstr "Sbaeneg (Mexico)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:303
 msgid "Swedish"
@@ -308,12 +288,8 @@ msgid "Vietnamese"
 msgstr "Fietnamaidd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"Rhybudd: Rydych chi'n dal i ddefnyddio'r cyfrinair diofyn ('password'). "
-"Newidiwch eich cyfrinair a mewngofnodi eto."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Rhybudd: Rydych chi'n dal i ddefnyddio'r cyfrinair diofyn ('password'). Newidiwch eich cyfrinair a mewngofnodi eto."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
 msgid "Administration"
@@ -341,9 +317,8 @@ msgstr "Creu / Golygu Grwpiau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:275
-#, fuzzy
 msgid "Show System Summary"
-msgstr "Crynodeb System LimeSurvey"
+msgstr "Dangos Crynodeb System"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:284
@@ -445,7 +420,7 @@ msgstr "Dim"
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:768
 #, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Arae (Labeli Hyblyg)"
+msgstr "Arae (Labeli Hyblyg) Graddfa Ddeuol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:769
 msgid "5 Point Choice"
@@ -488,9 +463,8 @@ msgid "Language Switch"
 msgstr "Newid Iaith"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:779
-#, fuzzy
 msgid "Multiple Numerical Input"
-msgstr "Mewnbwn rhifiadol"
+msgstr "Mewnbwn Rhifyddol Lluosog "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:780
 msgid "List (Radio)"
@@ -523,14 +497,12 @@ msgid "Ranking"
 msgstr "Safle"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:787
-#, fuzzy
 msgid "Short Free Text"
-msgstr "Testun rhydd byr"
+msgstr "Testun Rhydd Byr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:788
-#, fuzzy
 msgid "Long Free Text"
-msgstr "Testun rhydd hir"
+msgstr "Testun Rhydd Hir"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:789
 msgid "Huge Free Text"
@@ -1215,13 +1187,8 @@ msgid "Comment"
 msgstr "Sylw"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"Gofal:  Nid yw JavaScript yn gweithio yn eich porwr.   Efallai na fyddwch yn "
-"gallu ateb y cwestiynau yn yr arolwg hwn.  Cadarnhewch baramedrau eich porwr."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Gofal:  Nid yw JavaScript yn gweithio yn eich porwr.   Efallai na fyddwch yn gallu ateb y cwestiynau yn yr arolwg hwn.  Cadarnhewch baramedrau eich porwr."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1240,9 +1207,8 @@ msgstr "Mae  {NUMBEROFQUESTIONS} o gwestiynau yn yr arolwg hwn."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:172
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1308
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2422
-#, fuzzy
 msgid "Submit"
-msgstr "cyflwyno"
+msgstr "Cyflwyno"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
 msgid "A Note On Privacy"
@@ -1253,24 +1219,8 @@ msgid "This survey is anonymous."
 msgstr "Mae'r arolwg hwn yn ddienw"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"Nid yw'r cofnod o atebion eich arolwg yn cynnwys unrhyw wybodaeth i'ch "
-"adnabod chi, oni bai bod cwestiwn penodol yn yr arolwg yn gofyn am hyn.  Os "
-"ydych chi wedi ymateb i arolwg a ddefnyddiodd docyn adnabod i'ch caniatau "
-"chi i gael mynediad i'r arolwg, gallwn eich sicrhau chi nad yw'r tocyn "
-"adnabod yn cael ei gadw gyda'ch ymatebion.  Mae'n cael ei reoli mewn cronfa "
-"ddata ar wahân, a bydd yn cael ei ddiweddaru i nodi eich bod chi wedi (neu "
-"heb) lenwi'r arolwg hwn.  Nid oes modd paru tocynnau adnabod gydag atebion "
-"yn yr arolwg hwn."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Nid yw'r cofnod o atebion eich arolwg yn cynnwys unrhyw wybodaeth i'ch adnabod chi, oni bai bod cwestiwn penodol yn yr arolwg yn gofyn am hyn.  Os ydych chi wedi ymateb i arolwg a ddefnyddiodd docyn adnabod i'ch caniatau chi i gael mynediad i'r arolwg, gallwn eich sicrhau chi nad yw'r tocyn adnabod yn cael ei gadw gyda'ch ymatebion.  Mae'n cael ei reoli mewn cronfa ddata ar wahân, a bydd yn cael ei ddiweddaru i nodi eich bod chi wedi (neu heb) lenwi'r arolwg hwn.  Nid oes modd paru tocynnau adnabod gydag atebion yn yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
@@ -1288,7 +1238,7 @@ msgstr "Llwytho arolwg sydd heb ei orffen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2273
 msgid "Resume Later"
-msgstr ""
+msgstr "Parhau yn hwyrach"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "Thank You!"
@@ -1303,13 +1253,8 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Cliciwch ar 'Cyflwyno' nawr i orffen y broses ac i arbed eich atebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"Os ydych chi am daro golwg dros eich atebion, a/neu eu newid, gallwch wneud "
-"hynny nawr drwy glicio ar y botwm  [<< prev] a phori drwy eich atebion."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Os ydych chi am daro golwg dros eich atebion, a/neu eu newid, gallwch wneud hynny nawr drwy glicio ar y botwm  [<< prev] a phori drwy eich atebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1329,20 +1274,12 @@ msgid "Enter a name and password for this survey and click save below."
 msgstr "Rhowch enw a chyfrinair i'r arolwg hwn a chlicio ar 'Arbed' isod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Bydd eich arolwg yn cael ei arbed yn defnyddio'r enw a'r cyfrinair hwnnw.  "
-"Gallwch ei orffen yn hwyrach trwy fewngofnodi gyda'r un enw a'r cyfrinair."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Bydd eich arolwg yn cael ei arbed yn defnyddio'r enw a'r cyfrinair hwnnw.  Gallwch ei orffen yn hwyrach trwy fewngofnodi gyda'r un enw a'r cyfrinair."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Os rhowch gyfeiriad e-bost, bydd e-bost sy'n cynnwys y manylion yn cael ei "
-"anfon atoch."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Os rhowch gyfeiriad e-bost, bydd e-bost sy'n cynnwys y manylion yn cael ei anfon atoch."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
@@ -1421,12 +1358,8 @@ msgid "You may register for this survey if you wish to take part."
 msgstr "Gallwch gofrestru ar gyfer yr arolwg hwn os ydych am gymryd rhan."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"Rhowch eich manylion isod, bydd e-bost sy'n cynnwys y ddolen i gymryd rhan "
-"yn yr arolwg yn cael ei anfon yn syth."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Rhowch eich manylion isod, bydd e-bost sy'n cynnwys y ddolen i gymryd rhan yn yr arolwg yn cael ei anfon yn syth."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1593,12 +1526,8 @@ msgid "The answer to the security question is incorrect"
 msgstr "Mae'r ateb i'r cwestiwn diogelwch yn anghywir."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Mae'r enw hwn wedi cael ei ddefnyddio eisoes ar gyfer yr arolwg hwn.  Rhaid "
-"i chi ddefnyddio enw cadw unigryw."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Mae'r enw hwn wedi cael ei ddefnyddio eisoes ar gyfer yr arolwg hwn.  Rhaid i chi ddefnyddio enw cadw unigryw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
@@ -1607,56 +1536,25 @@ msgstr "Manylion arolwg ar gadw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-#, fuzzy
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"Rydych chi, neu rywun sy'n defnyddio eich cyfeiriad e-bost, wedi arbed "
-"arolwg sydd ar waith.  Gallwch ddefnyddio'r manylion canlynol i ddychwelyd "
-"i'r arolwg hwn a pharhau lle gwnaethoch ei adael."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Diolch am arbed yr arolwg.  Gallwch ddefnyddio'r manylion canlynol i ddychwelyd i'r arolwg hwn a pharhau lle gwnaethoch ei adael.  Cadwch y neges e-bost hon - nid yw'n bosib i ni gyrchu eich cyfrinair."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-#, fuzzy
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
-msgstr "Ail-lwytho'ch arolwg trwy glicio ar yr URL canlynol:"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
+msgstr "Ail-lwytho'ch arolwg trwy glicio ar yr URL canlynol (neu ei bastio i'ch porwr):"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
 msgid "Cannot submit results - there are none to submit."
 msgstr "Ni ellir cyflwyno eich canlyniadau - nid oes rhai i'w cyflwyno."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Gall y gwall hwn amlygu os ydych eisoes wedi cyflwyno eich ymatebion ac wedi "
-"gwasgu 'refresh' ar eich porwr. Yn yr achos hwn, mae eich atebion eisoes "
-"wedi cael eu harbed.<br /><br />Os ydych yn derbyn y neges hon ar hanner "
-"llenwi holiadur, dylech ddewis '<- BACK' ar eich porwr ac yna adfer/ail-"
-"lwytho'r dudalen flaenorol. Tra byddwch yn colli atebion o'r dudalen "
-"ddiwethaf, bydd yr holl rai eraill yn dal i fodoli. Gall y broblem hon "
-"amlygu os yw'r gweborwr yn cael ei orlwytho neu'n cael ei ddefnyddio'n "
-"ormodol. Ymddiheurwn am y broblem hon."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Gall y gwall hwn amlygu os ydych eisoes wedi cyflwyno eich ymatebion ac wedi gwasgu 'refresh' ar eich porwr. Yn yr achos hwn, mae eich atebion eisoes wedi cael eu harbed.<br /><br />Os ydych yn derbyn y neges hon ar hanner llenwi holiadur, dylech ddewis '<- BACK' ar eich porwr ac yna adfer/ail-lwytho'r dudalen flaenorol. Tra byddwch yn colli atebion o'r dudalen ddiwethaf, bydd yr holl rai eraill yn dal i fodoli. Gall y broblem hon amlygu os yw'r gweborwr yn cael ei orlwytho neu'n cael ei ddefnyddio'n ormodol. Ymddiheurwn am y broblem hon."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Os derbyniwch chi'r neges hon wrth lenwi arolwg, dylech ddewis  '<- BACK' ar "
-"eich porwr ac yna ail-lwytho'r dudalen flaenorol.  Byddwch yn colli'r "
-"atebion o'r dudalen flaenorol, ond bydd y gweddill yn dal i fodoli.  Gall y "
-"broblem hon ddigwydd os yw'r gweinyddwr wedi'i or-lwytho neu wedi'i or-"
-"ddefnyddio.  Ymddiheurwn am hyn."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Os derbyniwch chi'r neges hon wrth lenwi arolwg, dylech ddewis  '<- BACK' ar eich porwr ac yna ail-lwytho'r dudalen flaenorol.  Byddwch yn colli'r atebion o'r dudalen flaenorol, ond bydd y gweddill yn dal i fodoli.  Gall y broblem hon ddigwydd os yw'r gweinyddwr wedi'i or-lwytho neu wedi'i or-ddefnyddio.  Ymddiheurwn am hyn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:203
@@ -1665,9 +1563,8 @@ msgid "ERROR"
 msgstr "GWALL"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:175
-#, fuzzy
 msgid "We are sorry but you don't have permissions to do this."
-msgstr "Efallai  nad oes gennych hawl."
+msgstr "Ymddiheuriadau, nad oes hawl gennych i wneud hyn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:176
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:205
@@ -1676,9 +1573,9 @@ msgstr "Efallai  nad oes gennych hawl."
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:400
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:325
-#, fuzzy, php-format
+#, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "am ragor o gymorth"
+msgstr "Cysylltwch â %s ( %s ) am ragor o gymorth os gwelwch yn dda."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
@@ -1688,17 +1585,12 @@ msgstr "Yn anffodus mae eich sesiwn wedi dod i ben."
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
 #, fuzzy
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr ""
-"Rydych un ai wedi bod yn anactif am rhy hir neu roedd problemau gyda'ch "
-"cysylltiad."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "Rydych un ai wedi bod yn anactif am rhy hir neu roedd problemau gyda'ch cysylltiad."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
-#, fuzzy
 msgid "No available surveys"
-msgstr "Dim arolwg cyfatebol."
+msgstr "Dim arolygon ar gael"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:324
@@ -1707,9 +1599,8 @@ msgstr "Nid ydych wedi rhoi rhif adnabod ar gyfer yr arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:326
-#, fuzzy
 msgid "The following surveys are available:"
-msgstr "Dylid dileu'r arolygon canlynol"
+msgstr "Mae'r arolygon canlynol ar gael:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:379
 msgid "This survey is no longer available."
@@ -1730,27 +1621,22 @@ msgstr "Nid ydych wedi rhoi cyfrinair."
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
 #, fuzzy
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
 msgstr "Arolwg mynediad caeedig yw hwn, rhaid rhoi tocyn dilys."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
-msgstr ""
-"Nid yw'r tocyn sydd gennych yn ddilys, neu mae wedi cael ei ddefnyddio "
-"eisoes."
+msgid "The token you have provided is either not valid, or has already been used."
+msgstr "Nid yw'r tocyn sydd gennych yn ddilys, neu mae wedi cael ei ddefnyddio eisoes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1682
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1718
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1874
-#, fuzzy, php-format
+#, php-format
 msgid "For further information contact %s"
-msgstr "m ragor o wybodaeth, cysylltwch â"
+msgstr "Am ragor o wybodaeth, cysylltwch â %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:630
 msgid "Survey Saved"
@@ -1762,9 +1648,9 @@ msgstr "Nid oes arolwg cyfatebol wedi'i arbed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:739
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:879
-#, fuzzy, php-format
+#, php-format
 msgid "%s %% complete"
-msgstr "cyflawn"
+msgstr "%s %% cyflawn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1400
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:585
@@ -1773,11 +1659,9 @@ msgstr "cyflawn"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1785,21 +1669,17 @@ msgid ""
 msgstr ""
 "Annwyl {ENW CYNTAF},\n"
 "\n"
-"Mae'r e-bost hwn i gadarnhau eich bod wedi llenwi'r arolwg hwn sef  "
-"{SURVEYNAME} a bod eich ymateb wedi cael ei arbed.  Diolch yn fawr am gymryd "
-"rhan.  \n"
+"Mae'r e-bost hwn i gadarnhau eich bod wedi llenwi'r arolwg hwn sef  {SURVEYNAME} a bod eich ymateb wedi cael ei arbed.  Diolch yn fawr am gymryd rhan.  \n"
 "\n"
-"Os oes gennych unrhyw gwestiynau pellach am yr e-bost hwn, cysylltwch â  "
-"{ADMINNAME} ar {ADMINEMAIL}.\n"
+"Os oes gennych unrhyw gwestiynau pellach am yr e-bost hwn, cysylltwch â  {ADMINNAME} ar {ADMINEMAIL}.\n"
 "\n"
 "Yn gywir,\n"
 "\n"
 "{ADMINNAME}"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1419
-#, fuzzy
 msgid "Answer Submission for Survey"
-msgstr "Cyflwynwch eich arolwg."
+msgstr "Cyflwyno Ateb ar gyfer Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1421
 msgid "Survey Submitted"
@@ -1830,13 +1710,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Cafwyd gwall annisgwyl, ac ni ellir arbed eich atebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Nid yw eich atebion wedi'u colli. Maent wedi cael eu hanfon ar e-bost at "
-"weinyddydd yr holiadur a byddant yn cael eu rhoi yn ein cronfa ddata yn "
-"ddiweddarach."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Nid yw eich atebion wedi'u colli. Maent wedi cael eu hanfon ar e-bost at weinyddydd yr holiadur a byddant yn cael eu rhoi yn ein cronfa ddata yn ddiweddarach."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -1863,70 +1738,48 @@ msgid "Try to submit again"
 msgstr "Ceisiwch gyflwyno eto"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "Cadarnhewch fynediad i'r holiadur drwy ateb y cwestiynau diogelwch isod a chlicio i barhau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1716
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1753
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr ""
-"Mae hwn yn arolwg sydd wedi'i reoli. Rhaid i chi gael tocyn dilys i gymryd "
-"rhan."
+msgstr "Mae hwn yn arolwg sydd wedi'i reoli. Rhaid i chi gael tocyn dilys i gymryd rhan."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-#, fuzzy
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr ""
-"Os ydych wedi cael tocyn, dylech ei nodi yn y blwch isod a chlicio i barhau."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "Os ydych wedi cael tocyn, nodwch ef yn y blwch isod a chlicio i barhau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr ""
-"Os ydych wedi cael tocyn, dylech ei nodi yn y blwch isod a chlicio i barhau."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Os ydych wedi cael tocyn, dylech ei nodi yn y blwch isod a chlicio i barhau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-#, fuzzy
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
+msgid "Please confirm the token by answering the security question below and click continue."
 msgstr ""
-"Os ydych wedi cael tocyn, dylech ei nodi yn y blwch isod a chlicio i barhau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Nid oes gan yr holiadur unrhyw gwestiynau eto, ac ni ellir ei brofi na'i "
-"lenwi."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Nid oes gan yr holiadur unrhyw gwestiynau eto, ac ni ellir ei brofi na'i lenwi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
-#, fuzzy
 msgid "Previous"
-msgstr "Rhagolwg:"
+msgstr "Blaenorol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2180
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:494
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:570
-#, fuzzy
 msgid "Next"
-msgstr "nesaf"
+msgstr "Nesaf"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2572
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2585
-#, fuzzy
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Gwall:  Rhaid rhoi teitl i'r arolwg hwn."
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:64
 msgid "The email you used is not valid. Please try again."
@@ -1941,12 +1794,8 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "Diolch am gofrestru i gymryd rhan yn yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Anfonwyd e-bost i'r cyfeiriad a roddwyd, gyda manylion sut i ddefnyddio'r "
-"arolwg hwn.  Dilynwch y ddolen yn yr e-bost hwnnw i fynd ymlaen."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Anfonwyd e-bost i'r cyfeiriad a roddwyd, gyda manylion sut i ddefnyddio'r arolwg hwn.  Dilynwch y ddolen yn yr e-bost hwnnw i fynd ymlaen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -1957,9 +1806,8 @@ msgstr "Gweinyddwr yr Arolwg."
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:308
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:316
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:324
-#, fuzzy
 msgid "Choose one of the following answers"
-msgstr "Dewiswch un o'r canlynol yn unig"
+msgstr "Dewiswch un o'r atebion canlynol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:337
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:362
@@ -1968,9 +1816,9 @@ msgstr "Cliciwch ar bob un sy'n berthnasol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:342
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:367
-#, fuzzy, php-format
+#, php-format
 msgid "Check at most %d answers"
-msgstr "Gwirio ????"
+msgstr "Dewiswch %d ateb ar y mwyaf"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:352
 msgid "Choose your language"
@@ -1995,9 +1843,8 @@ msgid "Please complete all parts"
 msgstr "Llenwch yr holl rannau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:502
-#, fuzzy
 msgid "Please check the items"
-msgstr "Cliciwch ar o leiaf un eitem"
+msgstr "Cliciwch yr eitemau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:504
 msgid "Please rank all items"
@@ -2010,103 +1857,87 @@ msgstr "Cliciwch ar o leiaf un eitem"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
 #, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr ""
+msgstr "Os dewiswch '%s' yna mae'n rhaid i chi gynnwys disgrifiad."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
-"Ni allwch fynd ymlaen tan i chi gynnwys testun ar gyfer un neu ragor o "
-"gwestiynau."
+msgstr "Ni allwch fynd ymlaen tan i chi gynnwys testun ar gyfer un neu ragor o gwestiynau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Mae un neu fwy o'r cwestiynau gorfodol heb eu hateb. Ni chewch barhau tan i "
-"chi eu hateb"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Mae un neu fwy o'r cwestiynau gorfodol heb eu hateb. Ni chewch barhau tan i chi eu hateb"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Mae un neu fwy o'r cwestiynau heb eu hateb mewn modd dilys. Ni chewch barhau "
-"tan i'r atebion hyn fod yn ddilys"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Mae un neu fwy o'r cwestiynau heb eu hateb mewn modd dilys. Ni chewch barhau tan i'r atebion hyn fod yn ddilys"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
-msgstr ""
+msgstr "Dydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:639
-#, fuzzy
 msgid "Month"
-msgstr "Cyfrif"
+msgstr "Mis"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:640
-#, fuzzy
 msgid "Jan"
-msgstr "a"
+msgstr "Ion"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:641
 msgid "Feb"
-msgstr ""
+msgstr "Chwef"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:642
 msgid "Mar"
-msgstr ""
+msgstr "Maw"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:643
 msgid "Apr"
-msgstr ""
+msgstr "Ebr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:644
 msgid "May"
-msgstr ""
+msgstr "Mai"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:645
 msgid "Jun"
-msgstr ""
+msgstr "Meh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:646
 msgid "Jul"
-msgstr ""
+msgstr "Gorff"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:647
 msgid "Aug"
-msgstr ""
+msgstr "Awst"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:648
 msgid "Sep"
-msgstr ""
+msgstr "Medi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:649
 msgid "Oct"
-msgstr ""
+msgstr "Hyd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:650
-#, fuzzy
 msgid "Nov"
-msgstr "Na"
+msgstr "Tach"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:651
-#, fuzzy
 msgid "Dec"
-msgstr "Dileu"
+msgstr "Rhag"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:659
-#, fuzzy
 msgid "Year"
-msgstr "Clirio"
+msgstr "Blwyddyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:695
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Llenwch yr holl rannau"
+msgstr "Cwblhewch holl rannau o'r dyddiad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:709
 msgid "Format: YYYY-MM-DD"
-msgstr "Dull: YYYY-MM-DD"
+msgstr "Fformat: YYYY-MM-DD"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:710
 msgid "(eg: 2003-12-25 for Christmas day)"
@@ -2141,11 +1972,8 @@ msgstr "Dewiswch"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
-msgstr ""
-"Gwall: Nid yw'r set labeli a ddefnyddiwyd ar gyfer y cwestiwn hwn ar gael yn "
-"yr iaith hon."
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Gwall: Nid yw'r set labeli a ddefnyddiwyd ar gyfer y cwestiwn hwn ar gael yn yr iaith hon."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
 msgid "Please choose one of the following"
@@ -2167,9 +1995,7 @@ msgstr "Cliciwch ar eitem yn y rhestr ar y chwith, gan ddechrau gyda'r"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1523
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr ""
-"eitem sydd â'r safle uchaf yn eich tyb chi, gan symud ymlaen i'r un sydd â'r "
-"safle isaf."
+msgstr "eitem sydd â'r safle uchaf yn eich tyb chi, gan symud ymlaen i'r un sydd â'r safle isaf."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:936
@@ -2185,17 +2011,14 @@ msgid "Your Ranking"
 msgstr "Eich rhestr pwysigrwydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
-#, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
-msgstr "Cliciwch ar y siswrn sydd wrth ymyl pob eitem ar y dde"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "Cliciwch ar y siswrn sydd wrth ymyl pob eitem ar y dde i ddileu yr eitem olaf yn y rhestr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1918
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
-msgstr ""
+msgstr "Dewiswch '%d' ateb ar y mwyaf ar gyfer cwestiwn  \"%s\""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1862
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1889
@@ -2211,45 +2034,41 @@ msgid "Error: This question has no answers."
 msgstr "Gwall: Nid oes atebion i'r cwestiwn hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2118
-#, fuzzy
 msgid "Only numbers may be entered in these fields"
 msgstr "Dim ond rhifau y gallwch eu rhoi yn y maes hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2122
 #, php-format
 msgid "Total of all entries must not exceed %d"
-msgstr ""
+msgstr "Ni ddylai cyfanswm pob mewnbwn fod yn fwy na %d"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2126
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Rhaid i gyfanswm pob mewnbwn fod yn hafal i "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2130
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Rhaid i gyfanswm pob mewnbwn fod o leiaf "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2135
-#, fuzzy
 msgid "Total: "
-msgstr "Cyfanswm"
+msgstr "Cyfanswm:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2138
-#, fuzzy
 msgid "Remaining: "
-msgstr "Safle"
+msgstr "Yn weddill: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2168
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "Ateb yn annilys. Ni ddylai cyfanswm pob menwbwn fod yn fwy na "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Ateb yn annilys. Dylai cyfanswm pob menwbwn fod fod o leiaf "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2258,29 +2077,22 @@ msgstr "Dim ond rhifau y gallwch eu rhoi yn y maes hwn"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"Gwall: Nid yw'r set labeli a ddefnyddiwyd ar gyfer y cwestiwn hwn ar gael yn "
-"yr iaith hon a / neu nid yw'n bodoli."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Gwall: Nid yw'r set labeli a ddefnyddiwyd ar gyfer y cwestiwn hwn ar gael yn yr iaith hon a / neu nid yw'n bodoli."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
-#, fuzzy
 msgid "Error: There are no answers defined for this question."
-msgstr "Mae angen i chi ychwanegu atebion i'r cwestiwn hwn."
+msgstr "Gwall. Nid oes atebion wedi eu diffinio ar gyfer y cwestiwn hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:133
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:83
-#, fuzzy
 msgid "PDF Export"
-msgstr "Allfudo"
+msgstr "Allfudo PDF"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:290
-#, fuzzy
 msgid "Survey Name (ID)"
-msgstr "ID yr Arolwg:"
+msgstr "Enw Arolwg (ID)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:500
@@ -2310,9 +2122,8 @@ msgstr "Cwestiwn"
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:292
-#, fuzzy
 msgid "Your Answer"
-msgstr "Dim ateb"
+msgstr "Eich Ateb"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:53
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:457
@@ -2380,10 +2191,8 @@ msgstr "Gwirio cysondeb y data"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Os bydd gwallau'n dangos, efallai bydd rhaid cyflawni'r sgript hwn drachefn."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Os bydd gwallau'n dangos, efallai bydd rhaid cyflawni'r sgript hwn drachefn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
@@ -2585,9 +2394,8 @@ msgid "Error: You have to enter a name for this label set."
 msgstr "Gwall:  Rhaid i chi roi enw i'r set labeli hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
-#, fuzzy
 msgid "Create or Import New Label Set"
-msgstr "Creu neu fewnfudo arolwg newydd"
+msgstr "Creu neu Fewnforio Set Labeli Newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
 msgid "Create New Label Set"
@@ -2624,12 +2432,8 @@ msgid "Remove"
 msgstr "Dileu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-#, fuzzy
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"Ni allwch ddileu'r eitemau hyn.  Rhaid cael o leiaf un iaith mewn set labeli."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "Ni allwch ddileu'r eitem hon.  Rhaid cael o leiaf un iaith mewn set labeli."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2653,7 +2457,7 @@ msgstr "Dewis Ffeil CSV"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:73
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:182
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr "Amnewid Dolenni Adnoddau ?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:253
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:666
@@ -2714,9 +2518,8 @@ msgstr "Trefn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:388
-#, fuzzy
 msgid "Label:"
-msgstr "Labeli"
+msgstr "Label:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:359
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:821
@@ -2765,9 +2568,8 @@ msgid "Add new label"
 msgstr "Ychwanegu label newydd "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:394
-#, fuzzy
 msgid "Fix Order"
-msgstr "Trefn"
+msgstr "Cywiro Trefn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
@@ -2798,12 +2600,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr "Rhaid gosod labeli newydd ar y ffolder iaith gyntaf."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"Ni allwch newid codau, ychwanegu na dileu cofnodion yn y set labeli hwn "
-"oherwydd mae'n cael ei ddefnyddio gan arolwg sy'n fyw."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Ni allwch newid codau, ychwanegu na dileu cofnodion yn y set labeli hwn oherwydd mae'n cael ei ddefnyddio gan arolwg sy'n fyw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2818,12 +2616,12 @@ msgstr "Dewiswch ffeil i'w fewnfudo"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2589
 msgid "zip library not supported by PHP, Import ZIP Disabled"
-msgstr ""
+msgstr "llyfrgell zip ddim ar gael o fewn PHP, Analluogir Mewnforio ZIP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:461
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2598
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "Rheolaeth Adnoddau wedi eu Huwchlwytho"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2605
@@ -2834,18 +2632,17 @@ msgstr "Pori'r atebion a arbedwyd"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2606
 msgid "Export Resources As ZIP Archive"
-msgstr ""
+msgstr "Allforio Adnoddau fel archif ZIP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:470
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2607
-#, fuzzy
 msgid "Select ZIP File:"
-msgstr "Dewis Ffeil CSV"
+msgstr "Dewiswch Ffeil ZIP:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:472
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2609
 msgid "Import Resources ZIP Archive"
-msgstr ""
+msgstr "Mewnforio Adnoddau Archif ZIP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:489
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:830
@@ -2853,19 +2650,12 @@ msgid "Fix Sort"
 msgstr "Trwsio Sort"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"Mae rhai arolygon yn defnyddio'r set labeli hwn ar hyn o bryd.  Bydd "
-"diwygio'r codau, ychwanegu neu ddileu cofnodion i'r set labeli hwn yn gallu "
-"creu canlyniadau annymunol mewn arolygon eraill."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Mae rhai arolygon yn defnyddio'r set labeli hwn ar hyn o bryd.  Bydd diwygio'r codau, ychwanegu neu ddileu cofnodion i'r set labeli hwn yn gallu creu canlyniadau annymunol mewn arolygon eraill."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
-"Wedi methu copio labeli sydd eisioes wedi'u diffinio i ieithoedd eraill."
+msgstr "Wedi methu copio labeli sydd eisioes wedi'u diffinio i ieithoedd eraill."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:588
 msgid "Failed to delete labels for removed languages"
@@ -2876,12 +2666,8 @@ msgid "Update of Label Set failed"
 msgstr "Wedi methu diweddaru'r set labeli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
-"Methu dileu'r set labeli - mae cwestiynau sy'n dibynnu ar hwn.  Rhaid "
-"dileu'r cwestiynau hyn yn gyntaf."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Methu dileu'r set labeli - mae cwestiynau sy'n dibynnu ar hwn.  Rhaid dileu'r cwestiynau hyn yn gyntaf."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
@@ -2900,12 +2686,8 @@ msgid "Failed to insert label"
 msgstr "Wedi methu gosod label"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"Mae'r cod label hwn yn cael ei ddefnyddio eisioes yn y set labeli hwn.  "
-"Dewiswch god arall neu ailenwi'r un presennol."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Mae'r cod label hwn yn cael ei ddefnyddio eisioes yn y set labeli hwn.  Dewiswch god arall neu ailenwi'r un presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2934,12 +2716,8 @@ msgstr "Mewnfudo grwp"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"Cafwyd camgymeriad wrth lwytho'ch ffeil.  Mae'n bosibl ei fod oherwydd "
-"caniatâd anghywir yn eich ffolder %s"
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Cafwyd camgymeriad wrth lwytho'ch ffeil.  Mae'n bosibl ei fod oherwydd caniatâd anghywir yn eich ffolder %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:41
@@ -3041,38 +2819,25 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Nid yw'r ffeil yn ffeil grwp LimeSurvey.  Wedi methu mewnfudo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
+msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr "Ni allwch fewnfudo grwp sydd heb iaith sylfaen yr arolwg presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Ni allwch fewnfudo cwestiwn sydd heb iaith sylfaen yr arolwg presennol."
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Ni allwch fewnfudo cwestiwn sydd heb iaith sylfaen yr arolwg presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
-"Ni allwch fewnfudo setiau labeli sydd ddim yn cynnwys iaith sylfaen yr "
-"arolwg presennol."
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Ni allwch fewnfudo setiau labeli sydd ddim yn cynnwys iaith sylfaen yr arolwg presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
 msgid "Import partially successful."
 msgstr "Mewnfudo wedi rhannol lwyddo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr ""
-"Ni chafodd yr ieithoedd canlynol yn y grwp hwn eu mewnfudo gan nad yw'r "
-"arolwg yn cynnwys iaith o'r fath:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Ni chafodd yr ieithoedd canlynol yn y grwp hwn eu mewnfudo gan nad yw'r arolwg yn cynnwys iaith o'r fath:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
 msgid "Group Import Summary"
@@ -3112,7 +2877,6 @@ msgid "Conditions"
 msgstr "Amodau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:671
-#, fuzzy
 msgid "Question Attributes: "
 msgstr "Priodoleddau Cwestiwn:"
 
@@ -3339,7 +3103,7 @@ msgstr "Newid y cofnod presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "Mewnfudo nid fel atebion terfynol?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:95
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2199
@@ -3377,12 +3141,8 @@ msgid "Important Note:"
 msgstr "Nodyn pwysigL"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"PEIDIWCH ag adnewyddu'r dudalen hon gan y bydd yn mewnfudo'r dudalen eto ac "
-"yn creu copi dyblyg."
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "PEIDIWCH ag adnewyddu'r dudalen hon gan y bydd yn mewnfudo'r dudalen eto ac yn creu copi dyblyg."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
 msgid "Total records imported:"
@@ -3481,9 +3241,8 @@ msgid "Filter incomplete answers:"
 msgstr "Ffiltro atebion anghyflawn:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1269
-#, fuzzy
 msgid "Enabled"
-msgstr "Galluogi"
+msgstr "Galluogwyd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1270
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:615
@@ -3493,15 +3252,12 @@ msgid "Disabled"
 msgstr "Anabl"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
-#, fuzzy
 msgid "Show Graphs"
-msgstr "Dangos yr olaf .."
+msgstr "Dangos Graffiau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1282
 msgid "View Stats"
@@ -3626,9 +3382,9 @@ msgid "Null values are ignored in calculations"
 msgstr "Gwerthoedd nwl yn cael eu hanwybyddu yn y cyfrifiadau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2221
-#, fuzzy, php-format
+#, php-format
 msgid "Q1 and Q3 calculated using %s"
-msgstr "Q1 a Q3 yn cael eu cyfrifo'n defnyddio"
+msgstr "Q1 a Q3 yn cael eu cyfrifo gan ddefnyddio %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2221
 msgid "minitab method"
@@ -3741,25 +3497,15 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "Nid yw'r tocynnau wedi'u cychwyn ar gyfer yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
-"Os byddwch yn cychwyn y tocynnau ar gyfer yr arolwg hwn, bydd yr arolwg ar "
-"gael i ddefnyddwyr sydd wedi'i neilltuo â thocyn yn unig."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Os byddwch yn cychwyn y tocynnau ar gyfer yr arolwg hwn, bydd yr arolwg ar gael i ddefnyddwyr sydd wedi'i neilltuo â thocyn yn unig."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
 #, fuzzy
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Os ydych chi'n gosod yr arolwg yn ddienw, a'r atebion i gael stamp amser a "
-"chreu tabl tocynnau, bydd LimeSurvey yn nodi eich tocynnau gorffenedig gyda "
-"'Y', yn lle dyddiad/amser i sicrhau bod y cyfrangowyr yn parhau'n ddienw."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Os ydych chi'n gosod yr arolwg yn ddienw, a'r atebion i gael stamp amser a chreu tabl tocynnau, bydd LimeSurvey yn nodi eich tocynnau gorffenedig gyda 'Y', yn lle dyddiad/amser i sicrhau bod y cyfrangowyr yn parhau'n ddienw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
@@ -3808,7 +3554,7 @@ msgstr "Nodwedd 2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:416
 msgid "Show Token Summary"
-msgstr ""
+msgstr "Dangos Crynodeb Tocynnau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1742
@@ -3836,9 +3582,8 @@ msgid "Export Tokens to CSV file"
 msgstr "Allfudo tocynnau i ffeil CSV"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:448
-#, fuzzy
 msgid "Edit Email Templates"
-msgstr "Allfudo'r Templed"
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:450
 msgid "Send email invitation"
@@ -3874,9 +3619,8 @@ msgid "Total Surveys Completed"
 msgstr "Cyfanswm yr arolygon a gyflawnwyd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:542
-#, fuzzy
 msgid "Edit Email Settings"
-msgstr "Golygu set labeli"
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:555
 msgid "Invitation Email Subject:"
@@ -3974,8 +3718,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3996,8 +3739,7 @@ msgstr ""
 "\n"
 "Yn ddiweddar fe wnaethom eich gwahodd chi i gymryd rhan mewn arolwg.  \n"
 "\n"
-"Rydym yn sylwi nad ydych wedi llenwi'r arolwg, a hoffwn eich atgoffa chi bod "
-"yr arolwg yn dal i fod yn fyw os ydych chi am gymryd rhan.  \n"
+"Rydym yn sylwi nad ydych wedi llenwi'r arolwg, a hoffwn eich atgoffa chi bod yr arolwg yn dal i fod yn fyw os ydych chi am gymryd rhan.  \n"
 "\n"
 "Enw'r arolwg yw:\n"
 "\"{ENW'R AROLWG}\"\n"
@@ -4015,9 +3757,8 @@ msgstr ""
 "{SURVEYURL}"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:577
-#, fuzzy
 msgid "Confirmation Email Subject:"
-msgstr "E-bost cadarnhau"
+msgstr "Teitl E-bost Cadarnhad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:579
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1204
@@ -4026,9 +3767,8 @@ msgid "Confirmation of completed survey"
 msgstr "Cadarnhau bod yr arolwg wedi'i orffen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:582
-#, fuzzy
 msgid "Confirmation Email:"
-msgstr "E-bost cadarnhau."
+msgstr "E-bost Cadarnhad:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:584
 msgid "Confirmation Email"
@@ -4055,29 +3795,23 @@ msgstr "E-bost cofrestru cyhoeddus"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "Annwyl {ENW CYNTAF},\n"
 "\n"
-"Rydych chi, neu rywun sy'n defnyddio'ch cyfeiriad e-bost, wedi cofrestru i "
-"gymryd rhan mewn arolwg ar-lein o'r enw  {ENW'R AROLWG}.\n"
+"Rydych chi, neu rywun sy'n defnyddio'ch cyfeiriad e-bost, wedi cofrestru i gymryd rhan mewn arolwg ar-lein o'r enw  {ENW'R AROLWG}.\n"
 "\n"
 "I lenwi'r holiadur, cliciwch ar y ddolen ganlynol:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Os oes gennych unrhyw gwestiynau am yr arolwg hwn, neu os na wnaethoch "
-"gofrestru i gymryd rhan ac yn credu eich bod wedi derbyn yr e-bost mewn "
-"camgymeriad, cysylltwch â  {ADMINNAME} ar {ADMINEMAIL}."
+"Os oes gennych unrhyw gwestiynau am yr arolwg hwn, neu os na wnaethoch gofrestru i gymryd rhan ac yn credu eich bod wedi derbyn yr e-bost mewn camgymeriad, cysylltwch â  {ADMINNAME} ar {ADMINEMAIL}."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 #, fuzzy
@@ -4201,9 +3935,8 @@ msgstr "E-bost"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:823
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1614
-#, fuzzy
 msgid "Email Status"
-msgstr "Statws"
+msgstr "Statws E-bost"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:833
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1639
@@ -4260,40 +3993,24 @@ msgid "Delete Tokens Table"
 msgstr "Dileu tabl tocynnau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"Os y byddwch yn dileu'r tabl hwn, ni fydd angen y tocynnau i fynd mewn i'r "
-"arolwg hwn."
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Os y byddwch yn dileu'r tabl hwn, ni fydd angen y tocynnau i fynd mewn i'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"Bydd copi wrth gefn o'r tabl hwn yn cael ei wneud os ewch chi ymlaen.  Bydd "
-"gweinyddwr y system yn gallu cael mynediad i'r tabl hwn."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Bydd copi wrth gefn o'r tabl hwn yn cael ei wneud os ewch chi ymlaen.  Bydd gweinyddwr y system yn gallu cael mynediad i'r tabl hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
 msgstr "Dileu Tocynnau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"Mae'r tabl tocynnau wedi cael ei ddileu ac nid oes angen y tocynnau i gael "
-"mynediad i'r arolwg hwn."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Mae'r tabl tocynnau wedi cael ei ddileu ac nid oes angen y tocynnau i gael mynediad i'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Mae copi wrth gefn o'r tabl hwn wedi cael ei wneud.  Bydd gweinyddwr y "
-"system yn gallu cael mynediad iddo."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Mae copi wrth gefn o'r tabl hwn wedi cael ei wneud.  Bydd gweinyddwr y system yn gallu cael mynediad iddo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
@@ -4318,9 +4035,8 @@ msgstr "Neges"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1095
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1116
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1365
-#, fuzzy
 msgid "Sending to Token ID"
-msgstr "Yn anfon i TID rhif:"
+msgstr "Anfon i ID Tocyn:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
@@ -4342,18 +4058,13 @@ msgstr "Gwahoddiad wedi'i anfon i:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr "Post i  {FIRSTNAME} {LASTNAME} ({EMAIL}) wedi methu."
+msgstr "E-bost i {FIRSTNAME} {LASTNAME} ({EMAIL}) wedi methu. Neges wall:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"Mae rhagor o negeseuon e-bost i ddod nag y gellir eu hanfon mewn un swp.  "
-"Parhewch i anfon negeseuon e-bost trwy glicio isod."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Mae rhagor o negeseuon e-bost i ddod nag y gellir eu hanfon mewn un swp.  Parhewch i anfon negeseuon e-bost trwy glicio isod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1468
@@ -4361,14 +4072,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Mae dal i fod  {EMAILCOUNT} o negeseuon e-bost i'w hanfon."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"Nid oedd unrhyw negeseuon e-bost cymwys i'w hanfon.  Y rheswm oedd nad oedd "
-"yr un ohonynt yn cwrdd â'r meini prawf o - gael cyfeiriad e-bost, heb "
-"dderbyn gwahoddiad yn barod, wedi cwblhau'r arolwg yn barod a chael tocyn."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Nid oedd unrhyw negeseuon e-bost cymwys i'w hanfon.  Y rheswm oedd nad oedd yr un ohonynt yn cwrdd â'r meini prawf o - gael cyfeiriad e-bost, heb dderbyn gwahoddiad yn barod, wedi cwblhau'r arolwg yn barod a chael tocyn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
@@ -4407,26 +4112,16 @@ msgid "Reminder sent to:"
 msgstr "Nodyn atgoffa wedi'i anfon i:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"Nid oedd unrhyw negeseuon e-bost cymwys i'w hanfon.    Y rheswm oedd nad "
-"oedd yr un ohonynt yn cwrdd â'r meini prawf o - gael cyfeiriad e-bost, wedi "
-"derbyn gwahoddiad, ond heb gwblhau'r arolwg hyd yma.  "
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Nid oedd unrhyw negeseuon e-bost cymwys i'w hanfon.    Y rheswm oedd nad oedd yr un ohonynt yn cwrdd â'r meini prawf o - gael cyfeiriad e-bost, wedi derbyn gwahoddiad, ond heb gwblhau'r arolwg hyd yma.  "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
 msgstr "Creu Tocynnau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"Bydd clicio 'ie' yn creu tocynnau ar gyfer pawb yn y rhestr docynnau sydd "
-"heb dderbyn un.  A yw hyn yn iawn?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Bydd clicio 'ie' yn creu tocynnau ar gyfer pawb yn y rhestr docynnau sydd heb dderbyn un.  A yw hyn yn iawn?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4454,12 +4149,8 @@ msgid "Auto"
 msgstr "Awto"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"Gallwch adael hwn yn wag a chreu tocynnau'n awtomatig gan ddefnyddio 'Creu "
-"Tocynnau'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Gallwch adael hwn yn wag a chreu tocynnau'n awtomatig gan ddefnyddio 'Creu Tocynnau'"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
@@ -4482,10 +4173,8 @@ msgstr "Wedi methu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "Mae yna record yn bodoli eisioes gyda'r tocyn yna yn y tabl. Ni ellir defnyddio'r un tocyn gyda mwy nag un record"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
 #, fuzzy
@@ -4508,35 +4197,20 @@ msgstr "Nodyn:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
 #, fuzzy
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
-"Dylai'r ffeil fod yn ffeil safonol CSV (coma'n amgaeedig) gyda dyfynodau "
-"dwbl o amgylch y gwerthoedd (diofyn ar gyfer openoffice ac excel).  Dylai'r "
-"llinell gyntaf gynnwys gwybodaeth pennawd (a fydd yn cael ei ddileu).  Dylid "
-"trefnu'r wybodaeth fel a ganlyn: \"enw cyntaf, cyfenw, e-bost [tocyn], [cod "
-"iaith], [priodoledd1], [priodoledd2]\"."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Dylai'r ffeil fod yn ffeil safonol CSV (coma'n amgaeedig) gyda dyfynodau dwbl o amgylch y gwerthoedd (diofyn ar gyfer openoffice ac excel).  Dylai'r llinell gyntaf gynnwys gwybodaeth pennawd (a fydd yn cael ei ddileu).  Dylid trefnu'r wybodaeth fel a ganlyn: \"enw cyntaf, cyfenw, e-bost [tocyn], [cod iaith], [priodoledd1], [priodoledd2]\"."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
 msgid "Upload LDAP entries"
 msgstr "Llwytho cofnodion LDAP"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Diffinnir ymholiadau LDAP gan y gweinyddwr yn y ffeil config-ldap.php"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"Heb ddarganfod y ffeil llwytho i fyny.  Gwiriwch eich caniatâd a'r llwybr ar "
-"gyfer y cyfeiriadur llwytho i fyny."
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Heb ddarganfod y ffeil llwytho i fyny.  Gwiriwch eich caniatâd a'r llwybr ar gyfer y cyfeiriadur llwytho i fyny."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
@@ -4594,7 +4268,7 @@ msgstr "Dewiswch y ffeil CSV i'w lwytho i fyny:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2200
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2234
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Hidlo cyfeiriadau e-bost gwag:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2201
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2235
@@ -4635,9 +4309,7 @@ msgstr "Nid ydych wedi dewis arolwg ar gyfer cofnodi data."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:111
 #, fuzzy
 msgid "The token you have provided is not valid or has already been used."
-msgstr ""
-"Nid yw'r tocyn sydd gennych yn ddilys, neu mae wedi cael ei ddefnyddio "
-"eisoes."
+msgstr "Nid yw'r tocyn sydd gennych yn ddilys, neu mae wedi cael ei ddefnyddio eisoes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
@@ -4655,9 +4327,7 @@ msgstr "Golygu'r cofnod hwn"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:124
 #, fuzzy
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr ""
-"Mae'r arolwg hwn yn defnyddio atebion di-enw, ni allwch ddiweddaru'r ateb "
-"hwn."
+msgstr "Mae'r arolwg hwn yn defnyddio atebion di-enw, ni allwch ddiweddaru'r ateb hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:151
 msgid "Try again"
@@ -4690,16 +4360,12 @@ msgid "Start Language:"
 msgstr "Dechrau Iaith:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "Arbedwyd eich hatebion yn llwyddianus. Fe fyddwch yn derbyn e-bost i gadarnhau hyn. Gwnewch yn siwr eich bod yn arbed eich cyfrinair, gan na fydd yn bosibl i ni ei adfer i chi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
-msgstr ""
-"Mae cofnod tocyn wedi cael ei greu hefyd ar gyfer yr arolwg a arbedwyd."
+msgstr "Mae cofnod tocyn wedi cael ei greu hefyd ar gyfer yr arolwg a arbedwyd."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:431
 msgid "An email has been sent with details about your saved survey"
@@ -4795,37 +4461,37 @@ msgstr "Nid yw'r arolwg hwn yn fyw.  Ni allwch arbed eich ateb."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:98
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:112
 msgid "Firstname from token"
-msgstr ""
+msgstr "Enw cyntaf o'r tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:84
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:99
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:113
 msgid "Lastname from token"
-msgstr ""
+msgstr "Enw olaf o'r tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:85
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:94
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:114
 msgid "Email from the token"
-msgstr ""
+msgstr "E-bost o'r tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:86
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:102
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:115
 #, fuzzy
 msgid "Attribute_1 from token"
-msgstr "Nodwedd 1"
+msgstr "Nodwedd_1 o'r tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:116
 #, fuzzy
 msgid "Attribute_2 from token"
-msgstr "Nodwedd 1"
+msgstr "Nodwedd_2 o'r tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:95
 msgid "Token code for this participant"
-msgstr ""
+msgstr "Cod tocyn y cyfranogwr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:100
 #, fuzzy
@@ -4854,7 +4520,7 @@ msgstr "Dim arolwg cyfatebol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:403
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Nid oes newidyn ar gael ar gyfer y maes hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:410
 #, fuzzy
@@ -4863,7 +4529,7 @@ msgstr "Ffeiliau Safonol:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:422
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Meusydd Atebion Blaenorol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:451
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:457
@@ -4874,7 +4540,7 @@ msgstr "Mae pob cofnod tocyn wedi cael eu dileu"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #, php-format
 msgid "Survey Format is %s:"
-msgstr ""
+msgstr "Fformat Afolwg yw %s:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2235
@@ -4885,12 +4551,12 @@ msgstr "Y cyfan mewn un"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Dim ond atebion tudalennau Blaenorol sydd ar gael"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #, php-format
 msgid "Survey mode is set to %s:"
-msgstr ""
+msgstr "Gosodwyd modd yr Arolwg i %s:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2232
@@ -4957,7 +4623,7 @@ msgstr "i i gyfeiriadur templed newydd."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:136
 #, fuzzy, php-format
 msgid "Directory with the name `%s` already exists - choose another name"
-msgstr "yn bodoli eisoes - dewiswch enw arall."
+msgstr "Mae ffolder o'r enw `%s` yn bodoli eisoes - dewiswch enw arall"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:138
 #, fuzzy, php-format
@@ -5086,10 +4752,8 @@ msgid "Preview:"
 msgstr "Rhagolwg:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr ""
-"Mewnfudo atebion o hen dabl arolwg (sydd wedi dadfywiogi) i arolwg byw."
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Mewnfudo atebion o hen dabl arolwg (sydd wedi dadfywiogi) i arolwg byw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
@@ -5108,14 +4772,8 @@ msgid "Export database"
 msgstr "Allfudo'r cronfa ddata."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"Dim ond ar gyfer cronfeydd data MySQL y gellir allfudo'r cronfa ddata.  Ar "
-"gyfer mathau eraill o gronfa ddata, defnyddiwch y mecanwaith wrth gefn i "
-"greu tomen cronfa ddata."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Dim ond ar gyfer cronfeydd data MySQL y gellir allfudo'r cronfa ddata.  Ar gyfer mathau eraill o gronfa ddata, defnyddiwch y mecanwaith wrth gefn i greu tomen cronfa ddata."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5133,40 +4791,20 @@ msgid "You are about to delete this survey"
 msgstr "Rydych ar fin dileu'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Bydd y broses hon yn dileu'r arolwg hwn a phob grwp, cwestiynau, atebion ac "
-"amodau cysylltiedig."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Bydd y broses hon yn dileu'r arolwg hwn a phob grwp, cwestiynau, atebion ac amodau cysylltiedig."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Cyn i chi ddileu'r arolwg hwn, rydym yn argymell eich bod yn allfudo'r "
-"arolwg cyfan o'r brif sgrin weinyddol."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Cyn i chi ddileu'r arolwg hwn, rydym yn argymell eich bod yn allfudo'r arolwg cyfan o'r brif sgrin weinyddol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Mae'r arolwg yn fyw, ac mae tabl ymatebion yn bodoli.  Os y gwnewch ddileu'r "
-"arolwg, bydd yr atebion yn cael ei dileu.  Rydym yn argymell eich bod yn "
-"allfudo'r atebion cyn dileu'r arolwg."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Mae'r arolwg yn fyw, ac mae tabl ymatebion yn bodoli.  Os y gwnewch ddileu'r arolwg, bydd yr atebion yn cael ei dileu.  Rydym yn argymell eich bod yn allfudo'r atebion cyn dileu'r arolwg."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"Mae gan yr arolwg hwn dabl tocynnau cysylltiedig.  Os y gwnewch ddileu'r "
-"arolwg hwn, bydd y tabl tocynnau'n cael ei ddileu.  Rydym yn argymell "
-"allfudo neu ategu'r tocynnau hyn cyn dileu'r arolwg."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Mae gan yr arolwg hwn dabl tocynnau cysylltiedig.  Os y gwnewch ddileu'r arolwg hwn, bydd y tabl tocynnau'n cael ei ddileu.  Rydym yn argymell allfudo neu ategu'r tocynnau hyn cyn dileu'r arolwg."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5201,7 +4839,7 @@ msgstr "Ychwanegu Grwp Defnyddwyr newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "Gosod templedau y gall y defnyddiwr hwn gael mynediad iddynt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
 #, fuzzy
@@ -5311,7 +4949,7 @@ msgstr "Golygu Defnyddiwr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:535
 msgid "Take Ownership"
-msgstr ""
+msgstr "Cymeryd Perchnogaeth"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:544
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:617
@@ -5488,17 +5126,12 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "Nid yw'r ffeil hwn yn ffeil cwestiwn LimeSurvey.  Wedi methu mewnfudo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Ymddiheuriadau, rhaid mewnforio cwestiynau o'r un fersiwn. Methwyd mewnforio."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"Ni allwch fewnfudo cwestiwn sydd ddim yn cynnwys iaith sylfaen yr arolwg "
-"presennol."
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Ni allwch fewnfudo cwestiwn sydd ddim yn cynnwys iaith sylfaen yr arolwg presennol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
@@ -5552,19 +5185,17 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:261
 #, fuzzy
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr ""
-"Nid yw'r ffeil hwn yn ffeil set labeli LimeSurvey.  Mewnfudo wedi methu."
+msgstr "Nid yw'r ffeil hwn yn ffeil set labeli LimeSurvey.  Mewnfudo wedi methu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:282
-#, fuzzy
 msgid "Copy failed"
-msgstr "Wedi'u gorffen"
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:112
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:291
 msgid "OK"
-msgstr ""
+msgstr "Iawn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:122
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:301
@@ -5592,7 +5223,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:160
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:339
 msgid "Partial"
-msgstr ""
+msgstr "Rhannol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:164
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:172
@@ -5603,32 +5234,28 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:175
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:354
-#, fuzzy
 msgid "Imported Resources for"
-msgstr "Mewnfudo ymatebion"
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:177
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:356
-#, fuzzy
 msgid "Resources Import Summary"
-msgstr "Crynodeb Mewnfudo'r Arolwg"
+msgstr "Crynodeb Mewnfudo'r Adnoddau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:178
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:357
-#, fuzzy
 msgid "Total Imported files"
-msgstr "Cyfanswm y cofnodion a fewnfudwyd:"
+msgstr "Cyfanswm y ffeiliau a fewnforiwyd:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:179
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:358
 msgid "Total Errors"
-msgstr ""
+msgstr "Cyfanswm Gwallau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:183
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:189
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:362
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:368
-#, fuzzy
 msgid "File"
 msgstr "Ffeil"
 
@@ -5642,9 +5269,8 @@ msgid "Date Created"
 msgstr "Dyddiad creu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:45
-#, fuzzy
 msgid "Owner"
-msgstr "Arall"
+msgstr "Perchenog"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:46
 msgid "Access"
@@ -5660,19 +5286,16 @@ msgid "Status"
 msgstr "Statws"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:49
-#, fuzzy
 msgid "Full Responses"
-msgstr "ymatebion llawn"
+msgstr "Ymatebion Llawn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:50
-#, fuzzy
 msgid "Partial Responses"
-msgstr "Clirio atebion"
+msgstr "Ymatebion Rhannol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:51
-#, fuzzy
 msgid "Total Responses"
-msgstr "Allfudo Ymatebion"
+msgstr "Cyfanswm Ymatebion"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:63
 msgid "Anonymous"
@@ -5755,23 +5378,23 @@ msgstr "Iaith bresennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:296
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Hoff fodd golygydd HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:299
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Modd golygydd HTML diofyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:300
 msgid "No HTML editor"
-msgstr ""
+msgstr "Dim golygydd HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:301
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "Golygydd HTML mewnlin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:302
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "Golygydd HTML mewn blwch newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:310
 msgid "Users"
@@ -5799,11 +5422,8 @@ msgstr "Dangos PHPInfo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Ni ellir actifadu'r arolwg.  Nid oes gennych hawl neu nid oes yna gwestiynau."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Ni ellir actifadu'r arolwg.  Nid oes gennych hawl neu nid oes yna gwestiynau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
@@ -5844,14 +5464,12 @@ msgstr "Dileu'r Arolwg Presennol"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:615
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:617
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:22
-#, fuzzy
 msgid "Reset Survey Logic"
-msgstr "Dileu'r Arolwg"
+msgstr "Dileu Rhesymeg Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:612
-#, fuzzy
 msgid "This survey's questions don't use conditions"
-msgstr "Nid yw'r arolwg hwn yn fyw ar hyn o bryd."
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:630
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:631
@@ -5861,16 +5479,14 @@ msgstr "Newid trefn y grwp."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:638
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:639
-#, fuzzy
 msgid "Disabled - Change Group Order"
-msgstr "Newid trefn y grwp."
+msgstr "Analluogwyd - Newid trefn y grŵp."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:647
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:648
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1924
-#, fuzzy
 msgid "Export Survey Structure"
-msgstr "Allfudo Arolwg"
+msgstr "Allfudo Strwythur Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:661
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:662
@@ -5879,9 +5495,8 @@ msgstr "Gosod Rheolau'r Asesiad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:674
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:675
-#, fuzzy
 msgid "Set Survey Quotas"
-msgstr "Gosod Hawliau'r Arolwg"
+msgstr "Gosod Cwota'r Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:688
@@ -5896,8 +5511,7 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "Actifadu / golygu tocynnau i'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
@@ -5906,27 +5520,23 @@ msgstr "Ychwanegu grwp newydd i'r arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:750
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:751
-#, fuzzy
 msgid "Hide details of this Survey"
 msgstr "Cuddio manylion yr arolwg hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:753
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:754
-#, fuzzy
 msgid "Show details of this survey"
 msgstr "Dangos manylion yr arolwg hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:758
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:759
-#, fuzzy
 msgid "Close this survey"
-msgstr "Cau'r Arolwg hwn."
+msgstr "Cau'r arolwg hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:789
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2465
-#, fuzzy
 msgid "Answers to this survey are anonymized."
-msgstr "Wedi methu mewnfudo'r ffeil arolwg."
+msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:790
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2464
@@ -5963,8 +5573,7 @@ msgstr "Mae'n defnyddio cwcis ar gyfer rheoli mynediad."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:798
 msgid "If tokens are used, the public may register for this survey"
-msgstr ""
-"Os defnyddir tocynnau, gall y cyhoedd gofrestru ar gyfer yr arolwg hwn."
+msgstr "Os defnyddir tocynnau, gall y cyhoedd gofrestru ar gyfer yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:799
 msgid "Participants can save partially finished surveys"
@@ -6073,12 +5682,8 @@ msgid "Edit Current Group"
 msgstr "Golygu'r Grwp Presennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Bydd dileu'r grwp hwn hefyd yn dileu unrhyw gwestiynau ac atebion sydd "
-"ynddo.  Ydych chi'n siwr eich bod am barhau?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Bydd dileu'r grwp hwn hefyd yn dileu unrhyw gwestiynau ac atebion sydd ynddo.  Ydych chi'n siwr eich bod am barhau?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -6086,12 +5691,8 @@ msgid "Delete Current Group"
 msgstr "Dileu'r Grwp Presennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Mae'n amhosibl dileu'r grwp hwn gan fod yna o leiaf un cwestiwn sydd ag amod "
-"ar ei gynnwys."
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Mae'n amhosibl dileu'r grwp hwn gan fod yna o leiaf un cwestiwn sydd ag amod ar ei gynnwys."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6128,29 +5729,20 @@ msgid "Edit Current Question"
 msgstr "Golygu'r cwestiwn presennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Bydd dileu'r cwestiwn hwn hefyd yn dileu unrhyw atebion.  Ydych chi'n siwr "
-"eich bod am barhau?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Bydd dileu'r cwestiwn hwn hefyd yn dileu unrhyw atebion.  Ydych chi'n siwr eich bod am barhau?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
 msgstr "Dileu'r cwestiwn presennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr ""
-"Mae'n amhosibl dileu'r cwestiwn hwn gan fod yna amod ar o leiaf un o'r "
-"cwestiynau."
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Mae'n amhosibl dileu'r cwestiwn hwn gan fod yna amod ar o leiaf un o'r cwestiynau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
-#, fuzzy
 msgid "Disabled - Delete Current Question"
-msgstr "Dileu'r cwestiwn presennol"
+msgstr "Analluogwyd - Dileu'r cwestiwn presennol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1185
 msgid "Export this Question"
@@ -6248,24 +5840,20 @@ msgid "You need to add answers to this question"
 msgstr "Mae angen i chi ychwanegu atebion i'r cwestiwn hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1346
-#, fuzzy
 msgid "You need to choose a label set for this question!"
-msgstr "Mae angen i chi ddewis Set Labeli i'r cwestiwn hwn."
+msgstr "Mae angen i chi ddewis set labeli ar gyfer y cwestiwn hwn!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1366
-#, fuzzy
 msgid "Second Label Set"
-msgstr "Golygu set labeli"
+msgstr "Ail Set labeli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1370
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Mae angen i chi ddewis Set Labeli i'r cwestiwn hwn."
+msgstr "Mae angen i chi ddewis ail set labeli ar gyfer y cwestiwn hwn!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1384
-#, fuzzy
 msgid "Edit/Add second Label Sets"
-msgstr "Golygu/Ychwanegu Setiau Labeli"
+msgstr "Golygu/Ychwanegu ail Set Labeli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1396
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:107
@@ -6301,9 +5889,8 @@ msgstr "Diofyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1573
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1629
-#, fuzzy
 msgid "Answer:"
-msgstr "Ateb"
+msgstr "Ateb:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1617
 msgid "New Answer"
@@ -6315,12 +5902,8 @@ msgid "Add new Answer"
 msgstr "Ychwanegu ateb newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Ni allwch ychwanegu atebion neu olygu codau ateb i'r math hwn o gwestiwn "
-"oherwydd mae'r arolwg yn fyw."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Ni allwch ychwanegu atebion neu olygu codau ateb i'r math hwn o gwestiwn oherwydd mae'r arolwg yn fyw."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6380,9 +5963,8 @@ msgid "queXML Survey XML Format (*.xml)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1942
-#, fuzzy
 msgid "Export To File"
-msgstr "Allfudo'r Templed"
+msgstr "Allfudo'r i Ffeil"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1961
 msgid "Survey Security"
@@ -6406,9 +5988,8 @@ msgstr "Golygu'r Arolwg - Cam 1 o 2"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2159
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2851
-#, fuzzy
 msgid "General"
-msgstr "Rhyw"
+msgstr "Cyffredinol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2884
@@ -6417,9 +5998,8 @@ msgstr "E-bost Gweinyddiaeth:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2211
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2886
-#, fuzzy
 msgid "Bounce Email:"
-msgstr "Eich e-bost"
+msgstr "E-bost bownsio:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2899
@@ -6437,9 +6017,8 @@ msgid "Question by Question"
 msgstr "Fesul Cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2258
-#, fuzzy
 msgid "Template Preview:"
-msgstr "Templed:"
+msgstr "Rhagolwg Templed:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2926
@@ -6452,15 +6031,13 @@ msgid "Show [<< Prev] button"
 msgstr "Dangos y botwm  [<< Prev]"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2288
-#, fuzzy
 msgid "Participants may print answers?"
-msgstr "Mae modd arbed arolygon sydd ar eu hanner."
+msgstr "Mae modd i gyfranogwyr argraffu atebion?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2300
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2953
-#, fuzzy
 msgid "List survey publicly:"
-msgstr "Rhestru arolygon"
+msgstr "Rhestru arolwg yn gyhoeddus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2314
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2963
@@ -6505,9 +6082,8 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3016
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3017
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3019
-#, fuzzy
 msgid "Survey Access"
-msgstr "Llwyddiant"
+msgstr "Mynediad i'r Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2380
@@ -6517,9 +6093,8 @@ msgstr "Llwyddiant"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3016
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3018
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3020
-#, fuzzy
 msgid "Registration"
-msgstr "Gweinyddiaeth"
+msgstr "Cofrestru"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2376
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2384
@@ -6529,9 +6104,8 @@ msgstr "Gweinyddiaeth"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3017
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3018
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3021
-#, fuzzy
 msgid "Save & Load"
-msgstr "Arbed Nawr"
+msgstr "Arbed a Llwytho"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2407
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3026
@@ -6544,9 +6118,7 @@ msgid "Use HTML format for token emails?"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
@@ -6565,9 +6137,7 @@ msgid "Anonymous answers?"
 msgstr "Atebion dienw?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
@@ -6626,11 +6196,8 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Bydd unrhyw gwestiynau, atebion ac ati ar gyfer y ieithoedd a gafodd eu "
-"diddymu yn cael eu colli.  Ydych chi'n siwr?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Bydd unrhyw gwestiynau, atebion ac ati ar gyfer y ieithoedd a gafodd eu diddymu yn cael eu colli.  Ydych chi'n siwr?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -6647,41 +6214,32 @@ msgstr "Disgrifiad o'r URL"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
-"Mae gan yr arolwg presennol gwestiynau gydag amodau tu allan i'w grwp eu "
-"hunain"
+msgstr "Mae gan yr arolwg presennol gwestiynau gydag amodau tu allan i'w grwp eu hunain"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"Cyfyngir ar aildrefnu'r grwpiau er mwyn sicrhau na fydd cwestiynau sydd ag "
-"amodau yn cael eu haildrefnu ar ôl gosod yr amodau."
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Cyfyngir ar aildrefnu'r grwpiau er mwyn sicrhau na fydd cwestiynau sydd ag amodau yn cael eu haildrefnu ar ôl gosod yr amodau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "The following groups are concerned"
 msgstr "Mae'r grwpiau canlynol dan sylw"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2771
-#, fuzzy, php-format
+#, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "gweler yr amodau nodedig ar"
+msgstr "Mae grŵp %s yn dibynu ar grŵp %s, gweler yr amodau nodedig ar:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2775
-#, fuzzy
 msgid "QID"
-msgstr "ID"
+msgstr "QID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2841
 msgid "Error: You have to enter a title for this survey."
 msgstr "Gwall:  Rhaid rhoi teitl i'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2845
-#, fuzzy
 msgid "Create or Import Survey"
-msgstr "Creu neu fewnfudo arolwg newydd"
+msgstr "Creu neu Fewnforio Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2868
 msgid "This setting cannot be changed later!"
@@ -6692,9 +6250,8 @@ msgid "(This field is mandatory.)"
 msgstr "(Mae'r maes hwn yn un gorfodol)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2945
-#, fuzzy
 msgid "Participiants may print answers?"
-msgstr "Mae modd arbed arolygon sydd ar eu hanner."
+msgstr "Oes modd i gyfranogwyr argraffu'r cwestiynau?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2992
 msgid "Date Format"
@@ -6742,23 +6299,16 @@ msgid "Export Responses"
 msgstr "Allfudo Ymatebion"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:42
-#, fuzzy
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "Rydych ar fin dileu'r arolwg hwn."
+msgstr "Rydych ar fin dileu pob amod o'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-#, fuzzy
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Cyn i chi ddileu'r arolwg hwn, rydym yn argymell eich bod yn allfudo'r "
-"arolwg cyfan o'r brif sgrin weinyddol."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Rydym yn argymell eich bod yn allforio'r arolwg cyfan o'r brif sgrin weinyddol cyn mynd ymlaen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
-#, fuzzy
 msgid "All conditions in this survey have been deleted."
-msgstr "Mae pob cofnod tocyn wedi cael eu dileu"
+msgstr "Mae pob amod o'r arolwg hwn wedi cael eu dileu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:146
@@ -6766,9 +6316,8 @@ msgid "if you answered"
 msgstr "Os ateboch chi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:144
-#, fuzzy
 msgid "if you have NOT answered"
-msgstr "Os ateboch chi"
+msgstr "os NA ateboch chi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:244
 msgid "or"
@@ -6779,9 +6328,9 @@ msgid "to question"
 msgstr "i gwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:257
-#, fuzzy, php-format
+#, php-format
 msgid "Only answer this question %s"
-msgstr "Atebwch y cwestiwn hwn dim ond"
+msgstr "Atebwch y cwestiwn hwn yn unig %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:290
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:291
@@ -6808,7 +6357,6 @@ msgid "Please number each box in order of preference from 1 to"
 msgstr "Rhifwch pob blwch yn nhrefn blaenoriaeth o 1 i"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:449
-#, fuzzy
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Rhifwch pob blwch yn nhrefn blaenoriaeth o 1 i"
 
@@ -6836,9 +6384,8 @@ msgstr "Dewiswch pob un sy'n berthnasol a rhowch sylw:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:542
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:543
-#, fuzzy
 msgid "answers and provide a comment:"
-msgstr "Dewiswch pob un sy'n berthnasol a rhowch sylw:"
+msgstr "atebion a rhowch sylw:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:572
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:573
@@ -6890,9 +6437,9 @@ msgstr "Anfonwch eich arolwg dros y ffacs i:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:974
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:975
-#, fuzzy, php-format
+#, php-format
 msgid "Please submit by %s"
-msgstr "Anfonwch erbyn"
+msgstr "Anfonwch erbyn %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:189
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:190
@@ -6930,31 +6477,20 @@ msgid "Total"
 msgstr "Cyfanswm"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"Os byddwch yn creu unrhyw asesiadau yn y dudalen hon ar gyfer yr arolwg hwn, "
-"bydd yr asesiad yn cael ei berfformio ar ddiwedd yr arolwg ar ôl ei gyflwyno."
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "Os byddwch yn creu unrhyw asesiadau yn y dudalen hon ar gyfer yr arolwg hwn, bydd yr asesiad yn cael ei berfformio ar ddiwedd yr arolwg ar ôl ei gyflwyno."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
-#, fuzzy
 msgid "SID"
-msgstr "ID"
+msgstr "SID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:69
-#, fuzzy
 msgid "The defined LimeSurvey database does not exist"
-msgstr "Nid yw cronfa ddata diffiniedig yr arolwg yn bodoli."
+msgstr "Nid yw cronfa ddata diffiniedig yr arolwg yn bodoli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"Un ai nid yw'r gronfa ddata a ddewisiwyd wedi'i chreu eto, neu mae problem "
-"cael mynediad iddi."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Un ai nid yw'r gronfa ddata a ddewisiwyd wedi'i chreu eto, neu mae problem cael mynediad iddi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
 msgid "You have not selected a survey to browse."
@@ -6962,9 +6498,7 @@ msgstr "Nid ydych wedi dewis arolwg i bori trwyddo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:106
 msgid "This survey has not been activated. There are no results to browse."
-msgstr ""
-"Nid yw'r arolwg hwn wedi cael ei actifadu.  Nid oes canlyniadau i bori "
-"trwyddynt."
+msgstr "Nid yw'r arolwg hwn wedi cael ei actifadu.  Nid oes canlyniadau i bori trwyddynt."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:121
 msgid "There is no matching survey."
@@ -6972,9 +6506,8 @@ msgstr "Nid oes arolwg sy'n cydweddu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:161
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:385
-#, fuzzy
 msgid "Date Started"
-msgstr "Dyddiad arbed"
+msgstr "Dyddiad Cychwynwyd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:162
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:386
@@ -7009,24 +6542,23 @@ msgid "Close"
 msgstr "Cau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:681
-#, fuzzy
 msgid "Edit this token"
-msgstr "Golygu'r cofnod hwn"
+msgstr "Golygu'r tocyn hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:714
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses for this survey"
-msgstr "ymatebion i'r arolwg hwn"
+msgstr "%d ymatebion i'r arolwg hwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:715
-#, fuzzy, php-format
+#, php-format
 msgid "%d full responses"
-msgstr "ymatebion llawn"
+msgstr "%d ymatebion llawn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:716
-#, fuzzy, php-format
+#, php-format
 msgid "%d responses not completely filled out"
-msgstr "ymatebion sydd heb eu llenwi'n gywir"
+msgstr "%d o ymatebion heb eu llenwi'n gyflawn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -7038,9 +6570,8 @@ msgid "You are not allowed to import a survey!"
 msgstr "Nid oes gennych hawl i fewnfudo arolwg!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/cmdline_importsurvey.php:80
-#, fuzzy
 msgid "User name and password do not match!"
-msgstr "Enw defnyddiwr / cyfrinair ddim yn cyfateb!"
+msgstr "Enw defnyddiwr a chyfrinair ddim yn cyfateb!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpquestion.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpgroup.php:38
@@ -7063,31 +6594,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "DARLLENWCH HWN YN OFALUS CYN MYND YMLAEN."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
+msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Mewn arolwg byw, mae tabl yn cael ei greu i storio'r cofnodion data"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"Pan fyddwch yn dadfywiogi arolwg bydd y wybodaeth yn y tabl gwreiddiol yn "
-"symud i rywle arall, a phan bydd yr arolwg yn fyw eto, bydd y tabl yn wag.  "
-"Ni fyddwch bellach yn gallu cael mynediad i'r wybodaeth hyn trwy LimeSurvey."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Pan fyddwch yn dadfywiogi arolwg bydd y wybodaeth yn y tabl gwreiddiol yn symud i rywle arall, a phan bydd yr arolwg yn fyw eto, bydd y tabl yn wag.  Ni fyddwch bellach yn gallu cael mynediad i'r wybodaeth hyn trwy LimeSurvey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"Dim ond gweinyddwyr y system sy'n gallu cael mynediad i wybodaeth ar arolwg "
-"sydd wedi dadfywiogi, trwy ddefnyddio offeryn mynediad i Gronfa Ddata fel "
-"phpmyadmin.  Os yw eich arolwg yn defnyddio tocynnau, bydd y tabl yn cael ei "
-"ailenwi a dim ond gweinyddwyr y system fydd yn gallu ei ddefnyddio."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Dim ond gweinyddwyr y system sy'n gallu cael mynediad i wybodaeth ar arolwg sydd wedi dadfywiogi, trwy ddefnyddio offeryn mynediad i Gronfa Ddata fel phpmyadmin.  Os yw eich arolwg yn defnyddio tocynnau, bydd y tabl yn cael ei ailenwi a dim ond gweinyddwyr y system fydd yn gallu ei ddefnyddio."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -7110,22 +6626,16 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "Nid yw'r ymatebion i'r arolwg hwn ar gael bellach trwy LimeSurvey."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
-msgstr ""
-"Dylech nodi enw'r tabl hwn rhag ofn y byddwch angen y wybodaeth hyn nes "
-"ymlaen."
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Dylech nodi enw'r tabl hwn rhag ofn y byddwch angen y wybodaeth hyn nes ymlaen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
-"Mae'r tabl tocynnau sy'n gysylltiedig â'r arolwg hwn wedi cael ei ailenwi'n:"
+msgstr "Mae'r tabl tocynnau sy'n gysylltiedig â'r arolwg hwn wedi cael ei ailenwi'n:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
-"Mae'r cwestiwn hwn yn gwestiwn o fath aml ateb, ond nid oes atebion iddo."
+msgstr "Mae'r cwestiwn hwn yn gwestiwn o fath aml ateb, ond nid oes atebion iddo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
@@ -7136,25 +6646,16 @@ msgid "This question requires a Labelset, but none is set."
 msgstr "Mae angen set labeli ar y cwestiwn hwn, ond nid oes set wedi'i osod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
-#, fuzzy
 msgid "This question requires a second Labelset, but none is set."
-msgstr "Mae angen set labeli ar y cwestiwn hwn, ond nid oes set wedi'i osod."
+msgstr "Mae angen ail set labeli ar y cwestiwn hwn, ond nid oes set wedi'i osod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-#, fuzzy
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
-"Mae angen cyfieithiad ar gyfer y set labeli a ddefnyddir yn y cwestiwn hwn."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Mae angen cyfieithiad ar gyfer y set labeli a ddefnyddir yn y cwestiwn hwn, neu nid yw'n bodoli."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Mae amod i'r cwestiwn hwn, ond mae'r amod yn seiliedig ar gwestiwn sy'n "
-"dilyn ar ôl hwn."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Mae amod i'r cwestiwn hwn, ond mae'r amod yn seiliedig ar gwestiwn sy'n dilyn ar ôl hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7169,12 +6670,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Ni allwch actifadu'r arolwg hwn tan i'r problemau hyn gael eu datrys."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Dylech actifadu'r arolwg hwn pan rydych chi'n hollol siwr bod eich arolwg "
-"wedi cael ei sefydlu ac na fydd angen ei newid."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Dylech actifadu'r arolwg hwn pan rydych chi'n hollol siwr bod eich arolwg wedi cael ei sefydlu ac na fydd angen ei newid."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
 msgid "Once a survey is activated you can no longer:"
@@ -7205,27 +6702,16 @@ msgid "Edit (change) your group names"
 msgstr "Golygu (newid) enwau'r grwpiau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"Ychwanegu, dileu neu olygu atebion cwestiynau a ddiffiniwyd o flaen llaw "
-"(heblaw am gwestiynau amlateb)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Ychwanegu, dileu neu olygu atebion cwestiynau a ddiffiniwyd o flaen llaw (heblaw am gwestiynau amlateb)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Change survey name or description"
 msgstr "Newid enw'r arolwg neu'r disgrifiad"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"Unwaith y bydd data wedi cael ei gofnodi ar yr arolwg hwn, os ydych chi am "
-"ychwanegu neu ddileu grwpiau neu gwestiynau, bydd angen i chi ddadfywiogi'r "
-"arolwg.  Bydd hyn yn golygu symud data sydd eisioes wedi cael ei gofnodi i "
-"dabl sydd wedi cael ei archifo ar wahân."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Unwaith y bydd data wedi cael ei gofnodi ar yr arolwg hwn, os ydych chi am ychwanegu neu ddileu grwpiau neu gwestiynau, bydd angen i chi ddadfywiogi'r arolwg.  Bydd hyn yn golygu symud data sydd eisioes wedi cael ei gofnodi i dabl sydd wedi cael ei archifo ar wahân."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7233,16 +6719,11 @@ msgstr "Nid oedd modd actifadu'r arolwg."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:520
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr ""
-"Mae'r arolwg wedi cael ei actifadu.  Tabl canlyniadau wedi cael ei greu'n "
-"llwyddiannus."
+msgstr "Mae'r arolwg wedi cael ei actifadu.  Tabl canlyniadau wedi cael ei greu'n llwyddiannus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr ""
-"Mae'r arolwg hwn yn caniatau i'r cyhoedd gofrestru.   Rhaid hefyd creu tabl "
-"tocynnau."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Mae'r arolwg hwn yn caniatau i'r cyhoedd gofrestru.   Rhaid hefyd creu tabl tocynnau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
 msgid "This survey is now active, and responses can be recorded."
@@ -7257,12 +6738,8 @@ msgid "No invitation code is needed to complete the survey."
 msgstr "Nid oes angen cod gwahoddiad i lenwi'r arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"Gallwch drosi i'r dull mynediad caeedig trwy gychwyn tabl tocyn gyda'r botwm "
-"isod."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Gallwch drosi i'r dull mynediad caeedig trwy gychwyn tabl tocyn gyda'r botwm isod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
 msgid "Optional"
@@ -7291,22 +6768,17 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Nid yw'r ffeil yn cynnwys data LimeSurvey yn y dull cywir."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
-#, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
-msgstr "Ni chafodd ei fewnfudo, oherwydd ni wyddir y math o gwestiwn."
+#, php-format
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgstr "Ni chafodd cwestiwn  \"%s - %s\" ei fewnfudo, oherwydd ni wyddir y math o gwestiwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
@@ -7316,15 +6788,12 @@ msgstr "Crynodeb Mewnfudo'r Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-#, fuzzy
 msgid "Not imported Label Sets"
-msgstr "Mewnfudo Set Labeli"
+msgstr "Ddim wedi mewnforio Set Labeli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
@@ -7334,7 +6803,7 @@ msgstr "Priodweddau'r cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1237
 msgid "Quotas"
-msgstr ""
+msgstr "Cwotas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1239
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1264
@@ -7342,9 +6811,8 @@ msgid "Import of Survey is completed."
 msgstr "Wedi gorffen mewnfudo'r Arolwg."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1240
-#, fuzzy
 msgid "Go to survey"
-msgstr "Dim arolwg cyfatebol."
+msgstr "Ewch i'r arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1241
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1265
@@ -7353,11 +6821,10 @@ msgstr "Rhybuddion"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
-msgstr ""
-"Ni ellir ychwanegu'r grwo.  Mae'r enw grwp ar goll ar gyfer yr ieithoedd "
-"canlynol."
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr "Ni ellir ychwanegu'r grwo.  Mae'r enw grwp ar goll ar gyfer yr ieithoedd canlynol."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
 msgid "Error: The database reported the following error:"
@@ -7374,10 +6841,9 @@ msgid "Group could not be deleted"
 msgstr "Nid oedd modd dileu'r grwp."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
-#, fuzzy, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr "Nid oedd modd ychwanegu ateb.  Rhaid gosod cod yn y maes gorfodol."
+#, php-format
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "Nid oedd modd ychwanegu ateb.  Rhaid gosod côd yn y maes gorfodol (%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -7386,15 +6852,8 @@ msgid "Question could not be created."
 msgstr "Ni ellid creu cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Nid oedd modd diweddaru'r cwestiwn.  Mae amodau ar gyfer cwestiynau eraill "
-"sy'n dibynnu ar yr atebion i'r cwestiwn hwn a bydd newid y teip yn achosi "
-"problemau.  Rhaid dileu'r amodau hyn cyn i chi newid y teip i'r cwestiwn hwn."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Nid oedd modd diweddaru'r cwestiwn.  Mae amodau ar gyfer cwestiynau eraill sy'n dibynnu ar yr atebion i'r cwestiwn hwn a bydd newid y teip yn achosi problemau.  Rhaid dileu'r amodau hyn cyn i chi newid y teip i'r cwestiwn hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7406,12 +6865,8 @@ msgid "Answers can't be deleted"
 msgstr "Ni allwch ddileu'r atebion."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Mae'r cwestiwn hwn yn dibynnu ar atebion cwestiynau eraill ac ni ellid ei "
-"symud yn uwch na grwp Id:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Mae'r cwestiwn hwn yn dibynnu ar atebion cwestiynau eraill ac ni ellid ei symud yn uwch na grwp Id:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:630
@@ -7424,28 +6879,17 @@ msgid "See conditions:"
 msgstr "Gweler amodau:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Mae rhai cwestiynau'n dibynnu ar atebion y cwestiwn hwn.   Ni allwch symud y "
-"cwestiwn yn is na grwp ID:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Mae rhai cwestiynau'n dibynnu ar atebion y cwestiwn hwn.   Ni allwch symud y cwestiwn yn is na grwp ID:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
+msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Ni ellid ychwanegu'r cwestiwn.  Rhaid gosod cod yn y maes hanfodol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Nid oedd modd dileu'r cwestiwn.  Mae amodau ar gyfer cwestiynau eraill sy'n "
-"dibynnu ar y cwestiwn hwn.  Ni allwch ddileu'r cwestiwn hwn tan i chi symud "
-"yr amodau hyn."
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Nid oedd modd dileu'r cwestiwn.  Mae amodau ar gyfer cwestiynau eraill sy'n dibynnu ar y cwestiwn hwn.  Ni allwch ddileu'r cwestiwn hwn tan i chi symud yr amodau hyn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7454,9 +6898,7 @@ msgstr "Methu dileu'r cwestiwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Gwall wrth ychwanegu ateb:  Ni allwch ddefnyddio'r un cod ateb fwy nag "
-"unwaith."
+msgstr "Gwall wrth ychwanegu ateb:  Ni allwch ddefnyddio'r un cod ateb fwy nag unwaith."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:932
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:954
@@ -7472,17 +6914,12 @@ msgid "Failed to update answers"
 msgstr "Methu diweddaru atebion"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"Ni chaniateir atebion gyda chod 0 (sero) neu god gwag, ac ni fyddant yn cael "
-"eu harbed."
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "Ni chaniateir atebion gyda chod 0 (sero) neu god gwag, ac ni fyddant yn cael eu harbed."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
 msgid "Duplicate codes found, these entries won't be updated"
-msgstr ""
-"Codau dyblyg wedi'u canfod.  Ni fydd y cofnodion hyn yn cael eu diweddaru."
+msgstr "Codau dyblyg wedi'u canfod.  Ni fydd y cofnodion hyn yn cael eu diweddaru."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1091
 msgid "Failed to delete answer"
@@ -7513,9 +6950,8 @@ msgid "Survey could not be created"
 msgstr "Methu creu'r arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:26
-#, fuzzy
 msgid "Error: You have to enter a code for this question."
-msgstr "Gwall:  Rhaid i chi roi enw i'r set labeli hwn."
+msgstr "Gwall. Rhaid i chi ddarparu côd ar gyfer y cwestiwn hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:30
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:36
@@ -7532,29 +6968,25 @@ msgstr "Set Labeli:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:274
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:497
-#, fuzzy
 msgid "Second Label Set:"
-msgstr "Set Labeli:"
+msgstr "Ail Set Labeli:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:133
-#, fuzzy
 msgid "Position:"
-msgstr "yn ei le"
+msgstr "Safle:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:136
-#, fuzzy
 msgid "At end"
-msgstr "Anfon"
+msgstr "Ar y diwedd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:137
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:759
 msgid "At beginning"
-msgstr ""
+msgstr "At y dechrau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:140
-#, fuzzy
 msgid "After"
-msgstr "Arall"
+msgstr "Wedi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:180
 msgid "Select CSV File"
@@ -7588,14 +7020,12 @@ msgid "Edit Question"
 msgstr "Golygu cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:456
-#, fuzzy
 msgid "Question Type:"
-msgstr "Cwestiwn:"
+msgstr "Math Cwestiwn:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:467
-#, fuzzy
 msgid "Cannot be modified (Survey is active)"
-msgstr "Ni ellir ei ddiwygio"
+msgstr "Ni ellir ei ddiwygio (Arolwg yn weithredol)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:520
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:521
@@ -7612,52 +7042,40 @@ msgid "Current group is using conditional questions"
 msgstr "Mae'r grwp presennol yn defnyddio cwestiynau ag amodau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Cyfyngir ar ail-drefnu'r cwestiynau yn y grwp hwn er mwyn sicrhau bod y "
-"cwestiynau y seiliwyd yr amodau arnynt ddim yn cael eu cofnodi ar ôl y "
-"cwestiynau sydd ag amodau."
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Cyfyngir ar ail-drefnu'r cwestiynau yn y grwp hwn er mwyn sicrhau bod y cwestiynau y seiliwyd yr amodau arnynt ddim yn cael eu cofnodi ar ôl y cwestiynau sydd ag amodau."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "See the conditions marked on the following questions"
 msgstr "Gweler yr amodau sydd ar y cwestiynau canlynol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:754
-#, fuzzy
 msgid "Place after.."
-msgstr "Arhoswch os gwelwch yn dda..."
+msgstr "Gosod wedi.."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:815
-#, fuzzy
 msgid "View Question"
-msgstr "Golygu cwestiwn"
+msgstr "Gweld Cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumplabel.php:32
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Ni roddwyd LID.  Methu dympio set labeli."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:106
-#, fuzzy
 msgid "Export results"
-msgstr "Allfudo Canlyniadau"
+msgstr "Allfudo canlyniadau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:108
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "Allfudo canlyniadau i ffeil orchymyn SPSS"
+msgstr "Allfudo canlyniadau i ffeil SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:109
-#, fuzzy
 msgid "Export SPSS syntax file"
-msgstr "Allfudo ffeil arolwg W"
+msgstr "Allfudo ffeil cystrawen SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:110
-#, fuzzy
 msgid "Export SPSS data file"
-msgstr "Allfudo'r cronfa ddata."
+msgstr "Allfudo ffeil ddata SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:111
 msgid "Instructions for the impatient"
@@ -7665,25 +7083,23 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:113
 msgid "Download the data and the syntax file."
-msgstr ""
+msgstr "Islwytho ffeil ddata a chystrawen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:114
 msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
 msgid "Choose 'Run/All' from the menu to run the import."
-msgstr ""
+msgstr "Dewiswch 'rhedeg/Y Cyfan' o'r ddewislen i redeg y mewforiad."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:118
 msgid "Your data should be imported now."
-msgstr ""
+msgstr "Dylai eich data fod wedi ei fewnforio erbyn hyn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:676
 msgid "Record ID"
@@ -7788,22 +7204,15 @@ msgstr "Nid oes gennych hawl i fewnfudo cwestiwn!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-#, fuzzy
 msgid "Security Alert"
-msgstr "Cwestiwn diogelwch."
+msgstr "Rhybudd Diogelwch."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
@@ -7858,9 +7267,7 @@ msgid "You logged in successfully."
 msgstr "Fe wnaethoch fewngofnodi'n llwyddiannus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
@@ -7877,7 +7284,6 @@ msgstr "Allgofnodi wedi bod yn llwyddiant."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:325
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:488
-#, fuzzy
 msgid "Email address is not valid."
 msgstr "Nid yw'r cyfeiriad e-bost yn ddilys."
 
@@ -7886,9 +7292,9 @@ msgid "Username was not supplied."
 msgstr "Ni roddwyd yr enw defnyddiwr."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:358
-#, fuzzy, php-format
+#, php-format
 msgid "You were signed in on the site %s"
-msgstr "Roeddech wedi cofrestru ar y safle hwn"
+msgstr "Roeddech wedi mewngofnodi ar safle %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:367
 msgid "Login here"
@@ -7903,9 +7309,8 @@ msgid "Username and/or email address already exists."
 msgstr "Mae enw defnyddiwr a/neu gyfeiriad e-bost eisioes yn bodoli."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:412
-#, fuzzy
 msgid "Initial Superadmin cannot be deleted!"
-msgstr "Nid oes modd dileu'r rhan weinyddol!"
+msgstr "Nid oes modd dileu'r Prifweinydd cychwynol!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:488
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:512
@@ -7930,9 +7335,8 @@ msgid "You are not allowed to change your own rights!"
 msgstr "Nid oes gennych hawl i newid eich hawliau eich hun!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:637
-#, fuzzy
 msgid "Update usertemplates successful."
-msgstr "Hawliau defnyddiwr wedi diweddaru'n llwyddiannus."
+msgstr "Diweddarwyd templed defnyddiwr yn llwyddiannus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:643
 msgid "Error while updating usertemplates."
@@ -7940,18 +7344,15 @@ msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:37
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:45
-#, fuzzy
 msgid "HTML Editor"
-msgstr "Golygydd y templed"
+msgstr "Golygydd HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:53
-#, fuzzy
 msgid "Close Editor"
-msgstr "Golygydd y templed"
+msgstr "Cau Golygydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:86
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:136
-#, fuzzy
 msgid "Editing"
 msgstr "Golygu"
 
@@ -7966,9 +7367,8 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:256
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:315
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:599
-#, fuzzy
 msgid "Quota Name"
-msgstr "Enw'r set"
+msgstr "Enw'r Cwota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:262
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:605
@@ -7978,16 +7378,14 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:268
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:317
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:611
-#, fuzzy
 msgid "Quota Action"
-msgstr "Gweithredu"
+msgstr "Gweithredoedd Cwota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:341
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:614
-#, fuzzy
 msgid "Terminate Survey"
-msgstr "Creu Arolwg"
+msgstr "Terfynnu Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:276
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:343
@@ -7996,83 +7394,71 @@ msgid "Terminate Survey With Warning"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:281
-#, fuzzy
 msgid "Update Quota"
-msgstr "Diweddaru cwestiwn"
+msgstr "Diweddaru cwota"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:312
-#, fuzzy
 msgid "Survey Quotas"
-msgstr "Arolygon"
+msgstr "Cwotas Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:318
 msgid "Limit"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:335
-#, fuzzy
 msgid "Not Active"
-msgstr "Actif"
+msgstr "Ddim yn Weithredol"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:351
-#, fuzzy
 msgid "Modify"
-msgstr "Diwygio Defnyddiwr"
+msgstr "Diwygio"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:373
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
-#, fuzzy
 msgid "Add Answer"
-msgstr "Ychwanegu ateb newydd"
+msgstr "Ychwanegu ateb"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:416
-#, fuzzy
 msgid "No quotas have been set for this survey"
-msgstr "Crewyd tabl tocynnau ar gyfer yr arolwg hwn."
+msgstr "Nid oes cwota wedi cael ei sefydlu ar gyfer yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:422
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:620
-#, fuzzy
 msgid "Add New Quota"
-msgstr "Wedi ychwanegu tocyn newydd"
+msgstr "Adio Cwota Newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
-#, fuzzy
 msgid "Question Selection"
-msgstr "Fesul Cwestiwn"
+msgstr "Dewisiad Cwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:455
-#, fuzzy
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Nid oes cwestiynau yn yr arolwg hwn."
+msgstr "Nid oes cwestiynau sy'n cael eu cefnogi yn yr arolwg hwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
-#, fuzzy
 msgid "Survey Quota"
-msgstr "Arolwg"
+msgstr "Cwota Arolwg"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:475
-#, fuzzy
 msgid "Select Question"
-msgstr "Cwestiwn diogelwch."
+msgstr "Dewiswch Gwestiwn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:531
 msgid "All answers are already selected in this quota."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:551
-#, fuzzy
 msgid "Select Answer"
-msgstr "Dileu atebion"
+msgstr "Dewiswch Ateb"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:595
 msgid "New Quota"
-msgstr ""
+msgstr "Cwota Newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/login_check.php:35
 msgid "You have to enter user name and email."
@@ -8112,13 +7498,8 @@ msgid "You have not selected a Question."
 msgstr "Nid ydych wedi dewis cwestiwn."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"Nid oedd modd ychwanegu eich amod!  Nid oedd yn cynnwys y cwestiwn a/neu'r "
-"ateb y seiliwyd yr amod.  Sicrhewch eich bod wedi dewis cwestiwn ac ateb."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Nid oedd modd ychwanegu eich amod!  Nid oedd yn cynnwys y cwestiwn a/neu'r ateb y seiliwyd yr amod.  Sicrhewch eich bod wedi dewis cwestiwn ac ateb."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -8138,14 +7519,13 @@ msgstr "Dewiswch gwestiwn {QID} IF   yn unig"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:772
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:992
-#, fuzzy
 msgid "Less than"
-msgstr "Rhif yn llai na"
+msgstr "Llai na"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:773
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:993
 msgid "Less than or Equal to"
-msgstr ""
+msgstr "Llai neu Hafal i"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:774
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:994
@@ -8154,25 +7534,23 @@ msgstr "yn cyfateb i"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:775
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:995
-#, fuzzy
 msgid "Not Equal to"
-msgstr "Ddim yn cyfateb"
+msgstr "Ddim yn gyfartal â"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:776
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:996
 msgid "Greater than or Equal to"
-msgstr ""
+msgstr "Mwy na neu Hafal i"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:777
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:997
-#, fuzzy
 msgid "Greater than"
-msgstr "Rhif yn fwy na"
+msgstr "Mwy na"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:778
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:998
 msgid "Regular Expression"
-msgstr ""
+msgstr "REGEX "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:901
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
@@ -8188,12 +7566,8 @@ msgid "copy to"
 msgstr "copio i"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr ""
-"Ydych chi'n siwr eich bod am gopio'r amodau hyn i'r cwestiynau rydych chi "
-"wedi'u dewis?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Ydych chi'n siwr eich bod am gopio'r amodau hyn i'r cwestiynau rydych chi wedi'u dewis?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1018
@@ -8201,9 +7575,7 @@ msgid "Add Condition"
 msgstr "Ychwanegu amod"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
@@ -8255,21 +7627,20 @@ msgid "Microsoft Word (Latin charset)"
 msgstr "Microsoft Word (Latin charset)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:202
-#, fuzzy
 msgid "Microsoft Excel (All charsets)"
-msgstr "Microsoft Excel (Latin charset)"
+msgstr "Microsoft Excel (Pob set nodau)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:205
 msgid "(Iconv Library not installed)"
-msgstr ""
+msgstr "(Llyfrgell Iconv heb ei mewnosod)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:215
 msgid "CSV File (All charsets)"
-msgstr ""
+msgstr "Ffeil CSV (Pob set nodau)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:220
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:229
 msgid "Export Data"
@@ -8284,14 +7655,8 @@ msgid "Choose Columns"
 msgstr "Dewis Colofnau"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Mae eich arolwg yn cynnwys mwy na 255 o golofnau atebion.  Nid yw "
-"cymwysiadau taenlenni megis Excel yn gallu llwytho mwy na 255.  Dewiswch y "
-"colofnau yr ydych am eu hallfudo yn y rhestr isod."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Mae eich arolwg yn cynnwys mwy na 255 o golofnau atebion.  Nid yw cymwysiadau taenlenni megis Excel yn gallu llwytho mwy na 255.  Dewiswch y colofnau yr ydych am eu hallfudo yn y rhestr isod."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
@@ -8302,16 +7667,12 @@ msgid "Choose Token Fields"
 msgstr "Dewis Meysydd Tocyn"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"Mae eich arolwg yn gallu allfudo data tocyn cysylltiedig gyda phob ymateb.  "
-"Dewiswch unrhyw feysydd ychwanegol yr hoffech eu hallfudo."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Mae eich arolwg yn gallu allfudo data tocyn cysylltiedig gyda phob ymateb.  Dewiswch unrhyw feysydd ychwanegol yr hoffech eu hallfudo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
-msgstr ""
+msgstr "Gwybodaeth gyffredinol yn iaith:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:561
@@ -8320,9 +7681,8 @@ msgid "Time Submitted"
 msgstr "Amser Cyflwyno"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:861
-#, fuzzy
 msgid "New Record"
-msgstr "Gweld y Cofnod hwn"
+msgstr "Record Newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:893
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:898
@@ -8339,12 +7699,11 @@ msgstr "D/B"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1255
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:1256
 msgid "Tokens problem - token table missing"
-msgstr ""
+msgstr "Problem docynnau - tabl tocynnau ar goll"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
-"Nid yw'r ffeil hwn yn ffeil set labeli LimeSurvey.  Mewnfudo wedi methu."
+msgstr "Nid yw'r ffeil hwn yn ffeil set labeli LimeSurvey.  Mewnfudo wedi methu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8352,12 +7711,8 @@ msgid "Return to Labels Admin"
 msgstr "Dychwelyd i Weinyddu Labeli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
-"Roedd yna set labeli dyblyg felly ni chafodd y set hwn ei fewnfudo.  "
-"Defnyddir y copi dyblyg yn lle hynny."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Roedd yna set labeli dyblyg felly ni chafodd y set hwn ei fewnfudo.  Defnyddir y copi dyblyg yn lle hynny."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
@@ -8369,11 +7724,11 @@ msgstr "Y Setiau Labeli wedi cael eu mewnfudo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "Dechrau Golygydd HTML mewn Ffenestr Newydd"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr ""
+msgstr "Gosod ffocws ar Ffenestr y Golygydd HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:34
 msgid "Welcome to LimeSurvey Setup!"
@@ -8409,10 +7764,8 @@ msgid "A database named \"%s\" already exists."
 msgstr "Mae cronfa ddata o'r enw  \"%s\" yn bodoli eisioes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
-msgstr ""
-"Ydych chi am boblogi'r gronfa ddata nawr trwy greu'r tablau angenrheidiol?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "Ydych chi am boblogi'r gronfa ddata nawr trwy greu'r tablau angenrheidiol?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
 msgid "Database has been successfully upgraded to version "
@@ -8424,12 +7777,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "Cronfa ddata  `%s` wedi cael ei boblogi'n llwyddiannus."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
-"Gwybodaeth cronfa ddata heb ei roi.  Rhaid rhedeg y sgript hwn o admin.php "
-"yn unig."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Gwybodaeth cronfa ddata heb ei roi.  Rhaid rhedeg y sgript hwn o admin.php yn unig."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -8449,139 +7798,98 @@ msgstr "Ni roddwyd SID.  Methu dympio'r arolwg."
 
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Ydych chi'n siwr eich bod am ddileu'r cofnod hwn."
-
 #~ msgid "Failed to copy"
 #~ msgstr "Wedi methu copio."
-
 #~ msgid "Directory with the name"
 #~ msgstr "Mae Cyfeiriadur gyda'r enw hwnnw"
-
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr ""
 #~ "Ffeil CSV (UTF-8 charset - defnyddiwch hwn ar gyfer ieithoedd sydd ddim "
 #~ "yn lladin)"
-
 #~ msgid "Responses"
 #~ msgstr "Ymatebion"
-
 #~ msgid "Export Current Survey"
 #~ msgstr "Allfudo'r Arolwg Presennol."
-
 #~ msgid "depends on group"
 #~ msgstr "yn dibynnu ar y grwp"
-
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Mae'r ffeil a lwythwyd yn fwy na'r  upload_max_filesize directive in php."
 #~ "ini"
-
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Dim ond rhan o'r ffeil cafodd ei lwytho i fyny"
-
 #~ msgid "No file was uploaded"
 #~ msgstr "Ni chafodd ffeil ei lwytho i fyny"
-
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Gwall wrth drosglwyddo ffeil.  Rhaid dewis ffeil CSV"
-
 #~ msgid "You need to upload the file"
 #~ msgstr "Mae angen i chi lwytho'r ffeil"
-
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Rhaid i chi lwytho ffeil CSV"
-
 #~ msgid "Upload CSV file"
 #~ msgstr "Llwytho ffeil CSV"
-
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Mae'n amhosibl llwytho ffeil os nad yw o fath CSV"
-
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Mae'n amhosibl llwytho ffeil wag"
-
 #~ msgid "Uploading CSV file"
 #~ msgstr "Llwytho ffeil CSV"
-
 #~ msgid "Visualization:"
 #~ msgstr "Delweddu:"
-
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr ""
 #~ "Dewiswch y rhif maes yr hoffech ei ddefnyddio ar gyfer eich atebion:"
-
 #~ msgid "Move User"
 #~ msgstr "Symud Defnyddiwr"
-
 #~ msgid "Setting new Parent"
 #~ msgstr "Gosod Rhiant newydd"
-
 #~ msgid "was imported, but the type was set to \""
 #~ msgstr "Wedi'i allfudo, ond gosodwyd y teip i /\""
-
 #~ msgid "type"
 #~ msgstr "math"
-
 #~ msgid "\", because is the closest one"
 #~ msgstr "/\", oherwydd hwn yw'r un agosaf."
-
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Ni allwch fewnfudo setiau labeli sydd heb iaith sylfaen yr arolwg "
 #~ "presennol."
-
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr "Ni ellid ychwanegu'r ateb.  Mae yna ateb yn barod gyda'r cod hwn."
-
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr "Ni ellid diweddaru'r ateb.  Mae yna ateb yn barod gyda'r cod hwn."
-
 #~ msgid "No matching Group"
 #~ msgstr "Dim grwp cyfatebol"
-
 #~ msgid "No matching Survey!"
 #~ msgstr "Dim arolwg cyfatebol!"
-
 #~ msgid "Select all"
 #~ msgstr "Dewis popeth"
-
 #~ msgid "Proceed"
 #~ msgstr "Ewch ymlaen"
-
 #~ msgid "Question List"
 #~ msgstr "Rhestr gwestiynau"
-
 #~ msgid "Like"
 #~ msgstr "Yn debyg"
-
 #~ msgid "Filter Conditions"
 #~ msgstr "Ffiltro Amodau"
-
 #~ msgid "Numerical"
 #~ msgstr "Rhifiadol"
-
 #~ msgid "Huge free text"
 #~ msgstr "Testun rhydd anferth"
-
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Diweddaru'r tabl tocynnau gyda meysydd newydd."
-
 #~ msgid "to TokenID No"
 #~ msgstr "Dim rhif ID Tocyn"
-
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "Wedi creu {TOKENCOUNT}o gofnodion."
-
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Nid yw eich tocyn yn ddilys."
-
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Mae eich atebion i'r arolwg wedi cael eu harbed yn llwyddiannus."
-
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -8590,35 +7898,27 @@ msgstr "Ni roddwyd SID.  Methu dympio'r arolwg."
 #~ "Rydych chi, rhywun sy'n defnyddio eich cyfeiriad e-bost neu'r gweinyddwr "
 #~ "wedi arbed arolwg sydd ar fynd.  Gallwch ddefnyddio'r manylion canlynol i "
 #~ "ddychwelyd i'r arolwg hwn a pharhau i'w lenwi."
-
 #~ msgid "Please contact"
 #~ msgstr "Cysylltwch â"
-
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Arolwg mynediad caeedig yw hwn.  Rhaid cael tocyn dilyn i gymryd rhan."
-
 #~ msgid "prev"
 #~ msgstr "cynt"
-
 #~ msgid "last"
 #~ msgstr "olaf"
-
 #~ msgid "answers"
 #~ msgstr "atebion"
-
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "i gael gwared o'r eitem ddiwethaf yn eich rhestr pwysigrwydd"
-
 #~ msgid "Please choose at most"
 #~ msgstr "Dewiswch yn bennaf ?????"
-
 #~ msgid "answer(s) for question"
 #~ msgstr "ateb(ion) i gwestiwn"
-
 #~ msgid "Check Settings"
 #~ msgstr "Gwirio Gosodiadau"
-
 #~ msgid "Save Survey and Return"
 #~ msgstr "Arbed yr arolwg a mynd nôl"
+
+
