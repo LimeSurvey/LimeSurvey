@@ -29,7 +29,260 @@ class LsrcHelper {
 		}
 		return;
 	}
+	/*
+	 * Function to send Emails to participants of a specific survey
+	 */
+	function emailSender($surveyid, $type, $maxemails='') //XXX
+	{
+		global $connect ;
+		global $dbprefix ;
+
+		include("lsrc.config.php");
+		include("../../classes/core/html_entity_decode_php4.php");
+		$lsrcHelper= new LsrcHelper();
+		
+		switch ($type){
+			case "custom":
 	
+			break;
+			case "invite":
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START invite "); 
+				
+				
+				
+				if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+				{
+				    $ishtml=true;
+				}
+				else
+				{
+				    $ishtml=false;
+				}
+				
+				//$tokenoutput .= $clang->gT("Sending Invitations");
+				//if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+				//$tokenoutput .= "<br />\n";
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type"); 
+				// Texte für Mails aus der Datenbank holen und in die POST Dinger schreiben. Nicht schön aber praktikabel
+				
+				$sql = 	"SELECT surveyls_language, surveyls_email_invite_subj, surveyls_email_invite  ".
+						"FROM {$dbprefix}surveys_languagesettings ".
+						"WHERE surveyls_survey_id = ".$surveyid." ";
+				
+				//GET SURVEY DETAILS
+				$thissurvey=getSurveyInfo($surveyid);
+				
+//				$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+//				$sqlResult=$connect->Execute($sql);
+				$sqlResult = db_execute_assoc($sql);
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				while($languageRow = $sqlResult->FetchRow())
+				{
+					$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_invite'];
+					$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_invite_subj'];
+				}
+				
+//				if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
+//				{
+//					$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+//				}
+//				else
+//				{
+//					$SQLemailstatuscondition = "";
+//				}
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+		
+				if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
+				//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+				$ctresult = $connect->Execute($ctquery);
+				$ctcount = $ctresult->RecordCount();
+				$ctfieldcount = $ctresult->FieldCount();
+		
+				$emquery = "SELECT firstname, lastname, email, token, tid, language";
+				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+		
+				if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+				//$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
+				$emresult = db_select_limit_assoc($emquery,$maxemails);
+				$emcount = $emresult->RecordCount();
+		
+				//$tokenoutput .= "<table width='500px' align='center' >\n"
+				////."\t<tr>\n"
+				//."\t\t<td><font size='1'>\n";
+		
+				$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+				$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+				array_unshift($surveylangs,$baselanguage);
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				foreach ($surveylangs as $language)
+			    {
+					$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode_php4($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
+				
+				}
+		
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				if ($emcount > 0)
+				{
+					$mailsSend = 0;
+					while ($emrow = $emresult->FetchRow())
+					{
+						unset($fieldsarray);
+						$to = $emrow['email'];
+						$fieldsarray["{EMAIL}"]=$emrow['email'];
+						$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+						$fieldsarray["{TOKEN}"]=$emrow['token'];
+						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
+						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+						$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+				
+						$emrow['language']=trim($emrow['language']);
+						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+						$found = array_search($emrow['language'], $surveylangs);
+						if ($found==false) {$emrow['language']=$baselanguage;} 
+						
+						$from = $thissurvey['adminemail'];
+		
+		
+						if ($ishtml === false)
+						{
+							if ( $modrewrite ) 
+							{
+								$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+							} 
+							else 
+							{
+								$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+							}
+						}
+						else
+		        		{
+					          if ( $modrewrite ) 
+					          {
+					           		$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+					          } 
+							  else
+							  {
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+					          }
+		                }
+		                $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+						$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+						$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+						
+		                if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						{
+							// Put date into sent
+							$timeadjust = 0;
+							$today = date("Y-m-d H:i");
+							$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite Today:".$today); 
+							$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+							."SET sent='$today' WHERE tid={$emrow['tid']}";
+							//
+							$uderesult = $connect->Execute($udequery);
+							$mailsSend++;
+							//$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+						}
+						else
+						{
+							//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+							if($n==1)
+								$failedAddresses .= ",".$to;
+							else
+								$failedAddresses = $to;
+								
+							if ($debug>0) 
+							{
+								//$tokenoutput .= "<br /><pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+							}
+							$n=1;
+						}
+					}
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+					if ($ctcount > $emcount)
+					{
+						$lefttosend = $ctcount-$maxemails;
+						//$tokenoutput .= "\t\t</td>\n"
+						//."\t</tr>\n"
+						//."\t<tr>\n"
+						//."\t\t<td align='center'><strong>".$clang->gT("Warning")."</strong><br />\n"
+		                //."\t\t\t<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+						//.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
+						//$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
+						//$tokenoutput .= "<br /><br />\n";
+						//$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+						//."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+						//."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
+		                //."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
+						//."\t\t\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+				        foreach ($surveylangs as $language)
+						    {
+		          			$message = html_escape($_POST['message_'.$language]);
+		          			$subject = html_escape($_POST['subject_'.$language]);
+							//$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+							//."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+							//."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+							}
+						//$tokenoutput .="\t\t\t</form>\n";
+					}else{$lefttosend = 0;}
+				}
+				else
+				{
+					//$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
+				}
+				//$tokenoutput .= "\t\t</td>\n";
+				if($emcount==0)
+				{
+					return "No Mails to send";
+					
+				}			
+				if($maxemails>0)
+				{
+					$returnValue = "".$mailsSend." Mails send. ".$lefttosend." Mails left to send";	
+					if(isset($failedAddresses))
+						$returnValue .= "\nCould not send to: ".$failedAddresses;
+					return $returnValue;
+				}
+				
+				if(isset($mailsSend))
+				{
+					$returnValue = "".$mailsSend." Mails send. ";
+					if(isset($failedAddresses))
+						$returnValue .= "\nCould not send to: ".$failedAddresses;
+					return $returnValue;
+				}	
+				
+					
+				
+				
+			break;
+			case "remind":
+			
+			
+			break;
+			default: 
+			
+			break;
+		}
+	}
 	/**
 	 * function to get the id of the surveyowner
 	 *
@@ -734,7 +987,7 @@ class LsrcHelper {
 		    $values=array_values($surveylsrowdata);
 		    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		    $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		    $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+		    $iresult = $connect->Execute($insert);
 		
 		
 		
@@ -751,7 +1004,7 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		$iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+		$iresult = $connect->Execute($insert);
 		
 		$oldsid=$surveyid;
 		
@@ -787,7 +1040,7 @@ class LsrcHelper {
 		        $newvalues=array_values($surveylsrowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-				$lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
+				$lsiresult=$connect->Execute($lsainsert);
 			}	
 				
 		}
@@ -882,7 +1135,7 @@ class LsrcHelper {
 		                   FROM {$dbprefix}labels
 		                   WHERE lid=".$newlid."
 		                   ORDER BY language, sortorder, code";
-				$result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+				$result2 = db_execute_num($query2);
 				while($row2=$result2->FetchRow())
 				{
 					$thisset .= implode('.', $row2);
@@ -904,7 +1157,7 @@ class LsrcHelper {
 					//There is a matching labelset or the user is not allowed to edit labels -  
 		            // So, we will delete this one and refer to the matched one.
 					$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-					$result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+					$result=$connect->Execute($query) ;
 					$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
 					$result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 					if (isset($lsmatch)) {$newlid=$lsmatch;}
@@ -2097,7 +2350,7 @@ class LsrcHelper {
 		
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
-		$the_full_file_path = $modDir.$sMod.".csv";
+		$the_full_file_path = $sMod.".csv";
 		
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
 		
