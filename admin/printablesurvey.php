@@ -27,7 +27,7 @@ function try_debug($line)
 	};
 };
 
-define('print_template' , '/templates/print/' , true);
+define('PRINT_TEMPLATE' , '/templates/print/' , true);
 
 $surveyid = $_GET['sid'];
 
@@ -707,13 +707,10 @@ while ($degrow = $degresult->FetchRow())
 
 					$wrapper = setup_columns($dcols, $deacount);
 
-					 $question['ANSWER'] = $wrapper['whole-start'];
+					$question['ANSWER'] = $wrapper['whole-start'];
 
 					$rowcounter = 0;
 					$colcounter = 1;
-
-					if ($dcols > 0 && $deacount >= $dcols)
-					 $question['ANSWER'] .= $wrapper['whole-start'];
 
 					while ($dearow = $dearesult->FetchRow())
 					{
