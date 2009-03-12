@@ -864,8 +864,8 @@ function question_class($input)
 /**
  * question_class() returns a class name for a given question type to allow custom styling for each question type.
  *
- * @param string containing unique character representing each question type.
- * @returns string containing the class name for a given question type.
+ * @param string $input containing unique character representing each question type.
+ * @return string containing the class name for a given question type.
  */
 	switch($input)
 	{	// I think this is a bad solution to adding classes to question
@@ -930,9 +930,9 @@ function setup_columns($columns, $answer_count)
  * setup_columns() defines all the html tags to be wrapped around
  * various list type answers.
  *
- * It accepts two variable:
- *     $columns - usually supplied by $dcols
- *     $answer_count - usually supplied by $anscount
+ * @param integer $columns - the number of columns, usually supplied by $dcols
+ * @param integer $answer_count - the number of answers to a question, usually supplied by $anscount
+ * @return array with all the various opening and closing tags to generate a set of columns.
  *
  * It returns an array with the following items:
  *    $wrapper['whole-start']   = Opening wrapper for the whole list
@@ -994,6 +994,10 @@ function setup_columns($columns, $answer_count)
  */
 
 	$colstyle = COLSTYLE;
+//	if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey.php
+//	{
+//		$colstyle = 'table';
+//	}
 
 	if($columns < 2)
 	{
@@ -1064,13 +1068,13 @@ function setup_columns($columns, $answer_count)
 
 				if($columns > 1)
 				{
-					$wrapper['col-devide']	= "\t\t\t</td>\n\n\t\t\t<td>\n";
-					$wrapper['col-devide-last']	= "\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n";
+					$wrapper['col-devide']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td>\n\t\t\t\t<ul>\n";
+					$wrapper['col-devide-last']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n\t\t\t\t<ul>\n";
 				};
-				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n";
-				$wrapper['whole-end']	= "\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
-				$wrapper['item-start']	= '';
-				$wrapper['item-end']	= "<br />\n";
+				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<ul>\n";
+				$wrapper['whole-end']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
+				$wrapper['item-start']	= "\t\t\t\t\t<li>\n";
+				$wrapper['item-end']	= "\t\t\t\t\t</li>\n";
 	};
 
 	return $wrapper;
@@ -1079,21 +1083,15 @@ function setup_columns($columns, $answer_count)
 function alternation($alternate = '' , $type = 'col')
 {
 /**
- * alternation() creates or alternates between the odd string and the
- * even string used in as column and row classes for array type
- * questions.
+ * alternation() Returns a class identifyer for alternating between
+ * two options. Used to style alternate elements differently. creates
+ * or alternates between the odd string and the even string used in
+ * as column and row classes for array type questions.
  *
- * Accepts:
- *	$alternate =	'' (empty) (default)
- *			'array2'
- *			'array1'
- *			'odd'
- *			'even'
+ * @param string $alternate = '' (empty) (default) , 'array2' ,  'array1' , 'odd' , 'even'
+ * @param string  $type = 'col' (default) or 'row'
  *
- *	$type	  =	'col' (default)
- *			'row'
- *
- * Returns the other.
+ * @return string representing either the first alternation or the opposite alternation to the one supplied..
  */
  /*
 // The following allows type to be left blank for row in subsequent
@@ -1137,7 +1135,8 @@ function longest_string( $new_string , $longest_length )
 /**
  * longest_string() returns the length of the longest string past to it.
  * @peram string $new_string
- * @peram integer $longest_length length of the longest string passed to it.
+ * @peram integer $longest_length length of the (previously) longest string passed to it.
+ * @return integer representing the length of the longest string passed (updated if $new_string was longer than $longest_length)
  *
  * usage should look like this: $longest_length = longest_string( $new_string , $longest_length );
  *
@@ -1151,6 +1150,14 @@ function longest_string( $new_string , $longest_length )
 
 function label_class_width( $longest_length , $type = 'text' )
 {
+/**
+ * label_class_width() generates a class identifyer to be inserted into an HTML element
+ * 
+ * @peram integer representing the length longest string in a list.
+ * @peram string representing possible options: 'text' (default), checkbox, numeric
+ *
+ * @return string representing a CSS class.
+ */
 	if($type == 'numeric')
 	{ // numeric input box is generally smaller than so the label can afford to be longer
 		$too_long = 30;
