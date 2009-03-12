@@ -183,26 +183,9 @@ if  ($subaction=='dldata') {
                 } else {
                     echo( "'0'");
                 }           
-            }elseif ($fields[$fieldno]['LStype'] == 'M') 
+            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
             {
-                if ($fields[$fieldno]['code'] == 'other')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";
-                }  else if ($row[$fieldno] == 'Y')
-                {
-                    echo("'1'");
-                } else
-                {
-                   echo("'0'");
-                }
-            } else if ($fields[$fieldno]['LStype'] == 'P') 
-            {
-                if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";                    
-                } else if ($row[$fieldno] == 'Y')
+                if ($row[$fieldno] == 'Y')
                 {
                     echo("'1'");
                 } else
@@ -212,7 +195,7 @@ if  ($subaction=='dldata') {
             } else {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
+                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));
                     echo "'$strTemp'";
                 }
                 else
@@ -376,12 +359,12 @@ if  ($subaction=='dlstructure') {
 				$answers[] = array('code'=>$i, 'value'=>$i);
 			}				
 		}
-	    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
+	    if ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
 	    }
-	    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
+	    if ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
