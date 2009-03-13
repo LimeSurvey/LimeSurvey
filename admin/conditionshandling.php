@@ -44,7 +44,7 @@ if (!isset($p_canswers))
 	{
 		foreach ($_POST['canswers'] as $key => $val)
 		{
-			$p_canswers[$key]=sanitize_paranoid_string($val);
+		 	$p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
 		}
 	}
 }
@@ -962,7 +962,7 @@ if ($questionscount > 0)
 							// The question tittle is enclossed by @ to be identified latter
 							// and be processed accordingly
 //							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$rows['sid'].$X.$rows['gid'].$X.$rows['qid']."@", $dq['title'].": ".$dq['question']);
+							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['sid'].$X.$dq['gid'].$X.$dq['qid']."@", $dq['title'].": ".$dq['question']);
 						}
 					}
 				}
