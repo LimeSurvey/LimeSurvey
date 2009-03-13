@@ -5612,6 +5612,10 @@ function fix_FCKeditor_text($str)
 	{
 		$str = "";
 	}
+	if (preg_match("/^[\s]+$/",$str))
+	{
+		$str='';
+	}
 	return $str;
 }
 
