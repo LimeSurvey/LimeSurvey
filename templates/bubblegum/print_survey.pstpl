@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>{SITENAME} - {SURVEYNAME}</title>
+{HEADELEMENTS}
+
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_template.css" />
+<!--[if IE]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_IE_fix_all-versions.css" />
+<![endif]-->
+<!--[if lt IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_IE_fix_older-than-7.css" />
+<![endif]-->
+	</head>
+	<body>
+		<div id="limesurvey">
+			<h1>{SURVEYNAME}</h1>
+	
+			<div class="survey-welcome">{WELCOME}</div>
+
+			<div class="survey-description">{SURVEYDESCRIPTION}</div>
+
+			<p class="x-questions">{THEREAREXQUESTIONS}</p>
+{GROUPS}
+{PRIVACY}
+			<p class="submit-by">
+				{SUBMIT_BY}<br />
+				{FAX_TO}
+				{SUBMIT_TEXT}<br />
+				{THANKS}<br />
+			</p>
+		</div>
+
+	</body>
+</html>

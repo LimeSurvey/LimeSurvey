@@ -26,9 +26,6 @@ function try_debug($line)
 		return '<!-- printablesurvey.php: '.$line.' -->';
 	};
 };
-
-define('PRINT_TEMPLATE' , '/templates/print/' , true);
-
 $surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
@@ -56,15 +53,22 @@ $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_na
 $desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
 {
+	$template = $desrow['template'];
+	$welcome = $desrow['surveyls_welcometext'];
 	$surveyname = $desrow['surveyls_title'];
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = db_table_name("survey_".$desrow['sid']);
 	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
+	$surveystartdate = $desrow['startdate'];
 	$surveyfaxto = $desrow['faxto'];
 }
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
+
+
+//define('PRINT_TEMPLATE' , '/templates/print/' , true);
+define('PRINT_TEMPLATE' , '/templates/'.$template.'/' , true);
 
 $fieldmap=createFieldMap($surveyid);
 
@@ -109,12 +113,11 @@ $survey_output = array(
 			 'SITENAME' => $sitename
 			,'SURVEYNAME' => $surveyname
 			,'SURVEYDESCRIPTION' => $surveydesc
-			,'WELCOME' => ''
+			,'WELCOME' => $welcome
 			,'THEREAREXQUESTIONS' => 0
 			,'SUBMIT_TEXT' => $clang->gT("Submit Your Survey.")
-			,'SUBMIT_BY' => ''
+			,'SUBMIT_BY' => $surveyexpirydate
 			,'THANKS' => $clang->gT("Thank you for completing this survey.")
-			,'FAX_TO' => ''
 			,'PDF_FORM' => $pdf_form
 			,'HEADELEMENTS' => $headelements
 			,'TEMPLATEURL' => $rooturl.PRINT_TEMPLATE
@@ -159,7 +162,7 @@ if ($surveyuseexpiry=="Y")
  *		$group['ODD_EVEN'] = 	class to differentiate alternate groups
  *		$group['SCENARIO'] = 
  *
- *      $questions[]    =       contains an array of all the questions within a group
+ *	$questions[]    =       contains an array of all the questions within a group
  *		$question['QUESTION_CODE'] = 		content of the question code field
  *		$question['QUESTION_TEXT'] = 		content of the question field
  *		$question['QUESTION_SCENARIO'] = 		if there are conditions on a question, list the conditions.
@@ -290,10 +293,10 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'radio':
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
-					$image_dimensions = getimagesize($rooturl.PRINT_TEMPLATE.'img_'.$type.'.png');
+					$image_dimensions = getimagesize($rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png');
 					define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 				};
-				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
+				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
 		case 'rank':
