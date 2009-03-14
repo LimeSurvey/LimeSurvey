@@ -343,6 +343,20 @@ $demoModeOnly = false;
  *     NULL    blocks the use of columns
  */
 $column_style = 'ul';
+/** -----------------------------------------------------
+ * By default, the most columns you can have when you set the
+ * columns attribute for a questions is 8. (If you set it above the
+ * maximum, it will default to the maximum) This is because the
+ * number of columns must be reflected in the style sheet.
+ *
+ * NOTE: If you increase $max_columns from 8, you MUST add additional
+ *       styles to your style sheets.
+ *       The style definitions in template.css you'll need to add to are:
+ *              ul.cols-2 , table.cols-2 (etc)
+ *              ul.cols-2 li , ul.cols-2-ul (etc)
+ *              ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; } (etc)
+ */
+$max_columns = 8;
 
 /**
  * Use FireBug Lite for JavaScript and template development and testing.
