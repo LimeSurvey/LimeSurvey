@@ -294,7 +294,8 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
 					$image_dimensions = getimagesize($rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png');
-					define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
+					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
+					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
 				};
 				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
@@ -1552,24 +1553,47 @@ while ($degrow = $degresult->FetchRow())
 
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
 
+// START recursive tag stripping.
 
+$server_is_newer = newer_than_PHP('5.1.0'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
 $rounds = 0;
 while($rounds < 1)
 {
 	$replace_count = 0;
-	$survey_output['GROUPS'] = preg_replace(
-						 array(
-							 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
-							,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
-						 )
-						,array(
-							 '[[EMPTY-TABLE-CELL]]'
-							,''
-						 )
-						,$survey_output['GROUPS']
-						,-1
-						,$replace_count
+	if($server_is_newer == true) // Server version of PHP is at least 5.1.0 or newer
+	{
+		$survey_output['GROUPS'] = preg_replace(
+							 array(
+								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+							 )
+							,array(
+								 '[[EMPTY-TABLE-CELL]]'
+								,''
+							 )
+							,$survey_output['GROUPS']
+							,-1
+							,$replace_count
+						);
+	}
+	else // Server version of PHP is older than 5.1.0
+	{
+		$survey_output['GROUPS'] = preg_replace(
+							 array(
+								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+							 )
+							,array(
+								 '[[EMPTY-TABLE-CELL]]'
+								,''
+							 )
+							,$survey_output['GROUPS']
+						);
+		$replace_count = preg_match(
+						 '/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+						, $survey_output['GROUPS']
 					);
+	};
 
 	if($replace_count == 0)
 	{
@@ -1586,14 +1610,12 @@ while($rounds < 1)
 					,$survey_output['GROUPS']
 				);
 
-	}
-	else
-	{
-		$rounds = 0;
 	};
 };
 
 $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
+
+// END recursive empty tag stripping.
 
 if(isset($_POST['printableexport']))
 {

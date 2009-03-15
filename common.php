@@ -5668,3 +5668,56 @@ function strip_javascript($content){
     $text = preg_replace($search, '', $content);
     return $text;
 } 
+
+/**
+ * newer_than_PHP() tests whether the server version of PHP is newer than the specified version.
+ *
+ * The aim of this function is to allow developers to use new
+ * features of PHP without the server generating errors, warnings or
+ * notices on old systems.
+ * By testing whether the server version of PHP is same as, or newer
+ * than the version required by a particular feature, a developer can
+ * either only use that feature if the server supports it, or, he/she
+ * can provide an alternative procedure for servers with PHP versions
+ * predating the feature.
+ *
+ * @peram string $test_version Version of PHP required by a particular PHP feature/function.
+ * In the format: 'X.Y.Z' where 'X' = major version number, 'Y' = minor version number, 'Z' incremental version number.
+ * @return boolean TRUE the server version is newer than the specified version or FALSE other wise; 
+ */
+function newer_than_PHP($test_version)
+{
+	$test_version = explode('.',$test_version);
+	$server_version = explode('.',phpversion());
+
+	if($server_version[0] > $test_version[0])
+	{
+		return true; // Server version of PHP is at least a whole major release newer than the specified version.
+	}
+	elseif($server_version[0] == $test_version[0])
+	{ // Server version of PHP is the same major release as specified version
+		if($server_version[1] > $test_version[1])
+		{
+			return true; // Server version of PHP is at least a whole minor release newer than the specified version.
+		}
+		elseif($server_version[1] == $test_version[1])
+		{ // Server version of PHP is the same minor release as specified version
+			if($server_version[2] >= $test_version[2])
+			{
+				return true; // Server version of PHP is at least the same or a newer incremental release than the specified version
+			}
+			else
+			{
+				return false; // Server version of PHP is older incremental release than the specified version
+			};
+		}
+		else
+		{
+			return false; // Server version of PHP is an older minor release than the specified version
+		};
+	}
+	else
+	{
+		return false; // Server version of PHP is an older major release than the specified version
+	};
+};
