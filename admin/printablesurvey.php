@@ -1555,12 +1555,12 @@ $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $to
 
 // START recursive tag stripping.
 
-$server_is_newer = newer_than_PHP('5.1.0'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
+$server_is_newer = version_compare(_PHPVERSION , '5.1.0' , '>'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
 $rounds = 0;
 while($rounds < 1)
 {
 	$replace_count = 0;
-	if($server_is_newer == true) // Server version of PHP is at least 5.1.0 or newer
+	if($server_is_newer >= 0) // Server version of PHP is at least 5.1.0 or newer
 	{
 		$survey_output['GROUPS'] = preg_replace(
 							 array(
