@@ -209,7 +209,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 	
 			$insertOldValues = "INSERT INTO {$activetable} ( ".implode(", ",$fields2insert).") "
 							 . "VALUES( ".implode(", ",$values2import)."); ";		 
-			$result = $connect->Execute($insertOldValues) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg());
+			$result = $connect->Execute($insertOldValues) or safe_die("Error:<br />$insertOldValues<br />".$connect->ErrorMsg());
 		}
 
 //	}
