@@ -166,7 +166,14 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 		
 		foreach ($availablefields as $field => $value)
 		{
-			$fields2import[] = "\"".$value."\"";
+			if($databasetype=="postgres")
+			{
+				$fields2import[] = "\"".$value."\"";
+			}
+			else
+			{
+				$fields2import[] = '`'.$value.'`'; 
+			}
 		}
 		
 		if(count($fields2insert)!=count($fields2import))
