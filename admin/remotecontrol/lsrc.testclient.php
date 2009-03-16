@@ -186,6 +186,28 @@ $iVid = $_REQUEST['sid'];
 reset($_REQUEST);
 while(list($key, $value) = each($_REQUEST))
 {
+	if(substr($key,0,8)=="sendMail")
+	{
+		$iVid = $_REQUEST['sid'];
+		$sType = $_REQUEST['type'];
+		$maxemails = $_REQUEST['maxemails'];
+		$subject = $_REQUEST['subject'];
+		$mailText = $_REQUEST['mailText'];
+		
+		try
+		{
+			$sReturn = $client->sSendEmail($user, $pass, $iVid, $sType, $maxemails, $subject, $mailText);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+		
+		
+		
+	}
 	if(substr($key,0,9)=="delsurvey")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -585,7 +607,8 @@ for($n=1;$n<10;++$n)
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
-<div style='float:left;  margin-bottom: 5px'><?php 
+<div style='float:left;margin-bottom:5px'>
+<?php 
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -626,7 +649,31 @@ echo "<input type='submit' name='insPar' value='Insert Personal Data!'/>";
 echo "</form>";
 echo "</div>";
 
-
+echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<h3>sSendEmail function</h3>";
+echo "<p>Sends an Email to users of a specific survey. Invite, Remind and custom emails are possible</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' size='5' maxlength='5' value='".$iVid."'/>";
+echo "<br />";
+echo "<font color='red'>* </font><b> Email Type:</b><br/>";
+echo "<input type='radio' name='type' value='invite' checked='checked' /> invite";
+echo "<input type='radio' name='type' value='remind' /> remind";
+echo "<input type='radio' name='type' value='custom' /> custom<br/>";
+echo "<b>Maxemails (have to be Integer):</b> <br />";
+echo "<input type='text' name='maxemails' size='5' maxlength='5' value=''/>";
+echo "<br />";
+//echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]\" and so on :</b> <br />";
+echo "<b>Subject for custom cails</b> <br />";
+echo "<input type='text' name='subject' size=50' maxlength='255' value=''/><br/>";
+echo "<b>Mailtext for custom cails</b> <br />";
+echo "<textarea name='mailText' cols='50' rows='3'>";
+echo "</textarea> ";
+echo "<br />";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "<input type='submit' name='sendMail' value='Send Email to participants'/>";
+echo "</form>";
+echo "</div>";
 
 
 //phpinfo();

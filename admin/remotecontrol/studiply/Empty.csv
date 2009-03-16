@@ -8,7 +8,7 @@
 # SURVEYS TABLE
 #
 "sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
-"54461","1","Your Name","N","2008-11-05","2008-11-05","your@email.org","Y","","G","default","","de","","N","N","0","N","","","Y","N","0","N","Y","N","N","N","N","2008-11-05","N","Y","N","D","your@email.org"
+"54461","1","Your Name","N","2008-11-05","2008-11-05","your@email.org","Y","","G","hisnone","","de","","N","N","0","N","","","Y","N","0","N","Y","N","N","N","N","2008-11-05","N","Y","N","D","your@email.org"
 
 #
 # GROUPS TABLE

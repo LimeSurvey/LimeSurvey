@@ -15,11 +15,14 @@
 */
 
 ### Including
-//including LimeSurvey configs, for database variables and more... 
-include("../../config-defaults.php");
-include("../../config.php");
-require_once(dirname(__FILE__).'/../../common.php');
-
+// including LimeSurvey configs, for database variables and more... 
+// only include if this config is not used to save a survey.csv for the lsrc
+if(!isset($export4lsrc))
+{
+	include("../../config-defaults.php");
+	include("../../config.php");
+	require_once(dirname(__FILE__).'/../../common.php');
+}
 ### Error Handling
 // simple debug Option
 error_reporting(E_ALL);
@@ -65,8 +68,8 @@ $wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl
  * one for the core surveys, 
  * one for addable modules
  */
-$coreDir = "./studiply/";
-$modDir = "./studiply_mod/";
+$coreDir = "studiply/";
+$modDir = "studiply_mod/";
 
 
 //seperator for Tokens in sInsertToken function
