@@ -7,8 +7,7 @@ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 xmlns:typens="lsrcSchema"
 xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
       
-    <types><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:lsrcNamespace"><xsd:element name="string" type="xsd:string"></xsd:element></xsd:schema></types>
-    <message name="sCreateSurveyRequest">
+  <message name="sCreateSurveyRequest">
     <documentation>Function to start Surveys in LimeSurvey...</documentation>
         <part name="sUser" type="xsd:string">
       <documentation>Admin or Superadmin Account in Limesurvey needed
@@ -239,21 +238,6 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sDeleteSurveyFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
-  <message name="sSendEmailRequest">
-  	<part name="sUser" type="xsd:string"></part>
-  	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:int"></part>
-  	<part name="type" type="xsd:string"></part>
-  	<part name="maxemails" type="xsd:int"></part>
-  	<part name="subject" type="xsd:string"></part>
-  	<part name="emailText" type="xsd:string"></part>
-  </message>
-  <message name="sSendEmailResponse">
-  	<part name="return" type="xsd:string"></part>
-  </message>
-  <message name="sSendEmailFault">
-  	<part name="fault" element="tns:string"></part>
-  </message>
   <portType name="LsrcPortType">
     <operation name="sCreateSurvey" >
     <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
@@ -314,31 +298,10 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     	<output name="sDeleteSurveyResponse" message="tns:sDeleteSurveyResponse"></output>
             <fault name="sDeleteSurveyFault" message="tns:sDeleteSurveyFault"></fault>
         </operation>
-    <operation name="sSendEmail">
-    	<input name="sSendEmailRequest" message="tns:sSendEmailRequest"></input>
-    	<output name="sSendEmailResponse" message="tns:sSendEmailResponse"></output>
-            <fault name="sSendEmailFault" message="tns:sSendEmailFault"></fault>
-        </operation>
   </portType>
   
   <binding name="LsrcBinding" type="tns:LsrcPortType">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
-	
-	<operation name="sSendEmail">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sSendEmailRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sSendEmailResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sSendEmailFault">
-        <soap:fault name="sDeleteSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
 	
 	<operation name="sDeleteSurvey">
       <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />

@@ -68,7 +68,6 @@ $server->addFunction("sImportGroup");
 $server->addFunction("sAvailableModules");
 $server->addFunction("sImportQuestion");
 $server->addFunction("sImportMatrix");
-$server->addFunction("sSendEmail");
 // handle the soap request!
 $server->handle();
  
@@ -94,83 +93,6 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 	}
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
-}
-
-/*
- * Function to send reminder, invitation or custom mails to participants of a specific survey
- * $iVid = Survey ID
- * $type = invite, remind, custom
- * $subject = subject of custom mails
- * $emailText = Text of custom mails
- * 
- */
-function sSendEmail($sUser, $sPass, $iVid, $type, $maxemails='', $subject='', $emailText='')
-{
-	include("lsrc.config.php");
-	$lsrcHelper = new lsrcHelper();
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK "); 
-	
-	if(!$lsrcHelper->checkUser($sUser, $sPass))
-	{
-		throw new SoapFault("Authentication: ", "User or password wrong");
-		exit;
-	}
-	
-	// Check if all mandatory parameters are present, else abort...
-	if(!is_int($iVid) || $iVid==0 || $type=='')
-	{
-		throw new SoapFault("Server: ", "Mandatory Parameters missing");
-		exit;
-	}
-	
-	if($type=='custom' && $subject!='' && $emailText!='')
-	{
-		$emquery = "SELECT firstname, lastname, email, token, tid, language";
-		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
-
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
-
-		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
-		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
-		$emresult = db_select_limit_assoc($emquery,$maxemails);
-		
-		MailTextMessage();
-	}
-	
-	if($type=='invite' || $type=='remind')
-	{
-		$emailSenderReturn = $lsrcHelper->emailSender($iVid, $type, $maxemails);
-		
-		return $emailSenderReturn;
-//		if($maxemails != '')
-//		{
-//			return $emailSenderReturn;
-//			if($emailSenderReturn)
-//			{
-//				return "Mails send successfully";
-//			}
-//			else
-//				return $emailSenderReturn;
-//		}
-//		else
-//		{
-//			if($emailSenderReturn)
-//			{
-//				return "Mails send successfully";
-//			}
-//			else
-//			{
-//				throw new SoapFault("Sending Mail: ", "".$emailSenderReturn);
-//				exit;
-//			}
-//		}
-	}
-	else
-	{
-		throw new SoapFault("Type: ", "Wrong send Type given. Possible types are: custom, invite or remind");
-		exit;
-	}
-	
 }
 
 /**
@@ -644,7 +566,7 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
 		exit;
 	}
-	$checkImport = $lsrcHelper->importGroup($iVid, $modDir."mod_".$sMod);
+	$checkImport = $lsrcHelper->importGroup($iVid,"mod_".$sMod);
 	if(is_array($checkImport))
 	{
 		return "Import OK";
