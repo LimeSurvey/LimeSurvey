@@ -129,7 +129,8 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 		}
 		foreach ($importablefields as $field => $value)
 		{
-			$fields2insert[] = "\"".$value."\"";
+            $fields2insert[]=($databasetype=="postgres") ? "\"".$value."\"" : "`".$value."`";
+//		    if($databasetype=="postgres") { $fields2insert[] = "\"".$value."\""; }
 		}
 		
 		//fields we can supply //fields in the old database
@@ -184,7 +185,6 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 			echo "Sorry, a count of columns mismatch prevents the old Responses from importing.";
 			exit;
 		}
-		
 		$queryOldValues = "SELECT ".implode(", ",$fields2import)." "
 						. "FROM {$oldtable} ";
 		$resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
@@ -201,7 +201,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 				else
 				{
 					if(!is_numeric($fieldValue))
-						$values2import[] = "'".$fieldValue."'";
+						$values2import[] = "'".mysql_real_escape_string($fieldValue)."'";
 					else
 						$values2import[] = "".$fieldValue."";
 				}
