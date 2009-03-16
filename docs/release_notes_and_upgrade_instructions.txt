@@ -72,6 +72,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.80 [2009/03/09] to 1.80+ (build 6535) [2009/03/16] - Legend: + new feature, # update feature, - bug fix
+
+#Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)#Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)
+
+-Fix #2950 Added some more validation to SPSS variable names and added escaping to variable labels to prevent errors with quotes inside the description. (mennodekker)
+-Fixed Issue #2964: Error in SQL syntax while importing answers to survey (wahrendorff and jcleeland)
+-Fixed issue #2943: Phantom Help question marks when there is no Help text (lemeur)
+-Fixed issue #2959: Problems with condition editor and @SGQA@ codes for Date and numerical questions (lemeur)
+-Fixed issue #2953 & #2971: notices in printableanswers and compliance with php 4.3.2 (eric_t_cruiser)
+-Fixed a missing trailing "/" at the end of the link tag (maziminke)
+-Fixed issue #2962: more than 8 columns not working with question attribute display columns  (eric_t_cruiser)
+-Fixed minor bug in rendering. Was adding a second opening wrapper for flexible list dropdown, now only adding one. (eric_t_cruiser)
+-Fixed question type P and M with comment, other and othercomment not exporting data to SPSS and R (mennodekker)
+-Fixed single quote in answers is no longer removed in export to SPSS and R (mennodekker)
+
+
 Changes from 1.72 to 1.80 [2009/03/09]
 
 New features:
