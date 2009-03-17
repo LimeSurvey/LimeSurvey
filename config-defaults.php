@@ -73,6 +73,7 @@ $allowexportalldb   =   1;                // 0 will only export prefixed tables 
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
                                           // has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
+$printanswershonorsconditions = 1;	  // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic 
 $shownoanswer       =   1;                // Show 'no answer' for non mandatory questions
 $admintheme         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 

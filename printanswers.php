@@ -249,7 +249,7 @@ if (isset($_SESSION['s_lang']))
 		$field = "{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}";
 		$ftitle = "Grp{$fnrow['gid']}Qst{$fnrow['title']}";
 		$fquestion = $fnrow['question'];
-		if (checkquestionfordisplay($fnrow['qid'],null))
+		if ($printanswershonorsconditions == 1 && checkquestionfordisplay($fnrow['qid'],null))
 				{
 
 
