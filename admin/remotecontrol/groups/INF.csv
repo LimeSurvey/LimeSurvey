@@ -1,0 +1,43 @@
+# LimeSurvey Group Dump
+# DBVersion 130
+# This is a dumped group from the LimeSurvey Script
+# http://www.limesurvey.org/
+# Do not change this header!
+
+#
+# GROUPS TABLE
+#
+"gid","sid","group_name","group_order","description","language"
+"42","10","Student INF","5","Fragebogen für Informatik Studenten<br />","de"
+
+#
+# QUESTIONS TABLE
+#
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
+"212","10","42","L","1","Vieviele Computer haben Sie zu Hause?<br />","","Taschenrechner und Smartphones zählen nicht mit<br />","N","N","0","0","1","de"
+
+#
+# ANSWERS TABLE
+#
+"qid","code","answer","default_value","sortorder","language"
+"212","1","keinen","N","1","de"
+"212","2","einen","N","2","de"
+"212","3","mehr als einen","N","3","de"
+"212","4","mehr als 5","N","4","de"
+"212","5","da muß ich erstmal zählen gehen","N","5","de"
+
+#
+# CONDITIONS TABLE
+#
+
+#
+# LABELSETS TABLE
+#
+
+#
+# LABELS TABLE
+#
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#

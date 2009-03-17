@@ -68,6 +68,7 @@ $server->addFunction("sImportGroup");
 $server->addFunction("sAvailableModules");
 $server->addFunction("sImportQuestion");
 $server->addFunction("sImportMatrix");
+$server->addFunction("sImportFreetext");
 $server->addFunction("sSendEmail");
 // handle the soap request!
 $server->handle();
@@ -639,12 +640,13 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		exit;
 	}
 	
-	if(!is_file($modDir."mod_".$sMod.".csv"))
+	if(!is_file($modDir.$sMod.".csv"))
 	{
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
 		exit;
 	}
-	$checkImport = $lsrcHelper->importGroup($iVid, $modDir."mod_".$sMod);
+	
+	$checkImport = $lsrcHelper->importGroup($iVid,"mod_".$sMod);
 	if(is_array($checkImport))
 	{
 		return "Import OK";
@@ -658,7 +660,7 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 }
 
 /**
- * function to import a questiongroup with one freetext question and change it 
+ * function to import a fixed question 
  *
  * @param String $sUser
  * @param String $sPass
@@ -674,7 +676,6 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
 	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
-	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
 	
 	// check for appropriate rights
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
@@ -689,7 +690,70 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
 	
+	//import the module
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod);
+	if(is_array($lastId))
+	{
+//		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
+//		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
+//		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
+//		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
+		return "OK";
+	}
+	else
+	{
+		throw new SoapFault("Server: ", $lastId);
+		exit;
+	}
+}
+
+/**
+ * function to import a questiongroup with one freetext question and change it 
+ *
+ * @param String $sUser
+ * @param String $sPass
+ * @param Int $iVid
+ * @param String $sMod
+ * @param String $qTitle
+ * @param String $qText
+ * @param String $qHelp
+ * @return String
+ */
+function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='Freitext', $mandatory='N')
+{
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	
+	// check for appropriate rights
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	//check for Surveyowner
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
+		exit;
+	}
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
+	
+	//import the module
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod);
 	if(is_array($lastId))
 	{
 		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
@@ -717,7 +781,7 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
  * @param unknown_type $sItems comma seperated values
  * @return unknown
  */
-function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $mandatory='N' )
+function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Matrix', $mandatory='N' )
 {
 	global $connect ;
 	global $dbprefix ;
@@ -739,7 +803,12 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
-	
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
 	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
 	if(is_array($lastId))
 	{
@@ -763,7 +832,6 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 		exit;
 	}
 	
-	
 }
 
 /**
@@ -785,54 +853,80 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
-	if($mode=='mod')
-	{
-		$mDir = opendir($modDir);
-		$n=0;
-		while(false !== ($file = readdir($mDir))) 
-		{
-			if($file!='.' && $file!='..' && substr($file,0,4)=="mod_" && substr($file,-4,4)==".csv")
+	switch($mode){
+		case ('mod'):
+		
+			$mDir = opendir($modDir);
+			$n=0;
+			while(false !== ($file = readdir($mDir))) 
 			{
-				$file = basename ($file, ".csv");
-				$file = str_replace("mod_", "", $file);
-				
-				if($n == 0)
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
 				{
-					$return = $file;
-					$n=1;
-				}
-				else
-				{
-					$return .= ",".$file;
-				} 
-			}
-		}  
-		return $return;	
-	}
-	
-	if($mode=='core')
-	{
-		$cDir = opendir($coreDir);
-		$n=0;
-		while(false !== ($file = readdir($cDir))) 
-		{
-			if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
-			{
-				$file = basename ($file, ".csv");
-				//$file = str_replace("mod_", "", $file);
-				if($n == 0)
-				{
-					$return = $file;
-					$n=1;
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
 					
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
 				}
-				else
+				
+			}  
+			return $return;	
+		break;
+		case ('core'):
+		
+			$cDir = opendir($coreDir);
+			$n=0;
+			while(false !== ($file = readdir($cDir))) 
+			{
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
 				{
-					$return .= ",".$file;
-				} 
-			}
-		}  
-		return $return;	
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+						
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
+				}
+			}  
+			return $return;	
+		break;
+		case ('que'):
+		
+			$cDir = opendir($queDir);
+			$n=0;
+			while(false !== ($file = readdir($cDir))) 
+			{
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
+				{
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+						
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
+				}
+			}  
+			return $return;	
+		break;
 	}
 }
 

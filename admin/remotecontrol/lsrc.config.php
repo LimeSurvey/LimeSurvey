@@ -66,10 +66,12 @@ $wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 
  * one for the core surveys, 
- * one for addable modules
+ * one for addable modules,
+ * one for addable questions
  */
-$coreDir = "studiply/";
-$modDir = "studiply_mod/";
+$coreDir = "./surveys/";
+$modDir = "./groups/";
+$queDir = "./questions/";
 
 
 //seperator for Tokens in sInsertToken function
