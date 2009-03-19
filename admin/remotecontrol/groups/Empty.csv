@@ -1,0 +1,35 @@
+# LimeSurvey Group Dump
+# DBVersion 133
+# This is a dumped group from the LimeSurvey Script
+# http://www.limesurvey.org/
+# Do not change this header!
+
+#
+# GROUPS TABLE
+#
+"gid","sid","group_name","group_order","description","language"
+"562","666","Zusätzliche Fragen","1","","de"
+
+#
+# QUESTIONS TABLE
+#
+
+#
+# ANSWERS TABLE
+#
+
+#
+# CONDITIONS TABLE
+#
+
+#
+# LABELSETS TABLE
+#
+
+#
+# LABELS TABLE
+#
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#
