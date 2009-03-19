@@ -20,6 +20,7 @@ include_once("login_check.php");
 if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
+
 if ($action == "listsurveys")
 {
 	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
@@ -1969,32 +1970,44 @@ if($action == "exportstructure")
 {
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
-    $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
-    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-    .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
-    ."<tr>\n"
-    ."<td style='text-align:center;'>\n"
-    ."<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
-    ."<label for='surveycsv'>"
-    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n"
-    ."<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\"";
-    $exportstructure.="/>"
-    ."<label for='queXML'>"
-    .$clang->gT("queXML Survey XML Format (*.xml)")." ";
-    
-    $exportstructure.="</label>\n"
-    ."<br />&nbsp;</td>\n"
-    ."</tr>\n"
-    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-    ."<tr>\n"
-    ."<td align='center'>\n"
-    ."<input type='submit' value='"
-    .$clang->gT("Export To File")."' />\n"
-    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-    ."<input type='hidden' name='action' value='exportstructurecsv' />\n"
-    ."</td>\n"
-    ."</tr>\n"
-    ."</table><br /></from>\n";
+	    $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
+	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
+	    .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
+	    ."<tr>\n"
+	    ."<td style='text-align:center;'>\n";
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
+	    ."<label for='surveycsv'>"
+	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n";
+	    
+	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+	    ."<label for='queXML'>"
+	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
+	    ."</label>\n";
+	    
+	    // XXX
+	    include("../config.php");
+
+		//echo $export4lsrc;
+	    if($export4lsrc)
+	    {
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv' onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
+		    ."<label for='LsrcCsv'>"
+		    .$clang->gT("Save for Lsrc (*.csv)")." "
+		    ."</label>\n";
+	     }
+	    
+	    $exportstructure.="<br />&nbsp;</td>\n"
+	    ."</tr>\n"
+	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
+	    ."<tr>\n"
+	    ."<td align='center'>\n"
+	    ."<input type='submit' value='"
+	    .$clang->gT("Export To File")."' />\n"
+	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
+	    ."<input type='hidden' name='action' value='exportstructurecsv' />\n"
+	    ."</td>\n"
+	    ."</tr>\n";
+	    $exportstructure.="</table><br /></from>\n";
     }
 }
 

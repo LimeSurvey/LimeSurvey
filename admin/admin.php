@@ -174,6 +174,11 @@ elseif ($action == 'exportstructurecsv')
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_structure_csv.php');}
         else { include('access_denied.php');}    
+    }
+elseif ($action == 'exportstructureLsrcCsv')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_structure_lsrc.php');}
+        else { include('access_denied.php');}    
     }    
 elseif ($action == 'exportstructurequexml')
     {
