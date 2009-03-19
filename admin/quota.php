@@ -244,7 +244,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	if($subaction == "quota_delans")
 	{
 		$_POST  = array_map('db_quote', $_POST);
-		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
+		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE id = '{$_POST['quota_member_id']}' AND qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
@@ -325,6 +325,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				</table>';
 	}
 	
+	$totalquotas=0;
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -354,7 +355,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 			while ($quotalisting = $result->FetchRow())
 			{
 				$quotasoutput .='<tr>
-            		<td align="center">'.$quotalisting['name'].'</td>
+            		<td align="center"><a name="quota_'.$quotalisting['id'].'">'.$quotalisting['name'].'</a></td>
             		<td align="center">';
 				if ($quotalisting['active'] == 1)
 				{
@@ -370,6 +371,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				} elseif ($quotalisting['action'] == 2) {
 					$quotasoutput .= $clang->gT("Terminate Survey With Warning");
 				}
+				$totalquotas+=$quotalisting['qlimit'];
 				$quotasoutput .='</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
             		<td align="center">'.get_quotaCompletedCount($surveyid, $quotalisting['id']).'</td>
@@ -424,6 +426,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input name="submit" type="submit" id="submit" value="'.$clang->gT("Remove").'">
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
+            				<input type="hidden" name="quota_member_id" value="'.$quota_questions['id'].'" />
             				<input type="hidden" name="quota_qid" value="'.$quota_questions['qid'].'" />
             				<input type="hidden" name="quota_anscode" value="'.$quota_questions['code'].'" />
             				<input type="hidden" name="subaction" value="quota_delans" />
@@ -451,9 +454,9 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
+            				<td align="center"><a name="quota_end">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center">&nbsp;</td>
+            				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
             				<td align="center" style="padding: 3px;">&nbsp;</td>
           					</tr>
@@ -562,7 +565,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
       								</table>';
 		} else
 		{
-			$quotasoutput .='<form action="'.$scriptname.'" method="post">
+			$quotasoutput .='<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
 							 <table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
   							<tr>
     							<td valign="top">
@@ -613,7 +616,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if ($subaction == "new_quota")
 	{
-		$quotasoutput .='<form action="'.$scriptname.'" method="post">
+		$quotasoutput .='<form action="'.$scriptname.'#quota_end" method="post">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
   						<tr>
     						<td valign="top">
