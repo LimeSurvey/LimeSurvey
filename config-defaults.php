@@ -219,6 +219,15 @@ $defaulthtmleditormode = 'inline';
 $surveyPreview_require_Auth = true;
 
 
+// $use_one_time_passwords
+// New feature since version 1.81: One time passwords
+// The user can call the limesurvey login at /limesurvey/admin and pass username and
+// a one time password which was previously written into the users table (column one_time_pw) by
+// an external application.
+// This setting has to be turned on to enable the usage of one time passwords (default = off).
+$use_one_time_passwords = false;
+
+
 // $useWebserverAuth
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate
