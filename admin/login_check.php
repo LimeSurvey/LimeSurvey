@@ -17,14 +17,113 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (!isset($action)) {$action=returnglobal('action');}
 
+
+/*
+ * New feature since version 1.81: One time passwords
+ * The user can call the limesurvey login at /limesurvey/admin and pass username and
+ * a one time password which was previously written into the users table (column one_time_pw) by
+ * an external application.
+ * Furthermore there is a setting in config-defaults which has to be turned on (default = off)
+ * to enable the usage of one time passwords.
+ */
+
+//check if data was passed by URL
+if(isset($_GET['user']) && isset($_GET['onepass']))
+{	
+	//take care of passed data
+	$user = sanitize_user($_GET['user']);
+	$pw = sanitize_paranoid_string($_GET['onepass']);//sanitize_float($_GET['onepass']);
+	
+	//check if setting $use_one_time_passwords exists in config file
+	if(isset($use_one_time_passwords))
+	{	
+		//$use_one_time_passwords switched OFF but data was passed by URL: Show error message
+		if($use_one_time_passwords === false)
+		{
+			//create an error message
+			$loginsummary .= "<br />".$clang->gT("Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: ")."<br />";
+			$loginsummary .= '<br /><em>$use_one_time_passwords = true;</em><br />';
+			$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";		
+		}
+		//Data was passed, using one time passwords is enabled
+		else
+		{			
+			//check if user exists in DB
+			$query = "SELECT uid, users_name, password, one_time_pw FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($user);
+			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
+			$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
+			if(!$result)
+			{
+				echo "<br />".$connect->ErrorMsg();
+			}
+			if ($result->RecordCount() < 1)
+			{
+				// wrong or unknown username 
+				$loginsummary = $clang->gT("No one time password found for user")." ".$user."<br />";			
+			}
+			else
+			{
+				//get one time pw from db
+				$srow = $result->FetchRow();
+				$otpw = $srow['one_time_pw'];
+				
+				//check if passed password and one time password from database DON'T match
+				if($pw != $otpw)
+				{
+					//no match -> warning
+					$loginsummary = "<br />".$clang->gT("Passed one time password doesn't match one time password for user")." <em>".$user."</em><br />";
+					$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";		
+				}
+				//both passwords match
+				else
+				{
+					
+					//delete one time password in database
+					$uquery = "UPDATE ".db_table_name('users')." 
+					SET one_time_pw=''
+					WHERE users_name='".db_quote($user)."'";	
+	
+					$uresult = $connect->Execute($uquery);
+					
+					//data necessary for following functions
+					//$_POST['user'] = $srow['users_name'];
+					//$_POST['password'] = $srow['password'];
+					$_SESSION['user'] = $srow['users_name'];
+					$_SESSION['checksessionpost'] = randomkey(10);
+					$_SESSION['loginID'] = $srow['uid'];
+					$loginsummary = "";
+					
+					// Check if the user has changed his default password
+					if (strtolower($srow['password'])=='password')
+					{
+						$_SESSION['pw_notify']=true;
+					}
+					else
+					{
+						$_SESSION['pw_notify']=false;
+					} 
+					
+				}			
+				
+			}
+			
+		}
+	}
+}
+
+
+
 // check data for login
 if( isset($_POST['user']) && isset($_POST['password']) || 
 	($action == "forgotpass") || ($action == "login") || 
 	($action == "logout") || 
 	($useWebserverAuth === true && !isset($_SESSION['loginID'])) )	// added by Dennis
 {
+	echo '<script language="javascript" type="text/javascript">alert("USERCONTROL");</script>';
 	include("usercontrol.php");
 }
+
+
 
 
 // login form
@@ -121,8 +220,8 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 	}
 }
 
-if (isset($loginsummary)) {
-
+if (isset($loginsummary)) 
+{	
 	$adminoutput.= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
 	."\t<tr>\n"
     ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
