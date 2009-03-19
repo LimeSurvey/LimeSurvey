@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<definitions name="LsrcService"
-targetNamespace="urn:lsrcNamespace"
-xmlns:tns="urn:lsrcNamespace"
-xmlns="http://schemas.xmlsoap.org/wsdl/"
-xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-xmlns:typens="lsrcSchema"
-xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
-      
-    <types><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:lsrcNamespace"><xsd:element name="string" type="xsd:string"></xsd:element></xsd:schema></types>
-    <message name="sCreateSurveyRequest">
-    <documentation>Function to start Surveys in LimeSurvey...</documentation>
-        <part name="sUser" type="xsd:string">
-      <documentation>Admin or Superadmin Account in Limesurvey needed
+<definitions name="LsrcService" targetNamespace="urn:lsrcNamespace"
+	xmlns:tns="urn:lsrcNamespace" xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:typens="lsrcSchema"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<types>
+		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="urn:lsrcNamespace">
+			<xsd:element name="string" type="xsd:string"></xsd:element>
+		</xsd:schema>
+	</types>
+	<message name="sCreateSurveyRequest">
+		<documentation>Function to start Surveys in LimeSurvey...
+		</documentation>
+		<part name="sUser" type="xsd:string">
+			<documentation>Admin or Superadmin Account in Limesurvey needed
+			</documentation>
+		</part>
+		<part name="sPass" type="xsd:string">
+			<documentation>Correct password for the Superadmin in
+				Limesurvey
       </documentation>
-    </part>
-        <part name="sPass" type="xsd:string">
-      <documentation>Correct password for the Superadmin in Limesurvey
-      </documentation>
-    </part>
-        <part name="iVid" type="xsd:int" >
-      <documentation>This is the &quot;VeranstaltungsID&quot; similar to the SurveyID...
- Integer expected... 
-      </documentation>
+		</part>
+		<part name="iVid" type="xsd:int">
+			<documentation>This is the &quot;VeranstaltungsID&quot; similar to the SurveyID... Integer expected... </documentation>
     </part>
         <part name="sVtit" type="xsd:string">
         	<documentation>titel of the event, put together from NR and NAME from LSF. veranstaltung</documentation></part>
@@ -173,11 +175,12 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   </message>
   <message name="sImportGroupRequest">
 
-
         <part name="sUser" type="xsd:string"></part>
         <part name="sPass" type="xsd:string"></part>
         <part name="iVid" type="xsd:int"></part>
   	<part name="sMod" type="xsd:string"></part>
+  	<part name="sGroupName" type="xsd:string"></part>
+  	<part name="sGroupDescription" type="xsd:string"></part>
   </message>
   <message name="sImportGroupResponse">
   	<part name="return" type="xsd:string"></part>
@@ -185,6 +188,21 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sImportGroupFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
+  
+    <message name="sImportQuestionRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+    <part name="sMod" type="xsd:string"></part>
+    <part name="sMandatory" type="xsd:string"></part>
+    </message>
+  <message name="sImportQuestionResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sImportQuestionFault">
+  	<part name="fault" element="xsd:string"></part>
+  </message>
+  
   <message name="sAvailableModulesRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
@@ -196,20 +214,19 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   <message name="sAvailableModulesFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
-  <message name="sImportQuestionRequest">
+  <message name="sImportFreetextRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:int"></part>
-  	<part name="sMod" type="xsd:string"></part>
-  	<part name="sTitle" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part><part name="sTitle" type="xsd:string"></part>
   	<part name="sQuestion" type="xsd:string"></part>
-  	<part name="sHelp" type="xsd:string"></part>
-  	<part name="sMandatory" type="xsd:string"></part>
-  </message>
-  <message name="sImportQuestionResponse">
+  	<part name="sHelp" type="xsd:string"></part>
+        <part name="sMod" type="xsd:string"></part>
+        <part name="sMandatory" type="xsd:string"></part>
+    </message>
+  <message name="sImportFreetextResponse">
   	<part name="return" type="xsd:string"></part>
   </message>
-  <message name="sImportQuestionFault">
+  <message name="sImportFreetextFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
   <message name="sImportMatrixRequest">
@@ -252,8 +269,9 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
   	<part name="return" type="xsd:string"></part>
   </message>
   <message name="sSendEmailFault">
-  	<part name="fault" element="tns:string"></part>
+  	<part name="fault" element="xsd:string"></part>
   </message>
+  
   <portType name="LsrcPortType">
     <operation name="sCreateSurvey" >
     <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
@@ -294,15 +312,20 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     	<output name="sImportGroupResponse" message="tns:sImportGroupResponse"></output>
             <fault name="sImportGroupFault" message="tns:sImportGroupFault"></fault>
         </operation>
+    <operation name="sImportQuestion">
+    	<input name="sImportQuestionRequest" message="tns:sImportQuestionRequest"></input>
+    	<output name="sImportQuestionResponse" message="tns:sImportQuestionResponse"></output>
+        <fault name="sImportQuestionFault" message="tns:sImportQuestionFault"></fault>
+    </operation>
     <operation name="sAvailableModules">
     	<input name="sAvailableModulesRequest" message="tns:sAvailableModulesRequest"></input>
     	<output name="sAvailableModulesResponse" message="tns:sAvailableModulesResponse"></output>
             <fault name="sAvailableModulesFault" message="tns:sAvailableModulesFault"></fault>
         </operation>
-    <operation name="sImportQuestion">
-    	<input name="sImportQuestionRequest" message="tns:sImportQuestionRequest"></input>
-    	<output name="sImportQuestionResponse" message="tns:sImportQuestionResponse"></output>
-            <fault name="sImportQuestionFault" message="tns:sImportQuestionFault"></fault>
+    <operation name="sImportFreetext">
+    	<input name="sImportFreetextRequest" message="tns:sImportFreetextRequest"></input>
+    	<output name="sImportFreetextResponse" message="tns:sImportFreetextResponse"></output>
+            <fault name="sImportFreetextFault" message="tns:sImportFreetextFault"></fault>
         </operation>
     <operation name="sImportMatrix">
     	<input name="sImportMatrixRequest" message="tns:sImportMatrixRequest"></input>
@@ -372,6 +395,22 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
       </fault>
     </operation>
 	
+	<operation name="sImportFreetext">
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
+      <input name="sImportFreetextRequest">
+        <soap:body namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sImportFreetextResponse">
+        <soap:body namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sImportFreetextFault">
+        <soap:fault name="sImportFreetextFault" namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+    	
 	<operation name="sImportQuestion">
       <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
       <input name="sImportQuestionRequest">
@@ -517,16 +556,16 @@ xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
     </operation>
   </binding>
   
-  <service name="LsrcService">
-    <documentation>This is the LsrcService 
-    for remote starting surveys and registering tokens in LimeSurvey. 
-    Make sure to modify the soap:address to the current Location of the lsrcserver.php
-    It has to be like this: 'http://servername/[limesurveydir]/lsrcservice/lsrcserver.php'
-    NOTE: http for normal mode, begin the url with https for a SSL Webservice, it's just that easy.
-    </documentation>
-    <port name="LsrcPort" binding="tns:LsrcBinding">
-      <soap:address location="{lsrclocation}" />
-    </port>
+ <service name="LsrcService">
+   <documentation>This is the LsrcService 
+   for remote starting surveys and registering tokens in LimeSurvey. 
+   Make sure to modify the soap:address to the current Location of the lsrcserver.php
+   It has to be like this: 'http://servername/[limesurveydir]/lsrcservice/lsrcserver.php'
+   NOTE: http for normal mode, begin the url with https for a SSL Webservice, it's just that easy.
+   </documentation>
+   <port name="LsrcPort" binding="tns:LsrcBinding">
+     <soap:address location="{lsrclocation}" />
+   </port>
   </service>
 
 </definitions>

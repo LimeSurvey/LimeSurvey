@@ -8,7 +8,7 @@
 # QUESTIONS TABLE
 #
 "qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
-"2902","666","559","T","1","Placeholder","","Placeholder","N","Y","0","0","0","de"
+"2904","666","560","A","1","This is a question<br />","","","N","N","0","0","0","de"
 
 #
 # ANSWERS TABLE

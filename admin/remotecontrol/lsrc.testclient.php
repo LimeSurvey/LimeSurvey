@@ -14,8 +14,15 @@
 * 
 */
 $wsdl = $_REQUEST['wsdl'];
+
 #####################################################################
 ## Configuration Parameters
+//set this to your limesurvey installation path for the "test survey" link to work
+$limeUrl='https://localhost/limesource/limesurvey181';
+
+//We need authentication for every function, so just write the logindata once for all
+$user ="admin";
+$pass ="password";
 
 //we don't like caching while testing, so we disable it
 ini_set("soap.wsdl_cache_enabled", 0);
@@ -28,14 +35,9 @@ if($wsdl=='')
 	// give full uri of the wsdl from the webservice you want to connect to...
 	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
 	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl='https://localhost/limesource/limesurvey/admin/remotecontrol/lsrc.server.php?wsdl';
+	$wsdl="$limeUrl/admin/remotecontrol/lsrc.server.php?wsdl";
 }
-//set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey';
 
-//We need authentication for every function, so just write the logindata once for all
-$user ="admin";
-$pass ="password";
 
 // fixed certificate, if U use some... you need this if you have an own trusted certificate.
 // If you dont know what I am taking about, just leave this option untouched.
@@ -251,7 +253,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid, "Matrix", $qText, $qHelp, $items,$mandatory);
+			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory,0);
 		}
 		catch (SoapFault $fault)
 		{
@@ -273,7 +275,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportQuestion($user, $pass, $iVid, "Freitext", $qTitle, $qText, $qHelp,$mandatory);
+			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory,0);
 		}
 		catch (SoapFault $fault)
 		{
@@ -665,7 +667,7 @@ echo "<input type='text' name='maxemails' size='5' maxlength='5' value=''/>";
 echo "<br />";
 //echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]\" and so on :</b> <br />";
 echo "<b>Subject for custom cails</b> <br />";
-echo "<input type='text' name='subject' size=50' maxlength='255' value=''/><br/>";
+echo "<input type='text' name='subject' size='50' maxlength='255' value=''/><br/>";
 echo "<b>Mailtext for custom cails</b> <br />";
 echo "<textarea name='mailText' cols='50' rows='3'>";
 echo "</textarea> ";

@@ -491,10 +491,10 @@ class LsrcHelper {
 		  {
 		  	if ($importingfrom == "http")
 		  	{
-			    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
-			  	$importsurvey .= "</font></td></tr></table>\n";
-			  	$importsurvey .= "</body>\n</html>\n";
+//			    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+//			  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
+//			  	$importsurvey .= "</font></td></tr></table>\n";
+//			  	$importsurvey .= "</body>\n</html>\n";
 			  	//unlink($the_full_file_path);
 			  	return;
 			  }
@@ -812,12 +812,12 @@ class LsrcHelper {
 		{
 			if ($importingfrom == "http")
 			{
-				$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
-				$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-				$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-				$importsurvey .= "</font></td></tr></table>\n";
-				$importsurvey .= "</body>\n</html>\n";
-				unlink($the_full_file_path); //Delete the uploaded file
+//				$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
+//				$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
+//				$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+//				$importsurvey .= "</font></td></tr></table>\n";
+//				$importsurvey .= "</body>\n</html>\n";
+//				unlink($the_full_file_path); //Delete the uploaded file
 				return;
 			}
 			else 
@@ -2371,7 +2371,7 @@ class LsrcHelper {
 			//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 			//$importgroup .= "</td></tr></table>\n";
 			//unlink($the_full_file_path);
-			return;
+			return false;
 		}
 		
 		for ($i=0; $i<9; $i++)
@@ -2977,14 +2977,14 @@ class LsrcHelper {
 		    }
 		    $this->debugLsrc("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
 		    // CONDITIONS is DONE
-		    return array(gid=>$newgid,qid=>$myQid);
+		    return array('gid'=>$newgid,'qid'=>$myQid);
 		    //return $newgid;
 	}
 	
 	/*
 	 * function to import a single question
 	 */
-	function importQuestion($surveyid, $sMod) //XXX
+	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
 		global $connect ;
 		global $dbprefix ;
@@ -2992,56 +2992,74 @@ class LsrcHelper {
 		include("lsrc.config.php");
 		$newsid = $surveyid;
 		
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+		
+		//$getGidSql = "SELECT gid FROM {$dbprefix}  ";
+		$getGidSql = "SELECT gid 
+	                   FROM {$dbprefix}groups 
+	                   WHERE sid=".$surveyid." AND language='".GetBaseLanguageFromSurveyID($surveyid)."'
+	                   ORDER BY gid desc LIMIT 1; ";    
+        $getGidRs = db_execute_num($getGidSql);
+        $gidRow=$getGidRs->FetchRow();
+        $gid = $gidRow[0];
+		if($newGroup)
+			++$gid;        
+		        
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		$the_full_file_path = $queDir.$sMod.".csv";
 		
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
 		
 		$handle = fopen($the_full_file_path, "r");
 		while (!feof($handle))
 		{
-			$buffer = fgets($handle); 
+			$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
 		
-		if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump" && substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
+		// Now we try to determine the dataformat of the survey file.
+		if ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
 		{
-			//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			//$importgroup .= $clang->gT("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";
-			//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-			//$importgroup .= "</td></tr></table>\n";
-			//unlink($the_full_file_path);
-			return;
+		    $importversion = 100;  // version 1.0 file
 		}
+		elseif 
+		   ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
+		{
+		    $importversion = 99;  // Version 0.99 file or older - carries a different URL
+		}
+		elseif 
+		   (substr($bigarray[0], 0, 26) == "# LimeSurvey Question Dump" || substr($bigarray[0], 0, 27) == "# PHPSurveyor Question Dump")
+		    {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
+		      $importversion=substr($bigarray[1], 12, 3);
+		    }
+		else    // unknown file - show error message
+		  {
+//		      $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+//		      $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+//		      $importquestion .= "</font></td></tr></table>\n";
+//		      $importquestion .= "</body>\n</html>\n";
+//		      unlink($the_full_file_path);
+		      return "This is not a Limesurvey question file. Import failed";
+		  }
 		
-		for ($i=0; $i<9; $i++)
-		{
-			unset($bigarray[$i]);
-		}
-		$bigarray = array_values($bigarray);
-		
-		//GROUPS
-		if (array_search("# QUESTIONS TABLE\n", $bigarray))
-		{
-			$stoppoint = array_search("# QUESTIONS TABLE\n", $bigarray);
-		}
-		elseif (array_search("# QUESTIONS TABLE\r\n", $bigarray))
-		{
-			$stoppoint = array_search("# QUESTIONS TABLE\r\n", $bigarray);
-		}
-		else
-		{
-			$stoppoint = count($bigarray)-1;
-		}
-		for ($i=0; $i<=$stoppoint+1; $i++)
-		{
-			if ($i<$stoppoint-2) {$grouparray[] = $bigarray[$i];}
-			unset($bigarray[$i]);
-		}
-		$bigarray = array_values($bigarray);
+//		if ($importversion != $dbversionnumber)
+//		{
+////		    $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+////		    $importquestion .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
+////		    $importquestion .= "</font></td></tr></table>\n";
+////		    $importquestion .= "</body>\n</html>\n";
+////		    unlink($the_full_file_path);
+//		    return;
+//		}
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
+		{
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//QUESTIONS
 		if (array_search("# ANSWERS TABLE\n", $bigarray))
 		{
@@ -3061,28 +3079,8 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//ANSWERS
-		if (array_search("# CONDITIONS TABLE\n", $bigarray))
-		{
-			$stoppoint = array_search("# CONDITIONS TABLE\n", $bigarray);
-		}
-		elseif (array_search("# CONDITIONS TABLE\r\n", $bigarray))
-		{
-			$stoppoint = array_search("# CONDITIONS TABLE\r\n", $bigarray);
-		}
-		else
-		{
-			$stoppoint = count($bigarray)-1;
-		}
-		for ($i=0; $i<=$stoppoint+1; $i++)
-		{
-			if ($i<$stoppoint-2) {$answerarray[] = $bigarray[$i];}
-			unset($bigarray[$i]);
-		}
-		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		//CONDITIONS
 		if (array_search("# LABELSETS TABLE\n", $bigarray))
 		{
 			$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
@@ -3093,15 +3091,15 @@ class LsrcHelper {
 		}
 		else
 		{
-			$stoppoint = count($bigarray);
+			$stoppoint = count($bigarray)-1;
 		}
 		for ($i=0; $i<=$stoppoint+1; $i++)
 		{
-			if ($i<$stoppoint-2) {$conditionsarray[] = $bigarray[$i];}
+			if ($i<$stoppoint-2) {$answerarray[] = str_replace("`default`", "`default_value`", $bigarray[$i]);}
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//LABELSETS
 		if (array_search("# LABELS TABLE\n", $bigarray))
 		{
@@ -3121,7 +3119,7 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		//LABELS
 		if (array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray))
 		{
@@ -3141,108 +3139,114 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		//LAST LOT (now question_attributes)
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//Question_attributes
 		if (!isset($noconditions) || $noconditions != "Y")
 		{
-			// stoppoint is the last line number
-			// this is an empty line after the QA CSV lines
-			$stoppoint = count($bigarray)-1;
+			$stoppoint = count($bigarray);
 			for ($i=0; $i<=$stoppoint+1; $i++)
 			{
-				if ($i<=$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+				if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
 				unset($bigarray[$i]);
 			}
 		}
 		$bigarray = array_values($bigarray);
 		
-		$countgroups=0;
-		if (isset($questionarray))
-		    {
-		    $questionfieldnames=convertCSVRowToArray($questionarray[0],',','"');
-		    unset($questionarray[0]);
-		    $countquestions = 0;
-		    }
-		
+		if (isset($questionarray)) {$countquestions = count($questionarray)-1;}  else {$countquestions=0;}
 		if (isset($answerarray)) 
 		    {
-		    $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
-		    unset($answerarray[0]);
-		    $countanswers = 0;
-		    }
+		        $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+		        unset($answerarray[0]);
+		        $countanswers = count($answerarray);
+		    }  
+			  else {$countanswers=0;}
+		if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
+		if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
+		if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
 		
-		$countconditions = 0;
-		$countlabelsets=0;
-		$countlabels=0;
-		$countquestion_attributes = 0;
-		$countanswers = 0;
+		$languagesSupported = array();  // this array will keep all the languages supported for the survey
 		
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		// first check that imported group, questions and labels support the 
-		// current survey's baselang
-		$langcode = GetBaseLanguageFromSurveyID($newsid);
-		if (isset($grouparray))
+		// Let's check that imported objects support at least the survey's baselang
+		$langcode = GetBaseLanguageFromSurveyID($surveyid);
+		
+		$languagesSupported[$langcode] = 1;     // adds the base language to the list of supported languages
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		if ($countquestions > 0)
 		{
-			$groupfieldnames = convertCSVRowToArray($grouparray[0],',','"');
-			$langfieldnum = array_search("language", $groupfieldnames);
-			$gidfieldnum = array_search("gid", $groupfieldnames);
-			$groupssupportbaselang = bDoesImportarraySupportsLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$langcode,true);
-			if (!$groupssupportbaselang)
-			{
-				//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-				//$importgroup .= $clang->gT("You can't import a group which doesn't support the current survey's base language.")."<br /><br />\n";
-				//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-				//$importgroup .= "</td></tr></table>\n";
-				//unlink($the_full_file_path);
-				return "Group does not support Surveys Baselanguage ($langcode)";
-			}
-		}
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		if (isset($questionarray))
-		{
+			$questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
 			$langfieldnum = array_search("language", $questionfieldnames);
 			$qidfieldnum = array_search("qid", $questionfieldnames);
-			$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,false);
+			$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,true);
 			if (!$questionssupportbaselang)
 			{
-				//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-				//$importgroup .= $clang->gT("You can't import a question which doesn't support the current survey's base language.")."<br /><br />\n";
-				//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-				//$importgroup .= "</td></tr></table>\n";
-				//unlink($the_full_file_path);
-				return "Group does not support Surveys Baselanguage ($langcode)";
+//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+//				.$clang->gT("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n"
+//				."</td></tr></table>\n";
+//				unlink($the_full_file_path);
+				return "You can't import a question which doesn't support the current survey's base language";
 			}
 		}
-		
-		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		if (isset($labelsetsarray))
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $language)
 		{
-		    $labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
-		    $langfieldnum = array_search("languages", $labelsetfieldname);
-		    $lidfilednum =  array_search("lid", $labelsetfieldname);
-		    $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
-		    if (!$labelsetssupportbaselang)
-		    {
-		        $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		        .$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
-		        ."</td></tr></table>\n";
-		        //unlink($the_full_file_path);
-		        return "Group does not support Surveys Baselanguage ($langcode)";
-		    }
+		    $languagesSupported[$language] = 1;
 		}
 		
-		$newlids = array(); // this array will have the "new lid" for the label sets, the key will be the "old lid"
+		// Let's assume that if the questions do support tye baselang
+		// Then the answers do support it as well.
+		// ==> So the following section is commented for now
+		//if ($countanswers > 0)
+		//{
+		//	$langfieldnum = array_search("language", $answerfieldnames);
+		//	$answercodefilednum1 =  array_search("qid", $answerfieldnames);
+		//	$answercodefilednum2 =  array_search("code", $answerfieldnames);
+		//	$answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
+		//	$answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$langcode);
+		//	if (!$answerssupportbaselang)
+		//	{
+		//		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+		//		.$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
+		//		."</td></tr></table>\n";
+		//		return;
+		//	}
+		//	
+		//}
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		if ($countlabelsets > 0)
+		{
+			$labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+			$langfieldnum = array_search("languages", $labelsetfieldname);
+			$lidfilednum =  array_search("lid", $labelsetfieldname);
+			$labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+			if (!$labelsetssupportbaselang)
+			{
+//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+//				.$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
+//				."</td></tr></table>\n";
+//				unlink($the_full_file_path);
+				return "You can't import label sets which don't support the current survey's base language";
+			}
+		}
+		// I assume that if a labelset supports the survey's baselang,
+		// then it's labels do support it as well
+		
+		// GET SURVEY AND GROUP DETAILS
+		//$surveyid=$postsid;
+		//$gid=$postgid;
+		$newsid=$surveyid;
+		$newgid=$gid;
+		
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		
 		//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
 		if (isset($labelsetsarray) && $labelsetsarray) {
 		    $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
 		    $count=0;
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		    foreach ($labelsetsarray as $lsa) {
 		        $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
 		        $fieldcontents=convertCSVRowToArray($lsa,',','"');
 		        if ($count==0) {$count++; continue;}
-		        
-		        $countlabelsets++;
 		
 		        $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
 		        
@@ -3256,7 +3260,7 @@ class LsrcHelper {
 		        $lsiresult=$connect->Execute($lsainsert);
 		        
 		        // Get the new insert id for the labels inside this labelset
-		        $newlid=$connect->Insert_ID("{$dbprefix}labelsets",'lid');
+		        $newlid=$connect->Insert_ID("{$dbprefix}labelsets","lid");
 		
 		        if ($labelsarray) {
 		            $count=0;
@@ -3264,25 +3268,24 @@ class LsrcHelper {
 		                $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
 		                $lfieldcontents=convertCSVRowToArray($la,',','"');
 		                if ($count==0) {$count++; continue;}
-		                
+		
 		                // Combine into one array with keys and values since its easier to handle
 		                 $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
 		                $labellid=$labelrowdata['lid'];
 		                if ($labellid == $oldlid) {
 		                    $labelrowdata['lid']=$newlid;
 		
-				// translate internal links
-				$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+					// translate internal links
+					$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
 		
 		                    $newvalues=array_values($labelrowdata);
 		                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                    $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
 		                    $liresult=$connect->Execute($lainsert);
-		                    $countlabels++;
 		                }
 		            }
 		        }
-		
+				
 		        //CHECK FOR DUPLICATE LABELSETS
 		        $thisset="";
 		        $query2 = "SELECT code, title, sortorder, language
@@ -3323,303 +3326,128 @@ class LsrcHelper {
 		        }
 		        //END CHECK FOR DUPLICATES
 		        $labelreplacements[]=array($oldlid, $newlid);
-		        $newlids[$oldlid] = $newlid;
 		    }
 		}
+		
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		//these arrays will aloud to insert correctly groups an questions multi languague survey imports correctly, and will eliminate the need to "searh" the imported data
-		//$newgids = array(); // this array will have the "new gid" for the groups, the kwy will be the "old gid"    <-- not needed when importing groups
-		$newqids = array(); // this array will have the "new qid" for the questions, the kwy will be the "old qid"
 		
-		// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A __NOT__ NESTED FORMAT!
-		if (isset($grouparray) && $grouparray) 
-		{
-		    $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
-		    $surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
-		    
-		    // do GROUPS
-		    $gafieldorders=convertCSVRowToArray($grouparray[0],',','"');
-		    unset($grouparray[0]);
-		    $newgid = 0;
-		    $group_order = 0;   // just to initialize this variable
-		    foreach ($grouparray as $ga) 
-		    {
-		        //GET ORDER OF FIELDS
-		        $gacfieldcontents=convertCSVRowToArray($ga,',','"');
-		        $grouprowdata=array_combine($gafieldorders,$gacfieldcontents);
-		        
-		        // Skip not supported languages
-		        if (!in_array($grouprowdata['language'],$surveylanguages)) 
+		// QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
+		if (isset($questionarray) && $questionarray) {
+		    $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
+		    unset($questionarray[0]);
+		
+		    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
+		    //and save it for later
+		    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
+		    $qres = db_execute_assoc($qmaxqo) or safe_die ($clang->gT("Error").": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
+		    $qrow=$qres->FetchRow();
+		    $newquestionorder=$qrow['maxqo']+1;
+		
+			foreach ($questionarray as $qa) {
+		        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+				$newfieldcontents=$qacfieldcontents;
+		    	$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+		        if (isset($languagesSupported[$questionrowdata["language"]]))
 		        {
-		            $skippedlanguages[]=$grouprowdata['language'];  // this is for the message in the end.
-		            continue;
-		        }
+				    $oldqid = $questionrowdata['qid'];
+				    $oldsid = $questionrowdata['sid'];
+				    $oldgid = $questionrowdata['gid'];
 		
-		        // replace the sid
-		        $oldsid=$grouprowdata['sid'];
-		        $grouprowdata['sid']=$newsid;
-		
-		        // replace the gid  or remove it if needed (it also will calculate the group order if is a new group)
-		        $oldgid=$grouprowdata['gid'];
-		        if ($newgid == 0) 
-		        {
-		            unset($grouprowdata['gid']);
-		            
-		            // find the maximum group order and use this grouporder+1 to assign it to the new group 
-		            $qmaxgo = "select max(group_order) as maxgo from ".db_table_name('groups')." where sid=$newsid";
-		            $gres = db_execute_assoc($qmaxgo) or safe_die ($clang->gT("Error")." Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
-		            $grow=$gres->FetchRow();
-		            $group_order = $grow['maxgo']+1;            
-		        }
-		        else 
-		            $grouprowdata['gid'] = $newgid;
-		            
-		        $grouprowdata["group_order"]= $group_order; 
-		        
-		        // Everything set - now insert it
-		        $grouprowdata=array_map('convertCsvreturn2return', $grouprowdata);
-		
-		
-			// translate internal links
-			$grouprowdata['group_name']=translink('survey', $oldsid, $newsid, $grouprowdata['group_name']);
-			$grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
-		
-		        $newvalues=array_values($grouprowdata);
-		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-		        $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		        $gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
-		        
-		        //GET NEW GID  .... if is not done before and we count a group if a new gid is required
-		        if ($newgid == 0) 
-		        {
-		            $newgid = $connect->Insert_ID("{$dbprefix}groups",'gid');
-		            $countgroups++;
-		        }
-		    }
-		    // GROUPS is DONE
-		    
-		    // do QUESTIONS
-		    if (isset($questionarray) && $questionarray) 
-		    {
-		        foreach ($questionarray as $qa) 
-		        {
-		            $qacfieldcontents=convertCSVRowToArray($qa,',','"');
-		            $questionrowdata=array_combine($questionfieldnames,$qacfieldcontents);
-		
-		            // Skip not supported languages            
-		            if (!in_array($questionrowdata['language'],$surveylanguages)) 
-		                continue;
-		            
-		            // replace the sid
-		            $questionrowdata["sid"] = $newsid;
-		            
-		            // replace the gid (if the gid is not in the oldgid it means there is a problem with the exported record, so skip it)
-		            if ($questionrowdata['gid'] == $oldgid)
-		                $questionrowdata['gid'] = $newgid;
+		    	    // Remove qid field if there is no newqid; and set it to newqid if it's set
+		            if (!isset($newqid))
+				        unset($questionrowdata['qid']);
 		            else
-		                continue; // a problem with this question record -> don't consider 
+		                $questionrowdata['qid'] = $newqid;
 		                
-		            // replace the qid or remove it if needed
-		            $oldqid = $questionrowdata['qid'];  
-		            if (isset($newqids[$oldqid]))
-		                $questionrowdata['qid'] = $newqids[$oldqid];
-		            else
-		                unset($questionrowdata['qid']);
-		            
-		            // replace the lid for the new one (if there is no new lid in the $newlids array it mean that was not imported -> error, skip this record)
-		            if (in_array($questionrowdata["type"], array("F","H","W","Z", "1", ":", ";")))      // only fot the questions that uses a label set.
-		                if (isset($newlids[$questionrowdata["lid"]]))
-		                {
-		                    $questionrowdata["lid"] = $newlids[$questionrowdata["lid"]];
-		                    if(isset($newlids[$questionrowdata["lid1"]]))
-							{
-							    $questionrowdata["lid1"] = $newlids[$questionrowdata["lid1"]];
-						    }
-						}
-						else
-		                {
-						    continue; // a problem with this question record -> don't consider 
-		                }
-		//            $other = $questionrowdata["other"]; //Get 'other' field value
-		//            $oldlid = $questionrowdata['lid'];
+				    $questionrowdata["sid"] = $newsid;
+				    $questionrowdata["gid"] = $newgid;
+		            $questionrowdata["question_order"] = $newquestionorder;
 		
-		            // Everything set - now insert it
+		            
+		            // Now we will fix up the label id 
+				    $type = $questionrowdata["type"]; //Get the type
+					if ($type == "F" || $type == "H" || $type == "W" || 
+					    $type == "Z" || $type == "1" || $type == ":" ||
+						$type == ";" ) 
+		                {//IF this is a flexible label array, update the lid entry
+					    if (isset($labelreplacements)) {
+						    foreach ($labelreplacements as $lrp) {
+							    if ($lrp[0] == $questionrowdata["lid"]) {
+								    $questionrowdata["lid"]=$lrp[1];
+							       }
+		                        if ($lrp[0] == $questionrowdata["lid1"]) {
+		                            $questionrowdata["lid1"]=$lrp[1];
+		                           }
+						        }
+					         }
+		                }
+				    $other = $questionrowdata["other"]; //Get 'other' field value
+				    $oldlid = $questionrowdata["lid"];
 		            $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
-						          
-				// translate internal links ///XXX rakete may change question data here
-//				$questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
-//				$questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
-//				$questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
+		
+				// translate internal links
+				$questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
+				$questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
+				$questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 		
 		            $newvalues=array_values($questionrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-		            $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error")."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+		            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+				    $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		
-		            //GET NEW QID  .... if is not done before and we count a question if a new qid is required
-		            if (!isset($newqids[$oldqid])) 
-		            {
-		                $newqids[$oldqid] = $connect->Insert_ID("{$dbprefix}questions",'qid');
-		                $myQid=$newqids[$oldqid];
-		                $countquestions++;
-		            }
-		            else
-		            {
-		            	$myQid=$newqids[$oldqid];
-		            }
+		            // set the newqid only if is not set
+		            if (!isset($newqid))
+				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
 		        }
 		    }
-		    // QESTIONS is DONE
-		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		    // do ANSWERS
-		    if (isset($answerarray) && $answerarray) 
-		    {
-		        foreach ($answerarray as $aa) 
-		        {
-		            $aacfieldcontents=convertCSVRowToArray($aa,',','"');
-		            $answerrowdata=array_combine($answerfieldnames,$aacfieldcontents);
-		            
-		            // Skip not supported languages            
-		            if (!in_array($answerrowdata['language'],$surveylanguages)) 
-		                continue;
-		                
-		            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this answer is orphan -> error, skip this record)
-		            if (isset($newqids[$answerrowdata["qid"]]))
-		                $answerrowdata["qid"] = $newqids[$answerrowdata["qid"]];
-		            else
-		                continue; // a problem with this answer record -> don't consider
-		                
-		            // Everything set - now insert it     
-		            $answerrowdata = array_map('convertCsvreturn2return', $answerrowdata);
-		
-				// translate internal links
-				$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
-		
-		            $newvalues=array_values($answerrowdata);
-		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-		            $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error")."Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
-		            $countanswers++;
-		        }
-		    }
-		    // ANSWERS is DONE
 		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		   // Fix Group sortorder 
-		   //fixsortorderGroups(); //XXX commented out by rakete... and written in full length
-			$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		    $cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");    
-			$position=0;
-			while ($cdrow=$cdresult->FetchRow())
-			{
-				$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
-				$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked   
-				$position++;
-			}
-		   
-		   
-		   //... and for the questions inside the groups
-		   // get all group ids and fix questions inside each group
-		   $gquery = "SELECT gid FROM {$dbprefix}groups where sid=$newsid group by gid ORDER BY gid"; //Get last question added (finds new qid)
-		   $gres = db_execute_assoc($gquery);
-		   while ($grow = $gres->FetchRow()) 
-		        {
-		        	//fixsortorderQuestions(0,$grow['gid']);
-		        	$qid=sanitize_int(0);
-				    $gid=sanitize_int($grow['gid']);
-					$baselang = GetBaseLanguageFromSurveyID($surveyid);
-					if ($gid == 0)
-				    {
-				    	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' and language='{$baselang}'");  //Checked
-				    	$row=$result->FetchRow();
-				    	$gid=$row['gid'];
-				    }
-					$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");      //Checked    
-					$position=0;
-					while ($cdrow=$cdresult->FetchRow())
-					{
-						$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-						$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg());    //Checked    
-						$position++;
-					}
+		    //NOW DO ANSWERS FOR THIS QID - Is called just once and only if there was a question
+		    if (isset($answerarray) && $answerarray) {
+		        foreach ($answerarray as $aa) {
+		            $answerfieldcontents=convertCSVRowToArray($aa,',','"');
+		            $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
+		            if ($answerrowdata===false)
+		            {
+		              $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+		            }
+		            if (isset($languagesSupported[$answerrowdata["language"]]))
+		            {
+		                $code=$answerrowdata["code"];
+		                $thisqid=$answerrowdata["qid"];
+		                $answerrowdata["qid"]=$newqid;
+		
+					// translate internal links
+					$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
+		
+		                        $newvalues=array_values($answerrowdata);
+		                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		                        $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		                $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+		            }
 		        }
-		   } 
-		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		    // do ATTRIBUTES
-		    if (isset($question_attributesarray) && $question_attributesarray) 
-		    {
+		    }
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    // Finally the question attributes - Is called just once and only if there was a question  
+		    if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
 		        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
 		        unset($question_attributesarray[0]);
 		        foreach ($question_attributesarray as $qar) {
 		            $fieldcontents=convertCSVRowToArray($qar,',','"');
 		            $qarowdata=array_combine($fieldorders,$fieldcontents);
-		            
-		            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this attribute is orphan -> error, skip this record)
-		            if (isset($newqids[$qarowdata["qid"]]))
-		                $qarowdata["qid"] = $newqids[$qarowdata["qid"]];
-		            else
-		                continue; // a problem with this answer record -> don't consider
-		            
+		            $qarowdata["qid"]=$newqid;
 		            unset($qarowdata["qaid"]);
 		
-		            // Everything set - now insert it     
 		            $newvalues=array_values($qarowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-		            $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		            $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
-		            $countquestion_attributes++;        
 		        }
 		    }
-		    // ATTRIBUTES is DONE
-		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
-		    // do CONDITIONS
-		    if (isset($conditionsarray) && $conditionsarray) 
-		    {
-		        $fieldorders=convertCSVRowToArray($conditionsarray[0],',','"');
-		        unset($conditionsarray[0]);
-		        foreach ($conditionsarray as $car) {
-		            $fieldcontents=convertCSVRowToArray($car,',','"');
-		            $conditionrowdata=array_combine($fieldorders,$fieldcontents);
 		
-		            $oldqid = $conditionrowdata["qid"];
-		            $oldcqid = $conditionrowdata["cqid"];
-		            
-		            // replace the qid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
-		            if (isset($newqids[$oldqid]))
-		                $conditionrowdata["qid"] = $newqids[$oldqid];
-		            else
-		                continue; // a problem with this answer record -> don't consider
-		
-		            // replace the cqid for the new one (if there is no new qid in the $newqids array it mean that this condition is orphan -> error, skip this record)
-		            if (isset($newqids[$oldcqid]))
-		                $conditionrowdata["cqid"] = $newqids[$oldcqid];
-		            else
-		                continue; // a problem with this answer record -> don't consider
-		
-		            list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$conditionrowdata["cfieldname"],3);
-		            
-		            if ($oldcgid != $oldgid)    // this means that the condition is in another group (so it should not have to be been exported -> skip it
-		                continue;
-		            
-		            unset($conditionrowdata["cid"]); 
-		            
-		            // recreate the cfieldname with the new IDs
-		            $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
-		            
-		            $conditionrowdata["cfieldname"] = $newcfieldname;
-		            if (!isset($conditionrowdata["method"]) || trim($conditionrowdata["method"])=='') 
-		            {
-		                $conditionrowdata["method"]='==';
-		            }            
-		            $newvalues=array_values($conditionrowdata);
-		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-		            $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
-		            $countconditions++;
-		        }
-		    }
+		}
 		    $this->debugLsrc("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
 		    // CONDITIONS is DONE
-		    return array(gid=>$newgid,qid=>$myQid);
+		    return array('gid'=>$newgid,'qid'=>$newqid);
 		    //return $newgid;
 	}
 	
@@ -3692,5 +3520,4 @@ class LsrcHelper {
 	}
 		
 }
-?>
 ?>

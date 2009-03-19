@@ -621,7 +621,7 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
  * @param unknown_type $iVid
  * @param unknown_type $sMod
  */
-function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
+function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')//XXX
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -646,9 +646,14 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		exit;
 	}
 	
-	$checkImport = $lsrcHelper->importGroup($iVid,"mod_".$sMod);
+	$checkImport = $lsrcHelper->importGroup($iVid, $sMod);
 	if(is_array($checkImport))
 	{
+		if($gName!='')
+		$lsrcHelper->changeTable("groups", "group_name", $gName, "gid='".$checkImport['gid']."'");
+		if($gDesc!='')
+		$lsrcHelper->changeTable("groups", "description", $gDesc, "gid='".$checkImport['gid']."'");
+		
 		return "Import OK";
 	}
 	else
@@ -671,7 +676,7 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
  * @param String $qHelp
  * @return String
  */
-function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, $mandatory='N')
+function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -704,7 +709,7 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 //		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
 //		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
 //		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
-//		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
 		return "OK";
 	}
 	else
@@ -728,6 +733,13 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
  */
 function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='Freitext', $mandatory='N')
 {
+	/*
+	 * this var maybe added later to constructor, 
+	 * to determine if a new group should be build for the question 
+	 * or if the question should be added to the last group in survey
+	 */ 	
+	$newGroup=0;
+	
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
 	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
@@ -753,7 +765,7 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
 	}
 	
 	//import the module
-	$lastId = $lsrcHelper->importQuestion($iVid,$sMod);
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod,0);
 	if(is_array($lastId))
 	{
 		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
@@ -781,8 +793,15 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
  * @param unknown_type $sItems comma seperated values
  * @return unknown
  */
-function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Matrix', $mandatory='N' )
+function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
 {
+	/*
+	 * this var maybe added later to constructor, 
+	 * to determine if a new group should be build for the question 
+	 * or if the question should be added to the last group in survey
+	 */ 	
+	$newGroup=0;
+	
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -809,9 +828,10 @@ function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Ma
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
 		exit;
 	}
-	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod,$newGroup);
 	if(is_array($lastId))
 	{
+		
 		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
 		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
 		if($mandatory==''){$mandatory='N';}
@@ -822,7 +842,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Ma
 		foreach($aItems as $item)
 		{
 			++$n;
-			$lsrcHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".$_SESSION['lang']."' " , "", 1);
+			$lsrcHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".GetBaseLanguageFromSurveyID($iVid)."' " , "", 1);
 		}
 		return "OK";
 	}
