@@ -5534,6 +5534,12 @@ function getQuotaInformation($surveyid,$quotaid='all')
 						$value = $quota_entry['code'];
 					}
 					
+					if($qtype['type'] == "L" || $qtype['type'] == "O" || $qtype['type'] =="!") 
+					{
+					    $fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid']);
+					    $value = $quota_entry['code'];
+					}
+				
 					if($qtype['type'] == "M")
 					{
 						$fieldnames=array(0 => $surveyid.'X'.$qtype['gid'].'X'.$quota_entry['qid'].$quota_entry['code']);
