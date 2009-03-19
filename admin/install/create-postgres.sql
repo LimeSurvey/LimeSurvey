@@ -329,7 +329,8 @@ CREATE TABLE prefix_users (
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
-    htmleditormode character(7) DEFAULT 'default'::bpchar
+    htmleditormode character(7) DEFAULT 'default'::bpchar,
+	"one_time_pw" bytea
 );
 
 
