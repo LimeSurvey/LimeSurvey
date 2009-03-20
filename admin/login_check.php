@@ -18,6 +18,8 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (!isset($action)) {$action=returnglobal('action');}
 
 
+
+
 /*
  * New feature since version 1.81: One time passwords
  * The user can call the limesurvey login at /limesurvey/admin and pass username and
@@ -32,7 +34,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 {	
 	//take care of passed data
 	$user = sanitize_user($_GET['user']);
-	$pw = sanitize_paranoid_string($_GET['onepass']);//sanitize_float($_GET['onepass']);
+	$pw = sanitize_paranoid_string(md5($_GET['onepass']));
 	
 	//check if setting $use_one_time_passwords exists in config file
 	if(isset($use_one_time_passwords))
@@ -41,7 +43,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 		if($use_one_time_passwords === false)
 		{
 			//create an error message
-			$loginsummary .= "<br />".$clang->gT("Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: ")."<br />";
+			$loginsummary = "<br />".$clang->gT("Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: ")."<br />";
 			$loginsummary .= '<br /><em>$use_one_time_passwords = true;</em><br />';
 			$loginsummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";		
 		}
@@ -87,14 +89,10 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 					$uresult = $connect->Execute($uquery);
 					
 					//data necessary for following functions
-					//$_POST['user'] = $srow['users_name'];
-					//$_POST['password'] = $srow['password'];
 					$_SESSION['user'] = $srow['users_name'];
 					$_SESSION['checksessionpost'] = randomkey(10);
 					$_SESSION['loginID'] = $srow['uid'];
-					$loginsummary = "";
 					GetSessionUserRights($_SESSION['loginID']);
-					//$adminoutput = "";
 					
 					// Check if the user has changed his default password
 					if (strtolower($srow['password'])=='password')
@@ -109,14 +107,18 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 					//delete passed information
 					unset($_GET['user']);
 					unset($_GET['onepass']);
-					
-				}			
+										
+				}	//else -> passwords match			
 				
-			}
+			}	//else -> password found
 			
-		}
-	}
-}
+		}	//else -> one time passwords enabled
+		
+	}	//else -> one time passwords set
+	
+}	//else -> data was passed by URL
+
+
 
 
 
