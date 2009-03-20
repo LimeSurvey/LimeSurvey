@@ -59,7 +59,8 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 			if ($result->RecordCount() < 1)
 			{
 				// wrong or unknown username 
-				$loginsummary = $clang->gT("No one time password found for user")." ".$user."<br />";			
+				$loginsummary = $clang->gT("No one time password found for user")." ".$user."<br />";
+				session_regenerate_id();			
 			}
 			else
 			{
@@ -92,6 +93,8 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 					$_SESSION['checksessionpost'] = randomkey(10);
 					$_SESSION['loginID'] = $srow['uid'];
 					$loginsummary = "";
+					GetSessionUserRights($_SESSION['loginID']);
+					//$adminoutput = "";
 					
 					// Check if the user has changed his default password
 					if (strtolower($srow['password'])=='password')
@@ -102,6 +105,10 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 					{
 						$_SESSION['pw_notify']=false;
 					} 
+					
+					//delete passed information
+					unset($_GET['user']);
+					unset($_GET['onepass']);
 					
 				}			
 				
@@ -119,7 +126,6 @@ if( isset($_POST['user']) && isset($_POST['password']) ||
 	($action == "logout") || 
 	($useWebserverAuth === true && !isset($_SESSION['loginID'])) )	// added by Dennis
 {
-	echo '<script language="javascript" type="text/javascript">alert("USERCONTROL");</script>';
 	include("usercontrol.php");
 }
 
