@@ -784,7 +784,12 @@ if ($action == "mailsendusergroup")
 		}
 		else
 		{
-			$usersummary .= "<br /><strong>".$clang->gT("Email not sent!")."</strong><br />\n";
+            $usersummary .= sprintf($clang->gT("Email to %s failed. Error Message:"),$to)." ".$maildebug."<br />";
+            if ($debug>0) 
+            {
+                $usersummary .= "<br /><pre>Subject : $subject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+            }
+
 			$usersummary .= "<br /><a href='$scriptname?action=mailusergroup&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}
