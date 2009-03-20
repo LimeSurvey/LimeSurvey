@@ -289,9 +289,11 @@ while(list($key, $value) = each($_REQUEST))
 	{
 		$iVid = $_REQUEST['sid'];
 		$sMod = $_REQUEST['mod'];
+		$sGroupName = $_REQUEST['groupName'];
+		$sGroupDescription = $_REQUEST['groupDescription'];
 		try
 		{
-			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod);
+			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod, $sGroupName, $sGroupDescription);
 		}
 		catch (SoapFault $fault)
 		{
@@ -541,6 +543,10 @@ for($n=0;$n<count($aMods);++$n)
 {echo "<option value='".$aMods[$n]."'>".$aMods[$n]."</option>";}
 ?>
 </select> <? //print_r($mods);?> <br />
+<b>Name of the group:</b><br/>
+<input type='text' name='groupName' size='30' maxlength='150' /> <br />
+<b>groupDescription:</b><br/>
+<input type='text' name='groupDescription' size='30' maxlength='255' /> <br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>

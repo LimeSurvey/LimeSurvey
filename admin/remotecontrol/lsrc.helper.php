@@ -3517,7 +3517,6 @@ class LsrcHelper {
 		
 		return true;
 		
-	}
-		
+	}	
 }
 ?>
