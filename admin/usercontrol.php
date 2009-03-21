@@ -557,7 +557,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_template']) && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'])$rights['manage_template']=1;	else $rights['manage_template']=0;
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
-			setuserrights($postuserid, $rights);
+			if ($postuserid<>1) setuserrights($postuserid, $rights);
 			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
