@@ -293,7 +293,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'radio':
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
-					$image_dimensions = getimagesize($rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png');
+					$image_dimensions = getimagesize($rootdir.PRINT_TEMPLATE.'print_img_'.$type.'.png');
 					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
 				};
