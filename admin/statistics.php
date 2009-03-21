@@ -3392,7 +3392,15 @@ if (isset($summary) && $summary)
 				else
 				{ 
 					//get more data                          
-					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+                    
+                    if ($connect->databaseType == 'odbc_mssql')
+                    { 
+                        // mssql cannot compare text blobs so we have to cast here
+                        $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'"; 
+                    }
+                    else
+                    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+                                        
 				}
 				
 				//check filter option

@@ -586,9 +586,9 @@ if ($surveyid)
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\" "
 			. "onmouseout=\"hideTooltip()\" "
-			. "title=\"".$clang->gTview("Edit Current Survey")."\" "
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current Survey", "js")."');return false\">"
-			. "<img src='$imagefiles/edit.png' title='' name='EditSurvey' alt='".$clang->gT("Edit Current Survey")."' /></a>\n";
+			. "title=\"".$clang->gTview("Edit survey settings")."\" "
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit survey settings", "js")."');return false\">"
+			. "<img src='$imagefiles/edit.png' title='' name='EditSurveySettings' alt='".$clang->gT("Edit survey settings")."' /></a>\n";
 		}
 		else
 		{
@@ -2200,7 +2200,7 @@ if ($action == "editsurvey")
 
 			// header
 			$editsurvey .= "<table width='100%' border='0'>\n<tr><td colspan='4' class='settingcaption'>"
-			. "".$clang->gT("Edit Survey - Step 1 of 2")."</td></tr></table>\n";
+			. "".$clang->gT("Edit survey settings - Step 1 of 2")."</td></tr></table>\n";
 
 
 			// beginning TABs section
@@ -2759,7 +2759,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		. "}\n"
 		. "--></script>\n"
         . "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
-		. "".$clang->gT("Edit Survey - Step 2 of 2")."</td></tr></table>\n";
+		. "".$clang->gT("Edit survey settings - Step 2 of 2")."</td></tr></table>\n";
 		$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-1">';
 		foreach ($grplangs as $grouplang)
