@@ -2929,9 +2929,16 @@ function do_multiplenumeric($ia)
 		$maxsize = 255;
 	}
 
+	//EQUALS VALUE
 	if ($equalvalue=arraySearchByKey('equals_num_value', $qidattributes, 'attribute', 1))
 	{
 		$equals_num_value=$equalvalue['value'];
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
+		$calculateValue[]=3;
+	}
+	elseif ($equalvalue=arraySearchByKey('num_value_equals_sgqa', $qidattributes, 'attribute', 1))
+	{
+	    $equals_num_value=$_SESSION[$equalvalue['value']];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
 		$calculateValue[]=3;
 	}
@@ -2940,9 +2947,16 @@ function do_multiplenumeric($ia)
 		$equals_num_value[]=0;
 	}
 
+    //MIN VALUE
 	if ($minvalue=arraySearchByKey('min_num_value', $qidattributes, 'attribute', 1))
 	{
 		$min_num_value=$minvalue['value'];
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
+		$calculateValue[]=2;
+	}
+	elseif ($minvalue=arraySearchByKey('min_num_value_sgqa', $qidattributes, 'attribute', 1))
+	{
+	    $min_num_value=$_SESSION[$minvalue['value']];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
 		$calculateValue[]=2;
 	}
@@ -2951,9 +2965,16 @@ function do_multiplenumeric($ia)
 		$min_num_value=0;
 	}
 
+    //MAX VALUE
 	if ($maxvalue=arraySearchByKey('max_num_value', $qidattributes, 'attribute', 1))
 	{
 		$max_num_value = $maxvalue['value'];
+		$numbersonlyonblur[]='calculateValue'.$ia[1].'(1)'; 
+		$calculateValue[]=1;
+	}
+    elseif ($maxvalue=arraySearchByKey('max_num_value_sgqa', $qidattributes, 'attribute', 1))
+    {
+        $max_num_value = $_SESSION[$maxvalue['value']];	    
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(1)'; 
 		$calculateValue[]=1;
 	}
@@ -3048,7 +3069,6 @@ function do_multiplenumeric($ia)
 	{
 		$slider_layout = false;
 	}
-
 	if ($hidetip=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 	{
 		$hidetip=$hidetip['value'];
@@ -3061,7 +3081,6 @@ function do_multiplenumeric($ia)
 	{
 		$hidetip=0;
 	}
-
 	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();

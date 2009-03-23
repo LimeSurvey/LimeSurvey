@@ -3388,6 +3388,20 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('Show statistics of a certain question to the user'),
     "caption"=>$clang->gT('Show in public statistics'));
 	
+	$qattributes["max_num_value_sgqa"]=array(
+	"types"=>"K",
+	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
+	"caption"=>$clang->gT('Max value from SQGA'));
+
+	$qattributes["min_num_value_sgqa"]=array(
+	"types"=>"K",
+	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
+	"caption"=>$clang->gT('Min value from SQGA'));
+
+	$qattributes["num_value_equals_sgqa"]=array(
+	"types"=>"K",
+	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
+	"caption"=>$clang->gT('Value equals SQGA'));
 	
 	/* -- > Commented out since not yet used
 	$qattributes[]=array("name"=>"default_value",
