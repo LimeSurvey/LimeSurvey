@@ -72,6 +72,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.80+ (build 6536) to 1.80+ (build 6579) [2009/03/16] - Legend: + new feature, # update feature, - bug fix
+
+#Updated Feature #2795: Print Answers now skip answers from questions that were hidden due to branching-logic. (lemeur)
+
+#Updated translation: German (c_schmitz)
+
+-Fixed issue #2963: Any superadmin can accidentally delete the parent superadmin rights (c_schmitz)
+-Fixed a bug in mssql update (c_schmitz)
+-Fixed a bug with MSSQL in statistics failing with Multi-Flexi array (c_schmitz)
+-Fixed issue #2970: Show printable survey fails if allow_url_fopen is set to false (c_schmitz)
+-Fixed sending emails to user groups not giving a detailed error message on failure (c_schmitz)
+-Fixed some wording (c_schmitz)
+-Fixed issue #2976 Remove boilerplate questions from export to SPSS and R (mennodekker)
+
+
 Changes from 1.80 [2009/03/09] to 1.80+ (build 6536) [2009/03/16] - Legend: + new feature, # update feature, - bug fix
 
 #Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)#Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)
