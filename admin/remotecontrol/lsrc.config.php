@@ -55,18 +55,13 @@ $sslCert='cacert.pem';
 
 
 ### Variables
-// Since this variable isn't per default in Limesurveys config.php any more, we need to set it ourselfs 
-//(the setting in LS config-defaults.php is not working for lsrc... no idea why) 
-// set the LS installation Dir relative to document root
-//$relativeurl		=   "/limesource/limesurvey"; //default: "/limesurvey" //TODO: delete if no errors occure while commented
-
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
 $wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 
  * one for the core surveys, 
- * one for addable modules,
+ * one for addable groups,
  * one for addable questions
  */
 $coreDir = "./surveys/";

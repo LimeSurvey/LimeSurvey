@@ -106,14 +106,18 @@ class LsrcHelper {
 /*
 	 * Function to send Emails to participants of a specific survey
 	 */
-	function emailSender($surveyid, $type, $maxemails='') //XXX
+	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
-		global $connect ;
+		global $connect,$sitename ;
 		global $dbprefix ;
 
 		include("lsrc.config.php");
 		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
+		
+		// wenn maxmails ber den lsrc gegeben wird das nurtzen, ansonsten die default werte aus der config.php
+		if($maxLsrcEmails!='')
+		$maxemails = $maxLsrcEmails;
 		
 		switch ($type){
 			case "custom":
@@ -281,54 +285,25 @@ class LsrcHelper {
 							if($n==1)
 								$failedAddresses .= ",".$to;
 							else
-								$failedAddresses = $to;
-								
-							if ($debug>0) 
 							{
-								//$tokenoutput .= "<br /><pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
-							}
-							$n=1;
+								$failedAddresses = $to;
+								$n=1;
+							}	
 						}
 					}
 					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
 					if ($ctcount > $emcount)
 					{
 						$lefttosend = $ctcount-$maxemails;
-						//$tokenoutput .= "\t\t</td>\n"
-						//."\t</tr>\n"
-						//."\t<tr>\n"
-						//."\t\t<td align='center'><strong>".$clang->gT("Warning")."</strong><br />\n"
-		                //."\t\t\t<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
-						//.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
-						//$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
-						//$tokenoutput .= "<br /><br />\n";
-						//$tokenoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
-						//."\t\t\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-						//."\t\t\t<input type='hidden' name='subaction' value=\"email\" />\n"
-		                //."\t\t\t<input type='hidden' name='action' value=\"tokens\" />\n"
-						//."\t\t\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
-				        foreach ($surveylangs as $language)
-						    {
-		          			$message = html_escape($_POST['message_'.$language]);
-		          			$subject = html_escape($_POST['subject_'.$language]);
-							//$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
-							//."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
-							//."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
-							}
-						//$tokenoutput .="\t\t\t</form>\n";
+						
 					}else{$lefttosend = 0;}
 				}
 				else
 				{
-					//$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
-				}
-				//$tokenoutput .= "\t\t</td>\n";
-				if($emcount==0)
-				{
 					return "No Mails to send";
-					
-				}			
-				if($maxemails>0)
+				}
+			
+				if($maxemails>0 && $maxemails!='')
 				{
 					$returnValue = "".$mailsSend." Mails send. ".$lefttosend." Mails left to send";	
 					if(isset($failedAddresses))
@@ -349,11 +324,300 @@ class LsrcHelper {
 				
 			break;
 			case "remind":
+			// XXX: 
+			// TODO:
+//				if (!isset($_POST['ok']) || !$_POST['ok'])
+//				{
+				
+					/*
+					 * look if there were reminders send in the past, and if some tokens got lesser reminders than others
+					 * 
+					 * - if so: send reminders to the unremindet participants until they got the same remindcount than the others
+					 * - if not: send reminders normally
+					 */
+					
+					$remSQL = "SELECT tid, remindercount "
+							. "FROM ".db_table_name("tokens_{$surveyid}")." "
+							. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' "
+							. "ORDER BY remindercount desc LIMIT 1";
+					$remResult = db_execute_assoc($remSQL);		
+					$remRow = $remResult->FetchRow();
+					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$remRow['remindercount']." "); 
+					
+					$sendOnlySQL = "SELECT tid, remindercount "
+							. "FROM ".db_table_name("tokens_{$surveyid}")." "
+							. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' AND remindercount < ".$remRow['remindercount']." "
+							. "ORDER BY tid asc LIMIT 1";
+					$sendOnlyResult = db_execute_assoc($sendOnlySQL);		
+					
+					
+					
+					if($sendOnlyResult->RecordCount()>0)
+					{
+						$sendOnlyRow = $sendOnlyResult->FetchRow();
+						$starttokenid = $sendOnlyRow['tid'];
+						$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$sendOnlyRow['tid']."; ".$sendOnlyRow['remindercount']." ");
+					}
+					
+					if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+					{
+					    $ishtml=true;
+					}
+					else
+					{
+					    $ishtml=false;
+					}
+					
+					//GET SURVEY DETAILS
+					$thissurvey=getSurveyInfo($surveyid);
+					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type"); 
+					// Texte für Mails aus der Datenbank holen.
+					
+					$sql = 	"SELECT surveyls_language, surveyls_email_remind_subj, surveyls_email_remind  ".
+							"FROM {$dbprefix}surveys_languagesettings ".
+							"WHERE surveyls_survey_id = ".$surveyid." ";
+						
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+					
+					$sqlResult = db_execute_assoc($sql);					 
+					
+					while($languageRow = $sqlResult->FetchRow())
+					{
+						$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind'];
+						$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
+					}
+					
+					
+					//$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
+			
+					$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+					$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+					array_unshift($surveylangs,$baselanguage);
+					
+					foreach ($surveylangs as $language)
+					{
+						$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+						$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+						
+					}
+			
+//					if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
+//					if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+			
+//					if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
+//					{
+						$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+//					}
+//					else
+//					{
+//						$SQLemailstatuscondition = "";
+//					}
+			
+					if (isset($_POST['maxremindercount']) &&
+							$_POST['maxremindercount'] != '' &&
+							intval($_POST['maxremindercount']) != 0)
+					{
+						$SQLremindercountcondition = " AND remindercount < ".intval($_POST['maxremindercount']);
+					}
+					else
+					{
+						$SQLremindercountcondition = "";
+					}
+			
+					if (isset($_POST['minreminderdelay']) && 
+							$_POST['minreminderdelay'] != '' &&
+							intval($_POST['minreminderdelay']) != 0)
+					{
+						// $_POST['minreminderdelay'] in days (86400 seconds per day)
+						$compareddate = date_shift(
+								date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
+								"Y-m-d H:i",
+								$timeadjust);
+						$SQLreminderdelaycondition = " AND ( "
+							. " (remindersent = 'N' AND sent < '".$compareddate."') "
+							. " OR "
+							. " (remindersent < '".$compareddate."'))";
+					}
+					else
+					{
+						$SQLreminderdelaycondition = "";
+					}
+			
+					$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+			
+					if (isset($starttokenid)) {$ctquery .= " AND tid >= '{$starttokenid}'";}
+//					if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
+//					//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+
+					$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
+					$ctcount = $ctresult->RecordCount();
+					$ctfieldcount = $ctresult->FieldCount();
+					$emquery = "SELECT firstname, lastname, email, token, tid, language ";
+					if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+			
+					// TLR change to put date into sent
+					$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+			
+					if (isset($starttokenid)) {$emquery .= " AND tid >= '{$starttokenid}'";}
+					if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
+					$emquery .= " ORDER BY tid ";
+					$emresult = db_select_limit_assoc($emquery, $maxemails);
+					//$emresult = db_execute_assoc($emquery);
+					$emcount = $emresult->RecordCount();
+//					$tokenoutput .= "<table width='500' align='center' >\n"
+//						."\t<tr>\n"
+//						."\t\t<td><font size='1'>\n";
+					
 			
 			
+					if ($emcount > 0)
+					{
+						while ($emrow = $emresult->FetchRow())
+						{
+							unset($fieldsarray);
+							$to = $emrow['email'];
+							$fieldsarray["{EMAIL}"]=$emrow['email'];
+							$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+							$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+							$fieldsarray["{TOKEN}"]=$emrow['token'];
+							$fieldsarray["{LANGUAGE}"]=$emrow['language'];
+							$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+							$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+							
+							$emrow['language']=trim($emrow['language']);
+							if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+							if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
+							$found = array_search($emrow['language'], $surveylangs);
+							if ($found==false) {$emrow['language']=$baselanguage;} 
+			
+							$from = $_POST['from_'.$emrow['language']];
+			
+							if (getEmailFormat($surveyid) == 'html')
+							{
+								$ishtml=true;
+							}
+							else
+							{
+								$ishtml=false;
+							}
+							
+							if ($ishtml == false)
+							{
+								if ( $modrewrite ) 
+								{
+									$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+								} 
+								else 
+								{
+									$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+								}
+							}
+							else
+							{
+								if ( $modrewrite ) 
+								{
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+								} 
+								else
+								{
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+									$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
+								}
+							}
+							
+								$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+								$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+								
+								if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+								{
+									
+									// Put date into remindersent
+									$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+									$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+										."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
+									//
+									$uderesult = $connect->Execute($udequery); // or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+									//orig: $tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+									//$tokenoutput .= "\t\t\t({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+									$mailsSend++;
+								}
+								else
+								{
+									//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+									if($n==1)
+										$failedAddresses .= ",".$to;
+									else
+									{
+										$failedAddresses = $to;
+										$n=1;
+									}	
+												
+								}
+								//$lasttid = $emrow['tid'];
+							
+			            }
+						if ($ctcount > $emcount)
+						{
+							$lefttosend = $ctcount-$maxemails;
+//							$tokenoutput .= "\t\t</td>\n"
+//								."\t</tr>\n"
+//								."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
+//								."\t\t<td align='center'>\n"
+//								."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
+//								.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
+//								.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
+//								."<br />\n"
+//								."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
+//								."\t\t</td>\n"
+//								."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
+//								."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
+//								."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+//								."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+//							foreach ($surveylangs as $language)
+//							{
+//								$message = html_escape($_POST['message_'.$language]);
+////								$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
+////									."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
+////									."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
+//							}
+//							$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
+//								."\t</form>\n";
+						}else{$lefttosend = 0;}
+					}
+//					else
+//					{
+////						$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n"
+////							.$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
+////							."<br /><br />\n"
+////							."\t\t</td>\n";
+//					}
+
+					if($emcount==0)
+					{
+						return "No Reminders to send";
+					}			
+					if($maxemails>0)
+					{
+						$returnValue = "".$mailsSend." Reminders send. ".$lefttosend." Reminders left to send";	
+						if(isset($failedAddresses))
+							$returnValue .= "\nCould not send to: ".$failedAddresses;
+						return $returnValue;
+					}
+					
+					if(isset($mailsSend))
+					{
+						$returnValue = "".$mailsSend." Reminders send. ";
+						if(isset($failedAddresses))
+							$returnValue .= "\nCould not send to: ".$failedAddresses;
+						return $returnValue;
+					}	
+
+						
 			break;
 			default: 
-			
+			 
 			break;
 		}
 	}

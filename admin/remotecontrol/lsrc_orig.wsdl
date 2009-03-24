@@ -232,12 +232,12 @@
   <message name="sImportMatrixRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:int"></part>
-  	<part name="sMod" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
   	<part name="sTitle" type="xsd:string"></part>
   	<part name="sQuestion" type="xsd:string"></part>
   	<part name="sItems" type="xsd:string"></part>
-  	<part name="sMandatory" type="xsd:string"></part>
+        <part name="sMod" type="xsd:string"></part>
+        <part name="sMandatory" type="xsd:string"></part>
   </message>
   <message name="sImportMatrixResponse">
   	<part name="return" type="xsd:string"></part>

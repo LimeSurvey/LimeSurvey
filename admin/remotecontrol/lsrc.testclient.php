@@ -253,7 +253,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory,0);
+			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -275,7 +275,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory,0);
+			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{

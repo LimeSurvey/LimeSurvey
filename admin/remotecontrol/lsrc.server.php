@@ -105,12 +105,17 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
  * $emailText = Text of custom mails
  * 
  */
-function sSendEmail($sUser, $sPass, $iVid, $type, $maxemails='', $subject='', $emailText='')
+function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject='', $emailText='')
 {
+	global $sitename, $siteadminemail;
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
 	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK "); 
 	
+	// wenn maxmails ber den lsrc gegeben wird das nurtzen, ansonsten die default werte aus der config.php
+	if($maxLsrcEmails!='')
+	$maxemails = $maxLsrcEmails;
+		
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
@@ -126,21 +131,75 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxemails='', $subject='', $e
 	
 	if($type=='custom' && $subject!='' && $emailText!='')
 	{
+		//GET SURVEY DETAILS not working here... don't know why...
+		//$thissurvey=getSurveyInfo($iVid);
+		$from = $siteadminemail;
+		
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Admin Email: $from ; survey: $iVid  ; dump: ".print_r($thissurvey)."");
 		$emquery = "SELECT firstname, lastname, email, token, tid, language";
-		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+		//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+		$emquery .= " FROM ".db_table_name("tokens_{$iVid}")." WHERE email != '' ";
 
 		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
 		$emresult = db_select_limit_assoc($emquery,$maxemails);
+		$emcount = $emresult->RecordCount();
 		
-		MailTextMessage();
+		if ($emcount > 0)
+		{
+			$mailsSend = 0;
+			while ($emrow = $emresult->FetchRow())
+			{
+				if (MailTextMessage($emailText, $subject, $emrow['email'] , $from, $sitename, $ishtml=false, getBounceEmail($iVid)))
+				{
+					$mailsSend++;
+				}
+				else
+				{
+					//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+					if($n==1)
+						$failedAddresses .= ",".$to;
+					else
+					{
+						$failedAddresses = $to;
+						$n=1;
+					}	
+								
+				}
+			}
+			
+		}
+		else
+		{
+			return "No Mails to send";
+		}
+//		if ($ctcount > $emcount)
+//		{
+//			$lefttosend = $ctcount-$maxemails;
+//
+//		}else{$lefttosend = 0;}
+								
+//		if($maxemails>0)
+//		{
+//			$returnValue = "".$mailsSend." Mails send. ".$lefttosend." Mails left to send";	
+//			if(isset($failedAddresses))
+//				$returnValue .= "\nCould not send to: ".$failedAddresses;
+//			return $returnValue;
+//		}
+		
+		if(isset($mailsSend))
+		{
+			$returnValue = "".$mailsSend." Mails send. ";
+			if(isset($failedAddresses))
+				$returnValue .= "\nCould not send to: ".$failedAddresses;
+			return $returnValue;
+		}	
 	}
 	
 	if($type=='invite' || $type=='remind')
 	{
-		$emailSenderReturn = $lsrcHelper->emailSender($iVid, $type, $maxemails);
+		$emailSenderReturn = $lsrcHelper->emailSender($iVid, $type, $maxLsrcEmails);
 		
 		return $emailSenderReturn;
 //		if($maxemails != '')
@@ -801,7 +860,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Ma
 	 * or if the question should be added to the last group in survey
 	 */ 	
 	$newGroup=0;
-	
+		
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;

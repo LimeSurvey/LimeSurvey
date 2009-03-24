@@ -8,7 +8,7 @@
 # SURVEYS TABLE
 #
 "sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
-"35732","1","Tim Wahrendorff","N","2008-12-04","2008-12-04","wahrendorff@his.de","Y","","G","default","www.his.de","de","","N","N","0","N","","","N","N","0","N","Y","N","N","N","N","2008-12-04","N","Y","N","D","wahrendorff@his.de"
+"35732","1","Tim Wahrendorff","N","2008-12-04","2008-12-04","wahrendorff@his.de","Y","","G","hisinone","www.his.de","de","","N","N","0","N","","","N","N","0","N","Y","N","N","N","N","2008-12-04","N","Y","N","D","wahrendorff@his.de"
 
 #
 # GROUPS TABLE
