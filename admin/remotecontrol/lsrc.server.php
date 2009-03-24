@@ -143,7 +143,8 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 
 		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
-		$emresult = db_select_limit_assoc($emquery,$maxemails);
+		//$emresult = db_select_limit_assoc($emquery,$maxemails);
+		$emresult = db_execute_assoc($emquery);
 		$emcount = $emresult->RecordCount();
 		
 		if ($emcount > 0)
@@ -159,10 +160,10 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 				{
 					//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
 					if($n==1)
-						$failedAddresses .= ",".$to;
+						$failedAddresses .= ",".$emrow['email'];
 					else
 					{
-						$failedAddresses = $to;
+						$failedAddresses = $emrow['email'];
 						$n=1;
 					}	
 								
@@ -202,28 +203,7 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 		$emailSenderReturn = $lsrcHelper->emailSender($iVid, $type, $maxLsrcEmails);
 		
 		return $emailSenderReturn;
-//		if($maxemails != '')
-//		{
-//			return $emailSenderReturn;
-//			if($emailSenderReturn)
-//			{
-//				return "Mails send successfully";
-//			}
-//			else
-//				return $emailSenderReturn;
-//		}
-//		else
-//		{
-//			if($emailSenderReturn)
-//			{
-//				return "Mails send successfully";
-//			}
-//			else
-//			{
-//				throw new SoapFault("Sending Mail: ", "".$emailSenderReturn);
-//				exit;
-//			}
-//		}
+
 	}
 	else
 	{

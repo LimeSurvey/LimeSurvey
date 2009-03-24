@@ -103,7 +103,7 @@ class LsrcHelper {
 		
 	}
 
-/*
+	/*
 	 * Function to send Emails to participants of a specific survey
 	 */
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
@@ -115,7 +115,7 @@ class LsrcHelper {
 		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
 		
-		// wenn maxmails ber den lsrc gegeben wird das nurtzen, ansonsten die default werte aus der config.php
+		// wenn maxmails ber den lsrc gegeben wird das nutzen, ansonsten die default werte aus der config.php
 		if($maxLsrcEmails!='')
 		$maxemails = $maxLsrcEmails;
 		
@@ -388,8 +388,7 @@ class LsrcHelper {
 						$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind'];
 						$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
 					}
-					
-					
+
 					//$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
 			
 					$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -403,18 +402,8 @@ class LsrcHelper {
 						
 					}
 			
-//					if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
-//					if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
-			
-//					if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
-//					{
-						$SQLemailstatuscondition = " AND emailstatus = 'OK'";
-//					}
-//					else
-//					{
-//						$SQLemailstatuscondition = "";
-//					}
-			
+					$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+
 					if (isset($_POST['maxremindercount']) &&
 							$_POST['maxremindercount'] != '' &&
 							intval($_POST['maxremindercount']) != 0)
@@ -466,11 +455,6 @@ class LsrcHelper {
 					$emresult = db_select_limit_assoc($emquery, $maxemails);
 					//$emresult = db_execute_assoc($emquery);
 					$emcount = $emresult->RecordCount();
-//					$tokenoutput .= "<table width='500' align='center' >\n"
-//						."\t<tr>\n"
-//						."\t\t<td><font size='1'>\n";
-					
-			
 			
 					if ($emcount > 0)
 					{
@@ -561,43 +545,13 @@ class LsrcHelper {
 						if ($ctcount > $emcount)
 						{
 							$lefttosend = $ctcount-$maxemails;
-//							$tokenoutput .= "\t\t</td>\n"
-//								."\t</tr>\n"
-//								."\t<tr><form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
-//								."\t\t<td align='center'>\n"
-//								."\t\t\t<strong>".$clang->gT("Warning")."</strong><br /><br />\n"
-//								.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n"
-//								.str_replace("{EMAILCOUNT}", $lefttosend, $clang->gT("There are {EMAILCOUNT} emails still to be sent."))
-//								."<br />\n"
-//								."\t\t\t<input type='submit' value='".$clang->gT("Continue")."' />\n"
-//								."\t\t</td>\n"
-//								."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
-//								."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
-//								."\t<input type='hidden' name='action' value=\"tokens\" />\n"
-//								."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
-//							foreach ($surveylangs as $language)
-//							{
-//								$message = html_escape($_POST['message_'.$language]);
-////								$tokenoutput .="\t\t\t<input type='hidden' name='from_$language' value=\"".$_POST['from_'.$language]."\" />\n"
-////									."\t\t\t<input type='hidden' name='subject_$language' value=\"".$_POST['subject_'.$language]."\" />\n"
-////									."\t\t\t<input type='hidden' name='message_$language' value=\"$message\" />\n";
-//							}
-//							$tokenoutput.="\t<input type='hidden' name='last_tid' value=\"$lasttid\" />\n"
-//								."\t</form>\n";
 						}else{$lefttosend = 0;}
 					}
-//					else
-//					{
-////						$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n"
-////							.$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey.")."\n"
-////							."<br /><br />\n"
-////							."\t\t</td>\n";
-//					}
-
-					if($emcount==0)
+					else
 					{
 						return "No Reminders to send";
-					}			
+					}
+			
 					if($maxemails>0)
 					{
 						$returnValue = "".$mailsSend." Reminders send. ".$lefttosend." Reminders left to send";	
