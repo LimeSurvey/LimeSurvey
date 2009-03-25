@@ -2683,7 +2683,7 @@ if (isset($summary) && $summary)
 					if(!$excludezeros)
 					{
 					    //NO ZERO VALUES
-					    $query .= " AND (".db_quote_id($fieldname)." NOT LIKE 0)"; 
+					    $query .= " AND (".db_quote_id($fieldname)." <> 0)"; 
                     }
 				}
                 
