@@ -399,7 +399,7 @@ while(list($key, $value) = each($_REQUEST))
 			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
 		}
 		//this are the return Values
-		$sOutput .= "<br/><br/><b>Return</b>: <br/>['iVid'] => ". $sReturn['iVid'] ." <br/> ['return'] => ". $sReturn['return'];
+		$sOutput .= "<br/><br/><b>Return</b>: <br/> ['return'] => ". $sReturn;
 	}
 	if(substr($key,0,6)=="insPar")
 	{
