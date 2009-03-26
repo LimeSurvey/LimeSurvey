@@ -1384,7 +1384,7 @@ function do_list_radio($ia)
 	}
 	
 	//question attribute alphasort set?
-	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
 	}	
@@ -1596,7 +1596,7 @@ function do_list_flexible_radio($ia)
 	}
 	
 	//question attribute alphasort set?
-	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
 	}
@@ -1761,7 +1761,7 @@ function do_listwithcomment($ia)
 	}
 	
 	//question attribute alphasort set?
-	if (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1)) 
+	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1)) 
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
 	}
