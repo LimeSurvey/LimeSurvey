@@ -56,7 +56,7 @@ else
 }
 
 
-$surveyoptions = browsemenubar($clang->gT("Browse Responses"));
+$surveyoptions = browsemenubar($clang->gT("Browse Responses"), getSurveyName($surveyid));
 $browseoutput = "<table><tr><td></td></tr></table>\n"
 ."<table class='menubar'>\n";
 
