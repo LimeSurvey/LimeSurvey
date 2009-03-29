@@ -1798,7 +1798,7 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 	}
 }
 
-function browsemenubar($title='', $surveyname='')
+function browsemenubar($title='')
 {
 	global $surveyid, $scriptname, $imagefiles, $homeurl, $clang, $sumrows5, $surrows;
 
@@ -1806,7 +1806,7 @@ function browsemenubar($title='', $surveyname='')
 	//BROWSE MENU BAR
 	$browsemenubar = "<div class='menubar'>\n"
 	. "\t<div class='menubar-title'>\n"
-    . "\t<strong>$title</strong>: ($surveyname)"
+    . "\t<strong>$title</strong>: ({$thissurvey['name']})"
     . "\t</div>"
     . "\t<div class='menubar-main'>\n"
     . "\t<div class='menubar-left'>\n"
@@ -5657,18 +5657,4 @@ function strip_javascript($content){
     );
     $text = preg_replace($search, '', $content);
     return $text;
-}
-
-/**
-* This function returns the survey name in the base language
-*
-* @param string $surveyid Survey ID
-* @return string Survey Name
-*/
-function getSurveyName($surveyid)
-{
-    $sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-    $sumresult1 = db_select_limit_assoc($sumquery1, 1); //Checked
-    $s1row = $sumresult1->FetchRow();
-    return $s1row['surveyls_title'];
 }
