@@ -200,6 +200,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P" || $fnrow['type'] == "Z" || $fnrow['type'] == "W"))
 			{
 				$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(".$clang->gT("Other").")");
+				if ($fnrow['type'] == "P") {$fnames[] = array("$field{$fnrrow['code']}"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']} (".$clang->gT("Other Comment").")");}
 			}
 		}
 		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
