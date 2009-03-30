@@ -72,6 +72,13 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.80+ (build 6579) to 1.80+ (build 6592) [2009/03/30] - Legend: + new feature, # update feature, - bug fix
+
+# Changed SQL for odbc_mssql from "NOT LIKE 0" to "<> 0" which should be a bit faster
+
+- Fixed bug: zero values were not being included in mathematical calculations for stdev, avg, min, max, sum, and quartile calculations.  (jcleeland)
+- Fixed issue #2996: problem with multiple question attributes (maziminke)
+
 Changes from 1.80+ (build 6536) to 1.80+ (build 6579) [2009/03/16] - Legend: + new feature, # update feature, - bug fix
 
 #Updated Feature #2795: Print Answers now skip answers from questions that were hidden due to branching-logic. (lemeur)
