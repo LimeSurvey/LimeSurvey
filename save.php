@@ -84,6 +84,27 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 	}
 }                  
 
+//Check to see if we should set a submitdate or not
+// this depends on the move, and on quesitons checks
+if (isset($move) && $move == "movesubmit")
+{
+	$backok=null;
+	$notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
+	$notvalidated=checkpregs($move,$backok);
+	if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) )
+	{
+		$bFinalizeThisAnswer = true;
+	}
+	else
+	{
+		$bFinalizeThisAnswer = false;
+	}
+}
+else
+{
+	$bFinalizeThisAnswer = false;
+}
+
 //SAVE if on page with questions or on submit page
 if (isset($postedfieldnames))
 {
@@ -101,7 +122,7 @@ if (isset($postedfieldnames))
 	        	   $_SESSION['srid'] = $tempID;
 	        	   $saved_id = $tempID;
 				}
-				if (isset($move) && $move == "movesubmit")
+				if ($bFinalizeThisAnswer === true)
 				{
 					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);   // Checked    
 				}
@@ -324,7 +345,7 @@ function createinsertquery()
 
 	global $thissurvey, $timeadjust, $move;
 	global $deletenonvalues, $thistpl;
-	global $surveyid, $connect, $clang, $postedfieldnames;
+	global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
     require_once("./classes/inputfilter/class.inputfilter_clean.php");
     $myFilter = new InputFilter('','',1,1,1);
@@ -417,7 +438,7 @@ function createinsertquery()
 			{
 				$query .= ",".db_quote_id('refurl'); 
 			}
-			if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))
+			if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
 			{
 				$query .= ",".db_quote_id('submitdate'); 
 			}
@@ -437,7 +458,7 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SESSION['refurl']."'";
 			}
-			if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))
+			if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
 			{
                 // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
 				$query .= ", ".$connect->DBDate($mysubmitdate);
@@ -459,7 +480,7 @@ function createinsertquery()
 					$query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
 				}
 				// is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-				if ((isset($move) && $move == "movesubmit") && ($thissurvey['format'] != "A"))       
+				if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))       
 				{
 					$query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
 				}
@@ -514,7 +535,7 @@ function createinsertquery()
 			else
 			{
 				$query = "";
-				if ((isset($move) && $move == "movesubmit"))
+				if ($bFinalizeThisAnswer === true)
 				{
 					$query = "UPDATE {$thissurvey['tablename']} SET ";
 					$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
