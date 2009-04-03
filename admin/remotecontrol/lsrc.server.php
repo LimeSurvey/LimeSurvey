@@ -56,7 +56,7 @@ else{
 }
 
 //adds the functions to the SoapServer Object, 
-//the sChangeSurvey and sDeleteSurvey function should be commented out for productive Use
+//the sChangeSurvey function should be commented out for productive Use
 //$server->addFunction("sChangeSurvey");
 $server->addFunction("sDeleteSurvey");
 $server->addFunction("sActivateSurvey");
@@ -287,7 +287,7 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  *	$sPass = password have to be the right one for the existing user in limesurvey
  *  $sVtyp = Veranstaltungstyp (Vorlesung, Seminar, Uebung, Exkursion)
 */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp ) //XXX
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) //XXX
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -333,6 +333,8 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 			$lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
 		if($sUrl!='')
 			$lsrcHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
+		if($autoRd=='Y')
+			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
 			
 		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
