@@ -834,7 +834,7 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
  * @param unknown_type $sItems comma seperated values
  * @return unknown
  */
-function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
+function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
 {
 	/*
 	 * this var maybe added later to constructor, 
@@ -872,7 +872,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qText, $qHelp, $sItems, $sMod='Ma
 	$lastId = $lsrcHelper->importQuestion($iVid,$sMod,$newGroup);
 	if(is_array($lastId))
 	{
-		
+		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
 		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
 		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
 		if($mandatory==''){$mandatory='N';}
