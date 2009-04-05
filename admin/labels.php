@@ -93,8 +93,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	$labelsoutput.= "\t</select>\n"
     ."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
     ."onmouseout=\"hideTooltip()\"" 
-    ."title=\"".$clang->gTview("Add New Label Set")."\"" 
-    ."onmouseover=\"showTooltip(event,'".$clang->gT("Add New Label Set", "js")."');return false\">"
+    ."title=\"".$clang->gTview("Add new label set")."\"" 
+    ."onmouseover=\"showTooltip(event,'".$clang->gT("Add new label set", "js")."');return false\">"
     ."<img src='$imagefiles/add.png'  name='AddLabel' title='' alt='". $clang->gT("Add new label set")."' /></a>\n"     
     //Logout button
     ."\t<img src='$imagefiles/seperator.gif'  alt='' />\n"
@@ -313,28 +313,40 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table width='100%' class='form2columns'>\n"
+                ."\t<table id='labels' style='width:860px !important; margin:0 auto;' class='answertable'>\n"
                 ."<thead align='center'>"
         		."<tr>\n"
-        		."\t<td width='25%' align='right' class='settingcaption'><strong>\n"
+        		."\t<th  align='right' class='settingcaption'>\n"
         		.$clang->gT("Code")
-        		."\t</strong></td>\n"
-        		."\t<td class='settingcaption'><strong>\n"
+        		."\t</th>\n";
+                $labelsoutput.="<th align='right'>".$clang->gT("Assessment value").'</th>';
+        		$labelsoutput.="\t<th class='settingcaption'>\n"
         		.$clang->gT("Title")
-        		."\t</strong></td>\n"
-        		."\t<td class='settingcaption'><strong>\n"
+        		."\t</th>\n"
+        		."\t<th align='center' class='settingcaption'>\n"
         		.$clang->gT("Action")
-        		."\t</strong></td>\n"
-        		."\t<td align='center' class='settingcaption'><strong>\n"
+        		."\t</th>\n"
+        		."\t<th align='center' class='settingcaption'>\n"
         		.$clang->gT("Order")
-        		."\t</strong></td>\n"
+        		."\t</th>\n"
         		."</tr></thead>"
                 ."<tbody align='center'>";
+            $alternate=false;    
     		while ($row=$result->FetchRow())
     		{
                 $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
     			if ($first) {$codeids=$codeids.' '.$row['sortorder'];}                 
-    			$labelsoutput.= "<tr><td align='right'>\n";
+    			$labelsoutput.= "<tr style='white-space: nowrap;' ";
+                if ($alternate==true)
+                {
+                    $labelsoutput.=' class="highlight" ';
+                    $alternate=false;
+                }
+                else
+                {
+                    $alternate=true;
+                }
+                $labelsoutput.="><td align='right'>\n";
 
     			if ($activeuse > 0)
     			{
@@ -348,15 +360,30 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			else
     			{
     				$labelsoutput.= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n"; 
-    				$labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='10' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
+    				$labelsoutput.= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
     			}
     			
+            
+                
+                
     			$labelsoutput.= "\t</td>\n"
-    			."\t<td>\n"
+    			."\t<td style='text-align:center;'>\n";
+                if ($first)
+                {
+                    $labelsoutput.= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['assessment_value']}\" "
+                                   ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$lslanguage').click(); return false;} return goodchars(event,'1234567890-')\" />";
+                }
+                else
+                {
+                    $labelsoutput.= $row['assessment_value'];
+                    
+                }
+                $labelsoutput.= "\t</td>\n"
+                ."\t<td>\n"
     			."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\"/>\n"
-			. getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
+			    . getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
     			."\t</td>\n"
-    			."\t<td>\n";
+    			."\t<td style='text-align:center;'>\n";
     			if ($activeuse == 0)
     			{
     				$labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
@@ -369,7 +396,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			};
     			if ($position < $labelcount-1)
     			{
-    				// Fill the sortorder hiddenfield so we now what field is moved down
+    				// Fill the sortorder hiddenfield so we know what field is moved down
                     $labelsoutput.= "\t<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
     			}
     			$labelsoutput.= "\t</td></tr>\n";
@@ -377,23 +404,27 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan='4'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  id='saveallbtn_$lslanguage' />"
+                $labelsoutput.= "\t<tr><td colspan='5'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  id='saveallbtn_$lslanguage' />"
                 ."</center></td></tr>\n";
             }
 
     		$position=sprintf("%05d", $position);
     		if ($activeuse == 0 && $first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
-  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='10' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
+                ."<td style='text-align:center;'>"
+                ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' "
+                ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('addnewlabelbtn').click(); return false;} return goodchars(event,'1234567890-')\" />"
+                ."\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='text' maxlength='3000' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
-			. getEditor("addlabel", "inserttitle", "[".$clang->gT("Label:", "js")."](".$lslanguage.")",'','','',$action)
+			    . getEditor("addlabel", "inserttitle", "[".$clang->gT("Label:", "js")."](".$lslanguage.")",'','','',$action)
     			."\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
     			."\t</td>\n"
-    			."\t<td>\n"
+    			."\t<td style='text-align:center;'>\n"
 			    ."<input type='button' onclick=\"document.getElementById('formfixorder').submit();\" value=\"".$clang->gT('Fix Order')."\" />\n"
                 ."<script type='text/javascript'>\n"
     			."<!--\n"
@@ -548,16 +579,16 @@ function updateset($lid)
 	$dellangidsarray=array_diff($oldlangidsarray,$newlanidarray);
 
 	// If new languages are added, create labels' codes and sortorder for the new languages	
-	$query = "SELECT code,sortorder FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder";
+	$query = "SELECT code,sortorder,assessment_value FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder";
 	$result=db_execute_assoc($query);
-	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=$row['sortorder'];} }
+	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=array('sortorder'=>$row['sortorder'],'assessment_value'=>$row['assessment_value']);} }
 	if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
 	{
 		foreach ($addlangidsarray as $addedlangid)
 		{
-			foreach ($oldcodesarray as $oldcode => $oldsortorder)
+			foreach ($oldcodesarray as $oldcode => $olddata)
 			{
-				$sqlvalues[]= " ($lid, '$oldcode', '$oldsortorder', '$addedlangid')";
+				$sqlvalues[]= " ($lid, '$oldcode', '{$olddata['sortorder']}', '$addedlangid', '{$olddata['assessment_value']}' )";
 			}
 		}
 	}	
@@ -566,7 +597,7 @@ function updateset($lid)
         if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('labels')." ON");}
         foreach ($sqlvalues as $sqlline) 
         {
-		    $query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language) VALUES ".($sqlline);
+		    $query = "INSERT INTO ".db_table_name('labels')." (lid,code,sortorder,language,assessment_value) VALUES ".($sqlline);
 		    $result=db_execute_assoc($query);
 		    if (!$result)
 		    {
@@ -701,10 +732,11 @@ function modlabelsetanswers($lid)
                 $_POST['inserttitle']=fix_FCKeditor_text($_POST['inserttitle']);
                
    				$_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
+                $_POST['insertassessmentvalue']=(int)$_POST['insertassessmentvalue'];
 	  			foreach ($lslanguages as $lslanguage)
 				{
                     if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('labels')." ON");}
-    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage')";
+    				$query = "INSERT INTO ".db_table_name('labels')." (lid, code, title, sortorder,language, assessment_value) VALUES ($lid, {$_POST['insertcode']}, {$_POST['inserttitle']}, '$newsortorder','$lslanguage',{$_POST['insertassessmentvalue']})";
 					if (!$result = $connect->Execute($query))
 	    				{
 	    					$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert label", "js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -762,7 +794,7 @@ function modlabelsetanswers($lid)
 				$_POST['title_'.$sortorderid]=fix_FCKeditor_text($_POST['title_'.$sortorderid]);
 				$_POST['title_'.$sortorderid] = db_quoteall($_POST['title_'.$sortorderid],true);
 
-				$query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
+				$query = "UPDATE ".db_table_name('labels')." SET code=".$_POST['code_'.$codeids[$count]].", title={$_POST['title_'.$sortorderid]}, assessment_value={$_POST['assessmentvalue_'.$codeids[$count]]} WHERE lid=$lid AND sortorder=$orderid AND language='$langid'";
 
 				if (!$result = $connect->Execute($query)) 
 					// if update didn't work we assume the label does not exist and insert it

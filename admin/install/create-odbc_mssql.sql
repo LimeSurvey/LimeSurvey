@@ -38,6 +38,7 @@ CREATE TABLE [prefix_answers] (
   [answer] varchar(255) NOT NULL,
   [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
+  [assessment_value] INT NOT NULL default '0',
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[code],[language])
 ) 
@@ -58,8 +59,8 @@ CREATE TABLE [prefix_assessments] (
   [minimum] VARCHAR(50) NOT NULL default '',
   [maximum] VARCHAR(50) NOT NULL default '',
   [message] text NOT NULL,
-  [link] text NOT NULL,
-  PRIMARY KEY  ([id])
+  [language] VARCHAR(20) NOT NULL default 'en',
+  PRIMARY KEY  ([id],[language])
 ) 
 ;
 
@@ -108,6 +109,7 @@ CREATE TABLE [prefix_labels] (
   [title] VARCHAR(4000),
   [sortorder] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
+  [assessment_value] INT NOT NULL default '0',
   PRIMARY KEY  ([lid],[sortorder],[language]),
 ) 
 ;
@@ -211,7 +213,6 @@ CREATE TABLE [prefix_surveys] (
   [faxto] VARCHAR(20) default NULL,
   [format] char(1) default NULL,
   [template] VARCHAR(100) default 'default',
-  [url] VARCHAR(255) default NULL,
   [language] VARCHAR(50) default NULL,
   [additional_languages] VARCHAR(255) default NULL,
   [datestamp] char(1) default 'N',
@@ -235,6 +236,7 @@ CREATE TABLE [prefix_surveys] (
   [publicgraphs] char(1) default 'N',
   [htmlemail] char(1) default 'N',
   [tokenanswerspersistence] char(1) default 'N',
+  [assessments] char(1) default 'N',
   [usecaptcha] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
   PRIMARY KEY  ([sid])
@@ -254,6 +256,8 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_title] VARCHAR(200) NOT NULL,
   [surveyls_description] TEXT NULL,
   [surveyls_welcometext] TEXT NULL,
+  [surveyls_endtext] TEXT NULL,
+  [surveyls_url] VARCHAR(255) NULL,
   [surveyls_urldescription] VARCHAR(255) NULL,
   [surveyls_email_invite_subj] VARCHAR(255) NULL,
   [surveyls_email_invite] TEXT NULL,

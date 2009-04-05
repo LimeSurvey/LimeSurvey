@@ -33,7 +33,6 @@ img {
 	border: 0;
 }
 a:hover {
-	font-size: 10pt;
 	color: #819D26;
 	text-decoration: underline;
 }
@@ -194,7 +193,9 @@ input[disabled], textarea[disabled], select[disabled] {
 	color: #999;
 	background: #EEE;
 	font: 10px verdana, arial, sans-serif;
+    border:1px solid #ccc;
 }
+
 textarea {
 	font-size: 10px;
 	color: navy;
@@ -397,7 +398,6 @@ th, .header, .headertwo, table.form2columns th, .settingcaption {
 	color: #1D2D45;
 }
 a:link, a:visited {
-	font-size: 10pt;
 	color: #819D26;
 	text-decoration: none;
 }
@@ -454,4 +454,27 @@ a.invalidemail {
 
 .browsetable td:first-child {
     min-width:50px;
+}
+
+.answertable th {
+    font-weight:bold;
+    font-size: 8pt;
+    padding:3px;
+}
+
+.answertable tr {
+    white-space: nowrap;
+}
+
+.answertable th:first-child {
+    text-align:right;
+}   
+
+#languagetabs {
+    width:52%;
+    margin:0 auto;
+}
+
+.answertable tr.highlight {
+    background-color:#EAF2FF;
 }

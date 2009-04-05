@@ -241,7 +241,7 @@ if (file_exists($tpldir."/".$templatename."/template.css")) { $normalfiles[]="te
 $SurveyList=array("startpage.pstpl", "surveylist.pstpl", "endpage.pstpl");
 $Welcome=array("startpage.pstpl", "welcome.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
 $Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
-$Completed=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
+$CompletedTemplate=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
 $Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
 $Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
 $Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
@@ -281,7 +281,7 @@ if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
-$completed="Survey is completed and saved.";
+$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />".$clang->gT("Your survey responses have been recorded.")."<br /><br />\n";  
 $notanswered="5";
 $privacy="";
 $surveyid="1295";
@@ -468,7 +468,7 @@ switch($screenname) {
 	case $clang->gT("Completed Page", "unescaped"):
 	unset($files);
 	$myoutput[]="";
-	foreach ($Completed as $qs) {
+	foreach ($CompletedTemplate as $qs) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}

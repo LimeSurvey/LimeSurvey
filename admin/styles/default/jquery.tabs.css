@@ -96,3 +96,8 @@
     background: url(loading.gif) no-repeat 0 50%;
 }
 
+.ui-tabs-nav ul {
+    list-style-type:none;
+}
+
+

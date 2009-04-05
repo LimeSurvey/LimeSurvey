@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade 
 /// older versions to match current functionality
-global $modifyoutput;
+global $modifyoutput, $dbprefix;
 echo str_pad('Loading... ',4096)."<br />\n";
     if ($oldversion < 111) {
       // Language upgrades from version 110 to 111 since the language names did change
@@ -190,7 +190,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","UPDATE [prefix_users] SET [superadmin]=1 where ([create_survey]=1 AND [create_user]=1 AND [delete_user]=1 AND [configurator]=1)"); echo $modifyoutput; flush();
         //126
         modify_database("","ALTER TABLE [prefix_questions] ADD [lid1] int NOT NULL DEFAULT '0'"); echo $modifyoutput; flush();
-	modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]='' or [method]='0'"); echo $modifyoutput; flush();
+	    modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]='' or [method]='0'"); echo $modifyoutput; flush();
         
         modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
@@ -239,11 +239,44 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] ADD [publicgraphs] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }    
-	if ($oldversion < 133)
-    {
+    
+    if ($oldversion < 133)
+	{
         modify_database("","ALTER TABLE [prefix_users] ADD [one_time_pw] text"); echo $modifyoutput; flush();
+        // Add new assessment setting
+        modify_database("","ALTER TABLE [prefix_surveys] ADD [assessments] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        // add new assessment value fields to answers & labels
+        modify_database("","ALTER TABLE [prefix_answers] ADD [assessment_value] int NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_labels] ADD [assessment_value] int NOT NULL default '0'"); echo $modifyoutput; flush();
+        // copy any valid codes from code field to assessment field
+        modify_database("","update [prefix_answers] set [assessment_value]=CAST([code] as int)");// no output here is intended
+        modify_database("","update [prefix_labels] set [assessment_value]=CAST([code] as int)");// no output here is intended
+        // activate assessment where assesment rules exist
+        modify_database("","update [prefix_surveys] set [assessments]='Y' where [sid] in (SELECT [sid] FROM [prefix_assessments] group by [sid])"); echo $modifyoutput; flush();
+        // add language field to assessment table
+        modify_database("","ALTER TABLE [prefix_assessments] ADD [language] varchar(20) NOT NULL default 'en'"); echo $modifyoutput; flush();
+        // update language field with default language of that particular survey
+        modify_database("","update [prefix_assessments] set [language]=(select [language] from [prefix_surveys] where [sid]=[prefix_assessments].[sid])"); echo $modifyoutput; flush();
+        // copy assessment link to message since from now on we will have HTML assignment messages
+        modify_database("","update [prefix_assessments] set [message]=cast([message] as varchar) +'<br /><a href=\"'+[link]+'\">'+[link]+'</a>'"); echo $modifyoutput; flush();
+        // drop the old link field
+         modify_database("","ALTER TABLE [prefix_assessments] DROP COLUMN [link]"); echo $modifyoutput; flush();
+        // change the primary index to include language
+        // and fix missing translations for assessments
+        upgrade_survey_tables133a();
+
+        // Add new fields to survey language settings
+        modify_database("","ALTER TABLE [prefix_surveys_languagesettings] ADD [surveyls_url] varchar(255)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_surveys_languagesettings] ADD [surveyls_endtext] text"); echo $modifyoutput; flush();
+        // copy old URL fields ot language specific entries
+        modify_database("","update [prefix_surveys_languagesettings] set [surveyls_url]=(select [url] from [prefix_surveys] where [sid]=[prefix_surveys_languagesettings].[surveyls_survey_id])"); echo $modifyoutput; flush();
+        // drop old URL field 
+        upgrade_survey_tables133b();
+        modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [url]"); echo $modifyoutput; flush();
+        
         modify_database("","update [prefix_settings_global] set [stg_value]='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
+    }   
+        
     return true;
 }
 
@@ -296,4 +329,52 @@ function upgrade_token_tables128()
             modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount ] int DEFAULT '0'"); echo $modifyoutput; flush();
             }
 }
+
+
+
+
+function upgrade_survey_tables133a()
+{
+    global $dbprefix, $connect, $modifyoutput;
+    // find out the constraint name of the old primary key
+    $pkquery = " SELECT CONSTRAINT_NAME "
+              ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+              ."WHERE     (TABLE_NAME = '{$dbprefix}assessments') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+    $primarykey=$connect->GetRow($pkquery);
+    if ($primarykey!=false) 
+    {
+        modify_database("","ALTER TABLE [prefix_assessments] DROP CONSTRAINT {$primarykey[0]}"); echo $modifyoutput; flush();    
+    }
+    // add the new primary key
+    modify_database("","ALTER TABLE [prefix_assessments] ADD CONSTRAINT pk_assessments_id_lang PRIMARY KEY ([id],[language])"); echo $modifyoutput; flush();    
+    $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
+    $surveyidresult = db_execute_num($surveyidquery);
+    while ( $sv = $surveyidresult->FetchRow() )
+    {
+        FixLanguageConsistency($sv[0],$sv[1]);   
+    }
+}
+
+function upgrade_survey_tables133b()
+{
+    global $dbprefix, $connect, $modifyoutput;
+    // find out the name of the default constraint
+    // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
+    // It proves how badly designer some Microsoft software is!
+    $dfquery ="SELECT c_obj.name AS CONSTRAINT_NAME
+                FROM  sys.sysobjects AS c_obj INNER JOIN
+                      sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
+                      sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
+                      sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
+                WHERE (c_obj.xtype = 'D') AND (col.name = 'url')";
+    $defaultname=$connect->GetRow($dfquery);
+    if ($defaultname!=false) 
+    {
+        modify_database("","ALTER TABLE [prefix_surveys] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();    
+    }
+                
+
+}
+
 ?>

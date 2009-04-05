@@ -237,12 +237,42 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` ADD `publicgraphs` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
     	modify_database("","update `prefix_settings_global` set `stg_value`='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
+	
 	if ($oldversion < 133)
 	{
         modify_database("","ALTER TABLE `prefix_users` ADD `one_time_pw` blob"); echo $modifyoutput; flush();
+        // Add new assessment setting
+        modify_database("","ALTER TABLE `prefix_surveys` ADD `assessments` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        // add new assessment value fields to answers & labels
+        modify_database("","ALTER TABLE `prefix_answers` ADD `assessment_value` int(11) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_labels` ADD `assessment_value` int(11) NOT NULL default '0'"); echo $modifyoutput; flush();
+        // copy any valid codes from code field to assessment field
+        modify_database("","update `prefix_answers` set `assessment_value`=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'");echo $modifyoutput; flush();
+        modify_database("","update `prefix_labels` set `assessment_value`=CAST(`code` as SIGNED) where `code` REGEXP '^-?[0-9]+$'");echo $modifyoutput; flush();
+        // activate assessment where assesment rules exist
+        modify_database("","update `prefix_surveys` set `assessments`='Y' where `sid` in (SELECT `sid` FROM `prefix_assessments` group by `sid`)"); echo $modifyoutput; flush();
+        // add language field to assessment table
+        modify_database("","ALTER TABLE `prefix_assessments` ADD `language` varchar(20) NOT NULL default 'en'"); echo $modifyoutput; flush();
+        // update language field with default language of that particular survey
+        modify_database("","update `prefix_assessments` set `language`=(select `language` from `prefix_surveys` where `sid`=`prefix_assessments`.`sid`)"); echo $modifyoutput; flush();
+        // copy assessment link to message since from now on we will have HTML assignment messages
+        modify_database("","update `prefix_assessments` set `message`=concat(replace(`message`,'/''',''''),'<br /><a href=\"',`link`,'\">',`link`,'</a>')"); echo $modifyoutput; flush();
+        // drop the old link field
+        modify_database("","ALTER TABLE `prefix_assessments` DROP COLUMN `link`"); echo $modifyoutput; flush();
+        // change the primary index to include language
+        modify_database("","ALTER TABLE `prefix_assessments` DROP PRIMARY KEY, ADD PRIMARY KEY  USING BTREE(`id`, `language`)"); echo $modifyoutput; flush();
+        //finally fix missing translations for assessments
+        upgrade_survey_tables133();
+        // Add new fields to survey language settings
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_url` varchar(255)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_endtext` text"); echo $modifyoutput; flush();
+        // copy old URL fields ot language specific entries
+        modify_database("","update `prefix_surveys_languagesettings` set `surveyls_url`=(select `url` from `prefix_surveys` where `sid`=`prefix_surveys_languagesettings`.`surveyls_survey_id`)"); echo $modifyoutput; flush();
+        // drop old URL field 
+        modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `url`"); echo $modifyoutput; flush();
     	modify_database("","update `prefix_settings_global` set `stg_value`='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}    
-	return true;
+    return true;
 }
 
 
@@ -253,12 +283,12 @@ function upgrade_survey_tables117()
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else
-        {
+    {
         while ( $sv = $surveyidresult->FetchRow() )
-            {
+        {
             modify_database("","ALTER TABLE ".db_table_name('survey_'.$sv[0])." ADD `startdate` datetime AFTER `datestamp`"); echo $modifyoutput; flush();
-            }
         }
+    }
 }
 
 function upgrade_survey_tables118()
@@ -309,55 +339,62 @@ function upgrade_token_tables128()
 }
 
 
+function upgrade_survey_tables133()
+{
+    $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
+    $surveyidresult = db_execute_num($surveyidquery);
+    while ( $sv = $surveyidresult->FetchRow() )
+    {
+        FixLanguageConsistency($sv[0],$sv[1]);   
+    }
+}
+
 function fix_mysql_collation()
 {
-global $connect, $modifyoutput, $dbprefix;
-$sql = 'SHOW TABLE STATUS';
-$result = db_execute_assoc($sql);
-if (!$result) {
-       $modifyoutput .= 'SHOW TABLE - SQL Error';
+    global $connect, $modifyoutput, $dbprefix;
+    $sql = 'SHOW TABLE STATUS';
+    $result = db_execute_assoc($sql);
+    if (!$result) {
+           $modifyoutput .= 'SHOW TABLE - SQL Error';
+        }
+       
+    while ( $tables = $result->FetchRow() ) {
+    // Loop through all tables in this database
+       $table = $tables['Name'];
+       $tablecollation=$tables['Collation'];
+       if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
+       {
+	       if ($tablecollation!='utf8_unicode_ci')
+	       {
+	       modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
+	       echo $modifyoutput; flush();
+	       }            
+	      
+	       # Now loop through all the fields within this table
+	       $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
+	       while ( $column = $result2->FetchRow())
+	       {
+	       if ($column['Collation']!= 'utf8_unicode_ci' )
+		       {
+		          $field_name = $column['Field'];
+		          $field_type = $column['Type'];
+		          $field_default = $column['Default'];
+		          if ($field_default!='NULL') {$field_default="'".$field_default."'";}
+		          # Change text based fields
+		          $skipped_field_types = array('char', 'text', 'enum', 'set');
+		         
+		          foreach ( $skipped_field_types as $type )
+		          {        
+		             if ( strpos($field_type, $type) !== false )
+		             {
+					    $modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+					    if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
+					    modify_database("",$modstatement);
+		                echo $modifyoutput; flush();            
+		             }
+		          }
+	          }
+	       }
+       }
     }
-   
-while ( $tables = $result->FetchRow() ) {
-// Loop through all tables in this database
-   $table = $tables['Name'];
-   $tablecollation=$tables['Collation'];
-   if (strpos($table,'old_')===false  && ($dbprefix==''  || ($dbprefix!='' && strpos($table,$dbprefix)!==false)))
-   {
-	   if ($tablecollation!='utf8_unicode_ci')
-	   {
-	   modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
-	   echo $modifyoutput; flush();
-	   }            
-	  
-	   # Now loop through all the fields within this table
-	   $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
-	   while ( $column = $result2->FetchRow())
-	   {
-	   if ($column['Collation']!= 'utf8_unicode_ci' )
-		   {
-		      $field_name = $column['Field'];
-		      $field_type = $column['Type'];
-		      $field_default = $column['Default'];
-		      if ($field_default!='NULL') {$field_default="'".$field_default."'";}
-		      # Change text based fields
-		      $skipped_field_types = array('char', 'text', 'enum', 'set');
-		     
-		      foreach ( $skipped_field_types as $type )
-		      {        
-		         if ( strpos($field_type, $type) !== false )
-		         {
-					$modstatement="ALTER TABLE $table CHANGE `$field_name` `$field_name` $field_type CHARACTER SET utf8 COLLATE utf8_unicode_ci";
-					if ($type!='text') {$modstatement.=" DEFAULT $field_default";}
-					modify_database("",$modstatement);
-		            echo $modifyoutput; flush();            
-		         }
-		      }
-	      }
-	   }
-   }
 }
-}
-
-
-?>

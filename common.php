@@ -523,9 +523,11 @@ function db_table_name_nq($name)
     return $dbprefix.$name;
 }
 
-/*
- *  Return a sql statement for finding LIKE named tables
- */
+/**
+* Return a sql statement for finding LIKE named tables   
+* 
+* @param mixed $table
+*/
 function db_select_tables_like($table)
 {
 	global $databasetype;
@@ -540,10 +542,12 @@ function db_select_tables_like($table)
 	}	
 }
 
-/*
- *  Return a boolean stating if the table(s) exist(s)
- *  Accepts '%' in names since it uses the 'like' statement
- */
+/**
+*  Return a boolean stating if the table(s) exist(s)
+*  Accepts '%' in names since it uses the 'like' statement
+* 
+* @param mixed $table
+*/
 function db_tables_exist($table)
 {
 	global $connect;
@@ -580,7 +584,7 @@ function getsurveylist($returnarray=false)
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
     $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, "
                     ." a.useexpiry, a.expires, a.usestartdate, a.startdate, "
-					. "a.adminemail, a.private, a.faxto, a.format, a.template, a.url, "
+					. "a.adminemail, a.private, a.faxto, a.format, a.template, surveyls_url, "
 					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
 					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a "
 					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
@@ -642,11 +646,13 @@ function getsurveylist($returnarray=false)
 
 /**
 * getquestions() queries the database for a list of all questions matching the current survey sid
+* 
 * @global string $surveyid
 * @global string $gid
 * @global string $qid
 * @global string $dbprefix
 * @global string $scriptname
+* 
 * @return This string is returned containing <option></option> formatted list of questions to current survey
 */
 function getquestions($surveyid,$gid,$selectedqid)
@@ -688,7 +694,12 @@ function getquestions($surveyid,$gid,$selectedqid)
 }
 
 
-// Gets number of groups inside a particular survey
+/**
+* Gets number of groups inside a particular survey
+* 
+* @param string $surveyid
+* @param mixed $lang
+*/
 function getGroupSum($surveyid, $lang)
 {
 	global $surveyid,$dbprefix ;
@@ -701,7 +712,12 @@ function getGroupSum($surveyid, $lang)
 }
 
 
-// Gets number of questions inside a particular group 
+/**
+* Gets number of questions inside a particular group
+* 
+* @param string $surveyid
+* @param mixed $groupid
+*/
 function getQuestionSum($surveyid, $groupid)
 {
 	global $surveyid,$dbprefix ;
@@ -715,6 +731,8 @@ function getQuestionSum($surveyid, $groupid)
 
 /**
 * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group.
+* 
+* @param mixed $surveyid     
 * @global string $surveyid
 */
 function getMaxgrouporder($surveyid)
@@ -732,8 +750,13 @@ function getMaxgrouporder($surveyid)
 	else return ++$current_max ;
 }
 
+
 /**
-* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.
+* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.   
+* 
+* @param mixed $surveyid
+* @param mixed $gid
+* @return mixed
 */
 function getGroupOrder($surveyid,$gid)
 {
@@ -751,6 +774,7 @@ function getGroupOrder($surveyid,$gid)
 
 /**
 * getMaxquestionorder($gid) queries the database for the maximum sortorder of a question.
+* 
 * @global string $surveyid
 */
 function getMaxquestionorder($gid)
@@ -773,11 +797,13 @@ function getMaxquestionorder($gid)
 
 /**
 * getanswers() queries the database for a list of all answers matching the current question qid
+* 
 * @global string $surveyid
 * @global string $gid
 * @global string $qid
 * @global string $dbprefix
 * @global string $code
+* 
 * @return This string is returned containing <option></option> formatted list of answers matching current qid
 */
 function getanswers()
@@ -803,10 +829,13 @@ function getanswers()
 /**
 * getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
 *    question type
+* 
 * @global string $publicurl
 * @global string $sourcefrom
+* 
 * @param string $SelectedCode Value of the Question Type (defaults to "T")
 * @param string $ReturnType Type of output from this function (defaults to selector)
+* 
 * @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 */
 function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
@@ -859,14 +888,16 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 	}
 }
 
-function question_class($input)
-{
+
 /**
  * question_class() returns a class name for a given question type to allow custom styling for each question type.
  *
  * @param string containing unique character representing each question type.
  * @returns string containing the class name for a given question type.
  */
+function question_class($input)
+{
+
 	switch($input)
 	{	// I think this is a bad solution to adding classes to question
 		// DIVs but I can't think of a better solution. (eric_t_cruiser)
@@ -1132,8 +1163,6 @@ function alternation($alternate = '' , $type = 'col')
 }
 
 
-function longest_string( $new_string , $longest_length )
-{
 /**
  * longest_string() returns the length of the longest string past to it.
  * @peram string $new_string
@@ -1142,6 +1171,8 @@ function longest_string( $new_string , $longest_length )
  * usage should look like this: $longest_length = longest_string( $new_string , $longest_length );
  *
  */
+function longest_string( $new_string , $longest_length )
+{
 	if($longest_length < strlen(trim(strip_tags($new_string))))
 	{
 		$longest_length = strlen(trim(strip_tags($new_string)));
@@ -1200,7 +1231,9 @@ function label_class_width( $longest_length , $type = 'text' )
 
 /**
 * getNotificationlist() returns different options for notifications
+* 
 * @param string $notificationcode - the currently selected one
+* 
 * @return This string is returned containing <option></option> formatted list of notification methods for current survey
 */
 function getNotificationlist($notificationcode)
@@ -1224,10 +1257,13 @@ function getNotificationlist($notificationcode)
 
 /**
 * getgrouplist() queries the database for a list of all groups matching the current survey sid
+* 
 * @global string $surveyid
 * @global string $dbprefix
 * @global string $scriptname
+* 
 * @param string $gid - the currently selected gid/group
+* 
 * @return This string is returned containing <option></option> formatted list of groups to current survey
 */
 function getgrouplist($gid)
@@ -1460,10 +1496,13 @@ function gettemplatelist()
 }
 
 
+/**
+* Gets all survey infos in one big array including the language specific settings
+* 
+* @param string $surveyid  The survey ID
+* @param string $languagecode The language code - if not give the base language of the particular survey is used
+*/
 function getSurveyInfo($surveyid, $languagecode='')
-// Gets all survey infos in one big array including the language specific settings
-// if $languagecode is not set then the base language from the survey is used
-// 
 {
 	global $dbprefix, $siteadminname, $siteadminemail, $connect, $languagechanger;
 	$surveyid=sanitize_int($surveyid);
@@ -1501,7 +1540,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 	    if (!isset($thissurvey['adminname'])) {$thissurvey['adminname']=$siteadminname;}
 	    if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
 	    if (!isset($thissurvey['urldescrip']) ||
-		$thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['url'];}
+		$thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
 	}              
     
     //not sure this should be here... ToDo: Find a better place
@@ -2748,7 +2787,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
 	if (strpos($line, "{URL}") !== false) {
-		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
+		if ($thissurvey['surveyls_url']!=""){$linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['urldescrip']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
@@ -3392,7 +3431,7 @@ function questionAttributes($returnByName=false)
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
 	"caption"=>$clang->gT('Max value from SQGA'));
-
+	
 	$qattributes["min_num_value_sgqa"]=array(
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
@@ -4045,11 +4084,13 @@ function modify_database($sqlfile='', $sqlstring='') {
 				$command = str_replace('$databasetabletype', $databasetabletype, $command);
 
 				if (! db_execute_num($command)) {  //Checked
+                  $command=htmlspecialchars($command);
                   $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#FF0000'>...".$clang->gT("Failed! Reason: ").$connect->ErrorMsg()."</font>";
 				  $success = false;
 				}
                  else
                  {
+                    $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".$clang->gT("Executing").".....".$command."<font color='#00FF00'>...".$clang->gT("Success!")."</font>";
                  }
 
@@ -4438,7 +4479,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 }
 
 /**
-* FixLanguageConsistency() fixes missing groups,questions,answers for languages on a survey
+* FixLanguageConsistency() fixes missing groups,questions,answers & assessments for languages on a survey
 * @param string $sid - the currently selected survey
 * @param string $availlangs - space seperated list of additional languages in survey
 * @return bool - always returns true
@@ -4522,7 +4563,7 @@ function FixLanguageConsistency($sid, $availlangs)
 					if ($gresult->RecordCount() < 1)
 					{
                         if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." ON");}    //Checked
-						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}')";
+						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
 						$connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
                         if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." OFF");}   //Checked
 					}
@@ -4531,6 +4572,33 @@ function FixLanguageConsistency($sid, $availlangs)
 			}
 		}
 	}
+    
+    
+    $query = "SELECT * FROM ".db_table_name('assessments')." WHERE sid='{$sid}' AND language='{$baselang}'";
+    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->RecordCount() > 0)
+    {
+        while($assessment = $result->FetchRow())
+        {
+            foreach ($langs as $lang)
+            {
+                $query = "SELECT id FROM ".db_table_name('assessments')." WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
+                $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->RecordCount() < 1)
+                {
+                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." ON");}   //Checked
+                    $query = "INSERT INTO ".db_table_name('assessments')." (id,sid,scope,gid,name,minimum,maximum,message,language) "
+                            ."VALUES('{$assessment['id']}','{$assessment['sid']}',".db_quoteall($assessment['scope']).",".db_quoteall($assessment['gid']).",".db_quoteall($assessment['name']).",".db_quoteall($assessment['minimum']).",".db_quoteall($assessment['maximum']).",".db_quoteall($assessment['message']).",'{$lang}')";  
+                    $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
+                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." OFF");}   //Checked
+                }
+            }
+            reset($langs);
+        }
+    }
+
+    
+    
 	return true;
 }
 

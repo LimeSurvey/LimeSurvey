@@ -3129,8 +3129,7 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
-				$js_header_includes[] = '/scripts/jquery/jquery-ui-core-1.6rc2.min.js';
-				$js_header_includes[] = '/scripts/jquery/jquery-ui-slider-1.6rc2.min.js';
+				$js_header_includes[] = '/scripts/jquery/jquery-ui.js';
 				$js_header_includes[] = '/scripts/jquery/lime-slider.js';
 				$js_header_includes = array_unique($js_header_includes);
 

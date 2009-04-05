@@ -2495,8 +2495,10 @@ function surveymover()
 function doAssessment($surveyid)
 {
 	global $dbprefix, $thistpl, $connect;
+    $baselang=GetBaseLanguageFromSurveyID($surveyid);
+    if (!isset($_SESSION['s_lang'])) {$_SESSION['s_lang']=$baselang;}
 	$query = "SELECT * FROM ".db_table_name('assessments')."
-			  WHERE sid=$surveyid
+			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
 			  ORDER BY scope";
 	if ($result = db_execute_assoc($query))   //Checked 
 	{
@@ -2509,48 +2511,77 @@ function doAssessment($surveyid)
 					$assessment['group'][$row['gid']][]=array("name"=>$row['name'],
 					"min"=>$row['minimum'],
 					"max"=>$row['maximum'],
-					"message"=>$row['message'],
-					"link"=>$row['link']);
+					"message"=>$row['message']);
 				}
 				else
 				{
 					$assessment['total'][]=array( "name"=>$row['name'],
 					"min"=>$row['minimum'],
 					"max"=>$row['maximum'],
-					"message"=>$row['message'],
-					"link"=>$row['link']);
+					"message"=>$row['message']);
 				}
 			}
 			$fieldmap=createFieldMap($surveyid, "full");
 			$i=0;
 			$total=0;
 
-			// I added this condition : if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y"))
-			// because the internal representation of the answer of multiple Options type questions is Y, not the answer code
-			// for this type of questions I use $field['aid'] insted of $_SESSION[$field['fieldname']]
-
 			foreach($fieldmap as $field)
 			{
-				if (($field['fieldname'] != "datestamp") and ($field['fieldname'] != "startdate") and ($field['fieldname'] != "refurl") and ($field['fieldname'] != "ipaddr") and ($field['fieldname'] != "token"))
+				if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
 				{
+                    $fieldmap[$i]['assessment_value']=0; 
 					if (isset($_SESSION[$field['fieldname']])) 
 					{
-						if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
-						{
-							$fieldmap[$i]['answer']=$field['aid'];
-							$total=$total+$field['aid'];
-						}
-						else     // any other type of question
-						{
-							$fieldmap[$i]['answer']=$_SESSION[$field['fieldname']];
-							$total=$total+$_SESSION[$field['fieldname']];
-						}
+                        if ($field['type']==':') //Multiflexi numbers  - result is the assessment value
+                        {
+                            $fieldmap[$i]['assessment_value']=$_SESSION[$field['fieldname']];
+                            $total=$total+$_SESSION[$field['fieldname']];                             
+                        }
+                        else
+                        {
+                            // for questions which are using label sets
+                            if (in_array($field['type'],array('Z','1','F','H','W','Z')))
+                            {
+                                if ($field['type']=='1') //special treatment for Dual scale
+                                {
+                                    $x=substr($field['fieldname'],-1,1);
+                                }  
+                                else
+                                {
+                                    $x='';
+                                }
+                                $usquery = "SELECT assessment_value FROM ".db_table_name("labels")." where lid$x=".$field['lid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                            }
+                            else  // for normal answers
+                            {
+                                $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                            }
+                            $usresult = db_execute_assoc($usquery);          //Checked 
+                            if ($usresult)
+                            {
+                                $usrow = $usresult->FetchRow();
+                                
+                                if (($field['type'] == "M") || ($field['type'] == "P"))
+                                {
+                                    if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple Options type questions
+                                    {
+                                        $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                        $total=$total+$usrow['assessment_value'];
+                                    }
+                                }
+                                else     // any other type of question
+                                {
+                                    $fieldmap[$i]['assessment_value']=$usrow['assessment_value'];
+                                    $total=$total+$usrow['assessment_value'];
+                                }
+                            }                            
+                        }
 					}
-					else {$fieldmap[$i]['answer']=0;}
 					$groups[]=$field['gid'];
 				}
                 $i++;
 			}
+            
 			$groups=array_unique($groups);
 
 			foreach($groups as $group)
@@ -2558,7 +2589,7 @@ function doAssessment($surveyid)
 				$grouptotal=0;
 				foreach ($fieldmap as $field)
 				{
-					if ($field['gid'] == $group && isset($field['answer']))
+					if ($field['gid'] == $group && isset($field['assessment_value']))
 					{
 						//$grouptotal=$grouptotal+$field['answer'];
 						if (isset ($_SESSION[$field['fieldname']])) 
@@ -2594,10 +2625,6 @@ function doAssessment($surveyid)
 								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
 								 </td>
 								</tr>
-							  	<tr>
-								 <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
-								 </td>
-								</tr>
 							   </table><br />\n";
 						}
 					}
@@ -2616,10 +2643,6 @@ function doAssessment($surveyid)
 						 </th></tr>
 						 <tr>
 						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
-						  </td>
-						 </tr>
-						 <tr>
-						  <td align='center'><a href='".$assessed['link']."'>".$assessed['link']."</a>
 						  </td>
 						 </tr>
 						</table>\n";
