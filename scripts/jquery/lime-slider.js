@@ -29,12 +29,12 @@ $(document).ready(function(){
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
 				var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
-				$('#slider-callout-'+basename).css('left', ui.handle.css('left')).text(slider_prefix + thevalue + slider_suffix);
+				$('#slider-callout-'+basename).css('left', $(ui.handle).css('left')).text(slider_prefix + thevalue + slider_suffix);
 			};
 		sliderparams['stop'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
 				var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
-				$('#slider-callout-'+basename).css('left', ui.handle.css('left')).text(slider_prefix + thevalue + slider_suffix);
+				$('#slider-callout-'+basename).css('left', $(ui.handle).css('left')).text(slider_prefix + thevalue + slider_suffix);
 			};
 
 		sliderparams['change'] = function(e, ui) {
