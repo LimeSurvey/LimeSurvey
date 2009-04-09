@@ -451,6 +451,7 @@ if (isset($grouparray) && $grouparray)
             $newgid = $connect->Insert_ID("{$dbprefix}groups",'gid');
             $countgroups++;
         }
+        break; //makes sure only the first group is imported
     }
     // GROUPS is DONE
     

@@ -7,6 +7,7 @@ CREATE TABLE `prefix_answers` (
   `code` varchar(5) NOT NULL default '',
   `answer` text NOT NULL,
   `default_value` char(1) NOT NULL default 'N',
+  `assessment_value` int(11) NOT NULL default '0',
   `sortorder` int(11) NOT NULL,
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`qid`,`code`,`language`)
@@ -27,8 +28,8 @@ CREATE TABLE `prefix_assessments` (
   `minimum` varchar(50) NOT NULL default '',
   `maximum` varchar(50) NOT NULL default '',
   `message` text NOT NULL,
-  `link` text NOT NULL,
-  PRIMARY KEY  (`id`)
+  `language` varchar(20) NOT NULL default 'en',
+  PRIMARY KEY  (`id`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -74,6 +75,7 @@ CREATE TABLE `prefix_labels` (
   `code` varchar(5) NOT NULL default '',
   `title` text,
   `sortorder` int(11) NOT NULL,
+  `assessment_value` int(11) NOT NULL default '0',
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
@@ -207,7 +209,6 @@ CREATE TABLE `prefix_surveys` (
   `faxto` varchar(20) default NULL,
   `format` char(1) default NULL,
   `template` varchar(100) default 'default',
-  `url` varchar(255) default NULL,
   `language` varchar(50) default NULL,
   `additional_languages` varchar(255) default NULL,
   `datestamp` char(1) default 'N',
@@ -231,6 +232,7 @@ CREATE TABLE `prefix_surveys` (
   `listpublic` char(1) default 'N',
   `htmlemail` char(1) default 'N',
   `tokenanswerspersistence` char(1) default 'N',
+  `assessments` char(1) default 'N', 
   `usecaptcha` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   PRIMARY KEY  (`sid`)
@@ -249,6 +251,8 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_title` VARCHAR(200) NOT NULL,
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
+  `surveyls_endtext` TEXT NULL,
+  `surveyls_url` VARCHAR(255) NULL,
   `surveyls_urldescription` VARCHAR(255) NULL,
   `surveyls_email_invite_subj` VARCHAR(255) NULL,
   `surveyls_email_invite` TEXT NULL,
@@ -314,7 +318,8 @@ CREATE TABLE `prefix_users` (
   `configurator` tinyint(1) NOT NULL default '0',
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0',
-  `htmleditormode` varchar(7) default 'default'
+  `htmleditormode` varchar(7) default 'default',
+  `one_time_pw` BLOB
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -339,13 +344,13 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '132');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '133');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
+INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default', '');
 
 
 

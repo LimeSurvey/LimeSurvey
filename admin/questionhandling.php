@@ -479,7 +479,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         $qattributes=questionAttributes();
 
         $editquestion .= "\t<tr id='QTattributes'>
-                            <td align='right'><strong>".$clang->gT("Question Attributes:")."</strong></td>
+                            <td align='right'><strong><a name='qtattributes'>".$clang->gT("Question Attributes:")."</a></strong></td>
                             <td align='left'><select id='QTlist' name='attribute_name' >
                             </select>
                             <input type='text' id='QTtext' name='attribute_value' maxlength='20' /></td></tr>\n";
@@ -504,9 +504,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	    $editquestion .= "\t\t\t<table id='QTattributes' width='40%' >
 					       <tr>
 					        <td colspan='2' align='center'>
-						      <form action='$scriptname' method='post'><table class='attributetable'>
+						      <form action='$scriptname#qtattributes' method='post'><table class='attributetable'>
 						      <tr>
-						        <th colspan='4'>".$clang->gT("Question Attributes:")."</th>
+						        <th colspan='4'><a name='qtattributes'>".$clang->gT("Question Attributes:")."</a></th>
    					          </tr>
 						      <tr><th colspan='4' height='5'></th></tr>
                               <tr>  			  
@@ -525,7 +525,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	    {
 		    $editquestion .= "\t\t\t<table class='attributetable' width='90%' border='0' cellspacing='0'>"
 		    ."<tr><td width='85%'>"
-		    ."<form action='$scriptname' method='post'>"
+		    ."<form action='$scriptname#qtattributes' method='post'>"
 		    ."<table width='100%'><tr><td width='65%'><span title='".$attributetranslations[$qa['attribute']]['help']."'>"
 		    .$attributetranslations[$qa['attribute']]['caption']."</span></td>
 					       <td align='center' width='25%'><input type='text' name='attribute_value' value='"
@@ -538,7 +538,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 					       <input type='hidden' name='qid' value='$qid' />\n
 					       <input type='hidden' name='qaid' value='".$qa['qaid']."' />\n"
 		    ."\t\t\t</td></tr></table></form></td><td>
-					       <form action='$scriptname' method='post'><table width='100%'><tr><td width='5%'>
+					       <form action='$scriptname#qtattributes' method='post'><table width='100%'><tr><td width='5%'>
 					       <input type='submit' value='"
 		    .$clang->gT("Delete")."' />"
 		    . "\t<input type='hidden' name='action' value='delattribute' />\n"

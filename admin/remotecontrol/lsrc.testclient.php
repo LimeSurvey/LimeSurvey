@@ -14,8 +14,15 @@
 * 
 */
 $wsdl = $_REQUEST['wsdl'];
+
 #####################################################################
 ## Configuration Parameters
+//set this to your limesurvey installation path for the "test survey" link to work
+$limeUrl='https://localhost/limesource/limesurvey181';
+
+//We need authentication for every function, so just write the logindata once for all
+$user ="admin";
+$pass ="password";
 
 //we don't like caching while testing, so we disable it
 ini_set("soap.wsdl_cache_enabled", 0);
@@ -28,14 +35,9 @@ if($wsdl=='')
 	// give full uri of the wsdl from the webservice you want to connect to...
 	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
 	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl='https://localhost/limesource/limesurvey/admin/remotecontrol/lsrc.server.php?wsdl';
+	$wsdl="$limeUrl/admin/remotecontrol/lsrc.server.php?wsdl";
 }
-//set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey';
 
-//We need authentication for every function, so just write the logindata once for all
-$user ="admin";
-$pass ="password";
 
 // fixed certificate, if U use some... you need this if you have an own trusted certificate.
 // If you dont know what I am taking about, just leave this option untouched.
@@ -186,6 +188,28 @@ $iVid = $_REQUEST['sid'];
 reset($_REQUEST);
 while(list($key, $value) = each($_REQUEST))
 {
+	if(substr($key,0,8)=="sendMail")
+	{
+		$iVid = $_REQUEST['sid'];
+		$sType = $_REQUEST['type'];
+		$maxemails = $_REQUEST['maxemails'];
+		$subject = $_REQUEST['subject'];
+		$mailText = $_REQUEST['mailText'];
+		
+		try
+		{
+			$sReturn = $client->sSendEmail($user, $pass, $iVid, $sType, $maxemails, $subject, $mailText);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+		
+		
+		
+	}
 	if(substr($key,0,9)=="delsurvey")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -229,7 +253,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid, "Matrix", $qText, $qHelp, $items,$mandatory);
+			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -251,7 +275,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportQuestion($user, $pass, $iVid, "Freitext", $qTitle, $qText, $qHelp,$mandatory);
+			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -265,9 +289,11 @@ while(list($key, $value) = each($_REQUEST))
 	{
 		$iVid = $_REQUEST['sid'];
 		$sMod = $_REQUEST['mod'];
+		$sGroupName = $_REQUEST['groupName'];
+		$sGroupDescription = $_REQUEST['groupDescription'];
 		try
 		{
-			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod);
+			$sReturn = $client->sImportGroup($user, $pass, $iVid, $sMod, $sGroupName, $sGroupDescription);
 		}
 		catch (SoapFault $fault)
 		{
@@ -373,7 +399,7 @@ while(list($key, $value) = each($_REQUEST))
 			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
 		}
 		//this are the return Values
-		$sOutput .= "<br/><br/><b>Return</b>: <br/>['iVid'] => ". $sReturn['iVid'] ." <br/> ['return'] => ". $sReturn['return'];
+		$sOutput .= "<br/><br/><b>Return</b>: <br/> ['return'] => ". $sReturn;
 	}
 	if(substr($key,0,6)=="insPar")
 	{
@@ -517,6 +543,10 @@ for($n=0;$n<count($aMods);++$n)
 {echo "<option value='".$aMods[$n]."'>".$aMods[$n]."</option>";}
 ?>
 </select> <? //print_r($mods);?> <br />
+<b>Name of the group:</b><br/>
+<input type='text' name='groupName' size='30' maxlength='150' /> <br />
+<b>groupDescription:</b><br/>
+<input type='text' name='groupDescription' size='30' maxlength='255' /> <br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>
@@ -585,7 +615,8 @@ for($n=1;$n<10;++$n)
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
-<div style='float:left;  margin-bottom: 5px'><?php 
+<div style='float:left;margin-bottom:5px'>
+<?php 
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -626,7 +657,31 @@ echo "<input type='submit' name='insPar' value='Insert Personal Data!'/>";
 echo "</form>";
 echo "</div>";
 
-
+echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<h3>sSendEmail function</h3>";
+echo "<p>Sends an Email to users of a specific survey. Invite, Remind and custom emails are possible</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' size='5' maxlength='5' value='".$iVid."'/>";
+echo "<br />";
+echo "<font color='red'>* </font><b> Email Type:</b><br/>";
+echo "<input type='radio' name='type' value='invite' checked='checked' /> invite";
+echo "<input type='radio' name='type' value='remind' /> remind";
+echo "<input type='radio' name='type' value='custom' /> custom<br/>";
+echo "<b>Maxemails (have to be Integer):</b> <br />";
+echo "<input type='text' name='maxemails' size='5' maxlength='5' value=''/>";
+echo "<br />";
+//echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]\" and so on :</b> <br />";
+echo "<b>Subject for custom cails</b> <br />";
+echo "<input type='text' name='subject' size='50' maxlength='255' value=''/><br/>";
+echo "<b>Mailtext for custom cails</b> <br />";
+echo "<textarea name='mailText' cols='50' rows='3'>";
+echo "</textarea> ";
+echo "<br />";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "<input type='submit' name='sendMail' value='Send Email to participants'/>";
+echo "</form>";
+echo "</div>";
 
 
 //phpinfo();

@@ -174,6 +174,11 @@ elseif ($action == 'exportstructurecsv')
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_structure_csv.php');}
         else { include('access_denied.php');}    
+    }
+elseif ($action == 'exportstructureLsrcCsv')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_structure_lsrc.php');}
+        else { include('access_denied.php');}    
     }    
 elseif ($action == 'exportstructurequexml')
     {
@@ -301,7 +306,9 @@ elseif ($action=='showprintablesurvey')
     } 
 elseif ($action=='assessments' || $action=='assessmentdelete' || $action=='assessmentedit' || $action=='assessmentadd' || $action=='assessmentupdate')
     {
-    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('assessments.php');}
+    if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
+        include('assessments.php');
+    }
         else { include('access_denied.php');}    
     }    
 elseif ($action == 'replacementfields')

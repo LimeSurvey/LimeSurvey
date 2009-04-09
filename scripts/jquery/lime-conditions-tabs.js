@@ -1,7 +1,8 @@
 $(document).ready(function(){
 	$('#conditiontarget > ul').tabs({
 		fx: {
-			opacity: 'toggle'
+			opacity: 'toggle',
+            duration: 100
 		},
 		select:  
 			function(event, ui) {

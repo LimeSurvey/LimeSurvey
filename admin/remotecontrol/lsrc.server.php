@@ -56,7 +56,7 @@ else{
 }
 
 //adds the functions to the SoapServer Object, 
-//the sChangeSurvey and sDeleteSurvey function should be commented out for productive Use
+//the sChangeSurvey function should be commented out for productive Use
 //$server->addFunction("sChangeSurvey");
 $server->addFunction("sDeleteSurvey");
 $server->addFunction("sActivateSurvey");
@@ -68,6 +68,8 @@ $server->addFunction("sImportGroup");
 $server->addFunction("sAvailableModules");
 $server->addFunction("sImportQuestion");
 $server->addFunction("sImportMatrix");
+$server->addFunction("sImportFreetext");
+$server->addFunction("sSendEmail");
 // handle the soap request!
 $server->handle();
  
@@ -93,6 +95,122 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 	}
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
+}
+
+/*
+ * Function to send reminder, invitation or custom mails to participants of a specific survey
+ * $iVid = Survey ID
+ * $type = invite, remind, custom
+ * $subject = subject of custom mails
+ * $emailText = Text of custom mails
+ * 
+ */
+function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject='', $emailText='')
+{
+	global $sitename, $siteadminemail;
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK "); 
+	
+	// wenn maxmails ber den lsrc gegeben wird das nurtzen, ansonsten die default werte aus der config.php
+	if($maxLsrcEmails!='')
+	$maxemails = $maxLsrcEmails;
+		
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	// Check if all mandatory parameters are present, else abort...
+	if(!is_int($iVid) || $iVid==0 || $type=='')
+	{
+		throw new SoapFault("Server: ", "Mandatory Parameters missing");
+		exit;
+	}
+	
+	if($type=='custom' && $subject!='' && $emailText!='')
+	{
+		//GET SURVEY DETAILS not working here... don't know why...
+		//$thissurvey=getSurveyInfo($iVid);
+		$from = $siteadminemail;
+		
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Admin Email: $from ; survey: $iVid  ; dump: ".print_r($thissurvey)."");
+		$emquery = "SELECT firstname, lastname, email, token, tid, language";
+		//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+
+		$emquery .= " FROM ".db_table_name("tokens_{$iVid}")." WHERE email != '' ";
+
+		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
+		//$emresult = db_select_limit_assoc($emquery,$maxemails);
+		$emresult = db_execute_assoc($emquery);
+		$emcount = $emresult->RecordCount();
+		
+		if ($emcount > 0)
+		{
+			$mailsSend = 0;
+			while ($emrow = $emresult->FetchRow())
+			{
+				if (MailTextMessage($emailText, $subject, $emrow['email'] , $from, $sitename, $ishtml=false, getBounceEmail($iVid)))
+				{
+					$mailsSend++;
+				}
+				else
+				{
+					//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+					if($n==1)
+						$failedAddresses .= ",".$emrow['email'];
+					else
+					{
+						$failedAddresses = $emrow['email'];
+						$n=1;
+					}	
+								
+				}
+			}
+			
+		}
+		else
+		{
+			return "No Mails to send";
+		}
+//		if ($ctcount > $emcount)
+//		{
+//			$lefttosend = $ctcount-$maxemails;
+//
+//		}else{$lefttosend = 0;}
+								
+//		if($maxemails>0)
+//		{
+//			$returnValue = "".$mailsSend." Mails send. ".$lefttosend." Mails left to send";	
+//			if(isset($failedAddresses))
+//				$returnValue .= "\nCould not send to: ".$failedAddresses;
+//			return $returnValue;
+//		}
+		
+		if(isset($mailsSend))
+		{
+			$returnValue = "".$mailsSend." Mails send. ";
+			if(isset($failedAddresses))
+				$returnValue .= "\nCould not send to: ".$failedAddresses;
+			return $returnValue;
+		}	
+	}
+	
+	if($type=='invite' || $type=='remind')
+	{
+		$emailSenderReturn = $lsrcHelper->emailSender($iVid, $type, $maxLsrcEmails);
+		
+		return $emailSenderReturn;
+
+	}
+	else
+	{
+		throw new SoapFault("Type: ", "Wrong send Type given. Possible types are: custom, invite or remind");
+		exit;
+	}
+	
 }
 
 /**
@@ -169,7 +287,7 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  *	$sPass = password have to be the right one for the existing user in limesurvey
  *  $sVtyp = Veranstaltungstyp (Vorlesung, Seminar, Uebung, Exkursion)
 */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp ) //XXX
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) //XXX
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -215,6 +333,8 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 			$lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
 		if($sUrl!='')
 			$lsrcHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
+		if($autoRd=='Y')
+			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
 			
 		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
@@ -542,7 +662,7 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
  * @param unknown_type $iVid
  * @param unknown_type $sMod
  */
-function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
+function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')//XXX
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -561,14 +681,20 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 		exit;
 	}
 	
-	if(!is_file($modDir."mod_".$sMod.".csv"))
+	if(!is_file($modDir.$sMod.".csv"))
 	{
 		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
 		exit;
 	}
-	$checkImport = $lsrcHelper->importGroup($iVid,"mod_".$sMod);
+	
+	$checkImport = $lsrcHelper->importGroup($iVid, $sMod);
 	if(is_array($checkImport))
 	{
+		if($gName!='')
+		$lsrcHelper->changeTable("groups", "group_name", $gName, "gid='".$checkImport['gid']."'");
+		if($gDesc!='')
+		$lsrcHelper->changeTable("groups", "description", $gDesc, "gid='".$checkImport['gid']."'");
+		
 		return "Import OK";
 	}
 	else
@@ -580,7 +706,7 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
 }
 
 /**
- * function to import a questiongroup with one freetext question and change it 
+ * function to import a fixed question 
  *
  * @param String $sUser
  * @param String $sPass
@@ -591,12 +717,11 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod)//XXX
  * @param String $qHelp
  * @return String
  */
-function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, $mandatory='N')
+function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
 	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
-	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
 	
 	// check for appropriate rights
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
@@ -611,7 +736,77 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
 	
+	//import the module
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod);
+	if(is_array($lastId))
+	{
+//		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
+//		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
+//		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
+		$lsrcHelper->changeTable("questions", "mandatory", $mandatory, "qid='".$lastId['qid']."'");
+		return "OK";
+	}
+	else
+	{
+		throw new SoapFault("Server: ", $lastId);
+		exit;
+	}
+}
+
+/**
+ * function to import a questiongroup with one freetext question and change it 
+ *
+ * @param String $sUser
+ * @param String $sPass
+ * @param Int $iVid
+ * @param String $sMod
+ * @param String $qTitle
+ * @param String $qText
+ * @param String $qHelp
+ * @return String
+ */
+function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='Freitext', $mandatory='N')
+{
+	/*
+	 * this var maybe added later to constructor, 
+	 * to determine if a new group should be build for the question 
+	 * or if the question should be added to the last group in survey
+	 */ 	
+	$newGroup=0;
+	
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	
+	// check for appropriate rights
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	//check for Surveyowner
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
+		exit;
+	}
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
+	
+	//import the module
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod,0);
 	if(is_array($lastId))
 	{
 		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
@@ -639,8 +834,15 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $qTitle, $qText, $qHelp, 
  * @param unknown_type $sItems comma seperated values
  * @return unknown
  */
-function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $mandatory='N' )
+function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
 {
+	/*
+	 * this var maybe added later to constructor, 
+	 * to determine if a new group should be build for the question 
+	 * or if the question should be added to the last group in survey
+	 */ 	
+	$newGroup=0;
+		
 	global $connect ;
 	global $dbprefix ;
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -661,10 +863,16 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 		throw new SoapFault("Authentication: ", "You have no right to change Surveys from other people");
 		exit;
 	}
-	
-	$lastId = $lsrcHelper->importGroup($iVid,$sMod);
+	// Check if the file to import exists
+	if(!is_file($queDir.$sMod.".csv"))
+	{
+		throw new SoapFault("Server: ", "Survey Module $sMod does not exist");
+		exit;
+	}
+	$lastId = $lsrcHelper->importQuestion($iVid,$sMod,$newGroup);
 	if(is_array($lastId))
 	{
+		$lsrcHelper->changeTable("questions", "title", $qTitle, "qid='".$lastId['qid']."'");
 		$lsrcHelper->changeTable("questions", "question", $qText, "qid='".$lastId['qid']."'");
 		$lsrcHelper->changeTable("questions", "help", $qHelp, "qid='".$lastId['qid']."'");
 		if($mandatory==''){$mandatory='N';}
@@ -675,7 +883,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 		foreach($aItems as $item)
 		{
 			++$n;
-			$lsrcHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".$_SESSION['lang']."' " , "", 1);
+			$lsrcHelper->changeTable("answers", "qid,code,answer,default_value,sortorder,language", "'".$lastId['qid']."', '$n','$item','N','$n','".GetBaseLanguageFromSurveyID($iVid)."' " , "", 1);
 		}
 		return "OK";
 	}
@@ -684,7 +892,6 @@ function sImportMatrix($sUser, $sPass, $iVid, $sMod, $qText, $qHelp, $sItems, $m
 		throw new SoapFault("Server: ", $lastId);
 		exit;
 	}
-	
 	
 }
 
@@ -707,54 +914,80 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
 		throw new SoapFault("Authentication: ", "User or password wrong");
 		exit;
 	}
-	if($mode=='mod')
-	{
-		$mDir = opendir($modDir);
-		$n=0;
-		while(false !== ($file = readdir($mDir))) 
-		{
-			if($file!='.' && $file!='..' && substr($file,0,4)=="mod_" && substr($file,-4,4)==".csv")
+	switch($mode){
+		case ('mod'):
+		
+			$mDir = opendir($modDir);
+			$n=0;
+			while(false !== ($file = readdir($mDir))) 
 			{
-				$file = basename ($file, ".csv");
-				$file = str_replace("mod_", "", $file);
-				
-				if($n == 0)
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
 				{
-					$return = $file;
-					$n=1;
-				}
-				else
-				{
-					$return .= ",".$file;
-				} 
-			}
-		}  
-		return $return;	
-	}
-	
-	if($mode=='core')
-	{
-		$cDir = opendir($coreDir);
-		$n=0;
-		while(false !== ($file = readdir($cDir))) 
-		{
-			if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
-			{
-				$file = basename ($file, ".csv");
-				//$file = str_replace("mod_", "", $file);
-				if($n == 0)
-				{
-					$return = $file;
-					$n=1;
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
 					
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
 				}
-				else
+				
+			}  
+			return $return;	
+		break;
+		case ('core'):
+		
+			$cDir = opendir($coreDir);
+			$n=0;
+			while(false !== ($file = readdir($cDir))) 
+			{
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
 				{
-					$return .= ",".$file;
-				} 
-			}
-		}  
-		return $return;	
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+						
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
+				}
+			}  
+			return $return;	
+		break;
+		case ('que'):
+		
+			$cDir = opendir($queDir);
+			$n=0;
+			while(false !== ($file = readdir($cDir))) 
+			{
+				if($file!='.' && $file!='..' && substr($file,-4,4)==".csv")
+				{
+					$file = basename ($file, ".csv");
+					//$file = str_replace("mod_", "", $file);
+					if($n == 0)
+					{
+						$return = $file;
+						$n=1;
+						
+					}
+					else
+					{
+						$return .= ",".$file;
+					} 
+				}
+			}  
+			return $return;	
+		break;
 	}
 }
 

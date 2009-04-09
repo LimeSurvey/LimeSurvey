@@ -22,6 +22,7 @@ CREATE TABLE prefix_answers (
     answer text NOT NULL,
     default_value character(1) DEFAULT 'N'::bpchar NOT NULL,
     sortorder integer NOT NULL,
+    assessment_value integer DEFAULT 0 NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
@@ -41,7 +42,7 @@ CREATE TABLE prefix_assessments (
     minimum character varying(50) DEFAULT ''::character varying NOT NULL,
     maximum character varying(50) DEFAULT ''::character varying NOT NULL,
     message text NOT NULL,
-    link text NOT NULL
+    language character(20) DEFAULT 'en'::bpchar NOT NULL,
 );
 
 
@@ -88,6 +89,7 @@ CREATE TABLE prefix_labels (
     code character varying(5) DEFAULT ''::character varying NOT NULL,
     title text,
     sortorder integer NOT NULL,
+    assessment_value integer DEFAULT 0 NOT NULL,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL
 );
 
@@ -221,7 +223,6 @@ CREATE TABLE prefix_surveys (
     faxto character varying(20),
     format character(1),
     "template" character varying(100) DEFAULT 'default'::character varying,
-    url character varying(255),
     "language" character varying(50),
     additional_languages character varying(255),
     datestamp character(1) DEFAULT 'N'::bpchar,
@@ -245,6 +246,7 @@ CREATE TABLE prefix_surveys (
     publicgraphs character(1) DEFAULT 'N'::bpchar,
     htmlemail character(1) DEFAULT 'N'::bpchar,
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
+    assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL
     
@@ -263,7 +265,9 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_title character varying(200) NOT NULL,
     surveyls_description text,
     surveyls_welcometext text,
+    surveyls_url character varying(255),
     surveyls_urldescription character varying(255),
+    surveyls_endtext text,
     surveyls_email_invite_subj character varying(255),
     surveyls_email_invite text,
     surveyls_email_remind_subj character varying(255),
@@ -329,7 +333,8 @@ CREATE TABLE prefix_users (
     configurator integer DEFAULT 0 NOT NULL,
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
-    htmleditormode character(7) DEFAULT 'default'::bpchar
+    htmleditormode character(7) DEFAULT 'default'::bpchar,
+	"one_time_pw" bytea
 );
 
 
@@ -369,7 +374,7 @@ ALTER TABLE ONLY prefix_answers
 --
 
 ALTER TABLE ONLY prefix_assessments
-    ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language);
 
 
 --
@@ -494,7 +499,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '132');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '133');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

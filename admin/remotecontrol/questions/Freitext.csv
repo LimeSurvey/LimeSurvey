@@ -1,0 +1,27 @@
+# LimeSurvey Question Dump
+# DBVersion 132
+# This is a dumped question from the LimeSurvey Script
+# http://www.limesurvey.org/
+# Do not change this header!
+
+#
+# QUESTIONS TABLE
+#
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
+"2902","666","559","T","1","Placeholder","","Placeholder","N","Y","0","0","0","de"
+
+#
+# ANSWERS TABLE
+#
+
+#
+# LABELSETS TABLE
+#
+
+#
+# LABELS TABLE
+#
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#

@@ -15,11 +15,14 @@
 */
 
 ### Including
-//including LimeSurvey configs, for database variables and more... 
-include("../../config-defaults.php");
-include("../../config.php");
-require_once(dirname(__FILE__).'/../../common.php');
-
+// including LimeSurvey configs, for database variables and more... 
+// only include if this config is not used to save a survey.csv for the lsrc
+if(!isset($export4lsrc))
+{
+	include("../../config-defaults.php");
+	include("../../config.php");
+	require_once(dirname(__FILE__).'/../../common.php');
+}
 ### Error Handling
 // simple debug Option
 error_reporting(E_ALL);
@@ -52,21 +55,18 @@ $sslCert='cacert.pem';
 
 
 ### Variables
-// Since this variable isn't per default in Limesurveys config.php any more, we need to set it ourselfs 
-//(the setting in LS config-defaults.php is not working for lsrc... no idea why) 
-// set the LS installation Dir relative to document root
-//$relativeurl		=   "/limesource/limesurvey"; //default: "/limesurvey" //TODO: delete if no errors occure while commented
-
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
 $wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 
  * one for the core surveys, 
- * one for addable modules
+ * one for addable groups,
+ * one for addable questions
  */
-$coreDir = "./studiply/";
-$modDir = "./studiply_mod/";
+$coreDir = "./surveys/";
+$modDir = "./groups/";
+$queDir = "./questions/";
 
 
 //seperator for Tokens in sInsertToken function

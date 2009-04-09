@@ -55,7 +55,6 @@ else
     $language = GetBaseLanguageFromSurveyID($surveyid);
 }
 
-
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
 $browseoutput = "<table><tr><td></td></tr></table>\n"
 ."<table class='menubar'>\n";

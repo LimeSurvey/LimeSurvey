@@ -61,24 +61,24 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 	//COMMIT CHANGES TO DATABASE
 	if ($thissurvey['active'] != "Y")
 	{
-		//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
-		if($thissurvey['printanswers'] != 'Y')
-		{
-			killSession();
-		}
-
-		sendcacheheaders();
+        if ($thissurvey['assessments']== "Y") 
+        {
+            $assessments = doAssessment($surveyid); // assessments are using session data so this has to be placed before killSession
+        }
+        killSession();    
+        sendcacheheaders();
 		doHeader();
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 		//Check for assessments
-		$assessments = doAssessment($surveyid);
-		if ($assessments)
+
+		if ($thissurvey['assessments']== "Y" && $assessments)
 		{
 			echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		}
 
-		$completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
+        $completed = $thissurvey['surveyls_endtext'];    
+        $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
 		. $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
 		if ($thissurvey['printanswers'] == 'Y')
 		{ 
@@ -86,7 +86,6 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 			// in other cases the session is cleared at submit time
 			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		}
-		
 	}
 	else
 	{
@@ -118,20 +117,27 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             $subquery = createinsertquery();
             $connect->Execute($subquery);   // Checked
         }
-		//Create text for use in later print section
-        $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n"
-		. $clang->gT("Your survey responses have been recorded.")."<br />\n"
-		. "<a href='javascript:%20self.close()'>"
-		. $clang->gT("Close this Window")."</a></font><br /><br />\n";
-
-         // Link to Print Answer Preview  **********
-         if ($thissurvey['printanswers']=='Y')
-         {
+        
+        
+        //Survey end text
+        if (trim($thissurvey['surveyls_endtext'])=='')
+        {
+            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
+                        . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
+        }
+        else
+        {
+            $completed = $thissurvey['surveyls_endtext'];
+        }
+        
+        // Link to Print Answer Preview  **********
+        if ($thissurvey['printanswers']=='Y')
+        {
             $completed .= "<br /><br />"
             ."<a class='printlink' href='printanswers.php' target='_blank'>"
             .$clang->gT("Click here to print your answers.")
             ."</a><br />\n";
-         }
+        }
         //*****************************************
 
         if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}

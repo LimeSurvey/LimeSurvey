@@ -181,6 +181,11 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
     if ($thissurvey['active'] != "Y")
     {
     	//if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
+        if ($thissurvey['assessments']== "Y") 
+        {
+            $assessments = doAssessment($surveyid);
+        }
+
     	if($thissurvey['printanswers'] != 'Y')
     	{
     		killSession();
@@ -191,13 +196,13 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
         //Check for assessments
-        $assessments = doAssessment($surveyid);
-        if ($assessments)
+        if ($thissurvey['assessments']== "Y" && $assessments)
         {
-            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+                echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
         }
 
-        $completed = "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
+        $completed = $thissurvey['surveyls_endtext'];            
+        $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
         $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
 
     	if ($thissurvey['printanswers'] == 'Y')
@@ -223,16 +228,25 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
         //Check for assessments
-        $assessments = doAssessment($surveyid);
-        if ($assessments)
+        if ($thissurvey['assessments']== "Y") 
         {
-            $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+            $assessments = doAssessment($surveyid);
+            if ($assessments)
+            {
+                $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
+            }
         }
 
-        $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-        .$clang->gT("Your survey responses have been recorded.")."<br />\n"
-        ."<a href='javascript:window.close()'>"
-        .$clang->gT("Close this Window")."</a></font><br /><br />\n";
+        
+        if (trim($thissurvey['surveyls_endtext'])=='')
+        {
+            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
+                        . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
+        }
+        else
+        {
+            $completed = $thissurvey['surveyls_endtext'];
+        }        
 
         // Link to Print Answer Preview  **********
         if ($thissurvey['printanswers']=='Y')

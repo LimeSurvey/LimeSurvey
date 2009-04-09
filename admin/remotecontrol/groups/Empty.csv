@@ -1,5 +1,5 @@
 # LimeSurvey Group Dump
-# DBVersion 129
+# DBVersion 133
 # This is a dumped group from the LimeSurvey Script
 # http://www.limesurvey.org/
 # Do not change this header!
@@ -8,13 +8,11 @@
 # GROUPS TABLE
 #
 "gid","sid","group_name","group_order","description","language"
-"79","777","Bewertungsfragen","9","Spezielle Bewertungsfragen zusätzlich zum Kernfragebogen<br />","de"
+"562","666","Zusätzliche Fragen","1","","de"
 
 #
 # QUESTIONS TABLE
 #
-"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
-"334","777","79","A","1","This is a question<br />","","","N","N","0","0","1","de"
 
 #
 # ANSWERS TABLE

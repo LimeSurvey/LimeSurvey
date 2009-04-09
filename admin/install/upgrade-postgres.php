@@ -66,6 +66,48 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys ADD publicgraphs char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }
+	if ($oldversion < 133)
+    {
+        modify_database("","ALTER TABLE prefix_users ADD one_time_pw bytea"); echo $modifyoutput; flush();
+
+        // Add new assessment setting
+        modify_database("","ALTER TABLE prefix_surveys ADD assessments char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        // add new assessment value fields to answers & labels
+        modify_database("","ALTER TABLE prefix_answers ADD assessment_value integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_labels ADD assessment_value integer NOT NULL default '0'"); echo $modifyoutput; flush();
+        // copy any valid codes from code field to assessment field
+        modify_database("","update [prefix_answers set assessment_value=CAST(code as integer)");// no output here is intended
+        modify_database("","update prefix_labels set assessment_value=CAST(code as integer)");// no output here is intended
+        // activate assessment where assesment rules exist
+        modify_database("","update prefix_surveys set assessments='Y' where sid in (SELECT sid FROM prefix_assessments group by sid)"); echo $modifyoutput; flush();
+        // add language field to assessment table
+        modify_database("","ALTER TABLE prefix_assessments ADD language character varying(20) NOT NULL default 'en'"); echo $modifyoutput; flush();
+        // update language field with default language of that particular survey
+        modify_database("","update prefix_assessments set language=(select language from prefix_surveys where sid=prefix_assessments.sid)"); echo $modifyoutput; flush();
+        // copy assessment link to message since from now on we will have HTML assignment messages
+        modify_database("","update prefix_assessments set message=cast(message as character) +'<br /><a href=\"'+link+'\">'+link+'</a>'"); echo $modifyoutput; flush();
+        // drop the old link field
+         modify_database("","ALTER TABLE prefix_assessments DROP COLUMN link"); echo $modifyoutput; flush();
+        // change the primary index to include language
+        modify_database("","ALTER TABLE prefix_assessments DROP CONSTRAINT prefix_assessments_pkey"); echo $modifyoutput; flush();    
+        modify_database("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();    
+        // and fix missing translations for assessments
+        upgrade_survey_tables133();
+        
+        // Add new fields to survey language settings
+        modify_database("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_url character varying(255)"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_endtext text"); echo $modifyoutput; flush();
+        
+        // copy old URL fields ot language specific entries
+        modify_database("","update prefix_surveys_languagesettings set surveyls_url=(select url from prefix_surveys where sid=prefix_surveys_languagesettings.surveyls_survey_id)"); echo $modifyoutput; flush();
+        // drop old URL field 
+        modify_database("","ALTER TABLE prefix_surveys DROP COLUMN url"); echo $modifyoutput; flush();
+        
+        modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }   
+            
+    
+    
     return true;
 }
 
@@ -79,10 +121,22 @@ function upgrade_token_tables128()
     {
 		while ( $sv = $surveyidresult->FetchRow() )
 		{
-			modify_database("","ALTER TABLE ".$sv[0]." ADD remindersent VARCHAR(17) DEFAULT 'N'"); echo $modifyoutput; flush();
-			modify_database("","ALTER TABLE ".$sv[0]." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
+			modify_database("","ALTER TABLE ".$sv0." ADD remindersent character varying(17) DEFAULT 'N'"); echo $modifyoutput; flush();
+			modify_database("","ALTER TABLE ".$sv0." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
 		}
 	}
+}
+
+function upgrade_survey_tables133()
+{
+    global $modifyoutput;
+
+    $surveyidquery = "SELECT sid, additional_languages FROM ".db_table_name('surveys');
+    $surveyidresult = db_execute_num($surveyidquery);
+    while ( $sv = $surveyidresult->FetchRow() )
+    {
+        FixLanguageConsistency($sv0,$sv1);   
+    }
 }
 
 ?>

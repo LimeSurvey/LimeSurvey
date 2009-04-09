@@ -102,7 +102,480 @@ class LsrcHelper {
 		
 		
 	}
-	 
+
+	/*
+	 * Function to send Emails to participants of a specific survey
+	 */
+	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
+	{
+		global $connect,$sitename ;
+		global $dbprefix ;
+
+		include("lsrc.config.php");
+		include("../../classes/core/html_entity_decode_php4.php");
+		$lsrcHelper= new LsrcHelper();
+		
+		// wenn maxmails ber den lsrc gegeben wird das nutzen, ansonsten die default werte aus der config.php
+		if($maxLsrcEmails!='')
+		$maxemails = $maxLsrcEmails;
+		
+		switch ($type){
+			case "custom":
+	
+			break;
+			case "invite":
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START invite "); 
+				
+				
+				
+				if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+				{
+				    $ishtml=true;
+				}
+				else
+				{
+				    $ishtml=false;
+				}
+				
+				//$tokenoutput .= $clang->gT("Sending Invitations");
+				//if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+				//$tokenoutput .= "<br />\n";
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type"); 
+				// Texte für Mails aus der Datenbank holen und in die POST Dinger schreiben. Nicht schön aber praktikabel
+				
+				$sql = 	"SELECT surveyls_language, surveyls_email_invite_subj, surveyls_email_invite  ".
+						"FROM {$dbprefix}surveys_languagesettings ".
+						"WHERE surveyls_survey_id = ".$surveyid." ";
+				
+				//GET SURVEY DETAILS
+				$thissurvey=getSurveyInfo($surveyid);
+				
+//				$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+//				$sqlResult=$connect->Execute($sql);
+				$sqlResult = db_execute_assoc($sql);
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				while($languageRow = $sqlResult->FetchRow())
+				{
+					$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_invite'];
+					$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_invite_subj'];
+				}
+				
+//				if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
+//				{
+//					$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+//				}
+//				else
+//				{
+//					$SQLemailstatuscondition = "";
+//				}
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+		
+				if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
+				//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+				$ctresult = $connect->Execute($ctquery);
+				$ctcount = $ctresult->RecordCount();
+				$ctfieldcount = $ctresult->FieldCount();
+		
+				$emquery = "SELECT firstname, lastname, email, token, tid, language";
+				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' ";
+		
+				if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
+				//$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
+				$emresult = db_select_limit_assoc($emquery,$maxemails);
+				$emcount = $emresult->RecordCount();
+		
+				//$tokenoutput .= "<table width='500px' align='center' >\n"
+				////."\t<tr>\n"
+				//."\t\t<td><font size='1'>\n";
+		
+				$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+				$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+				array_unshift($surveylangs,$baselanguage);
+				
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				
+				foreach ($surveylangs as $language)
+			    {
+					$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode_php4($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
+				
+				}
+		
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+				if ($emcount > 0)
+				{
+					$mailsSend = 0;
+					while ($emrow = $emresult->FetchRow())
+					{
+						unset($fieldsarray);
+						$to = $emrow['email'];
+						$fieldsarray["{EMAIL}"]=$emrow['email'];
+						$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+						$fieldsarray["{TOKEN}"]=$emrow['token'];
+						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
+						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+						$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+				
+						$emrow['language']=trim($emrow['language']);
+						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+						$found = array_search($emrow['language'], $surveylangs);
+						if ($found==false) {$emrow['language']=$baselanguage;} 
+						
+						$from = $thissurvey['adminemail'];
+		
+		
+						if ($ishtml === false)
+						{
+							if ( $modrewrite ) 
+							{
+								$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+							} 
+							else 
+							{
+								$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+							}
+						}
+						else
+		        		{
+					          if ( $modrewrite ) 
+					          {
+					           		$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+					          } 
+							  else
+							  {
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+					          }
+		                }
+		                $lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+						$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+						$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+						
+		                if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						{
+							// Put date into sent
+							$timeadjust = 0;
+							$today = date("Y-m-d H:i");
+							$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite Today:".$today); 
+							$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+							."SET sent='$today' WHERE tid={$emrow['tid']}";
+							//
+							$uderesult = $connect->Execute($udequery);
+							$mailsSend++;
+							//$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+						}
+						else
+						{
+							//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+							if($n==1)
+								$failedAddresses .= ",".$to;
+							else
+							{
+								$failedAddresses = $to;
+								$n=1;
+							}	
+						}
+					}
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+					if ($ctcount > $emcount)
+					{
+						$lefttosend = $ctcount-$maxemails;
+						
+					}else{$lefttosend = 0;}
+				}
+				else
+				{
+					return "No Mails to send";
+				}
+			
+				if($maxemails>0 && $maxemails!='')
+				{
+					$returnValue = "".$mailsSend." Mails send. ".$lefttosend." Mails left to send";	
+					if(isset($failedAddresses))
+						$returnValue .= "\nCould not send to: ".$failedAddresses;
+					return $returnValue;
+				}
+				
+				if(isset($mailsSend))
+				{
+					$returnValue = "".$mailsSend." Mails send. ";
+					if(isset($failedAddresses))
+						$returnValue .= "\nCould not send to: ".$failedAddresses;
+					return $returnValue;
+				}	
+				
+					
+				
+				
+			break;
+			case "remind":
+			// XXX: 
+			// TODO:
+//				if (!isset($_POST['ok']) || !$_POST['ok'])
+//				{
+				
+					/*
+					 * look if there were reminders send in the past, and if some tokens got lesser reminders than others
+					 * 
+					 * - if so: send reminders to the unremindet participants until they got the same remindcount than the others
+					 * - if not: send reminders normally
+					 */
+					
+					$remSQL = "SELECT tid, remindercount "
+							. "FROM ".db_table_name("tokens_{$surveyid}")." "
+							. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' "
+							. "ORDER BY remindercount desc LIMIT 1";
+					$remResult = db_execute_assoc($remSQL);		
+					$remRow = $remResult->FetchRow();
+					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$remRow['tid']."; ".$remRow['remindercount']." "); 
+					
+					$sendOnlySQL = "SELECT tid, remindercount "
+							. "FROM ".db_table_name("tokens_{$surveyid}")." "
+							. "WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' AND remindercount < ".$remRow['remindercount']." "
+							. "ORDER BY tid asc LIMIT 1";
+					$sendOnlyResult = db_execute_assoc($sendOnlySQL);		
+					
+					
+					
+					if($sendOnlyResult->RecordCount()>0)
+					{
+						$sendOnlyRow = $sendOnlyResult->FetchRow();
+						$starttokenid = $sendOnlyRow['tid'];
+						$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ".$sendOnlyRow['tid']."; ".$sendOnlyRow['remindercount']." ");
+					}
+					
+					if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
+					{
+					    $ishtml=true;
+					}
+					else
+					{
+					    $ishtml=false;
+					}
+					
+					//GET SURVEY DETAILS
+					$thissurvey=getSurveyInfo($surveyid);
+					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type"); 
+					// Texte für Mails aus der Datenbank holen.
+					
+					$sql = 	"SELECT surveyls_language, surveyls_email_remind_subj, surveyls_email_remind  ".
+							"FROM {$dbprefix}surveys_languagesettings ".
+							"WHERE surveyls_survey_id = ".$surveyid." ";
+						
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite "); 
+					
+					$sqlResult = db_execute_assoc($sql);					 
+					
+					while($languageRow = $sqlResult->FetchRow())
+					{
+						$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind'];
+						$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
+					}
+
+					//$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
+			
+					$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+					$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
+					array_unshift($surveylangs,$baselanguage);
+					
+					foreach ($surveylangs as $language)
+					{
+						$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
+						$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
+						
+					}
+			
+					$SQLemailstatuscondition = " AND emailstatus = 'OK'";
+
+					if (isset($_POST['maxremindercount']) &&
+							$_POST['maxremindercount'] != '' &&
+							intval($_POST['maxremindercount']) != 0)
+					{
+						$SQLremindercountcondition = " AND remindercount < ".intval($_POST['maxremindercount']);
+					}
+					else
+					{
+						$SQLremindercountcondition = "";
+					}
+			
+					if (isset($_POST['minreminderdelay']) && 
+							$_POST['minreminderdelay'] != '' &&
+							intval($_POST['minreminderdelay']) != 0)
+					{
+						// $_POST['minreminderdelay'] in days (86400 seconds per day)
+						$compareddate = date_shift(
+								date("Y-m-d H:i:s",time() - 86400 * intval($_POST['minreminderdelay'])), 
+								"Y-m-d H:i",
+								$timeadjust);
+						$SQLreminderdelaycondition = " AND ( "
+							. " (remindersent = 'N' AND sent < '".$compareddate."') "
+							. " OR "
+							. " (remindersent < '".$compareddate."'))";
+					}
+					else
+					{
+						$SQLreminderdelaycondition = "";
+					}
+			
+					$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+			
+					if (isset($starttokenid)) {$ctquery .= " AND tid >= '{$starttokenid}'";}
+//					if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
+//					//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
+
+					$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
+					$ctcount = $ctresult->RecordCount();
+					$ctfieldcount = $ctresult->FieldCount();
+					$emquery = "SELECT firstname, lastname, email, token, tid, language ";
+					if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+			
+					// TLR change to put date into sent
+					$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+			
+					if (isset($starttokenid)) {$emquery .= " AND tid >= '{$starttokenid}'";}
+					if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
+					$emquery .= " ORDER BY tid ";
+					$emresult = db_select_limit_assoc($emquery, $maxemails);
+					//$emresult = db_execute_assoc($emquery);
+					$emcount = $emresult->RecordCount();
+			
+					if ($emcount > 0)
+					{
+						while ($emrow = $emresult->FetchRow())
+						{
+							unset($fieldsarray);
+							$to = $emrow['email'];
+							$fieldsarray["{EMAIL}"]=$emrow['email'];
+							$fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
+							$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
+							$fieldsarray["{TOKEN}"]=$emrow['token'];
+							$fieldsarray["{LANGUAGE}"]=$emrow['language'];
+							$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
+							$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+							
+							$emrow['language']=trim($emrow['language']);
+							if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+							if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
+							$found = array_search($emrow['language'], $surveylangs);
+							if ($found==false) {$emrow['language']=$baselanguage;} 
+			
+							$from = $_POST['from_'.$emrow['language']];
+			
+							if (getEmailFormat($surveyid) == 'html')
+							{
+								$ishtml=true;
+							}
+							else
+							{
+								$ishtml=false;
+							}
+							
+							if ($ishtml == false)
+							{
+								if ( $modrewrite ) 
+								{
+									$fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
+								} 
+								else 
+								{
+									$fieldsarray["{SURVEYURL}"]="$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+								}
+							}
+							else
+							{
+								if ( $modrewrite ) 
+								{
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
+								} 
+								else
+								{
+									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+									$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
+								}
+							}
+							
+								$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+								$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
+								
+								if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+								{
+									
+									// Put date into remindersent
+									$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+									$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+										."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
+									//
+									$uderesult = $connect->Execute($udequery); // or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+									//orig: $tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+									//$tokenoutput .= "\t\t\t({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+									$mailsSend++;
+								}
+								else
+								{
+									//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+									if($n==1)
+										$failedAddresses .= ",".$to;
+									else
+									{
+										$failedAddresses = $to;
+										$n=1;
+									}	
+												
+								}
+								//$lasttid = $emrow['tid'];
+							
+			            }
+						if ($ctcount > $emcount)
+						{
+							$lefttosend = $ctcount-$maxemails;
+						}else{$lefttosend = 0;}
+					}
+					else
+					{
+						return "No Reminders to send";
+					}
+			
+					if($maxemails>0)
+					{
+						$returnValue = "".$mailsSend." Reminders send. ".$lefttosend." Reminders left to send";	
+						if(isset($failedAddresses))
+							$returnValue .= "\nCould not send to: ".$failedAddresses;
+						return $returnValue;
+					}
+					
+					if(isset($mailsSend))
+					{
+						$returnValue = "".$mailsSend." Reminders send. ";
+						if(isset($failedAddresses))
+							$returnValue .= "\nCould not send to: ".$failedAddresses;
+						return $returnValue;
+					}	
+
+						
+			break;
+			default: 
+			 
+			break;
+		}
+	}
+	
 	/**
 	 * loginCheck for Lsrc, checks if the user with given password exists in LS Database and 
 	 * sets the SESSION rights for this user
@@ -236,10 +709,10 @@ class LsrcHelper {
 		  {
 		  	if ($importingfrom == "http")
 		  	{
-			    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
-			  	$importsurvey .= "</font></td></tr></table>\n";
-			  	$importsurvey .= "</body>\n</html>\n";
+//			    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+//			  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
+//			  	$importsurvey .= "</font></td></tr></table>\n";
+//			  	$importsurvey .= "</body>\n</html>\n";
 			  	//unlink($the_full_file_path);
 			  	return;
 			  }
@@ -557,12 +1030,12 @@ class LsrcHelper {
 		{
 			if ($importingfrom == "http")
 			{
-				$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
-				$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-				$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-				$importsurvey .= "</font></td></tr></table>\n";
-				$importsurvey .= "</body>\n</html>\n";
-				unlink($the_full_file_path); //Delete the uploaded file
+//				$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
+//				$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
+//				$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+//				$importsurvey .= "</font></td></tr></table>\n";
+//				$importsurvey .= "</body>\n</html>\n";
+//				unlink($the_full_file_path); //Delete the uploaded file
 				return;
 			}
 			else 
@@ -2116,7 +2589,7 @@ class LsrcHelper {
 			//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 			//$importgroup .= "</td></tr></table>\n";
 			//unlink($the_full_file_path);
-			return;
+			return false;
 		}
 		
 		for ($i=0; $i<9; $i++)
@@ -2722,7 +3195,477 @@ class LsrcHelper {
 		    }
 		    $this->debugLsrc("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
 		    // CONDITIONS is DONE
-		    return array(gid=>$newgid,qid=>$myQid);
+		    return array('gid'=>$newgid,'qid'=>$myQid);
+		    //return $newgid;
+	}
+	
+	/*
+	 * function to import a single question
+	 */
+	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
+	{
+		global $connect ;
+		global $dbprefix ;
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		include("lsrc.config.php");
+		$newsid = $surveyid;
+		
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+		
+		//$getGidSql = "SELECT gid FROM {$dbprefix}  ";
+		$getGidSql = "SELECT gid 
+	                   FROM {$dbprefix}groups 
+	                   WHERE sid=".$surveyid." AND language='".GetBaseLanguageFromSurveyID($surveyid)."'
+	                   ORDER BY gid desc LIMIT 1; ";    
+        $getGidRs = db_execute_num($getGidSql);
+        $gidRow=$getGidRs->FetchRow();
+        $gid = $gidRow[0];
+		if($newGroup)
+			++$gid;        
+		        
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		
+		$the_full_file_path = $queDir.$sMod.".csv";
+		
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK $the_full_file_path "); 
+		
+		$handle = fopen($the_full_file_path, "r");
+		while (!feof($handle))
+		{
+			$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
+			$bigarray[] = $buffer;
+		}
+		fclose($handle);
+		
+		// Now we try to determine the dataformat of the survey file.
+		if ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
+		{
+		    $importversion = 100;  // version 1.0 file
+		}
+		elseif 
+		   ((substr($bigarray[1], 0, 24) == "# SURVEYOR QUESTION DUMP")&& (substr($bigarray[4], 0, 37) == "# http://phpsurveyor.sourceforge.net/"))
+		{
+		    $importversion = 99;  // Version 0.99 file or older - carries a different URL
+		}
+		elseif 
+		   (substr($bigarray[0], 0, 26) == "# LimeSurvey Question Dump" || substr($bigarray[0], 0, 27) == "# PHPSurveyor Question Dump")
+		    {  // Wow.. this seems to be a >1.0 version file - these files carry the version information to read in line two
+		      $importversion=substr($bigarray[1], 12, 3);
+		    }
+		else    // unknown file - show error message
+		  {
+//		      $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+//		      $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+//		      $importquestion .= "</font></td></tr></table>\n";
+//		      $importquestion .= "</body>\n</html>\n";
+//		      unlink($the_full_file_path);
+		      return "This is not a Limesurvey question file. Import failed";
+		  }
+		
+//		if ($importversion != $dbversionnumber)
+//		{
+////		    $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+////		    $importquestion .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
+////		    $importquestion .= "</font></td></tr></table>\n";
+////		    $importquestion .= "</body>\n</html>\n";
+////		    unlink($the_full_file_path);
+//		    return;
+//		}
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
+		{
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//QUESTIONS
+		if (array_search("# ANSWERS TABLE\n", $bigarray))
+		{
+			$stoppoint = array_search("# ANSWERS TABLE\n", $bigarray);
+		}
+		elseif (array_search("# ANSWERS TABLE\r\n", $bigarray))
+		{
+			$stoppoint = array_search("# ANSWERS TABLE\r\n", $bigarray);
+		}
+		else
+		{
+			$stoppoint = count($bigarray)-1;
+		}
+		for ($i=0; $i<=$stoppoint+1; $i++)
+		{
+			if ($i<$stoppoint-2) {$questionarray[] = $bigarray[$i];}
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//ANSWERS
+		if (array_search("# LABELSETS TABLE\n", $bigarray))
+		{
+			$stoppoint = array_search("# LABELSETS TABLE\n", $bigarray);
+		}
+		elseif (array_search("# LABELSETS TABLE\r\n", $bigarray))
+		{
+			$stoppoint = array_search("# LABELSETS TABLE\r\n", $bigarray);
+		}
+		else
+		{
+			$stoppoint = count($bigarray)-1;
+		}
+		for ($i=0; $i<=$stoppoint+1; $i++)
+		{
+			if ($i<$stoppoint-2) {$answerarray[] = str_replace("`default`", "`default_value`", $bigarray[$i]);}
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//LABELSETS
+		if (array_search("# LABELS TABLE\n", $bigarray))
+		{
+			$stoppoint = array_search("# LABELS TABLE\n", $bigarray);
+		}
+		elseif (array_search("# LABELS TABLE\r\n", $bigarray))
+		{
+			$stoppoint = array_search("# LABELS TABLE\r\n", $bigarray);
+		}
+		else
+		{
+			$stoppoint = count($bigarray)-1;
+		}
+		for ($i=0; $i<=$stoppoint+1; $i++)
+		{
+			if ($i<$stoppoint-2) {$labelsetsarray[] = $bigarray[$i];}
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//LABELS
+		if (array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray))
+		{
+			$stoppoint = array_search("# QUESTION_ATTRIBUTES TABLE\n", $bigarray);
+		}
+		elseif (array_search("# QUESTION_ATTRIBUTES TABLE\r\n", $bigarray))
+		{
+			$stoppoint = array_search("# QUESTION_ATTRIBUTES TABLE\r\n", $bigarray);
+		}
+		else
+		{
+			$stoppoint = count($bigarray)-1;
+		}
+		for ($i=0; $i<=$stoppoint+1; $i++)
+		{
+			if ($i<$stoppoint-2) {$labelsarray[] = $bigarray[$i];}
+			unset($bigarray[$i]);
+		}
+		$bigarray = array_values($bigarray);
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		//Question_attributes
+		if (!isset($noconditions) || $noconditions != "Y")
+		{
+			$stoppoint = count($bigarray);
+			for ($i=0; $i<=$stoppoint+1; $i++)
+			{
+				if ($i<$stoppoint-1) {$question_attributesarray[] = $bigarray[$i];}
+				unset($bigarray[$i]);
+			}
+		}
+		$bigarray = array_values($bigarray);
+		
+		if (isset($questionarray)) {$countquestions = count($questionarray)-1;}  else {$countquestions=0;}
+		if (isset($answerarray)) 
+		    {
+		        $answerfieldnames=convertCSVRowToArray($answerarray[0],',','"');
+		        unset($answerarray[0]);
+		        $countanswers = count($answerarray);
+		    }  
+			  else {$countanswers=0;}
+		if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray)-1;}  else {$countlabelsets=0;}
+		if (isset($labelsarray)) {$countlabels = count($labelsarray)-1;}  else {$countlabels=0;}
+		if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray)-1;} else {$countquestion_attributes=0;}
+		
+		$languagesSupported = array();  // this array will keep all the languages supported for the survey
+		
+		// Let's check that imported objects support at least the survey's baselang
+		$langcode = GetBaseLanguageFromSurveyID($surveyid);
+		
+		$languagesSupported[$langcode] = 1;     // adds the base language to the list of supported languages
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		if ($countquestions > 0)
+		{
+			$questionfieldnames = convertCSVRowToArray($questionarray[0],',','"');
+			$langfieldnum = array_search("language", $questionfieldnames);
+			$qidfieldnum = array_search("qid", $questionfieldnames);
+			$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,true);
+			if (!$questionssupportbaselang)
+			{
+//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+//				.$clang->gT("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n"
+//				."</td></tr></table>\n";
+//				unlink($the_full_file_path);
+				return "You can't import a question which doesn't support the current survey's base language";
+			}
+		}
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $language)
+		{
+		    $languagesSupported[$language] = 1;
+		}
+		
+		// Let's assume that if the questions do support tye baselang
+		// Then the answers do support it as well.
+		// ==> So the following section is commented for now
+		//if ($countanswers > 0)
+		//{
+		//	$langfieldnum = array_search("language", $answerfieldnames);
+		//	$answercodefilednum1 =  array_search("qid", $answerfieldnames);
+		//	$answercodefilednum2 =  array_search("code", $answerfieldnames);
+		//	$answercodekeysarr = Array($answercodefilednum1,$answercodefilednum2);
+		//	$answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$langcode);
+		//	if (!$answerssupportbaselang)
+		//	{
+		//		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+		//		.$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
+		//		."</td></tr></table>\n";
+		//		return;
+		//	}
+		//	
+		//}
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		if ($countlabelsets > 0)
+		{
+			$labelsetfieldname = convertCSVRowToArray($labelsetsarray[0],',','"');
+			$langfieldnum = array_search("languages", $labelsetfieldname);
+			$lidfilednum =  array_search("lid", $labelsetfieldname);
+			$labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
+			if (!$labelsetssupportbaselang)
+			{
+//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
+//				.$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
+//				."</td></tr></table>\n";
+//				unlink($the_full_file_path);
+				return "You can't import label sets which don't support the current survey's base language";
+			}
+		}
+		// I assume that if a labelset supports the survey's baselang,
+		// then it's labels do support it as well
+		
+		// GET SURVEY AND GROUP DETAILS
+		//$surveyid=$postsid;
+		//$gid=$postgid;
+		$newsid=$surveyid;
+		$newgid=$gid;
+		
+			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		
+		//DO ANY LABELSETS FIRST, SO WE CAN KNOW WHAT THEIR NEW LID IS FOR THE QUESTIONS
+		if (isset($labelsetsarray) && $labelsetsarray) {
+		    $csarray=buildLabelSetCheckSumArray();   // build checksums over all existing labelsets
+		    $count=0;
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    foreach ($labelsetsarray as $lsa) {
+		        $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+		        $fieldcontents=convertCSVRowToArray($lsa,',','"');
+		        if ($count==0) {$count++; continue;}
+		
+		        $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
+		        
+		        // Save old labelid
+		        $oldlid=$labelsetrowdata['lid'];
+		        // set the new language
+		        unset($labelsetrowdata['lid']);
+		        $newvalues=array_values($labelsetrowdata);
+		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		        $lsainsert = "INSERT INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+		        $lsiresult=$connect->Execute($lsainsert);
+		        
+		        // Get the new insert id for the labels inside this labelset
+		        $newlid=$connect->Insert_ID("{$dbprefix}labelsets","lid");
+		
+		        if ($labelsarray) {
+		            $count=0;
+		            foreach ($labelsarray as $la) {
+		                $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
+		                $lfieldcontents=convertCSVRowToArray($la,',','"');
+		                if ($count==0) {$count++; continue;}
+		
+		                // Combine into one array with keys and values since its easier to handle
+		                 $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+		                $labellid=$labelrowdata['lid'];
+		                if ($labellid == $oldlid) {
+		                    $labelrowdata['lid']=$newlid;
+		
+					// translate internal links
+					$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+		
+		                    $newvalues=array_values($labelrowdata);
+		                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		                    $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+		                    $liresult=$connect->Execute($lainsert);
+		                }
+		            }
+		        }
+				
+		        //CHECK FOR DUPLICATE LABELSETS
+		        $thisset="";
+		        $query2 = "SELECT code, title, sortorder, language
+		                   FROM {$dbprefix}labels
+		                   WHERE lid=".$newlid."
+		                   ORDER BY language, sortorder, code";    
+		        $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		        while($row2=$result2->FetchRow())
+		        {
+		            $thisset .= implode('.', $row2);
+		        } // while
+		        $newcs=dechex(crc32($thisset)*1);
+		        unset($lsmatch);
+		        if (isset($csarray))
+		        {
+		            foreach($csarray as $key=>$val)
+		            {
+		                if ($val == $newcs)
+		                {
+		                    $lsmatch=$key;
+		                }
+		            }
+		        }
+		        if (isset($lsmatch))
+		        {
+		            //There is a matching labelset. So, we will delete this one and refer
+		            //to the matched one.
+		            $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+		            $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+		            $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+		            $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+		            $newlid=$lsmatch;
+		        }
+		        else
+		        {
+		            //There isn't a matching labelset, add this checksum to the $csarray array
+		            $csarray[$newlid]=$newcs;
+		        }
+		        //END CHECK FOR DUPLICATES
+		        $labelreplacements[]=array($oldlid, $newlid);
+		    }
+		}
+		
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		
+		// QUESTIONS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
+		if (isset($questionarray) && $questionarray) {
+		    $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
+		    unset($questionarray[0]);
+		
+		    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
+		    //and save it for later
+		    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
+		    $qres = db_execute_assoc($qmaxqo) or safe_die ($clang->gT("Error").": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
+		    $qrow=$qres->FetchRow();
+		    $newquestionorder=$qrow['maxqo']+1;
+		
+			foreach ($questionarray as $qa) {
+		        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
+				$newfieldcontents=$qacfieldcontents;
+		    	$questionrowdata=array_combine($qafieldorders,$qacfieldcontents);
+		        if (isset($languagesSupported[$questionrowdata["language"]]))
+		        {
+				    $oldqid = $questionrowdata['qid'];
+				    $oldsid = $questionrowdata['sid'];
+				    $oldgid = $questionrowdata['gid'];
+		
+		    	    // Remove qid field if there is no newqid; and set it to newqid if it's set
+		            if (!isset($newqid))
+				        unset($questionrowdata['qid']);
+		            else
+		                $questionrowdata['qid'] = $newqid;
+		                
+				    $questionrowdata["sid"] = $newsid;
+				    $questionrowdata["gid"] = $newgid;
+		            $questionrowdata["question_order"] = $newquestionorder;
+		
+		            
+		            // Now we will fix up the label id 
+				    $type = $questionrowdata["type"]; //Get the type
+					if ($type == "F" || $type == "H" || $type == "W" || 
+					    $type == "Z" || $type == "1" || $type == ":" ||
+						$type == ";" ) 
+		                {//IF this is a flexible label array, update the lid entry
+					    if (isset($labelreplacements)) {
+						    foreach ($labelreplacements as $lrp) {
+							    if ($lrp[0] == $questionrowdata["lid"]) {
+								    $questionrowdata["lid"]=$lrp[1];
+							       }
+		                        if ($lrp[0] == $questionrowdata["lid1"]) {
+		                            $questionrowdata["lid1"]=$lrp[1];
+		                           }
+						        }
+					         }
+		                }
+				    $other = $questionrowdata["other"]; //Get 'other' field value
+				    $oldlid = $questionrowdata["lid"];
+		            $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
+		
+				// translate internal links
+				$questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
+				$questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
+				$questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
+		
+		            $newvalues=array_values($questionrowdata);
+		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+				    $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+		
+		            // set the newqid only if is not set
+		            if (!isset($newqid))
+				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
+		        }
+		    }
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    //NOW DO ANSWERS FOR THIS QID - Is called just once and only if there was a question
+		    if (isset($answerarray) && $answerarray) {
+		        foreach ($answerarray as $aa) {
+		            $answerfieldcontents=convertCSVRowToArray($aa,',','"');
+		            $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
+		            if ($answerrowdata===false)
+		            {
+		              $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+		            }
+		            if (isset($languagesSupported[$answerrowdata["language"]]))
+		            {
+		                $code=$answerrowdata["code"];
+		                $thisqid=$answerrowdata["qid"];
+		                $answerrowdata["qid"]=$newqid;
+		
+					// translate internal links
+					$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
+		
+		                        $newvalues=array_values($answerrowdata);
+		                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		                        $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		                $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+		            }
+		        }
+		    }
+		$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		    // Finally the question attributes - Is called just once and only if there was a question  
+		    if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+		        $fieldorders  =convertCSVRowToArray($question_attributesarray[0],',','"');
+		        unset($question_attributesarray[0]);
+		        foreach ($question_attributesarray as $qar) {
+		            $fieldcontents=convertCSVRowToArray($qar,',','"');
+		            $qarowdata=array_combine($fieldorders,$fieldcontents);
+		            $qarowdata["qid"]=$newqid;
+		            unset($qarowdata["qaid"]);
+		
+		            $newvalues=array_values($qarowdata);
+		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+		            $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+		        }
+		    }
+		
+		}
+		    $this->debugLsrc("wir sind in - ".__FUNCTION__." Line ".__LINE__.", FERTIG "); 
+		    // CONDITIONS is DONE
+		    return array('gid'=>$newgid,'qid'=>$newqid);
 		    //return $newgid;
 	}
 	
@@ -2792,7 +3735,6 @@ class LsrcHelper {
 		
 		return true;
 		
-	}
-		
+	}	
 }
 ?>

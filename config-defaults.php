@@ -220,6 +220,15 @@ $defaulthtmleditormode = 'inline';
 $surveyPreview_require_Auth = true;
 
 
+// $use_one_time_passwords
+// New feature since version 1.81: One time passwords
+// The user can call the limesurvey login at /limesurvey/admin and pass username and
+// a one time password which was previously written into the users table (column one_time_pw) by
+// an external application.
+// This setting has to be turned on to enable the usage of one time passwords (default = off).
+$use_one_time_passwords = false;
+
+
 // $useWebserverAuth
 // Enable delegation of authentication to the webserver.
 // If you set this parameter to true and set your webserver to authenticate
@@ -410,6 +419,8 @@ $pdffontsize    = 9;                       //Fontsize for normal text; Surveytit
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
 $pdforientation = 'P';                     // Set L for Landscape or P for portrait format
 
+// This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
+$export4lsrc = false;
 
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.

@@ -1,5 +1,5 @@
 # LimeSurvey Survey Dump
-# DBVersion 129
+# DBVersion 132
 # This is a dumped survey from the LimeSurvey Script
 # http://www.limesurvey.org/
 # Do not change this header!
@@ -7,8 +7,8 @@
 #
 # SURVEYS TABLE
 #
-"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email"
-"54461","1","Your Name","N","2008-11-05","2008-11-05","your@email.org","Y","","G","default","","de","","N","N","0","N","","","Y","N","0","N","Y","N","N","N","N","2008-11-05","N","Y","N","D","your@email.org"
+"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","url","language","additional_languages","datestamp","usecookie","notification","allowregister","attribute1","attribute2","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","publicstatistics","htmlemail","tokenanswerspersistence","usecaptcha","bounce_email","publicgraphs"
+"54461","1","Your Name","N","1980-01-01","1980-01-01","your@email.org","Y","","G","hisnone","","de","","N","N","0","N","","","Y","N","0","N","Y","N","N","N","N","2008-11-05","N","N","Y","N","D","your@email.org","N"
 
 #
 # GROUPS TABLE

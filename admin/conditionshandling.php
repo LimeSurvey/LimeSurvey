@@ -131,10 +131,10 @@ $conditionsoutput .= "\t<div class='menubar-main'>\n"
 ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=editconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Add and edit conditions", "js")."');return false\">" 
-."<img name='ViewAllButton' src='$imagefiles/conditions_add.png' title='' alt='' /></a>\n"
+."<img name='ConditionAddButton' src='$imagefiles/conditions_add.png' title='' alt='' /></a>\n"
 ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" onmouseout=\"hideTooltip()\""
 ."onmouseover=\"showTooltip(event,'".$clang->gT("Copy conditions", "js")."');return false\">" 
-."<img name='ViewAllButton' src='$imagefiles/conditions_copy.png' title='' alt='' /></a>\n";
+."<img name='ConditionCopyButton' src='$imagefiles/conditions_copy.png' title='' alt='' /></a>\n";
 
 
 $conditionsoutput .="\t\t\t</div><div class='menubar-right'>\n"
@@ -1016,7 +1016,7 @@ foreach ($theserows as $row)
 			$questionselecter = substr($question, 0, 35)."..";
 		}
 		$conditionsoutput .=  ""
-		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: $questionselecter</option>\").appendTo(\"#questionNav\");\n";
+		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".javascript_escape(htmlspecialchars($questionselecter,ENT_NOQUOTES))."</option>\").appendTo(\"#questionNav\");\n";
 }
 $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 
@@ -1054,7 +1054,7 @@ foreach ($postrows as $row)
 			$questionselecter = substr($question, 0, 35)."..";
 		}
 		$conditionsoutput .=  ""
-		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: $questionselecter</option>\").appendTo(\"#questionNav\");\n";
+		. "\t\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".javascript_escape(htmlspecialchars($questionselecter,ENT_NOQUOTES))."</option>\").appendTo(\"#questionNav\");\n";
 }
 $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 
@@ -1204,7 +1204,7 @@ if ($subaction=='' ||
 
 	$conditionsoutput .= "<table width='100%' align='center' cellspacing='0' cellpadding='0'>\n"
 		."\t<tr bgcolor='#E1FFE1'>\n"
-		."\t\t<td><table align='center' width='100%' cellspacing='0' cellpading='0'><tr>\n";
+		."\t\t<td><table align='center' width='100%' cellspacing='0'><tr>\n";
 	$showreplace="$questiontitle". showSpeaker($questiontext);
 	$onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
 
@@ -1280,7 +1280,7 @@ if ($subaction=='' ||
 			}
 
 			$conditionsoutput .= "<tr><td>\n"
-				."<table width='100%' cellspacing='0' cellpading='0'><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
+				."<table width='100%' cellspacing='0'><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
 				."<form action='$scriptname?action=conditions' method='post' id='editscenario{$scenarionr['scenario']}' style='display: none'>\n"
 				."<label>".$clang->gT("New scenario number").":&nbsp;\n"
 				."<input type='text' name='newscenarionum' size='3'/></label>\n"
@@ -1697,7 +1697,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$js_getAnswers_onload = "";
 		foreach ($cquestions as $cqn)
 		{
-			$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"$cqn[0]\"";
+			$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
 			if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
 				$conditionsoutput .= " selected";
 				$js_getAnswers_onload .= "getAnswers(\"".$cqn[3]."\");\n";
@@ -1771,12 +1771,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui-tabs-1.6rc2.min.js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"../scripts/jquery/lime-conditions-tabs.js\"></script>\n"
 		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs.css\" />\n"
-		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n"
-		. "<script type=\"text/javascript\">\n"
-		. "\t$(document).ready(function(){\n"
-		. "\t\t$('#conditiontarget > ul').tabs();\n"
-		. "\t});\n"
-		. "</script>\n";
+		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{
@@ -1860,7 +1855,7 @@ function showSpeaker($hinttext)
 		$shortstring = substr($hinttext, 0, $max);
 
 		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
+		$reshtml= "<span style='cursor: hand' title=\"".html_escape($hinttext)."\" "
            ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" >"
            ." \"$shortstring...\" </span>"
            ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
