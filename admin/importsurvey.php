@@ -658,6 +658,10 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                     }		
         		// Combine into one array with keys and values since its easier to handle
          		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+                if ($importversion<=132)
+                {
+                   $labelrowdata["assessment_value"]=(int)$answerrowdata["code"];
+                }            
 				$labellid=$labelrowdata['lid'];
 		        if ($importversion<=100)
                 {
@@ -844,13 +848,13 @@ if (isset($grouparray) && $grouparray) {
 					$questionrowdata["gid"] = $newgid;
                     // Version <=100 doesn't have a language field yet so we set it now
             		if ($importversion<=100)  
-                        {
+                    {
                         $questionrowdata['language']=$newlanguage;
-                        } 
+                    } 
 					$oldqid=$qid;
                     if (!isset($questionrowdata["lid1"]))
                     {
-                      $questionrowdata["lid1"]=0; 
+                        $questionrowdata["lid1"]=0; 
 					}
                     // Now we will fix up the label id 
 					$type = $questionrowdata["type"]; //Get the type
@@ -924,6 +928,10 @@ if (isset($grouparray) && $grouparray) {
         							$aacfieldcontents=convertToArray($aa, "', '", "('", "')");
                                 }		
                     		$answerrowdata=array_combine($aafieldorders,$aacfieldcontents);
+                            if ($importversion<=132)
+                            {
+                               $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
+                            }
 							$code=$answerrowdata["code"];
 							$thisqid=$answerrowdata["qid"];
 							if ($thisqid == $qid) 
@@ -931,12 +939,12 @@ if (isset($grouparray) && $grouparray) {
 								$answerrowdata["qid"]=$newqid;
                                 // Version <=100 doesn't have a language field yet so we set it now
                         		if ($importversion<=100)  
-                                    {
+                                {
                                     $answerrowdata['language']=$newlanguage;
-                                    } 
+                                } 
     				
-			// translate internal links
-		    		$answerrowdata['answer']=translink('survey', $surveyid, $newsid, $answerrowdata['answer']);
+			                    // translate internal links
+		    		            $answerrowdata['answer']=translink('survey', $surveyid, $newsid, $answerrowdata['answer']);
 
                                 $newvalues=array_values($answerrowdata);
                                 $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
