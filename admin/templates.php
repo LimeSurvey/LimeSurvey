@@ -264,17 +264,17 @@ foreach ($files as $file) {
 if (!$screenname) {$screenname=$clang->gT("Welcome Page", "unescaped");}
 if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
 //FAKE DATA FOR TEMPLATES
-$thissurvey['name']="Template Sample";
+$thissurvey['name']=$clang->gT("Template Sample");
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
 $thissurvey['welcome']="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
 $thissurvey['allowsave']="Y";
 $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
 $thissurvey['url']="http://www.limesurvey.org/";
-$thissurvey['urldescrip']="A URL Description";
+$thissurvey['urldescrip']=$clang->gT("Some URL description");
 $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
-$groupname="Group 1: The first lot of questions";
+$groupname=$clang->gT("Group 1: The first lot of questions");
 $groupdescription="This group description is fairly vacuous, but quite important.";
 $navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" next &gt;&gt; \" name=\"move\" />\n";
 if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; prev\" name=\"move\" />\n".$navigator;}
@@ -286,10 +286,10 @@ $notanswered="5";
 $privacy="";
 $surveyid="1295";
 $token=1234567;
-$assessments="<table align='center'><tr><th>Assessment Heading</th></tr><tr><td align='center'>Assessment details<br />Note that assessments will only show if assessment rules have been set. Otherwise, this assessment table will not appear</td></tr></table>";
-$printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey Name (ID)")."</strong> testt (46962)</span><br />
+$assessments="<table align='center'><tr><th>".$clang->gT("Assessment heading")."</th></tr><tr><td align='center'>".$clang->gT("Assessment details")."<br />".$clang->gT("Note that this assessment section will only show if assessment rules have been set and assessment mode is activated.")."</td></tr></table>";
+$printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey name (ID)")."</strong> Test survey (46962)</span><br />
 <table class='printouttable' >
-<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your Answer")."</th></tr>
+<tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your answer")."</th></tr>
     <tr>
         <td>id</td>
         <td>12</td>
