@@ -2932,6 +2932,37 @@ if ($action == "ordergroups")
 		break;
         }
     }
+    // Move the question to specific position
+    if ((!empty($_POST['groupmovefrom']) || (isset($_POST['groupmovefrom']) && $_POST['groupmovefrom'] == '0')) && (!empty($_POST['groupmoveto']) || (isset($_POST['groupmoveto']) && $_POST['groupmoveto'] == '0')))
+    {
+       $newpos=$_POST['groupmoveto'];
+       $oldpos=$_POST['groupmovefrom'];
+	   if($newpos > $oldpos)
+	   {
+	      //Move the group we're changing out of the way
+	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$oldpos";
+          $cdresult=$connect->Execute($cdquery) or safe_die($cdquery."<br />".$connect->ErrorMsg());
+	      //Move all question_orders that are less than the newpos down one
+	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order-1 WHERE sid=$surveyid AND group_order > 0 AND group_order <= $newpos";
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
+    	  //Renumber the question we're changing
+		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$newpos WHERE sid=$surveyid AND group_order=-1";
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
+	   }
+	   if(($newpos+1) < $oldpos)
+	   {
+	      //echo "Newpos $newpos, Oldpos $oldpos";
+		  //Move the question we're changing out of the way
+		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$oldpos";
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
+	      //Move all question_orders that are later than the newpos up one
+	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order+1 WHERE sid=$surveyid AND group_order > ".$newpos." AND group_order <= $oldpos";
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
+    	  //Renumber the question we're changing
+		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=".($newpos+1)." WHERE sid=$surveyid AND group_order=-1";
+    	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
+	   }
+	}
 
         $ordergroups = "<table width='100%' border='0'>\n<tr ><td colspan='2' class='settingcaption'>"
 		. "".$clang->gT("Change Group Order")."</td></tr>"
@@ -2941,6 +2972,7 @@ if ($action == "ordergroups")
 	// => Get an array of groups containing questions with conditions outside the group
 	// $groupdepsarray[dependent-gid][target-gid]['conditions'][qid-having-conditions]=Array(cids...)
 	$groupdepsarray = GetGroupDepsForConditions($surveyid);
+	$nicegroupdeps=array();
 	if (!is_null($groupdepsarray))
 	{
 		$ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
@@ -2949,6 +2981,7 @@ if ($action == "ordergroups")
 			foreach($depgrouprow as $targgid => $targrow)
 			{
 				$ordergroups .= "<li>".sprintf($clang->gT("Group %s depends on group %s, see the marked conditions on:"), "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."')\">".$targrow['depgpname']."</a>", "<a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$targgid."')\">".$targrow['targetgpname']."</a> ");
+				$nicegroupdeps[$depgid]=$targgid;
 				foreach($targrow['conditions'] as $depqid => $depqrow)
 				{
 					$listcid=implode("-",$depqrow);
@@ -2967,7 +3000,8 @@ if ($action == "ordergroups")
 		$ogresult = db_execute_assoc($ogquery) or safe_die($connect->ErrorMsg());//Checked
 
 		$ogarray = $ogresult->GetArray();
-    		$groupcount = count($ogarray);
+		$miniogarray=$ogarray;
+    	$groupcount = count($ogarray);
 		for($i=0; $i < $groupcount ; $i++)
 		{
 			$downdisabled = "";
@@ -2986,6 +3020,68 @@ if ($action == "ordergroups")
 			}
 	
 			$ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
+			
+			// DROP DOWN LIST //
+			//Move to location 
+	    	//$ordergroups.="<li class='movableNode'>\n" ;
+	    	$ordergroups.="\t<select style='float:right; margin-left: 5px;";
+	    	$ordergroups.="' name='groupmovetomethod$i' onchange=\"this.form.groupmovefrom.value='".$ogarray[$i]['group_order']."';this.form.groupmoveto.value=this.value;submit()\">\n";
+	    	$ordergroups.="<option value=''>".$clang->gT("Place after..")."</option>\n";
+	    	//Display the "position at beginning" item
+	    	if(empty($groupdepsarray) || (!is_null($groupdepsarray)  && $i != 0 &&
+	            !array_key_exists($ogarray[$i]['gid'], $groupdepsarray))) 
+	       		{
+	                $ordergroups.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+	       		}
+        	//Find out if there are any dependencies
+	    	$max_start_order=0;
+        	if ( !is_null($groupdepsarray) && $i!=0 &&
+	     	    array_key_exists($ogarray[$i]['gid'], $groupdepsarray)) //This should find out if there are any dependencies
+	     	{
+	       	    foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val) 
+				{
+		            //qet the question_order value for each of the dependencies
+		     		foreach($miniogarray as $mo) 
+				    {
+			   		    if($mo['gid'] == $key && $mo['group_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
+			   			{
+			     		    $max_start_order = $mo['group_order']; //Set the maximum question condition to this
+			   			}
+			 		}
+		   		}
+	    	}
+			//Find out if any groups use this as a dependency
+			$max_end_order=$groupcount+1; //By default, stop the list at the last group
+
+			if ( !is_null($nicegroupdeps))
+			{
+	    		//to find which question has a dependence on this one
+	    		//then stop the list, so you can't move this group past the dependent one
+	    		foreach($nicegroupdeps as $gdarray)
+	    		{
+	    		    if ($ogarray[$i]['gid'] == $gdarray)
+	        		{
+	        		    //This group should never get higher than here ($gdarray)!
+	        		    //Get the group_order for $gdarray;
+	        		    $goquery="SELECT group_order FROM ".db_table_name('groups')." WHERE gid = $gdarray";
+	        		    $goresult=db_execute_assoc($goquery) or safe_die($connect->ErrorMsg());
+	        		    $gorow = $goresult->FetchRow(); 
+	        		    $max_end_order=$gorow['group_order'];
+					}
+	    		}
+			}
+			$minipos=$miniogarray[0]['group_order']; //Start at the very first group_order
+			foreach($miniogarray as $mo)
+			{
+	   		    if($minipos >= $max_start_order && $minipos < $max_end_order)
+	   			{
+	       		    $ordergroups.="<option value='".$mo['group_order']."'>".$mo['group_name']."</option>\n";
+	   			}
+	   			$minipos++;
+			}
+			$ordergroups.="</select>\n";			
+
+			// BUTTONS //
 			$ordergroups.= "<input style='float:right;";
 	
 	                if ($i == 0){$ordergroups.="visibility:hidden;";}
@@ -3001,6 +3097,8 @@ if ($action == "ordergroups")
 		}
 
 		$ordergroups.="</ul>\n"
+		. "<input type='hidden' name='groupmovefrom' />\n"
+		. "<input type='hidden' name='groupmoveto' />\n"
 		. "<input type='hidden' name='sortorder' />"
 		. "<input type='hidden' name='action' value='ordergroups' />" 
         . "</form>" ;
