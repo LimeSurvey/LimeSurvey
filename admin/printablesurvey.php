@@ -247,7 +247,7 @@ function populate_template( $template , $input  , $line = '')
 
 function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 {
-	global $rooturl;
+	global $rooturl, $rootdir;
 
 	if($type == 'other')
 	{

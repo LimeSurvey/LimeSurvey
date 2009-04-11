@@ -3000,6 +3000,31 @@ if ($action == "ordergroups")
 		$ogresult = db_execute_assoc($ogquery) or safe_die($connect->ErrorMsg());//Checked
 
 		$ogarray = $ogresult->GetArray();
+		//FIX BROKEN ORDER
+		//Check if all group_order numbers are consecutive
+		$consecutive=true;
+		$lastnumber=-1;
+		foreach($ogarray as $group)
+		{
+		    if(($group['group_order']-1) != $lastnumber)
+		    {
+			    $consecutive=false;
+			}
+		    $lastnumber=$group['group_order'];
+		}
+		//Fix bad ordering
+		if($ogarray[0]['group_order'] > 0 || !$consecutive) 
+		{
+		    $i=0;
+		    foreach($ogarray as $group)
+		    {
+		        $fixorderq = "UPDATE ".db_table_name('groups')." SET group_order=$i WHERE sid=$surveyid AND group_order = ".$group['group_order']; 
+		        $foresult = db_execute_assoc($fixorderq) or safe_die($connect->ErrorMsg());
+		        $ogarray[$i]['group_order']=$i;
+				$i++;
+			}
+		}
+		//END FIX BROKEN ORDER
 		$miniogarray=$ogarray;
     	$groupcount = count($ogarray);
 		for($i=0; $i < $groupcount ; $i++)
