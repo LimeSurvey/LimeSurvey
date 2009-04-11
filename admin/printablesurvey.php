@@ -26,9 +26,6 @@ function try_debug($line)
 		return '<!-- printablesurvey.php: '.$line.' -->';
 	};
 };
-
-define('print_template' , '/templates/print/' , true);
-
 $surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
@@ -56,15 +53,22 @@ $desquery = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_na
 $desresult = db_execute_assoc($desquery);
 while ($desrow = $desresult->FetchRow())
 {
+	$template = $desrow['template'];
+	$welcome = $desrow['surveyls_welcometext'];
 	$surveyname = $desrow['surveyls_title'];
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = db_table_name("survey_".$desrow['sid']);
 	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
+	$surveystartdate = $desrow['startdate'];
 	$surveyfaxto = $desrow['faxto'];
 }
 if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
+
+
+//define('PRINT_TEMPLATE' , '/templates/print/' , true);
+define('PRINT_TEMPLATE' , '/templates/'.$template.'/' , true);
 
 $fieldmap=createFieldMap($surveyid);
 
@@ -109,12 +113,11 @@ $survey_output = array(
 			 'SITENAME' => $sitename
 			,'SURVEYNAME' => $surveyname
 			,'SURVEYDESCRIPTION' => $surveydesc
-			,'WELCOME' => ''
+			,'WELCOME' => $welcome
 			,'THEREAREXQUESTIONS' => 0
 			,'SUBMIT_TEXT' => $clang->gT("Submit Your Survey.")
-			,'SUBMIT_BY' => ''
+			,'SUBMIT_BY' => $surveyexpirydate
 			,'THANKS' => $clang->gT("Thank you for completing this survey.")
-			,'FAX_TO' => ''
 			,'PDF_FORM' => $pdf_form
 			,'HEADELEMENTS' => $headelements
 			,'TEMPLATEURL' => $rooturl.PRINT_TEMPLATE
@@ -159,7 +162,7 @@ if ($surveyuseexpiry=="Y")
  *		$group['ODD_EVEN'] = 	class to differentiate alternate groups
  *		$group['SCENARIO'] = 
  *
- *      $questions[]    =       contains an array of all the questions within a group
+ *	$questions[]    =       contains an array of all the questions within a group
  *		$question['QUESTION_CODE'] = 		content of the question code field
  *		$question['QUESTION_TEXT'] = 		content of the question field
  *		$question['QUESTION_SCENARIO'] = 		if there are conditions on a question, list the conditions.
@@ -290,10 +293,11 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'radio':
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
-					$image_dimensions = getimagesize($rooturl.PRINT_TEMPLATE.'img_'.$type.'.png');
-					define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
+					$image_dimensions = getimagesize($rootdir.PRINT_TEMPLATE.'print_img_'.$type.'.png');
+					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
+					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
 				};
-				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
+				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
 		case 'rank':
@@ -707,13 +711,10 @@ while ($degrow = $degresult->FetchRow())
 
 					$wrapper = setup_columns($dcols, $deacount);
 
-					 $question['ANSWER'] = $wrapper['whole-start'];
+					$question['ANSWER'] = $wrapper['whole-start'];
 
 					$rowcounter = 0;
 					$colcounter = 1;
-
-					if ($dcols > 0 && $deacount >= $dcols)
-					 $question['ANSWER'] .= $wrapper['whole-start'];
 
 					while ($dearow = $dearesult->FetchRow())
 					{
@@ -1552,24 +1553,47 @@ while ($degrow = $degresult->FetchRow())
 
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
 
+// START recursive tag stripping.
 
+$server_is_newer = version_compare(PHP_VERSION , '5.1.0' , '>'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
 $rounds = 0;
 while($rounds < 1)
 {
 	$replace_count = 0;
-	$survey_output['GROUPS'] = preg_replace(
-						 array(
-							 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
-							,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
-						 )
-						,array(
-							 '[[EMPTY-TABLE-CELL]]'
-							,''
-						 )
-						,$survey_output['GROUPS']
-						,-1
-						,$replace_count
+	if($server_is_newer) // Server version of PHP is at least 5.1.0 or newer
+	{
+		$survey_output['GROUPS'] = preg_replace(
+							 array(
+								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+							 )
+							,array(
+								 '[[EMPTY-TABLE-CELL]]'
+								,''
+							 )
+							,$survey_output['GROUPS']
+							,-1
+							,$replace_count
+						);
+	}
+	else // Server version of PHP is older than 5.1.0
+	{
+		$survey_output['GROUPS'] = preg_replace(
+							 array(
+								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+							 )
+							,array(
+								 '[[EMPTY-TABLE-CELL]]'
+								,''
+							 )
+							,$survey_output['GROUPS']
+						);
+		$replace_count = preg_match(
+						 '/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
+						, $survey_output['GROUPS']
 					);
+	};
 
 	if($replace_count == 0)
 	{
@@ -1586,14 +1610,12 @@ while($rounds < 1)
 					,$survey_output['GROUPS']
 				);
 
-	}
-	else
-	{
-		$rounds = 0;
 	};
 };
 
 $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
+
+// END recursive empty tag stripping.
 
 if(isset($_POST['printableexport']))
 {

@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.80!
+Welcome to LimeSurvey v1.81!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -71,6 +71,79 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.80 to 1.81 [2009/04/10] - Legend: + new feature, # update feature, - bug fix
+
++New feature #2841: Multilingual assessments - feature kindly sponsored by 'Western Norway Research Institute' (c_schmitz)
++New feature #2858: End text / thank you text in last page - feature kindly sponsored by 'Western Norway Research Institute' (c_schmitz)
++New feature #2858: Language-specific end URL - feature kindly sponsored by 'Western Norway Research Institute' (c_schmitz)
++New Feature sSendEmail added (wahrendorff)
++New Feature: $max_columns to config-defaults.php. (eric_t_cruiser)
++New Feature: (minor) Added survey title to browse menu bar heading (jcleeland)
++New Feature: Added list question types ("L", "O" and "!") to quota feature (jcleeland)
++New Feature: Data entry improvement - when adding question attributes, screen returns to form (jcleeland)
++New Feature: default variable $export4lsrc for the lsrc export (wahrendorff)
++New Feature: Move group order directly in addition to just up and dn (like you can with question order) (jcleeland)
++New Feature: New question attributes for multiple numerical questions - max_num_value_sgqa, min_num_value_sgqa and num_value_equels_sgqa - use previous question/answer as values using SGQA identifier (jcleeland)
++New Feature: One time passwords. The user can call the limesurvey login at /limesurvey/admin and pass username and a one time password which was previously written into the users table (column one_time_pw) by an external application. Furthermore there is a setting in config-defaults which has to be turned on (default = off) to enable the usage of one time passwords. (maziminke)
++New Feature: printablesurvey.php is now template aware. have removed templates/print and added all the print template files to each of the other templates. Now each template can have its own print template. (eric_t_cruiser)
++New Feature: Quota dataentry screen returns to previous page position after adding new member or quota (makes data entry on large quota lists faster) (jcleeland)
++New Feature: sSendEmail. You are able to send invitations, reminders and custom messenges with lsrc, to participants of a specific survey. (wahrendorff)
++New Feature: this will enable the possibility to save your surveystructure to the lsrc survey directory if $export4lsrc is set to true in config.php (wahrendorff)
++New Feature: Total quota limit shown at end of list (jcleeland)
++New Feature: webservice email sender (wahrendorff)
+#Updated default template end page to look a little nicer (c_schmitz)
+#Updated Feature #2795: Print Answers not displaying all answers (lemeur)
+#Updated Feature #2795: Print Answers now skip answers from questions that were hidden due to branching-logic. (lemeur)
+#Updated Feature: added Auto-Redirect parameter (wahrendorff)
+#Updated Feature: added Title parameter to sImportMatrix (questioncode) (wahrendorff)
+#Updated Feature: delete obsolete files (wahrendorff)
+#Updated feature: forgotten .csv file (wahrendorff)
+#Updated Feature: give name and Description to imported groups (wahrendorff)
+#Updated feature: new dirs, changed import functions (wahrendorff)
+#Updated Feature: the .csv Files have been changed slightly. (wahrendorff)
+#Updated Feature: the logic to import surveys and groups expanded to omport of surveys, groups and questions.  (wahrendorff)
+#Updated Language: French. (b00z00)
+#Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)
+#Updated Language: Welsh. By Sion Pennant <sion.pennant@powys.gov.uk> (kadejo)
+#Updated palette file with nicer colors for graphs (thanks to level420) (c_schmitz)
+#Updated Language: German (c_schmitz)
+-Fixed #02976 Remove boilerplate questions from export to SPSS and R (mennodekker)
+-Fixed #2950 Added some more validation to SPSS variable names and added escaping to variable labels to prevent errors with quotes inside the description. (mennodekker)
+-Fixed #2953 & 2971: (eric_t_cruiser)
+-Fixed #2953 & 2971: tests for PHP version then uses appropriate sysntax for preg_replace() (eric_t_cruiser)
+-Fixed #2962: (eric_t_cruiser)
+-Fixed #2963: Any superadmin can accidentally delete the parent superadmin rights (c_schmitz)
+-Fixed #2967: (eric_t_cruiser)
+-Fixed a bug in mssql update (c_schmitz)
+-Fixed a bug with MSSQL in statistics failing with Multi-Flexi array (c_schmitz)
+-Fixed a missing trailing "/" at the end of the link tag (maziminke)
+-Fixed an issue with users table and sql 2000 addressed in defect 02354  (bobc55)
+-Fixed bug #2996: problem with multiple question attributes (maziminke)
+-Fixed bug 02964: Error in SQL syntax while importing answers to survey (jcleeland)
+-Fixed bug: removed unnecessary function getSurveyName from common.php, removed additional function variable in browseMenubar(), removed unnecessary changes to browse.php from new feature. (jcleeland)
+-Fixed bug: The "At beginning" option wasn't showing for change question order when there were no condition dependencies. Also tidied code formatting indents. (jcleeland)
+-Fixed bug: zero values were not being included in mathematical calculations for stdev, avg, min, max, sum, and quartile calculations.  (jcleeland)
+-Fixed Feature: custom Email ignores the maxemail setting for now. (wahrendorff)
+-Fixed Feature: Output of sTokenReturn Response fixed. (wahrendorff)
+-Fixed issue #2943: Phantom Help question marks when there is no Help text (lemeur)
+-Fixed issue #2955: Question type P othercomment is not working in admin (lemeur)
+-Fixed issue #2959: Problems with condition editor and @SGQA@ codes for Date and numerical questions (lemeur)
+-Fixed issue #2970: Show printable survey fails if allow_url_fopen is set to false (c_schmitz)
+-Fixed issue #2998: answer is recorded as completed although a mandatory question is not answered but the finish button is clicked (appears only on last page. (lemeur)
+-Fixed Issue 2964: maybe fixed random error (wahrendorff)
+-Fixed Issue: wrong template name fixed (wahrendorff)
+-Fixed Issue: xhtml closing Tag for link added (wahrendorff)
+-Fixed minor bug in rendering. Was adding a second opening wrapper for flexible list dropdown, now only adding one. (eric_t_cruiser)
+-Fixed question type P and M with comment, other and othercomment not exporting data to SPSS and R (mennodekker)
+-Fixed sending emails to user groups not giving a detailed error message on failure (c_schmitz)
+-Fixed single qoute in answers is no longer removed in export to SPSS and R (mennodekker)
+-Fixed some wording (c_schmitz)
+-Fixed SQL for odbc_mssql from "NOT LIKE 0" to "<> 0" which should be a bit faster! Can someone using mssql test this doesn't break anything? (jcleeland)
+-Fixed: Quota member delete was deleting all matching members, not just individual items (jcleeland)
+-Fixed: updated error message on line 212 to display correct SQL when failing (jcleeland)
+
+
 
 Changes from 1.72 to 1.80 [2009/03/09]
 

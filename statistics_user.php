@@ -751,6 +751,11 @@ if (isset($summary) && $summary)
 		//K = multiple numerical input
 		elseif ($firstletter == "N" || $firstletter == "K") //NUMERICAL TYPE
 		{
+		    //Zero handling
+		    if (!isset($excludezeros)) //If this hasn't been set, set it to on as default:
+		    {
+			    $excludezeros=1;
+			}
 			//create SGQ identifier
 	        list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
 			
@@ -857,15 +862,25 @@ if (isset($summary) && $summary)
 			//special treatment for MS SQL databases
 			if ($connect->databaseType == 'odbc_mssql')
                 { 
-                //no NULL/empty values please
-                $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." NOT LIKE 0)"; 
+            	    //no NULL/empty values please
+            	    $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
+				    if(!$excludezeros)
+				    {
+				        //NO ZERO VALUES
+				        $query .= " AND (".db_quote_id($fieldname)." <> 0)"; 
+                    }
                 }
                 
                 //other databases (MySQL, Postgres)
                 else
                 { 
-                //no NULL/empty values please
-                $query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL AND (".db_quote_id($fieldname)." != 0)"; 
+                	//no NULL/empty values please
+                	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
+					if(!$excludezeros)
+					{
+					    //NO ZERO VALUES
+					    $query .= " AND (".db_quote_id($fieldname)." != 0)";
+					}
                 }
 
 			
@@ -894,7 +909,12 @@ if (isset($summary) && $summary)
 			
 			//CALCULATE QUARTILES			
 			//get data
-			$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
+			$query ="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null";
+			//NO ZEROES
+			if(!$excludezeros)
+			{
+			    $query .= " AND ".db_quote_id($fieldname)." != 0";
+			}
 			
 			//filter incomplete answers?
 			if ($filterout_incomplete_answers == true) 
@@ -905,7 +925,12 @@ if (isset($summary) && $summary)
 			//execute query
 			$result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
 			
-			$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null AND ".db_quote_id($fieldname)." != 0";
+			$querystarter="SELECT ".db_quote_id($fieldname)." FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null";
+			//No Zeroes
+			if(!$excludezeros)
+			{
+			    $querystart .= " AND ".db_quote_id($fieldname)." != 0";
+			}
 			
 			//filter incomplete answers?
 			if ($filterout_incomplete_answers == true) 
@@ -1494,7 +1519,13 @@ if (isset($summary) && $summary)
 				else
 				{
 					//get more data                          
-					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+                    if ($connect->databaseType == 'odbc_mssql')
+                    { 
+                        // mssql cannot compare text blobs so we have to cast here
+                        $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'"; 
+                    }
+                    else
+                    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 				}
 				
 				//check filter option
@@ -1505,7 +1536,7 @@ if (isset($summary) && $summary)
 				
 
 				//get data
-				$result=db_execute_num($query) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+				$result=db_execute_num($query) or safe_die ("Couldn't do count of values:<br />$query<br />".$connect->ErrorMsg());
                 
 				// this just extracts the data, after we present
 				while ($row=$result->FetchRow())                   

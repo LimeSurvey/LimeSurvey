@@ -524,10 +524,10 @@ function db_table_name_nq($name)
 }
 
 /**
-* Return a sql statement for finding LIKE named tables   
+ *  Return a sql statement for finding LIKE named tables
 * 
 * @param mixed $table
-*/
+ */
 function db_select_tables_like($table)
 {
 	global $databasetype;
@@ -543,11 +543,11 @@ function db_select_tables_like($table)
 }
 
 /**
-*  Return a boolean stating if the table(s) exist(s)
-*  Accepts '%' in names since it uses the 'like' statement
+ *  Return a boolean stating if the table(s) exist(s)
+ *  Accepts '%' in names since it uses the 'like' statement
 * 
 * @param mixed $table
-*/
+ */
 function db_tables_exist($table)
 {
 	global $connect;
@@ -752,7 +752,7 @@ function getMaxgrouporder($surveyid)
 
 
 /**
-* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.   
+* getGroupOrder($surveyid,$gid) queries the database for the sortorder of a group.
 * 
 * @param mixed $surveyid
 * @param mixed $gid
@@ -892,8 +892,8 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 /**
  * question_class() returns a class name for a given question type to allow custom styling for each question type.
  *
- * @param string containing unique character representing each question type.
- * @returns string containing the class name for a given question type.
+ * @param string $input containing unique character representing each question type.
+ * @return string containing the class name for a given question type.
  */
 function question_class($input)
 {
@@ -954,6 +954,17 @@ if(!defined('COLSTYLE'))
 	};
 	define('COLSTYLE' ,strtolower($column_style), true);
 };
+if(!defined('MAX_COLUMNS'))
+{
+/**
+ * The following prepares and defines the 'MAX_COLUMNS' constant which
+ * dictates the maximum number of columns allowed when using display columns.
+ *
+ * $column_style is initialised at the end of config-defaults.php or from within config.php
+ */
+	$max_columns = isset($max_columns)?$max_columns:8;
+	define('MAX_COLUMNS' , $max_columns , true);
+};
 
 function setup_columns($columns, $answer_count)
 {
@@ -961,9 +972,9 @@ function setup_columns($columns, $answer_count)
  * setup_columns() defines all the html tags to be wrapped around
  * various list type answers.
  *
- * It accepts two variable:
- *     $columns - usually supplied by $dcols
- *     $answer_count - usually supplied by $anscount
+ * @param integer $columns - the number of columns, usually supplied by $dcols
+ * @param integer $answer_count - the number of answers to a question, usually supplied by $anscount
+ * @return array with all the various opening and closing tags to generate a set of columns.
  *
  * It returns an array with the following items:
  *    $wrapper['whole-start']   = Opening wrapper for the whole list
@@ -1024,14 +1035,26 @@ function setup_columns($columns, $answer_count)
  * between semantic markup and visual layout.
  */
 
+
 	$colstyle = COLSTYLE;
 
+/*
+	if(defined('PRINT_TEMPLATE')) // This forces tables based columns for printablesurvey
+	{
+		$colstyle = 'table';
+	};
+*/
 	if($columns < 2)
 	{
 		$colstyle = null;
 		$columns = 1;
 	}
-	elseif($columns > $answer_count)
+	elseif($columns > MAX_COLUMNS)
+	{
+		$columns = MAX_COLUMNS;
+	};
+
+	if($columns > $answer_count)
 	{
 		$columns = $answer_count;
 	};
@@ -1095,13 +1118,13 @@ function setup_columns($columns, $answer_count)
 
 				if($columns > 1)
 				{
-					$wrapper['col-devide']	= "\t\t\t</td>\n\n\t\t\t<td>\n";
-					$wrapper['col-devide-last']	= "\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n";
+					$wrapper['col-devide']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td>\n\t\t\t\t<ul>\n";
+					$wrapper['col-devide-last']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n\t\t\t\t<ul>\n";
 				};
-				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n";
-				$wrapper['whole-end']	= "\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
-				$wrapper['item-start']	= '';
-				$wrapper['item-end']	= "<br />\n";
+				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<ul>\n";
+				$wrapper['whole-end']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
+				$wrapper['item-start']	= "\t\t\t\t\t<li>\n";
+				$wrapper['item-end']	= "\t\t\t\t\t</li>\n";
 	};
 
 	return $wrapper;
@@ -1110,21 +1133,15 @@ function setup_columns($columns, $answer_count)
 function alternation($alternate = '' , $type = 'col')
 {
 /**
- * alternation() creates or alternates between the odd string and the
- * even string used in as column and row classes for array type
- * questions.
+ * alternation() Returns a class identifyer for alternating between
+ * two options. Used to style alternate elements differently. creates
+ * or alternates between the odd string and the even string used in
+ * as column and row classes for array type questions.
  *
- * Accepts:
- *	$alternate =	'' (empty) (default)
- *			'array2'
- *			'array1'
- *			'odd'
- *			'even'
+ * @param string $alternate = '' (empty) (default) , 'array2' ,  'array1' , 'odd' , 'even'
+ * @param string  $type = 'col' (default) or 'row'
  *
- *	$type	  =	'col' (default)
- *			'row'
- *
- * Returns the other.
+ * @return string representing either the first alternation or the opposite alternation to the one supplied..
  */
  /*
 // The following allows type to be left blank for row in subsequent
@@ -1166,7 +1183,8 @@ function alternation($alternate = '' , $type = 'col')
 /**
  * longest_string() returns the length of the longest string past to it.
  * @peram string $new_string
- * @peram integer $longest_length length of the longest string passed to it.
+ * @peram integer $longest_length length of the (previously) longest string passed to it.
+ * @return integer representing the length of the longest string passed (updated if $new_string was longer than $longest_length)
  *
  * usage should look like this: $longest_length = longest_string( $new_string , $longest_length );
  *
@@ -1182,6 +1200,14 @@ function longest_string( $new_string , $longest_length )
 
 function label_class_width( $longest_length , $type = 'text' )
 {
+/**
+ * label_class_width() generates a class identifyer to be inserted into an HTML element
+ * 
+ * @peram integer representing the length longest string in a list.
+ * @peram string representing possible options: 'text' (default), checkbox, numeric
+ *
+ * @return string representing a CSS class.
+ */
 	if($type == 'numeric')
 	{ // numeric input box is generally smaller than so the label can afford to be longer
 		$too_long = 30;
@@ -2787,7 +2813,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
 	if (strpos($line, "{URL}") !== false) {
-		if ($thissurvey['surveyls_url']!=""){$linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['urldescrip']}</a>";}
+		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
@@ -5693,6 +5719,10 @@ function fix_FCKeditor_text($str)
 	{
 		$str = "";
 	}
+	if (preg_match("/^[\s]+$/",$str))
+	{
+		$str='';
+	}
 	return $str;
 }
 
@@ -5725,4 +5755,214 @@ function strip_javascript($content){
     );
     $text = preg_replace($search, '', $content);
     return $text;
+} 
+
+function checkquestionfordisplay($qid, $gid=null)
+{ 
+	//This function checks if a given question should be displayed or not
+	//If the optionnal gid parameter is set, then we are in a group/group survey
+	// and thus we can't evaluate conditions using answers on the same page 
+	// (this will be done by javascript): in this case we disregard conditions on 
+	// answers from same page
+	global $dbprefix, $connect;
+
+	$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
+		." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
+	$scenarioresult=db_execute_assoc($scenarioquery);
+
+	if ($scenarioresult->RecordCount() == 0)
+	{
+		return true;
+	}
+
+	while ($scenariorow=$scenarioresult->FetchRow())
+	{
+		$scenario = $scenariorow['scenario'];
+		$totalands=0;
+		$query = "SELECT * FROM ".db_table_name('conditions')."\n"
+			."WHERE qid=$qid AND scenario=$scenario ORDER BY cqid,cfieldname";
+		$result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked 
+
+		$conditionsfoundforthisscenario=0;
+		while($row=$result->FetchRow())
+		{
+			// Conditions on the same question are Anded together
+			// (for instance conditions on several multiple-numerical lines)
+			// However, if they are related to the same cfieldname
+			// they are Ored. Conditions on the same cfieldname can be either:
+			// * conditions on the same 'simple question': 
+			//   - for instance several possible answers on the same radio-button question
+			// * conditions on the same 'multiple choice question': 
+			//   - this case is very specific. In fact each checkbox corresponds to a different
+			//     cfieldname (1X1X1a, 1X1X1b, ...), but the condition uses only the base 
+			//     'SGQ' cfieldname and the expected answers codes as values
+			//   - then, in the following lines for questions M or P, we transform the
+			//     condition SGQ='a' to SGQa='Y'
+			//  ==> This explains why conditions on multiple choice answers are ORed even if
+			//      in reality they use a different cfieldname for each checkbox
+			//
+			// In order to implement this we build an array storing the result
+			// of condition evaluations for this group and scenario
+			// This array is processed as follow:
+			// * it is indexed by cfieldname,
+			// * each 'cfieldname' row is added at the first condition eval on this fieldname
+			// * each row is updated only if the condition evaluation is successful
+			//   ==> this way if only 1 condition for a cfieldname is successful, the set of
+			//       conditions for this cfieldname is assumed to be met (Ored conditions)
+
+			$conditionsfoundforthisscenario++;
+			$conditionCanBeEvaluated=true;
+			//Iterate through each condition for this question and check if it is met.
+			$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+			$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
+			while($row2=$result2->FetchRow())
+			{
+				$cq_gid=$row2['gid'];
+				//Find out the "type" of the question this condition uses
+				$thistype=$row2['type'];
+			}
+
+
+			if ( !is_null($gid) && $gid == $cq_gid)
+			{
+				//Don't do anything - this cq is in the current group
+			}
+			elseif ($thistype == "M" || $thistype == "P")
+			{
+				// For multiple choice type questions, the "answer" value will be "Y"
+				// if selected, the fieldname will have the answer code appended.
+				$fieldname=$row['cfieldname'].$row['value'];
+				$cvalue="Y";     
+				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+			}
+			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname))
+			{ 
+				if (isset($_SESSION[$targetconditionfieldname[1]]) )
+				{
+					// If value uses @SIDXGIDXQID@ codes i
+					// then try to replace them with a 
+					// value recorded in SESSION if any
+					$cvalue=$_SESSION[$targetconditionfieldname[1]];
+					if (isset($_SESSION[$row['cfieldname']]))
+					{ 
+						$cfieldname=$_SESSION[$row['cfieldname']]; 
+					} 
+					else 
+					{ 
+						$conditionCanBeEvaluated=false;
+						//$cfieldname=' ';
+					}
+				}
+				else
+				{ // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
+					$conditionCanBeEvaluated=false;
+					//$cfieldname=' ';
+				}
+			}
+			else
+			{
+				//For all other questions, the "answer" value will be the answer code.
+				if (isset($_SESSION[$row['cfieldname']]))
+				{
+					$cfieldname=$_SESSION[$row['cfieldname']];
+				} 
+				else 
+				{
+					//$cfieldname=' ';
+					$conditionCanBeEvaluated=false;
+				}
+				$cvalue=$row['value'];
+			}
+
+			if ( !is_null($gid) && $gid == $cq_gid)
+			{
+				//Don't do anything - this cq is in the current group
+				$conditionMatches=true;
+			}
+			elseif ($conditionCanBeEvaluated === false)
+			{
+				// condition can't be evaluated, so let's assume FALSE
+				$conditionMatches=false;
+			}
+			else
+			{
+				if ($row['method'] != 'RX')
+				{
+					if (trim($row['method'])=='') 
+					{
+						$row['method']='==';
+					}
+					if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
+					{
+						$conditionMatches=true;
+						//This condition is met
+					}
+					else
+					{
+						$conditionMatches=false;
+					}
+				}
+				else
+				{
+					if (ereg(trim($cvalue),trim($cfieldname)))
+					{
+						$conditionMatches=true;
+
+					}
+					else
+					{
+						$conditionMatches=false;
+					}
+				}
+			}
+
+			if ($conditionMatches === true)
+			{
+				// Let's store this positive result in the distinctcqids array
+				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
+				// while conditions on different cfieldnames (either different conditions
+				// or conditions on different cfieldnames inside the same question)
+				if (!isset($distinctcqids[$row['cfieldname']]) || $distinctcqids[$row['cfieldname']] == 0)
+				{
+					$distinctcqids[$row['cfieldname']] = 1;
+				}
+			}
+			else
+			{
+				// Let's store this negative result in the distinctcqids array
+				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
+				// while conditions on different cfieldnames (either different conditions
+				// or conditions on different cfieldnames inside the same question)
+				if (!isset($distinctcqids[$row['cfieldname']]))
+				{
+					$distinctcqids[$row['cfieldname']] = 0;
+				}
+			}
+		} // while
+		if ($conditionsfoundforthisscenario > 0) {
+			foreach($distinctcqids as $key=>$val)
+			{
+				// Let's count the number of conditions that are met, and then compare
+				// it to the total number of stored results
+				$totalands=$totalands+$val;
+			}
+			if ($totalands >= count($distinctcqids))
+			{
+				// if all stored results are positive then we MUST show the group
+				// because at least this question is displayed
+				return true;
+			}
+		}
+		else
+		{
+			//Curious there is no condition for this question in this scenario
+			// this is not a normal behaviour, but I propose to defaults to a
+			// condition-matched state in this case
+			return true;
+		}
+		unset($distinctcqids);
+	} // end while scenario
+	return false;
 }
+

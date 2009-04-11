@@ -47,7 +47,7 @@ $typeMap = array(
 'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A', 'hide'=>1),
 'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
@@ -83,7 +83,7 @@ if  (!isset($subaction))
                         ."<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
                         ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
                         ."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"
-                        ."<li>".$clang->gT("Edit the 4th line and complete the filename with a full path to he downloaded data file.")."</li>"
+                        ."<li>".$clang->gT("Edit the 4th line and complete the filename with a full path to the downloaded data file.")."</li>"
                         ."<li>".$clang->gT("Choose 'Run/All' from the menu to run the import.")."</li>"
                         ."</ol><br />"
                         .$clang->gT("Your data should be imported now.")
@@ -183,36 +183,19 @@ if  ($subaction=='dldata') {
                 } else {
                     echo( "'0'");
                 }           
-            }elseif ($fields[$fieldno]['LStype'] == 'M') 
+            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
             {
-                if ($fields[$fieldno]['code'] == 'other')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";
-                }  else if ($row[$fieldno] == 'Y')
+                if ($row[$fieldno] == 'Y')
                 {
                     echo("'1'");
                 } else
                 {
                    echo("'0'");
                 }
-            } else if ($fields[$fieldno]['LStype'] == 'P') 
-            {
-                if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";                    
-                } else if ($row[$fieldno] == 'Y')
-                {
-                    echo("'1'");
-                } else
-                {
-                   echo("'0'");
-                }
-            } else {
+            } elseif (!$fields[$fieldno]['hide']) {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
+                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));
                     echo "'$strTemp'";
                 }
                 else
@@ -221,7 +204,7 @@ if  ($subaction=='dldata') {
                 }
             }
             $fieldno++;
-            if ($fieldno<$num_fields) echo ',';
+            if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
         }
         echo "\n";
     }
@@ -288,24 +271,20 @@ if  ($subaction=='dlstructure') {
        ."/FIRSTCASE=1\n"
        ."/IMPORTCASE=ALL\n"
        ."/VARIABLES=";    
-	$i=0;
 	foreach ($fields as $field){
-        echo "\n";
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
         if($field['LStype'] == 'N' || $field['LStype']=='K') {
             $field['size'].='.'.($field['size']-1);
         }
-		echo " {$field['id']} {$field['SPSStype']}{$field['size']}";
-		$i++;
+		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
 	}
-	echo ".\n"
-        ."CACHE.\n"
+	echo "CACHE.\n"
         ."EXECUTE.\n";
     
     //Create the variable labels:
     echo "*Define Variable Properties.\n";
     foreach ($fields as $field) {
-    	echo "VARIABLE LABELS " . $field['id'] . " \"" . strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel)) . "\".\n";
+    	if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . "\".\n";
     }
 
     // Create our Value Labels!
@@ -376,12 +355,12 @@ if  ($subaction=='dlstructure') {
 				$answers[] = array('code'=>$i, 'value'=>$i);
 			}				
 		}
-	    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
+	    if ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
 	    }
-	    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
+	    if ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
@@ -430,14 +409,16 @@ if  ($subaction=='dlstructure') {
     
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 	foreach ($fields as $field){
-		if (isset($field['sql_name'])) {
+		if (isset($field['sql_name']) && !$field['hide']) {
 			$ftitle = $field['title'];
 			if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
 				$ftitle = "q_" . $ftitle;
 			}
-			$ftitle = str_replace(array("-",":",";","!"), array("_hyph_","_dd_","_dc_","_excl_"), $ftitle);
-			if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-			echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
+			$ftitle = str_replace(array(" ","-",":",";","!","/","\\"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_"), $ftitle);
+			if (!$field['hide']) {
+				if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+				echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
+			}
 		}
 	}
     exit;          

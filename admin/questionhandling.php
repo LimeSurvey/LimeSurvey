@@ -658,64 +658,64 @@ if($action == "orderquestions")
     	. "\t\t".$clang->gT("Change Question Order")."</td></tr>"
         . "</table>\n";
 
-$questioncount = $oqresult->RecordCount();        
-$oqarray = $oqresult->GetArray();
-$minioqarray=$oqarray;
+    $questioncount = $oqresult->RecordCount();        
+    $oqarray = $oqresult->GetArray();
+    $minioqarray=$oqarray;
 
-// Get the condition dependecy array for all questions in this array and group
-$questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
-if (!is_null($questdepsarray))
-{
-	$orderquestions .= "<ul><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
-	foreach ($questdepsarray as $depqid => $depquestrow)
-	{
-		foreach ($depquestrow as $targqid => $targcid)
-		{
-			$listcid=implode("-",$targcid);
-			$question=arraySearchByKey($depqid, $oqarray, "qid", 1);
+    // Get the condition dependecy array for all questions in this array and group
+    $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
+    if (!is_null($questdepsarray))
+    {
+	    $orderquestions .= "<ul><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+	    foreach ($questdepsarray as $depqid => $depquestrow)
+	    {
+		    foreach ($depquestrow as $targqid => $targcid)
+		    {
+			    $listcid=implode("-",$targcid);
+			    $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
 
-			$orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".$question['question']. " [QID: ".$depqid."] </a> ";
-		}
-		$orderquestions .= "</li>\n";
-	}
-	$orderquestions .= "</ul></li></ul>";
-}
+			    $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".$question['question']. " [QID: ".$depqid."] </a> ";
+		    }
+		    $orderquestions .= "</li>\n";
+	    }
+	    $orderquestions .= "</ul></li></ul>";
+    }
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";	
 
-for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
-{
-	$downdisabled = "";
-	$updisabled = "";
-	//Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
-	if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
-	  array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
-	  array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
-	{
-		$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
-	}
-	//Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
-	if ( !is_null($questdepsarray) && $i !=0  &&
-	  array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
-	  array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
-	{
-		$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
-	}
+    for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
+    {
+	    $downdisabled = "";
+	    $updisabled = "";
+	    //Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
+	    if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
+	      array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
+	      array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
+	    {
+		    $downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
+	    }
+	    //Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
+	    if ( !is_null($questdepsarray) && $i !=0  &&
+	      array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
+	      array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
+	    {
+		    $updisabled = "disabled=\"true\" class=\"disabledbtn\"";
+	    }
 
-	//Move to location 
-	$orderquestions.="<li class='movableNode'>\n" ;
-	$orderquestions.="\t<select style='float:right; margin-left: 5px;";
-	$orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
-	$orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
-	//Display the "position at beginning" item
-	if(!is_null($questdepsarray)  && $i != 0 &&
-	   !array_key_exists($oqarray[$i]['qid'], $questdepsarray)) 
-	   {
-	     $orderquestions.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
-	   }
-    //Find out if there are any dependencies
-	$max_start_order=0;
-    if ( !is_null($questdepsarray) && $i!=0 &&
+	    //Move to location 
+	    $orderquestions.="<li class='movableNode'>\n" ;
+	    $orderquestions.="\t<select style='float:right; margin-left: 5px;";
+	    $orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
+	    $orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
+	    //Display the "position at beginning" item
+	    if(empty($questdepsarray) || (!is_null($questdepsarray)  && $i != 0 &&
+	       !array_key_exists($oqarray[$i]['qid'], $questdepsarray))) 
+	       {
+	         $orderquestions.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+	       }
+        //Find out if there are any dependencies
+	    $max_start_order=0;
+        if ( !is_null($questdepsarray) && $i!=0 &&
 	     array_key_exists($oqarray[$i]['qid'], $questdepsarray)) //This should find out if there are any dependencies
 	     {
 	       foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
@@ -728,57 +728,56 @@ for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start w
 			 }
 		   }
 	     }
-	//Find out if any questions use this as a dependency
-	$max_end_order=$questioncount+1;
-	if ( !is_null($questdepsarray))
-	{
-	    //There doesn't seem to be any choice but to go through the questdepsarray one at a time
-	    //to find which question has a dependence on this one
-	    foreach($questdepsarray as $qdarray)
+	    //Find out if any questions use this as a dependency
+	    $max_end_order=$questioncount+1;
+	    if ( !is_null($questdepsarray))
 	    {
-	        if (array_key_exists($oqarray[$i]['qid'], $qdarray))
+	        //There doesn't seem to be any choice but to go through the questdepsarray one at a time
+	        //to find which question has a dependence on this one
+	        foreach($questdepsarray as $qdarray)
 	        {
-	            $cqidquery = "SELECT question_order 
+	            if (array_key_exists($oqarray[$i]['qid'], $qdarray))
+	            {
+	                $cqidquery = "SELECT question_order 
 				          FROM ".db_table_name('conditions').", ".db_table_name('questions')." 
 						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
 						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
-                $cqidresult = db_execute_assoc($cqidquery);
-	            $cqidrow = $cqidresult->FetchRow();
-	            $max_end_order=$cqidrow['question_order'];
-			}
+                    $cqidresult = db_execute_assoc($cqidquery);
+	                $cqidrow = $cqidresult->FetchRow();
+	                $max_end_order=$cqidrow['question_order'];
+			    }
+	        }
 	    }
-	}
-	$minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
-	foreach($minioqarray as $mo)
-	{
-	   if($minipos >= $max_start_order && $minipos < $max_end_order)
-	   {
-	       $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
-	   }
-	   $minipos++;
-	}
-	$orderquestions.="</select>\n";
+	    $minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
+	    foreach($minioqarray as $mo)
+	    {
+	       if($minipos >= $max_start_order && $minipos < $max_end_order)
+	       {
+	           $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
+	       }
+	       $minipos++;
+	    }
+	    $orderquestions.="</select>\n";
 	
-	$orderquestions.= "\t<input style='float:right;";
-	if ($i == 0) {$orderquestions.="visibility:hidden;";}
-	$orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
-	if ($i < $questioncount-1)
-	{
-		// Fill the sortorder hiddenfield so we know what field is moved down
-		$orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
+	    $orderquestions.= "\t<input style='float:right;";
+	    if ($i == 0) {$orderquestions.="visibility:hidden;";}
+	    $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
+	    if ($i < $questioncount-1)
+	    {
+		    // Fill the sortorder hiddenfield so we know what field is moved down
+		    $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
+	    }
+	    $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
+	    $orderquestions.= "</li>\n" ;
 	}
-	$orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
-	$orderquestions.= "</li>\n" ;
-}
 
   	$orderquestions.="</ul>\n"
 	. "<input type='hidden' name='questionmovefrom' />\n"
 	. "<input type='hidden' name='questionmoveto' />\n"
   	. "\t<input type='hidden' name='sortorder' />"
   	. "\t<input type='hidden' name='action' value='orderquestions' />" 
-      . "</form>" ;
+    . "</form>" ;
   	$orderquestions .="<br />" ;
-
 }	
 
 function questionjavascript($type, $qattributes)

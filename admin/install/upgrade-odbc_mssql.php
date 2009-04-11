@@ -315,7 +315,7 @@ function upgrade_token_tables125()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus ] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
             }
 }
 
@@ -325,8 +325,8 @@ function upgrade_token_tables128()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindersent ] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount ] int DEFAULT '0'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindersent] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount] int DEFAULT '0'"); echo $modifyoutput; flush();
             }
 }
 

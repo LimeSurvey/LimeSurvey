@@ -326,11 +326,16 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 // Combine into one array with keys and values since its easier to handle
                  $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                 $labellid=$labelrowdata['lid'];
+                if ($importversion<=132)
+                {
+                   $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
+                }
+                
                 if ($labellid == $oldlid) {
                     $labelrowdata['lid']=$newlid;
 
-			// translate internal links
-			$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+			        // translate internal links
+			        $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
 
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -470,12 +475,15 @@ if (isset($questionarray) && $questionarray) {
                 $thisqid=$answerrowdata["qid"];
                 $answerrowdata["qid"]=$newqid;
 
-			// translate internal links
-			$answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
-
-                        $newvalues=array_values($answerrowdata);
-                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                        $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+			    // translate internal links
+			    $answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
+                if ($importversion<=132)
+                {
+                   $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
+                }
+                $newvalues=array_values($answerrowdata);
+                $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
                 $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
             }
         }

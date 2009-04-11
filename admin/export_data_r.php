@@ -47,7 +47,7 @@ $typeMap = array(
 'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A'),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
 'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
@@ -83,7 +83,7 @@ if  (!isset($subaction))
                             ."<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
                         ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
                         ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
-                        ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\")        on the R command window")."</li>"
+                        ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
                         ."</ol><br />"
                         .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.names are attributes of data, like for read.spss{foreign}.")
                         ."<table><tr><td>";
@@ -184,36 +184,19 @@ if  ($subaction=='dldata') {
                 } else {
                     echo($na);
                 }           
-            }elseif ($fields[$fieldno]['LStype'] == 'M') 
+            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
             {
-                if ($fields[$fieldno]['code'] == 'other')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";
-                }  else if ($row[$fieldno] == 'Y')
+            	if ($row[$fieldno] == 'Y')
                 {
                     echo("'1'");
                 } else
                 {
                    echo("'0'");
                 }
-            } else if ($fields[$fieldno]['LStype'] == 'P') 
-            {
-                if ($fields[$fieldno]['code'] == 'other' || $fields[$fieldno]['code'] == 'comment' || $fields[$fieldno]['code'] == 'othercomment')
-                {
-                    $strTmp = strip_tags_full($row[$fieldno]);
-                    echo "'$strTmp'";                    
-                } else if ($row[$fieldno] == 'Y')
-                {
-                    echo("'1'");
-                } else
-                {
-                   echo("'0'");
-                }
-            } else {
+            } elseif (!$fields[$fieldno]['hide']) {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array(' '),trim($strTmp));
+                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
                     echo "'$strTemp'";
                 }
                 else
@@ -222,7 +205,7 @@ if  ($subaction=='dldata') {
                 }
             }
             $fieldno++;
-            if ($fieldno<$num_fields) echo ',';
+            if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
         }
         echo "\n";
     }
@@ -279,7 +262,6 @@ if  ($subaction=='dlstructure') {
      */
 	echo $headerComment;
     echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";   
-	$i=0;
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
         if($field['LStype'] == 'N' || $field['LStype']=='K') {
@@ -298,14 +280,13 @@ if  ($subaction=='dlstructure') {
 				break;
 			 
 		}
-		echo " data[,which(names(data)==\"V" . substr($field['id'],1) . "\")]=as.$type(data[,which(names(data)==\"V" . substr($field['id'],1) . "\")])\n";
-		$i++;
+		if (!$field['hide']) echo " data[,which(names(data)==\"" . $field['id'] . "\")]=as.$type(data[,which(names(data)==\"" . $field['id'] . "\")])\n";	
 	}
     
     //Create the variable labels:
     echo "#Define Variable Properties.\n";
     foreach ($fields as $field) {
-    	echo 'attributes(data)$variable.labels[which(names(data)=="V' . substr($field['id'],1) . '")]="' . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . '"' . "\n";
+    	if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . '"' . "\n";
     }
 
     // Create our Value Labels!
@@ -376,12 +357,12 @@ if  ($subaction=='dlstructure') {
 				$answers[] = array('code'=>$i, 'value'=>$i);
 			}				
 		}
-	    if ($field['LStype'] == 'M' && $field['code'] != 'other' && $field['size'] > 0)
+	    if ($field['LStype'] == 'M' && substr($field['code'],5) != 'other' && $field['size'] > 0)
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
 	    }
-	    if ($field['LStype'] == "P" && $field['code'] != 'other' && $field['code'] != 'comment' && $field['code'] != 'othercomment')
+	    if ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
@@ -411,7 +392,7 @@ if  ($subaction=='dlstructure') {
 	    if (count($answers)>0) {
 	    	//print out the value labels!
 	    	// data$V14=factor(data$V14,levels=c(1,2,3),labels=c("Yes","No","Uncertain"))
-	    	echo 'data$V' . substr($field["id"],1) . '=factor(data$V' . substr($field["id"],1) . ',levels=c(';
+	    	echo 'data$' . $field["id"] . '=factor(data$' . $field["id"] . ',levels=c(';
 	    	$str="";
 	    	foreach ($answers as $answer) {
 	    		if ($field['SPSStype']=="F" && my_is_numeric($answer['code'])) {
@@ -441,8 +422,10 @@ if  ($subaction=='dlstructure') {
 				$ftitle = "q_" . $ftitle;
 			}
 			$ftitle = str_replace(array("-",":",";","!"), array("_hyph_","_dd_","_dc_","_excl_"), $ftitle);
-			if ($ftitle != $field['title']) $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-			echo "\"". $ftitle . "\",";
+			if (!$field['hide']) {
+				if ($ftitle != $field['title']) $errors .= "# Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
+				echo "\"". $ftitle . "\",";
+			}
 		}
 	}
 	echo "NA); names(data)= v.names[-length(v.names)]\nprint(str(data))\n";

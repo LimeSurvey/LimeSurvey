@@ -278,7 +278,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
-  [password] TEXT NOT NULL default '', 
+  [password] varchar(8000) NOT NULL default '', 
   [full_name] VARCHAR(50) NOT NULL,
   [parent_id] INT NOT NULL, 
   [lang] VARCHAR(20),
@@ -292,8 +292,8 @@ CREATE TABLE [prefix_users] (
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
   [one_time_pw] TEXT
-) 
-;
+);
+
 
 -- 
 -- Table structure for table [surveys_rights]

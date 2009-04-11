@@ -144,9 +144,13 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			
 				if ($labellid == $oldlid) {
 					$labelrowdata['lid']=$newlid;
-
-			// translate internal links
-			$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+                    
+			        // translate internal links
+			        $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+                    if (!isset($labelrowdata["assessment_value"]))
+                    {
+                       $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
+                    }
 
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly

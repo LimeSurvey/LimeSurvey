@@ -1,5 +1,5 @@
 <br />
-<table width="75%" align="center" border="1" style="border-collapse: collapse; border-color: #111111"  bgcolor="white">
+<table width="90%" align="center" border="1" style="border-collapse: collapse; border-color: #eee"  bgcolor="#EEf6ff">
 	<tr>
 		<td align="center">
 			<font size="2"><br />{COMPLETED}<br />
@@ -8,3 +8,4 @@
 		</td>
 	</tr>
 </table>
+<br />

@@ -322,13 +322,17 @@ if (isset($labelsetsarray) && $labelsetsarray) {
                 if ($count==0) {$count++; continue;}
                 
                 // Combine into one array with keys and values since its easier to handle
-                 $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+                $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                 $labellid=$labelrowdata['lid'];
+                if ($importversion<=132)
+                {
+                   $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
+                }
                 if ($labellid == $oldlid) {
                     $labelrowdata['lid']=$newlid;
 
-		// translate internal links
-		$labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+                    // translate internal links
+                    $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
 
                     $newvalues=array_values($labelrowdata);
                     $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -540,6 +544,12 @@ if (isset($grouparray) && $grouparray)
                 $answerrowdata["qid"] = $newqids[$answerrowdata["qid"]];
             else
                 continue; // a problem with this answer record -> don't consider
+
+            if ($importversion<=132)
+            {
+               $answerrowdata["assessment_value"]=(int)$answerrowdata["code"];
+            }
+
                 
             // Everything set - now insert it     
             $answerrowdata = array_map('convertCsvreturn2return', $answerrowdata);

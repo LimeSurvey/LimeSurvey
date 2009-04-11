@@ -376,6 +376,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 						$col_name .= db_quote_id($fieldname).", \n";
 						$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+
+						if ($irow['type']=="P")
+						{
+							$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}othercomment";
+							$col_name .= db_quote_id($fieldname).", \n";
+							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
+						}
 					}
 				}
 			}
@@ -1742,6 +1749,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}other";
 					if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
 					$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
+					if ($irow['type'] == "P")
+					{
+						$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}othercomment";
+						if (isset($_POST[$fieldname])) {$thisvalue=$_POST[$fieldname];} else {$thisvalue="";}
+						$updateqr .= db_quote_id($fieldname)." = '" . auto_escape($thisvalue) . "', \n";
+					}
 					unset($thisvalue);
 				}
 			}
@@ -2559,9 +2572,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					if ($deqrow['other'] == "Y")
 					{
 						$dataentryoutput .= "\t<tr>\n";
-						$dataentryoutput .= "\t\t<td  align='left' style='padding-left: 22px'>".$blang->gT("Other").":</td>\n";
-						$dataentryoutput .= "\t\t<td>\n";
-						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='50'/>\n";
+						$dataentryoutput .= "\t\t<td  align='left'><label>".$blang->gT("Other").":</label>\n";
+						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."other' size='10'/>\n";
+						$dataentryoutput .= "\t\t</td>\n";
+						$dataentryoutput .= "\t\t<td align='left'>\n";
+						$dataentryoutput .= "\t\t\t<input type='text' name='$fieldname"."othercomment' size='50'/>\n";
 						$dataentryoutput .= "\t\t</td>\n";
 						$dataentryoutput .= "\t</tr>\n";
 					}

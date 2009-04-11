@@ -508,7 +508,7 @@ if ($action == "editusers")
 		$usersummary .= "<td class='$bgcc' align='center' style='padding:3px;'>\n";
 		// users are allowed to delete all successor users (but the admin not himself)
 		//  || ($usr['uid'] == $_SESSION['loginID']))
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))
+		if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))&& $usr['uid']!=1)
 		{
 			$usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
 			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
@@ -517,10 +517,10 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ( ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 &&
+		if ( (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 &&
 			$usr['uid'] != $_SESSION['loginID'] ) || 
 		     ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && 
-			$usr['parent_id'] == $_SESSION['loginID']) )
+			$usr['parent_id'] == $_SESSION['loginID'])) && $usr['uid']!=1)
 		{
 			$usersummary .= "<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
@@ -538,7 +538,7 @@ if ($action == "editusers")
 			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
 			."</form>";
 		}
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+		if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1)
 		{
 			$usersummary .= "<form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Set Template Rights")."' />"
