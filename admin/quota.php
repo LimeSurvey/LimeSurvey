@@ -326,6 +326,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	}
 	
 	$totalquotas=0;
+	$totalcompleted=0;
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -372,9 +373,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 					$quotasoutput .= $clang->gT("Terminate Survey With Warning");
 				}
 				$totalquotas+=$quotalisting['qlimit'];
+				$completed=get_quotaCompletedCount($surveyid, $quotalisting['id']);
+				$highlight=($completed >= $quotalisting['qlimit']) ? "" : "style='color: red'"; //Incomplete quotas displayed in red
+				$totalcompleted=$totalcompleted+$completed;
+			    $csvoutput[]=$quotalisting['name'].",".$quotalisting['qlimit'].",".$completed.",".($quotalisting['qlimit']-$completed)."\r\n";
+
 				$quotasoutput .='</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
-            		<td align="center">'.get_quotaCompletedCount($surveyid, $quotalisting['id']).'</td>
+            		<td align="center" '.$highlight.'>'.$completed.'</td>
             		<td align="center" style="padding: 3px;">
             		<table width="100%"><tr><td align="center">
             		<form action="'.$scriptname.'" method="post">
@@ -457,8 +463,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<td align="center"><a name="quota_end">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
-            				<td align="center">&nbsp;</td>
-            				<td align="center" style="padding: 3px;">&nbsp;</td>
+            				<td align="center">'.$totalcompleted.'</td>
+            				<td align="center" style="padding: 3px;"<input type="button" value="'.$clang->gT("Quick CSV Report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')"></td>
           					</tr>
         					</tbody>
       						</table>
@@ -467,7 +473,17 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 							</table>';
 	}
 
-
+    if($_GET['quickreport'])
+    {
+        header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
+		header("Content-type: text/comma-separated-values; charset=UTF-8");
+    	echo $clang->gT("Quota Name").",".$clang->gT("Limit").",".$clang->gT("Completed").",".$clang->gT("Remaining")."\r\n";
+		foreach($csvoutput as $line)
+	    {
+		  echo $line;
+		}
+	die;
+	}
 	if($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid'])))
 	{
 		if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
