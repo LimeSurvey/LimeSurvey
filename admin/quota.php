@@ -327,6 +327,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	
 	$totalquotas=0;
 	$totalcompleted=0;
+	$csvoutput=array();
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -473,7 +474,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 							</table>';
 	}
 
-    if($_GET['quickreport'])
+    if(isset($_GET['quickreport']) && $_GET['quickreport'])
     {
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
 		header("Content-type: text/comma-separated-values; charset=UTF-8");
