@@ -1513,15 +1513,23 @@ if (isset($allfields))
 }
 
 //pre-selection of filter forms
-if (incompleteAnsFilterstate() === true)
+if (incompleteAnsFilterstate() == "filter")
 {
 	$selecthide="selected='selected'";
 	$selectshow="";
+	$selectinc="";
+}
+elseif (incompleteAnsFilterstate() == "inc")
+{
+	$selecthide="";
+	$selectshow="";
+	$selectinc="selected='selected'";
 }
 else
 {
 	$selecthide="";
 	$selectshow="selected='selected'";
+	$selectinc="";
 }
 
 
@@ -1884,9 +1892,10 @@ if ($grapherror!='')
     $viewalltext.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";
 }
 $viewalltext.="</td></tr>\n"
-."<tr><td align='center'><label for='filterinc'>".$clang->gT("Filter incomplete answers:")."</label><select name='filterinc' id='filterinc'>\n"
-."<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-."<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+."<tr><td align='center'><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
+."<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
+."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+."<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
 ."</select><br />&nbsp;</td></tr>\n";
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
 
@@ -2133,7 +2142,8 @@ if (isset($_POST['display']) && $_POST['display'])
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
 	
 	//if incompleted answers should be filtert submitdate has to be not null
-	if (incompleteAnsFilterstate() === true) {$query .= " WHERE submitdate is not null";}
+	if (incompleteAnsFilterstate() == "inc") {$query .= " WHERE submitdate is null";}
+	elseif (incompleteAnsFilterstate() == "filter") {$query .= " WHERE submitdate is not null";}
 	$result = db_execute_num($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
 	
 	//$total = total number of answers
@@ -2143,7 +2153,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	if (isset($selects) && $selects)
 	{
 		//filter incomplete answers?
-		if (incompleteAnsFilterstate() === true) {$query .= " AND ";}		
+		if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$query .= " AND ";}		
 		
 		else {$query .= " WHERE ";}
 		
@@ -2162,7 +2172,8 @@ if (isset($_POST['display']) && $_POST['display'])
 		//$query = $_POST['sql'];
 		
 		//filter incomplete answers?
-		if (incompleteAnsFilterstate() === true) {$query .= " AND ".$newsql;}
+		if (incompleteAnsFilterstate() == "inc") {$query .= " AND ".$newsql;}
+		elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND ".$newsql;}
 
 		else {$query .= " WHERE ".$newsql;}
 	}
@@ -2700,7 +2711,8 @@ if (isset($summary) && $summary)
                 }
 				
                 //filter incomplete answers if set
-                if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+                if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
+                elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
 				
                 //$sql was set somewhere before
                 if ($sql != "NULL") {$query .= " AND $sql";}
@@ -2735,7 +2747,8 @@ if (isset($summary) && $summary)
 				}
 				
 				//filtering enabled?
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+				if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
+				elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}
 				
 				//if $sql values have been passed to the statistics script from another script, incorporate them
 				if ($sql != "NULL") {$query .= " AND $sql";}
@@ -2750,7 +2763,8 @@ if (isset($summary) && $summary)
 				    $querystart .= " AND ".db_quote_id($fieldname)." != 0";
 				}
 				//filtering enabled?
-				if (incompleteAnsFilterstate() === true) {$querystarter .= " AND submitdate is not null";}                     
+				if (incompleteAnsFilterstate() == "inc") {$querystarters .= " AND submitdate is null";}
+				elseif (incompleteAnsFilterstate() == "filter") {$querystarter .= " AND submitdate is not null";}                     
 				
 				//if $sql values have been passed to the statistics script from another script, incorporate them
 				if ($sql != "NULL") {$querystarter .= " AND $sql";}
@@ -3428,7 +3442,8 @@ if (isset($summary) && $summary)
 				}
 				
 				//check filter option
-				if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}                     
+				if (incompleteAnsFilterstate() == "inc") {$query .= " AND submitdate is null";}
+				elseif (incompleteAnsFilterstate() == "filter") {$query .= " AND submitdate is not null";}                     
 				
 				//check for any "sql" that has been passed from another script
 				if ($sql != "NULL") {$query .= " AND $sql";}
@@ -3622,7 +3637,7 @@ if (isset($summary) && $summary)
 			}	//end foreach -> loop through answer data
 
 			//no filtering of incomplete answers and NO multiple option questions
-            if ((incompleteAnsFilterstate() === false) and ($qtype != "M") and ($qtype != "P"))
+            if ((incompleteAnsFilterstate() == "filter") and ($qtype != "M") and ($qtype != "P"))
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
                 if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))

@@ -4990,7 +4990,7 @@ if(!function_exists('str_ireplace')) {
 function incompleteAnsFilterstate()
 {
 	global $filterout_incomplete_answers;
-	$letsfliter='';
+	$letsfilter='';
 	$letsfilter = returnglobal('filterinc'); //read get/post filterinc
 
 	// first let's initialize the incompleteanswers session variable
@@ -5004,10 +5004,13 @@ function incompleteAnsFilterstate()
 	}
 
 	if  ($_SESSION['incompleteanswers']=='filter') {
-		return true;
+		return "filter"; //COMPLETE ANSWERS ONLY
 	}
 	elseif ($_SESSION['incompleteanswers']=='show') {
-		return false;
+		return false; //ALL ANSWERS
+	}
+	elseif ($_SESSION['incompleteanswers']=='incomplete') {
+	    return "inc"; //INCOMPLETE ANSWERS ONLY
 	}
 	else
 	{ // last resort is to prevent filtering

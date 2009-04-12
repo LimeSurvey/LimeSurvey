@@ -290,7 +290,8 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$nfncount = count($fnames)-1;
 	//SHOW INDIVIDUAL RECORD
 	$idquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
-	if (incompleteAnsFilterstate() === true) {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
+	if (incompleteAnsFilterstate() == "inc") {$idquery .= "submitdate == ".$connect->DBDate('1980-01-01'). " AND ";}
+	elseif (incompleteAnsFilterstate() == "filter") {$idquery .= "submitdate >= ".$connect->DBDate('1980-01-01'). " AND ";}
 	if ($id<1) {$id=1;}
 	if (isset($_POST['sql']) && $_POST['sql'])
 	{
@@ -603,7 +604,8 @@ elseif ($subaction == "all")
 
 	//LETS COUNT THE DATA
 	$dtquery = "SELECT count(*) FROM $surveytable";
-	if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
+	if (incompleteAnsFilterstate() == "inc") {$dtquery .= "WHERE submitdate IS NULL ";}
+	elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
 	$dtresult=db_execute_num($dtquery);
 	while ($dtrow=$dtresult->FetchRow()) {$dtcount=$dtrow[0];}
 
@@ -615,13 +617,18 @@ elseif ($subaction == "all")
 		if ($_POST['sql'] == "NULL")
 		{
 			$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
-            if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
+	if (incompleteAnsFilterstate() == "inc") {$dtquery .= "WHERE submitdate is null";}
+	elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
 			$dtquery .= " ORDER BY id";
 		}
 		else
 		{
             $dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable WHERE ";
-            if (incompleteAnsFilterstate() === true) {
+	        if (incompleteAnsFilterstate() == "inc") {
+			    $dtquery .= "submitdate is null ";
+			    if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }
+			}
+	        elseif (incompleteAnsFilterstate() == "filter") {
                 $dtquery .= " submitdate is not null ";
                 if (stripcslashes($_POST['sql']) !== "") { $dtquery .= " AND "; }
             }
@@ -632,7 +639,8 @@ elseif ($subaction == "all")
 	else
 	{
 		$dtquery = "SELECT *, CASE WHEN submitdate IS NULL THEN 'N' ELSE 'Y' END as completed FROM $surveytable ";
-		if (incompleteAnsFilterstate() === true) {$dtquery .= " WHERE submitdate is not null ";}
+		if (incompleteAnsFilterstate() == "inc") {$dtquery .= " WHERE submitdate is null ";}
+		elseif (incompleteAnsFilterstate() == "filter") {$dtquery .= " WHERE submitdate is not null ";}
 		$dtquery .= " ORDER BY id";
 	}
 	if ($order == "desc") {$dtquery .= " DESC";}
@@ -684,15 +692,23 @@ elseif ($subaction == "all")
 		$browseoutput .= "\t<tr><td align='left'>\n";
 	}
 
-	if (incompleteAnsFilterstate() === true)
+	if(incompleteAnsFilterstate() == "inc")
+	{
+	    $selecthide="";
+	    $selectshow="";
+	    $selectinc="selected='selected'";
+	}
+	elseif (incompleteAnsFilterstate() == "filter")
 	{
 		$selecthide="selected='selected'";
 		$selectshow="";
+		$selectinc="";
 	}
 	else
 	{
 		$selecthide="";
 		$selectshow="selected='selected'";
+		$selectinc="";
 	}
 
 	$browseoutput .=("\t\t</td>\n"
@@ -701,9 +717,10 @@ elseif ($subaction == "all")
 	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
 	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Filter incomplete answers:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
+	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+	."\t\t\t\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
 	."\t\t\t</select>\n"
 	."\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
 	."\t\t</font>\n"

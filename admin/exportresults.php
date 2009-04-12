@@ -163,15 +163,23 @@ if (!$exportstyle)
 	if (isset($_POST['sql'])) {$exportoutput .= " - ".$clang->gT("Filtered from statistics script");}
 	if (returnglobal('id')<>'') {$exportoutput .= " - ".$clang->gT("Single response");}
 
-	if (incompleteAnsFilterstate() === true)
+	if (incompleteAnsFilterstate() == "filter")
 	{
 		$selecthide="selected='selected'";
 		$selectshow="";
+		$selectinc="";
+	}
+	elseif (incompleteAnsFilterstate() == "inc")
+	{
+		$selecthide="";
+		$selectshow="";
+		$selectinc="selected='selected'";
 	}
 	else
 	{
 		$selecthide="";
 		$selectshow="selected='selected'";
+		$selectinc="";
 	}
 
 	$exportoutput .= "</strong> ($afieldcount ".$clang->gT("Columns").")</td></tr>\n"
@@ -193,9 +201,10 @@ if (!$exportstyle)
 	."<font size='1'><label for='convertspacetous'>"
 	.$clang->gT("Convert spaces in question text to underscores")."</label><br />"
 	
-	."\t\t\t&nbsp ".$clang->gT("Filter incomplete answers")." <select name='filterinc'>\n"
-	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+	."\t\t\t&nbsp ".$clang->gT("Include")." <select name='filterinc'>\n"
+	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
+	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+	."\t\t\t\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
 	."\t\t\t</select>\n"
 	."\t\t</font></font></td>\n"
 	."\t</tr>\n"
@@ -217,6 +226,12 @@ if (!$exportstyle)
 	."<label for='ansfull'>"
 	.$clang->gT("Full Answers")."</label>\n"
 	."\t\t</font></td>\n"
+	."\t</tr>\n"
+	."\t<tr>\n"
+	."\t\t<td align='left'>\n"
+	."\t\t\t<input type='checkbox' name='gridstyleseverity' id='gridstyleseverity' value='1'>\n"
+	."\t\t\t<label for='gridstyleseverity' style='font-size: 7pt; top: -3px; position: relative; left: -5px'>Export Severity Questions as Grid</label>\n"
+	."\t\t</td>\n"
 	."\t</tr>\n"
 	."\t<tr><td><font size='1'><strong>"
 	.$clang->gT("Format")."</strong></font></td></tr>\n"
@@ -555,9 +570,12 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POS
 	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
-if (incompleteAnsFilterstate() === true)
+if (incompleteAnsFilterstate() == "filter")
 {
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
+} elseif (incompleteAnsFilterstate() == "inc")
+{
+    $dquery .= "  WHERE $surveytable.submitdate is null ";
 }
 
 $dquery .=" ORDER BY id ";
@@ -898,18 +916,24 @@ if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST
 	$dquery	.= " FROM $surveytable "
 	. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
 	. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
-	if (incompleteAnsFilterstate() === true)
+	if (incompleteAnsFilterstate() == "filter")
 	{
     $dquery .= "  WHERE $surveytable.submitdate is not null ";
+	} elseif (incompleteAnsFilterstate() == "inc")
+	{
+	$dquery .= "  WHERE $surveytable.submitdate is null ";
 	}
 }
 else // this applies for exporting everything
 {
 	$dquery = "SELECT $selectfields FROM $surveytable ";
 
-	if (incompleteAnsFilterstate() === true)
+	if (incompleteAnsFilterstate() == "filter")
 	{
     $dquery .= "  WHERE $surveytable.submitdate is not null ";
+	} elseif (incompleteAnsFilterstate() == "inc")
+	{
+	$dquery .= "  WHERE $surveytable.submitdate is null ";
 	}
 }
 
@@ -917,13 +941,13 @@ if (isset($_POST['sql'])) //this applies if export has been called from the stat
 {
 	if ($_POST['sql'] != "NULL")
 	{
-		if (incompleteAnsFilterstate() === true) {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
+		if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$dquery .= " AND ".stripcslashes($_POST['sql'])." ";}
 		else {$dquery .= "WHERE ".stripcslashes($_POST['sql'])." ";}
 	}
 }
 if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if export has been called from single answer view
 {
-	if (incompleteAnsFilterstate() === true) {$dquery .= " AND $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
+	if (incompleteAnsFilterstate() == "filter" || incompleteAnsFilterstate() == "inc") {$dquery .= " AND $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
 	else {$dquery .= "WHERE $surveytable.id=".stripcslashes($_POST['answerid'])." ";}
 }
 
@@ -1098,18 +1122,18 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			switch ($ftype)
 			{
 				case "-": //JASONS SPECIAL TYPE
-				$exportoutput .= $drow[$i];
-                if($type == "pdf"){$pdf->intopdf($drow[$i]);}
-				break;
+				    $exportoutput .= $drow[$i];
+                    if($type == "pdf"){$pdf->intopdf($drow[$i]);}
+				    break;
 				case "R": //RANKING TYPE
-				$lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
-				$lr = db_execute_assoc($lq, array($drow[$i]));
-				while ($lrow = $lr->FetchRow())
-				{
-					$exportoutput .= strip_tags_full($lrow['answer']);
-                    if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['answer']));}
-				}
-				break;
+				    $lq = "SELECT * FROM {$dbprefix}answers WHERE qid=$fqid AND language='$explang' AND code = ?";
+				    $lr = db_execute_assoc($lq, array($drow[$i]));
+				    while ($lrow = $lr->FetchRow())
+				    {
+					    $exportoutput .= strip_tags_full($lrow['answer']);
+                        if($type == "pdf"){$pdf->intopdf(strip_tags_full($lrow['answer']));}
+				    }
+				    break;
 				case "1":
                     if (mb_substr($fieldinfo,-1) == 0) 
                     {
