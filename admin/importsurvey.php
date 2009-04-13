@@ -552,6 +552,8 @@ if ($importversion<=100)
 
 if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connect->BindTimeStamp($surveyrowdata['datecreated']);}
 unset($surveyrowdata['expires']);
+unset($surveyrowdata['attribute1']);
+unset($surveyrowdata['attribute2']);
 unset($surveyrowdata['url']);           
 if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
 $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];

@@ -26,14 +26,14 @@
 
 $databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
-$databasename       =   'limesurvey';  // The name of the database that we will create
+$databasename       =   'limesurvey_dev';  // The name of the database that we will create
 $databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is 'lime_'
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey"; //The root web url for your limesurvey installation (without a trailing slash). The double quotes (") are important.
+$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey_dev"; //The root web url for your limesurvey installation (without a trailing slash). The double quotes (") are important.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this setting.
                                            // If you use IIS then you MUST enter the complete rootdir e.g. : $rootDir='C:\Inetpub\wwwroot\limesurvey'!
@@ -50,3 +50,5 @@ $defaultpass        =   'password';       // This is the default password for th
 $siteadminemail     =   'your@email.org'; // The default email address of the site administrator
 $siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $siteadminname      =   'Your Name';      // The name of the site administrator
+
+$debug=2;

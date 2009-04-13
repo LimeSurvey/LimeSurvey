@@ -498,7 +498,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '133');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '134');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

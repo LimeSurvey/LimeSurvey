@@ -2955,18 +2955,26 @@ function templatereplace($line)
 		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
 		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
 		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-		if (strpos($line, "{TOKEN:ATTRIBUTE_1}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_1}", $_SESSION['thistoken']['attribute_1'], $line);
-		if (strpos($line, "{TOKEN:ATTRIBUTE_2}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_2}", $_SESSION['thistoken']['attribute_2'], $line);
 	}
 	else
 	{
 		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
 		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
 		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-		if (strpos($line, "{TOKEN:ATTRIBUTE_1}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_1}", "", $line);
-		if (strpos($line, "{TOKEN:ATTRIBUTE_2}") !== false) $line=str_replace("{TOKEN:ATTRIBUTE_2}", "", $line);
 	}
 
+    if (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
+    {
+        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
+        $templine=substr($templine,0,strpos($templine, "}")+1);
+        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
+        $replacestr='';
+        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
+        $line=str_replace($templine, $replacestr, $line);
+    }
+    
+    
+    
 	if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
 	if (strpos($line, "{RESTART}") !== false)
 	{
@@ -5208,8 +5216,14 @@ function retrieve_Answer($code)
 	return html_escape($return);
 }
 
-// returns true if thesurvey has a token table defined
-function bHasSurveyGotTokentable($thesurvey, $sid=null)
+/**
+* Check if token table odes exist
+* 
+* @param mixed $thesurvey
+* @param mixed $sid
+* @return true if thesurvey has a token table defined       
+*/
+function tokenTableExists($thesurvey, $sid=null)
 {
 	global $connect;
 	if (is_array($thesurvey))
@@ -5239,7 +5253,7 @@ function bHasSurveyGotTokentable($thesurvey, $sid=null)
 function bIsTokenCompletedDatestamped($thesurvey)
 {
 	if ($thesurvey['private'] == 'Y' &&
-		bHasSurveyGotTokentable($thesurvey) )
+		tokenTableExists($thesurvey) )
 	{
 		return false;
 	}
@@ -5759,13 +5773,19 @@ function strip_javascript($content){
     return $text;
 } 
 
+
+/**
+* This function checks if a given question should be displayed or not
+* If the optionnal gid parameter is set, then we are in a group/group survey
+* and thus we can't evaluate conditions using answers on the same page 
+* (this will be done by javascript): in this case we disregard conditions on 
+* answers from same page
+* 
+* @param mixed $qid
+* @param mixed $gid
+*/
 function checkquestionfordisplay($qid, $gid=null)
 { 
-	//This function checks if a given question should be displayed or not
-	//If the optionnal gid parameter is set, then we are in a group/group survey
-	// and thus we can't evaluate conditions using answers on the same page 
-	// (this will be done by javascript): in this case we disregard conditions on 
-	// answers from same page
 	global $dbprefix, $connect;
 
 	$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
@@ -5968,3 +5988,26 @@ function checkquestionfordisplay($qid, $gid=null)
 	return false;
 }
 
+/**
+* This is a helper function for GetAttributeFieldNames
+* 
+* @param mixed $fieldname
+*/
+function filterforattributes ($fieldname)
+{
+    if (strpos($fieldname,'attribute_')===false) return false; else return true;    
+}
+
+
+/**
+* Retrieves the attribute field names from the related token table
+* 
+* @param mixed $surveyid  The survey ID
+* @return array The fieldnames
+*/
+function GetAttributeFieldNames($surveyid)
+{
+    global $dbprefix, $connect;
+    $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
+    return array_filter($tokenfieldnames,'filterforattributes');
+}

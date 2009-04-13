@@ -398,7 +398,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; //$tokensexist = 0;
-if ($surveyexists == 1 && bHasSurveyGotTokentable($thissurvey))
+if ($surveyexists == 1 && tokenTableExists($thissurvey))
 {
 	$tokensexist = 1;
 }
@@ -793,9 +793,12 @@ function getTokenData($surveyid, $token)
 		$thistoken=array("firstname"=>$row['firstname'],
 		"lastname"=>$row['lastname'],
 		"email"=>$row['email'],
-		"language" =>$row['language'],
-		"attribute_1"=>$row['attribute_1'],
-		"attribute_2"=>$row['attribute_2']);
+		"language" =>$row['language']);
+         $attrfieldnames=GetAttributeFieldnames($surveyid);
+         foreach ($attrfieldnames as $attr_name)
+         {
+		   $thistoken[$attr_name]=$row[$attr_name];
+         }
 	} // while
 	return $thistoken;
 }
@@ -1350,8 +1353,11 @@ function submittokens()
 		$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 		$fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
 		$fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
-		$fieldsarray["{ATTRIBUTE_1}"]=$cnfrow['attribute_1'];
-		$fieldsarray["{ATTRIBUTE_2}"]=$cnfrow['attribute_2'];
+        $attrfieldnames=GetAttributeFieldnames($surveyid);
+        foreach ($attrfieldnames as $attr_name)
+        {
+            $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
+        }
 		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
 		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));

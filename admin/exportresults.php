@@ -42,11 +42,11 @@ include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 $exportoutput="";
 
+// Get info about the survey
+$thissurvey=getSurveyInfo($surveyid);
+
 if (!$exportstyle)
 {
-    // Get info about the survey
-    $thissurvey=getSurveyInfo($surveyid);
-
     // First add the standard fields 
     $excesscols[]="id";
     $excesscols[]='completed';
@@ -389,15 +389,12 @@ if (!$exportstyle)
 			."<label for='email_address'>".$clang->gT("Email")."</label><br />\n"
 			."<input type='checkbox' class='checkboxbtn' name='token' id='token'>"
 			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
-			$query = "SELECT * FROM {$dbprefix}tokens_$surveyid"; //SEE IF TOKENS TABLE HAS ATTRIBUTE FIELDS
-			$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
-			$rowcount = $result->FieldCount();
-			if ($rowcount > 7)
-			{
-				$exportoutput .= "<input type='checkbox' class='checkboxbtn' name='attribute_1' id='attribute_1'>"
-				."<label for='attribute_1'>".$clang->gT("Attribute 1")."</label><br />\n"
-				."<input type='checkbox' class='checkboxbtn' name='attribute_2' id='attribute_2'>"
-				."<label for='attribute_2'>".$clang->gT("Attribute 2")."</label><br />\n";
+
+            $attrfieldnames=GetAttributeFieldnames($surveyid);
+            foreach ($attrfieldnames as $attr_name)
+            {
+				$exportoutput .= "<input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
+				."<label for='$attr_name'>".sprintf($clang->gT("Attribute %s"),substr($attr_name,10))."</label><br />\n";
 			}
 			$exportoutput .= "\t\t</font></font></td>\n"
 			."\t</tr>\n"
@@ -536,25 +533,32 @@ if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 {
 	$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 }
-if (isset($_POST['token']) && $_POST['token']=="on")
+
+if (tokenTableExists(null,$surveyid))
 {
-	$dquery .= ", {$dbprefix}tokens_$surveyid.token";
-}
-if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
-{
-	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_1";
-}
-if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
-{
-	$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_2";
+    if (isset($_POST['token']) && $_POST['token']=="on")
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.token";
+    }
+
+    $attrfieldnames=GetAttributeFieldnames($surveyid);
+    foreach ($attrfieldnames as $attr_name)
+    {
+        if (isset($_POST[$attr_name]) && $_POST[$attr_name]=="on")
+        {
+            $dquery .= ", {$dbprefix}tokens_$surveyid.$attr_name";
+        }
+    }
 }
 $dquery .= " FROM $surveytable";
-if ((isset($_POST['first_name']) && $_POST['first_name']=="on")  || (isset($_POST['token']) && $_POST['token']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on") || (isset($_POST['email_address']) && $_POST['email_address']=="on"))
+
+if (tokenTableExists(null,$surveyid))
 {
-	$dquery .= ""
-	. " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
-	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
+    $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
+              ." ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
 }
+
+
 if (incompleteAnsFilterstate() === true)
 {
 	$dquery .= "  WHERE $surveytable.submitdate is not null ";
@@ -592,15 +596,10 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
 		else {$firstline .= $elang->gT("Token")."$separator";}
 	}
-	elseif ($fieldinfo == "attribute_1")
+	elseif (strpos($fieldinfo,"attribute_")!==false)
 	{
-		if ($type == "csv") {$firstline .= "\"attr1\"$separator";}
-		else {$firstline .= $elang->gT("Attribute 1")."$separator";}
-	}
-	elseif ($fieldinfo == "attribute_2")
-	{
-		if ($type == "csv") {$firstline .= "\"attr2\"$separator";}
-		else {$firstline .= $elang->gT("Attribute 2")."$separator";}
+		if ($type == "csv") {$firstline .= "\"$fieldinfo\"$separator";}
+		else {$firstline .= sprintf($elang->gT("Attribute %s"),substr($fieldinfo,10));}
 	}
 	elseif ($fieldinfo == "id")
 	{
@@ -868,7 +867,7 @@ $limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['expor
 
 
 //Now dump the data
-if ((isset($_POST['first_name']) && $_POST['first_name']=="on") || (isset($_POST['token']) && $_POST['token']=="on") || (isset($_POST['last_name']) && $_POST['last_name']=="on") || (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on") || (isset($_POST['attribute_2']) && $_POST['attribute_2'] == "on") || (isset($_POST['email_address']) && $_POST['email_address'] == "on"))
+if (tokenTableExists(null,$surveyid))
 {
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")

@@ -478,3 +478,45 @@ a.invalidemail {
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
+
+
+
+.browsetokens th
+{
+white-space:nowrap;
+width:auto;
+padding:2px 15px 2px 5px;
+font-size:12px;
+}
+
+.browsetokens th img
+{
+ padding-right:4px;
+}
+
+.browsetokens td 
+{
+  padding:0 5px;
+}
+
+.browsetokens td:first-child {
+    text-align:right;
+   padding-right: 3px;
+}   
+
+
+.tokensummary tr:first-child
+{
+ font-weight:bold;
+}
+
+.tokensummary tr {
+ margin:0px;
+ padding:0px;
+}
+
+.tokensummary td {
+     outline: 1px solid;
+     outline-color:#D2E0F2;
+padding: 2px 5px;
+}

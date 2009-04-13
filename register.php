@@ -97,8 +97,8 @@ $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
-. "(firstname, lastname, email, emailstatus, token, attribute_1, attribute_2)\n"
-. "VALUES (?, ?, ?, ?, ?, ?, ?)";
+. "(firstname, lastname, email, emailstatus, token)\n"
+. "VALUES (?, ?, ?, ?, ?)";
 $result = $connect->Execute($query, array($postfirstname, 
                                           $postlastname,
                                           returnglobal('register_email'), 
@@ -115,8 +115,6 @@ $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 $fieldsarray["{FIRSTNAME}"]=$postfirstname;
 $fieldsarray["{LASTNAME}"]=$postlastname;
-//$fieldsarray["{ATTRIBUTE_1}"]=$postattribute1;
-//$fieldsarray["{ATTRIBUTE_2}"]=$postattribute2;
 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
 $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
