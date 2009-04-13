@@ -18,7 +18,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.81";
-$dbversionnumber = 133;
+$dbversionnumber = 134;
 $buildnumber = "";
 
 
@@ -582,17 +582,14 @@ function db_tables_exist($table)
 function getsurveylist($returnarray=false)
     {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
-    $surveyidquery = "SELECT a.sid, a.owner_id, surveyls_title, surveyls_description, a.admin, a.active, surveyls_welcometext, "
-                    ." a.useexpiry, a.expires, a.usestartdate, a.startdate, "
-					. "a.adminemail, a.private, a.faxto, a.format, a.template, surveyls_url, "
-					. "a.language, a.datestamp, a.ipaddr, a.refurl, a.usecookie, a.notification, a.allowregister, a.attribute1, a.attribute2, "
-					. "a.allowsave, a.autoredirect, a.allowprev, a.datecreated FROM ".db_table_name('surveys')." AS a "
-					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
+    $surveyidquery = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url "
+					." FROM ".db_table_name('surveys')." AS a "
+					." INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
 
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 	{
 		$surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
-		$surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
+		$surveyidquery .= " WHERE b.uid =".$_SESSION['loginID'];
 	}
 
 	$surveyidquery .= " order by active DESC, surveyls_title";
@@ -601,7 +598,7 @@ function getsurveylist($returnarray=false)
         $surveyidresult = $connect->GetAll($surveyidquery);  //Checked
         return $surveyidresult;
     }
-    $surveyidresult = db_execute_num($surveyidquery);  //Checked
+    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
     $surveynames = $surveyidresult->GetRows();
@@ -611,19 +608,19 @@ function getsurveylist($returnarray=false)
     {
         foreach($surveynames as $sv)
         {
-            if($sv[5]!='Y') 
+            if($sv['active']!='Y') 
             { 
               $inactivesurveys .= "\t\t\t<option ";
-        			if($_SESSION['loginID'] == $sv[1]) {$inactivesurveys .= " style=\"font-weight: bold;\"";}
-        			if ($sv[0] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
-                    $inactivesurveys .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
+        			if($_SESSION['loginID'] == $sv['owner_id']) {$inactivesurveys .= " style=\"font-weight: bold;\"";}
+        			if ($sv['sid'] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
+                    $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
             }
               else
               {
               $activesurveys .= "\t\t\t<option ";
-        			if($_SESSION['loginID'] == $sv[1]) {$activesurveys .= " style=\"font-weight: bold;\"";}
-        			if ($sv[0] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
-                    $activesurveys .=" value='$scriptname?sid=$sv[0]'>$sv[2]</option>\n";
+        			if($_SESSION['loginID'] == $sv['owner_id']) {$activesurveys .= " style=\"font-weight: bold;\"";}
+        			if ($sv['sid'] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
+                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
               
               }
         }
@@ -3093,7 +3090,7 @@ function templatereplace($line)
       
 
 		$registerform .= "<tr><td align='right'><input type='hidden' name='lang' value='".$reglang."' /></td><td></td></tr>\n";
-		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
+/*		if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
 		{
 			$registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
 			."<td align='left'><input class='text' type='text' name='register_attribute1'";
@@ -3112,7 +3109,7 @@ function templatereplace($line)
 				$registerform .= " value='".htmlentities(returnglobal('register_attribute2'),ENT_QUOTES,'UTF-8')."'";
 			}
 			$registerform .= " /></td></tr>\n";
-		}
+		}        */
 		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".$clang->gT("Continue")."' />"
 		."</td></tr>\n"
 		."</table>\n"
@@ -4442,9 +4439,14 @@ function convertCSVRowToArray($string, $seperator, $quotechar)
 	return $fields;
 }
 
+
+/**
+* This function removes surrounding and masking quotes from the CSV field        
+* 
+* @param mixed $field
+* @return mixed
+*/
 function CSVUnquote($field)
-// This function removes surrounding and masking quotes from the CSV field
-// c_schmitz
 {
 	//print $field.":";
 	$field = preg_replace ("/^\040*\"/", "", $field);

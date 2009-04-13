@@ -92,8 +92,8 @@ while ($mayinsert != true)
 
 $postfirstname=sanitize_xss_string(strip_tags(returnglobal('register_firstname')));   
 $postlastname=sanitize_xss_string(strip_tags(returnglobal('register_lastname')));   
-$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));   
-$postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   
+/*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));   
+$postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
 //Insert new entry into tokens db
 $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
@@ -103,9 +103,8 @@ $result = $connect->Execute($query, array($postfirstname,
                                           $postlastname,
                                           returnglobal('register_email'), 
                                           'OK', 
-                                          $newtoken,
-                                          $postattribute1, 
-                                          $postattribute2)
+                                          $newtoken)
+                                          //                             $postattribute1,   $postattribute2)
 ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
 $tid=$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
 
@@ -116,8 +115,8 @@ $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
 $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 $fieldsarray["{FIRSTNAME}"]=$postfirstname;
 $fieldsarray["{LASTNAME}"]=$postlastname;
-$fieldsarray["{ATTRIBUTE_1}"]=$postattribute1;
-$fieldsarray["{ATTRIBUTE_2}"]=$postattribute2;
+//$fieldsarray["{ATTRIBUTE_1}"]=$postattribute1;
+//$fieldsarray["{ATTRIBUTE_2}"]=$postattribute2;
 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 $fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
 $fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));

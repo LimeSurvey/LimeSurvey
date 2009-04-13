@@ -215,8 +215,6 @@ CREATE TABLE `prefix_surveys` (
   `usecookie` char(1) default 'N',
   `notification` char(1) default '0',
   `allowregister` char(1) default 'N',
-  `attribute1` varchar(255) default NULL,
-  `attribute2` varchar(255) default NULL,
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
   `autoredirect` char(1) default 'N',
@@ -234,6 +232,7 @@ CREATE TABLE `prefix_surveys` (
   `tokenanswerspersistence` char(1) default 'N',
   `assessments` char(1) default 'N', 
   `usecaptcha` char(1) default 'N',
+  `usetokens` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   PRIMARY KEY  (`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;

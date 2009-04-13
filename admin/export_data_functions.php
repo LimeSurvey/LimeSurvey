@@ -60,7 +60,7 @@ function spss_fieldmap($prefix = 'V') {
 	}
 
 	#Lookup the names of the attributes
-	$query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+	$query="SELECT sid, 'attribute1', 'attribute2', private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 	$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
 	$num_results = $result->RecordCount();
 	$num_fields = $num_results;
