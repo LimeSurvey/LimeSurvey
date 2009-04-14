@@ -56,7 +56,7 @@ if (isset($_POST['method']))
 	}
 	else
 	{
-		$p_method = $_POST['method'];
+		$p_method = trim ($_POST['method']);
 	}
 }
 
@@ -1421,7 +1421,7 @@ if ($subaction=='' ||
 					$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t\t<td align='center' valign='middle' width='20%'>\n"
 						."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
-						.$method[$rows['method']]
+						.$method[trim ($rows['method'])]
 						."\t\t\t\t\t\t</font>\n"
 						."\t\t\t\t\t</td>\n"
 						."\n"
