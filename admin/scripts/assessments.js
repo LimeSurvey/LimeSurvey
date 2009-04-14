@@ -33,7 +33,14 @@ $(document).ready(function(){
               }
               else
               {
-                $('#newgroupselect').attr('disabled',false);
+                if ($('#newgroupselect>option').length==0){
+                  $('#radiototal').attr('checked',true);
+                  alert (strnogroup);    
+                }
+                else
+                {
+                    $('#newgroupselect').attr('disabled',false);
+                }
               }
         }
     )

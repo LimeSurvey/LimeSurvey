@@ -93,6 +93,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	}
 	
     $assessmentsoutput=PrepareEditorScript();  
+    $assessmentsoutput.="<script type=\"text/javascript\">
+                        <!-- 
+                            var strnogroup='".$clang->gT("There are no groups available.", "js")."';
+                        --></script>";
     $assessmentsoutput.="<table width='100%' border='0' >\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
