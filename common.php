@@ -1374,7 +1374,14 @@ function getgrouplistlang($gid, $language)
 	{
 		$groupselecter .= "\t\t<option";
 		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>".htmlspecialchars(strip_tags($gv[1]))."</option>\n";
+		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>";
+        if (strip_tags($gv[1]))
+        {
+            $groupselecter .= htmlspecialchars(strip_tags($gv[1]));
+		} else {
+		    $groupselecter .= htmlspecialchars($gv[1]);
+		}
+		$groupselecter .= "</option>\n";
 	}
 	if ($groupselecter)
 	{
