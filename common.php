@@ -2820,7 +2820,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
 	if (strpos($line, "{URL}") !== false) {
-		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
+		if ($thissurvey['surveyls_url']!=""){$linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
