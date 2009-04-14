@@ -42,7 +42,7 @@ CREATE TABLE prefix_assessments (
     minimum character varying(50) DEFAULT ''::character varying NOT NULL,
     maximum character varying(50) DEFAULT ''::character varying NOT NULL,
     message text NOT NULL,
-    language character(20) DEFAULT 'en'::bpchar NOT NULL,
+    language character(20) DEFAULT 'en'::bpchar NOT NULL
 );
 
 

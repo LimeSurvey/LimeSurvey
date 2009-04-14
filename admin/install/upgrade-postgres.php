@@ -85,7 +85,7 @@ global $modifyoutput;
         // update language field with default language of that particular survey
         modify_database("","update prefix_assessments set language=(select language from prefix_surveys where sid=prefix_assessments.sid)"); echo $modifyoutput; flush();
         // copy assessment link to message since from now on we will have HTML assignment messages
-        modify_database("","update prefix_assessments set message=cast(message as character) +'<br /><a href=\"'+link+'\">'+link+'</a>'"); echo $modifyoutput; flush();
+        modify_database("","update prefix_assessments set message=cast(message as character) ||'<br /><a href=\"'||link||'\">'||link||'</a>'"); echo $modifyoutput; flush();
         // drop the old link field
          modify_database("","ALTER TABLE prefix_assessments DROP COLUMN link"); echo $modifyoutput; flush();
         // change the primary index to include language
@@ -143,7 +143,7 @@ function upgrade_survey_tables133()
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
     {
-        FixLanguageConsistency($sv0,$sv1);   
+        FixLanguageConsistency($sv['0'],$sv['1']);   
     }
 }
 
