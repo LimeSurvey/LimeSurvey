@@ -660,7 +660,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
          		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                 if ($importversion<=132)
                 {
-                   $labelrowdata["assessment_value"]=(int)$answerrowdata["code"];
+                   $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
                 }            
 				$labellid=$labelrowdata['lid'];
 		        if ($importversion<=100)
