@@ -229,6 +229,8 @@ CREATE TABLE prefix_surveys (
     usecookie character(1) DEFAULT 'N'::bpchar,
     notification character(1) DEFAULT '0'::bpchar,
     allowregister character(1) DEFAULT 'N'::bpchar,
+    attribute1 character varying(255),
+    attribute2 character varying(255),
     allowsave character(1) DEFAULT 'Y'::bpchar,
     printanswers character(1) DEFAULT 'N'::bpchar,
     autonumber_start integer DEFAULT 0,
@@ -246,7 +248,6 @@ CREATE TABLE prefix_surveys (
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
-    usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL
     
 );
@@ -498,7 +499,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '134');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '133');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --
