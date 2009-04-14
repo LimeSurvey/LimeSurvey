@@ -1090,6 +1090,11 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
         		$fieldcontents=convertToArray($qar, "', '", "('", "')");
             }		
         $asrowdata=array_combine($fieldorders,$fieldcontents);
+        if (isset($asrowdata['link']))
+        {
+            if (trim($asrowdata['link'])!='') $asrowdata['message']=$asrowdata['message'].'<br /><a href="'.$asrowdata['link'].'">'.$asrowdata['link'].'</a>';
+            unset($asrowdata['link']);
+        }
 		$oldsid=$asrowdata["sid"];
 		$oldgid=$asrowdata["gid"];
 		foreach ($substitutions as $subs) {
