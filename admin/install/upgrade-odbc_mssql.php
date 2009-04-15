@@ -285,7 +285,14 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute2]"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }   
-                
+     if ($oldversion < 135)
+    {
+    	/*
+    	 * Related to Issue 00698 from Mar 2007, now in April 2009 the request is fullfilled :)
+    	 */
+        modify_database("","ALTER TABLE [prefix_question_attributes] ALTER COLUMN [value] text"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }               
     return true;
 }
 

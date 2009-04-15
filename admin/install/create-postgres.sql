@@ -118,7 +118,7 @@ CREATE TABLE prefix_question_attributes (
     qaid serial NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
     attribute character varying(50),
-    value character varying(20)
+    value text NULL
 );
 
 -- 

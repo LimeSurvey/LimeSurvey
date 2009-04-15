@@ -142,7 +142,7 @@ CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
   [attribute] VARCHAR(50) default NULL,
-  [value] VARCHAR(20) default NULL,
+  [value] TEXT default NULL,
   PRIMARY KEY  ([qaid])
 ) 
 ;
