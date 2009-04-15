@@ -89,7 +89,7 @@
 
 	    // Bosnian
 	    $supportedLanguages['bs']['description'] = $clang->gT('Bosnian');
-	    $supportedLanguages['bs']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
+	    $supportedLanguages['bs']['nativedescription'] = 'Bosanski';
 	    $supportedLanguages['bs']['rtl'] = false;
 
 	    // Bulgarian
