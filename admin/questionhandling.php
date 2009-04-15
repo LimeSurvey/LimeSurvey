@@ -529,7 +529,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		    ."<table width='100%'><tr><td width='65%'><span title='".$attributetranslations[$qa['attribute']]['help']."'>"
 		    .$attributetranslations[$qa['attribute']]['caption']."</span></td>
 					       <td align='center' width='25%'><input type='text' name='attribute_value' value='"
-		    .$qa['value']."' maxlength='20' /></td>
+		    .$qa['value']."'  /></td>
 					       <td ><input type='submit' value='"
 		    .$clang->gT("Save")."' />
 					       <input type='hidden' name='action' value='editattribute' />\n
