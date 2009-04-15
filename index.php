@@ -2346,7 +2346,7 @@ function doAssessment($surveyid)
                                 {
                                     $x='';
                                 }
-                                $usquery = "SELECT assessment_value FROM ".db_table_name("labels")." where lid=(select lid$x from ".db_table_name("questions")." where qid=".$field['qid'].") and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                                $usquery = "SELECT assessment_value FROM ".db_table_name("labels")." where lid=(select lid$x from ".db_table_name("questions")." where qid=".$field['qid']." and language='$baselang') and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
                             }
                             else  // for normal answers
                             {
