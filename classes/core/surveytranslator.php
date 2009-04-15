@@ -284,6 +284,11 @@
 	    $supportedLanguages['sk']['nativedescription'] = 'Slov&aacute;k';
 	    $supportedLanguages['sk']['rtl'] = false;
 
+ 	    // Sinhaka
+	    $supportedLanguages['si']['description'] = $clang->gT('Sinhala');
+	    $supportedLanguages['si']['nativedescription'] = '&#3523;&#3538;&#3458;&#3524;&#3517;';
+	    $supportedLanguages['si']['rtl'] = false;
+
 	    // Slovenian
 	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');
 	    $supportedLanguages['sl']['nativedescription'] = 'Sloven&#353;&#269;ina';
