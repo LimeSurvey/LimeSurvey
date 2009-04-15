@@ -136,7 +136,7 @@ deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
 /*
  * only show questions where question attribute "public_statistics" is set to "1"
  */
-$query = "SELECT DISTINCT(".db_table_name("questions").".qid), ".db_table_name("questions").".*, group_name, group_order\n"
+$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
 ."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("survey_$surveyid").", ".db_table_name("question_attributes")."\n"
 ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
 ."AND ".db_table_name("groups").".language='".$language."'\n"
