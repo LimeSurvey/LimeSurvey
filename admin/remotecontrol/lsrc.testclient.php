@@ -13,12 +13,15 @@
 * $Id$
 * 
 */
+/*
+ * TODO: make this testclient new... it's ugly code...
+ */
 $wsdl = $_REQUEST['wsdl'];
 
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey181';
+$limeUrl='https://localhost/limesource/limesurvey_dev';
 
 //We need authentication for every function, so just write the logindata once for all
 $user ="admin";
@@ -35,7 +38,7 @@ if($wsdl=='')
 	// give full uri of the wsdl from the webservice you want to connect to...
 	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
 	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl="$limeUrl/admin/remotecontrol/lsrc.server.php?wsdl";
+	$wsdl=$limeUrl.'/admin/remotecontrol/lsrc.server.php?wsdl';
 }
 
 
@@ -207,6 +210,23 @@ while(list($key, $value) = each($_REQUEST))
 		//these are just outputs for testing
 		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 		
+		
+		
+	}
+	if(substr($key,0,8)=="getField")
+	{
+		$iVid = $_REQUEST['sid'];
+		
+		try
+		{
+			$sReturn = $client->sGetFieldmap($user, $pass, $iVid);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 		
 		
 	}
@@ -683,7 +703,15 @@ echo "<input type='submit' name='sendMail' value='Send Email to participants'/>"
 echo "</form>";
 echo "</div>";
 
-
+echo "<div style='float:right; margin-bottom:5px'>";
+echo "<h3>sGetFieldmap function</h3>";
+echo "<p>Gets you the fieldmap from a survey as csv</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
+echo "<input type='submit' name='getField' value='Get me the Fieldmap as CSV!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "</form></div>";
 //phpinfo();
 
 ?>

@@ -70,6 +70,7 @@ $server->addFunction("sImportQuestion");
 $server->addFunction("sImportMatrix");
 $server->addFunction("sImportFreetext");
 $server->addFunction("sSendEmail");
+$server->addFunction("sGetFieldmap");
 // handle the soap request!
 $server->handle();
  
@@ -77,7 +78,7 @@ $server->handle();
  *	Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
  *
 */
-function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') //XXX
+function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -96,7 +97,13 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
 }
-
+/*
+ * TODO: return Fieldmap of the survey
+ */
+function sFieldMap($sUser, $sPass, $iVid)
+{
+	exit;
+}
 /*
  * Function to send reminder, invitation or custom mails to participants of a specific survey
  * $iVid = Survey ID
@@ -287,11 +294,11 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  *	$sPass = password have to be the right one for the existing user in limesurvey
  *  $sVtyp = Veranstaltungstyp (Vorlesung, Seminar, Uebung, Exkursion)
 */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) //XXX
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iVid START OK ");
 	
 	
 	if($sVwel=='')
@@ -321,7 +328,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	
 	if($lsrcHelper->importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp))
 	{// if import of survey went ok it returns true, else nothing
-		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", nach import OK ");
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",surveyid=$iVid nach import OK ");
 		
 		//get the optional data into db
 		if($sMail!='')
@@ -332,7 +339,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 		if($sName!='')
 			$lsrcHelper->changeTable("surveys", "admin", $sName, "sid='$iVid'");
 		if($sUrl!='')
-			$lsrcHelper->changeTable("surveys", "url", $sUrl, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iVid'");
 		if($autoRd=='Y')
 			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
 			
@@ -355,7 +362,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
  *	$sUser = have to be an existing admin or superadmin in Limesurvey
  *	$sPass = password have to be the right one for the existing user in limesurvey
  */
-function sInsertToken($sUser, $sPass, $iVid, $sToken) //XXX
+function sInsertToken($sUser, $sPass, $iVid, $sToken) 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -469,7 +476,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken) //XXX
  *	$sUser = have to be an existing admin or superadmin in Limesurvey
  *	$sPass = password have to be the right one for the existing user in limesurvey
  */
-function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
+function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -588,7 +595,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) //XXX
 /**
  * function to return unused Tokens as String, seperated by commas, to get the people who did not complete the Survey
  */ 
-function sTokenReturn($sUser, $sPass, $iVid) //XXX
+function sTokenReturn($sUser, $sPass, $iVid) 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -662,7 +669,7 @@ function sTokenReturn($sUser, $sPass, $iVid) //XXX
  * @param unknown_type $iVid
  * @param unknown_type $sMod
  */
-function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')//XXX
+function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -1002,7 +1009,7 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",mode=$mode START OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid START OK ");
 	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
@@ -1035,4 +1042,32 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	
 }
 
+/*
+ * Fieldmap as csv for a surveyid
+ */
+function sGetFieldmap($sUser, $sPass, $iVid)
+{
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to get fieldmaps from other peoples Surveys");
+		exit;
+	}
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey $iVid does not exists");
+		exit;
+	}
+	
+	$returnCSV = $lsrcHelper->FieldMap2CSV($iVid);
+	return $returnCSV;
+	
+}
 ?>
