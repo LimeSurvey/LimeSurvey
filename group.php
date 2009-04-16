@@ -224,7 +224,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         $_SESSION['sid']=$surveyid;
 
 		sendcacheheaders();
-		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		{
 			//Automatically redirect the page to the "url" setting for the survey
 			
@@ -238,7 +238,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 			}
 			header("Location: {$redir}");	*/
 
-			$url = $thissurvey['url'];
+			$url = $thissurvey['surveyls_url'];
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
