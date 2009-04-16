@@ -24,68 +24,6 @@ if(isset($usepdfexport) && $usepdfexport == 1)
 }
 
 
-// function for condition check, only shoing the questions, where conditions met
-function conditionCheck($id,$qid, $surveyid)
-	{
-		$conditionCheckValue = array();
-		$condCheckQuery = "SELECT qid, cqid, cfieldname, method, value FROM ".db_table_name("conditions")." WHERE qid=$qid ";
-		$condCheckResult = db_execute_assoc($condCheckQuery);
-		$condAnzahl = $condCheckResult->RecordCount();
-		if($condAnzahl==0 || $condAnzahl==FALSE)
-		{
-			//echo $condAnzahl;
-			return true;
-			exit;
-		}
-		else
-		{
-			//echo $condAnzahl;
-		}
-		while ($condRow = $condCheckResult->FetchRow())
-		{	
-			//conditionCheck();
-			$condCheckQuery2 = " SELECT * FROM ".db_table_name("survey_{$surveyid}")." WHERE id=$id ";
-			$condCheckResult2 = db_execute_assoc($condCheckQuery2);
-			
-			$condValue = $condCheckResult2->FetchRow();
-
-			switch ($condRow['method']) {
-				case "==":
-				    if($condRow['value'] == $condValue[$condRow['cfieldname']])
-				    {
-				    	echo $condValue;
-				    	$conditionCheckValue[] = true;
-				    }
-					else
-				    {
-				    	$conditionCheckValue[] = false;
-				    }
-				break;
-				case "!=":
-			 		if($condRow['value']!= $condValue[$condRow['cfieldname']])
-				    {
-				    	$conditionCheckValue[] = true;
-				    }
-				    else
-				    {
-				    	$conditionCheckValue[] = false;
-				    }
-				break;				
-				
-			}
-		}
-		foreach($conditionCheckValue as $value)
-		{
-			if($value==false)
-			{
-				return false;
-				exit;
-			}
-		}
-		return true;
-		exit;
-	}
-
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
 $tpldir="$publicdir/templates";
@@ -271,6 +209,10 @@ if (isset($_SESSION['s_lang']))
 				if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
 				{
 					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+					if ($fnrow['type'] == "P" and $fnrow['other'] == "Y")
+					{
+						$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)");
+					}
 				}
 				}
 				elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
