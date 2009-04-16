@@ -3736,5 +3736,36 @@ class LsrcHelper {
 		return true;
 		
 	}	
+    
+    /**
+    * This function pulls a CSV representation of the Field map
+    * 
+    * @param mixed $surveyid - the survey ID you want the Fieldmap for
+    */
+    function FieldMap2CSV($surveyid)
+    {
+        $fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name');   
+        $fieldmap=createFieldMap($surveyid,'full',true);
+        
+        $result='"'.implode('","',$fields).'"'."\n";
+        foreach ($fieldmap as $entry)
+        {
+      
+           $destfieldmap=array();
+           foreach ($fields as $field)
+           {
+              if (isset($entry[$field]))
+              {
+                $destfieldmap[$field]=$entry[$field];  
+              }
+              else
+              {
+                $destfieldmap[$field]='';
+              }
+           }
+           $result.=implode(',',array_map('CSVEscape',$entry))."\n";
+        }
+        return $result;  
+    }
 }
 ?>
