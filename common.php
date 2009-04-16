@@ -17,7 +17,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
-$versionnumber = "1.81";
+$versionnumber = "1.81+";
 $dbversionnumber = 133;
 $buildnumber = "";
 
@@ -5975,4 +5975,3 @@ function checkquestionfordisplay($qid, $gid=null)
 	} // end while scenario
 	return false;
 }
-

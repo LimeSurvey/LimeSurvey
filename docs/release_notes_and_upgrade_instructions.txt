@@ -72,6 +72,34 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.81 to 1.81+ [2009/04/16] - Legend: + new feature, # update feature, - bug fix
+
++Added translation: Sinhalese translation by Janaka Padukka (c_schmitz)
++New Feature: Quota provides quick csv summary export (jcleeland)
++New Feature: Quota summary highlights unfinished quota entries (jcleeland)
++New Feature: Quotas now shows total completed (jcleeland)
++New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
+#Updated Feature: "Filter incomplete answers", "enable"/"disable" has always been confusing for users (jcleeland)
+#Updated Feature: You can now choose to browse records, statistics or export using filter by incomplete records as well as complete records, or all records (jcleeland)
+#Updated language: German translation (c_schmitz)
+#Updated translation: Turkish by A. Murad BAYRAM (c_schmitz)
+-Fixed issue #3035: Automatic loading of end URL does not work (c_schmitz)
+-Fixed Other-Comment field not displayed in the participant's print-answers window after submission when using a multiple choice question with comments and Other enabled (lemeur)
+-Fixed issue #3005: No < index in Conditionhandling (wahrendorff)
+-Fixed issue in printablesurvey.php - needed global $rootdir (jcleeland)
+-Fixed issue: The getgrouplistlang() function now will display contents of html tags if the entry would otherwise be empty. (jcleeland)
+-Fixed issue: browse single record when incomplete entry was broken from changes to filterincomplete (jcleeland)
+-Fixed issue: minor bugs with new quota features fixed (jcleeland)
+-Fixed issue #3004: 'Other/OtherComment' option does not appear for multiple choice with comments in the printable version. (lemeur)
+-Fixed issue #3029: Error message on submission with assessments when using questions with label sets (c_schmitz)
+-Fixed issue #3030: Notice at Assessments when trying to add an assessment and no groups exist in a survey (c_schmitz)
+-Fixed wrong native description for Bosnian language (c_schmitz)
+-Fixed issue with pg: Syntax error in install script (wahrendorff)
+-Fixed issue with pg: wrong concat chars on upgrade (wahrendorff)
+-Fixed issue #3021 (SQL error at public statistics using MS SQL database) (maziminke)
+-Fixed: changed donation link to new general donation link: donate.limesurvey.org (el-matador-69)
+
+
 Changes from 1.80 to 1.81 [2009/04/10] - Legend: + new feature, # update feature, - bug fix
 
 +New feature #2841: Multilingual assessments - feature kindly sponsored by 'Western Norway Research Institute' (c_schmitz)
