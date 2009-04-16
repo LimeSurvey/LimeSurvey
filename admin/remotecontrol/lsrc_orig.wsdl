@@ -251,7 +251,7 @@
   <message name="sDeleteSurveyRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
   </message>
   <message name="sDeleteSurveyResponse">
   	<part name="return" type="xsd:string"></part>
@@ -274,7 +274,18 @@
   <message name="sSendEmailFault">
   	<part name="fault" element="xsd:string"></part>
   </message>
-  
+
+  <message name="sGetFieldmapRequest">
+  	<part name="sUser" type="xsd:string"></part>
+  	<part name="sPass" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
+  </message>
+  <message name="sGetFieldmapResponse">
+  	<part name="return" type="xsd:string"></part>
+  </message>
+  <message name="sGetFieldmapFault">
+  	<part name="fault" element="xsd:string"></part>
+  </message>
   <portType name="LsrcPortType">
     <operation name="sCreateSurvey" >
     <documentation>Creates (Import and activate) a Survey in LimeSurvey</documentation>
@@ -345,10 +356,31 @@
     	<output name="sSendEmailResponse" message="tns:sSendEmailResponse"></output>
             <fault name="sSendEmailFault" message="tns:sSendEmailFault"></fault>
         </operation>
+    <operation name="sGetFieldmap">
+    	<input message="tns:sGetFieldmapRequest" name="sGetFieldmapRequest"></input>
+    	<output message="tns:sGetFieldmapResponse" name="sGetFieldmapResponse"></output>
+            <fault name="sGetFieldmapFault" message="tns:sGetFieldmapFault"></fault>
+        </operation>
   </portType>
   
   <binding name="LsrcBinding" type="tns:LsrcPortType">
     <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+	
+	<operation name="sGetFieldmap">
+      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
+      <input name="sGetFieldmapRequest">
+        <soap:body namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output name="sGetFieldmapResponse">
+        <soap:body namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="sGetFieldmapFault">
+        <soap:fault name="sGetFieldmapFault" namespace="urn:lsrcNamespace"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
 	
 	<operation name="sSendEmail">
       <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />

@@ -18,7 +18,7 @@ $wsdl = $_REQUEST['wsdl'];
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey181';
+$limeUrl='https://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all
 $user ="admin";
@@ -210,6 +210,24 @@ while(list($key, $value) = each($_REQUEST))
 		
 		
 	}
+	if(substr($key,0,8)=="getField")
+	{
+		$iVid = $_REQUEST['sid'];
+		
+		try
+		{
+			$sReturn = $client->sGetFieldmap($user, $pass, $iVid);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+		
+		
+	}
+	
 	if(substr($key,0,9)=="delsurvey")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -683,6 +701,15 @@ echo "<input type='submit' name='sendMail' value='Send Email to participants'/>"
 echo "</form>";
 echo "</div>";
 
+echo "<div style='float:right; margin-bottom:5px'>";
+echo "<h3>sGetFieldmap function</h3>";
+echo "<p>Gets you the fieldmap from a survey as csv</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
+echo "<input type='submit' name='getField' value='Get me the Fieldmap as CSV!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "</form></div>";
 
 //phpinfo();
 

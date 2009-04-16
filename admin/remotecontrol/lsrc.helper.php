@@ -72,10 +72,12 @@ class LsrcHelper {
 		{
 			$where = str_replace("\\","",$where);
 			$query2num = "SELECT {$key} FROM {$dbprefix}{$table} WHERE {$where}";
-			$this->debugLsrc("wir sind in Line ".__LINE__.", OK ($query2num)"); 		
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2num)"); 	
+				
 			$query2update = "update ".$dbprefix.$table." set ".$key."='".$value."' where ".$where."";
 			$rs = db_execute_assoc($query2num);
-			$this->debugLsrc("wir sind in Line ".__LINE__.", OK ($query2update)");   
+			
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2update)");   
 			
 			if($connect->Execute($query2update)){
 				return $rs->RecordCount()." Rows changed";
@@ -672,6 +674,7 @@ class LsrcHelper {
 		// HINT FOR IMPORTERS: go to Line 714 to manipulate the Survey, while it's imported 
 		
 		    $the_full_file_path = $coreDir.$sVtyp.".csv";
+		    
 		 $this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",the_full_file_path ='$the_full_file_path' OK ");    
 		//$_SERVER['SERVER_NAME'] = "";				// just to avoid notices
 		//$_SERVER['SERVER_SOFTWARE'] = "";		// just to avoid notices
@@ -714,12 +717,12 @@ class LsrcHelper {
 //			  	$importsurvey .= "</font></td></tr></table>\n";
 //			  	$importsurvey .= "</body>\n</html>\n";
 			  	//unlink($the_full_file_path);
-			  	return;
+			  	return false;
 			  }
 			  else 
 			  {
 			  	//echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
-			  	return;
+			  	return false;
 			  }
 		  }
 		
@@ -1036,12 +1039,12 @@ class LsrcHelper {
 //				$importsurvey .= "</font></td></tr></table>\n";
 //				$importsurvey .= "</body>\n</html>\n";
 //				unlink($the_full_file_path); //Delete the uploaded file
-				return;
+				return false;
 			}
 			else 
 			{
 				//echo $clang->gT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
-				return;
+				return false;
 			}
 		}
 		
@@ -1207,7 +1210,7 @@ class LsrcHelper {
 		    $values=array_values($surveylsrowdata);
 		    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		    $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		    $iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+		    $iresult = $connect->Execute($insert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 		
 		
 		
@@ -1224,7 +1227,7 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		$iresult = $connect->Execute($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+		$iresult = $connect->Execute($insert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
 		
 		$oldsid=$surveyid;
 		
@@ -1260,7 +1263,7 @@ class LsrcHelper {
 		        $newvalues=array_values($surveylsrowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-				$lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
+				$lsiresult=$connect->Execute($lsainsert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
 			}	
 				
 		}
@@ -1426,14 +1429,14 @@ class LsrcHelper {
 				{
 					if ($importingfrom == "http") 
 		            { 
-		                $importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
-		                                ."<br />\n".$clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
+//		                $importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
+//		                                ."<br />\n".$clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
 		            }
 		            else
 		            {
 		                //echo $clang->gT("Error").": A group in the CSV/SQL file is not part of the same Survey. The import of the survey was stopped.\n";
 		            }
-					return;
+					return false;
 				}
 				//remove the old group id
 				if ($newgroup) {unset($grouprowdata['gid']);} 
@@ -1458,7 +1461,7 @@ class LsrcHelper {
 		
 		        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
 		        $ginsert = 'insert INTO '.db_table_name('groups').' ('.implode(',',array_keys($grouprowdata)).') VALUES ('.implode(',',$newvalues).')'; 
-				$gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+				$gres = $connect->Execute($ginsert);// or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
 		        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 				//GET NEW GID
 				if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
@@ -1492,13 +1495,13 @@ class LsrcHelper {
 		                	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
 		                	if (!array_key_exists($questionrowdata["type"], $qtypes))
 		                	{
-		                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was NOT imported because the question type is unknown."), $questionrowdata["title"], $questionrowdata["question"]) . "</li>";
+		                		//$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was NOT imported because the question type is unknown."), $questionrowdata["title"], $questionrowdata["question"]) . "</li>";
 		                		$countquestions--;
 		                		continue;
 		                	}
 		                	else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
 		                	{
-		                		$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
+		                		//$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
 		                	}
 		                }
 		                        		
@@ -1555,7 +1558,7 @@ class LsrcHelper {
 		                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                    $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		
-							$qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+							$qres = $connect->Execute($qinsert);// or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		                    if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 				            if ($newquestion)
 						{
@@ -1598,7 +1601,7 @@ class LsrcHelper {
 		                                $newvalues=array_values($answerrowdata);
 		                                $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                                $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-										$ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+										$ares = $connect->Execute($ainsert);// or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
 										
 										if ($type == "M" || $type == "P") {
 											$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -3735,9 +3738,9 @@ class LsrcHelper {
 		
 		return true;
 		
-	}	
-    
-    /**
+	}
+
+	/**
     * This function pulls a CSV representation of the Field map
     * 
     * @param mixed $surveyid - the survey ID you want the Fieldmap for
