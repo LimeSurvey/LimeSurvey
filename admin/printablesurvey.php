@@ -249,7 +249,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 {
 	global $rooturl, $rootdir;
 
-	if($type == 'other')
+	if($type == 'other' or $type == 'othercomment')
 	{
 		$x = 1;
 	};
@@ -302,6 +302,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 
 		case 'rank':
 		case 'other':
+		case 'othercomment':
 		case 'text':
 		case 'textarea':$output = '<div class="input-'.$type.'"'.$style.$div_title.'>{NOTEMPTY}</div>';
 				break;
@@ -900,6 +901,15 @@ while ($degrow = $degresult->FetchRow())
 					$longest_string = longest_string($mearow['answer'] , $longest_string );
 					$question['ANSWER'] .= "\t<li>\n\t\t".input_type_image('checkbox',$mearow['answer']).$mearow['answer']."\n\t\t".input_type_image('text','comment box',60)."\n\t</li>\n";
 					$pdfoutput[$j]=array(" o ".$mearow['code']," __________");
+					$j++;
+				}
+				if ($deqrow['other'] == "Y")
+				{ 
+					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t".input_type_image('other','',1)."".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
+					// lemeur: PDFOUTPUT HAS NOT BEEN IMPLEMENTED for these fields
+					// not sure who did implement this.
+					$pdfoutput[$j][0]=array(" o "."Other"," __________");
+					$pdfoutput[$j][1]=array(" o "."OtherComment"," __________");
 					$j++;
 				}
 				

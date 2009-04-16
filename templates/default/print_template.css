@@ -114,6 +114,7 @@ div.survey-group
 }
 
  div.input-other
+,div.input-othercomment
 ,div.input-rank
 ,div.input-text
 ,div.input-textarea
@@ -126,6 +127,7 @@ li.other
 	margin-top: 0.3em;
 }
 div.input-other
+,div.input-othercomment
 {
 	margin: -2em 0% 0% 5.5em;
 	width: 15em;
@@ -135,6 +137,18 @@ div.input-other
 .multiple-opt div.input-other
 {
 	margin-left: 3.5em;
+}
+.multiple-opt-comments div.input-other
+{
+	margin-top: 0.3em;
+	margin-left: 0em;
+	width: 10em;
+}
+.multiple-opt-comments div.input-othercomment
+{
+	margin-top: -2.1em;
+	margin-left: 10.5em;
+	width: 24em;
 }
 
 .ranking .q-answer li
