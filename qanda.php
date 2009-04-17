@@ -5603,7 +5603,7 @@ function do_array_flexible_dual($ia)
 					}
 					if (count($labelans1)>0) // if second label set is used
 					{
-//						$answer .= "\t\t\t\t\t<td><font size='1'></font></td>\n";		// separator	
+						$answer .= "<td>&nbsp;</td>\n";		// separator	
 						foreach ($labelans1 as $ld)
 						{
 						$answer .= "\t\t\t<th>".$ld."</th>\n";
