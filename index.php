@@ -2350,7 +2350,13 @@ function doAssessment($surveyid)
                             }
                             else  // for normal answers
                             {
-                                $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                                if (($field['type'] == "M") || ($field['type'] == "P"))
+                                {
+                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".$field['aid'];
+                                }
+                                else{
+                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
+                                    }
                             }
                             $usresult = db_execute_assoc($usquery);          //Checked 
                             if ($usresult)
