@@ -99,6 +99,10 @@ if (recursive_in_array($templatename,$templates)===false)
 if ($subaction == "delete" && $templatename!='default' ) 
 {
    rmdirr($tpldir."/".$templatename);
+   
+   $templatequery = "UPDATE {$dbprefix}surveys set template='default' where template='$templatename'\n";    
+   $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+   
    $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
    $templatename = "default";
 }
@@ -345,7 +349,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
     break;
 
@@ -377,7 +381,7 @@ switch($screenname) {
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endgroup.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/navigator.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endpage.pstpl"));
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
 	break;
 	case $clang->gT("Welcome Page", "unescaped"):
@@ -387,7 +391,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Register Page", "unescaped"):
@@ -412,7 +416,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Save Page", "unescaped"):
@@ -433,7 +437,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Load Page", "unescaped"):
@@ -454,7 +458,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Clear All Page", "unescaped"):
@@ -475,7 +479,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Completed Page", "unescaped"):
@@ -485,7 +489,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 
@@ -507,7 +511,7 @@ switch($screenname) {
         $myoutput[]=templatereplace($op);
     }
     $myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
     break;
 }
 $myoutput[]="</html>";
@@ -627,7 +631,7 @@ $templatesoutput.= "\t\t\t<div class='menubar'>\n"
 . "\t\t\t\t</div>\n"
 . "\t\t\t<div class='menubar-main'>\n"
 . "\t\t\t<div class='menubar-left'>\n";
-if (is_writable("$publicdir/templates/$templatename") && ($templatename != "default") ) {
+if (is_writable($tpldir."/".$templatename) && ($templatename != "default") ) {
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' " 
             		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
 } else {
