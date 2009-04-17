@@ -620,19 +620,24 @@ elseif ($action == "usertemplates")
 	// SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
       if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
       {
-                      $templaterights = array();
-                      $tquery = "SELECT * FROM ".$dbprefix."templates";
-                      $tresult = db_execute_assoc($tquery);
-                      while ($trow = $tresult->FetchRow()) {
-                              if (isset($_POST[$trow["folder"]."_use"]))
-                                      $templaterights[$trow["folder"]] = 1;
-                              else
-                                      $templaterights[$trow["folder"]] = 0;
+              $templaterights = array();
+              $tquery = "SELECT * FROM ".$dbprefix."templates";
+              $tresult = db_execute_assoc($tquery);
+              while ($trow = $tresult->FetchRow()) {
+                      if (isset($_POST[$trow["folder"]."_use"]))
+                            $templaterights[$trow["folder"]] = 1;
+                      else
+                              $templaterights[$trow["folder"]] = 0;
+              }
+              foreach ($templaterights as $key => $value) {
+                      $uquery = "INSERT INTO {$dbprefix}templates_rights (uid,".db_quote_id('folder').",".db_quote_id('use').")  VALUES ({$postuserid},'".$key."',$value)";
+                      $uresult = $connect->execute($uquery);
+                      if (!$uresult)
+                      {
+                            $uquery = "UPDATE {$dbprefix}templates_rights  SET  ".db_quote_id('use')."=$value where ".db_quote_id('folder')."='$key' AND uid=".$postuserid;
+                            $uresult = $connect->execute($uquery);
                       }
-                      foreach ($templaterights as $key => $value) {
-                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
-                              $uresult = $connect->execute($uquery);
-                      }
+              }
 		      if ($uresult)
 		      {
 			      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";
