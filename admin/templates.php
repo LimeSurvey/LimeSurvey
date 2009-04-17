@@ -84,12 +84,25 @@ if (isset ($_POST['changes'])) {
 	}
 
 
-if ($action != "newtemplate" && !$templatename) {$templatename = "default";}
 $template_a=gettemplatelist();
 foreach ($template_a as $tp) {
-	$templates[]=array("name"=>$tp, "dir"=>$tpldir."/".$tp);
+    $templates[]=array("name"=>$tp, "dir"=>$tpldir."/".$tp);
 }
 unset($template_a);
+    
+// check if a template like this exists
+if (recursive_in_array($templatename,$templates)===false)
+{
+   $templatename = "default";
+}
+    
+if ($subaction == "delete" && $templatename!='default' ) 
+{
+   rmdirr($tpldir."/".$templatename);
+   $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
+   $templatename = "default";
+}
+
 
 
 //Save Changes if necessary
@@ -577,8 +590,13 @@ $templatesoutput.= "<div class='menubar'>\n"
 . "onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Default Administration Page")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" 
 . "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' /></a>\n"
 . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
-. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />"
-. "</div>\n"
+. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />";
+
+if (isset($flashmessage))
+{
+  $templatesoutput.='<span style="font-weight:bold;">'.$flashmessage.'</span>';  
+}
+$templatesoutput.= "</div>\n"
 . "\t\t\t<div class='menubar-right'>\n"
 
 //Logout Button
@@ -621,41 +639,47 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60'
 
 if ($templatename == "default" && $debug<2) 
 {
-        $templatesoutput.= "\t\t\t\t\t" .
-    		 "<img name='EditName' src='$imagefiles/noedit.png' alt='' title=''" .
-    		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" ".
-             " />";
+    $templatesoutput.="<img name='EditName' src='$imagefiles/edit_disabled.png' alt='' title=''" 
+    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" "
+         ." />"
+         ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='' title=''" 
+         ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete the default template.", "js")."')\" "
+         ." />";
 }
 else 
     {	
-        $templatesoutput.= "\t\t\t\t\t<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
+        $templatesoutput.= "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
     		 "<img name='EditName' src='$imagefiles/edit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
              " /></a>";
+        $templatesoutput.= "<a href='#' "
+             ." onclick='if (confirm(\"".$clang->gT("Are you sure you want to delete this template?", "js")."\")) window.open(\"admin.php?action=templates&amp;subaction=delete&amp;templatename=$templatename\", \"_top\")' >" .
+             "<img name='DeleteTemplate' src='$imagefiles/delete.png' alt='' title=''" .
+             " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this template", "js")."')\" ".
+             " /></a>";
     }
 $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
-."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
-		"onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" .
-				"<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-."\t\t\t\t\t" .
-		"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " .
-		"onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" .
-		"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
-."</div>\n"
-."<div class='menubar-right'>\n"
-."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
-. "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
-. makeoptions($screens, "name", "name", html_escape($screenname) )
-. "</select>\n"
-."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
-."<img src='$imagefiles/seperator.gif' alt='' />"
-."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
-."</div></div></div>\n"
-."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
-."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
-. "\t<tr>\n"
-. "\t\t<td>\n";
+    ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
+    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" 
+    ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+    ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
+    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
+    ."</div>\n"
+    ."<div class='menubar-right'>\n"
+    ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
+    . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
+    . makeoptions($screens, "name", "name", html_escape($screenname) )
+    . "</select>\n"
+    ."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
+    ."<img src='$imagefiles/seperator.gif' alt='' />"
+    ."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
+    ."</div></div></div>\n"
+    ."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
+    ."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
+    . "\t<tr>\n"
+    . "\t\t<td>\n";
 
 
 //FILE CONTROL DETAILS
@@ -929,5 +953,43 @@ function multiarray_search($arrayVet, $campo, $valor){
     return false;
 }
 
+
+function rmdirr($dirname)
+{
+    // Sanity check
+    if (!file_exists($dirname)) {
+        return false;
+    }
+ 
+    // Simple delete for a file
+    if (is_file($dirname) || is_link($dirname)) {
+        return unlink($dirname);
+    }
+ 
+    // Loop through the folder
+    $dir = dir($dirname);
+    while (false !== $entry = $dir->read()) {
+        // Skip pointers
+        if ($entry == '.' || $entry == '..') {
+            continue;
+        }
+ 
+        // Recurse
+        rmdirr($dirname . DIRECTORY_SEPARATOR . $entry);
+    }
+ 
+    // Clean up
+    $dir->close();
+    return rmdir($dirname);
+}
+
+function recursive_in_array($needle, $haystack) {
+    foreach ($haystack as $stalk) {
+        if ($needle == $stalk || (is_array($stalk) && recursive_in_array($needle, $stalk))) {
+            return true;
+        }
+    }
+    return false;
+}
 
 ?>

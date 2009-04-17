@@ -17,7 +17,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
-$versionnumber = "1.81";
+$versionnumber = "1.82";
 $dbversionnumber = 135;
 $buildnumber = "";
 
@@ -6011,3 +6011,4 @@ function GetAttributeFieldNames($surveyid)
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
     return array_filter($tokenfieldnames,'filterforattributes');
 }
+
