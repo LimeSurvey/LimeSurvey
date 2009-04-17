@@ -66,6 +66,7 @@ if (!isset($screenname)) {$screenname=auto_unescape(returnglobal('screenname'));
 if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===false)) {die('Invalid screen name');}  // Die you sneaky bastard!
 
 if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
+if (!isset($subaction)) {$subaction=sanitize_paranoid_string(returnglobal('subaction'));}
 if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
@@ -107,6 +108,10 @@ if ($subaction == "delete" && $templatename!='default' )
    $templatename = "default";
 }
 
+if ($action == "templateupload")
+{
+    include("import_resources_zip.php");
+}
 
 
 //Save Changes if necessary
@@ -167,7 +172,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir)) {
 	}
 }
 
-if ($action == "templateupload") 
+if ($action == "templateuploadfile") 
   {
 
       if ($demoModeOnly == true)
@@ -666,6 +671,9 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
     ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
     ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" 
     ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+    ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
+    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Import template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Import template", "js")."')\">" 
+    ."<img name='Export' src='$imagefiles/import.png' alt='' title='' /></a>\n"
     ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
     ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
@@ -685,113 +693,141 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
     . "\t<tr>\n"
     . "\t\t<td>\n";
 
-
-//FILE CONTROL DETAILS
-$templatesoutput.= "\t\t\t<table class='menubar'>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td colspan='2' height='8'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT("File Control:")."</strong>\n"
-. "\t\t\t\t</td>\n"
-. "\t\t\t</tr>\n"
-. "\t\t\t<tr>"
-. "\t\t\t\t<td align='center' >\n";
-
-$templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
-."\t\t\t\t\t<tr>\n"
-."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
-. "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
-."<strong>".$clang->gT("Standard Files:")."</strong></td>"
-."<td align='center'><strong>".$clang->gT("Now editing:");
-if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
-$templatesoutput.= "</strong></td>"
-."<td align='right' ><strong>".$clang->gT("Other Files:")."</strong></td></tr>\n"
-."<tr><td valign='top'><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
-.makeoptions($files, "name", "name", $editfile)
-."</select>\n"
-."\t\t\t\t\t\t</td>\n"
-."\t\t\t\t\t\t<td align='center' valign='top'>\n"
-. "<form name='editTemplate' method='post' action='admin.php'>\n"
-. "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-. "\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-. "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-. "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-."<textarea name='changes' id='changes' cols='110' rows='12'>";
-if ($editfile) {
-	$templatesoutput.= textarea_encode(filetext($editfile));
+    
+if ($subaction=='templateupload')
+{    
+    $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
+    if (!function_exists("zip_open"))
+    {
+        $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+    }    
+    $templatesoutput.= "\t<form enctype='multipart/form-data' name='importtemplate' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "\t<input type='hidden' name='lid' value='$lid' />\n"
+        . "\t<input type='hidden' name='action' value='templateupload' />\n"
+        . "\t<table width='60%' class='form2columns'>\n"
+        . "\t<tbody align='center'>"
+        . "\t\t<tr><th  colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
+        . "\t\t<tr><td>&nbsp;</td></tr>\n"
+        . "\t\t<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
+        . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
+        . "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></td><td></td>\n"
+        . "\t\t</tr>\n"
+        . "\t</tbody></table></form>\n"; 
 }
-$templatesoutput.= "</textarea><br />\n";
-if (is_writable("$tpldir/$templatename")) {
-	$templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
-	if ($templatename == "default" && $debug<2) {
-		$templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
-	}
-	$templatesoutput.= " />";
+elseif (isset($importtemplateoutput))
+{
+    $templatesoutput.=$importtemplateoutput;
 }
-$templatesoutput.= "<br />\n"
-."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
-."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr><tr><td align='right'>"
-. "<select size='12' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
-.makeoptions($otherfiles, "name", "name", "")
-."</select>"
-."</td></tr><tr><td align='right'>"
-."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?","js")."')\"";
-if ($templatename == "default") {
-		$templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Files in the default template cannot be deleted.")."'";
+else
+{
+        
+
+    //FILE CONTROL DETAILS
+    $templatesoutput.= "\t\t\t<table class='menubar'>\n"
+    . "\t\t\t<tr>\n"
+    . "\t\t\t\t<td colspan='2' height='8'>\n"
+    . "\t\t\t\t\t<strong>".$clang->gT("File Control:")."</strong>\n"
+    . "\t\t\t\t</td>\n"
+    . "\t\t\t</tr>\n"
+    . "\t\t\t<tr>"
+    . "\t\t\t\t<td align='center' >\n";
+
+    $templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
+    ."\t\t\t\t\t<tr>\n"
+    ."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
+    . "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
+    ."<strong>".$clang->gT("Standard Files:")."</strong></td>"
+    ."<td align='center'><strong>".$clang->gT("Now editing:");
+    if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
+    $templatesoutput.= "</strong></td>"
+    ."<td align='right' ><strong>".$clang->gT("Other Files:")."</strong></td></tr>\n"
+    ."<tr><td valign='top'><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+    .makeoptions($files, "name", "name", $editfile)
+    ."</select>\n"
+    ."\t\t\t\t\t\t</td>\n"
+    ."\t\t\t\t\t\t<td align='center' valign='top'>\n"
+    . "<form name='editTemplate' method='post' action='admin.php'>\n"
+    . "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
+    . "\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+    . "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
+    . "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
+    ."<textarea name='changes' id='changes' cols='110' rows='12'>";
+    if ($editfile) {
+	    $templatesoutput.= textarea_encode(filetext($editfile));
+    }
+    $templatesoutput.= "</textarea><br />\n";
+    if (is_writable("$tpldir/$templatename")) {
+	    $templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
+	    if ($templatename == "default" && $debug<2) {
+		    $templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
+	    }
+	    $templatesoutput.= " />";
+    }
+    $templatesoutput.= "<br />\n"
+    ."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
+    ."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr><tr><td align='right'>"
+    . "<select size='12' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
+    .makeoptions($otherfiles, "name", "name", "")
+    ."</select>"
+    ."</td></tr><tr><td align='right'>"
+    ."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?","js")."')\"";
+    if ($templatename == "default") {
+		    $templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Files in the default template cannot be deleted.")."'";
+    }
+    $templatesoutput.= " />\n"
+    ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+    ."<input type='hidden' name='templatename' value='$templatename' />\n"
+    ."<input type='hidden' name='action' value='templatefiledelete' />\n"
+    . "</td></tr></table></form></td>\n"
+    ."</tr>\n"
+    ."</table></td></tr><tr><td align='right' valign='top'>"
+    ."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>\n"
+    ."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
+    ."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"30\" /><br />"
+    ."<input type='submit' value='".$clang->gT("Upload")."'";
+    if ($templatename == "default") {
+	    $templatesoutput.= " disabled='disabled'";
+    }
+    $templatesoutput.= " />\n"
+    ."<input type='hidden' name='editfile' value='$editfile' />\n"
+    ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+    ."<input type='hidden' name='templatename' value='$templatename' />\n"
+    ."<input type='hidden' name='action' value='templateuploadfile' />\n"
+    ."</td></tr></table></form>\n"
+    ."\t\t\t\t\t\t</td>\n"
+    ."\t\t\t\t\t</tr>\n"
+    ."\t\t\t\t</table>\n"
+    ."\t\t\t</td>\n"
+    ."\t</tr>"
+    ."</table>"
+    ."</td></tr></table>";
+
+    //SAMPLE ROW
+    $templatesoutput.= "\t\t\t<table class='menubar'>\n"
+    . "\t\t\t<tr>\n"
+    . "\t\t\t\t<td colspan='2' height='8'>\n"
+    . "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
+    . "\t\t\t\t</td>\n"
+    . "\t\t\t</tr>\n"
+    ."\t<tr>\n"
+    ."\t\t<td width='90%' align='center' >\n";
+
+
+    unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
+    $time=date("ymdHis");
+    $fnew=fopen("$tempdir/template_temp_$time.html", "w+");
+    fwrite ($fnew, getHeader());
+    $myoutput=str_replace('template.css',"template.css?t=$time",$myoutput);
+    foreach($myoutput as $line) {
+	    fwrite($fnew, $line);
+    }
+    fclose($fnew);
+    $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
+    $templatesoutput.= "<br />\n"
+    ."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
+    ."<br />&nbsp;<br />"
+    ."</td></tr></table>\n";
 }
-$templatesoutput.= " />\n"
-."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-."<input type='hidden' name='templatename' value='$templatename' />\n"
-."<input type='hidden' name='action' value='templatefiledelete' />\n"
-. "</td></tr></table></form></td>\n"
-."</tr>\n"
-."</table></td></tr><tr><td align='right' valign='top'>"
-."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>\n"
-."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"30\" /><br />"
-."<input type='submit' value='".$clang->gT("Upload")."'";
-if ($templatename == "default") {
-	$templatesoutput.= " disabled='disabled'";
-}
-$templatesoutput.= " />\n"
-."<input type='hidden' name='editfile' value='$editfile' />\n"
-."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-."<input type='hidden' name='templatename' value='$templatename' />\n"
-."<input type='hidden' name='action' value='templateupload' />\n"
-."</td></tr></table></form>\n"
-."\t\t\t\t\t\t</td>\n"
-."\t\t\t\t\t</tr>\n"
-."\t\t\t\t</table>\n"
-."\t\t\t</td>\n"
-."\t</tr>"
-."</table>"
-."</td></tr></table>";
-
-//SAMPLE ROW
-$templatesoutput.= "\t\t\t<table class='menubar'>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td colspan='2' height='8'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
-. "\t\t\t\t</td>\n"
-. "\t\t\t</tr>\n"
-."\t<tr>\n"
-."\t\t<td width='90%' align='center' >\n";
-
-
-unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
-$time=date("ymdHis");
-$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
-fwrite ($fnew, getHeader());
-$myoutput=str_replace('template.css',"template.css?t=$time",$myoutput);
-foreach($myoutput as $line) {
-	fwrite($fnew, $line);
-}
-fclose($fnew);
-$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-$templatesoutput.= "<br />\n"
-."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
-."<br />&nbsp;<br />"
-."</td></tr></table>\n";
-
 
 function doreplacement($file) { //Produce sample page from template file
 	$output=array();
