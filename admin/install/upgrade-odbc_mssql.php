@@ -89,7 +89,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }
     
     if ($oldversion < 113) {
-    //No action needed
+	//No action needed
         modify_database("","update [prefix_settings_global] set [stg_value]='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
@@ -108,23 +108,23 @@ echo str_pad('Loading... ',4096)."<br />\n";
         upgrade_survey_tables118();
         //119
         modify_database("","CREATE TABLE [prefix_quota] (
-                          [id] int NOT NULL IDENTITY (1,1),
-                          [sid] int,
-                          [name] varchar(255) ,
-                          [qlimit] int ,
-                          [action] int ,
-                          [active] int NOT NULL default '1',
-                          PRIMARY KEY  ([id])
-                        );");echo $modifyoutput; flush();
+						  [id] int NOT NULL IDENTITY (1,1),
+						  [sid] int,
+						  [name] varchar(255) ,
+						  [qlimit] int ,
+						  [action] int ,
+						  [active] int NOT NULL default '1',
+						  PRIMARY KEY  ([id])
+						);");echo $modifyoutput; flush();
         modify_database("","CREATE TABLE [prefix_quota_members] (
-                          [id] int NOT NULL IDENTITY (1,1),
-                          [sid] int ,
-                          [qid] int ,
-                          [quota_id] int ,
-                          [code] varchar(5) ,
-                          PRIMARY KEY  ([id])
-                        );");echo $modifyoutput; flush();
-                        
+						  [id] int NOT NULL IDENTITY (1,1),
+						  [sid] int ,
+						  [qid] int ,
+						  [quota_id] int ,
+						  [code] varchar(5) ,
+						  PRIMARY KEY  ([id])
+						);");echo $modifyoutput; flush();
+						
        // Rename Norwegian language code from NO to NB
        $oldnewlanguages=array('no'=>'nb');
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
@@ -150,37 +150,37 @@ echo str_pad('Loading... ',4096)."<br />\n";
            $toreplace=$datarow['additional_languages'];
            $toreplace2=str_replace('no','nb',$toreplace);
            if ($toreplace2!=$toreplace) {modify_database("","update [prefix_surveys] set [additional_languages]='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
-        }    
+        }	
         
         modify_database("","ALTER TABLE [prefix_surveys] ADD [htmlemail] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usecaptcha] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [tokenanswerspersistence] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_users] ADD [htmleditormode] CHAR(7) DEFAULT 'default'"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE [prefix_templates_rights] (
-                          [uid] int NOT NULL,
-                          [folder] varchar(255) NOT NULL,
-                          [use] int NOT NULL,
-                          PRIMARY KEY  ([uid],[folder])
-                          );");echo $modifyoutput; flush();
+						  [uid] int NOT NULL,
+						  [folder] varchar(255) NOT NULL,
+						  [use] int NOT NULL,
+						  PRIMARY KEY  ([uid],[folder])
+						  );");echo $modifyoutput; flush();
         modify_database("","CREATE TABLE [prefix_templates] (
-                          [folder] varchar(255) NOT NULL,
-                          [creator] int NOT NULL,
-                          PRIMARY KEY  ([folder])
-                          );");echo $modifyoutput; flush();        
-        //123
+						  [folder] varchar(255) NOT NULL,
+						  [creator] int NOT NULL,
+						  PRIMARY KEY  ([folder])
+						  );");echo $modifyoutput; flush();        
+	    //123
         modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [value] VARCHAR(255)"); echo $modifyoutput; flush();
         // There is no other way to remove the previous default value
         /*modify_database("","DECLARE @STR VARCHAR(100)
-                                    SET @STR = (
-                                    SELECT NAME
-                                    FROM SYSOBJECTS SO
-                                    JOIN SYSCONSTRAINTS SC ON SO.ID = SC.CONSTID
-                                    WHERE OBJECT_NAME(SO.PARENT_OBJ) = 'lime_labels'
-                                    AND SO.XTYPE = 'D' AND SC.COLID =
-                                    (SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
-                                    SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR 
-                                     exec (@STR);"); echo $modifyoutput; flush();     */
-                                     
+									SET @STR = (
+									SELECT NAME
+									FROM SYSOBJECTS SO
+									JOIN SYSCONSTRAINTS SC ON SO.ID = SC.CONSTID
+									WHERE OBJECT_NAME(SO.PARENT_OBJ) = 'lime_labels'
+									AND SO.XTYPE = 'D' AND SC.COLID =
+									(SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
+									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR 
+	 								exec (@STR);"); echo $modifyoutput; flush();     */
+	 								
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] varchar(4000)"); echo $modifyoutput; flush();
         //124
         modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] text"); echo $modifyoutput; flush();
@@ -190,12 +190,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","UPDATE [prefix_users] SET [superadmin]=1 where ([create_survey]=1 AND [create_user]=1 AND [delete_user]=1 AND [configurator]=1)"); echo $modifyoutput; flush();
         //126
         modify_database("","ALTER TABLE [prefix_questions] ADD [lid1] int NOT NULL DEFAULT '0'"); echo $modifyoutput; flush();
-        modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]='' or [method]='0'"); echo $modifyoutput; flush();
+	    modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]='' or [method]='0'"); echo $modifyoutput; flush();
         
         modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     
-    if ($oldversion < 127) {
+	if ($oldversion < 127) {
         modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput; 
         modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput; 
         modify_database("","create index [assessments_idx3] on [prefix_assessments] ([gid])"); echo $modifyoutput; 
@@ -212,23 +212,23 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","update [prefix_settings_global] set [stg_value]='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 }
 
-    if ($oldversion < 128) {
-        upgrade_token_tables128();
+	if ($oldversion < 128) {
+		upgrade_token_tables128();
         modify_database("","update [prefix_settings_global] set [stg_value]='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
-    
-    if ($oldversion < 129) {
-        //128
+	}
+	
+	if ($oldversion < 129) {
+		//128
         modify_database("","ALTER TABLE [prefix_surveys] ADD [startdate] DATETIME"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usestartdate] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
-    if ($oldversion < 130)
-    {
-        modify_database("","ALTER TABLE [prefix_conditions] ADD [scenario] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();
-        modify_database("","UPDATE [prefix_conditions] SET [scenario]=1 where ( [scenario] is null) or [scenario]='' or [scenario]=0"); echo $modifyoutput; flush();
+	}
+	if ($oldversion < 130)
+	{
+		modify_database("","ALTER TABLE [prefix_conditions] ADD [scenario] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();
+		modify_database("","UPDATE [prefix_conditions] SET [scenario]=1 where ( [scenario] is null) or [scenario]='' or [scenario]=0"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
+	}
     if ($oldversion < 131)
     {
         modify_database("","ALTER TABLE [prefix_surveys] ADD [publicstatistics] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
@@ -241,8 +241,8 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }    
     
     if ($oldversion < 133)
-    {
-        modify_database("","ALTER TABLE [prefix_users] ADD [one_time_pw] varchar(8000)"); echo $modifyoutput; flush();
+	{
+        modify_database("","ALTER TABLE [prefix_users] ADD [one_time_pw] text"); echo $modifyoutput; flush();
         // Add new assessment setting
         modify_database("","ALTER TABLE [prefix_surveys] ADD [assessments] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         // add new assessment value fields to answers & labels
@@ -276,28 +276,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         
         modify_database("","update [prefix_settings_global] set [stg_value]='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }   
-    
-    if ($oldversion < 134)
-    {
-        //these changes were made because of an issue with bug 3021 in the queston table.   
-        //this version 134 is made for microsoft sql server creates.   A sctipt canot change a data type from text to ntext.  
-        //tables and columns that were changed in the create are:
-        //prefix_groups.description
-        //prefix_questions.question
-        //prefix_questions.preg
-        //prefix_questions.help
-        //prefix_surveys_languagesettings.surveyls_description
-        //prefix_surveys_languagesettings.surveyls_welcometext
-        //prefix_surveys_languagesettings.surveyls_endtext
-        //prefix_surveys_languagesettings.surveyls_email_invite
-        //prefix_surveys_languagesettings.surveyls_email_remind
-        //prefix_surveys_languagesettings.surveyls_email_register
-        //prefix_surveys_languagesettings.surveyls_email_confirm
-    
-        modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }
-
-
+        
     return true;
 }
 
@@ -321,8 +300,8 @@ function upgrade_survey_tables117()
 
 function upgrade_survey_tables118()
 {
-      global $connect,$modifyoutput,$dbprefix;
-      $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
             modify_database("","ALTER TABLE ".$sv." ALTER COLUMN [token] VARCHAR(36)"); echo $modifyoutput; flush();
@@ -332,8 +311,8 @@ function upgrade_survey_tables118()
 
 function upgrade_token_tables125()
 {
-      global $connect,$modifyoutput,$dbprefix;
-      $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
             modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
@@ -342,8 +321,8 @@ function upgrade_token_tables125()
 
 function upgrade_token_tables128()
 {
-      global $connect,$modifyoutput,$dbprefix;
-      $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+  	global $connect,$modifyoutput,$dbprefix;
+  	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
             modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindersent] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
