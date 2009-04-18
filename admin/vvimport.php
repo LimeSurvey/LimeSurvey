@@ -79,7 +79,7 @@ if ($subaction != "upload")
 
 		$vvoutput= "<br />
 		<form enctype='multipart/form-data' method='post' action='admin.php?sid=$surveyid'>
-		<table class='outlinetable' align='center'>		
+		<table class='form2columns' style='width:95%;' align='center'>		
 		<tr><th colspan=2>".$clang->gT("Import a VV survey file")."</th></tr>
 		<tr><td>".$clang->gT("File:")."</td><td><input type='file' size=50 name='the_file'></td></tr>
 		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=10 name='sid' value='$surveyid' readonly></td></tr>
@@ -95,11 +95,11 @@ if ($subaction != "upload")
 		<tr><td>".$clang->gT("Character set of the file:")."</td><td><select id='vvcharset' name='vvcharset'>
 		$charsetsout
 		</select></td></tr>
-		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Import")."'>
+		<tr</td><td><td><input type='submit' value='".$clang->gT("Import")."'>
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
-        <tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
+        <tr></td><td><td>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
 		</table>
 		</form><br />";
 	}
@@ -223,10 +223,10 @@ else
 			{
 				unset($fieldvalues[count($fieldvalues)-1]);
 			}
-			// make this safe for mysql (*after* we undo first excel's
+			// make this safe for DB (*after* we undo first excel's
 			// and then our escaping).
 			$fieldvalues=array_map('db_quote',$fieldvalues);
-			$fieldnames=array_map('db_quote',$fieldnames);
+			$fieldnames=array_map('db_quote_id',$fieldnames);
 			// okay, now we should be good to go.
 			if ($insertstyle=="ignore" && !$noid)
 			$insert = "INSERT IGNORE";
@@ -234,7 +234,7 @@ else
 			$insert = "REPLACE";
 			else $insert = "INSERT";
 			$insert .= " INTO $surveytable\n";
-			$insert .= "(`".implode("`, `", $fieldnames)."`)\n";
+			$insert .= "(".implode(",", $fieldnames).")\n";
 			$insert .= "VALUES\n";
 			$insert .= "('".implode("', '", $fieldvalues)."')\n";
 			if (!$result = $connect->Execute($insert))

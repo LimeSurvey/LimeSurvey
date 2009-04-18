@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-16 21:26+0100\n"
-"PO-Revision-Date: 2009-04-16 21:31+0100\n"
+"POT-Creation-Date: 2009-04-18 02:25+0100\n"
+"PO-Revision-Date: 2009-04-18 02:25+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1409,7 +1409,7 @@ msgstr "Ihre Antwort"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:401
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:409
 msgid "Choose one of the following answers"
-msgstr "Bitte wählen Sie eine der folgenden Antworten"
+msgstr "Bitte wählen Sie eine der folgenden Antworten."
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:419
 #, php-format
@@ -5589,133 +5589,133 @@ msgid "Forgot Your Password?"
 msgstr "Haben Sie Ihr Passwort vergessen?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:118
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1630
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1640
 msgid "Submit Your Survey."
 msgstr "Übermittlung Ihres ausgefüllten Fragebogens:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:120
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1630
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1640
 msgid "Thank you for completing this survey."
 msgstr "Vielen Dank für die Beantwortung des Fragebogens."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:133
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1628
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1638
 msgid "Please fax your completed survey to:"
 msgstr "Bitte faxen Sie den ausgefüllten Fragebogen an"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:138
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1624
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1634
 #, php-format
 msgid "Please submit by %s"
 msgstr "Bitte übermitteln bis %s"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:409
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:417
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:410
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:418
 msgid "if you answered"
 msgstr "falls ihre Antwort "
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:413
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:414
 msgid "if you have NOT answered"
 msgstr "wenn Sie nicht geantwortet haben"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:524
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:525
 msgid "to question"
 msgstr " war bei der Frage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:531
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:532
 #, php-format
 msgid "Only answer this question %s"
 msgstr "Bitte beantworten Sie diese Frage nur, %s"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:584
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:585
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:609
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:616
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:635
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:586
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:610
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:617
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:636
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:704
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:706
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:764
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:637
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:705
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:707
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:765
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:982
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:986
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:766
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:992
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:996
 msgid "Please choose *only one* of the following:"
 msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:601
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:603
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:602
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:604
 msgid "Please enter a date:"
 msgstr "Bitte ein Datum eingeben:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:791
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:792
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnen mit 1 bis"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:792
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:793
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Bitte nummerieren Sie jede Box in der Reihenfolge Ihrer Präferenz, beginnend von 1 bis"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:815
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:816
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:817
 msgid "Please choose *all* that apply:"
 msgstr "Bitte wählen Sie alle Punkte aus, die zutreffen:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:820
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:821
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:889
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:822
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:890
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:891
 msgid "Please choose *at most* "
 msgstr "Bitte wählen Sie *maximal*"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:820
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:821
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:822
 msgid "answers:"
 msgstr "Antworten:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:884
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:885
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:886
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Bitte wählen Sie die zutreffenden Punkte aus und schreiben Sie einen Kommentar dazu:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:889
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:890
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:891
 msgid "answers and provide a comment:"
 msgstr "Antworten und geben Sie einen Kommentar ein:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:918
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:920
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:928
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:930
 msgid "Please write your answer(s) here:"
 msgstr "Bitte Ihre Antwort(en) hierher schreiben"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:937
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:939
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:946
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:947
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:949
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:956
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:959
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:962
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:969
 #: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:972
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:975
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:982
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:985
 msgid "Please write your answer here:"
 msgstr "Bitte schreiben Sie Ihre Antwort hier"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:996
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1013
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1050
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1058
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1085
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1099
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1125
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1139
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1326
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1335
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1408
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1410
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1502
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1503
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1006
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1023
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1060
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1068
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1095
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1109
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1135
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1149
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1336
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1345
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1418
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1420
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1512
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1513
 msgid "Please choose the appropriate response for each item:"
 msgstr "Bitte wählen Sie die zutreffende Antwort aus"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1554
+#: D:\web\xampp\htdocs\limesurvey/admin/printablesurvey.php:1564
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Diese Umfrage enthält {NUMBEROFQUESTIONS} Fragen."
 
@@ -7221,11 +7221,11 @@ msgstr "Sie sind nicht berechtigt Ihre eigenen Rechte zu ändern!"
 msgid "Set Template Rights"
 msgstr "Setze Vorlagen Rechte"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:638
+#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:643
 msgid "Update usertemplates successful."
 msgstr "Benutzer-Vorlage erfolgreich aktualisiert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:644
+#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:649
 msgid "Error while updating usertemplates."
 msgstr "Fehler während der Aktualisierung von usertemplates."
 
