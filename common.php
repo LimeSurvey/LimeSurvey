@@ -3334,7 +3334,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Random answer order'));
     
     $qattributes["text_input_width"]=array(
-    "types"=>"NSTUK;",
+    "types"=>"NSTUK;Q",
     "help"=>$clang->gT('Width of text input box'),
     "caption"=>$clang->gT('Input box width'));
     

@@ -2780,7 +2780,6 @@ function do_multipleshorttext($ia)
 		$numbersonly = '';
 		$class_num_only = '';
 	}
-
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
@@ -2788,6 +2787,14 @@ function do_multipleshorttext($ia)
 	else
 	{
 		$maxsize=255;
+	}
+	if ($textinputwidth=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
+	{
+		$tiwidth=$textinputwidth['value'];
+	}
+	else
+	{
+		$tiwidth=20;
 	}
 
 	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
@@ -2839,7 +2846,7 @@ function do_multipleshorttext($ia)
 			$myfname = $ia[1].$ansrow['code'];
 			$answer_main .= "\t<li>\n"
 			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
-			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{
