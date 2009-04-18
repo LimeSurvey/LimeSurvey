@@ -344,14 +344,14 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '133');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '134');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default', '');
-
+INSERT INTO `prefix_users` (users_name, password, full_name, parent_id, lang, email, create_survey, create_user, delete_user, superadmin, configurator, manage_template, manage_label, htmleditormode) 
+VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
 
 
 --

@@ -13,9 +13,6 @@ CREATE TABLE [prefix_quota] (
 );
 
 
-
-
-
 CREATE TABLE [prefix_quota_members] (
   [id] int NOT NULL IDENTITY (1,1),
   [sid] int ,
@@ -24,9 +21,6 @@ CREATE TABLE [prefix_quota_members] (
   [code] varchar(5) ,
   PRIMARY KEY  ([id])
 );
-
-
-
 
 -- 
 -- Table structure for table [answers]
@@ -41,8 +35,7 @@ CREATE TABLE [prefix_answers] (
   [assessment_value] INT NOT NULL default '0',
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[code],[language])
-) 
-;
+);
 
 -- --------------------------------------------------------
 
@@ -61,8 +54,7 @@ CREATE TABLE [prefix_assessments] (
   [message] text NOT NULL,
   [language] VARCHAR(20) NOT NULL default 'en',
   PRIMARY KEY  ([id],[language])
-) 
-;
+);
 
 -- --------------------------------------------------------
 
@@ -79,8 +71,7 @@ CREATE TABLE [prefix_conditions] (
   [method] char(2) NOT NULL default '',
   [value] VARCHAR(255) NOT NULL default '',
   PRIMARY KEY  ([cid])
-) 
-;
+);
 
 -- 
 -- Table structure for table [groups]
@@ -91,11 +82,10 @@ CREATE TABLE [prefix_groups] (
   [sid] INT NOT NULL default '0',
   [group_name] VARCHAR(100) NOT NULL default '',
   [group_order] INT NOT NULL default '0',
-  [description] text,
+  [description] NTEXT,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([gid],[language])
-) 
-;
+);
 
 -- --------------------------------------------------------
 
@@ -111,26 +101,21 @@ CREATE TABLE [prefix_labels] (
   [language] VARCHAR(20) default 'en',
   [assessment_value] INT NOT NULL default '0',
   PRIMARY KEY  ([lid],[sortorder],[language]),
-) 
-;
+);
 
-CREATE INDEX labels_code_idx 
-  ON [prefix_labels] ([code])
-;
+CREATE INDEX labels_code_idx ON [prefix_labels] ([code]);
 
 -- --------------------------------------------------------
 
 -- 
 -- Table structure for table [labelsets]
 -- 
-
 CREATE TABLE [prefix_labelsets] (
   [lid] INT NOT NULL IDENTITY (1,1),
   [label_name] VARCHAR(100) NOT NULL default '',
   [languages] VARCHAR(200) default 'en',
   PRIMARY KEY  ([lid])
-) 
-;
+);
 
 -- --------------------------------------------------------
 
@@ -144,8 +129,7 @@ CREATE TABLE [prefix_question_attributes] (
   [attribute] VARCHAR(50) default NULL,
   [value] VARCHAR(20) default NULL,
   PRIMARY KEY  ([qaid])
-) 
-;
+);
 
 -- --------------------------------------------------------
 
@@ -159,9 +143,9 @@ CREATE TABLE [prefix_questions] (
   [gid] INT NOT NULL default '0',
   [type] char(1) NOT NULL default 'T',
   [title] VARCHAR(20) NOT NULL default '',
-  [question] text NOT NULL,
-  [preg] text,
-  [help] text,
+  [question] NTEXT NOT NULL,
+  [preg] NTEXT,
+  [help] NTEXT,
   [other] char(1) NOT NULL default 'N',
   [mandatory] char(1) default NULL,
   [lid] INT NOT NULL default '0',
@@ -169,16 +153,12 @@ CREATE TABLE [prefix_questions] (
   [question_order] INT NOT NULL,
   [language] VARCHAR(20) default 'en',
   PRIMARY KEY  ([qid],[language])
-) 
-;
-
--- --------------------------------------------------------
+);
 
 
 -- 
 -- Table structure for table [saved_control]
 -- 
-
 CREATE TABLE [prefix_saved_control] (
   [scid] INT NOT NULL IDENTITY (1,1),
   [sid] INT NOT NULL default '0',
@@ -192,10 +172,8 @@ CREATE TABLE [prefix_saved_control] (
   [saved_date] datetime, 
   [refurl] text,
   PRIMARY KEY  ([scid])
-) 
-;
+);
 
--- --------------------------------------------------------
 
 -- 
 -- Table structure for table [surveys]
@@ -222,7 +200,7 @@ CREATE TABLE [prefix_surveys] (
   [attribute1] VARCHAR(255) default NULL,
   [attribute2] VARCHAR(255) default NULL,
   [allowsave] char(1) default 'Y',
-  [autonumber_start] bigINT default '0',
+  [autonumber_start] bigint default '0',
   [autoredirect] char(1) default 'N',
   [allowprev] char(1) default 'Y',
   [printanswers] char(1) default 'N',
@@ -240,41 +218,40 @@ CREATE TABLE [prefix_surveys] (
   [usecaptcha] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
   PRIMARY KEY  ([sid])
-) 
-;
+);
+
+
 -- 
 -- Table structure for table [surveys_languagesettings]
 -- 
 
-if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
-DROP TABLE [dbo].[prefix_surveys_languagesettings]
-;
+
+--if EXISTS (select * from dbo.sysobjects where id = object_id(N'[dbo].[prefix_surveys_languagesettings]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+--DROP TABLE [dbo].[prefix_surveys_languagesettings];
 
 CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_survey_id] INT NOT NULL DEFAULT 0, 
   [surveyls_language] VARCHAR(45) NOT NULL DEFAULT 'en',
   [surveyls_title] VARCHAR(200) NOT NULL,
-  [surveyls_description] TEXT NULL,
-  [surveyls_welcometext] TEXT NULL,
-  [surveyls_endtext] TEXT NULL,
+  [surveyls_description] NTEXT NULL,
+  [surveyls_welcometext] NTEXT NULL,
+  [surveyls_endtext] NTEXT NULL,
   [surveyls_url] VARCHAR(255) NULL,
   [surveyls_urldescription] VARCHAR(255) NULL,
   [surveyls_email_invite_subj] VARCHAR(255) NULL,
-  [surveyls_email_invite] TEXT NULL,
+  [surveyls_email_invite] NTEXT NULL,
   [surveyls_email_remind_subj] VARCHAR(255) NULL,
-  [surveyls_email_remind] TEXT NULL,
+  [surveyls_email_remind] NTEXT NULL,
   [surveyls_email_register_subj] VARCHAR(255) NULL,
-  [surveyls_email_register] TEXT NULL,
+  [surveyls_email_register] NTEXT NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
-  [surveyls_email_confirm] TEXT NULL,
+  [surveyls_email_confirm] NTEXT NULL,
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
-)
-;
+);
 
 -- 
 -- Table structure for table [users]
 -- 
-
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
@@ -290,15 +267,14 @@ CREATE TABLE [prefix_users] (
   [configurator] TINYINT NOT NULL default '0',
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
-  [htmleditormode] char(7) default 'default',
-  [one_time_pw] TEXT
+  [htmleditormode] varchar(7) default 'default',
+  [one_time_pw] varchar(8000) null
 ) 
 ;
 
 -- 
 -- Table structure for table [surveys_rights]
 -- 
-
 CREATE TABLE [prefix_surveys_rights] (
 	[sid] INT NOT NULL default '0', 
 	[uid] INT NOT NULL default '0', 
@@ -309,20 +285,18 @@ CREATE TABLE [prefix_surveys_rights] (
 	[delete_survey] TINYINT NOT NULL default '0',
 	[activate_survey] TINYINT NOT NULL default '0',
 	PRIMARY KEY ([sid], [uid])
-) 
-;
+);
+
 
 -- 
 -- Table structure for table [user_groups]
 -- 
-
 CREATE TABLE [prefix_user_groups] (
 	[ugid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
 	[name] VARCHAR(20) NOT NULL UNIQUE,
 	[description] TEXT NOT NULL default '',
 	[owner_id] INT NOT NULL  
-) 
-;
+);
 
 -- 
 -- Table structure for table [user_in_groups]
@@ -331,13 +305,12 @@ CREATE TABLE [prefix_user_groups] (
 CREATE TABLE [prefix_user_in_groups] (
 	[ugid] INT NOT NULL, 
 	[uid] INT NOT NULL 
-) 
-;
+);
+
 
 --
 -- Table structure for table [settings_global]
 --
-
 CREATE TABLE [prefix_settings_global] (
   [stg_name] VARCHAR(50) NOT NULL default '',
   [stg_value] VARCHAR(255) NOT NULL default '',
@@ -346,32 +319,30 @@ CREATE TABLE [prefix_settings_global] (
 
 
 CREATE TABLE [prefix_templates_rights] (
-						  [uid] int NOT NULL,
-						  [folder] varchar(255) NOT NULL,
-						  [use] int NOT NULL,
-						  PRIMARY KEY  ([uid],[folder])
-						  );
+    [uid] int NOT NULL,
+    [folder] varchar(255) NOT NULL,
+    [use] int NOT NULL,
+    PRIMARY KEY  ([uid],[folder])
+);
 						  
 CREATE TABLE [prefix_templates] (
-						  [folder] varchar(255) NOT NULL,
-						  [creator] int NOT NULL,
-						  PRIMARY KEY  ([folder])
-						  );
+    [folder] varchar(255) NOT NULL,
+    [creator] int NOT NULL,
+    PRIMARY KEY  ([folder])
+);
 
 --
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '133');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '134');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
 --
-
-INSERT INTO [prefix_users]  (users_name, [password], full_name, parent_id, lang, email, create_survey, create_user, delete_user, superadmin, configurator, manage_template, 
-                      manage_label, htmleditormode) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
-
+INSERT INTO [prefix_users] (users_name, password, full_name, parent_id, lang, email, create_survey, create_user, delete_user, superadmin, configurator, manage_template, manage_label, htmleditormode) 
+VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
 
 
 --

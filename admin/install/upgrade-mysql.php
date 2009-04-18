@@ -272,6 +272,14 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `url`"); echo $modifyoutput; flush();
     	modify_database("","update `prefix_settings_global` set `stg_value`='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}    
+    
+  	if ($oldversion < 134)
+	{
+        //do nothing -- 134 is ms sql server only
+    	modify_database("","update `prefix_settings_global` set `stg_value`='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }
+
+    
     return true;
 }
 
