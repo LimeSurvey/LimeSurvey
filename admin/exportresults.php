@@ -24,6 +24,7 @@ if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
 if (!isset($type)) {$type=returnglobal('type');}
 if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
+if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
@@ -189,7 +190,7 @@ if (!$exportstyle)
 	."<label for='headcodes'>"
 	.$clang->gT("Question codes")."</label><br />\n"
 	
-	."\t\t\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous'>"
+	."\t\t\t<input type='checkbox' value='Y' name='convertspacetous' id='convertspacetous' style='margin-left: 25px'>"
 	."<font size='1'><label for='convertspacetous'>"
 	.$clang->gT("Convert spaces in question text to underscores")."</label><br />"
 	
@@ -210,7 +211,11 @@ if (!$exportstyle)
 	$exportoutput .= "<br />\n"
 	."\t\t\t<input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px'>"
 	."<font size='1'><label for='convertyto1'>"
-	.$clang->gT("Convert Y to 1")."</label>";
+	.$clang->gT("Convert Y to")."</label><input type='text' name='convertyto' size='1' value='1' maxlength='1' style='width:10px'>";
+	$exportoutput .= "<br />\n"
+	."\t\t\t<input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px'>"
+	."<font size='1'><label for='convertnto2'>"
+	.$clang->gT("Convert N to")."</label><input type='text' name='convertnto' size='1' value='2' maxlength='1' style='width:10px'>";
 
      $exportoutput .= "<br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"
@@ -939,13 +944,34 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		if($convertyto1 == "Y")
 		//Converts "Y" to "1" in export
 		{
+		  $convertyto=returnglobal('convertyto');
 		  foreach($drow as $key=>$dr) {
             $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
-            if($fielddata['type'] == "M" || 
-			   $fielddata['type'] == "P"
+            if(isset($fielddata['type']) &&
+			   ($fielddata['type'] == "M" || 
+			   $fielddata['type'] == "P" ||
+			   $fielddata['type'] == "Y")
 			   )
             {
-		      if($dr == "Y") {$dr = "1";}
+		      if($dr == "Y") {$dr = $convertyto;}
+		    }
+		    $line[$key]=$dr;
+		  }
+		  $drow=$line;
+		}
+		if($convertnto2 == "Y")
+		//Converts "N" to "2" in export
+		{
+		  $convertnto=returnglobal('convertnto');
+		  foreach($drow as $key=>$dr) {
+            $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
+            if(isset($fielddata['type']) &&
+			   ($fielddata['type'] == "M" || 
+			   $fielddata['type'] == "P" ||
+			   $fielddata['type'] == "Y")
+			   )
+            {
+		      if($dr == "N") {$dr = $convertnto;}
 		    }
 		    $line[$key]=$dr;
 		  }
