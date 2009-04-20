@@ -72,7 +72,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.81 to 1.81+ [2009/04/16] - Legend: + new feature, # update feature, - bug fix
+Changes from 1.81+ (build 6654) to 1.81+ (build 6678) [2009/04/20] - Legend: + new feature, # update feature, - bug fix
+
++New Feature: sGetFieldmap, gets the fieldmap from a survey as csv from the lsrc. (wahrendorff)
+#Updated Language: Hungarian - kindly provided by Miklós Kriván (c_schmitz)
+#Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
+#Updated language: German & German (informal) (c_schmitz)
+#updated database version to 134.    This version allows Microsoft Sql server to store utf8. (bobc55)
+-Fixed issue #2332: VVimport fails with MSSQL DB (c_schmitz)
+-Fixed issue #3025: On MS SQL Server editing template rights does not list any templates (c_schmitz)
+-Fixed issue #3042: Assessments don't work correctly with multiple choice questions (c_schmitz)
+-Fixed issue with MSSQL installation not creating admin user properly (c_schmitz)
+-Fixed issue with repeating headings aligned wrong on dual scale question (c_schmitz)
+-Fixed issue: Small change to the RemoteControl test client to ensure notices are not thrown (c_schmitz)
+
+Changes from 1.81 to 1.81+ (build 6654) [2009/04/16] - Legend: + new feature, # update feature, - bug fix
 
 +Added translation: Sinhalese translation by Janaka Padukka (c_schmitz)
 +New Feature: Quota provides quick csv summary export (jcleeland)
