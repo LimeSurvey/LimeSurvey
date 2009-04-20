@@ -1678,12 +1678,18 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
 
+	// tokenAttr Tab
 	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	foreach (GetAttributeFieldNames($surveyid) as $tokenattr)
+	{
+		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape(strtoupper($tokenattr))."</option>\n";
+	}
+
 	$conditionsoutput .= "\t\t\t</select>\n"
 		."\t\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
 
-	// Regexp tab
+	// Regexp Tab
 	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
 		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align=left' ></textarea>\n"
 		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
