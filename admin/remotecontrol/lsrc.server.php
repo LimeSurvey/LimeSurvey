@@ -786,6 +786,11 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
 	 * to determine if a new group should be build for the question 
 	 * or if the question should be added to the last group in survey
 	 */ 	
+	if($sMod=='')
+		$sMod='Freitext';
+	if($mandatory=='')
+		$mandatory='N';
+		
 	$newGroup=0;
 	
 	include("lsrc.config.php");
@@ -848,6 +853,11 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 	 * to determine if a new group should be build for the question 
 	 * or if the question should be added to the last group in survey
 	 */ 	
+	if($sMod=='')
+		$sMod='Matrix5';
+	if($mandatory=='')
+		$mandatory='N';
+		
 	$newGroup=0;
 		
 	global $connect ;
