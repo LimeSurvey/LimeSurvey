@@ -13,17 +13,16 @@
 * $Id$
 * 
 */
-$wsdl = $_REQUEST['wsdl'];
+$wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey';
+$limeUrl='http://localhost/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all
 $user ="admin";
 $pass ="password";
-
 //we don't like caching while testing, so we disable it
 ini_set("soap.wsdl_cache_enabled", 0);
 
