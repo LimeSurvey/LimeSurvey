@@ -1587,7 +1587,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
-		. "\t\t<td><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
+		. "\t\t<td><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
 
 	if (isset($cquestions))
 	{
@@ -1616,7 +1616,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
-		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
+		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' align='left'>\n"
 		. "\t\t\t<option value='<'>".$clang->gT("Less than")."</option>\n"
 		. "\t\t\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
 		. "\t\t\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
@@ -1639,7 +1639,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 
 	$conditionsoutput .= ""
-		."\t\t<td>\n"
+		."\t\t<td valign='top' align='left'>\n"
 		."\t\t<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
 		."\t\t<ul>\n"
 		."\t\t\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
@@ -1650,17 +1650,17 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t</ul>\n";
 
 	// Predefined answers tab
-	$conditionsoutput .= "\t\t\t<div id='CANSWERSTAB'><select name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; min-width:600px;' size='7'>\n"
+	$conditionsoutput .= "\t\t\t<div id='CANSWERSTAB'><select align='left' name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
 		."\t\t\t</select>\n"
 		."\t\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers for this question")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
 	// Constant tab 
-	$conditionsoutput .= "<div id='CONST' style='display:'>"
-		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5'></textarea>\n"
+	$conditionsoutput .= "<div id='CONST' style='display:' >"
+		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' align='left' style='width:600px;font-family:verdana; font-size:10' size='7' ></textarea>\n"
 		."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
 		."\t\t</div>\n";
 	// Previous answers tab @SGQA@ placeholders
-	$conditionsoutput .= "\t\t\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; min-width:600px;' size='7'>\n";
+	$conditionsoutput .= "\t\t\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
 	foreach ($cquestions as $cqn) 
 	{ // building the @SGQA@ placeholders options
 		if ($cqn[2] != 'M' && $cqn[2] != 'P')
@@ -1677,14 +1677,14 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
 
-	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; min-width:600px;' size='7'>\n";
+	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
 	$conditionsoutput .= "\t\t\t</select>\n"
 		."\t\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
 
 	// Regexp tab
 	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
-		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5'></textarea>\n"
+		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align=left' ></textarea>\n"
 		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		."\t\t</div>\n";
 	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
