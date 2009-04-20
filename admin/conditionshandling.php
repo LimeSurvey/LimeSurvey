@@ -36,6 +36,7 @@ if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
+if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
 
 if (!isset($p_canswers))
 {
@@ -1375,27 +1376,27 @@ if ($subaction=='' ||
 						if ($rightOperandType == 'predefinedAnsw')
 						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' name='canswers[]' id='editModeTargetVal{$rows['cid']}' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' name='EDITcanswers[]' id='editModeTargetVal{$rows['cid']}' value='".html_escape($rows['value'])."' />\n";
 						}
 						elseif ($rightOperandType == 'prevQsgqa')
 						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='prevQuestionSGQA' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITprevQuestionSGQA' value='".html_escape($rows['value'])."' />\n";
 						}
 						elseif ($rightOperandType == 'tokenAttr')
 						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='tokenAttr' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITtokenAttr' value='".html_escape($rows['value'])."' />\n";
 						}
 						elseif ($rightOperandType == 'regexp')
 						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='ConditionRegexp' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionRegexp' value='".html_escape($rows['value'])."' />\n";
 						}
 						else
 						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='ConditionConst' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionConst' value='".html_escape($rows['value'])."' />\n";
 						}
 					}
 
@@ -1666,9 +1667,9 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		if ($cqn[2] != 'M' && $cqn[2] != 'P')
 		{ // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
 			$conditionsoutput .= "\t\t\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
-			if (isset($p_prevquestionsgqa) && $cqn[3] == $p_prevquestionsgqa)
+			if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
 			{
-				$conditionsoutput .= " selected";
+				$conditionsoutput .= " selected='selected'";
 			}
 			$conditionsoutput .= ">$cqn[0]</option>\n";
 		}
@@ -1744,29 +1745,60 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$conditionsoutput .= "\tdocument.getElementById('method').value='".$p_method."';\n";
 	}
 
-	if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+	if ($subaction == "editthiscondition")
 	{
-		$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['ConditionConst']))."';\n";
-		$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
-	}
-	elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
-	{
-		$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['prevQuestionSGQA']))."';\n";
-		$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
-	}
-	elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
-	{
-		$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['tokenAttr']))."';\n";
-		$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
-	}
-	elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
-	{
-		$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['ConditionRegexp']))."';\n";
-		$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['EDITConditionConst']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+		}
+		elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
+		{ // TIBO
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['EDITprevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		}
+		elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['EDITtokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		}
+		elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['EDITConditionRegexp']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		}
+		elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
+		{ // was a predefined answers post
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+			$conditionsoutput .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
+		}
 	}
 	else
-	{ // was a predefined answers post
-		$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+	{
+		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['ConditionConst']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+		}
+		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
+		{ // TIBO
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['prevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		}
+		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['tokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		}
+		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['ConditionRegexp']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		}
+		else
+		{ // was a predefined answers post
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+		}
 	}
 
 	if (isset($p_scenario))
