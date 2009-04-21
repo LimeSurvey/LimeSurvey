@@ -72,10 +72,11 @@ class LsrcHelper {
 		{
 			$where = str_replace("\\","",$where);
 			$query2num = "SELECT {$key} FROM {$dbprefix}{$table} WHERE {$where}";
+			$rs = db_execute_assoc($query2num);
+			
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2num)"); 	
 				
 			$query2update = "update ".$dbprefix.$table." set ".$key."='".$value."' where ".$where."";
-			$rs = db_execute_assoc($query2num);
 			
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ($query2update)");   
 			
@@ -117,6 +118,7 @@ class LsrcHelper {
 		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
 		
+		
 		// wenn maxmails ber den lsrc gegeben wird das nutzen, ansonsten die default werte aus der config.php
 		if($maxLsrcEmails!='')
 		$maxemails = $maxLsrcEmails;
@@ -139,8 +141,8 @@ class LsrcHelper {
 				    $ishtml=false;
 				}
 				
-				//$tokenoutput .= $clang->gT("Sending Invitations");
-				//if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
+				//$tokenoutput .= ("Sending Invitations");
+				//if (isset($tokenid)) {$tokenoutput .= " (".("Sending to Token ID").":&nbsp;{$tokenid})";}
 				//$tokenoutput .= "<br />\n";
 				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $surveyid, $type"); 
 				// Texte für Mails aus der Datenbank holen und in die POST Dinger schreiben. Nicht schön aber praktikabel
@@ -279,11 +281,11 @@ class LsrcHelper {
 							//
 							$uderesult = $connect->Execute($udequery);
 							$mailsSend++;
-							//$tokenoutput .= "[".$clang->gT("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+							//$tokenoutput .= "[".("Invitation sent to:")."{$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 						}
 						else
 						{
-							//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+							//$tokenoutput .= ReplaceFields(("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
 							if($n==1)
 								$failedAddresses .= ",".$to;
 							else
@@ -391,7 +393,7 @@ class LsrcHelper {
 						$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
 					}
 
-					//$tokenoutput .= $clang->gT("Sending Reminders")."<br />\n";
+					//$tokenoutput .= ("Sending Reminders")."<br />\n";
 			
 					$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 					$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -442,7 +444,7 @@ class LsrcHelper {
 //					if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
 //					//$tokenoutput .= "<!-- ctquery: $ctquery -->\n";
 
-					$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
+					$ctresult = $connect->Execute($ctquery) or $this->debugLsrc ("Database error!<br />\n" . $connect->ErrorMsg());
 					$ctcount = $ctresult->RecordCount();
 					$ctfieldcount = $ctresult->FieldCount();
 					$emquery = "SELECT firstname, lastname, email, token, tid, language ";
@@ -524,14 +526,14 @@ class LsrcHelper {
 									$udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
 										."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
 									//
-									$uderesult = $connect->Execute($udequery); // or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-									//orig: $tokenoutput .= "\t\t\t({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
-									//$tokenoutput .= "\t\t\t({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+									$uderesult = $connect->Execute($udequery) or $this->debugLsrc ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+									//orig: $tokenoutput .= "\t\t\t({$emrow['tid']})[".("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
+									//$tokenoutput .= "\t\t\t({$emrow['tid']}) [".("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 									$mailsSend++;
 								}
 								else
 								{
-									//$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+									//$tokenoutput .= ReplaceFields(("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
 									if($n==1)
 										$failedAddresses .= ",".$to;
 									else
@@ -668,8 +670,9 @@ class LsrcHelper {
 	{
 		global $connect ;
 		global $dbprefix ;
-		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+		
 		include("lsrc.config.php");
+		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
 		// HINT FOR IMPORTERS: go to Line 714 to manipulate the Survey, while it's imported 
 		
@@ -712,8 +715,8 @@ class LsrcHelper {
 		  {
 		  	if ($importingfrom == "http")
 		  	{
-//			    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-//			  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
+//			    $importsurvey .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+//			  	$importsurvey .= ("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
 //			  	$importsurvey .= "</font></td></tr></table>\n";
 //			  	$importsurvey .= "</body>\n</html>\n";
 			  	//unlink($the_full_file_path);
@@ -721,7 +724,7 @@ class LsrcHelper {
 			  }
 			  else 
 			  {
-			  	//echo $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."\n";
+			  	//echo ("This file is not a LimeSurvey survey file. Import failed.")."\n";
 			  	return false;
 			  }
 		  }
@@ -1033,9 +1036,9 @@ class LsrcHelper {
 		{
 			if ($importingfrom == "http")
 			{
-//				$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
-//				$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-//				$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
+//				$importsurvey .= "<br /><strong><font color='red'>".("Error")."</strong></font><br />\n";
+//				$importsurvey .= ("Import of this survey file failed")."<br />\n";
+//				$importsurvey .= ("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
 //				$importsurvey .= "</font></td></tr></table>\n";
 //				$importsurvey .= "</body>\n</html>\n";
 //				unlink($the_full_file_path); //Delete the uploaded file
@@ -1043,7 +1046,7 @@ class LsrcHelper {
 			}
 			else 
 			{
-				//echo $clang->gT("Import of this survey file failed")."\n".$clang->gT("File does not contain LimeSurvey data in the correct format.")."\n";
+				//echo ("Import of this survey file failed")."\n".("File does not contain LimeSurvey data in the correct format.")."\n";
 				return false;
 			}
 		}
@@ -1210,8 +1213,15 @@ class LsrcHelper {
 		    $values=array_values($surveylsrowdata);
 		    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		    $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		    $iresult = $connect->Execute($insert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
-		
+			    try
+			    {
+			    	$iresult = $connect->Execute($insert) or $this->debugLsrc("<br />".("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+			    }
+			    catch(exception $e)
+			    {
+			    	throw new SoapFault("Server: ", "$e : $connect->ErrorMsg()");
+			    	exit;
+			    }
 		
 		
 		    }
@@ -1227,7 +1237,7 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		$iresult = $connect->Execute($insert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg());
+		$iresult = $connect->Execute($insert) or $this->debugLsrc("<br />"."Import of this survey file failed on Line: ".__LINE__."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" . $connect->ErrorMsg()) and exit;
 		
 		$oldsid=$surveyid;
 		
@@ -1263,7 +1273,7 @@ class LsrcHelper {
 		        $newvalues=array_values($surveylsrowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-				$lsiresult=$connect->Execute($lsainsert);// or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
+				$lsiresult=$connect->Execute($lsainsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."") and exit;
 			}	
 				
 		}
@@ -1358,7 +1368,7 @@ class LsrcHelper {
 		                   FROM {$dbprefix}labels
 		                   WHERE lid=".$newlid."
 		                   ORDER BY language, sortorder, code";
-				$result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+				$result2 = db_execute_num($query2) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 				while($row2=$result2->FetchRow())
 				{
 					$thisset .= implode('.', $row2);
@@ -1380,9 +1390,9 @@ class LsrcHelper {
 					//There is a matching labelset or the user is not allowed to edit labels -  
 		            // So, we will delete this one and refer to the matched one.
 					$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-					$result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+					$result=$connect->Execute($query) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 					$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-					$result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+					$result=$connect->Execute($query) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 					if (isset($lsmatch)) {$newlid=$lsmatch;}
 		              else {++$deniedcountlabelsets;--$countlabelsets;}
 				}
@@ -1429,12 +1439,12 @@ class LsrcHelper {
 				{
 					if ($importingfrom == "http") 
 		            { 
-//		                $importsurvey .= "<br />\n<font color='red'><strong>".$clang->gT("Error")."</strong></font>"
-//		                                ."<br />\n".$clang->gT("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
+//		                $importsurvey .= "<br />\n<font color='red'><strong>".("Error")."</strong></font>"
+//		                                ."<br />\n".("A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped.")."<br /><br />\n";
 		            }
 		            else
 		            {
-		                //echo $clang->gT("Error").": A group in the CSV/SQL file is not part of the same Survey. The import of the survey was stopped.\n";
+		                //echo ("Error").": A group in the CSV/SQL file is not part of the same Survey. The import of the survey was stopped.\n";
 		            }
 					return false;
 				}
@@ -1461,7 +1471,7 @@ class LsrcHelper {
 		
 		        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}
 		        $ginsert = 'insert INTO '.db_table_name('groups').' ('.implode(',',array_keys($grouprowdata)).') VALUES ('.implode(',',$newvalues).')'; 
-				$gres = $connect->Execute($ginsert);// or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+				$gres = $connect->Execute($ginsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 		        if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 				//GET NEW GID
 				if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
@@ -1495,13 +1505,13 @@ class LsrcHelper {
 		                	$questionrowdata["type"] = strtoupper($questionrowdata["type"]);
 		                	if (!array_key_exists($questionrowdata["type"], $qtypes))
 		                	{
-		                		//$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was NOT imported because the question type is unknown."), $questionrowdata["title"], $questionrowdata["question"]) . "</li>";
+		                		//$importwarning .= "<li>" . sprintf(("Question \"%s - %s\" was NOT imported because the question type is unknown."), $questionrowdata["title"], $questionrowdata["question"]) . "</li>";
 		                		$countquestions--;
 		                		continue;
 		                	}
 		                	else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
 		                	{
-		                		//$importwarning .= "<li>" . sprintf($clang->gT("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
+		                		//$importwarning .= "<li>" . sprintf(("Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."), $questionrowdata["title"], $questionrowdata["question"], $qtypes[$questionrowdata["type"]]) . "</li>";
 		                	}
 		                }
 		                        		
@@ -1558,7 +1568,7 @@ class LsrcHelper {
 		                    $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                    $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		
-							$qres = $connect->Execute($qinsert);// or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+							$qres = $connect->Execute($qinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 		                    if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 				            if ($newquestion)
 						{
@@ -1601,7 +1611,7 @@ class LsrcHelper {
 		                                $newvalues=array_values($answerrowdata);
 		                                $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                                $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-										$ares = $connect->Execute($ainsert);// or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+										$ares = $connect->Execute($ainsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 										
 										if ($type == "M" || $type == "P") {
 											$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid,
@@ -1679,7 +1689,7 @@ class LsrcHelper {
 			while ($cdrow=$cdresult->FetchRow())
 			{
 				$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
-				$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked   
+				$cd2result = $connect->Execute($cd2query) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());  //Checked   
 				$position++;
 			}
 		
@@ -1707,7 +1717,7 @@ class LsrcHelper {
 					while ($cdrow=$cdresult->FetchRow())
 					{
 						$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-						$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg());    //Checked    
+						$cd2result = $connect->Execute($cd2query) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());   
 						$position++;
 					}
 		        	
@@ -1743,7 +1753,7 @@ class LsrcHelper {
 		        $newvalues=array_values($qarowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+				$result=$connect->Execute($qainsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 			}
 		}
 		
@@ -1777,7 +1787,7 @@ class LsrcHelper {
 		        $newvalues=array_values($asrowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $asinsert = "insert INTO {$dbprefix}assessments (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert assessment<br />$asinsert<br />".$connect->ErrorMsg());
+				$result=$connect->Execute($asinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 		
 				unset($newgid);
 			}
@@ -1806,7 +1816,7 @@ class LsrcHelper {
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		
 		        $asinsert = "insert INTO {$dbprefix}quota (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+				$result=$connect->Execute($asinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 				$quotaids[] = array($oldid,$connect->Insert_ID(db_table_name_nq('quota'),"id"));
 		
 			}
@@ -1846,7 +1856,7 @@ class LsrcHelper {
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		
 		        $asinsert = "insert INTO {$dbprefix}quota_members (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+				$result=$connect->Execute($asinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 		
 			}
 		}
@@ -1903,7 +1913,7 @@ class LsrcHelper {
 		            $newvalues=array_values($conditionrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-					$result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
+					$result=$connect->Execute($conditioninsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 				} else {
 					$importsurvey .= "<font size=1>Condition for $oldqid skipped ($oldcqid does not exist)</font><br />";
 					//if ($importingfrom != "http") echo "Condition for $oldqid skipped ($oldcqid does not exist)\n";
@@ -1951,17 +1961,17 @@ class LsrcHelper {
 				//Fix a question id - requires renumbering a question
 				$oldqid = $_GET['fixnumbering'];
 				$query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
-				$result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = db_select_limit_assoc($query, 1) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow()) {$lastqid=$row['qid'];}
 				$newqid=$lastqid+1;
 				$query = "UPDATE {$dbprefix}questions SET qid=$newqid WHERE qid=$oldqid";
-				$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = $connect->Execute($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 				//Update conditions.. firstly conditions FOR this question
 				$query = "UPDATE {$dbprefix}conditions SET qid=$newqid WHERE qid=$oldqid";
-				$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = $connect->Execute($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 				//Now conditions based upon this question
 				$query = "SELECT cqid, cfieldname FROM {$dbprefix}conditions WHERE cqid=$oldqid";
-				$result = db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = db_execute_assoc($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				while ($row=$result->FetchRow())
 				{
@@ -1975,16 +1985,16 @@ class LsrcHelper {
 								  SET cqid=$newqid,
 								  cfieldname='".str_replace("X".$oldqid, "X".$newqid, $switch['cfieldname'])."'
 								  WHERE cqid=$oldqid";
-						$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+						$result = $connect->Execute($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 					}
 				}
 				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				//Now question_attributes
 				$query = "UPDATE {$dbprefix}question_attributes SET qid=$newqid WHERE qid=$oldqid";
-				$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = $connect->Execute($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 				//Now answers
 				$query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
-				$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+				$result = $connect->Execute($query) or $this->debugLsrc($query."<br />".$connect->ErrorMsg());
 			}
 			//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 			//THESE QUESTION TYPES ARE:
@@ -2004,7 +2014,7 @@ class LsrcHelper {
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('L', 'O', 'M', 'P', 'A', 'B', 'C', 'E', 'F', 'R', 'J', '!', '^', ':', '1')";
-			$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
+			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't get list of questions<br />$chkquery<br />".$connect->ErrorMsg());
 			while ($chkrow = $chkresult->FetchRow())
 			{
 				$chaquery = "SELECT * FROM {$dbprefix}answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
@@ -2012,16 +2022,16 @@ class LsrcHelper {
 				$chacount=$charesult->RecordCount();
 				if (!$chacount > 0)
 				{
-					//$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
+					//$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question is a multiple answer type question but has no answers."), $chkrow['gid']);
 				}
 			}
 		
 			//NOW CHECK THAT ALL QUESTIONS HAVE A 'QUESTION TYPE' FIELD
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type = ''";
-			$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
+			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't check questions for missing types<br />$chkquery<br />".$connect->ErrorMsg());
 			while ($chkrow = $chkresult->FetchRow())
 			{
-				//$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question does not have a question 'type' set."), $chkrow['gid']);
+				//$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question does not have a question 'type' set."), $chkrow['gid']);
 			}
 		
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
@@ -2029,46 +2039,46 @@ class LsrcHelper {
 		
 			//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID" SET
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid = 0 OR lid is null)";
-			//$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+			//$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 			while($chkrow = $chkresult->FetchRow()){
-			//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a Labelset, but none is set."), $chkrow['gid']);
+			//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question requires a Labelset, but none is set."), $chkrow['gid']);
 			} // while
 			
 			//CHECK THAT FLEXIBLE LABEL TYPE QUESTIONS HAVE AN "LID1" SET FOR MULTI SCALE
 			$chkquery = "SELECT qid, question, gid FROM {$dbprefix}questions WHERE sid={$surveyid} AND (type ='1') AND (lid1 = 0 OR lid1 is null)";
-			//$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
+			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't check questions for missing LIDs<br />$chkquery<br />".$connect->ErrorMsg());
 			while($chkrow = $chkresult->FetchRow()){
-			//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("This question requires a second Labelset, but none is set."), $chkrow['gid']);
+			//	$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".("This question requires a second Labelset, but none is set."), $chkrow['gid']);
 			} // while
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			
 			// XXX rakete Changed: This was making errors, for we dont have additional languages and this script throws an error when there are none.
 				
 			//NOW check that all used labelsets have all necessary languages
-	//		$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid > 0) AND (lid is not null)";
-	//		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $chkquery ");
-	//		$chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
-	//		$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
-	//		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	//		array_unshift($slangs,$baselang);
-	//		while ($chkrow = $chkresult->FetchRow())
-	//		{
-	//		    foreach ($slangs as $surveylanguage)
-	//				{
-	//				$chkquery2 = "SELECT lid FROM {$dbprefix}labels WHERE language='$surveylanguage' AND (lid = {$chkrow['lid']}) ";
-	//				$chkresult2 = db_execute_assoc($chkquery2);
-	//				if ($chkresult2->RecordCount()==0)
-	//		            {
-	//					$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": ".$clang->gT("The labelset used in this question does not exists or is missing a translation."), $chkrow['gid']);
-	//		    		}
-	//				}  //foreach
-	//		} //while 
+			$chkquery = "SELECT qid, question, gid, lid FROM {$dbprefix}questions WHERE sid={$surveyid} AND type IN ('F', 'H', 'W', 'Z', ':', '1') AND (lid > 0) AND (lid is not null)";
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", $chkquery ");
+			$chkresult = db_execute_assoc($chkquery) or $this->debugLsrc ("Couldn't check questions for missing LID languages<br />$chkquery<br />".$connect->ErrorMsg());
+			$slangs = GetAdditionalLanguagesFromSurveyID($surveyid); 
+			$baselang = GetBaseLanguageFromSurveyID($surveyid);
+			array_unshift($slangs,$baselang);
+			while ($chkrow = $chkresult->FetchRow())
+			{
+			    foreach ($slangs as $surveylanguage)
+					{
+					$chkquery2 = "SELECT lid FROM {$dbprefix}labels WHERE language='$surveylanguage' AND (lid = {$chkrow['lid']}) ";
+					$chkresult2 = db_execute_assoc($chkquery2);
+					if ($chkresult2->RecordCount()==0)
+			            {
+						$failedcheck[]=array($chkrow['qid'], $chkrow['question'], ": The labelset used in this question does not exists or is missing a translation.", $chkrow['gid']);
+			    		}
+					}  //foreach
+			} //while 
 			
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 			//CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
 			//A: Make an array of all the qids in order of appearance
 			//	$qorderquery="SELECT * FROM {$dbprefix}questions, {$dbprefix}groups WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND {$dbprefix}questions.sid={$surveyid} ORDER BY {$dbprefix}groups.sortorder, {$dbprefix}questions.title";
-			//	$qorderresult=$connect->Execute($qorderquery) or safe_die("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
+			//	$qorderresult=$connect->Execute($qorderquery) or $this->debugLsrc("Couldn't generate a list of questions in order<br />$qorderquery<br />".$connect->ErrorMsg());
 			//	$qordercount=$qorderresult->RecordCount();
 			//	$c=0;
 			//	while ($qorderrow=$qorderresult->FetchRow())
@@ -2078,7 +2088,7 @@ class LsrcHelper {
 			//		}
 			//TO AVOID NATURAL SORT ORDER ISSUES, FIRST GET ALL QUESTIONS IN NATURAL SORT ORDER, AND FIND OUT WHICH NUMBER IN THAT ORDER THIS QUESTION IS
 			$qorderquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND type not in ('S', 'D', 'T', 'Q')";
-			$qorderresult = db_execute_assoc($qorderquery) or safe_die ("$qorderquery<br />".$connect->ErrorMsg());
+			$qorderresult = db_execute_assoc($qorderquery) or $this->debugLsrc ("$qorderquery<br />".$connect->ErrorMsg());
 			$qrows = array(); //Create an empty array in case FetchRow does not return any rows
 			while ($qrow = $qorderresult->FetchRow()) {$qrows[] = $qrow;} // Get table output into array
 			usort($qrows, 'CompareGroupThenTitle'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
@@ -2095,7 +2105,7 @@ class LsrcHelper {
 			. "FROM {$dbprefix}conditions, {$dbprefix}questions, {$dbprefix}groups "
 			. "WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
 			. "AND {$dbprefix}questions.gid={$dbprefix}groups.gid ORDER BY {$dbprefix}conditions.qid";
-			$conresult=db_execute_assoc($conquery) or safe_die("Couldn't check conditions for relative consistency<br />$conquery<br />".$connect->ErrorMsg());
+			$conresult=db_execute_assoc($conquery) or $this->debugLsrc("Couldn't check conditions for relative consistency<br />$conquery<br />".$connect->ErrorMsg());
 			//2: Check each conditions cqid that it occurs later than the cqid
 			while ($conrow=$conresult->FetchRow())
 			{
@@ -2116,7 +2126,7 @@ class LsrcHelper {
 					}
 					if ($qidfound == 1)
 					{
-						//$failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".$clang->gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
+						//$failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
 					}
 					$b++;
 				}
@@ -2147,51 +2157,51 @@ class LsrcHelper {
 			if (isset($failedcheck) && $failedcheck)
 			{
 				//$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-				//$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+				//$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 				//$activateoutput .= "\t<tr>\n";
 				//$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
-				//$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong><br />\n";
-				//$activateoutput .= "\t\t\t".$clang->gT("Survey does not pass consistency check")."</font>\n";
+				//$activateoutput .= "\t\t\t<font color='red'><strong>".("Error")."</strong><br />\n";
+				//$activateoutput .= "\t\t\t".("Survey does not pass consistency check")."</font>\n";
 				//$activateoutput .= "\t\t</td>\n";
 				//$activateoutput .= "\t</tr>\n";
 				//$activateoutput .= "\t<tr>\n";
 				//$activateoutput .= "\t\t<td>\n";
-				//$activateoutput .= "\t\t\t<strong>".$clang->gT("The following problems have been found:")."</strong><br />\n";
+				//$activateoutput .= "\t\t\t<strong>".("The following problems have been found:")."</strong><br />\n";
 				//$activateoutput .= "\t\t\t<ul>\n";
 				foreach ($failedcheck as $fc)
 				{
 					//$activateoutput .= "\t\t\t\t<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
 				}
 				//$activateoutput .= "\t\t\t</ul>\n";
-				//$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
+				//$activateoutput .= "\t\t\t".("The survey cannot be activated until these problems have been resolved.")."\n";
 				//$activateoutput .= "\t\t</td>\n";
 				//$activateoutput .= "\t</tr>\n";
 				//$activateoutput .= "</table><br />&nbsp;\n";
 				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", NICHT ERWARTET "); 
-				return;
+				return false;
 			}
 			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK "); 
 			//$activateoutput .= "<br />\n<table class='alertbox'>\n";
-			//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></td></tr>\n";
+			//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".("Activate Survey")." ($surveyid)</strong></td></tr>\n";
 			//$activateoutput .= "\t<tr>\n";
 			//$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
-			//$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong><br />\n";
-			//$activateoutput .= "\t\t\t".$clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
+			//$activateoutput .= "\t\t\t<font color='red'><strong>".("Warning")."</strong><br />\n";
+			//$activateoutput .= "\t\t\t".("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
 			//$activateoutput .= "\t\t\t</font>\n";
 			//$activateoutput .= "\t\t</td>\n";
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "\t<tr>\n";
 			//$activateoutput .= "\t\t<td>\n";
-			//$activateoutput .= $clang->gT("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
-			//$activateoutput .= $clang->gT("Once a survey is activated you can no longer:")."<ul><li>".$clang->gT("Add or delete groups")."</li><li>".$clang->gT("Add or remove answers to Multiple Answer questions")."</li><li>".$clang->gT("Add or delete questions")."</li></ul>\n";
-			//$activateoutput .= $clang->gT("However you can still:")."<ul><li>".$clang->gT("Edit (change) your questions code, text or type")."</li><li>".$clang->gT("Edit (change) your group names")."</li><li>".$clang->gT("Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)")."</li><li>".$clang->gT("Change survey name or description")."</li></ul>\n";
-			//$activateoutput .= $clang->gT("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
+			//$activateoutput .= ("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
+			//$activateoutput .= ("Once a survey is activated you can no longer:")."<ul><li>".("Add or delete groups")."</li><li>".("Add or remove answers to Multiple Answer questions")."</li><li>".("Add or delete questions")."</li></ul>\n";
+			//$activateoutput .= ("However you can still:")."<ul><li>".("Edit (change) your questions code, text or type")."</li><li>".("Edit (change) your group names")."</li><li>".("Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)")."</li><li>".("Change survey name or description")."</li></ul>\n";
+			//$activateoutput .= ("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
 			//$activateoutput .= "\t\t</td>\n";
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "\t<tr>\n";
 			//$activateoutput .= "\t\t<td align='center'>\n";
-			//$activateoutput .= "\t\t\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$surveyid}', '_top')\" />\n";
-			//$activateoutput .= "\t\t\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"".get2post("$scriptname?action=activate&amp;ok=Y&amp;sid={$surveyid}")."\" />\n";
+			//$activateoutput .= "\t\t\t<input type='submit' value=\"".("Activate Survey")."\" onclick=\"window.open('$scriptname?action=activate&amp;ok=Y&amp;sid={$surveyid}', '_top')\" />\n";
+			//$activateoutput .= "\t\t\t<input type='submit' value=\"".("Activate Survey")."\" onclick=\"".get2post("$scriptname?action=activate&amp;ok=Y&amp;sid={$surveyid}")."\" />\n";
 			//$activateoutput .= "\t\t<br />&nbsp;</td>\n";
 			//$activateoutput .= "\t</tr>\n";
 			//$activateoutput .= "</table><br />&nbsp;\n";
@@ -2309,7 +2319,7 @@ class LsrcHelper {
 		                       ." AND a.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." ORDER BY a.sortorder, a.answer";
-					$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=db_execute_assoc($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					while ($abrow=$abresult->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
@@ -2364,7 +2374,7 @@ class LsrcHelper {
 		                                   ." AND a.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                                   ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                                   ." ORDER BY a.sortorder, a.answer";
-					$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=db_execute_assoc($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					while ($abrow = $abresult->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}`";
@@ -2386,7 +2396,7 @@ class LsrcHelper {
 		                                   ." AND a.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                                   ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                                   ." ORDER BY a.sortorder, a.answer";
-					$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=db_execute_assoc($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					while ($abrow = $abresult->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(20),\n";
@@ -2395,7 +2405,7 @@ class LsrcHelper {
 		/*		elseif ($arow['type'] == "J")
 				{
 					$abquery = "SELECT {$dbprefix}answers.*, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND sid={$surveyid} AND {$dbprefix}questions.qid={$arow['qid']} ORDER BY {$dbprefix}answers.sortorder, {$dbprefix}answers.answer";
-					$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=db_execute_assoc($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					while ($abrow = $abresultt->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}` C(5),\n";
@@ -2409,7 +2419,7 @@ class LsrcHelper {
 		                       ." AND a.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." ORDER BY a.sortorder, a.answer";
-					$abresult=$connect->Execute($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=$connect->Execute($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					$abcount=$abresult->RecordCount();
 					for ($i=1; $i<=$abcount; $i++)
 					{
@@ -2423,7 +2433,7 @@ class LsrcHelper {
 		                       ." AND a.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                       ." ORDER BY a.sortorder, a.answer";
-					$abresult=db_execute_assoc($abquery) or safe_die ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
+					$abresult=db_execute_assoc($abquery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abquery<br />".$connect->ErrorMsg());
 					$abcount=$abresult->RecordCount();
 					while ($abrow = $abresult->FetchRow())
 					{
@@ -2432,7 +2442,7 @@ class LsrcHelper {
 			                     ." AND l.lid=q.lid AND sid={$surveyid} AND q.qid={$arow['qid']} AND l.title = '' "
 		                         ." AND l.language='".GetbaseLanguageFromSurveyid($surveyid). "' "
 		                         ." AND q.language='".GetbaseLanguageFromSurveyid($surveyid). "' ";
-						$abmultiscaleresult=$connect->Execute($abmultiscalequery) or safe_die ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
+						$abmultiscaleresult=$connect->Execute($abmultiscalequery) or $this->debugLsrc ("Couldn't get perform answers query<br />$abmultiscalequery<br />".$connect->ErrorMsg());
 						$abmultiscaleresultcount =$abmultiscaleresult->RecordCount();
 						$abmultiscaleresultcount = 1;
 						for ($j=0; $j<=$abmultiscaleresultcount; $j++)
@@ -2454,11 +2464,11 @@ class LsrcHelper {
 			if ($execresult==0 || $execresult==1)
 			{
 	//		$activateoutput .= "<br />\n<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n" .
-	//		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
+	//		"<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".("Activate Survey")." ($surveyid)</strong></font></td></tr>\n" .
 	//		"<tr><td>\n" .
-	//		"<font color='red'>".$clang->gT("Survey could not be actived.")."</font><br />\n" .
-	//		"<center><a href='$scriptname?sid={$surveyid}'>".$clang->gT("Main Admin Screen")."</a></center>\n" .
-	//		"DB ".$clang->gT("Error").":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
+	//		"<font color='red'>".("Survey could not be actived.")."</font><br />\n" .
+	//		"<center><a href='$scriptname?sid={$surveyid}'>".("Main Admin Screen")."</a></center>\n" .
+	//		"DB ".("Error").":<br />\n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" .
 	//		"<pre>$createsurvey</pre>\n" .
 	//		"</td></tr></table></br>&nbsp;\n" .
 	//		"</body>\n</html>";
@@ -2487,8 +2497,8 @@ class LsrcHelper {
 				}
 		
 				//$activateoutput .= "<br />\n<table class='alertbox'>\n";
-				//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
-				//$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
+				//$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".("Activate Survey")." ($surveyid)</td></tr>\n";
+				//$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
 				$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 				$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
 				$acresult = $connect->Execute($acquery);
@@ -2587,9 +2597,9 @@ class LsrcHelper {
 		
 		if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump" && substr($bigarray[0], 0, 24) != "# PHPSurveyor Group Dump")
 		{
-			//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			//$importgroup .= $clang->gT("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";
-			//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+			//$importgroup .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+			//$importgroup .= ("This file is not a LimeSurvey group file. Import failed.")."<br /><br />\n";
+			//$importgroup .= "<input type='submit' value='".("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 			//$importgroup .= "</td></tr></table>\n";
 			//unlink($the_full_file_path);
 			return false;
@@ -2768,9 +2778,9 @@ class LsrcHelper {
 			$groupssupportbaselang = bDoesImportarraySupportsLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$langcode,true);
 			if (!$groupssupportbaselang)
 			{
-				//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-				//$importgroup .= $clang->gT("You can't import a group which doesn't support the current survey's base language.")."<br /><br />\n";
-				//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+				//$importgroup .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+				//$importgroup .= ("You can't import a group which doesn't support the current survey's base language.")."<br /><br />\n";
+				//$importgroup .= "<input type='submit' value='".("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 				//$importgroup .= "</td></tr></table>\n";
 				//unlink($the_full_file_path);
 				return "Group does not support Surveys Baselanguage ($langcode)";
@@ -2784,9 +2794,9 @@ class LsrcHelper {
 			$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,false);
 			if (!$questionssupportbaselang)
 			{
-				//$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-				//$importgroup .= $clang->gT("You can't import a question which doesn't support the current survey's base language.")."<br /><br />\n";
-				//$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
+				//$importgroup .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+				//$importgroup .= ("You can't import a question which doesn't support the current survey's base language.")."<br /><br />\n";
+				//$importgroup .= "<input type='submit' value='".("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
 				//$importgroup .= "</td></tr></table>\n";
 				//unlink($the_full_file_path);
 				return "Group does not support Surveys Baselanguage ($langcode)";
@@ -2802,8 +2812,8 @@ class LsrcHelper {
 		    $labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
 		    if (!$labelsetssupportbaselang)
 		    {
-		        $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		        .$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
+		        $importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n"
+		        .("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
 		        ."</td></tr></table>\n";
 		        //unlink($the_full_file_path);
 		        return "Group does not support Surveys Baselanguage ($langcode)";
@@ -2868,7 +2878,7 @@ class LsrcHelper {
 		                   FROM {$dbprefix}labels
 		                   WHERE lid=".$newlid."
 		                   ORDER BY language, sortorder, code";    
-		        $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		        $result2 = db_execute_num($query2) or $this->debugLsrc("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		        while($row2=$result2->FetchRow())
 		        {
 		            $thisset .= implode('.', $row2);
@@ -2890,9 +2900,9 @@ class LsrcHelper {
 		            //There is a matching labelset. So, we will delete this one and refer
 		            //to the matched one.
 		            $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-		            $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($query) or $this->debugLsrc("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 		            $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-		            $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($query) or $this->debugLsrc("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 		            $newlid=$lsmatch;
 		        }
 		        else
@@ -2946,7 +2956,7 @@ class LsrcHelper {
 		            
 		            // find the maximum group order and use this grouporder+1 to assign it to the new group 
 		            $qmaxgo = "select max(group_order) as maxgo from ".db_table_name('groups')." where sid=$newsid";
-		            $gres = db_execute_assoc($qmaxgo) or safe_die ($clang->gT("Error")." Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
+		            $gres = db_execute_assoc($qmaxgo) or $this->debugLsrc (("Error")." Failed to find out maximum group order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
 		            $grow=$gres->FetchRow();
 		            $group_order = $grow['maxgo']+1;            
 		        }
@@ -2966,7 +2976,7 @@ class LsrcHelper {
 		        $newvalues=array_values($grouprowdata);
 		        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		        $ginsert = "insert INTO {$dbprefix}groups (".implode(',',array_keys($grouprowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		        $gres = $connect->Execute($ginsert) or safe_die($clang->gT("Error").": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
+		        $gres = $connect->Execute($ginsert) or $this->debugLsrc("Error: ".": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
 		        
 		        //GET NEW GID  .... if is not done before and we count a group if a new gid is required
 		        if ($newgid == 0) 
@@ -3033,7 +3043,7 @@ class LsrcHelper {
 		            $newvalues=array_values($questionrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error")."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+		            $qres = $connect->Execute($qinsert) or $this->debugLsrc ("Error: "."Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		
 		            //GET NEW QID  .... if is not done before and we count a question if a new qid is required
 		            if (!isset($newqids[$oldqid])) 
@@ -3077,7 +3087,7 @@ class LsrcHelper {
 		            $newvalues=array_values($answerrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $ainsert = "insert INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error")."Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+		            $ares = $connect->Execute($ainsert) or $this->debugLsrc ("Error: "."Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
 		            $countanswers++;
 		        }
 		    }
@@ -3091,7 +3101,7 @@ class LsrcHelper {
 			while ($cdrow=$cdresult->FetchRow())
 			{
 				$cd2query="UPDATE ".db_table_name('groups')." SET group_order='{$position}' WHERE gid='{$cdrow['gid']}' ";
-				$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked   
+				$cd2result = $connect->Execute($cd2query) or $this->debugLsrc ("Couldn't update group_order<br />$cd2query<br />".$connect->ErrorMsg());  //Checked   
 				$position++;
 			}
 		   
@@ -3117,7 +3127,7 @@ class LsrcHelper {
 					while ($cdrow=$cdresult->FetchRow())
 					{
 						$cd2query="UPDATE ".db_table_name('questions')." SET question_order='{$position}' WHERE qid='{$cdrow['qid']}' ";
-						$cd2result = $connect->Execute($cd2query) or safe_die ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg());    //Checked    
+						$cd2result = $connect->Execute($cd2query) or $this->debugLsrc ("Couldn't update question_order<br />$cd2query<br />".$connect->ErrorMsg());    //Checked    
 						$position++;
 					}
 		        }
@@ -3144,7 +3154,7 @@ class LsrcHelper {
 		            $newvalues=array_values($qarowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($qainsert) or $this->debugLsrc ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
 		            $countquestion_attributes++;        
 		        }
 		    }
@@ -3192,7 +3202,7 @@ class LsrcHelper {
 		            $newvalues=array_values($conditionrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $conditioninsert = "insert INTO {$dbprefix}conditions (".implode(',',array_keys($conditionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $result=$connect->Execute($conditioninsert) or safe_die ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($conditioninsert) or $this->debugLsrc ("Couldn't insert condition<br />$conditioninsert<br />".$connect->ErrorMsg());
 		            $countconditions++;
 		        }
 		    }
@@ -3257,8 +3267,8 @@ class LsrcHelper {
 		    }
 		else    // unknown file - show error message
 		  {
-//		      $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-//		      $importquestion .= $clang->gT("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
+//		      $importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+//		      $importquestion .= ("This file is not a LimeSurvey question file. Import failed.")."<br /><br />\n";
 //		      $importquestion .= "</font></td></tr></table>\n";
 //		      $importquestion .= "</body>\n</html>\n";
 //		      unlink($the_full_file_path);
@@ -3267,8 +3277,8 @@ class LsrcHelper {
 		
 //		if ($importversion != $dbversionnumber)
 //		{
-////		    $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-////		    $importquestion .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
+////		    $importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n";
+////		    $importquestion .= ("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
 ////		    $importquestion .= "</font></td></tr></table>\n";
 ////		    $importquestion .= "</body>\n</html>\n";
 ////		    unlink($the_full_file_path);
@@ -3400,8 +3410,8 @@ class LsrcHelper {
 			$questionssupportbaselang = bDoesImportarraySupportsLanguage($questionarray,Array($qidfieldnum), $langfieldnum,$langcode,true);
 			if (!$questionssupportbaselang)
 			{
-//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-//				.$clang->gT("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n"
+//				$importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n"
+//				.("You can't import a question which doesn't support the current survey's base language")."<br /><br />\n"
 //				."</td></tr></table>\n";
 //				unlink($the_full_file_path);
 				return "You can't import a question which doesn't support the current survey's base language";
@@ -3425,8 +3435,8 @@ class LsrcHelper {
 		//	$answerssupportbaselang = bDoesImportarraySupportsLanguage($answerarray,$answercodekeysarr,$langfieldnum,$langcode);
 		//	if (!$answerssupportbaselang)
 		//	{
-		//		$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-		//		.$clang->gT("You can't import answers which don't support current survey's base language")."<br /><br />\n"
+		//		$importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n"
+		//		.("You can't import answers which don't support current survey's base language")."<br /><br />\n"
 		//		."</td></tr></table>\n";
 		//		return;
 		//	}
@@ -3441,8 +3451,8 @@ class LsrcHelper {
 			$labelsetssupportbaselang = bDoesImportarraySupportsLanguage($labelsetsarray,Array($lidfilednum),$langfieldnum,$langcode,true);
 			if (!$labelsetssupportbaselang)
 			{
-//				$importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n"
-//				.$clang->gT("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
+//				$importquestion .= "<strong><font color='red'>".("Error")."</font></strong><br />\n"
+//				.("You can't import label sets which don't support the current survey's base language")."<br /><br />\n"
 //				."</td></tr></table>\n";
 //				unlink($the_full_file_path);
 				return "You can't import label sets which don't support the current survey's base language";
@@ -3513,7 +3523,7 @@ class LsrcHelper {
 		                   FROM {$dbprefix}labels
 		                   WHERE lid=".$newlid."
 		                   ORDER BY language, sortorder, code";    
-		        $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		        $result2 = db_execute_num($query2) or $this->debugLsrc("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
 		        while($row2=$result2->FetchRow())
 		        {
 		            $thisset .= implode('.', $row2);
@@ -3535,9 +3545,9 @@ class LsrcHelper {
 		            //There is a matching labelset. So, we will delete this one and refer
 		            //to the matched one.
 		            $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-		            $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($query) or $this->debugLsrc("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
 		            $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-		            $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($query) or $this->debugLsrc("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 		            $newlid=$lsmatch;
 		        }
 		        else
@@ -3560,7 +3570,7 @@ class LsrcHelper {
 		    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
 		    //and save it for later
 		    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
-		    $qres = db_execute_assoc($qmaxqo) or safe_die ($clang->gT("Error").": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
+		    $qres = db_execute_assoc($qmaxqo) or $this->debugLsrc ("Error: ".": Failed to find out maximum question order value<br />\n$qmaxqo<br />\n".$connect->ErrorMsg());
 		    $qrow=$qres->FetchRow();
 		    $newquestionorder=$qrow['maxqo']+1;
 		
@@ -3614,7 +3624,7 @@ class LsrcHelper {
 		            $newvalues=array_values($questionrowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-				    $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
+				    $qres = $connect->Execute($qinsert) or $this->debugLsrc ("Error: ".": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
 		
 		            // set the newqid only if is not set
 		            if (!isset($newqid))
@@ -3629,7 +3639,7 @@ class LsrcHelper {
 		            $answerrowdata=array_combine($answerfieldnames,$answerfieldcontents);
 		            if ($answerrowdata===false)
 		            {
-		              $importquestion.='<br />'.$clang->gT("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
+		              $importquestion.='<br />'.("Faulty line in import - fields and data don't match").":".implode(',',$answerfieldcontents);
 		            }
 		            if (isset($languagesSupported[$answerrowdata["language"]]))
 		            {
@@ -3643,7 +3653,7 @@ class LsrcHelper {
 		                        $newvalues=array_values($answerrowdata);
 		                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		                        $ainsert = "INSERT INTO {$dbprefix}answers (".implode(',',array_keys($answerrowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		                $ares = $connect->Execute($ainsert) or safe_die ($clang->gT("Error").": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
+		                $ares = $connect->Execute($ainsert) or $this->debugLsrc ("Error: ".": Failed to insert answer<br />\n$ainsert<br />\n".$connect->ErrorMsg());
 		            }
 		        }
 		    }
@@ -3661,7 +3671,7 @@ class LsrcHelper {
 		            $newvalues=array_values($qarowdata);
 		            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 		            $qainsert = "INSERT INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")"; 
-		            $result=$connect->Execute($qainsert) or safe_die ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
+		            $result=$connect->Execute($qainsert) or $this->debugLsrc ("Couldn't insert question_attribute<br />$qainsert<br />".$connect->ErrorMsg());
 		        }
 		    }
 		
@@ -3699,11 +3709,11 @@ class LsrcHelper {
 		if (in_array("{$dbprefix}tokens_$surveyid", $tablelist)) //delete the tokens_$surveyid table
 		{
 			$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
-			$dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
+			$dsresult = $dict->ExecuteSQLArray($dsquery) or $this->debugLsrc ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
 		}
 	
 		$dsquery = "SELECT qid FROM {$dbprefix}questions WHERE sid=$surveyid";
-		$dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
+		$dsresult = db_execute_assoc($dsquery) or $this->debugLsrc ("Couldn't find matching survey to delete<br />$dsquery<br />".$connect->ErrorMsg());
 		while ($dsrow = $dsresult->FetchRow())
 		{
 			$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
