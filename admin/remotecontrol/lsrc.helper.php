@@ -13,12 +13,16 @@
 * $Id$
 * 
 */
+/**
+ * @author Wahrendorff
+ *
+ */
 class LsrcHelper {
 	
 	/**
 	 * simple debug function to make life a bit easier
 	 *
-	 * @param unknown_type $text
+	 * @param string $text
 	 */
 	function debugLsrc($text)
 	{
@@ -106,8 +110,13 @@ class LsrcHelper {
 		
 	}
 
-	/*
-	 * Function to send Emails to participants of a specific survey
+	/**
+	 * 
+	 * Enter description here...
+	 * @param $surveyid
+	 * @param $type
+	 * @param $maxLsrcEmails
+	 * @return unknown_type
 	 */
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
@@ -3212,8 +3221,13 @@ class LsrcHelper {
 		    //return $newgid;
 	}
 	
-	/*
-	 * function to import a single question
+	/**
+	 * 
+	 * Enter description here...
+	 * @param $surveyid
+	 * @param $sMod
+	 * @param $newGroup
+	 * @return unknown_type
 	 */
 	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
@@ -3754,6 +3768,7 @@ class LsrcHelper {
     * This function pulls a CSV representation of the Field map
     * 
     * @param mixed $surveyid - the survey ID you want the Fieldmap for
+    * @return String $fieldmap
     */
     function FieldMap2CSV($surveyid)
     {

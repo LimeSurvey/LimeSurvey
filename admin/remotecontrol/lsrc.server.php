@@ -593,7 +593,12 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 } //end of function sInsertParticipants
 
 /**
+ * 
  * function to return unused Tokens as String, seperated by commas, to get the people who did not complete the Survey
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @return unknown_type
  */ 
 function sTokenReturn($sUser, $sPass, $iVid) 
 {
@@ -907,7 +912,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
  *
  * @param String $sUser
  * @param String $sPass
- * String $mode ("mod" or "core")
+ * @param String $mode ("mod" or "core")
  * @return commma seperated list of available Modules (groups)
  */
 function sAvailableModules($sUser, $sPass, $mode='mod')
@@ -1042,8 +1047,13 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	
 }
 
-/*
- * Fieldmap as csv for a surveyid
+/**
+ * 
+ * This function pulls a CSV representation of the Field map
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @return unknown_type
  */
 function sGetFieldmap($sUser, $sPass, $iVid)
 {
