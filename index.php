@@ -961,8 +961,16 @@ function checkgroupfordisplay($gid)
 
 function checkconfield($value)
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect,$surveyid,$thissurvey;
 	$fieldisdisplayed=true;
+	if (!is_array($thissurvey))
+	{
+		$local_thissurvey=getSurveyInfo($surveyid);
+	}
+	else
+	{
+		$local_thissurvey=$thissurvey;
+	}
 
 	//$value is the fieldname for the field we are checking for conditions
 	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
@@ -1032,6 +1040,21 @@ function checkconfield($value)
 								if (isset($_SESSION[$targetconditionfieldname[1]]))
 								{
 									$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+								}
+								else
+								{
+									$conditionCanBeEvaluated=false;
+								}
+							}
+							// Replace {TOKEN:XXX} condition values
+							// By corresponding value
+							if ($local_thissurvey['private'] == 'N' && 
+								ereg('^{TOKEN:([^}]*)}$',$cqv["matchvalue"], $targetconditiontokenattr))
+							{
+								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+								{
+									//$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+									$cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 								}
 								else
 								{
@@ -1931,9 +1954,9 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	//An array containing information about used to insert the data into the db at the submit stage
 	//4. SESSION VARIABLE - fieldarray
 	//See rem at end..
+	$_SESSION['token'] = $clienttoken;
 	if ($thissurvey['private'] == "N")
 	{
-		$_SESSION['token'] = $clienttoken;
 		$_SESSION['insertarray'][]= "token";
 	}
 

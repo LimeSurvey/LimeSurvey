@@ -468,7 +468,7 @@ END;
             $cd[4] == "C" ||
             $cd[4] == "E" ||
             $cd[4] == "F" ||
-			$cd[4] == "H" ||
+	    $cd[4] == "H" ||
             $cd[4] == "G" ||
             $cd[4] == "Y" ||
             $cd[4] == "1" ||
@@ -553,6 +553,19 @@ END;
 			$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
 		}
 	
+      }
+      elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $comparedtokenattr))
+      { //TIBO
+		if ( isset($_SESSION['token']) &&
+			in_array(strtolower($comparedtokenattr[1]),GetAttributeFieldNames($surveyid)))
+		{
+			$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
+			$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '$comparedtokenattrValue'";
+		}
+		else
+		{
+			$java .= " 'impossible to evaluate tokenAttr' == 'tokenAttr'";
+		}
       }
       else
       {

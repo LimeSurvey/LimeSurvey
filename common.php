@@ -2810,7 +2810,7 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
 	if (strpos($line, "{URL}") !== false) {
-		if ($thissurvey['url']!=""){$linkreplace="<a href='{$thissurvey['url']}'>{$thissurvey['urldescrip']}</a>";}
+		if ($thissurvey['surveyls_url']!=""){$linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['urldescrip']}</a>";}
 		else {$linkreplace="";}
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
@@ -5756,22 +5756,6 @@ function recursive_stripslashes($array_or_string)
 }
 
 
-/**
-* This function strips any content between and including <style>  & <javascript> tags
-* 
-* @param string $content String to clean
-* @return string  Cleaned string
-*/
-function strip_javascript($content){
-    $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
-                   '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
-    /*               ,'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
-                   '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
-                   */
-    );
-    $text = preg_replace($search, '', $content);
-    return $text;
-} 
 
 
 /**
@@ -5786,7 +5770,16 @@ function strip_javascript($content){
 */
 function checkquestionfordisplay($qid, $gid=null)
 { 
-	global $dbprefix, $connect;
+	global $dbprefix, $connect,$surveyid,$thissurvey;
+
+	if (!is_array($thissurvey))
+	{
+		$local_thissurvey=getSurveyInfo($surveyid);
+	}
+	else
+	{
+		$local_thissurvey=$thissurvey;
+	}
 
 	$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
 		." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
@@ -5866,6 +5859,31 @@ function checkquestionfordisplay($qid, $gid=null)
 					// then try to replace them with a 
 					// value recorded in SESSION if any
 					$cvalue=$_SESSION[$targetconditionfieldname[1]];
+					if (isset($_SESSION[$row['cfieldname']]))
+					{ 
+						$cfieldname=$_SESSION[$row['cfieldname']]; 
+					} 
+					else 
+					{ 
+						$conditionCanBeEvaluated=false;
+						//$cfieldname=' ';
+					}
+				}
+				else
+				{ // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
+					$conditionCanBeEvaluated=false;
+					//$cfieldname=' ';
+				}
+			}
+			elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['value'],$targetconditiontokenattr))
+			{ //TIBO
+				if ( isset($_SESSION['token']) && 
+					in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+				{
+					// If value uses {TOKEN:XXX} placeholders
+					// then try to replace them with a 
+					// the value recorded in DB
+					$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 					if (isset($_SESSION[$row['cfieldname']]))
 					{ 
 						$cfieldname=$_SESSION[$row['cfieldname']]; 
@@ -6012,3 +6030,52 @@ function GetAttributeFieldNames($surveyid)
     return array_filter($tokenfieldnames,'filterforattributes');
 }
 
+/**
+* Retrieves the token attribute value from the related token table
+* 
+* @param mixed $surveyid  The survey ID
+* @param mixed $attrName  The token-attribute field name
+* @param mixed $token  The token code
+* @return string The token attribute value (or null on error)
+*/
+function GetAttributeValue($surveyid,$attrName,$token)
+{
+    global $dbprefix, $connect;
+    $attrName=strtolower($attrName);
+    if (!in_array($attrName,GetAttributeFieldNames($surveyid)))
+    {
+	return null;	
+    }
+    $sanitized_token=$connect->qstr($token,get_magic_quotes_gpc());
+    $surveyid=sanitize_int($surveyid);
+
+    $query="SELECT $attrName FROM {$dbprefix}tokens_$surveyid WHERE token=$sanitized_token"; 
+    $result=db_execute_num($query);
+    $count=$result->RecordCount();
+    if ($count != 1)
+    {
+	return null;
+    }
+    else
+    {
+    	$row=$result->FetchRow();
+	return $row[0];
+    }
+}
+
+/**
+* This function strips any content between and including <style>  & <javascript> tags
+* 
+* @param string $content String to clean
+* @return string  Cleaned string
+*/
+function strip_javascript($content){
+    $search = array('@<script[^>]*?>.*?</script>@si',  // Strip out javascript
+                   '@<style[^>]*?>.*?</style>@siU'    // Strip style tags properly
+    /*               ,'@<[\/\!]*?[^<>]*?>@si',            // Strip out HTML tags
+                   '@<![\s\S]*?--[ \t\n\r]*>@'         // Strip multi-line comments including CDATA
+                   */
+    );
+    $text = preg_replace($search, '', $content);
+    return $text;
+} 
