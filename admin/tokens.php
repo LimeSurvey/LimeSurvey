@@ -915,10 +915,10 @@ if ($subaction == "browse" || $subaction == "search")
 
                         $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry&amp;subaction=edit' method='post' target='_blank'>\n";
                         $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry' method='post' target='_blank'>\n"
-                        ."\t\t<td align='center' >\n"
+                        //."\t\t<td align='center' >\n" // to be replaced by icons
                         ."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
                         .$clang->gT("Update Response")."' />\n"
-                        ."\t\t</td>\n"
+                        //."\t\t</td>\n"
                         ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
                         ."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"
                         ."\t\t<input type='hidden' name='id' value='$id' />\n"
