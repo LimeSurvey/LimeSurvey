@@ -579,7 +579,7 @@ function updateset($lid)
 	$dellangidsarray=array_diff($oldlangidsarray,$newlanidarray);
 
 	// If new languages are added, create labels' codes and sortorder for the new languages	
-	$query = "SELECT code,sortorder,assessment_value FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder";
+	$query = "SELECT code,sortorder,assessment_value FROM ".db_table_name('labels')." WHERE lid=".$lid." GROUP BY code,sortorder,assessment_value";
 	$result=db_execute_assoc($query);
 	if ($result) { while ($row=$result->FetchRow()) {$oldcodesarray[$row['code']]=array('sortorder'=>$row['sortorder'],'assessment_value'=>$row['assessment_value']);} }
 	if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
