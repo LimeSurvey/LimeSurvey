@@ -32,8 +32,9 @@
       String expected. Put together from TYP, DOZENTEN- TITLE, -NAME,
       </documentation>
     </part>
-    <part name="sVwel" type="xsd:string"></part>
-    <part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>
+    <part name="sVwel" type="xsd:string"></part>
+        <part name="sVend" type="xsd:string"></part>
+        <part name="sMail" type="xsd:string"><documentation>The E-Mail Adress of the Person who to contact in matters of evaluation. Limesurvey uses this to send notifications of Surveyparticipation, if wante</documentation></part>
     <part name="sName" type="xsd:string"><documentation>The Name of the Administrator, resp. the Person whos email Adress was given
       </documentation></part>
     <part name="sUrl" type="xsd:string"><documentation>The URL to wich will be redirected when completing the Survey
@@ -41,7 +42,8 @@
     <part name="sUbes" type="xsd:string"><documentation>The text for the Link, if not loaded automatically</documentation></part>
     
     <part name="sVtyp" type="xsd:string"></part>
-    <part name="sAutoRd" type="xsd:string"></part></message>
+    <part name="sAutoRd" type="xsd:string"></part>
+    </message>
   
   <message name="sCreateSurveyResponse">
       <part name="vid" type="xsd:string">

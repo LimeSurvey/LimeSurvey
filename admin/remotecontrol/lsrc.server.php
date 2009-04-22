@@ -309,7 +309,7 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  * @param $autoRd
  * @return unknown_type
  */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -320,6 +320,10 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	{//if no welcometext is given, set this one
 		$sVwel	= "Herzlich Willkommen zur Evaluation von \"".$sVtit."\"";
 	}
+//	if($sVend=='')
+//	{//if no endtext is given, set this one
+//		$sVend	= "Vielen Dank für Ihre Teilnahme an der Umfrage!";
+//	}
 	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{// check for appropriate rights
@@ -357,6 +361,8 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iVid'");
 		if($autoRd=='Y')
 			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
+		if($sVend!='')
+			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "sid='$iVid'");
 			
 		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
