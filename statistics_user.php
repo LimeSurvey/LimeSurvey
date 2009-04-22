@@ -646,8 +646,8 @@ if (isset($summary) && $summary)
 		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
 	}
 
-	//let's run through the survey
-	$runthrough=$summary;
+	//let's run through the survey // Fixed bug 3053 with array_unique
+	$runthrough=array_unique($summary);
 	
 	//GET LIST OF LEGIT QIDs FOR TESTING LATER	
 	$lq = "SELECT DISTINCT qid FROM ".db_table_name("questions")." WHERE sid=$surveyid"; 
