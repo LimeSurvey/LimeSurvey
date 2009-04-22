@@ -75,9 +75,17 @@ $server->addFunction("sGetFieldmap");
 $server->handle();
  
 /**
- *	Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
- *
-*/
+ * 
+ * Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
+ * @param $sUser
+ * @param $sPass
+ * @param $table
+ * @param $key
+ * @param $value
+ * @param $where
+ * @param $mode
+ * @return unknown_type
+ */
 function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 {
 	include("lsrc.config.php");
@@ -97,20 +105,18 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0')
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
 }
-/*
- * TODO: return Fieldmap of the survey
- */
-function sFieldMap($sUser, $sPass, $iVid)
-{
-	exit;
-}
-/*
- * Function to send reminder, invitation or custom mails to participants of a specific survey
- * $iVid = Survey ID
- * $type = invite, remind, custom
- * $subject = subject of custom mails
- * $emailText = Text of custom mails
+
+/**
  * 
+ * Function to send reminder, invitation or custom mails to participants of a specific survey
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $type
+ * @param $maxLsrcEmails
+ * @param $subject
+ * @param $emailText
+ * @return unknown_type
  */
 function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject='', $emailText='')
 {
@@ -221,13 +227,15 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 }
 
 /**
- *	Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
- *	$iVid= Survey ID
- *	$dStart = datetime
- *	$dE = datetime
- *	$sUser = have to be an existing admin or superadmin in limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
-*/
+ * 
+ * Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $dStart
+ * @param $dEnd
+ * @return unknown_type
+ */
 function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 {
 	include("lsrc.config.php");
@@ -285,15 +293,22 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 }
 
 /**
- *	Function to import a survey into the database and change some Values. Required parameters are:
- *	$iVid  = Survey ID
- *	$sVtit = Survey Titel
- *	$sVbes = Surveydescription
- *  $sVwel = Welcometext
- *	$sUser = have to be an existing accounts with appropriate rights in limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
- *  $sVtyp = Veranstaltungstyp (Vorlesung, Seminar, Uebung, Exkursion)
-*/
+ * 
+ * Function to import a survey into the database and change some Values. Required parameters are:
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sVtit
+ * @param $sVbes
+ * @param $sVwel
+ * @param $sMail
+ * @param $sName
+ * @param $sUrl
+ * @param $sUbes
+ * @param $sVtyp
+ * @param $autoRd
+ * @return unknown_type
+ */
 function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
@@ -356,11 +371,13 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 }//end of function sCreateSurvey
 
 /**
- *	Function to insert Tokens to an existing Survey, makes it "closed"
- *	$iVid = Survey ID
- *	$sToken = String of tokens in this pattern: token1,token2,token3,token4,token5 and so on...
- *	$sUser = have to be an existing admin or superadmin in Limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
+ * 
+ * Function to insert Tokens to an existing Survey, makes it "closed"
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sToken
+ * @return unknown_type
  */
 function sInsertToken($sUser, $sPass, $iVid, $sToken) 
 {
@@ -470,11 +487,13 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 } //end of function sInsertToken  
 
 /**
- *	Function to insert Participants data while auto creating tokens for everyone...
- *	$iVid = Survey ID
- *	$sParticipantData = String of datasets in this pattern: FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME... and so on...
- *	$sUser = have to be an existing admin or superadmin in Limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
+ * 
+ * Function to insert Participants data while auto creating tokens for everyone...
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sParticipantData
+ * @return unknown_type
  */
 function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
 {
@@ -669,10 +688,15 @@ function sTokenReturn($sUser, $sPass, $iVid)
 }//end of function sTokenReturn  
 
 /**
+ * 
  * function to import an exported group of questions into a survey
- *
- * @param unknown_type $iVid
- * @param unknown_type $sMod
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sMod
+ * @param $gName
+ * @param $gDesc
+ * @return unknown_type
  */
 function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')
 {
@@ -718,16 +742,14 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')
 }
 
 /**
+ * 
  * function to import a fixed question 
- *
- * @param String $sUser
- * @param String $sPass
- * @param Int $iVid
- * @param String $sMod
- * @param String $qTitle
- * @param String $qText
- * @param String $qHelp
- * @return String
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 {
@@ -773,16 +795,17 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 }
 
 /**
- * function to import a questiongroup with one freetext question and change it 
- *
- * @param String $sUser
- * @param String $sPass
- * @param Int $iVid
- * @param String $sMod
- * @param String $qTitle
- * @param String $qText
- * @param String $qHelp
- * @return String
+ * 
+ * function to import one freetext question and change it 
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $qTitle
+ * @param $qText
+ * @param $qHelp
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='Freitext', $mandatory='N')
 {
@@ -835,16 +858,18 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
 }
 
 /**
+ * 
  * function to import a five scale Matrix question and set 1 to n items
- *
- * @param unknown_type $sUser
- * @param unknown_type $sPass
- * @param unknown_type $iVid
- * @param unknown_type $sMod
- * @param unknown_type $qTitle
- * @param unknown_type $qHelp
- * @param unknown_type $sItems comma seperated values
- * @return unknown
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $qTitle
+ * @param $qText
+ * @param $qHelp
+ * @param $sItems
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
 {
@@ -908,8 +933,8 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 }
 
 /**
+ * 
  * function to collect all available Modules and send them comma seperated to the client
- *
  * @param String $sUser
  * @param String $sPass
  * @param String $mode ("mod" or "core")
@@ -1004,8 +1029,8 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
 }
 
 /**
+ * 
  * function to delete a survey
- *
  * @param unknown_type $sUser
  * @param unknown_type $sPass
  * @param unknown_type $iVid
@@ -1076,7 +1101,7 @@ function sGetFieldmap($sUser, $sPass, $iVid)
 		exit;
 	}
 	
-	$returnCSV = $lsrcHelper->FieldMap2CSV($iVid);
+	$returnCSV = "".$lsrcHelper->FieldMap2CSV($iVid);
 	return $returnCSV;
 	
 }

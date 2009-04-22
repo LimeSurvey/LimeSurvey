@@ -43,7 +43,7 @@ class LsrcHelper {
 	function getSurveyOwner($iVid)
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
@@ -69,7 +69,7 @@ class LsrcHelper {
 	{//be aware that this function may be a security risk
 	
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		if($mode=='' || !isset($mode) || $mode=='0')
@@ -121,7 +121,7 @@ class LsrcHelper {
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
 		global $connect,$sitename ;
-		global $dbprefix ;
+//		global $dbprefix ;
 
 		include("lsrc.config.php");
 		include("../../classes/core/html_entity_decode_php4.php");
@@ -599,7 +599,7 @@ class LsrcHelper {
 	function checkUser($sUser, $sPass) // XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		require($homedir."/classes/core/sha256.php"); 
@@ -650,7 +650,7 @@ class LsrcHelper {
 	function surveyExists($sid)//XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		
@@ -678,7 +678,7 @@ class LsrcHelper {
 	function importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		
 		include("lsrc.config.php");
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -1099,7 +1099,7 @@ class LsrcHelper {
 		
 		if ($importversion<=100)
 		// find the old language field and replace its contents with the new language shortcuts
-		    {
+		{
 		    $oldlanguage=$surveyrowdata['language'];
 		    $newlanguage='en'; //Default
 		    switch ($oldlanguage) 
@@ -1222,18 +1222,9 @@ class LsrcHelper {
 		    $values=array_values($surveylsrowdata);
 		    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		    $insert = "insert INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-			    try
-			    {
-			    	$iresult = $connect->Execute($insert) or $this->debugLsrc("".("Import of this survey file failed")."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg());
-			    }
-			    catch(exception $e)
-			    {
-			    	throw new SoapFault("Server: ", "$e : $connect->ErrorMsg()");
-			    	exit;
-			    }
-		
-		
-		    }
+			$iresult = $connect->Execute($insert) or $this->debugLsrc("".("Import of this survey file failed")."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg());
+			
+		}
 		
 		
 		
@@ -1246,7 +1237,7 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-		$iresult = $connect->Execute($insert) or $this->debugLsrc(""."Import of this survey file failed on Line: ".__LINE__."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg()) and exit;
+		$iresult = $connect->Execute($insert) or $this->debugLsrc(""."Import of this survey file failed on Line: ".__LINE__."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg());
 		
 		$oldsid=$surveyid;
 		
@@ -1951,7 +1942,7 @@ class LsrcHelper {
 	function activateSurvey($surveyid)//XXX activateSurvey
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$_GET['sid'] = $surveyid;
@@ -2585,7 +2576,7 @@ class LsrcHelper {
 	function importGroup($surveyid, $sMod) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3232,7 +3223,7 @@ class LsrcHelper {
 	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3705,7 +3696,7 @@ class LsrcHelper {
 	function deleteSurvey($surveyid)
 	{
 		global $connect ;
-		global $dbprefix ;
+		// global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
