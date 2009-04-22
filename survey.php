@@ -560,7 +560,7 @@ END;
 			in_array(strtolower($comparedtokenattr[1]),GetAttributeFieldNames($surveyid)))
 		{
 			$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-			$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '$comparedtokenattrValue'";
+			$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '".javascript_escape($comparedtokenattrValue)."'";
 		}
 		else
 		{

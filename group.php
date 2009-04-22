@@ -541,7 +541,7 @@ for ($i=0;$i<count($conditions);$i++)
 
 	// If this is a New Question ('New If Statement'):
 	// * add the endzone to output and reset it
-	// * reset the cqcount (uused to append && or || to conditions
+	// * reset the cqcount (used to append && or || to conditions
 	// * set the runonce flag to true (will stay true if no condition is on a question from this group)
 	// * initialize the new if statement code in newjava to the empty string (will be appended to $java at 'After If Statement')
 	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))
@@ -560,9 +560,14 @@ for ($i=0;$i<count($conditions);$i++)
 	// the set the runconce flag to False, because we'll need to evaluate this condition
 	//each time another question in this page is modified
 	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
+	$conditionSourceOnPreviousPage = false; // used later in TokenAttr conditions
 	if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] == $gid)
 	{
-		$newjava_runonce = false;
+		$newjava_runonce = false; // this param is cumulated for all conditions on this fieldname
+	}
+	else
+	{
+		$conditionSourceOnPreviousPage = true; // this param is specific to this basic condition
 	}
 
 	if (!isset($oldcq) || !$oldcq)
@@ -654,10 +659,10 @@ for ($i=0;$i<count($conditions);$i++)
 	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
 	// condition editor seems not updated yet
 	if ($cd[3] == '' || $cd[3] == ' ')
-	{
+	{ 
 		if ($cd[6] == '==')
 		{
-			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value)";
 		} else 
 		{
 			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
@@ -712,8 +717,66 @@ for ($i=0;$i<count($conditions);$i++)
 				    $newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
 			    }
 
-//			}
-		} else
+		}
+		elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
+		{ //TIBO
+			if ( isset($_SESSION['token']) && 
+				in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+			{
+				$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
+				if ($conditionSourceOnPreviousPage === false)
+				{
+					$newjava .= "document.getElementById('$idname').value $cd[6] '".javascript_escape($cvalue)."'";
+				}
+				else
+				{
+					// get previous question answer value: $cd[2]
+					if (isset($_SESSION[$cd[2]]))
+					{
+						$prevanswerToCompare=$_SESSION[$cd[2]];
+						if ($cd[6] != 'RX')
+						{
+							if (eval('if (trim($prevanswerToCompare) '.$cd[6].' trim($cvalue)) return true; else return false;'))
+							{
+								//$newjava .= "'tokenMatch' == 'tokenMatch'";
+								$newjava .= "true";
+							}
+							else
+							{
+								//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
+								$newjava .= "false";
+							}
+						}
+						else
+						{
+							if (ereg(trim($cvalue),trim($prevanswerToCompare)))
+							{
+								//$newjava .= "'tokenMatch' == 'tokenMatch'";
+								$newjava .= "true";
+							}
+							else
+							{
+								//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
+								$newjava .= "false";
+							}
+						}
+					}
+					else
+					{
+						//$newjava .= "'impossible to evaluate prevQ' == 'tokenAttr'";
+						$newjava .= "false";
+					}
+					// compare to the TokenAttr
+					// return true or false
+				}
+			}
+			else
+			{
+				//$newjava .= "'Missing tokenAttr' == 'tokenAttr'";
+				$newjava .= "false";
+			}
+		}
+		else
 		{
 			$newjava .= "document.getElementById('$idname') != null &&";
 			if ($cd[3]) //Well supose that we are comparing a non empty value
