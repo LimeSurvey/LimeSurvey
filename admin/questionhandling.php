@@ -398,16 +398,32 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
  			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
   		}
   		
-  		$editquestion .= "\t\t</td>\n"
-  		. "\t</tr>\n"
-  		. "\t<tr>\n"
-  		. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
-  		. "\t\t<td align='left'><select name='gid'>\n"
-  		. getgrouplist3($eqrow['gid'])
-  		. "\t\t</select></td>\n"
-  		. "\t</tr>\n";
-  		$editquestion .= "\t<tr id='OtherSelection'>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+  		if ($activated != "Y")
+		{
+			$editquestion .= "\t\t</td>\n"
+				. "\t</tr>\n"
+				. "\t<tr>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
+				. "\t\t<td align='left'><select name='gid'>\n"
+				. getgrouplist3($eqrow['gid'])
+				. "\t\t</select></td>\n"
+				. "\t</tr>\n";
+			$editquestion .= "\t<tr id='OtherSelection'>\n"
+				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+		}
+		else
+		{
+			$editquestion .= "\t\t</td>\n"
+				. "\t</tr>\n"
+				. "\t<tr>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
+				. "\t\t<td align='left'>\n"
+				. getgrouplist4($eqrow['gid'])
+				. "\t\t</td>\n"
+				. "\t</tr>\n";
+			$editquestion .= "\t<tr id='OtherSelection'>\n"
+				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+		}
   		
   		if ($activated != "Y")
   		{

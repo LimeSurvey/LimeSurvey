@@ -1361,6 +1361,23 @@ function getgrouplist3($gid)
 	return $groupselecter;
 }
 
+function getgrouplist4($gid)
+{
+	global $surveyid, $dbprefix, $connecti,$clang;
+    if (!$surveyid) {$surveyid=returnglobal('sid');}
+	$groupselecter = "";
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$gidquery = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' and gid=$gid";
+
+
+	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");      //Checked
+	while ($gv = $gidresult->FetchRow())
+	{
+		$groupselecter .= "\t\t".htmlspecialchars($gv[0])." - ".$clang->gT("Cannot be modified (Survey is active)")."\n";
+	}
+	return $groupselecter;
+}
+
 
 function getgrouplistlang($gid, $language)
 {
