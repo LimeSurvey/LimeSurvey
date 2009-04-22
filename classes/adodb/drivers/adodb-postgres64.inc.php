@@ -492,7 +492,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 			// LEFT JOIN would have been much more elegant, but postgres does 
 			// not support OUTER JOINS. So here is the clumsy way.
 			
-			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+            $this->fetchMode = ADODB_FETCH_ASSOC;  
 			
 			$rskey = $this->Execute(sprintf($this->metaKeySQL,($table)));
 			// fetch all result in once for performance.
@@ -506,7 +506,7 @@ select viewname,'V' from pg_views where viewname like $mask";
 
 		$rsdefa = array();
 		if (!empty($this->metaDefaultsSQL)) {
-			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+			$this->fetchMode = ADODB_FETCH_ASSOC;
 			$sql = sprintf($this->metaDefaultsSQL, ($table));
 			$rsdef = $this->Execute($sql);
 			if (isset($savem)) $this->SetFetchMode($savem);

@@ -285,7 +285,7 @@ if(isset($surveyid))
 		if (strlen($_POST['title']) < 1)
 		{
 			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
-                              ."alert(\"".sprintf($clang->gT("Answer could not be added. You must insert a code in the mandatory field (%s)","js"),$_POST['title'])."\")\n "
+                              ."alert(\"".$clang->gT("The question could not be added. You must enter a at least enter a question code","js")."\")\n "
                               ."//-->\n</script>\n";
 		}
 		else
