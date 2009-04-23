@@ -1614,7 +1614,7 @@ if ($subaction == "tokenify" &&
 	else
 	{
 		$newtokencount = 0;
-		$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
+		$tkquery = "SELECT tid FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 		$tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
 		while ($tkrow = $tkresult->FetchRow())
 		{
