@@ -3763,7 +3763,7 @@ class LsrcHelper {
     */
     function FieldMap2CSV($surveyid)
     {
-        $fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name');   
+        $fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name','lid','lid1');   
         $fieldmap=createFieldMap($surveyid,'full',true);
         
         $result='"'.implode('","',$fields).'"'."\n";
@@ -3782,7 +3782,8 @@ class LsrcHelper {
                 $destfieldmap[$field]='';
               }
            }
-           $result.=implode(',',array_map('CSVEscape',$entry))."\n";
+           $entry=array_map('CSVEscape',array_values($destfieldmap));
+           $result.=implode(',',$entry)."\n";
         }
         return $result;  
     }
