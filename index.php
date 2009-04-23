@@ -993,11 +993,34 @@ function checkconfield($value)
 				. "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
 				. "AND ".db_table_name('conditions').".qid=$sfa[0] "
 				. "AND ".db_table_name('conditions').".scenario=$scenario "
+				. "AND ".db_table_name('conditions').".cfieldname NOT LIKE '{%' "
 				. "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
 				$result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked 
-
 				$conditionsfound = $result->RecordCount();
-				while($rows = $result->FetchRow()) //Go through the condition on this field
+
+				$querytoken = "SELECT ".db_table_name('conditions').".*, '' as type "
+				. "FROM ".db_table_name('conditions')." "
+				. "WHERE "
+				. " ".db_table_name('conditions').".qid=$sfa[0] "
+				. "AND ".db_table_name('conditions').".scenario=$scenario "
+				. "AND ".db_table_name('conditions').".cfieldname LIKE '{%' "
+				. "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
+				$resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />".$connect->ErrorMsg());         //Checked 
+				$conditionsfoundtoken = $resulttoken->RecordCount();
+				$conditionsfound = $conditionsfound + $conditionsfoundtoken;
+
+				while ($Condrow = $resulttoken->FetchRow())
+				{
+					$aAllCondrows[] = $Condrow;
+				}
+				while ($Condrow = $result->FetchRow())
+				{
+					$aAllCondrows[] = $Condrow;
+				}
+
+
+//				while($rows = $result->FetchRow()) //Go through the condition on this field
+				foreach ($aAllCondrows as $rows)
 				{
 					if($rows['type'] == "M" || $rows['type'] == "P")
 					{
@@ -1065,14 +1088,45 @@ function checkconfield($value)
 							if (trim($cqv['matchmethod'])=='') {$cqv['matchmethod']='==';}
 							if($cqv['cfieldname'] == $con && $conditionCanBeEvaluated === true)
 							{
+								if (!preg_match("/^{/",$cqv['cfieldname']))
+								{
+									if (isset($_SESSION[$cqv['matchfield']]))
+									{
+										$comparisonLeftOperand =  $_SESSION[$cqv['matchfield']];
+									}
+									else
+									{
+										$comparisonLeftOperand = null;
+									}
+								}
+								elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$cqv['cfieldname'],$sourceconditiontokenattr))
+								{
+									if ( isset($_SESSION['token']) &&
+									  in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+									{
+										$comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
+									}
+									else
+									{
+										$comparisonLeftOperand = null;
+									}
+									
+								}
+								else
+								{
+									$comparisonLeftOperand = null;
+								}
+
 								if ($cqv['matchmethod'] != "RX")
 								{
-									if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
+//									if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
+									if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if ($comparisonLeftOperand '.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
 									{//plug successful matches into appropriate container
 										$addon=1;
 									}
 								}
-								elseif ( isset($_SESSION[$cqv["matchfield"]]) && ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && ereg($cqv["matchvalue"],$comparisonLeftOperand))
 								{
 										$addon=1;
 								}

@@ -36,6 +36,7 @@ if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
+if (!isset($p_csrctoken)) {$p_csrctoken=returnglobal('csrctoken');}
 if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
 
 if (!isset($p_canswers))
@@ -61,22 +62,28 @@ if (isset($_POST['method']))
 	}
 }
 
+/**
 if (isset($_POST['ConditionConst']))
 {
-	$html_ValOrRegEx = html_escape(auto_unescape($_POST['ConditionConst']));
+	$html_ConditionConst = html_escape(auto_unescape($_POST['ConditionConst']));
 }
 if (isset($_POST['prevQuestionSGQA']))
 {
-	$html_ValOrRegEx = html_escape(auto_unescape($_POST['prevQuestionSGQA']));
+	$html_prevQuestionSGQA = html_escape(auto_unescape($_POST['prevQuestionSGQA']));
 }
 if (isset($_POST['tokenAttr']))
 {
-	$html_ValOrRegEx = html_escape(auto_unescape($_POST['tokenAttr']));
+	$html_tokenAttr = html_escape(auto_unescape($_POST['tokenAttr']));
 }
 if (isset($_POST['ConditionRegexp']))
 {
-	$html_ValOrRegEx = html_escape(auto_unescape($_POST['ConditionRegexp']));
+	$html_ConditionRegexp = html_escape(auto_unescape($_POST['ConditionRegexp']));
 }
+if (isset($_POST['csrctoken']))
+{
+	$html_csrctoken = html_escape(auto_unescape($_POST['csrctoken']));
+}
+**/
 
 if (isset($_POST['newscenarionum']))
 {
@@ -184,18 +191,27 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 				!isset($_POST['prevQuestionSGQA']) &&
 				!isset($_POST['tokenAttr']) &&
 				!isset($_POST['ConditionRegexp'])) ||
-			!isset($p_cquestions))
+			(!isset($p_cquestions) && !isset($p_csrctoken)))
 	{
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
+		if (isset($p_cquestions) && $p_cquestions != '')
+		{
+			$conditionCfieldname=$p_cquestions;
+		}
+		elseif(isset($p_csrctoken) && $p_csrctoken != '')
+		{
+			$conditionCfieldname=$p_csrctoken;
+		}
+
 		if (isset($p_canswers))
 		{
 			foreach ($p_canswers as $ca)
 			{
 				$query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-					. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$p_cquestions}', '{$p_method}', '$ca')";
+					. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
 				$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 			}
 		}
@@ -221,7 +237,7 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 		if (isset($posted_condition_value))
 		{ 
 			$query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$p_cquestions}', '{$p_method}', ".$posted_condition_value.")";
+				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', ".$posted_condition_value.")";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
@@ -235,17 +251,26 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
 				!isset($_POST['prevQuestionSGQA']) &&
 				!isset($_POST['tokenAttr']) &&
 				!isset($_POST['ConditionRegexp'])) ||
-			!isset($p_cquestions))
+			(!isset($p_cquestions) && !isset($p_csrctoken)))
 	{
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
+		if (isset($p_cquestions) && $p_cquestions != '')
+		{
+			$conditionCfieldname=$p_cquestions;
+		}
+		elseif(isset($p_csrctoken) && $p_csrctoken != '')
+		{
+			$conditionCfieldname=$p_csrctoken;
+		}
+
 		if (isset($p_canswers))
 		{
 			foreach ($p_canswers as $ca)
 			{ // This is an Edit, there will only be ONE VALUE
-				$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}', cqid='{$p_cqid}', cfieldname='{$p_cquestions}', method='{$p_method}', value='$ca' "
+				$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}', cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='$ca' "
 					. " WHERE cid={$p_cid}";
 				$result = $connect->Execute($query) or safe_die ("Couldn't update condition<br />$query<br />".$connect->ErrorMsg());
 			}
@@ -271,7 +296,7 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
 
 		if (isset($posted_condition_value)) 
 		{ 
-			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$p_cquestions}', method='{$p_method}', value=".$posted_condition_value." "
+			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value=".$posted_condition_value." "
 				. " WHERE cid={$p_cid}";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
@@ -1045,6 +1070,17 @@ if (isset($cquestions))
 		$jn++;
 	}
 }
+
+//  record a JS variable to let jQuery know if survey is Anonymous
+if ($thissurvey['private'] == 'Y')
+{
+	$conditionsoutput .= "isAnonymousSurvey = true;";
+}
+else
+{
+	$conditionsoutput .= "isAnonymousSurvey = false;";
+}
+
 $conditionsoutput .= "//-->\n"
 ."</script>\n";
 
@@ -1205,9 +1241,28 @@ if ($subaction=='' ||
 				."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."AND {$dbprefix}conditions.qid=$qid "
 				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
+				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
 				."ORDER BY {$dbprefix}conditions.cfieldname";
 			$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 			$conditionscount=$result->RecordCount();
+
+			$querytoken = "SELECT {$dbprefix}conditions.cid, "
+				."{$dbprefix}conditions.scenario, "
+				."{$dbprefix}conditions.cqid, "
+				."{$dbprefix}conditions.cfieldname, "
+				."{$dbprefix}conditions.method, "
+				."{$dbprefix}conditions.value, "
+				."'' AS type "
+				."FROM {$dbprefix}conditions "
+				."WHERE "
+				." {$dbprefix}conditions.qid=$qid "
+				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
+				."AND {$dbprefix}conditions.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
+				."ORDER BY {$dbprefix}conditions.cfieldname";
+			$resulttoken = db_execute_assoc($querytoken) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+			$conditionscounttoken=$resulttoken->RecordCount();
+
+			$conditionscount=$conditionscount+$conditionscounttoken;
 
 			// this array will be used soon,
 			// to explain wich conditions is used to evaluate the question
@@ -1222,7 +1277,18 @@ if ($subaction=='' ||
 
 			if ($conditionscount > 0)
 			{
-				while ($rows=$result->FetchRow())
+				$aConditionsMerged=Array();
+				while ($arow=$resulttoken->FetchRow())
+				{
+					$aConditionsMerged[]=$arow;
+				}
+				while ($arow=$result->FetchRow())
+				{
+					$aConditionsMerged[]=$arow;
+				}
+				
+//				while ($rows=$result->FetchRow())
+				foreach ($aConditionsMerged as $rows)
 				{
 					if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
 					$markcidstyle="";
@@ -1273,18 +1339,33 @@ if ($subaction=='' ||
 					$conditionsoutput .= ""
 						."\t\t\t\t<td valign='middle' align='right' width='40%'>\n"
 						."\t\t\t\t\t<font size='1' face='verdana'>\n";
-					//BUILD FIELDNAME?
-					foreach ($cquestions as $cqn)
+			
+					$leftOperandType = 'unknown'; // prevquestion, tokenattr                                                     
+					if ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)                   
 					{
-						if ($cqn[3] == $rows['cfieldname'])
+						$leftOperandType = 'tokenattr';
+						$aTokenAttrNames=GetAttributeNames($surveyid);
+						$thisAttrName=$aTokenAttrNames[strtolower($extractedTokenAttr[1])];
+						$conditionsoutput .= "\t\t\t".html_escape($thisAttrName)." (".$clang->gT("from token").")\n";
+						// TIBO not sure this is used anymore !!
+						$conditionsList[]=array("cid"=>$rows['cid'],
+								"text"=>$thisAttrName);
+					}
+					else
+					{
+						$leftOperandType = 'prevquestion';
+						foreach ($cquestions as $cqn)
 						{
-							$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
-							$conditionsList[]=array("cid"=>$rows['cid'],
-									"text"=>$cqn[0]." ({$rows['value']})");
-						}
-						else
-						{
-							//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+							if ($cqn[3] == $rows['cfieldname'])
+							{
+								$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
+								$conditionsList[]=array("cid"=>$rows['cid'],
+										"text"=>$cqn[0]." ({$rows['value']})");
+							}
+							else
+							{
+								//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+							}
 						}
 					}
 
@@ -1383,11 +1464,24 @@ if ($subaction=='' ||
 							."\t\t\t\t\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
 							."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
-							."\t\t\t\t\t<input type='hidden' id='cquestions{$rows['cid']}'  name='cquestions' value='{$rows['cfieldname']}' />\n"
+//							."\t\t\t\t\t<input type='hidden' id='cquestions{$rows['cid']}'  name='cquestions' value='{$rows['cfieldname']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='method' value='{$rows['method']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 							."\t\t\t\t\t<input type='hidden' name='gid' value='$gid' />\n"
 							."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n";
+						// now sets e corresponding hidden input field
+						// depending on the leftOperandType		
+						if ($leftOperandType == 'tokenattr')
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='csrctoken{$rows['cid']}' name='csrctoken' value='".html_escape($rows['cfieldname'])."' />\n";
+						}
+						else
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='cquestions{$rows['cid']}' name='cquestions' value='".html_escape($rows['cfieldname'])."' />\n";
+						}
+				
 						// now set the corresponding hidden input field
 						// depending on the rightOperandType
 						// This is used when Editting a condition
@@ -1604,10 +1698,20 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t\t<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		. "$scenarioTxt</td>\n"
 		. "\t</tr>\n"
-		. "\t<tr class='conditiontbl'>\n"
-		. "\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
-		. "\t\t<td><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
+		. "\t<tr class='conditiontbl'>\n";
 
+	// Source condition selection
+	$conditionsoutput .= ""
+		."\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
+		."\t\t<td valign='top' align='left'>\n"
+		."\t\t\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
+		."\t\t\t<ul>\n"
+		."\t\t\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+		."\t\t\t</ul>\n";
+	
+	// Previous question tab
+	$conditionsoutput .= "\t\t\t\t<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
 	if (isset($cquestions))
 	{
 		$js_getAnswers_onload = "";
@@ -1631,7 +1735,30 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		}
 	}
 
-	$conditionsoutput .= "\t\t\t</select>\n"
+	$conditionsoutput .= "\t\t\t\t</select>\n"
+		."\t\t\t\t</div>\n";
+
+	// Source token Tab
+	$conditionsoutput .= "\t\t\t\t<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
+	foreach (GetAttributeNames($surveyid) as $tokenattr => $tokenattrName)
+	{
+		// Check to select
+		if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
+		{
+			$selectThisSrcTokenAttr = "selected=\"selected\"";
+		}
+		else
+		{
+			$selectThisSrcTokenAttr = "";
+		}
+		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
+	}
+
+	$conditionsoutput .= "\t\t\t\t</select>\n"
+		."\t\t\t\t</div>\n\t\t\t\t\n";
+
+	 $conditionsoutput .= "\t\t\t</div>\n" // End Source tabs
+		. "\t\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
@@ -1698,15 +1825,6 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t</div>\n\t\t\t\n";
 
 	// tokenAttr Tab
-	//  record a JS variable to let jQuery know if survey is Anonymous
-	if ($thissurvey['private'] == 'Y')
-	{
-		$js_getAnswers_onload="isAnonymousSurvey = true;";
-	}
-	else
-	{
-		$js_getAnswers_onload="isAnonymousSurvey = false;";
-	}
 
 	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
 	foreach (GetAttributeNames($surveyid) as $tokenattr => $tokenattrName)
@@ -1720,7 +1838,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// Regexp Tab
 	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
-		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align=left' ></textarea>\n"
+		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align='left' ></textarea>\n"
 		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		."\t\t</div>\n";
 	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
@@ -1760,12 +1878,12 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."<input type='hidden' name='cqid' id='cqid' value='' />\n"
 		."<input type='hidden' name='cid' id='cid' value='".$submitcid."' />\n"
 		."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
+		."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
 		."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
 		."</form>\n";
-	$conditionsoutput .= "</td></tr>\n";
 
 	if (!isset($js_getAnswers_onload))
 	{
@@ -1781,7 +1899,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 
 	if ($subaction == "editthiscondition")
-	{
+	{ // in edit mode we read previous values in order to dusplay them in the corresponding inputs
 		if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
 		{
 			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['EDITConditionConst']))."';\n";
@@ -1807,9 +1925,20 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 			$conditionsoutput .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
 		}
+
+		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		}
+		else
+		{
+			$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+		}
 	}
 	else
-	{
+	{ // in other modes, for the moment we do the same as for edit mode
 		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
 		{
 			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['ConditionConst']))."';\n";
@@ -1832,7 +1961,22 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		}
 		else
 		{ // was a predefined answers post
+			if (isset($_POST['cquestions']))
+			{
+				$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			}
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+		}
+
+		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		}
+		else
+		{
+			if (isset($_POST['cquestions'])) $conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		}
 	}
 
@@ -1842,6 +1986,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	}
 	$conditionsoutput .= "-->\n"
 		. "</script>\n";
+	$conditionsoutput .= "</td></tr>\n";
 }
 //END: DISPLAY THE ADD or EDIT CONDITION FORM
 

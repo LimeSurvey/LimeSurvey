@@ -556,86 +556,148 @@ for ($i=0;$i<count($conditions);$i++)
     
 	}
 
-	// If the Gid of the question used for the condition is on the same group,
-	// the set the runconce flag to False, because we'll need to evaluate this condition
-	//each time another question in this page is modified
-	ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
-	$conditionSourceOnPreviousPage = false; // used later in TokenAttr conditions
-	if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] == $gid)
+	// try to determine if local eval (in php) of this simple condition is possible
+	$localEvaluationPossible = false;
+	unset($localEvaluation);
+
+	if ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
+	{ // Source of this simple condition is TokenAttr
+		if ( isset($_SESSION['token']) &&
+			in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+		{
+			$tokenAttrSourceValue=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
+			// local evaluation avoids transmitting
+			// the comparison values to the client in Javascript
+			// It is possible if target value is not an @SGQA@ answer
+			// or if target value is  an @SGQA@ answer from a previous page (group)
+			if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
+			{ // target condition value is an SGQA code
+
+				$targetSgqa_gid = $comparedfieldname[2];
+				if ($targetSgqa_gid != $gid)
+				{ // target answer was on a previous page
+					$localEvaluationPossible = true;
+
+					if (isset($_SESSION[$comparedfieldname[1]]))
+					{
+						$answercvalue=$_SESSION[$comparedfieldname[1]];
+						if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($answercvalue)) return true; else return false;'))
+						{
+							$localEvaluation = 'true';
+						}
+						else
+						{
+							$localEvaluation = 'false';
+						}
+					}
+					else
+					{
+						$localEvaluation = 'false';
+					}
+				}
+				else
+				{ // target answer is on the same page
+					$localEvaluationPossible = false;
+					$newjava_runonce = false; // the whole conditions set must be evaluated each time for this question
+					$JSsourceElt = "document"; // let's use an always existing Elt
+					$JSsourceVal = "'".javascript_escape($tokenAttrSourceValue)."'";
+				}
+			}
+			else
+			{ // other cases cwith TokenAttr as source an be evaluated locally
+				$localEvaluationPossible = true;
+			
+				if ($cd[6] == 'RX')
+				{ // the comparison right operand is a RegExp
+					if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
+					{
+						$localEvaluation = 'true';
+					}
+					else
+					{
+						$localEvaluation = 'false';
+					}
+				}
+				elseif (preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
+				{
+					// the following is Not usefull
+					// because $conditionSourceOnPreviousPage is only used when right operand is Token Attr
+					// but "TokenAttr oper TokenAttr" conditions are evaluated locally here
+					// $conditionSourceOnPreviousPage = true;
+					if ( isset($_SESSION['token']) &&
+						in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+					{
+						$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
+						if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($comparedtokenattrValue)) return true; else return false;'))
+						{ // conditin matches
+							$localEvaluation = 'true';
+							//$localEvaluation = "'tokenmatch' == 'tokenmatch'
+						}
+						else
+						{ // no match
+							$localEvaluation = 'false';
+						}
+					}
+					else
+					{ // No token in session, or no such atribute ==> false
+						$localEvaluation = 'false';
+					}
+				}
+				else
+				{ // the comparison right operand is a constant
+					if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($cd[3])) return true; else return false;'))
+					{
+						$localEvaluation = 'true';
+					}
+					else
+					{
+						$localEvaluation = 'false';
+					}
+				}
+			}
+			
+			
+		}
+		else
+		{ // Can't evaluate ==> False
+			$localEvaluationPossible = true;
+			$localEvaluation = false;
+		}
+	}
+	elseif (ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid))
 	{
-		$newjava_runonce = false; // this param is cumulated for all conditions on this fieldname
+		// If the Gid of the question used for the condition is on the same group,
+		// the set the runconce flag to False, because we'll need to evaluate this condition
+		//each time another question in this page is modified
+		$conditionSourceOnPreviousPage = false; // used later in TokenAttr conditions
+		if (isset($sourceQuestionGid[1]) && $sourceQuestionGid[1] == $gid)
+		{
+			$newjava_runonce = false; // this param is cumulated for all conditions on this fieldname
+		}
+		else
+		{
+			$conditionSourceOnPreviousPage = true; // this param is specific to this basic condition
+		}
+
+		$localEvaluationPossible = false;
+		unset($localEvaluation);
+		$idname=retrieveJSidname($cd,$gid);
+		$JSsourceElt = "document.getElementById('$idname')";
+		$JSsourceVal = "document.getElementById('$idname').value";
 	}
 	else
-	{
-		$conditionSourceOnPreviousPage = true; // this param is specific to this basic condition
+	{ // Abnormal. MAybe the token table doesn't contain the required TokenAttrs !
+		$localEvaluationPossible = true;
+		$localEvaluation = "'seriousError' == 'VerySeriousError'";
 	}
+	
+		
 
 	if (!isset($oldcq) || !$oldcq)
 	{
 		$oldcq = $cd[2];
 	}
 	
-	//Just in case the dropdown threshold is being applied, check number of answers here
-	if ($cd[4] == "L") 
-	{
-		$cccquery="SELECT COUNT(*) FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
-		$cccresult=db_execute_num($cccquery); //Checked
-		list($cccount) = $cccresult->FetchRow();
-	}
-	if ($cd[4] == "R")
-	{
-		if ($sourceQuestionGid[1] == $gid)
-		{
-			ereg("[0-9]+X[0-9]+X(.*)",$cd[2],$rankcode);
-			$idname="fvalue_".$rankcode[1];
-		}
-		else
-		{
-			$idname="java$cd[2]";  
-		}
-	}
-	elseif ($cd[4] == "5" ||
-			$cd[4] == "A" ||
-			$cd[4] == "B" ||
-			$cd[4] == "C" ||
-			$cd[4] == "E" ||
-			$cd[4] == "F" ||
-			$cd[4] == "H" ||
-			$cd[4] == "G" ||
-			$cd[4] == "Y" ||
-			$cd[4] == "1" ||
-			($cd[4] == "L" && $cccount <= $dropdownthreshold))
-	{
-		$idname="java$cd[2]";
-	}
-	elseif ($cd[4] == "M" ||
-			$cd[4] == "P")
-	{
-		$idname="java$cd[5]$cd[3]";
-	}
-	elseif ($cd[4] == "D" ||
-			$cd[4] == "N" ||
-			$cd[4] == "S" ||
-			$cd[4] == "T" ||
-			$cd[4] == "U" ||
-			$cd[4] == "Q" ||
-			$cd[4] == "K")
-	{
-		ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid);
-		if ($sourceQuestionGid[1] == $gid)
-		{ // if question is on same page then field is answerXXXX	
-			$idname="answer$cd[2]";
-		}
-		else
-		{ // If question is on another page then field if javaXXXX
-			$idname="java$cd[2]";
-		}
-	}
-	else
-	{
-		$idname="java".$cd[2];
-	}
-
 	// Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
 	if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7])
 	{	// We have a new scenario, so "or" the scenario.
@@ -651,156 +713,161 @@ for ($i=0;$i<count($conditions);$i++)
 	}
 	$oldscenario=$cd[7];
 
-// The [3] element is for the value used to be compared with
-	// If it is '' (empty) means not answered
-	// then a space or a false are interpreted as no answer
-	// as we let choose if the questions is answered or not
-	// and doesnt care the answer, so we wait for a == or !=
-	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
-	// condition editor seems not updated yet
-	if ($cd[3] == '' || $cd[3] == ' ')
-	{ 
-		if ($cd[6] == '==')
-		{
-			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value)";
-		} else 
-		{
-			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
-			$newjava .= "document.getElementById('$idname') != null && document.getElementById('$idname').value";
-		}
-	}
-	elseif ($cd[4] == "M" || 
-			$cd[4] == "P")
-		//                $cd[4] == "P" ||
-		//                $cd[4] == "!")
+
+	if ($localEvaluationPossible == true && isset($localEvaluation))
 	{
-		//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
-		$newjava .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] 'Y'"; // 
-	} else
+		 $newjava .= "$localEvaluation";
+	} // end local evaluations of conditions
+	else
 	{
-		/* NEW
-		 * If the value is enclossed by @
-		 * the value of this question must be evaluated instead.
-		 */
-		if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
+		// The [3] element is for the value used to be compared with
+		// If it is '' (empty) means not answered
+		// then a space or a false are interpreted as no answer
+		// as we let choose if the questions is answered or not
+		// and doesnt care the answer, so we wait for a == or !=
+		// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
+		// condition editor seems not updated yet
+		if ($cd[3] == '' || $cd[3] == ' ')
+		{ 
+			if ($cd[6] == '==')
+			{
+//			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value)";
+				$newjava .= "$JSsourceElt != null && ($JSsourceVal == ' ' || !$JSsourceVal)";
+			}
+			else 
+			{
+				// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
+				$newjava .= "$JSsourceElt != null && $JSsourceVal";
+			}
+		} // end specific case of No Answer
+		elseif ($cd[4] == "M" || 
+				$cd[4] == "P")
 		{
-			//$auxqtitle = substr($cd[3],1,strlen($cd[3])-2);
-			$auxqtitle = $comparedfieldname[1];
+			//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+			$newjava .= "$JSsourceElt != null && $JSsourceVal $cd[6] 'Y'"; // 
+		} // end specific case of M or P questions
+		else
+		{
+			/* NEW
+			 * If the value is enclossed by @
+			 * the value of this question must be evaluated instead.
+			 */
+			if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
+			{
+				$sgq_from_sgqa = $_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
+				$qid_from_sgq=$comparedfieldname[2];
+				$q2type=$qtypesarray[$sgq_from_sgqa];
+				$idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
 
-			// Let's determin the idname of this second question field
-			ereg("[0-9]+X([0-9]+)X.*",$auxqtitle,$sourceQuestionGid2);
-			if ($sourceQuestionGid2[1] == $gid && 
-				($q2type == "D" ||
-					$q2type == "N" ||
-					$q2type == "K") )
-			{ // field name for text input boxes differs if they are on the same page or not
-				$idname2 = "answer".$auxqtitle;
-			}
-			else
-			{ // other interresting cases are using the following format
-			// I know that this doesn't support P,M and other question types 
-			// but these are irrelevant for @SGQA@ tags
-				$idname2 = "java".$auxqtitle;
-			}
+				$newjava .= "( $JSsourceElt != null && $JSsourceVal != '') && ";
 
-			$newjava .= "( document.getElementById('" . $idname . "') != null && document.getElementById('" . $idname . "').value != '') && ";
-
-				$newjava .= "( document.getElementById('" . $idname2 . "') != null && document.getElementById('" . $idname2 . "').value != '') && ";
-				$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$cd[2]];
+				$newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
 				$cqidattributes = getQuestionAttributes($cd[1]);
 				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 				{ // Numerical questions
-					$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+					//$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
+					$newjava .= "(parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('$idname2').value))";
 				}
 				else
-			    { 
-				    $newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
-			    }
+				{ 
+					//				$newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
+					$newjava .= "($JSsourceVal $cd[6] document.getElementById('$idname2').value)";
+				}
 
-		}
-		elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
-		{ //TIBO
-			if ( isset($_SESSION['token']) && 
-				in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-			{
-				$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
-				if ($conditionSourceOnPreviousPage === false)
+			} // end target @SGQA@
+			elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
+			{ 
+				if ( isset($_SESSION['token']) && 
+						in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 				{
-					$newjava .= "document.getElementById('$idname').value $cd[6] '".javascript_escape($cvalue)."'";
-				}
-				else
-				{
-					// get previous question answer value: $cd[2]
-					if (isset($_SESSION[$cd[2]]))
+					$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
+					if ($conditionSourceOnPreviousPage === false)
 					{
-						$prevanswerToCompare=$_SESSION[$cd[2]];
-						if ($cd[6] != 'RX')
+						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 						{
-							if (eval('if (trim($prevanswerToCompare) '.$cd[6].' trim($cvalue)) return true; else return false;'))
+							$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($cvalue)."')";
+						}
+						else
+						{
+							//$newjava .= "document.getElementById('$idname').value $cd[6] '".javascript_escape($cvalue)."'";
+							$newjava .= "$JSsourceVal $cd[6] '".javascript_escape($cvalue)."'";
+						}
+					}
+					else
+					{ // note that source of condition is not a TokenAttr because this case is processed
+						// earlier
+						// get previous question answer value: $cd[2]
+						if (isset($_SESSION[$cd[2]]))
+						{
+							$prevanswerToCompare=$_SESSION[$cd[2]];
+							if ($cd[6] != 'RX')
 							{
-								//$newjava .= "'tokenMatch' == 'tokenMatch'";
-								$newjava .= "true";
+								if (eval('if (trim($prevanswerToCompare) '.$cd[6].' trim($cvalue)) return true; else return false;'))
+								{
+									//$newjava .= "'tokenMatch' == 'tokenMatch'";
+									$newjava .= "true";
+								}
+								else
+								{
+									//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
+									$newjava .= "false";
+								}
 							}
 							else
 							{
-								//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
-								$newjava .= "false";
+								if (ereg(trim($cvalue),trim($prevanswerToCompare)))
+								{
+									//$newjava .= "'tokenMatch' == 'tokenMatch'";
+									$newjava .= "true";
+								}
+								else
+								{
+									//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
+									$newjava .= "false";
+								}
 							}
 						}
 						else
 						{
-							if (ereg(trim($cvalue),trim($prevanswerToCompare)))
-							{
-								//$newjava .= "'tokenMatch' == 'tokenMatch'";
-								$newjava .= "true";
-							}
-							else
-							{
-								//$newjava .= "'tokenNoMatch' == 'tokenMatchNot'";
-								$newjava .= "false";
-							}
+							//$newjava .= "'impossible to evaluate prevQ' == 'tokenAttr'";
+							$newjava .= "false";
 						}
 					}
-					else
-					{
-						//$newjava .= "'impossible to evaluate prevQ' == 'tokenAttr'";
-						$newjava .= "false";
-					}
-					// compare to the TokenAttr
-					// return true or false
-				}
-			}
-			else
-			{
-				//$newjava .= "'Missing tokenAttr' == 'tokenAttr'";
-				$newjava .= "false";
-			}
-		}
-		else
-		{
-			$newjava .= "document.getElementById('$idname') != null &&";
-			if ($cd[3]) //Well supose that we are comparing a non empty value
-			{
-				$newjava .= "document.getElementById('$idname').value != '' && ";
-			}
-			if ($cd[6] == 'RX')
-			{
-				$newjava .= "match_regex(document.getElementById('$idname').value,'$cd[3]')";
-			}
-			else
-			{
-				$cqidattributes = getQuestionAttributes($cd[1]);
-				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
-				{ // Numerical questions
-					$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
 				}
 				else
 				{
-					$newjava .= "document.getElementById('$idname').value $cd[6] '$cd[3]'";
+					//$newjava .= "'Missing tokenAttr' == 'tokenAttr'";
+					$newjava .= "false";
 				}
-			}
-		}
-	}
+			} // end target as TokenAttr
+			else
+			{ // right operand is a Constant or an Answer Code
+				$newjava .= "$JSsourceElt != null &&";
+				if ($cd[3]) //Well supose that we are comparing a non empty value
+				{
+					$newjava .= "$JSsourceVal != '' && ";
+				}
+				if ($cd[6] == 'RX')
+				{
+					$newjava .= "match_regex($JSsourceVal,'$cd[3]')";
+				}
+				else
+				{
+					$cqidattributes = getQuestionAttributes($cd[1]);
+					if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+					{ // Numerical questions
+						//$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
+						$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";
+					}
+					else
+					{
+						$newjava .= "$JSsourceVal $cd[6] '$cd[3]'";
+					}
+				}
+			} // end target as Constant or Answer Code
+		} // generic cases for javasript evals
+	} // end not local eval
+
 	if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
 	{
 		$endzone = ")))\n";

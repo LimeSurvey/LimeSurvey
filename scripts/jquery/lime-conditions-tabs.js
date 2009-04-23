@@ -92,10 +92,18 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#conditionsource').tabs({
+		fx: {
+			opacity: 'toggle',
+       		     duration: 100
+		}
+	});
+
 	// disable RegExp tab onload (new condition)
 	$('#conditiontarget').tabs('disable', 4);
 	// disable TokenAttribute tab onload if survey is anonymous
 	if (isAnonymousSurvey) $('#conditiontarget').tabs('disable', 3);
+	if (isAnonymousSurvey) $('#conditionsource').tabs('disable', 1);
 
 	$('#resetForm').click( function() {
 		$('#canswers option').remove();
@@ -128,15 +136,45 @@ $(document).ready(function(){
 		}
 	);
 
+	$('#conditionsource').find(':input').change(
+		function(evt)
+		{
+			$('#conditionsource').find(':input').each(
+				function(indx,elt)
+				{
+					if (elt.id != evt.target.id)
+					{
+						if ($(elt).attr('type') == 'select-multiple' || 
+							$(elt).attr('type') == 'select-one' ) {
+							$(elt).find('option:selected').removeAttr("selected");
+						}
+						else {
+							$(elt).val('');	
+						}
+					}
+					return true;
+				}
+			);
+		}
+	);
+
 	// Select the condition target Tab depending on operator
 	//selectTabFromOper($('#method').val());
 	$('#method').change(selectTabFromOper);
 
 	$('#cquestions').change(populateCanswersSelect);
 
+	$('#csrctoken').change(function() {
+		$('#cqid').val(0);
+	});
+
 	// At edition time, a hidden field gives the Tab that should be selected
 	if ($('#editTargetTab').val() != '') {
 		$('#conditiontarget').tabs('select', $('#editTargetTab').val());
+	}
+	// At edition time, a hidden field gives the Tab that should be selected
+	if ($('#editSourceTab').val() != '') {
+		$('#conditionsource').tabs('select', $('#editSourceTab').val());
 	}
 	
 	// At edition time, if cquestions is set, populate answers

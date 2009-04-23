@@ -5829,18 +5829,29 @@ function checkquestionfordisplay($qid, $gid=null)
 			$conditionsfoundforthisscenario++;
 			$conditionCanBeEvaluated=true;
 			//Iterate through each condition for this question and check if it is met.
-			$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
-				." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
-			$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
-			while($row2=$result2->FetchRow())
-			{
-				$cq_gid=$row2['gid'];
-				//Find out the "type" of the question this condition uses
-				$thistype=$row2['type'];
+
+			if (!preg_match("/^{/",$row['cfieldname']))
+			{ // this is a simple condition using a question as source
+				$conditionSourceType='question';
+				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+					." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+				$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
+				while($row2=$result2->FetchRow())
+				{
+					$cq_gid=$row2['gid'];
+					//Find out the "type" of the question this condition uses
+					$thistype=$row2['type'];
+				}
+			}
+			else
+			{ // this condition uses a token attr as source
+				$conditionSourceType='tokenattr';
+				$thistype="";
+				$cq_gid=0;
 			}
 
 
-			if ( !is_null($gid) && $gid == $cq_gid)
+			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
 			{
 				//Don't do anything - this cq is in the current group
 			}
@@ -5860,14 +5871,34 @@ function checkquestionfordisplay($qid, $gid=null)
 					// then try to replace them with a 
 					// value recorded in SESSION if any
 					$cvalue=$_SESSION[$targetconditionfieldname[1]];
-					if (isset($_SESSION[$row['cfieldname']]))
-					{ 
-						$cfieldname=$_SESSION[$row['cfieldname']]; 
-					} 
-					else 
-					{ 
+					if ($conditionSourceType == 'question')
+					{
+						if (isset($_SESSION[$row['cfieldname']]))
+						{ 
+							$cfieldname=$_SESSION[$row['cfieldname']]; 
+						} 
+						else 
+						{ 
+							$conditionCanBeEvaluated=false;
+							//$cfieldname=' ';
+						}
+					}
+					elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
+					{
+						if ( isset($_SESSION['token']) &&
+							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+						{
+							$cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);	
+						}
+						else
+						{
+							$conditionCanBeEvaluated=false;
+						}
+					
+					}
+					else
+					{
 						$conditionCanBeEvaluated=false;
-						//$cfieldname=' ';
 					}
 				}
 				else
@@ -5885,14 +5916,34 @@ function checkquestionfordisplay($qid, $gid=null)
 					// then try to replace them with a 
 					// the value recorded in DB
 					$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
-					if (isset($_SESSION[$row['cfieldname']]))
-					{ 
-						$cfieldname=$_SESSION[$row['cfieldname']]; 
-					} 
-					else 
-					{ 
+					if ($conditionSourceType == 'question')
+					{
+						if (isset($_SESSION[$row['cfieldname']]))
+						{ 
+							$cfieldname=$_SESSION[$row['cfieldname']]; 
+						} 
+						else 
+						{ 
+							$conditionCanBeEvaluated=false;
+							//$cfieldname=' ';
+						}
+					}
+					elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
+					{
+						if ( isset($_SESSION['token']) &&
+							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+						{
+							$cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);	
+						}
+						else
+						{
+							$conditionCanBeEvaluated=false;
+						}
+					
+					}
+					else
+					{
 						$conditionCanBeEvaluated=false;
-						//$cfieldname=' ';
 					}
 				}
 				else
@@ -5904,19 +5955,40 @@ function checkquestionfordisplay($qid, $gid=null)
 			else
 			{
 				//For all other questions, the "answer" value will be the answer code.
-				if (isset($_SESSION[$row['cfieldname']]))
+				$cvalue=$row['value'];
+
+				if ($conditionSourceType == 'question')
 				{
-					$cfieldname=$_SESSION[$row['cfieldname']];
-				} 
-				else 
+					if (isset($_SESSION[$row['cfieldname']]))
+					{
+						$cfieldname=$_SESSION[$row['cfieldname']];
+					} 
+					else 
+					{
+						//$cfieldname=' ';
+						$conditionCanBeEvaluated=false;
+					}
+				}
+				elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
 				{
-					//$cfieldname=' ';
+					if ( isset($_SESSION['token']) &&
+						in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+					{
+						$cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);	
+					}
+					else
+					{
+						$conditionCanBeEvaluated=false;
+					}
+					
+				}
+				else
+				{
 					$conditionCanBeEvaluated=false;
 				}
-				$cvalue=$row['value'];
 			}
 
-			if ( !is_null($gid) && $gid == $cq_gid)
+			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
 			{
 				//Don't do anything - this cq is in the current group
 				$conditionMatches=true;
@@ -5928,12 +6000,12 @@ function checkquestionfordisplay($qid, $gid=null)
 			}
 			else
 			{
+				if (trim($row['method'])=='') 
+				{
+					$row['method']='==';
+				}
 				if ($row['method'] != 'RX')
 				{
-					if (trim($row['method'])=='') 
-					{
-						$row['method']='==';
-					}
 					if (eval('if (trim($cfieldname)'. $row['method'].' trim($cvalue)) return true; else return false;'))
 					{
 						$conditionMatches=true;
