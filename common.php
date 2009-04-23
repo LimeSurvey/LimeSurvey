@@ -6031,6 +6031,35 @@ function GetAttributeFieldNames($surveyid)
 }
 
 /**
+* Retrieves the attribute names from the related token table
+* 
+* @param mixed $surveyid  The survey ID
+* @return array The fieldnames as key and names as value in an Array
+*/
+function GetAttributeNames($surveyid)
+{
+    global $dbprefix, $connect;
+    $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
+    $extra_attrs=array_filter($tokenfieldnames,'filterforattributes');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs_names=Array(
+			'First Name',
+			'Last Name',
+			'Email address',
+			'Token code',
+			'Language code',
+			'Invitation sent date',
+			'Last Reminder sent date',
+			'Total numbers of sent reminders');
+
+    $extra_attrs_names=$extra_attrs; // To be updated
+
+    $extra_attrs_and_names=array_combine($extra_attrs,$extra_attrs_names);
+    $basic_attrs_and_names=array_combine($basic_attrs,$basic_attrs_names);
+    return array_merge($basic_attrs_and_names,$extra_attrs_and_names);
+}
+
+/**
 * Retrieves the token attribute value from the related token table
 * 
 * @param mixed $surveyid  The survey ID

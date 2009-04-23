@@ -1,7 +1,7 @@
 function populateCanswersSelect(evt) {
 	var fname = $('#cquestions').val();
 
-	// empty canswers Select
+	// empty the canswers Select
 	$('#canswers option').remove();
 	var Keys = new Array();
 	// store the indices in the Fieldnames array (to find codes and answers) where fname is found
@@ -37,7 +37,7 @@ function populateCanswersSelect(evt) {
 				$('#conditiontarget').tabs('enable', 0);
 				$('#conditiontarget').tabs('enable', 1);
 				$('#conditiontarget').tabs('enable', 2);
-				$('#conditiontarget').tabs('enable', 3);
+				if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
 				$('#conditiontarget').tabs('enable', 4);
 				selectTabFromOper();
 				$('#method').find('option').each( function() {
@@ -47,18 +47,6 @@ function populateCanswersSelect(evt) {
 		}
 	}
 
-	//if (Keys.length == 0)
-	//{
-	//	if ($('#conditiontarget').tabs('option', 'selected') == 0)
-	//	{
-	//		$('#conditiontarget').tabs('select', 1);
-	//	}
-	//	$('#conditiontarget').tabs('disable', 0);
-	//}
-	//else
-	//{
-	//	$('#conditiontarget').tabs('enable', 0);
-	//}
 	for (var i=0;i<Keys.length;i++) {
 		var optionSelected = false;
 		// If we are at page load time, then we may know which option to select
@@ -90,7 +78,7 @@ function selectTabFromOper() {
 		$('#conditiontarget').tabs('enable', 0);
 		$('#conditiontarget').tabs('enable', 1);
 		$('#conditiontarget').tabs('enable', 2);
-		$('#conditiontarget').tabs('enable', 3);
+		if (!isAnonymousSurvey) $('#conditiontarget').tabs('enable', 3);
 		$('#conditiontarget').tabs('select', '#CANSWERSTAB');
 		$('#conditiontarget').tabs('disable', 4);
 	}
@@ -104,15 +92,10 @@ $(document).ready(function(){
 		}
 	});
 
-//	$('#conditiontarget').bind('tabsselect', function(event, ui) {
-//		for (var i = $('#conditiontarget').tabs('length') - 1; i >= 0; i--) {
-//			if (i != ui.index) {
-//				$('#conditiontarget').tabs(i).find(':input').val('');
-//			}
- //   		} 
-//		return true;
-//	});	
-//
+	// disable RegExp tab onload (new condition)
+	$('#conditiontarget').tabs('disable', 4);
+	// disable TokenAttribute tab onload if survey is anonymous
+	if (isAnonymousSurvey) $('#conditiontarget').tabs('disable', 3);
 
 	$('#resetForm').click( function() {
 		$('#canswers option').remove();

@@ -416,6 +416,7 @@ unset($canswers);
 // 1: Get information for this question
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+$thissurvey=getSurveyInfo($surveyid);
 
 $query = "SELECT * "
          ."FROM {$dbprefix}questions, "
@@ -1310,7 +1311,7 @@ if ($subaction=='' ||
 						$rightOperandType = 'prevQsgqa';
 						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
 					}
-					elseif (preg_match('/^{TOKEN:[^}]*}$/',$rows['value']) > 0)
+					elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:[^}]*}$/',$rows['value']) > 0)
 					{
 						$rightOperandType = 'tokenAttr';
 						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
@@ -1639,6 +1640,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$multipletext = "multiple";
 	}
 
+
 	$conditionsoutput .= ""
 		."\t\t<td valign='top' align='left'>\n"
 		."\t\t<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
@@ -1679,10 +1681,20 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t</div>\n\t\t\t\n";
 
 	// tokenAttr Tab
-	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
-	foreach (GetAttributeFieldNames($surveyid) as $tokenattr)
+	//  record a JS variable to let jQuery know if survey is Anonymous
+	if ($thissurvey['private'] == 'Y')
 	{
-		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape(strtoupper($tokenattr))."</option>\n";
+		$js_getAnswers_onload="isAnonymousSurvey = true;";
+	}
+	else
+	{
+		$js_getAnswers_onload="isAnonymousSurvey = false;";
+	}
+
+	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	foreach (GetAttributeNames($surveyid) as $tokenattr => $tokenattrName)
+	{
+		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
 	}
 
 	$conditionsoutput .= "\t\t\t</select>\n"
