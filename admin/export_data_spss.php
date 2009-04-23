@@ -278,6 +278,7 @@ if  ($subaction=='dlstructure') {
         }
 		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
 	}
+	echo ".\n";
 	echo "CACHE.\n"
         ."EXECUTE.\n";
     
