@@ -721,7 +721,7 @@ for ($i=0;$i<count($conditions);$i++)
 		elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
 		{ //TIBO
 			if ( isset($_SESSION['token']) && 
-				in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+				in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 			{
 				$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 				if ($conditionSourceOnPreviousPage === false)

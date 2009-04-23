@@ -5878,7 +5878,7 @@ function checkquestionfordisplay($qid, $gid=null)
 			elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['value'],$targetconditiontokenattr))
 			{ //TIBO
 				if ( isset($_SESSION['token']) && 
-					in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+					in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 				{
 					// If value uses {TOKEN:XXX} placeholders
 					// then try to replace them with a 
@@ -6031,6 +6031,19 @@ function GetAttributeFieldNames($surveyid)
 }
 
 /**
+* Retrieves the token field names usable for conditions from the related token table
+* 
+* @param mixed $surveyid  The survey ID
+* @return array The fieldnames
+*/
+function GetTokenConditionsFieldNames($surveyid)
+{
+    $extra_attrs=GetAttributeFieldNames($surveyid);
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    return array_merge($basic_attrs,$extra_attrs);
+}
+
+/**
 * Retrieves the attribute names from the related token table
 * 
 * @param mixed $surveyid  The survey ID
@@ -6071,7 +6084,7 @@ function GetAttributeValue($surveyid,$attrName,$token)
 {
     global $dbprefix, $connect;
     $attrName=strtolower($attrName);
-    if (!in_array($attrName,GetAttributeFieldNames($surveyid)))
+    if (!in_array($attrName,GetTokenConditionsFieldNames($surveyid)))
     {
 	return null;	
     }

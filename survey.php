@@ -557,7 +557,7 @@ END;
       elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $comparedtokenattr))
       { //TIBO
 		if ( isset($_SESSION['token']) &&
-			in_array(strtolower($comparedtokenattr[1]),GetAttributeFieldNames($surveyid)))
+			in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 		{
 			$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
 			$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '".javascript_escape($comparedtokenattrValue)."'";

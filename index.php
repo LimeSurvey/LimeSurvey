@@ -1051,7 +1051,7 @@ function checkconfield($value)
 							if ($local_thissurvey['private'] == 'N' && 
 								ereg('^{TOKEN:([^}]*)}$',$cqv["matchvalue"], $targetconditiontokenattr))
 							{
-								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetAttributeFieldNames($surveyid)))
+								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 								{
 									//$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
 									$cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
