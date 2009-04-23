@@ -204,6 +204,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		}
 		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
 		{
+           $lset=array(); 
 		   $fnrquery = "SELECT *
 		                FROM ".db_table_name('answers')." 
 					    WHERE qid={$fnrow['qid']}
