@@ -1306,15 +1306,32 @@ if ($subaction=='' ||
 						$rightOperandType = 'regexp';
 						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
 					}
-					elseif (preg_match('/^@[0-9]+X[0-9]+X[^@]*@$/',$rows['value']) > 0)
-					{
+					elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
+					{ // TIBO SGQA
 						$rightOperandType = 'prevQsgqa';
-						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
+						$textfound=false;
+						foreach ($cquestions as $cqn)
+						{
+							if ($cqn[3] == $matchedSGQA[1])
+							{
+								$matchedSGQAText=$cqn[0];
+								$textfound=true;
+								break;
+							}
+						}
+						if ($textfound === false)
+						{
+							$matchedSGQAText=$rows['value'].' ('.$clang->gT("Not found").')';
+						}
+				
+						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($matchedSGQAText)."\n";
 					}
-					elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:[^}]*}$/',$rows['value']) > 0)
+					elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
 					{
 						$rightOperandType = 'tokenAttr';
-						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
+						$aTokenAttrNames=GetAttributeNames($surveyid);
+						$thisAttrName=$aTokenAttrNames[strtolower($extractedTokenAttr[1])];
+						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($thisAttrName)." (".$clang->gT("from token").")\n";
 					}
 					elseif (isset($canswers))
 					{
