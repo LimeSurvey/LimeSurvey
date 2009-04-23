@@ -515,6 +515,7 @@ elseif ($subaction == "all")
 		}	
 		elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";")
 		{
+            $lset=array();
 			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
 			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
 			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND

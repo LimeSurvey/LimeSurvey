@@ -382,6 +382,10 @@ function createinsertquery()
                 }
                 else  
                 {
+                    if ($fieldexists['type']=='N') //sanitize numerical fields
+                    {
+                        $_SESSION[$value]=sanitize_float($_SESSION[$value]);                         
+                    }
                 	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
                 }
 
@@ -523,6 +527,10 @@ function createinsertquery()
 						}
 						else
 						{
+                            if ($fieldinfo['type']=='N') //sanitize numerical fields
+                            {
+                                $_POST[$field]=sanitize_float($_POST[$field]);    
+                            }
 							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
 						}
 					}
