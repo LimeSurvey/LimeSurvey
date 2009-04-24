@@ -155,6 +155,10 @@ $(document).ready(function(){
 					return true;
 				}
 			);
+			if (evt.target.id == 'csrctoken')
+			{
+				$('#canswers option').remove();
+			}
 		}
 	);
 
