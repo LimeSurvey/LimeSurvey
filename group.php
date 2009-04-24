@@ -657,7 +657,7 @@ for ($i=0;$i<count($conditions);$i++)
 	{
 		if ($cd[6] == '==')
 		{
-			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value";
+			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value)";
 		} else 
 		{
 			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
