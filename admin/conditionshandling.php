@@ -1345,8 +1345,15 @@ if ($subaction=='' ||
 					{
 						$leftOperandType = 'tokenattr';
 						$aTokenAttrNames=GetAttributeNames($surveyid);
-						$thisAttrName=$aTokenAttrNames[strtolower($extractedTokenAttr[1])];
-						$conditionsoutput .= "\t\t\t".html_escape($thisAttrName)." (".$clang->gT("from token").")\n";
+						if (count($aTokenAttrNames) != 0)
+						{
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+						}
+						else
+						{
+							$thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+						}
+						$conditionsoutput .= "\t\t\t$thisAttrName\n";
 						// TIBO not sure this is used anymore !!
 						$conditionsList[]=array("cid"=>$rows['cid'],
 								"text"=>$thisAttrName);
@@ -1411,8 +1418,15 @@ if ($subaction=='' ||
 					{
 						$rightOperandType = 'tokenAttr';
 						$aTokenAttrNames=GetAttributeNames($surveyid);
-						$thisAttrName=$aTokenAttrNames[strtolower($extractedTokenAttr[1])];
-						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($thisAttrName)." (".$clang->gT("from token").")\n";
+						if (count($aTokenAttrNames) != 0)
+						{
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+						}
+						else
+						{
+							$thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+						}
+						$conditionsoutput .= "\t\t\t$thisAttrName\n";
 					}
 					elseif (isset($canswers))
 					{

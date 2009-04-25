@@ -6125,6 +6125,10 @@ function GetTokenConditionsFieldNames($surveyid)
 function GetAttributeNames($surveyid)
 {
     global $dbprefix, $connect;
+    if (tokenTableExists(null,$surveyid) === false)
+    {
+	return Array();
+    }
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
     $extra_attrs=array_filter($tokenfieldnames,'filterforattributes');
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
