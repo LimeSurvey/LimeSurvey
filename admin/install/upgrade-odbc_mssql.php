@@ -271,7 +271,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         // copy old URL fields ot language specific entries
         modify_database("","update [prefix_surveys_languagesettings] set [surveyls_url]=(select [url] from [prefix_surveys] where [sid]=[prefix_surveys_languagesettings].[surveyls_survey_id])"); echo $modifyoutput; flush();
         // drop old URL field 
-        upgrade_survey_tables133b();
+        mssql_drop_constraint('url','surveys');
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [url]"); echo $modifyoutput; flush();
         
         modify_database("","update [prefix_settings_global] set [stg_value]='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
@@ -281,15 +281,15 @@ echo str_pad('Loading... ',4096)."<br />\n";
     {
         // Add new assessment setting
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usetokens] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        mssql_drop_constraint('attribute1','surveys');        
+        mssql_drop_constraint('attribute2','surveys');        
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute1]"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute2]"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }   
      if ($oldversion < 135)
     {
-    	/*
-    	 * Related to Issue 00698 from Mar 2007, now in April 2009 the request is fullfilled :)
-    	 */
+        mssql_drop_constraint('value','question_attributes');        
         modify_database("","ALTER TABLE [prefix_question_attributes] ALTER COLUMN [value] text"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }               
@@ -335,6 +335,7 @@ function upgrade_token_tables125()
             }
 }
 
+
 function upgrade_token_tables128()
 {
   	global $connect,$modifyoutput,$dbprefix;
@@ -345,8 +346,6 @@ function upgrade_token_tables128()
             modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount] int DEFAULT '0'"); echo $modifyoutput; flush();
             }
 }
-
-
 
 
 function upgrade_survey_tables133a()
@@ -372,25 +371,27 @@ function upgrade_survey_tables133a()
     }
 }
 
-function upgrade_survey_tables133b()
+
+function mssql_drop_constraint($fieldname, $tablename)
 {
     global $dbprefix, $connect, $modifyoutput;
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     // It proves how badly designer some Microsoft software is!
-    $dfquery ="SELECT c_obj.name AS CONSTRAINT_NAME
+    $dfquery ="SELECT c_obj.name AS constraint_name 
                 FROM  sys.sysobjects AS c_obj INNER JOIN
                       sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
                       sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
                       sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
-                WHERE (c_obj.xtype = 'D') AND (col.name = 'url')";
+                WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='$dbprefix$tablename')";
     $defaultname=$connect->GetRow($dfquery);
     if ($defaultname!=false) 
     {
-        modify_database("","ALTER TABLE [prefix_surveys] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();    
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();    
     }
                 
 
 }
+
 
 ?>

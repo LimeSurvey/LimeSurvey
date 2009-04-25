@@ -283,9 +283,6 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }     
      if ($oldversion < 135)
     {
-    	/*
-    	 * Related to Issue 00698 from Mar 2007, now in April 2009 the request is fullfilled :)
-    	 */
         modify_database("","ALTER TABLE `prefix_question_attributes` MODIFY `value` text"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='135' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }     
