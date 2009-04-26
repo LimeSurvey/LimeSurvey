@@ -432,8 +432,8 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 
 
 
-unset($cquestions);
-unset($canswers);
+$cquestions=Array();
+$canswers=Array();
 
 
 
