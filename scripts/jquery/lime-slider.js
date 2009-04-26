@@ -24,7 +24,7 @@ $(document).ready(function(){
 		//sliderparams['animate'] = true;
 		if (slider_startvalue != 'NULL')
 		{
-			sliderparams['startValue']= slider_startvalue;
+			sliderparams['value']= slider_startvalue;
 		}
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
