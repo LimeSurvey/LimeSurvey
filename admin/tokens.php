@@ -1683,7 +1683,7 @@ if ($subaction == "updatetokenattributes" &&
     }
     else
     {
-        $tokenoutput.=sprintf($clang->gT('There wered %s fields successfully added.'),$number2add);
+        $tokenoutput.=sprintf($clang->gT('%s fields were successfully added.'),$number2add);
     }
 }
 
