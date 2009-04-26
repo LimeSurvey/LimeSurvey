@@ -1022,6 +1022,12 @@ function checkconfield($value)
 //				while($rows = $result->FetchRow()) //Go through the condition on this field
 				foreach ($aAllCondrows as $rows)
 				{
+					if (preg_match("/^\+(.*)$/",$rows['cfieldname'],$cfieldnamematch))
+					{ // this condition uses a single checkbox as source
+						$rows['type'] = "+".$rows['type'];
+						$rows['cfieldname'] = $cfieldnamematch[1];
+					}
+
 					if($rows['type'] == "M" || $rows['type'] == "P")
 					{
 						$matchfield=$rows['cfieldname'].$rows['value'];

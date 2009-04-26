@@ -851,6 +851,29 @@ if ($questionscount > 0)
 			}
 			unset($quicky);
 		} // End if type R
+		elseif($rows['type'] == "M" || $rows['type'] == "P")
+		{
+			$cquestions[]=array("$shortquestion [".$clang->gT("Group of checkboxes")."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+			$aquery="SELECT * "
+				."FROM {$dbprefix}answers "
+				."WHERE qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY sortorder, "
+				."answer";
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+
+			while ($arows=$aresult->FetchRow())
+			{
+				$theanswer = addcslashes($arows['answer'], "'");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+
+				$shortanswer = strip_tags($arows['answer']);
+				$shortanswer .= "[{$arows['code']}]";
+				$cquestions[]=array("$shortquestion ($shortanswer) [".$clang->gT("Single checkbox")."]", $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], 'Y', 'checked');
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], '', 'not checked');
+			}
+		}
 		else
 		{
 			$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
@@ -913,6 +936,7 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
 				break;
+
 				default:
 				$aquery="SELECT * "
 					."FROM {$dbprefix}answers "
@@ -1242,6 +1266,7 @@ if ($subaction=='' ||
 				."AND {$dbprefix}conditions.qid=$qid "
 				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
 				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
+//				."AND {$dbprefix}conditions.cfieldname NOT LIKE '+%' \n" // avoid catching SRCtokenAttr conditions
 				."ORDER BY {$dbprefix}conditions.cfieldname";
 			$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 			$conditionscount=$result->RecordCount();

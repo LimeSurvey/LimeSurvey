@@ -96,6 +96,12 @@ function retrieveConditionInfo($ia)
 //		while ($crow = $cresult->FetchRow())
 		foreach ($aAllConditions as $crow)
 		{
+			if (preg_match("/^\+(.*)$/",$crow['cfieldname'],$cfieldnamematch))
+			{ // this condition uses a single checkbox as source
+				$crow['type'] = "+".$crow['type'];
+				$crow['cfieldname'] = $cfieldnamematch[1];
+			}
+
 			$conditions[] = array ($crow['qid'],
 						$crow['cqid'],
 						$crow['cfieldname'],
@@ -164,6 +170,11 @@ function retrieveJSidname($cd,$currentgid=null)
 			$cd[4] == "P")
 	{
 		$idname="java$cd[5]$cd[3]";
+	}
+	elseif ($cd[4] == "+M" || 
+			$cd[4] == "+P")
+	{
+		$idname="java$cd[2]";
 	}
 	elseif ($cd[4] == "D" ||
 			$cd[4] == "N" ||

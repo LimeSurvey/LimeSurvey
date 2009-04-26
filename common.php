@@ -2012,10 +2012,13 @@ function returnglobal($stringname)
             return sanitize_languagecode($_REQUEST[$stringname]);
         }
         elseif ($stringname =="htmleditormode" || 
-		$stringname =="subaction" ||
-		$stringname =="cquestions")
+		$stringname =="subaction")
         {
             return sanitize_paranoid_string($_REQUEST[$stringname]);    
+        }
+        elseif ( $stringname =="cquestions")
+        {
+            return sanitize_cquestions($_REQUEST[$stringname]);    
         }
 		return $_REQUEST[$stringname];
 	}
@@ -5871,7 +5874,28 @@ function checkquestionfordisplay($qid, $gid=null)
 			$conditionCanBeEvaluated=true;
 			//Iterate through each condition for this question and check if it is met.
 
-			if (!preg_match("/^{/",$row['cfieldname']))
+			if (preg_match("/^\+(.*)$/",$row['cfieldname'],$cfieldnamematch))
+			{ // this condition uses a single checkbox as source
+				$conditionSourceType='question';
+				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
+					." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
+				$result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked 
+				while($row2=$result2->FetchRow())
+				{
+					$cq_gid=$row2['gid'];
+					// set type to +M or +P in order to skip
+					$thistype='+'.$row2['type']; 
+				}
+
+				$row['cfieldname']=$cfieldnamematch[1]; // remover the leading '+'
+			}
+			elseif (preg_match("/^{/",$row['cfieldname']))
+			{ // this condition uses a token attr as source
+				$conditionSourceType='tokenattr';
+				$thistype="";
+				$cq_gid=0;
+			}
+			else
 			{ // this is a simple condition using a question as source
 				$conditionSourceType='question';
 				$query2= "SELECT type, gid FROM ".db_table_name('questions')."\n"
@@ -5883,12 +5907,6 @@ function checkquestionfordisplay($qid, $gid=null)
 					//Find out the "type" of the question this condition uses
 					$thistype=$row2['type'];
 				}
-			}
-			else
-			{ // this condition uses a token attr as source
-				$conditionSourceType='tokenattr';
-				$thistype="";
-				$cq_gid=0;
 			}
 
 
@@ -5903,6 +5921,18 @@ function checkquestionfordisplay($qid, $gid=null)
 				$fieldname=$row['cfieldname'].$row['value'];
 				$cvalue="Y";     
 				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+			}
+			elseif ($thistype == "+M" || $thistype == "+P")
+			{
+				$fieldname=$row['cfieldname'];
+				$cvalue=$row['value'];
+				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+			}
+
+			
+			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
+			{
+				//Don't do anything - this cq is in the current group
 			}
 			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname))
 			{ 
