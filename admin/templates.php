@@ -293,6 +293,7 @@ $thissurvey['allowsave']="Y";
 $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
 $thissurvey['url']="http://www.limesurvey.org/";
+$thissurvey['surveyls_url']=$thissurvey['url'];
 $thissurvey['urldescrip']=$clang->gT("Some URL description");
 $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);

@@ -1565,6 +1565,8 @@ function getSurveyInfo($surveyid, $languagecode='')
 	    if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
 	    if (!isset($thissurvey['urldescrip']) ||
 		$thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
+		$thissurvey['passthrulabel']=isset($_SESSION['passthrulabel']) ? $_SESSION['passthrulabel'] : "";
+		$thissurvey['passthruvalue']=isset($_SESSION['passthruvalue']) ? $_SESSION['passthruvalue'] : "";
 	}              
     
     //not sure this should be here... ToDo: Find a better place
@@ -2932,14 +2934,9 @@ function templatereplace($line)
     {
         if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
         if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
-    }    
-	while (strpos($line, "{INSERTANS:") !== false)
-	{
-		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
-		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
-		$line=str_replace($answreplace, $answreplace3, $line);
-	}
+    }
+    
+    $line=insertansReplace($line);
 
 	if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank You!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
 	if (strpos($line, "{SUBMITREVIEW}") !== false) {
@@ -3127,6 +3124,50 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
 	if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", $clang->gT("Your Assessment"), $line);
+	return $line;
+}
+
+/**
+* insertAnsReplace() takes a string and looks for any {INSERTANS:xxxx} variables
+*  which it then, one by one, substitutes the SGQA code with the relevant answer
+*  from the session array containing responses
+*
+*  The operations of this function were previously in the templatereplace function
+*  but have been moved to a function of their own to make it available
+*  to other areas of the script.
+* 
+* @param mixed $line   string - the string to iterate, and then return
+* 
+* @return string This string is returned containing the substituted responses
+*
+*/
+function insertansReplace($line)
+{
+	while (strpos($line, "{INSERTANS:") !== false)
+	{
+		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
+		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
+		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
+		$line=str_replace($answreplace, $answreplace3, $line);
+	}
+	return $line;
+}
+
+/**
+* passthruReplace() takes a string and looks for {PASSTHRULABEL} and {PASSTHRUVALUE} variables
+*  which it then substitutes for passthru data sent in the initial URL and stored
+*  in the session array containing responses
+*
+* @param mixed $line   string - the string to iterate, and then return
+* @param mixed $thissurvey     string - the string containing the surveyinformation
+* @return string This string is returned containing the substituted responses
+*
+*/
+function passthruReplace($line, $thissurvey)
+{
+	$line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
+	$line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
+
 	return $line;
 }
 

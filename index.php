@@ -145,7 +145,7 @@ if ($surveyid &&
 		@session_destroy();	// make it silent because for
 					// some strange reasons it fails sometimes
 					// which is not a problem
-					// but if it throughs an error then future
+					// but if it throws an error then future
 					// session functions won't work because
 					// headers are already sent.
 		$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
@@ -2314,6 +2314,16 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	}
 	// Check if the current survey language is set - if not set it
 	// this way it can be changed later (for example by a special question type)
+	
+	//Check if a passthru label and value have been included in the query url
+	if(isset($_GET['passthru']) && $_GET['passthru'] != "")
+	{
+	    if(isset($_GET[$_GET['passthru']]) && $_GET[$_GET['passthru']] != "")
+	    {
+	        $_SESSION['passthrulabel']=$_GET['passthru'];
+	        $_SESSION['passthruvalue']=$_GET[$_GET['passthru']];
+	    }
+	}
 
 	return $totalquestions;
 }

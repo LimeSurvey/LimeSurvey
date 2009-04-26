@@ -65,6 +65,10 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         {
             $assessments = doAssessment($surveyid); // assessments are using session data so this has to be placed before killSession
         }
+
+        //Before doing the "templatereplace()" function, check the $thissurvey['url']
+        //field for limereplace stuff, and do transformations!
+
         killSession();    
         sendcacheheaders();
 		doHeader();
@@ -87,19 +91,21 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		}
 	}
-	else
+	else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
 	{
-
-		if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
+		if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
 		{
 			$cookiename="PHPSID".returnglobal('sid')."STATUS";
-			setcookie("$cookiename", "COMPLETE", time() + 31536000); //365 days
+			setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
 		}
 
-		$content='';
+        //Before doing the "templatereplace()" function, check the $thissurvey['url']
+        //field for limereplace stuff, and do transformations!
+        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
+		$thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
-		//Start to print the final page
-			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+		$content='';
+		$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 		//Check for assessments
 		$assessments = doAssessment($surveyid);
@@ -170,14 +176,15 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 		sendcacheheaders();
 		if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
 		{
-			//Automatically redirect the page to the "url" setting for the survey
-			session_write_close();
 			
-			$url = $thissurvey['url'];
+            $url = insertansReplace($thissurvey['url']);
+            $url = passthruReplace($url, $thissurvey);
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
             $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
+			//Automatically redirect the page to the "url" setting for the survey
+			session_write_close();
 
 			header("Location: {$url}");
 		}

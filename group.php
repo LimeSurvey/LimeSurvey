@@ -89,7 +89,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
     }
 
 	//COMMIT CHANGES TO DATABASE
-	if ($thissurvey['active'] != "Y")
+	if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
 	{
         if ($thissurvey['assessments']== "Y") 
         {
@@ -122,14 +122,19 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 			$completed .= "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		}
 	}
-	else
+	else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
 	{
-	if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1)
+	 	if ($thissurvey['usecookie'] == "Y" && $tokensexist != 1) //don't use cookies if tokens are being used
 		{
 			$cookiename="PHPSID".returnglobal('sid')."STATUS";
-			setcookie("$cookiename", "COMPLETE", time() + 31536000);
+			setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
 		}
 
+        //Before doing the "templatereplace()" function, check the $thissurvey['url']
+        //field for limereplace stuff, and do transformations!
+        $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
+		$thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
+		
 		$content='';
 		$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
@@ -238,7 +243,8 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 			}
 			header("Location: {$redir}");	*/
 
-			$url = $thissurvey['url'];
+            $url = insertansReplace($thissurvey['url']);
+            $url = passthruReplace($url, $thissurvey);
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
             $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
