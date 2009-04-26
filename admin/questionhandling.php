@@ -214,12 +214,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		    {
 			    if ($value != 99)
 			    {
-                    if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
 				    $egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 				    ." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
 				    ." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}', '{$basesettings['lid1']}', '{$basesettings['question_order']}','{$key}')";
 				    $egresult = $connect->Execute($egquery);
-                    if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
 			    }
 		    }
 	    
@@ -508,6 +508,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
     {
         $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Update Question")."' />\n"
         . "\t<input type='hidden' name='action' value='updatequestion' />\n"
+        . "\t<input type='hidden' name='gid' value='$gid' />"
         . "\t<input type='hidden' name='qid' value='$qid' />";
     }
 	$editquestion .= "\t<input type='hidden' name='sid' value='$surveyid' />\n"

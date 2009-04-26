@@ -425,7 +425,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
-        if ($databasetype=='odbc_mssql')
+        if (databasetype == 'odbc_mssql' || databasetype == 'mssql' || databasetype == 'mssql_n')
 		{
 			$createtokentable.= "email C(320) ,\n "
 			."emailstatus C(300) DEFAULT 'OK',\n ";
@@ -538,7 +538,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
-        if ($databasetype=='odbc_mssql')
+        if (databasetype == 'odbc_mssql' || databasetype == 'mssql' || databasetype == 'mssql_n')
 		{
 			$createtokentable.= "email C(320) ,\n "
 			."emailstatus C(300) DEFAULT 'OK',\n ";

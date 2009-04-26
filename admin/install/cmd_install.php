@@ -65,8 +65,10 @@ if (isset($argv[1]) && $argv[1]=='install')
 	require_once($homedir."/classes/core/sha256.php");
 	
 	$success = 0;  // Let's be optimistic
-	
-	$sqlfile = dirname(__FILE__).'/create-'.$databasetype.'.sql' ;
+
+    $createdbtype=$databasetype;
+    if ($createdbtype=='mssql_n' || createdbtype=='odbc_mssql') $createdbtype='mssql';         	
+	$sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
 	
 	if (!empty($sqlfile)) {
 		if (!is_readable($sqlfile)) {
@@ -152,7 +154,10 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
 
 {
    
-    include ('upgrade-'.$databasetype.'.php');
+    $upgradedbtype=$databasetype;
+    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql') $upgradedbtype='mssql';     
+        
+    include ('upgrade-'.$upgradedbtype.'.php');
     $tables = $connect->MetaTables();
     
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";

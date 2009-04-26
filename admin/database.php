@@ -154,7 +154,7 @@ if(isset($surveyid))
                   }
                   else{
                         $query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
-                        if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('groups')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('groups')." OFF;";
+                        if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') $query = 'SET IDENTITY_INSERT '.db_table_name('groups')." ON; " . $query . 'SET IDENTITY_INSERT '.db_table_name('groups')." OFF;";
                         $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
                      }
 				if (!$result)
@@ -342,7 +342,7 @@ if(isset($surveyid))
 						$query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 						." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
 						." '{$_POST['question_'.$alang]}', '{$_POST['preg']}', '{$_POST['help_'.$alang]}', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}',$question_order,'{$alang}')";
-                        if ($connect->databaseType == 'odbc_mssql') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
+                        if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') $query = "SET IDENTITY_INSERT ".db_table_name('questions')." ON; " . $query . "SET IDENTITY_INSERT ".db_table_name('questions')." OFF;";
 						$result2 = $connect->Execute($query);
 						if (!$result2)
 						{
@@ -685,11 +685,11 @@ if(isset($surveyid))
             $_POST['question_'.$qlanguage]=fix_FCKeditor_text($_POST['question_'.$qlanguage]);
             $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
                 
-            if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
+            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
 			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language) 
                       VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
 			$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());
-            if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
+            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
 			}
 			if (!$result)
 			{

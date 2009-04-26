@@ -1239,7 +1239,7 @@ function checkpregs($move,$backok=null)
 					$pregresult=db_execute_assoc($pregquery) or safe_die("ERROR: $pregquery<br />".$connect->ErrorMsg());      //Checked 
 					while($pregrow=$pregresult->FetchRow())
 					{
-						$preg=$pregrow['preg'];
+						$preg=trim($pregrow['preg']);
 					} // while
 					if (isset($preg) && $preg)
 					{

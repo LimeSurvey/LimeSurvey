@@ -240,7 +240,7 @@ if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no to
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
-        if ($databasetype=='odbc_mssql')
+        if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n')
              {
                           $createtokentable.= "email C(320) ,\n "
                                              ."emailstatus C(300) DEFAULT 'OK',\n ";

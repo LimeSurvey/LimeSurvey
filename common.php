@@ -138,24 +138,28 @@ $connect=&ADONewConnection($databasetype);
 $database_exists = FALSE;
 switch ($databasetype)
 {
-	case "mysql"     :if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
-		 			 	 else {$dbport=$databaselocation;}
+    case "postgres":    
+  	case "mysql": if ($databaseport!="default") {$dbhost="$databaselocation:$databaseport";}
+		 			 	 else {$dbhost=$databaselocation;}
 	break;
-	case "odbc_mssql": $dbport="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
+    case "mssql_n": 
+    case "mssql": if ($databaseport!="default") {$dbhost="$databaselocation,$databaseport";}
+                           else {$dbhost=$databaselocation;}
+    break;                             
+	case "odbc_mssql": $dbhost="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
 	break;
-	case "postgres": if ($databaseport!="default") {$dbport="$databaselocation:$databaseport";}
-		 			 	 else {$dbport=$databaselocation;}
-	break;
+
 	default: safe_die("Unknown database type");
 }
 // Now try connecting to the database
-if (@$connect->Connect($dbport, $databaseuser, $databasepass, $databasename))
-{ $database_exists = TRUE;}
+if (@$connect->Connect($dbhost, $databaseuser, $databasepass, $databasename))
+{ 
+    $database_exists = TRUE;
+}
 else {
  // If that doesnt work try connection without database-name
 	$connect->database = '';
-	if ($databasetype=='odbc_mssql') {$dbport="Driver={SQL Server};Server=$databaselocation;";}
-	if (!@$connect->Connect($dbport, $databaseuser, $databasepass))
+	if (!@$connect->Connect($dbhost, $databaseuser, $databasepass))
     {
        safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
     }
@@ -180,8 +184,9 @@ if ($databasetype=='mysql') {
 }
 
 // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
-if ($databasetype=='odbc_mssql') {
-   @$connect->Execute('SET DATEFORMAT ymd;');     //Checked    
+if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_n') {
+   @$connect->Execute('SET DATEFORMAT ymd;');     //Checked   
+   @$connect->Execute('SET QUOTED_IDENTIFIER ON;');     //Checked   
 }
 
 
@@ -196,7 +201,7 @@ If ($dbexistsbutempty && $sourcefrom=='admin') {
 If (!$dbexistsbutempty && $sourcefrom=='admin')
 {
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'"; 
-    $usresult = db_execute_assoc($usquery,'',true); //checked
+    $usresult = db_execute_assoc($usquery,'',false); //checked
     if (!$usresult)
     {
      die ("<br />The configured LimeSurvey database does not seem to exist and the LimeSurvey tables weren't found. <br />Please check the <a href='http://docs.limesurvey.org'>online manual</a> for installation instructions.<br />If you already edited config.php please run the <a href='$homeurl/install/index.php'>installation script</a>.");
@@ -472,6 +477,8 @@ function db_quote_id($id)
         case "mysql" : 
             return "`".$id."`";
             break;
+        case "mssql_n" : 
+        case "mssql" : 
         case "odbc_mssql" : 
             return "[".$id."]";
             break;
@@ -486,7 +493,7 @@ function db_quote_id($id)
 function db_random()
 {
     global $connect,$databasetype;
-    if ($databasetype=='odbc_mssql') {$srandom='NEWID()';}
+    if ($databasetype=='odbc_mssql' || $databasetype=='mssql_n' || $databasetype=='mssql')  {$srandom='NEWID()';}
     else {$srandom=$connect->random;}
     return $srandom;
     
@@ -534,6 +541,8 @@ function db_select_tables_like($table)
 	switch ($databasetype) {
 		case 'mysql'	  : 
 			return "SHOW TABLES LIKE '$table'";
+        case 'mssql' : 
+        case 'mssql_n' : 
 		case 'odbc_mssql' : 
 			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
 		case 'postgres' : 
@@ -4522,10 +4531,10 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 				if ($gresult->RecordCount() < 1)
 				{
-                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}   //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}   //Checked
 					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";  
 					$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." OFF");}   //Checked
+                     if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." OFF");}   //Checked
 				}
 			}
 			reset($langs);
@@ -4546,10 +4555,10 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());   //Checked
 				if ($gresult->RecordCount() < 1)
 				{
-                    if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}    //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}    //Checked
 					$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,lid,question_order,language) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['lid']}','{$question['question_order']}','{$lang}')";
 					$connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked
-                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}      //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}      //Checked
 				}
 			}
 			reset($langs);
@@ -4573,10 +4582,10 @@ function FixLanguageConsistency($sid, $availlangs)
 					$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Checked
 					if ($gresult->RecordCount() < 1)
 					{
-                        if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." ON");}    //Checked
+                        if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." ON");}    //Checked
 						$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,default_value,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",".db_quoteall($answer['default_value']).",'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
 						$connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
-                        if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." OFF");}   //Checked
+                        if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('answers')." OFF");}   //Checked
 					}
 				}
 				reset($langs);
@@ -4597,11 +4606,11 @@ function FixLanguageConsistency($sid, $availlangs)
                 $gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
                 if ($gresult->RecordCount() < 1)
                 {
-                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." ON");}   //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." ON");}   //Checked
                     $query = "INSERT INTO ".db_table_name('assessments')." (id,sid,scope,gid,name,minimum,maximum,message,language) "
                             ."VALUES('{$assessment['id']}','{$assessment['sid']}',".db_quoteall($assessment['scope']).",".db_quoteall($assessment['gid']).",".db_quoteall($assessment['name']).",".db_quoteall($assessment['minimum']).",".db_quoteall($assessment['maximum']).",".db_quoteall($assessment['message']).",'{$lang}')";  
                     $connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    if ($databasetype=='odbc_mssql') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." OFF");}   //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='mssql' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('assessments')." OFF");}   //Checked
                 }
             }
             reset($langs);
