@@ -4746,7 +4746,7 @@ function do_array_multitext($ia)
 
         if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
         {
-                $numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
                 $class_num_only = ' numbers-only';
         }
         else
