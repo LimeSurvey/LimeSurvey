@@ -2807,8 +2807,14 @@ function templatereplace($line)
 	}
 	if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
 	if (strpos($line, "{URL}") !== false) {
-		if ($thissurvey['surveyls_url']!=""){$linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";}
-		else {$linkreplace="";}
+		if ($thissurvey['surveyls_url']!=""){
+            if (trim($thissurvey['surveyls_urldescription'])!=''){    
+                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_urldescription']}</a>";
+            }
+		    else {
+                $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
+            }
+        }
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
         if (isset($clienttoken)) {$token=$clienttoken;} else {$token='';}

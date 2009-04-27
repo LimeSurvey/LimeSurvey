@@ -142,23 +142,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 			    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		    }
         }
-        /* Todo: Check the possibility to branch if the survey was completed or not */
-        
-	   if (trim($thissurvey['surveyls_endtext'])=='')
-       {
-            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-                        . $clang->gT("Your survey responses have been recorded.")."<br />\n";           
-       }
-       else
-       {
-            $completed = $thissurvey['surveyls_endtext'];
-       }
-
-    
-    	$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-		           . $clang->gT("Your survey responses have been recorded.")."<br />\n"
-			       . "<a href='javascript:window.close()'>"
-			       . $clang->gT("Close this Window")."</a></font><br /><br />\n";
 
 		//Update the token if needed and send a confirmation email
 		if (isset($clienttoken) && $clienttoken)
@@ -188,7 +171,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         
-        if (trim($thissurvey['surveyls_endtext'])=='')
+        if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
         {
             $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
@@ -227,16 +210,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		{
 			//Automatically redirect the page to the "url" setting for the survey
-			
-			/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere
-            $redir = $thissurvey['url'];
-            
-            // Add the token to the redirect just in case
-            if (isset($mytoken)) 
-            {
-			$redir .= "?token=".$mytoken;
-			}
-			header("Location: {$redir}");	*/
 
 			$url = $thissurvey['surveyls_url'];
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
