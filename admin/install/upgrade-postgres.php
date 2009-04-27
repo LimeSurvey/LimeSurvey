@@ -117,7 +117,22 @@ global $modifyoutput;
     {
         modify_database("","ALTER TABLE prefix_question_attributes ALTER COLUMN value TYPE text"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
-    }   
+    }
+    if ($oldversion < 136)
+    {
+	   modify_database("", "ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
+	   modify_database("", "CREATE TABLE prefix_quota_languagesettings (
+						   quotals_id serial NOT NULL,
+  						   quotals_quota_id integer NOT NULL DEFAULT 0,
+						   quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+						   quotals_name character varying(200),
+  						   quotals_message text NOT NULL,
+  						   quotals_url character varying(255),
+  						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
+	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
+  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
 
     
     

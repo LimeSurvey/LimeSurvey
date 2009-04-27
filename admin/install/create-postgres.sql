@@ -131,13 +131,26 @@ CREATE TABLE prefix_quota (
   name character varying(255),
   qlimit integer,
   "action" integer,
-  "active" integer NOT NULL default '1'
+  "active" integer NOT NULL default '1',
+  autoload_url integer NOT NULL DEFAULT 0
 );
 
 ALTER TABLE ONLY prefix_quota
     ADD CONSTRAINT prefix_quota_pkey PRIMARY KEY (id);
 
+CREATE TABLE prefix_quota_languagesettings
+(
+  quotals_id serial NOT NULL,
+  quotals_quota_id integer NOT NULL DEFAULT 0,
+  quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+  quotals_name character varying(200),
+  quotals_message text NOT NULL,
+  quotals_url character varying(255),
+  quotals_urldescrip character varying(255)
+);
 
+ALTER TABLE ONLY prefix_quota_languagesettings
+  ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);
 
 CREATE TABLE prefix_quota_members (
   id serial,
@@ -498,7 +511,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '134');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '136');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

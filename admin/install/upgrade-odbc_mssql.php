@@ -292,7 +292,22 @@ echo str_pad('Loading... ',4096)."<br />\n";
         mssql_drop_constraint('value','question_attributes');        
         modify_database("","ALTER TABLE [prefix_question_attributes] ALTER COLUMN [value] text"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
-    }               
+    }
+    if ($oldversion < 136) //New quota functions
+    {
+	    modify_database("", "ALTER TABLE[prefix_quota] ADD [autoload_url] int NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE [prefix_quota_languagesettings] (
+  							[quotals_id] int NOT NULL IDENTITY (1,1),
+							[quotals_quota_id] int,
+  							[quotals_language] varchar(45) NOT NULL default 'en',
+  							[quotals_name] varchar(255),
+  							[quotals_message] text,
+  							[quotals_url] varchar(255),
+  							[quotals_urldescrip] varchar(255),
+  							PRIMARY KEY ([quotals_id])
+							);");echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
     return true;
 }
 

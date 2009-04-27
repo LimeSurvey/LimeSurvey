@@ -118,10 +118,25 @@ CREATE TABLE `prefix_quota` (
   `qlimit` int(8) default NULL,
   `action` int(2) default NULL,
   `active` int(1) NOT NULL default '1',
+  `autoload_url` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+--
+-- Table Structure for table quota_languagesettings
+--
+
+CREATE TABLE `prefix_quota_languagesettings` (
+  `quotals_id` int(11) NOT NULL auto_increment,
+  `quotals_quota_id` int(11) NOT NULL default '0',
+  `quotals_language` varchar(45) NOT NULL default 'en',
+  `quotals_name` varchar(255) collate utf8_unicode_ci default NULL,
+  `quotals_message` text NOT NULL,
+  `quotals_url` varchar(255),
+  `quotals_urldescrip` varchar(255),
+  PRIMARY KEY (`quotals_id`)
+)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
@@ -343,7 +358,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '134');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '136');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

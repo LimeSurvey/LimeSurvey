@@ -2664,7 +2664,9 @@ function check_quota($checkaction,$surveyid)
 				{
 
 					// Check the status of the quota, is it full or not
-					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
+					$querysel = "SELECT id FROM ".db_table_name('survey_'.$surveyid)." 
+					             WHERE ".implode(' AND ',$querycond)." "." 
+								 AND submitdate IS NOT NULL";
 
 					$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg());    //Checked 
 					$quota_check = $result->FetchRow();
@@ -2723,10 +2725,17 @@ function check_quota($checkaction,$surveyid)
 			{
 				session_destroy();
 				sendcacheheaders();
+				if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
+				{
+					header("Location: ".$quota['Url']);
+				}
 				doHeader();
 				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-				echo "\t<center><br />\n";
-				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
+				echo "\t<div class='quotamessage'>\n";
+				echo "\t".$quota['Message']."<br /><br />\n";
+				echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
+				echo "\t</div>\n";
+//				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();
 				exit;

@@ -9,11 +9,21 @@ CREATE TABLE [prefix_quota] (
   [qlimit] int ,
   [action] int ,
   [active] int NOT NULL default '1',
+  [autoload_url] int NOT NULL default '0',
   PRIMARY KEY  ([id])
 );
 
 
-
+CREATE TABLE [prefix_quota_languagesettings] (
+  [quotals_id] int NOT NULL IDENTITY (1,1),
+  [quotals_quota_id] int,
+  [quotals_language] varchar(45) NOT NULL default 'en',
+  [quotals_name] varchar(255),
+  [quotals_message] text,
+  [quotals_url] varchar(255),
+  [quotals_urldescrip] varchar(255),
+  PRIMARY KEY ([quotals_id])
+);
 
 
 CREATE TABLE [prefix_quota_members] (
@@ -361,7 +371,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '134');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '136');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --

@@ -214,22 +214,125 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	if (!isset($action)) $action=returnglobal('action');
 	if (!isset($subaction)) $subaction=returnglobal('subaction');
 	if (!isset($quotasoutput)) $quotasoutput = "";
+	if (!isset($_POST['autoload_url']) || empty($_POST['autoload_url'])) {$_POST['autoload_url']=0;}
 	if($subaction == "insertquota")
 	{
+	    if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 1)
+	    {
+		    $_POST['quota_limit'] = 1;
+		}
 		$_POST  = array_map('db_quote', $_POST);
-		$query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action) VALUES ('$surveyid','{$_POST['quota_name']}','{$_POST['quota_limit']}','{$_POST['quota_action']}')";
-		$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		$query = "INSERT INTO ".db_table_name('quota')." (sid,name,qlimit,action,autoload_url) 
+		          VALUES ('$surveyid','{$_POST['quota_name']}','{$_POST['quota_limit']}','{$_POST['quota_action']}', '{$_POST['autoload_url']}')";
+		$connect->Execute($query) or safe_die("Error inserting limit".$connect->ErrorMsg());
+		$quotaid=$connect->Insert_Id(db_table_name_nq('quota'),"id");
+		
+		//Get the languages used in this survey
+  		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+  		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+  		$langs[] = $baselang;
+        //Iterate through each language, and make sure there is a quota message for it
+		$errorstring = '';  
+        foreach ($langs as $lang)
+        {
+          if (!$_POST['quotals_message_'.$lang]) { $errorstring.= GetLanguageNameFromCode($lang,false)."\\n";}
+		}
+        if ($errorstring!='') 
+        {
+            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Quota could not be added.\\n\\nIt is missing a quota message for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+        }  
+		else
+		//All the required quota messages exist, now we can insert this info into the database
+		{
+	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); 
+         
+    		foreach ($langs as $lang) //Iterate through each language
+	       	{
+		     	//Clean XSS
+		     	if ($filterxsshtml)
+		     	{
+  		 		    $_POST['quotals_message_'.$lang]=$myFilter->process($_POST['quotals_message_'.$lang]);
+		     	}
+                else
+                {
+                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                }
+                
+                // Fix bug with FCKEditor saving strange BR types
+                $_POST['quotals_message_'.$lang]=fix_FCKeditor_text($_POST['quotals_message_'.$lang]);
+
+				//Now save the language to the database:
+                $query = "INSERT INTO ".db_table_name('quota_languagesettings')." (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
+		        	      VALUES ('$quotaid', '$lang', '".db_quote($_POST['quota_name'])."', '".db_quote($_POST['quotals_message_'.$lang])."', '".db_quote($_POST['quotals_url_'.$lang])."', '".db_quote($_POST['quotals_urldescrip_'.$lang])."')";
+				if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('quota_languagesettings').' ON; '.$query . 'SET IDENTITY INSERT '.db_table_name('quota_languagesettings').' OFF;';
+	    		$connect->Execute($query) or safe_die($connect->ErrorMsg());
+			}
+		} //End insert language based components
 		$viewquota = "1";
 
-	}
+	} //End foreach $lang
 
 	if($subaction == "modifyquota")
 	{
 		$_POST  = array_map('db_quote', $_POST);
-		$query = "UPDATE ".db_table_name('quota')." SET name='{$_POST['quota_name']}', qlimit='{$_POST['quota_limit']}', action='{$_POST['quota_action']}' where id='{$_POST['quota_id']}' ";
-		$connect->Execute($query) or safe_die($connect->ErrorMsg());
-		$viewquota = "1";
+		$query = "UPDATE ".db_table_name('quota')." 
+			      SET name='{$_POST['quota_name']}', 
+				  qlimit='{$_POST['quota_limit']}', 
+				  action='{$_POST['quota_action']}',
+				  autoload_url='{$_POST['autoload_url']}'
+				  WHERE id='{$_POST['quota_id']}' ";
+		$connect->Execute($query) or safe_die("Error modifying quota".$connect->ErrorMsg());
 
+		//Get the languages used in this survey
+  		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+  		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+  		$langs[] = $baselang;
+        //Iterate through each language, and make sure there is a quota message for it
+		$errorstring = '';  
+        foreach ($langs as $lang)
+        {
+          if (!$_POST['quotals_message_'.$lang]) { $errorstring.= GetLanguageNameFromCode($lang,false)."\\n";}
+		}
+        if ($errorstring!='') 
+        {
+            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Quota could not be added.\\n\\nIt is missing a quota message for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+        }  
+		else
+		//All the required quota messages exist, now we can insert this info into the database
+		{
+	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+		    $myFilter = new InputFilter('','',1,1,1); 
+         
+    		foreach ($langs as $lang) //Iterate through each language
+	       	{
+		     	//Clean XSS
+		     	if ($filterxsshtml)
+		     	{
+  		 		    $_POST['quotals_message_'.$lang]=$myFilter->process($_POST['quotals_message_'.$lang]);
+		     	}
+                else
+                {
+                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                }
+                
+                // Fix bug with FCKEditor saving strange BR types
+                $_POST['quotals_message_'.$lang]=fix_FCKeditor_text($_POST['quotals_message_'.$lang]);
+
+				//Now save the language to the database:
+                $query = "UPDATE ".db_table_name('quota_languagesettings')." 
+				          SET quotals_name='".db_quote($_POST['quota_name'])."', 
+						  quotals_message='".db_quote($_POST['quotals_message_'.$lang])."', 
+						  quotals_url='".db_quote($_POST['quotals_url_'.$lang])."', 
+						  quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang])."'
+				          WHERE quotals_quota_id = '{$_POST['quota_id']}'
+						  AND quotals_language = '$lang'";
+				$connect->Execute($query) or safe_die($connect->ErrorMsg());
+			}
+		} //End insert language based components
+
+
+		$viewquota = "1";
 	}
 	
 	if($subaction == "insertquotaanswer")
@@ -244,29 +347,33 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	if($subaction == "quota_delans")
 	{
 		$_POST  = array_map('db_quote', $_POST);
-		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE id = '{$_POST['quota_member_id']}' AND qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
+		$query = "DELETE FROM ".db_table_name('quota_members')." 
+			      WHERE id = '{$_POST['quota_member_id']}' 
+				  AND qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
 
 	}
-
 
 	if($subaction == "quota_delquota")
 	{
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
-
+		
+		$query = "DELETE FROM ".db_table_name('quota_languagesettings')." WHERE quotals_quota_id='{$_POST['quota_id']}'";
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		
 		$query = "DELETE FROM ".db_table_name('quota_members')." WHERE quota_id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		$viewquota = "1";
-
 	}
 
 	if ($subaction == "quota_editquota")
 	{
 		$_POST  = array_map('db_quote', $_POST);
-		$query = "SELECT * FROM ".db_table_name('quota')." where id='{$_POST['quota_id']}'";
+		$query = "SELECT * FROM ".db_table_name('quota')."
+		          WHERE id='{$_POST['quota_id']}'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 		$quotainfo = $result->FetchRow();
 		
@@ -304,7 +411,78 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             									$quotasoutput .= '>'.$clang->gT("Terminate Survey With Warning") .'</option>
             									</select></td>
           								</tr>
-          								<tr align="left" class="evenrow"> 
+          								<tr class="evenrow">
+          								    <td align="right"><blockquote>
+          								        <p><strong>'.$clang->gT("Autoload URL").':</strong></p>
+          								        </blockquote></td>
+          								    <td align="left"><input name="autoload_url" type="checkbox" value="1"';
+		if($quotainfo['autoload_url'] == "1") {$quotasoutput .= " checked";}
+		$quotasoutput .= '></td>
+          								</tr>
+          							</tbody>
+          						</table>
+          					</td>
+          				</tr>
+          			</table>';
+		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_push($langs,$baselang);
+
+		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+	    $myFilter = new InputFilter('','',1,1,1);
+
+		$quotasoutput .= '
+			<div class="tab-pane" id="tab-pane-1">'."\n\n";
+    	foreach ($langs as $lang)
+    	{
+    	    //Get this one
+    	    $langquery = "SELECT * FROM ".db_table_name('quota_languagesettings')." WHERE quotals_quota_id='{$_POST['quota_id']}' AND quotals_language = '$lang'";
+ 			$langresult = db_execute_assoc($langquery) or safe_die($connect->ErrorMsg());
+			$langquotainfo = $langresult->FetchRow();   	    
+            $quotasoutput .= '
+				<div class="tab-page">
+						  	 	 <h2 class="tab">'.GetLanguageNameFromCode($lang,false);
+        	if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base Language").')';}
+        	$quotasoutput .= "</h2>";
+		
+			$quotasoutput.='
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+  						<tr>
+    						<td valign="top">
+								<table width="100%" border="0">
+        							<tbody>
+          								<tr class="evenrow">
+          								    <td align="right" valign="top"><blockquote>
+          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        </blockquote></td>
+          								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$langquotainfo['quotals_message'].'</textarea></td>
+										</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("URL").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <input name="quotals_url_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_url'].'" /></td>
+          								</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_urldescrip'].'" /></td>
+          								</tr>
+       								</tbody>
+      							</table>
+    						</td>
+  						</tr>
+					</table>
+				</div>';
+		};
+		$quotasoutput .= '
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+		 			    <tr>
+		 			  	    <td valign="top">
+		 			  	        <table width="100%" border="0">
+		 			  	            <tbody>
+									    <tr align="left" class="evenrow"> 
             								<td>&nbsp;</td>
             								<td><table width="30%"><tr><td align="left"><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
             								<input type="hidden" name="sid" value="'.$surveyid.'" />
@@ -329,7 +507,10 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
-		$query = "SELECT * FROM ".db_table_name('quota')." where sid='".$surveyid."'";
+		$query = "SELECT * FROM ".db_table_name('quota')." , ".db_table_name('quota_languagesettings')."
+		          WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
+		          AND sid='".$surveyid."'
+				  AND quotals_language = '".$baselang."'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
 		$quotasoutput .='<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
@@ -449,16 +630,16 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		}
 
 		$quotasoutput .='<tr>
-            				<td align="center"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'">
-            				<input type="hidden" name="sid" value="'.$surveyid.'" />
-            				<input type="hidden" name="action" value="quotas" />
-            				<input type="hidden" name="subaction" value="new_quota" /></form></td>
+            				<td align="center">&nbsp;</td>
             				<td align="center"><a name="quota_end">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
-            				<td align="center" style="padding: 3px;">&nbsp;</td>
+            				<td align="center" style="padding: 3px;"><form action="'.$scriptname.'" method="post">
+            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'">
+            				<input type="hidden" name="sid" value="'.$surveyid.'" />
+            				<input type="hidden" name="action" value="quotas" />
+            				<input type="hidden" name="subaction" value="new_quota" /></form></td>
           					</tr>
         					</tbody>
       						</table>
@@ -616,8 +797,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if ($subaction == "new_quota")
 	{
-		$quotasoutput .='<form action="'.$scriptname.'#quota_end" method="post">
-					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+		$quotasoutput .='<form action="'.$scriptname.'#quota_end" method="post" name="addnewquotaform">';
+		$quotasoutput.='					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
   						<tr>
     						<td valign="top">
 								<table width="100%" border="0">
@@ -629,13 +810,13 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             								<td align="right"><blockquote> 
                 								<p><strong>'.$clang->gT("Quota Name").':</strong></p>
               									</blockquote></td>
-            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255"></td>
+            								<td align="left"> <input name="quota_name" type="text" size="30" maxlength="255" /></td>
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
                 								<p><strong>'.$clang->gT("Quota Limit").':</strong></p>
               									</blockquote></td>
-            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8"></td>
+            								<td align="left"><input name="quota_limit" type="text" size="12" maxlength="8" /></td>
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
@@ -646,21 +827,76 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             									<option value ="2">'.$clang->gT("Terminate Survey With Warning") .'</option>
             									</select></td>
           								</tr>
-          								<tr align="left" class="evenrow"> 
-            								<td>&nbsp;</td>
-            								<td><input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'" />
-            								<input type="hidden" name="sid" value="'.$surveyid.'" />
-            								<input type="hidden" name="action" value="quotas" />
-            								<input type="hidden" name="subaction" value="insertquota" />
-            								</td>
-            								
-            								</form>
+          								<tr class="evenrow">
+          								    <td align="right"><blockquote>
+          								        <p><strong>'.$clang->gT("Autoload URL").':</strong></p>
+          								        </blockquote></td>
+          								    <td align="left"><input name="autoload_url" type="checkbox" value="1"></td>
           								</tr>
-       							</tbody>
-      						</table>
-    					</td>
-  					</tr>
-				</table>';
+          							</tbody>
+          						</table>
+          					</td>
+          				</tr>
+					</table>
+					';
+		
+		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
+		$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		array_push($langs,$baselang);
+
+		require_once("../classes/inputfilter/class.inputfilter_clean.php");
+	    $myFilter = new InputFilter('','',1,1,1);
+
+		$thissurvey=getSurveyInfo($surveyid);
+
+		$quotasoutput .= '
+			<div class="tab-pane" id="tab-pane-1">'."\n\n";
+    	foreach ($langs as $lang)
+    	{
+            $quotasoutput .= '
+				<div class="tab-page">
+						  	 	 <h2 class="tab">'.GetLanguageNameFromCode($lang,false);
+        	if ($lang==$baselang) {$quotasoutput .= '('.$clang->gT("Base Language").')';}
+        	$quotasoutput .= "</h2>";
+			$quotasoutput.='
+					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
+  						<tr>
+    						<td valign="top">
+								<table width="100%" border="0">
+        							<tbody>
+          								<tr class="evenrow">
+          								    <td align="right" valign="top"><blockquote>
+          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        </blockquote></td>
+          								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$clang->gT("Sorry your responses have exceeded a quota on this survey.").'</textarea></td>
+										</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("URL").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <input name="quotals_url_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['url'].'" /></td>
+          								</tr>
+          								<tr class="evenrow"> 
+            								<td align="right"><blockquote> 
+                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+              									</blockquote></td>
+            								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['urldescrip'].'" /></td>
+          								</tr>
+       								</tbody>
+      							</table>
+    						</td>
+  						</tr>
+					</table>
+				</div>';
+		};
+	
+		$quotasoutput .= '
+				<input type="hidden" name="sid" value="'.$surveyid.'" />
+				<input type="hidden" name="action" value="quotas" />
+				<input type="hidden" name="subaction" value="insertquota" />
+				</div>
+				<input name="submit" type="submit" value="'.$clang->gT("Add New Quota").'" />
+			</form>';
 	}
 }
 

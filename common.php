@@ -18,7 +18,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.82";
-$dbversionnumber = 135;
+$dbversionnumber = 136;
 $buildnumber = "";
 
 
@@ -5668,7 +5668,10 @@ function safe_die($text)
 function getQuotaInformation($surveyid,$quotaid='all')
 {
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$query = "SELECT * FROM ".db_table_name('quota')." WHERE sid='{$surveyid}'";
+	$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
+		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
+			  AND sid='{$surveyid}'
+			  AND quotals_language='$baselang'";
 	if ($quotaid != 'all')
 	{
 		$query .= " AND id=$quotaid";
@@ -5683,7 +5686,13 @@ function getQuotaInformation($surveyid,$quotaid='all')
 	{
 		while ($survey_quotas = $result->FetchRow())
 		{
-			array_push($quota_info,array('Name' => $survey_quotas['name'],'Limit' => $survey_quotas['qlimit'],'Action' => $survey_quotas['action']));
+			array_push($quota_info,array('Name' => $survey_quotas['name'],
+										 'Limit' => $survey_quotas['qlimit'],
+										 'Action' => $survey_quotas['action'],
+										 'Message' => $survey_quotas['quotals_message'],
+										 'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), getSurveyInfo($surveyid)),
+										 'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
+										 'AutoloadUrl' => $survey_quotas['autoload_url']));
 			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
 			$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked 
 			$quota_info[$x]['members'] = array();
@@ -5722,7 +5731,12 @@ function getQuotaInformation($surveyid,$quotaid='all')
 						$value = $temp[1];
 					}
 					
-					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],'type' => $qtype['type'],'code' => $quota_entry['code'],'value' => $value,'qid' => $quota_entry['qid'],'fieldnames' => $fieldnames));
+					array_push($quota_info[$x]['members'],array('Title' => $qtype['title'],
+																'type' => $qtype['type'],
+																'code' => $quota_entry['code'],
+																'value' => $value,
+																'qid' => $quota_entry['qid'],
+																'fieldnames' => $fieldnames));
 				}
 			}
 			$x++;
@@ -5764,7 +5778,10 @@ function get_quotaCompletedCount($surveyid, $quotaid)
 			}
 
 		}
+		//FOR MYSQL?
 		$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate !=''";
+		//FOR POSTGRES?
+		$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
 		$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
 		$quota_check = $result->FetchRow();
 		$result = $quota_check['count'];
