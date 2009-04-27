@@ -201,7 +201,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 				else
 				{
 					if(!is_numeric($fieldValue))
-						$values2import[] = "'".mysql_real_escape_string($fieldValue)."'";
+						$values2import[] = "'".db_quote($fieldValue)."'";
 					else
 						$values2import[] = "".$fieldValue."";
 				}
