@@ -74,7 +74,7 @@ function checkforupgrades()
     global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
     $adminoutput='';
     $upgradedbtype=$databasetype;
-    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql') $upgradedbtype='mssql';         
+    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';         
     include ('upgrade-'.$databasetype.'.php');
     $tables = $connect->MetaTables();
 

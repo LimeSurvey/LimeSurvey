@@ -2660,7 +2660,7 @@ if (isset($summary) && $summary)
 				$fieldname=substr($rt, 1, strlen($rt));
 				
 				//special treatment for MS SQL databases
-                if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n')
+                if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
                 { 
                 	//standard deviation
                 	$query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev"; 
@@ -2687,7 +2687,7 @@ if (isset($summary) && $summary)
                 //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
                 
 				//special treatment for MS SQL databases
-				if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n')
+				if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
                 { 
                 	//no NULL/empty values please
                 	$query .= " FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
@@ -3431,7 +3431,7 @@ if (isset($summary) && $summary)
 				{ 
 					//get more data                          
                     
-                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'mssql' || $connect->databaseType == 'mssql_n')
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
                     { 
                         // mssql cannot compare text blobs so we have to cast here
                         $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'"; 
