@@ -217,6 +217,7 @@ if (isset($_SESSION['s_lang']))
 				}
 				elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
 				{
+                    $lset=array();
 					$fnrquery = "SELECT *
 						FROM ".db_table_name('answers')." 
 						WHERE qid={$fnrow['qid']}
