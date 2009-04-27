@@ -1960,6 +1960,7 @@ if ($subaction == "upload" &&
    )
 {
    	$duplicatelist=array();
+	$invalidemaillist=array();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
@@ -2040,10 +2041,12 @@ if ($subaction == "upload" &&
 					if ($filterblankemail && $line[2]=='')
 					{
 						$invalidemail=true;
+						$invalidemaillist[]=$line[0]." ".$line[1]." ( )";
 					} 
-					if  ($line[2]!='' && !validate_email($line[2])) 
+					elseif ($line[2]!='' && !validate_email($line[2])) 
 					{
-						$invalidemail=true;;
+						$invalidemail=true;
+						$invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
 					} 
 					
 					if ($invalidemail)
@@ -2089,21 +2092,20 @@ if ($subaction == "upload" &&
 		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
 		$message .= "$xy ".$clang->gT("Duplicate records removed");
 		$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
-		$message .= "<div id='duplicateslist' style='display: none; 
-		                                             width: 400px; 
-													 background-color: #FFF;
-													 border: 1px solid #CCC;
-													 height: 50px; 
-													 overflow: auto; 
-													 text-align: left;
-													 margin-bottom: 0px;
-													 font-size: 8pt'>";
+		$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
 		foreach($duplicatelist as $data) {
 		  $message .= "<li>$data</li>\n";
 		}
 		$message .= "</div>";
 		$message .= "<br />\n";
-		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
+		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed");
+		$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
+		$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
+		foreach($invalidemaillist as $data) {
+			$message .= "<li>$data</li>\n";
+		}
+		$message .= "</div>";
+		$message .= "<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
 		unlink($the_full_file_path);
 	}
@@ -2117,6 +2119,7 @@ if ($subaction == "uploadldap" &&
    )
 {
     $duplicatelist=array();
+	$invalidemaillist=array();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Uploading LDAP Query")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
@@ -2241,10 +2244,12 @@ if ($subaction == "uploadldap" &&
 						if ($filterblankemail && $myemail=='')
 						{
 							$invalidemail=true;
+							$invalidemaillist[]=$myfirstname." ".$mylastname." ( )";
 						} 
-						if  ($myemail!='' && !validate_email($myemail)) 
+						elseif ($myemail!='' && !validate_email($myemail))
 						{
-							$invalidemail=true;;
+							$invalidemail=true;
+							$invalidemaillist[]=$myfirstname." ".$mylastname." (".$myemail.")";
 						} 
 						
 						if ($invalidemail)
@@ -2287,8 +2292,24 @@ if ($subaction == "uploadldap" &&
 			$message = "$resultnum ".$clang->gT("Results from LDAP Query").".<br />\n";
 			$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 			$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
-			$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
-			$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
+			$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
+			$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
+			$message .= "$xy ".$clang->gT("Duplicate records removed");
+			$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+			$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
+			foreach($duplicatelist as $data) {
+				$message .= "<li>$data</li>\n";
+			}
+			$message .= "</div>";
+			$message .= "<br />\n";
+			$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed");
+			$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
+			$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
+			foreach($invalidemaillist as $data) {
+				$message .= "<li>$data</li>\n";
+			}
+			$message .= "</div>";
+			$message .= "<br />\n";
 			$tokenoutput .= "<i>$message</i><br />\n";
 		}
 		else {

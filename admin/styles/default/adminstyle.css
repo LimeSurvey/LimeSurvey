@@ -478,3 +478,14 @@ a.invalidemail {
 .answertable tr.highlight {
     background-color:#EAF2FF;
 }
+
+.badtokenlist {
+    width: 400px; 
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    height: 50px; 
+    overflow: auto; 
+    text-align: left;
+    margin-bottom: 0px;
+    font-size: 8pt
+}
