@@ -960,9 +960,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		{
 		  foreach($drow as $key=>$dr) {
             $fielddata=arraySearchByKey($key, $fieldmap, "fieldname", 1);
-            if($fielddata['type'] == "M" || 
-			   $fielddata['type'] == "P"
-			   )
+            if(isset($fielddata['type']) && ($fielddata['type'] == "M" || $fielddata['type'] == "P"))
             {
 		      if($dr == "Y") {$dr = "1";}
 		    }
