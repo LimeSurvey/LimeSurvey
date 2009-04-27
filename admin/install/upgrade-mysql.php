@@ -288,7 +288,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }
     if ($oldversion < 136) //New Quota Functions
     {
-	    modify_database("", "ALTER TABLE `prefix_quota_languagesettings` ADD `autoload_url` int(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE `prefix_quota` ADD `autoload_url` int(1) NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("","CREATE TABLE `prefix_quota_languagesettings` (
 								         `quotals_id` int(11) NOT NULL auto_increment,
 										 `quotals_quota_id` int(11) NOT NULL default '0',
@@ -299,7 +299,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 										 `quotals_urldescrip` varchar(255),
 										 PRIMARY KEY (`quotals_id`)
 										 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
-        modify_database("","update [prefix_settings_global] set [stg_value]='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='136' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
     return true;
 }
