@@ -275,13 +275,13 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 		exit;
 	}
 	
-	if($dStart!='')
+	if($dStart!='' && $dStart!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
 		$lsrcHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
-	if($dEnd!='')
+	if($dEnd!='' && $dEnd!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
 		$lsrcHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
@@ -501,7 +501,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
  * @param $sParticipantData
  * @return unknown_type
  */
-function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
+function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData, $sToken='') 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -587,14 +587,24 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		if($sData!='')
 		{
 			$asDatafield = explode($sDatafieldSeperator, $sData);
-			$checkCnt=1;
-			while($checkCnt>0)
+			
+			// if no token is set, generate a unique one
+			if($sToken=='')
 			{
-				$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
-				$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
-				$result = db_execute_assoc($cQuery);
-				$checkCnt = $result->RecordCount();
+				$checkCnt=1;
+				while($checkCnt>0)
+				{
+					$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
+					$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
+					$result = db_execute_assoc($cQuery);
+					$checkCnt = $result->RecordCount();
+				}
 			}
+			else
+			{
+				$value = $sToken;
+			}
+			
 			$iDataLength = count($asDatafield);
 			for($n=0;$n>=$iDataLength;++$n)
 			{

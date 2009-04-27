@@ -96,9 +96,11 @@
       <documentation>Data for Participant expected in this format:  [Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de]::[Firstname];[Lastname];[email@email.de] and so on... seperate the Datasets with :: and the Datafields in the Sets with ;
        </documentation>
     </part>
-
-
-  </message> 
+    <part name="sToken" type="xsd:string">
+    <documentation>A token for the participant. If no token (an empty string) is given, a unique token for this participant will be generated
+       </documentation>
+    </part>
+   </message> 
   <message name="sInsertParticipantsResponse">
      <part name="return" type="xsd:string" >
        <documentation>This is the return Value of sInsertParticipants, if everything went fine it's "Token table populated successfully"
