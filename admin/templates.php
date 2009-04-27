@@ -281,7 +281,8 @@ if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
-$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />".$clang->gT("Your survey responses have been recorded.")."<br /><br />\n";  
+$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />"
+            .$clang->gT("Your survey responses have been recorded.")."<br /><br />\n";  
 $notanswered="5";
 $privacy="";
 $surveyid="1295";
