@@ -1613,18 +1613,26 @@ if ($subaction == "tokenify" &&
 	}
 	else
 	{
+        // select all existing tokens  
+        $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
+        $ntresult = db_execute_assoc($ntquery);
+        while ($tkrow = $ntresult->FetchRow())
+        {
+            $existingtokens[$tkrow['token']]=null;    
+        }  
 		$newtokencount = 0;
 		$tkquery = "SELECT tid FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 		$tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
 		while ($tkrow = $tkresult->FetchRow())
 		{
-			$insert = "NO";
-			while ($insert != "OK")
+			$isvalidtoken = false;
+			while ($isvalidtoken == false)
 			{
 				$newtoken = randomkey(15);
-				$ntquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='$newtoken'";
-				$ntresult = $connect->Execute($ntquery);
-				if (!$ntresult->RecordCount()) {$insert = "OK";}
+				if (!isset($existingtokens[$newtoken])) {
+                    $isvalidtoken = true;
+                    $existingtokens[$newtoken]=null; 
+                }
 			}
 			$itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
 			$itresult = $connect->Execute($itquery);
