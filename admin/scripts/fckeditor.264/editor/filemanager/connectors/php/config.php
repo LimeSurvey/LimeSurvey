@@ -59,6 +59,7 @@ if ($demoModeOnly === false &&
 	// because we don't know the sid yet
 	if (preg_match('/^(create|edit):(question|group|answer)/',$_SESSION['FileManagerContext']) != 0 ||
 		preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) !=0 ||
+		preg_match('/^edit:assessments/',$_SESSION['FileManagerContext']) !=0 ||
 		preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
 	{
 		$contextarray=split(':',$_SESSION['FileManagerContext'],3);
