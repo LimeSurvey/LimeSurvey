@@ -2815,6 +2815,7 @@ function templatereplace($line)
                 $linkreplace="<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
             }
         }
+        else $linkreplace='';
 		$line=str_replace("{URL}", $linkreplace, $line);            
         $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL 
         if (isset($clienttoken)) {$token=$clienttoken;} else {$token='';}

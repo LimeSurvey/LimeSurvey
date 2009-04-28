@@ -350,6 +350,9 @@ if (!$surveyid)
 					  "list"=>implode("\n",$list),
 					  );
 
+    $thissurvey['name']=$sitename;
+    $thissurvey['templatedir']=$defaulttemplate;
+    
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
