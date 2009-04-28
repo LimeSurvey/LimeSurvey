@@ -16,8 +16,8 @@ $(document).ready(function(){
 		var slider_suffix = $('#slider-suffix-' + basename).attr('value');
 		var sliderparams = Array();
 
-		sliderparams['min'] = slider_min;
-		sliderparams['max'] = slider_max;
+		sliderparams['min'] = slider_min*1; // to force numerical we multiply with 1
+		sliderparams['max'] = slider_max*1; // to force numerical we multiply with 1
 		// not using the stepping param because it is not smooth
 		// using Math.round workaround instead
 		//sliderparams['stepping'] = slider_stepping;
