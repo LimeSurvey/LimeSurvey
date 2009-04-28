@@ -68,7 +68,8 @@ if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc)
 
 
 //define('PRINT_TEMPLATE' , '/templates/print/' , true);
-define('PRINT_TEMPLATE' , '/templates/'.$template.'/' , true);
+define('PRINT_TEMPLATE_DIR' , $tpldir.'/'.$template.'/' , true);
+define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/'.$template.'/' , true);
 
 $fieldmap=createFieldMap($surveyid);
 
@@ -120,7 +121,7 @@ $survey_output = array(
 			,'THANKS' => $clang->gT("Thank you for completing this survey.")
 			,'PDF_FORM' => $pdf_form
 			,'HEADELEMENTS' => $headelements
-			,'TEMPLATEURL' => $rooturl.PRINT_TEMPLATE
+			,'TEMPLATEURL' => PRINT_TEMPLATE_URL
 			,'FAXTO' => $surveyfaxto
 			,'PRIVACY' => ''
 			,'GROUPS' => ''
@@ -191,7 +192,7 @@ function populate_template( $template , $input  , $line = '')
  *
  * How:
  */
- 	$full_path = $rootdir.PRINT_TEMPLATE.'print_'.$template.'.pstpl';
+ 	$full_path = PRINT_TEMPLATE_DIR.'print_'.$template.'.pstpl';
 	$full_constant = 'TEMPLATE'.$template.'.pstpl';
 	if(!defined($full_constant))
 	{
@@ -293,11 +294,11 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'radio':
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
-					$image_dimensions = getimagesize($rootdir.PRINT_TEMPLATE.'print_img_'.$type.'.png');
+					$image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
 					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
 				};
-				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
+				$output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
 		case 'rank':
