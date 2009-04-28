@@ -2696,7 +2696,7 @@ if (isset($summary) && $summary)
 					    //NO ZERO VALUES
 					    $query .= " AND (".db_quote_id($fieldname)." <> 0)"; 
                     }
-				}
+                }
                 
                 //other databases (MySQL, Postgres)
                 else
@@ -2730,7 +2730,7 @@ if (isset($summary) && $summary)
 					$showem[]=array($clang->gT("Minimum"), $row['minimum']);
 					
 					//Display the maximum and minimum figures after the quartiles for neatness
-					$maximum=$row['maximum'];
+					$maximum=$row['maximum']; 
 					$minimum=$row['minimum'];
 				}
 
@@ -3437,7 +3437,7 @@ if (isset($summary) && $summary)
                         $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'"; 
                     }
                     else
-                    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+					$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
                                         
 				}
 				
@@ -3630,7 +3630,7 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(strip_tags($fname), 25, "\n");
+                    $lbl[] = wordwrap(strip_tags("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
                     
                 }	//end while -> loop through results
                 
@@ -3693,7 +3693,7 @@ if (isset($summary) && $summary)
 	                $justcode[]=$fname;
 	                
 	                //edit labels and put them into antoher array
-	                $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
+                   $lbl[] = wordwrap(strip_tags("$al[1] ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
 	                
 	            }	//end else -> noncompleted NOT checked
 	            
@@ -4214,7 +4214,7 @@ if (isset($summary) && $summary)
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
 					
-                    $Test = new pChart(690,$gheight); 
+                    $Test = new pChart(690,$gheight);  
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
 					$Test->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
