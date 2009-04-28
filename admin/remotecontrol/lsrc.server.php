@@ -55,25 +55,27 @@ else{
 	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1));
 }
 
-//adds the functions to the SoapServer Object, 
-//the sChangeSurvey function should be commented out for productive Use
-//$server->addFunction("sChangeSurvey");
-$server->addFunction("sDeleteSurvey");
-$server->addFunction("sActivateSurvey");
-$server->addFunction("sCreateSurvey");
-$server->addFunction("sInsertToken");
-$server->addFunction("sTokenReturn");
-$server->addFunction("sInsertParticipants");
-$server->addFunction("sImportGroup");
-$server->addFunction("sAvailableModules");
-$server->addFunction("sImportQuestion");
-$server->addFunction("sImportMatrix");
-$server->addFunction("sImportFreetext");
-$server->addFunction("sSendEmail");
-$server->addFunction("sGetFieldmap");
-// handle the soap request!
-$server->handle();
- 
+	//adds the functions to the SoapServer Object, 
+	//the sChangeSurvey function should be commented out for productive Use
+	//$server->addFunction("sChangeSurvey");
+	$server->addFunction("sDeleteSurvey");
+	$server->addFunction("sActivateSurvey");
+	$server->addFunction("sCreateSurvey");
+	$server->addFunction("sInsertToken");
+	$server->addFunction("sTokenReturn");
+	$server->addFunction("sInsertParticipants");
+	$server->addFunction("sImportGroup");
+	$server->addFunction("sAvailableModules");
+	$server->addFunction("sImportQuestion");
+	$server->addFunction("sImportMatrix");
+	$server->addFunction("sImportFreetext");
+	$server->addFunction("sSendEmail");
+	$server->addFunction("sGetFieldmap");
+	// handle the soap request!
+if($enableLsrc==true)
+{
+	$server->handle();
+}
 /**
  * 
  * Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing

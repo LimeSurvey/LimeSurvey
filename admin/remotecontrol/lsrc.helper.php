@@ -49,7 +49,7 @@ class LsrcHelper {
 		$lsrcHelper= new LsrcHelper();
 		if($lsrcHelper->surveyExists($iVid))
 		{
-			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=$iVid";
+			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=".sanitize_int($iVid)."";
 			$rs = db_execute_assoc($query2num);
 			return $rs->FetchRow();
 			
@@ -122,7 +122,7 @@ class LsrcHelper {
 	{
 		global $connect,$sitename ;
 //		global $dbprefix ;
-
+		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
 		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
@@ -599,12 +599,12 @@ class LsrcHelper {
 	function checkUser($sUser, $sPass) // XXX
 	{
 		global $connect ;
-//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		require($homedir."/classes/core/sha256.php"); 
 		
-		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name='".$sUser."' ";
+		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name='".sanitize_paranoid_string($sUser)."' ";
 		// echo $query;
 		$result = db_execute_assoc($query);
 		$gv = $result->FetchRow();

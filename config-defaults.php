@@ -421,6 +421,8 @@ $pdforientation = 'P';                     // Set L for Landscape or P for portr
 
 // This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
 $export4lsrc = false;
+// This value determines if the RemoteControl is enabled (true) or not (false)
+$enableLsrc = false;
 
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
