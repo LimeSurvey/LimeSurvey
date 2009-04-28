@@ -18,11 +18,12 @@ $wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='http://localhost/limesurvey';
+$limeUrl='http://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all
 $user ="admin";
 $pass ="password";
+
 //we don't like caching while testing, so we disable it
 ini_set("soap.wsdl_cache_enabled", 0);
 
@@ -168,14 +169,14 @@ if($file!=FALSE)
 	try
 	{	$mods = $client->sAvailableModules($user, "password", "mod");}
 	catch (SoapFault $fault)
-	{	$mods .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+	{	$mods .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }
 if($file!=FALSE)
 {
 	try
 	{	$cores = $client->sAvailableModules($user, "password", "core");}
 	catch (SoapFault $fault)
-	{	$cores .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+	{	$cores .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }
 
 $iVid = $_REQUEST['sid'];
@@ -353,6 +354,7 @@ while(list($key, $value) = each($_REQUEST))
 		$sVbes = $_REQUEST['sdes'];
 		$sVtit = $_REQUEST['stit'];
 		$sVwel = $_REQUEST['sVwel'];
+		$sVend = $_REQUEST['sVend'];
 		$sMail = $_REQUEST['sEmail'];
 		$sName = $_REQUEST['sName'];
 		$sUrl = $_REQUEST['sUrl'];
@@ -361,7 +363,7 @@ while(list($key, $value) = each($_REQUEST))
 
 		try
 		{
-			$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
+			$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
 		}
 		catch (SoapFault $fault)
 		{
@@ -505,6 +507,8 @@ Message is left blank):</b> <br />
 <input type='text' name='sdes' size='30' maxlength='150' /> <br />
 <b>Willkommenstext / Welcome Message:</b> <br />
 <textarea name='sVwel' cols='50' rows='3'></textarea> <br />
+<b>Endtext / endtext:</b> <br />
+<textarea name='sVend' cols='50' rows='3'></textarea> <br />
 <b>Admin Name:</b> <br />
 <input type='text' name='sName' size='30' maxlength='150' /> <br />
 <b>Admin Email:</b> <br />
