@@ -2352,7 +2352,7 @@ function doAssessment($surveyid)
                             {
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
-                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".$field['aid'];
+                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".db_quoteall($field['aid']);
                                 }
                                 else{
                                         $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
