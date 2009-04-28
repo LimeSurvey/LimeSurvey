@@ -114,6 +114,7 @@ switch ($fieldtype)
 {
 	case 'survey-desc':
 	case 'survey-welc':
+	case 'survey-endtext':
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
