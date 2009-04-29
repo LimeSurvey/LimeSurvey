@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.81!
+Welcome to LimeSurvey v1.82!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -72,31 +72,67 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.81+ (build 6654) to 1.81+ (build 6678) [2009/04/20] - Legend: + new feature, # update feature, - bug fix
+Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # update feature, - bug fix
 
-+New Feature: sGetFieldmap, gets the fieldmap from a survey as csv from the lsrc. (wahrendorff)
++New Feature: Invalid email list after upload from CSV or LDAP - patch by bdg (c_schmitz)
++New Feature: in remotecontrol (lsrc), sGetFieldmap, gets the fieldmap from a survey as csv from the lsrc. (wahrendorff)
++New Feature: Quota provides quick csv summary export (jcleeland)
++New Feature: Quota summary highlights unfinished quota entries (jcleeland)
++New Feature: Quotas now shows total completed (jcleeland)
++New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
++New language translation: Sinhalese translation by Janaka Padukka (c_schmitz)
+#Updated Language: Czech (macduy)
 #Updated Language: Hungarian - kindly provided by Miklós Kriván (c_schmitz)
 #Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
 #Updated language: German & German (informal) (c_schmitz)
-#updated database version to 134.    This version allows Microsoft Sql server to store utf8. (bobc55)
+#Updated language: German translation (c_schmitz)
+#Updated translation: Turkish by A. Murad BAYRAM (c_schmitz)
+#Updated remotecontrol (lsrc): #03060: sInsertParticipants, Token parameter added in order to provide a token to a dataset. If no token is provided, a unique one will be generated. (wahrendorff)
+#Updated remotecontrol (lsrc): sCreateSurvey, Parameter for the endtext added, be caucious when using this function and updating lsrc or Limesurvey. (wahrendorff)
+#Updated remotecontrol (lsrc): added Endtext to sCreateSurvey in testclient (wahrendorff)
+#Updated remotecontrol (lsrc):  improved docs, removed obsolete global $dbprefix (wahrendorff)
+#Updated remotecontrol (lsrc): survey templates (wahrendorff)
+#Updated Feature: issue #3006: Small change to make graphs more comprehensible - patch and idea by Ptigrouick (c_schmitz)
+#Updated Feature: "Filter incomplete answers", "enable"/"disable" has always been confusing for users (jcleeland)
+#Updated Feature: You can now choose to browse records, statistics or export using filter by incomplete records as well as complete records, or all records (jcleeland)
+-Fixed #2354: Database error with MSSQL when editing users with a non-super admin. (c_schmitz)
+-Fixed #3052: Notice at adding a user group (lemeur)
+-Fixed #3058: Only created 32768 tokens automatically - massive speedup for token generation - generates 50,000 tokens in 2 minutes now on a decent server (c_schmitz)
+-Fixed #3071: Setting slider minimum caused slider to break (c_schmitz)
+-Fixed issue #03078: possible security vulnerability in Lsrc fixed (wahrendorff)
+-Fixed issue : lsrc, wrong where condition for setting the endtext, (wahrendorff)
+-Fixed issue: lsrc, fixed misunderstanding of java dateobjects delivered to sActivateSurvey (wahrendorff)
+-Fixed issue #3053: User Statistics not displayed properly (wahrendorff)
+-Fixed issue: lsrc, sInsertParticipants now working like expected and documented (wahrendorff)
+-Fixed issue: lsrc, sInsertParticipants was not generating tokens after last changes. (wahrendorff)
+-Fixed LimeReplacementFields not working for the End-Message. (lemeur)
+-Fixed a bug where a survey admin could move a question to another group in an activated survey: this is not supported by LS1 (lemeur)
+-Fixed bug unquoted sql in assessments code see http://www.limesurvey.org/component/option,com_fireboard/Itemid,105/func,view/catid,1/id,26424/lang,en/ (jcleeland)
+-Fixed bug: spss requires period and new line after variable and before CACHE. command (jcleeland)
+-Fixed bug: {URL} replace was causing error message (jcleeland)
+-Fixed issue #2872: Survey overview page having no title (c_schmitz)
+-Fixed issue #3039: Many notices in token/assessments screen with Postgres DB (c_schmitz)
+-Fixed issue #3044: Slider_default does not display (lemeur)
+-Fixed issue #3065: No Answer condition won't work. (lemeur)
+-Fixed issue #37: List (Flexible Labels) (Dropdown) Other option was not saved (c_schmitz)
+-Fixed issue when trying to save after editing question on activated survey (c_schmitz)
+-Fixed issue where negative values for multi-fley question types weren't allowed (c_schmitz)
+-Fixed issue where survey URL did not appear when description being empty (c_schmitz)
+-Fixed issue with duplicated columns when browsing multiple Array Multi Flexible questions in results (c_schmitz)
+-Fixed issue with error when using multiple Multi-flexi text questions and printing answers by participiant (c_schmitz)
+-Fixed issue with fatal error on viewing a single repsonse when using multiple Array Multi Flexible questions (c_schmitz)
+-Fixed issue with standard end text not appearing when end text is empty (c_schmitz)
+-Fixed issue: Edited label set could not be saved in Postgres (c_schmitz)
+-Fixed issue: Import of question types was dumbed down due to version restriction (c_schmitz)
+-Fixed issue: Notices when exporting to CSV file (c_schmitz)
+-Fixed upload image not working for assessments. (lemeur)
+-Fixed Issue unknown: changed mysql_escape_string to db_quote... now hopefully working for all db types... (wahrendorff)
 -Fixed issue #2332: VVimport fails with MSSQL DB (c_schmitz)
 -Fixed issue #3025: On MS SQL Server editing template rights does not list any templates (c_schmitz)
 -Fixed issue #3042: Assessments don't work correctly with multiple choice questions (c_schmitz)
 -Fixed issue with MSSQL installation not creating admin user properly (c_schmitz)
 -Fixed issue with repeating headings aligned wrong on dual scale question (c_schmitz)
 -Fixed issue: Small change to the RemoteControl test client to ensure notices are not thrown (c_schmitz)
-
-Changes from 1.81 to 1.81+ (build 6654) [2009/04/16] - Legend: + new feature, # update feature, - bug fix
-
-+Added translation: Sinhalese translation by Janaka Padukka (c_schmitz)
-+New Feature: Quota provides quick csv summary export (jcleeland)
-+New Feature: Quota summary highlights unfinished quota entries (jcleeland)
-+New Feature: Quotas now shows total completed (jcleeland)
-+New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
-#Updated Feature: "Filter incomplete answers", "enable"/"disable" has always been confusing for users (jcleeland)
-#Updated Feature: You can now choose to browse records, statistics or export using filter by incomplete records as well as complete records, or all records (jcleeland)
-#Updated language: German translation (c_schmitz)
-#Updated translation: Turkish by A. Murad BAYRAM (c_schmitz)
 -Fixed issue #3035: Automatic loading of end URL does not work (c_schmitz)
 -Fixed Other-Comment field not displayed in the participant's print-answers window after submission when using a multiple choice question with comments and Other enabled (lemeur)
 -Fixed issue #3005: No < index in Conditionhandling (wahrendorff)
@@ -112,7 +148,6 @@ Changes from 1.81 to 1.81+ (build 6654) [2009/04/16] - Legend: + new feature, # 
 -Fixed issue with pg: wrong concat chars on upgrade (wahrendorff)
 -Fixed issue #3021 (SQL error at public statistics using MS SQL database) (maziminke)
 -Fixed: changed donation link to new general donation link: donate.limesurvey.org (el-matador-69)
-
 
 Changes from 1.80 to 1.81 [2009/04/10] - Legend: + new feature, # update feature, - bug fix
 
