@@ -3136,7 +3136,15 @@ if ($action == "newsurvey")
 			if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
 			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 		}
-
+        
+        //Use the current user details for the default administrator name and email for this survey
+        $query = "SELECT full_name, email FROM ".db_table_name('users')." WHERE users_name = ".db_quoteall($_SESSION['user']);
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+		$owner=$result->FetchRow();
+		//Degrade gracefully to $siteadmin details if anything is missing.
+		if(empty($owner['full_name'])) $owner['full_name']=$siteadminname;
+		if(empty($owner['email'])) $owner['email'] = $siteadminemail;
+        
 		$newsurvey .= "</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font>\n"
 		. "</span></div>\n";
 
@@ -3156,14 +3164,13 @@ if ($action == "newsurvey")
         . getEditor("survey-endtext","endtext", "[".$clang->gT("End message:", "js")."]",'','','',$action)
         . "</span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Administrator:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='admin' value='$siteadminname' /></span></div>\n"
+		. "<span class='settingentry'><input type='text' size='50' name='admin' value='".$owner['full_name']."' /></span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Admin Email:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='adminemail' value='$siteadminemail' /></span></div>\n"
+		. "<span class='settingentry'><input type='text' size='50' name='adminemail' value='".$owner['email']."' /></span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Bounce Email:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='bounce_email' value='$siteadminemail' /></span></div>\n";
+		. "<span class='settingentry'><input type='text' size='50' name='bounce_email' value='".$owner['email']."' /></span></div>\n";
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Fax To:")."</span>\n"
 		. "<span class='settingentry'><input type='text' size='50' name='faxto' /></span></div>\n";
-
 
 		// End General TAB
 		// Create Survey Button 
