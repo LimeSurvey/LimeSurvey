@@ -367,7 +367,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
 		if($autoRd=='Y')
 			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
 		if($sVend!='')
-			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "sid='$iVid'");
+			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iVid'");
 			
 		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
@@ -506,7 +506,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
  * @param $sParticipantData
  * @return unknown_type
  */
-function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData, $sToken='') 
+function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -593,25 +593,18 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData, $sToken='
 		{
 			$asDatafield = explode($sDatafieldSeperator, $sData);
 			
-			// if no token is set, generate a unique one
-			if($sToken=='')
+			$checkCnt=1;
+			while($checkCnt>0)
 			{
-				$checkCnt=1;
-				while($checkCnt>0)
-				{
-					$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
-					$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
-					$result = db_execute_assoc($cQuery);
-					$checkCnt = $result->RecordCount();
-				}
-			}
-			else
-			{
-				$value = $sToken;
+				$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
+				$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
+				$result = db_execute_assoc($cQuery);
+				$checkCnt = $result->RecordCount();
 			}
 			
+			
 			$iDataLength = count($asDatafield);
-			for($n=0;$n>=$iDataLength;++$n)
+			for($n=0;$n>=5;++$n)
 			{
 				if($asDatafield[$n]==''){$asDatafield[$n]=null;}
 			}
@@ -619,7 +612,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData, $sToken='
 					."(firstname,lastname,email,emailstatus,token,"
 					."language,sent,completed,attribute_1,attribute_2,mpid)"
 					."VALUES ('".utf8_decode($asDatafield[0])."' , 
-					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , NULL , '".$value."',
+					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , NULL , '".utf8_decode($asDatafield[5])."',
 					'".$_SESSION['lang']."', 'N', 'N', '".utf8_decode($asDatafield[3])."' , '".utf8_decode($asDatafield[4])."' , NULL); ";
 				
 			$connect->Execute($sInsertParti);	
