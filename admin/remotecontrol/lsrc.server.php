@@ -498,7 +498,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 } //end of function sInsertToken  
 
 /**
- * 
+ * TODO: redo better... maybe some other function for compatibility
  * Function to insert Participants data while auto creating tokens for everyone...
  * @param $sUser
  * @param $sPass
@@ -587,13 +587,14 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 	// write the tokens to the token_table
 	$iCountParticipants =  count($asDataset);
 	$iInsertedParticipants=0;
+	
 	foreach($asDataset as $sData)
 	{
 		if($sData!='')
 		{
-			$asDatafield = explode($sDatafieldSeperator, $sData);
-			
+			$asDatafield = explode($sDatafieldSeperator, $sData);			
 			$checkCnt=1;
+			// token generieren
 			while($checkCnt>0)
 			{
 				$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
@@ -601,15 +602,15 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 				$result = db_execute_assoc($cQuery);
 				$checkCnt = $result->RecordCount();
 			}
-			
+			if(!isset($asDatafield[5]) || $asDatafield[5]=='')
+			{
+				$asDatafield[5]= $value;
+			}
 			
 			$iDataLength = count($asDatafield);
-			for($n=0;$n>=5;++$n)
+			for($n=0;$n>=$iDataLength;++$n)
 			{
-				if($asDatafield[5]=='')
-				{
-					$asDatafield[5]= $value;
-				}
+				
 				if($asDatafield[$n]=='')
 				{
 					$asDatafield[$n]=null;
@@ -618,9 +619,9 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid 
 					."(firstname,lastname,email,emailstatus,token,"
 					."language,sent,completed,attribute_1,attribute_2,mpid)"
-					."VALUES ('".utf8_decode($asDatafield[0])."' , 
-					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , 'OK' , '".utf8_decode($asDatafield[5])."',
-					'".$_SESSION['lang']."', 'N', 'N', '".utf8_decode($asDatafield[3])."' , '".utf8_decode($asDatafield[4])."' , NULL); ";
+					."VALUES ('".$asDatafield[0]."' , 
+					'".$asDatafield[1]."' , '".$asDatafield[2]."' , 'OK' , '".$asDatafield[5]."',
+					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
 				
 			$connect->Execute($sInsertParti);	
 			++$iInsertedParticipants;
