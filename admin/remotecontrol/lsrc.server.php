@@ -55,8 +55,11 @@ else{
 	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1));
 }
 
-	//adds the functions to the SoapServer Object, 
-	//the sChangeSurvey function should be commented out for productive Use
+	/**
+	 * adds the functions to the SoapServer Object, 
+	 * 
+	 * the sChangeSurvey function should be commented out for productive Use 
+	 */
 	//$server->addFunction("sChangeSurvey");
 	$server->addFunction("sDeleteSurvey");
 	$server->addFunction("sActivateSurvey");
@@ -277,13 +280,13 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 		exit;
 	}
 	
-	if($dStart!='' && $dStart!='1980-01-01')
+	if($dStart!='' && substr($dStart,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
 		$lsrcHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
-	if($dEnd!='' && $dEnd!='1980-01-01')
+	if($dEnd!='' && substr($dEnd,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
 		$lsrcHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
