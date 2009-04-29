@@ -280,7 +280,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	."</form>\n";
     foreach ($assessmentlangs as $assessmentlang)   
     {
-        $assessmentsoutput.=getEditor("question-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
+        $assessmentsoutput.=getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
     }
     
 	}

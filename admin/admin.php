@@ -395,6 +395,13 @@ elseif ($action == 'replacementfields')
 				include('access_denied.php');
 			}
 		break;
+		case 'assessments':
+			if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
+				$_SESSION['FileManagerContext']="edit:assessments:$surveyid";
+				include('fck_LimeReplacementFields.php');
+			}
+			else { include('access_denied.php');}    
+		break;
 		default:
 		break;
 	}

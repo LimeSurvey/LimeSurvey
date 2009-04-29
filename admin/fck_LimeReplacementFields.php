@@ -161,6 +161,9 @@ switch ($fieldtype)
 	case 'editanswer':
 		$isInstertansEnabled=true;
 	break;
+	case 'assessment-text':
+		$replFields[]=array('TOTAL',$clang->gT("Total score for this assessment rule"));
+	break;
 }
 
 
