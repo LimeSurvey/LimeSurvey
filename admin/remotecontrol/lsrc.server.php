@@ -606,13 +606,20 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 			$iDataLength = count($asDatafield);
 			for($n=0;$n>=5;++$n)
 			{
-				if($asDatafield[$n]==''){$asDatafield[$n]=null;}
+				if($asDatafield[5]=='')
+				{
+					$asDatafield[5]= $value;
+				}
+				if($asDatafield[$n]=='')
+				{
+					$asDatafield[$n]=null;
+				}
 			}
 			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid 
 					."(firstname,lastname,email,emailstatus,token,"
 					."language,sent,completed,attribute_1,attribute_2,mpid)"
 					."VALUES ('".utf8_decode($asDatafield[0])."' , 
-					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , NULL , '".utf8_decode($asDatafield[5])."',
+					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , 'OK' , '".utf8_decode($asDatafield[5])."',
 					'".$_SESSION['lang']."', 'N', 'N', '".utf8_decode($asDatafield[3])."' , '".utf8_decode($asDatafield[4])."' , NULL); ";
 				
 			$connect->Execute($sInsertParti);	
