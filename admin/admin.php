@@ -18,11 +18,11 @@
 require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
 // XML code for LS1.70 is based on the experimental PHP4 domxml
-// extension. PHP5 uses the PHP5/dom extension.
+// extension. PHP5 uses the PHP5/dom extension unless the old domxml is activated
 // the following file is a wrapper to use PHP4/domxml scripts 
 // with PHP5/dom or PHP6/dom
 // see http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/index.en.html#licence
-if (version_compare(PHP_VERSION,'5','>='))
+if (version_compare(PHP_VERSION,'5','>=')&& !(function_exists('domxml_new_doc')))
 {
     require_once(dirname(__FILE__).'/classes/core/domxml-php4-to-php5.php');
 }
