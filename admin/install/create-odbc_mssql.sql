@@ -45,7 +45,7 @@ CREATE TABLE [prefix_quota_members] (
 CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
-  [answer] varchar(255) NOT NULL,
+  [answer] varchar(8000) NOT NULL,
   [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
   [assessment_value] INT NOT NULL default '0',

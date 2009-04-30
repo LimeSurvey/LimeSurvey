@@ -291,6 +291,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     {
         mssql_drop_constraint('value','question_attributes');        
         modify_database("","ALTER TABLE [prefix_question_attributes] ALTER COLUMN [value] text"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE [prefix_answers] ALTER COLUMN [answer] varchar(8000)"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }
     if ($oldversion < 136) //New quota functions
