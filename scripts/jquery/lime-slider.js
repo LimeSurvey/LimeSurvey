@@ -24,7 +24,7 @@ $(document).ready(function(){
 		//sliderparams['animate'] = true;
 		if (slider_startvalue != 'NULL')
 		{
-			sliderparams['value']= slider_startvalue;
+			sliderparams['value']= slider_startvalue*1;
 		}
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
@@ -51,7 +51,7 @@ $(document).ready(function(){
 		
 		if (slider_startvalue != 'NULL')
 		{
-				var thevalue = $('#slider-'+basename).slider('value') / slider_divisor;
+				var thevalue = slider_startvalue / slider_divisor;
 				$('#slider-callout-'+basename).css('left', $('#slider-handle-'+basename).css('left')).text(slider_prefix + thevalue + slider_suffix);
 		}
 	})
