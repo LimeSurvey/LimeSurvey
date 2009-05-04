@@ -276,6 +276,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
     {
         // Add new tokens setting
         modify_database("","ALTER TABLE `prefix_surveys` ADD `usetokens` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` ADD `attributedescriptions` TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `attribute1`"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `attribute2`"); echo $modifyoutput; flush();
         

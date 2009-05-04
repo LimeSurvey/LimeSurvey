@@ -109,6 +109,7 @@ global $modifyoutput;
     if ($oldversion < 134)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD usetokens char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
@@ -131,7 +132,7 @@ global $modifyoutput;
   						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
 	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
   	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
-        modify_database("","update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
     

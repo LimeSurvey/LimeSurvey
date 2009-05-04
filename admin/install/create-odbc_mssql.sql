@@ -248,6 +248,8 @@ CREATE TABLE [prefix_surveys] (
   [usecaptcha] char(1) default 'N',
   [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
+  [attributedescriptions] text,
+  
   PRIMARY KEY  ([sid])
 ) 
 ;

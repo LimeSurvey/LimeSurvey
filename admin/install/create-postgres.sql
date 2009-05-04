@@ -260,8 +260,8 @@ CREATE TABLE prefix_surveys (
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
     usetokens character(1) DEFAULT 'N'::bpchar,
-    "bounce_email" character varying(320) NOT NULL
-    
+    "bounce_email" character varying(320) NOT NULL,
+    attributedescriptions text
 );
 
 

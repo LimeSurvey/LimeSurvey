@@ -203,11 +203,8 @@ if (!isset($surveyid) || !$surveyid)
 }
 
 // MAKE SURE THAT THE SURVEY EXISTS
-$chquery = "SELECT * FROM ".db_table_name('surveys')." as a inner join ".db_table_name('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=$surveyid";
-
-$chresult=db_execute_assoc($chquery);
-$chcount=$chresult->RecordCount();
-if (!$chcount)
+$thissurvey=getSurveyInfo($surveyid);
+if ($thissurvey===false)
 {
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
 	.$clang->gT("Token control").":</strong></font></td></tr>\n"
@@ -219,15 +216,14 @@ if (!$chcount)
 	."</body>\n</html>";
 	return;
 }
-// A survey DOES exist
-while ($chrow = $chresult->FetchRow())
-{
-	$tokenoutput .= "\t<div class='menubar'>"
-    ."<div class='menubar-title'>"
-	."<strong>".$clang->gT("Token control").":</strong> "
-	.htmlspecialchars($chrow['surveyls_title'])."</div>\n";
-	$surveyprivate = $chrow['private'];
-}
+    else        // A survey DOES exist         
+    {
+	    $tokenoutput .= "\t<div class='menubar'>"
+        ."<div class='menubar-title'>"
+	    ."<strong>".$clang->gT("Token control").":</strong> "
+	    .htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
+	    $surveyprivate = $thissurvey['private'];
+    }
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 $tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
@@ -428,9 +424,9 @@ if ($sumrows5['edit_survey_property'] ||
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Add new token entry", "js")."');return false\">" .
 	"<img name='AddNewButton' src='$imagefiles/add.png' title='' alt='' /></a>\n"
 	."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnewattribute', '_top')\" onmouseout=\"hideTooltip()\"" .
-    "onmouseover=\"showTooltip(event,'".$clang->gT("Add new attribute field", "js")."');return false\">" .
-    "<img name='AddNewButton' src='$imagefiles/add.png' title='' alt='' /></a>\n"
+    ."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" onmouseout=\"hideTooltip()\"" .
+    "onmouseover=\"showTooltip(event,'".$clang->gT("Manage additional attribute fields", "js")."');return false\">" .
+    "<img name='ManageAttributesButton' src='$imagefiles/token_manage.png' title='' alt='' /></a>\n"
     ."\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" onmouseout=\"hideTooltip()\" ".
 	"onmouseover=\"showTooltip(event,'".$clang->gT("Import tokens from CSV file", "js")."');return false\"> <img name='ImportButton' src='$imagefiles/importcsv.png' title='' alt='' /></a>"
@@ -844,13 +840,13 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n";
     
-    $attrfieldnames=GetAttributeFieldnames($surveyid);
-    foreach ($attrfieldnames as $attr_name)
+    $attrfieldnames=GetTokenFieldsAndNames($surveyid);
+    foreach ($attrfieldnames as $attr_name=>$attr_translation)
     {
         $tokenoutput .= "\t\t<th align='left' >"
         ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=$attr_name&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
         ."<img src='$imagefiles/downarrow.png' alt='' title='"
-        .$clang->gT("Sort by: ").sprintf($clang->gT("Attribute %s"),substr($attr_name,10))."' border='0' align='left' /></a>".sprintf($clang->gT("Attribute %s"),substr($attr_name,10))."</th>\n";
+        .$clang->gT("Sort by: ").$attr_translation."' border='0' align='left' /></a>".$attr_translation."</th>\n";
     }
 	$tokenoutput .="\t</tr>\n";
 
@@ -1635,23 +1631,83 @@ if ($subaction == "delete" &&
 	."\t</td></tr></table>\n";
 }
 
-if ($subaction == "addnewattribute" && 
+if ($subaction == "managetokenattributes" && 
     ($sumrows5['edit_survey_property'] || 
         $sumrows5['activate_survey'] ||
         $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-    $tokenfieldnames=GetAttributeFieldnames($surveyid);
-    $nrofattributes=count($tokenfieldnames);
+    $tokenoutput .= "</table><table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+    . "\t\t".$clang->gT("Manage token attribute fields")."</td></tr></table>\n";
+    $tokenfields=GetTokenFieldsAndNames($surveyid,true);
+    $nrofattributes=0;
+    $tokenoutput.='<form action="'.$scriptname.'" method="post">'
+                 ."<table><tr><th>Attribute field</th><th>Field description</th><th>Example Data</th></tr>";
+
+    $exampledataquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+    $exampledata = db_select_limit_assoc($exampledataquery,1) or safe_die ("Could not get example data!<br />$exampledataquery<br />".$connect->ErrorMsg());
+    $examplerow = $exampledata->FetchRow();
+
+    
+    foreach ($tokenfields as $tokenfield=>$tokendescription)
+    {
+            $nrofattributes++;  
+            $tokenoutput.="<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription)."' /></td><td>";
+            if ($examplerow!==false)
+            {
+                $tokenoutput.=htmlspecialchars($examplerow[$tokenfield]);
+            }
+            else
+            {
+                $tokenoutput.=$clang->gT('<no data>');
+            }
+            $tokenoutput.="</td></tr>";
+    }
+    $tokenoutput.="</table><br />"
+    .'<input type="submit" value="'.$clang->gT('Save attribute descriptions').'" />'
+    ."<input type='hidden' name='action' value='tokens' />\n"
+    ."<input type='hidden' name='subaction' value='updatetokenattributedescriptions' />\n"
+    ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"    
+    .'</form><br /><br />';
+
+    $tokenoutput .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
+    . "\t\t".$clang->gT("Add token attributes")."</td></tr></table>\n";
+        
     $tokenoutput .=sprintf($clang->gT('There are %s user attribute fields in this token table'),$nrofattributes).'<br />'
     .'<form action="'.$scriptname.'" method="post">'
-    .'<label for="addnumber">'.$clang->gT('Please enter the number of user attribute fields you want to add:')
-    .'<input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1"><br /><br />'
-    .'<input type="submit" value="'.$clang->gT('Add fields').'">'
+    .'<label for="addnumber">'.$clang->gT('Please enter the number of user attribute fields you want to add:').'</label>'
+    .'<input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" /><br /><br />'
+    .'<input type="submit" value="'.$clang->gT('Add fields').'" />'
     ."<input type='hidden' name='action' value='tokens' />\n"
     ."<input type='hidden' name='subaction' value='updatetokenattributes' />\n"
     ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"    
-    .'</form>';
+    .'</form></table>';
+}
+
+
+if ($subaction == "updatetokenattributedescriptions" && 
+    ($sumrows5['edit_survey_property'] || 
+        $sumrows5['activate_survey'] ||
+        $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+   )
+{
+   // find out the existing token attribute fieldnames
+   $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
+   $fieldcontents='';
+   foreach ($tokenattributefieldnames as $fieldname)
+   {
+       $fieldcontents.=$fieldname.'='.strip_tags($_POST['description_'.$fieldname])."\n";
+   }
+   $updatequery = "update ".db_table_name('surveys').' set attributedescriptions='.db_quoteall($fieldcontents,true)." where sid=$surveyid";
+   $execresult=db_execute_assoc($updatequery);
+    if ($execresult===false)
+    {
+        $tokenoutput.='Updating token descriptions failed:'.htmlspecialchars($connect->ErrorMsg());
+    }
+    else
+    {
+        $tokenoutput.=$clang->gT('Token descriptions were successfully updated.');
+    }   
 }
 
 
@@ -1686,7 +1742,6 @@ if ($subaction == "updatetokenattributes" &&
         $tokenoutput.=sprintf($clang->gT('%s fields were successfully added.'),$number2add);
     }
 }
-
 
 
 if (($subaction == "edit" || $subaction == "addnew") && 

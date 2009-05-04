@@ -1369,7 +1369,7 @@ if ($subaction=='' ||
 					if ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)                   
 					{
 						$leftOperandType = 'tokenattr';
-						$aTokenAttrNames=GetAttributeNames($surveyid);
+						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
 							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
@@ -1442,7 +1442,7 @@ if ($subaction=='' ||
 					elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
 					{
 						$rightOperandType = 'tokenAttr';
-						$aTokenAttrNames=GetAttributeNames($surveyid);
+						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
 							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
@@ -1779,7 +1779,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// Source token Tab
 	$conditionsoutput .= "\t\t\t\t<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
-	foreach (GetAttributeNames($surveyid) as $tokenattr => $tokenattrName)
+	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
 		// Check to select
 		if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
@@ -1866,7 +1866,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	// tokenAttr Tab
 
 	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
-	foreach (GetAttributeNames($surveyid) as $tokenattr => $tokenattrName)
+	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
 		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
 	}

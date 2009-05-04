@@ -283,6 +283,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usetokens] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         mssql_drop_constraint('attribute1','surveys');        
         mssql_drop_constraint('attribute2','surveys');        
+        modify_database("", "ALTER TABLE [prefix_surveys] ADD [attributedescriptions] TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute1]"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute2]"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
@@ -306,7 +307,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
   							[quotals_url] varchar(255),
   							[quotals_urldescrip] varchar(255),
   							PRIMARY KEY ([quotals_id])
-							);");echo $modifyoutput; flush();        
+							);");echo $modifyoutput; flush(); 
         modify_database("","update [prefix_settings_global] set [stg_value]='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
     return true;

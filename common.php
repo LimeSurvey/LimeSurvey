@@ -1523,7 +1523,8 @@ function gettemplatelist()
 * Gets all survey infos in one big array including the language specific settings
 * 
 * @param string $surveyid  The survey ID
-* @param string $languagecode The language code - if not give the base language of the particular survey is used
+* @param string $languagecode The language code - if not given the base language of the particular survey is used
+* @return array Returns array with survey info or false, if survey does not exist
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
@@ -1541,7 +1542,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 	while ($row=$result->FetchRow())
 	{
         $thissurvey=$row;
-        // now create some stupid array translations
+        // now create some stupid array translations - needed for backward compatibility
         // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
         $thissurvey["name"]=$thissurvey['surveyls_title'];
         $thissurvey["description"]=$thissurvey['surveyls_description'];
@@ -6210,31 +6211,53 @@ function GetTokenConditionsFieldNames($surveyid)
 * @param mixed $surveyid  The survey ID
 * @return array The fieldnames as key and names as value in an Array
 */
-function GetAttributeNames($surveyid)
+function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
-    global $dbprefix, $connect;
+    global $dbprefix, $connect, $clang;
     if (tokenTableExists(null,$surveyid) === false)
     {
 	return Array();
     }
-    $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
-    $extra_attrs=array_filter($tokenfieldnames,'filterforattributes');
+    $extra_attrs=GetAttributeFieldNames($surveyid);
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
     $basic_attrs_names=Array(
-			'First Name',
-			'Last Name',
-			'Email address',
-			'Token code',
-			'Language code',
-			'Invitation sent date',
-			'Last Reminder sent date',
-			'Total numbers of sent reminders');
+			$clang->gT('First Name'),
+			$clang->gT('Last Name'),
+			$clang->gT('Email address'),
+			$clang->gT('Token code'),
+			$clang->gT('Language code'),
+			$clang->gT('Invitation sent date'),
+			$clang->gT('Last Reminder sent date'),
+			$clang->gT('Total numbers of sent reminders'));
 
-    $extra_attrs_names=$extra_attrs; // To be updated
-
-    $extra_attrs_and_names=array_combine($extra_attrs,$extra_attrs_names);
-    $basic_attrs_and_names=array_combine($basic_attrs,$basic_attrs_names);
-    return array_merge($basic_attrs_and_names,$extra_attrs_and_names);
+    $thissurvey=getSurveyInfo($surveyid);               
+    $attdescriptiondata=$thissurvey['attributedescriptions'];
+    $attdescriptiondata=explode("\n",$attdescriptiondata);
+    $attributedescriptions=array(); $basic_attrs_and_names=array();
+    foreach ($attdescriptiondata as $attdescription)
+    {
+        $attributedescriptions['attribute_'.substr($attdescription,10,strpos($attdescription,'=')-10)] = substr($attdescription,strpos($attdescription,'=')+1);
+    }
+    foreach ($extra_attrs as $fieldname)
+    {
+        if (isset($attributedescriptions[$fieldname]))
+        {
+            $extra_attrs_and_names[$fieldname]=$attributedescriptions[$fieldname];
+        }
+        else
+        {
+            $extra_attrs_and_names[$fieldname]=sprintf($clang->gT('Attribute %s'),substr($fieldname,10));
+        }
+    }
+    if ($onlyAttributes===false)
+    {
+        $basic_attrs_and_names=array_combine($basic_attrs,$basic_attrs_names);
+        return array_merge($basic_attrs_and_names,$extra_attrs_and_names);
+    }
+    else
+    {
+        return $extra_attrs_and_names;
+    }
 }
 
 /**
