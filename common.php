@@ -5265,22 +5265,12 @@ function retrieve_Answer($code)
 /**
 * Check if token table odes exist
 * 
-* @param mixed $thesurvey
-* @param mixed $sid
-* @return true if thesurvey has a token table defined       
+* @param mixed $sid  The survey id to check
+* @return boolean true if thesurvey has a token table defined       
 */
-function tokenTableExists($thesurvey, $sid=null)
+function tokenTableExists($surveyid)
 {
 	global $connect;
-	if (is_array($thesurvey))
-	{
-		$surveyid = $thesurvey['sid'];
-	}
-	elseif (!is_null($sid))
-	{
-		$surveyid = $sid;
-	}
-
 	$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
 	foreach ($tablelist as $tbl)
 	{
@@ -5298,8 +5288,7 @@ function tokenTableExists($thesurvey, $sid=null)
 // Returns true otherwise
 function bIsTokenCompletedDatestamped($thesurvey)
 {
-	if ($thesurvey['private'] == 'Y' &&
-		tokenTableExists($thesurvey) )
+	if ($thesurvey['private'] == 'Y' &&  tokenTableExists($thesurvey['sid']))
 	{
 		return false;
 	}
@@ -6188,6 +6177,10 @@ function filterforattributes ($fieldname)
 function GetAttributeFieldNames($surveyid)
 {
     global $dbprefix, $connect;
+    if (tokenTableExists($surveyid) === false)
+    {
+    return Array();
+    }    
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
     return array_filter($tokenfieldnames,'filterforattributes');
 }
@@ -6214,7 +6207,7 @@ function GetTokenConditionsFieldNames($surveyid)
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
     global $dbprefix, $connect, $clang;
-    if (tokenTableExists(null,$surveyid) === false)
+    if (tokenTableExists($surveyid) === false)
     {
 	return Array();
     }

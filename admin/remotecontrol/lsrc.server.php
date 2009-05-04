@@ -530,8 +530,8 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
-		. "attribute_1 C(100) ,\n"
-		. "attribute_2 C(100) ,\n"
+		. "attribute_1 C(255) ,\n"
+		. "attribute_2 C(255) ,\n"
 		. "mpid I ";
 		
 		$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)

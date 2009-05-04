@@ -117,8 +117,11 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-		$replFields[]=array('TOKEN:ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
-		$replFields[]=array('TOKEN:ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+        $attributes=GetTokenFieldsAndNames($surveyid);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
 		$replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
 		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
 		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
@@ -136,8 +139,11 @@ switch ($fieldtype)
 		$replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
 		$replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
-		$replFields[]=array('ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
-		$replFields[]=array('ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+        $attributes=GetTokenFieldsAndNames($surveyid);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
 		$replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
 		$replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
 		$replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
@@ -152,8 +158,11 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-		$replFields[]=array('TOKEN:ATTRIBUTE_1',$clang->gT("Attribute_1 from token"));
-		$replFields[]=array('TOKEN:ATTRIBUTE_2',$clang->gT("Attribute_2 from token"));
+        $attributes=GetTokenFieldsAndNames($surveyid);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
 		$replFields[]=array('EXPIRY',$clang->gT("Survey expiration date (YYYY-MM-DD)"));
 		$replFields[]=array('EXPIRY-DMY',$clang->gT("Survey expiration date (DD-MM-YYYY)"));
 		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));

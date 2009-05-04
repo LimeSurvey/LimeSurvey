@@ -395,11 +395,11 @@ if (!$exportstyle)
 			."<input type='checkbox' class='checkboxbtn' name='token' id='token'>"
 			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
 
-            $attrfieldnames=GetAttributeFieldnames($surveyid);
-            foreach ($attrfieldnames as $attr_name)
+            $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+            foreach ($attrfieldnames as $attr_name=>$attr_desc)
             {
 				$exportoutput .= "<input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
-				."<label for='$attr_name'>".sprintf($clang->gT("Attribute %s"),substr($attr_name,10))."</label><br />\n";
+				."<label for='$attr_name'>".$attr_desc."</label><br />\n";
 			}
 			$exportoutput .= "\t\t</font></font></td>\n"
 			."\t</tr>\n"
@@ -413,7 +413,21 @@ if (!$exportstyle)
 	return;
 }
 
-//HERE WE EXPORT THE ACTUAL RESULTS
+
+
+
+
+// ======================================================================
+// Actual export routines start here !
+// ======================================================================
+
+$tokenTableExists=tokenTableExists($surveyid);
+
+if ($tokenTableExists)
+{
+    $attributeFieldAndNames=GetTokenFieldsAndNames($surveyid);
+    $attributeFields=array_keys($attributeFieldAndNames);
+}
 
 //sendcacheheaders();             // sending "cache headers" before this permit us to send something else than a "text/html" content-type
 switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
@@ -539,15 +553,14 @@ if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 	$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 }
 
-if (tokenTableExists(null,$surveyid))
+if ($tokenTableExists)
 {
     if (isset($_POST['token']) && $_POST['token']=="on")
     {
         $dquery .= ", {$dbprefix}tokens_$surveyid.token";
     }
 
-    $attrfieldnames=GetAttributeFieldnames($surveyid);
-    foreach ($attrfieldnames as $attr_name)
+    foreach ($attributeFields as $attr_name)
     {
         if (isset($_POST[$attr_name]) && $_POST[$attr_name]=="on")
         {
@@ -557,7 +570,7 @@ if (tokenTableExists(null,$surveyid))
 }
 $dquery .= " FROM $surveytable";
 
-if (tokenTableExists(null,$surveyid))
+if ($tokenTableExists)
 {
     $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
               ." ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
@@ -601,10 +614,10 @@ for ($i=0; $i<$fieldcount; $i++)
 		if ($type == "csv") {$firstline .= "\"".$elang->gT("Token")."\"$separator";}
 		else {$firstline .= $elang->gT("Token")."$separator";}
 	}
-	elseif (strpos($fieldinfo,"attribute_")!==false)
+	elseif (substr($fieldinfo,0,10)=="attribute_")
 	{
-		if ($type == "csv") {$firstline .= "\"$fieldinfo\"$separator";}
-		else {$firstline .= sprintf($elang->gT("Attribute %s"),substr($fieldinfo,10));}
+		if ($type == "csv") {$firstline .= CSVEscape($fieldinfo)."$separator";}
+		else {$firstline .= $attributeFieldAndNames[$fieldinfo]."$separator";}
 	}
 	elseif ($fieldinfo == "id")
 	{
@@ -869,10 +882,10 @@ else
 //is the number of records not the ending point
 $from_record = sanitize_int($_POST['export_from']) - 1;
 $limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['export_from']) + 1;
-
+$attributefieldAndNames=array();
 
 //Now dump the data
-if (tokenTableExists(null,$surveyid))
+if ($tokenTableExists)
 {
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
@@ -887,18 +900,17 @@ if (tokenTableExists(null,$surveyid))
 	{
 		$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 	}
-	if (isset($_POST['token']) && $_POST['token']=="on")
-	{
-		$dquery .= ", {$dbprefix}tokens_$surveyid.token";
-	}
-	if (isset($_POST['attribute_1']) && $_POST['attribute_1']=="on")
-	{
-		$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_1";
-	}
-	if (isset($_POST['attribute_2']) && $_POST['attribute_2']=="on")
-	{
-		$dquery .= ", {$dbprefix}tokens_$surveyid.attribute_2";
-	}
+    if (isset($_POST['token']) && $_POST['token']=="on")
+    {
+        $dquery .= ", {$dbprefix}tokens_$surveyid.token";
+    }
+    foreach ($attributeFields as $attributefield)
+    {
+        if (isset($_POST[$attributefield]) && $_POST[$attributefield]=="on")
+        {
+            $dquery .= ", {$dbprefix}tokens_$surveyid.$attributefield";
+        }
+    }
 	$dquery	.= " FROM $surveytable "
 	. "LEFT OUTER JOIN {$dbprefix}tokens_$surveyid "
 	. "ON $surveytable.token={$dbprefix}tokens_$surveyid.token ";
@@ -1008,9 +1020,9 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
 		    }
 	}
 }
-elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
+elseif ($answers == "long")        //chose complete answers
 {
-//	echo $dquery;
+
     $labelscache=array();
 	//$dresult = db_execute_num($dquery) or safe_die("ERROR: $dquery -".$connect->ErrorMsg());
 	$dresult = db_select_limit_num($dquery, $limit_interval, $from_record);
@@ -1039,7 +1051,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
 			$fqid=0;            // By default fqid is set to zero 
             $field=$dresult->FetchField($i);
 			$fieldinfo=$field->name;
-            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && $fieldinfo != "attribute_1" && $fieldinfo != "attribute_2" && $fieldinfo != "completed")
+            if ($fieldinfo != "startlanguage" && $fieldinfo != "id" && $fieldinfo != "datestamp" && $fieldinfo != "startdate" && $fieldinfo != "ipaddr"  && $fieldinfo != "refurl" && $fieldinfo != "token" && $fieldinfo != "firstname" && $fieldinfo != "lastname" && $fieldinfo != "email" && (substr($fieldinfo,0,10)!="attribute_") && $fieldinfo != "completed")
 			{
 //				$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
                 $fielddata=$outmap[$fieldinfo];
@@ -1097,19 +1109,19 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
                         case "tid":
                         $ftitle=$elang->gT("Token ID").":";
                         break;
-						case "attribute_1":
-						$ftitle=$elang->gT("Attribute 1").":";
-						break;
-						case "attribute_2":
-						$ftitle=$elang->gT("Attribute 2").":";
-						break;
 						case "startlanguage":
 						$ftitle=$elang->gT("Language").":";
 						break;
 						default:
-                        $fielddata=$outmap[$fieldinfo];  
-//						$fielddata=arraySearchByKey($fieldinfo, $fieldmap, "fieldname", 1);
-						if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";} 
+                        if (substr($fieldinfo,0,10)=='attribute_')
+                        {
+                           $ftitle=$attributeFieldAndNames[$fieldinfo]; 
+                        }
+                        else
+                        {
+                            $fielddata=$outmap[$fieldinfo];  
+                            if (isset($fielddata['title']) && !isset($ftitle)) {$ftitle=$fielddata['title'].":";}                             
+                        }
 					} // switch
 				}
 			}
@@ -1122,7 +1134,7 @@ elseif ($answers == "long")        //vollst�ndige Antworten gew�hlt
             if ($type == "pdf"){ $pdf->intopdf($ftitle);}
 			switch ($ftype)
 			{
-				case "-": //JASONS SPECIAL TYPE
+				case "-": //SPECIAL Placeholder TYPE
 				$exportoutput .= $drow[$i];
                 if($type == "pdf"){$pdf->intopdf($drow[$i]);}
 				break;

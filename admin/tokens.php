@@ -226,8 +226,8 @@ if ($thissurvey===false)
     }
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-$tkquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-if (!$tkresult = $connect->Execute($tkquery)) //If the query fails, assume no tokens table exists
+$tokenexists=tokenTableExists($surveyid);
+if (!$tokenexists) //If no tokens table exists
 {
 	if (isset($_POST['createtable']) && $_POST['createtable']=="Y" && 
 		($sumrows5['edit_survey_property'] || 
@@ -469,9 +469,13 @@ $tokenoutput .="\t\t\t</div><div class='menubar-right'><a href=\"#\" onclick=\"s
 $tokenoutput .= "\t</div></div></div></td></tr>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
-$tkcount = $tkresult->RecordCount();
-	$tokenoutput .= "\t<tr>\n"
-	."\t\t<td align='center'>\n";
+$tksq = "SELECT count(tid) FROM ".db_table_name("tokens_$surveyid");
+$tksr = db_execute_num($tksq);
+$tkr = $tksr->FetchRow();
+$tkcount = $tkr[0];
+
+$tokenoutput .= "\t<tr>\n"
+."\t\t<td align='center'>\n";
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
 if ($subaction==''){
@@ -757,7 +761,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t\t\t\t</form>\n"
 	."\t\t</td>\n"
-	."\t\t<td align='right'><form action='$homeurl/admin.php'>\n"
+	."\t\t<td align='left'><form action='$homeurl/admin.php'>\n"
 	."\t\t<font size='1' face='verdana'>"
 	."&nbsp;".$clang->gT("Records displayed:")."<input type='text' size='4' value='$limit' name='limit' />"
 	."&nbsp;".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' />"
@@ -840,7 +844,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n";
     
-    $attrfieldnames=GetTokenFieldsAndNames($surveyid);
+    $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
     foreach ($attrfieldnames as $attr_name=>$attr_translation)
     {
         $tokenoutput .= "\t\t<th align='left' >"
@@ -900,25 +904,10 @@ if ($subaction == "browse" || $subaction == "search")
                     // UPDATE button to the tokens display in the MPID Actions column
                     if  ($id)
                     {
-                        $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=browse' method='post' target='_blank'>\n"
-                        ."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='V' title='"
-                        .$clang->gT("View Response")."' />\n"
-                        ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                        ."\t\t<input type='hidden' value='id' name='subaction' />\n"
-                        ."\t\t<input type='hidden' value='$id' name='id' />\n"
-                        ."\t\t</form>\n";
-
-
-                        $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry&amp;subaction=edit' method='post' target='_blank'>\n";
-                        $tokenoutput .= "\t\t<form action='$homeurl/$scriptname?action=dataentry' method='post' target='_blank'>\n"
-                        //."\t\t<td align='center' >\n" // to be replaced by icons
-                        ."\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='submit' value='U' title='"
-                        .$clang->gT("Update Response")."' />\n"
-                        //."\t\t</td>\n"
-                        ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-                        ."\t\t<input type='hidden' name='surveytable' value='survey_$surveyid' />\n"
-                        ."\t\t<input type='hidden' name='id' value='$id' />\n"
-                        ."\t\t</form>\n";
+                        $tokenoutput .= "\t\t<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
+                        .$clang->gT("View/Update response")."' />\n";
+//                        $tokenoutput .= "\t\t<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id=$id', '_top')\" type='submit'  title='"
+//                        .$clang->gT("Update response")."' />\n";
                     }
                 }
 
@@ -1127,10 +1116,7 @@ if ($subaction == "email" &&
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
 
-		$emquery = "SELECT firstname, lastname, email, token, tid, language";
-		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
-
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+		$emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
 		if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
 		$tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
@@ -1153,7 +1139,8 @@ if ($subaction == "email" &&
 			
 			}
 
-		
+
+        $attributes=GetTokenFieldsAndNames($surveyid);
 		if ($emcount > 0)
 		{
 			while ($emrow = $emresult->FetchRow())
@@ -1165,11 +1152,14 @@ if ($subaction == "email" &&
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
 				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+
+                foreach ($attributes as $attributefield=>$attributedescription)
+                {
+                    $fieldsarray['{'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                }
 
 				$emrow['language']=trim($emrow['language']);
-				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
+				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not given use default
 				$found = array_search($emrow['language'], $surveylangs);
 				if ($found==false) {$emrow['language']=$baselanguage;} 
 				
@@ -1432,11 +1422,7 @@ if ($subaction == "remind" && //XXX
 		$ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
 		$ctcount = $ctresult->RecordCount();
 		$ctfieldcount = $ctresult->FieldCount();
-		$emquery = "SELECT firstname, lastname, email, token, tid, language ";
-		if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
-
-		// TLR change to put date into sent
-		$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+		$emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 		if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 		if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
@@ -1448,7 +1434,7 @@ if ($subaction == "remind" && //XXX
 			."\t\t<td><font size='1'>\n";
 		
 
-
+        $attributes=GetTokenFieldsAndNames($surveyid);
 		if ($emcount > 0)
 		{
 			while ($emrow = $emresult->FetchRow())
@@ -1460,9 +1446,12 @@ if ($subaction == "remind" && //XXX
 				$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 				$fieldsarray["{TOKEN}"]=$emrow['token'];
 				$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-				$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-				$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
-				
+                
+                foreach ($attributes as $attributefield=>$attributedescription)
+                {
+                    $fieldsarray['{'.strtoupper($attributefield).'}']=$emrow[$attributefield];
+                }
+
 				$emrow['language']=trim($emrow['language']);
 				if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 				$found = array_search($emrow['language'], $surveylangs);
@@ -1739,7 +1728,8 @@ if ($subaction == "updatetokenattributes" &&
     }
     else
     {
-        $tokenoutput.=sprintf($clang->gT('%s fields were successfully added.'),$number2add);
+        $tokenoutput.='<br/>'.sprintf($clang->gT('%s field(s) were successfully added.'),$number2add).'<br/><br />';
+        $tokenoutput.="<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes'>".$clang->gT('Back to attribute field management.').'</a><br /><br />&nbsp;';
     }
 }
 
@@ -1856,11 +1846,11 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	."<tr>\n";
 
     // now the attribute fieds
-    $attrfieldnames=GetAttributeFieldnames($surveyid);
-    foreach ($attrfieldnames as $attr_name)
+    $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
+    foreach ($attrfieldnames as $attr_name=>$attr_description)
     {
         $tokenoutput .= "\t\t<tr>"
-        ."<td align='right' width='20%'><strong>".sprintf($clang->gT("Attribute %s"),substr($attr_name,10)).":</strong></td>\n"
+        ."<td align='right' width='20%'><strong>".$attr_description.":</strong></td>\n"
         ."\t<td><input type='text' size='60' name='$attr_name' value='";
         if (isset($$attr_name)) { $tokenoutput .=$$attr_name;}
         $tokenoutput.="'></td>"
@@ -2009,7 +1999,7 @@ if ($subaction == "import" &&
 	."\t\t<td align='center'>\n"
 	."\t\t\t<strong>".$clang->gT("Note:")."</strong><p>\n"
 	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line must contain the field names. The fields can be in any order.").'</p><span style="font-weight:bold;">'.$clang->gT("Mandatory fields:")."</span> firstname,lastname,email<br />"
-    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus,token,language code,attribute_1,attribute_2, attribute_... ."                                                                                                               
+    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, languagecode, attribute_1, attribute_2, attribute_3, ... ."                                                                                                               
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"  
@@ -2045,6 +2035,7 @@ if ($subaction == "upload" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
+    $attrfieldnames=GetAttributeFieldnames($surveyid);
    	$duplicatelist=array();
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
@@ -2073,7 +2064,8 @@ if ($subaction == "upload" &&
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);
 		// open it and trim the ednings
-		$tokenlistarray = array_map('rtrim',file($the_full_file_path));
+		$tokenlistarray = file($the_full_file_path);
+        $baselanguage=GetBaseLanguageFromSurveyID($surveyid);
 		if (!isset($tokenlistarray)) {$tokenoutput .= "Failed to open the uploaded file!\n";}
 		foreach ($tokenlistarray as $buffer)
 		{
@@ -2081,7 +2073,20 @@ if ($subaction == "upload" &&
 			$firstname = ""; $lastname = ""; $email = ""; $emailstatus="OK"; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
 			if ($xx==0)
 			{
-				//THIS IS THE FIRST LINE. IT IS THE HEADINGS. IGNORE IT
+				// Pick apart the first line
+                $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode');
+                $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
+                $firstline = convertCSVRowToArray($buffer,',','"');
+                $firstline=array_map('trim',$firstline);
+                $ignoredcolumns=array();
+                //now check the first line for invalid fields
+                foreach ($firstline as $index=>$fieldname)
+                {
+                    if (!in_array($fieldname,$allowedfieldnames))
+                    {
+                        $ignoredcolumns[]=$fieldname;
+                    }
+                }  
             }
 			else
 			{
@@ -2089,75 +2094,63 @@ if ($subaction == "upload" &&
 				$line = convertCSVRowToArray($buffer,',','"');
 				// sanitize it before writing into table
 				$line = array_map('db_quote',$line);
-				if (isset($line[0]) && $line[0] != "" & isset($line[1]) && $line[1] != "" && isset($line[2]))
-				{
-					// If old export file with first col as TID
-					// with no attribute
-					if (is_numeric($line[0])) 
-					{
-						$line[8] = $line[0];
-						$line[0] = $line[1];
-						$line[1] = $line[2];
-						$line[2] = $line[3];
-						$line[3] = "OK";
-						$line[4] = $line[4];
-						$line[5] = $line[5];
-						$line[6] = $line[6];
-					}
-					
-					$dupfound=false;
-					$invalidemail=false;
 
-            if ($filterduplicatetoken)
-            {
-						$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".$connect->qstr($line[2])." and firstname = ".$connect->qstr($line[0])." and lastname= ".$connect->qstr($line[1])."";
-                $dupresult = $connect->Execute($dupquery);
-                if ( $dupresult->RecordCount() > 0)
+                $writearray=array_combine($firstline,$line);
+                
+                //kick out ignored columns 
+                foreach ($ignoredcolumns  as $column)
                 {
-                    $dupfound = true;
-							$duplicatelist[]=$line[0]." ".$line[1]." (".$line[2].")";
+                    unset($writearray[$column]);
                 }
-            }
-				
-				
-					$line[2] = trim($line[2]);
-				
-					//treat blank emails
-					if ($filterblankemail && $line[2]=='')
-            {
-                $invalidemail=true;
-            } 
-					if  ($line[2]!='' && !validate_email($line[2])) 
-            {
-                $invalidemail=true;;
-            }                 
-					
-            if ($invalidemail)
-            {
-              ++$invalidemailcount; 
-            }
-            elseif ($dupfound)
-            {
-                ++$xy;
-            }
-					else 
-					{
-						if (!isset($line[3]) || $line[3]=='') $line[3] = "OK";
-						if (!isset($line[4]) || $line[4] == "") $line[4] = "";
-						if (!isset($line[5]) || $line[5] == "") $line[5] = GetBaseLanguageFromSurveyID($surveyid);
-						if (!isset($line[6])) $line[6] = "";
-						if (!isset($line[7])) $line[7] = "";
-						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-						. "(firstname, lastname, email, emailstatus, token, language, attribute_1, attribute_2, sent, completed) \n"
-						. "VALUES (";
-						$iq .= $connect->qstr($line[0]).", ".$connect->qstr($line[1]).", ".$connect->qstr($line[2]).", ".$connect->qstr($line[3]).", ".strtolower($connect->qstr($line[4]))." , ".$connect->qstr($line[5]).", ".$connect->qstr($line[6]).", ".$connect->qstr($line[7]).", ".$connect->qstr('N').", ".$connect->qstr('N');
-						$iq .= ")";
-						$ir = $connect->Execute($iq);
-						if (!$ir) $xy++;
-						$xz++;
-					}
-					$xv++;
+				$dupfound=false;
+				$invalidemail=false;
+
+                if ($filterduplicatetoken)
+                {
+				    $dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".db_quoteall($writearray['email'])." and firstname = ".db_quoteall($writearray['firstname'])." and lastname= ".db_quoteall($writearray['lastname'])."";
+                    $dupresult = $connect->Execute($dupquery);
+                    if ( $dupresult->RecordCount() > 0)
+                    {
+                        $dupfound = true;
+						$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
+                    }
+                }
+				    
+				    
+				$writearray['email'] = trim($writearray['email']);
+				    
+					    //treat blank emails
+				if ($filterblankemail && $writearray['email']=='')
+                {
+                    $invalidemail=true;
+                } 
+					    if  ($writearray['email']!='' && !validate_email($writearray['email'])) 
+                {
+                    $invalidemail=true;;
+                }                 
+					    
+                if ($invalidemail)
+                {
+                    ++$invalidemailcount; 
+                }
+                elseif ($dupfound)
+                {
+                    ++$xy;
+                }
+				else 
+				{
+					if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
+					if (!isset($writearray['token'])) $line[4] = "";
+					if (!isset($writearray['languagecode']) || $writearray['languagecode'] == "") $writearray['language'] = $baselanguage;
+                        else $writearray['language']=$writearray['languagecode'];
+					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+					. "(".implode(',',array_keys($writearray)).") \n"
+					. "VALUES ('".implode("','",array_values($writearray))."')";
+					$ir = $connect->Execute($iq);
+					if (!$ir) $xy++;
+					$xz++;
 				}
+				$xv++;
 			}
 			$xx++;
 		}
