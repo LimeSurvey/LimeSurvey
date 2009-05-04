@@ -4559,7 +4559,7 @@ function do_array_flexible($ia)
 		}
 		$cellwidth = round( ($columnswidth / $numrows ) , 1 );
 
-		$answer_start = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\">\n";
+		$answer_start = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array type question\" width=\"100%\">\n";
 		$answer_head = "\t<thead>\n"
 		. "\t\t<tr>\n"
 		. "\t\t\t<td>&nbsp;</td>\n";
@@ -4692,9 +4692,9 @@ function do_array_flexible($ia)
 			$fn++;
 		}
 
-		$answer_cols = "\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n"
-		. "\t<colgroup class=\"col-responses\">\n";
-
+		$answer_cols = "\t<colgroup class=\"col-responses\">\n"
+		."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
+		
 		$odd_even = '';
 		foreach ($labelans as $c)
 		{
