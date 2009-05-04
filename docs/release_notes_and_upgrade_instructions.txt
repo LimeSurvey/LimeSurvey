@@ -22,6 +22,7 @@ HOW TO INSTALL
 If you are doing a complete new installation please refer to the manual at
 http://docs.limesurvey.org
 
+Please also have a look at the "Installation security hints" section of the online manual in order to secure your installation.
 
 
 === UPGRADING=====
@@ -71,6 +72,14 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.82 (build 6757) to 1.82+ (build 6768) [2009/05/04] - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Portuguese - kindly provided by Joao Cordeiro <jcfcsh atthotmail d0t com> (c_schmitz)
+-Fixed Issue #3099: Flexible labels does not scale like expected  (wahrendorff)
+-Fixed an html error: one col in question was not in the colgroup (wahrendorff)
+-Fixed issue #3088: Fatal error in /admin/admin.php if DOMXML extension is enabled in PHP5 (c_schmitz)
+-Fixed issue #3094: Slider value displays NaN at start. (dqminh)
 
 Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # update feature, - bug fix
 
