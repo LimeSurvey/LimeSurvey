@@ -2965,7 +2965,7 @@ function templatereplace($line)
 		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
 	}
 
-    if (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
+    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
     {
         $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
         $templine=substr($templine,0,strpos($templine, "}")+1);
