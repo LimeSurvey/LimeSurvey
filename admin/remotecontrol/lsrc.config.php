@@ -56,7 +56,7 @@ $sslCert='cacert.pem';
 
 ### Variables
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
-$wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl";
+$wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/remotecontrol/lsrc.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 
