@@ -68,8 +68,16 @@ if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc)
 
 
 //define('PRINT_TEMPLATE' , '/templates/print/' , true);
-define('PRINT_TEMPLATE_DIR' , $tpldir.'/'.$template.'/' , true);
+if(is_dir($tpldir.'/'.$template.'/'))
+{
+	define('PRINT_TEMPLATE_DIR' , $tpldir.'/'.$template.'/' , true);
+}
+else
+{
+	define('PRINT_TEMPLATE_DIR' , $tpldir.'/default/' , true);
+}
 define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/'.$template.'/' , true);
+
 
 $fieldmap=createFieldMap($surveyid);
 
