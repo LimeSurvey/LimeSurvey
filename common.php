@@ -6304,9 +6304,9 @@ function strip_javascript($content){
 } 
 /**
  * 
- * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... whatever)
+ * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... to whatever)
  * @param $date Datestring, that should be formated normally it is in YYYY-MM-DD, but we take also YY-MM-DD or YY-M-D
- * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible, even )
+ * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible )
  * @return formated datestring
  */
 function dateFormat($date, $format="DD.MM.YYYY")
