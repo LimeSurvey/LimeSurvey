@@ -2037,7 +2037,7 @@ function do_listwithcomment($ia)
 // ---------------------------------------------------------------
 function do_ranking($ia)
 {
-	global $dbprefix, $imagefiles, $clang;
+	global $dbprefix, $imagefiles, $clang, $thissurvey;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -2072,6 +2072,14 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n"
 	. "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n"
 	. "\t\t\t\t\t\t\t{\n"
+	//CREATE A SECRET HIDDEN ELEMENT WITH THE ID FOR ARRAY_FILTER CONTROLS! 
+	// SO FAR THIS JUST STOPS A JAVASCRIPT ERROR OCCURRING
+	. "\t\t\t\t\t\t\tcurrentElement=document.createElement('input');\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('id', 'javatbd{$ia[1]}'+\$code);\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('name', 'javatbd{$ia[1]}'+\$code);\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('value', \$value);\n"
+	. "document.body.appendChild(currentElement);\n"
+	//END OF SECRET HIDDEN ELEMENT
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
@@ -2113,6 +2121,7 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\t}\n"
 	. "\t\t\t\t\tvar i=document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
 	. "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i] = new Option(\$text, \$value);\n"
+	. "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i].id = 'javatbd{$ia[1]}'+\$value;\n"
 	. "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length > 0)\n"
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=false;\n"
@@ -2182,30 +2191,24 @@ function do_ranking($ia)
 	$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
 	if (isset($choicewidth)) {$choicelist.=$choicewidth;}
     $choicelist .= " id='CHOICES_{$ia[0]}' onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
-	if (_PHPVERSION <= "4.2.0")
+	$hiddens="";
+	foreach ($answers as $ans)
 	{
-		foreach ($chosen as $chs) {$choose[]=$chs[0];}
-		foreach ($answers as $ans)
+		if (!in_array($ans, $chosen))
 		{
-			if (!in_array($ans[0], $choose))
+		    $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}' id='javatbd{$ia[1]}{$ans[0]}'";
+			if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || 
+			    ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
 			{
-				$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-				if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
+			    $choicelist .= " style='display: none'";
 			}
+			$choicelist .= ">{$ans[1]}</option>\n";
+			if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 		}
-	}
-	else
-	{
-		foreach ($answers as $ans)
-		{
-			if (!in_array($ans, $chosen))
-			{
-				$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-				if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
-			}
-		}
+		$hiddens.="<input type=\"hidden\" name=\"tbdisp{$ia[1]}{$ans[0]}\" id=\"tbdisp{$ia[1]}{$ans[0]}\" value=\"off\" />\n";
 	}
 	$choicelist .= "\t\t\t\t\t\t</select>\n";
+	$choicelist .= $hiddens;
 
 	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
 	. "\t\t\t\t<tr>\n"

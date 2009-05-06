@@ -3320,7 +3320,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"ABCEF:;",
+    "types"=>"ABCEF:;R",
     "help"=>$clang->gT("Filter an array's answers from a Multiple Options Question"),
     "caption"=>$clang->gT('Array filter'));
     
