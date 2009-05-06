@@ -67,7 +67,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 	$success = 0;  // Let's be optimistic
 
     $createdbtype=$databasetype;
-    if ($createdbtype=='mssql_n' || createdbtype=='odbc_mssql' || createdbtype=='odbtp') $createdbtype='mssql';         	
+    if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';         	
 	$sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
 	
 	if (!empty($sqlfile)) {
