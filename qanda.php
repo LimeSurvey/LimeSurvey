@@ -2075,6 +2075,7 @@ function do_ranking($ia)
 	//CREATE A SECRET HIDDEN ELEMENT WITH THE ID FOR ARRAY_FILTER CONTROLS! 
 	// SO FAR THIS JUST STOPS A JAVASCRIPT ERROR OCCURRING
 	. "\t\t\t\t\t\t\tcurrentElement=document.createElement('input');\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('type', 'hidden');\n"
 	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('id', 'javatbd{$ia[1]}'+\$code);\n"
 	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('name', 'javatbd{$ia[1]}'+\$code);\n"
 	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('value', \$value);\n"
@@ -2201,7 +2202,16 @@ function do_ranking($ia)
 			    ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
 			{
 			    $choicelist .= " style='display: none'";
-			}
+			} elseif (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || 
+			          ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && 
+					   getArrayFiltersOutGroup($ia[0]) == true))
+		    {
+			    $selected = getArrayFiltersForQuestion($ia[0]);
+			    if (!in_array($ans[0],$selected))
+			    {
+				    $choicelist .= " style='display: none'";
+			    }
+            }
 			$choicelist .= ">{$ans[1]}</option>\n";
 			if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 		}
