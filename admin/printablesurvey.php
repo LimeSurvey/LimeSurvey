@@ -866,7 +866,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$question['ANSWER'] .= $wrapper['item-start-other'].$clang->gT("Other").":\n\t\t".input_type_image('other').$wrapper['item-end'];
+					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT("Other").":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
 					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
@@ -916,7 +916,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{ 
-					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t".input_type_image('other','',1)."".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
+					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".input_type_image('other','',1)."</div>".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
 					// lemeur: PDFOUTPUT HAS NOT BEEN IMPLEMENTED for these fields
 					// not sure who did implement this.
 					$pdfoutput[$j][0]=array(" o "."Other"," __________");
