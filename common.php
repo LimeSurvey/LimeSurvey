@@ -19,7 +19,7 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.82";
 $dbversionnumber = 136;
-$buildnumber = "";
+$buildnumber = "dev";
 
 
 
@@ -2778,7 +2778,7 @@ function templatereplace($line)
 	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
-	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions - 2;
 	if ($totalquestionsAsked < 1)
 	{
 		if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
@@ -6302,3 +6302,64 @@ function strip_javascript($content){
     $text = preg_replace($search, '', $content);
     return $text;
 } 
+/**
+ * 
+ * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... whatever)
+ * @param $date Datestring, that should be formated normally it is in YYYY-MM-DD, but we take also YY-MM-DD or YY-M-D
+ * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible, even )
+ * @return formated datestring
+ */
+function dateFormat($date, $format="DD.MM.YYYY")
+{
+	if(preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/",$date))
+	{
+		$pieces = explode("-",$date);
+		$yy = $pieces[0];
+		$mm = $pieces[1];
+		$dd = $pieces[2];
+	}
+	elseif(preg_match("/^([0-9]{2})-([0-9]{1,2})-([0-9]{1,2})/",$date))
+	{
+		$pieces = explode("-",$date);
+		$yy = $pieces[0];
+		$mm = $pieces[1];
+		$dd = $pieces[2];
+	}
+	else
+	{
+		return "No valid Date";
+	}
+	// Format check
+	$c['Y'] = substr_count($format,"Y" );
+	$c['M'] = substr_count($format,"M" );
+	$c['D'] = substr_count($format,"D" );
+	
+	foreach($c as $key => $value)
+	{
+		for($n=0;$n<$value;++$n)
+		{
+			$dFormat[$key] .= "".$key;
+		}
+	}
+	
+	if(strlen($yy)>$c['Y'])
+	{$yy = substr($yy,-2,2);}
+	if(strlen($yy)<4 && strlen($yy)<$c['Y'])
+	{$yy = "20".$yy;}
+	if(strlen($mm)<2 && strlen($mm)<$c['M'])
+	{$mm = "0".$mm;}
+	if(strlen($dd)>2 )
+	{$dd = substr($dd,0,2);}
+	if(strlen($dd)<2 && strlen($dd)<$c['D'])
+	{$dd = "0".$dd;}
+	
+	$return = str_replace($dFormat['Y'],substr($yy,-$c['Y'], $c['Y']), $format);
+	$return = str_replace($dFormat['M'],substr($mm,-$c['M'], $c['M']), $return);
+	$return = str_replace($dFormat['D'],substr($dd,-$c['D'], $c['D']), $return);
+	
+	return $return;
+			
+}
+
+
+
