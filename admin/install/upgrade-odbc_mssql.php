@@ -286,6 +286,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "ALTER TABLE [prefix_surveys] ADD [attributedescriptions] TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute1]"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute2]"); echo $modifyoutput; flush();
+        upgrade_token_tables134();
         modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }   
      if ($oldversion < 135)
@@ -348,7 +349,7 @@ function upgrade_token_tables125()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [emailstatus] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD [emailstatus] VARCHAR(300) DEFAULT 'OK'"); echo $modifyoutput; flush();
             }
 }
 
@@ -359,8 +360,8 @@ function upgrade_token_tables128()
   	$tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv)
             {
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindersent] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
-            modify_database("","ALTER TABLE ".$sv." ADD COLUMN [remindercount] int DEFAULT '0'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD [remindersent] VARCHAR(17) DEFAULT 'OK'"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD [remindercount] int DEFAULT '0'"); echo $modifyoutput; flush();
             }
 }
 
@@ -388,6 +389,17 @@ function upgrade_survey_tables133a()
     }
 }
 
+
+function upgrade_token_tables134()
+{
+      global $connect,$modifyoutput,$dbprefix;
+      $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    foreach ($tokentables as $sv)
+            {
+            modify_database("","ALTER TABLE ".$sv." ADD [validfrom] DATETIME"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv." ADD [validuntil] DATETIME"); echo $modifyoutput; flush();
+            }
+}
 
 function mssql_drop_constraint($fieldname, $tablename)
 {

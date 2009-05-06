@@ -112,6 +112,7 @@ global $modifyoutput;
         modify_database("", "ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
+        upgrade_token_tables134();
         modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     } 
      if ($oldversion < 135)
@@ -165,6 +166,22 @@ function upgrade_survey_tables133()
     while ( $sv = $surveyidresult->FetchRow() )
     {
         FixLanguageConsistency($sv['0'],$sv['1']);   
+    }
+}
+
+function upgrade_token_tables134()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."tokens%");
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        while ( $sv = $surveyidresult->FetchRow() )
+        {
+            modify_database("","ALTER TABLE ".$sv0." ADD validfrom datetime"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv0." ADD validuntil datetime"); echo $modifyoutput; flush();
+        }
     }
 }
 

@@ -117,7 +117,7 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-        $attributes=GetTokenFieldsAndNames($surveyid);
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
@@ -139,7 +139,7 @@ switch ($fieldtype)
 		$replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
 		$replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
-        $attributes=GetTokenFieldsAndNames($surveyid);
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
             $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
@@ -158,7 +158,7 @@ switch ($fieldtype)
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-        $attributes=GetTokenFieldsAndNames($surveyid);
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
             $replFields[]=array('TOKEN:'.strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));

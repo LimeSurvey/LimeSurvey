@@ -17,7 +17,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
-$versionnumber = "1.82";
+$versionnumber = "1.85";
 $dbversionnumber = 136;
 $buildnumber = "dev";
 
@@ -58,10 +58,7 @@ function use_firebug()
 
     if(FIREBUG == true)
     {
-//        return '		<script language="javascript" type="text/javascript" src="/scripts/firebug-lite.js"></script>
-//';
-	return '		<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
-';
+	    return '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>';
     };
 };
 
@@ -71,6 +68,7 @@ define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for ms
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
+require_once ($rootdir.'/classes/dateparser/dateparser.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
 require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
@@ -249,167 +247,168 @@ if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false
 
 // SITE STYLES
 $setfont = "<font size='2' face='verdana'>";
-
 $singleborderstyle = "style='border: 1px solid #111111'";
 
 /**
-     * showadminmenu() function returns html text for the administration button bar
-     * @global string $homedir
-     * @global string $scriptname
-     * @global string $surveyid
-     * @global string $setfont
-     * @global string $imagefiles
-     * @return string $adminmenu
-     */
-    function showadminmenu()
-        {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action;
-        $adminmenu  = "<div class='menubar'>\n";
-        if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
-        $adminmenu  .="\t<div class='menubar-title'>\n"
-                    . "\t\t<strong>".$clang->gT("Administration")."</strong>";
-		if(isset($_SESSION['loginID']))
-			{
-			$adminmenu  .= " --  ".$clang->gT("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
-			}
-       	$adminmenu .= "\t\t</div>\n"
-                    . "\t\t\t<div class='menubar-main'>\n"
-                    . "\t\t\t\t<div class='menubar-left'>\n"
-                    . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\"" .
-                     "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
-                     "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
-                    ."title=''" ." /></a>\n";
+ * showadminmenu() function returns html text for the administration button bar
+ * 
+ * @global string $homedir
+ * @global string $scriptname
+ * @global string $surveyid
+ * @global string $setfont
+ * @global string $imagefiles
+ * @return string $adminmenu
+ */
+function showadminmenu()
+{
+    global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action;
+    
+    $adminmenu = "<div class='menubar'>\n";
+    if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
+    $adminmenu .="\t<div class='menubar-title'>\n"
+               . "\t\t<strong>".$clang->gT("Administration")."</strong>";
+	if(isset($_SESSION['loginID']))
+	{
+		$adminmenu  .= " --  ".$clang->gT("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
+	}
+    $adminmenu .= "\t\t</div>\n"
+                . "\t\t\t<div class='menubar-main'>\n"
+                . "\t\t\t\t<div class='menubar-left'>\n"
+                . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\"" .
+                 "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
+                 "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
+                ."title=''" ." /></a>\n";
 
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'   />\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
+	$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'   />\n"
+                . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-		// edit users
-		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" " .
-					"onmouseout=\"hideTooltip()\""
-					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
-					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
-					." title='' alt='".$clang->gT("Create/Edit Users")."' /></a>";
+	// edit users
+	$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" " .
+				"onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
+				 "<img src='$imagefiles/security.png' name='AdminSecurity'"
+				." title='' alt='".$clang->gT("Create/Edit Users")."' /></a>";
 
-		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" "
+	$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" "
+				. "onmouseout=\"hideTooltip()\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups", "js")."');return false\">" .
+				"<img src='$imagefiles/usergroup.png' title=''  alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+
+	// check settings
+					$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" "
 					. "onmouseout=\"hideTooltip()\""
-					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups", "js")."');return false\">" .
-					"<img src='$imagefiles/usergroup.png' title=''  alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
+					. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
+					. "' alt='". $clang->gT("Show System Summary")."'/></a>"
+					. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
 
-		// check settings
-						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" "
-					    . "onmouseout=\"hideTooltip()\""
-                      	. "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
-						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-						. "' alt='". $clang->gT("Show System Summary")."'/></a>"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+	// check data cosistency
+    if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
+		{
+		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\" ".
+					   "onmouseout=\"hideTooltip()\""
+					  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
+					"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."'  /></a>\n";
+		}
+	else
+		{
+		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
+		}
 
-		// check data cosistency
-        if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
-			{
-			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\" ".
-						   "onmouseout=\"hideTooltip()\""
-						  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
-						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."'  /></a>\n";
-			}
-		else
-			{
-			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
-			}
+	// list surveys
+	$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" "
+		 		."onmouseout=\"hideTooltip()\""
+                ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
+		 		."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
+		 		."  alt='".$clang->gT("List Surveys")."'  onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+                ."</a>" ;
 
-		// list surveys
-		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" "
-		 			."onmouseout=\"hideTooltip()\""
-                    ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
-		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
-		 			."  alt='".$clang->gT("List Surveys")."'  onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
-                    ."</a>" ;
-
-		// db backup & label editor
-		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
-			{
-			$adminmenu  .= "<a href=\"#\" title=\"".$clang->gTview("Backup Entire Database")."\" "
-						. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
-						. "onmouseout=\"hideTooltip()\""
-						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
-						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)'  />"
-						."</a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-			}
-		else
-			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
-			}
-		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
-			{
-			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\" "
-						. "onmouseout=\"hideTooltip()\""
-						. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
-						 "<img src='$imagefiles/labels.png'  name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-           	}
-		else
-			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
-			}
-        if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
-			{
-	        $adminmenu .= "<a href=\"#\" " .
-	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" "
-	                    . "onmouseout=\"hideTooltip()\""
-	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
-	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."'  /></a>\n";
-            }
-            // survey select box
-            $adminmenu .= "\t\t\t\t\t</div><div class='menubar-right'><font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
-                        . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
-                        . getsurveylist()
-                        . "\t\t\t\t\t</select>\n";
-            
-            if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
-                {
-            $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-                        . "title=\"".$clang->gTview("Create or Import New Survey")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
-                        "<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
-                 }
+	// db backup & label editor
+	if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
+		{
+		$adminmenu  .= "<a href=\"#\" title=\"".$clang->gTview("Backup Entire Database")."\" "
+					. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
+					."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)'  />"
+					."</a>\n"
+					. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+		}
+	else
+		{
+		  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
+		}
+	if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
+	{
+		$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\" "
+					. "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
+					 "<img src='$imagefiles/labels.png'  name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
+					. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+    }
+	else
+	{
+		  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
+	}
+    if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+	{
+	    $adminmenu .= "<a href=\"#\" " .
+	        		  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" "
+	                . "onmouseout=\"hideTooltip()\""
+	                . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
+	                "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."'  /></a>\n";
+    }
+    // survey select box
+    $adminmenu .= "\t\t\t\t\t</div><div class='menubar-right'><font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
+                . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+                . getsurveylist()
+                . "\t\t\t\t\t</select>\n";
+    
+    if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
+    {
+    $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
+                . "title=\"".$clang->gTview("Create or Import New Survey")."\" "
+                . "onmouseout=\"hideTooltip()\""
+                . "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
+                "<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
+    }
 
 
-        if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
-	    {
-	        $adminmenu .= "\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
-                        . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-                        . "title=\"".$clang->gTview("Logout")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-					    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
-                        . "<img src='$imagefiles/logout.png' name='Logout'"
-					    . "title='' alt='".$clang->gT("Logout")."'/></a>"
-	                    . "\t\t<a href=\"#\" onclick=\"showhelp('show')\""
-                        . "title=\"".$clang->gTview("Show Help")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
-                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
-                        . "alt='". $clang->gT("Show Help")."'/></a>";
-                        
-	        $adminmenu .= "\t\t\t\t</div>\n"
-                        . "\t\t\t</div>\n"
-                        . "\t\t</div>\n";
-            $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
-                $adminmenu.= '<div style="width:500px;margin:0 auto;">'
-                             .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
-                             .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
-                             .'<ol>'
-                             .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
-                             .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
-                             .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
-                             .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
-                             .'</ol></p><br />&nbsp;</div>';
-            }
-                        
-        }                 
-        return $adminmenu;
+    if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
+	{
+	    $adminmenu .= "\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
+                    . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
+                    . "title=\"".$clang->gTview("Logout")."\" "
+                    . "onmouseout=\"hideTooltip()\""
+					. "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
+                    . "<img src='$imagefiles/logout.png' name='Logout'"
+					. "title='' alt='".$clang->gT("Logout")."'/></a>"
+	                . "\t\t<a href=\"#\" onclick=\"showhelp('show')\""
+                    . "title=\"".$clang->gTview("Show Help")."\" "
+                    . "onmouseout=\"hideTooltip()\""
+                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
+                    . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
+                    . "alt='". $clang->gT("Show Help")."'/></a>";
+                    
+	    $adminmenu .= "\t\t\t\t</div>\n"
+                    . "\t\t\t</div>\n"
+                    . "\t\t</div>\n";
+        $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+        if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
+            $adminmenu.= '<div style="width:500px;margin:0 auto;">'
+                         .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
+                         .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
+                         .'<ol>'
+                         .'<li>'.sprintf($clang->gT('Create a new survey clicking on the %s icon in the upper right.'),"<img src='$imagefiles/add_small.png' name='ShowHelp' title='' alt='". $clang->gT("Add survey")."'/>").'</li>'
+                         .'<li>'.$clang->gT('Create a new group inside your survey.').'</li>'
+                         .'<li>'.$clang->gT('Create one or more question inside the new group.').'</li>'
+                         .'<li>'.sprintf($clang->gT('Done. Test your survey using the %s icon.'),"<img src='$imagefiles/do_small.png' name='ShowHelp' title='' alt='". $clang->gT("Test survey")."'/>").'</li>'
+                         .'</ol></p><br />&nbsp;</div>';
         }
+                    
+    }                 
+    return $adminmenu;
+}
 
 
 
@@ -515,10 +514,13 @@ function db_table_name($name)
 	return db_quote_id($dbprefix.$name);
 }
 
+/**
+* returns the table name without quotes 
+* 
+* @param mixed $name
+*/
 function db_table_name_nq($name)
-//returns the table name without quotes
 {
-    
     global $dbprefix;
     return $dbprefix.$name;
 }
@@ -789,37 +791,6 @@ function getMaxquestionorder($gid)
 		return "0" ;
 	}
 	else return $current_max ;
-}
-
-
-/**
-* getanswers() queries the database for a list of all answers matching the current question qid
-* 
-* @global string $surveyid
-* @global string $gid
-* @global string $qid
-* @global string $dbprefix
-* @global string $code
-* 
-* @return This string is returned containing <option></option> formatted list of answers matching current qid
-*/
-function getanswers()
-{
-	global $surveyid, $gid, $qid, $code, $dbprefix, $connect, $clang;
-	$qid=sanitize_int($qid);
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$aquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid AND language='$s_lang' ORDER BY sortorder, answer";
-
-	$aresult = db_execute_assoc($aquery); //Checked
-	$answerselecter = "";
-	while ($arow = $aresult->FetchRow())
-	{
-		$answerselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;code={$arow['code']}'";
-		if ($code == $arow['code']) {$answerselecter .= " selected='selected'"; $aexists="Y";}
-		$answerselecter .= ">{$arow['code']}: {$arow['answer']}</option>\n";
-	}
-	if (!$aexists) {$answerselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$answerselecter;}
-	return $answerselecter;
 }
 
 
@@ -1605,77 +1576,12 @@ function getlabelsets($languages=null)
 }
 
 
-function checkactivations()
-{
-	global $dbprefix, $connect;
-	$tablelist = $connect->MetaTables();
-	$tablenames[] = "ListofTables"; //dummy entry because in_array never finds the first one!
-	foreach ($tablelist as $tbl)
-	{
-		$tablenames[] = $tbl;
-	}
-	$caquery = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
-	$caresult = db_execute_assoc($caquery);    //Checked
-	if (!$caresult) {return "Database Error";}
-	while ($carow = $caresult->FetchRow())
-	{
-		$surveyname = "{$dbprefix}survey_{$carow['sid']}";
-		if (!in_array($surveyname, $tablenames))
-		{
-			$udquery = "UPDATE ".db_table_name('surveys')." SET active='N' WHERE sid={$carow['sid']}";
-			$udresult = $connect->Execute($udquery);   //Checked    
-		}
-	}
-}
-
-
 function checkifemptydb()
 {
 	global $connect, $dbprefix;
 	$tablelist = $connect->MetaTables('TABLES');
 	if ( in_array($dbprefix.'surveys',$tablelist) ) {Return(false);}
 	else {Return(true);}
-}
-
-function checkfortables()
-{
-	global $scriptname, $dbprefix, $setfont, $connect, $clang;
-	$alltables=array("{$dbprefix}surveys",
-	"{$dbprefix}groups",
-	"{$dbprefix}questions",
-	"{$dbprefix}answers",
-	"{$dbprefix}conditions",
-	"{$dbprefix}users",
-	"{$dbprefix}labelsets",
-	"{$dbprefix}labels");
-	$tables = $connect->MetaTables();
-
-	foreach($alltables as $at)
-	{
-		if (!sql_table_exists($at, $tables))
-		{
-			$checkfields="Y";
-		}
-	}
-	if (!isset($checkfields)) {$checkfields="";}
-	if ($checkfields=="Y")
-	{
-		echo "<br />\n"
-		."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-		."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-		.$clang->gT("LimeSurvey Setup")."</strong></td></tr>\n"
-		."\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n"
-		."\t\t<font color='red'><strong>"
-		.$clang->gT("Error")."</strong></font><br />\n"
-		."\t\t"
-		.$clang->gT("It appears as if some tables or fields are missing from your database.")."<br /><br />\n"
-		."\t\t<input type='submit' value='"
-		.$clang->gT("Check Database Fields")."' onclick=\"window.open('checkfields.php', '_top')\" />\n"
-		."\t</td></tr>\n"
-		."</table>\n"
-		."</body></html>\n";
-		exit;
-	}
 }
 
 
@@ -1711,17 +1617,6 @@ function CompareGroupThenTitle($a, $b)
 function StandardSort($a, $b)
 {
 	return strnatcasecmp($a, $b);
-}
-
-
-function conditionscount($qid)
-{
-	global $dbprefix, $connect;
-    $qid=sanitize_int($qid);
-	$query="SELECT COUNT(*) FROM ".db_table_name('conditions')." WHERE qid=$qid";
-	$result=db_execute_num($query) or safe_die ("Couldn't get conditions<br />$query<br />".$connect->ErrorMsg());
-	list($count) = $result->FetchRow();
-	return $count;
 }
 
 
@@ -2044,18 +1939,6 @@ function sendcacheheaders()
 }
 
 
-function getLegitQids($surveyid)
-{
-	global $dbprefix;
-    $surveyid=sanitize_int($surveyid);
-
-	//GET LIST OF LEGIT QIDs FOR TESTING LATER
-	$lq = "SELECT DISTINCT qid FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$_SESSION['s_lang']."'";
-	$lr = db_execute_num($lq);        //Checked
-	return array_merge(array("DUMMY ENTRY"), $lr->GetRows());
-}
-
-
 function returnquestiontitlefromfieldcode($fieldcode)
 {
 	// Performance optimized	: Nov 13, 2006
@@ -2329,21 +2212,14 @@ function validate_templatedir($templatename)
 }
 
 
-function crlf_lineendings($text)
-{
-	$text=str_replace("\r\n", "~~~~", $text); //First replace any good line endings with ~~~~
-	$text=str_replace("\n", "~~~~", $text); //Then replace any solitary \n's with ~~~~
-	$text=str_replace("\r", "~~~~", $text); //Then replace any solitary \r's with ~~~~
-	$text=str_replace("~~~~", "\r\n", $text); //Finally replace all ~~~~'s with \r\n
-	return $text;
-}
-
-
-
-//This function generates an array containing the fieldcode, and matching data in the same
-//order as the activate script
-// @param: $force_refresh  - Forces to really refresh the array, not just take the session copy
-
+/**
+* This function generates an array containing the fieldcode, and matching data in the same order as the activate script
+* 
+* @param string $surveyid
+* @param mixed $style
+* @param mixed $force_refresh - Forces to really refresh the array, not just take the session copy 
+* @return mixed
+*/
 function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 
 	global $dbprefix, $connect, $globalfieldmap, $clang;
@@ -2723,10 +2599,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 
 function templatereplace($line)
 {
-	// Performance optimized	: Nov 10, 2006
-	// Performance Improvement	: 49%
-	// Optimized By				: swales
-
 	global $surveylist, $sitename, $clienttoken, $rooturl;
 	global $thissurvey, $imagefiles, $defaulttemplate;
 	global $percentcomplete, $move;
@@ -3519,33 +3391,6 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
 	"caption"=>$clang->gT('Value equals SQGA'));
 	
-	/* -- > Commented out since not yet used
-	$qattributes[]=array("name"=>"default_value",
-	"types"=>"^",
-	"help"=>"What value to use as the default");
-
-	$qattributes[]=array("name"=>"minimum_value",
-	"types"=>"^",
-	"help"=>"The lowest value on the slider");
-
-	$qattributes[]=array("name"=>"maximum_value",
-	"types"=>"^",
-	"help"=>"The highest value on the slider");
-
-	$qattributes[]=array("name"=>"left_label",
-    "types"=>"^",
-    "help"=>"The label to the left of the slider");
-
-    $qattributes[]=array("name"=>"centre_label",
-    "types"=>"^"
-    "help"=>"The centre label on the slider");
-
-    $qattributes[]=array("name"=>"right_label",
-    "types"=>"^",
-    "help"=>"The ")
-
-	*/
-
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
@@ -5127,25 +4972,31 @@ function captcha_enabled($screen, $captchamode='')
 	}
 }
 
-// used for import[survey|questions|groups]
+
+/**
+* used for import[survey|questions|groups]
+* 
+* @param mixed $string
+* @return mixed
+*/
 function convertCsvreturn2return($string)
 {
-        return str_replace('\n', "\n", $string);
+    return str_replace('\n', "\n", $string);
 }
 
-// Checks that each object from an array of CSV data
-// [question-rows,answer-rows,labelsets-row] 
-// supports iat least a given language
-//
-// param:
-// $csvarray : array with a line of csv data per row
-// $idkeysarray: array of integers giving the csv-row numbers of the object keys
-// $langfieldnum: integer giving the csv-row number of the language(s) filed
-//		==> the language field  can be a single language code or a 
-//		    space separated language code list
-// $langcode: the language code to be tested
-// $hasheader: if we should strip off the first line (if it contains headers)
-//
+
+
+/**
+*  Checks that each object from an array of CSV data [question-rows,answer-rows,labelsets-row] supports at least a given language
+* 
+* @param mixed $csvarray array with a line of csv data per row      
+* @param mixed $idkeysarray  array of integers giving the csv-row numbers of the object keys  
+* @param mixed $langfieldnum  integer giving the csv-row number of the language(s) filed
+*        ==> the language field  can be a single language code or a 
+*            space separated language code list
+* @param mixed $langcode  the language code to be tested    
+* @param mixed $hasheader  if we should strip off the first line (if it contains headers)   
+*/
 function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,$langcode, $hasheader = false)
 {
 	// An array with one row per object id and langsupport status as value
@@ -5298,33 +5149,25 @@ function bIsTokenCompletedDatestamped($thesurvey)
 	}
 }
 
-function date_shift($date, $dformat, $shift)
-/* example usage
-
-$date = "2006-12-31 21:00";
-$shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
-
-echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
-
-// will output: 2007-01-01 03:00:00
+/**
+* example usage
+* $date = "2006-12-31 21:00";
+* $shift "+6 hours"; // could be days, weeks... see function strtotime() for usage
+* 
+* echo sql_date_shift($date, "Y-m-d H:i:s", $shift);
+* 
+* will output: 2007-01-01 03:00:00
+* 
+* @param mixed $date
+* @param mixed $dformat
+* @param mixed $shift
+* @return string
 */
+function date_shift($date, $dformat, $shift)
 {
-return date($dformat, strtotime($shift, strtotime($date)));
+    return date($dformat, strtotime($shift, strtotime($date)));
 }
 
-function mydebug($strOutput)
-{
-  $datei = fopen("d:\debug.txt","a+");
-  fwrite($datei, "$strOutput \n");
-  fclose($datei);
-}
-function mydebug_var($strOutput)
-{
-  $datei = fopen("d:\debug.txt","a+");
-  fwrite($datei, var_export($strOutput, TRUE));
-  fwrite($datei, "\n");
-  fclose($datei);
-}
 
 // getBounceEmail: returns email used to receive error notifications
 function getBounceEmail($surveyid)
@@ -6302,6 +6145,23 @@ function strip_javascript($content){
     $text = preg_replace($search, '', $content);
     return $text;
 } 
+
+
+/**
+* This functions converts any time format to any other time format
+* 
+* @param mixed $datetime
+* @param mixed $inputformat
+* @param mixed $outputformat
+*/
+function convertDateTimeFormat($datetime, $inputformat, $outputformat)
+{
+   if (trim($datetime)=='') return ''; 
+   $date = new DateParser();
+   return $date->Format($outputformat, $inputformat, $datetime); 
+}
+
+
 /**
  * 
  * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... to whatever)

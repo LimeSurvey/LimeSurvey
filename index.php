@@ -475,6 +475,9 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	exit;
 }
 
+
+
+
 //CHECK IF SURVEY ID DETAILS HAVE CHANGED
 if (isset($_SESSION['oldsid'])) {$oldsid=$_SESSION['oldsid'];}
 
@@ -570,10 +573,10 @@ if ($tokensexist == 1 && isset($token) && $token &&
 {
 	//check if token actually does exist
 
-	$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+	$tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
 	$tkresult = db_execute_num($tkquery); //Checked 
-	list($tkexist) = $tkresult->FetchRow();
-	if (!$tkexist)
+	$tokendata = $tkresult->FetchRow();
+	if ($tkresult->RecordCount()==0)
 	{
 		sendcacheheaders();
 		doHeader();
@@ -583,15 +586,44 @@ if ($tokensexist == 1 && isset($token) && $token &&
 		echo "\t<center><br />\n"
 		."\t".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."<br /><br />\n"
 		."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
-		."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
-		."(<a href='mailto:{$thissurvey['adminemail']}'>"
+		."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
+		." (<a href='mailto:{$thissurvey['adminemail']}'>"
 		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		doFooter();
 		exit;
 	}
-}
+}    
+elseif ($tokensexist == 1 && isset($token) && $token && !isset($_SESSION['step'])) //check if token is in a valid time frame
+    {
+        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+        $tkresult = db_execute_assoc($tkquery); //Checked 
+        $tokendata = $tkresult->FetchRow();
+        if ((trim($tokendata['validfrom'])!='' && convertDateTimeFormat($tokendata['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1) || 
+            (trim($tokendata['validuntil'])!='' && convertDateTimeFormat($tokendata['validuntil'],'Y-m-d H:i:s','U')*1<date('U')*1) 
+            )
+        {
+            sendcacheheaders();
+            doHeader();
+            //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+            echo "\t<center><br />\n"
+            ."\t<span>".$clang->gT("We are sorry but you are not allowed to enter this survey.")."</span><br /><br />\n"
+            ."\t".$clang->gT("Your token seems to be valid but can be used only during a certain time period.")."<br />\n"
+            ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
+            ." (<a href='mailto:{$thissurvey['adminemail']}'>"
+            ."{$thissurvey['adminemail']}</a>)")."<br /><br />\n"
+            ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+            doFooter();
+            exit;
+        }
+    }
+
+
+
 //CLEAR SESSION IF REQUESTED
 if (isset($_GET['move']) && $_GET['move'] == "clearall")
 {
@@ -2748,7 +2780,7 @@ function check_quota($checkaction,$surveyid)
 				doHeader();
 				echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 				echo "\t<center><br />\n";
-				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
+				echo "\t".$clang->gT("We are sorry but your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
 				echo "<form method='post' action='".$_SERVER['PHP_SELF']."' id='limesurvey' name='limesurvey'><input type=\"hidden\" name=\"move\" value=\"movenext\" id=\"movenext\" /><input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; ". $clang->gT("Previous")." ' name='move2' />
 					<input type='hidden' name='thisstep' value='".($_SESSION['step'])."' id='thisstep' />
 					<input type='hidden' name='sid' value='".returnglobal('sid')."' id='sid' />

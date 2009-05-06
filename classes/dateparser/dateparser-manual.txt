@@ -1,0 +1,38 @@
+$date = new dateparser();
+
+Example usage : $date->parseDate("Y-m-d H:i:s","2008-4-24 20:28:34");
+Returns : array(	"Year"=>2008,
+			"Month"=>4,
+			"Day"=>24,
+ 			"Hour"=>20,
+			"Minute"=>28,
+ 	         	"Second"=>34,
+ 			"Timezone"=>"+0300"
+ 		);
+
+
+=======================================
+    Other Functions : 
+=======================================
+
+$date->Compare($date1,$date2)
+-------------------------------
+$date1 and $date2 is date in array format which our first function creates. Returns 1 if first is newer,-1 if second is newer, 0 if they are the exactly same.
+
+
+$date->dateDiff($pattern1,$date1,$pattern2,$date2);
+---------------------------------------------------
+$date1 and $date2 are string dates and the $pattern1 $pattern2 is the identifier patterns of them. Produces a new array which contains the difference of year,month,day,hour,minute,second variables in date format.
+
+
+$date->Format($patternTo,$patternFrom,$date);
+---------------------------------------------
+returns a reformatted date value. for example;
+
+$date->Format("j F Y H:i","Y-m-d H:i:s","2008-04-29 09:44:32") 
+
+returns "29 April 2008 09:44"
+
+
+Function Localize and generatePattern are internal functions. Localize is not complete yet but I think you can complete it yourself. generatePattern generates RegExp pattern from date patterns for later usage in the parseDate function. All date types which supported in php.net are added to this script.
+

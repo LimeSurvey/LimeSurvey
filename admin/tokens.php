@@ -116,7 +116,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	$tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language code";
+	$tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,languagecode,validfrom,validuntil";
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     foreach ($attrfieldnames as $attr_name)
     {
@@ -131,7 +131,9 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 		$tokenoutput .= '"'.trim($brow['email'])."\",";
 		$tokenoutput .= '"'.trim($brow['emailstatus'])."\",";
 		$tokenoutput .= '"'.trim($brow['token'])."\",";
-		$tokenoutput .= '"'.trim($brow['language'])."\"";
+		$tokenoutput .= '"'.trim($brow['language'])."\",";
+        $tokenoutput .= '"'.trim(convertDateTimeFormat($brow['validfrom'],'Y-m-d H:i:s','Y-m-d H:i'))."\",";
+        $tokenoutput .= '"'.trim(convertDateTimeFormat($brow['validuntil'],'Y-m-d H:i:s','Y-m-d H:i'))."\"";
         foreach ($attrfieldnames as $attr_name)
         {
             $tokenoutput .=',"'.trim($brow[$attr_name])."\"";
@@ -635,7 +637,7 @@ if ($subaction == "updateemailsettings" &&
 				$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
 			}
 		}
-	$tokenoutput .= "<tr><td align='center'><br /><strong><font class='successtitle'>".$clang->gT("Token email settings have been saved.")."</font></strong><br />&nbsp;</td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><br /><strong><span class='successtitle'>".$clang->gT("Token email settings have been saved.")."</span></strong><br />&nbsp;</td></tr>\n";
 
 	}
 
@@ -650,7 +652,7 @@ if ($subaction == "deleteall" &&
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
 	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-	$tokenoutput .= "<tr><td  align='center'><strong><font class='successtitle'>".$clang->gT("All token entries have been deleted.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td  align='center'><strong><span class='successtitle'>".$clang->gT("All token entries have been deleted.")."</span></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -662,7 +664,7 @@ if ($subaction == "clearinvites" &&
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
 	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All invite entries have been set to 'Not invited'.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><span class='successtitle'>".$clang->gT("All invite entries have been set to 'Not invited'.")."</font></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -674,7 +676,7 @@ if ($subaction == "cleartokens" &&
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET token=''";
 	$result=$connect->Execute($query) or safe_die("Couldn't reset the tokens field<br />$query<br />".$connect->ErrorMsg());
-	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All unique token numbers have been removed.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<tr><td align='center'><strong><font class='successtitle'>".$clang->gT("All unique token numbers have been removed.")."</span></strong></td></tr>\n";
 	$subaction="";
 }
 
@@ -842,7 +844,15 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n";
+	.$clang->gT("Sort by: ").$clang->gT("Completed?")."' border='0' align='left' /></a>".$clang->gT("Completed?")."</th>\n"
+    ."\t\t<th align='left'  >"
+    ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validfrom%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+    ."<img src='$imagefiles/downarrow.png' alt='' title='"
+    .$clang->gT("Sort by: ").$clang->gT("Valid from")."' border='0' align='left' /></a>".$clang->gT("Valid from")."</th>\n"
+    ."\t\t<th align='left'  >"
+    ."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=validuntil%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
+    ."<img src='$imagefiles/downarrow.png' alt='' title='"
+    .$clang->gT("Sort by: ").$clang->gT("Valid until")."' border='0' align='left' /></a>".$clang->gT("Valid until")."</th>\n";
     
     $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
     foreach ($attrfieldnames as $attr_name=>$attr_translation)
@@ -854,29 +864,50 @@ if ($subaction == "browse" || $subaction == "search")
     }
 	$tokenoutput .="\t</tr>\n";
 
+    $tokenfieldorder=array('tid', 
+                           'firstname', 
+                           'lastname', 
+                           'email', 
+                           'emailstatus', 
+                           'token', 
+                           'language', 
+                           'sent', 
+                           'remindersent', 
+                           'remindercount', 
+                           'completed', 
+                           'validfrom', 
+                           'validuntil');
+    foreach ($attrfieldnames as $attr_name=>$attr_translation)
+    {
+        $tokenfieldorder[]=$attr_name;
+    }
+                           
 	while ($brow = $bresult->FetchRow())
 	{
 		$brow['token'] = trim($brow['token']);
+        if (trim($brow['validfrom'])!=''){ $brow['validfrom']= convertDateTimeFormat($brow['validfrom'],'Y-m-d H:i:s','Y-m-d H:i');};
+        if (trim($brow['validuntil'])!=''){ $brow['validuntil']= convertDateTimeFormat($brow['validuntil'],'Y-m-d H:i:s','Y-m-d H:i');};
+
 		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		$tokenoutput .= "\t<tr class='$bgc'>\n";
-		foreach ($brow as $a=>$b)
+		foreach ($tokenfieldorder as $tokenfieldname)
 		{
-			if ($a=='mpid') continue;
-            if ($a =='email' && $brow['emailstatus'] != 'OK')
+            
+            if ($tokenfieldname =='email' && $brow['emailstatus'] != 'OK')
 			{
 				$tokenoutput .= "\t\t<td>"
 				."<a href=\"#\" class='invalidemail' onmouseover=\"showTooltip(event,'".$clang->gT('Invalid email address:','js').javascript_escape($brow['emailstatus'])."');return false;\" "
-				."onmouseout=\"hideTooltip()\">$brow[$a]</a></td>\n";
+				."onmouseout=\"hideTooltip()\">$brow[$tokenfieldname]</a></td>\n";
 			}
-			elseif ($a != 'emailstatus')
+			elseif ($tokenfieldname != 'emailstatus')
 			{
-                if  ($a=='tid') {$tokenoutput.="<td><span style='font-weight:bold'>".$brow[$a]."</span></td>";}
+                if  ($tokenfieldname=='tid') {$tokenoutput.="<td><span style='font-weight:bold'>".$brow[$tokenfieldname]."</span></td>";}
                 else
                 {  
-				    $tokenoutput .= "\t\t<td>$brow[$a]</td>\n";
+				    $tokenoutput .= "\t\t<td>$brow[$tokenfieldname]</td>\n";
                 }
 			}
-            if ($a=='tid')
+            if ($tokenfieldname=='tid')
             {
                 $tokenoutput .= "\t\t<td align='left' style='white-space:nowrap;'>\n";
                 if ($sumrows5['edit_survey_property'] || 
@@ -887,6 +918,10 @@ if ($subaction == "browse" || $subaction == "search")
                     {
                         $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language'];
                         $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_do.png' title='".$clang->gT("Do Survey")."' onclick=\"window.open('$publicurl/index.php?sid=$surveyid&amp;lang=".$toklang."&amp;token=".trim($brow['token'])."', '_blank')\" />\n";
+                    }
+                    else
+                    {
+                        $tokenoutput .= "<img src='$imagefiles/blank.gif' height='16' width='16'/>";
                     }
                     $tokenoutput .="\t\t\t<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_edit.png' title='"
                     .$clang->gT("Edit token entry")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid=".$brow['tid']."&amp;start=$start&amp;limit=$limit&amp;order=$order', '_top')\" />"
@@ -1843,6 +1878,21 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
+    ."<tr>\n"
+    ."\t<td align='right' width='20%'><strong>".$clang->gT("Valid from").":</strong></td>\n"
+
+    // TLR change to put date into sent and completed
+    //    ."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
+    ."\t<td><input type='text' size='22' name='validfrom' value=\"";
+    if (isset($validfrom)) $tokenoutput.= convertDateTimeFormat($validfrom,'Y-m-d H:i:s','Y-m-d H:i');
+    $tokenoutput .= "\" />\n".$clang->gT('until')
+
+    // TLR change to put date into sent and completed
+    //    ."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
+    ."\t<input type='text' size='22' name='validuntil' value=\"";
+    if (isset($validuntil)) $tokenoutput.=  convertDateTimeFormat($validuntil,'Y-m-d H:i:s','Y-m-d H:i');        
+    $tokenoutput .= "\" /> <spann class='annotation'>".$clang->gT('Format: yyyy-mm-dd hh:mm').'</span></td>'
+    ."</tr>\n"
 	."<tr>\n";
 
     // now the attribute fieds
@@ -1851,7 +1901,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     {
         $tokenoutput .= "\t\t<tr>"
         ."<td align='right' width='20%'><strong>".$attr_description.":</strong></td>\n"
-        ."\t<td><input type='text' size='60' name='$attr_name' value='";
+        ."\t<td><input type='text' size='55' name='$attr_name' value='";
         if (isset($$attr_name)) { $tokenoutput .=$$attr_name;}
         $tokenoutput.="'></td>"
         ."</tr>";  
@@ -1891,6 +1941,18 @@ if ($subaction == "updatetoken" &&
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
+    if (trim($_POST['validfrom'])=='') {
+        $_POST['validfrom']=null;
+    } 
+    else
+    {
+        $_POST['validfrom']=$connect->BindTimeStamp(convertDateTimeFormat(trim($_POST['validfrom']),'Y-m-d H:i','Y-m-d H:i:s'));  
+    }
+    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;} 
+    else
+    {
+        $_POST['validuntil']=$connect->BindTimeStamp(convertDateTimeFormat(trim($_POST['validuntil']),'Y-m-d H:i','Y-m-d H:i:s'));  
+    }
 	$data = array();
 	$data[] = $_POST['firstname'];
 	$data[] = $_POST['lastname'];
@@ -1901,6 +1963,9 @@ if ($subaction == "updatetoken" &&
 	$data[] = sanitize_languagecode($_POST['language']);
 	$data[] = $_POST['sent'];
 	$data[] = $_POST['completed'];
+//    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
+    $data[] = $_POST['validfrom'];
+    $data[] = $_POST['validuntil'];
 
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
@@ -1911,7 +1976,7 @@ if ($subaction == "updatetoken" &&
 		// Using adodb Execute with blinding method so auto-dbquote is done
 		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
 		. "lastname=?, email=?, emailstatus=?, "
-		. "token=?, language=?, sent=?, completed=?";
+		. "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?";
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {
@@ -1921,8 +1986,8 @@ if ($subaction == "updatetoken" &&
         
 		$udquery .= " WHERE tid={$tokenid}";
 		$udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
-		$tokenoutput .=  "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
-						."<br />".$clang->gT("Updated Token")."<br /><br />\n"
+		$tokenoutput .=  "<br /><span class='successtitle'>".$clang->gT("Success")."</span><br />\n"
+						."<br />".$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
 						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse".$_POST['urlextra']."'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
 						."\t</td></tr></table>\n";
 	}
@@ -1967,7 +2032,7 @@ if ($subaction == "inserttoken" &&
 	{
 		// AutoExecute
 		$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-		$tokenoutput .= "<br /><font class='successtitle'><strong>".$clang->gT("Success")."</strong></font><br />\n"
+		$tokenoutput .= "<br /><span class='successtitle'>".$clang->gT("Success")."</span><br />\n"
 		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
@@ -1999,7 +2064,7 @@ if ($subaction == "import" &&
 	."\t\t<td align='center'>\n"
 	."\t\t\t<strong>".$clang->gT("Note:")."</strong><p>\n"
 	."\t\t\t".$clang->gT("File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line must contain the field names. The fields can be in any order.").'</p><span style="font-weight:bold;">'.$clang->gT("Mandatory fields:")."</span> firstname,lastname,email<br />"
-    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, languagecode, attribute_1, attribute_2, attribute_3, ... ."                                                                                                               
+    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, languagecode, validfrom, validuntil, attribute_1, attribute_2, attribute_3, ... ."                                                                                                               
 	."\t\t</font></td>\n"
 	."\t</tr>\n"
 	."</table><br />\n"  
@@ -2058,9 +2123,9 @@ if ($subaction == "upload" &&
 	}
 	else
 	{
-		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n"
+		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n"
 		.$clang->gT("Creating Token Entries")."<br />\n";
-		$xz = 0; $xx = 0; $xy = 0; $xv = 0; $invalidemailcount = 0;
+		$xz = 0; $recordcount = 0; $duplicatecount = 0; $xv = 0; $invalidemailcount = 0;
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);
 		// open it and trim the ednings
@@ -2071,10 +2136,10 @@ if ($subaction == "upload" &&
 		{
             $buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
 			$firstname = ""; $lastname = ""; $email = ""; $emailstatus="OK"; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
-			if ($xx==0)
+			if ($recordcount==0)
 			{
 				// Pick apart the first line
-                $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode');
+                $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
                 $firstline = convertCSVRowToArray($buffer,',','"');
                 $firstline=array_map('trim',$firstline);
@@ -2105,7 +2170,7 @@ if ($subaction == "upload" &&
 				$dupfound=false;
 				$invalidemail=false;
 
-                if ($filterduplicatetoken)
+                if ($filterduplicatetoken!=false)
                 {
 				    $dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".db_quoteall($writearray['email'])." and firstname = ".db_quoteall($writearray['firstname'])." and lastname= ".db_quoteall($writearray['lastname'])."";
                     $dupresult = $connect->Execute($dupquery);
@@ -2135,7 +2200,7 @@ if ($subaction == "upload" &&
                 }
                 elseif ($dupfound)
                 {
-                    ++$xy;
+                    ++$duplicatecount;
                 }
 				else 
 				{
@@ -2143,32 +2208,37 @@ if ($subaction == "upload" &&
 					if (!isset($writearray['token'])) $line[4] = "";
 					if (!isset($writearray['languagecode']) || $writearray['languagecode'] == "") $writearray['language'] = $baselanguage;
                         else $writearray['language']=$writearray['languagecode'];
+                    if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}    
+                    if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}    
+                    unset($writearray['languagecode']);    
 					$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 					. "(".implode(',',array_keys($writearray)).") \n"
 					. "VALUES ('".implode("','",array_values($writearray))."')";
 					$ir = $connect->Execute($iq);
-					if (!$ir) $xy++;
+					if (!$ir) $duplicatecount++;
 					$xz++;
 				}
 				$xv++;
 			}
-			$xx++;
+			$recordcount++;
 		}
-		$xx = $xx-1;
+		$recordcount = $recordcount-1;
 		if ($xz != 0)
 		{
-			$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n";
+			$tokenoutput .= "<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n";
 		} else {
 			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
 		}
-		$message = "$xx ".$clang->gT("Records in CSV").".<br />\n";
-		$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
-		$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
+		$message = sprintf($clang->gT("%s records in CSV"),$recordcount).".<br />\n";
+		$message .= sprintf($clang->gT("%s records met minumum requirements"),$xv).".<br />\n";
+		$message .= sprintf($clang->gT("%s records imported"),$xz).".<br />\n";
 		$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
 		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
-		$message .= "$xy ".$clang->gT("Duplicate records removed");
-		$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
-		$message .= "<div id='duplicateslist' style='display: none; 
+		$message .= sprintf($clang->gT("%s duplicate records removed"),$duplicatecount);
+        if ($duplicatecount>0)
+        {
+		    $message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+		    $message .= "<div id='duplicateslist' style='display: none; 
 		                                             width: 400px; 
 													 background-color: #FFF;
 													 border: 1px solid #CCC;
@@ -2177,10 +2247,11 @@ if ($subaction == "upload" &&
 													 text-align: left;
 													 margin-bottom: 0px;
 													 font-size: 8pt'>";
-		foreach($duplicatelist as $data) {
-		  $message .= "<li>$data</li>\n";
-		}
-		$message .= "</div>";
+		    foreach($duplicatelist as $data) {
+		      $message .= "<li>$data</li>\n";
+		    }
+		    $message .= "</div>";
+        }
 		$message .= "<br />\n";
 		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
 		$tokenoutput .= "<i>$message</i><br />\n";
@@ -2238,7 +2309,7 @@ if ($subaction == "uploadldap" &&
 			$resultnum=ldap_doTokenSearch($ds, $ldapq, $ResArray);
 			$xz = 0; // imported token count
 			$xv = 0; // meet minim requirement count
-			$xy = 0; // duplicate tokens skipped count
+			$duplicatecount = 0; // duplicate tokens skipped count
 			$invalidemailcount = 0;
 
 			if ($resultnum >= 1) {
@@ -2332,7 +2403,7 @@ if ($subaction == "uploadldap" &&
 						}
 						elseif ($dupfound)
 						{
-							++$xy;
+							++$duplicatecount;
 						}
 						elseif ($meetminirequirements===true)
 						{
@@ -2347,7 +2418,7 @@ if ($subaction == "uploadldap" &&
 							if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
 							$iq .= ")";
 							$ir = $connect->Execute($iq);
-							if (!$ir) $xy++;
+							if (!$ir) $duplicatecount++;
 							$xz++;
 							// or safe_die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
 						} 
@@ -2357,7 +2428,7 @@ if ($subaction == "uploadldap" &&
 
 			if ($xz != 0)
 			{
-				$tokenoutput .= "<font class='successtitle'>".$clang->gT("Success")."</font><br /><br />\n";
+				$tokenoutput .= "<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n";
 			}
 			else
 			{
@@ -2366,7 +2437,7 @@ if ($subaction == "uploadldap" &&
 			$message = "$resultnum ".$clang->gT("Results from LDAP Query").".<br />\n";
 			$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 			$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
-			$message .= "$xy ".$clang->gT("Duplicate records removed").".<br />\n";
+			$message .= "$duplicatecount ".$clang->gT("Duplicate records removed").".<br />\n";
 			$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed").".<br />\n";
 			$tokenoutput .= "<i>$message</i><br />\n";
 		}
