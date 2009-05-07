@@ -1581,15 +1581,15 @@ function buildsurveysession()
 					        <td align='right' valign='middle'>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 					        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
-			// In case we this is a direct Reload previous answers URL, then add hiddent fields
+			// In case we this is a direct Reload previous answers URL, then add hidden fields
 			if (isset($_GET['loadall']) && isset($_GET['scid']) 
 				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
 			{
 				echo "
-						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
-						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
-						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
-						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+						<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+						<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+						<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+						<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
 
 			echo "
@@ -1648,10 +1648,10 @@ function buildsurveysession()
 				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
 			{
 				echo "
-					<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
-					<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
-					<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
-					<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+					<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+					<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+					<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+					<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
 
 			echo "
@@ -1784,10 +1784,10 @@ function buildsurveysession()
 				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
 			{
 				echo "
-						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
-						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
-						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
-						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+						<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+						<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+						<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+						<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
 
 			echo	        $clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>";
@@ -1806,10 +1806,10 @@ function buildsurveysession()
 				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
 			{
 				echo "
-						<input type='hidden' name='loadall' value='".$_GET['loadall']."' id='loadall' />
-						<input type='hidden' name='scid' value='".$_GET['scid']."' id='scid' />
-						<input type='hidden' name='loadname' value='".$_GET['loadname']."' id='loadname' />
-						<input type='hidden' name='loadpass' value='".$_GET['loadpass']."' id='loadpass' />";
+                        <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
 
 			echo	        $clang->gT("Token").":</td><td align='left' valign='middle'>&nbsp;$gettoken<input type='hidden' name='token' value='$gettoken'>";
