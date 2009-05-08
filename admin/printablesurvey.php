@@ -682,8 +682,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT("Other")).' '.$clang->gT("Other")."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Other").": ________");}
+						$qAttrib = getQAttributes($deqrow['qid']);
+						if(!isset($qAttrib["other_replace_text"]))
+						{$qAttrib["other_replace_text"]="Other";}
+					
+						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
+						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qAttrib["other_replace_text"]).": ________");}
 					}
 					$question['ANSWER'] .= $wrapper['whole-end'];
 					//Let's break the presentation into columns.
@@ -763,9 +767,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == 'Y')
 					{
+						$qAttrib = getQAttributes($deqrow['qid']);
+						if(!isset($qAttrib["other_replace_text"]))
+						{$qAttrib["other_replace_text"]="Other";}
 //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT("Other")).' '.$clang->gT("Other")."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
+						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 				//Let's break the presentation into columns.
@@ -814,6 +821,7 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 				$qidattributes=getQuestionAttributes($deqrow['qid']);
+								
 				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
 				{
 					$dcols=$displaycols['value'];
@@ -866,8 +874,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT("Other").":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
+					$qAttrib = getQAttributes($deqrow['qid']);
+					if(!isset($qAttrib["other_replace_text"]))
+					{$qAttrib["other_replace_text"]="Other";}
+					
+					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT($qAttrib["other_replace_text"]).":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 //				};
