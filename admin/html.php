@@ -1201,7 +1201,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			else
 			{
 				$questionsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it","js")."')\""
+				"onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Disabled - Delete Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled - Delete Current Question", "js")."');return false\">"

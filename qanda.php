@@ -631,7 +631,7 @@ function mandatory_message($ia)
 					break;
 				case 'M':
 				case 'P':
-					$qtitle .= ' '.$clang->gT('Please check at least one item').'.';
+					$qtitle .= ' '.$clang->gT('Please check at least one item.').'.';
 					$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0];
 					$qresult = db_execute_assoc($qquery);    //Checked
 					$qrow = $qresult->FetchRow();
@@ -2138,7 +2138,7 @@ function do_ranking($ia)
 			. "\t\t\t\t{\n"
 			. "\t\t\t\t\tcount={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
 			. "\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please rank at least '%d' item(s) for question \"%s\"","js"),  
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
 			. "\t\t\t\t\t} else {\n"	
@@ -2468,7 +2468,7 @@ function do_multiplechoice($ia)
 	{
 		$minanswscript .= 		
 			"\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
 			. "\t\t\t\t\t} else {\n"	
@@ -2742,7 +2742,7 @@ function do_multiplechoice_withcomments($ia)
 	{
 		$minanswscript .= 		
 			"\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least '%d' answer(s) for question \"%s\"","js"),  
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),  
 				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
 			. "\t\t\t\t\t\treturn false;\n"
 			. "\t\t\t\t\t} else {\n"	
@@ -3192,7 +3192,7 @@ function do_multiplenumeric($ia)
 		}
 		if ($minvalue)
 		{
-			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %d'),$min_num_value)."</p>\n";
+			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %s'),$min_num_value)."</p>\n";
 		}
 
 		$label_width = round($label_width * 0.8);
@@ -3342,7 +3342,7 @@ Style to be applied to all templates.
 		$answer .= "       case 2:\n";
 		$answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
 		$answer .= "             {\n";
-		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."';\n";
+		$answer .= "               bob.value = '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least $s.",'js'),$min_num_value)."';\n";
 //		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
 //		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";
@@ -3350,7 +3350,7 @@ Style to be applied to all templates.
 		$answer .= "             }\n";
 		$answer .= "             else\n";
 		$answer .= "             {\n";
-		$answer .= "               if (bob.value == '' || bob.value == '".$clang->gT("Answer is invalid. The total of all entries should add up to at least ").$min_num_value."')\n";
+		$answer .= "               if (bob.value == '' || bob.value == '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."')\n";
 		$answer .= "               {\n";
 		$answer .= "                 bob.value = '';\n";
 //		$answer .= "                 document.getElementById('totalvalue_".$ia[1]."').style.color='black';\n";
