@@ -3245,7 +3245,30 @@ function getQuestionAttributes($qid)
 	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
 	return $qid_attributes;
 }
-
+/**
+ * 
+ * returns a flat array with all question attributes for the question only (and the qid we gave it)!
+ * @author: wahrendorff
+ * @param $qid
+ * @return array{attribute=>value , attribute=>value}
+ */
+function getQAttributes($qid)
+{
+	$array = getQuestionAttributes($qid);
+	//$return = array();
+	$return["qid"]=$qid;
+	foreach($array as $key=>$value)
+	{
+		foreach($value as $attribute=>$single)
+		{
+			if($attribute == "attribute")
+			{
+				$return[$single] =  $value["value"] ;
+			}
+		}
+	}
+	return $return;
+}
 /**
 * Returns array of question type chars with attributes
 * 
