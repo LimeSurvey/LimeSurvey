@@ -258,7 +258,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         // update language field with default language of that particular survey
         modify_database("","update [prefix_assessments] set [language]=(select [language] from [prefix_surveys] where [sid]=[prefix_assessments].[sid])"); echo $modifyoutput; flush();
         // copy assessment link to message since from now on we will have HTML assignment messages
-        modify_database("","update [prefix_assessments] set [message]=cast([message] as varchar) +'<br /><a href=\"'+[link]+'\">'+[link]+'</a>'"); echo $modifyoutput; flush();
+        modify_database("","update [prefix_assessments] set [message]=cast([message] as varchar) +'<br /><a href=\"'+cast([link] as varchar)+'\">'+cast([link] as varchar)+'</a>'"); echo $modifyoutput; flush();
         // drop the old link field
          modify_database("","ALTER TABLE [prefix_assessments] DROP COLUMN [link]"); echo $modifyoutput; flush();
         // change the primary index to include language
