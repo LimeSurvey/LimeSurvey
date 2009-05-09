@@ -46,8 +46,8 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 		</div>
 		<hr />
 		
-		<tr><td align="center"><br /><font color="red"><strong>	
-		</strong></font><br />
+		<tr><td align="center"><br /><span style="color:red;"><strong>	
+		</strong></span><br />
 		</table>
 		<form  onsubmit="self.close()">
 			<input type="submit" value="'.$clang->gT("Close Editor").'" />

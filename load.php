@@ -43,8 +43,8 @@ foreach(file("$thistpl/load.pstpl") as $op)
 //PRESENT OPTIONS SCREEN (Replace with Template Later)
 //END
 //echo "<input type='hidden' name='PHPSESSID' value='".session_id()."'>\n";
-echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-echo "<input type='hidden' name='loadall' value='reload'>\n";
+echo "<input type='hidden' name='sid' value='$surveyid' />\n";
+echo "<input type='hidden' name='loadall' value='reload' />\n";
 echo "</form>";
 
 foreach(file("$thistpl/endpage.pstpl") as $op)

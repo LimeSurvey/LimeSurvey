@@ -172,7 +172,7 @@ function showsaveform()
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
 	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $relativeurl, $thisstep;
 	sendcacheheaders();
-	echo "<html>\n";
+    doHeader();   
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 		echo templatereplace($op);
@@ -197,10 +197,10 @@ function showsaveform()
 		echo templatereplace($op);
 	}
 	//END
-	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-	echo "<input type='hidden' name='thisstep' value='",$thisstep,"'>\n";
-	echo "<input type='hidden' name='token' value='",$clienttoken,"'>\n";
-	echo "<input type='hidden' name='saveprompt' value='Y'>\n";
+	echo "<input type='hidden' name='sid' value='$surveyid' />\n";
+	echo "<input type='hidden' name='thisstep' value='",$thisstep,"' />\n";
+	echo "<input type='hidden' name='token' value='",$clienttoken,"' />\n";
+	echo "<input type='hidden' name='saveprompt' value='Y' />\n";
 	echo "</form>";
 
 	foreach(file("$thistpl/endpage.pstpl") as $op)
