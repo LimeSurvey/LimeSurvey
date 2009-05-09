@@ -33,7 +33,8 @@ $databaseuser       =   'root';        // The name of a user with rights to crea
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is 'lime_'
-$databasetabletype  =   'myISAM';	     // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
+$databasetabletype  =   'myISAM';	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
+$databasepersistent =   false;	       // If you want to enable persistent database connections set this to 'true' - this might be faster for some database drivers. Default is false.
 
 // FILE LOCATIONS
 

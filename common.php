@@ -152,16 +152,34 @@ switch ($databasetype)
 	default: safe_die("Unknown database type");
 }
 // Now try connecting to the database
-if (@$connect->Connect($dbhost, $databaseuser, $databasepass, $databasename))
-{ 
-    $database_exists = TRUE;
+if ($databasepersistent==true)
+{
+    if (@$connect->PConnect($dbhost, $databaseuser, $databasepass, $databasename))
+    { 
+        $database_exists = TRUE;
+    }
+    else {
+     // If that doesnt work try connection without database-name
+    	$connect->database = '';
+    	if (!@$connect->PConnect($dbhost, $databaseuser, $databasepass))
+        {
+           safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
+        }
+    }
 }
-else {
- // If that doesnt work try connection without database-name
-	$connect->database = '';
-	if (!@$connect->Connect($dbhost, $databaseuser, $databasepass))
-    {
-       safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
+else
+{
+    if (@$connect->Connect($dbhost, $databaseuser, $databasepass, $databasename))
+    { 
+        $database_exists = TRUE;
+    }
+    else {
+     // If that doesnt work try connection without database-name
+    	$connect->database = '';
+    	if (!@$connect->Connect($dbhost, $databaseuser, $databasepass))
+        {
+           safe_die("Can't connect to LimeSurvey database. Reason: ".$connect->ErrorMsg());
+        }
     }
 }
 
@@ -4562,7 +4580,7 @@ function FixLanguageConsistency($sid, $availlangs)
 				$gresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 				if ($gresult->RecordCount() < 1)
 				{
-                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}   //Checked
+                    if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." ON");}   //Checked
 					$query = "INSERT INTO ".db_table_name('groups')." (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";  
 					$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
                      if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_') {$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups')." OFF");}   //Checked
