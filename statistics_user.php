@@ -202,7 +202,7 @@ foreach ($rows as $row)
 	$row['type'],
 	$row['title'],
 	$row['group_name'],
-	strip_tags($row['question']),
+	FlattenText($row['question']),
 	$row['lid'],
     $row['lid1']);
     
@@ -685,7 +685,7 @@ if (isset($summary) && $summary)
 			{
 				$qtitle=$nrow[0];
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+				$qquestion=FlattenText($nrow[2]);
 				$qlid=$nrow[3];
 				$qother=$nrow[4];
 			}
@@ -729,9 +729,9 @@ if (isset($summary) && $summary)
 			//loop through question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qquestion=FlattenText($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 			}
 			
 			//get answers
@@ -794,9 +794,9 @@ if (isset($summary) && $summary)
 			//loop through results
 			while ($nrow=$nresult->FetchRow()) 
 			{				
-			    $qtitle=strip_tags($nrow[0]); //clean up title
+			    $qtitle=FlattenText($nrow[0]); //clean up title
 				$qtype=$nrow[1]; 
-				$qquestion=strip_tags($nrow[2]); //clean up question
+				$qquestion=FlattenText($nrow[2]); //clean up question
 				$qiqid=$nrow[3]; 
 				$qlid=$nrow[4];
 			}
@@ -1137,9 +1137,9 @@ if (isset($summary) && $summary)
 			//loop though question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]);
+				$qtitle=FlattenText($nrow[0]);
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+				$qquestion=FlattenText($nrow[2]);
 				$qiqid=$nrow[3];
 				$qlid=$nrow[4];
                 $qlid1=$nrow[5];
@@ -1308,7 +1308,7 @@ if (isset($summary) && $summary)
 					//add code and title to results for outputting them later
 					while ($frow=$fresult->FetchRow())
 					{
-						$alist[]=array($frow['code'], strip_tags($frow['title']));
+						$alist[]=array($frow['code'], FlattenText($frow['title']));
 					}
 					
 					//counter
@@ -1355,7 +1355,7 @@ if (isset($summary) && $summary)
 				//put label code and label title into array
 				while ($frow=$fresult->FetchRow())
 				{
-					$alist[]=array($frow['code'], strip_tags($frow['title']));
+					$alist[]=array($frow['code'], FlattenText($frow['title']));
 				}
 				
 				//does "other" field exist?
@@ -1424,7 +1424,7 @@ if (isset($summary) && $summary)
                 //put label code and label title into array
                 while ($frow=$fresult->FetchRow())
                 {
-                    $alist[]=array($frow['code'], strip_tags($frow['title']));
+                    $alist[]=array($frow['code'], FlattenText($frow['title']));
                 }
                 
                 //adapt title and question
@@ -1688,7 +1688,7 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(strip_tags($fname), 25, "\n");
+                    $lbl[] = wordwrap(FlattenText($fname), 25, "\n");
                     
                 }	//end while -> loop through results
                 
@@ -1752,7 +1752,7 @@ if (isset($summary) && $summary)
 	                $justcode[]=$fname;
 	                
 	                //edit labels and put them into antoher array
-	                $lbl[] = wordwrap(strip_tags($fname), 20, "\n");
+	                $lbl[] = wordwrap(FlattenText($fname), 20, "\n");
 	                
 	            }	//end else -> noncompleted NOT checked
 	            

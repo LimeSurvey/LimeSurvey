@@ -206,7 +206,7 @@ foreach ($rows as $row)
 	$row['type'],
 	$row['title'],
 	$row['group_name'],
-	strip_tags($row['question']),
+	FlattenText($row['question']),
 	$row['lid'],
     $row['lid1']);
 }
@@ -409,7 +409,7 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 		
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " /><strong>".showspeaker($flt[5])."</strong>"
+		$statisticsoutput .= " /><strong>".showspeaker(FlattenText($flt[5]))."</strong>"
 		."<br />\n";
 		
 		//numerical question type -> add some HTML to the output
@@ -1125,7 +1125,7 @@ foreach ($filters as $flt)
 				//pre-select
 				if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 				
-				$statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+				$statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['title'])."</option>\n";
 			}
 			
 			$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1251,7 +1251,7 @@ foreach ($filters as $flt)
 			//pre-check
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			
-			$statisticsoutput .= ">({$row[0]}) ".strip_tags($row[1])."</option>\n";
+			$statisticsoutput .= ">({$row[0]}) ".FlattenText($row[1])."</option>\n";
             
 		} // while
 		
@@ -1358,7 +1358,7 @@ foreach ($filters as $flt)
                 //pre-check
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
                     
-                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['title'])."</option>\n";
                 
             }
                 
@@ -1444,7 +1444,7 @@ foreach ($filters as $flt)
                 //pre-check
                 if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
                    
-                $statisticsoutput .= ">({$frow['code']}) ".strip_tags($frow['title'])."</option>\n";
+                $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['title'])."</option>\n";
                 
             }
                 
@@ -2386,7 +2386,7 @@ if (isset($summary) && $summary)
 			{
 				$qtitle=$nrow[0];
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+				$qquestion=FlattenText($nrow[2]);
 				$qlid=$nrow[3];
 				$qother=$nrow[4];
 			}
@@ -2442,9 +2442,9 @@ if (isset($summary) && $summary)
 			//loop through question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]); 
+				$qtitle=FlattenText($nrow[0]); 
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+                $qquestion=FlattenText($nrow[2]);
 				$nlid=$nrow[4];
 			}			
 			
@@ -2505,9 +2505,9 @@ if (isset($summary) && $summary)
 			//loop through question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]).'-'.$count; 
+				$qtitle=FlattenText($nrow[0]).'-'.$count; 
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+                $qquestion=FlattenText($nrow[2]);
 			}
 			
 			//get answers
@@ -2550,9 +2550,9 @@ if (isset($summary) && $summary)
 			//loop through question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+				$qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
+                $qquestion=FlattenText($nrow[2]). "[".$clang->gT("Ranking")." ".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
 			}
 			
 			//get answers
@@ -2622,9 +2622,9 @@ if (isset($summary) && $summary)
 				//loop through results
 				while ($nrow=$nresult->FetchRow()) 
 				{				
-				    $qtitle=strip_tags($nrow[0]); //clean up title
+				    $qtitle=FlattenText($nrow[0]); //clean up title
 					$qtype=$nrow[1]; 
-					$qquestion=strip_tags($nrow[2]); //clean up question
+                    $qquestion=FlattenText($nrow[2]);
 					$qiqid=$nrow[3]; 
 					$qlid=$nrow[4];
 				}
@@ -2647,7 +2647,7 @@ if (isset($summary) && $summary)
 				
 				//outputting headline
 				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-				."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field summary for")." $qtitle:</strong>"
+				."\t<tr><td colspan='2' align='center'><strong>".sprintf($clang->gT("Field summary for %s"),$qtitle).":</strong>"
 				."</td></tr>\n"
 				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
 				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
@@ -2986,9 +2986,9 @@ if (isset($summary) && $summary)
 			//loop though question data
 			while ($nrow=$nresult->FetchRow())
 			{
-				$qtitle=strip_tags($nrow[0]);
+				$qtitle=FlattenText($nrow[0]);
 				$qtype=$nrow[1];
-				$qquestion=strip_tags($nrow[2]);
+                $qquestion=FlattenText($nrow[2]);
 				$qiqid=$nrow[3];
 				$qlid=$nrow[4];
                 $qlid1=$nrow[5];
@@ -3179,7 +3179,7 @@ if (isset($summary) && $summary)
 					//add code and title to results for outputting them later
 					while ($frow=$fresult->FetchRow())
 					{
-						$alist[]=array($frow['code'], strip_tags($frow['title']));
+						$alist[]=array($frow['code'], FlattenText($frow['title']));
 					}
 					
 					//counter
@@ -3237,7 +3237,7 @@ if (isset($summary) && $summary)
 				//put label code and label title into array
 				while ($frow=$fresult->FetchRow())
 				{
-					$alist[]=array($frow['code'], strip_tags($frow['title']));
+					$alist[]=array($frow['code'], FlattenText($frow['title']));
 				}
 				
 				//does "other" field exist?
@@ -3307,7 +3307,7 @@ if (isset($summary) && $summary)
                 //put label code and label title into array
                 while ($frow=$fresult->FetchRow())
                 {
-                    $alist[]=array($frow['code'], strip_tags($frow['title']));
+                    $alist[]=array($frow['code'], FlattenText($frow['title']));
                 }
                 
                 //adapt title and question
@@ -3360,12 +3360,12 @@ if (isset($summary) && $summary)
 			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//headline
-			.$clang->gT("Field summary for")." $qtitle:</strong>"
+			.sprintf($clang->gT("Field summary for %s"),$qtitle)."</strong>"
 			."</td></tr>\n"
 			."\t<tr><td colspan='4' align='center'><strong>"
 			
 			//question title
-			."$qquestion</strong></td></tr>\n"
+			.$qquestion."</strong></td></tr>\n"
 			."\t<tr>\n\t\t<td width='50%' align='center' >";
 			
 			// this will count the answers considered completed
@@ -3630,7 +3630,7 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(strip_tags("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                    $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
                     
                 }	//end while -> loop through results
                 
@@ -3693,7 +3693,7 @@ if (isset($summary) && $summary)
 	                $justcode[]=$fname;
 	                
 	                //edit labels and put them into antoher array
-                   $lbl[] = wordwrap(strip_tags("$al[1] ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
+                   $lbl[] = wordwrap(FlattenText("$al[1] ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
 	                
 	            }	//end else -> noncompleted NOT checked
 	            
@@ -4337,7 +4337,7 @@ function showSpeaker($hinttext)
 	
 	if(strlen($hinttext) > ($maxchars))
 	{
-		$shortstring = strip_tags($hinttext);
+		$shortstring = FlattenText($hinttext);
 		
 		$shortstring = mb_substr($hinttext, 0, $maxchars);
 		
