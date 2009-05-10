@@ -2123,7 +2123,7 @@ function do_ranking($ia)
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list").""
+	. "\t\t\t\t\t\t".$clang->gT("Click on the scissors next to each item on the right to remove the last entry in your ranked list")
 	. "\t\t\t\t\t</font></td>\n"
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t</table>\n";
