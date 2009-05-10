@@ -3344,7 +3344,7 @@ Style to be applied to all templates.
 		$answer .= "       case 2:\n";
 		$answer .= "          if (totalvalue_".$ia[1]." < $min_num_value)\n";
 		$answer .= "             {\n";
-		$answer .= "               bob.value = '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least $s.",'js'),$min_num_value)."';\n";
+		$answer .= "               bob.value = '".sprintf($clang->gT("Answer is invalid. The total of all entries should add up to at least %s.",'js'),$min_num_value)."';\n";
 //		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').style.color='red';\n";
 //		$answer .= "               document.getElementById('min_num_value_".$ia[1]."').style.color='red';\n";
 		$answer .= "               document.getElementById('totalvalue_".$ia[1]."').setAttribute(ieAtt,'" . $errorClass . "');\n";

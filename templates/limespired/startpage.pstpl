@@ -1,6 +1,6 @@
 		<title>{SURVEYNAME} &ndash; {GROUPNAME}</title>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
-<!--[if IE]>
+<!--[if lt IE 8]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
 <![endif]-->
 <!--[if lt IE 7]>

@@ -1,11 +1,5 @@
 /* The following styles are for all versions of IE */
 
- .list-radio-flexible li:first-child
-,.list-radio li:first-child
-{
-	margin-left: 0.3em;
-	text-indent: -1.6em;
-}
 
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
 ,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
@@ -37,13 +31,6 @@
 	margin-bottom: -1.3em;
 }
 
-/* The following is a dirty hack because I can't work out what's causing the problem.
- See http://bugs.limesurvey.org/view.php?id=2631 for the problem.*/
- .list-radio-flexible li:first-child
-,.list-radio li:first-child
-{
-	text-indent: -1.5em;
-}
 
   .list-radio-flexible ul.cols-2 li:first-child , .list-radio ul.cols-2 li:first-child
 , .list-radio-flexible ul.cols-3 li:first-child , .list-radio ul.cols-3 li:first-child
@@ -56,3 +43,8 @@
 	text-indent: 1.5em;
 }
 
+
+.choice-5-pt-radio ul
+{
+    margin-left: 2em;
+}
