@@ -333,6 +333,7 @@ function star_replace($input)
 }
 
 $total_questions = 0;
+$mapquestionsNumbers=Array();
 
 // =========================================================
 // START doin the business:
@@ -505,6 +506,8 @@ while ($degrow = $degresult->FetchRow())
 						case "B":
 						case "C":
 						case "E":
+						case "F":
+						case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
@@ -513,6 +516,15 @@ while ($degrow = $degresult->FetchRow())
 								$answer_section=" (".$ansrow['answer'].")";
 							}
 							break;
+
+						// TIBO: TODO dual scale: section=line(answer)+(#0 and #1)
+						case "1":
+							break;
+						// TIBO: TODO multi flexi section=line(answer)+column(label) 
+						case ":":
+						case ";":
+							break;
+
 						default:
 							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
@@ -533,7 +545,9 @@ while ($degrow = $degresult->FetchRow())
 					$explanation .= "'".$conditions[0]."'";
 				}
 				unset($conditions);
-				$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section ";
+				// TIBO: don't use $distinctrow['title'], but the question number instead
+				//$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section ";
+				$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
 				$x++;
 			}
 			$s++;
@@ -561,6 +575,8 @@ while ($degrow = $degresult->FetchRow())
 					,'QUESTIONHELP' => ''			// content of the question help field.
 					,'ANSWER' => ''				// contains formatted HTML answer
 				);
+		//TIBO map question qid to their q number
+		$mapquestionsNumbers[$deqrow['qid']]=$total_questions;
 		//END OF GETTING CONDITIONS
 
 		$qid = $deqrow['qid'];

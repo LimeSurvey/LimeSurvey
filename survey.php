@@ -643,6 +643,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	$gid=$gl[0];
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
+	echo "\n\n<div id='Group-$gid'>\n";
 	echo "\n\n<!-- START THE GROUP -->\n";
 	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 	echo "\n";
@@ -690,6 +691,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 	echo "\n\n<!-- END THE GROUP -->\n";
 	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 	echo "\n";
+	echo "\n\n</div>\n"; //Group-$gid
 }
 //echo "&nbsp;\n";
 $navigator = surveymover();
