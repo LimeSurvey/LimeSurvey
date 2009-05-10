@@ -1,5 +1,9 @@
-/* The following styles are for versions of IE older than 7 */
-
+/* The following styles are for all versions of IE */
+.multiple-short-txt ul
+{
+	margin-top: 0.4em;
+	margin-bottom: -0.8em;
+}
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
 ,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
 ,.multiple-opt-comments ul.X6  label.answertext , .multiple-short-txt ul.X6  label , .numeric-multi ul.X6  label
@@ -19,12 +23,49 @@
 	margin-bottom: -1.8em;
 	display: block;
 }
+
 .numeric-multi dl.multiplenumerichelp
 {
-	margin-top: -4.5em;
-	margin-bottom: 1em;
+	margin-top: -5.3em;
+	margin-bottom: 2em;
 }
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin-bottom: -1.5em;;
+	margin-right: 10em;
+	margin-bottom: -1.8em;
+}
+.numeric-multi dl.multiplenumerichelp dd
+{
+	margin: 0% 0% 0.5em 7em;
+}
+
+.innergraph img {
+height:16px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}
+
+.multiple-short-txt td.answer,
+.date td.answer,
+.yes-no td.answer,
+.list-radio td.answer,
+.list-radio-flexible td.answer,
+.choice-5-pt-radio td.answer,
+.gender td.answer {
+    padding-bottom:10px;
+}
+
+.date button
+{
+    line-height:15px;
+    height:21px;
+    width:22px;
+}
+
+td.questionhelp {
+    text-align:left;
+}
+
+.choice-5-pt-radio ul {
+    margin-left:15px;
 }

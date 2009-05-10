@@ -588,9 +588,9 @@ function validation_message($ia)
 			$helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
 			while ($helprow=$helpresult->FetchRow())
 			{
-				$help=' <span class="questionhelp">('.$helprow['help'].')</span>';
+				$help=' <span class="questionhelp">'.$helprow['help'].'</span>';
 			}
-			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').' '.$help.'</span><br />
+			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly.').' '.$help.'</span><br />
 ';
 		}
 	}
