@@ -2087,7 +2087,7 @@ if($action == "surveysecurity")
 		. "</tr>\n";
 		
 		if (isset($usercontrolSameGroupPolicy) &&
-			$usercontrolSameGroupPolicy === true)
+			$usercontrolSameGroupPolicy == true)
 		{
 			$authorizedGroupsList=getusergrouplist('simplegidarray');
 		}
@@ -2103,7 +2103,7 @@ if($action == "surveysecurity")
 				while ($resul3row = $result3->FetchRow())
 				{
 					if (!isset($usercontrolSameGroupPolicy) ||
-						$usercontrolSameGroupPolicy === false ||
+						$usercontrolSameGroupPolicy == false ||
 						in_array($resul3row['ugid'],$authorizedGroupsList))
 					{
 						$group_ids[] = $resul3row['ugid'];

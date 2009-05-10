@@ -1447,7 +1447,7 @@ function getuserlist($outputformat='fullinfoarray')
 		}
 
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && isset($usercontrolSameGroupPolicy) &&
-		$usercontrolSameGroupPolicy === true)
+		$usercontrolSameGroupPolicy == true)
 	{
 		if (isset($myuid))
 		{
@@ -4287,7 +4287,7 @@ function getsurveyuserlist()
     $surveynames = $surveyidresult->GetRows();
 
     if (isset($usercontrolSameGroupPolicy) &&
-		$usercontrolSameGroupPolicy === true)
+		$usercontrolSameGroupPolicy == true)
     {
 	$authorizedUsersList = getuserlist('onlyuidarray');
     }
@@ -4297,7 +4297,7 @@ function getsurveyuserlist()
         foreach($surveynames as $sv)
             {
 		if (!isset($usercontrolSameGroupPolicy) ||
-			$usercontrolSameGroupPolicy === false ||
+			$usercontrolSameGroupPolicy == false ||
 			in_array($sv['uid'],$authorizedUsersList))
 		{
 			$surveyselecter .= "\t\t\t<option";
@@ -4325,7 +4325,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
     $surveynames = $surveyidresult->GetRows();
 
     if (isset($usercontrolSameGroupPolicy) &&
-		$usercontrolSameGroupPolicy === true)
+		$usercontrolSameGroupPolicy == true)
     {
 	 $authorizedGroupsList=getusergrouplist('simplegidarray');
     }
@@ -4335,7 +4335,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
         foreach($surveynames as $sv)
             {
 		if (!isset($usercontrolSameGroupPolicy) ||
-			$usercontrolSameGroupPolicy === false ||
+			$usercontrolSameGroupPolicy == false ||
 			in_array($sv['ugid'],$authorizedGroupsList))
 		{
 			$surveyselecter .= "\t\t\t<option";

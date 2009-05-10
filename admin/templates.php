@@ -354,7 +354,7 @@ switch($screenname) {
 
 	$question="How many roads must a man walk down?";
 	$questioncode="1a";
-	$answer="<input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label><br /><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label><br /><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label><br />\n";
+	$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/question.pstpl"));
 
 	$question="Please explain your details:";
