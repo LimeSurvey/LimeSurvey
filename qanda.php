@@ -2837,6 +2837,7 @@ function do_multipleshorttext($ia)
 	 	while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
+			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
 			$answer_main .= "\t<li>\n"
 			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
 			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
@@ -3109,6 +3110,7 @@ function do_multiplenumeric($ia)
 		while ($ansrow = $ansresult->FetchRow())
 		{
 			$myfname = $ia[1].$ansrow['code'];
+			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
 			$answer_main .= "\t<li>\n\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n";
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{
