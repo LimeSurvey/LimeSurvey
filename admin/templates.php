@@ -869,23 +869,20 @@ function filetext($templatefile) {
 
 function makegraph($currentstep, $total)
 {
-	global $thissurvey, $publicurl, $templatename, $clang;
-	$shchart="$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";
-	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
-	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
-	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
-	$size=intval(($currentstep-1)/$total*100);
-	$graph .= "<td width='100' align='left'>\n"
-	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
-	. "<tr><td>\n"
-    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s %% complete"), $size)."' />\n"
-	. "</td></tr>\n"
-	. "</table>\n"
-	. "</td>\n"
-	. "<td align='left' width='40'>&nbsp;100%</td></tr>\n"
-	. "</table>\n"
-	. "</td></tr>\n</table>\n";
-	return $graph;
+    global $thissurvey;
+    global $publicurl, $clang;
+
+    $shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
+
+    $size = intval(($currentstep-1)/$total*100);
+    $graph = '<div id="progress-graph">
+    <span class="hide">You have completed '.$size.'% of this survey</span>
+
+            <div class="zero">0%</div>
+            <div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="You have completed '.$size.'% of this survey" /></div>
+            <div class="cent">100%</div>
+        </div>';
+    return $graph;
 }
 
 function mkdir_p($target){
