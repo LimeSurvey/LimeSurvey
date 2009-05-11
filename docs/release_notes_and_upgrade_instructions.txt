@@ -73,6 +73,41 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.82+ (build 6768) to 1.82+ (build 6825) [2009/05/11] - Legend: + new feature, # update feature, - bug fix
+
++New feature: Email address in surveylist is now 'encoded' (c_schmitz)
++New feature:Persistent connections for better performance (default: off) (c_schmitz)
++New feature: checks if the template have a print_survey.pstpl, if not, use the default template for print output (wahrendorff)
+
+#Updated translation: Polish - kindly provided by Elzbieta Lesinska (elisa) (c_schmitz)
+#Updated translation: Chinese Traditional by Mark Yeung http://www.pstudy.net (c_schmitz)
+#Updated translation: Danish by Robin Sharp ( robin -a-t- imm -d-o-t- dtu -d-o-t- dk ) (c_schmitz)
+#Updated translation: Dutch (100%) kindly provided by Francis Reynders  - freynder -a-t- gmail -d-o-t- com (c_schmitz)
+#Updated translation: Dutch by Francis Reynders  - freynder -a-t- gmail -d-o-t- com (c_schmitz)
+#Updated translation: French by Wael Almoman (walmoman (a-t) salesconquest (d-o-t) com) (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German informal (c_schmitz)
+#Updated translation: Lithuanian by Arnoldas Brazys (c_schmitz)
+
+-Fixed issue #3119: Other replace text was not replaced in printview (wahrendorff)
+-Fixed (partly) issue #3100: Anomaly generation in paper questionnaire. Issues remain with type 1 : and ; (lemeur)
+-Fixed issue #3103: Javascript error in IE6 when in 'resume later' screen (c_schmitz)
+-Fixed issue #3100: partly, the welcome and description text were in wrong order (wahrendorff)
+-Fixed issue: printablesurvey.php fails, if the template given is not available. (wahrendorff)
+-Fixed issue #2517: VVimport/export fails to correctly import/export "NULL" entries for submitdate (c_schmitz)
+-Fixed issue #2672: Limespired template having problems in IE6 - tested in IE6/7/8 & FF3 (c_schmitz)
+-Fixed issue #3073: Java Script Visible in 'get statistics from response' (c_schmitz)
+-Fixed issue #3077: Installation error - updating message column in assessments table (c_schmitz)
+-Fixed issue #3096: Layout error of multiple short text with firefox mozilla when answers are empty. (lemeur)
+-Fixed issue #3102: MSSQL install not finding creation files (c_schmitz)
+-Fixed issue #3115: Data Entry does not parse some strings to escape quotes (c_schmitz)
+-Fixed issue #3127: 'Click on scissor to remove item' -label does not translate. (lemeur)
+-Fixed issue: Checked default template for IE6/7/8 and FF3 (c_schmitz)
+-Fixed issue: VVImport not working on MSSQL. (c_schmitz)
+-Fixed possible XSS issue with token controlled surveys - Thank you to Ian Ward Comfort! (c_schmitz)
+-Fixed issue: other text was getting into the input field for some translations (wahrendorff)
+
+
 Changes from 1.82 (build 6757) to 1.82+ (build 6768) [2009/05/04] - Legend: + new feature, # update feature, - bug fix
 
 #Updated translation: Portuguese - kindly provided by Joao Cordeiro <jcfcsh atthotmail d0t com> (c_schmitz)
