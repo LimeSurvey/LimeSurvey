@@ -3036,10 +3036,10 @@ function templatereplace($line)
 		$saveform .= "' /></td></tr>\n";
         if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
         {
-		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+		    $saveform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
 		$saveform .= "<tr><td align='right'></td><td></td></tr>\n"
-		. "<tr><td></td><td><input type='submit' name='savesubmit' value='".$clang->gT("Save Now")."' /></td></tr>\n"
+		. "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='".$clang->gT("Save Now")."' /></td></tr>\n"
 		. "</table>";
 		$line=str_replace("{SAVEFORM}", $saveform, $line);
 	}
@@ -3061,7 +3061,7 @@ function templatereplace($line)
 
         
 		$loadform .="<tr><td align='right'></td><td></td></tr>\n"
-		. "<tr><td></td><td><input type='submit' value='".$clang->gT("Load Now")."' /></td></tr></table>\n";
+		. "<tr><td></td><td><input type='submit' id='loadbutton' value='".$clang->gT("Load Now")."' /></td></tr></table>\n";
 		$line=str_replace("{LOADFORM}", $loadform, $line);
 	}
 	//REGISTER SURVEY DETAILS
