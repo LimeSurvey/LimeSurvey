@@ -222,7 +222,7 @@ if ($surveyid &&
 		echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
-		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
+		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
 		."\t\t</center><br />\n";
 
 		echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
@@ -345,7 +345,7 @@ if (!$surveyid)
 	}
 	$surveylist=array(
 	                  "nosid"=>$clang->gT("You have not provided a survey identification number"),
-	                  "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail),
+	                  "contact"=>sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail)),
                       "listheading"=>$clang->gT("The following surveys are available:"),
 					  "list"=>implode("\n",$list),
 					  );
@@ -2667,6 +2667,44 @@ function check_quota($checkaction,$surveyid)
 	}
 
 }
+
+
+	function encodeEmail($mail, $text="", $class="", $params=array())
+	{
+		$encmail ="";
+		for($i=0; $i<strlen($mail); $i++)
+		{
+			$encMod = rand(0,2);
+	        switch ($encMod) {
+	        case 0: // None
+	            $encmail .= substr($mail,$i,1);
+	            break;
+	        case 1: // Decimal
+	            $encmail .= "&#".ord(substr($mail,$i,1)).';';
+	            break;
+	        case 2: // Hexadecimal
+				$encmail .= "&#x".dechex(ord(substr($mail,$i,1))).';';
+	            break;
+			}
+		}
+
+		if(!$text)
+		{
+			$text = $encmail;
+		}
+/*		$encmail = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;".$encmail;
+		$querystring = "";
+		foreach($params as $key=>$val)
+		{
+			if($querystring){
+				$querystring .= "&$key=".rawurlencode($val);
+			} else {
+				$querystring = "?$key=".rawurlencode($val);
+			}
+		}
+		return "<a class='$class' href='$encmail$querystring'>$text</a>"; */
+		return $text;
+	}
 
 
 ?>
