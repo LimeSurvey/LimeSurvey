@@ -1,36 +1,34 @@
-<table width="100%" align="center" cellspacing="0">
+<table style='width:100%; background-color:#FFFFFF; text-align:center;'>
     <tr>
-            <td align="center" bgcolor="#FFFFFF">
-             <p><font face="verdana" size="4" color="#328639"><strong>{SITENAME}</strong></font></p>
+            <td style='text-align:center;'>
+             <h1>{SITENAME}</h1>
             </td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
-             <strong>{SURVEYLISTHEADING}</strong>
+		<td  style='padding-top:20px; text-align:center;'>
+             <span style='font-weight:bold;'>{SURVEYLISTHEADING}</span>
          </td>
     </tr>
 	<tr>
-		<td align="center" bgcolor="#FFFFFF">
-             <table align="center">
-               <tr>
-                <td>
+		<td align="center"  style='padding:20px 0;'>
                 <ul>{SURVEYLIST}</ul>
-                </td>
-               </tr>
-             </table>
 		</td>
 	</tr>
       <tr>
-            <td align="center" bgcolor="#FFFFFF">
+            <td style='text-align:center;'>
              {SURVEYCONTACT}
             </td>
       </tr>
       <tr>
-            <td align="center" height="100px" bgcolor="#FFFFFF" valign="bottom">
-             <p>{LANGUAGECHANGER}</p>
-             <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
-             <a href="http://www.limesurvey.org" target="_blank"><font color="#000000">The Online Survey Tool</font></a> - Free & Open Source<br />
+            <td style='text-align:center;' height="100" valign="bottom">
+             <p  style='padding:20px 0;'>{LANGUAGECHANGER}</p>
+             <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a><br />
+             <span style='font-size:0.9em;'><a href="http://www.limesurvey.org" style='color:#000;' target="_blank">The Online Survey Tool</a> - Free &amp; Open Source</span><br />
             </td>
       </tr>
 </table>
-<body style="background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);">
+<style type="text/css">
+body {
+    background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);
+}
+</style>
