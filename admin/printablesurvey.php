@@ -604,6 +604,12 @@ while ($degrow = $degresult->FetchRow())
 			if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		}
 
+		$qidattributes=getQAttributes($deqrow['qid']);
+		
+		if (isset($qidattributes['page_break']))
+        {
+            $question['QUESTION_CLASS'] .=' breakbefore ';
+        }
 
 		switch($deqrow['type'])
 		{
@@ -651,10 +657,9 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "Z": //LIST Flexible drop-down/radio-button list
-					$qidattributes=getQuestionAttributes($deqrow['qid']);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+					if (isset($qidattributes["display_columns"]))
 					{
-						$dcols=$displaycols['value'];
+						$dcols=$qidattributes['display_columns'];
 					}
 					else
 					{
@@ -714,19 +719,18 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case '!': //List - dropdown
-					$qidattributes=getQuestionAttributes($deqrow['qid']);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+                    if (isset($qidattributes["display_columns"]))
 					{
-						$dcols=$displaycols['value'];
+						$dcols=$qidattributes['display_columns'];
 					}
 					else
 					{
 						$dcols=0;
 					}
 
-					if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+                    if (isset($qidattributes["category_separator"]))
 					{
-						$optCategorySeparator = $optCategorySeparator['value'];
+						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
 					{
@@ -836,25 +840,25 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-								
-				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+							
+                if (isset($qidattributes["display_columns"]))
 				{
-					$dcols=$displaycols['value'];
+					$dcols=$qidattributes['display_columns'];
 				}
 				else
 				{
 					$dcols=0;
 				}
-				if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+                if (!isset($qidattributes["max_answers"]))
 				{
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *all* that apply:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *all* that apply:"),"U");}
 				}
 				else
 				{
-					$question['QUESTION_TYPE_HELP'] = $clang->gT('Please choose *at most* ').' <span class="num">'.$maxansw['value'].'</span> '.$clang->gT('answers:');
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers:"),"U");}
+                    $maxansw=$qidattributes["max_answers"];
+					$question['QUESTION_TYPE_HELP'] = $clang->gT('Please choose *at most* ').' <span class="num">'.$maxansw.'</span> '.$clang->gT('answers:');
+					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers:"),"U");}
 				}
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -890,12 +894,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$qAttrib = getQAttributes($deqrow['qid']);
-					if(!isset($qAttrib["other_replace_text"]))
-					{$qAttrib["other_replace_text"]="Other";}
-					
-					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT($qAttrib["other_replace_text"]).":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
+					if(!isset($qidattributes["other_replace_text"]))
+					{
+                        $qidattributes["other_replace_text"]="Other";
+                    }
+					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT($qidattributes["other_replace_text"]).":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 //				};
@@ -918,16 +922,16 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+				if (!isset($qidattributes['max_answers']))
 				{
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 				}
 				else
 				{
-					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw['value'].'</span> '.$clang->gT("answers and provide a comment:");
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers and provide a comment:"),"U");}
+                    $maxansw=$qidattributes['max_answers'];
+					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
+					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
 				}
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -1209,27 +1213,26 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ":": //ARRAY (Multi Flexible) (Numbers)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-					$maxvalue=$maxvalue['value'];
+				if (isset($qidattributes['multiflexible_max'])) {
+					$maxvalue=$qidattributes['multiflexible_max'];
 				}
 				else
 				{
 					$maxvalue=10;
 				}
-				if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-					$minvalue=$minvalue['value'];
+                if (isset($qidattributes['multiflexible_min'])) {
+					$minvalue=$qidattributes['multiflexible_min'];
 				} else {
 					$minvalue=1;
 				}
-				if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-					$stepvalue=$stepvalue['value'];
+                if (isset($qidattributes['multiflexible_step'])) {
+					$stepvalue=$qidattributes['multiflexible_step'];
 				}
 				else
 				{
 					$stepvalue=1;
 				}
-				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                if (isset($qidattributes['multiflexible_checkbox'])) {
 					$checkboxlayout=true;
 				} else {
 					$checkboxlayout=false;
@@ -1315,7 +1318,6 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ";": //ARRAY (Multi Flexible) (text)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 
@@ -1432,25 +1434,23 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
+				if (isset($qidattributes['dualscale_headerA']))
 				{
-					$leftheader= $dsheaderA['value'];
+					$leftheader= $qidattributes['dualscale_headerA'];
 				}
 				else
 				{
 					$leftheader ='';
 				}
-				if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+                if (isset($qidattributes['dualscale_headerB']))
 				{
-					$rightheader= $dsheaderB['value'];
+					$rightheader= $qidattributes['dualscale_headerB'];
 				}
 				else
 				{
 					$rightheader ='';
 				}
 
-				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);

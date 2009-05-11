@@ -3249,6 +3249,12 @@ function buildLabelSetCheckSumArray()
 	return $csarray;
 }
 
+
+/**
+* Obsolete - please use getQAttributes instead
+* 
+* @param string $qid
+*/
 function getQuestionAttributes($qid)
 {
 	global $dbprefix, $connect;
@@ -3263,6 +3269,8 @@ function getQuestionAttributes($qid)
 	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
 	return $qid_attributes;
 }
+
+
 /**
  * 
  * returns a flat array with all question attributes for the question only (and the qid we gave it)!
@@ -3509,6 +3517,12 @@ function questionAttributes($returnByName=false)
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
 	"caption"=>$clang->gT('Value equals SQGA'));
+
+    $qattributes["page_break"]=array(
+    "types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
+    "caption"=>$clang->gT('Insert page break in printable view'));
+
 	
 	/* -- > Commented out since not yet used
 	$qattributes[]=array("name"=>"default_value",
