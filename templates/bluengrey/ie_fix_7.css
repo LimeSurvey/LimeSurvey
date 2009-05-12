@@ -1,42 +1,8 @@
-/* The following styles are for versions of IE older than 7 */
-
-#progress-graph div.graph 
+/* The following styles are for all versions of IE */
+.multiple-short-txt ul
 {
-	margin-top: -1.7em;
-}
-
-
- .numeric div.question
-,.choice-5-pt-radio div.question
-,.yes-no div.question
-,.gender div.question
-,.date div.question
-,.numeric-multi div.question
-,.numeric div.question
-,.list-with-comment div.question
-,.list-dropdown-flexible div.question
-,.ranking div.question
-,.numeric-multi div.question
-,.language div.question
-,.multiple-opt-comments div.question
-,.multiple-short-txt div.question
-,.text-short div.question
-,.text-long div.question
-,.text-huge div.question
-,.numeric-multi div.question
-,.array-5-pt div.question
-,.array-10-pt div.question
-,.array-yes-uncertain-no div.question
-,.array-increase-same-decrease div.question
-,.array-flexible-row div.question
-,.array-flexible-column div.question
-,.slider div.question
-,.array-multi-flexi div.question
-,.array-multi-flexi-text div.question
-,.array-flexible-duel-scale div.question
-{
-	margin: 1em 1em;
-	width: 100%;
+	margin-top: 0.4em;
+	margin-bottom: -0.8em;
 }
  .multiple-opt-comments ul.X2  label.answertext , .multiple-short-txt ul.X2  label , .numeric-multi ul.X2  label
 ,.multiple-opt-comments ul.X4  label.answertext , .multiple-short-txt ul.X4  label , .numeric-multi ul.X4  label
@@ -54,16 +20,52 @@
 ,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
 ,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
 {
-	margin-bottom: -1.2em;
+	margin-bottom: -1.8em;
 	display: block;
 }
 
 .numeric-multi dl.multiplenumerichelp
 {
-	margin-top: -5em;
+	margin-top: -5.3em;
+	margin-bottom: 2em;
 }
-
 .numeric-multi dl.multiplenumerichelp dt
 {
-	margin-bottom: -1.3em;
+	margin-right: 10em;
+	margin-bottom: -1.8em;
+}
+.numeric-multi dl.multiplenumerichelp dd
+{
+	margin: 0% 0% 0.5em 7em;
+}
+
+.innergraph img {
+height:16px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}
+
+.multiple-short-txt td.answer,
+.date td.answer,
+.yes-no td.answer,
+.list-radio td.answer,
+.list-radio-flexible td.answer,
+.choice-5-pt-radio td.answer,
+.gender td.answer {
+    padding-bottom:10px;
+}
+
+.date button
+{
+    line-height:15px;
+    height:21px;
+    width:22px;
+}
+
+td.questionhelp {
+    text-align:left;
+}
+
+.choice-5-pt-radio ul {
+    margin-left:15px;
 }

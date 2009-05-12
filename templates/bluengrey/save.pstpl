@@ -1,7 +1,8 @@
-<center>
+<div id='savetable'><center>
 <font color="red">{SAVEERROR}</font>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
+<h3>{SAVEHEADING}</h3><br />
 {SAVEMESSAGE}<br /><br />
 {SAVEFORM}<br />
 {RETURNTOSURVEY}
 </center>
+</div>

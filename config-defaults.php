@@ -175,7 +175,7 @@ $emailcharset = "UTF-8";                  // You can change this to change the c
 //      http://example.com/lime/survey/12345/lang-fr/tk-ertoiuy [^]
 
 // If you want to have fancy URLs, set this to 1 AND
-// rename htaccess.txt in the LimeSurvey root directory to .htaccees.
+// rename htaccess.txt in the LimeSurvey root directory to .htaccess
 // 
 // NOTE: You MUST have the Apache mod_rewrite module installed.
 // If you don't know what this is better leave this setting alone.
