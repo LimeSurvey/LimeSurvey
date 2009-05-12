@@ -16,7 +16,7 @@
 ,.multiple-opt-comments ul.X28 label.answertext , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label
 ,.multiple-opt-comments ul.X30 label.answertext , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label
 {
-	margin-bottom: -1.8em;
+	margin-bottom: -1.6em;
 	display: block;
 }
 .numeric-multi dl.multiplenumerichelp
@@ -59,4 +59,19 @@
 td.questionhelp
 {
     text-align:left;
+}
+
+div.input input
+{
+    margin-top:2px;
+    padding-left:2px;
+}
+
+li.other .answer-comment {
+    margin-top:-1.8em;
+}
+
+.choice-5-pt-radio li, .list-radio-flexible li, .list-radio li, .list-with-comment li, .multiple-opt li, .multiple-opt-comments li, .multiple-short-txt li, .numeric-multi li, .yes-no li, .gender li
+{
+    margin-bottom: 0.05em;
 }
