@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-09 21:17+0200\n"
-"PO-Revision-Date: 2009-05-09 21:59+0100\n"
-"Last-Translator: Elżbieta Lesińska <elesinska@wp.pl>\n"
+"POT-Creation-Date: 2009-05-12 09:17+0200\n"
+"PO-Revision-Date: 2009-05-13 01:53+0100\n"
+"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,7 @@ msgstr "Ta ankieta nie jest aktywna. Twoje odpowiedzi nie zostaną zapisane."
 # C:\limesurvey/survey.php:113
 #: /var/lib/limesurvey-svn/subversion1x/question.php:205
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:81
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1500
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1486
 #: /var/lib/limesurvey-svn/subversion1x/group.php:116
 msgid "Did Not Save"
 msgstr "Nie zapisano"
@@ -104,8 +104,8 @@ msgstr "Kliknij, aby wydrukować odpowiedzi."
 #: /var/lib/limesurvey-svn/subversion1x/question.php:261
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:143
 #: /var/lib/limesurvey-svn/subversion1x/group.php:194
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:529
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:403
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:541
 msgid "or"
 msgstr "lub"
 
@@ -575,10 +575,10 @@ msgstr "Nieaktywna"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1340
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1365
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1432
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4274
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4308
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4347
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4383
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4288
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4322
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4361
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4397
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:81
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:105
@@ -598,8 +598,8 @@ msgstr "Wybierz..."
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1341
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1366
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1433
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4309
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4348
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4323
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4362
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:746
 msgid "None"
 msgstr "Żadne"
@@ -867,7 +867,7 @@ msgstr "Ustawienia LimeSurvey"
 # C:\limesurvey/admin/install/createdb.php:68
 # C:\limesurvey/admin/install/createdb.php:100
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1680
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5250
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5264
 #: /var/lib/limesurvey-svn/subversion1x/save.php:567
 #: /var/lib/limesurvey-svn/subversion1x/index.php:471
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:29
@@ -1004,7 +1004,7 @@ msgstr "Pokaż odpowiedzi"
 # C:\limesurvey/admin/html.php:1102
 # C:\limesurvey/admin/html.php:2577
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1920
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5615
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5629
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:513
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:572
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1289
@@ -1018,7 +1018,7 @@ msgstr "Wybierz język:"
 # C:\limesurvey/admin/html.php:2593
 # C:\limesurvey/admin/tokens.php:699
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1925
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5631
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5645
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:990
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:60
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:518
@@ -1140,9 +1140,9 @@ msgstr "Domyślny"
 # C:\limesurvey/admin/tokens.php:571
 # C:\limesurvey/admin/tokens.php:1139
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2076
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1643
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1793
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1815
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1629
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1779
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1801
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:828
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1731
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:617
@@ -1360,9 +1360,9 @@ msgstr "Inne (jakie?)"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2243
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2249
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2265
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3652
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4118
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4171
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3654
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4120
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4173
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1208
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1333
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:718
@@ -1418,13 +1418,13 @@ msgstr "Inne (jakie?)"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3422
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3429
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3436
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:453
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1016
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1020
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1125
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1142
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1147
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:454
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:472
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1036
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1040
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1145
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1162
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:233
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:249
@@ -1519,9 +1519,9 @@ msgstr "Tak"
 # C:\limesurvey/admin/tokens.php:1047
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2250
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2266
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3661
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4120
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4189
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3663
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4122
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4191
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1209
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1334
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:724
@@ -1577,13 +1577,13 @@ msgstr "Tak"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3423
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3430
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3437
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:454
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:473
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1017
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1021
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1127
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1144
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:455
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:474
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1037
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1041
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1147
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1164
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:235
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:250
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:338
@@ -1659,8 +1659,8 @@ msgstr "Nie"
 # C:\limesurvey/admin/statistics.php:1425
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2251
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2259
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5236
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5241
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5250
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5255
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:760
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1139
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1300
@@ -1668,26 +1668,26 @@ msgstr "Nie"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1716
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1824
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1891
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3672
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3754
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3830
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3907
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3987
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4049
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4123
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4209
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4400
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4483
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4573
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4593
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4679
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5263
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5264
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5549
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5615
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5737
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5972
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6026
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3674
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3756
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3832
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3909
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3989
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4051
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4125
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4211
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4402
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4485
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4575
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4595
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4681
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5265
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5266
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5551
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5617
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5974
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6028
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1460
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1549
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1832
@@ -1748,16 +1748,16 @@ msgstr "Brak odpowiedzi"
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2257
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3729
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3731
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1327
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:707
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3198
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:862
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1950
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2111
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:460
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:625
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:629
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:647
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:254
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:341
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:845
@@ -1786,16 +1786,16 @@ msgstr "Mężczyzna"
 # C:\limesurvey/admin/statistics.php:1322
 # C:\limesurvey/admin/stats.php:671
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2258
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3710
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3712
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1326
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:701
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3197
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:859
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1951
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2110
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:461
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:624
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:629
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:462
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:646
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:342
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:844
@@ -1823,18 +1823,18 @@ msgstr "Kobieta"
 # C:\limesurvey/admin/statistics.php:1285
 # C:\limesurvey/admin/stats.php:567
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2267
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4119
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4179
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4181
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1210
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:893
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3059
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1379
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1962
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2658
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:472
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1126
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1143
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1147
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:473
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1146
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:368
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:580
@@ -1860,17 +1860,17 @@ msgstr "Nie wiem"
 # C:\limesurvey/admin/statistics.php:1296
 # C:\limesurvey/admin/stats.php:589
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2273
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4395
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4442
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4397
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4444
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1227
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:945
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3076
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1982
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2677
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:479
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1165
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1181
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:480
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1185
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1201
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:238
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:360
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:584
@@ -1896,17 +1896,17 @@ msgstr "Wzrost"
 # C:\limesurvey/admin/statistics.php:1298
 # C:\limesurvey/admin/stats.php:599
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2274
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4397
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4465
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4399
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4467
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1229
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:955
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3078
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1983
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2679
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:480
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1183
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1185
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:481
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1187
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1203
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:240
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:586
@@ -1932,17 +1932,17 @@ msgstr "Spadek"
 # C:\limesurvey/admin/statistics.php:1297
 # C:\limesurvey/admin/stats.php:594
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2275
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4396
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4453
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4398
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4455
 #: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1228
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:950
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3077
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1984
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2678
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:481
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1166
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1182
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1185
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:482
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1186
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1202
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:239
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:361
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:585
@@ -1987,7 +1987,7 @@ msgstr "Ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 # C:\limesurvey/admin/dataentry.php:1240
 # C:\limesurvey/admin/dataentry.php:2210
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2823
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2287
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2273
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:207
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1586
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2951
@@ -2078,9 +2078,9 @@ msgstr "Uruchom ponownie tę ankietę"
 # C:\limesurvey/survey.php:144
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3009
 #: /var/lib/limesurvey-svn/subversion1x/index.php:592
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1700
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1737
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1917
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1686
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1723
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1903
 #: /var/lib/limesurvey-svn/subversion1x/register.php:158
 msgid "Close this Window"
 msgstr "Zamknij to okno"
@@ -2161,9 +2161,9 @@ msgstr "Twój email"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3039
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3059
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3110
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1600
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1662
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1823
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1586
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1648
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1809
 msgid "Security Question"
 msgstr "Pytanie bezpieczeństwa"
 
@@ -2318,9 +2318,9 @@ msgstr "Adres e-mail"
 # C:\limesurvey/admin/userrighthandling.php:978
 # C:\limesurvey/admin/userrighthandling.php:983
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3135
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1603
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1665
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1826
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1589
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1651
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1812
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:299
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:318
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1256
@@ -2393,12 +2393,12 @@ msgstr "Kontynuuj"
 msgid "Your Assessment"
 msgstr "Twoja ocena"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3305
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3306
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3313
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3314
 msgid "Sort answers alphabetically"
 msgstr "Sortuj odpowiedzi alfabetycznie"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3310
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3318
 msgid "The percentage width of the answer column"
 msgstr "Procentowa szerokość kolumny odpowiedzi"
 
@@ -2406,138 +2406,138 @@ msgstr "Procentowa szerokość kolumny odpowiedzi"
 # C:\limesurvey/admin/results.php:212
 # C:\limesurvey/admin/results.php:214
 # C:\limesurvey/admin/results.php:282
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3311
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3319
 msgid "Answer width"
 msgstr "Szerokość pola odpowiedzi"
 
 # C:\limesurvey/admin/activate.php:241
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3315
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3323
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "Filtr odpowiedzi dla pytań wielokrotnego wyboru"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3316
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3324
 msgid "Array filter"
 msgstr "Filtruj"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3320
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3321
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3328
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3329
 msgid "Category Separator"
 msgstr "Separator kategorii"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3325
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3333
 msgid "Filter the available answers by this value"
 msgstr "Filtruj dostępne odpowiedzi wg wartości"
 
 # C:\limesurvey/admin/statistics.php:1571
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3326
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3334
 msgid "Code filter"
 msgstr "Filtruj kod"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3330
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3338
 msgid "Number of columns to display"
 msgstr "Liczba pokazywanych kolumn"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3331
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3339
 msgid "Display columns"
 msgstr "Pokaż kolumny"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3335
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3343
 msgid "How many rows to display"
 msgstr "Liczba wierszy do pokazania"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3336
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3344
 msgid "Display rows"
 msgstr "Pokaż wiersze"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3340
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3348
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Ukryj podpowiedź domyślnie pokazywaną przy pytaniu"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:760
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3341
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3349
 msgid "Hide tip"
 msgstr "Ukryj podpowiedź"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3345
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3353
 msgid "Limit the number of possible answers"
 msgstr "Limit liczby potencjalnych odpowiedzi"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3346
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3354
 msgid "Maximum answers"
 msgstr "Maksymalnie odpowiedzi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3350
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3358
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksymalna suma dla wielokrotnej wartości liczbowej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3351
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3359
 msgid "Maximum sum value"
 msgstr "Maksymalna suma"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3355
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3363
 msgid "Maximum characters allowed"
 msgstr "Dozwolona maksymalna liczba znaków"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3356
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3364
 msgid "Maximum characters"
 msgstr "Maksymalnie znaków"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3360
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3368
 msgid "Ensure a minimum number of possible answers"
 msgstr "Zapewnij minimalną liczbę potencjalnych odpowiedzi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3361
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3369
 msgid "Minimum answers"
 msgstr "Minimalnie odpowiedzi"
 
 # C:\limesurvey/common.php:704
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3365
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3373
 msgid "Allow only numerical input"
 msgstr "Zezwól tylko na wartość liczbową"
 
 # C:\limesurvey/admin/statistics.php:156
 # C:\limesurvey/admin/statistics.php:305
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3366
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3374
 msgid "Numbers only"
 msgstr "Tylko liczby"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3370
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3378
 msgid "Present answers in random order"
 msgstr "Prezentuj odpowiedzi w losowej kolejności"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3371
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3379
 msgid "Random answer order"
 msgstr "Losowa kolejność wariantów odpowiedzi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3375
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3383
 msgid "Width of text input box"
 msgstr "Szerokość pola tekstowego"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3376
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3384
 msgid "Input box width"
 msgstr "Szerokość pola"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3380
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3388
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi równać się"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3381
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3389
 msgid "Equals sum value"
 msgstr "Suma wprowadzanych wartości"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3385
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3393
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi być większa niż"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3386
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3394
 msgid "Minimum sum value"
 msgstr "Minimalna suma dla wprowadzanych wartości"
 
@@ -2549,41 +2549,41 @@ msgstr "Minimalna suma dla wprowadzanych wartości"
 # C:\limesurvey/admin/html.php:2188
 # C:\limesurvey/admin/html.php:2193
 # C:\limesurvey/admin/html.php:2198
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3390
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3391
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3398
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3399
 msgid "Use slider layout"
 msgstr "Użyj formy suwaka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3395
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3396
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3403
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3404
 msgid "Slider minimum value"
 msgstr "Minimalna wartość suwaka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3400
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3401
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3408
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3409
 msgid "Slider maximum value"
 msgstr "Maksymalna wartość suwaka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3405
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3406
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3413
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3414
 msgid "Slider accuracy"
 msgstr "Dokładność suwaka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3410
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3411
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3418
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3419
 msgid "Slider initial value"
 msgstr "Wartość początkowa suwaka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3415
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3423
 msgid "Add a prefix to the answer field"
 msgstr "Dodaj prefiks do pola odpowiedzi"
 
 # C:\limesurvey/common.php:1558
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3416
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3424
 msgid "Answer prefix"
 msgstr "Prefiks odpowiedzi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3420
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3428
 msgid "Add a suffix to the answer field"
 msgstr "Dodaj sufiks do pola odpowiedzi"
 
@@ -2592,65 +2592,65 @@ msgstr "Dodaj sufiks do pola odpowiedzi"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3421
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3429
 msgid "Answer suffix"
 msgstr "Sufiks odpowiedzi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3425
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3433
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Użyj odpowiednich pól zamiast okna kalendarza"
 
 # C:\limesurvey/common.php:1249
 # C:\limesurvey/admin/saved.php:149
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3426
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3434
 msgid "Display select boxes"
 msgstr "Pokaż pola wyboru"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3430
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3438
 msgid "Minimum year value for dropdown list"
 msgstr "Minimalny rok dla listy rozwijanej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3431
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3439
 msgid "Minimum dropdown year"
 msgstr "Minimalny rok dla listy"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3435
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3443
 msgid "Maximum year value for dropdown list"
 msgstr "Maksymalny rok dla listy rozwijanej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3436
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3444
 msgid "Maximum dropdown year"
 msgstr "Maksymalny rok dla listy"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3440
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3448
 msgid "Excludes all other options if this is selected"
 msgstr "Wyklucza wszystkie inne opcje w przypadku tego wyboru"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3441
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3449
 msgid "Exclusive option"
 msgstr "Opcja wykluczająca"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3445
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3453
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maksymalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3446
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3454
 msgid "Maximum value"
 msgstr "Maksimum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3450
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3458
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1097
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3451
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3459
 msgid "Minimum value"
 msgstr "Minimum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3455
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3463
 msgid "Step value for array (multi-flexible) question type"
 msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 
@@ -2670,148 +2670,156 @@ msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3456
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3464
 msgid "Step value"
 msgstr "Wartość kroku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3460
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3468
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "Użyj pola wyboru dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/login_check.php:58
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3461
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3469
 msgid "Checkbox layout"
 msgstr "Układ pola wyboru"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3465
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3473
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "Użyj podwójnej listy rozwijanej zamiast podwójnej skali"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3466
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3474
 msgid "Dual dropdown"
 msgstr "Podwójna lista rozwijana"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3470
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3478
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefiks|Sufiks dla listy rozwijanej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3471
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3479
 msgid "Prefix|Suffix"
 msgstr "Prefiks|Sufiks"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3475
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3483
 msgid "Header for scale A"
 msgstr "Nagłówek dla skali A"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3476
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3484
 msgid "Header scale A"
 msgstr "Nagłówek skali A"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3480
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3488
 msgid "Header for scale B"
 msgstr "Nagłówek dla skali B"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3481
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3489
 msgid "Header scale B"
 msgstr "Nagłówek skali B"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3485
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3493
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Answer-Separator|Separator-pośredni dla listy rozwijanej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3486
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3494
 msgid "Dropdown separators"
 msgstr "Separatory dla listy rozwijanej"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3490
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3498
 msgid "Replaces the 'other' label with text"
 msgstr "Zastępuje etykietę 'inne' tekstem"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3491
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3499
 msgid "\"Other\" caption"
 msgstr "Nagłówek \"Inne\""
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3495
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3503
 msgid "Show statistics of a certain question to the user"
 msgstr "Pokaż użytkownikowi statystyki pytania"
 
 # C:\limesurvey/admin/importoldresponses.php:58
 # C:\limesurvey/admin/statistics.php:99
 # C:\limesurvey/admin/stats.php:101
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3496
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3504
 msgid "Show in public statistics"
 msgstr "Pokaż w statystyce"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3500
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3508
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "Kod SQGA do wykorzystania sumy z poprzedniego pytania jako maksimum dla tego pytania"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3501
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3509
 msgid "Max value from SQGA"
 msgstr "Wartość maksymalna z SQGA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3505
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3513
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "Kod SQGA do wykorzystania sumy z poprzedniego pytania jako minimum dla tego pytania"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3506
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3514
 msgid "Min value from SQGA"
 msgstr "Wartość minimalna z SQGA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3510
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3518
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "Kod SQGA do wykorzystania sumy z poprzedniego pytania jako sumy dla tego pytania"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3511
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3519
 msgid "Value equals SQGA"
 msgstr "Wartość równa SQGA"
+
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3523
+msgid "Insert a page break before this question in printable view by setting this to 1."
+msgstr "Wstaw podział strony przed tym pytaniem w widoku wydruku ustawiając 1."
+
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3524
+msgid "Insert page break in printable view"
+msgstr "Wstaw podział strony w widoku wydruku"
 
 # C:\limesurvey/admin/conditions.php:611
 # C:\limesurvey/admin/conditions.php:659
 # C:\limesurvey/admin/html.php:999
 # C:\limesurvey/admin/statistics.php:1630
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3676
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3690
 msgid "Version"
 msgstr "Wersja"
 
 # C:\limesurvey/common.php:2399
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3685
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3699
 msgid "Online Manual"
 msgstr "Podręcznik online"
 
 # C:\limesurvey/common.php:2402
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3688
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3702
 msgid "Support this project - Donate to "
 msgstr "Wspomóż ten projekt - przekaż darowiznę "
 
 # C:\limesurvey/common.php:2405
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3691
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3705
 msgid "Visit our website!"
 msgstr "Odwiedź naszą stronę!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3806
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3820
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nie został wysłany (funkcja wysyłania jest nieaktywna w trybie demo)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3947
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3961
 msgid "Local Submission"
 msgstr "Lokalny"
 
 # C:\limesurvey/common.php:2750
 # C:\limesurvey/common.php:2755
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4157
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4163
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4171
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4177
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:114
 msgid "Executing"
 msgstr "Wykonuję"
 
 # C:\limesurvey/common.php:2750
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4157
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4171
 msgid "Failed! Reason: "
 msgstr "Błąd! Powód:"
 
 # C:\limesurvey/common.php:2755
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4163
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4177
 msgid "Success!"
 msgstr "Udane!"
 
@@ -2847,8 +2855,8 @@ msgstr "Hasło jest nieprawidłowe."
 # C:\limesurvey/save.php:221
 #: /var/lib/limesurvey-svn/subversion1x/save.php:246
 #: /var/lib/limesurvey-svn/subversion1x/index.php:537
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1574
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1767
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1560
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1753
 #: /var/lib/limesurvey-svn/subversion1x/register.php:57
 msgid "The answer to the security question is incorrect"
 msgstr "Odpowiedź na pytanie bezpieczeństwa jest nieprawidłowa"
@@ -3018,8 +3026,8 @@ msgstr "To jest ankieta z ograniczonym dostępem. Musisz podać token, aby ją w
 # C:\limesurvey/index.php:298
 # C:\limesurvey/index.php:1128
 #: /var/lib/limesurvey-svn/subversion1x/index.php:588
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1696
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1733
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1682
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1719
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Wprowadzony numer tokena jest albo nieprawidłowy, albo był już wykorzystany."
 
@@ -3027,9 +3035,9 @@ msgstr "Wprowadzony numer tokena jest albo nieprawidłowy, albo był już wykorz
 # C:\limesurvey/index.php:1129
 # C:\limesurvey/index.php:1213
 #: /var/lib/limesurvey-svn/subversion1x/index.php:589
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1697
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1734
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1914
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1683
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1720
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1900
 #, php-format
 msgid "For further information contact %s"
 msgstr "W celu uzyskania informacji skontaktuj się z %s"
@@ -3045,134 +3053,134 @@ msgid "There is no matching saved survey"
 msgstr "Nie ma zapisanej takiej ankiety."
 
 # C:\limesurvey/admin/printablesurvey.php:690
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1409
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1395
 msgid "Answer Submission for Survey"
 msgstr "Nowa odpowiedź w badaniu"
 
 # C:\limesurvey/index.php:960
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1411
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1397
 msgid "Survey Submitted"
 msgstr "Ankieta wysłana"
 
 # C:\limesurvey/index.php:961
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1412
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1398
 msgid "A new response was entered for your survey"
 msgstr "Nowa odpowiedź w badaniu"
 
 # C:\limesurvey/index.php:964
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1415
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1401
 msgid "Click the following link to reload the survey:"
 msgstr "Kliknij na poniższy link, aby odświeżyć stronę z ankietą:"
 
 # C:\limesurvey/index.php:968
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1419
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1405
 msgid "Click the following link to see the individual response:"
 msgstr "Kliknij na poniższy link, aby zobaczyć odpowiedzi:"
 
 # C:\limesurvey/index.php:971
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1422
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1408
 msgid "Click the following link to edit the individual response:"
 msgstr "Kliknij na poniższy link, aby edytować odpowiedzi:"
 
 # C:\limesurvey/index.php:974
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1425
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1411
 msgid "View statistics by clicking here:"
 msgstr "Kliknij tu, aby zobaczyć statystyki"
 
 # C:\limesurvey/index.php:1025
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1501
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1487
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Pojawił się nieoczekiwany błąd i Twoje odpowiedzi nie mogły być zapisane."
 
 # C:\limesurvey/index.php:1028
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1504
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1490
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Twoje odpowiedzi nie zostały utracone. Zostały wysłane do administratora strony, który umieści je w bazie danych."
 
 # C:\limesurvey/index.php:1029
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1505
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1491
 msgid "An error occurred saving a response to survey id"
 msgstr "Pojawił się nieoczekiwany błąd podczas zapisywania odpowiedzi."
 
 # C:\limesurvey/index.php:1030
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1506
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1492
 msgid "DATA TO BE ENTERED"
 msgstr "DANE DO WPROWADZENIA"
 
 # C:\limesurvey/index.php:1035
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1511
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1497
 msgid "SQL CODE THAT FAILED"
 msgstr "Kod SQL, który sprawił problem"
 
 # C:\limesurvey/index.php:1037
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1513
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1499
 msgid "ERROR MESSAGE"
 msgstr "KOMUNIKAT BŁĘDU"
 
 # C:\limesurvey/index.php:1039
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1515
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1501
 msgid "Error saving results"
 msgstr "Błąd podczas zapisywania wyników"
 
 # C:\limesurvey/index.php:1047
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1523
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1509
 msgid "Try to submit again"
 msgstr "Spróbuj wysłać ponownie"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1577
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1563
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Aby uzyskać dostęp do ankiety, odpowiedz na poniższe pytanie."
 
 # C:\limesurvey/index.php:297
 # C:\limesurvey/index.php:1085
 # C:\limesurvey/index.php:1127
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1635
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1695
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1732
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1770
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1621
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1681
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1718
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1756
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Dostęp do ankiety jest ograniczony. Musisz posiadać token, aby ją wypełnić."
 
 # C:\limesurvey/index.php:1086
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1636
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1622
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Jeśli otrzymałaś/-łeś token, wprowadź go do poniższego pola oraz kliknij \"Dalej\"."
 
 # C:\limesurvey/index.php:1086
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1775
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1761
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Jeśli otrzymałaś/-łeś token, wprowadź go do poniższego pola oraz kliknij \"Dalej\"."
 
 # C:\limesurvey/index.php:1086
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1797
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1783
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Potwierdź otrzymany token i odpowiedz na poniższe pytanie bezpieczeństwa, a następnie kliknij \"Dalej\"."
 
 # C:\limesurvey/index.php:1212
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1913
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1899
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "W ankiecie nie ma jeszcze żadnych pytań i nie można jej testować ani wypełniać."
 
 # C:\limesurvey/admin/templates.php:591
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2266
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2653
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2252
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2639
 msgid "Previous"
 msgstr "Wstecz"
 
 # C:\limesurvey/index.php:1436
 # C:\limesurvey/index.php:1441
 # C:\limesurvey/index.php:1446
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2271
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2277
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2282
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2257
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2263
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2268
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:542
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:618
 msgid "Next"
 msgstr "Dalej"
 
 # C:\limesurvey/admin/html.php:2377
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2639
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2652
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2625
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2638
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Przepraszamy, ale wyczerpano limit odpowiedzi w tym badaniu."
 
@@ -3225,8 +3233,8 @@ msgstr "Oceń co najmniej %d elementów"
 # C:\limesurvey/qanda.php:313
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:433
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1237
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1238
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1256
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1257
 msgid "Check any that apply"
 msgstr "Wybierz właściwe odpowiedzi"
 
@@ -3259,15 +3267,15 @@ msgstr "Wybierz język"
 # C:\limesurvey/qanda.php:376
 # C:\limesurvey/admin/printablesurvey.php:249
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:560
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:571
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:573
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:587
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:589
 msgid "*"
 msgstr "*"
 
 # C:\limesurvey/qanda.php:409
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:593
-msgid "This question must be answered correctly"
-msgstr "Należy odpowiedzieć na to pytanie"
+msgid "This question must be answered correctly."
+msgstr "Należy odpowiedzieć na to pytanie w odpowiedni sposób."
 
 # C:\limesurvey/qanda.php:426
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:612
@@ -3487,8 +3495,8 @@ msgstr "(np.: 2007-12-24 dla Wigilii Bożego Narodzenia)"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:948
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1120
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1282
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5952
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6006
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5954
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6008
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:856
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:880
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:927
@@ -3590,79 +3598,80 @@ msgstr "Proszę wybrać co najmniej %d odpowiedzi w pytaniu \"%s\""
 # C:\limesurvey/admin/printablesurvey.php:395
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2618
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2645
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:795
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:797
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:815
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:817
 msgid "Make a comment on your choice here:"
 msgstr "Wprowadź komentarz do swojej odpowiedzi:"
 
 # C:\limesurvey/qanda.php:426
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2833
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3104
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4132
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5800
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3105
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4134
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5802
 msgid "Error: This question has no answers."
 msgstr "Błąd: To pytanie nie ma zdefiniowanych wariantów odpowiedzi."
 
 # C:\limesurvey/qanda.php:1627
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3183
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3185
 msgid "Only numbers may be entered in these fields"
 msgstr "Można wprowadzać tylko liczby"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3187
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3189
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Suma wszystkich nie może być wyższa niż %d"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3191
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3193
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Suma wszystkich musi być równa %d"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3195
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3197
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Suma wszystkich musi równać się co najmniej %s"
 
 # C:\limesurvey/admin/assessments.php:109
 # C:\limesurvey/admin/assessments.php:128
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3275
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3277
 msgid "Total: "
 msgstr "Razem"
 
 # C:\limesurvey/common.php:708
 # C:\limesurvey/admin/exportresults.php:538
 # C:\limesurvey/admin/statistics.php:1050
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3278
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3280
 msgid "Remaining: "
 msgstr "Pozostało:"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3324
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3332
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3368
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3379
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3326
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3334
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3370
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3381
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odpowiedź błędna. Liczba ogólna nie powinna przekraczać"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3353
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3347
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3355
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Niepoprawna odpowiedź. Suma wszystkich pozycji powinna wynosić co najmniej %s."
 
 # C:\limesurvey/qanda.php:1627
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3449
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3451
 msgid "Only numbers may be entered in this field"
 msgstr "Można wprowadzać tylko liczby"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4720
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4944
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5233
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5377
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6052
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4722
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4946
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5235
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5379
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6054
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Błąd: Zestaw etykiet wykorzystywany w bieżącym pytaniu nie jest dostępny dla bieżącego języka lub nie istnieje."
 
 # C:\limesurvey/admin/labels.php:127
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5371
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5373
 msgid "Error: There are no answers defined for this question."
 msgstr "Błąd: musisz podać warianty odpowiedzi dla tego pytania."
 
@@ -5435,7 +5444,7 @@ msgstr "LUB pomiędzy"
 # C:\limesurvey/admin/statistics.php:327
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:270
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:663
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:412
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:413
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1382
 msgid "and"
 msgstr "i"
@@ -7600,12 +7609,6 @@ msgstr "Wczytaj plik"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:746
 msgid "Preview:"
 msgstr "Podgląd:"
-
-# C:\limesurvey/index.php:490
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:881
-#, php-format
-msgid "%s %% complete"
-msgstr "%s %% zakończonych"
 
 # C:\limesurvey/admin/importquestion.php:45
 # C:\limesurvey/admin/questionhandling.php:137
@@ -9853,47 +9856,47 @@ msgstr "Wszystkie powiązania między pytaniami zostały usunięte."
 
 # C:\limesurvey/admin/printablesurvey.php:690
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:129
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1663
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1679
 msgid "Submit Your Survey."
 msgstr "Wyślij ankietę."
 
 # C:\limesurvey/admin/printablesurvey.php:691
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:131
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1663
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1679
 msgid "Thank you for completing this survey."
 msgstr "Dziękujemy za wypełnienie ankiety. "
 
 # C:\limesurvey/admin/printablesurvey.php:691
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:144
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1661
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1677
 msgid "Please fax your completed survey to:"
 msgstr "Wyślij wypełnioną ankietę na numer faksu:"
 
 # C:\limesurvey/admin/statistics.php:736
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:149
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1657
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1673
 #, php-format
 msgid "Please submit by %s"
 msgstr "Prosimy o dostarczenie ankiety przed %s"
 
 # C:\limesurvey/admin/printablesurvey.php:130
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:421
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:429
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:422
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:430
 msgid "if you answered"
 msgstr "jeśli odpowiedzi już udzielono"
 
 # C:\limesurvey/admin/printablesurvey.php:130
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:425
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:426
 msgid "if you have NOT answered"
 msgstr "jeśli nie udzielono odpowiedzi"
 
 # C:\limesurvey/admin/printablesurvey.php:231
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:536
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:550
 msgid "to question"
 msgstr "do pytania"
 
 # C:\limesurvey/admin/printablesurvey.php:237
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:543
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:557
 #, php-format
 msgid "Only answer this question %s"
 msgstr "Należy udzielić odpowiedzi na to pytanie (%s)"
@@ -9904,72 +9907,72 @@ msgstr "Należy udzielić odpowiedzi na to pytanie (%s)"
 # C:\limesurvey/admin/printablesurvey.php:346
 # C:\limesurvey/admin/printablesurvey.php:388
 # C:\limesurvey/admin/printablesurvey.php:527
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:596
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:597
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:621
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:628
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:647
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:648
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:720
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:722
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:783
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:784
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1015
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1019
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:618
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:619
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:643
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:650
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:668
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:669
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:740
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:742
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:803
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:804
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1035
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1039
 msgid "Please choose *only one* of the following:"
 msgstr "Proszę wybrać jedną odpowiedź z poniższych:"
 
 # C:\limesurvey/admin/printablesurvey.php:275
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:613
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:615
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:635
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:637
 msgid "Please enter a date:"
 msgstr "Proszę wprowadzić datę"
 
 # C:\limesurvey/admin/printablesurvey.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:810
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:830
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Proszę ponumerować elementy wg stopnia istotności począwszy od 1 do"
 
 # C:\limesurvey/admin/printablesurvey.php:402
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:811
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:831
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Proszę ponumerować elementy wg stopnia istotności począwszy od 1 do"
 
 # C:\limesurvey/admin/printablesurvey.php:421
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:835
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:836
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:854
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:855
 msgid "Please choose *all* that apply:"
 msgstr "Proszę wybrać wszystkie, które pasują"
 
 # C:\limesurvey/admin/printablesurvey.php:425
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:840
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:841
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:913
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:914
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:860
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:861
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:934
 msgid "Please choose *at most* "
 msgstr "Proszę wybrać najwyżej"
 
 # C:\limesurvey/admin/printablesurvey.php:425
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:840
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:841
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:860
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:861
 msgid "answers:"
 msgstr "odpowiedzi:"
 
 # C:\limesurvey/admin/printablesurvey.php:481
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:908
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:909
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:927
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:928
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Proszę wybrać wszystkie pasujące odpowiedzi oraz dodać komentarz"
 
 # C:\limesurvey/admin/printablesurvey.php:481
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:913
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:914
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:934
 msgid "answers and provide a comment:"
 msgstr "odpowiedzi i dodać komentarz:"
 
 # C:\limesurvey/admin/printablesurvey.php:496
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:951
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:953
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:971
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:973
 msgid "Please write your answer(s) here:"
 msgstr "Proszę wpisać odpowiedź/odpowiedzi tutaj:"
 
@@ -9977,14 +9980,14 @@ msgstr "Proszę wpisać odpowiedź/odpowiedzi tutaj:"
 # C:\limesurvey/admin/printablesurvey.php:515
 # C:\limesurvey/admin/printablesurvey.php:519
 # C:\limesurvey/admin/printablesurvey.php:523
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:970
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:972
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:979
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:982
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:990
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:992
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:995
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1005
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1008
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:999
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1002
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1012
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1015
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1028
 msgid "Please write your answer here:"
 msgstr "Proszę wpisać odpowiedź tutaj:"
 
@@ -9994,25 +9997,25 @@ msgstr "Proszę wpisać odpowiedź tutaj:"
 # C:\limesurvey/admin/printablesurvey.php:590
 # C:\limesurvey/admin/printablesurvey.php:610
 # C:\limesurvey/admin/printablesurvey.php:647
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1029
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1046
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1083
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1091
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1118
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1132
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1158
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1172
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1359
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1368
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1441
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1443
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1535
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1536
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1049
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1066
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1103
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1111
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1138
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1152
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1178
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1192
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1377
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1386
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1457
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1459
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1551
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1552
 msgid "Please choose the appropriate response for each item:"
 msgstr "Proszę wybrać odpowiednią odpowiedź przy każdym elemencie:"
 
 # C:\limesurvey/common.php:1868
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1587
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1603
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 
