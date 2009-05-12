@@ -1190,7 +1190,7 @@ function do_list_dropdown($ia)
 		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
-		$answer .= "' onchange='checkconditions(this.value, this.name, this.type);'";
+		$answer .= " onchange='checkconditions(this.value, this.name, this.type);'";
 		$thisfieldname="$ia[1]other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		$answer .= ' />';
