@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-28 20:17+0200\n"
-"PO-Revision-Date: 2009-04-28 19:54-0000\n"
+"POT-Creation-Date: 2009-05-13 02:17+0200\n"
+"PO-Revision-Date: 2009-05-13 02:33-0000\n"
 "Last-Translator: Mac Duy Hai <macduy@gmail.com>\n"
 "Language-Team: LimeSurvey Team <lukas.slansky@upce.cz>\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr "Průzkum není nyní aktivní. Nebudete moci uložit Vaše odpovědi."
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:205
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:81
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1500
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1486
 #: /var/lib/limesurvey-svn/subversion1x/group.php:116
 msgid "Did Not Save"
 msgstr "Neuloženo"
@@ -77,8 +77,8 @@ msgstr "Vytištění odpovědí."
 #: /var/lib/limesurvey-svn/subversion1x/question.php:261
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:143
 #: /var/lib/limesurvey-svn/subversion1x/group.php:194
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:392
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:519
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:403
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:541
 msgid "or"
 msgstr "nebo"
 
@@ -298,80 +298,80 @@ msgstr "Thajština"
 msgid "Vietnamese"
 msgstr "Vietnamština"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:273
+#: /var/lib/limesurvey-svn/subversion1x/common.php:291
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Varování: stále používáte výchozí heslo ('password'). Prosím změňte je a znovu se přihlaste."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:275
+#: /var/lib/limesurvey-svn/subversion1x/common.php:293
 msgid "Administration"
 msgstr "Administrace"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:278
+#: /var/lib/limesurvey-svn/subversion1x/common.php:296
 msgid "Logged in as"
 msgstr "Přihlášen jako"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:284
-#: /var/lib/limesurvey-svn/subversion1x/common.php:285
+#: /var/lib/limesurvey-svn/subversion1x/common.php:302
+#: /var/lib/limesurvey-svn/subversion1x/common.php:303
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:578
 msgid "Default Administration Page"
 msgstr "Přednastavená administrátorská stránka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:294
-#: /var/lib/limesurvey-svn/subversion1x/common.php:296
+#: /var/lib/limesurvey-svn/subversion1x/common.php:312
+#: /var/lib/limesurvey-svn/subversion1x/common.php:314
 msgid "Create/Edit Users"
 msgstr "Vytvořit/editovat uživatele"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:300
-#: /var/lib/limesurvey-svn/subversion1x/common.php:301
+#: /var/lib/limesurvey-svn/subversion1x/common.php:318
+#: /var/lib/limesurvey-svn/subversion1x/common.php:319
 msgid "Create/Edit Groups"
 msgstr "Vytvořit/editovat skupiny"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:306
-#: /var/lib/limesurvey-svn/subversion1x/common.php:308
+#: /var/lib/limesurvey-svn/subversion1x/common.php:324
+#: /var/lib/limesurvey-svn/subversion1x/common.php:326
 msgid "Show System Summary"
 msgstr "Zobrazit přehled systému"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:316
-#: /var/lib/limesurvey-svn/subversion1x/common.php:317
+#: /var/lib/limesurvey-svn/subversion1x/common.php:334
+#: /var/lib/limesurvey-svn/subversion1x/common.php:335
 msgid "Check Data Integrity"
 msgstr "Zkontrolovat integritu dat"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:327
-#: /var/lib/limesurvey-svn/subversion1x/common.php:329
+#: /var/lib/limesurvey-svn/subversion1x/common.php:345
+#: /var/lib/limesurvey-svn/subversion1x/common.php:347
 msgid "List Surveys"
 msgstr "Seznam průzkumů"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:338
-#: /var/lib/limesurvey-svn/subversion1x/common.php:339
+#: /var/lib/limesurvey-svn/subversion1x/common.php:356
+#: /var/lib/limesurvey-svn/subversion1x/common.php:357
 msgid "Backup Entire Database"
 msgstr "Záloha celé databáze"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:351
-#: /var/lib/limesurvey-svn/subversion1x/common.php:352
+#: /var/lib/limesurvey-svn/subversion1x/common.php:369
+#: /var/lib/limesurvey-svn/subversion1x/common.php:370
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1410
 msgid "Edit/Add Label Sets"
 msgstr "Změnit/přidat sadu popisků"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:364
-#: /var/lib/limesurvey-svn/subversion1x/common.php:365
+#: /var/lib/limesurvey-svn/subversion1x/common.php:382
+#: /var/lib/limesurvey-svn/subversion1x/common.php:383
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:573
 msgid "Template Editor"
 msgstr "Editor šablon"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:368
+#: /var/lib/limesurvey-svn/subversion1x/common.php:386
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:323
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1276
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1305
 msgid "Surveys"
 msgstr "Průzkumy"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:378
-#: /var/lib/limesurvey-svn/subversion1x/common.php:379
+#: /var/lib/limesurvey-svn/subversion1x/common.php:396
+#: /var/lib/limesurvey-svn/subversion1x/common.php:397
 msgid "Create or Import New Survey"
 msgstr "Vytvořit nebo importovat nový průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:389
-#: /var/lib/limesurvey-svn/subversion1x/common.php:391
+#: /var/lib/limesurvey-svn/subversion1x/common.php:407
+#: /var/lib/limesurvey-svn/subversion1x/common.php:409
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:105
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:107
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:598
@@ -379,69 +379,69 @@ msgstr "Vytvořit nebo importovat nový průzkum"
 msgid "Logout"
 msgstr "Odhlásit"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:395
-#: /var/lib/limesurvey-svn/subversion1x/common.php:397
+#: /var/lib/limesurvey-svn/subversion1x/common.php:413
+#: /var/lib/limesurvey-svn/subversion1x/common.php:415
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:111
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:113
 msgid "Show Help"
 msgstr "Zobrazit nápovědu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:405
+#: /var/lib/limesurvey-svn/subversion1x/common.php:423
 #, php-format
 msgid "Welcome to %s!"
 msgstr "Vítejte na %s!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:406
+#: /var/lib/limesurvey-svn/subversion1x/common.php:424
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr "Několik velmi jednoduchých kroků pro vytvoření Vašeho prvního vlastního průzkumu:"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:408
+#: /var/lib/limesurvey-svn/subversion1x/common.php:426
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "Vytvořte nový průzkum kliknutím na ikonu %s vpravo nahoře."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:408
+#: /var/lib/limesurvey-svn/subversion1x/common.php:426
 msgid "Add survey"
 msgstr "Přidat průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:409
+#: /var/lib/limesurvey-svn/subversion1x/common.php:427
 msgid "Create a new group inside your survey."
 msgstr "Vytvořte novou skupinu uvnitř průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:410
+#: /var/lib/limesurvey-svn/subversion1x/common.php:428
 msgid "Create one or more question inside the new group."
 msgstr "Vytvořit jednu nebo více otázek v nové skupině."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:411
+#: /var/lib/limesurvey-svn/subversion1x/common.php:429
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "Hotovo. Otestujte svůj průzkum pomocí ikony %s."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:411
+#: /var/lib/limesurvey-svn/subversion1x/common.php:429
 msgid "Test survey"
 msgstr "Test průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:643
+#: /var/lib/limesurvey-svn/subversion1x/common.php:661
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:89
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:364
 msgid "Active"
 msgstr "Aktivní"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:648
+#: /var/lib/limesurvey-svn/subversion1x/common.php:666
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:106
 msgid "Inactive"
 msgstr "Neaktivní"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:651
-#: /var/lib/limesurvey-svn/subversion1x/common.php:700
-#: /var/lib/limesurvey-svn/subversion1x/common.php:833
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1322
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1347
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1414
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4232
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4266
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4305
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4341
+#: /var/lib/limesurvey-svn/subversion1x/common.php:669
+#: /var/lib/limesurvey-svn/subversion1x/common.php:718
+#: /var/lib/limesurvey-svn/subversion1x/common.php:851
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1340
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1365
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1432
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4288
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4322
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4361
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4397
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:81
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:105
@@ -450,163 +450,163 @@ msgstr "Neaktivní"
 msgid "Please Choose..."
 msgstr "Vyberte prosím..."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:652
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1323
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1348
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1415
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4267
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4306
+#: /var/lib/limesurvey-svn/subversion1x/common.php:670
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1341
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1366
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1433
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4323
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4362
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:746
 msgid "None"
 msgstr "Žádný"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:857
+#: /var/lib/limesurvey-svn/subversion1x/common.php:875
 msgid "Array (Flexible Labels) Dual Scale"
 msgstr "Pole (přizpůsobivé popisky) dvojí měřítko"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:858
+#: /var/lib/limesurvey-svn/subversion1x/common.php:876
 msgid "5 Point Choice"
 msgstr "5 možností"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:859
+#: /var/lib/limesurvey-svn/subversion1x/common.php:877
 msgid "Array (5 Point Choice)"
 msgstr "Pole (5 možností)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:860
+#: /var/lib/limesurvey-svn/subversion1x/common.php:878
 msgid "Array (10 Point Choice)"
 msgstr "Pole (10 možností)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:861
+#: /var/lib/limesurvey-svn/subversion1x/common.php:879
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Pole (Ano/Ne/Nevím)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:862
+#: /var/lib/limesurvey-svn/subversion1x/common.php:880
 msgid "Date"
 msgstr "Datum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:863
+#: /var/lib/limesurvey-svn/subversion1x/common.php:881
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Pole (zvýšení, stejné, pokles)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:864
+#: /var/lib/limesurvey-svn/subversion1x/common.php:882
 msgid "Array (Flexible Labels)"
 msgstr "Pole (přizpůsobivé popisky)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:865
+#: /var/lib/limesurvey-svn/subversion1x/common.php:883
 msgid "Gender"
 msgstr "Pohlaví"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:866
+#: /var/lib/limesurvey-svn/subversion1x/common.php:884
 msgid "Array (Flexible Labels) by Column"
 msgstr "Pole (přizpůsobivé popisky) po sloupcích"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:867
+#: /var/lib/limesurvey-svn/subversion1x/common.php:885
 msgid "Language Switch"
 msgstr "Přepínač jazyka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:868
+#: /var/lib/limesurvey-svn/subversion1x/common.php:886
 msgid "Multiple Numerical Input"
 msgstr "Vícenásobný číselný vstup"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:869
+#: /var/lib/limesurvey-svn/subversion1x/common.php:887
 msgid "List (Radio)"
 msgstr "Seznam (výčet)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:870
+#: /var/lib/limesurvey-svn/subversion1x/common.php:888
 msgid "Multiple Options"
 msgstr "Různé možnosti"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:871
+#: /var/lib/limesurvey-svn/subversion1x/common.php:889
 msgid "Numerical Input"
 msgstr "Číselný vstup"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:872
+#: /var/lib/limesurvey-svn/subversion1x/common.php:890
 msgid "List With Comment"
 msgstr "Seznam s komentářem"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:873
+#: /var/lib/limesurvey-svn/subversion1x/common.php:891
 msgid "Multiple Options With Comments"
 msgstr "Různé možnosti s komentáři"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:874
+#: /var/lib/limesurvey-svn/subversion1x/common.php:892
 msgid "Multiple Short Text"
 msgstr "Různé krátké texty"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:875
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:734
+#: /var/lib/limesurvey-svn/subversion1x/common.php:893
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:759
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2555
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:690
 msgid "Ranking"
 msgstr "Ohodnocení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:876
+#: /var/lib/limesurvey-svn/subversion1x/common.php:894
 msgid "Short Free Text"
 msgstr "Krátký text"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:877
+#: /var/lib/limesurvey-svn/subversion1x/common.php:895
 msgid "Long Free Text"
 msgstr "Dlouhý text"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:878
+#: /var/lib/limesurvey-svn/subversion1x/common.php:896
 msgid "Huge Free Text"
 msgstr "Textové pole (rozsáhlé)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:879
+#: /var/lib/limesurvey-svn/subversion1x/common.php:897
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Rozbalovací seznam (přizpůsobivé popisky) "
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:880
+#: /var/lib/limesurvey-svn/subversion1x/common.php:898
 msgid "Boilerplate Question"
 msgstr "Standardizované otázky"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:881
+#: /var/lib/limesurvey-svn/subversion1x/common.php:899
 msgid "Yes/No"
 msgstr "Ano/Ne"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:882
+#: /var/lib/limesurvey-svn/subversion1x/common.php:900
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Seznam (přizpůsobivé popisky) (výčet) "
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:883
+#: /var/lib/limesurvey-svn/subversion1x/common.php:901
 msgid "List (Dropdown)"
 msgstr "Rozbalovací seznam"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:884
+#: /var/lib/limesurvey-svn/subversion1x/common.php:902
 msgid "Array (Multi Flexible) (Numbers)"
 msgstr "Pole (vícenásobné přizpůsobivé popisky) (čísla)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:885
+#: /var/lib/limesurvey-svn/subversion1x/common.php:903
 msgid "Array (Multi Flexible) (Text)"
 msgstr "Pole (vícenásobné přizpůsobivé popisky) (text)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1278
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1296
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:816
 msgid "No email notification"
 msgstr "Bez emailového oznámení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1279
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1297
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:819
 msgid "Basic email notification"
 msgstr "Základní emailové oznámení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1280
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1298
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:822
 msgid "Detailed email notification with result codes"
 msgstr "Podrobné emailové oznámení s kódy výsledků"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1385
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1403
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:338
 msgid "Cannot be modified (Survey is active)"
 msgstr "Nelze měnit (průzkum je aktivní)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1659
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1677
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:32
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/index.php:49
 msgid "LimeSurvey Setup"
 msgstr "Nastavení LimeSurvey"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1662
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5208
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1680
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5264
 #: /var/lib/limesurvey-svn/subversion1x/save.php:567
 #: /var/lib/limesurvey-svn/subversion1x/index.php:471
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:29
@@ -618,7 +618,7 @@ msgstr "Nastavení LimeSurvey"
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:450
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:518
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:563
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:129
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:128
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:193
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:211
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:279
@@ -692,46 +692,46 @@ msgstr "Nastavení LimeSurvey"
 msgid "Error"
 msgstr "Chyba"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1664
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1682
 msgid "It appears as if some tables or fields are missing from your database."
 msgstr "Zobrazí se, když v databázi některé tabulky nebo pole chybí."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1666
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1684
 msgid "Check Database Fields"
 msgstr "Zkontrolovat pole databáze"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1874
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1892
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:121
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:70
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:102
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:113
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:101
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:112
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:566
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:69
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:110
 msgid "Return to Survey Administration"
 msgstr "Návrat k administraci průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1880
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1898
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:126
 msgid "Show summary information"
 msgstr "Zobrazit souhrn informací"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1886
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1893
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1904
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1911
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:128
 msgid "Display Responses"
 msgstr "Zobrazit odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1902
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5573
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1920
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5629
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:513
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:572
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1289
 msgid "Please select a language:"
 msgstr "Prosím zvolte jazyk:"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1907
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5589
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1925
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5645
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:990
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:60
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:518
@@ -744,11 +744,11 @@ msgstr "Prosím zvolte jazyk:"
 msgid "Cancel"
 msgstr "Storno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1917
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1935
 msgid "Display Last 50 Responses"
 msgstr "Zobrazit posledních 50 odpovědí."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1921
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1939
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:530
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:531
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:541
@@ -756,48 +756,48 @@ msgstr "Zobrazit posledních 50 odpovědí."
 msgid "Dataentry Screen for Survey"
 msgstr "Obrazovka průzkumu pro vstup dat"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1925
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1943
 msgid "Get statistics from these responses"
 msgstr "Získat statistiky z těchto odpovědí."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1932
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1950
 msgid "Export Results to Application"
 msgstr "Export výsledků do aplikace"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1937
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1955
 msgid "Export results to a SPSS command file"
 msgstr "Exportovat výsledek do souboru příkazů SPSS"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1939
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1957
 msgid "Export result to a SPSS command file"
 msgstr "Exportovat výsledek do souboru příkazů SPSS"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1942
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1944
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1960
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1962
 msgid "Export results to a R data file"
 msgstr "Exportovat výsledek do souboru příkazů R"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1948
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1966
 msgid "Import answers from a deactivated survey table"
 msgstr "Import odpovědí z tabulky deaktivovaného průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1953
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1971
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:707
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:708
 msgid "View Saved but not submitted Responses"
 msgstr "Zobrazit uložené, ale neodeslané odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1957
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1975
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:83
 msgid "Import a VV survey file"
 msgstr "Importovat soubor průzkumu VV"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1963
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1981
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:46
 msgid "Export a VV survey file"
 msgstr "Exportovat soubor VV survey"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:1978
+#: /var/lib/limesurvey-svn/subversion1x/common.php:1996
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:27
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:44
@@ -805,14 +805,14 @@ msgstr "Exportovat soubor VV survey"
 msgid "Iterate survey"
 msgstr "Procházet průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2057
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2075
 msgid "Preset"
 msgstr "Předvolby"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2058
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1643
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1793
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1815
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2076
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1629
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1779
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1801
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:828
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1731
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:617
@@ -825,7 +825,7 @@ msgstr "Předvolby"
 msgid "Token"
 msgstr "Identifikátor"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2059
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2077
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:169
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:424
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:624
@@ -834,7 +834,7 @@ msgstr "Identifikátor"
 msgid "Date Last Action"
 msgstr "Datum poslední akce"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2060
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2078
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:168
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:423
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:629
@@ -843,7 +843,7 @@ msgstr "Datum poslední akce"
 msgid "Date Started"
 msgstr "Datum začátku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2061
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2079
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:178
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:625
@@ -853,7 +853,7 @@ msgstr "Datum začátku"
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2062
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2080
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:182
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:178
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:435
@@ -863,12 +863,12 @@ msgstr "IP adresa"
 msgid "Referring URL"
 msgstr "Odkazující URL"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2110
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2217
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2273
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2454
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2568
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2578
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2128
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2235
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2291
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2472
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2586
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2596
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:647
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:988
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1226
@@ -879,10 +879,10 @@ msgstr "Odkazující URL"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2176
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2521
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2636
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:712
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1364
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1453
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1494
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:737
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1389
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1478
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1519
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2413
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3246
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3337
@@ -899,12 +899,6 @@ msgstr "Odkazující URL"
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2515
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2531
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2575
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:675
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:676
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:757
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:758
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:859
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:860
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:346
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:201
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:287
@@ -920,14 +914,14 @@ msgstr "Odkazující URL"
 msgid "Other"
 msgstr "jiné"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2225
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2231
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2247
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3652
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4118
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4171
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1208
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1333
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2243
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2249
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2265
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3654
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4120
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4173
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1233
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1358
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:718
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:887
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3057
@@ -981,13 +975,13 @@ msgstr "jiné"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3422
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3429
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3436
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:443
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:461
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:994
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:998
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1103
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1120
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1125
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:454
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:472
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1036
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1040
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1145
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1162
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:233
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:245
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:249
@@ -1018,13 +1012,13 @@ msgstr "jiné"
 msgid "Yes"
 msgstr "Ano"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2232
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2248
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3661
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4120
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4189
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1209
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1334
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2250
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2266
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3663
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4122
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4191
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1234
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1359
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:724
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:899
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3058
@@ -1078,13 +1072,13 @@ msgstr "Ano"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3423
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3430
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3437
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:444
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:463
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:995
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:999
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1105
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1122
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1125
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:455
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:474
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1037
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1041
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1147
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1164
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:235
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:250
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:338
@@ -1111,10 +1105,10 @@ msgstr "Ano"
 msgid "No"
 msgstr "Ne"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2233
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2241
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5194
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5199
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2251
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2259
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5250
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5255
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:760
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1139
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1300
@@ -1122,33 +1116,33 @@ msgstr "Ne"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1716
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1824
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1891
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3672
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3754
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3830
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3907
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3987
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4049
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4123
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4209
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4400
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4483
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4573
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4593
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4679
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5263
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5264
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5549
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5615
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5737
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5972
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6026
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1460
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1549
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1832
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1846
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1880
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1915
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1956
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3674
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3756
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3832
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3909
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3989
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4051
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4125
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4211
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4402
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4485
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4575
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4595
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4681
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5265
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5266
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5551
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5617
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5739
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5974
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6028
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1485
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1574
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1857
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1871
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1905
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1940
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1981
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2476
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2535
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3344
@@ -1185,17 +1179,17 @@ msgstr "Ne"
 msgid "No answer"
 msgstr "Žádná odpověď"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2239
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3729
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1327
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2257
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3731
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1352
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:707
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3198
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:862
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1950
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2111
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:450
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:615
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:619
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:461
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:647
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:254
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:341
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:845
@@ -1207,17 +1201,17 @@ msgstr "Žádná odpověď"
 msgid "Male"
 msgstr "Muž"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2240
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3710
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1326
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2258
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3712
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1351
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:701
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3197
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:859
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1951
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2110
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:451
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:614
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:619
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:462
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:646
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:342
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:844
@@ -1229,19 +1223,19 @@ msgstr "Muž"
 msgid "Female"
 msgstr "Žena"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2249
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4119
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4179
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1210
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2267
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4181
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1235
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:893
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3059
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1379
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1962
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2658
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:462
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1104
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1121
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1125
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:473
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1146
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1167
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:234
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:368
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:580
@@ -1252,18 +1246,18 @@ msgstr "Žena"
 msgid "Uncertain"
 msgstr "Nevím"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2255
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4395
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4442
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1227
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2273
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4397
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4444
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1252
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:945
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3076
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1982
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2677
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:469
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1143
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1159
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:480
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1185
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1201
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:238
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:360
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:584
@@ -1274,18 +1268,18 @@ msgstr "Nevím"
 msgid "Increase"
 msgstr "Zvýšení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2256
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4397
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4465
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1229
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2274
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4399
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4467
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1254
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:955
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3078
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1983
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2679
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:470
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1145
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1161
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:481
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1187
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1203
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:240
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:586
@@ -1296,18 +1290,18 @@ msgstr "Zvýšení"
 msgid "Decrease"
 msgstr "Pokles"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2257
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4396
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4453
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1228
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2275
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4398
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4455
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1253
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:950
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3077
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1984
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2678
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1144
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1160
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1163
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:482
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1186
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1202
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:239
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:361
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:585
@@ -1318,131 +1312,131 @@ msgstr "Pokles"
 msgid "Same"
 msgstr "Stejný"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2471
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2489
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2308
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:197
 msgid "Comment"
 msgstr "Komentář"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2759
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2777
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Upozornění: Máte v prohlížeči zakázané spouštění JavaScriptu. Může se tedy stát, že nebudete moci zodpovědět všechny otázky. Prosím zkontrolujte nastavení Vašeho prohlížeče."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2774
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2792
 msgid "There are no questions in this survey"
 msgstr "Průzkum neobsahuje ani jednu otázku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2778
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2796
 msgid "There is 1 question in this survey"
 msgstr "Tento průzkum obsahuje 1 otázku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2782
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2800
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Průzkum obsahuje {NUMBEROFQUESTIONS} otázek."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2805
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2287
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2823
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2273
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:207
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1586
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2951
 msgid "Submit"
 msgstr "odeslat"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2849
 msgid "A Note On Privacy"
 msgstr "Prohlášení o zachování soukromí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2849
 msgid "This survey is anonymous."
 msgstr "Tento průzkum je anonymní."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2831
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2849
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Záznam odpovědí v průzkumu neobsahuje žádné Vaše identifikační údaje, pokud se na ně konkrétní otázka nedotázala. Pokud jste odpovídal(a) na průzkum, který používá identifikátor k povolení přístupu k průzkumu, ujišťujeme Vás, že tento identifikátor není provázán s odpověďmi v tomto průzkumu. V oddělené databázi identifikátorů se zobrazí pouze to, že jste buď vyplnil(a), nebo nevyplnil(a) tento průzkum. Neexistuje způsob, jak spárovat identifikátor s odpověďmi v tomto průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2841
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2859
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Jste si jistý(á), že chcete vymazat všechny odpovědi?"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2842
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2860
 msgid "Exit and Clear Survey"
 msgstr "Ukončit a vymazat průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2866
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2872
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2884
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2890
 #: /var/lib/limesurvey-svn/subversion1x/index.php:555
 #: /var/lib/limesurvey-svn/subversion1x/index.php:559
 msgid "Load Unfinished Survey"
 msgstr "Načíst nedokončený průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2867
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2880
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2885
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2898
 msgid "Resume Later"
 msgstr "Obnovit později"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2947
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2965
 msgid "Thank You!"
 msgstr "Děkujeme Vám!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2947
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2965
 msgid "You have completed answering the questions in this survey."
 msgstr "vyplnil(a) jste všechny otázky v tomto průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2947
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2965
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Nyní klikněte na 'Odeslat' k dokončení průzkumu a uložení odpovědí."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2953
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2971
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Pokud chcete zkontrolovat kteroukoli z otázek, které jste vytvořil(a), a/nebo je změnit, můžete tak učinit nyní kliknutím na tlačítko [<< předchozí] a procházením Vašich odpovědí."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2974
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2992
 msgid "Answers Cleared"
 msgstr "Odpovědi vymazány"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2981
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2988
+#: /var/lib/limesurvey-svn/subversion1x/common.php:2999
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3006
 msgid "Restart this Survey"
 msgstr "Znovu spustit tento průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2991
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3009
 #: /var/lib/limesurvey-svn/subversion1x/index.php:592
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1700
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1737
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1917
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1686
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1723
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1903
 #: /var/lib/limesurvey-svn/subversion1x/register.php:158
 msgid "Close this Window"
 msgstr "Zavřít toto okno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2993
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3011
 msgid "Save Your Unfinished Survey"
 msgstr "Uložit Váš nedokončený průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2994
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3012
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Zapište jméno a heslo pro tento průzkum a klikněte na uložte."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2994
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3012
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Váš průzkum bude uložen se jménem a heslem. Průzkum může být dokončen později po přihlášení se stejným jménem a heslem."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:2994
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3012
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Jestliže uvedete emailovou adresu, bude Vám zaslán email s podrobnostmi."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3002
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3020
 msgid "Return To Survey"
 msgstr "Vrátit se k průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3007
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3025
 #: /var/lib/limesurvey-svn/subversion1x/save.php:321
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:537
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:817
 msgid "Name"
 msgstr "Jméno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3010
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3036
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3028
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3054
 #: /var/lib/limesurvey-svn/subversion1x/save.php:322
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:538
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:188
@@ -1454,63 +1448,63 @@ msgstr "Jméno"
 msgid "Password"
 msgstr "Heslo"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3013
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3031
 msgid "Repeat Password"
 msgstr "Zopakovat heslo"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3016
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3034
 msgid "Your Email"
 msgstr "Váš email"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3021
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3041
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3092
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1600
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1662
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1823
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3039
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3059
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3110
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1586
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1648
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1809
 msgid "Security Question"
 msgstr "Bezpečnostní otázka"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3024
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3042
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1961
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2014
 msgid "Save Now"
 msgstr "Nyní uložit"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3029
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3047
 msgid "Load A Previously Saved Survey"
 msgstr "Načíst dříve uložený průzkum"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3030
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3048
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Můžete si načíst průzkum, který jste si dříve uložil(a)."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3030
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3048
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Vepište 'jméno', které jste použil(a) při ukládání průzkumu, a heslo."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3033
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3051
 msgid "Saved name"
 msgstr "Uložené jméno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3046
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3064
 msgid "Load Now"
 msgstr "Nyní načíst"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3051
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3069
 msgid "You must be registered to complete this survey"
 msgstr "Aby bylo možné dokončit tento průzkum, musíte se zaregistrovat."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3052
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3070
 msgid "You may register for this survey if you wish to take part."
 msgstr "Jestliže se chcete účastnit tohoto průzkumu, měl(a) byste se zaregistrovat."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3052
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3070
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Níže uveďte Vaše údaje a bezprostředně na to Vám bude zaslán emailem odkaz na účast v průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3059
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3077
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1700
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:394
@@ -1520,7 +1514,7 @@ msgstr "Níže uveďte Vaše údaje a bezprostředně na to Vám bude zaslán em
 msgid "First Name"
 msgstr "Jméno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3066
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3084
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:88
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1706
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:396
@@ -1530,17 +1524,17 @@ msgstr "Jméno"
 msgid "Last Name"
 msgstr "Příjmení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3073
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3091
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:87
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:599
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:600
 msgid "Email Address"
 msgstr "Emailová adresa"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3117
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1603
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1665
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1826
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3135
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1589
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1651
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1812
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:299
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:318
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1256
@@ -1608,365 +1602,373 @@ msgstr "Emailová adresa"
 msgid "Continue"
 msgstr "Pokračovat"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3124
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3142
 msgid "Your Assessment"
 msgstr "Vaše hodnocení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3264
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3265
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3313
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3314
 msgid "Sort answers alphabetically"
 msgstr "Třídit odpovědi abecedně"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3269
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3318
 msgid "The percentage width of the answer column"
 msgstr "Procentuální šířka sloupce odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3270
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3319
 msgid "Answer width"
 msgstr "Šířka odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3274
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3323
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "Filtrovat pole odpovědí z otázky s více odpověďmi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3275
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3324
 msgid "Array filter"
 msgstr "Pole filtru"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3279
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3280
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3328
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3329
 msgid "Category Separator"
 msgstr "Oddělovač kategorií"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3284
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3333
 msgid "Filter the available answers by this value"
 msgstr "Filtrovat dostupné odpovědi touto hodnotou"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3285
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3334
 msgid "Code filter"
 msgstr "Filtr kódu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3289
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3338
 msgid "Number of columns to display"
 msgstr "Počet sloupců pro zobrazení"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3290
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3339
 msgid "Display columns"
 msgstr "Zobrazit sloupce"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3294
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3343
 msgid "How many rows to display"
 msgstr "Kolik řádků zobrazit"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3295
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3344
 msgid "Display rows"
 msgstr "Zobrazit řádky"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3299
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3348
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Skrýt tip, který je normálně zobrazen spolu s otázkou"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3300
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3349
 msgid "Hide tip"
 msgstr "Skrýt tip"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3304
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3353
 msgid "Limit the number of possible answers"
 msgstr "Omezit počet možných odpovědí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3305
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3354
 msgid "Maximum answers"
 msgstr "Maximum odpovědí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3309
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3358
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maximální součet hodnot vícenásobných číselných vstupů"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3310
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3359
 msgid "Maximum sum value"
 msgstr "Maximální součet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3314
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3363
 msgid "Maximum characters allowed"
 msgstr "Maximální povolený počet znaků"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3315
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3364
 msgid "Maximum characters"
 msgstr "Maximum znaků"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3319
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3368
 msgid "Ensure a minimum number of possible answers"
 msgstr "Zajistit minimální počet možných odpovědí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3320
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3369
 msgid "Minimum answers"
 msgstr "Minimum odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3324
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3373
 msgid "Allow only numerical input"
 msgstr "Povolit pouze číselný vstup"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3325
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3374
 msgid "Numbers only"
 msgstr "Pouze čísla"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3329
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3378
 msgid "Present answers in random order"
 msgstr "Zobrazovat odpovědi v náhodném pořadí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3330
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3379
 msgid "Random answer order"
 msgstr "Náhodné pořadí odpovědí"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3334
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3383
 msgid "Width of text input box"
 msgstr "Šířka textového vstupního boxu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3335
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3384
 msgid "Input box width"
 msgstr "Šířka vstupu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3339
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3388
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Vícenásobný číselný vstup musí mít součet roven této hodnotě"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3340
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3389
 msgid "Equals sum value"
 msgstr "Součet je roven"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3344
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3393
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Vícenásobný číselný vstup musí být větší, než tato hodnota"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3345
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3394
 msgid "Minimum sum value"
 msgstr "Minimální součet"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3349
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3350
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3398
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3399
 msgid "Use slider layout"
 msgstr "Použít rozvržení posuvníku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3354
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3355
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3403
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3404
 msgid "Slider minimum value"
 msgstr "Minimální hodnota posuvníku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3359
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3360
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3408
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3409
 msgid "Slider maximum value"
 msgstr "Maximální hodnota posuvníku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3364
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3365
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3413
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3414
 msgid "Slider accuracy"
 msgstr "Přesnost posuvníku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3369
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3370
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3418
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3419
 msgid "Slider initial value"
 msgstr "Počáteční hodnota posuvníku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3374
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3423
 msgid "Add a prefix to the answer field"
 msgstr "Přidat prefix k poli odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3375
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3424
 msgid "Answer prefix"
 msgstr "Prefix odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3379
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3428
 msgid "Add a suffix to the answer field"
 msgstr "Přidat suffix k poli odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3380
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3429
 msgid "Answer suffix"
 msgstr "Suffix odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3384
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3433
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Použít přístupné výběrové box místo kalendářového popup okna"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3385
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3434
 msgid "Display select boxes"
 msgstr "Zobrazit výběrová pole"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3389
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3438
 msgid "Minimum year value for dropdown list"
 msgstr "Minimální rok rozbalovacího seznamu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3390
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3439
 msgid "Minimum dropdown year"
 msgstr "Minimální rok"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3394
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3443
 msgid "Maximum year value for dropdown list"
 msgstr "Maximální rok rozbalovacího seznamu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3395
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3444
 msgid "Maximum dropdown year"
 msgstr "Maximální rok"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3399
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3448
 msgid "Excludes all other options if this is selected"
 msgstr "Vylučuje všechny ostatní možnosti, je-li vybráno"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3400
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3449
 msgid "Exclusive option"
 msgstr "Exkluzivní možnost"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3404
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3453
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maximální hodnota pro otázku typu array(mult-flexible)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3405
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3454
 msgid "Maximum value"
 msgstr "Maximální hodnota"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3409
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3458
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimální hodnota pro otázku typu array(multi-flexible)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3410
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3459
 msgid "Minimum value"
 msgstr "Minimální hodnota"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3414
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3463
 msgid "Step value for array (multi-flexible) question type"
 msgstr "Hodnota kroku pro otázku typu array (multi-flexible)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3415
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3464
 msgid "Step value"
 msgstr "Hodnota kroku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3419
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3468
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "Použít rozvržení zatrhávacích polí pro otázku typu array (multi-flexible)"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3420
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3469
 msgid "Checkbox layout"
 msgstr "Rozvržení checkboxu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3424
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3473
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "Použít dva rozbalovací seznamy místo dvou škál"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3425
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3474
 msgid "Dual dropdown"
 msgstr "Dva rozbalovací seznamy"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3429
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3478
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefix|suffix rozbalovacího seznamu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3430
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3479
 msgid "Prefix|Suffix"
 msgstr "Prefix|suffix"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3434
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3483
 msgid "Header for scale A"
 msgstr "Hlavička pro škálu A"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3435
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3484
 msgid "Header scale A"
 msgstr "Hlavička škály A"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3439
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3488
 msgid "Header for scale B"
 msgstr "Hlavička pro škálu B"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3440
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3489
 msgid "Header scale B"
 msgstr "Hlavička škály B"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3444
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3493
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Oddělovač po-odpovědi|mezi-seznamy pro rozbalovací seznamy"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3445
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3494
 msgid "Dropdown separators"
 msgstr "Oddělovače rozbalovacího seznamu"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3449
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3498
 msgid "Replaces the 'other' label with text"
 msgstr "Nahrazení popisku \"jiné\" textem"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3450
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3499
 msgid "\"Other\" caption"
 msgstr "Nadpis \"jiné\""
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3454
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3503
 msgid "Show statistics of a certain question to the user"
 msgstr "Zobrazit statistiky otázky uživateli"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3455
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3504
 msgid "Show in public statistics"
 msgstr "Zobrazit ve veřejných statistikách"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3459
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3508
 #, fuzzy
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "SGQA identifikátor k použití součtu předchozí otázky jako maximum pro tuto otázku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3460
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3509
 #, fuzzy
 msgid "Max value from SQGA"
 msgstr "Maximální hodnota z SQGA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3464
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3513
 #, fuzzy
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "SGQA identifikátor k použití součtu předchozí otázky jako minimum pro tuto otázku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3465
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3514
 #, fuzzy
 msgid "Min value from SQGA"
 msgstr "Minimální hodnota z SQGA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3469
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3518
 #, fuzzy
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "SGQA identifikátor k použití součtu předchozí otázky jako součet pro tuto otázku"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3470
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3519
 msgid "Value equals SQGA"
 msgstr "Hodnota odpovídá SQGA"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3635
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3523
+msgid "Insert a page break before this question in printable view by setting this to 1."
+msgstr "Nastavením této hodnoty na 1 se následující otázka v tisknutelné verzi zobrazí na nové stránce."
+
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3524
+msgid "Insert page break in printable view"
+msgstr "Vložit ukočení stránky v tisknutelné verzi"
+
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3690
 msgid "Version"
 msgstr "Verze"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3644
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3699
 msgid "Online Manual"
 msgstr "Příručka on-line"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3647
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3702
 msgid "Support this project - Donate to "
 msgstr "Podpořte tento projekt - darujte"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3650
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3705
 msgid "Visit our website!"
 msgstr "Navštivte naše webové stránky!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3765
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3820
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nebyl odeslán, protože je aktivován demonstrační režim."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3905
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3961
 msgid "Local Submission"
 msgstr "Lokální odeslání"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4115
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4171
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4177
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:114
 msgid "Executing"
 msgstr "Provádění"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4115
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4171
 msgid "Failed! Reason: "
 msgstr "Neúspěch! Důvod:"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4177
 msgid "Success!"
 msgstr "Úspěch!"
 
@@ -1991,8 +1993,8 @@ msgstr "Vaše hesla se neshodují."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:246
 #: /var/lib/limesurvey-svn/subversion1x/index.php:537
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1574
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1767
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1560
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1753
 #: /var/lib/limesurvey-svn/subversion1x/register.php:57
 msgid "The answer to the security question is incorrect"
 msgstr "Odpověď na bezpečnostní otázku není správná"
@@ -2125,15 +2127,15 @@ msgid "This is a closed-access survey, so you must supply a valid token.  Please
 msgstr "Přístup k tomuto průzkumu je omezený, musíte vložit platný identifikátor. Kontaktujte prosím správce pro pomoc."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:588
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1696
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1733
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1682
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1719
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Přihlašovací údaje, které jste uvedl(a), již nejsou platné nebo již byly použity."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:589
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1697
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1734
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1914
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1683
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1720
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1900
 #, php-format
 msgid "For further information contact %s"
 msgstr "Pro bližší informace kontaktujte %s"
@@ -2146,108 +2148,108 @@ msgstr "Průzkum uložen"
 msgid "There is no matching saved survey"
 msgstr "Mezi uloženými průzkumy není žádný odpovídající"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1409
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1395
 msgid "Answer Submission for Survey"
 msgstr "Odeslaná odpověď průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1411
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1397
 msgid "Survey Submitted"
 msgstr "Průzkum odeslán"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1412
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1398
 msgid "A new response was entered for your survey"
 msgstr "Do Vašeho průzkumu byla vložena nová odpověď"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1415
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1401
 msgid "Click the following link to reload the survey:"
 msgstr "Pro znovunačtení průzkumu klikněte na následující odkaz:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1419
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1405
 msgid "Click the following link to see the individual response:"
 msgstr "Pro zobrazení individuálních odpovědí klikněte na následující odkaz:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1422
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1408
 msgid "Click the following link to edit the individual response:"
 msgstr "Pro editování individuálních odpovědí klikněte na následující odkaz:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1425
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1411
 msgid "View statistics by clicking here:"
 msgstr "Zobrazit statistiky kliknutím zde:"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1501
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1487
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Vyskytla se neočekávaná chyba a Vaše odpovědi nemohly být uloženy."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1504
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1490
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaše odpovědi nebyly ztraceny a byly emailem odeslány administrátorovi průzkumu. Do databáze budou vloženy později."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1505
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1491
 msgid "An error occurred saving a response to survey id"
 msgstr "Při ukládání odpovědi k id průzkumu se vyskytla chyba"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1506
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1492
 msgid "DATA TO BE ENTERED"
 msgstr "DATA, KTERÁ MAJÍ BÝT VLOŽENA"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1511
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1497
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KÓD, KTERÝ CHYBOVAL"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1513
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1499
 msgid "ERROR MESSAGE"
 msgstr "CHYBOVÁ ZPRÁVA"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1515
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1501
 msgid "Error saving results"
 msgstr "Chyba při ukládání výsledků"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1523
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1509
 msgid "Try to submit again"
 msgstr "Zkusit odeslat znovu"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1577
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1563
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Potvrďte prosím přístup k průzkumu zodpovězením bezpečnostní otázky níže a kliknutím na pokračovat."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1635
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1695
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1732
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1770
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1621
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1681
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1718
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1756
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Toto je řízený průzkum. K účasti potřebujete platné přihlašovací údaje."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1636
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1622
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Pokud jste byl vybaven identifikátorem, prosím zapište jej do níže uvedeného pole a klikněte na pokračovat."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1775
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1761
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Pokud jste byl vybaven identifikátorem, prosím zapište jej do níže uvedeného pole a klikněte na pokračovat."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1797
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1783
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Prosím potvrďte identifikátor zodpovězením bezpečnostní otázky a vyberte \"pokračovat\"."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:1913
+#: /var/lib/limesurvey-svn/subversion1x/index.php:1899
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Tento průzkum dosud neobsahuje žádné otázky a nemůže být testován nebo vyplněn."
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2266
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2653
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2252
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2639
 msgid "Previous"
 msgstr "předcházející"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2271
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2277
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2282
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2257
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2263
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2268
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:542
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:618
 msgid "Next"
 msgstr "další"
 
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2639
-#: /var/lib/limesurvey-svn/subversion1x/index.php:2652
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2625
+#: /var/lib/limesurvey-svn/subversion1x/index.php:2638
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Omlouváme se, Vaše odpověď přesáhla kvótu definovanou v průzkumu."
 
@@ -2286,8 +2288,8 @@ msgstr "Hodnotit minimálně %d položek"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:433
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:471
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1215
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1216
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1256
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1257
 msgid "Check any that apply"
 msgstr "Můžete vybrat více možností. Vyberte všechny, které odpovídají skutečnosti."
 
@@ -2314,14 +2316,14 @@ msgid "Choose your language"
 msgstr "Zvolte si Váš jazyk"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:560
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:561
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:563
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:587
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:589
 msgid "*"
 msgstr "*"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:593
-msgid "This question must be answered correctly"
-msgstr "Otázka musí být zodpovězena přesně"
+msgid "This question must be answered correctly."
+msgstr "Otázka musí být zodpovězena správně."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:612
 msgid "This question is mandatory"
@@ -2340,8 +2342,8 @@ msgid "Please rank all items"
 msgstr "Prosím ohodnoťte všechny položky"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:634
-msgid "Please check at least one item"
-msgstr "Prosím zaškrtněte aspoň jednu položku"
+msgid "Please check at least one item."
+msgstr "Prosím zaškrtněte alespoň jednu položku."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:649
 #, php-format
@@ -2435,8 +2437,8 @@ msgstr "(např.: 2003-12-24 pro Štědrý den)"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:948
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1120
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1282
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5952
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6006
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5954
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6008
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:856
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:880
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:927
@@ -2503,7 +2505,7 @@ msgstr "Klikněte na nůžky napravo vedle každé položky, aby se odstranil po
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2141
 #, php-format
-msgid "Please rank at least '%d' item(s) for question \"%s\""
+msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Ohodnoťte prosím minimálně '%d' položek k otázce \"%s\""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2450
@@ -2515,80 +2517,81 @@ msgstr "Vyberte prosím maximálně %d odpovědí k otázce \"%s\""
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2471
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2745
 #, php-format
-msgid "Please choose at least '%d' answer(s) for question \"%s\""
+msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Vyberte prosím minimálně %d odpovědí k otázce \"%s\""
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2618
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2645
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:778
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:780
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:815
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:817
 msgid "Make a comment on your choice here:"
 msgstr "Zde uveďte komentář k Vaší volbě:"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:2833
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3104
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4132
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5800
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3105
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4134
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5802
 msgid "Error: This question has no answers."
 msgstr "Chyba: otázka nemá odpověď."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3183
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3185
 msgid "Only numbers may be entered in these fields"
 msgstr "Do tohoto pole může být zapsán pouze číselný údaj"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3187
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3189
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Součet položek nesmí přesáhnout %d"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3191
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3193
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Součet položek musí být %d"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3195
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3197
 #, php-format
-msgid "Total of all entries must be at least %d"
-msgstr "Součet položek musí být nejméně %d"
+msgid "Total of all entries must be at least %s"
+msgstr "Součet položek musí být nejméně %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3275
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3277
 msgid "Total: "
 msgstr "Celkem:"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3278
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3280
 msgid "Remaining: "
 msgstr "Zbývá:"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3324
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3332
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3368
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3379
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3326
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3334
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3370
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3381
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odpověď není platná. Součet položek nesmí být více než"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3345
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3353
-msgid "Answer is invalid. The total of all entries should add up to at least "
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3347
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3355
+#, fuzzy, php-format
+msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odpověď není platná. Součet položek musí být minimálně"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3449
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:3451
 msgid "Only numbers may be entered in this field"
 msgstr "Do tohoto pole může být zapsán pouze číselný údaj"
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4720
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4944
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5233
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5377
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6052
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4722
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:4946
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5235
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5379
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:6054
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Chyba: Sada popisků použitá v této otázce není dostupná v tomto jazyce nebo neexistuje."
 
-#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5371
+#: /var/lib/limesurvey-svn/subversion1x/qanda.php:5373
 msgid "Error: There are no answers defined for this question."
 msgstr "Chyba: Pro tuto otázku nejsou definovány žádné odpovědi."
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:137
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:89
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:99
 msgid "PDF Export"
 msgstr "Export PDF"
 
@@ -2639,79 +2642,77 @@ msgstr "Vaše odpověď"
 msgid "Print your answers."
 msgstr "Vytisknout své odpovědi."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:598
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:623
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1947
 msgid "Please wait ..."
 msgstr "Prosím počkejte..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:600
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:625
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1949
 msgid "Go back"
 msgstr "Zpět"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:609
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:634
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1964
 msgid "Getting questions and answers ..."
 msgstr "Shromažďuji otázky a odpovědi ..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:622
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:647
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2203
 msgid "Total records in survey"
 msgstr "Celkem záznamů v průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:639
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:664
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2338
 msgid "Generating summaries ..."
 msgstr "Generuji souhrny..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:822
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1476
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2650
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3363
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:847
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1501
 msgid "Field summary for"
 msgstr "Souhrn polí pro"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:826
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:851
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2654
 msgid "Calculation"
 msgstr "Výpočet"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:828
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:853
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2656
 msgid "Result"
 msgstr "Výsledek"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:900
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1565
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2016
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:925
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1590
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2041
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2727
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3509
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3962
 msgid "Sum"
 msgstr "Suma"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:901
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2134
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:926
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2159
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2728
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4082
 msgid "Standard deviation"
 msgstr "Směrodatná odchylka"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:902
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:927
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2729
 msgid "Average"
 msgstr "Průměr"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:903
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:928
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2730
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:137
 msgid "Minimum"
 msgstr "Minimum"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:944
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1561
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1575
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1648
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:969
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1586
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1600
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1673
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2776
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3505
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3519
@@ -2719,51 +2720,51 @@ msgstr "Minimum"
 msgid "Count"
 msgstr "Počet"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:978
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1003
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2813
 msgid "1st quartile (Q1)"
 msgstr "1. kvartil (Q1)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1012
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1037
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2847
 msgid "2nd quartile (Median)"
 msgstr "2. kvartil (medián)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1054
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1079
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2890
 msgid "3rd quartile (Q3)"
 msgstr "3. kvartil (Q3)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1070
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1095
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2906
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:137
 msgid "Maximum"
 msgstr "Maximum"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1084
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1109
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2920
 msgid "Null values are ignored in calculations"
 msgstr "Null hodnoty jsou při výpočtech ignorovány"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1085
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1110
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2921
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 a Q3 spočítané pomocí %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1085
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1110
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2921
 msgid "minitab method"
 msgstr "metoda minitab"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1100
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1125
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2936
 msgid "Not enough values for calculation"
 msgstr "Není dostatek hodnot pro výpočet"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1559
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1573
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1646
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1584
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1598
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1671
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2475
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2534
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3503
@@ -2774,21 +2775,21 @@ msgstr "Není dostatek hodnot pro výpočet"
 msgid "Answer"
 msgstr "Odpověď"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1563
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1577
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1650
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1588
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1602
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1675
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3507
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3521
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3592
 msgid "Percentage"
 msgstr "Procentualita"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1730
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1755
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3671
 msgid "Non completed"
 msgstr "nedokončeno"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2016
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2041
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:678
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3962
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:507
@@ -2799,17 +2800,17 @@ msgstr "nedokončeno"
 msgid "Answers"
 msgstr "Odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2022
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2047
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3968
 msgid "Number of cases"
 msgstr "Počet případů"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2134
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2159
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4082
 msgid "Arithmetic mean"
 msgstr "Aritmetický průměr"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2322
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2347
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4270
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:613
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:162
@@ -3410,7 +3411,7 @@ msgid "Import Group"
 msgstr "Importovat skupinu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:30
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:130
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:129
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:170
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:32
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:195
@@ -3476,7 +3477,7 @@ msgstr "Nebyl zadán SID (průzkumu). Nelze importovat skupinu."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:54
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:669
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:137
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:136
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1848
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1895
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1985
@@ -3500,7 +3501,7 @@ msgid "Success"
 msgstr "Úspěch"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:55
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:138
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:137
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:69
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:76
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:255
@@ -3781,7 +3782,8 @@ msgid "When an imported record matches an existing record ID:"
 msgstr "Pokud importovaný záznam odpovídá existujícímu ID:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:89
-msgid "Report an error (and skip the new record)."
+#, fuzzy
+msgid "Report and skip the new record."
 msgstr "Ohlásit chybu (a přeskočit nový záznam)."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:90
@@ -3789,35 +3791,31 @@ msgid "Renumber the new record."
 msgstr "Přečíslovat nový záznam."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:91
-msgid "Ignore the new record."
-msgstr "Ignorovat nový záznam."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:92
 msgid "Replace the existing record."
 msgstr "Přepsat existující záznam."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:94
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:93
 msgid "Import as not finalized answers?"
 msgstr "Importovat jako hotové odpovědi?"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:95
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:94
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2350
 msgid "Character set of the file:"
 msgstr "Znaková sada souboru:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:98
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:97
 msgid "Import"
 msgstr "Import"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:111
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:110
 msgid "Cannot import the VVExport file."
 msgstr "Nelze importovat soubor VVExport."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:131
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:130
 msgid "Back to Response Import"
 msgstr "Zpět k importu odpovědí"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:139
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:138
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:70
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:77
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:256
@@ -3826,24 +3824,29 @@ msgstr "Zpět k importu odpovědí"
 msgid "Reading file.."
 msgstr "Čtení souboru.."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:258
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:243
+#, php-format
+msgid "Record ID %d was skipped because of duplicate ID."
+msgstr "Jelikož ID %d již existuje, záznam s totožným ID byl přeskočen."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:278
 #, php-format
 msgid "Import Failed on Record %d because [%s]"
 msgstr "Import skončil s chybou na záznamu %d protože [%s]"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:271
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:292
 msgid "Important Note:"
 msgstr "Důležitá poznámka:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:271
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:292
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr "NEaktualizujte tuto stránku, protože by byl soubor znovu importován a vznikly by tak duplikáty."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:273
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:294
 msgid "Total records imported:"
 msgstr "Importovaných záznamů celkem:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:274
+#: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:295
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:73
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:575
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1779
@@ -3909,7 +3912,7 @@ msgstr "NEBO mezi"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:270
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:663
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:402
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:413
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1382
 msgid "and"
 msgstr "a"
@@ -4019,6 +4022,12 @@ msgstr "Procházet"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1987
 msgid "Export"
 msgstr "Export"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2650
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3363
+#, fuzzy, php-format
+msgid "Field summary for %s"
+msgstr "Souhrn polí pro"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:30
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:51
@@ -5148,117 +5157,121 @@ msgstr "Vyberte prosím..."
 msgid "This survey is not yet active. Your response cannot be saved"
 msgstr "Tento průzkum dosud není aktivní. Vaše odpovědi nemohou být uloženy."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:117
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:135
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:152
-msgid "Firstname from token"
-msgstr "Křestní jméno z identifikátoru"
-
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:118
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:136
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:153
+msgid "Firstname from token"
+msgstr "Křestní jméno z identifikátoru"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:119
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:137
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:154
 msgid "Lastname from token"
 msgstr "Příjmení z identifikátoru"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:119
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:131
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:154
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:120
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:132
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:155
 msgid "Email from the token"
 msgstr "Email z identifikátoru"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:120
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:139
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:155
-msgid "Attribute_1 from token"
-msgstr "Atribut_1 z tokenu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:121
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:140
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:156
-msgid "Attribute_2 from token"
-msgstr "Atribut_2 z tokenu"
+msgid "Attribute_1 from token"
+msgstr "Atribut_1 z tokenu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:122
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:144
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:141
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:157
-msgid "Survey expiration date (YYYY-MM-DD)"
-msgstr "Datum expirace průzkumu (YYYY-MM-DD)"
+msgid "Attribute_2 from token"
+msgstr "Atribut_2 z tokenu"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:145
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:158
-msgid "Survey expiration date (DD-MM-YYYY)"
-msgstr "Datum expirace průzkumu (DD-MM-YYYY)"
+msgid "Survey expiration date (YYYY-MM-DD)"
+msgstr "Datum expirace průzkumu (YYYY-MM-DD)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:124
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:146
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:159
+msgid "Survey expiration date (DD-MM-YYYY)"
+msgstr "Datum expirace průzkumu (DD-MM-YYYY)"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:125
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:147
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:160
 msgid "Survey expiration date (MM-DD-YYYY)"
 msgstr "Datum expirace průzkumu (MM-DD-YYYY)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:132
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:133
 msgid "Token code for this participant"
 msgstr "Kód identifikátoru pro tohoto respondenta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:137
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:138
 msgid "Name of the survey"
 msgstr "Jméno průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:138
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:139
 msgid "Description of the survey"
 msgstr "Popis průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:141
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:142
 msgid "Name of the survey administrator"
 msgstr "Jméno administrátor průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:142
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:143
 msgid "Email address of the survey administrator"
 msgstr "Emailová adresa administrátora průzkumu,"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:143
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:144
 msgid "URL of the survey"
 msgstr "URL průzkumu"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:483
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:165
+msgid "Total score for this assessment rule"
+msgstr "Součet bodů pro toto vyhodnocení"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:487
 msgid "No replacement variable available for this field"
 msgstr "Pro toto pole není dostupná žádná náhradní proměnná"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:492
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:496
 msgid "Standard Fields"
 msgstr "Standardní pole"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:504
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:508
 msgid "Previous Answers Fields"
 msgstr "Předchozí pole odpovědi"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:540
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:552
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:544
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:556
 msgid "Some Question have been disabled"
 msgstr "Některé otázky byly zakázány"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:542
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:546
 #, php-format
 msgid "Survey Format is %s:"
 msgstr "Formát průzkumu je %s:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:542
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:546
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2356
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3213
 msgid "All in one"
 msgstr "Vše najednou"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:544
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:553
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:548
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:557
 msgid "Only Previous pages answers are available"
 msgstr "Jsou dostupné pouze odpovědi na minulých stránkách"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:553
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:557
 #, php-format
 msgid "Survey mode is set to %s:"
 msgstr "Mód průzkumu byl nastaven na %s:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:553
+#: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:557
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2353
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3212
 msgid "Group by Group"
@@ -5479,11 +5492,6 @@ msgstr "Načíst soubor"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:746
 msgid "Preview:"
 msgstr "Náhled:"
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:881
-#, php-format
-msgid "%s %% complete"
-msgstr "%s %% hotovo"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:30
 msgid "Important instructions"
@@ -6526,7 +6534,8 @@ msgid "Delete Current Question"
 msgstr "Odstranit aktuální otázku"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1204
-msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+#, fuzzy
+msgid "It's impossible to delete this question because there is at least one question having a condition on it."
 msgstr "Nelze smazat otázku, protože existuje alespoň jedna jiná otázka, která je na ní závislá"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1207
@@ -7031,9 +7040,8 @@ msgstr "Uvítací zpráva:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2868
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3185
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3187
-#, fuzzy
 msgid "End message:"
-msgstr "Ukončovací Zpráva:"
+msgstr "Zakončovací sdělení:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2870
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3287
@@ -7153,134 +7161,134 @@ msgstr "Před pokračováním doporučujeme exportovat celý průzkum z hlavní 
 msgid "All conditions in this survey have been deleted."
 msgstr "Byly smazány všechny podmínky v tomto průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:119
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1641
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:129
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1679
 msgid "Submit Your Survey."
 msgstr "Odeslat Váš průzkum."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:121
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1641
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:131
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1679
 msgid "Thank you for completing this survey."
 msgstr "Děkujeme Vám za vyplnění tohoto průzkumu."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:134
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1639
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:144
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1677
 msgid "Please fax your completed survey to:"
 msgstr "Prosím odfaxujte vyplněný průzkum na:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:139
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1635
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:149
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1673
 #, php-format
 msgid "Please submit by %s"
 msgstr "Odpovězte prosím před %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:411
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:419
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:422
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:430
 msgid "if you answered"
 msgstr "jestliže jste odpověděl(a)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:415
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:426
 msgid "if you have NOT answered"
 msgstr "Jestliže jste NEodpověděl(a)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:526
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:550
 msgid "to question"
 msgstr "zeptat se"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:533
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:557
 #, php-format
 msgid "Only answer this question %s"
 msgstr "Odpovězte jen na tuto otázku %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:586
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:587
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:611
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:618
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:637
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:638
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:706
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:708
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:766
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:767
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:993
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:997
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:619
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:643
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:650
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:668
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:669
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:740
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:742
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:803
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:804
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1035
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1039
 msgid "Please choose *only one* of the following:"
 msgstr "Prosím zvolte *pouze jednu* z následujících možností:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:603
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:605
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:635
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:637
 msgid "Please enter a date:"
 msgstr "Prosím napište datum:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:793
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:830
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Prosím očíslujte každé okénko podle preferencí od 1 do"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:794
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:831
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Prosím očíslujte každé okénko podle preferencí od 1 do"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:817
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:818
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:854
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:855
 msgid "Please choose *all* that apply:"
 msgstr "Prosím zvolte *vše*, co je relevantní:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:822
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:823
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:891
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:892
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:860
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:861
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:934
 msgid "Please choose *at most* "
 msgstr "Prosím zvolte *nanejvýš*"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:822
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:823
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:860
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:861
 msgid "answers:"
 msgstr "odpovědi:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:886
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:887
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:927
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:928
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Prosím zvolte vše, co je relevantní, a dodejte komentář:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:891
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:892
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:933
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:934
 msgid "answers and provide a comment:"
 msgstr "odpovědi a dodejte komentář:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:929
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:931
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:971
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:973
 msgid "Please write your answer(s) here:"
 msgstr "Prosím napište své odpovědi zde:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:948
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:950
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:957
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:960
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:970
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:973
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:983
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:986
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:990
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:992
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:999
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1002
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1012
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1015
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1028
 msgid "Please write your answer here:"
 msgstr "Prosím napište svou odpověď zde:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1007
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1024
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1061
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1069
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1096
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1110
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1136
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1150
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1337
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1346
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1419
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1421
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1513
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1514
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1049
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1066
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1103
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1111
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1138
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1152
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1178
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1192
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1377
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1386
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1457
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1459
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1551
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1552
 msgid "Please choose the appropriate response for each item:"
 msgstr "Prosím zvolte vhodnou odpověď pro každou z položek:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1565
+#: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1603
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Průzkum obsahuje {NUMBEROFQUESTIONS} otázek."
 
@@ -7988,9 +7996,8 @@ msgid "Group could not be deleted"
 msgstr "Skupina nemůže být smazána"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:288
-#, fuzzy
-msgid "The question could not be added. You must enter at least enter a question code"
-msgstr "Otázku nelze přidat. Musíte vložit kód v povinném poli"
+msgid "The question could not be added. You must enter at least enter a question code."
+msgstr "Otázku nelze přidat. Do povinného pole je potřeba vložit platný kód."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:359
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:667
@@ -8197,12 +8204,12 @@ msgstr "Zobrazit otázku"
 msgid "No LID has been provided. Cannot dump label set."
 msgstr "Nebylo uvedeno LID. Nelze exportovat sadu popisků."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:555
-#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:568
+#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:563
+#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:576
 msgid "LimeSurvey Online Manual"
 msgstr "Online příručka LimeSurvey (anglicky)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:616
+#: /var/lib/limesurvey-svn/subversion1x/admin/admin.php:624
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:333
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:339
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:390
@@ -8858,6 +8865,10 @@ msgstr "Vyberte \"Run/All\" (Spustit/Vše) z nabídky pro spuštění importu."
 msgid "Your data should be imported now."
 msgstr "Nyní by měla být data importována."
 
+#~ msgid "Ignore the new record."
+#~ msgstr "Ignorovat nový záznam."
+#~ msgid "%s %% complete"
+#~ msgstr "%s %% hotovo"
 #~ msgid "Add New Label Set"
 #~ msgstr "Přidat novou sadu popisků"
 #~ msgid "Filter incomplete answers:"
