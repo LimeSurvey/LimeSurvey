@@ -1560,8 +1560,8 @@ function buildsurveysession()
 				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect")."</font><br />"; 
 			}
 
-		      echo "<tr><td>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br />&nbsp;
-			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
+		      echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br /><p>
+			        <form class='captcha' method='get' action='".$_SERVER['PHP_SELF']."'>
 			        <table align='center'>
 				        <tr>
 					        <td align='right' valign='middle'>
@@ -1583,13 +1583,13 @@ function buildsurveysession()
 			        </tr>";
 	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	                { echo "<tr>
-				                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
+				                <td align='middle' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php' /></td>
+                                <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
 				                </td>
 			                </tr>";}
 			        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
 		        </table>
-		        </form>
-		        <br />&nbsp;</center>";
+		        </form>";
 
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			doFooter();

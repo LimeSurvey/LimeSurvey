@@ -982,3 +982,19 @@ td.rank label, td.rank td strong {
 li.other .answer-comment {
     margin-top:-1.65em;
 }
+
+p.captcha
+{
+    margin-left:10px;
+    margin-top:10px;
+}
+
+form.captcha table td
+{
+    padding:5px 5px;
+}
+
+form.captcha label
+{
+    font-weight:bold
+}
