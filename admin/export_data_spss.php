@@ -273,7 +273,7 @@ if  ($subaction=='dlstructure') {
        ."/VARIABLES=";    
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-        if($field['LStype'] == 'N' || $field['LStype']=='K') {
+        if(($field['LStype'] == 'N' || $field['LStype']=='K') && $field['SPSStype']=='F') {
             $field['size'].='.'.($field['size']-1);
         }
 		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";

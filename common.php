@@ -139,6 +139,7 @@ $database_exists = FALSE;
 switch ($databasetype)
 {
     case "postgres":    
+    case "mysqli":    
   	case "mysql": if ($databaseport!="default") {$dbhost="$databaselocation:$databaseport";}
 		 			 	 else {$dbhost=$databaselocation;}
 	break;
