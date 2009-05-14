@@ -2242,13 +2242,13 @@ if (isset($summary) && $summary)
 
                     $Test = new pChart(1,1); 
                     
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
                     $legendsize=$Test->getLegendBoxSize($DataSet->GetDataDescription());
                      
                     if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                     $Test = new pChart(690+$legendsize[0],$gheight); 
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",8);  
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
                     $Test->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
@@ -2256,14 +2256,14 @@ if (isset($summary) && $summary)
                     $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
                     $Test->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",6);
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",6);
                     $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                     // Draw the bar graph
                     $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                     //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
                     // Finish the graph
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
                     $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
                     // $Test->drawTitle(50,22,"Example ".$legendsize[0].'x'.$legendsize[1],50,50,50,585);
 				}	//end if (bar chart)
@@ -2297,9 +2297,9 @@ if (isset($summary) && $summary)
                     $Test->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					
                     // Draw the pie chart  
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",10);  
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
                     $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
-                    $Test->setFontProperties("classes/pchart/fonts/tahoma.ttf",9);  
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
                     $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
 					
 				}	//end else -> pie charts
