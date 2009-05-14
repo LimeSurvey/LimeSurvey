@@ -19,7 +19,7 @@ h3
 	margin-top: 0%;
 }
 
-
+*
 {
 	page-break-after: always; 
 }
@@ -129,15 +129,13 @@ li.other
 div.input-other
 ,div.input-othercomment
 {
-	
-	margin: -2em 0% 0% 5.5em;
-	width: 15em;
+	width: 20em;
 	height: 2em;
 }
 
 .multiple-opt div.input-other
 {
-	/*margin-left: 5.5em;*/
+	padding-left: 5.5em;
 }
 .multiple-opt-comments div.input-other
 {
@@ -151,9 +149,9 @@ div.input-other
 	margin-left: 10.5em;
 	width: 24em;
 }
-.other-replacetext
+div.other-replacetext
 {
-	display :inline;
+	width:1px;
 }
 .ranking .q-answer li
 {
@@ -279,7 +277,3 @@ div.array-multi-flexi .q-answer table tbody td div.input-text
 	padding: 0% 0.3em;
 }
 
-div.breakbefore
-{
-    page-break-before: always; 
-}
