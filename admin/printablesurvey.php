@@ -393,7 +393,7 @@ while ($degrow = $degresult->FetchRow())
 		$scenarioresult=db_execute_assoc($scenarioquery);
 
 		while ($scenariorow=$scenarioresult->FetchRow())
-        	{
+        {
         		if($s == 0 && $scenarioresult->RecordCount() > 1)
 			{	
 				$explanation .= '<p class="scenario">'.try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
@@ -404,7 +404,7 @@ while ($degrow = $degresult->FetchRow())
 			}
 
 			$x=0;
-			$distinctquery="SELECT DISTINCT cqid, method, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} AND language='{$surveyprintlang}' ORDER BY cqid";
+			$distinctquery="SELECT DISTINCT cqid, method, ".db_table_name("questions").".title, ".db_table_name("questions").".question FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} AND language='{$surveyprintlang}' ORDER BY cqid";
 			$distinctresult=db_execute_assoc($distinctquery);
 			while ($distinctrow=$distinctresult->FetchRow())
 			{
@@ -419,15 +419,15 @@ while ($degrow = $degresult->FetchRow())
 
 				if($distinctrow['method']=='==')
 				{
-					$explanation .= $clang->gT("if you answered")." ";
+					$explanation .= $clang->gT("Answer was")." ";
 				}
 				elseif($distinctrow['method']='!=')
 				{
-					$explanation .= $clang->gT("if you have NOT answered")." ";
+					$explanation .= $clang->gT("Answer was NOT")." ";
 				}
 				else
 				{
-					$explanation .= $clang->gT("if you answered")." ";
+					$explanation .= $clang->gT("Answer was")." ";
 				}
 
 				$conquery="SELECT cid, cqid, ".db_table_name("questions").".title,\n"
@@ -510,6 +510,7 @@ while ($degrow = $degresult->FetchRow())
 						case "H":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+							//$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
@@ -547,14 +548,17 @@ while ($degrow = $degresult->FetchRow())
 				unset($conditions);
 				// TIBO: don't use $distinctrow['title'], but the question number instead
 				//$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section ";
-				$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
+				//$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
+				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$distinctrow['title']."]' (".strip_tags($distinctrow['question']).")" ;
+				//$distinctrow
 				$x++;
 			}
 			$s++;
 		}
 		if ($explanation)
 		{
-			$explanation = "[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
+			$explanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b>"
+			."<br/> ° ".$explanation;//"[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
 		}
 		else
 		{
@@ -565,6 +569,7 @@ while ($degrow = $degresult->FetchRow())
 
 		$question = array(
 					 'QUESTION_NUMBER' => $total_questions	// content of the question code field
+					,'QUESTION_CODE' => $deqrow['title']
 					,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])	// content of the question field
 					,'QUESTION_SCENARIO' => $explanation	// if there are conditions on a question, list the conditions.
 					,'QUESTION_MANDATORY' => ''		// translated 'mandatory' identifier
