@@ -110,12 +110,12 @@ $headelements = '
 		<script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
 <![endif]-->
 
-		<script type="text/javascript" src="'.$rooturl.'/scripts/tabpane/js/tabpane.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/tooltips.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
 		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar.js"></script>
 		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/lang/calendar-'.$_SESSION['adminlang'].'.js"></script>
 		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar-setup.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/validation.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/validation.js"></script>
 
 		<link rel="stylesheet" type="text/css" media="all" href="'.$rooturl.'/scripts/calendar/calendar-blue.css" title="win2k-cold-1" />
 ';
