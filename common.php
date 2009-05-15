@@ -3507,17 +3507,17 @@ function questionAttributes($returnByName=false)
 	$qattributes["max_num_value_sgqa"]=array(
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
-	"caption"=>$clang->gT('Max value from SQGA'));
+	"caption"=>$clang->gT('Max value from SGQA'));
 	
 	$qattributes["min_num_value_sgqa"]=array(
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
-	"caption"=>$clang->gT('Min value from SQGA'));
+	"caption"=>$clang->gT('Min value from SGQA'));
 
 	$qattributes["num_value_equals_sgqa"]=array(
 	"types"=>"K",
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
-	"caption"=>$clang->gT('Value equals SQGA'));
+	"caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["page_break"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:",
