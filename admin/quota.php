@@ -453,7 +453,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         							<tbody>
           								<tr class="evenrow">
           								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
           								        </blockquote></td>
           								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$langquotainfo['quotals_message'].'</textarea></td>
 										</tr>
@@ -465,7 +465,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+                								<p><strong>'.$clang->gT("URL description").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_urldescrip'].'" /></td>
           								</tr>
@@ -888,7 +888,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         							<tbody>
           								<tr class="evenrow">
           								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
           								        </blockquote></td>
           								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$clang->gT("Sorry your responses have exceeded a quota on this survey.").'</textarea></td>
           								</tr>
@@ -900,7 +900,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+                								<p><strong>'.$clang->gT("URL description").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['urldescrip'].'" /></td>
           								</tr>

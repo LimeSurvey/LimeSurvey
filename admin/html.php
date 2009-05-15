@@ -2864,7 +2864,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("End URL:")."</span>\n"
             . "<span class='settingentry'><input type='text' size='80' name='url_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_url']}\" />\n"
             . "</span></div>"
-			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
+			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL description:")."</span>\n"
 			. "<span class='settingentry'><input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
 			. "</span></div></div>";
 		}
