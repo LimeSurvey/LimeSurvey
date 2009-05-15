@@ -107,6 +107,18 @@ function sanitize_paranoid_string($string, $min='', $max='')
    }
 }
 
+function sanitize_cquestions($string, $min='', $max='')
+{
+   if (isset($string))
+   {
+   	$string = preg_replace("/[^_.a-zA-Z0-9+]/", "", $string);
+	$len = strlen($string);
+	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
+	return FALSE;
+	return $string;
+   }
+}
+
 function sanitize_email($email) {
 // Handles now emails separated with a semikolon    
     $emailarray=explode(';',$email);

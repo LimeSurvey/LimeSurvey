@@ -66,6 +66,7 @@ if (!isset($screenname)) {$screenname=auto_unescape(returnglobal('screenname'));
 if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===false)) {die('Invalid screen name');}  // Die you sneaky bastard!
 
 if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
+if (!isset($subaction)) {$subaction=sanitize_paranoid_string(returnglobal('subaction'));}
 if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
@@ -84,12 +85,33 @@ if (isset ($_POST['changes'])) {
 	}
 
 
-if ($action != "newtemplate" && !$templatename) {$templatename = "default";}
 $template_a=gettemplatelist();
 foreach ($template_a as $tp) {
 	$templates[]=array("name"=>$tp, "dir"=>$tpldir."/".$tp);
 }
 unset($template_a);
+
+// check if a template like this exists
+if (recursive_in_array($templatename,$templates)===false)
+{
+   $templatename = "default";
+}
+
+if ($subaction == "delete" && $templatename!='default' ) 
+{
+   rmdirr($tpldir."/".$templatename);
+   
+   $templatequery = "UPDATE {$dbprefix}surveys set template='default' where template='$templatename'\n";    
+   $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+   
+   $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
+   $templatename = "default";
+}
+
+if ($action == "templateupload")
+{
+    include("import_resources_zip.php");
+}
 
 
 //Save Changes if necessary
@@ -150,7 +172,7 @@ if ($action == "templaterename" && isset($newname) && isset($copydir)) {
 	}
 }
 
-if ($action == "templateupload") 
+if ($action == "templateuploadfile") 
   {
 
       if ($demoModeOnly == true)
@@ -333,7 +355,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
     break;
 
@@ -365,7 +387,7 @@ switch($screenname) {
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endgroup.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/navigator.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endpage.pstpl"));
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
 	break;
 	case $clang->gT("Welcome Page", "unescaped"):
@@ -375,7 +397,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Register Page", "unescaped"):
@@ -400,7 +422,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Save Page", "unescaped"):
@@ -421,7 +443,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Load Page", "unescaped"):
@@ -442,7 +464,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Clear All Page", "unescaped"):
@@ -463,7 +485,7 @@ switch($screenname) {
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Completed Page", "unescaped"):
@@ -473,7 +495,7 @@ switch($screenname) {
 		$files[]=array("name"=>$qs);
 		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
 	}
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 
@@ -495,7 +517,7 @@ switch($screenname) {
         $myoutput[]=templatereplace($op);
     }
     $myoutput[]= "\n";
-    if (file_exists($publicdir."/templates/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
     break;
 }
 $myoutput[]="</html>";
@@ -578,8 +600,13 @@ $templatesoutput.= "<div class='menubar'>\n"
 . "onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Default Administration Page")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" 
 . "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' /></a>\n"
 . "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
-. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />"
-. "</div>\n"
+. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />";
+
+if (isset($flashmessage))
+{
+  $templatesoutput.='<span style="font-weight:bold;">'.$flashmessage.'</span>';  
+}
+$templatesoutput.= "</div>\n"
 . "\t\t\t<div class='menubar-right'>\n"
 
 //Logout Button
@@ -610,7 +637,7 @@ $templatesoutput.= "\t\t\t<div class='menubar'>\n"
 . "\t\t\t\t</div>\n"
 . "\t\t\t<div class='menubar-main'>\n"
 . "\t\t\t<div class='menubar-left'>\n";
-if (is_writable("$publicdir/templates/$templatename") && ($templatename != "default") ) {
+if (is_writable($tpldir."/".$templatename) && ($templatename != "default") ) {
 	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' " 
             		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
 } else {
@@ -622,27 +649,36 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60'
 
 if ($templatename == "default" && $debug<2) 
 {
-        $templatesoutput.= "\t\t\t\t\t" .
-    		 "<img name='EditName' src='$imagefiles/noedit.png' alt='' title=''" .
-    		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" ".
-             " />";
+    $templatesoutput.="<img name='EditName' src='$imagefiles/edit_disabled.png' alt='' title=''" 
+    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" "
+         ." />"
+         ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='' title=''" 
+         ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete the default template.", "js")."')\" "
+         ." />";
 }
 else 
     {	
-        $templatesoutput.= "\t\t\t\t\t<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
+        $templatesoutput.= "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
     		 "<img name='EditName' src='$imagefiles/edit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
              " /></a>";
+        $templatesoutput.= "<a href='#' "
+             ." onclick='if (confirm(\"".$clang->gT("Are you sure you want to delete this template?", "js")."\")) window.open(\"admin.php?action=templates&amp;subaction=delete&amp;templatename=$templatename\", \"_top\")' >" .
+             "<img name='DeleteTemplate' src='$imagefiles/delete.png' alt='' title=''" .
+             " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this template", "js")."')\" ".
+             " /></a>";
     }
 $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
-."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'".
-		"onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" .
-				"<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+    ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
+    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" 
+    ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+    ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
+    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Import template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Import template", "js")."')\">" 
+    ."<img name='Export' src='$imagefiles/import.png' alt='' title='' /></a>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-."\t\t\t\t\t" .
-		"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " .
-		"onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" .
-		"<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
+    ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
+    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
 ."</div>\n"
 ."<div class='menubar-right'>\n"
 ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
@@ -658,6 +694,34 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
 . "\t<tr>\n"
 . "\t\t<td>\n";
 
+
+if ($subaction=='templateupload')
+{    
+    $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
+    if (!function_exists("zip_open"))
+    {
+        $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+    }    
+    $templatesoutput.= "\t<form enctype='multipart/form-data' name='importtemplate' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+        . "\t<input type='hidden' name='lid' value='$lid' />\n"
+        . "\t<input type='hidden' name='action' value='templateupload' />\n"
+        . "\t<table width='60%' class='form2columns'>\n"
+        . "\t<tbody align='center'>"
+        . "\t\t<tr><th  colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
+        . "\t\t<tr><td>&nbsp;</td></tr>\n"
+        . "\t\t<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
+        . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
+        . "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></td><td></td>\n"
+        . "\t\t</tr>\n"
+        . "\t</tbody></table></form>\n"; 
+}
+elseif (isset($importtemplateoutput))
+{
+    $templatesoutput.=$importtemplateoutput;
+}
+else
+{
+        
 
 //FILE CONTROL DETAILS
 $templatesoutput.= "\t\t\t<table class='menubar'>\n"
@@ -729,7 +793,7 @@ $templatesoutput.= " />\n"
 ."<input type='hidden' name='editfile' value='$editfile' />\n"
 ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
 ."<input type='hidden' name='templatename' value='$templatename' />\n"
-."<input type='hidden' name='action' value='templateupload' />\n"
+    ."<input type='hidden' name='action' value='templateuploadfile' />\n"
 ."</td></tr></table></form>\n"
 ."\t\t\t\t\t\t</td>\n"
 ."\t\t\t\t\t</tr>\n"
@@ -764,7 +828,7 @@ $templatesoutput.= "<br />\n"
 ."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 ."<br />&nbsp;<br />"
 ."</td></tr></table>\n";
-
+}
 
 function doreplacement($file) { //Produce sample page from template file
 	$output=array();
@@ -927,5 +991,43 @@ function multiarray_search($arrayVet, $campo, $valor){
     return false;
 }
 
+
+function rmdirr($dirname)
+{
+    // Sanity check
+    if (!file_exists($dirname)) {
+        return false;
+    }
+ 
+    // Simple delete for a file
+    if (is_file($dirname) || is_link($dirname)) {
+        return unlink($dirname);
+    }
+ 
+    // Loop through the folder
+    $dir = dir($dirname);
+    while (false !== $entry = $dir->read()) {
+        // Skip pointers
+        if ($entry == '.' || $entry == '..') {
+            continue;
+        }
+ 
+        // Recurse
+        rmdirr($dirname . DIRECTORY_SEPARATOR . $entry);
+    }
+ 
+    // Clean up
+    $dir->close();
+    return rmdir($dirname);
+}
+
+function recursive_in_array($needle, $haystack) {
+    foreach ($haystack as $stalk) {
+        if ($needle == $stalk || (is_array($stalk) && recursive_in_array($needle, $stalk))) {
+            return true;
+        }
+    }
+    return false;
+}
 
 ?>

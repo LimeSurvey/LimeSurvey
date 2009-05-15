@@ -60,7 +60,7 @@ function spss_fieldmap($prefix = 'V') {
 	}
 
 	#Lookup the names of the attributes
-	$query="SELECT sid, attribute1, attribute2, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+	$query="SELECT sid, 'attribute1', 'attribute2', private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
 	$result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
 	$num_results = $result->RecordCount();
 	$num_fields = $num_results;
@@ -90,12 +90,13 @@ function spss_fieldmap($prefix = 'V') {
 		if (in_array('email', $token_fields)) {
 			$fields[$fieldno++]=array('id'=>"$prefix$fieldno",'name'=> $clang->gT('Email'),'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
 		}
-		if (in_array('attribute_1', $token_fields)) {
-			$fields[$fieldno++]=array('id'=>"$prefix$fieldno",'name'=>$attr1_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-		}
-		if (in_array('attribute_2', $token_fields)) {
-			$fields[$fieldno++]=array('id'=>"$prefix$fieldno",'name'=>$attr2_name,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
-		}
+        $tokenattributes=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($tokenattributes as $attributefield=>$attributedescription)
+        {
+            if (in_array($attributefield, $token_fields)) {
+                $fields[$fieldno++]=array('id'=>"$prefix$fieldno",'name'=>$attributedescription,'code'=>'','qid'=>0,'LStype'=>'Undef','SPSStype'=>'A','size'=>100);
+            }
+        }
 	} else {
 		$fields=array();
 	}
@@ -142,8 +143,8 @@ function spss_fieldmap($prefix = 'V') {
 		 
 		#Get qid (question id)
 		$code='';
-		$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'attribute_1', 'attribute_2', 'startlanguage', 'ipaddr', 'refurl');
-		if (in_array($fieldname, $noQID)){
+		$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl');
+		if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
 			$qid = 0;
 			$varlabel = $fieldname;
 			$ftitle = $fieldname;
@@ -190,12 +191,12 @@ function spss_getquery() {
 		$query="SELECT {$dbprefix}tokens_$surveyid.firstname   ,
 		{$dbprefix}tokens_$surveyid.lastname    ,
 		{$dbprefix}tokens_$surveyid.email";
-		if (in_array('attribute_1', $token_fields)) {
-			$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_1";
-		}
-		if (in_array('attribute_2', $token_fields)) {
-			$query .= ",\n		{$dbprefix}tokens_$surveyid.attribute_2";
-		}
+        $tokenattributes=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($tokenattributes as $attributefield=>$attributedescription)
+		    if (in_array($attributefield, $token_fields)) {
+			    $query .= ",\n		{$dbprefix}tokens_$surveyid.$attributefield";
+		    }
+        }
 		$query .= ",\n	       {$dbprefix}survey_$surveyid.*
 	    FROM {$dbprefix}survey_$surveyid
 	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";

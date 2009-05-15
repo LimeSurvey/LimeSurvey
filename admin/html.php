@@ -66,7 +66,7 @@ if ($action == "listsurveys")
 			else $privacy =$clang->gT("Not Anonymous") ;
 
 			
-			if (bHasSurveyGotTokentable(null,$rows['sid']))
+			if (tokenTableExists($rows['sid']))
 			{
 				$visibility = $clang->gT("Closed-access");
 			}
@@ -711,25 +711,11 @@ if ($surveyid)
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey'])
 		{
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";     
-            if ($activated == "Y")
-            {
-			    $surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" "
+			$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" "
 			    . "onmouseout=\"hideTooltip()\" "
-			    . "title=\"".$clang->gTview("Activate/Edit Tokens for this Survey")."\" "
-			    . "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">"
-			    . "<img src='$imagefiles/tokens.png' title='' name='TokensControl' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."' /></a>\n" ;
-            }
-            else
-            {
-                $surveysummary .= "<a href=\"#\" onclick=\"alert('"
-		        . $clang->gT("Adding/editing tokens is not possible because this survey is not activated.","js")."')\" "
-                . "onmouseout=\"hideTooltip()\" "
-                . "title=\"".$clang->gTview("Activate/Edit Tokens for this Survey")."\" "
-                . "onmouseover=\"showTooltip(event,'".$clang->gT("Activate/Edit Tokens for this Survey", "js")."');return false\">"
-                . "<img src='$imagefiles/tokens_disabled.png' title='' alt='".$clang->gT("Activate/Edit Tokens for this Survey")."' "
-                . "name='DoTokens' /></a>\n";
-                
-            }
+			    . "title=\"".$clang->gTview("Token management")."\" "
+			    . "onmouseover=\"showTooltip(event,'".$clang->gT("Token management", "js")."');return false\">"
+			    . "<img src='$imagefiles/tokens.png' title='' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
 		$surveysummary .= "</div>\n"
 		. "<div class='menubar-right'>\n";
@@ -1680,7 +1666,7 @@ if (returnglobal('viewanswer'))
 			}
 
 			// Don't show Default Button for array question types
-			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+			if ($qtype != "A" && $qtype != "B" && $qtype != "C" && $qtype != "E" && $qtype != "F" && $qtype != "H" && $qtype != "R" && $qtype != "Q" && $qtype != "1" && $qtype != ":" && $qtype != ";") $vasummary .= "<input type='submit' name='method' value='".$clang->gT("Default")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			$vasummary .= "</td>\n"
 			."<td width='10%'>\n";
 			if ($position > 0)
@@ -2474,6 +2460,31 @@ if ($action == "editsurvey")
 		// Publication and access control TAB
 		$editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2>\n";
 
+        
+
+            // Token access
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Only users with tokens may enter the survey?")."</span>\n"
+            . "<span class='settingentry'><select name='usetokens'>\n"
+            . "<option value='Y'";
+            if ($esrow['usetokens'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if ($esrow['usetokens'] != "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select></span>\n</div>\n";
+
+            // Self registration
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow public registration?")."</span>\n"
+            . "<span class='settingentry'><select name='allowregister'>\n"
+            . "<option value='Y'";
+            if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+            if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected='selected'";}
+            $editsurvey .= ">".$clang->gT("No")."</option>\n"
+            . "</select></span>\n</div>\n";
+        
+        
 
             // Start date
             $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
@@ -2499,7 +2510,7 @@ if ($action == "editsurvey")
 			. "<span class='settingentry'><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></span></div>\n";
 
 			//COOKIES
-			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use Cookies?")."</span>\n"
+			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"
 			. "<span class='settingentry'><select name='usecookie'>\n"
 			. "<option value='Y'";
 			if ($esrow['usecookie'] == "Y") {$editsurvey .= " selected='selected'";}
@@ -2510,16 +2521,6 @@ if ($action == "editsurvey")
 			. "</select></span>\n"
 			. "</div>\n";
 
-			// Auto registration
-			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow public registration?")."</span>\n"
-			. "<span class='settingentry'><select name='allowregister'>\n"
-			. "<option value='Y'";
-			if ($esrow['allowregister'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "<option value='N'";
-			if ($esrow['allowregister'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option>\n"
-			. "</select></span>\n</div>\n";
 
 	// Use Captcha 
         $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"
@@ -2555,13 +2556,6 @@ if ($action == "editsurvey")
 	$editsurvey .= ">------------- / ------------ / ---------</option>\n"
 
         . "</select></span>\n</div>\n";
-
-			// token
-			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Token Attribute Names:")."</span>\n"
-			. "<span class='settingentry'><input type='text' size='25' name='attribute1'"
-			. " value=\"{$esrow['attribute1']}\" />(".$clang->gT("Attribute 1").")<br />"
-			. "<input type='text' size='25' name='attribute2'"
-			. " value=\"{$esrow['attribute2']}\" />(".$clang->gT("Attribute 2").")</span>\n</div>\n";
 
 	// Email format
         $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
@@ -3167,7 +3161,15 @@ if ($action == "newsurvey")
 			if ($defaultlang == $langkey2) {$newsurvey .= " selected='selected'";}
 			$newsurvey .= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 		}
-
+        
+        //Use the current user details for the default administrator name and email for this survey
+        $query = "SELECT full_name, email FROM ".db_table_name('users')." WHERE users_name = ".db_quoteall($_SESSION['user']);
+        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+		$owner=$result->FetchRow();
+		//Degrade gracefully to $siteadmin details if anything is missing.
+		if(empty($owner['full_name'])) $owner['full_name']=$siteadminname;
+		if(empty($owner['email'])) $owner['email'] = $siteadminemail;
+        
 		$newsurvey .= "</select><font size='1'> ".$clang->gT("This setting cannot be changed later!")."</font>\n"
 		. "</span></div>\n";
 
@@ -3187,14 +3189,13 @@ if ($action == "newsurvey")
         . getEditor("survey-endtext","endtext", "[".$clang->gT("End message:", "js")."]",'','','',$action)
         . "</span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Administrator:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='admin' value='$siteadminname' /></span></div>\n"
+		. "<span class='settingentry'><input type='text' size='50' name='admin' value='".$owner['full_name']."' /></span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Admin Email:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='adminemail' value='$siteadminemail' /></span></div>\n"
+		. "<span class='settingentry'><input type='text' size='50' name='adminemail' value='".$owner['email']."' /></span></div>\n"
 		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Bounce Email:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='50' name='bounce_email' value='$siteadminemail' /></span></div>\n";
+		. "<span class='settingentry'><input type='text' size='50' name='bounce_email' value='".$owner['email']."' /></span></div>\n";
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Fax To:")."</span>\n"
 		. "<span class='settingentry'><input type='text' size='50' name='faxto' /></span></div>\n";
-
 
 		// End General TAB
 		// Create Survey Button 
@@ -3306,6 +3307,20 @@ if ($action == "newsurvey")
 		// Publication and access control TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2>\n";
 
+        
+    // Use tokens
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Only users with tokens may enter the survey?")."</span>\n"
+        . "<span class='settingentry'><select name='usetokens'>\n"
+        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "</select></span>\n</div>\n";
+
+    // Public registration
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow public registration?")."</span>\n"
+        . "<span class='settingentry'><select name='allowregister'>\n"
+        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "</select></span>\n</div>\n";
 
         // Timed Start
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
@@ -3326,7 +3341,7 @@ if ($action == "newsurvey")
 		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
 
 		//COOKIES
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use Cookies?")."</span>\n"
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"
 		. "<span class='settingentry'><select name='usecookie'>\n"
 		. "<option value='Y'";
 		if (isset($esrow) && $esrow['usecookie'] == "Y") {$newsurvey .= " selected='selected'";}
@@ -3336,12 +3351,6 @@ if ($action == "newsurvey")
 		. "</select></span>\n"
 		. "</div>\n";
 
-	// Public registration
-        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow public registration?")."</span>\n"
-        . "<span class='settingentry'><select name='allowregister'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></span>\n</div>\n";
 
 	// Use Captcha 
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use CAPTCHA for").":</span>\n"

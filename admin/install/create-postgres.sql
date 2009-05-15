@@ -118,7 +118,7 @@ CREATE TABLE prefix_question_attributes (
     qaid serial NOT NULL,
     qid integer DEFAULT 0 NOT NULL,
     attribute character varying(50),
-    value character varying(20)
+    value text NULL
 );
 
 -- 
@@ -131,13 +131,26 @@ CREATE TABLE prefix_quota (
   name character varying(255),
   qlimit integer,
   "action" integer,
-  "active" integer NOT NULL default '1'
+  "active" integer NOT NULL default '1',
+  autoload_url integer NOT NULL DEFAULT 0
 );
 
 ALTER TABLE ONLY prefix_quota
     ADD CONSTRAINT prefix_quota_pkey PRIMARY KEY (id);
 
+CREATE TABLE prefix_quota_languagesettings
+(
+  quotals_id serial NOT NULL,
+  quotals_quota_id integer NOT NULL DEFAULT 0,
+  quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+  quotals_name character varying(200),
+  quotals_message text NOT NULL,
+  quotals_url character varying(255),
+  quotals_urldescrip character varying(255)
+);
 
+ALTER TABLE ONLY prefix_quota_languagesettings
+  ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);
 
 CREATE TABLE prefix_quota_members (
   id serial,
@@ -229,8 +242,6 @@ CREATE TABLE prefix_surveys (
     usecookie character(1) DEFAULT 'N'::bpchar,
     notification character(1) DEFAULT '0'::bpchar,
     allowregister character(1) DEFAULT 'N'::bpchar,
-    attribute1 character varying(255),
-    attribute2 character varying(255),
     allowsave character(1) DEFAULT 'Y'::bpchar,
     printanswers character(1) DEFAULT 'N'::bpchar,
     autonumber_start integer DEFAULT 0,
@@ -248,8 +259,9 @@ CREATE TABLE prefix_surveys (
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,
-    "bounce_email" character varying(320) NOT NULL
-    
+    usetokens character(1) DEFAULT 'N'::bpchar,
+    "bounce_email" character varying(320) NOT NULL,
+    attributedescriptions text
 );
 
 
@@ -499,7 +511,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '133');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '136');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

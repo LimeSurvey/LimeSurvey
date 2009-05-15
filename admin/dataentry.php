@@ -137,15 +137,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			}
 		}
 
-		if (bHasSurveyGotTokentable($thissurvey) && (!isset($_POST['token']) || !$_POST['token']))
+		if (tokenTableExists($thissurvey['sid']) && (!isset($_POST['token']) || !$_POST['token']))
 		{// First Check if the survey uses tokens and if a token has been provided
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</strong>\n";
 		}
-		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken == 'UnknownToken')
+		elseif (tokenTableExists($thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
 		{
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("The token you have provided is not valid or has already been used.")."</strong>\n";
 		}
-		elseif (bHasSurveyGotTokentable($thissurvey) && $lastanswfortoken != '')
+		elseif (tokenTableExists($thissurvey['sid']) && $lastanswfortoken != '')
 		{
 			$errormsg="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("There is already a recorded answer for this token")."</strong>\n";
 			if ($lastanswfortoken != 'PrivacyProtected')
@@ -402,7 +402,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$insertqr = substr($insertqr, 0, -3); //Strip off the last comma-space
 
 			//NOW SHOW SCREEN
-			if (bHasSurveyGotTokentable($thissurvey) && 
+			if (tokenTableExists($thissurvey['sid']) && 
 			    isset($_POST['token']) && $_POST['token'] &&
 			    $thissurvey['private'] == 'N') //handle tokens if survey needs them
 			{
@@ -1838,7 +1838,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."\t\t</td>\n"
 		."\t</tr>\n";
 
-		if (bHasSurveyGotTokentable($thissurvey)) //Give entry field for token id 
+		if (tokenTableExists($thissurvey['sid'])) //Give entry field for token id 
 		{
 			$dataentryoutput .= "\t<tr>\n"
 			."\t\t<td valign='top' width='1%'></td>\n"
@@ -2950,7 +2950,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			$dataentryoutput .= "\t\t<td colspan='3' align='center'>\n";
 			$dataentryoutput .= "\t\t\t<input type='submit' id='submitdata' value='".$clang->gT("Submit")."'";
 
-			if (bHasSurveyGotTokentable($thissurvey))
+			if (tokenTableExists($thissurvey['sid']))
 			{
 				$dataentryoutput .= " disabled='disabled'/>\n";
 			}

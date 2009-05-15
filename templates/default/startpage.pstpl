@@ -22,6 +22,9 @@
 		<style type="text/css" media="aural tty">
 progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
 		</style>
+		
+		<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
+		
 	</head>
 <body class="default">
 <table width="75%" align="center" class="outerframe">

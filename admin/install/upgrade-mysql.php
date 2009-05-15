@@ -272,6 +272,36 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `url`"); echo $modifyoutput; flush();
     	modify_database("","update `prefix_settings_global` set `stg_value`='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}    
+    if ($oldversion < 134)
+    {
+        // Add new tokens setting
+        modify_database("","ALTER TABLE `prefix_surveys` ADD `usetokens` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` ADD `attributedescriptions` TEXT;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `attribute1`"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE `prefix_surveys` DROP COLUMN `attribute2`"); echo $modifyoutput; flush();
+        upgrade_token_tables134();
+        modify_database("","update `prefix_settings_global` set `stg_value`='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }     
+     if ($oldversion < 135)
+    {
+        modify_database("","ALTER TABLE `prefix_question_attributes` MODIFY `value` text"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='135' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }
+    if ($oldversion < 136) //New Quota Functions
+    {
+	    modify_database("", "ALTER TABLE `prefix_quota` ADD `autoload_url` int(1) NOT NULL default '0'"); echo $modifyoutput; flush();
+        modify_database("","CREATE TABLE `prefix_quota_languagesettings` (
+								         `quotals_id` int(11) NOT NULL auto_increment,
+										 `quotals_quota_id` int(11) NOT NULL default '0',
+										 `quotals_language` varchar(45) NOT NULL default 'en',
+										 `quotals_name` varchar(255) collate utf8_unicode_ci default NULL,
+										 `quotals_message` text NOT NULL,
+										 `quotals_url` varchar(255),
+										 `quotals_urldescrip` varchar(255),
+										 PRIMARY KEY (`quotals_id`)
+										 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+        modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='136' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
     return true;
 }
 
@@ -339,6 +369,8 @@ function upgrade_token_tables128()
 }
 
 
+
+
 function upgrade_survey_tables133()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
@@ -347,6 +379,24 @@ function upgrade_survey_tables133()
     {
         FixLanguageConsistency($sv[0],$sv[1]);   
     }
+}
+
+
+// Add the reminders tracking fields
+function upgrade_token_tables134()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = "SHOW TABLES LIKE '".$dbprefix."tokens%'";
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `validfrom` Datetime"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD `validuntil` Datetime"); echo $modifyoutput; flush();
+            }
+        }
 }
 
 function fix_mysql_collation()

@@ -16,7 +16,7 @@
 //
 // TODO
 //
-// Optionnally mark ADDED, UPDATED lines with different colors jus as the EDITTED one
+// Optionnally mark ADDED, UPDATED lines with different colors just as the EDITTED one
 //
 // add warning if updating scenario with a scenario number which already exists (merging)
 //
@@ -36,6 +36,8 @@ if (!isset($p_cqid)) {$p_cqid=returnglobal('cqid');}
 if (!isset($p_cid)) {$p_cid=returnglobal('cid');}
 if (!isset($p_subaction)) {$p_subaction=returnglobal('subaction');}
 if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
+if (!isset($p_csrctoken)) {$p_csrctoken=returnglobal('csrctoken');}
+if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
 
 if (!isset($p_canswers))
 {
@@ -56,14 +58,32 @@ if (isset($_POST['method']))
 	}
 	else
 	{
-		$p_method = trim($_POST['method']);
+		$p_method = trim ($_POST['method']);
 	}
 }
 
-if (isset($_POST['ValOrRegEx']))
+/**
+if (isset($_POST['ConditionConst']))
 {
-	$html_ValOrRegEx = html_escape(auto_unescape($_POST['ValOrRegEx']));
+	$html_ConditionConst = html_escape(auto_unescape($_POST['ConditionConst']));
 }
+if (isset($_POST['prevQuestionSGQA']))
+{
+	$html_prevQuestionSGQA = html_escape(auto_unescape($_POST['prevQuestionSGQA']));
+}
+if (isset($_POST['tokenAttr']))
+{
+	$html_tokenAttr = html_escape(auto_unescape($_POST['tokenAttr']));
+}
+if (isset($_POST['ConditionRegexp']))
+{
+	$html_ConditionRegexp = html_escape(auto_unescape($_POST['ConditionRegexp']));
+}
+if (isset($_POST['csrctoken']))
+{
+	$html_csrctoken = html_escape(auto_unescape($_POST['csrctoken']));
+}
+**/
 
 if (isset($_POST['newscenarionum']))
 {
@@ -167,26 +187,57 @@ if (isset($_GET['markcid']))
 if (isset($p_subaction) && $p_subaction == "insertcondition")
 {
 	if ((!isset($p_canswers) &&
-				!isset($_POST['ValOrRegEx'])) ||
-			!isset($p_cquestions))
+				!isset($_POST['ConditionConst']) &&
+				!isset($_POST['prevQuestionSGQA']) &&
+				!isset($_POST['tokenAttr']) &&
+				!isset($_POST['ConditionRegexp'])) ||
+			(!isset($p_cquestions) && !isset($p_csrctoken)))
 	{
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
+		if (isset($p_cquestions) && $p_cquestions != '')
+		{
+			$conditionCfieldname=$p_cquestions;
+		}
+		elseif(isset($p_csrctoken) && $p_csrctoken != '')
+		{
+			$conditionCfieldname=$p_csrctoken;
+		}
+
 		if (isset($p_canswers))
 		{
 			foreach ($p_canswers as $ca)
 			{
 				$query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-					. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$p_cquestions}', '{$p_method}', '$ca')";
+					. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '$ca')";
 				$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 			}
 		}
-		if (isset($_POST['ValOrRegEx']) && $_POST['ValOrRegEx']) //Remmember: '', ' ', 0 are evaluated as FALSE
-		{ //here is saved the textarea for constants or regex
+
+		unset($posted_condition_value);
+		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['ConditionConst'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['prevQuestionSGQA'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['tokenAttr'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['ConditionRegexp'],get_magic_quotes_gpc());
+		}
+
+		if (isset($posted_condition_value))
+		{ 
 			$query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$p_cquestions}', '{$p_method}', ".$connect->qstr($_POST['ValOrRegEx'],get_magic_quotes_gpc()).")";
+				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', ".$posted_condition_value.")";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
@@ -196,25 +247,56 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 if (isset($p_subaction) && $p_subaction == "updatecondition")
 {
 	if ((!isset($p_canswers) &&
-				!isset($_POST['ValOrRegEx'])) ||
-			!isset($p_cquestions))
+				!isset($_POST['ConditionConst']) &&
+				!isset($_POST['prevQuestionSGQA']) &&
+				!isset($_POST['tokenAttr']) &&
+				!isset($_POST['ConditionRegexp'])) ||
+			(!isset($p_cquestions) && !isset($p_csrctoken)))
 	{
 		$conditionsoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.","js")."\")\n //-->\n</script>\n";
 	}
 	else
 	{
+		if (isset($p_cquestions) && $p_cquestions != '')
+		{
+			$conditionCfieldname=$p_cquestions;
+		}
+		elseif(isset($p_csrctoken) && $p_csrctoken != '')
+		{
+			$conditionCfieldname=$p_csrctoken;
+		}
+
 		if (isset($p_canswers))
 		{
 			foreach ($p_canswers as $ca)
 			{ // This is an Edit, there will only be ONE VALUE
-				$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}', cqid='{$p_cqid}', cfieldname='{$p_cquestions}', method='{$p_method}', value='$ca' "
+				$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}', cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='$ca' "
 					. " WHERE cid={$p_cid}";
 				$result = $connect->Execute($query) or safe_die ("Couldn't update condition<br />$query<br />".$connect->ErrorMsg());
 			}
 		}
-		if (isset($_POST['ValOrRegEx']) && $_POST['ValOrRegEx']) //Remmember: '', ' ', 0 are evaluated as FALSE
-		{ //here is saved the textarea for constants or regex
-			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$p_cquestions}', method='{$p_method}', value=".$connect->qstr($_POST['ValOrRegEx'],get_magic_quotes_gpc())." "
+
+		unset($posted_condition_value);
+		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['ConditionConst'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['prevQuestionSGQA'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['tokenAttr'],get_magic_quotes_gpc());
+		}
+		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
+		{
+			$posted_condition_value = $connect->qstr($_POST['ConditionRegexp'],get_magic_quotes_gpc());
+		}
+
+		if (isset($posted_condition_value)) 
+		{ 
+			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value=".$posted_condition_value." "
 				. " WHERE cid={$p_cid}";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
@@ -350,8 +432,8 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 
 
 
-unset($cquestions);
-unset($canswers);
+$cquestions=Array();
+$canswers=Array();
 
 
 
@@ -359,6 +441,7 @@ unset($canswers);
 // 1: Get information for this question
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+$thissurvey=getSurveyInfo($surveyid);
 
 $query = "SELECT * "
          ."FROM {$dbprefix}questions, "
@@ -399,14 +482,10 @@ foreach ($qrows as $qrow)
 {
 	if ($qrow["qid"] != $qid && $position=="before")
 	{
-		if ($qrow['type'] != "UNSUPPORTEDTYPE")
-		{
-		// There is currently no unsupported question 
-		// type for use in conditions
-		// So remember the questions of this type
+		// remember all previous questions
+		// all question types are supported.
 			$questionlist[]=$qrow["qid"];
 		}
-	}
 	elseif ($qrow["qid"] == $qid)
 	{
 		break;
@@ -517,8 +596,8 @@ if (isset($postquestionlist) && is_array($postquestionlist))
 
 $questionscount=count($theserows);
 
-if (isset($postquestionscount) && $postquestionscount > 0) //Build the select box for questions after this one
-{
+if (isset($postquestionscount) && $postquestionscount > 0)
+{ //Build the array used for the questionNav and copyTo select boxes
 	foreach ($postrows as $pr)
 	{
 		$pquestions[]=array("text"=>$pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
@@ -526,13 +605,10 @@ if (isset($postquestionscount) && $postquestionscount > 0) //Build the select bo
 	}
 }
 
+// Previous question parsing ==> building cquestions[] and canswers[]
 if ($questionscount > 0)
 {
 	$X="X";
-	// Will detect if the questions are type D to use later
-	$dquestions=array();
-	// Will detect if the questions are of Numerical type, for use in @SGQA@ conditions
-	$numquestions=array();
 
 	foreach($theserows as $rows)
 	{
@@ -603,32 +679,6 @@ if ($questionscount > 0)
 				if ($rows['mandatory'] != 'Y')
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
-				}
-
-				if ($rows['type'] == 'A' ||
-						$rows['type'] == 'B')
-				{
-					$rows['acode']=$arows['code']; // let's add the answer code data
-					$numquestions[]=$rows; // This is a numerical question type
-
-					foreach ($numquestions as $numq)
-					{
-						if ($rows['qid'] != $numq['qid'] ||
-								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
-						{
-							if ($numq['type'] == "A" ||
-									$numq['type'] == "B" ||
-									$numq['type'] == "K" ) // multiple line numerical questions
-							{
-								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
-							}
-							elseif ($numq['type'] == "N" ||
-									$numq['type'] == "5") // single line numerical questions
-							{
-								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
-							}
-						}
-					}
 				}
 
 			} //while
@@ -770,31 +820,6 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "", $clang->gT("No answer"));
 				}
 
-				if ($rows['type'] == 'K')
-				{
-					$rows['acode']=$arows['code']; // let's add the answer code data
-					$numquestions[]=$rows; // This is a numerical question type
-
-					foreach ($numquestions as $numq)
-					{
-						if ($rows['qid'] != $numq['qid'] ||
-								($rows['qid'] == $numq['qid'] && $rows['acode'] != $numq['acode']))
-						{
-							if ($numq['type'] == "A" ||
-									$numq['type'] == "B" ||
-									$numq['type'] == "K") // multiple line numerical questions
-							{
-								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
-							}
-							elseif ($numq['type'] == "N" ||
-									$numq['type'] == "5") // single line numerical questions
-							{
-								$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
-							}
-						}
-					}
-				}
-
 			} //while
 		}
 		elseif ($rows['type'] == "R") //Answer Ranking
@@ -826,6 +851,29 @@ if ($questionscount > 0)
 			}
 			unset($quicky);
 		} // End if type R
+		elseif($rows['type'] == "M" || $rows['type'] == "P")
+		{
+			$cquestions[]=array("$shortquestion [".$clang->gT("Group of checkboxes")."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+			$aquery="SELECT * "
+				."FROM {$dbprefix}answers "
+				."WHERE qid={$rows['qid']} "
+				."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+				."ORDER BY sortorder, "
+				."answer";
+			$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
+
+			while ($arows=$aresult->FetchRow())
+			{
+				$theanswer = addcslashes($arows['answer'], "'");
+				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+
+				$shortanswer = strip_tags($arows['answer']);
+				$shortanswer .= "[{$arows['code']}]";
+				$cquestions[]=array("$shortquestion ($shortanswer) [".$clang->gT("Single checkbox")."]", $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], 'Y', 'checked');
+				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], '', 'not checked');
+			}
+		}
 		else
 		{
 			$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
@@ -859,25 +907,6 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
-				$numquestions[]=$rows; // This is a numerical question type
-
-				foreach ($numquestions as $numq)
-				{
-					if ($rows['qid'] != $numq['qid'])
-					{
-						if ($numq['type'] == "A" ||
-								$numq['type'] == "B" ||
-								$numq['type'] == "K" ) // multiple line numerical questions
-						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
-						}
-						elseif ($numq['type'] == "N" ||
-								$numq['type'] == "5") // single line numerical questions
-						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
-						}
-					}
-				}
 				break;
 				case "W": // List Flexibel Label Dropdown
 				case "Z": // List Flexible Radio Button
@@ -900,25 +929,6 @@ if ($questionscount > 0)
 				break;
 
 				case "N": // Simple Numerical questions
-				$numquestions[]=$rows; // This is a numerical question type
-
-				foreach ($numquestions as $numq)
-				{
-					if ($rows['qid'] != $numq['qid'])
-					{
-						if ($numq['type'] == "A" ||
-								$numq['type'] == "B" ||
-								$numq['type'] == "K" ) // multiple line numerical questions
-						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid'].$numq['acode']."@", $numq['title'].": ".$numq['question']." [".$numq['acode']."]");
-						}
-						elseif ($numq['type'] == "N" ||
-								$numq['type'] == "5") // single line numerical questions
-						{
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$numq['sid'].$X.$numq['gid'].$X.$numq['qid']."@", $numq['title'].": ".$numq['question']);
-						}
-					}
-				}
 
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
@@ -926,6 +936,7 @@ if ($questionscount > 0)
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 				}
 				break;
+
 				default:
 				$aquery="SELECT * "
 					."FROM {$dbprefix}answers "
@@ -948,24 +959,7 @@ if ($questionscount > 0)
 					{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 					}
-
-					// Now, save the questions type D only, then
-					// it don�t need pass by all the array elements...
-					$dquestions[]=$rows;
-
-					// offer previous date questions to compare
-					foreach ($dquestions as $dq)
-					{
-						if ($rows['qid'] != $dq['qid'] &&
-								$dq['type'] == "D")
-						{   // Can�t compare with the same question, and only if are D
-							// The question tittle is enclossed by @ to be identified latter
-							// and be processed accordingly
-//							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['title']."@", $dq['title'].": ".$dq['question']);
-							$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "@".$dq['sid'].$X.$dq['gid'].$X.$dq['qid']."@", $dq['title'].": ".$dq['question']);
 						}
-					}
-				}
 				elseif ($rows['type'] != "M" &&
 						$rows['type'] != "P" &&
 						$rows['type'] != "J" &&
@@ -1041,6 +1035,7 @@ $conditionsoutput .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
 $conditionsoutput .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\").appendTo(\"#questionNav\");\n";
 foreach ($postrows as $row)
 {
+		$question=$row['question'];
 		$question=str_replace("'", "`", $question);
 		$question=str_replace("\r","",$question);
 		$question=str_replace("\n","",$question);
@@ -1063,7 +1058,7 @@ $conditionsoutput .=  "-->\n"
 // END UPDATE THE questionNav SELECT INPUT
 
 //Now display the information and forms
-//BEGIN: PREPARE jAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
+//BEGIN: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 $conditionsoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
 ."\tvar Fieldnames = new Array();\n"
@@ -1099,83 +1094,18 @@ if (isset($cquestions))
 		$jn++;
 	}
 }
-$conditionsoutput .= "\n"
-."\tfunction clearAnswers()\n"
-."\t\t{\n"
-."\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
-."\t\t\t\t{\n";
-//$conditionsoutput .= "alert(i);\n";
-$conditionsoutput .= "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
-."\t\t\t\t}\n"
-."\t\t}\n";
 
-$conditionsoutput .= "\tfunction getAnswers(fname)\n"
-."\t\t{\n";
-$conditionsoutput .= "\t\t\tfor (var i=document.getElementById('canswers').options.length-1; i>=0; i--)\n"
-."\t\t\t\t{\n";
-$conditionsoutput .= "\t\t\t\t\tdocument.getElementById('canswers').options[i] = null;\n"
-."\t\t\t\t}\n";
-$conditionsoutput .= "\t\t\tvar Keys = new Array();\n"
-."\t\t\tfor (var i=0;i<Fieldnames.length;i++)\n"
-."\t\t\t\t{\n"
-."\t\t\t\tif (Fieldnames[i] == fname)\n"
-."\t\t\t\t\t{\n"
-."\t\t\t\t\tKeys[Keys.length]=i;\n"
-."\t\t\t\t\t}\n"
-."\t\t\t\t}\n"
-."\t\t\tfor (var i=0;i<QFieldnames.length;i++)\n"
-."\t\t\t\t{\n"
-."\t\t\t\tif (QFieldnames[i] == fname)\n"
-."\t\t\t\t\t{\n"
-."\t\t\t\t\tdocument.getElementById('cqid').value=Qcqids[i];\n"
-."\t\t\t\t\tif (Qtypes[i] == 'D' || Qtypes[i] == 'N' ||\n"
-."\t\t\t\t\t\tQtypes[i] == 'K' || \n"
-."\t\t\t\t\t\tQtypes[i] == ';' || Qtypes[i] == 'S' ||\n"
-."\t\t\t\t\t\tQtypes[i] == 'Q' || Qtypes[i] == 'U' ||\n"
-."\t\t\t\t\t\tQtypes[i] == 'T' )\n"
-."\t\t\t\t\t\t{\n"
-."\t\t\t\t\t\t$('#conditiontarget > ul').tabs('select', '#CONST_RGX');\n"
-."\t\t\t\t\t\t}\n"
-."\t\t\t\t\telse\n"
-."\t\t\t\t\t\t{\n"
-."\t\t\t\t\t\tif (document.getElementById('method').value == 'RX')\n"
-."\t\t\t\t\t\t\t{\n"
-."\t\t\t\t\t\t\tdocument.getElementById('method').value = '==';\n"
-."\t\t\t\t\t\t\t$(\"#ValOrRegExLabel\").empty();\n"
-."\t\t\t\t\t\t\t$('<a href=\"http://docs.limesurvey.org/tiki-index.php?page=SGQA+identifier\" target=\"_blank\">".$clang->gT("Constant value or @SGQA@ code")."</a>').appendTo(\"#ValOrRegExLabel\");\n"
-."\t\t\t\t\t\t\t$('#conditiontarget > ul').tabs('enable', 0);\n"
-."\t\t\t\t\t\t\t}\n"
-."\t\t\t\t\t\t$('#conditiontarget > ul').tabs('select', '#CANSWERSTAB');\n"
-."\t\t\t\t\t\t}\n"
-."\t\t\t\t\t}\n"
-."\t\t\t\t}\n";
-$conditionsoutput .= "\t\t\tfor (var i=0;i<Keys.length;i++)\n"
-."\t\t\t\t{\n";
-$conditionsoutput .= "\t\t\t\tdocument.getElementById('canswers').options[document.getElementById('canswers').options.length] = new Option(Answers[Keys[i]], Codes[Keys[i]]);\n"
-."\t\t\t\t}\n"
-. "\t\t\tif (document.getElementById('canswers').options.length > 0){\n"                                                                         
-//. "\t\t\t\tdocument.getElementById('canswers').style.display = '';}\n"
-. "\t\t\t\t$('#conditiontarget > ul').tabs('select', '#CANSWERSTAB');}\n"
-. "\t\t\telse {\n"                                                                         
-//. "\t\t\t\tdocument.getElementById('canswers').style.display = 'none';}\n"
-. "\t\t\t\t$('#conditiontarget > ul').tabs('select', 'CONST_RGX');}\n"
-."\t\t}\n"
-."function evaluateLabels(val)\n"
-."{\n"
-."\tif(val == 'RX')\n"
-."\t{\n"
-."\t\t$('#conditiontarget > ul').tabs('select', '#CONST_RGX');\n"
-."\t\t$('#conditiontarget > ul').tabs('disable', 0);\n"
-."\t\t$(\"#ValOrRegExLabel\").empty();\n"
-."\t\t$('<a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a>').appendTo(\"#ValOrRegExLabel\");\n"
-."\t}\n"
-."\telse {\n"
-."\t\t$('#conditiontarget > ul').tabs('enable', 0);\n"
-."\t\t$(\"#ValOrRegExLabel\").empty();\n"
-."\t\t$('<a href=\"http://docs.limesurvey.org/tiki-index.php?page=SGQA+identifier\" target=\"_blank\">".$clang->gT("Constant value or @SGQA@ code")."</a>').appendTo(\"#ValOrRegExLabel\");\n"
-."\t}\n"
-."}\n"
-."//-->\n"
+//  record a JS variable to let jQuery know if survey is Anonymous
+if ($thissurvey['private'] == 'Y')
+{
+	$conditionsoutput .= "isAnonymousSurvey = true;";
+}
+else
+{
+	$conditionsoutput .= "isAnonymousSurvey = false;";
+}
+
+$conditionsoutput .= "//-->\n"
 ."</script>\n";
 
 $conditionsoutput .= "</td></tr>\n";
@@ -1225,7 +1155,7 @@ if ($subaction=='' ||
 
 
 		if ($scenariocount > 0)
-		{
+		{ // show the Delete all conditions for this question button
 			$conditionsoutput .= "\t\t<a href='#' "
 				. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
 				." onmouseover=\"showTooltip(event,'".$clang->gT("Delete all conditions","js")."');return false\""
@@ -1234,7 +1164,7 @@ if ($subaction=='' ||
 		}
 
 		if ($scenariocount > 1)
-		{
+		{ // show the renumber scenario button for this question
 		$conditionsoutput .= "\t\t<a href='#' "
 			. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?","js")."')) {document.getElementById('toplevelsubaction').value='renumberscenarios'; document.getElementById('deleteallconditions').submit();}\""
 			." onmouseover=\"showTooltip(event,'".$clang->gT("Renumber scenario automatically","js")."');return false\""
@@ -1335,9 +1265,29 @@ if ($subaction=='' ||
 				."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."AND {$dbprefix}conditions.qid=$qid "
 				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
+				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
+//				."AND {$dbprefix}conditions.cfieldname NOT LIKE '+%' \n" // avoid catching SRCtokenAttr conditions
 				."ORDER BY {$dbprefix}conditions.cfieldname";
 			$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 			$conditionscount=$result->RecordCount();
+
+			$querytoken = "SELECT {$dbprefix}conditions.cid, "
+				."{$dbprefix}conditions.scenario, "
+				."{$dbprefix}conditions.cqid, "
+				."{$dbprefix}conditions.cfieldname, "
+				."{$dbprefix}conditions.method, "
+				."{$dbprefix}conditions.value, "
+				."'' AS type "
+				."FROM {$dbprefix}conditions "
+				."WHERE "
+				." {$dbprefix}conditions.qid=$qid "
+				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
+				."AND {$dbprefix}conditions.cfieldname LIKE '{%' \n" // only catching SRCtokenAttr conditions
+				."ORDER BY {$dbprefix}conditions.cfieldname";
+			$resulttoken = db_execute_assoc($querytoken) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
+			$conditionscounttoken=$resulttoken->RecordCount();
+
+			$conditionscount=$conditionscount+$conditionscounttoken;
 
 			// this array will be used soon,
 			// to explain wich conditions is used to evaluate the question
@@ -1352,7 +1302,18 @@ if ($subaction=='' ||
 
 			if ($conditionscount > 0)
 			{
-				while ($rows=$result->FetchRow())
+				$aConditionsMerged=Array();
+				while ($arow=$resulttoken->FetchRow())
+				{
+					$aConditionsMerged[]=$arow;
+				}
+				while ($arow=$result->FetchRow())
+				{
+					$aConditionsMerged[]=$arow;
+				}
+				
+//				while ($rows=$result->FetchRow())
+				foreach ($aConditionsMerged as $rows)
 				{
 					if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
 					$markcidstyle="";
@@ -1403,7 +1364,28 @@ if ($subaction=='' ||
 					$conditionsoutput .= ""
 						."\t\t\t\t<td valign='middle' align='right' width='40%'>\n"
 						."\t\t\t\t\t<font size='1' face='verdana'>\n";
-					//BUILD FIELDNAME?
+			
+					$leftOperandType = 'unknown'; // prevquestion, tokenattr                                                     
+					if ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)                   
+					{
+						$leftOperandType = 'tokenattr';
+						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
+						if (count($aTokenAttrNames) != 0)
+						{
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+						}
+						else
+						{
+							$thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+						}
+						$conditionsoutput .= "\t\t\t$thisAttrName\n";
+						// TIBO not sure this is used anymore !!
+						$conditionsList[]=array("cid"=>$rows['cid'],
+								"text"=>$thisAttrName);
+					}
+					else
+					{
+						$leftOperandType = 'prevquestion';
 					foreach ($cquestions as $cqn)
 					{
 						if ($cqn[3] == $rows['cfieldname'])
@@ -1417,50 +1399,87 @@ if ($subaction=='' ||
 							//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
 						}
 					}
+					}
 
 					$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t\t<td align='center' valign='middle' width='20%'>\n"
 						."\t\t\t\t\t\t<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
-						.$method[trim($rows['method'])]
+						.$method[trim ($rows['method'])]
 						."\t\t\t\t\t\t</font>\n"
 						."\t\t\t\t\t</td>\n"
 						."\n"
 						."\t\t\t\t\t<td align='left' valign='middle' width='30%'>\n"
 						."\t\t\t\t\t\t<font size='1' face='verdana'>\n";
-					// Here will be searched the conditional answer for this question
-					// this conditional part is the labeled one
-					// But there is another kind of condition
-					// the specified in ValOrRegEx and is in $rows['value']
-					$bHasAnswer = false;
-					$bIsPredefinedAnswer = false;
-					if (isset($canswers))
+
+					// let's read the condition's right operand
+					// determine its type and display it
+					$rightOperandType = 'unknown'; // predefinedAnsw,constantVal, prevQsgqa, tokenAttr, regexp
+					if ($rows['method'] == 'RX')
+					{
+						$rightOperandType = 'regexp';
+						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
+					}
+					elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
+					{ // TIBO SGQA
+						$rightOperandType = 'prevQsgqa';
+						$textfound=false;
+						foreach ($cquestions as $cqn)
+						{
+							if ($cqn[3] == $matchedSGQA[1])
+							{
+								$matchedSGQAText=$cqn[0];
+								$textfound=true;
+								break;
+							}
+						}
+						if ($textfound === false)
+						{
+							$matchedSGQAText=$rows['value'].' ('.$clang->gT("Not found").')';
+						}
+				
+						$conditionsoutput .= "\t\t\t\t\t\t".html_escape($matchedSGQAText)."\n";
+					}
+					elseif ($thissurvey['private'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
+					{
+						$rightOperandType = 'tokenAttr';
+						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
+						if (count($aTokenAttrNames) != 0)
+						{
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+						}
+						else
+						{
+							$thisAttrName=html_escape($extractedTokenAttr[1])." [".$clang->gT("Inexistant token table")."]";
+						}
+						$conditionsoutput .= "\t\t\t$thisAttrName\n";
+					}
+					elseif (isset($canswers))
 					{
 						foreach ($canswers as $can)
 						{
-							//$conditionsoutput .= $rows['cfieldname'] . "- $can[0]<br />";
-							//$conditionsoutput .= $can[1];
 							if ($can[0] == $rows['cfieldname'] && $can[1] == $rows['value'])
 							{
 								$conditionsoutput .= "\t\t\t\t\t\t$can[2] ($can[1])\n";
-								$bHasAnswer = true;
-								$bIsPredefinedAnswer = true;
+								$rightOperandType = 'predefinedAnsw';
+								
 							}
 						}
 					}
-					if (!$bHasAnswer)
+					// if $rightOperandType is still unkown then it is a simple constant
+					if ($rightOperandType == 'unknown')
 					{
+						$rightOperandType = 'constantVal';
 						if ($rows['value'] == ' ' ||
 								$rows['value'] == '')
 						{
 							$conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No answer")."\n";
-							$bIsPredefinedAnswer = true;
 						} 
 						else
 						{
-							$conditionsoutput .= "\t\t\t\t\t\t".$rows['value']."\n";
-							$bIsPredefinedAnswer = false;
+							$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
 						}
 					}
+
 					$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
 						."\t\t\t\t\t<td align='right' valign='middle' width='10%'>\n";
 
@@ -1469,10 +1488,10 @@ if ($subaction=='' ||
 						$subaction == "renumberscenarios" || $subaction == "deleteallconditions" || 
 						$subaction == "updatescenario" ||
 						$subaction == "deletescenario" || $subaction == "delete")
-					{
+					{ // show single condition action buttons in edit mode
 						$conditionsoutput .= ""
 							."\t\t\t\t\t\t<a href='#' "
-							." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {document.getElementById('conditionaction{$rows['cid']}').submit();}\""
+							." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {\$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
 							." onmouseover=\"showTooltip(event,'".$clang->gT("Delete this condition","js")."');return false\"" 
 							." onmouseout=\"hideTooltip()\">"
 							." <img src='$imagefiles/conditions_delete.png'  alt='' name='DeleteWholeGroup' title='' /></a>\n"
@@ -1484,20 +1503,51 @@ if ($subaction=='' ||
 							."\t\t\t\t\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
 							."\t\t\t\t\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='scenario' value='{$rows['scenario']}' />\n"
-							."\t\t\t\t\t<input type='hidden' name='cquestions' value='{$rows['cfieldname']}' />\n"
+//							."\t\t\t\t\t<input type='hidden' id='cquestions{$rows['cid']}'  name='cquestions' value='{$rows['cfieldname']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='method' value='{$rows['method']}' />\n"
 							."\t\t\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 							."\t\t\t\t\t<input type='hidden' name='gid' value='$gid' />\n"
 							."\t\t\t\t\t<input type='hidden' name='qid' value='$qid' />\n";
-						if ($bIsPredefinedAnswer === true)
-						{ // Add canswers[]
+						// now sets e corresponding hidden input field
+						// depending on the leftOperandType		
+						if ($leftOperandType == 'tokenattr')
+						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' name='canswers[]' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='csrctoken{$rows['cid']}' name='csrctoken' value='".html_escape($rows['cfieldname'])."' />\n";
 						}
 						else
-						{ // Add ValOrReg
+						{
 							$conditionsoutput .= ""
-							."\t\t\t\t\t<input type='hidden' name='ValOrRegEx' value='".html_escape($rows['value'])."' />\n";
+							."\t\t\t\t\t<input type='hidden' id='cquestions{$rows['cid']}' name='cquestions' value='".html_escape($rows['cfieldname'])."' />\n";
+						}
+				
+						// now set the corresponding hidden input field
+						// depending on the rightOperandType
+						// This is used when Editting a condition
+						if ($rightOperandType == 'predefinedAnsw')
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' name='EDITcanswers[]' id='editModeTargetVal{$rows['cid']}' value='".html_escape($rows['value'])."' />\n";
+					}
+						elseif ($rightOperandType == 'prevQsgqa')
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITprevQuestionSGQA' value='".html_escape($rows['value'])."' />\n";
+						}
+						elseif ($rightOperandType == 'tokenAttr')
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITtokenAttr' value='".html_escape($rows['value'])."' />\n";
+						}
+						elseif ($rightOperandType == 'regexp')
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionRegexp' value='".html_escape($rows['value'])."' />\n";
+						}
+						else
+						{
+							$conditionsoutput .= ""
+							."\t\t\t\t\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionConst' value='".html_escape($rows['value'])."' />\n";
 						}
 					}
 
@@ -1687,11 +1737,20 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t\t<td valign='bottom'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		. "$scenarioTxt</td>\n"
 		. "\t</tr>\n"
-		. "\t<tr class='conditiontbl'>\n"
+		. "\t<tr class='conditiontbl'>\n";
+
+	// Source condition selection
+	$conditionsoutput .= ""
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
-		. "\t\t<td><select onclick=\"getAnswers(this.options[this.selectedIndex].value)\" name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."'>\n";
+		."\t\t<td valign='top' align='left'>\n"
+		."\t\t\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
+		."\t\t\t<ul>\n"
+		."\t\t\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+		."\t\t\t</ul>\n";
 		
-	
+	// Previous question tab
+	$conditionsoutput .= "\t\t\t\t<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
 	if (isset($cquestions))
 	{
 		$js_getAnswers_onload = "";
@@ -1700,33 +1759,49 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 			$conditionsoutput .= "\t\t\t\t<option value='$cqn[3]' title=\"".htmlspecialchars($cqn[0])."\"";
 			if (isset($p_cquestions) && $cqn[3] == $p_cquestions) {
 				$conditionsoutput .= " selected";
-				$js_getAnswers_onload .= "getAnswers(\"".$cqn[3]."\");\n";
 				if (isset($p_canswers))
 				{
-					//$js_getAnswers_onload .= "document.getElementById('canswers').value='".$p_canswers."';";
-					$js_getAnswers_onload .= "for(i = 0; i < document.getElementById('canswers').length; i++)\n"
-						."{\n"
-						."\tvar optionval = document.getElementById('canswers').options[i].value;\n"
-						."\tif (";
+					$canswersToSelect = "";
 						foreach ($p_canswers as $checkval)
 						{
-							$js_getAnswers_onload .= " optionval == '".$checkval."' || ";
+						$canswersToSelect .= ";$checkval";
 						}
-						$js_getAnswers_onload .= " 0 == 1 )\n"
-						."\t{\n"
-						."\t\tdocument.getElementById('canswers').options[i].selected=true;\n"
-						."\t}\n"
-						."}\n";
+					$canswersToSelect = substr($canswersToSelect,1);
+					$js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
 				}
 			}
 			$conditionsoutput .= ">$cqn[0]</option>\n";
 		}
 	}
-	$conditionsoutput .= "\t\t\t</select>\n"
+
+	$conditionsoutput .= "\t\t\t\t</select>\n"
+		."\t\t\t\t</div>\n";
+
+	// Source token Tab
+	$conditionsoutput .= "\t\t\t\t<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
+	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+	{
+		// Check to select
+		if (isset($p_csrctoken) && $p_csrctoken == '{TOKEN:'.strtoupper($tokenattr).'}')
+		{
+			$selectThisSrcTokenAttr = "selected=\"selected\"";
+		}
+		else
+		{
+			$selectThisSrcTokenAttr = "";
+		}
+		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
+	}
+
+	$conditionsoutput .= "\t\t\t\t</select>\n"
+		."\t\t\t\t</div>\n\t\t\t\t\n";
+
+	 $conditionsoutput .= "\t\t\t</div>\n" // End Source tabs
+		. "\t\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "\t\t<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
-		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' onChange='evaluateLabels(this.value)'>\n"
+		. "\t\t<td><select name='method' id='method' style='font-family:verdana; font-size:10' align='left'>\n"
 		. "\t\t\t<option value='<'>".$clang->gT("Less than")."</option>\n"
 		. "\t\t\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
 		. "\t\t\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
@@ -1748,30 +1823,72 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$multipletext = "multiple";
 	}
 
+
 	$conditionsoutput .= ""
-		."\t\t<td>\n"
+		."\t\t<td valign='top' align='left'>\n"
 		."\t\t<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
 		."\t\t<ul>\n"
 		."\t\t\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
-		."\t\t\t<li><a href=\"#CONST_RGX\"><span>".$clang->gT("Advanced")."</span></a></li>\n"
-		."\t\t</ul>\n"
-		."\t\t\t<div id='CANSWERSTAB'><select name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; min-width:600px;' size='7'>\n";
-	$conditionsoutput .= "\t\t\t</select>\n"
-		."\t\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers")."</span>\n"
+		."\t\t\t<li><a href=\"#CONST\"><span>".$clang->gT("Constant")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#PREVQUESTIONS\"><span>".$clang->gT("Questions")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
+		."\t\t</ul>\n";
+
+	// Predefined answers tab
+	$conditionsoutput .= "\t\t\t<div id='CANSWERSTAB'><select align='left' name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
+		."\t\t\t</select>\n"
+		."\t\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers for this question")."</span>\n"
 		."\t\t\t</div>\n\t\t\t\n";
-	$conditionsoutput .= "<div id='CONST_RGX' style='display:'>"
-		."\t\t<textarea name='ValOrRegEx' id='ValOrRegEx' cols='113' rows='5'></textarea>\n"
-		."\t\t<br /><div id='ValOrRegExLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=SGQA+identifier\" target=\"_blank\">".$clang->gT("Constant value or @SGQA@ code")."</a></div>\n"
-		."\t\t</div>\n"
+	// Constant tab 
+	$conditionsoutput .= "<div id='CONST' style='display:' >"
+		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' align='left' style='width:600px;font-family:verdana; font-size:10' size='7' ></textarea>\n"
+		."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
 		."\t\t</div>\n";
+	// Previous answers tab @SGQA@ placeholders
+	$conditionsoutput .= "\t\t\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	foreach ($cquestions as $cqn) 
+	{ // building the @SGQA@ placeholders options
+		if ($cqn[2] != 'M' && $cqn[2] != 'P')
+		{ // Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers
+			$conditionsoutput .= "\t\t\t\t<option value='@$cqn[3]@' title=\"".htmlspecialchars($cqn[0])."\"";
+			if (isset($p_prevquestionsgqa) && $p_prevquestionsgqa == "@".$cqn[3]."@")
+			{
+				$conditionsoutput .= " selected='selected'";
+			}
+			$conditionsoutput .= ">$cqn[0]</option>\n";
+		}
+	}
+	$conditionsoutput .= "\t\t\t</select>\n"
+		."\t\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
+		."\t\t\t</div>\n\t\t\t\n";
+
+	// tokenAttr Tab
+
+	$conditionsoutput .= "\t\t\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
+	{
+		$conditionsoutput .= "\t\t\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
+	}
+
+	$conditionsoutput .= "\t\t\t</select>\n"
+		."\t\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
+		."\t\t\t</div>\n\t\t\t\n";
+
+	// Regexp Tab
+	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
+		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align='left' ></textarea>\n"
+		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
+		."\t\t</div>\n";
+	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
 
 
 	$js_adminheader_includes .= ""
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui-core-1.6rc2.min.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui-tabs-1.6rc2.min.js\"></script>\n"
+		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
 		. "<script type=\"text/javascript\" src=\"../scripts/jquery/lime-conditions-tabs.js\"></script>\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs.css\" />\n"
-		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n";
+		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui-tibo.css\" />\n";
+		//		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs.css\" />\n";
+	//		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{
@@ -1791,7 +1908,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t</tr>\n"
 		."\t<tr>\n"
 		."\t\t<td colspan='2' align='center'>\n"
-		."\t\t\t<input type='reset' value='".$clang->gT("Clear")."' onclick=\"clearAnswers()\" />\n"
+		."\t\t\t<input type='reset' id='resetForm' value='".$clang->gT("Clear")."' />\n"
 		."\t\t\t<input type='submit' value='".$submitLabel."' />\n"
 		."<input type='hidden' name='sid' value='$surveyid' />\n"
 		."<input type='hidden' name='gid' value='$gid' />\n"
@@ -1799,14 +1916,19 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."<input type='hidden' name='subaction' value='$submitSubaction' />\n"
 		."<input type='hidden' name='cqid' id='cqid' value='' />\n"
 		."<input type='hidden' name='cid' id='cid' value='".$submitcid."' />\n"
+		."<input type='hidden' name='editTargetTab' id='editTargetTab' value='' />\n" // auto-select tab by jQuery when editing a condition
+		."<input type='hidden' name='editSourceTab' id='editSourceTab' value='' />\n" // auto-select tab by jQuery when editing a condition
+		."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
 		."\t\t</td>\n"
 		."\t</tr>\n"
 		."</table>\n"
 		."</form>\n";
-	$conditionsoutput .= "</td></tr>\n";
 
-	if (isset($js_getAnswers_onload) && $js_getAnswers_onload != '')
+	if (!isset($js_getAnswers_onload))
 	{
+		$js_getAnswers_onload = '';
+	}
+
 		$conditionsoutput .= "<script type='text/javascript'>\n"
 			. "<!--\n"
 			. "\t".$js_getAnswers_onload."\n";
@@ -1814,18 +1936,97 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		{
 			$conditionsoutput .= "\tdocument.getElementById('method').value='".$p_method."';\n";
 		}
-		if (isset($_POST['ValOrRegEx']))
+
+	if ($subaction == "editthiscondition")
+	{ // in edit mode we read previous values in order to dusplay them in the corresponding inputs
+		if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('ValOrRegEx').value='".javascript_escape(auto_unescape($_POST['ValOrRegEx']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['EDITConditionConst']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		}
+		elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
+		{ // TIBO
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['EDITprevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		}
+		elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['EDITtokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		}
+		elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['EDITConditionRegexp']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		}
+		elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
+		{ // was a predefined answers post
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+			$conditionsoutput .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
+		}
+
+		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		}
+		else
+		{
+			$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+		}
+	}
+	else
+	{ // in other modes, for the moment we do the same as for edit mode
+		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['ConditionConst']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
+		}
+		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
+		{ // TIBO
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['prevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
+		}
+		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['tokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
+		}
+		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['ConditionRegexp']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
+		}
+		else
+		{ // was a predefined answers post
+			if (isset($_POST['cquestions']))
+			{
+				$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			}
+			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
+		}
+
+		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
+		{
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
+		}
+		else
+		{
+			if (isset($_POST['cquestions'])) $conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
+		}
+	}
+
 		if (isset($p_scenario))
 		{
 			$conditionsoutput .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
 		}
 		$conditionsoutput .= "-->\n"
 			. "</script>\n";
+	$conditionsoutput .= "</td></tr>\n";
 	}
-}
 //END: DISPLAY THE ADD or EDIT CONDITION FORM
 
 
@@ -1869,9 +2070,5 @@ function showSpeaker($hinttext)
   return $reshtml; 
   
 }
-
-
-
-
 
 ?>

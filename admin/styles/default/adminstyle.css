@@ -4,23 +4,28 @@ body {
 	background-color: #5670A1;
 	margin: 0;
 }
+
 form {
 	margin: 0;
 	padding: 0;
 }
+
 ul,ol {
 	text-align: left;
 	font-size: 10pt;
 	color: #000;
 }
+
 p {
     clear: left;
 }
+
 .boxstyle {
 	border-color: #9C0;
 	border-style: solid;
 	border-width: 1px;
 }
+
 .footer {
 	text-align: center;
 	color: #9C0;
@@ -29,16 +34,20 @@ p {
 	margin: 0;
 	padding: 5px;
 }
+
 img {
 	border: 0;
 }
+
 a:hover {
 	color: #819D26;
 	text-decoration: underline;
 }
+
 th, p, div {
 	font-size: 10pt;
 }
+
 .maintitle {
 	font-size: 14pt;
 	font-weight: 700;
@@ -51,21 +60,26 @@ th, p, div {
 	background-repeat: repeat-x;
 	margin: auto;
 }
+
 table.statisticstable {
 	margin: 2px auto;
 }
+
 .basic {
 	color: #1d2d45;
 }
+
 .statisticstable td {
 	vertical-align: top;
 }
+
 div.menubar {
 	background-color: #EEF6FF;
 	width: 99.2%;
 	margin-top: 3px;
 	margin-left: 3px;
 }
+
 .menubar-main {
 	background-color: #EEF6FF;
 	width: 100%;
@@ -74,12 +88,14 @@ div.menubar {
 	border-style: solid;
 	border-width: 1px;
 }
+
 .menubar img {
 	vertical-align: middle;
     max-height:40px;
     border:0;
     margin-left:-2px;
 }
+
 .menubar-title {
 	background-color: #EEF6FF;
 	float: left;
@@ -90,6 +106,7 @@ div.menubar {
 	border-style: solid;
 	border-width: 1px;
 }
+
 .menubar-left {
 	background-color: #EEF6FF;
 	text-align: left;
@@ -98,11 +115,13 @@ div.menubar {
 	margin: 0;
 	padding: 0;
 }
+
 .menubar-right {
 	background-color: #EEF6FF;
 	float: right;
 	line-height: 1em;
 }
+
 table.menubar {
 	width: 100%;
 	border-collapse: collapse;
@@ -115,80 +134,98 @@ table.menubar {
 		Mazi*/
 	text-align: left;
 }
+
 .menubar td {
 	color: #265522;
 	font-size: 8pt;
 	border-bottom: 2px solid #D2E0F2;
 }
+
 .menubar select {
 	color: #333;
 	width: 200px;
 }
+
 table.attributetable {
 	width: 100%;
 	text-align: center;
 	border: 1px solid #d2e0f2;
 	border-collapse: collapse;
 }
+
 .attributetable tr:first-child {
 	background-color: #d2e0f2;
 }
+
 table.table2columns {
 	background-color: #FFF;
 	width: 100%;
 	text-align: center;
 	border: 1px solid #555;
 }
+
 .table2columns td:first-child {
 	width: 250px;
 }
+
 table.form2columns {
 	width: 100%;
 	text-align: center;
 	border: none;
 	background-color: #f8f8ff;
 }
+
 table.form2columns td:first-child {
 	width: 30%;
 	text-align: right;
 }
+
 table.form2columns td.centered {
 	text-align: center;
 }
+
 .outlinetable {
 	border: 1px solid #111;
 }
+
 .outlinetable td {
 	font-size: 10pt;
 	border: 1px solid #483D8B;
 	background: #EEF6FF;
 }
+
 .outlinetable th {
 	font-size: 10pt;
 	color: #1D2D45;
 	background: #CCE6FF;
 }
+
 td {
 	font-size: 10pt;
 	color: #1D2D45;
 }
+
 .btstyle {
 	font-size: 11px;
 }
+
 .standardbtn {
 	height: 20px;
 	color: #000;
 	font-size: 11px;
 }
+
 .disabledbtn {
 	height: 20px;
 	color: #999;
 	font-size: 11px;
 }
+
 input, select {
 	color: navy;
 	font: 10px verdana, arial, sans-serif;
 }
+
 input[disabled], textarea[disabled], select[disabled] {
 	color: #999;
 	background: #EEE;
@@ -201,21 +238,25 @@ textarea {
 	color: navy;
 	font-family: verdana, arial, sans-serif;
 }
+
 .subtitle {
 	font-size: 10px;
 	color: #FFF;
 }
+
 .listboxtemplates {
 	margin-top: 10px;
 	height: 20px;
 	color: #333;
 	width: 180px;
 }
+
 .boxcaption {
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 40px;
 }
+
 .saveOrderbtn {
 	border: thin solid #00CED1;
 	text-decoration: none;
@@ -226,26 +267,32 @@ textarea {
 	border-left: 1px solid #00BFFF;
 	margin: 5px;
 }
+
 .settingentryhighlight {
 	color: navy;
 	font-weight: 700;
 }
+
 .statusentryhighlight {
 	font-size: 10px;
 	color: #E00;
 }
+
 .errortitle {
 	font-weight: 700;
 	color: #FF0F0F;
 }
+
 .warningtitle {
 	font-weight: 700;
 	color: #FFA07A;
 }
+
 .successtitle {
 	font-weight: 700;
 	color: #16B700;
 }
+
 font.settingcaption {
 	vertical-align: top;
 	text-align: right;
@@ -253,6 +300,7 @@ font.settingcaption {
 	font-weight: 700;
 	color: #1D2D45;
 }
+
 span.settingcaption {
 	float: left;
 	width: 350px;
@@ -263,6 +311,7 @@ span.settingcaption {
 	background-color: #F8F8FF;
 	color: #1D2D45;
 }
+
 .settingentry {
 	float: left;
 	width: 600px;
@@ -273,12 +322,14 @@ span.settingcaption {
 	margin-bottom: 10px;
 	background-color: #F8F8FF;
 }
+
 .settingrow {
 	width: 1000px;
 	clear: left;
 	margin-bottom: 20px;
 	background-color: #F8F8FF;
 }
+
 #dhtmlgoodies_tooltip {
 	border: 1px solid #000;
 	position: absolute;
@@ -289,6 +340,7 @@ span.settingcaption {
 	font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
 	padding: 2px;
 }
+
 #dhtmlgoodies_tooltipShadow {
 	position: absolute;
 	display: none;
@@ -297,6 +349,7 @@ span.settingcaption {
 	-moz-border-radius: 5px;
 	background: #555;
 }
+
 .movableList {
 	padding-left: 0;
 	margin-left: 0;
@@ -304,6 +357,7 @@ span.settingcaption {
 	padding-top: 0;
 	width: 60em;
 }
+
 .movableNode {
 	list-style-type: none;
 	border: 1px solid #999;
@@ -313,6 +367,7 @@ span.settingcaption {
 	background: #EEEFFF;
 	padding: 0.5em;
 }
+
 .langpopup2 {
 	position: absolute;
 	width: 100px;
@@ -330,6 +385,7 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .langpopup1 {
 	position: absolute;
 	width: 100px;
@@ -347,6 +403,7 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .previewpopup {
 	position: absolute;
 	width: 110px;
@@ -364,17 +421,21 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .oddrow {
 	background-color: #EBF2FA;
 }
+
 .choicelist {
 	width: 200px;
 	font-size: 10pt;
 }
+
 .ranklist {
 	width: 200px;
 	margin-top: 3px;
 }
+
 th.admincell {
 	background-color: #F8BDB5;
 }
@@ -386,10 +447,12 @@ form.token label {
 	text-align: right;
 	margin-right: 0.5em;
 }
+
 .submit {
 	float: none !important;
 	margin: 0 auto;
 }
+
 th, .header, .headertwo, table.form2columns th, .settingcaption {
 	text-align: center;
 	font-size: 13px;
@@ -397,33 +460,42 @@ th, .header, .headertwo, table.form2columns th, .settingcaption {
 	background-color: #D2E0F2;
 	color: #1D2D45;
 }
+
 a:link, a:visited {
 	color: #819D26;
 	text-decoration: none;
 }
+
 .statisticstable select, .statisticstable textarea {
 	width: 170px;
 }
+
 .alertbox tr:first-child, .evenrow {
 	background-color: #EEF6FF;
 }
+
 .table2columns td+td, table.form2columns td+td, action {
 	text-align: left;
 }
+
 .checkboxbtn, .radiobtn {
 	background-color: transparent;
 }
+
 .langpopup2td, .langpopup1td {
 	background: #FDFDF5;
 }
+
 .langpopup2td:first-child, .langpopup1td:first-child {
 	color: #000;
 	font-size: 10pt;
 }
+
 form.token select, form.token input {
 	margin-top: 1.5em;
 	float: left;
 }
+
 table.alertbox {
     width: 450px;
     margin-left:auto; 
@@ -488,4 +560,44 @@ a.invalidemail {
     text-align: left;
     margin-bottom: 0px;
     font-size: 8pt
+}
+
+.browsetokens th {
+white-space:nowrap;
+width:auto;
+padding:2px 15px 2px 5px;
+font-size:12px;
+}
+
+.browsetokens th img {
+ padding-right:4px;
+}
+
+.browsetokens td {
+  padding:0 5px;
+}
+
+.browsetokens td:first-child {
+    text-align:right;
+   padding-right: 3px;
+}   
+
+.tokensummary tr:first-child {
+ font-weight:bold;
+}
+
+.tokensummary tr {
+ margin:0px;
+ padding:0px;
+}
+
+.tokensummary td {
+     outline: 1px solid;
+     outline-color:#D2E0F2;
+padding: 2px 5px;
+}
+
+.annotation
+{
+    font-size:10px;
 }

@@ -104,7 +104,7 @@ CREATE TABLE `prefix_question_attributes` (
   `qaid` int(11) NOT NULL auto_increment,
   `qid` int(11) NOT NULL default '0',
   `attribute` varchar(50) default NULL,
-  `value` varchar(20) default NULL,
+  `value` text default NULL,
   PRIMARY KEY  (`qaid`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -118,10 +118,25 @@ CREATE TABLE `prefix_quota` (
   `qlimit` int(8) default NULL,
   `action` int(2) default NULL,
   `active` int(1) NOT NULL default '1',
+  `autoload_url` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
+--
+-- Table Structure for table quota_languagesettings
+--
+
+CREATE TABLE `prefix_quota_languagesettings` (
+  `quotals_id` int(11) NOT NULL auto_increment,
+  `quotals_quota_id` int(11) NOT NULL default '0',
+  `quotals_language` varchar(45) NOT NULL default 'en',
+  `quotals_name` varchar(255) collate utf8_unicode_ci default NULL,
+  `quotals_message` text NOT NULL,
+  `quotals_url` varchar(255),
+  `quotals_urldescrip` varchar(255),
+  PRIMARY KEY (`quotals_id`)
+)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 
@@ -215,8 +230,6 @@ CREATE TABLE `prefix_surveys` (
   `usecookie` char(1) default 'N',
   `notification` char(1) default '0',
   `allowregister` char(1) default 'N',
-  `attribute1` varchar(255) default NULL,
-  `attribute2` varchar(255) default NULL,
   `allowsave` char(1) default 'Y',
   `autonumber_start` bigint(11) default '0',
   `autoredirect` char(1) default 'N',
@@ -234,7 +247,9 @@ CREATE TABLE `prefix_surveys` (
   `tokenanswerspersistence` char(1) default 'N',
   `assessments` char(1) default 'N', 
   `usecaptcha` char(1) default 'N',
+  `usetokens` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
+  `attributedescriptions` text,
   PRIMARY KEY  (`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -344,7 +359,7 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '133');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '136');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --

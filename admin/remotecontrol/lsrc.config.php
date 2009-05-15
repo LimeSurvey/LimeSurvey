@@ -25,7 +25,7 @@ if(!isset($export4lsrc))
 }
 ### Error Handling
 // simple debug Option
-error_reporting(E_ALL);
+ini_set("error_reporting","E_ALL");
 
 //specialized debug option, true for own debuglog
 $lsrcDebug = true;

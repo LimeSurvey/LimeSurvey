@@ -106,6 +106,36 @@ global $modifyoutput;
         modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }   
            
+    if ($oldversion < 134)
+    {
+        modify_database("","ALTER TABLE prefix_surveys ADD usetokens char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
+        upgrade_token_tables134();
+        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    } 
+     if ($oldversion < 135)
+    {
+        modify_database("","ALTER TABLE prefix_question_attributes ALTER COLUMN value TYPE text"); echo $modifyoutput; flush();
+        modify_database("","update prefix_settings_global set stg_value='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+    }
+    if ($oldversion < 136)
+    {
+	   modify_database("", "ALTER TABLE prefix_quota ADD autoload_url integer NOT NULL DEFAULT 0"); echo $modifyoutput; flush();
+	   modify_database("", "CREATE TABLE prefix_quota_languagesettings (
+						   quotals_id serial NOT NULL,
+  						   quotals_quota_id integer NOT NULL DEFAULT 0,
+						   quotals_language character varying(45) NOT NULL DEFAULT 'en'::character varying,
+						   quotals_name character varying(200),
+  						   quotals_message text NOT NULL,
+  						   quotals_url character varying(255),
+  						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
+	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
+  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
+
     
     return true;
 }
@@ -135,6 +165,22 @@ function upgrade_survey_tables133()
     while ( $sv = $surveyidresult->FetchRow() )
     {
         FixLanguageConsistency($sv['0'],$sv['1']);   
+    }
+}
+
+function upgrade_token_tables134()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."tokens%");
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+    {
+        while ( $sv = $surveyidresult->FetchRow() )
+        {
+            modify_database("","ALTER TABLE ".$sv0." ADD validfrom datetime"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv0." ADD validuntil datetime"); echo $modifyoutput; flush();
+        }
     }
 }
 

@@ -30,13 +30,13 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 * $ia[7] => conditions ??
 *
 * $conditions element structure
-* $condition[n][0] => question id
-* $condition[n][1] => question with value to evaluate
-* $condition[n][2] => internal field name of element [1]
-* $condition[n][3] => value to be evaluated on answers labeled. *NEW* tittle of questions to evaluate.
+* $condition[n][0] => qid = question id
+* $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
+* $condition[n][2] => field name of element [1] (Except for type M or P)
+* $condition[n][3] => value to be evaluated on answers labeled.
 * $condition[n][4] => type of question
-* $condition[n][5] => equal to [2], but concatenated in this time (why the same value 2 times?)
-* $condition[n][6] => method used to evaluate *NEW*
+* $condition[n][5] => SGQ code of element [1] (sub-part of [2])
+* $condition[n][6] => method used to evaluate
 * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 */
 
@@ -62,12 +62,46 @@ function retrieveConditionInfo($ia)
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
 				."AND {$dbprefix}conditions.qid=$ia[0] "
 				."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
+				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' "
 				."ORDER BY {$dbprefix}conditions.scenario, "
 					 ."{$dbprefix}conditions.cqid, "
 					 ."{$dbprefix}conditions.cfieldname";
 		$cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
-		while ($crow = $cresult->FetchRow())
+		$cquerytoken =	"SELECT {$dbprefix}conditions.qid, "
+				      ."{$dbprefix}conditions.scenario, "
+				      ."{$dbprefix}conditions.cqid, "
+				      ."{$dbprefix}conditions.cfieldname, "
+				      ."{$dbprefix}conditions.value, "
+				      ."'' as type, "
+				      ."0 as sid, "
+				      ."0 as gid, "
+				      ."{$dbprefix}conditions.method "
+				."FROM {$dbprefix}conditions "
+				."WHERE "
+				." {$dbprefix}conditions.qid=$ia[0] "
+				."AND {$dbprefix}conditions.cfieldname LIKE '{%' "
+				."ORDER BY {$dbprefix}conditions.scenario, "
+				 ."{$dbprefix}conditions.cqid, "
+				 ."{$dbprefix}conditions.cfieldname";
+		$cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
+
+		while ($tempcrow = $cresulttoken->FetchRow())
 		{
+			$aAllConditions[] = $tempcrow;
+		}
+		while ($tempcrow = $cresult->FetchRow())
+		{
+			$aAllConditions[] = $tempcrow;
+		}
+//		while ($crow = $cresult->FetchRow())
+		foreach ($aAllConditions as $crow)
+		{
+			if (preg_match("/^\+(.*)$/",$crow['cfieldname'],$cfieldnamematch))
+			{ // this condition uses a single checkbox as source
+				$crow['type'] = "+".$crow['type'];
+				$crow['cfieldname'] = $cfieldnamematch[1];
+			}
+
 			$conditions[] = array ($crow['qid'],
 						$crow['cqid'],
 						$crow['cfieldname'],
@@ -83,6 +117,88 @@ function retrieveConditionInfo($ia)
 	{
 		return null;
 	}
+}
+
+// returns the Javascript IdName of a question used in conditions 
+// $cd = Array (
+//   0 => Unused
+//   1 => qid of the question
+//   2 => fieldname of the question
+//   3 => value used in comparison (only usd for type M and P egals 'Y', optionnal for other types)
+//   4 => type of the question
+//   5 => SGQ code corresponding to the fieldname
+// if $currentgid is not null (Group by group survey), the fieldname depends on the groupId
+function retrieveJSidname($cd,$currentgid=null)
+{
+	global $dbprefix, $connect;
+
+	preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[5],$matchGID);
+	$questiongid=$matchGID[1];
+
+	if ($cd[4] == "L")
+	{
+		$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
+		$cccresult=$connect->Execute($cccquery); // Checked
+		$cccount=$cccresult->RecordCount();
+	}
+	if ($cd[4] == "R")
+	{
+		if (!isset($currentgid) || $questiongid == $currentgid)
+		{ // if question is on same page then field is fvalue_XXXX
+			$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
+		}
+		else
+		{ // If question is on another page then field if javaXXXX
+			$idname="java$cd[2]";
+		} 
+	}
+	elseif ($cd[4] == "5" ||
+			$cd[4] == "A" ||
+			$cd[4] == "B" ||
+			$cd[4] == "C" ||
+			$cd[4] == "E" ||
+			$cd[4] == "F" ||
+			$cd[4] == "H" ||
+			$cd[4] == "G" ||
+			$cd[4] == "Y" ||
+			$cd[4] == "1" ||
+			($cd[4] == "L" && $cccount <= $dropdownthreshold))
+	{
+		$idname="java$cd[2]";
+	}
+	elseif ($cd[4] == "M" || 
+			$cd[4] == "P")
+	{
+		$idname="java$cd[5]$cd[3]";
+	}
+	elseif ($cd[4] == "+M" || 
+			$cd[4] == "+P")
+	{
+		$idname="java$cd[2]";
+	}
+	elseif ($cd[4] == "D" ||
+			$cd[4] == "N" ||
+			$cd[4] == "S" ||
+			$cd[4] == "T" ||
+			$cd[4] == "U" ||
+			$cd[4] == "Q" ||
+			$cd[4] == "K" )
+	{
+		if (!isset($currentgid) || $questiongid == $currentgid)
+		{ // if question is on same page then field is answerXXXX
+			$idname="answer$cd[2]";
+		}
+		else
+		{ // If question is on another page then field if javaXXXX
+			$idname="java$cd[2]";
+		}
+	}
+	else
+	{
+		$idname="java".$cd[2];
+	}
+
+	return $idname;
 }
 
 function create_mandatorylist($ia)
@@ -1921,7 +2037,7 @@ function do_listwithcomment($ia)
 // ---------------------------------------------------------------
 function do_ranking($ia)
 {
-	global $dbprefix, $imagefiles, $clang;
+	global $dbprefix, $imagefiles, $clang, $thissurvey;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -1956,6 +2072,15 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='none';\n"
 	. "\t\t\t\t\t\tif (!document.getElementById(\$inputname).value)\n"
 	. "\t\t\t\t\t\t\t{\n"
+	//CREATE A SECRET HIDDEN ELEMENT WITH THE ID FOR ARRAY_FILTER CONTROLS! 
+	// SO FAR THIS JUST STOPS A JAVASCRIPT ERROR OCCURRING
+	. "\t\t\t\t\t\t\tcurrentElement=document.createElement('input');\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('type', 'hidden');\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('id', 'javatbd{$ia[1]}'+\$code);\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('name', 'javatbd{$ia[1]}'+\$code);\n"
+	. "\t\t\t\t\t\t\tcurrentElement.setAttribute('value', \$value);\n"
+	. "document.body.appendChild(currentElement);\n"
+	//END OF SECRET HIDDEN ELEMENT
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$inputname).value=\$value;\n"
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$hiddenname).value=\$code;\n"
 	. "\t\t\t\t\t\t\tdocument.getElementById(\$cutname).style.display='';\n"
@@ -1997,6 +2122,7 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\t}\n"
 	. "\t\t\t\t\tvar i=document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
 	. "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i] = new Option(\$text, \$value);\n"
+	. "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').options[i].id = 'javatbd{$ia[1]}'+\$value;\n"
 	. "\t\t\t\t\tif (document.getElementById('CHOICES_{$ia[0]}').options.length > 0)\n"
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=false;\n"
@@ -2066,30 +2192,33 @@ function do_ranking($ia)
 	$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
 	if (isset($choicewidth)) {$choicelist.=$choicewidth;}
     $choicelist .= " id='CHOICES_{$ia[0]}' onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
-	if (_PHPVERSION <= "4.2.0")
+	$hiddens="";
+	foreach ($answers as $ans)
 	{
-		foreach ($chosen as $chs) {$choose[]=$chs[0];}
-		foreach ($answers as $ans)
+		if (!in_array($ans, $chosen))
 		{
-			if (!in_array($ans[0], $choose))
+		    $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}' id='javatbd{$ia[1]}{$ans[0]}'";
+			if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || 
+			    ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
 			{
-				$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-				if (strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
-			}
+			    $choicelist .= " style='display: none'";
+			} elseif (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || 
+			          ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && 
+					   getArrayFiltersOutGroup($ia[0]) == true))
+		    {
+			    $selected = getArrayFiltersForQuestion($ia[0]);
+			    if (!in_array($ans[0],$selected))
+			    {
+				    $choicelist .= " style='display: none'";
+			    }
+            }
+			$choicelist .= ">{$ans[1]}</option>\n";
+			if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
 		}
-	}
-	else
-	{
-		foreach ($answers as $ans)
-		{
-			if (!in_array($ans, $chosen))
-			{
-				$choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
-				if (isset($maxselectlength) && strlen($ans[1]) > $maxselectlength) {$maxselectlength = strlen($ans[1]);}
-			}
-		}
+		$hiddens.="<input type=\"hidden\" name=\"tbdisp{$ia[1]}{$ans[0]}\" id=\"tbdisp{$ia[1]}{$ans[0]}\" value=\"off\" />\n";
 	}
 	$choicelist .= "\t\t\t\t\t\t</select>\n";
+	$choicelist .= $hiddens;
 
 	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
 	. "\t\t\t\t<tr>\n"
@@ -2780,7 +2909,6 @@ function do_multipleshorttext($ia)
 		$numbersonly = '';
 		$class_num_only = '';
 	}
-
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
@@ -2788,6 +2916,14 @@ function do_multipleshorttext($ia)
 	else
 	{
 		$maxsize=255;
+	}
+	if ($textinputwidth=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
+	{
+		$tiwidth=$textinputwidth['value'];
+	}
+	else
+	{
+		$tiwidth=20;
 	}
 
 	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
@@ -2840,7 +2976,7 @@ function do_multipleshorttext($ia)
 			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
 			$answer_main .= "\t<li>\n"
 			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
-			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{

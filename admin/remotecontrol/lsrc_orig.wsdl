@@ -316,16 +316,19 @@
       <fault name="sTokenReturnFault" message="tns:sTokenReturnFault"/>
     </operation>
     <operation name="sChangeSurvey">
+    <documentation>Change DB-tables on the fly, when activated</documentation>
     	<input name="sChangeSurveyRequest" message="tns:sChangeSurveyRequest"></input>
     	<output name="sChangeSurveyResponse" message="tns:sChangeSurveyResponse"></output>
             <fault name="sChangeSurveyFault" message="tns:sChangeSurveyFault"></fault>
         </operation>
     <operation name="sActivateSurvey">
+    <documentation>Activate the survey and give a start and enddate optional</documentation>
     	<input name="sActivateSurveyRequest" message="tns:sActivateSurveyRequest"></input>
     	<output name="sActivateSurveyResponse" message="tns:sActivateSurveyResponse"></output>
             <fault name="sActivateSurveyFault" message="tns:sActivateSurveyFault"></fault>
         </operation>
     <operation name="sImportGroup">
+    <documentation>Import a group.csv into the survey</documentation>
     	<input name="sImportGroupRequest" message="tns:sImportGroupRequest"></input>
     	<output name="sImportGroupResponse" message="tns:sImportGroupResponse"></output>
             <fault name="sImportGroupFault" message="tns:sImportGroupFault"></fault>

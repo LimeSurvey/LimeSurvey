@@ -129,8 +129,8 @@ elseif ($action=='labels' || $action=='newlabelset' || $action=='insertlabelset'
         else { include('access_denied.php');}
   }      
 elseif ($action=='templates' || $action=='templatecopy' || $action=='templatesavechanges' || 
-        $action=='templaterename' || $action=='templateupload' || $action=='templatefiledelete' || 
-        $action=='templatezip'  || $action=='templaterefresh')
+        $action=='templaterename' || $action=='templateuploadfile' || $action=='templatefiledelete' || 
+        $action=='templatezip'  || $action=='templaterefresh' || $action=='templateupload')
   { 
       if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include('templates.php');}
         else { include('access_denied.php');}

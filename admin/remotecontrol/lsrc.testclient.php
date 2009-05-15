@@ -35,7 +35,7 @@ if($wsdl=='')
 	// give full uri of the wsdl from the webservice you want to connect to...
 	// THIS NEEDS TO BE CHANGED to the webservice you want to connect, localhost is just for testing on one machine...
 	// change http to https if you want to use ssl connection to the wsdl...
-	$wsdl="$limeUrl/admin/remotecontrol/lsrc.server.php?wsdl";
+	$wsdl=$limeUrl.'/admin/remotecontrol/lsrc.server.php?wsdl';
 }
 
 
@@ -227,7 +227,6 @@ while(list($key, $value) = each($_REQUEST))
 		
 		
 	}
-	
 	if(substr($key,0,9)=="delsurvey")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -713,7 +712,6 @@ echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
 echo "<input type='submit' name='getField' value='Get me the Fieldmap as CSV!'/>";
 echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
-
 //phpinfo();
 
 ?>

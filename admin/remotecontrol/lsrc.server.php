@@ -110,7 +110,6 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0')
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
 }
-
 /**
  * 
  * Function to send reminder, invitation or custom mails to participants of a specific survey
@@ -314,7 +313,7 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  * @param $autoRd
  * @return unknown_type
  */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -327,7 +326,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $s
 	}
 //	if($sVend=='')
 //	{//if no endtext is given, set this one
-//		$sVend	= "Vielen Dank fÃ¼r Ihre Teilnahme an der Umfrage!";
+//		$sVend	= "Vielen Dank für Ihre Teilnahme an der Umfrage!";
 //	}
 	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
@@ -560,8 +559,8 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
-		. "attribute_1 C(100) ,\n"
-		. "attribute_2 C(100) ,\n"
+		. "attribute_1 C(255) ,\n"
+		. "attribute_2 C(255) ,\n"
 		. "mpid I ";
 		
 		$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
@@ -836,6 +835,11 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
 	 * to determine if a new group should be build for the question 
 	 * or if the question should be added to the last group in survey
 	 */ 	
+	if($sMod=='')
+		$sMod='Freitext';
+	if($mandatory=='')
+		$mandatory='N';
+		
 	$newGroup=0;
 	
 	include("lsrc.config.php");
@@ -900,6 +904,11 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 	 * to determine if a new group should be build for the question 
 	 * or if the question should be added to the last group in survey
 	 */ 	
+	if($sMod=='')
+		$sMod='Matrix5';
+	if($mandatory=='')
+		$mandatory='N';
+		
 	$newGroup=0;
 		
 	global $connect ;
