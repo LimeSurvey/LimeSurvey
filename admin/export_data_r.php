@@ -85,7 +85,7 @@ if  (!isset($subaction))
                         ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
                         ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
                         ."</ol><br />"
-                        .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.names are attributes of data, like for read.spss{foreign}.")
+                        .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
                         ."<table><tr><td>";
 } else {
 	// Get Base Language:
@@ -261,7 +261,7 @@ if  ($subaction=='dlstructure') {
      * be sent to the client.
      */
 	echo $headerComment;
-    echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";   
+    echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n names(data)=paste(\"d\",1:dim(data)[2],sep=\"\")";   
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
         if($field['LStype'] == 'N' || $field['LStype']=='K') {
