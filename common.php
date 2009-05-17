@@ -6128,7 +6128,9 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $thissurvey=getSurveyInfo($surveyid);               
     $attdescriptiondata=$thissurvey['attributedescriptions'];
     $attdescriptiondata=explode("\n",$attdescriptiondata);
-    $attributedescriptions=array(); $basic_attrs_and_names=array();
+    $attributedescriptions=array(); 
+    $basic_attrs_and_names=array();
+    $extra_attrs_and_names=array();
     foreach ($attdescriptiondata as $attdescription)
     {
         $attributedescriptions['attribute_'.substr($attdescription,10,strpos($attdescription,'=')-10)] = substr($attdescription,strpos($attdescription,'=')+1);
