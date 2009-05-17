@@ -647,6 +647,9 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
+            				</tr>
+            				<tr>
+            				<td>&nbsp;</td>
             				<td align="center"><a name="quota_end">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
