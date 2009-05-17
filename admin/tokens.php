@@ -2299,8 +2299,15 @@ if ($subaction == "uploadldap" &&
 
 	// define $attrlist: list of attributes to read from users' entries
 	$attrparams = array('firstname_attr','lastname_attr',
-	'email_attr','token_attr', 'language',
-	'attr1', 'attr2');
+	'email_attr','token_attr', 'language');
+
+	$aTokenAttr=GetAttributeFieldNames($surveyid);
+	foreach ($aTokenAttr as $thisattrfieldname)
+	{
+		$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+		$attrparams[] = "attr".$attridx;
+	}
+
 	foreach ($attrparams as $id => $attr) {
 		if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
 		$ldap_queries[$ldapq][$attr] != '') {
@@ -2320,6 +2327,7 @@ if ($subaction == "uploadldap" &&
 			$resultnum=ldap_doTokenSearch($ds, $ldapq, $ResArray);
 			$xz = 0; // imported token count
 			$xv = 0; // meet minim requirement count
+			$xy = 0; // check for duplicates
 			$duplicatecount = 0; // duplicate tokens skipped count
 			$invalidemailcount = 0;
 
@@ -2332,8 +2340,7 @@ if ($subaction == "uploadldap" &&
 						$myemail='';
 						$mylanguage='';
 						$mytoken='';
-						$myattr1='';
-						$myattr2='';
+						$myattrArray=array();
 
 						// The first 3 attrs MUST exist in the ldap answer
 						// ==> send PHP notice msg to apache logs otherwise
@@ -2371,8 +2378,14 @@ if ($subaction == "uploadldap" &&
 
 						// The following attrs are optionnal
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
-						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]) ) $myattr1 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr1']]);
-						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]) ) $myattr2 = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr2']]);
+
+						foreach ($aTokenAttr as $thisattrfieldname)
+						{
+							$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+							if ( isset($ldap_queries[$ldapq]['attr'.$attridx]) && 
+								isset($responseGroup[$j][$ldap_queries[$ldapq]['attr'.$attridx]]) ) $myattrArray[$attridx] = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr'.$attridx]]);
+						}
+
 						if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
 
 						// In case Ldap Server encoding isn't UTF-8, let's translate
@@ -2381,8 +2394,12 @@ if ($subaction == "uploadldap" &&
 						{
 							$myfirstname = @mb_convert_encoding($myfirstname,"UTF-8",$ldapencoding);
 							$mylastname = @mb_convert_encoding($mylastname,"UTF-8",$ldapencoding);
-							$myattr1 = @mb_convert_encoding($myattr1,"UTF-8",$ldapencoding);
-							$myattr2 = @mb_convert_encoding($myattr2,"UTF-8",$ldapencoding);	
+							foreach ($aTokenAttr as $thisattrfieldname)
+							{
+								$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+								@mb_convert_encoding($myattrArray[$attridx],"UTF-8",$ldapencoding);
+							}
+							
 						}
 
 						// Now check for duplicates or bad formatted email addresses
@@ -2396,6 +2413,7 @@ if ($subaction == "uploadldap" &&
 							{
 								$dupfound = true;
 								$duplicatelist[]=$myfirstname." ".$mylastname." (".$myemail.")";
+								$xy++;
 
 							}
 						}	
@@ -2423,12 +2441,20 @@ if ($subaction == "uploadldap" &&
 							// No issue, let's import
 							$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 							. "(firstname, lastname, email, emailstatus, token, language";
-							if (!empty($myattr1)) {$iq .= ", attribute_1";}
-							if (!empty($myattr2)) {$iq .= ", attribute_2";}
+
+							foreach ($aTokenAttr as $thisattrfieldname)
+							{
+								$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+								if (!empty($myattrArray[$attridx])) {$iq .= ", $thisattrfieldname";}
+							}
 							$iq .=") \n"
-							. "VALUES ('$myfirstname', '$mylastname', '$myemail', 'OK', '$mytoken', '$mylanguage'";
-							if (!empty($myattr1)) {$iq .= ", '$myattr1'";}
-							if (!empty($myattr2)) {$iq .= ", '$myattr2'";}
+							. "VALUES (".db_quoteall($myfirstname).", ".db_quoteall($mylastname).", ".db_quoteall($myemail).", 'OK', ".db_quoteall($mytoken).", ".db_quoteall($mylanguage)."";
+
+							foreach ($aTokenAttr as $thisattrfieldname)
+							{
+								$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+								if (!empty($myattrArray[$attridx])) {$iq .= ", ".db_quoteall($myattrArray[$attridx]).""; }// dbquote_all encloses str with quotes 
+							}
 							$iq .= ")";
 							$ir = $connect->Execute($iq);
 							if (!$ir) $duplicatecount++;

@@ -79,10 +79,10 @@ function ldap_bindCnx($ds, $server_id = null) {
 function ldap_readattr($attr) {
 
 	if (is_array($attr)) { 
-		return trim(addslashes($attr[0]));
+		return trim($attr[0]);
 	}
 	else {
-		return trim(addslashes($attr));
+		return trim($attr);
 	}
 }
 
