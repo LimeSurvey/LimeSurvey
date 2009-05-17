@@ -134,7 +134,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
 	}
 	$groupselect .="</select>\n";
-	$headings=array($clang->gT("Scope"), $clang->gT("Group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
+	$headings=array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
 	$inputs=array("<input type='radio' id='radiototal' name='scope' value='T' checked='checked'>".$clang->gT("Total")."</input><input type='radio' id='radiogroup' name='scope' value='G'>".$clang->gT("Group")."</input>",
 	$groupselect,
 	"<input type='text' name='minimum' class='numbersonly' />",
@@ -154,7 +154,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$scopeselect .= "value='T'>".$clang->gT("Total")."</input>";
         $scopeselect .= "<input type='radio' name='scope' id='radiogroup' value='G'";
 		if ($editdata['scope'] == "G") {$scopeselect .= " checked='checked'";}
-		$scopeselect .= ">".$clang->gT("Group")."</input>";
+		$scopeselect .= ">".$clang->gT("Question group")."</input>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
 		$groupselect,
@@ -193,7 +193,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
         }
 		else 
         {
-            $assessmentsoutput.= "<td>".$clang->gT("Group")."</td>\n"; 
+            $assessmentsoutput.= "<td>".$clang->gT("Question group")."</td>\n"; 
             $assessmentsoutput.= "<td>".$groups[$assess['gid']]['group_name']." (".$assess['gid'].")</td>\n";
         }
 

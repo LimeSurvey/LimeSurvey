@@ -1280,7 +1280,7 @@ if ($importingfrom == "http")
 	    {
 	    $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";
 	    }
-	$importsurvey .= "\t<li>".$clang->gT("Groups").": $countgroups</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Question groups").": $countgroups</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";

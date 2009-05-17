@@ -2623,7 +2623,7 @@ function templatereplace($line)
 	global $publicurl, $templatedir, $token;
 	global $assessments, $s_lang;
 	global $errormsg, $clang;
-	global $saved_id, $tpldir;
+	global $saved_id, $templaterootdir;
 	global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;    
     global $printoutput, $captchapath, $loadname;
@@ -2798,7 +2798,7 @@ function templatereplace($line)
         {
            If (!isset($helpicon))
            {
-              $templatedir="$tpldir/".$thissurvey['templatedir']."/";
+              $templatedir="$templaterootdir/".$thissurvey['templatedir']."/";
                if ($thissurvey['templatedir']) 
                {
                    $templateurl="$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/";

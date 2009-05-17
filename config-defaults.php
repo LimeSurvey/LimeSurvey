@@ -384,6 +384,16 @@ $use_firebug_lite = false;
 $showaggregateddata = 1;
 
 
+/**
+ * When this settings is true/1 (default) then the standard templates that are delivered with the
+ * LimeSurvey installation package are read-only. If you want to modify a template just copy it first.
+ * This prevents upgrade problems later because if you modify your standard templates you could accidenitally
+ * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.    
+ */ 
+$standard_templates_readonly    =  true; 
+
+
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
@@ -399,16 +409,16 @@ require_once(dirname(__FILE__).'/config.php');
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //LimeSurvey installation. Do not change unless you know what you are doing.
-    $homeurl        =   "$rooturl/admin";  // The website location (url) of the admin scripts
-    $publicurl      =   "$rooturl";        // The public website location (url) of the public survey script
+    $homeurl        =   "$rooturl/admin";     // The website location (url) of the admin scripts
+    $publicurl      =   "$rooturl";           // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
-    $imagefiles     =   "$rooturl/images"; // Location of button bar files for admin script
-  	$tpldir         =   "$rootdir/templates"; // Location of the templates
-    $homedir        =   "$rootdir/admin";  // The physical disk location of the admin scripts
-    $publicdir      =   "$rootdir";        // The physical disk location of the public scripts
-    $tempdir        =   "$rootdir/tmp";    // The physical location where LimeSurvey can store temporary files
-                                           // Note: For OS/2 the $tempdir may need to be defined as an actual directory
-                                           // example: "x:/limesurvey/tmp". We don't know why.
+    $imagefiles     =   "$rooturl/images";    // Location of button bar files for admin script
+  	$templaterootdir=   "$rootdir/templates"; // Location of the templates
+    $homedir        =   "$rootdir/admin";     // The physical disk location of the admin scripts
+    $publicdir      =   "$rootdir";           // The physical disk location of the public scripts
+    $tempdir        =   "$rootdir/tmp";       // The physical location where LimeSurvey can store temporary files
+                                              // Note: For OS/2 the $tempdir may need to be defined as an actual directory
+                                              // example: "x:/limesurvey/tmp". We don't know why.
     $fckeditordir   =   "$homeurl/scripts/fckeditor.264";
 
 //PDF Export Settings

@@ -116,7 +116,7 @@ if ($action == "copyquestion")
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td ><strong>".$clang->gT("Group:")."</strong></td>\n"
+		. "\t\t<td ><strong>".$clang->gT("Question group:")."</strong></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t\t</select></td>\n"
@@ -403,7 +403,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			$editquestion .= "\t\t</td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
-				. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
 				. "\t\t<td align='left'><select name='gid'>\n"
 				. getgrouplist3($eqrow['gid'])
 				. "\t\t</select></td>\n"
@@ -416,7 +416,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 			$editquestion .= "\t\t</td>\n"
 				. "\t</tr>\n"
 				. "\t<tr>\n"
-				. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
 				. "\t\t<td align='left'>\n"
 				. getgrouplist4($eqrow['gid'])
 				. "\t\t</td>\n"

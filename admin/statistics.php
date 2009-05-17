@@ -320,7 +320,7 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		
 		//use current groupname and groupid as heading 
-		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Group")." $flt[1])</font></td></tr>\n\t\t"
+		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
 		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
 		

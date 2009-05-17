@@ -90,7 +90,7 @@ if ($surveyid)
      
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
-$tpldir="$publicdir/templates";
+$templaterootdir="$publicdir/templates";
 
 
 

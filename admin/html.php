@@ -639,9 +639,9 @@ if ($surveyid)
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
 			. "onmouseout=\"hideTooltip()\" "
-			. "title=\"".$clang->gTview("Change Group Order")."\" "
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Group Order")."' name='ordergroups' /></a>\n";
+			. "title=\"".$clang->gTview("Change question group order")."\" "
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change question group order", "js")."');return false\">"
+			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change question group order")."' name='ordergroups' /></a>\n";
 		}
 		else
 		{
@@ -719,7 +719,7 @@ if ($surveyid)
 		}
 		$surveysummary .= "</div>\n"
 		. "<div class='menubar-right'>\n";
-		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Groups").":</font>\n"
+		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Question groups").":</font>\n"
 		. "<select name='groupselect' "
 		. "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 
@@ -741,7 +741,7 @@ if ($surveyid)
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
             . "onmouseout=\"hideTooltip()\""
             . "title=\"".$clang->gTview("Add New Group to Survey")."\""
-            . "onmouseover=\"showTooltip(event,'".$clang->gT("Add New Group to Survey", "js")."');return false\"> "
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Add new question group to survey", "js")."');return false\"> "
             . "<img src='$imagefiles/add.png' title='' alt='' name='AddNewGroup' /></a>\n";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
@@ -980,7 +980,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	{
         $grow = array_map('strip_tags', $grow);
 		//$grow = array_map('htmlspecialchars', $grow);
-		$groupsummary .= '<strong>'.$clang->gT("Group").'</strong>&nbsp;'
+		$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
 		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font>\n"
 		. "</div>\n"
         . "<div class='menubar-main'>\n"
@@ -994,7 +994,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			$groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "title=\"".$clang->gTview("Edit Current Group")."\""
+			. "title=\"".$clang->gTview("Edit current question group")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current Group", "js")."');return false\">" .
 			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' /></a>\n" ;
 		}
@@ -1010,7 +1010,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 //				$groupsummary .= "<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
 				$groupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid")."}\""
 				. "onmouseout=\"hideTooltip()\""
-				. "title=\"".$clang->gTview("Delete Current Group")."\""
+				. "title=\"".$clang->gTview("Delete current question group")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title=''  /></a>\n";
 				//get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid");
@@ -1019,8 +1019,8 @@ if ($surveyid && $gid )   // Show the group toolbar
 			{
 				$groupsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\" "
 				. "onmouseout=\"hideTooltip()\""
-				. "title=\"".$clang->gTview("Delete Current Group")."\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
+				. "title=\"".$clang->gTview("Delete current question group")."\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete current question group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' /></a>\n";
 			}
 		}
@@ -1046,7 +1046,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         {
 
             $groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
-            . "title=\"".$clang->gTview("Export Current Group")."\" "
+            . "title=\"".$clang->gTview("Export current question group")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
             "<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup'  /></a>\n";
         }

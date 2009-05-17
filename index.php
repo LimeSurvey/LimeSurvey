@@ -40,7 +40,7 @@ else {
 
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
-$tpldir="$publicdir/templates";
+$templaterootdir="$publicdir/templates";
 
 @session_start();
 
@@ -74,14 +74,14 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
 		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		."\t\t</center><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -98,14 +98,14 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
 		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		."\t\t</center><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -218,14 +218,14 @@ if ($surveyid &&
 		sendcacheheaders();
 		doHeader();
 
-		echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+		echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 		echo "\t\t<center><br />\n"
 		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
 		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
 		."\t\t</center><br />\n";
 
-		echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+		echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 		doFooter();
 		exit;
 	}
@@ -247,14 +247,14 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
     ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
 	."\t\t</center><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 };
@@ -356,11 +356,11 @@ if (!$surveyid)
 	//A nice exit
 	sendcacheheaders();
 	doHeader();
-	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/$defaulttemplate/startpage.pstpl"));
 
-	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/surveylist.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/$defaulttemplate/surveylist.pstpl"));
 
-	echo templatereplace(file_get_contents("$tpldir/$defaulttemplate/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/$defaulttemplate/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -415,11 +415,11 @@ else
 //SET THE TEMPLATE DIRECTORY
 if (!$thissurvey['templatedir']) 
 {
-    $thistpl=$tpldir."/".$defaulttemplate;
+    $thistpl=$templaterootdir."/".$defaulttemplate;
 } 
     else 
     {
-        $thistpl=$tpldir."/".validate_templatedir($thissurvey['templatedir']);
+        $thistpl=$templaterootdir."/".validate_templatedir($thissurvey['templatedir']);
     }
 
 
@@ -430,13 +430,13 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
     ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
 	."<br /><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }
@@ -447,13 +447,13 @@ if ($thissurvey['startdate'] > date("Y-m-d") && $thissurvey['usestartdate'] == "
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+    echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
     echo "\t\t<center><br />\n"
     ."\t\t\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
     ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
     ."<br /><br />\n";
 
-    echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+    echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
     doFooter();
     exit;
 }
@@ -466,14 +466,14 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
     ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
 	."<br /><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 }

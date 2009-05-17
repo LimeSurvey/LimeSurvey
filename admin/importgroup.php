@@ -669,7 +669,7 @@ else
     $importgroup .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 }
 $importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
-."<ul>\n\t<li>".$clang->gT("Groups").": ";
+."<ul>\n\t<li>".$clang->gT("Groups:");
 if (isset($countgroups)) {$importgroup .= $countgroups;}
 $importgroup .= "</li>\n"
     ."\t<li>".$clang->gT("Questions").": ";
