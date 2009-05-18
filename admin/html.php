@@ -3214,21 +3214,27 @@ if ($action == "newsurvey")
 		. "<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "</select></span>\n"
 		. "</div>\n";
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template:")."</span>\n"
-		. "<span class='settingentry'><select name='template'>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template:")."</span>\n"
+        . "<span class='settingentry'><select name='template'  "
+        . " onkeyup='this.onchange();' onchange='document.getElementById(\"preview\").src=\"".$publicurl."/templates/\"+this.value+\"/preview.png\";'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
 			
 			if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )  {
 				$newsurvey .= "<option value='$tname'";
-				if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected='selected'";}
-				elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected='selected'";}
+				if ((!isset($esrow) || !$esrow['template']) && $tname == $defaulttemplate) {$newsurvey .= " selected='selected'";}
 				$newsurvey .= ">$tname</option>\n";
 			}
 			
 		}
 		$newsurvey .= "</select></span>\n"
-		. "</div>\n";
+                    . "</div>\n"
+                    . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template Preview:")."</span>\n"
+                    . "<span class='settingentry'><img id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
+                    . "</span>\n"
+                    . "</div>\n";
+        
+    
 
 		//ALLOW SAVES
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow Saves?")."</span>\n"
