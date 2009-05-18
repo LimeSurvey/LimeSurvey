@@ -237,6 +237,7 @@ background-color:#A7A9D1;
 {
 	margin-left: 0%;
 	padding-left: 0%;
+	text-align: left;
 }
 
  .choice-5-pt-radio li
@@ -277,7 +278,7 @@ background-color:#A7A9D1;
 ,.yes-no ul
 ,.gender ul
 {
-	text-align: left;
+	text-align: center;
 	margin-left: 0%;
 	padding-left: 0%;
 }
@@ -363,13 +364,15 @@ ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
 ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
 ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
-.list-dropdown-flexible p.question
+ .list-dropdown p.question
+,.list-dropdown-flexible p.question
 {
+	text-align: center;
 	margin-left: 1em;
 }
-/* STYLES NOT YET DEFINED - - - - -
-.list-dropdown {}
-*/
+
+
+
 .list-with-comment div.list
 {
 	width: 47%;
@@ -455,7 +458,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	padding-right: 0%;
 }
 
- [class=multiple-opt-comments] ul li span
+ [class=multiple-opt-comments] ul li span.comment
 ,[class=multiple-short-txt] ul li span
 ,[class=numeric-multi] ul li span
 {
@@ -464,9 +467,11 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	vertical-align: baseline;
 	white-space: nowrap;
 }
-[class=multiple-opt-comments] ul li span
+[class=multiple-opt-comments] ul li span.option
 {
-	padding: 0.3em 1em 0% 0%;
+	padding: 0.3em 1em 0% 2em;
+	text-indent: -2.1em;
+	display: table-cell;
 }
 .numeric-multi div.multinum-slider
 {

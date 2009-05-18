@@ -1,5 +1,11 @@
 /* The following styles are for all versions of IE */
-
+ .choice-5-pt-radio ul
+,.yes-no ul
+,.gender ul
+{
+	margin-left: 2.5em;
+	text-align: center;
+}
 .multiple-short-txt ul.numbers-only li span
 {
 	width: 10em;
@@ -97,7 +103,8 @@
 .multiple-opt-comments ul.X30 span.comment  , .multiple-short-txt ul.X30 span  , .numeric-multi ul.X30 span  { margin-left: 30.5em; }
 
 .multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large span.comment  , .multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
+.multiple-opt-comments ul.X-large span.comment { margin-left: 1em; }
+.multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
 
 .numeric-multi dl.multiplenumerichelp.X-large { display: static; }
 
@@ -106,7 +113,7 @@
 
 .numeric-multi ul.multiplenumerichelp li label
 {
-	margin: 0% 0% -1.6em 0%;
+	margin: 0% 0% -1.3em 0%;
 	width: 3.5em;
 	display: block;
 }

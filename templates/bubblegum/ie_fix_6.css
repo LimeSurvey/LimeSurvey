@@ -1,9 +1,10 @@
 /* The following styles are for versions of IE older than 7 */
- #limesurvey .choice-5-pt-radio ul
+ .choice-5-pt-radio ul
 ,.yes-no ul
 ,.gender ul
 {
-	margin-left: 2.5em%;
+	margin-left: 2.5em;
+	text-align: center;
 }
 
 .date td td
@@ -47,18 +48,19 @@
 	margin-top: 0.3em;
 	display: block;
 }
- .multiple-short-txt ul label
-,.multiple-opt-comments ul span.option
+.multiple-short-txt ul label
 {
 	margin-bottom: -1.6em;
 	margin-top: 0.5em;
 	display: block;
 }
- .multiple-opt-comments ul.X-large span.option
-,.multiple-short-txt ul.X-large span
-,.numeric-multi ul.X-large span
+.multiple-opt-comments ul span.option
 {
-	margin-bottom: 0%;
+	margin-bottom: -1.6em;
+	padding-left: 2em;
+	text-indent: -2em;
+	margin-top: 0.5em;
+	display: block;
 }
  .multiple-opt-comments ul span.comment
 ,.multiple-short-txt ul span
@@ -67,6 +69,12 @@
 	display: block;
 	margin-bottom: 0.7em;
     font-size:80%;
+}
+ .multiple-opt-comments ul.X-large span.option
+,.multiple-short-txt ul.X-large label
+,.numeric-multi ul.X-large label
+{
+	margin-bottom: 0%;
 }
 .multiple-opt-comments ul.X2  span.option , .multiple-short-txt ul.X2 label  , .numeric-multi ul.X2 label  { width: 3em;}
 .multiple-opt-comments ul.X2  span.comment  , .multiple-short-txt ul.X2 span   , .numeric-multi ul.X2 span   { margin-left: 3.5em; }
@@ -113,8 +121,9 @@
 .multiple-opt-comments ul.X30 span.option , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 31em;}
 .multiple-opt-comments ul.X30 span.comment  , .multiple-short-txt ul.X30 span  , .numeric-multi ul.X30 span  { margin-left: 31.5em; }
 
-.multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large span.comment  , .multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
+.multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0.3em;}
+.multiple-opt-comments ul.X-large span.comment { margin-left: 2.5em; }
+.multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
 
 .numeric-multi dl.multiplenumerichelp.X-large { display: static; }
 

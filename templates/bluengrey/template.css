@@ -645,6 +645,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 	display: table-row;
 	font-size: 90%;
 }
+[class=multiple-opt-comments] ul li span.option
+{
+	padding: 0.3em 1em 0% 1.5em;
+    text-indent: -1.5em;
+	display: table-cell;
+	vertical-align: baseline;
+}
  [class=multiple-short-txt] ul li label
 ,[class=numeric-multi] ul li label
 ,[class=numeric-multi] ul.slider li label
@@ -660,7 +667,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
     font-size:12px;
 }
 
- [class=multiple-opt-comments] ul li span
+ [class=multiple-opt-comments] ul li span.comment
 ,[class=multiple-short-txt] ul li span
 ,[class=numeric-multi] ul li span
 ,[class=numeric-multi] ul li.slider span

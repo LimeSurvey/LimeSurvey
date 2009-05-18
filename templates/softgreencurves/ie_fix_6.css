@@ -40,13 +40,9 @@
 .multiple-opt-comments ul span.option
 {
 	margin-bottom: -2.1em;
+	padding-left: 2.3em;
+	text-indent: -2.3em;
 	display: block;
-}
- .multiple-opt-comments ul.X-large span.option
-,.multiple-short-txt ul.X-large span
-,.numeric-multi ul.X-large span
-{
-	margin-bottom: 0%;
 }
  .multiple-opt-comments ul span.comment
 ,.multiple-short-txt ul span
@@ -55,6 +51,12 @@
 	display: block;
 	margin-bottom: 0.7em;
     font-size:80%;
+}
+ .multiple-opt-comments ul.X-large span.option
+,.multiple-short-txt ul.X-large span
+,.numeric-multi ul.X-large span
+{
+	margin-bottom: 0%;
 }
 .multiple-opt-comments ul.X2  span.option , .multiple-short-txt ul.X2 label  , .numeric-multi ul.X2 label  { width: 3em;}
 .multiple-opt-comments ul.X2  span.comment  , .multiple-short-txt ul.X2 span   , .numeric-multi ul.X2 span   { margin-left: 3.5em; }
@@ -101,8 +103,9 @@
 .multiple-opt-comments ul.X30 span.option , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 31em;}
 .multiple-opt-comments ul.X30 span.comment  , .multiple-short-txt ul.X30 span  , .numeric-multi ul.X30 span  { margin-left: 31.5em; }
 
-.multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large span.comment  , .multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
+.multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0.2em;}
+.multiple-opt-comments ul.X-large span.comment { margin-left: 2.9em; }
+.multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
 
 .numeric-multi dl.multiplenumerichelp.X-large { display: static; }
 

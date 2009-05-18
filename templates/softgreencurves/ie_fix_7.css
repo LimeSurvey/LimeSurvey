@@ -48,12 +48,14 @@
 	margin-bottom: -2.1em;
 	display: block;
 }
-.multiple-opt-comments ul span.option
+#limesurvey .multiple-opt-comments ul span.option
 {
-	margin-bottom: -2.9em;
+	margin-bottom: -2.6em;
+	padding-left: 2.5em;
+	text-indent: -2.5em;
 	display: block;
 }
- .multiple-opt-comments ul.X-large span.option
+ #limesurvey .multiple-opt-comments ul.X-large span.option
 ,.multiple-short-txt ul.X-large span
 ,.numeric-multi ul.X-large span
 {

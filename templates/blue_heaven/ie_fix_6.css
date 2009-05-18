@@ -31,8 +31,9 @@
  .multiple-short-txt ul label
 ,.multiple-opt-comments ul span.option
 {
-	margin-bottom: -1.4em;
-	margin-top: 0.5em;
+	margin: 0.5em 0.5em -1.4em 0%;
+	padding-left: 1.7em;
+	text-indent: -1.7em;
 	display: block;
 }
  .multiple-opt-comments ul.X-large span.option

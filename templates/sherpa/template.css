@@ -623,6 +623,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	display: table-row;
 }
+[class=multiple-opt-comments] ul li span.option
+{
+	padding: 0.3em 1em 0% 1.8em;
+	text-indent: -1.8em;
+	display: table-cell;
+	vertical-align: baseline;
+}
  [class=multiple-short-txt] ul li label
 ,[class=numeric-multi] ul li label
 {
@@ -645,10 +652,6 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	vertical-align: baseline;
 	font-size: 80%;
 	white-space: nowrap;
-}
-[class=multiple-opt-comments] ul li span
-{
-	padding: 0.3em 1em 0% 0%;
 }
 .numeric-multi div.multinum-slider
 {

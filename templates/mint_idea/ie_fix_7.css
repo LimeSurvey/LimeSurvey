@@ -43,12 +43,14 @@
 	margin-bottom: -2.2em;
 	display: block;
 }
-,.multiple-opt-comments ul span.option
+#limesurvey .multiple-opt-comments ul span.option
 {
 	margin-bottom: -2.1em;
+	padding-left: 2.3em;
+	text-indent: -2.3em;
 	display: block;
 }
- .multiple-opt-comments ul.X-large span.option
+ #limesurvey .multiple-opt-comments ul.X-large span.option
 ,.multiple-short-txt ul.X-large span
 ,.numeric-multi ul.X-large span
 {

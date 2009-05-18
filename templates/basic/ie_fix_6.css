@@ -33,19 +33,18 @@ margin:0px 0px 0px 0px;
 }
  .multiple-short-txt ul label
 ,.numeric-multi ul label
-,.multiple-opt-comments ul span.option
 {
 	margin-bottom: -1.6em;
 	margin-top: 0.5em;
 	display: block;
 }
-.multiple-opt-comments ul span.option { margin-bottom: -1.7em; }
-
- .multiple-opt-comments ul.X-large span.option
-,.multiple-short-txt ul.X-large span
-,.numeric-multi ul.X-large span
+.multiple-opt-comments ul span.option
 {
-	margin-bottom: 0%;
+	padding-left: 1.8em;
+	text-indent: -1.7em;
+	margin-bottom: -1.7em;
+	margin-top: 0.5em;
+	display: block;
 }
  .multiple-short-txt ul span
 ,.numeric-multi ul span
@@ -57,6 +56,13 @@ margin:0px 0px 0px 0px;
 {
 	display: block;
 	margin-bottom: 0.5em;
+}
+
+ .multiple-opt-comments ul.X-large span.option
+,.multiple-short-txt ul.X-large label
+,.numeric-multi ul.X-large label
+{
+	margin-bottom: 0.2em;
 }
 .multiple-opt-comments ul.X2  span.option , .multiple-short-txt ul.X2 label  , .numeric-multi ul.X2 label  { width: 2em;}
 .multiple-opt-comments ul.X2  span.comment  , .multiple-short-txt ul.X2 span   , .numeric-multi ul.X2 span   { margin-left: 2.5em; }
@@ -104,7 +110,8 @@ margin:0px 0px 0px 0px;
 .multiple-opt-comments ul.X30 span.comment  , .multiple-short-txt ul.X30 span  , .numeric-multi ul.X30 span  { margin-left: 30.5em; }
 
 .multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
-.multiple-opt-comments ul.X-large span.comment  , .multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
+.multiple-opt-comments ul.X-large span.comment  { margin-left: 1.8em; }
+.multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
 
 /*
 .numeric-multi dl.multiplenumerichelp.X2  { left: 10em; }
