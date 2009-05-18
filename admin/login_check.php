@@ -61,7 +61,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 			if ($result->RecordCount() < 1)
 			{
 				// wrong or unknown username 
-				$loginsummary = $clang->gT("No one time password found for user")." ".$user."<br />";
+				$loginsummary = sprintf($clang->gT("No one-time password found for user %s"),htmlspecialchars($user))."<br />";
 				session_regenerate_id();			
 			}
 			else
