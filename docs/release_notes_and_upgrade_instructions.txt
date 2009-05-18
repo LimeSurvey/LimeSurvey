@@ -76,7 +76,7 @@ Thank you to everyone who helped with this new release!
 
 Changes from 1.82+ (build 6825) to 1.85RC1 [2009/05/18] - Legend: + new feature, # update feature, - bug fix
 
-  Quick "what's new" for this version:
+  What's hot in this version:
    * multiple (dynamic) token attributes are now supported
    * the token table can be managed before survey activation
    * conditions can be based on token attributes
