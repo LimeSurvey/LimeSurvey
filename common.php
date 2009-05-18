@@ -75,7 +75,7 @@ require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
 
 $dbprefix=strtolower($dbprefix);
-define("_PHPVERSION", phpversion());
+define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
 if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
 {

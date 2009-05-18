@@ -433,7 +433,6 @@ function setman_questionandcode_multiscale($ia)
 	return array($mandatorys, $mandatoryfns);
 }
 
-
 function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 {
 	//This function returns an array containing the "question/answer" html display
@@ -474,6 +473,18 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	$qidattributes=getQuestionAttributes($ia[0]);
 	//echo "<pre>";print_r($qidattributes);echo "</pre>";
 	//Create the question/answer html
+	
+	// Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
+	// this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
+	
+	$question_text = array(
+				 'text' => $qtitle
+				,'help' => ''
+				,'mandatory' => ''
+				,'man_message' => ''
+				,'valid_message' => ''
+			);
+
 	switch ($ia[4])
 	{
 		case 'X': //BOILERPLATE QUESTION
@@ -491,6 +502,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose one of the following answers').'</span>';
+				$question_text['help'] = $clang->gT('Choose one of the following answers');
 			}
 			break;
 		case 'L': //LIST drop-down/radio-button list
@@ -499,6 +511,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose one of the following answers').'</span>';
+				$question_text['help'] = $clang->gT('Choose one of the following answers');
 			}
 			break;
 		case 'W': //List - dropdown
@@ -507,6 +520,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose one of the following answers').'</span>';
+				$question_text['help'] = $clang->gT('Choose one of the following answers');
 			}
 			break;
 		case '!': //List - dropdown
@@ -515,6 +529,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose one of the following answers').'</span>';
+				$question_text['help'] = $clang->gT('Choose one of the following answers');
 			}
 			break;
 		case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
@@ -523,6 +538,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose one of the following answers').'</span>';
+				$question_text['help'] = $clang->gT('Choose one of the following answers');
 			}
 			break;
 		case 'R': //RANKING STYLE
@@ -533,6 +549,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
 					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</span>";
+					$question_text['help'] = sprintf($clang->gT("Rank at least %d items"), $minansw['value']);
 				
 				}
 			}
@@ -547,6 +564,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
 					. $clang->gT('Check any that apply').'</span>';
+					$question_text['help'] = $clang->gT('Check any that apply');
 				}
 				else
 				{
@@ -554,14 +572,17 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value']);
 					} elseif ($maxansw) 
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw['value']);
 					} else 
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
 					}
 				}
 			}
@@ -573,6 +594,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			{
 				$qtitle .= "<br />\n<span class=\"questionhelp\">"
 				. $clang->gT('Choose your language').'</span>';
+				$question_text['help'] = $clang->gT('Choose your language');
 			}
 			break;
 		case 'P': //MULTIPLE OPTIONS WITH COMMENTS checkbox + text
@@ -585,6 +607,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
 					. $clang->gT('Check any that apply').'</span>';
+					$question_text['help'] = $clang->gT('Check any that apply');
 				}
 				else
 				{
@@ -592,14 +615,17 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check between %d and %d answers"), $minansw['value'], $maxansw['value']);
 					} elseif ($maxansw) 
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check at most %d answers"), $maxansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check at most %d answers"), $maxansw['value']);
 					} else 
 					{
 						$qtitle .= "<br />\n<span class=\"questionhelp\">"
 						. sprintf($clang->gT("Check at least %d answers"), $minansw['value'])."</span>";
+						$question_text['help'] = sprintf($clang->gT("Check at least %d answers"), $minansw['value']);
 					}
 				}
 			}
@@ -674,14 +700,43 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	if ($ia[6] == 'Y')
 	{
 		$qtitle = '<span class="asterisk">'.$clang->gT('*').'</span>'.$qtitle;
+		$question_text['mandatory'] = $clang->gT('*');
 	}
 	//If this question is mandatory but wasn't answered in the last page
 	//add a message HIGHLIGHTING the question
 	$qtitle .= mandatory_message($ia);
+	$question_text['man_message'] = mandatory_message($ia);
 
 	$qtitle .= validation_message($ia);
+	$question_text['valid_message'] = validation_message($ia);
+// =====================================================
+// The following section adds to the templating system by allowing
+// templaters to control where the various parts of the question text
+// are put.
+	$qtitle_custom = '';
 
-	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1]);
+	foreach($question_text as $key => $value)
+	{
+		$find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
+		$replace[] = $value; // substitue text
+	};
+	if(!defined('QUESTION_START'))
+	{
+		define('QUESTION_START' , file_get_contents('templates/'.$thissurvey['template'].'/question_start.pstpl' , true));
+	};
+	$qtitle_custom = str_replace( $find , $replace , QUESTION_START);
+	
+	$c = 1;
+	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
+	{ 
+		$matches = 0;
+		$qtitle_custom = preg_replace('/(?:<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>|(?U)<br(?: ?\/)?>)[\r\n\t ]*/isU','',$qtitle_custom , -1 , $matches);
+		$c = $matches;
+	};
+	$qtitle = $qtitle_custom;
+// =====================================================
+
+	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1] );
 	//New Return
 	return array($qanda, $inputnames);
 }
@@ -2162,8 +2217,8 @@ function do_ranking($ia)
 				}
 			}
 		}
-		$ranklist .= "\t\t\t\t\t\t\t<tr><td style=\"text-align:right;\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
-		."$i:&nbsp;</label></td><td><input class='text' type='text' name='RANK_{$ia[0]}$i' id='RANK_{$ia[0]}$i'";
+		$ranklist .= "\t\t\t\t\t\t\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
+		."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$ia[0]}$i\" id=\"RANK_{$ia[0]}$i\"";
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$ranklist .= " value='";
@@ -2171,7 +2226,7 @@ function do_ranking($ia)
 			$ranklist .= "'";
 		}
 		$ranklist .= " onfocus=\"this.blur()\" />\n";
-		$ranklist .= "\t\t\t\t\t\t<input type='hidden' name='$myfname' id='fvalue_{$ia[0]}$i' value='";
+		$ranklist .= "\t\t\t\t\t\t<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$ia[0]}$i\" value='";
 		$chosen[]=""; //create array
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
@@ -2179,19 +2234,19 @@ function do_ranking($ia)
 			$chosen[]=array($thiscode, $thistext);
 		}
 		$ranklist .= "' />\n";
-		$ranklist .= "\t\t\t\t\t\t<img src='$imagefiles/cut.gif' alt='".$clang->gT("Remove this item")."' title='".$clang->gT("Remove this item")."' ";
+		$ranklist .= "\t\t\t\t\t\t<img src=\"$imagefiles/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
 		if ($i != $existing)
 		{
-			$ranklist .= "style='display:none'";
+			$ranklist .= "style=\"display:none\"";
 		}
-		$ranklist .= " id='cut_{$ia[0]}$i' onclick=\"deletethis_{$ia[0]}(document.limesurvey.RANK_{$ia[0]}$i.value, document.limesurvey.fvalue_{$ia[0]}$i.value, document.limesurvey.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
+		$ranklist .= " id=\"cut_{$ia[0]}$i\" onclick=\"deletethis_{$ia[0]}(document.limesurvey.RANK_{$ia[0]}$i.value, document.limesurvey.fvalue_{$ia[0]}$i.value, document.limesurvey.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
 		$inputnames[]=$myfname;
 		$ranklist .= "</td></tr>\n";
 	}
 
-	$choicelist = "\t\t\t\t\t\t<select size='$anscount' name='CHOICES_{$ia[0]}' ";
+	$choicelist = "\t\t\t\t\t\t<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
 	if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-    $choicelist .= " id='CHOICES_{$ia[0]}' onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class='select'>\n";
+    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
 	$hiddens="";
 	foreach ($answers as $ans)
 	{
@@ -2220,7 +2275,8 @@ function do_ranking($ia)
 	$choicelist .= "\t\t\t\t\t\t</select>\n";
 	$choicelist .= $hiddens;
 
-	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
+//	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
+	$answer .= "\t\t\t<table border='0' cellspacing='0' class='rank'>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
 	. "\t\t\t\t\t\t".$clang->gT("Click on an item in the list on the left, starting with your")
@@ -2228,7 +2284,7 @@ function do_ranking($ia)
 	. "\t\t\t\t\t</font></td>\n"
 	. "\t\t\t\t</tr>\n"
 	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td align='left' valign='top' class='rank'>\n"
+	. "\t\t\t\t\t<td align='left' valign='top' class='rank label'>\n"
 	. "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>".$clang->gT("Your Choices").":</label></strong><br />\n"
 	. "&nbsp;".$choicelist
 	. "\t\t\t\t\t&nbsp;</td>\n";
@@ -2236,13 +2292,13 @@ function do_ranking($ia)
 	{
 		$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
 		$answer .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"
-		. "\t\t\t\t\t<td align='left' width='250' class='rank'>\n"
+		. "\t\t\t\t\t<td align='left' class='output'>\n"
 		. "\t\t\t\t\t\t\t<table border='0' cellspacing='1' cellpadding='0'>\n"
 		. "\t\t\t\t\t\t\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
 	}
 	else
 	{
-		$answer .= "\t\t\t\t\t<td style=\"text-align:left; width:250px; white-space:nowrap;\" class=\"rank\">\n"
+		$answer .= "\t\t\t\t\t<td style=\"text-align:left; white-space:nowrap;\" class=\"rank output\">\n"
 		. "\t\t\t\t\t\t\t<table border='0' cellspacing='1' cellpadding='0'>\n"
 		. "\t\t\t\t\t\t\t<tr><td></td><td><strong>".$clang->gT("Your Ranking").":</strong></td></tr>\n";
 	}
@@ -2719,7 +2775,7 @@ function do_multiplechoice_withcomments($ia)
 
 		$myfname = $ia[1].$ansrow['code'];
 		$myfname2 = $myfname."comment";
-		$answer_main .= "\t<li>\n\t\t<label for=\"answer$myfname\" class=\"answertext\">\n"
+		$answer_main .= "\t<li>\n\t\t<span class=\"option\">\n\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n"
 		. "\t\t\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 		if (isset($_SESSION[$myfname]))
 		{
@@ -2743,11 +2799,11 @@ function do_multiplechoice_withcomments($ia)
 		if (isset($_SESSION[$myfname])) {$answer_main .= $_SESSION[$myfname];}
 		$answer_main .= "' />\n";
 		$fn++;
-		$answer_main .= "\t\t<label for='answer$myfname2' class=\"answer-comment\">\n"
-		."\t\t\t<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+		$answer_main .= "\t\t</span>\n\t\t<span class=\"comment\">\n\t\t\t<label for='answer$myfname2' class=\"answer-comment\">\n"
+		."\t\t\t\t<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
 		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;checkconditions(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t\t</label>\n"
+		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;checkconditions(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");' onKeyUp='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t\t\t</label>\n\t\t</span>\n"
 
 		. "\t</li>\n";
 		// --> END NEW FEATURE - SAVE
@@ -2761,17 +2817,18 @@ function do_multiplechoice_withcomments($ia)
 		$myfname = $ia[1].'other';
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
-		$answer_main .= "\t<li class=\"other\">\n"
-		. "\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t".$othertext.":\n\t\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		$answer_main .= "\t<li class=\"other\">\n\t\t<span class=\"option\">\n"
+		. "\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t\t".$othertext.":\n\t\t\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
 		}
 		$fn++;
 		// --> START NEW FEATURE - SAVE
-		$answer_main .= "  $callmaxanswscriptother />\n\t\t</label>\n"
-		. "\t\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
-		. '			<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
+		$answer_main .= "  $callmaxanswscriptother />\n\t\t\t</label>\n\t\t</span>\n"
+		. "\t\t<span class=\"comment\">\n\t\t\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
+		. '
+				<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
 		// --> END NEW FEATURE - SAVE
 
 		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
@@ -2802,7 +2859,7 @@ function do_multiplechoice_withcomments($ia)
 			}
 		}
 
-		$answer_main .= "\t\t</label>\n\t</li>\n";
+		$answer_main .= "\t\t\t</label>\n\t\t</span>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 		$inputnames[]=$myfname;
@@ -3255,14 +3312,14 @@ function do_multiplenumeric($ia)
 
 			if ($slider_layout === false)
 			{
-				$answer_main .= "\t\t<div class=\"input\">\n\t\t\t".$prefix."\n\t\t\t<input class=\"text\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+				$answer_main .= "\t\t<span class=\"input\">\n\t\t\t".$prefix."\n\t\t\t<input class=\"text\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
 				if (isset($_SESSION[$myfname]))
 				{
 					$answer_main .= $_SESSION[$myfname];
 				}
 
 				// --> START NEW FEATURE - SAVE
-				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t\t\t".$suffix."\n\t\t</div>\n\t</li>\n";
+				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t\t\t".$suffix."\n\t\t</span>\n\t</li>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			else
@@ -3405,21 +3462,20 @@ function do_multiplenumeric($ia)
 				$label_width = 'X'.$label_width;
 			}
 		}
-		$answer .= $question_tip.'<ul class="'.$label_width.$class_computed."\">\n".$answer_main."</ul>\n";
-
+		$answer_computed = '';
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$answer_computed  = "\n<dl class=\"multiplenumerichelp $comp_width\">\n";
-			$answer_computed .= "\t<dt>".$clang->gT('Total: ')."</dt>\n\t\t<dd>$prefix<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
+			$answer_computed  = "\n<ul class=\"multiplenumerichelp $comp_width\">\n";
+			$answer_computed .= "\t<li>\n\t\t<label for=\"totalvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Total: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
 			if ($equalvalue)
 			{
-				$answer_computed .= "\n\t<dt>".$clang->gT('Remaining: ')."</dt>\n\t\t<dd>$prefix<input type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />$suffix</dd>\n";
+				$answer_computed .= "\t<li>\n\t\t<label for=\"remainingvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Remaining: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
 			}
-			$answer_computed .= "</dl>\n";
+			$answer_computed .= "</ul>\n";
 		}
+		$answer .= $question_tip.'<ul class="'.$label_width.$class_computed."\">\n".$answer_main."</ul>\n".$answer_computed;
 	}
-	$answer_computed = isset($answer_computed)?$answer_computed:'';
-	$answer .= $answer_computed;
+	
 //just added these here so its easy to change in one place
 	$errorClass = 'tip error';
 	$goodClass = ' tip good';

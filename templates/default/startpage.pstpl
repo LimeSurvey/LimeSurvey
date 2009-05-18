@@ -1,16 +1,10 @@
-		<title>{SURVEYNAME}</title>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>{SURVEYNAME}</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
-		<script type="text/javascript">
-			var ie = false;
-		</script>
-
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
 <!--[if lte IE 6]>
-		<script type="text/javascript">
-			var ie = true;
-		</script>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 <![endif]-->
 <!--[if IE 7]>
@@ -19,14 +13,22 @@
 <!--[if IE 8]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
 <![endif]-->
+
+<!-- The following CSS hides visual elements of the progress bar from screen readers. -->
 		<style type="text/css" media="aural tty">
 progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
 		</style>
 		
 		<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
+<!-- NOTE: the following JS must ALWAYS be in IE conditional tags otherwise it will break JS in non-IE browsers. -->
+<!--[if IE]>
+		<script type="text/javascript">
+			var ie = true;
+		</script>
+<![endif]-->
 		
 	</head>
-<body class="default">
+	<body class="default">
 <table width="75%" align="center" class="outerframe">
 	<tr>
 		<td>
