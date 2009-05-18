@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.82+!
+Welcome to LimeSurvey v1.85RC1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -72,6 +72,79 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.82+ (build 6825) to 1.85RC1 [2009/05/18] - Legend: + new feature, # update feature, - bug fix
+
+  Quick "what's new" for this version:
+   * multiple (dynamic) token attributes are now supported
+   * the token table can be managed before survey activation
+   * conditions can be based on token attributes
+   * individual validity time for a token
+   * import and delete templates
+   * quota termination text and end-url are programmable
+
++New Feature: Dynamic token attributes (adding/naming multiple token attributes), the token table can be managed before survey activation.
++New Feature: Conditions can be based on token attributes (lemeur)
++New Feature: the condition editor GUI helps using a previous answer as target of a condition (no more need to know the SGQA code for this) (lemeur)
++New Feature: #2923: Individual validity time for a token (c_schmitz)
++New Feature: array_filter for ranking questions (jcleeland)
++New Feature #2531: Possibility to set a "Default" at Array (Multi Flexible) (jcleeland)
++New Feature: #02995: Quota Termination should have programmable URL, option for auto-redirect, and editable text (jcleeland)
++New Feature: Importing Token form LDAP is now compliant with the new multiple-token-attributes features. (lemeur)
++New Feature: New parameter to make the standard templates read-only - if a user wants to edit a template a copy has to be created (c_schmitz)
++New feature: ANDed conditions for type M and P questions (lemeur)
++New Feature: #3055: Passing parameters in End URL (email address from survey, {INSERTANS:1234X56X78}, {PASSTHRULABEL} and {PASSTHRUVALUE} codes which will be replaced by values passed in the initial survey query url as ?passthru=AWORD&AWORD=1234 (jcleeland)
++New Feature: #2986: template.js is now added to templates
++New Feature: When exporting codes, convert "Y" to "1" now allows selecting what y is converted to. (jcleeland)
++New Feature: When exporting codes, can now convert "N" in Yes/No question type to "2" (or any other character) (jcleeland)
++New Feature: When exporting codes, can now convert "Y" in Yes/No question type to "1" (or any other character) (jcleeland)
++New Feature: #03012: Multiple short text question needs text_input_width attribute (jcleeland)
++New Feature: Template import (c_schmitz)
++New Feature: Deleting a template is now possible (c_schmitz)
++New Feature in lsrc: sGetFieldmap, gets the fieldmap from a survey as csv from the lsrc (wahrendorff)
+
+#Updated Feature: token import from LDAP now accept mixed-case attribute names in config-ldap.php. (lemeur)
+#Updated default/template.css to convert highly breakable css for multiple-text,, multiple-numeric and multiple-options-with-comment to much more robust CSS2, 'display:table' styling (doesn't work in IE6 or IE7 but works fine in IE8) moved all original breakable CSS to IE conditional CSS files. (tested FF IE6,IE7, IE8: default, basic, bluengrey, blue_heaven, bubblegum, business_grey, clear_logo, edgyblue, eirenicon, limespired, mint_idea, phpsurveyor, sherpa, softgreencurves ). (eric_t_cruiser)
+#Updated Feature: Named worksheet in exported xls like surveytitle (wahrendorff)
+#Updated Feature: Questions Codes can now be shown in the printlayout({QUESTION_CODE}), Conditons refer to -number, -code and questiontext. Easier Sentence structure for notes on Conditions for easier translations. (wahrendorff)
+#Updated Feature:  printlayout, Question code is shown in addion to the question number. Conditional Notes refer to Number, Code and questiontext for full identification possibilities. (wahrendorff)
+
+#Updated Language: de, de-informal (wahrendorff)
+#Updated Language: Czech (macduy)dly provided by Igor DobraÄ#Updated Language: French. (b00z00)
+#Updated Language: German (c_schmitz)
+#Updated Language: German Informal (c_schmitz)
+#Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
+#Updated Language: spanish (kadejo)
+#Updated Language: French by Wael Almoman (c_schmitz)
+
+-Fixed Issue with pg: wrong concat chars on upgrade (wahrendorff)
+-Fixed Issue with pg: Syntax error in install script (wahrendorff)
+-Fixed issue #3005: No < index in Conditionhandling (wahrendorff)
+-Fixed issue #698: customable other option. (wahrendorff)
+-Fixed issue in lsrc with non mandatory Webservice Params (wahrendorff)
+-Fixed Feature: new survey templates for lsrc for this version (wahrendorff)
+-Fixed bug: {URL} in templates not available in all cases. (maziminke)
+-Fixed bug: minor fix, changed language "There wered %s fields successfully added" to "%s fields were successfully added" which is better phrasing (jcleeland)
+-Fixed bug: 03063: When a user creates a poll, super admin's details filled in (jcleeland)
+-Fixed: Adjusted path settings for pchart fonts. (maziminke)
+-Fixed #2940: Template Editor: Progress bar is too high in preview (c_schmitz)
+-Fixed an issue with token import from LDAP not counting duplicates. (lemeur)
+-Fixed issue #2944: mint idea-Template: Public Survey page layout problem (c_schmitz)
+-Fixed issue #2960: in print view questions may be split across two pages. Added a new question attribute page_break for this to force a page break at any question in printable view (c_schmitz)
+-Fixed part of issue #3153: issue in token-import from LDAP while trying to import the language code (lemeur)
+-Fixed problem with SPSS export and very long number fields (c_schmitz)
+-Fixed some translations (c_schmitz)
+-Fixed some wrong path settings for JS files. (maziminke)
+-Fixed #2760: forced comment input to be below option/answer text for questions with long answer texts for "Multiple Option with Comment" type questions. (change Only applies IE 7 and older - FF, IE 8 etc now use CSS tables layout. ) (eric_t_cruiser)
+-Fixed #2914: Added template for question text, mandatory text, question help text and question validation text. So now templaters/designers can now easily control the look of those fields. However, due to time constraints the default question_start.pstpl for each template is exactly the same as what was hard coded by qanda.php. (eric_t_cruiser)
+-Fixed #2954: centred radio buttons. (tested FF IE6,IE7, IE8: default, basic, bluengrey, blue_heaven, bubblegum, business_grey ) (eric_t_cruiser)
+-Fixed #2956: made prefix/suffix 80% of full answer text. (tested FF IE6,IE7, IE8: default, basic, bluengrey, blue_heaven, bubblegum, business_grey, clear_logo, edgyblue, eirenicon, limespired, mint_idea, sherpa ) I also made the answer text smaller (default). This problem also applies to five point choice, gender and yes/no question types. (eric_t_cruiser)
+-Fixed #2975, 029072b and 02760 : updated qanda.php to allow make it easier to use 'display: table...' properties for multiple-text, multiple-numeric and multiple-options-with-comment. (eric_t_cruiser)
+-Fixed #3028: uncommented styling to make list horizontal. (tested FF IE6,IE7, IE8: default, basic, bluengrey, blue_heaven, bubblegum, business_grey, clear_logo, edgyblue, eirenicon, limespired, mint_idea, phpsurveyor, sherpa ) (eric_t_cruiser)
+-Fixed #3097: no character set defined (missing header/footer) (maziminke)
+-Fixed: minor layout change to ensure running total for limit, completed and "quick csv report" button are aligned properly in table for quotas. (jcleeland)
+
 
 Changes from 1.82+ (build 6768) to 1.82+ (build 6825) [2009/05/11] - Legend: + new feature, # update feature, - bug fix
 
