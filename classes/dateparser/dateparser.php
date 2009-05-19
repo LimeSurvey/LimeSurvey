@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
  * Converts string date to date array by using date patterns.
  *
