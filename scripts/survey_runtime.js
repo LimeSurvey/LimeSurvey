@@ -5,6 +5,10 @@ $(document).ready(function()
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepCellAdapters();
+    if (typeof(focus_element) != 'undefined') 
+    {
+        $(focus_element).focus();
+    }
 });
 
 Array.prototype.push = function()

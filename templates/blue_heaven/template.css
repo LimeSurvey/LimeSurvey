@@ -602,7 +602,6 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 }
 
 
-<<<<<<< .mine
 /* Jquery CSS
  */
 /** UI Base **/
@@ -614,17 +613,58 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
 .ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
 .slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
-        font-family: "Myriad Pro"; color: #284a6e; font-weight: bold; text-align: center;}
-=======
-/* Jquery CSS
- */
-/** UI Base **/
-.ui-wrapper { border: 1px solid #50A029; }
-.ui-wrapper input, .ui-wrapper textarea { border: 0; }
-/** UI Slider **/
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../../images/slider-handle.gif);  }
-.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
->>>>>>> .r5970
+
+#tokenform
+{
+  margin-top:1em;
+}
+
+#tokenform input
+{
+}
+
+#tokenform label {  
+float: left;  
+width: 20em;  
+margin-right: 0.5em;  
+text-align: right;
+}
+
+#tokenform li
+{
+  padding-bottom:5px;
+}
+
+#tokenform img
+{
+  margin-bottom:-5px;
+  margin-right: 5px;
+}
+
+
+p#tokenmessage
+{
+  margin:20px;
+}
+
+
+p#tokenmessage
+{
+  margin:20px;
+  text-align:center;
+}
+
+
+div#wrapper{
+  width:600px;
+  margin:0 auto;
+}
+
+
+#tokenform input.submit
+{
+ margin-left:18em;
+ margin-top:1em;
+ margin-bottom:1em;
+}
+

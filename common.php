@@ -2631,7 +2631,7 @@ function templatereplace($line)
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
-			"\t\t<script type=\"text/javascript\" src=\"$rooturl/scripts/surveyRuntime.js\"></script>\n"
+			"\t\t<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
 			.use_firebug()
 			."\t</head>", $line);
 	}

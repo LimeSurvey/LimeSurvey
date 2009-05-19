@@ -212,7 +212,7 @@ font-size:1em;
 }
 
 
-.errormandatory,.warningjs {
+.error, .errormandatory, .warningjs {
     font-size:12px;
     font-weight:700;
     color:RED;
@@ -831,4 +831,59 @@ padding-left:5px;
 
 #loadbutton, #savebutton {
     padding:0 10px;
+}
+
+
+#tokenform
+{
+  margin-top:1em;
+}
+
+#tokenform input
+{
+}
+
+#tokenform label {  
+float: left;  
+width: 20em;  
+margin-right: 0.5em;  
+text-align: right;
+}
+
+#tokenform li
+{
+  padding-bottom:5px;
+}
+
+#tokenform img
+{
+  margin-bottom:-5px;
+  margin-right: 5px;
+}
+
+
+p#tokenmessage
+{
+  margin:20px;
+}
+
+
+p#tokenmessage
+{
+  margin:20px;
+  text-align:center;
+}
+
+
+div#wrapper{
+  width:600px;
+  margin:0 auto;
+}
+
+
+#tokenform input.submit
+{
+ margin-left:18em;
+ margin-top:1em;
+ margin-bottom:1em;
 }

@@ -54,7 +54,7 @@ if (function_exists("ImageCreate") && captcha_enabled('registrationscreen',$this
 		!isset($_SESSION['secanswer']) ||
 		$_POST['loadsecurity'] != $_SESSION['secanswer'])
     {
-	    $register_errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+	    $register_errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
     }
 }
 

@@ -390,7 +390,7 @@ else
 //{
 //	if (!isset($_GET['loadsecurity']) || $_GET['loadsecurity'] != $_SESSION['secanswer'])
 //	{
-//		$secerror = $clang->gT("The answer to the security question is incorrect")."<br />\n";
+//		$secerror = $clang->gT("The answer to the security question is incorrect.")."<br />\n";
 //		$_GET['token'] = "";
 //	}
 //}
@@ -537,7 +537,7 @@ if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 			$_POST['loadsecurity'] != $_SESSION['secanswer']) &&
 		 !isset($_GET['scid']))
 	    {
-		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+		    $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
 	    }
     }
 
@@ -1678,7 +1678,7 @@ function buildsurveysession()
 
 			if (isset($_GET['loadsecurity']))
 			{ // was a bad answer
-				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect")."</font><br />"; 
+				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect.")."</font><br />"; 
 			}
 
 		      echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."<br /><p>
@@ -1737,20 +1737,21 @@ function buildsurveysession()
 		}
 		else
 		{
-          echo " <center><br />";
-	      if (isset($secerror)) echo "<font color='#FF0000'>".$secerror."</font><br />"; 
-	      echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-	      echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."<br />&nbsp;
-	        <form method='get' action='".$_SERVER['PHP_SELF']."'>
-	        <table align='center'>
-		        <tr>
-			        <td align='right' valign='middle'>
-			        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-			        <input type='hidden' name='tokenSEC' value='1' id='sid' />"
-			        .$clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>
+	      if (isset($secerror)) echo "<span class='error'>".$secerror."</span><br />"; 
+	      echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
+	      echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
+            <script type='text/javascript'>var focus_element='#token';</script>
+	        <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+
+                <ul>
+                <li>
+                    <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />
+                </li>
+                <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+                <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
 
-			// In case we this is a direct Reload previous answers URL, then add hiddent fields
+			// If this is a direct Reload previous answers URL, then add hidden fields
 			if (isset($_GET['loadall']) && isset($_GET['scid']) 
 				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
 			{
@@ -1761,18 +1762,17 @@ function buildsurveysession()
 					<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
 
-			echo "
-			        </td>
-		        </tr>";
-                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
-                { echo "<tr>
-			                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
-			                </td>
-		                </tr>";}
-		        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
-	        </table>
-	        </form>
-	        <br />&nbsp;</center>";
+            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+                { 
+                    echo "<li>
+			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+		                  </li>";
+                }
+                echo "<li>
+                        <input class='submit' type='submit' value='".$clang->gT("Continue")."' /> 
+                      </li>
+            </ul>          
+	        </form></div>";
 		}
 
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
@@ -1798,13 +1798,11 @@ function buildsurveysession()
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-			echo "\t<center><br />\n"
-			."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-			."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+			echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
+			."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br />\n"
 			."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
-			."(<a href='mailto:{$thissurvey['adminemail']}'>"
-			."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-			."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+			." (<a href='mailto:{$thissurvey['adminemail']}'>"
+			."{$thissurvey['adminemail']}</a>)</p></div>\n";
 
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			doFooter();
@@ -1837,12 +1835,11 @@ function buildsurveysession()
 				echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 				echo "\t<center><br />\n"
 				."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
-				."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
+				."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/>\n"
 				."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
-				."(<a href='mailto:{$thissurvey['adminemail']}'>"
-				."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-				."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-
+				." (<a href='mailto:{$thissurvey['adminemail']}'>"
+				."{$thissurvey['adminemail']}</a>)<br /><br />\n";
+                
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();
 				exit;
@@ -1855,9 +1852,7 @@ function buildsurveysession()
 			sendcacheheaders();
 			doHeader();
 			// No or bad answer to required security question
-
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	        //echo makedropdownlist();
 			echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 			// If token wasn't provided and public registration
 			// is enabled then show registration form
@@ -1867,76 +1862,71 @@ function buildsurveysession()
 			}
 			else
 			{ // only show CAPTCHA
-	          echo " <center><br />";
 
-			if (isset($_GET['loadsecurity']))
-			{ // was a bad answer
-				echo "<font color='#FF0000'>".$clang->gT("The answer to the security question is incorrect")."</font><br />"; 
-			}
-
-		      echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
-			// IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
-			// AND HIDE ENTRY FIELD
-			if (!isset($gettoken))
-			{
-			      echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."<br />&nbsp;
-			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
-			        <table align='center'>
-				        <tr>
-					        <td align='right' valign='middle'>
+		        echo '<div id="wrapper"><p id="tokenmessage">';
+                if (isset($_GET['loadsecurity']))
+                { // was a bad answer
+                    echo "<span class='error'>".$clang->gT("The answer to the security question is incorrect.")."</span><br />"; 
+                }                
+                
+                echo $clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />";
+			    // IF TOKEN HAS BEEN GIVEN THEN AUTOFILL IT
+			    // AND HIDE ENTRY FIELD
+			    if (!isset($gettoken))
+			    {
+			        echo $clang->gT("If you have been issued with a token, please enter it in the box below and click continue.")."</p> 
+			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+                        <ul>
+                        <li>
 					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='tokenSEC' value='1' id='sid' />
-						<input type='hidden' name='lang' value='".$templang."' id='lang' />";
-			if (isset($_GET['loadall']) && isset($_GET['scid']) 
-				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
-			{
-				echo "
-						<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-						<input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-						<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-						<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
-			}
+					        <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
+						    <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+			        if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				        && isset($_GET['loadname']) && isset($_GET['loadpass']))
+			        {
+				          echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+						        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+						        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+						        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+			        }
 
-			echo	        $clang->gT("Token")."</td><td align='left' valign='middle'><input class='text' type='text' name='token'>";
-			}
-			else
-			{
-			      echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."<br />&nbsp;
-			        <form method='get' action='".$_SERVER['PHP_SELF']."'>
-			        <table align='center'>
-				        <tr>
-					        <td align='right' valign='middle'>
-					        <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
-					        <input type='hidden' name='tokenSEC' value='1' id='sid' />
-						<input type='hidden' name='lang' value='".$templang."' id='lang' />";
-			if (isset($_GET['loadall']) && isset($_GET['scid']) 
-				&& isset($_GET['loadname']) && isset($_GET['loadpass']))
-			{
-				echo "
-                        <input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
-                        <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
-                        <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
-                        <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
-			}
+			        echo '<label for="token">'.$clang->gT("Token")."</label><input class='text' type='text' id=token name='token'></li>";
+			    }
+			    else
+			    {
+			        echo $clang->gT("Please confirm the token by answering the security question below and click continue.")."</p>
+			            <form id='tokenform' method='get' action='".$_SERVER['PHP_SELF']."'>
+                        <ul>
+			            <li>
+					            <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
+					            <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
+						        <input type='hidden' name='lang' value='".$templang."' id='lang' />";
+			        if (isset($_GET['loadall']) && isset($_GET['scid']) 
+				        && isset($_GET['loadname']) && isset($_GET['loadpass']))
+			        {
+				        echo "<input type='hidden' name='loadall' value='".htmlspecialchars($_GET['loadall'])."' id='loadall' />
+                              <input type='hidden' name='scid' value='".returnglobal('scid')."' id='scid' />
+                              <input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
+                              <input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
+			        }
+                    echo '<label for="token">'.$clang->gT("Token:")."</label><span id=token>$gettoken</span>"
+                         ."<input type='hidden' name='token' value='$gettoken'></li>";
+			    }
 
-			echo	        $clang->gT("Token").":</td><td align='left' valign='middle'>&nbsp;$gettoken<input type='hidden' name='token' value='$gettoken'>";
-			}
 
-			echo "
-				        </td>
-			        </tr>";
-	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
-	                { echo "<tr>
-				                <td align='center' valign='middle'>".$clang->gT("Security Question")."</td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php'></td><td valign='center'><input type='text' size='5' maxlength='3' name='loadsecurity' value=''></td></tr></table>
-				                </td>
-			                </tr>";}
-			        echo "<tr><td colspan='2' align='center'><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></td></tr>
-		        </table>
-		        </form>
-		        <br />&nbsp;</center>";
+	            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
+	            { 
+                    echo "<li>
+                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                          </li>";
+                }
+			    echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
+		                </ul>
+		                </form>
+		                </id>";
 			}
-
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+           
+			echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 			doFooter();
 			exit;
 		}
@@ -2020,9 +2010,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
 		."\t".sprintf($clang->gT("For further information contact %s"), $thissurvey['adminname'])
 		." (<a href='mailto:{$thissurvey['adminemail']}'>"
-		."{$thissurvey['adminemail']}</a>)<br /><br />\n"
-		."\t<a href='javascript:%20self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-
+		."{$thissurvey['adminemail']}</a>)<br /><br />\n";
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 		doFooter();
 		exit;
