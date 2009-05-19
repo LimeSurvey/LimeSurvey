@@ -21,7 +21,7 @@ sendcacheheaders();
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($column)) {$column=returnglobal('column');}
 if (!isset($order)) {$order=returnglobal('order');}
-if (!isset($sql)) {$sql=returnglobal('sql');}
+
 
 if (!$surveyid)
 {
@@ -39,10 +39,6 @@ if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' 
 else
 	{ $query = "SELECT id, ".db_quote_id($column)." FROM {$dbprefix}survey_$surveyid WHERE (".db_quote_id($column)." != '')"; }
 
-if ($sql && $sql != "NULL")
-{
-	$query .= " AND ".auto_unescape(urldecode($sql));
-}
 
 if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
 
@@ -63,7 +59,7 @@ while ($row=$result->FetchRow())
 	$listcolumnoutput.=  "<tr><td valign='top' align='center' >"
 	. "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=".$row['id']."' target='home'>"
 	. $row['id']."</a></td>"
-	. "<td valign='top'>".$row[$column]."</td></tr>\n";
+	. "<td valign='top'>".htmlspecialchars($row[$column])."</td></tr>\n";
 }
 $listcolumnoutput.= "</table>\n";
 
