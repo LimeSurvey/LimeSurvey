@@ -4170,7 +4170,7 @@ if (isset($summary) && $summary)
                     if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                     $Test = new pChart(690+$legendsize[0],$gheight); 
                     $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                    $Test->setFontProperties($rootdir.$rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
+                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
                     $Test->setGraphArea(50,30,500,$gheight-60);  
                     $Test->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
                     $Test->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
