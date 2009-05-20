@@ -419,6 +419,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
 				. "\t\t<td align='left'>\n"
 				. getgrouplist4($eqrow['gid'])
+                . "\t<input type='hidden' name='gid' value='{$eqrow['gid']}' />"                
 				. "\t\t</td>\n"
 				. "\t</tr>\n";
 			$editquestion .= "\t<tr id='OtherSelection'>\n"
@@ -508,7 +509,6 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
     {
         $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Update Question")."' />\n"
         . "\t<input type='hidden' name='action' value='updatequestion' />\n"
-        . "\t<input type='hidden' name='gid' value='$gid' />"
         . "\t<input type='hidden' name='qid' value='$qid' />";
     }
 	$editquestion .= "\t<input type='hidden' name='sid' value='$surveyid' />\n"

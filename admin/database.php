@@ -516,8 +516,6 @@ if(isset($surveyid))
                         $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=fix_FCKeditor_text($_POST['help_'.$qlang]);
                        
-        		//$_POST  = array_map('db_quote', $_POST);
-
 						if (isset($qlang) && $qlang != "")
 						{ // ToDo: Sanitize the POST variables !
 							$uqquery = "UPDATE ".db_table_name('questions')
@@ -526,23 +524,23 @@ if(isset($surveyid))
 							. "gid='".db_quote($postgid)."', other='".db_quote($_POST['other'])."', "
 							. "mandatory='".db_quote($_POST['mandatory'])."'";
 	        				if ($oldgid!=$postgid)
-						{
-							if ( getGroupOrder(returnglobal('sid'),$oldgid) > getGroupOrder(returnglobal('sid'),returnglobal('gid')) )
-							{
-								// Moving question to a 'upper' group
-								// insert question at the end of the destination group
-								// this prevent breaking conditions if the target qid is in the dest group
-								$insertorder = getMaxquestionorder($postgid) + 1;
-								$uqquery .=', question_order='.$insertorder.' '; 
-							}
-							else
-							{
-								// Moving question to a 'lower' group
-								// insert question at the beginning of the destination group
-								shiftorderQuestions($postsid,$postgid,1); // makes 1 spare room for new question at top of dest group
-								$uqquery .=', question_order=0 ';
-							}
-						}
+						    {
+							    if ( getGroupOrder(returnglobal('sid'),$oldgid) > getGroupOrder(returnglobal('sid'),returnglobal('gid')) )
+							    {
+								    // Moving question to a 'upper' group
+								    // insert question at the end of the destination group
+								    // this prevent breaking conditions if the target qid is in the dest group
+								    $insertorder = getMaxquestionorder($postgid) + 1;
+								    $uqquery .=', question_order='.$insertorder.' '; 
+							    }
+							    else
+							    {
+								    // Moving question to a 'lower' group
+								    // insert question at the beginning of the destination group
+								    shiftorderQuestions($postsid,$postgid,1); // makes 1 spare room for new question at top of dest group
+								    $uqquery .=', question_order=0 ';
+							    }
+						    }
 							if (isset($_POST['lid']) && trim($_POST['lid'])!="")
 							{
 								$uqquery.=", lid='".db_quote($_POST['lid'])."' ";
