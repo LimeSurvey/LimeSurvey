@@ -450,7 +450,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
     			."<font color='green' size='1'><i><strong>"
-    			.$clang->gT("Warning")."</strong>: ".$clang->gT("Inserting New labels must be done on the first language folder.")."</i></font>\n"
+    			.$clang->gT("Note: Inserting new labels must be done on the first language tab.")."</i></font>\n"
     			."\t</td>\n"
     			."</tr>\n";
 			}
