@@ -750,7 +750,7 @@ if ($action == "mailsendusergroup")
     	$to = '';
     	while ($egurow = $eguresult->FetchRow())
     	{
-    		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. ', ' ;
+    		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. '; ' ;
     		$addressee .= $egurow['users_name'].', ';
     	}
     	$to = substr("$to", 0, -2);
