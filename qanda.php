@@ -731,7 +731,13 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
-		$qtitle_custom = preg_replace('/(?:<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>|(?U)<br(?: ?\/)?>)[\r\n\t ]*/isU','',$qtitle_custom , -1 , $matches);
+		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1 , $matches );
+		$c = $matches;
+	};
+	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
+	{ 
+		$matches = 0;
+		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 , $matches );
 		$c = $matches;
 	};
 	$qtitle = $qtitle_custom;
