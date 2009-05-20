@@ -36,7 +36,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
 	if (!isset($lid1)) {$lid1=returnglobal('lid1');}
-	$labelsoutput= include2var('./scripts/addremove.js');
+    $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/addremove.js\"></script>\n";
 	
 	//DO DATABASE UPDATESTUFF 
 	if ($action == "updateset") {updateset($lid);}
@@ -57,14 +57,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	}
 	
 
-	$labelsoutput.= "<table width='100%' border='0' >\n"
-                    . "\t<tr>\n"
-                    . "\t\t<td>\n"
-                    . "\t\t\t<div class='menubar'>\n"
-                    . "\t\t\t<div class='menubar-title'>\n"
-                    . "\t\t\t\t<strong>"
-	.$clang->gT("Label Sets Administration")."</strong>\n"
-	."</div>\n"
+	$labelsoutput= "<table width='100%' border='0' >\n"
+    ."\t<tr>\n"
+    ."\t<td>\n"
+    ."\t\t<div class='menubar'>\n"
+    ."\t\t<div class='menubar-title'>\n"
+    ."\t\t<strong>".$clang->gT("Label Sets Administration")."</strong>\n"
+	."\t\t</div>\n"
     ."\t<div class='menubar-main'>\n"
     ."\t<div class='menubar-left'>\n"
 	."\t<a href='$scriptname' onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Return to Survey Administration")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .

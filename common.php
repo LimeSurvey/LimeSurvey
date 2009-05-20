@@ -4333,17 +4333,6 @@ function languageDropdownClean($surveyid,$selected)
 	return $html;
 }
 
-function include2var($file)
-//This function includes a file but doesn't output it - instead it writes it into the return variable
-// by Carsten Schmitz
-{
-   ob_start();
-   include $file;
-   $output = ob_get_contents();
-   @ob_end_clean();
-   return $output;
-} 
-
 function BuildCSVFromQuery($Query)
 {
 	global $dbprefix, $connect;

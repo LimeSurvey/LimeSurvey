@@ -1,5 +1,3 @@
-<script type='text/javascript'>
-<!--
 function DoAdd()
 {
 	if (document.getElementById("available_languages").selectedIndex>-1)
@@ -138,6 +136,3 @@ function checklangs(mylangs)
 	}
 	return true;
 }
-
-//-->
-</script>

@@ -2252,8 +2252,9 @@ if ($action == "editsurvey")
 		while ($esrow = $esresult->FetchRow())
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
-			$editsurvey = include2var('./scripts/addremove.js');
-			$editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
+            $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/addremove.js\"></script>\n";
+
+			$editsurvey = "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
 
 			// header
 			$editsurvey .= "<table width='100%' border='0'>\n<tr><td colspan='4' class='settingcaption'>"

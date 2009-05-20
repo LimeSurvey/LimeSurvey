@@ -545,11 +545,12 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values=do_ranking($ia);
 			if (count($values[1]) > 1 && !$displaycols=arraySearchByKey('hide_tip', $qidattributes, 'attribute', 1))
 			{
-				if ($minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
+                $question_text['help'] = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
+ 				if ($minansw=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
 					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</span>";
-					$question_text['help'] = sprintf($clang->gT("Rank at least %d items"), $minansw['value']);
+					$question_text['help'] .=' '.sprintf($clang->gT("Rank at least %d items"), $minansw['value']);
 				
 				}
 			}
@@ -564,7 +565,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
 					. $clang->gT('Check any that apply').'</span>';
-					$question_text['help'] = $clang->gT('Check any that apply');
+					$question_text['help'] = $clang->gT('Check any that apply');       
 				}
 				else
 				{
@@ -2275,14 +2276,7 @@ function do_ranking($ia)
 	$choicelist .= "\t\t\t\t\t\t</select>\n";
 	$choicelist .= $hiddens;
 
-//	$answer .= "\t\t\t<table border='0' cellspacing='5' width='500' class='rank'>\n"
 	$answer .= "\t\t\t<table border='0' cellspacing='0' class='rank'>\n"
-	. "\t\t\t\t<tr>\n"
-	. "\t\t\t\t\t<td colspan='2' class='rank'><font size='1'>\n"
-	. "\t\t\t\t\t\t".$clang->gT("Click on an item in the list on the left, starting with your")
-	. "\t\t\t\t\t\t".$clang->gT("highest ranking item, moving through to your lowest ranking item.")
-	. "\t\t\t\t\t</font></td>\n"
-	. "\t\t\t\t</tr>\n"
 	. "\t\t\t\t<tr>\n"
 	. "\t\t\t\t\t<td align='left' valign='top' class='rank label'>\n"
 	. "\t\t\t\t\t\t<strong>&nbsp;&nbsp;<label for='CHOICES_{$ia[0]}'>".$clang->gT("Your Choices").":</label></strong><br />\n"
