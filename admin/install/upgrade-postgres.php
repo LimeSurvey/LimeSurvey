@@ -113,7 +113,8 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         upgrade_token_tables134();
-        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();  
+               
     } 
      if ($oldversion < 135)
     {
@@ -133,10 +134,12 @@ global $modifyoutput;
   						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
 	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
   	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+       modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
+       modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
+               
 	}
 
-    
     return true;
 }
 
@@ -178,8 +181,8 @@ function upgrade_token_tables134()
     {
         while ( $sv = $surveyidresult->FetchRow() )
         {
-            modify_database("","ALTER TABLE ".$sv0." ADD validfrom datetime"); echo $modifyoutput; flush();
-            modify_database("","ALTER TABLE ".$sv0." ADD validuntil datetime"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD validfrom timestamp"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD validuntil timestamp"); echo $modifyoutput; flush();
         }
     }
 }

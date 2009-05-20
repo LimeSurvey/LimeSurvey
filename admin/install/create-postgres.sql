@@ -331,8 +331,8 @@ CREATE TABLE prefix_user_in_groups (
 --
 
 CREATE TABLE prefix_users (
-    uid serial NOT NULL,
-    users_name character varying(64) DEFAULT ''::character varying NOT NULL,
+    uid serial PRIMARY KEY NOT NULL,
+    users_name character varying(64) DEFAULT ''::character varying UNIQUE NOT NULL,
     "password" bytea NOT NULL,
     full_name character varying(50) NOT NULL,
     parent_id integer NOT NULL,
@@ -346,9 +346,8 @@ CREATE TABLE prefix_users (
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
     htmleditormode character(7) DEFAULT 'default'::bpchar,
-	"one_time_pw" bytea
+	"one_time_pw" bytea	
 );
-
 
 CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
