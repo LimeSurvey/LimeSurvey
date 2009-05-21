@@ -74,6 +74,13 @@ require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
 
+//Every 20th time clean up the temp directory of old files
+//for large volume installations the  probability might be set higher or lower
+if (rand(1,20)==1) 
+{
+    cleanTempDirectory();   
+}
+
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
@@ -6271,3 +6278,19 @@ function dateFormat($date, $format="DD.MM.YYYY")
 			
 }
 
+/**
+* This function cleans files from the temporary directory being older than 1 day
+* @todo Make the days configurable 
+*/
+function cleanTempDirectory()
+{
+    global $tempdir;
+    $dir=  $tempdir.'/';
+    $dp = opendir($dir) or die ('Could not open temporary directory');
+    while ($file = readdir($dp)) {
+        if ((filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt') {
+            unlink($dir.$file);
+        }
+    }
+    closedir($dp);    
+}

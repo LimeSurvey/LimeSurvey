@@ -102,6 +102,20 @@
       }
     }
 
+
+   /* This function is retrieving the cached picture if applicable */
+   function GetFileFromCache($ID,$Data)
+    {
+     $Hash     = $this->GetHash($ID,$Data);
+     if ( $this->IsInCache("","",$Hash ) )
+      {
+       $FileName = $this->CacheFolder.$Hash;
+
+       return $FileName;
+       exit();
+      }
+    }
+
    /* This function is building the graph unique hash key */
    function GetHash($ID,$Data)
     {
@@ -113,7 +127,7 @@
         $tKey = $tKey.$Serie.$Value;
        $mKey = $mKey.md5($tKey);
       }
-     return(md5($mKey));
+     return(md5($mKey).'.png');
     }
   }
 ?>

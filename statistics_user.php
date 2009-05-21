@@ -154,10 +154,6 @@ if ( function_exists( $embedded_headerfunc ) )
 echo $embedded_headerfunc();
 
 
-//Delete any stats files from the temp directory that aren't from today.
-deleteNotPattern($tempdir, "STATS_*.png","STATS_".date("d")."*.png");
-
-
 /*
  * only show questions where question attribute "public_statistics" is set to "1"
  */
@@ -664,13 +660,6 @@ if (isset($summary) && $summary)
 	$prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
 	$prb->moveStep($process_status);
 
-	//check if pchart should be used
-	if (isset($publicgraphs) && $publicgraphs == 1)  
-	{
-		//Delete any old temp image files
-		deletePattern($tempdir, "STATS_".date("d")."X".$currentuser."X".$surveyid."X"."*.png");
-	}
-
 	//let's run through the survey // Fixed bug 3053 with array_unique
 	$runthrough=array_unique($summary);
 	
@@ -1051,6 +1040,7 @@ if (isset($summary) && $summary)
 				
 				$total=0;				
 				
+					
 				//3RD QUARTILE (Q3)
 				$q3=(3/4)*($medcount+1);
 				$q3b=(int)((3/4)*($medcount+1));
@@ -2089,6 +2079,8 @@ if (isset($summary) && $summary)
             		//calculate arithmetic mean
             		if(isset($sumitems) && $sumitems > 0)
             		{
+            			
+            			
             			//calculate and round results
             			//there are always 5 items
             			for($x = 0; $x < 5; $x++)
@@ -2240,32 +2232,43 @@ if (isset($summary) && $summary)
                     
                     //$DataSet->SetAbsciseLabelSerie();  
 
-                    $Test = new pChart(1,1); 
                     
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
-                    $legendsize=$Test->getLegendBoxSize($DataSet->GetDataDescription());
+
+                   
+                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    {
+                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                    }  
+                    else
+                    { 
+                    $graph = new pChart(1,1); 
+                    
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
+                    $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
                      
                     if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
-                    $Test = new pChart(690+$legendsize[0],$gheight); 
-                    $Test->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
-                    $Test->setGraphArea(50,30,500,$gheight-60);  
-                    $Test->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
-                    $Test->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
-                    $Test->drawGraphArea(255,255,255,TRUE);  
-                    $Test->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
-                    $Test->drawGrid(4,TRUE,230,230,230,50);     
+                    $graph = new pChart(690+$legendsize[0],$gheight); 
+                    $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
+                    $graph->setGraphArea(50,30,500,$gheight-60);  
+                    $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
+                    $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
+                    $graph->drawGraphArea(255,255,255,TRUE);  
+                    $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
+                    $graph->drawGrid(4,TRUE,230,230,230,50);     
                                       // Draw the 0 line
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",6);
-                    $Test->drawTreshold(0,143,55,72,TRUE,TRUE);
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",6);
+                    $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                     // Draw the bar graph
-                    $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
-                    //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
+                    $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                        //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
                     // Finish the graph
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
-                    $Test->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
-                    // $Test->drawTitle(50,22,"Example ".$legendsize[0].'x'.$legendsize[1],50,50,50,585);
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
+                    $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
+                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                    }
 				}	//end if (bar chart)
 				
 				//Pie Chart
@@ -2291,16 +2294,26 @@ if (isset($summary) && $summary)
                     $DataSet->AddAllSeries();
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
+                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    {
+                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                    }  
+                    else
+                    { 
 					
-                    $Test = new pChart(690,$gheight);  
-					$Test->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
-                    $Test->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
+                    $graph = new pChart(690,$gheight);  
+                        $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+					$graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
+                    $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					
                     // Draw the pie chart  
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
-                    $Test->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
-                    $Test->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
-                    $Test->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
+                    $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
+                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
+                    $graph->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
+                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
+                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData()));                         
+                    }
 					
 				}	//end else -> pie charts
 
@@ -2310,14 +2323,8 @@ if (isset($summary) && $summary)
 				//increase counter, start value -> 1
 				$ci++;
 				
-				//filename of chart image
-				$gfilename="STATS_".date("d")."X".$currentuser."X".$surveyid."X".$ci.date("His").".png";
-				
-				//create graph
-				$Test->Render($tempdir."/".$gfilename);
-				
 				//add graph to output
-				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$gfilename."\" border='0'></td></tr>";
+				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1'></td></tr>";
 			}
 			
 			//close table/output
@@ -2360,61 +2367,6 @@ echo getFooter();
 
 //Delete all Session Data
 $_SESSION['finished'] = true;
-
-
-
-//delete old images
-function deletePattern($dir, $pattern = "")
-{
-	$deleted = false;
-	$pattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($pattern));
-	if (substr($dir,-1) != "/") $dir.= "/";
-	if (is_dir($dir))
-	{
-		$d = opendir($dir);
-		while ($file = readdir($d))
-		{
-			if (is_file($dir.$file) && ereg("^".$pattern."$", $file))
-			{
-				if (unlink($dir.$file))
-				{
-					$deleted[] = $file;
-				}
-			}
-		}
-		closedir($d);
-		return $deleted;
-	}
-	else return 0;
-}
-
-
-//delete old images (which aren't from today?)
-function deleteNotPattern($dir, $matchpattern, $pattern = "")
-{
-	$deleted = false;
-	$pattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($pattern));
-	$matchpattern = str_replace(array("\*","\?"), array(".*","."), preg_quote($matchpattern));
-	if (substr($dir,-1) != "/") $dir.= "/";
-	if (is_dir($dir))
-	{
-		$d = opendir($dir);
-		while ($file = readdir($d))
-		{
-			if (is_file($dir.$file) && ereg("^".$matchpattern."$", $file) && !ereg("^".$pattern."$", $file))
-			{
-				if (unlink($dir.$file))
-				{
-					$deleted[] = $file;
-				}
-			}
-		}
-		closedir($d);
-		return $deleted;
-	}
-	else return 0;
-}
-
 
 
 //simple function to square a value

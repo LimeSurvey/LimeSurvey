@@ -833,8 +833,6 @@ $templatesoutput.= "\t\t\t<table class='menubar'>\n"
 ."\t<tr>\n"
 ."\t\t<td width='90%' align='center' >\n";
 
-
-unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
 $time=date("ymdHis");
 $fnew=fopen("$tempdir/template_temp_$time.html", "w+");
 fwrite ($fnew, getHeader());
@@ -858,64 +856,7 @@ function doreplacement($file) { //Produce sample page from template file
 	return $output;
 }
 
-function unlink_wc($dir, $pattern){
-	if ($dh = opendir($dir)) {
 
-		//List and put into an array all files
-		while (false !== ($file = readdir($dh))){
-			if ($file != "." && $file != "..") {
-				$files[] = $file;
-			}
-		}
-		closedir($dh);
-
-
-		//Split file name and extenssion
-		if(strpos($pattern,".")) {
-			$baseexp=substr($pattern,0,strpos($pattern,"."));
-			$typeexp=substr($pattern,strpos($pattern,".")+1,strlen($pattern));
-		}else{
-			$baseexp=$pattern;
-			$typeexp="";
-		}
-
-		//Escape all regexp Characters
-		$baseexp=preg_quote($baseexp);
-		$typeexp=preg_quote($typeexp);
-
-		// Allow ? and *
-		$baseexp=str_replace(array("\*","\?"), array(".*","."), $baseexp);
-		$typeexp=str_replace(array("\*","\?"), array(".*","."), $typeexp);
-
-		//Search for pattern match
-		$i=0;
-		foreach($files as $file) {
-			$filename=basename($file);
-			if(strpos($filename,".")) {
-				$base=substr($filename,0,strpos($filename,"."));
-				$type=substr($filename,strpos($filename,".")+1,strlen($filename));
-			}else{
-				$base=$filename;
-				$type="";
-			}
-
-			if(preg_match("/^".$baseexp."$/i",$base) && preg_match("/^".$typeexp."$/i",$type))  {
-				$matches[$i]=$file;
-				$i++;
-			}
-		}
-		if (isset($matches)) {
-			while(list($idx,$val) = each($matches)){
-				if (substr($dir,-1) == "/"){
-					unlink($dir.$val);
-				}else{
-					unlink($dir."/".$val);
-				}
-			}
-		}
-
-	}
-}
 
 function getListOfFiles($wh){
 	//Returns an array containing all files in a directory
