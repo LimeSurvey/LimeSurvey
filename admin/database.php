@@ -453,7 +453,7 @@ if(isset($surveyid))
         
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || $_POST['type']== "W" || 
             $_POST['type']== "Z" || $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" || 
-            $_POST['type']== "K" || $_POST['type']== "X" || $_POST['type']== "")
+            $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';
         }
