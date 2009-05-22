@@ -421,9 +421,29 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$explanation .= $clang->gT("Answer was")." ";
 				}
-				elseif($distinctrow['method']='!=')
+				elseif($distinctrow['method']=='!=')
 				{
 					$explanation .= $clang->gT("Answer was NOT")." ";
+				}
+				elseif($distinctrow['method']=='<')
+				{
+					$explanation .= $clang->gT("Answer was less than")." ";
+				}
+				elseif($distinctrow['method']=='<=')
+				{
+					$explanation .= $clang->gT("Answer was less than or equal to")." ";
+				}
+				elseif($distinctrow['method']=='>=')
+				{
+					$explanation .= $clang->gT("Answer was greater than or equal to")." ";
+				}
+				elseif($distinctrow['method']=='>')
+				{
+					$explanation .= $clang->gT("Answer was greater than")." ";
+				}
+				elseif($distinctrow['method']=='RX')
+				{
+					$explanation .= $clang->gT("Answer matched (regexp)")." ";
 				}
 				else
 				{
@@ -432,7 +452,7 @@ while ($degrow = $degresult->FetchRow())
 
 				$conquery="SELECT cid, cqid, ".db_table_name("questions").".title,\n"
 				."".db_table_name("questions").".question, value, ".db_table_name("questions").".type,\n"
-				."".db_table_name("questions").".lid, cfieldname\n"
+				."".db_table_name("questions").".lid, ".db_table_name("questions").".lid1, cfieldname\n"
 				."FROM ".db_table_name("conditions").", ".db_table_name("questions")."\n"
 				."WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid\n"
 				."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
@@ -464,6 +484,8 @@ while ($degrow = $degresult->FetchRow())
 							break;
 						case "A":
 						case "B":
+						case ":":
+						case ";":
 							$conditions[]=$conrow['value'];
 							break;
 						case "C":
@@ -481,11 +503,50 @@ while ($degrow = $degresult->FetchRow())
 								case "D": $conditions[]=$clang->gT("Decrease"); break;
 								case "S": $conditions[]=$clang->gT("Same"); break;
 							}
-						case "F":
 						case "1":
+							$labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+							if ($labelIndex == 0)
+							{ // TIBO
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									$postans=$frow['title'];
+									$conditions[]=$frow['title'];
+								} // while
+							}
+							elseif ($labelIndex == 1)
+							{
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid1']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									$postans=$frow['title'];
+									$conditions[]=$frow['title'];
+								} // while
+							}
+							break;
+						case "L":
+						case "!":
+						case "O":
+						case "M":
+						case "P":
+						case "R":
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+							$ansresult=db_execute_assoc($ansquery);
+							while ($ansrow=$ansresult->FetchRow())
+							{
+								$conditions[]=$ansrow['answer'];
+							}
+							$conditions = array_unique($conditions);
+							break;
+						case "F":
 						case "H":
 						case "W":
-						case "L":
 						default:
 							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 							$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
@@ -499,6 +560,8 @@ while ($degrow = $degresult->FetchRow())
 							} // while
 							break;
 					} // switch
+					
+					// Now let's complete the answer text with the answer_section
 					$answer_section="";
 					switch($conrow['type'])
 					{
@@ -508,6 +571,7 @@ while ($degrow = $degresult->FetchRow())
 						case "E":
 						case "F":
 						case "H":
+						case "K":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
 							//$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
@@ -518,25 +582,56 @@ while ($degrow = $degresult->FetchRow())
 							}
 							break;
 
-						// TIBO: TODO dual scale: section=line(answer)+(#0 and #1)
-						case "1":
-							break;
-						// TIBO: TODO multi flexi section=line(answer)+column(label) 
-						case ":":
-						case ";":
-							break;
+						case "1": // dual: (Label 1), (Label 2)
+							$labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+							//$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
+							$ansresult=db_execute_assoc($ansquery);
 
-						default:
-							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+							if ($labelIndex == 0)
+							{ 
+								while ($ansrow=$ansresult->FetchRow())
+								{
+									$answer_section=" (".$ansrow['answer']." ".$clang->gT("Label")."1)";
+								}
+							}
+							elseif ($labelIndex == 1)
+							{
+								while ($ansrow=$ansresult->FetchRow())
+								{
+									$answer_section=" (".$ansrow['answer']." ".$clang->gT("Label")."2)";
+								}
+							}
+							break;
+						case ":":
+						case ";": //multi flexi: ( answer [label] )
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
-								$conditions[]=$ansrow['answer'];
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									//$conditions[]=$frow['title'];
+									$answer_section=" (".$ansrow['answer']."[".$frow['title']."])";
+								} // while
 							}
-							$conditions = array_unique($conditions);
+							break;
+						case "R": // (Rank 1), (Rank 2)... TIBO
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$rankid=$thiscquestion[0]['aid'];
+							$answer_section=" (".$clang->gT("RANK")." $rankid)";
+							break;
+						default: // nothing to add
 							break;
 					}
 				}
+
 				if (count($conditions) > 1)
 				{
 					$explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
@@ -546,10 +641,9 @@ while ($degrow = $degresult->FetchRow())
 					$explanation .= "'".$conditions[0]."'";
 				}
 				unset($conditions);
-				// TIBO: don't use $distinctrow['title'], but the question number instead
-				//$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section ";
+				// Following line commented out because answer_section  was lost, but is required for some question types
 				//$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
-				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$distinctrow['title']."]' (".strip_tags($distinctrow['question']).")" ;
+				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$distinctrow['title']."]' (".strip_tags($distinctrow['question'])."$answer_section)" ;
 				//$distinctrow
 				$x++;
 			}
