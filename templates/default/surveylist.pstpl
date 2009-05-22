@@ -29,7 +29,7 @@
 </table>
 <style type="text/css">
 body {
-    background-image: url({TEMPLATEURL}linearer_gradient_LimeSurvey2.gif);
+    background-image: url({TEMPLATEURL}gradient2.gif);
 }
 </style>
 <!--[if lt IE 7]>

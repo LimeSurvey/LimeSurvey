@@ -4142,8 +4142,7 @@ if (isset($summary) && $summary)
                         $counter++;
                         if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
                     }
-//                    $DataSet->AddPoint($justcode,"LabelX");
-//                    $DataSet->SetAbsciseLabelSerie("LabelX");
+
                     if ($maxyvalue<10) {++$maxyvalue;}
                     $counter=0;
                     foreach ($lbl as $label)
@@ -4152,11 +4151,6 @@ if (isset($summary) && $summary)
                         $counter++;
                     }
                     
-                    //$DataSet->SetAbsciseLabelSerie();  
-                    
-                    
-
-                   
                     if ($MyCache->IsInCache("pic",$DataSet->GetData()))
                     {
                         $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 

@@ -601,3 +601,30 @@ padding: 2px 5px;
 {
     font-size:10px;
 }
+
+table.templatecontrol {
+    width: 100%;
+    background-color: #EEF6FF;
+    border-color: #8195BA;
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+}
+
+table.templatecontrol select
+{
+    min-width:150px;
+}
+
+.subheader {
+    font-size:10px;
+    font-weight:bold;
+    background-color: #EEF6FF;
+    text-align: left;
+}
+
+.flashmessage
+{
+    font-size:10px;
+    font-weight:bold;
+}
