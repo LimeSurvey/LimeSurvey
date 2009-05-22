@@ -265,7 +265,8 @@ if (!$tokenexists) //If no tokens table exists
 
 
 		$tabname = "{$dbprefix}tokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-        $taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+        $taboptarray = array('mysql' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                             'mysqli' => 'TYPE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 		$dict = NewDataDictionary($connect);
 		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
 		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
@@ -2161,8 +2162,15 @@ if ($subaction == "upload" &&
                     if (!in_array($fieldname,$allowedfieldnames))
                     {
                         $ignoredcolumns[]=$fieldname;
-			}
-                }  
+			        }           
+                }
+                if (!in_array('firstname',$firstline) || !in_array('lastname',$firstline) || !in_array('email',$firstline))
+                {
+                    $tokenoutput .= '<p>'.$clang->gT("Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'").'</p>';
+                    $recordcount=count($tokenlistarray);
+                    break;
+                }
+                  
             }
 			else
 			{

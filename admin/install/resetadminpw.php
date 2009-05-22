@@ -22,16 +22,17 @@ sendcacheheaders();
 
 switch ($databasetype) 
 {
-case 'mysql': modify_database("",'UPDATE `prefix_users` set password=\'$defaultpass\' where uid=1;'); 
-		 echo $modifyoutput; flush();
-		 break;
-case 'odbtp':
-case 'mssql_n':         
-case 'odbc_mssql':modify_database("",'UPDATE [prefix_users] set password=\'$defaultpass\' where uid=1;'); 
-		 echo $modifyoutput; flush();
-		 break;
-case 'postgres':modify_database("",'UPDATE prefix_users set \"password\"=\'$defaultpass\' where uid=1;'); 
-		 echo $modifyoutput; flush();
-		 break;
+    case 'mysqli':
+    case 'mysql' : modify_database("",'UPDATE `prefix_users` set password=\'$defaultpass\' where uid=1;'); 
+                echo $modifyoutput; flush();
+                break;
+    case 'odbtp':
+    case 'mssql_n':         
+    case 'odbc_mssql':modify_database("",'UPDATE [prefix_users] set password=\'$defaultpass\' where uid=1;'); 
+		     echo $modifyoutput; flush();
+		     break;
+    case 'postgres':modify_database("",'UPDATE prefix_users set \"password\"=\'$defaultpass\' where uid=1;'); 
+		     echo $modifyoutput; flush();
+		     break;
 }
 ?>

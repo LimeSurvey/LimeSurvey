@@ -755,7 +755,7 @@ function loadanswers()
 			$query .= "AND ".db_table_name('saved_control').".scid={$scid}\n";
 		}
 		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."'
-				  AND ".db_table_name('saved_control').".access_code ". (($databasetype == 'mysql')? "=": "like" ) ." '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+				  AND ".db_table_name('saved_control').".access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
 	}
 	elseif (isset($_SESSION['srid']))
 	{

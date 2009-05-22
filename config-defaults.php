@@ -25,7 +25,13 @@
 
 // === Basic Setup
 
-$databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, odbc_mssql or postgres
+$databasetype       =   'mysql';       // ADOdb database driver - valid values are mysql, mysqli, odbc_mssql, mssql_n, odbtp or postgres
+                                       // mysql: Recommended driver for mysql
+                                       // mysqli: Slightly faster driver for mysql - not on all server systems available 
+                                       // odbc_mssql: MSSQL driver for easy run with MS SQL Server
+                                       // mssql_n: Experimental driver for  MS SQL Server which handles UTF-8 charsets
+                                       // odbtp: Best choice for MSSQL-Server to handle UTF-8 correctly - we recommend to activate $databasepersistent for decent speed
+                                       // postgres: Standard postgres driver
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql use the mssql servername, not localhost or IP
 $databaseport       =   'default';     // The port of your Database - if you use a standard port leave on default
 $databasename       =   'limesurvey';  // The name of the database that we will create

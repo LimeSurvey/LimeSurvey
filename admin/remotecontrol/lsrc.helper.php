@@ -2284,7 +2284,7 @@ class LsrcHelper {
 						$createsurvey .= " F";
 						break;
 						case "S":  //SHORT TEXT
-						if ($databasetype=='mysql')	{$createsurvey .= " X";}
+						if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
 						   else  {$createsurvey .= " C(255)";}
 						break;
 						case "L":  //LIST (RADIO)
@@ -2389,7 +2389,7 @@ class LsrcHelper {
 					while ($abrow = $abresult->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}`";
-		                if ($databasetype=='mysql')    
+		                if ($databasetype=='mysql' || $databasetype=='mysqli')    
 		                {
 		                    $createsurvey .= " X";
 		                }
@@ -2468,7 +2468,8 @@ class LsrcHelper {
 			$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 			$tabname = "{$dbprefix}survey_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 		
-			$taboptarray = array('mysql' => 'ENGINE'.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+            $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                                 'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 			$dict = NewDataDictionary($connect);
 			$sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
 			$execresult=$dict->ExecuteSQLArray($sqlarray,1);

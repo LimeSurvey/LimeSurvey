@@ -197,7 +197,7 @@ $dbexistsbutempty=($database_exists && checkifemptydb());
 
 
 
-if ($databasetype=='mysql') {
+if ($databasetype=='mysql' || $databasetype=='mysqli') {
     if ($debug>1) { @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'"); } //for development - use mysql in the strictest mode  //Checked
     $infoarray=$connect->ServerInfo();
     if (version_compare ($infoarray['version'],'4.1','<'))
@@ -499,6 +499,7 @@ function db_quote_id($id)
 
     switch ($databasetype)
     {
+        case "mysqli" : 
         case "mysql" : 
             return "`".$id."`";
             break;
@@ -567,7 +568,8 @@ function db_select_tables_like($table)
 {
 	global $databasetype;
 	switch ($databasetype) {
-		case 'mysql'	  : 
+        case 'mysqli': 
+		case 'mysql' : 
 			return "SHOW TABLES LIKE '$table'";
         case 'odbtp' : 
         case 'mssql_n' : 
