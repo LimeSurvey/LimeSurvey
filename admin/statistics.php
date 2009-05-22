@@ -4288,23 +4288,25 @@ function showSpeaker($hinttext)
 	{
 		$maxchars = 15;
 	}
-	
+	$htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
+    $jshinttext=javascript_escape($hinttext,true,true);
+    
 	if(strlen($hinttext) > ($maxchars))
 	{
 		$shortstring = FlattenText($hinttext);
 		
-		$shortstring = mb_substr($hinttext, 0, $maxchars);
+		$shortstring = htmlspecialchars(mb_substr($hinttext, 0, $maxchars));
 		
 		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' alt=\"".$hinttext."\" title=\"".$hinttext."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />"
+		$reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
            ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$hinttext' title='$hinttext' "
-           ." onclick=\"alert('".$clang->gT("Question","js").": $hinttext')\" />";
+           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+           ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
 	}
 	else
 	{
-		$reshtml= "<span alt=\"".$hinttext."\" title=\"".$hinttext."\"> \"$hinttext\"</span>";		
+		$reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";		
 	}	
   return $reshtml; 
 }

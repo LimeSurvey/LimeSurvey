@@ -3828,8 +3828,6 @@ function FlattenText($texttoflatten)
 {
     $nicetext = strip_javascript($texttoflatten);
 	$nicetext = strip_tags($nicetext);
-	$nicetext = str_replace("\"", "`", $nicetext);
-	$nicetext = str_replace("'", "`", $nicetext);
 	$nicetext = str_replace("\r", "", $nicetext);
 	$nicetext = trim(str_replace("\n", "", $nicetext));
 	return  $nicetext;

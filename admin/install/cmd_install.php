@@ -49,7 +49,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 	}
 	else
 	{
-		if ($databasetype=='mysql') {$connect->Execute("ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");} //Set the collation also for manually created DBs
+		if ($databasetype=='mysql' || $databasetype=='mysqli') {$connect->Execute("ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");} //Set the collation also for manually created DBs
 		
 		print("\nDatabase $databasename on $databasetype EXISTS, not created \n");
 		
