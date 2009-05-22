@@ -3686,8 +3686,7 @@ if (isset($summary) && $summary)
 	                $justcode[]=$fname;
 	                
 	                //edit labels and put them into antoher array
-                   $lbl[] = wordwrap(FlattenText("$al[1] ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
-	                
+                   $lbl[] = wordwrap(FlattenText($clang->gT("Non completed")." ($TotalIncomplete)"), 20, "\n"); // NMO 2009-03-24
 	            }	//end else -> noncompleted NOT checked
 	            
             }	//end if -> no filtering of incomplete answers and no multiple option questions
