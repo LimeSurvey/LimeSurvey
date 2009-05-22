@@ -642,7 +642,8 @@ if (isset($flashmessage))
 {
   $templatesoutput.='<span class="flashmessage">'.$flashmessage.'</span>'; 
 }
-else {
+elseif (is_template_editable($templatename)==false)
+{
   $templatesoutput.='<span class="flashmessage">'.sprintf($clang->gT('Note: This is a standard template. If you want to edit it %s please copy it first%s.'),"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>').'</span>'; 
 }
@@ -673,19 +674,12 @@ $templatesoutput.= "</div>\n"
 
 //TEMPLATE DETAILS
 $templatesoutput.= "\t\t\t<div class='menubar'>\n"
-. "\t\t\t<div class='menubar-title'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
-. "\t\t\t\t</div>\n"
-. "\t\t\t<div class='menubar-main'>\n"
-. "\t\t\t<div class='menubar-left'>\n";
-if (is_writable($templaterootdir."/".$templatename) && (is_template_editable($templatename)) ) {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' " 
-            		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
-} else {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='' '" 
-            		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template cannot be modified", "js")."')\" />\n";
-}
-$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='40'/>\n"
+. "<div class='menubar-title'>\n"
+. "<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
+. "</div>\n"
+. "<div class='menubar-main'>\n"
+. "<div class='menubar-left'>\n";
+$templatesoutput.= "<img src='$imagefiles/blank.gif' alt='' width='104' height='40'/>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 if (!is_template_editable($templatename)) 
@@ -806,6 +800,10 @@ if (is_template_editable($templatename)==true)
 	    }
 	    $templatesoutput.= " />";
     }
+    else
+    {
+        $templatesoutput.='<span class="flashmessage">'.$clang->gT("You can't save changes because the template directory is not writable.").'</span>';
+    }
     $templatesoutput.= "<br />\n"
     ."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
     ."<table width='90' align='left' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr>"
@@ -833,6 +831,7 @@ if (is_template_editable($templatename)==true)
     if (!is_template_editable($templatename))  {
 	    $templatesoutput.= " disabled='disabled'";
     }
+    
     $templatesoutput.= " />\n"
     ."<input type='hidden' name='editfile' value='$editfile' />\n"
     ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
@@ -844,8 +843,7 @@ if (is_template_editable($templatename)==true)
     ."\t\t\t\t</table>\n"
     ."\t\t\t</td>\n"
     ."\t</tr>"
-    ."</table>"
-    ."</td></tr></table>";
+    ."</table>";
 }
 
 //SAMPLE ROW
@@ -1029,11 +1027,11 @@ function recursive_in_array($needle, $haystack) {
 function is_template_editable($templatename)   
 {
     global $standardtemplates, $standard_templates_readonly, $debug, $defaulttemplate;
-    if($debug>2) // Debug mode set to developer debug
+    if($debug>1) // Debug mode set to developer 
     {
         return true;
     }
-    elseif ((in_array($templatename,$standardtemplates) && $standard_templates_readonly==true) || $templatename==$defaulttemplate)
+    elseif ((in_array($templatename,$standardtemplates) && $standard_templates_readonly==true))
     {
         return false;
     }
