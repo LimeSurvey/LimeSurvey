@@ -74,9 +74,9 @@ require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
 
-//Every 20th time clean up the temp directory of old files
-//for large volume installations the  probability might be set higher or lower
-if (rand(1,20)==1) 
+//Every 50th time clean up the temp directory of old files (older than 1 day)
+//depending on the load the  probability might be set higher or lower
+if (rand(1,50)==1) 
 {
     cleanTempDirectory();   
 }
@@ -6288,7 +6288,7 @@ function cleanTempDirectory()
     $dir=  $tempdir.'/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
-        if ((filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt') {
+        if ((filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.') {
             unlink($dir.$file);
         }
     }
