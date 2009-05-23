@@ -632,4 +632,5 @@ table.templatecontrol select
 .templatecontrol textarea#changes {
    font-family: monospace;
    font-size:0.8em;
+   width:95%;
 }

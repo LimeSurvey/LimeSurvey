@@ -37,16 +37,14 @@ function focusFirst(Event)
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
  * 
- * This can be used to start other functions on pageload as well. Just copy the lines and replace the function name.
+ * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
  */
 
-/** UnComment if you want to use the focusFirst function
+/** Uncomment if you want to use the focusFirst function
 
-//var ie is set in startpage.pstpl to true (Internet Explorer) or false (other Browser than IE) with conditional comments. IE needs his own attachEvent.
-if(ie) 
-	{window.attachEvent("onload", focusFirst);}
-else // EventListener are supported from gecko and webkit Browsers (Firefox, Iceweasel, Safari, Chrome etc.)
-	{document.addEventListener("load", focusFirst, true);}
+$(document).ready(function(){
+   focusFirst();
+})
 	
 **/
 

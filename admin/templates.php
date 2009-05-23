@@ -107,8 +107,16 @@ if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('oth
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
+$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/edit_area/edit_area_full.js\"></script>\n";
 $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/templates.js\"></script>\n";
 
+// find out language for code editor 
+$availableeditorlanguages=array('bg','cs' ,'de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
+$extension = substr(strrchr($editfile, "."), 1);        
+if ($extension=='css' || $extension=='js') {$highlighter=$extension;} else {$highlighter='html';};
+if(in_array($_SESSION['adminlang'],$availableeditorlanguages)) {$codelanguage=$_SESSION['adminlang'];}
+    else  {$codelanguage='en';}     
+$js_adminheader_includes .= "<script type=\"text/javascript\"> var adminlanguage='$codelanguage'; var highlighter='$highlighter'; </script>\n";
 
 if (isset ($_POST['changes'])) {
 	$changedtext=$_POST['changes'];
@@ -118,6 +126,16 @@ if (isset ($_POST['changes'])) {
 	   $changedtext = stripslashes($changedtext);
 	}
 }
+
+if (isset ($_POST['changes_cp'])) {
+    $changedtext=$_POST['changes_cp'];
+    $changedtext=str_replace ('<?','',$changedtext);
+    if(get_magic_quotes_gpc())
+    {
+       $changedtext = stripslashes($changedtext);
+    }
+}
+
 
 
 $template_a=gettemplatelist();
@@ -569,7 +587,7 @@ if (is_array($files)) {
         }
     }	
     if ($match == 0) {
-		if (count($files) == 1) {
+		if (count($files) > 0) {
 			$editfile=$files[0]["name"];
 		} else {
 			$editfile="";
@@ -767,14 +785,36 @@ if (is_template_editable($templatename)==true)
     $templatesoutput.= "\t\t\t<table class='templatecontrol'>\n"
     . "\t\t\t<tr>\n"
     . "\t\t\t\t<th colspan='3'>\n"
-    . "\t\t\t\t\t<strong>".sprintf($clang->gT("Editing template '%s'"),$templatename)."</strong>\n"
+    . "\t\t\t\t\t<strong>".sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile)."</strong>\n"
     . "\t\t\t\t</th>\n"
     . "\t\t\t</tr>\n"
-    . "\t\t\t<tr><th class='subheader'>"
+    . "\t\t\t<tr><th class='subheader' width='150'>"
     .$clang->gT("Standard Files:")."</th>"
-    ."<th style='text-align:center' class='subheader'>".$clang->gT("Now editing:");
-    if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
-    $templatesoutput.= "</th><th class='subheader' colspan='2' align='right' >".$clang->gT("Other Files:")."</th></tr>\n";
+        ."<td align='center' valign='top' rowspan='3'>\n"
+        ."<form name='editTemplate' method='post' action='admin.php'>\n"
+        ."\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
+        ."\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+        ."\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
+        ."\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
+        ."<textarea name='changes' id='changes' rows='15' class='codepress html'>";
+    if ($editfile) {
+        $templatesoutput.= textarea_encode(filetext($editfile));
+    }
+    $templatesoutput.= "</textarea><br />\n";
+    if (is_writable("$templaterootdir/$templatename")) {
+        $templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
+        if (!is_template_editable($templatename)) {
+            $templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to a standard template.")."'";
+        }
+        $templatesoutput.= " />";
+    }
+    else
+    {
+        $templatesoutput.='<span class="flashmessage">'.$clang->gT("You can't save changes because the template directory is not writable.").'</span>';
+    }
+    $templatesoutput.= "<br />\n"
+    ."</form></td>";
+    $templatesoutput.= "<th class='subheader' colspan='2' align='right' width='200'>".$clang->gT("Other Files:")."</th></tr>\n";
         
     $templatesoutput.="<tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
         .makeoptions($files, "name", "name", $editfile)
@@ -785,30 +825,7 @@ if (is_template_editable($templatename)==true)
         . "</select>\n"
         
         ."</td>\n"
-        ."<td align='center' valign='top' rowspan='2'>\n"
-        ."<form name='editTemplate' method='post' action='admin.php'>\n"
-        ."\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-        ."\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-        ."\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-        ."\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-        ."<textarea name='changes' id='changes' cols='80' rows='15'>";
-    if ($editfile) {
-	    $templatesoutput.= textarea_encode(filetext($editfile));
-    }
-    $templatesoutput.= "</textarea><br />\n";
-    if (is_writable("$templaterootdir/$templatename")) {
-	    $templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
-	    if (!is_template_editable($templatename)) {
-		    $templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to a standard template.")."'";
-	    }
-	    $templatesoutput.= " />";
-    }
-    else
-    {
-        $templatesoutput.='<span class="flashmessage">'.$clang->gT("You can't save changes because the template directory is not writable.").'</span>';
-    }
-    $templatesoutput.= "<br />\n"
-    ."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
+        ."<td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
     ."<table width='90' align='left' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr>"
     . "<tr><td><select size='11' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
     .makeoptions($otherfiles, "name", "name", "")

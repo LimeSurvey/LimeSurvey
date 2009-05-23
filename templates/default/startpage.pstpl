@@ -1,4 +1,3 @@
-
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<title>{SURVEYNAME}</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
@@ -20,12 +19,6 @@ progress-graph .zero, progress-graph .graph, progress-graph .cent { display: non
 		</style>
 		
 		<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
-<!-- NOTE: the following JS must ALWAYS be in IE conditional tags otherwise it will break JS in non-IE browsers. -->
-<!--[if IE]>
-		<script type="text/javascript">
-			var ie = true;
-		</script>
-<![endif]-->
 		
 	</head>
 	<body class="default">

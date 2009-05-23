@@ -11,17 +11,11 @@
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 <![endif]-->
 
-<!-- The following CSS hides visual elements of the progress bar from screen readers. -->
-		<style type="text/css" media="aural tty">
-progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
-		</style>
+    <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
+    <style type="text/css" media="aural tty">
+        progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+    </style>
 
-<!-- NOTE: the following JS must ALWAYS be in IE conditional tags otherwise it will break JS in non-IE browsers. -->
-<!--[if IE]>
-		<script type="text/javascript">
-			var ie = true;
-		</script>
-<![endif]-->
 	</head>
 	<body>
 
