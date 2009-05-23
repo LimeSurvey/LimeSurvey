@@ -107,15 +107,17 @@ if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('oth
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
+$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/templates.js\"></script>\n";
+
 
 if (isset ($_POST['changes'])) {
-	    $changedtext=$_POST['changes'];
-	    if(get_magic_quotes_gpc())
-	    {
-	       $changedtext = str_replace("\'", stripslashes("'"), $changedtext);
-	       $changedtext = str_replace('\"', stripslashes('"'), $changedtext);
-	    }
+	$changedtext=$_POST['changes'];
+    $changedtext=str_replace ('<?','',$changedtext);
+	if(get_magic_quotes_gpc())
+	{
+	   $changedtext = stripslashes($changedtext);
 	}
+}
 
 
 $template_a=gettemplatelist();
@@ -324,6 +326,7 @@ $thissurvey['name']=$clang->gT("Template Sample");
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
 $thissurvey['welcome']="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
 $thissurvey['allowsave']="Y";
+$thissurvey['active']="Y";
 $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
 $thissurvey['surveyls_url']="http://www.limesurvey.org/";
@@ -684,8 +687,8 @@ $templatesoutput.= "<img src='$imagefiles/blank.gif' alt='' width='104' height='
 
 if (!is_template_editable($templatename)) 
 {
-    $templatesoutput.="<img name='EditName' src='$imagefiles/edit_disabled.png' alt='' title=''" 
-    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit a standard template.", "js")."')\" "
+    $templatesoutput.="<img name='RenameTemplate' src='$imagefiles/edit_disabled.png' alt='' title=''" 
+    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't rename a standard template.", "js")."')\" "
          ." />"
          ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='' title=''" 
          ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete a standard template.", "js")."')\" "
@@ -694,7 +697,7 @@ if (!is_template_editable($templatename))
 else 
     {	
         $templatesoutput.= "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
-    		 "<img name='EditName' src='$imagefiles/edit.png' alt='' title=''" .
+    		 "<img name='RenameTemplate' src='$imagefiles/edit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
              " /></a>";
         $templatesoutput.= "<a href='#' "
@@ -709,7 +712,7 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
     ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
     ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
     ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Import template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Import template", "js")."')\">" 
-    ."<img name='Export' src='$imagefiles/import.png' alt='' title='' /></a>\n"
+    ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='' title='' /></a>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
     ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
@@ -788,7 +791,7 @@ if (is_template_editable($templatename)==true)
         ."\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
         ."\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
         ."\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-        ."<textarea name='changes' id='changes' cols='110' rows='15'>";
+        ."<textarea name='changes' id='changes' cols='80' rows='15'>";
     if ($editfile) {
 	    $templatesoutput.= textarea_encode(filetext($editfile));
     }

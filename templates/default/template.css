@@ -654,11 +654,6 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     background-image: url(slider-handle.gif);  
 }
 
-.ui-slider-disabled .ui-slider-handle { 
-    opacity: 0.5; 
-    filter: alpha(opacity=50); 
-}
-
 .ui-slider-1 { 
     width: 200px; 
     height: 23px; 
@@ -834,13 +829,11 @@ padding-left:5px;
 }
 
 
-#tokenform
-{
+#tokenform {
   margin-top:1em;
 }
 
-#tokenform input
-{
+#tokenform input {
 }
 
 #tokenform label {  
@@ -850,39 +843,34 @@ margin-right: 0.5em;
 text-align: right;
 }
 
-#tokenform li
-{
+#tokenform li {
   padding-bottom:5px;
 }
 
-#tokenform img
-{
+#tokenform img {
   margin-bottom:-5px;
   margin-right: 5px;
 }
 
 
-p#tokenmessage
-{
+p#tokenmessage {
   margin:20px;
 }
 
 
-p#tokenmessage
-{
+p#tokenmessage {
   margin:20px;
   text-align:center;
 }
 
 
-div#wrapper{
+div#wrapper {
   width:600px;
   margin:0 auto;
 }
 
 
-#tokenform input.submit
-{
+#tokenform input.submit {
  margin-left:18em;
  margin-top:1em;
  margin-bottom:1em;

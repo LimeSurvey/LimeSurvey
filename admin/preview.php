@@ -34,15 +34,23 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 $_SESSION['s_lang'] = $language;
 $clang = new limesurvey_lang($language);
 
+$thissurvey=getSurveyInfo($surveyid);
+
 $qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='{$language}'";
 $qresult = db_execute_assoc($qquery);
 $qrows = $qresult->FetchRow();
-$ia = array(0 => $qid, 1 => "FIELDNAME", 2 => $qrows['title'], 3 => $qrows['question'], 4 => $qrows['type'], 5 => $qrows['gid'],
-6 => $qrows['mandatory'], 7 => $qrows['other']);
+$ia = array(0 => $qid, 
+            1 => "FIELDNAME", 
+            2 => $qrows['title'], 
+            3 => $qrows['question'], 
+            4 => $qrows['type'], 
+            5 => $qrows['gid'],
+            6 => $qrows['mandatory'], 
+            7 => $qrows['other']);
+            
 $answers = retrieveAnswers($ia);
 $thistpl="$publicdir/templates";
 doHeader();
-//echo "\t\t\t\t<div id='question'";
 $form_start = '
 		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		<script type="text/javascript">

@@ -628,3 +628,8 @@ table.templatecontrol select
     font-size:10px;
     font-weight:bold;
 }
+
+.templatecontrol textarea#changes {
+   font-family: monospace;
+   font-size:0.8em;
+}
