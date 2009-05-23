@@ -240,9 +240,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			while ($irow = $iresult->FetchRow())
 			{
 				if ($irow['type'] != "M" && $irow['type'] != "A" && $irow['type'] != "B" && $irow['type'] != "C" && 
-				    $irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
-					$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
-					$irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" && $irow['type'] != ";")
+						$irow['type'] != "E" && $irow['type'] != "F" && $irow['type'] != "H" && $irow['type'] != "P" && 
+						$irow['type'] != "O" && $irow['type'] != "R" && $irow['type'] != "Q" && $irow['type'] != "J" &&
+						$irow['type'] != "K" && $irow['type'] != ":" && $irow['type'] != "1" && $irow['type'] != ";")
 				{
 					$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 					if (isset($_POST[$fieldname]))
@@ -261,6 +261,17 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
 						}
 					}
+					// if "!" "L" "W" "Z", and Other ==> add other fieldname
+					if ($irow['type'] == "!" || $irow['type'] == "L" ||
+						$irow['type'] == "W" || $irow['type'] == "Z")
+					{
+						$fieldname2=$fieldname."other";
+						if (isset($_POST[$fieldname2]) && isset($_POST[$fieldname]) && $_POST[$fieldname] == '-oth-' && $_POST[$fieldname2]!= "")
+						{
+							$col_name .= db_quote_id($fieldname2).", \n";
+							$insertqr .= "'" . auto_escape($_POST[$fieldname2]) . "', \n";
+						}
+					}
 				}
 				elseif ($irow['type'] == "O")
 				{
@@ -272,10 +283,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				elseif ($irow['type'] == "1")
 				{
 					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
-					".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
-					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-					".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-				
+						".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
+						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+						".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+
 					$i2result = $connect->Execute($i2query);
 					$i2count = $i2result->RecordCount();
 					while ($i2answ = $i2result->FetchRow())
@@ -289,14 +300,14 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$col_name .= db_quote_id($fieldname).", \n";
 						$insertqr .= "'" . auto_escape($_POST["$fieldname"]) . "', \n";
 					}
-	
+
 				}
 				elseif ($irow['type'] == "R")
 				{
 					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")." WHERE
-					".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
-					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-					".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+						".db_table_name("answers").".qid=".db_table_name("questions").".qid AND ".db_table_name("questions").".qid={$irow['qid']} AND 
+						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+						".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 					$i2result = $connect->Execute($i2query);
 					$i2count = $i2result->RecordCount();
 					for ($i=1; $i<=$i2count; $i++)
@@ -306,44 +317,44 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						$insertqr .= "'" . auto_escape($_POST["d$fieldname"]) . "', \n";
 					}
 				}
-        		elseif ($irow['type'] == ":" || $irow['type'] == ";")
-        		{
-        			$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-        			WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
-        			".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
-        			".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid
-        			ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
-        			$i2result = db_execute_assoc($i2query);
-        			$ab2query = "SELECT ".db_table_name('labels').".*
-        			             FROM ".db_table_name('questions').", ".db_table_name('labels')."
-        			             WHERE sid=$surveyid 
-        						 AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
-        			             AND ".db_table_name('questions').".language='".$language."'
-        			             AND ".db_table_name('labels').".language='".$language."'
-        			             AND ".db_table_name('questions').".qid=".$irow['qid']."
-        			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
-        			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
-        			while($ab2row=$ab2result->FetchRow())
-        			{
-        			    $lset[]=$ab2row;
-        			}
-        			while ($i2row = $i2result->FetchRow())
-        			{
-        			    foreach($lset as $ls)
-        			    {
-        			        $fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}_{$ls['code']}";
+				elseif ($irow['type'] == ":" || $irow['type'] == ";")
+				{
+					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
+						WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND
+						".db_table_name("answers").".language='{$language}' AND ".db_table_name("questions").".language='{$language}' AND
+						".db_table_name("questions").".qid={$irow['qid']} AND ".db_table_name("questions").".sid=$surveyid
+						ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
+					$i2result = db_execute_assoc($i2query);
+					$ab2query = "SELECT ".db_table_name('labels').".*
+						FROM ".db_table_name('questions').", ".db_table_name('labels')."
+						WHERE sid=$surveyid 
+						AND ".db_table_name('labels').".lid=".db_table_name('questions').".lid
+						AND ".db_table_name('questions').".language='".$language."'
+						AND ".db_table_name('labels').".language='".$language."'
+						AND ".db_table_name('questions').".qid=".$irow['qid']."
+						ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
+					$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+					while($ab2row=$ab2result->FetchRow())
+					{
+						$lset[]=$ab2row;
+					}
+					while ($i2row = $i2result->FetchRow())
+					{
+						foreach($lset as $ls)
+						{
+							$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}{$i2row['code']}_{$ls['code']}";
 							$col_name .= db_quote_id($fieldname).", \n";
 							$insertqr .= "'" . auto_escape($_POST[$fieldname]) . "', \n";
-        			    }
-        			}
-        			unset($lset);
-        		}
+						}
+					}
+					unset($lset);
+				}
 				else
 				{
 					$i2query = "SELECT ".db_table_name("answers").".*, ".db_table_name("questions").".other FROM ".db_table_name("answers").", ".db_table_name("questions")."
-					WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
-					".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
-					".db_table_name("questions").".qid={$irow['qid']} 
+						WHERE ".db_table_name("answers").".qid=".db_table_name("questions").".qid AND 
+						".db_table_name("questions").".language = '{$language}' AND ".db_table_name("answers").".language = '{$language}' AND
+						".db_table_name("questions").".qid={$irow['qid']} 
 					AND ".db_table_name("questions").".sid=$surveyid ORDER BY ".db_table_name("answers").".sortorder, ".db_table_name("answers").".answer";
 					$i2result = db_execute_assoc($i2query);
 					while ($i2row = $i2result->FetchRow())
