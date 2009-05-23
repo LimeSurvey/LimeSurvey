@@ -2410,6 +2410,8 @@ function do_multiplechoice($ia)
 	// Check if the min_answers attribute is set
 	$minansw=0;
 	$minanswscript = "";
+
+
 	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
 	{
 		$minansw=$minanswattr['value'];
@@ -2666,8 +2668,36 @@ function do_multiplechoice($ia)
 			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
 			. "\t\t\t\t-->\n"
 			. "\t\t\t</script>\n";
-		$answer = $minanswscript . $answer;
+		//$answer = $minanswscript . $answer;
 	}
+
+	$checkotherscript = "";
+	if ($other == 'Y')
+	{
+		// Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
+		// this means that if it is cehcked We must force the end-user to enter text in the input
+		// box
+		$checkotherscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
+			. "\t\t\t\t\totherval=document.getElementById('answer".$myfname."').value;\n"
+			. "\t\t\t\t\tif (otherval != '' || othercboxval != true) {\n"	
+			. "\t\t\t\t\t\treturn oldonsubmitOther_{$ia[0]};\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've checked the \"other\" checkbox for question \"%s\". Please also fill in the accompanying text field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+
+	$answer = $minanswscript . $checkotherscript . $answer;
 	
 	if (count($excludeallothers)>0)
 	{
@@ -2941,8 +2971,36 @@ function do_multiplechoice_withcomments($ia)
 			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
 			. "\t\t\t\t-->\n"
 			. "\t\t\t</script>\n";
-		$answer = $minanswscript . $answer;
+		//$answer = $minanswscript . $answer;
 	}
+
+	$checkotherscript = "";
+	if ($other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+	{
+		// Multiple options with 'other' is a specific case as the checkbox isn't recorded into DB
+		// this means that if it is cehcked We must force the end-user to enter text in the input
+		// box
+		$checkotherscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercommentval=document.getElementById('answer".$myfname2."').value;\n"
+			. "\t\t\t\t\totherval=document.getElementById('answer".$myfname."').value;\n"
+			. "\t\t\t\t\tif (otherval != '' && othercommentval == '') {\n"	
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've filled the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\treturn oldonsubmitOther_{$ia[0]};\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+
+	$answer = $minanswscript . $checkotherscript . $answer;
 
 	return array($answer, $inputnames);
 }

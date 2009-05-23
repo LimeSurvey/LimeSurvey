@@ -3300,6 +3300,11 @@ function questionAttributes($returnByName=false)
 	"types"=>"MPR",
 	"help"=>$clang->gT('Ensure a minimum number of possible answers'),
     "caption"=>$clang->gT('Minimum answers'));
+
+	$qattributes["other_comment_mandatory"]=array(
+	"types"=>"P",
+	"help"=>$clang->gT('Make the \"other comment\" field mandatory when the \"other\" field has been answered'),
+    "caption"=>$clang->gT('Other comment mandatory'));
     
     $qattributes["numbers_only"]=array(
     "types"=>"Q;",
