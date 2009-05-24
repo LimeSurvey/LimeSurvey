@@ -12,7 +12,7 @@ body, html, table, form, textarea{
 }
 
 #editor{
-	border: solid #888 1px;
+	border: solid #D2E0F2 1px;
 	overflow: hidden;
 }
 
@@ -163,7 +163,7 @@ pre{
 /* area popup */
 .editarea_popup{
 	border: solid 1px #888888;
-	background-color: #ECE9D8; 
+	background-color: #EEF6FF; 
 	width: 250px; 
 	padding: 4px; 
 	position: absolute;
@@ -252,7 +252,7 @@ div#area_search_replace  #area_search_msg{
 #edit_area_help div.close_popup{
 	float: right;
 }
-
+                        
 /* area_toolbar */
 .area_toolbar{
 	/*font: 11px sans-serif;*/
@@ -295,7 +295,7 @@ table.statusbar{
 .area_toolbar td.infos{
 	text-align: center;
 	width: 130px;
-	border-right: solid 1px #888;
+	border-right: solid 1px #D2E0F2;
 	border-width: 0 1px 0 0;
 	padding: 0;
 }

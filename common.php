@@ -3134,7 +3134,6 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 				$default_language = $row['language'];
 			}
 	
-			//echo "Language: ".$language."<br>Default language: ".$default_language."<br>Available languages: ".$additional_languages."<br />";
 			if (!isset($language)
                  or ($language=='') 
                  or (isset($additional_languages) && strpos($additional_languages, $language) === false) 

@@ -897,12 +897,12 @@ function makelanguagechanger()
       $lang = GetBaseLanguageFromSurveyID($surveyid);
       
     $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-    $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
+    $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
     
     foreach ($slangs as $otherlang)
     {
         if($otherlang != $lang)
-        $htmlcode .= "\t<option value=\"$relativeurl/index.php?sid=". $surveyid ."&lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
+        $htmlcode .= "\t<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $otherlang ."$tokenparam\" >".getLanguageNameFromCode($otherlang,false)."</option>\n";
     }
     if($lang != GetBaseLanguageFromSurveyID($surveyid))
     {
@@ -1978,7 +1978,6 @@ UpdateSessionGroupList($_SESSION['s_lang']);
     ." ORDER BY ".db_table_name('groups').".group_order,".db_table_name('questions').".question_order";
 
  //var_dump($_SESSION);
-//	echo $query."<br>";
 	$result = db_execute_assoc($query);    //Checked 
 
 	$arows = $result->GetRows();

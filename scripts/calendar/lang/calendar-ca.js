@@ -5,7 +5,7 @@
 // Encoding: any
 // Distributed under the same terms as the calendar itself.
 
-// For translators: please use UTF-8 if possible.  We strongly believe that
+// For translators: please use UTF-8.  We strongly believe that
 // Unicode is the answer to a real internationalized world.  Also please
 // include your contact information in the header, as can be seen above.
 
@@ -42,6 +42,10 @@ Calendar._SDN = new Array
  "Div",
  "Dis",
  "Diu");
+
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array

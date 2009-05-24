@@ -7,7 +7,7 @@
 
 <table width="100%" cellpadding="2">
 	<tr>
-		<td valign="center" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.png" alt="Logo Image"/></td>
+		<td valign="center" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.png" alt="Logo Image" /></td>
                 <td valign="bottom" align="center" width="100%"><table width="100%">
                 <tr><td  align="center"><strong>{SURVEYNAME}</strong></td></tr>
                 <tr><td  align="center">{LANGUAGECHANGER}</td></tr>

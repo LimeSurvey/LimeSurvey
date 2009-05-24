@@ -5,7 +5,7 @@
 // Encoding: any
 // Distributed under the same terms as the calendar itself.
 
-// For translators: please use UTF-8 if possible.  We strongly believe that
+// For translators: please use UTF-8.  We strongly believe that
 // Unicode is the answer to a real internationalized world.  Also please
 // include your contact information in the header, as can be seen above.
 

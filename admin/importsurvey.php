@@ -26,7 +26,7 @@ while (!feof($handle))
 }
 fclose($handle);
 
-
+if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
 // Now we try to determine the dataformat of the survey file.
  
 if (isset($bigarray[1]) && isset($bigarray[4])&& (substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
@@ -1295,7 +1295,7 @@ if ($importingfrom == "http")
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
-	if ($importwarning != "") $importsurvey .= "<br><strong>".$clang->gT("Warnings").":</strong><br><ul style=\"text-align:left;\">" . $importwarning . "</ul><br>\n";
+	if ($importwarning != "") $importsurvey .= "<br /><strong>".$clang->gT("Warnings").":</strong><br /><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
 	$importsurvey .= "</td></tr></table><br /></table>\n";
 	unlink($the_full_file_path);
 	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
@@ -1324,4 +1324,9 @@ else
 
 }
 
-?>
+function removeBOM($str=""){
+        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $str=substr($str, 3);
+        }
+        return $str;
+} 

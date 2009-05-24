@@ -37,53 +37,53 @@ $standardtemplates=array('basic',
 
 //Standard Template Subfiles
 //Only these files may be edited or saved
-$files[]=array("name"=>"assessment.pstpl");
-$files[]=array("name"=>"clearall.pstpl");
-$files[]=array("name"=>"completed.pstpl");
-$files[]=array("name"=>"endgroup.pstpl");
-$files[]=array("name"=>"endpage.pstpl");
-$files[]=array("name"=>"groupdescription.pstpl");
-$files[]=array("name"=>"load.pstpl");
-$files[]=array("name"=>"navigator.pstpl");
-$files[]=array("name"=>"printanswers.pstpl");
-$files[]=array("name"=>"privacy.pstpl");
-$files[]=array("name"=>"question.pstpl");
-$files[]=array("name"=>"question_start.pstpl");
-$files[]=array("name"=>"register.pstpl");
-$files[]=array("name"=>"save.pstpl");
-$files[]=array("name"=>"surveylist.pstpl");
-$files[]=array("name"=>"startgroup.pstpl");
-$files[]=array("name"=>"startpage.pstpl");
-$files[]=array("name"=>"survey.pstpl");
-$files[]=array("name"=>"welcome.pstpl");
-$files[]=array("name"=>"print_survey.pstpl");
-$files[]=array("name"=>"print_group.pstpl");
-$files[]=array("name"=>"print_question.pstpl");
+$files[]=array('name'=>'assessment.pstpl');
+$files[]=array('name'=>'clearall.pstpl');
+$files[]=array('name'=>'completed.pstpl');
+$files[]=array('name'=>'endgroup.pstpl');
+$files[]=array('name'=>'endpage.pstpl');
+$files[]=array('name'=>'groupdescription.pstpl');
+$files[]=array('name'=>'load.pstpl');
+$files[]=array('name'=>'navigator.pstpl');
+$files[]=array('name'=>'printanswers.pstpl');
+$files[]=array('name'=>'privacy.pstpl');
+$files[]=array('name'=>'question.pstpl');
+$files[]=array('name'=>'question_start.pstpl');
+$files[]=array('name'=>'register.pstpl');
+$files[]=array('name'=>'save.pstpl');
+$files[]=array('name'=>'surveylist.pstpl');
+$files[]=array('name'=>'startgroup.pstpl');
+$files[]=array('name'=>'startpage.pstpl');
+$files[]=array('name'=>'survey.pstpl');
+$files[]=array('name'=>'welcome.pstpl');
+$files[]=array('name'=>'print_survey.pstpl');
+$files[]=array('name'=>'print_group.pstpl');
+$files[]=array('name'=>'print_question.pstpl');
 
 //Standard CSS Files
 //These files may be edited or saved
-$cssfiles[]=array("name"=>'template.css');
-$cssfiles[]=array("name"=>'ie_fix_6.css');
-$cssfiles[]=array("name"=>'ie_fix_7.css');
-$cssfiles[]=array("name"=>'ie_fix_8.css');
-$cssfiles[]=array("name"=>'print_template.css');
-$cssfiles[]=array("name"=>'print_ie_fix_6.css');
-$cssfiles[]=array("name"=>'print_ie_fix_all.css');
-$cssfiles[]=array("name"=>'template.js');
+$cssfiles[]=array('name'=>'template.css');
+$cssfiles[]=array('name'=>'ie_fix_6.css');
+$cssfiles[]=array('name'=>'ie_fix_7.css');
+$cssfiles[]=array('name'=>'ie_fix_8.css');
+$cssfiles[]=array('name'=>'print_template.css');
+$cssfiles[]=array('name'=>'print_ie_fix_6.css');
+$cssfiles[]=array('name'=>'print_ie_fix_all.css');
+$cssfiles[]=array('name'=>'template.js');
 
 //Standard Screens
 //Only these may be viewed
 
-$screens[]=array("name"=>$clang->gT("Survey List Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Completed Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Clear All Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Register Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Load Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Save Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Print answers page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Printable survey page", "unescaped"));
+$screens[]=array('name'=>$clang->gT('Survey List Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Welcome Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Question Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Completed Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Clear All Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Register Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Load Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Save Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Print answers page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Printable survey page', 'unescaped'));
 
 
 // Set this so common.php doesn't throw notices about undefined variables
@@ -107,7 +107,7 @@ if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('oth
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/edit_area/edit_area_full.js\"></script>\n";
+$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/edit_area/edit_area_loader.js\"></script>\n";
 $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/templates.js\"></script>\n";
 
 // find out language for code editor 
@@ -313,15 +313,15 @@ foreach ($cssfiles as $fl) {
 }
 
 //Page Display Instructions
-$SurveyList=array("startpage.pstpl", "surveylist.pstpl", "endpage.pstpl");
-$Welcome=array("startpage.pstpl", "welcome.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
-$Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl",  "question_start.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
-$CompletedTemplate=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
-$Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
-$Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
-$Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
-$Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
-$printtemplate=array("startpage.pstpl", "printanswers.pstpl", "endpage.pstpl");
+$SurveyList=array('startpage.pstpl', 'surveylist.pstpl', 'endpage.pstpl');
+$Welcome=array('startpage.pstpl', 'welcome.pstpl', 'privacy.pstpl', 'navigator.pstpl', 'endpage.pstpl');
+$Question=array('startpage.pstpl', 'survey.pstpl', 'startgroup.pstpl', 'groupdescription.pstpl',  'question_start.pstpl', 'question.pstpl', 'endgroup.pstpl', 'navigator.pstpl', 'endpage.pstpl');
+$CompletedTemplate=array('startpage.pstpl', 'assessment.pstpl', 'completed.pstpl', 'endpage.pstpl');
+$Clearall=array('startpage.pstpl', 'clearall.pstpl', 'endpage.pstpl');
+$Register=array('startpage.pstpl', 'survey.pstpl', 'register.pstpl', 'endpage.pstpl');
+$Save=array('startpage.pstpl', 'save.pstpl', 'endpage.pstpl');
+$Load=array('startpage.pstpl', 'load.pstpl', 'endpage.pstpl');
+$printtemplate=array('startpage.pstpl', 'printanswers.pstpl', 'endpage.pstpl');
 $printablesurveytemplate=array('print_survey.pstpl', 'print_group.pstpl', 'print_question.pstpl');
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
@@ -342,7 +342,7 @@ if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unse
 //FAKE DATA FOR TEMPLATES
 $thissurvey['name']=$clang->gT("Template Sample");
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
-$thissurvey['welcome']="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
+$thissurvey['welcome']=$clang->gT('Welcome to this sample survey').'<br />'.$clang->gT('You should have a great time doing this').'<br />';
 $thissurvey['allowsave']="Y";
 $thissurvey['active']="Y";
 $thissurvey['templatedir']=$templatename;
@@ -352,9 +352,9 @@ $thissurvey['surveyls_urldescription']=$clang->gT("Some URL description");
 $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname=$clang->gT("Group 1: The first lot of questions");
-$groupdescription="This group description is fairly vacuous, but quite important.";
-$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" next &gt;&gt; \" name=\"move\" />\n";
-if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; prev\" name=\"move\" />\n".$navigator;}
+$groupdescription=$clang->gT("This group description is fairly vacuous, but quite important.");
+$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" Next &gt;&gt; \" name=\"move\" />\n";
+if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; Previous\" name=\"move\" />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
@@ -431,11 +431,13 @@ switch($screenname) {
 	$question="How many roads must a man walk down?";
 	$questioncode="1a";
 	$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
-	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
+    $myoutput[]='<div id="question1" class="list-radio">';
+    $myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
-	$question="Please explain your details:";
+	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain your details:");
 	$questioncode="2";
-	$answer="<textarea class='textarea'>Some text in this answer</textarea>";
+	$answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
+    $myoutput[]='<div id="question2" class="text-long mandatory">';
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/endgroup.pstpl"));

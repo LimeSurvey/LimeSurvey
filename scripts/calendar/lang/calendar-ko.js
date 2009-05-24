@@ -46,6 +46,10 @@ Calendar._SDN = new Array
  "토",
  "일");
 
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
+
 // full month names
 Calendar._MN = new Array
 ("1월",
@@ -107,8 +111,16 @@ Calendar._TT["NEXT_YEAR"] = "다음 해 (길게 누르면 목록)";
 Calendar._TT["SEL_DATE"] = "날짜를 선택하세요";
 Calendar._TT["DRAG_TO_MOVE"] = "마우스 드래그로 이동 하세요";
 Calendar._TT["PART_TODAY"] = " (오늘)";
-Calendar._TT["MON_FIRST"] = "월요일을 한 주의 시작 요일로";
-Calendar._TT["SUN_FIRST"] = "일요일을 한 주의 시작 요일로";
+
+// the following is to inform that "%s" is to be the first day of week
+// %s will be replaced with the day name.
+Calendar._TT["DAY_FIRST"] = "Display %s first";
+
+// This may be locale-dependent.  It specifies the week-end days, as an array
+// of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
+// means Monday, etc.
+Calendar._TT["WEEKEND"] = "0,6";
+
 Calendar._TT["CLOSE"] = "닫기";
 Calendar._TT["TODAY"] = "오늘";
 Calendar._TT["TIME_PART"] = "(Shift-)클릭 또는 드래그 하세요";
@@ -118,3 +130,4 @@ Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%b/%e [%a]";
 
 Calendar._TT["WK"] = "주";
+Calendar._TT["TIME"] = "Time:";

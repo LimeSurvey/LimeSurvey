@@ -11,14 +11,14 @@
 
 // full day names
 Calendar._DN = new Array
-("SvÁtdiena",
+("Sv√ßtdiena",
  "Pirmdiena",
  "Otrdiena",
- "Trediena",
+ "Tre√∞diena",
  "Ceturdiena",
  "Piektdiena",
  "Sestdiena",
- "SvÁtdiena");
+ "Sv√ßtdiena");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -43,15 +43,19 @@ Calendar._SDN = new Array
  "Se",
  "Sv");
 
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
+
 // full month names
 Calendar._MN = new Array
-("Janv‚ris",
- "Febru‚ris",
+("Janv√¢ris",
+ "Febru√¢ris",
  "Marts",
- "AprÓlis",
+ "Apr√Ælis",
  "Maijs",
- "J˚nijs",
- "J˚lijs",
+ "J√ªnijs",
+ "J√ªlijs",
  "Augusts",
  "Septembris",
  "Oktobris",
@@ -65,8 +69,8 @@ Calendar._SMN = new Array
  "Mar",
  "Apr",
  "Mai",
- "J˚n",
- "J˚l",
+ "J√ªn",
+ "J√ªl",
  "Aug",
  "Sep",
  "Okt",
@@ -75,7 +79,7 @@ Calendar._SMN = new Array
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "Par kalend‚ru";
+Calendar._TT["INFO"] = "Par kalend√¢ru";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
@@ -83,37 +87,37 @@ Calendar._TT["ABOUT"] =
 "For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
 "Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
 "\n\n" +
-"Datuma izvÁle:\n" +
-"- Izmanto \xab, \xbb pogas, lai izvÁlÁtos gadu\n" +
-"- Izmanto " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + "pogas, lai izvÁlÁtos mÁnesi\n" +
-"- Turi nospiestu peles pogu uz jebkuru no augst‚k minÁtaj‚m pog‚m, lai pa‚trin‚tu izvÁli.";
+"Datuma izv√ßle:\n" +
+"- Izmanto \xab, \xbb pogas, lai izv√ßl√ßtos gadu\n" +
+"- Izmanto " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + "pogas, lai izv√ßl√ßtos m√ßnesi\n" +
+"- Turi nospiestu peles pogu uz jebkuru no augst√¢k min√ßtaj√¢m pog√¢m, lai pa√¢trin√¢tu izv√ßli.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Laika izvÁle:\n" +
-"- UzklikÌini uz jebkuru no laika daÔ‚m, lai palielin‚tu to\n" +
-"- vai Shift-klikÌis, lai samazin‚tu to\n" +
-"- vai noklikÌini un velc uz attiecÓgo virzienu lai mainÓtu ‚tr‚k.";
+"Laika izv√ßle:\n" +
+"- Uzklik√∞√≠ini uz jebkuru no laika da√Ø√¢m, lai palielin√¢tu to\n" +
+"- vai Shift-klik√∞√≠is, lai samazin√¢tu to\n" +
+"- vai noklik√∞√≠ini un velc uz attiec√Ægo virzienu lai main√Ætu √¢tr√¢k.";
 
-Calendar._TT["PREV_YEAR"] = "Iepr. gads (turi izvÁlnei)";
-Calendar._TT["PREV_MONTH"] = "Iepr. mÁnesis (turi izvÁlnei)";
-Calendar._TT["GO_TODAY"] = "–odien";
-Calendar._TT["NEXT_MONTH"] = "N‚koais mÁnesis (turi izvÁlnei)";
-Calendar._TT["NEXT_YEAR"] = "N‚koais gads (turi izvÁlnei)";
-Calendar._TT["SEL_DATE"] = "IzvÁlies datumu";
-Calendar._TT["DRAG_TO_MOVE"] = "Velc, lai p‚rvietotu";
-Calendar._TT["PART_TODAY"] = " (odien)";
+Calendar._TT["PREV_YEAR"] = "Iepr. gads (turi izv√ßlnei)";
+Calendar._TT["PREV_MONTH"] = "Iepr. m√ßnesis (turi izv√ßlnei)";
+Calendar._TT["GO_TODAY"] = "√êodien";
+Calendar._TT["NEXT_MONTH"] = "N√¢ko√∞ais m√ßnesis (turi izv√ßlnei)";
+Calendar._TT["NEXT_YEAR"] = "N√¢ko√∞ais gads (turi izv√ßlnei)";
+Calendar._TT["SEL_DATE"] = "Izv√ßlies datumu";
+Calendar._TT["DRAG_TO_MOVE"] = "Velc, lai p√¢rvietotu";
+Calendar._TT["PART_TODAY"] = " (√∞odien)";
 
 // the following is to inform that "%s" is to be the first day of week
 // %s will be replaced with the day name.
-Calendar._TT["DAY_FIRST"] = "AttÁlot %s k‚ pirmo";
+Calendar._TT["DAY_FIRST"] = "Att√ßlot %s k√¢ pirmo";
 
 // This may be locale-dependent.  It specifies the week-end days, as an array
 // of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "1,7";
 
-Calendar._TT["CLOSE"] = "AizvÁrt";
-Calendar._TT["TODAY"] = "–odien";
-Calendar._TT["TIME_PART"] = "(Shift-)KlikÌis vai p‚rvieto, lai mainÓtu";
+Calendar._TT["CLOSE"] = "Aizv√ßrt";
+Calendar._TT["TODAY"] = "√êodien";
+Calendar._TT["TIME_PART"] = "(Shift-)Klik√∞√≠is vai p√¢rvieto, lai main√Ætu";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%d-%m-%Y";

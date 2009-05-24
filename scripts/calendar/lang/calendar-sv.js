@@ -3,25 +3,25 @@
 // Calendar SV language (Swedish, svenska)
 // Author: Mihai Bazon, <mihai_bazon@yahoo.com>
 // Translation team: <sv@li.org>
-// Translator: Leonard Norrgård <leonard.norrgard@refactor.fi>
-// Last translator: Leonard Norrgård <leonard.norrgard@refactor.fi>
+// Translator: Leonard NorrgÃ¥rd <leonard.norrgard@refactor.fi>
+// Last translator: Leonard NorrgÃ¥rd <leonard.norrgard@refactor.fi>
 // Encoding: iso-latin-1
 // Distributed under the same terms as the calendar itself.
 
-// For translators: please use UTF-8 if possible.  We strongly believe that
+// For translators: please use UTF-8.  We strongly believe that
 // Unicode is the answer to a real internationalized world.  Also please
 // include your contact information in the header, as can be seen above.
 
 // full day names
 Calendar._DN = new Array
-("söndag",
- "måndag",
+("sÃ¶ndag",
+ "mÃ¥ndag",
  "tisdag",
  "onsdag",
  "torsdag",
  "fredag",
- "lördag",
- "söndag");
+ "lÃ¶rdag",
+ "sÃ¶ndag");
 
 // Please note that the following array of short day names (and the same goes
 // for short month names, _SMN) isn't absolutely necessary.  We give it here
@@ -36,6 +36,10 @@ Calendar._DN = new Array
 // this feature.
 Calendar._SDN_len = 2;
 Calendar._SMN_len = 3;
+
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
@@ -57,37 +61,46 @@ Calendar._TT = {};
 Calendar._TT["INFO"] = "Om kalendern";
 
 Calendar._TT["ABOUT"] =
-"DHTML Datum/tid-väljare\n" +
+"DHTML Datum/tid-vÃ¤ljare\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
-"För senaste version gå till: http://www.dynarch.com/projects/calendar/\n" +
-"Distribueras under GNU LGPL.  Se http://gnu.org/licenses/lgpl.html för detaljer." +
+"FÃ¶r senaste version gÃ¥ till: http://www.dynarch.com/projects/calendar/\n" +
+"Distribueras under GNU LGPL.  Se http://gnu.org/licenses/lgpl.html fÃ¶r detaljer." +
 "\n\n" +
 "Val av datum:\n" +
-"- Använd knapparna \xab, \xbb för att välja år\n" +
-"- Använd knapparna " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " för att välja månad\n" +
-"- Håll musknappen nedtryckt på någon av ovanstående knappar för snabbare val.";
+"- AnvÃ¤nd knapparna \xab, \xbb fÃ¶r att vÃ¤lja Ã¥r\n" +
+"- AnvÃ¤nd knapparna " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " fÃ¶r att vÃ¤lja mÃ¥nad\n" +
+"- HÃ¥ll musknappen nedtryckt pÃ¥ nÃ¥gon av ovanstÃ¥ende knappar fÃ¶r snabbare val.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "Val av tid:\n" +
-"- Klicka på en del av tiden för att öka den delen\n" +
-"- eller skift-klicka för att minska den\n" +
-"- eller klicka och drag för snabbare val.";
+"- Klicka pÃ¥ en del av tiden fÃ¶r att Ã¶ka den delen\n" +
+"- eller skift-klicka fÃ¶r att minska den\n" +
+"- eller klicka och drag fÃ¶r snabbare val.";
 
-Calendar._TT["PREV_YEAR"] = "Föregående år (håll för menu)";
-Calendar._TT["PREV_MONTH"] = "Föregående månad (håll för menu)";
-Calendar._TT["GO_TODAY"] = "Gå till dagens datum";
-Calendar._TT["NEXT_MONTH"] = "Följande månad (håll för menu)";
-Calendar._TT["NEXT_YEAR"] = "Följande år (håll för menu)";
-Calendar._TT["SEL_DATE"] = "Välj datum";
-Calendar._TT["DRAG_TO_MOVE"] = "Drag för att flytta";
+Calendar._TT["PREV_YEAR"] = "FÃ¶regÃ¥ende Ã¥r (hÃ¥ll fÃ¶r menu)";
+Calendar._TT["PREV_MONTH"] = "FÃ¶regÃ¥ende mÃ¥nad (hÃ¥ll fÃ¶r menu)";
+Calendar._TT["GO_TODAY"] = "GÃ¥ till dagens datum";
+Calendar._TT["NEXT_MONTH"] = "FÃ¶ljande mÃ¥nad (hÃ¥ll fÃ¶r menu)";
+Calendar._TT["NEXT_YEAR"] = "FÃ¶ljande Ã¥r (hÃ¥ll fÃ¶r menu)";
+Calendar._TT["SEL_DATE"] = "VÃ¤lj datum";
+Calendar._TT["DRAG_TO_MOVE"] = "Drag fÃ¶r att flytta";
 Calendar._TT["PART_TODAY"] = " (idag)";
-Calendar._TT["MON_FIRST"] = "Visa måndag först";
-Calendar._TT["SUN_FIRST"] = "Visa söndag först";
-Calendar._TT["CLOSE"] = "Stäng";
+
+// the following is to inform that "%s" is to be the first day of week
+// %s will be replaced with the day name.
+Calendar._TT["DAY_FIRST"] = "Display %s first";
+
+// This may be locale-dependent.  It specifies the week-end days, as an array
+// of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
+// means Monday, etc.
+Calendar._TT["WEEKEND"] = "0,6";
+
+Calendar._TT["CLOSE"] = "StÃ¤ng";
 Calendar._TT["TODAY"] = "Idag";
-Calendar._TT["TIME_PART"] = "(Skift-)klicka eller drag för att ändra tid";
+Calendar._TT["TIME_PART"] = "(Skift-)klicka eller drag fÃ¶r att Ã¤ndra tid";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";
 Calendar._TT["TT_DATE_FORMAT"] = "%A %d %b %Y";
 
 Calendar._TT["WK"] = "vecka";
+Calendar._TT["TIME"] = "Time:";

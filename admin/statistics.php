@@ -1886,7 +1886,7 @@ $viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
 ." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
 ."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
-$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br>";
+$viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br />";
 if ($grapherror!='')  
 {
     $viewalltext.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";

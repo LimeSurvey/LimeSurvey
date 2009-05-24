@@ -17,6 +17,18 @@ Calendar._DN = new Array
  "Subota",
  "Nedelja");
 
+// Please note that the following array of short day names (and the same goes
+// for short month names, _SMN) isn't absolutely necessary.  We give it here
+// for exemplification on how one can customize the short day names, but if
+// they are simply the first N letters of the full name you can simply say:
+//
+//   Calendar._SDN_len = N; // short day name length
+//   Calendar._SMN_len = N; // short month name length
+//
+// If N = 3 then this is not needed either since we assume a value of 3 if not
+// present, to be compatible with translation files that were written before
+// this feature.
+
 // short day names
 Calendar._SDN = new Array
 ("Ned",
@@ -27,6 +39,10 @@ Calendar._SDN = new Array
  "Pet",
  "Sub",
  "Ned");
+
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
 
 // full month names
 Calendar._MN = new Array
@@ -87,12 +103,13 @@ Calendar._TT["SEL_DATE"] = "Izaberi datum";
 Calendar._TT["DRAG_TO_MOVE"] = "Pritisni i vuci za promenu pozicije";
 Calendar._TT["PART_TODAY"] = " (danas)";
 
-// Choose first day of week.
+// the following is to inform that "%s" is to be the first day of week
+// %s will be replaced with the day name.
 Calendar._TT["DAY_FIRST"] = "%s kao prvi dan u nedelji"; 
-Calendar._TT["MON_FIRST"] = "Prikaži ponedeljak kao prvi dan nedelje";
-Calendar._TT["SUN_FIRST"] = "Prikaži nedelju kao prvi dan nedelje";
 
-// Weekend is usual: Sunday (0) and Saturday (6).
+// This may be locale-dependent.  It specifies the week-end days, as an array
+// of comma-separated numbers.  The numbers are from 0 to 6: 0 means Sunday, 1
+// means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
 Calendar._TT["CLOSE"] = "Zatvori";

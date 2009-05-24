@@ -12,6 +12,18 @@ Calendar._DN = new Array
 "E Shtune",
 "E Diele");
 
+// Please note that the following array of short day names (and the same goes
+// for short month names, _SMN) isn't absolutely necessary.  We give it here
+// for exemplification on how one can customize the short day names, but if
+// they are simply the first N letters of the full name you can simply say:
+//
+//   Calendar._SDN_len = N; // short day name length
+//   Calendar._SMN_len = N; // short month name length
+//
+// If N = 3 then this is not needed either since we assume a value of 3 if not
+// present, to be compatible with translation files that were written before
+// this feature.
+
 //ditet shkurt
 Calendar._SDN = new Array
 ("Die",
@@ -22,6 +34,10 @@ Calendar._SDN = new Array
 "Pre",
 "Sht",
 "Die");
+
+// First day of the week. "0" means display Sunday first, "1" means display
+// Monday first, etc.
+Calendar._FD = 0;
 
 // muajt
 Calendar._MN = new Array
@@ -89,8 +105,7 @@ Calendar._TT["WEEKEND"] = "0,6";
 
 Calendar._TT["CLOSE"] = "Mbyll";
 Calendar._TT["TODAY"] = "Sot";
-Calendar._TT["TIME_PART"] = "Kliko me (Shift-)ose terhiqe per te ndryshuar 
-vleren";
+Calendar._TT["TIME_PART"] = "Kliko me (Shift-)ose terhiqe per te ndryshuar vleren";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%Y-%m-%d";

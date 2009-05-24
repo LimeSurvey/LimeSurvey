@@ -1932,8 +1932,8 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$scenarioresult=db_execute_assoc($scenarioquery);
 				while ($scenariorow=$scenarioresult->FetchRow())
 				{
-					if ($s == 0 && $scenarioresult->RecordCount() > 1) { $explanation .= " <br>-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
-					if ($s > 0) { $explanation .= " <br>-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
+					if ($s == 0 && $scenarioresult->RecordCount() > 1) { $explanation .= " <br />-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
+					if ($s > 0) { $explanation .= " <br />-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
 
 					$x=0;
 					$distinctquery="SELECT DISTINCT cqid, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} ORDER BY cqid";
