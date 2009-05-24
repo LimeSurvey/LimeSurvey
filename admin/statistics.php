@@ -322,7 +322,7 @@ foreach ($filters as $flt)
 		//use current groupname and groupid as heading 
 		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
-		."\t\t\t<table align='center' width='70%' class='statisticstable'><tr>\n";
+		."\t\t\t<table class='statisticstable'><tr>\n";
 		
 		//counter which is used to adapt layout depending on counter #
 		$counter=0;
@@ -2193,23 +2193,20 @@ if (isset($_POST['display']) && $_POST['display'])
 	//put everything into this table
 	
 	//show some main data at the beginnung
-	$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
-	."cellpadding='2' cellspacing='0' >\n"
-	."\t<tr><td colspan='2' align='center'><strong>"
-	.$clang->gT("Results")."</strong></td></tr>\n"
-	."\t<tr><td colspan='2' align='center'>"
-	.""
-	."<strong>".$clang->gT("No of records in this query").": $results </strong><br />\n\t\t"
-	.$clang->gT("Total records in survey").": $total<br />\n";
+	$statisticsoutput .= "<br />\n<table class='statisticssummary' align='center' >\n"
+	."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
+	."\t<tr><th>".$clang->gT("No of records in this query:").'</th>'
+    ."<td>$results</td></tr>\n"
+    ."\t<tr><th>".$clang->gT("Total records in survey:").'</th>'
+    ."<td>$total</td></tr>\n";
 	
 	//only calculate percentage if $total is set
 	if ($total)
 	{
 		$percent=sprintf("%01.2f", ($results/$total)*100);
-		$statisticsoutput .= $clang->gT("Percentage of total")
-		.": $percent%<br />";
+        $statisticsoutput .= "\t<tr><th align='right'>".$clang->gT("Percentage of total:").'</th>'
+        ."<td>$percent%</td></tr>\n";
 	}
-	$statisticsoutput .= "\n\t\t</td></tr>\n";
 	
 	//put everything from $selects array into a string connected by AND
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}	
@@ -3349,17 +3346,17 @@ if (isset($summary) && $summary)
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 		{
 			//output
-			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
-			."\t<tr><td colspan='4' align='center'><strong>"
+			$statisticsoutput .= "<table class='statisticstable'>\n"
+			."\t<thead><tr><th colspan='4' align='center'><strong>"
 			
 			//headline
 			.sprintf($clang->gT("Field summary for %s"),$qtitle)."</strong>"
-			."</td></tr>\n"
-			."\t<tr><td colspan='4' align='center'><strong>"
+			."</th></tr>\n"
+			."\t<tr><th colspan='4' align='center'><strong>"
 			
 			//question title
-			.$qquestion."</strong></td></tr>\n"
-			."\t<tr>\n\t\t<td width='50%' align='center' >";
+			.$qquestion."</strong></th></tr>\n"
+			."\t<tr>\n\t\t<th width='50%' align='center' >";
 			
 			// this will count the answers considered completed
 			$TotalCompleted = 0;    
@@ -3493,14 +3490,14 @@ if (isset($summary) && $summary)
 							if($qtype == "5" || $qtype == "A")
 							{
 								//four columns
-								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-								."\t\t<td width='20%' align='center' >"
-								."<strong>".$clang->gT("Count")."</strong></td>\n"
-								."\t\t<td width='20%' align='center' >"
-								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-								."\t\t<td width='10%' align='center' >"
-								."<strong>".$clang->gT("Sum")."</strong></td>\n"
-								."\t</tr>\n";
+								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></th>\n"
+								."\t\t<th width='20%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></th>\n"
+								."\t\t<th width='20%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+								."\t\t<th width='10%' align='center' >"
+								."<strong>".$clang->gT("Sum")."</strong></th>\n"
+								."\t</tr></thead>\n";
 								
 								$showheadline = false;							
 							}
@@ -3508,11 +3505,11 @@ if (isset($summary) && $summary)
 							{
 								//three columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-								."\t\t<td width='25%' align='center' >"
-								."<strong>".$clang->gT("Count")."</strong></td>\n"
-								."\t\t<td width='25%' align='center' >"
-								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-								."\t</tr>\n";
+								."\t\t<th width='25%' align='center' >"
+								."<strong>".$clang->gT("Count")."</strong></th>\n"
+								."\t\t<th width='25%' align='center' >"
+								."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+								."\t</tr></thead>\n";
 								
 								$showheadline = false;
 							}
@@ -3578,12 +3575,12 @@ if (isset($summary) && $summary)
 						if(!isset($showheadline) || $showheadline != false)
 						{						
 							//three columns
-							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-							."\t\t<td width='25%' align='center' >"
-							."<strong>".$clang->gT("Count")."</strong></td>\n"
-							."\t\t<td width='25%' align='center' >"
-							."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-							."\t</tr>\n";
+							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$clang->gT("Count")."</strong></th>\n"
+							."\t\t<th width='25%' align='center' >"
+							."<strong>".$clang->gT("Percentage")."</strong></th>\n"
+							."\t</tr></thead>\n";
 						
 							$showheadline = false;
 						}
@@ -3951,7 +3948,7 @@ if (isset($summary) && $summary)
 	                		}
 	                		
 	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
-	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
+	                		$statisticsoutput .= "<tfoot><tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
@@ -3961,7 +3958,7 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
 	                		//there has to be a whitespace within the table cell to display correctly
-	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";  
+	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr></tfoot>";  
 	                		
 	                	}
 	                	

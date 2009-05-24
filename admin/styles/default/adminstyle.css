@@ -634,3 +634,22 @@ table.templatecontrol select
    font-size:0.8em;
    width:95%;
 }
+
+table.statisticstable, table.statisticssummary {
+    background-color:#EEF6FF;
+}
+
+.statisticstable td:first-child {
+    text-align:right;
+}
+
+.statisticstable thead th {
+    background:#D2E0F2;
+    text-align:center;
+    color:#1D2D45;
+}
+
+.statisticstable tfoot tr {
+    background:#D2E0F2;
+    text-align:center;
+}
