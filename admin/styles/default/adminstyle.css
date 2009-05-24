@@ -635,18 +635,34 @@ table.templatecontrol select
    width:95%;
 }
 
+
 table.statisticstable, table.statisticssummary {
     background-color:#EEF6FF;
+    border-collapse:collapse;
+    border-width: 0px;
+    border-style: none;
 }
 
 .statisticstable td:first-child {
     text-align:right;
 }
 
+.statisticssummary th, .statisticssummary td, .statisticstable td {
+    padding:3px 10px;
+    
+}
+
+.statisticstable tr {
+    border-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+}
+
 .statisticstable thead th {
     background:#D2E0F2;
     text-align:center;
     color:#1D2D45;
+    padding:4 10px;
 }
 
 .statisticstable tfoot tr {

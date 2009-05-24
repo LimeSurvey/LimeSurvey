@@ -2195,7 +2195,7 @@ if (isset($_POST['display']) && $_POST['display'])
 	//show some main data at the beginnung
 	$statisticsoutput .= "<br />\n<table class='statisticssummary' align='center' >\n"
 	."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
-	."\t<tr><th>".$clang->gT("No of records in this query:").'</th>'
+	."\t<tr><th>".$clang->gT("Number of records in this query:").'</th>'
     ."<td>$results</td></tr>\n"
     ."\t<tr><th>".$clang->gT("Total records in survey:").'</th>'
     ."<td>$total</td></tr>\n";
@@ -4068,10 +4068,10 @@ if (isset($summary) && $summary)
             		}            		
             		
             		//calculate standard deviation
-			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic mean")." | ".$clang->gT("Standard deviation")."</td>";	//German: "Fallzahl"
-			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
-			        //there has to be a whitespace within the table cell to display correctly
-			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";
+			        $statisticsoutput .= "<tr><td align='center'>".$clang->gT("Arithmetic mean")."</td>";	//German: "Fallzahl"
+			        $statisticsoutput .= "<td align='center' colspan='3'> $am</td>";
+                    $statisticsoutput .= "<tr><td align='center'>".$clang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
+                    $statisticsoutput .= "<td align='center' colspan='3'>$stddev</td></tr>";
             	}
             }
             
@@ -4164,7 +4164,7 @@ if (isset($summary) && $summary)
                         $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
                         $graph->setGraphArea(50,30,500,$gheight-60);  
-                        $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
+                        $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);  
                         $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
                         $graph->drawGraphArea(255,255,255,TRUE);  
                         $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
@@ -4215,16 +4215,17 @@ if (isset($summary) && $summary)
                     else
                     { 
 					
+                        $gheight=ceil($gheight);
                         $graph = new pChart(690,$gheight);  
                         $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-					    $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
+					    $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);  
                         $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					    
                         // Draw the pie chart  
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
                         $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
-                        $graph->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
+                        $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
                         $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
                         $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData()));                         
                     }
