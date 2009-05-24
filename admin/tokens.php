@@ -549,7 +549,7 @@ if ($subaction == "emailsettings")
 		. "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
 		. "\t\t".$clang->gT("Edit email settings")."</td></tr></table>\n"
-		. '<div class="tab-pane" id="tab-pane-1">';
+		. '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
 	$surveyinfo=getSurveyInfo($surveyid);
 	foreach ($grplangs as $grouplang)
 	{
@@ -1053,7 +1053,7 @@ if ($subaction == "email" &&
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselang);
-		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
+		$tokenoutput .= "<div class='tab-pane' id='tab-pane-send-$surveyid'>";
         foreach ($surveylangs as $language)
 	    {
 			//GET SURVEY DETAILS
@@ -1303,7 +1303,7 @@ if ($subaction == "remind" && //XXX
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselang);
 		
-		$tokenoutput .= "<div class='tab-pane' id='tab-pane-1'>";
+		$tokenoutput .= "<div class='tab-pane' id='tab-pane-send-$surveyid'>";
 		foreach ($surveylangs as $language)
 		{
 			//GET SURVEY DETAILS

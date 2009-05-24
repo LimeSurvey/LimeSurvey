@@ -432,7 +432,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	    $myFilter = new InputFilter('','',1,1,1);
 
 		$quotasoutput .= '
-			<div class="tab-pane" id="tab-pane-1">'."\n\n";
+			<div class="tab-pane" id="tab-pane-quota-'.$surveyid.'">'."\n\n";
     	foreach ($langs as $lang)
     	{
     	    //Get this one
@@ -875,8 +875,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		$thissurvey=getSurveyInfo($surveyid);
 
 		$quotasoutput .= '
-			<div class="tab-pane" id="tab-pane-1">'."\n\n";
-    	foreach ($langs as $lang)
+            <div class="tab-pane" id="tab-pane-quota-'.$surveyid.'">'."\n\n";        
+        foreach ($langs as $lang)
     	{
             $quotasoutput .= '
 				<div class="tab-page">

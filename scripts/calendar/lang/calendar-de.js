@@ -2,7 +2,7 @@
 
 // Calendar DE language
 // Author: Jack (tR), <jack@jtr.de>
-// Encoding: any
+// Encoding: utf-8
 // Distributed under the same terms as the calendar itself.
 
 // For translators: please use UTF-8 if possible.  We strongly believe that
@@ -51,7 +51,7 @@ Calendar._FD = 1;
 Calendar._MN = new Array
 ("Januar",
  "Februar",
- "M\u00e4rz",
+ "März",
  "April",
  "Mai",
  "Juni",
@@ -66,7 +66,7 @@ Calendar._MN = new Array
 Calendar._SMN = new Array
 ("Jan",
  "Feb",
- "M\u00e4r",
+ "Mär",
  "Apr",
  "May",
  "Jun",
@@ -79,30 +79,29 @@ Calendar._SMN = new Array
 
 // tooltips
 Calendar._TT = {};
-Calendar._TT["INFO"] = "\u00DCber dieses Kalendarmodul";
+Calendar._TT["INFO"] = "Über dieses Kalendarmodul";
 
 Calendar._TT["ABOUT"] =
 "DHTML Date/Time Selector\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this ;-)
-"For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
-"Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
+"Vertrieben unter der GNU LGPL Lizenz. Siehe http://gnu.org/licenses/lgpl.html ." +
 "\n\n" +
-"Datum ausw\u00e4hlen:\n" +
-"- Benutzen Sie die \xab, \xbb Buttons um das Jahr zu w\u00e4hlen\n" +
+"Datum auswählen:\n" +
+"- Benutzen Sie die \xab, \xbb Buttons um das Jahr zu wählen\n" +
 "- Benutzen Sie die " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " Buttons um den Monat zu w\u00e4hlen\n" +
 "- F\u00fcr eine Schnellauswahl halten Sie die Maustaste \u00fcber diesen Buttons fest.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
-"Zeit ausw\u00e4hlen:\n" +
-"- Klicken Sie auf die Teile der Uhrzeit, um diese zu erh\u00F6hen\n" +
+"Zeit auswählen:\n" +
+"- Klicken Sie auf die Teile der Uhrzeit, um diese zu erhöhen\n" +
 "- oder klicken Sie mit festgehaltener Shift-Taste um diese zu verringern\n" +
-"- oder klicken und festhalten f\u00fcr Schnellauswahl.";
+"- oder klicken und festhalten für Schnellauswahl.";
 
-Calendar._TT["PREV_YEAR"] = "Voriges Jahr (Festhalten f\u00fcr Schnellauswahl)";
-Calendar._TT["PREV_MONTH"] = "Voriger Monat (Festhalten f\u00fcr Schnellauswahl)";
+Calendar._TT["PREV_YEAR"] = "Voriges Jahr (Festhalten für Schnellauswahl)";
+Calendar._TT["PREV_MONTH"] = "Voriger Monat (Festhalten für Schnellauswahl)";
 Calendar._TT["GO_TODAY"] = "Heute ausw\u00e4hlen";
-Calendar._TT["NEXT_MONTH"] = "N\u00e4chst. Monat (Festhalten f\u00fcr Schnellauswahl)";
-Calendar._TT["NEXT_YEAR"] = "N\u00e4chst. Jahr (Festhalten f\u00fcr Schnellauswahl)";
-Calendar._TT["SEL_DATE"] = "Datum ausw\u00e4hlen";
+Calendar._TT["NEXT_MONTH"] = "Nächst. Monat (Festhalten für Schnellauswahl)";
+Calendar._TT["NEXT_YEAR"] = "Nächst. Jahr (Festhalten für Schnellauswahl)";
+Calendar._TT["SEL_DATE"] = "Datum auswählen";
 Calendar._TT["DRAG_TO_MOVE"] = "Zum Bewegen festhalten";
 Calendar._TT["PART_TODAY"] = " (Heute)";
 
@@ -115,9 +114,9 @@ Calendar._TT["DAY_FIRST"] = "Woche beginnt mit %s ";
 // means Monday, etc.
 Calendar._TT["WEEKEND"] = "0,6";
 
-Calendar._TT["CLOSE"] = "Schlie\u00dfen";
+Calendar._TT["CLOSE"] = "Schließen";
 Calendar._TT["TODAY"] = "Heute";
-Calendar._TT["TIME_PART"] = "(Shift-)Klick oder Festhalten und Ziehen um den Wert zu \u00e4ndern";
+Calendar._TT["TIME_PART"] = "(Shift-)Klick oder Festhalten und Ziehen um den Wert zu ändern";
 
 // date formats
 Calendar._TT["DEF_DATE_FORMAT"] = "%d.%m.%Y";

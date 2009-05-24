@@ -137,7 +137,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		$labelsoutput.= "\n\t</th></tr></table>\n";
 
 
-		$labelsoutput.= "<div class='tab-pane' id='tab-pane-1'>\n";
+		$labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$row['lid']}'>\n";
 
 		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
 
@@ -301,7 +301,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
 		."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
-        $labelsoutput.= "<div class='tab-pane' id='tab-pane-1'>";    
+        $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>";    
         $first=true;
         $sortorderids=''; $codeids='';
 		foreach ($lslanguages as $lslanguage)
@@ -403,7 +403,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		}
     	    if ($labelcount>0)  
             {                       
-                $labelsoutput.= "\t<tr><td colspan='5'><center><input type='submit' name='method' value='".$clang->gT("Save All")."'  id='saveallbtn_$lslanguage' />"
+                $labelsoutput.= "\t<tr><td colspan='5'><center><input type='submit' name='method' value='".$clang->gT("Save Changes")."'  id='saveallbtn_$lslanguage' />"
                 ."</center></td></tr>\n";
             }
 
@@ -751,7 +751,7 @@ function modlabelsetanswers($lid)
 		break;
 
 		// Save all labels with one button
-		case $clang->gT("Save All", "unescaped"):
+		case $clang->gT("Save Changes", "unescaped"):
 		//Determine autoids by evaluating the hidden field		
 		$sortorderids=explode(' ', trim($_POST['sortorderids']));
 		$codeids=explode(' ', trim($_POST['codeids']));
@@ -761,7 +761,7 @@ function modlabelsetanswers($lid)
 		foreach ($codeids as $codeid)
 		{
 			$_POST['code_'.$codeid] = db_quoteall($_POST['code_'.$codeid],true);
-			$_POST['oldcode_'.$codeid] = db_quoteall($_POST['oldcode_'.$codeid],true);
+			if (isset($_POST['oldcode_'.$codeid])) $_POST['oldcode_'.$codeid] = db_quoteall($_POST['oldcode_'.$codeid],true);
 			// Get the code values to check for duplicates
 			$codevalues[] = $_POST['code_'.$codeid];
 		}
@@ -806,7 +806,7 @@ function modlabelsetanswers($lid)
 					}
 				}
 
-				update_labelcodes_in_conditions($lid,$_POST['oldcode_'.$codeids[$count]],$_POST['code_'.$codeids[$count]]);
+				if (isset($_POST['oldcode_'.$codeids[$count]])) update_labelcodes_in_conditions($lid,$_POST['oldcode_'.$codeids[$count]],$_POST['code_'.$codeids[$count]]);
 
 				$count++;
 				if ($count>count($codeids)-1) {$count=0;}

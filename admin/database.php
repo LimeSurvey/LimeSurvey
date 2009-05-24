@@ -913,7 +913,7 @@ if(isset($surveyid))
 			}
 		//break; // Commented by lemeur for AutoSaveAll
 		// Save all answers with one button
-		case $clang->gT("Save All", "unescaped"):
+		case $clang->gT("Save Changes", "unescaped"):
 			//Determine autoids by evaluating the hidden field		
             $sortorderids=explode(' ', trim($_POST['sortorderids']));
             natsort($sortorderids); // // Added by lemeur for AutoSaveAll

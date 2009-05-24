@@ -289,7 +289,7 @@ function setupAllTabs() {
 		
 		// uninitiated tab pane
 		if ( tabPaneRe.test( cn ) && !el.tabPane )
-			new WebFXTabPane( el, false );
+			new WebFXTabPane( el, true );
 	
 		// unitiated tab page wit a valid tab pane parent
 		else if ( tabPageRe.test( cn ) && !el.tabPage &&

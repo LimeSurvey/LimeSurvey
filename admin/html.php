@@ -1531,7 +1531,7 @@ if (returnglobal('viewanswer'))
 	. "<input type='hidden' name='viewanswer' value='Y' />\n"
 	. "<input type='hidden' name='sortorder' value='' />\n"
 	. "<input type='hidden' name='action' value='modanswer' />\n";
-	$vasummary .= "<div class='tab-pane' id='tab-pane-1'>";
+	$vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
 	$first=true;
 	$sortorderids=''; 
 	$codeids='';
@@ -1685,7 +1685,7 @@ if (returnglobal('viewanswer'))
 		if ($anscount > 0)
 		{
 			$vasummary .= "<tr><td colspan='6'><center>"
-   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save All")."' />\n"
+   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -2262,7 +2262,7 @@ if ($action == "editsurvey")
 
 
 			// beginning TABs section
-			$editsurvey .= "<div class='tab-pane' id='tab-pane-1'>\n";
+			$editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
 			// General & Contact TAB
 			$editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
 
@@ -2835,7 +2835,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
 		. "".$clang->gT("Edit survey settings - Step 2 of 2")."</td></tr></table>\n";
 		$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
-		. '<div class="tab-pane" id="tab-pane-1">';
+		. '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
 		foreach ($grplangs as $grouplang)
 		{
             // this one is created to get the right default texts fo each language
@@ -3143,7 +3143,7 @@ if ($action == "newsurvey")
 		. "".$clang->gT("Create or Import Survey")."</td></tr></table>\n";
 
 		// begin Tabs section
-		$newsurvey .= "<div class='tab-pane' id='tab-pane-1'>\n";
+		$newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
 
 		// General and Contact TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";

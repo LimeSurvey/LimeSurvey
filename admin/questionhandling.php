@@ -29,7 +29,7 @@ if ($action == "copyquestion")
 	$editquestion .= "<table width='100%' border='0' class='form2columns'>\n\t<tr><th>"
 	. "\t\t".$clang->gT("Copy Question")."</th></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
-	. '<div class="tab-pane" id="tab-pane-1">';
+	. '<div class="tab-pane" id="tab-pane-copyquestion">';
 	foreach ($questlangs as $language)
 	{
     	$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid and language=".db_quoteall($language);
@@ -231,7 +231,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</td></tr></table>\n"
 	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post'>\n"
-	. '<div class="tab-pane" id="tab-pane-1">';
+	. '<div class="tab-pane" id="tab-pane-editquestion-'.$surveyid.'">';
 	
     if (!$adding)
     {    
