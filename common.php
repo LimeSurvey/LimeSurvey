@@ -3864,7 +3864,7 @@ function getreferringurl()
     }
     else
     {
-       $_SESSION['refurl'] = $clang->gT("Local Submission");
+       $_SESSION['refurl'] = '-';
     }
   }
   else

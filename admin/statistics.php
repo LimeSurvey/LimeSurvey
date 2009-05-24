@@ -1484,7 +1484,7 @@ foreach ($filters as $flt)
 			//pre-check
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 			
-			$statisticsoutput .= ">$row[1]</option>\n";
+			$statisticsoutput .= '>'.FlattenText($row[1])."</option>\n";
 		}
 		
 		$statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -2394,7 +2394,7 @@ if (isset($summary) && $summary)
 				$mfield=substr($rt, 1, strlen($rt))."$row[0]";
 				
 				//create an array containing answer code, answer and fieldname(??)
-				$alist[]=array("$row[0]", "$row[1]", $mfield);
+				$alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
 			}
 			
 			//check "other" field. is it set?
@@ -2446,7 +2446,7 @@ if (isset($summary) && $summary)
 			  	$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question answer<br />$nquery<br />".$connect->ErrorMsg());
     			while ($nrow=$nresult->FetchRow())
     			{
-    			    $qtitle .= " [".$nrow['answer']."]";
+    			    $qtitle .= " [".FlattenText($nrow['answer'])."]";
     			}
 			}
 
@@ -2455,7 +2455,7 @@ if (isset($summary) && $summary)
 				$nresult = db_execute_assoc($nquery) or safe_die("Couldn't get labelset for text question<br />$nquery<br />".$connect->ErrorMsg());
 				while ($nrow = $nresult->FetchRow())
 				{
-    			    $qtitle .= " [".$nrow['title']."]";
+    			    $qtitle .= " [".FlattenText($nrow['title'])."]";
 				}
 			}
 			
@@ -2511,7 +2511,7 @@ if (isset($summary) && $summary)
 		    while ($qrow=$qresult->FetchRow())
 	    	{
 	    		//store each answer here
-		    	$atext=$qrow[1];
+		    	$atext=FlattenText($qrow[1]);
 		    }
 		    
 		    //add this to the question title
@@ -2557,7 +2557,7 @@ if (isset($summary) && $summary)
 			{
 				//create an array containing answer code, answer and fieldname(??)
 				$mfield=substr($rt, 1, strpos($rt, "-")-1);
-				$alist[]=array("$row[0]", "$row[1]", $mfield);
+				$alist[]=array("$row[0]", FlattenText($row[1]), $mfield);
 			}
 		}	
 		
@@ -2632,7 +2632,7 @@ if (isset($summary) && $summary)
 				    //handle answer
 				    while ($qrow=$qresult->FetchRow())
 			    	{
-				    	$atext=$qrow[1];
+				    	$atext=FlattenText($qrow[1]);
 				    }
 				    //put single items in brackets at output
 				    $qtitle .= " [$atext]";
@@ -3008,7 +3008,7 @@ if (isset($summary) && $summary)
 						$alist[]=array("$i", "$i");
 					}
 					//add counter
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 				
 				//list IDs and answer codes in brackets
@@ -3029,7 +3029,7 @@ if (isset($summary) && $summary)
 					{
 						$alist[]=array("$i", "$i");
 					}
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 				
 				$qquestion .= "<br />\n[".$atext."]";
@@ -3050,7 +3050,7 @@ if (isset($summary) && $summary)
 					$alist[]=array("Y", $clang->gT("Yes"));
 					$alist[]=array("N", $clang->gT("No"));
 					$alist[]=array("U", $clang->gT("Uncertain"));
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 				//output
 				$qquestion .= "<br />\n[".$atext."]";
@@ -3069,7 +3069,7 @@ if (isset($summary) && $summary)
 					$alist[]=array("I", $clang->gT("Increase"));
 					$alist[]=array("S", $clang->gT("Same"));
 					$alist[]=array("D", $clang->gT("Decrease"));
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 				$qquestion .= "<br />\n[".$atext."]";
 				$qtitle .= "($qanswer)";
@@ -3092,7 +3092,7 @@ if (isset($summary) && $summary)
 						$alist[]=array($frow['code'], $frow['title']);
 						$ltext=$frow['title'];
 					}
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 
 				$qquestion .= "<br />\n[".$atext."] [".$ltext."]";
@@ -3144,7 +3144,7 @@ if (isset($summary) && $summary)
     						//$alist[]=array($frow['code'], $frow['title']);
     						$ltext=$frow['title'];
     					}
-    					$atext=$qrow[1];
+    					$atext=FlattenText($qrow[1]);
     				}
     				
     				for($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) 
@@ -3176,7 +3176,7 @@ if (isset($summary) && $summary)
 					}
 					
 					//counter
-					$atext=$qrow[1];
+					$atext=FlattenText($qrow[1]);
 				}
 				
 				//output
@@ -3320,7 +3320,7 @@ if (isset($summary) && $summary)
 				//put answer code and title into array
 				while ($qrow=$qresult->FetchRow())
 				{
-					$alist[]=array("$qrow[0]", "$qrow[1]");
+					$alist[]=array("$qrow[0]", FlattenText($qrow[1]));
 				}
 				
 				//handling for "other" field for list radio or list drowpdown
