@@ -669,3 +669,21 @@ table.statisticstable, table.statisticssummary {
     background:#D2E0F2;
     text-align:center;
 }
+                   
+#filtersettings ul {
+ width:300px;
+ list-style-type:none; 
+}
+
+#filtersettings ul {
+ width:300px;
+ list-style-type:none; 
+  line-height:22px;
+}
+
+#filtersettings ul label, 
+#filtersettings ul select, 
+#filtersettings ul input {
+   vertical-align:middle;
+   margin:0 2px;
+}

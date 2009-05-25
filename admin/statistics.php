@@ -1880,23 +1880,23 @@ if ($grapherror!='')
     unset($_POST['usegraph']);
 }
  
-$viewalltext = "\t\t<tr><td align='center' class='settingcaption'>\n"
+$viewalltext = "<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."<tr><td align='center'><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label><br /><br /></td></tr>\n"
-."<tr><td align='center'><input type='checkbox' id='usegraph' name='usegraph' ";
+."<tr><td align='center'><ul class='myul'><li><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
+." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></li>"
+."<li><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
 $viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br />";
 if ($grapherror!='')  
 {
     $viewalltext.="<span id='grapherror' style='display:none'>$grapherror<hr /></span>";
 }
-$viewalltext.="</td></tr>\n"
-."<tr><td align='center'><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
+$viewalltext.="</li>\n"
+."<li><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
 ."<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
 ."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
 ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
-."</select><br />&nbsp;</td></tr>\n";
+."</select></li></ul></td></tr>\n";
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
 
 //add line to separate the the filters from the other options

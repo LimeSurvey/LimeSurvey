@@ -16,24 +16,17 @@
 
 include_once("login_check.php");
 
-//
+//  Standard templates
 $standardtemplates=array('basic',
                          'bluengrey',
-                         'blue_heaven',
-                         'bubblegum',
                          'business_grey',
                          'clear_logo',
                          'default',
-                         'edgyblue',
                          'eirenicon',
                          'limespired',
                          'mint_idea',
-                         'phpsurveyor',
                          'sherpa',
-                         'softgreencurves',
-                         'vallendar'
-                         );
-
+                         'vallendar');
 
 //Standard Template Subfiles
 //Only these files may be edited or saved

@@ -716,6 +716,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 // are put.
 	$qtitle_custom = '';
 
+    $replace=array();
 	foreach($question_text as $key => $value)
 	{
 		$find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
@@ -2317,25 +2318,25 @@ function do_ranking($ia)
 	{ 
 		$minansw=$minanswattr['value'];
 		$minanswscript = "<script type='text/javascript'>\n"
-			. "\t\t\t<!--\n"
-			. "\t\t\t\toldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
-			. "\t\t\t\tfunction ensureminansw_{$ia[0]}()\n"
-			. "\t\t\t\t{\n"
-			. "\t\t\t\t\tcount={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
-			. "\t\t\t\t\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-			. "\t\t\t\t\t\talert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
-				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
-			. "\t\t\t\t\t\treturn false;\n"
-			. "\t\t\t\t\t} else {\n"	
-			. "\t\t\t\t\t\tif (oldonsubmit_{$ia[0]}){\n"
-			. "\t\t\t\t\t\t\treturn oldonsubmit_{$ia[0]}();\n"
-			. "\t\t\t\t\t\t}\n"
-			. "\t\t\t\t\t\treturn true;\n"
-			. "\t\t\t\t\t}\n"	
-			. "\t\t\t\t}\n"
-			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
-			. "\t\t\t\t-->\n"
-			. "\t\t\t</script>\n";
+			. "  <!--\n"
+			. "  oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
+			. "  function ensureminansw_{$ia[0]}()\n"
+			. "  {\n"
+			. "     count={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
+			. "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
+			. "     alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
+				    $minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "     return false;\n"
+			. "   } else {\n"	
+			. "     if (oldonsubmit_{$ia[0]}){\n"
+			. "         return oldonsubmit_{$ia[0]}();\n"
+			. "     }\n"
+			. "     return true;\n"
+			. "     }\n"	
+			. "  }\n"
+			. "  document.limesurvey.onsubmit = ensureminansw_{$ia[0]}\n"
+			. "  -->\n"
+			. "  </script>\n";
 		$answer = $minanswscript . $answer;
 	}
 
