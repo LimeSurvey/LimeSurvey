@@ -840,7 +840,7 @@ function mandatory_popup($ia, $notanswered=null)
 	//This sets the mandatory popup message to show if required
 	//Called from question.php, group.php or survey.php
 	if ($notanswered === null) {unset($notanswered);}
-	if (isset($notanswered) && is_array($notanswered)) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
+	if (isset($notanswered) && is_array($notanswered) && isset($showpopups) && $showpopups == 1) //ADD WARNINGS TO QUESTIONS IF THEY WERE MANDATORY BUT NOT ANSWERED
 	{
 		global $mandatorypopup, $popup, $clang;
 		//POPUP WARNING
@@ -873,7 +873,7 @@ function validation_popup($ia, $notvalidated=null)
 	//Called from question.php, group.php or survey.php
 	if ($notvalidated === null) {unset($notvalidated);}
 	$qtitle="";
-	if (isset($notvalidated) && is_array($notvalidated))  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
+	if (isset($notvalidated) && is_array($notvalidated) && isset($showpopups) && $showpopups == 1)  //ADD WARNINGS TO QUESTIONS IF THEY ARE NOT VALID
 	{
 		global $validationpopup, $vpopup, $clang;
 		//POPUP WARNING

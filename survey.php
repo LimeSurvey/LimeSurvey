@@ -766,6 +766,18 @@ echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 
+//Display the "mandatory" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+}
+
+//Display the "validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
+
 foreach ($_SESSION['grouplist'] as $gl)
 {
 	$gid=$gl[0];

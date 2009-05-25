@@ -97,7 +97,8 @@ $debug              =   0;      // Set this to 1 if you are looking for errors. 
 $memorylimit        =  '32M';   // This sets how much memory LimeSurvey can access. 16M is the minimum (M=mb) recommended.
 
 $sessionlifetime    =  3600;    // How long until a survey session expires in seconds
-
+$showpopups         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
+                                          // 1=Show popup message, 0=Show message on page instead.
 
 
 /**

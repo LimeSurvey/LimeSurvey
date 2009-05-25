@@ -507,6 +507,18 @@ else
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
 
+	//Display the "mandatory" message on page if necessary
+	if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+	{
+		echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+	}
+
+	//Display the "validation" message on page if necessary
+	if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+	{
+		echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+	}
+
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
