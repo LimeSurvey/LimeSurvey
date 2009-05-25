@@ -183,7 +183,7 @@ if  ($subaction=='dldata') {
                 } else {
                     echo( "'0'");
                 }           
-            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
+            } elseif (($fields[$fieldno]['LStype'] == 'O' || $fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
             {
                 if ($row[$fieldno] == 'Y')
                 {
@@ -195,7 +195,14 @@ if  ($subaction=='dldata') {
             } elseif (!$fields[$fieldno]['hide']) {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));
+                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));                    
+                    /*
+                     * Temp quick fix for replacing decimal dots with comma's                    
+                    if (my_is_numeric($strTemp)) {
+                    	//$strTemp = (string) $strTemp;
+                    	$strTemp = str_replace('.',',',$strTemp);
+                    }
+                    */
                     echo "'$strTemp'";
                 }
                 else
@@ -273,13 +280,12 @@ if  ($subaction=='dlstructure') {
        ."/VARIABLES=";    
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-        if(($field['LStype'] == 'N' || $field['LStype']=='K') && $field['SPSStype']=='F') {
+        if($field['SPSStype']=='F' && ($field['LStype'] == 'N' || $field['LStype']=='K')) {
             $field['size'].='.'.($field['size']-1);
         }
 		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
 	}
-	echo ".\n";
-	echo "CACHE.\n"
+	echo ".\nCACHE.\n"
         ."EXECUTE.\n";
     
     //Create the variable labels:
@@ -294,22 +300,26 @@ if  ($subaction=='dlstructure') {
     {
     	$answers=array();
     	if (strpos("!LO",$field['LStype']) !== false) {
-		    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
-		    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
-		    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-		    and {$dbprefix}questions.qid='".$field['qid']."'";
-		    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
-		    $num_results = $result->RecordCount();
-		    if ($num_results > 0)
-		    {
-			    $displayvaluelabel = 0;
-			    # Build array that has to be returned
-			    for ($i=0; $i < $num_results; $i++)
+    		if (($field['LStype'] == '!' || $field['LStype'] == 'L') && (substr($field['code'],-5) == 'other') || (substr($field['code'],-5) == 'comment')) {
+    			//We have a comment field, so free text
+    		} else {
+			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
+			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
+			    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+			    and {$dbprefix}questions.qid='".$field['qid']."'";
+			    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
+			    $num_results = $result->RecordCount();
+			    if ($num_results > 0)
 			    {
-				    $row = $result->FetchRow();
-					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    $displayvaluelabel = 0;
+				    # Build array that has to be returned
+				    for ($i=0; $i < $num_results; $i++)
+				    {
+					    $row = $result->FetchRow();
+						$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    }
 			    }
-		    }
+    		}
 	    }
 	    if (strpos("FWZWH1",$field['LStype']) !== false) {
 		    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
@@ -361,7 +371,7 @@ if  ($subaction=='dlstructure') {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
 	    }
-	    if ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
+	    if ($field['LStype'] == "P" && substr($field['code'],-7) != 'comment')
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));

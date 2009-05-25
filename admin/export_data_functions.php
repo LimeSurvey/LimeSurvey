@@ -151,19 +151,24 @@ function spss_fieldmap($prefix = 'V') {
 		} else{
 			//GET FIELD DATA
 			$fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
-			$qid=$fielddata['qid'];
-			$ftype=$fielddata['type'];
-			$fsid=$fielddata['sid'];
-			$fgid=$fielddata['gid'];
-			$code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
-			$varlabel=$fielddata['question'];
-			$ftitle=$fielddata['title'];
-			if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-			if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
-			if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-			if (isset($typeMap[$ftype]['hide'])) {
-				$hide = $typeMap[$ftype]['hide'];
-				$diff++;
+			if (count($fielddata)==0) {
+			  //Field in database but no longer in survey... how is this possible?
+			  //@TODO: think of a fix.
+			} else {
+				$qid=$fielddata['qid'];
+				$ftype=$fielddata['type'];
+				$fsid=$fielddata['sid'];
+				$fgid=$fielddata['gid'];
+				$code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
+				$varlabel=$fielddata['question'];
+				$ftitle=$fielddata['title'];
+				if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
+				if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
+				if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
+				if (isset($typeMap[$ftype]['hide'])) {
+					$hide = $typeMap[$ftype]['hide'];
+					$diff++;
+				}
 			}
 				
 		}
@@ -192,7 +197,7 @@ function spss_getquery() {
 		{$dbprefix}tokens_$surveyid.lastname    ,
 		{$dbprefix}tokens_$surveyid.email";
         $tokenattributes=GetTokenFieldsAndNames($surveyid,true);
-        foreach ($tokenattributes as $attributefield=>$attributedescription)
+        foreach ($tokenattributes as $attributefield=>$attributedescription) {
 		    if (in_array($attributefield, $token_fields)) {
 			    $query .= ",\n		{$dbprefix}tokens_$surveyid.$attributefield";
 		    }
