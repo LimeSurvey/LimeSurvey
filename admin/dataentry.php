@@ -1712,6 +1712,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     			             AND ".db_table_name('questions').".qid=".$irow['qid']."
     			             ORDER BY ".db_table_name('labels').".sortorder, ".db_table_name('labels').".title";
     			$ab2result=db_execute_assoc($ab2query) or die("Couldn't get list of labels in createFieldMap function (case :)<br />$ab2query<br />".htmlspecialchars($connection->ErrorMsg()));
+                $lset=array();
     			while($ab2row=$ab2result->FetchRow())
     			{
     			    $lset[]=$ab2row;
@@ -1726,6 +1727,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
     					unset($thisvalue);
     				}
 				}
+			    unset($lset);
 			}
 			else
 			{
