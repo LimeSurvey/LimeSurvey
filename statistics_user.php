@@ -106,7 +106,9 @@ if (isset($publicgraphs) && $publicgraphs == 1)
 {
     require_once('classes/pchart/pchart/pChart.class');
     require_once('classes/pchart/pchart/pData.class');
+    require_once('classes/pchart/pchart/pCache.class');
 
+    $MyCache = new pCache($tempdir.'/'); 
 	//$currentuser is created as prefix for pchart files
 	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
 	{
