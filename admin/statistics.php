@@ -83,21 +83,7 @@ if (isset($_POST['usegraph']))
     require_once('../classes/pchart/pchart/pCache.class');
 
     $MyCache = new pCache($tempdir.'/');  
-
-	//$currentuser is created as prefix for pchart files
-	if (isset($_SERVER['REDIRECT_REMOTE_USER']))
-	{
-		$currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
-	}
-	elseif (session_id())
-	{
-		$currentuser=substr(session_id(), 0, 15);
-	}
-	else
-	{
-		$currentuser="standard";
-	}
-}
+ }
 
 // This gets all the 'to be shown questions' from the POST and puts these into an array 
 $summary=returnglobal('summary');
@@ -4148,7 +4134,7 @@ if (isset($summary) && $summary)
                         $counter++;
                     }
                     
-                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
                     {
                         $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
                     }  
@@ -4180,8 +4166,8 @@ if (isset($summary) && $summary)
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
                         $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
-                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }
 				}	//end if (bar chart)
 				
@@ -4208,9 +4194,9 @@ if (isset($summary) && $summary)
                     $DataSet->AddAllSeries();
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
-                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
                     {
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }  
                     else
                     { 
@@ -4226,7 +4212,7 @@ if (isset($summary) && $summary)
                         $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
                         $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
-                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
+                        $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                         $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData()));                         
                     }
 					

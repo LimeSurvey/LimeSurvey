@@ -313,10 +313,9 @@ if (!$exportstyle)
 	."\t</tr>\n"
 	."</table>\n"
 	."</td>";
-	$query="SELECT private FROM {$dbprefix}surveys WHERE sid=$surveyid"; //Find out if tokens are used
-	$result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
-	while ($rows = $result->FetchRow()) {$surveyprivate=$rows['private'];}
-	if ($surveyprivate == "N")
+
+    // Find out if survey results are anonymous
+	if ($thissurvey['private'] == "N")
 	{
 		$query=db_select_tables_like("{$dbprefix}tokens_$surveyid"); //SEE IF THERE IS AN ASSOCIATED TOKENS TABLE
 		$result=$connect->Execute($query) or safe_die("Couldn't get table list<br />$query<br />".$connect->ErrorMsg());
@@ -567,24 +566,24 @@ if (isset($_POST['email_address']) && $_POST['email_address']=="on")
 	$dquery .= ", {$dbprefix}tokens_$surveyid.email";
 }
 
-if ($tokenTableExists)
+if ($tokenTableExists && $thissurvey['private']=='N')
 {
-if (isset($_POST['token']) && $_POST['token']=="on")
-{
-	$dquery .= ", {$dbprefix}tokens_$surveyid.token";
-}
+    if (isset($_POST['token']) && $_POST['token']=="on")
+    {
+	    $dquery .= ", {$dbprefix}tokens_$surveyid.token";
+    }
 
     foreach ($attributeFields as $attr_name)
-{
+    {
         if (isset($_POST[$attr_name]) && $_POST[$attr_name]=="on")
-{
+        {
             $dquery .= ", {$dbprefix}tokens_$surveyid.$attr_name";
-}
+        }
     }
 }
 $dquery .= " FROM $surveytable";
 
-if ($tokenTableExists)
+if ($tokenTableExists && $thissurvey['private']=='N')
 {
     $dquery .= " LEFT OUTER JOIN {$dbprefix}tokens_$surveyid"
 	. " ON $surveytable.token = {$dbprefix}tokens_$surveyid.token";
@@ -900,7 +899,7 @@ $limit_interval = sanitize_int($_POST['export_to']) - sanitize_int($_POST['expor
 $attributefieldAndNames=array();
 
 //Now dump the data
-if ($tokenTableExists)
+if ($tokenTableExists && $thissurvey['private']=='N')
 {
 	$dquery = "SELECT $selectfields";
 	if (isset($_POST['first_name']) && $_POST['first_name']=="on")
