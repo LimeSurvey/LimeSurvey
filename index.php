@@ -2505,9 +2505,9 @@ function doAssessment($surveyid)
 						if (isset ($_SESSION[$field['fieldname']])) 
 						{
 							if (($field['type'] == "M") and ($_SESSION[$field['fieldname']] == "Y")) 	// for Multiple Options type questions
-								$grouptotal=$grouptotal+$field['aid'];
+								$grouptotal=$grouptotal+$field['assessment_value'];
 							else																		// any other type of question
-								$grouptotal=$grouptotal+$_SESSION[$field['fieldname']];
+								$grouptotal=$grouptotal+$field['assessment_value'];
 						}
 					}
 				}

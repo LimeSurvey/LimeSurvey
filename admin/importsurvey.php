@@ -1099,10 +1099,17 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
         }
 		$oldsid=$asrowdata["sid"];
 		$oldgid=$asrowdata["gid"];
-		foreach ($substitutions as $subs) {
-			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
-			if ($oldgid==$subs[1]) {$newgid=$subs[4];}
-		}
+        if  ($oldgid>0)
+        {
+            foreach ($substitutions as $subs) {
+                if ($oldsid==$subs[0]) {$newsid=$subs[3];}
+                if ($oldgid==$subs[1]) {$newgid=$subs[4];}
+            }
+        }
+        else
+        {
+            $newgid=0;
+        }
 
 		$asrowdata["sid"]=$newsid;
 		$asrowdata["gid"]=$newgid;
