@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.85RC1!
+Welcome to LimeSurvey v1.85RC2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -73,6 +73,55 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.85RC1 (build 6875) to  1.85RC2 (build 6935) [2009/05/25]  - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian language (idobraca)
+#Updated translation: French by Wael Almoman ( wael dot almoman (at) gmail d0tt com) (c_schmitz)
+#Updated translation: a little update of Italian language (idobraca)
+#Updated translation: German and German Informal (c_schmitz)
+
++New feature: new question attribute other_comment_mandatory for multiple options with comment questions. This fixes partly issue #2882. (lemeur)
++New feature: Tabs can be inserted now in template editing area (c_schmitz)
++New feature:  caching for graphs in public and non-public statistics - speeds up statistics creation times up to 95% when using graphs (c_schmitz)
++New feature #2917: Limesurvey does now remember which language was edited after button action in design of multilingual survey (c_schmitz)
++New feature #2999: Suppress mandatory & validation popups - patch provided by bdg (c_schmitz)
++New feature: Major overhaul of the template editor (c_schmitz)
++New feature: Various database drivers (mysqli, odbtp, mssql_n) added to supported DB drivers (c_schmitz)
+
+#Removed feature: Removed templates blue_heaven, bubblegum, edgyblue, phpsurveyor, softgreencurves - these are available now in the file repository on http://www.limesurvey.org (c_schmitz)
+#Updated feature: removed indiscriminate stripping of <BR> tags from qtitle in qanda.php. Added recursive stripping of <BR> tags from the END of qtitle in qanda.php (eric_t_cruiser)
+
+-Fixed issue #3100: Anomaly generation in paper questionnaire. (lemeur)
+-Fixed issue #3140: hide-tip attribute don't work in ranking questions  (c_schmitz)
+-Fixed issue #03178: Wrong labels for ranking type questions at statistics (jcleeland)
+-Fixed issue: possible NULL value loop, changed file_exists to is_file (wahrendorff)
+-Fixed issue: wrong html syntax (wahrendorff)
+-Fixed a bug preventing to record a condition based on Dual Scale questions answers (lemeur)
+-Fixed issue #2881: In a Multiple Choice Question, if one listed option and 'Other' are choosen, it allows to go ahead without any text in 'Other'. (lemeur)
+-Fixed issue #3015: Other text not being saved in database in data entry page for List using dropdown or radio layout (lemeur)
+-Fixed issue #3097: Problem with single quotes in statistics (c_schmitz)
+-Fixed issue #3121: Unable to move question from one group to another (c_schmitz)
+-Fixed issue #3131: Faulty import of group titles/description for additional languages (c_schmitz)
+-Fixed issue #3158: Fatal error on survey submission when admin notification email is activated and question type Multi-Flexi is used. (c_schmitz)
+-Fixed issue #3167: Admin survey answer editing cannot be done if you have more than one label set for "Array" questions. (c_schmitz)
+-Fixed issue #3177: Data Validation for multiple numeric questions remains empty when the field is edited (lemeur)
+-Fixed issue #3180: Sending mail to user group sends only to first user (c_schmitz)
+-Fixed issue #3183: Import Question raises ugly error if no upload file is selected (c_schmitz)
+-Fixed issue #3186: Error in results exporting when survey is anonymous and token table is created. (c_schmitz)
+-Fixed issue #3188: Importing tokens without proper header created system errors (c_schmitz)
+-Fixed issue #3198: GROUP-Results (ASSESSMENT) are not displayed (c_schmitz)
+-Fixed issue when zipping/exporting templates containing 0-byte files (c_schmitz)
+-Fixed issue with notices when previewing a question (c_schmitz)
+-Fixed issue: Answer HTML showing in statistics (c_schmitz)
+-Fixed issue: Errors when graphs are created under certain circumstances (c_schmitz)
+-Fixed issue: Missing and buggy calendar translations which caused numerous calendars not to popup (c_schmitz)
+-Fixed issue: Missing flags for some languages (c_schmitz)
+-Fixed issue: importing survey with group assessments fails (c_schmitz)
+-Fixed validfrom & validuntil fields are missing when creating token tables (c_schmitz)
+-Fixed issues: wrong syntax datetime is now timestamp in create script, added Constraints Primary key and unique to table users for upgrade and create.. (wahrendorff)
+-Fixed copy paste error in path settings (maziminke)
+-Fixed issue #3204:Other and other comment fields not always exported correctly to SPSS (mennodekker)
 
 Changes from 1.82+ (build 6825) to 1.85RC1 [2009/05/18] - Legend: + new feature, # update feature, - bug fix
 
