@@ -2226,10 +2226,13 @@ function validate_templatedir($templatename)
     {
          return $templatename;
     }
-    else 
+    elseif (is_dir("$publicdir/templates/{$defaulttemplate}/"))
     {
          return $defaulttemplate;
-
+    }
+    else 
+    {
+         return 'default';
     }     
 }
 
@@ -6298,3 +6301,5 @@ function cleanTempDirectory()
     }
     closedir($dp);    
 }
+
+ 

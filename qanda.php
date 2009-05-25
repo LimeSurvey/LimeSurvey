@@ -724,7 +724,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	};
 	if(!defined('QUESTION_START'))
 	{
-		define('QUESTION_START' , file_get_contents('templates/'.$thissurvey['template'].'/question_start.pstpl' , true));
+		define('QUESTION_START' , file_get_contents('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl' , true));
 	};
 	$qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 	
