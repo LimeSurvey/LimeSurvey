@@ -427,7 +427,7 @@ switch($screenname) {
     $myoutput[]='<div id="question1" class="list-radio">';
     $myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
-	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain your details:");
+	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
 	$questioncode="2";
 	$answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
     $myoutput[]='<div id="question2" class="text-long mandatory">';

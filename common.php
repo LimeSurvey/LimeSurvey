@@ -3305,7 +3305,7 @@ function questionAttributes($returnByName=false)
 
 	$qattributes["other_comment_mandatory"]=array(
 	"types"=>"P",
-	"help"=>$clang->gT('Make the \"other comment\" field mandatory when the \"other\" field has been answered'),
+	"help"=>$clang->gT("Make the \"other comment\" field mandatory when the \"other\" field has been marked"),
     "caption"=>$clang->gT('Other comment mandatory'));
     
     $qattributes["numbers_only"]=array(
