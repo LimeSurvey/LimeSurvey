@@ -17,7 +17,7 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
-$versionnumber = "1.85RC2";
+$versionnumber = "1.85RC3";
 $dbversionnumber = 136;
 $buildnumber = "";
 
@@ -26,7 +26,7 @@ $buildnumber = "";
 if ($debug>0) {//For debug purposes - switch on in config.php
         @ini_set("display_errors", 1);
         error_reporting(E_ALL); 
-        }
+}
 
 if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
 @ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys 
@@ -38,9 +38,9 @@ $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';
 $maildebug='';
 
-if ( $ver_num < 432 )
+if ( $ver_num < 500 )
 {
-    $dieoutput .= 'This script needs PHP 4.3.2 or above! Your version: '.phpversion().'<br />';
+    $dieoutput .= 'This script can only be run on PHP version 5.x or later! Your version: '.phpversion().'<br />';
 }
 
 if (!function_exists('mb_convert_encoding'))
@@ -52,15 +52,6 @@ if ($dieoutput!='') die($dieoutput);
 
 // The following function (when called) includes FireBug Lite if true 
 define('FIREBUG' , $use_firebug_lite);
-
-function use_firebug()
-{
-
-    if(FIREBUG == true)
-    {
-	    return '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>';
-    };
-};
 
 define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for mssql
 
@@ -619,7 +610,7 @@ function db_tables_exist($table)
 *
 */
 function getsurveylist($returnarray=false)
-    {
+{
     global $surveyid, $dbprefix, $scriptname, $connect, $clang;
     $surveyidquery = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url "
 					." FROM ".db_table_name('surveys')." AS a "
@@ -678,7 +669,7 @@ function getsurveylist($returnarray=false)
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
       else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
-    }
+}
 
 /**
 * getquestions() queries the database for a list of all questions matching the current survey sid
@@ -696,12 +687,10 @@ function getquestions($surveyid,$gid,$selectedqid)
 	global $dbprefix, $scriptname, $connect, $clang;
 //MOD for multilanguage surveys
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}'";
+	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' order by question_order";
 	$qresult = db_execute_assoc($qquery); //checked
 	$qrows = $qresult->GetRows();
 
-	// Perform a case insensitive natural sort on group name then question title of a multidimensional array
-	usort($qrows, 'CompareGroupThenTitle');
 	if (!isset($questionselecter)) {$questionselecter="";}
 	foreach ($qrows as $qrow)
 	{
@@ -716,8 +705,8 @@ function getquestions($surveyid,$gid,$selectedqid)
 			$questionselecter .= $question;
 		}
 		else
-		{
-			$questionselecter .= substr($question, 0, 35)."..";
+		{   
+			$questionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";          
 		}
 		$questionselecter .= "</option>\n";
 	}
@@ -1612,7 +1601,7 @@ function sql_table_exists($tableName, $tables)
 	return(in_array($tableName, $tables));
 }
 
-
+    
 ################################################################################
 # Compares two elements from an array (passed by the usort function)
 # and returns -1, 0 or 1 depending on the result of the comparison of
@@ -3513,7 +3502,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
 
     if ($htmldecode==true) {
-        $str=html_entity_decode_php4($str);
+        $str=html_entity_decode($question,ENT_QUOTES,'UTF-8');
     }
     if ($strip_tags==true)
     {
@@ -3816,7 +3805,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     if ($ishtml) { 
         $mail->IsHTML(true);
     	$mail->Body = $body;
-    	$mail->AltBody = strip_tags(br2nl(html_entity_decode_php4($textbody)));
+    	$mail->AltBody = strip_tags(br2nl(html_entity_decode($textbody,ENT_QUOTES,'UTF-8')));
     } else
         {
         $mail->IsHTML(false);
@@ -4020,8 +4009,8 @@ function getArrayFiltersOutGroup($qid)
  * commands can be supplied in this argument.
  * @return bool Returns true if database was modified successfully.
  */
-function modify_database($sqlfile='', $sqlstring='') {
-
+function modify_database($sqlfile='', $sqlstring='') 
+{
 	global $dbprefix;
 	global $defaultuser;
 	global $defaultpass;
@@ -4101,7 +4090,7 @@ function modify_database($sqlfile='', $sqlstring='') {
 
 // unsets all Session variables to kill session
 function killSession()	//added by Dennis
-	{
+{
 		// Delete the Session Cookie
 		$CookieInfo = session_get_cookie_params();
 		if ( (empty($CookieInfo['domain'])) && (empty($CookieInfo['secure'])) ) {
@@ -4120,7 +4109,7 @@ function killSession()	//added by Dennis
 		$_SESSION = array(); // redundant with previous lines
 		session_unset();
 		session_destroy();
-  	}
+}
 
 
 
@@ -4130,7 +4119,7 @@ function killSession()	//added by Dennis
 
 // set the rights of a user and his children
 function setuserrights($uid, $rights)
-	{
+{
 	global $connect;
     $uid=sanitize_int($uid);
 	$updates = "create_survey=".$rights['create_survey']
@@ -4142,11 +4131,11 @@ function setuserrights($uid, $rights)
 	. ", manage_label=".$rights['manage_label'];
 	$uquery = "UPDATE ".db_table_name('users')." SET ".$updates." WHERE uid = ".$uid;
  	return $connect->Execute($uquery);     //Checked
-	}
+}
 
 // set the rights for a survey
 function setsurveyrights($uids, $rights)
-	{
+{
 	global $connect, $surveyid;
     $uids=array_map('sanitize_int',$uids);  
 	$uids_implode = implode(" OR uid = ", $uids);
@@ -4160,10 +4149,10 @@ function setsurveyrights($uids, $rights)
 	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
 	// TODO
 	return $connect->Execute($uquery);   //Checked 
-	}
+}
 
 function createPassword()
-	{
+{
 	$pwchars = "abcdefhjmnpqrstuvwxyz23456789";
 	$password_length = 8;
 	$passwd = '';
@@ -4173,10 +4162,10 @@ function createPassword()
 		$passwd .= $pwchars[floor(rand(0,strlen($pwchars)-1))];
 		}
 	return $passwd;
-	}
+}
 
 function getgroupuserlist()
-    {
+{
     global $ugid, $dbprefix, $scriptname, $connect, $clang;
 
     $ugid=sanitize_int($ugid);
@@ -4196,10 +4185,10 @@ function getgroupuserlist()
         }
     $surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
-    }
+}
 
 function getsurveyuserlist()
-    {
+{
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $surveyid=sanitize_int($surveyid);
 	$surveyidquery = "SELECT a.uid, a.users_name FROM ".db_table_name('users')." AS a LEFT OUTER JOIN (SELECT uid AS id FROM ".db_table_name('surveys_rights')." WHERE sid = {$surveyid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
@@ -4231,10 +4220,10 @@ function getsurveyuserlist()
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
-    }
+}
 
 function getsurveyusergrouplist($outputformat='htmloptions')
-    {
+{
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $surveyid=sanitize_int($surveyid);
 
@@ -4281,7 +4270,7 @@ function getsurveyusergrouplist($outputformat='htmloptions')
 }
 
 function getusergrouplist($outputformat='optionlist')
-    {
+{
     global $dbprefix, $scriptname, $connect, $clang;
 
 	//$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {$_SESSION['loginID']} ORDER BY name";
@@ -4314,7 +4303,7 @@ function getusergrouplist($outputformat='optionlist')
     {
     	return $selecter;
     }
-    }
+}
 
 
 function languageDropdown($surveyid,$selected)
@@ -4914,37 +4903,6 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 		}
 	}
 	return $resarray;
-}
-
-
-// array_combine function is PHP5 only so we have to provide 
-// our own in case it doesn't exist as in PHP 4
-if (!function_exists('array_combine')) {
-   function array_combine($a, $b) {
-       $c = array();
-       if (is_array($a) && is_array($b))
-           while (list(, $va) = each($a))
-               if (list(, $vb) = each($b))
-                   $c[$va] = $vb;
-               else
-                   break 1;
-       return $c;
-   }
-}
-
-if (!function_exists("stripos")) {
-  function stripos($str,$needle,$offset=0)
-  {
-      return strpos(strtolower($str),strtolower($needle),$offset);
-  }
-}
-
-if(!function_exists('str_ireplace')) {
-    function str_ireplace($search,$replace,$subject) 
-    {
-        $search = preg_quote($search, "/");
-        return preg_replace("/".$search."/i", $replace, $subject); 
-    } 
 }
 
 function incompleteAnsFilterstate()
@@ -6302,4 +6260,12 @@ function cleanTempDirectory()
     closedir($dp);    
 }
 
+
+function use_firebug()
+{
+    if(FIREBUG == true)
+    {
+        return '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>';
+    };
+};
  

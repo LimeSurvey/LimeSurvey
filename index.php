@@ -20,7 +20,6 @@ require_once(dirname(__FILE__).'/classes/core/startup.php');
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
-require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 @ini_set('session.gc_maxlifetime', $sessionlifetime);
 
 $loadname=returnglobal('loadname');
@@ -1468,7 +1467,7 @@ function submittokens()
 
 		$subject=Replacefields($subject, $fieldsarray);
 
-		$subject=html_entity_decode_php4($subject, ENT_QUOTES, $emailcharset);
+		$subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
 		if (getEmailFormat($surveyid) == 'html')
 		{
@@ -1486,11 +1485,11 @@ function submittokens()
 
 			if (!$ishtml)
 			{
-				$message=strip_tags(br2nl(html_entity_decode_php4($message, ENT_QUOTES, $emailcharset )));
+				$message=strip_tags(br2nl(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
 			}
 			else 
 			{
-				$message=html_entity_decode_php4($message,ENT_QUOTES, $emailcharset );
+				$message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
 			}
 
 			//Only send confirmation email if there is a valid email address
@@ -1541,7 +1540,7 @@ function sendsubmitnotification($sendnotification)
             if ($prevquestion!=$qaarray[0])
             {
                 $prevquestion=$qaarray[0];
-                $questiontitle=strip_tags(html_entity_decode_php4($prevquestion, ENT_QUOTES, $emailcharset));
+                $questiontitle=strip_tags(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
                 $message .= "\n$questiontitle: ";
                 if ($qaarray[1]!='')
                 {
@@ -1550,7 +1549,7 @@ function sendsubmitnotification($sendnotification)
             }
             if ($qaarray[1]!='')
             {
-			    $answeroption=strip_tags(html_entity_decode_php4($qaarray[1], ENT_QUOTES, $emailcharset));
+			    $answeroption=strip_tags(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
 			    $message .= "[$answeroption]:   ";
             }
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
@@ -1561,14 +1560,14 @@ function sendsubmitnotification($sendnotification)
 				{
 					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) 
 					{
-					 		$message .= "\t" . strip_tags(html_entity_decode_php4($line, ENT_QUOTES, $emailcharset));
+					 		$message .= "\t" . strip_tags(html_entity_decode($line, ENT_QUOTES, $emailcharset));
 							$message .= "\n";
 					}
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
-				$message .= strip_tags(html_entity_decode_php4(getextendedanswer($value, $_SESSION[$value],ENT_QUOTES, $emailcharset)));
+				$message .= strip_tags(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
 				$message .= "\n";
 			}
 		}

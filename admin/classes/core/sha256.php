@@ -3,7 +3,7 @@
 
 /*******************************************************************************
  *
- *      SHA256 static class for PHP4
+ *      SHA256 static class for PHP
  *      implemented by feyd _at_ devnetwork .dot. net
  *      specification from http://csrc.nist.gov/cryptval/shs/sha256-384-512.pdf
  *

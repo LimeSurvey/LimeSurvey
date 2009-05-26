@@ -256,7 +256,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		     	}
                 else
                 {
-                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                    $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
                 }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -313,7 +313,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		     	}
                 else
                 {
-                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                    $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
                 }
                 
                 // Fix bug with FCKEditor saving strange BR types

@@ -19,7 +19,6 @@ require_once(dirname(__FILE__).'/classes/core/startup.php');    // Since this fi
 require_once(dirname(__FILE__).'/config-defaults.php');
 require_once(dirname(__FILE__).'/common.php');
 require_once($rootdir.'/classes/core/language.php');
-require_once(dirname(__FILE__).'/classes/core/html_entity_decode_php4.php');
 
 $surveyid=returnglobal('sid');
 $postlang=returnglobal('lang');

@@ -1317,8 +1317,7 @@ if ($subaction=='' ||
 				{
 					if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
 					$markcidstyle="";
-					if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
-							array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
+					if (array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
 						// === required cause key 0 would otherwise be interpreted as FALSE
 					{
 						$markcidstyle="";

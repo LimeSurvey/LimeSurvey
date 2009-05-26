@@ -20,7 +20,7 @@
  * @return $string
  */
 function strip_tags_full($string) {
-	$string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
+	$string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
 	//combining these into one mb_ereg_replace call ought to speed things up
 	$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp

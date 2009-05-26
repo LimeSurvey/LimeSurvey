@@ -28,7 +28,6 @@ if (version_compare(PHP_VERSION,'5','>=')&& !(function_exists('domxml_new_doc'))
 }
 require_once(dirname(__FILE__).'/../config-defaults.php');  
 require_once(dirname(__FILE__).'/../common.php');
-require_once($rootdir.'/classes/core/html_entity_decode_php4.php');  // has been secured
 
 
 require_once('htmleditor-functions.php');

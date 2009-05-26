@@ -724,7 +724,7 @@ function modlabelsetanswers($lid)
 	   			}
                 else
                           {
-                            $_POST['inserttitle'] = html_entity_decode_php4($_POST['inserttitle'], ENT_QUOTES, "UTF-8");
+                            $_POST['inserttitle'] = html_entity_decode($_POST['inserttitle'], ENT_QUOTES, "UTF-8");
                           }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -785,7 +785,7 @@ function modlabelsetanswers($lid)
 				}
 				else
 				{
-					$_POST['title_'.$sortorderid] = html_entity_decode_php4($_POST['title_'.$sortorderid], ENT_QUOTES, "UTF-8");
+					$_POST['title_'.$sortorderid] = html_entity_decode($_POST['title_'.$sortorderid], ENT_QUOTES, "UTF-8");
 				}
 
 

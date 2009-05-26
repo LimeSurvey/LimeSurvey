@@ -124,7 +124,6 @@ class LsrcHelper {
 //		global $dbprefix ;
 		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
-		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
 		
 		
@@ -218,7 +217,7 @@ class LsrcHelper {
 			    {
 					$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode_php4($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
+		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
 				
 				}
 		
@@ -520,7 +519,7 @@ class LsrcHelper {
 								else
 								{
 									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
-									$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
+									$_POST['message_'.$emrow['language']] = html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
 								}
 							}
 							

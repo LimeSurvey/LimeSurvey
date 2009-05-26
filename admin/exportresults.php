@@ -1473,7 +1473,7 @@ elseif ($answers == "long")        //chose complete answers
 
 
 	function strip_tags_full($string) {
-		$string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
+		$string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
 		mb_regex_encoding('utf-8');
 		$pattern = array('\r', '\n', '-oth-');
 		for ($i=0; $i<sizeof($pattern); $i++) {

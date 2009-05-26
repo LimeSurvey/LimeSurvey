@@ -84,7 +84,7 @@ if(isset($surveyid))
                 } 
                    else
                           {
-                            $_POST['attribute_value'] = html_entity_decode_php4($_POST['attribute_value'], ENT_QUOTES, "UTF-8");
+                            $_POST['attribute_value'] = html_entity_decode($_POST['attribute_value'], ENT_QUOTES, "UTF-8");
                           }
             }
                 
@@ -135,8 +135,8 @@ if(isset($surveyid))
 		     	}
                    else
                           {
-                            $_POST['group_name_'.$grouplang] = html_entity_decode_php4($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
-                            $_POST['description_'.$grouplang] = html_entity_decode_php4($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
+                            $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
+                            $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
                           }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -190,8 +190,8 @@ if(isset($surveyid))
 			    }
 			    else
 			    {
-				    $_POST['group_name_'.$grplang] = html_entity_decode_php4($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
-				    $_POST['description_'.$grplang] = html_entity_decode_php4($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+				    $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+				    $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
 			    }
 
 			    // Fix bug with FCKEditor saving strange BR types
@@ -313,9 +313,9 @@ if(isset($surveyid))
 			}	
                    else
                           {
-                            $_POST['title'] = html_entity_decode_php4($_POST['title'], ENT_QUOTES, "UTF-8");
-                            $_POST['question_'.$baselang] = html_entity_decode_php4($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$baselang] = html_entity_decode_php4($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
                           }
             
             // Fix bug with FCKEditor saving strange BR types
@@ -494,7 +494,7 @@ if(isset($surveyid))
 					}
                           else
                           {
-                            $_POST['title'] = html_entity_decode_php4($_POST['title'], ENT_QUOTES, "UTF-8");
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
                           }
                      
                     // Fix bug with FCKEditor saving strange BR types
@@ -509,8 +509,8 @@ if(isset($surveyid))
 						}
                           else
                           {
-                            $_POST['question_'.$qlang] = html_entity_decode_php4($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$qlang] = html_entity_decode_php4($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
                           }
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
@@ -645,9 +645,9 @@ if(isset($surveyid))
 			}
                    else
                           {
-                            $_POST['title'] = html_entity_decode_php4($_POST['title'], ENT_QUOTES, "UTF-8");
-                            $_POST['question_'.$baselang] = html_entity_decode_php4($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$baselang] = html_entity_decode_php4($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
                           }
             
             
@@ -675,8 +675,8 @@ if(isset($surveyid))
 				}
                    else
                           {
-                            $_POST['question_'.$qlanguage] = html_entity_decode_php4($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
-                            $_POST['help_'.$qlanguage] = html_entity_decode_php4($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                            $_POST['question_'.$qlanguage] = html_entity_decode($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
+                            $_POST['help_'.$qlanguage] = html_entity_decode($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
                           }
                 
             // Fix bug with FCKEditor saving strange BR types
@@ -710,7 +710,7 @@ if(isset($surveyid))
 					}			
                     else
                           {
-                            $qr1['answer'] = html_entity_decode_php4($qr1['answer'], ENT_QUOTES, "UTF-8");
+                            $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
                           }
 
                     
@@ -861,7 +861,7 @@ if(isset($surveyid))
 					    }
                         else
                           {
-                            $_POST['insertanswer'] = html_entity_decode_php4($_POST['insertanswer'], ENT_QUOTES, "UTF-8");
+                            $_POST['insertanswer'] = html_entity_decode($_POST['insertanswer'], ENT_QUOTES, "UTF-8");
                           }
 
                         // Fix bug with FCKEditor saving strange BR types
@@ -963,7 +963,7 @@ if(isset($surveyid))
 					}
                         else
                           {
-                            $_POST['answer_'.$sortorderid] = html_entity_decode_php4($_POST['answer_'.$sortorderid], ENT_QUOTES, "UTF-8");
+                            $_POST['answer_'.$sortorderid] = html_entity_decode($_POST['answer_'.$sortorderid], ENT_QUOTES, "UTF-8");
                           }
                     
                     // Fix bug with FCKEditor saving strange BR types
@@ -1217,12 +1217,12 @@ if(isset($surveyid))
 			  	}
                 else
                           {
-                            $_POST['short_title_'.$langname] = html_entity_decode_php4($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['description_'.$langname] = html_entity_decode_php4($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['welcome_'.$langname] = html_entity_decode_php4($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['endtext_'.$langname] = html_entity_decode_php4($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['urldescrip_'.$langname] = html_entity_decode_php4($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
-                            $_POST['url_'.$langname] = html_entity_decode_php4($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['endtext_'.$langname] = html_entity_decode($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
+                            $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
                           }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -1286,10 +1286,10 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		}
         else
               {
-                $_POST['surveyls_title'] = html_entity_decode_php4($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
-                $_POST['description'] = html_entity_decode_php4($_POST['description'], ENT_QUOTES, "UTF-8");
-                $_POST['welcome'] = html_entity_decode_php4($_POST['welcome'], ENT_QUOTES, "UTF-8");
-                $_POST['urldescrip'] = html_entity_decode_php4($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
+                $_POST['surveyls_title'] = html_entity_decode($_POST['surveyls_title'], ENT_QUOTES, "UTF-8");
+                $_POST['description'] = html_entity_decode($_POST['description'], ENT_QUOTES, "UTF-8");
+                $_POST['welcome'] = html_entity_decode($_POST['welcome'], ENT_QUOTES, "UTF-8");
+                $_POST['urldescrip'] = html_entity_decode($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
               }
 
 
