@@ -93,7 +93,7 @@ class LsrcHelper {
 		}
 		if($mode==1 || $mode=='1')
 		{
-			$query2insert = "INSERT INTO ".$dbprefix.$table." (".$key.") VALUES (".$value.");";
+			$query2insert = "INSERT INTO {$dbprefix}{$table} ({$key}) VALUES ({$value});";
 			$this->debugLsrc("wir sind in Line ".__LINE__.", inserting ($query2insert)");   
 			if($connect->Execute($query2insert))
 			{
@@ -604,7 +604,7 @@ class LsrcHelper {
 		include("lsrc.config.php");
 		require($homedir."/classes/core/sha256.php"); 
 		
-		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name='".sanitize_paranoid_string($sUser)."' ";
+		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name=".$connect->qstr(sanitize_user($sUser));
 		// echo $query;
 		$result = db_execute_assoc($query);
 		$gv = $result->FetchRow();

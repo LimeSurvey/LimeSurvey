@@ -18,9 +18,9 @@ $wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='http://localhost/limesource/limesurvey';
+$limeUrl='https://localhost/limesource/limesurvey';
 
-//We need authentication for every function, so just write the logindata once for all
+//We need authentication for every function, so just write the logindata once for all (this is the default)
 $user ="admin";
 $pass ="password";
 
@@ -134,24 +134,32 @@ function soapCheck ($path2wsdl)
 	return $soapCheck;
 }
 
-// We initiate a SOAPclient Object and give the ssl-certificate, if wished:
+//// We initiate a SOAPclient Object and give the ssl-certificate, if wished:
+//$cert = 'D:\\xampp\apache\privkey.pem';
 if(isset($cert) && $cert!="")
 {
 	ini_set("allow_url_fopen", 1);
 	$file = fopen($wsdl,"r");
 	if(class_exists(SoapClient) && $file!=FALSE)
 	{
-		$context["ssl"]["local_cert"] = $cert;
-		//		$context["ssl"]["verify_peer"] = TRUE;
-		$context["ssl"]["allow_self_signed"] = TRUE;
-		//		$context["ssl"]["cafile"] = "D://xampp//htdocs//apache//conf//keys//allinOne.pem";
-		//		$context["ssl"]["capath"] = "D://xampp//htdocs//apache//conf//keys";
+		/**
+		 * TODO: no documentation in PHP manual... no doc here... Can't tell you what to do in order to get Communication working with fixed Certificates
+		 * Can't even say, which certificates, how they have to be (.pem, .crt, .key etc.?) 
+		 * Own Microkosmos for Geeks only... Sad truth...
+		 */
+		$context = array(
+			'ssl'=> array(
+				'verify_peer' => false,
+				'allow_self_signed'	=> true,
+				'local_cert' => $cert
+			)
+		);
 		$stream_context = stream_context_create($context);
 
 		$client = new SoapClient($wsdl, array('soap_version' => SOAP_1_1,
 				'trace' => 1, 
-		//'stream_context' => $stream_context,
-				'local_cert' => $cert));
+				'stream_context' => $stream_context
+		));
 	}
 }
 else

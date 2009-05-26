@@ -39,17 +39,26 @@ if(isset($_GET['wsdl']))
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
 	
-	// I don't know for sure how this works... no developerdocumentation on this.
-	$context["ssl"]["local_cert"] = $sslCert;
-	$context["ssl"]["verify_peer"] = FALSE;
-	$context["ssl"]["allow_self_signed"] = TRUE;
-	$context["ssl"]["cafile"] = "D://xampp//htdocs//apache//conf//keys//cacert.pem";
+	/**
+	 * TODO: no documentation in PHP manual... no doc here... Can't tell you what to do in order to get Communication working with fixed Certificates
+	 * Can't even say, which certificates, however it says in the docu that this should be a .pem RSA encoded file with .key and .crt together.
+	 * 
+	 */
+	$context = array(
+		'ssl'=> array(
+				'verify_peer' => false,
+				'allow_self_signed'	=> true,
+				'local_cert' => $sslCert,
+				'passphrase' => 'hisuser',
+				'capture_peer_cert' => true
+				
+			)	
+	);
 	
   	$stream_context = stream_context_create($context);
 	
   	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1, 
-	 			'stream_context' => $stream_context,
-	 			'local_cert' => $sslCert));
+	 			'stream_context' => $stream_context));
 }
 else{
 	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1));
@@ -313,7 +322,7 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
  * @param $autoRd
  * @return unknown_type
  */
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -326,7 +335,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	}
 //	if($sVend=='')
 //	{//if no endtext is given, set this one
-//		$sVend	= "Vielen Dank für Ihre Teilnahme an der Umfrage!";
+//		$sVend	= "Vielen Dank fÃ¼r Ihre Teilnahme an der Umfrage!";
 //	}
 	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
@@ -379,6 +388,7 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	}
 	
 }//end of function sCreateSurvey
+
 
 /**
  * 
