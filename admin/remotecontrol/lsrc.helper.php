@@ -681,8 +681,6 @@ class LsrcHelper {
 //		global $dbprefix ;
 		
 		include("lsrc.config.php");
-		
-		include("lsrc.config.php");
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
 		// HINT FOR IMPORTERS: go to Line 714 to manipulate the Survey, while it's imported 
@@ -1248,8 +1246,15 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
+		try
+		{
 		$iresult = $connect->Execute($insert) or $this->debugLsrc(""."Import of this survey file failed on Line: ".__LINE__."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg()) and exit;
-		
+		}
+	 	catch(exception $e)
+	    {
+	    	throw new SoapFault("Server: ", "$e : $connect->ErrorMsg()");
+	    	exit;
+	    }
 		$oldsid=$surveyid;
 		
 		// Now import the survey language settings
