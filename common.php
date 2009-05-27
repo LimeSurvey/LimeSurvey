@@ -1603,11 +1603,16 @@ function sql_table_exists($tableName, $tables)
 	return(in_array($tableName, $tables));
 }
 
-    
-################################################################################
-# Compares two elements from an array (passed by the usort function)
-# and returns -1, 0 or 1 depending on the result of the comparison of
-# the sort order of the group_order and question_order field
+
+/**
+* Compares two elements from an array (passed by the usort function) 
+* and returns -1, 0 or 1 depending on the result of the comparison of 
+* the sort order of the group_order and question_order field
+* 
+* @param mixed $a
+* @param mixed $b
+* @return int
+*/
 function CompareGroupThenTitle($a, $b)
 {
 	if (isset($a["group_order"]) && isset($b["group_order"]))
@@ -1630,47 +1635,6 @@ function CompareGroupThenTitle($a, $b)
 function StandardSort($a, $b)
 {
 	return strnatcasecmp($a, $b);
-}
-
-
-function keycontroljs()
-{
-	$kcjs="
-    <script type=\"text/javascript\">
-    <!--
-
-    function getkey(e)
-       {
-       if (window.event) return window.event.keyCode;
-        else if (e) return e.which; else return null;
-        }
-
-    function goodchars(e, goods)
-        {
-       var key, keychar;
-       key = getkey(e);
-        if (key == null) return true;
-
-        // get character
-        keychar = String.fromCharCode(key);
-        keychar = keychar.toLowerCase();
-       goods = goods.toLowerCase();
-
-       // check goodkeys
-        if (goods.indexOf(keychar) != -1)
-            return true;
-
-        // control keys
-        if ( key==null || key==0 || key==8 || key==9  || key==27 )
-          return true;
-
-      // else return false
-     return false;
-       }
-    //-->
-    </script>
-";
-	return $kcjs;
 }
 
 

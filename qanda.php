@@ -950,9 +950,13 @@ function do_5pointchoice($ia)
 // ---------------------------------------------------------------
 function do_date($ia)
 {
-	global $clang, $js_header_includes, $css_header_includes;
-	$qidattributes=getQuestionAttributes($ia[0]);
-	if (arraySearchByKey('dropdown_dates', $qidattributes, 'attribute', 1)) {
+	global $clang, $js_header_includes, $css_header_includes, $thissurvey;
+	$qidattributes=getQAttributes($ia[0]);
+    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
+    $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+    $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
+    
+	if (isset($qidattributes['dropdown_dates'])) {
 		if (!empty($_SESSION[$ia[1]]))
 		{
 			list($currentyear, $currentmonth, $currentdate) = explode('-', $_SESSION[$ia[1]]);
@@ -961,137 +965,119 @@ function do_date($ia)
 			$currentmonth=''; 
 			$currentyear='';
 		}
-		$answer = keycontroljs();
-		$answer .= '
-			<p class="question">
-				<select id="day'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="day">
-					<option value="">'.$clang->gT('Day').'</option>
-';
-		for ($i=1; $i<=31; $i++) {
-			if ($i == $currentdate)
-			{
-				$i_date_selected = SELECTED;
-			}
-			else
-			{
-				$i_date_selected = '';
-			}
-			$answer .= '					<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i).'</option>
-';
-		}
+        
+        $dateorder = split('[/.-]', $dateformatdetails['phpdate']);
+        $answer='<p class="question">';
+        foreach($dateorder as $datepart)
+        {
+                switch($datepart)
+                {
+                    // Show day select box     
+                    case 'j':
+                    case 'd':   $answer .= ' <select id="day'.$ia[1].'" class="day">
+                                                <option value="">'.$clang->gT('Day')."</option>\n";
+                                for ($i=1; $i<=31; $i++) {
+                                    if ($i == $currentdate)
+                                    {
+                                        $i_date_selected = SELECTED;
+                                    }
+                                    else
+                                    {
+                                        $i_date_selected = '';
+                                    }
+                                    $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.sprintf('%02d', $i)."</option>\n";
+                                }
+                                $answer .='</select>';
+                                break;
+                    // Show month select box                                     
+                    case 'n': 
+                    case 'm':   $answer .= ' <select id="month'.$ia[1].'" class="month">
+                                            <option value="">'.$clang->gT('Month')."</option>\n";
+                                $montharray=array(
+                                    $clang->gT('Jan'), 
+                                    $clang->gT('Feb'), 
+                                    $clang->gT('Mar'), 
+                                    $clang->gT('Apr'), 
+                                    $clang->gT('May'),
+                                    $clang->gT('Jun'),
+                                    $clang->gT('Jul'),
+                                    $clang->gT('Aug'),
+                                    $clang->gT('Sep'),
+                                    $clang->gT('Oct'),
+                                    $clang->gT('Nov'),
+                                    $clang->gT('Dec')); 
+                                for ($i=1; $i<=12; $i++) {
+                                    if ($i == $currentmonth)
+                                    {
+                                        $i_date_selected = SELECTED;
+                                    }
+                                    else
+                                    {
+                                        $i_date_selected = '';
+                                    }
 
-		$answer .= '				</select>
-				<select id="month'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="month">
-					<option value="">'.$clang->gT('Month').'</option>
-';
-		$montharray=array(
-			$clang->gT('Jan'), 
-			$clang->gT('Feb'), 
-			$clang->gT('Mar'), 
-			$clang->gT('Apr'), 
-			$clang->gT('May'),
-			$clang->gT('Jun'),
-			$clang->gT('Jul'),
-			$clang->gT('Aug'),
-			$clang->gT('Sep'),
-			$clang->gT('Oct'),
-			$clang->gT('Nov'),
-			$clang->gT('Dec')); 
-		for ($i=1; $i<=12; $i++) {
-			if ($i == $currentmonth)
-			{
-				$i_date_selected = SELECTED;
-			}
-			else
-			{
-				$i_date_selected = '';
-			}
+                                    $answer .= '    <option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
+                                }
+                                $answer .= '    </select>';
+                                break;
+                    // Show year select box                                     
+                    case 'Y':   $answer .= ' <select id="year'.$ia[1].'" class="year">
+                                            <option value="">'.$clang->gT('Year').'</option>';
 
-			$answer .= '	<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
-		}
+                                /*
+                                 *  New question attributes used only if question attribute
+                                 * "dropdown_dates" is used (see IF(...) above).
+                                 * 
+                                 * yearmin = Minimum year value for dropdown list, if not set default is 1900
+                                 * yearmax = Maximum year value for dropdown list, if not set default is 2020
+                                 */
+                                if (isset($qidattributes['dropdown_dates_year_min']))
+                                {
+                                    $yearmin = $qidattributes['dropdown_dates_year_min'];
+                                }
+                                else
+                                {
+                                    $yearmin = 1900;
+                                }
+                                
+                                if (isset($qidattributes['dropdown_dates_year_max']))
+                                {
+                                    $yearmax = $qidattributes['dropdown_dates_year_min'];
+                                }
+                                else
+                                {
+                                    $yearmax = 2020;
+                                }
+                                
+                                for ($i=$yearmax; $i>=$yearmin; $i--) {
+                                    if ($i == $currentyear)
+                                    {
+                                        $i_date_selected = SELECTED;
+                                    }
+                                    else
+                                    {
+                                        $i_date_selected = '';
+                                    }
+                                    $answer .= '  <option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>';
+                                }
+                                $answer .= '</select>';
 
-		$answer .= '	</select>
-				<select id="year'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="year">
-					<option value="">'.$clang->gT('Year').'</option>';
+                                break;
+                    }        
+        }
 
-		/*
-		 * Maziminke (2008-11-25): New question attributes used only if question attribute
-		 * "dropdown_dates" is used (see IF(...) above).
-		 * 
-		 * yearmin = Minimum year value for dropdown list, if not set default is 1900
-		 * yearmax = Maximum year value for dropdown list, if not set default is 2020
-		 */
-		if($yearmin = arraySearchByKey('dropdown_dates_year_min', $qidattributes, 'attribute', 1))
-		{
-			$yearmin = $yearmin['value'];
-		}
-		else
-		{
-			$yearmin = 1900;
-		}
-		
-		if($yearmax = arraySearchByKey('dropdown_dates_year_max', $qidattributes, 'attribute', 1))
-		{
-			$yearmax = $yearmax['value'];
-		}
-		else
-		{
-			$yearmax = 2020;
-		}
-		
-		for ($i=$yearmax; $i>=$yearmin; $i--) {
-			if ($i == $currentyear)
-			{
-				$i_date_selected = SELECTED;
-			}
-			else
-			{
-				$i_date_selected = '';
-			}
-			$answer .= '					<option value="'.$i.'"'.$i_date_selected.'>'.$i.'</option>
-';
-		}
-		$answer .= '				</select>
-				<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
-			</p>
-';
-
+		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+			</p>';
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
-			<input type="hidden" name="qattribute_answer'.$ia[1].'" />
-			<script type="text/javascript">
-'
-		. "function dateUpdater(val) {\n"
-		. "  label='answer'+val;\n"
-		. "  yearlabel='year'+val;\n"
-		. "  monthlabel='month'+val;\n"
-		. "  daylabel='day'+val;\n"
-		. "  bob = eval('document.limesurvey.qattribute_answer".$ia[1]."');\n"
-		. "  if(document.getElementById(yearlabel).value != '' && document.getElementById(monthlabel).value != '' && document.getElementById(daylabel).value != '')\n"
-		. "  {\n"
-		. "    document.getElementById(label).value=document.getElementById(yearlabel).value+'-'+document.getElementById(monthlabel).value+'-'+document.getElementById(daylabel).value;\n"
-		. "    ValidDate(document.getElementById(label));\n"
-		. "    checkconditions(document.getElementById(label).value, document.getElementById(label).name, document.getElementById(label).type);\n"
-		. "    bob.value='';\n"
-		. "  } else if (document.getElementById(yearlabel).value == '' && document.getElementById(monthlabel).value == '' && document.getElementById(daylabel).value == '') {\n"
-		. "    document.getElementById(label).value='';\n"
-		. "    bob.value='';\n"
-		. "  } else {\n"
-		. "    document.getElementById(label).value='';\n"
-		. "    bob.value='".$clang->gT("Please complete all parts of the date")."';\n"
-		. "  }\n"
-		. "}\n"
-		. "dateUpdater(\"{$ia[1]}\");\n"
-		. "</script>\n";
+			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
+                    <input type="hidden" id="dateformat'.$ia[1].'" value="'.$dateformatdetails['jsdate'].'"/>';
+
 
 	} 
     else 
         {
-            $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
             $js_header_includes[] = '/scripts/jquery/languages/ui.datepicker-'.$clang->langcode.'.js';
-            $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
             $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
-            $languagedetails=getLanguageDetails($clang->langcode);
-            $dateformatdetails=getDateFormatData($languagedetails['dateformat']);
 
             // Format the date  for output
             if (trim($_SESSION[$ia[1]])!='')
@@ -3078,7 +3064,6 @@ function do_multipleshorttext($ia)
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
 
-	$answer = keycontroljs();
 	$answer_main = '';
 
 	$label_width = 0;
@@ -3351,7 +3336,6 @@ function do_multiplenumeric($ia)
 	$anscount = $ansresult->RecordCount()*2;
 	//$answer .= "\t\t\t\t\t<input type='hidden' name='MULTI$ia[1]' value='$anscount'>\n";
 	$fn = 1;
-	$answer = keycontroljs();
 
 	$answer_main = '';
 
@@ -3698,8 +3682,7 @@ function do_numerical($ia)
 		$tiwidth=10;
 	}
 	// --> START NEW FEATURE - SAVE
-	$answer = keycontroljs()
-	. "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
+	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
 	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='checkconditions(this.value, this.name, this.type)'"
 	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n"
 	. "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
@@ -5094,7 +5077,7 @@ function do_array_multitext($ia)
 		. "\t</thead>\n"
 		. "\n\t<tbody>\n";
 
-		$answer = "\n" . keycontroljs() . "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
+		$answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
 
 		$trbc = '';
 		while ($ansrow = $ansresult->FetchRow())
