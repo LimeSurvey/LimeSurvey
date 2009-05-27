@@ -315,49 +315,12 @@ if(isset($vpopup)) {echo $vpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-echo "\n\n<!-- INPUT NAMES -->\n"
-."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
-.implode("|", $inputnames)
-."' />\n";
+echo "\n<!-- INPUT NAMES -->\n"
+    ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
+    .implode("|", $inputnames)
+    ."' />\n";
 
-echo "\n";
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "    function ValidDate(oObject)\n";
-echo "    {// Regular expression used to check if date is in correct format\n";
-echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "     var pattern = new RegExp(str_regexp);\n";
-echo "     if ((oObject.value.match(pattern)!=null))\n";
-echo "     {var date_array = oObject.value.split('-');\n";
-echo "      var day = date_array[2];\n";
-echo "      var month = date_array[1];\n";
-echo "      var year = date_array[0];\n";
-echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      str_regexp = /4|6|9|11/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day <= 28 && month == 2)\n";
-echo "      { return true;\n";
-echo "      }        \n";
-echo "     }\n";
-echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "     oObject.focus();\n";
-echo "     oObject.select();\n";
-echo "     return false;\n";
-echo "    }\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
-// <-- END NEW FEATURE - SAVE
+// <-- END FEATURE - SAVE
 
 echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 

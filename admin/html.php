@@ -2867,7 +2867,19 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             . "</span></div>"
 			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL description:")."</span>\n"
 			. "<span class='settingentry'><input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
-			. "</span></div></div>";
+			. "</span></div>"
+            . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Date format:")."</span>\n"
+            . "<span class='settingentry'><select size='1' name='dateformat_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n";
+            foreach (getDateFormatData() as $index=>$dateformatdata)
+            {
+               $editsurvey.= "<option value='{$index}'";
+               if ($esrow['surveyls_dateformat']==$index) {
+                    $editsurvey.=" selected='selected'"; 
+               }
+               $editsurvey.= ">".$dateformatdata['dateformat'].'</option>';
+            }
+            $editsurvey.= "</select></span></div>"
+            . "</div>";
 		}
 		$editsurvey .= '</div>';
 		$editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
@@ -3305,7 +3317,18 @@ if ($action == "newsurvey")
 		. "<span class='settingentry'><select name='autoredirect'>\n"
 		. "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "</select></span></div>";
+		. "</select></span></div>"
+
+        //Default date format
+        . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Date format:")."</span>\n"
+        . "<span class='settingentry'><select size='1' name='dateformat' />\n";
+        foreach (getDateFormatData() as $index=>$dateformatdata)
+        {
+           $newsurvey.= "<option value='{$index}'";
+           $newsurvey.= ">".$dateformatdata['dateformat'].'</option>';
+        }
+        $newsurvey.= "</select></span></div>";
+        
 
 		// End Presention and navigation TAB
 		// Create Survey Button 

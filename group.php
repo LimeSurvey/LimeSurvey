@@ -384,69 +384,22 @@ if (isset($vpopup)) {echo $vpopup;}
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 $hiddenfieldnames=implode("|", $inputnames);
-print <<<END
-<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
 
-<!-- INPUT NAMES -->
-<input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />
-END;
+echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
+      <!-- INPUT NAMES -->
+      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo " <script type='text/javascript'>\n";
-echo " <!--\n";
-echo "    function ValidDate(oObject)\n";
-echo "    {// Regular expression used to check if date is in correct format\n";
-echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "     var pattern = new RegExp(str_regexp);\n";
-echo "     if ( oObject.value=='')\n";
-echo "     { return true;\n";
-echo "     }\n";
-echo "     if ((oObject.value.match(pattern)!=null))\n";
-echo "     {var date_array = oObject.value.split('-');\n";
-echo "      var day = date_array[2];\n";
-echo "      var month = date_array[1];\n";
-echo "      var year = date_array[0];\n";
-echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      str_regexp = /4|6|9|11/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day <= 28 && month == 2)\n";
-echo "      { return true;\n";
-echo "      }        \n";
-echo "     }\n";
-echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "     oObject.focus();\n";
-echo "     oObject.select();\n";
-echo "     return false;\n";
-echo "    }\n";
-echo " //-->\n";
-echo " </script>\n\n";
-// <-- END NEW FEATURE - SAVE
+// <-- END FEATURE - SAVE
 
 // <-- START THE SURVEY -->
 
-//foreach(file("$thistpl/survey.pstpl") as $op)
-//{
-//	echo "\t".templatereplace($op);
-//}
 	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-print <<<END
-<input type='hidden' id='runonce' value='0' />
-<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-<script type='text/javascript'>
-<!--
-
-END;
+echo "<input type='hidden' id='runonce' value='0' />
+    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+    <script type='text/javascript'>
+    <!--\n";
+    
 // Find out if there are any array_filter questions in this group
 $array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
 // Put in the radio button reset javascript for the array filter unselect

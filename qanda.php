@@ -950,7 +950,7 @@ function do_5pointchoice($ia)
 // ---------------------------------------------------------------
 function do_date($ia)
 {
-	global $clang;
+	global $clang, $js_header_includes, $css_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if (arraySearchByKey('dropdown_dates', $qidattributes, 'attribute', 1)) {
 		if (!empty($_SESSION[$ia[1]]))
@@ -1007,14 +1007,12 @@ function do_date($ia)
 				$i_date_selected = '';
 			}
 
-			$answer .= '					<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>
-';
+			$answer .= '	<option value="'.sprintf('%02d', $i).'"'.$i_date_selected.'>'.$montharray[$i-1].'</option>';
 		}
 
-		$answer .= '				</select>
+		$answer .= '	</select>
 				<select id="year'.$ia[1].'" onchange="dateUpdater(\''.$ia[1].'\');" class="year">
-					<option value="">'.$clang->gT('Year').'</option>
-';
+					<option value="">'.$clang->gT('Year').'</option>';
 
 		/*
 		 * Maziminke (2008-11-25): New question attributes used only if question attribute
@@ -1085,30 +1083,36 @@ function do_date($ia)
 		. "dateUpdater(\"{$ia[1]}\");\n"
 		. "</script>\n";
 
-	} else {
-	$answer = keycontroljs()
-		. "
-			<p class=\"question\">
-				<input class=\"text\" type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" onblur=\"ValidDate(this)\" />
-				<button type=\"reset\" id=\"f_trigger_{$ia[1]}\">...</button>
-			</p>
-			<p class=\"tip\">
-				".$clang->gT('Format: YYYY-MM-DD')."<br />
-				".$clang->gT('(eg: 2003-12-25 for Christmas day)')."
-			</p>
-";
-	// Here we do setup the date javascript
-	$answer .= "<script type=\"text/javascript\">\n"
-	. "Calendar.setup({\n"
-	. "inputField     :    \"answer{$ia[1]}\",\n"	// id of the input field
-	. "ifFormat       :    \"%Y-%m-%d\",\n"	// format of the input field
-	. "showsTime      :    false,\n"	// will display a time selector
-	. "button         :    \"f_trigger_{$ia[1]}\",\n"	// trigger for the calendar (button ID)
-	. "singleClick    :    true,\n"	// double-click mode
-	. "step           :    1\n"	// show all years in drop-down boxes (instead of every other year as default)
-	. "});\n"
-	. "</script>\n";
-	}
+	} 
+    else 
+        {
+            $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
+            $js_header_includes[] = '/scripts/jquery/languages/ui.datepicker-'.$clang->langcode.'.js';
+            $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+            $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
+            $languagedetails=getLanguageDetails($clang->langcode);
+            $dateformatdetails=getDateFormatData($languagedetails['dateformat']);
+
+            // Format the date  for output
+            if (trim($_SESSION[$ia[1]])!='')
+            {
+                $datetimeobj = new Date_Time_Converter($_SESSION[$ia[1]] , "Y-m-d");
+                $dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            }
+            else
+            {
+                $dateoutput='';  
+            }
+            
+            $answer ="<p class=\"question\">
+				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
+                        <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
+                        <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
+			         </p>
+			         <p class=\"tip\">                      
+				         ".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."
+			         </p>";
+	    }
 	$inputnames[]=$ia[1];
 
 	return array($answer, $inputnames);
@@ -3385,7 +3389,6 @@ function do_multiplenumeric($ia)
 			{
 				$js_header_includes[] = '/scripts/jquery/jquery-ui.js';
 				$js_header_includes[] = '/scripts/jquery/lime-slider.js';
-				$js_header_includes = array_unique($js_header_includes);
 
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
 				{

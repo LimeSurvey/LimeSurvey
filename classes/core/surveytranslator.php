@@ -21,7 +21,38 @@
  * @subpackage Core
  */
 
+ 
+    /**
+    * Returns all available dateformats in a structured aray
+    * If $format is given only the particual dateformat will be returned
+    * 
+    * @param $format integer 
+    * @returns array
+    * 
+    */
+    function getDateFormatData($format=0)
+    {
+        $dateformats= array(1=> array ('phpdate' => 'd.m.Y', 'jsdate' => 'dd.mm.yy', 'dateformat' => 'dd.mm.yyyy'),
+                            2=> array ('phpdate' => 'd-m-Y', 'jsdate' => 'dd-mm-yy', 'dateformat' => 'dd-mm-yyyy'),
+                            5=> array ('phpdate' => 'd/m/Y', 'jsdate' => 'dd/mm/yy', 'dateformat' => 'dd/mm/yyyy'),
+                            3=> array ('phpdate' => 'Y.m.d', 'jsdate' => 'yy.mm.dd', 'dateformat' => 'yyyy.mm.dd'),
+                            6=> array ('phpdate' => 'Y-m-d', 'jsdate' => 'yy-mm-dd', 'dateformat' => 'yyyy-mm-dd'),
+                            7=> array ('phpdate' => 'Y/m/d', 'jsdate' => 'yy/mm/dd', 'dateformat' => 'yyyy/mm/dd'),
+                            4=> array ('phpdate' => 'j.n.Y', 'jsdate' => 'd.m.yy', 'dateformat' => 'd.m.yyyy'),
+                            8=> array ('phpdate' => 'j/n/Y', 'jsdate' => 'd/m/yy', 'dateformat' => 'd/m/yyyy'),
+                            9=> array ('phpdate' => 'm-d-Y', 'jsdate' => 'mm-dd-yy', 'dateformat' => 'mm-dd-yyyy')
+        );
 
+        if ($format >0)
+        {
+            return $dateformats[$format];
+        }
+        else 
+            return $dateformats;
+        
+    }
+    
+  
     function getLanguageCodefromLanguage($languagetosearch)
     {
         $detaillanguages = getLanguageData();
@@ -37,6 +68,7 @@
     }
 
 
+    
 
     function getLanguageNameFromCode($codetosearch, $withnative=true)
     {
@@ -77,7 +109,7 @@
     function getLanguageDetails($codetosearch)
     {
         $detaillanguages = getLanguageData();
-        if (isset($detaillanguages[$codetosearch]['rtl']))
+        if (isset($detaillanguages[$codetosearch]))
         {
               return $detaillanguages[$codetosearch];
         }
@@ -94,367 +126,314 @@
 	    $supportedLanguages['sq']['description'] = $clang->gT('Albanian');
 	    $supportedLanguages['sq']['nativedescription'] = 'Shqipe';
 	    $supportedLanguages['sq']['rtl'] = false;
-        $supportedLanguages['sq']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['sq']['dateformat'] = 'dd.mm.yyyy';
+        $supportedLanguages['sq']['dateformat'] = 1;
 
 	    // Arabic
 	    $supportedLanguages['ar']['description'] = $clang->gT('Arabic');
 	    $supportedLanguages['ar']['nativedescription'] = '&#1593;&#1614;&#1585;&#1614;&#1576;&#1610;&#1618;';
 	    $supportedLanguages['ar']['rtl'] = true;
-        $supportedLanguages['ar']['dateformatphp'] = 'dd-mm-yyyy';
-        $supportedLanguages['ar']['dateformat'] = 'dd-mm-yyyy';
+        $supportedLanguages['ar']['dateformat'] = 2;
 
 	    // Basque
 	    $supportedLanguages['eu']['description'] = $clang->gT('Basque');
 	    $supportedLanguages['eu']['nativedescription'] = 'Euskara';
 	    $supportedLanguages['eu']['rtl'] = false;
-        $supportedLanguages['eu']['dateformatphp'] = 'Y.m.d';
-        $supportedLanguages['eu']['dateformat'] = 'yyyy.mm.dd';
+        $supportedLanguages['eu']['dateformat'] = 3;
 
 	    // Bosnian
 	    $supportedLanguages['bs']['description'] = $clang->gT('Bosnian');
 	    $supportedLanguages['bs']['nativedescription'] = 'Bosanski';
 	    $supportedLanguages['bs']['rtl'] = false;
-        $supportedLanguages['bs']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['bs']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['bs']['dateformat'] = 4;        
 
 	    // Bulgarian
 	    $supportedLanguages['bg']['description'] = $clang->gT('Bulgarian');
 	    $supportedLanguages['bg']['nativedescription'] = '&#x0411;&#x044a;&#x043b;&#x0433;&#x0430;&#x0440;&#x0441;&#x043a;&#x0438;';
 	    $supportedLanguages['bg']['rtl'] = false;
-        $supportedLanguages['bg']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['bg']['dateformat'] = 'dd.mm.yyyy';
-        
+        $supportedLanguages['bg']['dateformat'] = 1;
         
         // Catalan
 		$supportedLanguages['ca']['description'] = $clang->gT('Catalan');
 	    $supportedLanguages['ca']['nativedescription'] = 'Catal&#940;';
 	    $supportedLanguages['ca']['rtl'] = false;
-        $supportedLanguages['ca']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['ca']['dateformat'] = 'dd.mm.yyyy';
+        $supportedLanguages['ca']['dateformat'] = 1;
 
         // Welsh
 		$supportedLanguages['cy']['description'] = $clang->gT('Welsh');
 	    $supportedLanguages['cy']['nativedescription'] = 'Cymraeg';
 	    $supportedLanguages['cy']['rtl'] = false;
-        $supportedLanguages['cy']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['cy']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['cy']['dateformat'] = 5;
 
         // Chinese (Simplified)
 	    $supportedLanguages['zh-Hans']['description'] = $clang->gT('Chinese (Simplified)');
 	    $supportedLanguages['zh-Hans']['nativedescription'] = '&#31616;&#20307;&#20013;&#25991;';
 	    $supportedLanguages['zh-Hans']['rtl'] = false;
-        $supportedLanguages['zh-Hans']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['zh-Hans']['dateformat'] = 'yyyy-mm-dd';
+        $supportedLanguages['zh-Hans']['dateformat'] = 6;
 
         // Chinese (Traditional - Hong Kong)
         $supportedLanguages['zh-Hant-HK']['description'] = $clang->gT('Chinese (Traditional - Hong Kong)');
         $supportedLanguages['zh-Hant-HK']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#35486;&#31995;';
 	    $supportedLanguages['zh-Hant-HK']['rtl'] = false;
-        $supportedLanguages['zh-Hant-HK']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['zh-Hant-HK']['dateformat'] = 'yyyy-mm-dd';
+        $supportedLanguages['zh-Hant-HK']['dateformat'] = 6;
 
         // Chinese (Traditional - Taiwan)
         $supportedLanguages['zh-Hant-TW']['description'] = $clang->gT('Chinese (Traditional - Taiwan)');
         $supportedLanguages['zh-Hant-TW']['nativedescription'] = 'Chinese (Traditional - Taiwan)';
 	    $supportedLanguages['zh-Hant-TW']['rtl'] = false;
-        $supportedLanguages['zh-Hant-TW']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['zh-Hant-TW']['dateformat'] = 'yyyy-mm-dd';
+        $supportedLanguages['zh-Hant-TW']['dateformat'] = 6;
 
         // Croatian
 	    $supportedLanguages['hr']['description'] = $clang->gT('Croatian');
 	    $supportedLanguages['hr']['nativedescription'] = 'Hrvatski';
 	    $supportedLanguages['hr']['rtl'] = false;
-        $supportedLanguages['hr']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['hr']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['hr']['dateformat'] = 4;        
 
         // Czech
         $supportedLanguages['cs']['description'] = $clang->gT('Czech');
         $supportedLanguages['cs']['nativedescription'] = '&#x010c;esky';
 	    $supportedLanguages['cs']['rtl'] = false;
-        $supportedLanguages['cs']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['cs']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['cs']['dateformat'] = 4;        
         
         // Danish
 	    $supportedLanguages['da']['description'] = $clang->gT('Danish');
 	    $supportedLanguages['da']['nativedescription'] = 'Dansk';
 	    $supportedLanguages['da']['rtl'] = false;
-        $supportedLanguages['da']['dateformatphp'] = 'd-m-Y';
-        $supportedLanguages['da']['dateformat'] = 'dd-mm-yyyy';
+        $supportedLanguages['da']['dateformat'] =  2;
 
 	    // Dutch
 	    $supportedLanguages['nl']['description'] = $clang->gT('Dutch');
 	    $supportedLanguages['nl']['nativedescription'] = 'Nederlands';
 	    $supportedLanguages['nl']['rtl'] = false;
-        $supportedLanguages['nl']['dateformatphp'] = 'd-m-Y';
-        $supportedLanguages['nl']['dateformat'] = 'dd-mm-yyyy';
+        $supportedLanguages['nl']['dateformat'] = 2;
+
+        // Dutch
+        $supportedLanguages['nl-informal']['description'] = $clang->gT('Dutch Informal');
+        $supportedLanguages['nl-informal']['nativedescription'] = 'Nederlands (Du)';
+        $supportedLanguages['nl-informal']['rtl'] = false;
+        $supportedLanguages['nl-informal']['dateformat'] = 2;
 
 	    // English
 	    $supportedLanguages['en']['description'] = $clang->gT('English');
 	    $supportedLanguages['en']['nativedescription'] = 'English';
 	    $supportedLanguages['en']['rtl'] = false;
-        $supportedLanguages['en']['dateformatphp'] = 'm-d-Y';
-        $supportedLanguages['en']['dateformat'] = 'mm-dd-yyyy';
+        $supportedLanguages['en']['dateformat'] = 9;
 
         // Estonian
         $supportedLanguages['et']['description'] = $clang->gT('Estonian');
         $supportedLanguages['et']['nativedescription'] = 'Eesti';
 	    $supportedLanguages['et']['rtl'] = false;
-        $supportedLanguages['et']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['et']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['et']['dateformat'] = 4;        
 
 	    // Finnish
 	    $supportedLanguages['fi']['description'] = $clang->gT('Finnish');
 	    $supportedLanguages['fi']['nativedescription'] = 'Suomi';
 	    $supportedLanguages['fi']['rtl'] = false;
-        $supportedLanguages['fi']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['fi']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['fi']['dateformat'] = 4;        
 
 	    // French
 	    $supportedLanguages['fr']['description'] = $clang->gT('French');
 	    $supportedLanguages['fr']['nativedescription'] = 'Fran&#231;ais';
 	    $supportedLanguages['fr']['rtl'] = false;
-        $supportedLanguages['fr']['dateformatphp'] = 'd-m-Y';
-        $supportedLanguages['fr']['dateformat'] = 'dd-mm-yyyy';
-        
+        $supportedLanguages['fr']['dateformat'] = 2;
 
         // Galician
         $supportedLanguages['gl']['description'] = $clang->gT('Galician');
         $supportedLanguages['gl']['nativedescription'] = 'Galego';
 	    $supportedLanguages['gl']['rtl'] = false;
-        $supportedLanguages['gl']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['gl']['dateformat'] = 'dd/mm/yyyy';
-        
+        $supportedLanguages['gl']['dateformat'] = 5;
 
    	    // German
 	    $supportedLanguages['de']['description'] = $clang->gT('German');
 	    $supportedLanguages['de']['nativedescription'] = 'Deutsch (Sie)';
 	    $supportedLanguages['de']['rtl'] = false;
-        $supportedLanguages['de']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['de']['dateformat'] = 'tt.mm.jjjj';
+        $supportedLanguages['de']['dateformat'] = 1;
 
         // German informal
 	    $supportedLanguages['de-informal']['description'] = $clang->gT('German informal');
 	    $supportedLanguages['de-informal']['nativedescription'] = 'Deutsch (Du)';
 	    $supportedLanguages['de-informal']['rtl'] = false;
-        $supportedLanguages['de-informal']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['de-informal']['dateformat'] = 'tt.mm.jjjj';
+        $supportedLanguages['de-informal']['dateformat'] = 1;
 
 	    // Greek
 	    $supportedLanguages['el']['description'] = $clang->gT('Greek');
 	    $supportedLanguages['el']['nativedescription'] = '&#949;&#955;&#955;&#951;&#957;&#953;&#954;&#940;';
 	    $supportedLanguages['el']['rtl'] = false;
-        $supportedLanguages['el']['dateformatphp'] = 'j/n/Y';
-        $supportedLanguages['el']['dateformat'] = 'd/m/yyyy';    
+        $supportedLanguages['el']['dateformat'] = 8;    
         
   	    // Hindi
 	    $supportedLanguages['hi']['description'] = $clang->gT('Hindi');
 	    $supportedLanguages['hi']['nativedescription'] = '&#2361;&#2367;&#2344;&#2381;&#2342;&#2368;';
 	    $supportedLanguages['hi']['rtl'] = false;
-        $supportedLanguages['hi']['dateformatphp'] = 'd-m-Y';
-        $supportedLanguages['hi']['dateformat'] = 'dd-mm-yyyy';
+        $supportedLanguages['hi']['dateformat'] = 2;
                      
 	    // Hebrew
 	    $supportedLanguages['he']['description'] = $clang->gT('Hebrew');
 	    $supportedLanguages['he']['nativedescription'] = ' &#1506;&#1489;&#1512;&#1497;&#1514;';
 	    $supportedLanguages['he']['rtl'] = true;
-        $supportedLanguages['he']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['he']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['he']['dateformat'] = 5;
 
 	    // Hungarian
 	    $supportedLanguages['hu']['description'] = $clang->gT('Hungarian');
 	    $supportedLanguages['hu']['nativedescription'] = 'Magyar';
 	    $supportedLanguages['hu']['rtl'] = false;
-        $supportedLanguages['hu']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['hu']['dateformat'] = 'yyyy-mm-dd';
-        
+        $supportedLanguages['hu']['dateformat'] = 6;
 
 	    // Icelandic
 	    $supportedLanguages['is']['description'] = $clang->gT('Icelandic');
 	    $supportedLanguages['is']['nativedescription'] = '&#237;slenska';
 	    $supportedLanguages['is']['rtl'] = false;
-        $supportedLanguages['is']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['is']['dateformat'] = 'dd.mm.yyyy';
-
+        $supportedLanguages['is']['dateformat'] = 1;
         
 	    // Indonesian
 	    $supportedLanguages['id']['description'] = $clang->gT('Indonesian');
 	    $supportedLanguages['id']['nativedescription'] = 'Bahasa Indonesia';
 	    $supportedLanguages['id']['rtl'] = false;
-        $supportedLanguages['id']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['id']['dateformat'] = 'dd/mm/yyyy';
-        
+        $supportedLanguages['id']['dateformat'] = 5;
 
 	    // Italian
 	    $supportedLanguages['it']['description'] = $clang->gT('Italian');
 	    $supportedLanguages['it']['nativedescription'] = 'Italiano';
 	    $supportedLanguages['it']['rtl'] = false;
-        $supportedLanguages['it']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['it']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['it']['dateformat'] = 5;
 
 	    // Japanese
 	    $supportedLanguages['ja']['description'] = $clang->gT('Japanese');
 	    $supportedLanguages['ja']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
 	    $supportedLanguages['ja']['rtl'] = false;
-        $supportedLanguages['ja']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['ja']['dateformat'] = 'yyyy-mm-dd';
+        $supportedLanguages['ja']['dateformat'] = 6;
 
 	    // Korean
 	    $supportedLanguages['ko']['description'] = $clang->gT('Korean');
 	    $supportedLanguages['ko']['nativedescription'] = '&#54620;&#44397;&#50612;';
 	    $supportedLanguages['ko']['rtl'] = false;
-        $supportedLanguages['ko']['dateformatphp'] = 'Y/m/d';
-        $supportedLanguages['ko']['dateformat'] = 'yyyy/mm/dd';        
+        $supportedLanguages['ko']['dateformat'] = 7;        
 
 	    // Lithuanian
 	    $supportedLanguages['lt']['description'] = $clang->gT('Lithuanian');
 	    $supportedLanguages['lt']['nativedescription'] = 'Lietuvi&#371;';
 	    $supportedLanguages['lt']['rtl'] = false;
-        $supportedLanguages['lt']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['lt']['dateformat'] = 'yyyy-mm-dd';        
+        $supportedLanguages['lt']['dateformat'] = 6;        
 
         // Latvian
         $supportedLanguages['lv']['description'] = $clang->gT('Latvian');
         $supportedLanguages['lv']['nativedescription'] = 'Latvie&#353;u';
         $supportedLanguages['lv']['rtl'] = false;	    
-        $supportedLanguages['lv']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['lv']['dateformat'] = 'yyyy-mm-dd';        
+        $supportedLanguages['lv']['dateformat'] = 6;        
 
 	    // Macedonian
 	    $supportedLanguages['mk']['description'] = $clang->gT('Macedonian');
 	    $supportedLanguages['mk']['nativedescription'] = '&#1052;&#1072;&#1082;&#1077;&#1076;&#1086;&#1085;&#1089;&#1082;&#1080;';
 	    $supportedLanguages['mk']['rtl'] = false;
-        $supportedLanguages['mk']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['mk']['dateformat'] = 'dd.mm.yyyy';
-        
+        $supportedLanguages['mk']['dateformat'] = 1;
    
 	    // Norwegian Bokmal
 	    $supportedLanguages['nb']['description'] = $clang->gT('Norwegian (Bokmal)');
 	    $supportedLanguages['nb']['nativedescription'] = 'Norsk Bokm&#229;l';
 	    $supportedLanguages['nb']['rtl'] = false;
-        $supportedLanguages['nb']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['nb']['dateformat'] = 'd.m.yyyy';        
-        
+        $supportedLanguages['nb']['dateformat'] = 4;        
 
 	    // Norwegian Nynorsk 
 	    $supportedLanguages['nn']['description'] = $clang->gT('Norwegian (Nynorsk)');
 	    $supportedLanguages['nn']['nativedescription'] = 'Norsk Nynorsk';
 	    $supportedLanguages['nn']['rtl'] = false;
-        $supportedLanguages['nn']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['nn']['dateformat'] = 'd.m.yyyy';        
+        $supportedLanguages['nn']['dateformat'] = 4;        
 
 	    // Persian
 	    $supportedLanguages['fa']['description'] = $clang->gT('Persian');
 	    $supportedLanguages['fa']['nativedescription'] = '&#1601;&#1575;&#1585;&#1587;&#1740;';
 	    $supportedLanguages['fa']['rtl'] = true;
-        $supportedLanguages['fa']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['fa']['dateformat'] = 'yyyy-mm-dd';
+        $supportedLanguages['fa']['dateformat'] = 6;
 
         // Polish
         $supportedLanguages['pl']['description'] = $clang->gT('Polish');
         $supportedLanguages['pl']['nativedescription'] = 'Polski';
 	    $supportedLanguages['pl']['rtl'] = false;
-        $supportedLanguages['pl']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['pl']['dateformat'] = 'dd.mm.yyyy';
+        $supportedLanguages['pl']['dateformat'] = 1;
  
  	    // Portuguese
 	    $supportedLanguages['pt']['description'] = $clang->gT('Portuguese');
 	    $supportedLanguages['pt']['nativedescription'] = 'Portugu&#234;s';
 	    $supportedLanguages['pt']['rtl'] = false;
-        $supportedLanguages['pt']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['pt']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['pt']['dateformat'] = 5;
 
 	    // Brazilian Portuguese
 	    $supportedLanguages['pt-BR']['description'] = $clang->gT('Portuguese (Brazilian)');
 	    $supportedLanguages['pt-BR']['nativedescription'] = 'Portugu&#234;s do Brasil';
 	    $supportedLanguages['pt-BR']['rtl'] = false;
-        $supportedLanguages['pt-BR']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['pt-BR']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['pt-BR']['dateformat'] = 5;
 
 	    // Russian
 	    $supportedLanguages['ru']['description'] = $clang->gT('Russian');
 	    $supportedLanguages['ru']['nativedescription'] = '&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;';
 	    $supportedLanguages['ru']['rtl'] = false;
-        $supportedLanguages['ru']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['ru']['dateformat'] = 'dd.mm.yyyy';
+        $supportedLanguages['ru']['dateformat'] = 1;
 
 	    // Romanian
 	    $supportedLanguages['ro']['description'] = $clang->gT('Romanian');
 	    $supportedLanguages['ro']['nativedescription'] = 'Rom&#226;nesc';
 	    $supportedLanguages['ro']['rtl'] = false;
-        $supportedLanguages['ro']['dateformatphp'] = 'd.m.Y';
-        $supportedLanguages['ro']['dateformat'] = 'dd.mm.yyyy';
+        $supportedLanguages['ro']['dateformat'] = 1;
  
  	    // Slovak
 	    $supportedLanguages['sk']['description'] = $clang->gT('Slovak');
 	    $supportedLanguages['sk']['nativedescription'] = 'Slov&aacute;k';
 	    $supportedLanguages['sk']['rtl'] = false;
-        $supportedLanguages['sk']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['sk']['dateformat'] = 'd.m.yyyy';
+        $supportedLanguages['sk']['dateformat'] = 4;
 
  	    // Sinhala
 	    $supportedLanguages['si']['description'] = $clang->gT('Sinhala');
 	    $supportedLanguages['si']['nativedescription'] = '&#3523;&#3538;&#3458;&#3524;&#3517;';
 	    $supportedLanguages['si']['rtl'] = false;
-        $supportedLanguages['si']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['si']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['si']['dateformat'] = 5;
 
 	    // Slovenian
 	    $supportedLanguages['sl']['description'] = $clang->gT('Slovenian');
 	    $supportedLanguages['sl']['nativedescription'] = 'Sloven&#353;&#269;ina';
 	    $supportedLanguages['sl']['rtl'] = false;
-        $supportedLanguages['sl']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['sl']['dateformat'] = 'd.m.yyyy';
+        $supportedLanguages['sl']['dateformat'] = 4;
 
         // Serbian
         $supportedLanguages['sr']['description'] = $clang->gT('Serbian');
         $supportedLanguages['sr']['nativedescription'] = 'Srpski';
 	    $supportedLanguages['sr']['rtl'] = false;
-        $supportedLanguages['sr']['dateformatphp'] = 'j.n.Y';
-        $supportedLanguages['sr']['dateformat'] = 'd.m.yyyy';
+        $supportedLanguages['sr']['dateformat'] = 4;
 
 	    // Spanish
 	    $supportedLanguages['es']['description'] = $clang->gT('Spanish');
 	    $supportedLanguages['es']['nativedescription'] = 'Espa&#241;ol';
 	    $supportedLanguages['es']['rtl'] = false;
-        $supportedLanguages['es']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['es']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['es']['dateformat'] = 5;
 
 	    // Spanish (Mexico)
 	    $supportedLanguages['es-MX']['description'] = $clang->gT('Spanish (Mexico)');
 	    $supportedLanguages['es-MX']['nativedescription'] = 'Espa&#241;ol Mejicano';
 	    $supportedLanguages['es-MX']['rtl'] = false;
-        $supportedLanguages['es-MX']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['es-MX']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['es-MX']['dateformat'] = 5;
 
 	    // Swedish
 	    $supportedLanguages['sv']['description'] = $clang->gT('Swedish');
 	    $supportedLanguages['sv']['nativedescription'] = 'Svenska';
 	    $supportedLanguages['sv']['rtl'] = false;
-        $supportedLanguages['sv']['dateformatphp'] = 'Y-m-d';
-        $supportedLanguages['sv']['dateformat'] = 'yyyy-mm-dd';        
+        $supportedLanguages['sv']['dateformat'] = 6;        
 
 	    // Turkish
 	    $supportedLanguages['tr']['description'] = $clang->gT('Turkish');
 	    $supportedLanguages['tr']['nativedescription'] = 'T&#252;rk&#231;e';
 	    $supportedLanguages['tr']['rtl'] = false;
-        $supportedLanguages['tr']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['tr']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['tr']['dateformat'] = 5;
 
 	    // Thai
 	    $supportedLanguages['th']['description'] = $clang->gT('Thai');
 	    $supportedLanguages['th']['nativedescription'] = '&#3616;&#3634;&#3625;&#3634;&#3652;&#3607;&#3618;';
 	    $supportedLanguages['th']['rtl'] = false;
-        $supportedLanguages['th']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['th']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['th']['dateformat'] = 5;
 
 
 	    // Vietnamese
 	    $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
 	    $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
 	    $supportedLanguages['vi']['rtl'] = false;
-        $supportedLanguages['vi']['dateformatphp'] = 'd/m/Y';
-        $supportedLanguages['vi']['dateformat'] = 'dd/mm/yyyy';
+        $supportedLanguages['vi']['dateformat'] = 5;
 
         uasort($supportedLanguages,"user_sort");
         

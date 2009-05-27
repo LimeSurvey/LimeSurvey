@@ -75,6 +75,7 @@ function checkforupgrades()
     $adminoutput='';
     $upgradedbtype=$databasetype;
     if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';         
+    if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';         
     include ('upgrade-'.$upgradedbtype.'.php');
     $tables = $connect->MetaTables();
 

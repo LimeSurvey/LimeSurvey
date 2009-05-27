@@ -9,11 +9,21 @@ CREATE TABLE [prefix_quota] (
   [qlimit] int ,
   [action] int ,
   [active] int NOT NULL default '1',
+  [autoload_url] int NOT NULL default '0',
   PRIMARY KEY  ([id])
 );
 
 
-
+CREATE TABLE [prefix_quota_languagesettings] (
+  [quotals_id] int NOT NULL IDENTITY (1,1),
+  [quotals_quota_id] int,
+  [quotals_language] varchar(45) NOT NULL default 'en',
+  [quotals_name] varchar(255),
+  [quotals_message] text,
+  [quotals_url] varchar(255),
+  [quotals_urldescrip] varchar(255),
+  PRIMARY KEY ([quotals_id])
+);
 
 
 CREATE TABLE [prefix_quota_members] (
@@ -35,7 +45,7 @@ CREATE TABLE [prefix_quota_members] (
 CREATE TABLE [prefix_answers] (
   [qid] INT NOT NULL default '0',
   [code] VARCHAR(5) NOT NULL default '',
-  [answer] varchar(255) NOT NULL,
+  [answer] varchar(8000) NOT NULL,
   [default_value] char(1) NOT NULL default 'N',
   [sortorder] INT NOT NULL,
   [assessment_value] INT NOT NULL default '0',
@@ -142,7 +152,7 @@ CREATE TABLE [prefix_question_attributes] (
   [qaid] INT NOT NULL IDENTITY (1,1),
   [qid] INT NOT NULL default '0',
   [attribute] VARCHAR(50) default NULL,
-  [value] VARCHAR(20) default NULL,
+  [value] TEXT default NULL,
   PRIMARY KEY  ([qaid])
 ) 
 ;
@@ -219,8 +229,6 @@ CREATE TABLE [prefix_surveys] (
   [usecookie] char(1) default 'N',
   [notification] char(1) default '0',
   [allowregister] char(1) default 'N',
-  [attribute1] VARCHAR(255) default NULL,
-  [attribute2] VARCHAR(255) default NULL,
   [allowsave] char(1) default 'Y',
   [autonumber_start] bigINT default '0',
   [autoredirect] char(1) default 'N',
@@ -238,7 +246,10 @@ CREATE TABLE [prefix_surveys] (
   [tokenanswerspersistence] char(1) default 'N',
   [assessments] char(1) default 'N',
   [usecaptcha] char(1) default 'N',
+  [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
+  [attributedescriptions] text,
+  
   PRIMARY KEY  ([sid])
 ) 
 ;
@@ -267,6 +278,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
   [surveyls_email_register] TEXT NULL,
   [surveyls_email_confirm_subj] VARCHAR(255) NULL,
   [surveyls_email_confirm] TEXT NULL,
+  [surveyls_dateformat] INT NOT NULL DEFAULT 1, 
   PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 )
 ;
@@ -278,7 +290,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
 CREATE TABLE [prefix_users] (
   [uid] INT NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [users_name] VARCHAR(64) NOT NULL UNIQUE default '',
-  [password] TEXT NOT NULL default '', 
+  [password] varchar(8000) NOT NULL default '', 
   [full_name] VARCHAR(50) NOT NULL,
   [parent_id] INT NOT NULL, 
   [lang] VARCHAR(20),
@@ -292,8 +304,8 @@ CREATE TABLE [prefix_users] (
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
   [one_time_pw] TEXT
-) 
-;
+);
+
 
 -- 
 -- Table structure for table [surveys_rights]
@@ -362,15 +374,14 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '133');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '137');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 --
 -- Table [users]
 --
 
-INSERT INTO [prefix_users]  (users_name, [password], full_name, parent_id, lang, email, create_survey, create_user, delete_user, superadmin, configurator, manage_template, 
-                      manage_label, htmleditormode) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
+INSERT INTO [prefix_users] VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default');
 
 
 

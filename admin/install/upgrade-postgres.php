@@ -133,12 +133,18 @@ global $modifyoutput;
   						   quotals_url character varying(255),
   						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
 	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
-  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+  	   					    ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
        modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-       modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
-       modify_database("","ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
                
 	}
+    
+    if ($oldversion < 137) //New date format specs
+    {
+        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }         
 
     return true;
 }

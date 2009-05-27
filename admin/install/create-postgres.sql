@@ -287,7 +287,8 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_register_subj character varying(255),
     surveyls_email_register text,
     surveyls_email_confirm_subj character varying(255),
-    surveyls_email_confirm text
+    surveyls_email_confirm text,
+    surveyls_dateformat integer DEFAULT 1 NOT NULL
 );
 
 
@@ -510,7 +511,7 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '136');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '137');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 --

@@ -18,7 +18,7 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 $versionnumber = "1.85RC3";
-$dbversionnumber = 136;
+$dbversionnumber = 137;
 $buildnumber = "";
 
 
@@ -59,7 +59,7 @@ define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for ms
 ## DO NOT EDIT BELOW HERE
 ##################################################################################
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
-require_once ($rootdir.'/classes/dateparser/dateparser.php');
+require_once ($rootdir.'/classes/datetimeconverter/class.datetimeconverter.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
 require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
@@ -81,9 +81,11 @@ if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami"
 }
 
 
-// Array of JS scripts to include in header
+// Array of JS and CSS scripts to include in header
 // is updated by questions in qanda.php
-$js_header_includes = Array();
+$js_header_includes = array();
+$css_header_includes =  array();
+
 // JS scripts and CSS to include in admin header
 // updated by admin scripts. Caution this is a string not an array
 $js_adminheader_includes = "";
@@ -3502,7 +3504,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     $new_str ='';
 
     if ($htmldecode==true) {
-        $str=html_entity_decode($question,ENT_QUOTES,'UTF-8');
+        $str=html_entity_decode($str,ENT_QUOTES,'UTF-8');
     }
     if ($strip_tags==true)
     {
@@ -3517,8 +3519,11 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 // If you want to echo the header use doHeader() !
 function getHeader()
 {
-	global $embedded, $surveyid, $rooturl,$defaultlang, $js_header_includes;
+	global $embedded, $surveyid, $rooturl,$defaultlang, $js_header_includes, $css_header_includes;
 
+    $js_header_includes = array_unique($js_header_includes);
+    $css_header_includes = array_unique($css_header_includes);
+    
     if (isset($_SESSION['s_lang']) && $_SESSION['s_lang'])
     {
         $surveylanguage= $_SESSION['s_lang'];
@@ -3532,12 +3537,18 @@ function getHeader()
         $surveylanguage=$defaultlang;
     }
 
-	$js_header = "";
+	$js_header = ''; $css_header='';
 	foreach ($js_header_includes as $jsinclude)
 	{
 		$js_header .= "<script type=\"text/javascript\" src=\"".$rooturl."$jsinclude\"></script>\n";
 	}
 
+    foreach ($css_header_includes as $cssinclude)
+    {
+        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl.$cssinclude."\" />\n";
+    }
+    
+    
 	if ( !$embedded )
 	{
 		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -3547,12 +3558,13 @@ function getHeader()
             $header.=" dir=\"rtl\" ";
         }
         $header.= ">\n\t<head>\n"
+                . $css_header
         		. "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar.js\"></script>\n"
+        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar_stripped.js\"></script>\n"
         		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
                 . "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
-        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup.js\"></script>\n"
-			. $js_header;
+        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup_stripped.js\"></script>\n"
+			    . $js_header;
 			
         return $header;        
     }
@@ -3654,9 +3666,9 @@ function getAdminHeader($meta=false)
 	$strAdminHeader .= $js_adminheader_includes;
     }
 
-	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar.js\"></script>\n"
+	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar_stripped.js\"></script>\n"
 	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
-	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup.js\"></script>\n"
+	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup_stripped.js\"></script>\n"
 	. "\t\t<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
 	. use_firebug()
 	. "\t</head>\n\t<body>\n"

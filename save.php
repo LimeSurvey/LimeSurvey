@@ -58,6 +58,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 
 
 global $connect;
+
 //First, save the posted data to session
 //Doing this ensures that answers on the current page are saved as well.
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
@@ -386,6 +387,13 @@ function createinsertquery()
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);                         
                     }
+                    elseif ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    {
+                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
+                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                    }
                 	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
                 }
 
@@ -531,6 +539,12 @@ function createinsertquery()
                             {
                                 $_POST[$field]=sanitize_float($_POST[$field]);    
                             }
+                            elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
+                            {
+                                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
+                                $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
+                            }                            
 							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
 						}
 					}
