@@ -316,7 +316,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	$new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');        
 	$new_user = $postnew_user; // TODO: check if html decode should be used here
 	$new_email = $postnew_email; // TODO: check if html decode should be used here
-	$new_full_name = html_entity_decode($postnew_full_name,'UTF-8');        
+	$new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');        
 	$valid_email = true;
 
 	if(!validate_email($new_email))
