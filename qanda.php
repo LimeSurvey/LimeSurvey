@@ -130,7 +130,7 @@ function retrieveConditionInfo($ia)
 // if $currentgid is not null (Group by group survey), the fieldname depends on the groupId
 function retrieveJSidname($cd,$currentgid=null)
 {
-	global $dbprefix, $connect;
+	global $dbprefix, $connect, $dropdownthreshold;
 
 	preg_match("/^[0-9]+X([0-9]+)X([0-9]+)$/",$cd[5],$matchGID);
 	$questiongid=$matchGID[1];
