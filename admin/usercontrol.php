@@ -476,10 +476,10 @@ elseif ($action == "moduser")
 		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])) && !($demoModeOnly == true && $postuserid == 1)
 	  )
 	{
-		$users_name = html_entity_decode($postuser,'UTF-8');        
-		$email = html_entity_decode($postemail,'UTF-8');        
-		$pass = html_entity_decode($_POST['pass'],'UTF-8');        
-		$full_name = html_entity_decode($postfull_name,'UTF-8');        
+		$users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');        
+		$email = html_entity_decode($postemail,ENT_QUOTES, 'UTF-8');        
+		$pass = html_entity_decode($_POST['pass'],ENT_QUOTES, 'UTF-8');        
+		$full_name = html_entity_decode($postfull_name,ENT_QUOTES, 'UTF-8');        
 		$valid_email = true;
 
 		if(!validate_email($email))
