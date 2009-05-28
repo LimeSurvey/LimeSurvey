@@ -3265,7 +3265,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Minimum answers'));
 
 	$qattributes["other_comment_mandatory"]=array(
-	"types"=>"P",
+	"types"=>"PLW!Z",
 	"help"=>$clang->gT("Make the \"other comment\" field mandatory when the \"other\" field has been marked"),
     "caption"=>$clang->gT('Other comment mandatory'));
     

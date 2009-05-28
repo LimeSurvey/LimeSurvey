@@ -1340,6 +1340,7 @@ function do_list_dropdown($ia)
 		."\telse\n"
 		."\t\t{\n"
 		."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
+		."\t\tdocument.getElementById(hiddenothername).value='';\n" // reset othercomment field
 		."\t\t}\n"
 		."\t}\n"
 		."//--></script>\n".$answer;
@@ -1371,6 +1372,31 @@ function do_list_dropdown($ia)
 	{
 		$answer .= "</p>";
 	}
+
+	$checkotherscript = "";
+	if (isset($other) && $other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+	{
+		$checkotherscript = "\n<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
+			. "\t\t\t\t\totherval=document.getElementById('answer{$ia[1]}').value;\n"
+			. "\t\t\t\t\tif (otherval == '-oth-' && othercommentval == '') {\n"	
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+	$answer = $checkotherscript . $answer;
 
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
@@ -1506,6 +1532,7 @@ function do_list_flexible_dropdown($ia)
 		."\telse\n"
 		."\t\t{\n"
 		."\t\tdocument.getElementById(hiddenothername).style.display='none';\n"
+		."\t\tdocument.getElementById(hiddenothername).value='';\n" // TIBO enable this to reset the othercomment field when other unlesected
 		."\t\t}\n"
 		."\t}\n"
 		."//--></script>\n".$answer;
@@ -1515,10 +1542,43 @@ function do_list_flexible_dropdown($ia)
 		{
 			$answer .= ' none';
 		}
+		$answer .= "\" value=\"";
+
+		if (isset($_SESSION[$ia[1].'other']))
+		{
+			$answer .= str_replace ("\"", "'", str_replace("\\", "",($_SESSION[$ia[1].'other'])));
+		}
+
 		$answer .= "\" />\n\t\t\t</p>\n";
 
 		$inputnames[]=$ia[1]."other";
 	}
+
+	$checkotherscript = "";
+	if (isset($other) && $other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+	{
+		$checkotherscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercommentval=document.getElementById('othertext{$ia[1]}').value;\n"
+			. "\t\t\t\t\totherval=document.getElementById('answer{$ia[1]}').value;\n"
+			. "\t\t\t\t\tif (otherval == '-oth-' && othercommentval == '') {\n"	
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+
+	$answer = $checkotherscript . $answer;
 
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
@@ -1608,7 +1668,9 @@ function do_list_radio($ia)
 		{
 			$check_ans = '';
 		}
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+//		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+// TIBO switch to the following line in order to reset the othercomment field when the other option is unselected
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
 '.$wrapper['item-end'];
 
@@ -1685,7 +1747,7 @@ function do_list_radio($ia)
 			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
@@ -1709,6 +1771,32 @@ function do_list_radio($ia)
 	}
 	$answer .= $wrapper['whole-end'].'
 <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+
+	$checkotherscript = "";
+	if (isset($other) && $other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+	{
+		$checkotherscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
+			. "\t\t\t\t\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
+			. "\t\t\t\t\tif (otherval == true && othercommentval == '') {\n"	
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+
+	$answer = $checkotherscript . $answer;
 
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
@@ -1799,7 +1887,7 @@ function do_list_flexible_radio($ia)
 			{
 				$check_ans ='';
 			};
-			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['title'].'</label>
 '.$wrapper['item-end'];
 
@@ -1881,7 +1969,7 @@ function do_list_flexible_radio($ia)
 			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 
@@ -1905,6 +1993,32 @@ function do_list_flexible_radio($ia)
 
 	$answer .= $wrapper['whole-end'].'
 <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+
+	$checkotherscript = "";
+	if (isset($other) && $other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+	{
+		$checkotherscript = "<script type='text/javascript'>\n"
+			. "\t\t\t<!--\n"
+			. "\t\t\t\toldonsubmitOther_{$ia[0]} = document.limesurvey.onsubmit;\n"	
+			. "\t\t\t\tfunction ensureOther_{$ia[0]}()\n"
+			. "\t\t\t\t{\n"
+			. "\t\t\t\t\tothercommentval=document.getElementById('answer{$ia[1]}othertext').value;\n"
+			. "\t\t\t\t\totherval=document.getElementById('SOTH{$ia[1]}').checked;\n"
+			. "\t\t\t\t\tif (otherval == true && othercommentval == '') {\n"	
+			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
+			. "\t\t\t\t\t\treturn false;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t\telse {\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
+			. "\t\t\t\t\t}\n"
+			. "\t\t\t\t}\n"
+			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
+			. "\t\t\t-->\n"
+			. "\t\t</script>\n";
+	}
+
+	$answer = $checkotherscript . $answer;
 
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
@@ -2676,7 +2790,8 @@ function do_multiplechoice($ia)
 			. "\t\t\t\t\tothercboxval=document.getElementById('answer".$myfname."cbox').checked;\n"
 			. "\t\t\t\t\totherval=document.getElementById('answer".$myfname."').value;\n"
 			. "\t\t\t\t\tif (otherval != '' || othercboxval != true) {\n"	
-			. "\t\t\t\t\t\treturn oldonsubmitOther_{$ia[0]};\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
 			. "\t\t\t\t\t}\n"
 			. "\t\t\t\t\telse {\n"
 			. "\t\t\t\t\t\talert('".sprintf($clang->gT("You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field.","js"),trim(javascript_escape($ia[3],true,true)))."');\n"
@@ -2983,7 +3098,8 @@ function do_multiplechoice_withcomments($ia)
 			. "\t\t\t\t\t\treturn false;\n"
 			. "\t\t\t\t\t}\n"
 			. "\t\t\t\t\telse {\n"
-			. "\t\t\t\t\t\treturn oldonsubmitOther_{$ia[0]};\n"
+			. "\t\t\t\t\t\tresult=oldonsubmitOther_{$ia[0]}();\n"
+			. "\t\t\t\t\t\treturn result;\n"
 			. "\t\t\t\t\t}\n"
 			. "\t\t\t\t}\n"
 			. "\t\t\t\tdocument.limesurvey.onsubmit = ensureOther_{$ia[0]};\n"
