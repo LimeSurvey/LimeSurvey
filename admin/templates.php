@@ -877,6 +877,11 @@ $templatesoutput.= "\t\t\t<table class='menubar'>\n"
 . "\t\t\t<tr>\n"
 . "\t\t\t\t<td colspan='2' height='8'>\n"
 . "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
+. "\t\t\t\t\t<input type='button' value='iPhone' id='iphone'>\n"
+. "\t\t\t\t\t<input type='button' value='640x480' id='640'>\n"
+. "\t\t\t\t\t<input type='button' value='800x600' id='800'>\n"
+. "\t\t\t\t\t<input type='button' value='1024x768' id='1024'>\n"
+. "\t\t\t\t\t<input type='button' value='".$clang->gt("Full")."' id='full'>\n"
 . "\t\t\t\t</td>\n"
 . "\t\t\t</tr>\n"
 ."\t<tr>\n"
@@ -898,7 +903,7 @@ foreach($myoutput as $line) {
 fclose($fnew);
 $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
 $templatesoutput.= "<br />\n"
-."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='500' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
+."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='500' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
 ."<br />&nbsp;<br />"
 ."</td></tr></table>\n";
 }
