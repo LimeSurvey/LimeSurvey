@@ -107,6 +107,11 @@ div.menubar {
 	border-width: 1px;
 }
 
+
+.menubar-title img {
+    margin-bottom:2px;
+}
+
 .menubar-left {
 	background-color: #EEF6FF;
 	text-align: left;
@@ -687,3 +692,4 @@ table.statisticstable, table.statisticssummary {
    vertical-align:middle;
    margin:0 2px;
 }
+

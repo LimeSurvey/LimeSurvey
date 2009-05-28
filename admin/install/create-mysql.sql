@@ -336,7 +336,9 @@ CREATE TABLE `prefix_users` (
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
-  `one_time_pw` BLOB
+  `one_time_pw` BLOB,
+  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1 
+  
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 

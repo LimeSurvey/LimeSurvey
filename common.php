@@ -293,7 +293,13 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                     . "\t\t<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
-			$adminmenu  .= " --  ".$clang->gT("Logged in as"). ": <strong>". $_SESSION['user'] ."</strong>"."\n";
+			$adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
+                        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" "
+                        . "onmouseout=\"hideTooltip()\""
+                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Edit your personal preferences", "js")."');return false\">"
+                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='HomeButton' alt='".$clang->gT("Edit your personal preferences")."' "
+                        . "title='' /></a>"
+                        . "</strong>\n";
 			}
        	$adminmenu .= "\t\t</div>\n"
                     . "\t\t\t<div class='menubar-main'>\n"

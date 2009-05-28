@@ -142,7 +142,8 @@ global $modifyoutput;
     
     if ($oldversion < 137) //New date format specs
     {
-        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_users ADD \"dateformat\" integer NOT NULL default 1"); echo $modifyoutput; flush();
        modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }         
 

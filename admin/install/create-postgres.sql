@@ -347,7 +347,8 @@ CREATE TABLE prefix_users (
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
     htmleditormode character(7) DEFAULT 'default'::bpchar,
-	"one_time_pw" bytea	
+	one_time_pw bytea,
+    "dateformat" integer DEFAULT 1 NOT NULL
 );
 
 CREATE TABLE prefix_templates_rights (

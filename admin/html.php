@@ -199,18 +199,8 @@ if ($action == "listsurveys")
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
 
-if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
+if ($action == "personalsettings")
 {
-	//GET NUMBER OF SURVEYS
-	$query = "SELECT sid FROM ".db_table_name('surveys');
-	$result = $connect->Execute($query); //Checked
-	$surveycount=$result->RecordCount();
-	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
-	$result = $connect->Execute($query); //Checked
-	$activesurveycount=$result->RecordCount();
-	$query = "SELECT users_name FROM ".db_table_name('users');
-	$result = $connect->Execute($query); //Checked
-	$usercount = $result->RecordCount();
 
 	// prepare data for the htmleditormode preference
 	$edmod1='';
@@ -233,75 +223,40 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 		break;
 	}
 
-	$tablelist = $connect->MetaTables();
-	foreach ($tablelist as $table)
-	{
-		$stlength=strlen($dbprefix).strlen("old");
-		if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
-		{
-			$oldtokenlist[]=$table;
-		}
-		elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
-		{
-			$tokenlist[]=$table;
-		}
-		elseif (substr($table, 0, $stlength) == $dbprefix."old")
-		{
-			$oldresultslist[]=$table;
-		}
-	}
-	if(isset($oldresultslist) && is_array($oldresultslist))
-	{$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
-	if(isset($oldtokenlist) && is_array($oldtokenlist))
-	{$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
-	if(isset($tokenlist) && is_array($tokenlist))
-	{$activetokens=count($tokenlist);} else {$activetokens=0;}
 	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
 	. "<form action='$scriptname' method='post'>"
-	. "<table class='table2columns'"
-	. "cellpadding='1' cellspacing='0' width='600'>\n"
+	. "<table class='form2columns'"
+	. "cellpadding='1' cellspacing='0'>\n"
 	. "<tr>\n"
-	. "<td colspan='2' align='center' bgcolor='#F8F8FF'>\n"
-	. "<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
-	. "</td>\n"
+	. "<th colspan='2' align='center' bgcolor='#F8F8FF'>\n"
+	. "<strong>".$clang->gT("Your personal settings")."</strong>\n"
+	. "</th>\n"
 	. "</tr>\n";
-	// Database name & default language
-	$cssummary .= "<tr>\n"
-	. "<td width='50%' align='right'>\n"
-	. "<strong>".$clang->gT("Database Name").":</strong>\n"
-	. "</td><td>\n"
-	. "$databasename\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Default Language").":</strong>\n"
-	. "</td><td>\n"
-	. "".getLanguageNameFromCode($defaultlang)."\n"
-	. "</td>\n"
-	. "</tr>\n";
+    $cssummary .=  "<tr>\n"
+    . "<td colspan='2'>&nbsp;</td>\n"
+    . '</tr>';
+
 	// Current language
 	$cssummary .=  "<tr>\n"
-	. "<td align='right' >\n"
-	. "<strong>".$clang->gT("Current Language").":</strong>\n"
-	. "</td><td>\n"
-	. "<select name='lang' onchange='form.submit()'>\n";
+	. "<td align='right' width='50%'>\n"
+	. "<strong>".$clang->gT("Interface language").":</strong>\n"
+	. "</td><td width='50%'>\n"
+	. "<select name='lang'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
 		$cssummary .= "<option value='$langkey'";
 		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected='selected'";}
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
-	$cssummary .= "</select>\n"
-	. "<input type='hidden' id='action' name='action' value='changelang' />\n"
-	. "</td>\n"
+	$cssummary .= "</select></td>\n"
 	. "</tr>\n";
+    
 	// Current htmleditormode
 	$cssummary .=  "<tr>\n"
 	. "<td align='right' >\n"
 	. "<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
 	. "</td><td>\n"
-	. "<select name='htmleditormode' onchange='document.getElementById(\"action\").value=\"changehtmleditormode\";form.submit();'>\n"
+	. "<select name='htmleditormode'>\n"
 	. "<option value='default' $edmod1>".$clang->gT("Default HTML editor mode")."</option>\n"
 	. "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
 	. "<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
@@ -309,58 +264,150 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 	$cssummary .= "</select>\n"
 	. ""
 	. "</td>\n"
-	. "</tr>\n";
-	// Other infos
-	$cssummary .=  "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Users").":</strong>\n"
-	. "</td><td>\n"
-	. "$usercount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$surveycount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Active Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$activesurveycount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("De-activated Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$deactivatedsurveys\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Active Token Tables").":</strong>\n"
-	. "</td><td>\n"
-	. "$activetokens\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("De-activated Token Tables").":</strong>\n"
-	. "</td><td>\n"
-	. "$deactivatedtokens\n"
-	. "</td>\n"
 	. "</tr>\n"
 	. "</table></form>\n"
 	. "<table><tr><td height='1'></td></tr></table>\n";
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
+    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='savepersonalsettings' /><input type='submit' value='".$clang->gT("Save settings")."' /></form></td></tr></table>";
+    }
+}
+
+
+if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
+{
+    //GET NUMBER OF SURVEYS
+    $query = "SELECT sid FROM ".db_table_name('surveys');
+    $result = $connect->Execute($query); //Checked
+    $surveycount=$result->RecordCount();
+    $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
+    $result = $connect->Execute($query); //Checked
+    $activesurveycount=$result->RecordCount();
+    $query = "SELECT users_name FROM ".db_table_name('users');
+    $result = $connect->Execute($query); //Checked
+    $usercount = $result->RecordCount();
+
+    // prepare data for the htmleditormode preference
+    $edmod1='';
+    $edmod2='';
+    $edmod3='';
+    $edmod4='';
+    switch ($_SESSION['htmleditormode'])
+    {
+        case 'none':
+            $edmod2="selected='selected'";
+        break;
+        case 'inline':
+            $edmod3="selected='selected'";
+        break;
+        case 'popup':
+            $edmod4="selected='selected'";
+        break;
+        default:
+            $edmod1="selected='selected'";
+        break;
+    }
+
+    $tablelist = $connect->MetaTables();
+    foreach ($tablelist as $table)
+    {
+        $stlength=strlen($dbprefix).strlen("old");
+        if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+        {
+            $oldtokenlist[]=$table;
+        }
+        elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+        {
+            $tokenlist[]=$table;
+        }
+        elseif (substr($table, 0, $stlength) == $dbprefix."old")
+        {
+            $oldresultslist[]=$table;
+        }
+    }
+    if(isset($oldresultslist) && is_array($oldresultslist))
+    {$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
+    if(isset($oldtokenlist) && is_array($oldtokenlist))
+    {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
+    if(isset($tokenlist) && is_array($tokenlist))
+    {$activetokens=count($tokenlist);} else {$activetokens=0;}
+    $cssummary = "<table><thead><tr><td height='1'></td></tr></table>\n"
+    . "<form action='$scriptname' method='post'>"
+    . "<table class='statisticssummary'>\n"
+    . "<tr>\n"
+    . "<th colspan='2' align='center'>\n"
+    . "<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
+    . "</th>\n"
+    . "</tr></thead>\n";
+    // Database name & default language
+    $cssummary .= "<tr>\n"
+    . "<td width='50%' align='right'>\n"
+    . "<strong>".$clang->gT("Database Name").":</strong>\n"
+    . "</td><td>\n"
+    . "$databasename\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Default Language").":</strong>\n"
+    . "</td><td>\n"
+    . "".getLanguageNameFromCode($defaultlang)."\n"
+    . "</td>\n"
+    . "</tr>\n";
+    // Other infos
+    $cssummary .=  "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Users").":</strong>\n"
+    . "</td><td>\n"
+    . "$usercount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$surveycount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Active Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$activesurveycount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("De-activated Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$deactivatedsurveys\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Active Token Tables").":</strong>\n"
+    . "</td><td>\n"
+    . "$activetokens\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("De-activated Token Tables").":</strong>\n"
+    . "</td><td>\n"
+    . "$deactivatedtokens\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "</table></form><br />\n";
+    
+    if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
+    {
     $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."' /></form></td></tr></table>";
     }
 }
+
+
+
 
 if ($surveyid)
 {

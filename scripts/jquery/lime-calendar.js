@@ -34,8 +34,8 @@ function dateUpdater() {
     }
 
     if (($('#year'+thisid).val()=='') || ($('#month'+thisid).val()=='') || ($('#day'+thisid).val()=='')){
-        $('#qattribute_answer'+this).val('Please complete all parts of the date!');
-        $('#'+thisid).val('');
+        $('#qattribute_answer'+thisid).val('Please complete all parts of the date!');
+        $('#answer'+thisid).val('');
     }
     else
     {

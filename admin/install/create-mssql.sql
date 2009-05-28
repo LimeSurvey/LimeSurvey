@@ -303,7 +303,8 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
-  [one_time_pw] TEXT
+  [one_time_pw] TEXT,
+  [dateformat] INT NOT NULL DEFAULT 1
 );
 
 
