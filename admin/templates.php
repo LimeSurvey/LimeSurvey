@@ -328,6 +328,17 @@ foreach ($files as $file) {
 		}
 	}
 }
+//CHECK ALL CSS & JS FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
+foreach ($cssfiles as $file) {
+	$thisfile="$templaterootdir/$templatename/".$file['name'];
+	if (!is_file($thisfile)) {
+		$copyfile="$templaterootdir/default/".$file['name'];
+		$newfile=$thisfile;
+		if (!@copy($copyfile, $newfile)) {
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
+		}
+	}
+}
 
 
 if (!$screenname) {$screenname=$clang->gT("Welcome Page", "unescaped");}
