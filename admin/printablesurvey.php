@@ -112,10 +112,7 @@ $headelements = '
 
 		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
 		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar_stripped.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/lang/calendar-'.$_SESSION['adminlang'].'.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar-setup_stripped.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/validation.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/admin_core.js"></script>
 
 		<link rel="stylesheet" type="text/css" media="all" href="'.$rooturl.'/scripts/calendar/calendar-blue.css" title="win2k-cold-1" />
 ';

@@ -20,9 +20,9 @@ if (!isset($action)) {$action=returnglobal('action');}
 
 $surveyinfo=getSurveyInfo($surveyid);
 
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/assessments.js\"></script>\n";
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
+$js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+$js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+//                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
 
 $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey

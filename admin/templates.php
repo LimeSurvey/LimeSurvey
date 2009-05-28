@@ -100,8 +100,9 @@ if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('oth
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/edit_area/edit_area_loader.js\"></script>\n";
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/templates.js\"></script>\n";
+
+$js_adminheader_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
+$js_adminheader_includes[]= $homeurl."/scripts/templates.js";
 
 // find out language for code editor 
 $availableeditorlanguages=array('bg','cs' ,'de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
@@ -109,7 +110,6 @@ $extension = substr(strrchr($editfile, "."), 1);
 if ($extension=='css' || $extension=='js') {$highlighter=$extension;} else {$highlighter='html';};
 if(in_array($_SESSION['adminlang'],$availableeditorlanguages)) {$codelanguage=$_SESSION['adminlang'];}
     else  {$codelanguage='en';}     
-$js_adminheader_includes .= "<script type=\"text/javascript\"> var adminlanguage='$codelanguage'; var highlighter='$highlighter'; </script>\n";
 
 if (isset ($_POST['changes'])) {
 	$changedtext=$_POST['changes'];
@@ -616,7 +616,8 @@ if ($handle = opendir($dirloc)) {
 //****************************************************************
 //** OUTPUT STARTS HERE
 //****************************************************************
-$templatesoutput= "<script type='text/javascript'>\n"
+$templatesoutput = "<script type=\"text/javascript\"> var adminlanguage='$codelanguage'; var highlighter='$highlighter'; </script>\n";
+$templatesoutput.= "<script type='text/javascript'>\n"
 ."<!--\n"
 ."function copyprompt(text, defvalue, copydirectory, action)\n"
 ."\t{\n"

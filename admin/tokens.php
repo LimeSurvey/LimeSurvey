@@ -487,29 +487,29 @@ if ($subaction==''){
 	$tokenoutput .= "\t<tr>\n"
 	."\t\t<td align='center'>\n"
 	."\t\t<br />\n"
-	."\t\t\t<table align='center' class='tokensummary'>\n"
+	."\t\t\t<table align='center' class='statisticssummary'>\n"
 	."\t\t\t\t<tr>\n"
-	."\t\t\t\t\t<td align='center'>\n"
-	.$clang->gT("Total records in this token table")."</td><td> $tkcount</td></tr><tr>\n";
+	."\t\t\t\t\t<th>\n"
+	.$clang->gT("Total records in this token table")."</th><td> $tkcount</td></tr><tr>\n";
 	
 	
 	
 	$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
 	$tksr = db_execute_num($tksq);
 	while ($tkr = $tksr->FetchRow())
-	{$tokenoutput .= "<td>".$clang->gT("Total with no unique Token")."</td><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
+	{$tokenoutput .= "<th>".$clang->gT("Total with no unique Token")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 	
 	$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (sent!='N' and sent<>'')";
 	
 	$tksr = db_execute_num($tksq);
 	while ($tkr = $tksr->FetchRow())
 	
-	{$tokenoutput .= "<td>".$clang->gT("Total invitations sent")."</td><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
+	{$tokenoutput .= "<th>".$clang->gT("Total invitations sent")."</th><td> $tkr[0] / $tkcount</td></tr><tr>\n";}
 	$tksq = "SELECT count(*) FROM ".db_table_name("tokens_$surveyid")." WHERE (completed!='N' and completed<>'')";
 	
 	$tksr = db_execute_num($tksq) or safe_die ("Couldn't execute token selection query<br />$abquery<br />".$connect->ErrorMsg());
 	while ($tkr = $tksr->FetchRow())
-	{$tokenoutput .= "<td>".$clang->gT("Total surveys completed")."</td><td> $tkr[0] / $tkcount\n";}
+	{$tokenoutput .= "<th>".$clang->gT("Total surveys completed")."</th><td> $tkr[0] / $tkcount\n";}
 	$tokenoutput .= "</td>\n"
 	."\t\t\t\t</tr>\n"
 	."\t\t\t</table>\n"

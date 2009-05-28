@@ -1186,7 +1186,8 @@ if ($subaction=='' ||
 
 	if ($scenariocount > 0)
 	{
-		$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-checkgroup.js\"></script>\n";
+        $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-checkgroup.js';
 		while ($scenarionr=$scenarioresult->FetchRow())
 		{
 			$scenariotext = "";
@@ -1882,12 +1883,11 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
 
 
-	$js_adminheader_includes .= ""
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/lime-conditions-tabs.js\"></script>\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui-tibo.css\" />\n";
-		//		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs.css\" />\n";
-	//		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n";
+    $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
+    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+    
+	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{

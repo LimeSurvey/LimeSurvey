@@ -123,7 +123,7 @@ $statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
 ." cellspacing='0'>\n"
 ."<tr><td align='center' class='settingcaption' height='22'>"
 ."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
-."<font size='3'><strong>".$clang->gT("Filter settings")."</strong></font>"
+.$clang->gT("Filter settings")
 ."</td></tr>\n"
 ."</table>\n"
 
@@ -4136,7 +4136,7 @@ if (isset($summary) && $summary)
                     
                     if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
                     {
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }  
                     else
                     { 
@@ -4213,7 +4213,7 @@ if (isset($summary) && $summary)
                         $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
                         $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
                         $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData()));                         
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));                         
                     }
 					
 				}	//end else -> pie charts

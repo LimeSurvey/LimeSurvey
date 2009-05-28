@@ -36,7 +36,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	if (!isset($action)) {$action=returnglobal('action');}
 	if (!isset($lid)) {$lid=returnglobal('lid');}
 	if (!isset($lid1)) {$lid1=returnglobal('lid1');}
-    $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/addremove.js\"></script>\n";
 	
 	//DO DATABASE UPDATESTUFF 
 	if ($action == "updateset") {updateset($lid);}

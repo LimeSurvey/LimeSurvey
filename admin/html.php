@@ -223,55 +223,56 @@ if ($action == "personalsettings")
 		break;
 	}
 
-	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
-	. "<form action='$scriptname' method='post'>"
-	. "<table class='form2columns'"
-	. "cellpadding='1' cellspacing='0'>\n"
-	. "<tr>\n"
-	. "<th colspan='2' align='center' bgcolor='#F8F8FF'>\n"
+	$cssummary = "<div class='formheader'>"
 	. "<strong>".$clang->gT("Your personal settings")."</strong>\n"
-	. "</th>\n"
-	. "</tr>\n";
-    $cssummary .=  "<tr>\n"
-    . "<td colspan='2'>&nbsp;</td>\n"
-    . '</tr>';
+	. "</div>\n"
+    . "<div>\n"
+    . "<form action='$scriptname' id='personalsettings' method='post'>"
+    . "<ul>\n";
 
 	// Current language
-	$cssummary .=  "<tr>\n"
-	. "<td align='right' width='50%'>\n"
-	. "<strong>".$clang->gT("Interface language").":</strong>\n"
-	. "</td><td width='50%'>\n"
-	. "<select name='lang'>\n";
+	$cssummary .=  "<li>\n"
+	. "<label for='lang'>".$clang->gT("Interface language").":</label>\n"
+	. "<select id='lang' name='lang'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
 		$cssummary .= "<option value='$langkey'";
 		if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected='selected'";}
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
-	$cssummary .= "</select></td>\n"
-	. "</tr>\n";
+	$cssummary .= "</select>\n"
+	. "</li>\n";
     
 	// Current htmleditormode
-	$cssummary .=  "<tr>\n"
-	. "<td align='right' >\n"
-	. "<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
-	. "</td><td>\n"
-	. "<select name='htmleditormode'>\n"
-	. "<option value='default' $edmod1>".$clang->gT("Default HTML editor mode")."</option>\n"
-	. "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
+	$cssummary .=  "<li>\n"
+	. "<label for='htmleditormode'>".$clang->gT("HTML editor mode").":</label>\n"
+	. "<select id='htmleditormode' name='htmleditormode'>\n"
+	. "<option value='default' $edmod1>".$clang->gT("Default")."</option>\n"
 	. "<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
-	. "<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n";
+	. "<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n"
+    . "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n";
 	$cssummary .= "</select>\n"
-	. ""
-	. "</td>\n"
-	. "</tr>\n"
-	. "</table></form>\n"
-	. "<table><tr><td height='1'></td></tr></table>\n";
-    
-    if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
+	. "</li>\n";
+
+    // Date format
+    $cssummary .=  "<li>\n"
+    . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"
+    . "<select name='dateformat' id='dateformat'>\n";
+    foreach (getDateFormatData() as $index=>$dateformatdata)
     {
-    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='savepersonalsettings' /><input type='submit' value='".$clang->gT("Save settings")."' /></form></td></tr></table>";
-    }
+           $cssummary.= "<option value='{$index}'";
+           if ($index==$_SESSION['dateformat'])
+           {
+               $cssummary.= "selected='selected'";
+           }
+           
+           $cssummary.= ">".$dateformatdata['dateformat'].'</option>';
+    }    
+    $cssummary .= "</select>\n"
+    . "</li>\n"
+    . "</ul>\n"
+    . "<input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='".$clang->gT("Save settings")
+    ."' /></form></div>";
 }
 
 
@@ -908,9 +909,11 @@ if ($surveyid)
 		$surveysummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Start date:")."</strong></td>\n";
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
         if ($surveyinfo['usestartdate']== "Y")
         {
-            $startdate=$surveyinfo['startdate'];
+            $datetimeobj = new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
+            $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
         }
         else
         {
@@ -921,7 +924,8 @@ if ($surveyid)
 		. $clang->gT("Expiry Date:")."</strong></td>\n";
 		if ($surveyinfo['useexpiry']== "Y")
 		{
-			$expdate=$surveyinfo['expires'];
+            $datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
+            $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
 		}
 		else
 		{
@@ -2299,7 +2303,6 @@ if ($action == "editsurvey")
 		while ($esrow = $esresult->FetchRow())
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
-            $js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/addremove.js\"></script>\n";
 
 			$editsurvey = "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
 
@@ -2541,10 +2544,18 @@ if ($action == "editsurvey")
             $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
             . "<option value='N'";
             if (!isset($esrow['usestartdate']) || $esrow['usestartdate'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option></select></span></div>"
-            . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
-            . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value=\"{$esrow['startdate']}\" /><button type='reset' id='f_trigger_a'>...</button></span></div>\n";
+            $editsurvey .= ">".$clang->gT("No")."</option></select></span></div>";
 
+            $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+            $startdate='';
+            if (trim($esrow['startdate'])!= '')
+            {
+                $datetimeobj = new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+                $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            }            
+            
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'><label for='startdate_$surveyid'>".$clang->gT("Start date:")."</label></span>\n"
+            . "<span class='settingentry'><input type='text' class='popupdate' id='startdate_$surveyid' size='12' name='startdate' value=\"{$startdate}\" /></span></div>\n";
 
 			// Expiration
 			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
@@ -2553,10 +2564,15 @@ if ($action == "editsurvey")
 			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
 			. "<option value='N'";
 			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option></select></span></div>"
-			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
-			. "<span class='settingentry'><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></span></div>\n";
-
+			$editsurvey .= ">".$clang->gT("No")."</option></select></span></div>";
+            $expires='';
+            if (trim($esrow['expires'])!= '')
+            {
+                $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+                $expires=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            }            
+			$editsurvey .="<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
+			. "<span class='settingentry'><input type='text' class='popupdate' id='enddate_$surveyid' size='12' name='expires' value=\"{$expires}\" /></span></div>\n";
 			//COOKIES
 			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"
 			. "<span class='settingentry'><select name='usecookie'>\n"
@@ -2808,8 +2824,8 @@ if ($action == "editsurvey")
 		. "<table width='100%' class='form2columns'>\n"
 		. "<tbody align='center'>"
 		. "<tr><td></td><td>\n"
-		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources></td><td><td></tr>\n"
-		. "<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources></td><td><td></tr>\n"
+		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></td><td><td></tr>\n"
+		. "<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></td><td><td></tr>\n"
 		. "<tr><td>&nbsp;</td></tr><tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"
@@ -2827,26 +2843,6 @@ if ($action == "editsurvey")
 			$editsurvey .= "<table><tr><td colspan='4' align='center'><input type='button' onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "</td></tr>\n"
 			. "</table>\n";
-
-			// Here we do the setup the date javascript
-			$editsurvey .= "<script type=\"text/javascript\">\n"
-			. "Calendar.setup({\n"
-			. "inputField     :    \"f_date_b\",\n"     // id of the input field
-			. "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
-			. "showsTime      :    false,\n"            // will display a time selector
-			. "button         :    \"f_trigger_b\",\n"  // trigger for the calendar (button ID)
-			. "singleClick    :    true,\n"             // double-click mode
-			. "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
-			. "});\n"
-            . "Calendar.setup({\n"
-            . "inputField     :    \"f_date_a\",\n"     // id of the input field
-            . "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
-            . "showsTime      :    false,\n"            // will display a time selector
-            . "button         :    \"f_trigger_a\",\n"  // trigger for the calendar (button ID)
-            . "singleClick    :    true,\n"             // double-click mode
-            . "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
-            . "});\n"
-            . "</script>\n";
 		}
 
 	}
@@ -3563,25 +3559,6 @@ if ($action == "newsurvey")
 		// End TAB pane 
 		$newsurvey .= "</div>\n";
 
-		// Here we do setup the date javascript
-		$newsurvey .= "<script type=\"text/javascript\">\n"
-        . "Calendar.setup({\n"
-        . "inputField     :    \"f_date_a\",\n"    // id of the input field
-        . "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-        . "showsTime      :    false,\n"                    // will display a time selector
-        . "button         :    \"f_trigger_a\",\n"         // trigger for the calendar (button ID)
-        . "singleClick    :    true,\n"                   // double-click mode
-        . "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-        . "});\n"
-		. "Calendar.setup({\n"
-		. "inputField     :    \"f_date_b\",\n"    // id of the input field
-		. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-		. "showsTime      :    false,\n"                    // will display a time selector
-		. "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
-		. "singleClick    :    true,\n"                   // double-click mode
-		. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-		. "});\n"
-		. "</script>\n";
 	}
 	else
 	{

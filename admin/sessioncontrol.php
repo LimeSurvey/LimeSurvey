@@ -41,35 +41,15 @@ if (session_id() == "")
 //  ==> thus we just change the login form lang: no user profile update
 // if changelang is called from another form (after login) then update user lang
 // when a loginlang is specified at login time, the user profile is updated in usercontrol.php 
-if (returnglobal('action') == "changelang" && (!isset($login) || !$login ))	
+if ((returnglobal('action') == "changelang" || returnglobal('action') == "savepersonalsettings") && (!isset($login) || !$login ))	
 	{
 	$_SESSION['adminlang']=returnglobal('lang');
-	// if user is logged in update language in database
-	if(isset($_SESSION['loginID']))
-		{
-		$uquery = "UPDATE {$dbprefix}users SET lang='{$_SESSION['adminlang']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
-		$uresult = $connect->Execute($uquery); //Checked
-		}
 	}
 elseif (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='' )
 	{
 	$_SESSION['adminlang']=$defaultlang;
 	}
 
-// if changehtmleditormode is called then update user htmleditormode
-if (returnglobal('action') == "changehtmleditormode" )	
-	{
-	$_SESSION['htmleditormode']=returnglobal('htmleditormode');
-	if(isset($_SESSION['loginID']))
-		{
-		$uquery = "UPDATE {$dbprefix}users SET htmleditormode='{$_SESSION['htmleditormode']}' WHERE uid={$_SESSION['loginID']}";	//		added by Dennis
-		$uresult = $connect->Execute($uquery) or die("Can't update htmleditor setting"); //Checked
-		}
-	}
-elseif (!isset($_SESSION['htmleditormode']) || $_SESSION['htmleditormode']=='' )
-	{
-	$_SESSION['htmleditormode']=$defaulthtmleditormode;
-	}
 
 // Construct the language class, and set the language.
 if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}

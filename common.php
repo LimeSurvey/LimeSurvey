@@ -80,16 +80,15 @@ if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami"
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
 }
 
-
 // Array of JS and CSS scripts to include in header
 // is updated by questions in qanda.php
 $js_header_includes = array();
 $css_header_includes =  array();
-
+ 
 // JS scripts and CSS to include in admin header
 // updated by admin scripts. Caution this is a string not an array
-$js_adminheader_includes = "";
-
+$js_adminheader_includes = array();   
+$css_adminheader_includes = array();   
 
 /*
 * $sourcefrom variable checks the location of the current script against
@@ -3597,7 +3596,7 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-	global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes;
+	global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes, $css_adminheader_includes;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html ";
@@ -3620,29 +3619,40 @@ function getAdminHeader($meta=false)
 	. "\t\t<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "\t\t<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
     . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n";
+    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
+    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n"
+    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
+    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
+    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
     if (getLanguageRTL($_SESSION['adminlang']))
     {
-    $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
-    }
-    else
-    {
-    $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
+        $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
     }
 
-    if (isset($js_adminheader_includes))
+    $js_adminheader_includes = array_unique($js_adminheader_includes);
+    $css_adminheader_includes = array_unique($css_adminheader_includes);
+    
+    foreach ($js_adminheader_includes as $jsinclude)
     {
-	$strAdminHeader .= $js_adminheader_includes;
-    }
-
-	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar_stripped.js\"></script>\n"
-	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/lang/calendar-".$_SESSION['adminlang'].".js\"></script>\n"
-	. "\t\t<script type=\"text/javascript\" src=\"../scripts/calendar/calendar-setup_stripped.js\"></script>\n"
-	. "\t\t<script type=\"text/javascript\" src=\"scripts/validation.js\"></script>"
+        $strAdminHeader .= "<script type=\"text/javascript\" src=\"".$jsinclude."\"></script>\n";
+    }    
+    foreach ($css_adminheader_includes as $cssinclude)
+    {
+        $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
+    }    
+	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>"
 	. use_firebug()
-	. "\t</head>\n\t<body>\n"
-	. "\t\t<div class=\"maintitle\">\n"
+	. "\t</head>\n\t<body>\n";
+    if (isset($_SESSION['dateformat']))
+    {
+        $formatdata=getDateFormatData($_SESSION['dateformat']);
+        $strAdminHeader .= "<script type='text/javascript'>
+                               var userdateformat='".$formatdata['jsdate']."';
+                               var userlanguage='".$_SESSION['adminlang']."';
+                           </script>";
+    }
+    
+    $strAdminHeader .="\t\t<div class=\"maintitle\">\n"
 	. "\t\t\t$sitename\n"
 	. "\t\t</div>\n";
 	return $strAdminHeader;

@@ -3,6 +3,7 @@ body {
 	text-align: left;
 	background-color: #5670A1;
 	margin: 0;
+    font-size: 9pt;
 }
 
 form {
@@ -456,14 +457,20 @@ form.token label {
 .submit {
 	float: none !important;
 	margin: 0 auto;
+    margin-bottom: 10px;
 }
 
-th, .header, .headertwo, table.form2columns th, .settingcaption {
+.header, .formheader, .headertwo, table.form2columns th, .settingcaption {
 	text-align: center;
 	font-size: 13px;
 	font-weight: 700;
 	background-color: #D2E0F2;
 	color: #1D2D45;
+}
+
+.formheader
+{
+    width:100%;
 }
 
 a:link, a:visited {
@@ -524,13 +531,26 @@ a.invalidemail {
 	color: red;
 }
 
+.browsetable tr:hover { 
+    background-color: #C5D0F2;
+}
+
+.browsetable th {
+    background-color: #D2E0F2;     
+    font-size:10pt;
+    padding:2px;
+}
+
 .browsetable td {
     width:140px;     
-    min-width:140px;
+    min-width:120px;
+    font-size:8pt;
+    padding:1px 2px; 
 }
 
 .browsetable td:first-child {
     min-width:50px;
+    font-weight:bold;
 }
 
 .answertable th {
@@ -648,8 +668,15 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
 }
 
+
+.statisticssummary th:first-child,
 .statisticstable td:first-child {
     text-align:right;
+}
+
+.statisticssummary thead th:first-child
+{
+    text-align:center;
 }
 
 .statisticssummary th, .statisticssummary td, .statisticstable td {
@@ -676,14 +703,14 @@ table.statisticstable, table.statisticssummary {
 }
                    
 #filtersettings ul {
- width:300px;
- list-style-type:none; 
+    width:300px;
+    list-style-type:none; 
 }
 
 #filtersettings ul {
- width:300px;
- list-style-type:none; 
-  line-height:22px;
+    width:300px;
+    list-style-type:none; 
+    line-height:22px;
 }
 
 #filtersettings ul label, 
@@ -691,5 +718,31 @@ table.statisticstable, table.statisticssummary {
 #filtersettings ul input {
    vertical-align:middle;
    margin:0 2px;
+}
+
+#personalsettings label {  
+    float: left;  
+    width: 20em;  
+    margin-right: 0.5em;  
+    text-align: right;
+}
+
+#personalsettings li {  
+    list-style-type: none;
+    padding-bottom:5px;
+}
+    
+form#personalsettings {
+  width:750px;
+  margin:0 auto;
+}
+
+div.messagebox {
+    width: 450px;
+    margin:10px auto; 
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    text-align: center;
+    padding:10px;  
 }
 

@@ -326,27 +326,3 @@ function disposeAllTabs() {
 	}
 }
 
-
-// initialization hook up
-
-// DOM2
-if ( typeof window.addEventListener != "undefined" )
-	window.addEventListener( "load", setupAllTabs, false );
-
-// IE 
-else if ( typeof window.attachEvent != "undefined" ) {
-	window.attachEvent( "onload", setupAllTabs );
-	window.attachEvent( "onunload", disposeAllTabs );
-}
-
-else {
-	if ( window.onload != null ) {
-		var oldOnload = window.onload;
-		window.onload = function ( e ) {
-			oldOnload( e );
-			setupAllTabs();
-		};
-	}
-	else 
-		window.onload = setupAllTabs;
-}

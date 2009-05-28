@@ -75,7 +75,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action == 'delquestion'       || $action == 'delquestionall' || $action == 'insertnewsurvey'   ||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
-      $action == 'updategroup'       || $action == 'deactivate'     ||
+      $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
       $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' ||
       $action == 'delattribute'      || $action == 'addattribute'   || $action == 'editattribute')
   {

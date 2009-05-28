@@ -1072,14 +1072,25 @@ if(isset($surveyid))
 	elseif ($action == "updatesurvey" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property']))
 	{
 
+        $formatdata=getDateFormatData($_SESSION['dateformat']);
 		if (trim($_POST['expires'])=="")
 		{
 			$_POST['expires']='1980-01-01';
 		}
+        else
+        {
+            $datetimeobj = new Date_Time_Converter($_POST['expires'],$formatdata['phpdate']);
+            $_POST['expires']=$datetimeobj->convert("Y-m-d H:i:s");            
+        }
 		if (trim($_POST['startdate'])=="")
 		{
 			$_POST['startdate']='1980-01-01';
 		}
+        else
+        {
+            $datetimeobj = new Date_Time_Converter($_POST['startdate'],$formatdata['phpdate']);
+            $_POST['startdate']=$datetimeobj->convert("Y-m-d H:i:s");            
+        }
 		CleanLanguagesFromSurvey($postsid,$_POST['languageids']);
 		FixLanguageConsistency($postsid,$_POST['languageids']);
 		
@@ -1387,10 +1398,18 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		}
 	}
 }
-
+elseif ($action == "savepersonalsettings")
+{
+    $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}'
+               WHERE uid={$_SESSION['loginID']}";    
+    $uresult = $connect->Execute($uquery)  or safe_die ($isrquery."<br />".$connect->ErrorMsg());
+    $_SESSION['adminlang']=$_POST['lang'];
+    $_SESSION['htmleditormode']=$_POST['htmleditormode'];
+    $_SESSION['dateformat']= $_POST['dateformat'];
+    $databaseoutput.='<div class="messagebox"><strong>'.$clang->gT('Your personal settings were successfully saved.').'</strong></div>';
+}
 else
 {
-
 	include("access_denied.php");
 }
 

@@ -99,7 +99,7 @@ if (!isset($_SESSION['loginID']))
 		if (isset($postuser) && isset($_POST['password']))
 		{
 			include("database.php");
-			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
+			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode,dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 			$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
@@ -128,6 +128,7 @@ if (!isset($_SESSION['loginID']))
                     $_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+                    $_SESSION['dateformat'] = $fields['dateformat'];
 					// Compute a checksession random number to test POSTs
 					$_SESSION['checksessionpost'] = randomkey(10);
 					if (isset($postloginlang) && $postloginlang)
@@ -194,7 +195,7 @@ if (!isset($_SESSION['loginID']))
 		}
 
 		include("database.php");
-		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 		$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
@@ -281,6 +282,7 @@ if (!isset($_SESSION['loginID']))
 			$_SESSION['user'] = $fields['users_name'];
 			$_SESSION['adminlang'] = $fields['lang'];
 			$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+            $_SESSION['dateformat'] = $fields['dateformat'];
 			$_SESSION['checksessionpost'] = randomkey(10);
 			$_SESSION['pw_notify']=false;
 			$clang = new limesurvey_lang($_SESSION['adminlang']);
