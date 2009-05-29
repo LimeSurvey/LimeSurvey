@@ -769,7 +769,7 @@ function validation_message($ia)
 			{
 				$help=' <span class="questionhelp">'.$helprow['help'].'</span>';
 			}
-			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly.').' '.$help.'</span><br />
+			$qtitle .= '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').'.'.$help.'</span><br />
 ';
 		}
 	}
