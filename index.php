@@ -1146,7 +1146,7 @@ function checkconfield($value)
 								if ($cqv['matchmethod'] != "RX")
 								{
 //									if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
-									if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if ($comparisonLeftOperand '.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
+									if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$cqv['matchmethod'].' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
 									{//plug successful matches into appropriate container
 										$addon=1;
 									}
