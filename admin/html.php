@@ -38,20 +38,21 @@ if ($action == "listsurveys")
 	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 
 	if($result->RecordCount() > 0) {
-        $listsurveys= "<br /><table cellpadding='1' width='800'>
+        $listsurveys= "<br /><table class='listsurveys'>
 				  <tr>
-				    <th height=\"22\" width='22'>&nbsp;</th>
-				    <th height=\"22\"><strong>".$clang->gT("Survey")."</strong></th>
-				    <th><strong>".$clang->gT("Date Created")."</strong></th>
-				    <th><strong>".$clang->gT("Owner")."</strong></th>
-				    <th><strong>".$clang->gT("Access")."</strong></th>
-				    <th><strong>".$clang->gT("Answer Privacy")."</strong></th>
-				    <th><strong>".$clang->gT("Status")."</strong></th>
-				    <th><strong>".$clang->gT("Full Responses")."</strong></th>
-                                    <th><strong>".$clang->gT("Partial Responses")."</strong></th>
-                                    <th><strong>".$clang->gT("Total Responses")."</strong></th>
+				    <th>".$clang->gT("Status")."</th>
+				    <th style='width:20%;'>".$clang->gT("Survey")."</th>
+				    <th>".$clang->gT("Date Created")."</th>
+				    <th>".$clang->gT("Owner") ."</th>
+				    <th>".$clang->gT("Access")."</th>
+				    <th>".$clang->gT("Anonymous answers")."</th>
+				    <th>".$clang->gT("Status")."</th>
+				    <th>".$clang->gT("Full Responses")."</th>
+                    <th>".$clang->gT("Partial Responses")."</th>
+                    <th>".$clang->gT("Total Responses")."</th>
 				  </tr>";
         $gbc = "evenrow"; 
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 		while($rows = $result->FetchRow())
 		{
@@ -61,9 +62,9 @@ if ($action == "listsurveys")
 			
 			if($rows['private']=="Y")
 			{
-				$privacy=$clang->gT("Anonymous") ;
+				$privacy=$clang->gT("Yes") ;
 			}
-			else $privacy =$clang->gT("Not Anonymous") ;
+			else $privacy =$clang->gT("No") ;
 
 			
 			if (tokenTableExists($rows['sid']))
@@ -105,7 +106,9 @@ if ($action == "listsurveys")
 			}
 			else $status =$clang->gT("Inactive") ;
 
-			$datecreated=$rows['datecreated'] ;
+			
+            $datetimeobj = new Date_Time_Converter($rows['datecreated'] , "Y-m-d H:i:s");
+            $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);                 
 
 			if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
 			{
@@ -130,7 +133,7 @@ if ($action == "listsurveys")
 				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$listsurveys .= "<td><img src='$imagefiles/expired.png' title='' "
-					. "alt='".$clang->gT("This survey is active but expired.")."' align='left' width='20'"
+					. "alt='".$clang->gT("This survey is active but expired.")."' "
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
 				}
@@ -143,11 +146,11 @@ if ($action == "listsurveys")
 						. "title=\"".$clang->gTview("De-activate this Survey")."\" "
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("De-activate this Survey", "js")."');return false\">"
 						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
-						. "alt='".$clang->gT("De-activate this Survey")."'  border='0' hspace='0' align='left' width='20' /></a></td>\n";
+						. "alt='".$clang->gT("De-activate this Survey")."' /></a></td>\n";
 					} else 
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' title='' "
-						. "alt='".$clang->gT("This survey is currently active")."' align='left' border='0' hspace='0' align='left' width='20' "
+						. "alt='".$clang->gT("This survey is currently active")."' "
 						. "onmouseout=\"hideTooltip()\""
 						. "title=\"".$clang->gTview("This survey is currently active")."\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is currently active", "js")."');return false\" /></td>\n";
@@ -160,17 +163,17 @@ if ($action == "listsurveys")
 					. "onmouseout=\"hideTooltip()\""
 					. "title=\"".$clang->gTview("Activate this Survey")."\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
-					"<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
+					"<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' /></a></td>\n" ;	
 				} else 
 				{
 					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
-					. "title='' alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left'"
+					. "title='' alt='".$clang->gT("This survey is not currently active")."'"
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" /></td>\n";
 				}			
 			}
 			
-			$listsurveys.="<td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
+			$listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$ownername."</td>".
 					    "<td>".$visibility."</td>" .
@@ -180,9 +183,9 @@ if ($action == "listsurveys")
 					    if ($rows['active']=="Y")
 					    {
 						$complete = $responses - $partial_responses;
-                                                $listsurveys .= "<td align='center'>".$complete."</td>";
-                                                $listsurveys .= "<td align='center'>".$partial_responses."</td>";
-                                                $listsurveys .= "<td align='center'>".$responses."</td>";
+                                                $listsurveys .= "<td>".$complete."</td>";
+                                                $listsurveys .= "<td>".$partial_responses."</td>";
+                                                $listsurveys .= "<td>".$responses."</td>";
 					    }else{
 						$listsurveys .= "<td>&nbsp;</td>";
 						$listsurveys .= "<td>&nbsp;</td>";
@@ -333,10 +336,9 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
     {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
     if(isset($tokenlist) && is_array($tokenlist))
     {$activetokens=count($tokenlist);} else {$activetokens=0;}
-    $cssummary = "<table><thead><tr><td height='1'></td></tr></table>\n"
-    . "<form action='$scriptname' method='post'>"
+    $cssummary = "<br /><form action='$scriptname' method='post'>"
     . "<table class='statisticssummary'>\n"
-    . "<tr>\n"
+    . "<thead><tr>\n"
     . "<th colspan='2' align='center'>\n"
     . "<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
     . "</th>\n"
@@ -827,8 +829,7 @@ if ($surveyid)
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$surveysummary .= "<table width='100%' align='center' bgcolor='#FFFFFF' border='0'>\n"
-		. "<tr id='surveydetails' $showstyle><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
+		$surveysummary .= "<table class='table2columns' $showstyle><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
 		. "(".$clang->gT("ID")." {$surveyinfo['sid']})</strong></td></tr>\n";
@@ -1001,7 +1002,7 @@ if ($surveyid)
 			}
 		}
 		$surveysummary .=  $surveysummary2
-		. "</table></td></tr></table>\n";
+		. "</table>\n";
 	}
 	else
 	{

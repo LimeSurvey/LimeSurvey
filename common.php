@@ -296,7 +296,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" "
                         . "onmouseout=\"hideTooltip()\""
                         . "onmouseover=\"showTooltip(event,'".$clang->gT("Edit your personal preferences", "js")."');return false\">"
-                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='HomeButton' alt='".$clang->gT("Edit your personal preferences")."' "
+                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' "
                         . "title='' /></a>"
                         . "</strong>\n";
 			}
@@ -6162,27 +6162,12 @@ function strip_javascript($content){
 
 
 /**
-* This functions converts any time format to any other time format
-* 
-* @param mixed $datetime
-* @param mixed $inputformat
-* @param mixed $outputformat
-*/
-function convertDateTimeFormat($datetime, $inputformat, $outputformat)
-{
-   if (trim($datetime)=='') return ''; 
-   $date = new DateParser();
-   return $date->Format($outputformat, $inputformat, $datetime); 
-}
-
-
-/**
  * 
  * formats a datestring (YY-MM-DD or YYYY-MM-DD or YY-M-D... to whatever)
  * @param $date Datestring, that should be formated normally it is in YYYY-MM-DD, but we take also YY-MM-DD or YY-M-D
  * @param $format Format you want your date in (DD.MM.YYYY or MM.DD.YYYY or MM/YY ? everything possible )
  * @return formated datestring
- */
+
 function dateFormat($date, $format="DD.MM.YYYY")
 {
 	if(preg_match("/^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})/",$date))
@@ -6232,9 +6217,9 @@ function dateFormat($date, $format="DD.MM.YYYY")
 	$return = str_replace($dFormat['D'],substr($dd,-$c['D'], $c['D']), $return);
 	
 	return $return;
-			
 }
-
+ */
+ 
 /**
 * This function cleans files from the temporary directory being older than 1 day
 * @todo Make the days configurable 

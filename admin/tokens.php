@@ -32,7 +32,7 @@ if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'))
 
 include_once("login_check.php");
 include_once("database.php");
-
+$dateformatdetails=getDateFormatData($_SESSION['dateformat']);     
 
 //$invitationBody = "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
 //$reminderBody = "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
@@ -696,16 +696,10 @@ if (!$subaction &&
 	."\t\t<td align='center'>\n"
 	."\t\t\t<table align='center'><tr><td>\n"
 	."\t\t\t<br />\n"
-//	."\t\t\t<ul><li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites' onclick='return confirm(\""
-//	.$clang->gT("Are you really sure you want to reset all invitation records to NO?")."\")'>".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 	."\t\t\t<ul><li><a href='#' onclick=\"if( confirm('"
 	.$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
-//	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens' onclick='return confirm(\""
-//	.$clang->gT("Are you sure you want to delete all unique token numbers?")."\")'>".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 	."\t\t\t<li><a href='#' onclick=\"if ( confirm('"
 	.$clang->gT("Are you sure you want to delete all unique token numbers?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
-//	."\t\t\t<li><a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall' onclick='return confirm(\""
-//	.$clang->gT("Are you really sure you want to delete ALL token entries?")."\")'>".$clang->gT("Delete all token entries")."</a></li>\n";
 	."\t\t\t<li><a href='#' onclick=\" if (confirm('"
 	.$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
 	$tokenoutput .= "\t\t\t<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul>\n"
@@ -790,12 +784,12 @@ if ($subaction == "browse" || $subaction == "search")
 		}
 	if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
 	else {$bquery .= " ORDER BY $order"; }
-	//safe_die($bquery.":::".$start.":::".$limit);
+
 	$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
 	$bgc="";
 
-	$tokenoutput .= "<tr><td colspan='3'>\n"
-	."<table class='browsetokens' cellpadding='1' cellspacing='1' border='0' style='border: 1px solid rgb(85, 85, 85);'>\n";
+	$tokenoutput .= "</table>\n"
+	."<table class='browsetokens' cellpadding='1' cellspacing='1'>\n";
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
 	."\t\t<th align='left' >"
@@ -817,11 +811,6 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
 	.$clang->gT("Sort by: ").$clang->gT("Email address")."' border='0' align='left' /></a>".$clang->gT("Email address")."</th>\n"
 
-//	."\t\t<th align='left'  >"
-//	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=emailstatus&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
-//	."<img src='$imagefiles/downarrow.png' alt='' title='"
-//	.$clang->gT("Sort by: ").$clang->gT("Email Status")."' border='0' align='left' /></a>".$clang->gT("Email Status")."</th>\n"
-
 	."\t\t<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=token&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
@@ -839,11 +828,11 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindersent%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Reminder sent?")."' border='0' align='left' /></a>".$clang->gT("Reminder sent?")."</th>\n"
-	."\t\t<th align='left' class='wrap'>"
+	.$clang->gT("Sort by: ").$clang->gT("Reminder sent?")."' border='0' align='left' /></a><span>".$clang->gT("Reminder sent?")."</span></th>\n"
+	."\t\t<th align='left'>"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=remindercount%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
-	.$clang->gT("Sort by: ").$clang->gT("Reminder count")."' border='0' align='left' /></a>".$clang->gT("Reminder count")."</th>\n"
+	.$clang->gT("Sort by: ").$clang->gT("Reminder count")."' border='0' align='left' /></a><span>".$clang->gT("Reminder count")."</span></th>\n"
 	."\t\t<th align='left'  >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=completed%20desc&amp;start=$start&amp;limit=$limit&amp;searchstring=$searchstring'>"
 	."<img src='$imagefiles/downarrow.png' alt='' title='"
@@ -888,8 +877,14 @@ if ($subaction == "browse" || $subaction == "search")
 	while ($brow = $bresult->FetchRow())
 	{
 		$brow['token'] = trim($brow['token']);
-        if (trim($brow['validfrom'])!=''){ $brow['validfrom']= convertDateTimeFormat($brow['validfrom'],'Y-m-d H:i:s','Y-m-d H:i');};
-        if (trim($brow['validuntil'])!=''){ $brow['validuntil']= convertDateTimeFormat($brow['validuntil'],'Y-m-d H:i:s','Y-m-d H:i');};
+        if (trim($brow['validfrom'])!=''){ 
+                $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
+                $brow['validfrom']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');   
+        };
+        if (trim($brow['validuntil'])!=''){ 
+                $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
+                $brow['validuntil']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');   
+        };
 
 		if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		$tokenoutput .= "\t<tr class='$bgc'>\n";
@@ -944,8 +939,6 @@ if ($subaction == "browse" || $subaction == "search")
 			{
                         $tokenoutput .= "\t\t<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
                         .$clang->gT("View/Update response")."' />\n";
-//                        $tokenoutput .= "\t\t<input type='image' src='$imagefiles/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id=$id', '_top')\" type='submit'  title='"
-//                        .$clang->gT("Update response")."' />\n";
 			}
 		}
 
@@ -967,7 +960,7 @@ if ($subaction == "browse" || $subaction == "search")
 		$tokenoutput .= "\t</tr>\n";
 	}
 	$tokenoutput .= "</table>\n"
-	."</td></tr></table></td></tr></table>\n";
+	."</td></tr></table><br />\n";
 }
 
 if ($subaction == "kill" && 
@@ -977,19 +970,15 @@ if ($subaction == "kill" &&
    )
 {
 	$date = date('YmdHis');
-	$tokenoutput .= "\t<tr><td colspan='2' height='4' align='center'>"
-	."<strong>".$clang->gT("Delete Tokens Table").":</strong>"
-	."</td></tr>\n"
-	."\t<tr><td colspan='2' align='center'>\n"
-	."<br />\n";
+	$tokenoutput .= "\t</table><div class='messagebox'>"
+	."<div class='header'>".$clang->gT("Delete Tokens Table")."</div>";
 	// ToDo: Just delete it if there is no token in the table
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
-		$tokenoutput .= "<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
+		$tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div><br />\n"
 		.$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
 		."( \"old_tokens_{$surveyid}_$date\" )<br /><br />\n"
 		."<input type='submit' value='"
-//		.$clang->gT("Delete Tokens")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething', '_top')\" /><br />\n"
 		.$clang->gT("Delete Tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" /><br />\n"
 		."<input type='submit' value='"
 		.$clang->gT("Cancel")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
@@ -1004,7 +993,7 @@ if ($subaction == "kill" &&
 	    {
 	    // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
 	    	$oldTableJur = db_table_name_nq($oldtable);
-		$deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_tid_seq');
+		    $deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_tid_seq');
 			$deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
 	        $setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_tid_seq ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($newtable)."_tid_seq'::regclass);";
 			$deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
@@ -1020,7 +1009,7 @@ if ($subaction == "kill" &&
 		.$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname?sid={$surveyid}', '_top')\" />\n"
 		."</span>\n";
 	}
-	$tokenoutput .= "</td></tr></table>\n"
+	$tokenoutput .= "</div>\n"
 	."<table><tr><td></td></tr></table>\n";
 
 }
@@ -1041,10 +1030,9 @@ if ($subaction == "email" &&
     }    
 
 	$tokenoutput .= PrepareEditorScript();
-	$tokenoutput .= "\t<tr>\n\t\t<td colspan='2' height='4'>"
-	."<strong>"
-	.$clang->gT("Email Invitation").":</strong></td>\n\t</tr>\n"
-	."\t<tr>\n\t\t<td colspan='2' align='center'>\n";
+	$tokenoutput .= "\t</table><div class='header'>"
+	.$clang->gT("Send email invitations")."</div>\n"
+	."\t<div><br/>\n";
     if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 
@@ -1282,7 +1270,7 @@ if ($subaction == "email" &&
 		$tokenoutput .= "\t\t</td>\n";
 
 	}
-	$tokenoutput .= "</td></tr></table>\n";
+	$tokenoutput .= "</div>\n";
 }
 
 
@@ -1292,9 +1280,8 @@ if ($subaction == "remind" && //XXX
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
 	$tokenoutput .= PrepareEditorScript();
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-		.$clang->gT("Email Reminder").":</strong></td></tr>\n"
-		."\t<tr><td colspan='2' align='center'>\n";
+	$tokenoutput .= "\t</table><div class='header'>"
+		.$clang->gT("Email Reminder")."</div><br />\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
 		//GET SURVEY DETAILS
@@ -1315,7 +1302,6 @@ if ($subaction == "remind" && //XXX
 				$tokenoutput .= "(".$clang->gT("Base Language").")";
 			}    
 			$tokenoutput .= "</h2><table class='table2columns' >\n"
-				."\n"
 				."\t<tr>\n"
 				."\t\t<td align='right' width='150'><strong>".$clang->gT("From").":</strong></td>\n"
 				."\t\t<td><input type='text' size='50' name='from_$language' value=\"{$thissurvey['adminname']} <{$thissurvey['adminemail']}>\" /></td>\n"
@@ -1871,38 +1857,33 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Invite sent?").":</strong></td>\n"
-
-	// TLR change to put date into sent and completed
-	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='sent' value=\"";
 	."\t<td><input type='text' size='15' name='sent' value=\"";
 
 	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></td>\n"
 	."</tr>\n"
+    
 	."<tr>\n"
 	."\t<td align='right' width='20%'><strong>".$clang->gT("Completed?").":</strong></td>\n"
-
-	// TLR change to put date into sent and completed
-	//	."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
 	."\t<td><input type='text' size='15' name='completed' value=\"";
-
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
-		$tokenoutput .= "\" /></td>\n"
-		."</tr>\n"
-		."<tr>\n"
+	$tokenoutput .= "\" /></td>\n"
+	."</tr>\n"
+
+	."<tr>\n"
     ."\t<td align='right' width='20%'><strong>".$clang->gT("Valid from").":</strong></td>\n"
-
-    // TLR change to put date into sent and completed
-    //    ."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
-    ."\t<td><input type='text' size='22' name='validfrom' value=\"";
-    if (isset($validfrom)) $tokenoutput.= convertDateTimeFormat($validfrom,'Y-m-d H:i:s','Y-m-d H:i');
+    ."\t<td><input type='text' class='popupdatetime' size='22' name='validfrom' value=\"";
+    if (isset($validfrom)){
+                $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
+                $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');             
+    } 
     $tokenoutput .= "\" />\n".$clang->gT('until')
-
-    // TLR change to put date into sent and completed
-    //    ."\t<td bgcolor='#EEEEEE'><input type='text' size='1' name='completed' value=\"";
-    ."\t<input type='text' size='22' name='validuntil' value=\"";
-    if (isset($validuntil)) $tokenoutput.=  convertDateTimeFormat($validuntil,'Y-m-d H:i:s','Y-m-d H:i');        
-    $tokenoutput .= "\" /> <spann class='annotation'>".$clang->gT('Format: yyyy-mm-dd hh:mm').'</span></td>'
+    ."\t<input type='text' size='22' name='validuntil' class='popupdatetime' value=\"";
+    if (isset($validuntil)){
+                $datetimeobj = new Date_Time_Converter($validuntil , "Y-m-d H:i:s");
+                $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');             
+    } 
+    $tokenoutput .= "\" /> <span class='annotation'>".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'].' '.$clang->gT('hh:mm')).'</span></td>'
 		."</tr>\n"
 	."<tr>\n";
 
@@ -1957,12 +1938,14 @@ if ($subaction == "updatetoken" &&
     } 
     else
     {
-        $_POST['validfrom']=$connect->BindTimeStamp(convertDateTimeFormat(trim($_POST['validfrom']),'Y-m-d H:i','Y-m-d H:i:s'));  
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');             
     }
     if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;} 
     else
     {
-        $_POST['validuntil']=$connect->BindTimeStamp(convertDateTimeFormat(trim($_POST['validuntil']),'Y-m-d H:i','Y-m-d H:i:s'));  
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');             
     }
 	$data = array();
 	$data[] = $_POST['firstname'];

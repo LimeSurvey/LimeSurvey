@@ -3275,7 +3275,7 @@ function do_multiplenumeric($ia)
 {
 	global $dbprefix, $clang, $js_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
-
+    $answer='';
 	//Must turn on the "numbers only javascript"
 	$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))

@@ -1,11 +1,20 @@
 $(document).ready(function(){
     setupAllTabs();
-    $(".popupdate").datepicker({ dateFormat: userdateformat,  
-                          showOn: 'both',
-                          changeYear: true, 
-                          changeMonth: true, 
-                          duration: 'fast',
-                        }, $.datepicker.regional[userlanguage]);
+    if(typeof(userdateformat) !== 'undefined') 
+    {
+        $(".popupdate").datepicker({ dateFormat: userdateformat,  
+                              showOn: 'button',
+                              changeYear: true, 
+                              changeMonth: true, 
+                              duration: 'fast',
+                            }, $.datepicker.regional[userlanguage]);
+        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
+                              showOn: 'button',
+                              changeYear: true, 
+                              changeMonth: true, 
+                              duration: 'fast',
+                            }, $.datepicker.regional[userlanguage]);
+    }
 });
 
 

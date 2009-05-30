@@ -6,7 +6,7 @@ body {
     font-size: 9pt;
 }
 
-form {
+div, form {
 	margin: 0;
 	padding: 0;
 }
@@ -76,9 +76,8 @@ table.statisticstable {
 
 div.menubar {
 	background-color: #EEF6FF;
-	width: 99.2%;
+	width: 99.1%;
 	margin-top: 3px;
-	margin-left: 3px;
 }
 
 .menubar-main {
@@ -135,9 +134,6 @@ table.menubar {
 	border-color: #8195BA;
 	border-style: solid;
 	border-width: 1px;
-	/*	Check this setting when merging 
-		I implemented it to correct the layout of the menu bar in statistics.php
-		Mazi*/
 	text-align: left;
 }
 
@@ -165,9 +161,13 @@ table.attributetable {
 
 table.table2columns {
 	background-color: #FFF;
-	width: 100%;
+	width: 99.3%;
 	text-align: center;
-	border: 1px solid #555;
+	border: 1px solid;
+    border-color: #fff #8195BA #8195BA #D2E0F2;
+    margin-top:-2px;
+    margin-bottom:4px;
+    padding:5px 0;
 }
 
 .table2columns td:first-child {
@@ -343,7 +343,7 @@ span.settingcaption {
 	z-index: 20000;
 	-moz-border-radius: 5px;
 	background: #FDFDF5;
-	font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
+	font: 1em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
 	padding: 2px;
 }
 
@@ -351,6 +351,8 @@ span.settingcaption {
 	position: absolute;
 	display: none;
 	z-index: 10000;
+    opacity: .35; 
+    filter:Alpha(Opacity=35);    
 	-khtml-opacity: 0.7px;
 	-moz-border-radius: 5px;
 	background: #555;
@@ -531,10 +533,29 @@ a.invalidemail {
 	color: red;
 }
 
+.browsetable {
+    border: 1px solid;  
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+}
+
 .browsetable tr:hover { 
     background-color: #C5D0F2;
 }
 
+.listsurveys {
+    text-align:center;
+    width:70%;
+}
+
+.listsurveys th {
+    background-color: #D2E0F2;     
+    font-size:10pt;
+    padding:2px 8px;
+}
+
+
+
+.listsurveys th,
 .browsetable th {
     background-color: #D2E0F2;     
     font-size:10pt;
@@ -547,6 +568,12 @@ a.invalidemail {
     font-size:8pt;
     padding:1px 2px; 
 }
+
+.listsurveys td {
+    font-size:8pt;
+    padding:2px 6px; 
+}
+
 
 .browsetable td:first-child {
     min-width:50px;
@@ -587,19 +614,39 @@ a.invalidemail {
     font-size: 8pt
 }
 
-.browsetokens th {
-white-space:nowrap;
-width:auto;
-padding:2px 15px 2px 5px;
-font-size:12px;
+.browsetokens
+{
+    margin: 5px 2px;
+    border: 1px solid;  
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
 }
 
+.browsetokens th {
+    white-space:nowrap;
+    width:auto;
+    padding:2px 15px 2px 5px;
+    font-size:12px;
+    background-color:#D2E0F2;
+    color: #1D2D45;
+    vertical-align:top;    
+}
+
+.browsetokens tr {
+    height:32px;
+}
+
+.browsetokens th span{
+    white-space:normal;
+}
+
+
 .browsetokens th img {
- padding-right:4px;
+    padding-right:4px;
 }
 
 .browsetokens td {
-  padding:0 5px;
+    padding:0 5px;
+    color: #1D2D45;
 }
 
 .browsetokens td:first-child {
@@ -661,6 +708,7 @@ table.templatecontrol select
 }
 
 
+
 table.statisticstable, table.statisticssummary {
     background-color:#EEF6FF;
     border-collapse:collapse;
@@ -668,6 +716,10 @@ table.statisticstable, table.statisticssummary {
     border-style: none;
 }
 
+.statisticssummary thead th
+{
+    background:#D2E0F2;
+}
 
 .statisticssummary th:first-child,
 .statisticstable td:first-child {
@@ -744,5 +796,17 @@ div.messagebox {
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     text-align: center;
     padding:10px;  
+}
+
+div.messagebox .header{
+    padding:10px;  
+}
+
+div.messagebox .warningheader {
+    font-weight:bold;
+    color:#ee0000;
+    background-color: #ffeeee;   
+    margin: 5px 0;
+    padding:2px;  
 }
 

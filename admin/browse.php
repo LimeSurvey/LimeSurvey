@@ -572,7 +572,7 @@ elseif ($subaction == "all")
 	//NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 	if ($fncount < 10) {$cellwidth = "10%";} else {$cellwidth = "100";}
 	$tableheader = "<!-- DATA TABLE -->";
-	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%' border='0' cellpadding='0' cellspacing='1' style='border: 1px solid #555555'>\n";}
+	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%' cellpadding='0' cellspacing='1'>\n";}
 	else {$tableheader .= "<table class='browsetable' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<thead><tr valign='top'>\n"
 	. "\t\t<th  class='evenrow' width='$cellwidth'><strong>id</strong></th>\n";
