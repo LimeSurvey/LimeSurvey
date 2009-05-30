@@ -3119,6 +3119,7 @@ function do_multiplechoice_withcomments($ia)
 function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
+    $answer='';
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))

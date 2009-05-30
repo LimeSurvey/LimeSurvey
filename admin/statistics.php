@@ -2622,15 +2622,15 @@ if (isset($summary) && $summary)
 				}
 				
 				//outputting headline
-				$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-				."\t<tr><td colspan='2' align='center'><strong>".sprintf($clang->gT("Field summary for %s"),$qtitle).":</strong>"
-				."</td></tr>\n"
-				."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
-				."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Calculation")."</strong></td>\n"
-				."\t\t<td width='50%' align='center' ><strong>"
-				.$clang->gT("Result")."</strong></td>\n"
-				."\t</tr>\n";
+				$statisticsoutput .= "\n<table class='statisticstable' >\n"
+				."\t<thead><tr><th colspan='2' align='center'><strong>".sprintf($clang->gT("Field summary for %s"),$qtitle).":</strong>"
+				."</th></tr>\n"
+				."\t<tr><th colspan='2' align='center'><strong>$qquestion</strong></th></tr>\n"
+				."\t<tr>\n\t\t<th width='50%' align='center' ><strong>"
+				.$clang->gT("Calculation")."</strong></th>\n"
+				."\t\t<th width='50%' align='center' ><strong>"
+				.$clang->gT("Result")."</strong></th>\n"
+				."\t</tr></thead>\n";
 				
 				//this field is queried using mathematical functions
 				$fieldname=substr($rt, 1, strlen($rt));
