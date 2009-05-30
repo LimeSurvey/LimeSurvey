@@ -59,7 +59,6 @@ while ($desrow = $desresult->FetchRow())
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = db_table_name("survey_".$desrow['sid']);
-	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
 	$surveystartdate = $desrow['startdate'];
 	$surveyfaxto = $desrow['faxto'];
@@ -141,7 +140,7 @@ if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number ex
 	$survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
 }
 
-if ($surveyuseexpiry=="Y")
+if ($surveystartdate!='')
 {
     $survey_output['SUBMIT_BY'] = sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
 }
@@ -1764,13 +1763,13 @@ $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '
 
 if(isset($_POST['printableexport']))
 {
-	if ($surveyuseexpiry=="Y")
+    if ($surveystartdate!='')  
 	{
     		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
 	};
 	if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 	{
-		if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please fax your completed survey to:")."$surveyfaxto",'B');}
+		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
 	};
 	$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
 	$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");

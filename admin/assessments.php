@@ -59,7 +59,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
                 $datarray['id']=$aid;
             }
             
-		    $query = $connect->GetInsertSQL($inserttable, $datarray);
+		    $query = $connect->GetInsertSQL($inserttable, $datarray, get_magic_quotes_gpc());
 		    $result=$connect->Execute($query) or safe_die("Error inserting<br />$query<br />".$connect->ErrorMsg());
             if ($first==true)
             {

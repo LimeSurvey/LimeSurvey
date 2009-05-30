@@ -7,8 +7,8 @@
 #
 # SURVEYS TABLE
 #
-"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","language","additional_languages","datestamp","usecookie","notification","allowregister","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","publicstatistics","publicgraphs","htmlemail","tokenanswerspersistence","assessments","usecaptcha","bounce_email","usetokens","attributedescriptions"
-"26553","1","Tim Wahrendorff","N","","","wahrendorff@localhost","Y","","G","hisinone","de","","N","N","0","N","Y","N","0","N","Y","N","N","N","N","2009-04-21","N","N","N","Y","N","N","D","wahrendorff@localhost","N",""
+"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","language","additional_languages","datestamp","usecookie","notification","allowregister","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","refurl","datecreated","listpublic","publicstatistics","publicgraphs","htmlemail","tokenanswerspersistence","assessments","usecaptcha","bounce_email","usetokens","attributedescriptions"
+"26553","1","Tim Wahrendorff","N","","","wahrendorff@localhost","Y","","G","hisinone","de","","N","N","0","N","Y","N","0","N","Y","N","N","2009-04-21","N","N","N","Y","N","N","D","wahrendorff@localhost","N",""
 
 #
 # GROUPS TABLE

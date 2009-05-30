@@ -304,9 +304,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	}
     if ($oldversion < 137) //New Quota Functions
     {
-        modify_database("","ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
-        modify_database("","ALTER TABLE `prefix_users` ADD `dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
-        modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='137' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD `surveyls_dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_users` ADD `dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_surveys` set `startdate`=null where `usestartdate`='N'"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_surveys` set `expires`=null where `useexpiry`='N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `usestartdate`"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `useexpiry`"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='137' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }  
       
     return true;

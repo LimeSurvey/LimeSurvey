@@ -2040,11 +2040,16 @@ function getsidgidqidaidtype($fieldcode)
 	return $aRef;
 }
 
-/*
-*
-*
+/**
+* put your comment there...
+* 
+* @param mixed $fieldcode
+* @param mixed $value
+* @param mixed $format
+* @param mixed $dateformatid
+* @return string
 */
-function getextendedanswer($fieldcode, $value, $format='')
+function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y')
 {
 	// Performance optimized	: Nov 13, 2006
 	// Performance Improvement	: 36%
@@ -2053,7 +2058,7 @@ function getextendedanswer($fieldcode, $value, $format='')
 	global $dbprefix, $surveyid, $connect, $clang, $action;
 
 	// use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
-	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
+	$s_lang = GetBaseLanguageFromSurveyID($surveyid);        
 	if  (!isset($action) || (isset($action) && $action!='browse') ) 
     {
         if (isset($_SESSION['s_lang'])) $s_lang = $_SESSION['s_lang'];  //This one does not work in admin mode when you browse a particular answer
@@ -2075,79 +2080,85 @@ function getextendedanswer($fieldcode, $value, $format='')
 		} // while
 		switch($this_type)
 		{
+            case 'D': if (trim($value)!='')
+                {
+                    $datetimeobj = new Date_Time_Converter($value , "Y-m-d H:i:s");
+                    $value=$datetimeobj->convert($dateformatphp);                                      
+                }
+                break;                                   
 			case "L":
 			case "!":
 			case "O":
 			case "^":
 			case "I":
 			case "R":
-			$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
-			$result = db_execute_assoc($query) or safe_die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".$connect->ErrorMsg()); //Checked   
-			while($row=$result->FetchRow())
-			{
-				$this_answer=$row['answer'];
-			} // while
-			if ($value == "-oth-")
-			{
-				$this_answer=$clang->gT("Other");
-			}
-			break;
+			    $query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
+			    $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type L - getextendedanswer() in common.php<br />$query<br />".$connect->ErrorMsg()); //Checked   
+			    while($row=$result->FetchRow())
+			    {
+				    $this_answer=$row['answer'];
+			    } // while
+			    if ($value == "-oth-")
+			    {
+				    $this_answer=$clang->gT("Other");
+			    }
+			    break;
 			case "M":
 			case "J":
 			case "P":
-			switch($value)
-			{
-				case "Y": $this_answer=$clang->gT("Yes"); break;
-			}
-			break;
+			    switch($value)
+			    {
+				    case "Y": $this_answer=$clang->gT("Yes"); break;
+			    }
+			    break;
 			case "Y":
-			switch($value)
-			{
-				case "Y": $this_answer=$clang->gT("Yes"); break;
-				case "N": $this_answer=$clang->gT("No"); break;
-				default: $this_answer=$clang->gT("No answer");
-			}
-			break;
+			    switch($value)
+			    {
+				    case "Y": $this_answer=$clang->gT("Yes"); break;
+				    case "N": $this_answer=$clang->gT("No"); break;
+				    default: $this_answer=$clang->gT("No answer");
+			    }
+			    break;
 			case "G":
-			switch($value)
-			{
-				case "M": $this_answer=$clang->gT("Male"); break;
-				case "F": $this_answer=$clang->gT("Female"); break;
-				default: $this_answer=$clang->gT("No answer");
-			}
-			break;
+			    switch($value)
+			    {
+				    case "M": $this_answer=$clang->gT("Male"); break;
+				    case "F": $this_answer=$clang->gT("Female"); break;
+				    default: $this_answer=$clang->gT("No answer");
+			    }
+			    break;
 			case "C":
-			switch($value)
-			{
-				case "Y": $this_answer=$clang->gT("Yes"); break;
-				case "N": $this_answer=$clang->gT("No"); break;
-				case "U": $this_answer=$clang->gT("Uncertain"); break;
-			}
-			break;
+			    switch($value)
+			    {
+				    case "Y": $this_answer=$clang->gT("Yes"); break;
+				    case "N": $this_answer=$clang->gT("No"); break;
+				    case "U": $this_answer=$clang->gT("Uncertain"); break;
+			    }
+			    break;
 			case "E":
-			switch($value)
-			{
-				case "I": $this_answer=$clang->gT("Increase"); break;
-				case "D": $this_answer=$clang->gT("Decrease"); break;
-				case "S": $this_answer=$clang->gT("Same"); break;
-			}
-			break;
+			    switch($value)
+			    {
+				    case "I": $this_answer=$clang->gT("Increase"); break;
+				    case "D": $this_answer=$clang->gT("Decrease"); break;
+				    case "S": $this_answer=$clang->gT("Same"); break;
+			    }
+			    break;
 			case "F":
 			case "H":
 			case "W":
 			case "Z":
 			case "1":
-			$query = "SELECT title FROM ".db_table_name('labels')." WHERE ((lid=$this_lid) OR (lid=$this_lid1)) AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
-			$result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
-			while($row=$result->FetchRow())
-			{
-				$this_answer=$row['title'];
-			} // while
-			if ($value == "-oth-")
-			{
-				$this_answer=$clang->gT("Other");
-			}
-			break;
+			    $query = "SELECT title FROM ".db_table_name('labels')." WHERE ((lid=$this_lid) OR (lid=$this_lid1)) AND code='".$connect->escape($value)."' AND language='".$s_lang."'";
+			    $result = db_execute_assoc($query) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common.php");   //Checked
+			    while($row=$result->FetchRow())
+			    {
+				    $this_answer=$row['title'];
+			    } // while
+			    if ($value == "-oth-")
+			    {
+				    $this_answer=$clang->gT("Other");
+			    }
+			    break;
 			default:
 			;
 		} // switch

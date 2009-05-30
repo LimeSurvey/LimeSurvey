@@ -236,8 +236,6 @@ CREATE TABLE `prefix_surveys` (
   `allowprev` char(1) default 'Y',
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
-  `useexpiry` char(1) NOT NULL default 'N',
-  `usestartdate` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
   `publicstatistics` char(1) default 'N',

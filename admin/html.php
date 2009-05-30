@@ -78,11 +78,11 @@ if ($action == "listsurveys")
 
 			if($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$status=$clang->gT("Expired") ;
 				} 
-                elseif ($rows['usestartdate']=='Y' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+                elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
                 {
                     $status=$clang->gT("Not yet active") ;
                 }                
@@ -130,7 +130,7 @@ if ($action == "listsurveys")
 
 			if ($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$listsurveys .= "<td><img src='$imagefiles/expired.png' title='' "
 					. "alt='".$clang->gT("This survey is active but expired.")."' "
@@ -475,14 +475,14 @@ if ($surveyid)
 		}
 		elseif ($activated == "Y")
 		{
-			if (($surveyinfo['useexpiry']=='Y') && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+			if ($surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
 			{
 				$surveysummary .= "<img src='$imagefiles/expired.png' title='' "
 				. "alt='".$clang->gT("This survey is active but expired.")."' "
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
 			}
-            elseif (($surveyinfo['usestartdate']=='Y') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+            elseif (($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
             {
                 $surveysummary .= "<img src='$imagefiles/notyetstarted.png' title='' "
                 . "alt='".$clang->gT("This survey is active but has a start date.")."' "
@@ -911,7 +911,7 @@ if ($surveyid)
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Start date:")."</strong></td>\n";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
-        if ($surveyinfo['usestartdate']== "Y")
+        if (trim($surveyinfo['startdate'])!= '')
         {
             $datetimeobj = new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
             $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
@@ -923,7 +923,7 @@ if ($surveyid)
         $surveysummary .= "<td align='left'>$startdate</td></tr>\n"		
         . "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Expiry Date:")."</strong></td>\n";
-		if ($surveyinfo['useexpiry']== "Y")
+        if (trim($surveyinfo['expires'])!= '')
 		{
             $datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
@@ -2539,14 +2539,6 @@ if ($action == "editsurvey")
         
 
             // Start date
-            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
-            . "<span class='settingentry'><select name='usestartdate'><option value='Y'";
-            if (isset($esrow['usestartdate']) && $esrow['usestartdate'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (!isset($esrow['usestartdate']) || $esrow['usestartdate'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option></select></span></div>";
-
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
             $startdate='';
             if (trim($esrow['startdate'])!= '')
@@ -2558,14 +2550,7 @@ if ($action == "editsurvey")
             $editsurvey .= "<div class='settingrow'><span class='settingcaption'><label for='startdate_$surveyid'>".$clang->gT("Start date:")."</label></span>\n"
             . "<span class='settingentry'><input type='text' class='popupdate' id='startdate_$surveyid' size='12' name='startdate' value=\"{$startdate}\" /></span></div>\n";
 
-			// Expiration
-			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
-			. "<span class='settingentry'><select name='useexpiry'><option value='Y'";
-			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "<option value='N'";
-			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option></select></span></div>";
+			// Expiration date
             $expires='';
             if (trim($esrow['expires'])!= '')
             {
@@ -3191,6 +3176,8 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+        
 		$newsurvey = PrepareEditorScript();
 		$newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
@@ -3398,22 +3385,14 @@ if ($action == "newsurvey")
         . "</select></span>\n</div>\n";
 
         // Timed Start
-        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
-        . "<span class='settingentry'><select name='usestartdate'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option></select></span></div>\n"
-        . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
-        . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value='"
-        . date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_a'>...</button>"
-        . "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
+        . "<span class='settingentry'><input type='text' class='popupdate' id='startdate' size='12' name='startdate' value='' />"
+        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></span></div>\n";
 
 		// Expiration
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
-		. "<span class='settingentry'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "<option value='N' selected='selected'>".$clang->gT("No")."</option></select></span></div>\n"
-		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
-		. "<span class='settingentry'><input type='text' id='f_date_b' size='12' name='expires' value='"
-		. date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
-		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
+		. "<span class='settingentry'><input type='text' class='popupdate' id='enddate' size='12' name='expires' value='' />"
+		. "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></span></div>\n";
 
 		//COOKIES
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"

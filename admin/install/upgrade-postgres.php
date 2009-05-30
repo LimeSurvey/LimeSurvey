@@ -109,7 +109,7 @@ global $modifyoutput;
     if ($oldversion < 134)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD usetokens char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         upgrade_token_tables134();
@@ -144,6 +144,10 @@ global $modifyoutput;
     {
        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
        modify_database("", "ALTER TABLE prefix_users ADD \"dateformat\" integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_surveys set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_surveys set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN usestartdate"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN useexpiry"); echo $modifyoutput; flush();
        modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }         
 

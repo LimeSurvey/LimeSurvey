@@ -291,13 +291,11 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 	if($dStart!='' && substr($dStart,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
-		$lsrcHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
 	if($dEnd!='' && substr($dEnd,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
-		$lsrcHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','expires',$dEnd,'sid='.$iVid);
 	}
 	

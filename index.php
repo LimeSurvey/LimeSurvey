@@ -318,8 +318,8 @@ if (!$surveyid)
 			  AND surveyls_language=a.language 
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
-			  AND ((a.expires >= '".date("Y-m-d")."' AND a.useexpiry = 'Y') OR (a.useexpiry = 'N'))
-              AND ((a.startdate <= '".date("Y-m-d")."' AND a.usestartdate = 'Y') OR (a.usestartdate = 'N'))
+			  AND ((a.expires >= '".date("Y-m-d")."') OR (a.expires is null))
+              AND ((a.startdate <= '".date("Y-m-d")."') OR (a.startdate is null))
 			  ORDER BY surveyls_title";
 	$result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked 
 	$list=array();
@@ -424,7 +424,7 @@ if (!$thissurvey['templatedir'])
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
+if ($thissurvey['expiry']!='' and $thissurvey['expiry'] < date("Y-m-d"))
 {
 	sendcacheheaders();
 	doHeader();
@@ -441,7 +441,7 @@ if ($thissurvey['expiry'] < date("Y-m-d") && $thissurvey['useexpiry'] == "Y")
 }
 
 //MAKE SURE SURVEY IS ALREADY VALID
-if ($thissurvey['startdate'] > date("Y-m-d") && $thissurvey['usestartdate'] == "Y")
+if ($thissurvey['startdate']!='' and $thissurvey['startdate'] >= date("Y-m-d"))
 {
     sendcacheheaders();
     doHeader();

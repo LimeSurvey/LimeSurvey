@@ -1075,7 +1075,7 @@ if(isset($surveyid))
         $formatdata=getDateFormatData($_SESSION['dateformat']);
 		if (trim($_POST['expires'])=="")
 		{
-			$_POST['expires']='1980-01-01';
+			$_POST['expires']=null;
 		}
         else
         {
@@ -1084,7 +1084,7 @@ if(isset($surveyid))
         }
 		if (trim($_POST['startdate'])=="")
 		{
-			$_POST['startdate']='1980-01-01';
+			$_POST['startdate']=null;
 		}
         else
         {
@@ -1095,27 +1095,41 @@ if(isset($surveyid))
 		FixLanguageConsistency($postsid,$_POST['languageids']);
 		
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
-		
-		$_POST  = array_map('db_quote', $_POST);
-		$usquery = "UPDATE {$dbprefix}surveys \n"
-		. "SET admin='{$_POST['admin']}', useexpiry='{$_POST['useexpiry']}',\n"
-		. "expires='{$_POST['expires']}', adminemail='{$_POST['adminemail']}',\n"
-        . "startdate='{$_POST['startdate']}',usestartdate='{$_POST['usestartdate']}',\n"
-		. "bounce_email='{$_POST['bounce_email']}', usetokens='{$_POST['usetokens']}',\n"
-		. "private='{$_POST['private']}', faxto='{$_POST['faxto']}',\n"
-		. "format='{$_POST['format']}', template='{$_POST['template']}',\n"
-		. "assessments='{$_POST['assessments']}',\n"
-		. "language='{$_POST['language']}', additional_languages='{$_POST['languageids']}',\n"
-		. "datestamp='{$_POST['datestamp']}', ipaddr='{$_POST['ipaddr']}',"
-        ." refurl='{$_POST['refurl']}', publicgraphs='{$_POST['publicgraphs']}',\n"
-		. "usecookie='{$_POST['usecookie']}', notification='{$_POST['notification']}',\n"
-		. "allowregister='{$_POST['allowregister']}', allowsave='{$_POST['allowsave']}',\n"
-        . "printanswers='{$_POST['printanswers']}', publicstatistics='{$_POST['publicstatistics']}',\n"   
-		. "autoredirect='{$_POST['autoredirect']}', allowprev='{$_POST['allowprev']}',\n"
-		. "listpublic='{$_POST['public']}', htmlemail='{$_POST['htmlemail']}',\n"
-		. "tokenanswerspersistence='{$_POST['tokenanswerspersistence']}', usecaptcha='{$_POST['usecaptcha']}'\n"
-		. "WHERE sid={$postsid}";
-		
+
+        $sql = "SELECT * FROM ".db_table_name('surveys')." WHERE sid={$postsid}";
+        $rs = db_execute_assoc($sql);        
+		$updatearray= array('admin'=>$_POST['admin'],
+                            'expires'=>$_POST['expires'], 
+                            'adminemail'=>$_POST['adminemail'], 
+                            'startdate'=>$_POST['startdate'], 
+                            'bounce_email'=>$_POST['bounce_email'], 
+                            'usetokens'=>$_POST['usetokens'], 
+                            'private'=>$_POST['private'], 
+                            'faxto'=>$_POST['faxto'], 
+                            'format'=>$_POST['format'], 
+                            'template'=>$_POST['template'], 
+                            'assessments'=>$_POST['assessments'], 
+                            'language'=>$_POST['language'], 
+                            'additional_languages'=>$_POST['languageids'], 
+                            'datestamp'=>$_POST['datestamp'], 
+                            'ipaddr'=>$_POST['ipaddr'], 
+                            'refurl'=>$_POST['refurl'], 
+                            'publicgraphs'=>$_POST['publicgraphs'], 
+                            'usecookie'=>$_POST['usecookie'], 
+                            'notification'=>$_POST['notification'], 
+                            'allowregister'=>$_POST['allowregister'], 
+                            'allowsave'=>$_POST['allowsave'], 
+                            'printanswers'=>$_POST['printanswers'], 
+                            'publicstatistics'=>$_POST['publicstatistics'], 
+                            'autoredirect'=>$_POST['autoredirect'], 
+                            'allowprev'=>$_POST['allowprev'], 
+                            'listpublic'=>$_POST['public'], 
+                            'htmlemail'=>$_POST['htmlemail'], 
+                            'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'], 
+                            'usecaptcha'=>$_POST['usecaptcha'] 
+                            );
+              
+        $usquery=$connect->GetUpdateSQL($rs, $updatearray, get_magic_quotes_gpc());                                             
 		$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
@@ -1264,10 +1278,11 @@ if(isset($surveyid))
 
 elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 {
+    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);   
 	if ($_POST['url'] == "http://") {$_POST['url']="";}
 	if (!$_POST['surveyls_title'])
 	{
-		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a short title","js")."\")\n //-->\n</script>\n";
+		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a title","js")."\")\n //-->\n</script>\n";
 	} else
 	{
 		if (trim($_POST['expires'])=="")
@@ -1308,35 +1323,66 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 
         $_POST['dateformat'] = (int) $_POST['dateformat'];
-		$_POST  = array_map('db_quote', $_POST);
 
-		$isquery = "INSERT INTO {$dbprefix}surveys\n"
-		. "(sid, owner_id, "
-        . "admin, active, "
-        . "useexpiry, expires, "
-        . "usestartdate, startdate,"
-		. "adminemail, bounce_email, private, "
-        . "faxto, format, template, "
-		. "language, datestamp, ipaddr, refurl, "
-        . "usecookie, notification, allowregister, "
-		. "allowsave, autoredirect, "
-        . "allowprev, printanswers, usetokens, "
-        . "datecreated, listpublic, htmlemail, tokenanswerspersistence, "
-        . "usecaptcha, publicstatistics, publicgraphs, assessments)\n"
-		. "VALUES ($surveyid, {$_SESSION['loginID']},\n"
-		. "'{$_POST['admin']}', 'N', \n"
-		. "'{$_POST['useexpiry']}','{$_POST['expires']}'," 
-        . "'{$_POST['usestartdate']}','{$_POST['startdate']}'," 
-        . "'{$_POST['adminemail']}', '{$_POST['bounce_email']}', '{$_POST['private']}',\n"
-		. "'{$_POST['faxto']}', '{$_POST['format']}', '{$_POST['template']}',\n"
-		. "'{$_POST['language']}', '{$_POST['datestamp']}', '{$_POST['ipaddr']}', '{$_POST['refurl']}',\n"
-		. "'{$_POST['usecookie']}', '{$_POST['notification']}', '{$_POST['allowregister']}',\n"
-		. "'{$_POST['allowsave']}', '{$_POST['autoredirect']}', \n"
-        . "'{$_POST['allowprev']}', '{$_POST['printanswers']}', '{$_POST['usetokens']}',\n"
-		. "'".date("Y-m-d")."', '{$_POST['public']}', '{$_POST['htmlemail']}', '{$_POST['tokenanswerspersistence']}', \n"
-        . "'{$_POST['usecaptcha']}', '{$_POST['publicstatistics']}','{$_POST['publicgraphs']}','{$_POST['assessments']}')";
 
-		$isresult = $connect->Execute($isquery);
+        if (trim($_POST['expires'])=='')
+        {
+            $_POST['expires']=null;
+        }
+        else
+        {
+            $datetimeobj = new Date_Time_Converter($_POST['expires'] , "Y-m-d H:i:s");
+            $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
+            $_POST['expires']=$browsedatafield;
+        }
+
+        if (trim($_POST['startdate'])=='')
+        {
+            $_POST['expires']=null;
+        }
+        else
+        {
+            $datetimeobj = new Date_Time_Converter($_POST['startdate'] , "Y-m-d H:i:s");
+            $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
+            $_POST['startdate']=$browsedatafield;
+        }
+        
+        
+        $insertarray=array( 'sid'=>$surveyid,
+                            'owner_id'=>$_SESSION['loginID'],
+                            'admin'=>$_POST['admin'],
+                            'active'=>'N',
+                            'expires'=>$_POST['expires'],
+                            'startdate'=>$_POST['startdate'],
+                            'adminemail'=>$_POST['adminemail'],
+                            'bounce_email'=>$_POST['bounce_email'],
+                            'private'=>$_POST['private'],
+                            'faxto'=>$_POST['faxto'],
+                            'format'=>$_POST['format'],
+                            'template'=>$_POST['template'],
+                            'language'=>$_POST['language'],
+                            'datestamp'=>$_POST['datestamp'],
+                            'ipaddr'=>$_POST['ipaddr'],
+                            'refurl'=>$_POST['refurl'],
+                            'usecookie'=>$_POST['usecookie'],
+                            'notification'=>$_POST['notification'],
+                            'allowregister'=>$_POST['allowregister'],
+                            'allowsave'=>$_POST['allowsave'],
+                            'autoredirect'=>$_POST['autoredirect'],
+                            'allowprev'=>$_POST['allowprev'],
+                            'printanswers'=>$_POST['printanswers'],
+                            'usetokens'=>$_POST['usetokens'],
+                            'datecreated'=>date("Y-m-d"),
+                            'public'=>$_POST['public'],
+                            'htmlemail'=>$_POST['htmlemail'],
+                            'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
+                            'usecaptcha'=>$_POST['usecaptcha'],
+                            'publicstatistics'=>$_POST['publicstatistics'],
+                            'publicgraphs'=>$_POST['publicgraphs'],
+                            'assessments'=>$_POST['assessments']
+                            );
+        $isquery = $connect->GetInsertSQL(db_table_name_nq('surveys'), $insertarray, get_magic_quotes_gpc());    
+		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); 
 
 
                 
@@ -1385,7 +1431,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 
 		// Insert into survey_rights
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
-		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); //ADDED by Moses
+		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg());
 		if ($isresult)
 		{
 			$surveyselect = getsurveylist();

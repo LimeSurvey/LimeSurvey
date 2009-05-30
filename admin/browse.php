@@ -56,7 +56,7 @@ else
 }
 
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
-$browseoutput = "<table style='background-color:#F8F8FF;' width='100%'>\n";
+$browseoutput = "<table style='background-color:#F8F8FF;' width='100%' align='center'>\n";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
@@ -135,6 +135,7 @@ else //SURVEY MATCHING $surveyid DOESN'T EXIST
 $qulanguage = GetBaseLanguageFromSurveyID($surveyid);
 if ($subaction == "id") // Looking at a SINGLE entry
 {
+    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 	//SHOW HEADER
 	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= '<tr><td>'.$surveyoptions;} // Don't show options if coming from tokens script
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
@@ -348,10 +349,10 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		for ($i; $i<$nfncount+1; $i++)
 		{
 			$browseoutput .= "\t<tr>\n"
-			."\t\t<th valign='top' align='right' width='50%'>"
+			."\t\t<th align='right' width='50%'>"
 			.strip_tags(strip_javascript($fnames[$i][2]))."</th>\n"
-			."\t\t<td valign='top' align='left' >"
-			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]]), ENT_QUOTES)
+			."\t\t<td align='left' >"
+			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']), ENT_QUOTES)
 			."</td>\n"
 			."\t</tr>\n";
 		}
@@ -731,6 +732,7 @@ elseif ($subaction == "all")
 	."<table><tr><td></td></tr></table>\n";
 
 	$browseoutput .= $tableheader;
+    $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 	while ($dtrow = $dtresult->FetchRow())
 	{
@@ -766,7 +768,6 @@ elseif ($subaction == "all")
 			}
 			$i++;
 		}
-        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 		for ($i; $i<$fncount; $i++)
 		{

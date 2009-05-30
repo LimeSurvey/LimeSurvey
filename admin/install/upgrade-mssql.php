@@ -315,6 +315,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
     {
 	    modify_database("", "ALTER TABLE [prefix_surveys_languagesettings] ADD [surveyls_dateformat] int NOT NULL default '1'"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_users] ADD [dateformat] int NOT NULL default '1'"); echo $modifyoutput; flush();
+        modify_database("", "update [prefix_surveys] set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
+        modify_database("", "update [prefix_surveys] set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN usestartdate"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN useexpiry"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
     return true;

@@ -61,6 +61,7 @@ $dataentryoutput ='';
 
 include_once("login_check.php");
 
+$dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
 $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
@@ -792,7 +793,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
 		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'><strong>"
-		.$clang->gT("Editing Response")." (ID $id)</strong></td></tr>\n"
+		.sprintf($clang->gT("Editing response (ID %s)"),$id)."</strong></td></tr>\n"
 		."\t<tr><td colspan='2' height='1'></td></tr>\n";
 
 		foreach ($results as $idrow)
@@ -858,20 +859,22 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					}
 					break;
 					case "D": //DATE
-					$dataentryoutput .= "\t\t\t<input type='text' size='10' name='{$fnames[$i][0]}' value='{$idrow[$fnames[$i][0]]}' />\n";
+                        $datetimeobj = new Date_Time_Converter($idrow[$fnames[$i][0]] , "Y-m-d H:i:s");
+                        $thisdate=$datetimeobj->convert($dateformatdetails['phpdate']);                 
+					    $dataentryoutput .= "\t\t\t<input type='text' class='popupdate' size='12' name='{$fnames[$i][0]}' value='{$thisdate}' />\n";
 					break;
 					case "G": //GENDER drop-down list
-					$dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
-					."\t\t\t\t<option value=''";
-					if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
-					$dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
-					."\t\t\t\t<option value='F'";
-					if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected='selected'";}
-					$dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
-					."\t\t\t\t<option value='M'";
-					if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected='selected'";}
-					$dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
-					."\t\t\t</select>\n";
+					    $dataentryoutput .= "\t\t\t<select name='{$fnames[$i][0]}'>\n"
+					    ."\t\t\t\t<option value=''";
+					    if ($idrow[$fnames[$i][0]] == "") {$dataentryoutput .= " selected='selected'";}
+					    $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n"
+					    ."\t\t\t\t<option value='F'";
+					    if ($idrow[$fnames[$i][0]] == "F") {$dataentryoutput .= " selected='selected'";}
+					    $dataentryoutput .= ">".$clang->gT("Female")."</option>\n"
+					    ."\t\t\t\t<option value='M'";
+					    if ($idrow[$fnames[$i][0]] == "M") {$dataentryoutput .= " selected='selected'";}
+					    $dataentryoutput .= ">".$clang->gT("Male")."</option>\n"
+					    ."\t\t\t</select>\n";
 					break;
 					case "W":
 					case "Z":
@@ -1634,9 +1637,17 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			{
 				$fieldname = "{$irow['sid']}X{$irow['gid']}X{$irow['qid']}";
 				if (isset($_POST[$fieldname])) { $thisvalue=$_POST[$fieldname]; } else {$thisvalue="";}
-				if ($irow['type'] == 'D' && $thisvalue == "")
+				if ($irow['type'] == 'D')
 				{
-					$updateqr .= db_quote_id($fieldname)." = NULL, \n";
+                    if ($thisvalue == "")
+                    {
+                        $updateqr .= db_quote_id($fieldname)." = NULL, \n";
+                    }
+                    else
+                    {
+                        $datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
+                        $updateqr .= db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";  
+                    }
 				}
 				elseif ( $irow['type'] == 'N' && $thisvalue == "")
 				{

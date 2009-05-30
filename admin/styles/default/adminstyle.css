@@ -550,12 +550,9 @@ a.invalidemail {
 .listsurveys th {
     background-color: #D2E0F2;     
     font-size:10pt;
-    padding:2px 8px;
+    padding:2px 4px;
 }
 
-
-
-.listsurveys th,
 .browsetable th {
     background-color: #D2E0F2;     
     font-size:10pt;

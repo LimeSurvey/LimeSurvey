@@ -554,6 +554,8 @@ if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connec
 unset($surveyrowdata['expires']);
 unset($surveyrowdata['attribute1']);
 unset($surveyrowdata['attribute2']);
+unset($surveyrowdata['usestartdate']);
+unset($surveyrowdata['useexpiry']);
 unset($surveyrowdata['url']);           
 if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
 $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
