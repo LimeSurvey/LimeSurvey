@@ -613,7 +613,7 @@ class LsrcHelper {
 		}
 		else
 		{
-			if((SHA256::hash($sPass)==$gv['password']))
+			if((SHA256::hashing($sPass)==$gv['password']))
 			{
 				$_SESSION['loginID']=$gv['uid'];
 				$_SESSION['lang']=$gv['lang'];

@@ -17,32 +17,25 @@
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
+
+##################################################################################
+
 $versionnumber = "1.85RC3";
 $dbversionnumber = 137;
 $buildnumber = "";
 
+##################################################################################
 
-
-if ($debug>0) {//For debug purposes - switch on in config.php
-        @ini_set("display_errors", 1);
-        error_reporting(E_ALL); 
-}
-
-if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
-@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys 
-
+// Check for most necessary requirements
 // Now check for PHP & db version
 // Do not localize/translate this!
 $ver = explode( '.', PHP_VERSION );
 $ver_num = $ver[0] . $ver[1] . $ver[2];
-$dieoutput='';
-$maildebug='';
-
+$dieoutput='';     
 if ( $ver_num < 500 )
 {
     $dieoutput .= 'This script can only be run on PHP version 5.x or later! Your version: '.phpversion().'<br />';
 }
-
 if (!function_exists('mb_convert_encoding'))
 {
     $dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.limesurvey.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
@@ -50,14 +43,24 @@ if (!function_exists('mb_convert_encoding'))
 if ($dieoutput!='') die($dieoutput);
 
 
+if ($debug>0) {//For debug purposes - switch on in config.php
+        @ini_set("display_errors", 1);
+        error_reporting(E_ALL | E_STRICT); 
+}
+
+if (ini_get("max_execution_time")<600) @set_time_limit(600); // Maximum execution time - works only if safe_mode is off
+@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys 
+
+$maildebug='';
+                  
+
 // The following function (when called) includes FireBug Lite if true 
 define('FIREBUG' , $use_firebug_lite);
 
 define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for mssql
 
 ##################################################################################
-## DO NOT EDIT BELOW HERE
-##################################################################################
+
 require_once ($rootdir.'/classes/adodb/adodb.inc.php');
 require_once ($rootdir.'/classes/datetimeconverter/class.datetimeconverter.php');
 require_once ($rootdir.'/classes/phpmailer/class.phpmailer.php');
@@ -4060,7 +4063,7 @@ function modify_database($sqlfile='', $sqlstring='')
 				$command .= $line;
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
 				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
-				$command = str_replace('$defaultpass', SHA256::hash($defaultpass), $command); // variables By Moses
+				$command = str_replace('$defaultpass', SHA256::hashing($defaultpass), $command); // variables By Moses
 				$command = str_replace('$siteadminname', $siteadminname, $command);
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses

@@ -77,7 +77,7 @@ if (!isset($_SESSION['loginID']))
 
 				if(MailTextMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
 				{
-					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
+					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
 					$connect->Execute($query); //Checked
 					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />";
 					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
@@ -112,7 +112,7 @@ if (!isset($_SESSION['loginID']))
 			else
 			{
 				$fields = $result->FetchRow();
-				if (SHA256::hash($_POST['password']) == $fields['password'])
+				if (SHA256::hashing($_POST['password']) == $fields['password'])
 				{
 					// Anmeldung ERFOLGREICH
 					if (strtolower($_POST['password'])=='password')
@@ -223,7 +223,7 @@ if (!isset($_SESSION['loginID']))
 				."(users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) "
 				."VALUES ("
 				. $connect->qstr($mappeduser).", "
-				. "'".SHA256::hash($new_pass)."', "
+				. "'".SHA256::hashing($new_pass)."', "
 				. "'".db_quote($WebserverAuth_autouserprofile['full_name'])."', "
 				. getInitialAdmin_uid()." , "
 				. "'".$WebserverAuth_autouserprofile['lang']."', "
@@ -334,7 +334,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 	{
 		$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery); //Checked
 
 		if($uresult)
@@ -497,7 +497,7 @@ elseif ($action == "moduser")
 			{
 				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".$postuserid;
 			} else {
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".$postuserid;
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hashing($pass)."' WHERE uid=".$postuserid;
 			}
 			
 			$uresult = $connect->Execute($uquery);//Checked

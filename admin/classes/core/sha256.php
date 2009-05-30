@@ -15,10 +15,10 @@
  *----- Version 1.0.1 ----------------------------------------------------------
  *
  *      Syntax:
- *            string SHA256::hash( string message[, string format ])
+ *            string SHA256::hashing( string message[, string format ])
  *
  *      Description:
- *            SHA256::hash() is a static function that must be called with `message`
+ *            SHA256::hashing() is a static function that must be called with `message`
  *            and optionally `format`. Possible values for `format` are:
  *            'bin' binary string output
  *            'hex' default; hexidecimal string output (lower case)
@@ -26,7 +26,7 @@
  *            Failures return FALSE.
  *
  *      Usage:
- *            $hash = SHA256::hash('string to hash');
+ *            $hash = SHA256::hashing('string to hash');
  *
  ******************************************************************************/
 
@@ -136,7 +136,7 @@ class SHA256Data extends hashData
 //      static class. Access via SHA256::hash()
 class SHA256 extends hash
 {
-        function hash($str, $mode = 'hex')
+        static function hashing($str, $mode = 'hex')
         {
                 static $modes = array( 'hex', 'bin', 'bit' );
                 $ret = false;
@@ -147,7 +147,7 @@ class SHA256 extends hash
                 }
                 else
                 {
-                        $data =& new SHA256Data($str);
+                        $data = new SHA256Data($str);
 
                         SHA256::compute($data);
 
@@ -171,7 +171,7 @@ class SHA256 extends hash
         //      begin internal functions
        
         //      32-bit summation
-        function sum()
+        static function sum()
         {
                 $T = 0;
                 for($x = 0, $y = func_num_args(); $x < $y; $x++)
@@ -202,7 +202,7 @@ class SHA256 extends hash
        
        
         //      compute the hash
-        function compute(&$hashData)
+        static function compute(&$hashData)
         {
                 static $vars = 'abcdefgh';
                 static $K = null;
@@ -292,7 +292,7 @@ class SHA256 extends hash
        
        
         //      set up the display of the hash in hex.
-        function hashHex(&$hashData)
+        static function hashHex(&$hashData)
         {
                 $str = '';
                
@@ -385,7 +385,7 @@ function test1()
                 echo 'Testing ' . var_export($str,true) . "\n";
                 list($s1,$s2) = explode(' ', microtime());
                 for($x = 0; $x < $it; $x++)
-                        $data =& new SHA256Data($str);
+                        $data = new SHA256Data($str);
                 list($e1,$e2) = explode(' ', microtime());
                 echo hexerize($data->chunks);
                 echo hexerize($data->hash);
