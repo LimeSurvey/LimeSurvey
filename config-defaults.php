@@ -465,4 +465,5 @@ else
 {
 	// commandline installation, no relativeurl needed 
 }
-?>
+
+

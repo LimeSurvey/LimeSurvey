@@ -2527,11 +2527,11 @@ function doAssessment($surveyid)
 							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
         					    <table align='center'>
 								 <tr>
-								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
+								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
 								  </th>
 								 </tr>
 								 <tr>
-								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
+								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
 								 </td>
 								</tr>
 							   </table><br />\n";
