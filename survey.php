@@ -403,6 +403,7 @@ END;
 	* $condition[n][5] => SGQ code of element [1] (sub-part of [2])
 	* $condition[n][6] => method used to evaluate
     * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
+    * $condition[n][8] => group id of the question having the condition set ($condition[n][0])
     */
 	
 	foreach ($conditions as $cd)
@@ -422,51 +423,6 @@ END;
 	}
 
 		$idname=retrieveJSidname($cd);
-		// TIBO TODO: the block below is replaced by the function above
-//		//Just in case the dropdown threshold is being applied, check number of answers here
-//		if ($cd[4] == "L")
-//		{
-//			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
-//			$cccresult=$connect->Execute($cccquery); // Checked
-//			$cccount=$cccresult->RecordCount();
-//		}
-//		if ($cd[4] == "R")
-//		{
-//			$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
-//		}
-//		elseif ($cd[4] == "5" ||
-//				$cd[4] == "A" ||
-//				$cd[4] == "B" ||
-//				$cd[4] == "C" ||
-//				$cd[4] == "E" ||
-//				$cd[4] == "F" ||
-//				$cd[4] == "H" ||
-//				$cd[4] == "G" ||
-//				$cd[4] == "Y" ||
-//				$cd[4] == "1" ||
-//				($cd[4] == "L" && $cccount <= $dropdownthreshold))
-//		{
-//			$idname="java$cd[2]";
-//		}
-//		elseif ($cd[4] == "M" || 
-//				$cd[4] == "P")
-//		{
-//			$idname="java$cd[5]$cd[3]";
-//		}
-//		elseif ($cd[4] == "D" ||
-//				$cd[4] == "N" ||
-//				$cd[4] == "S" ||
-//				$cd[4] == "T" ||
-//				$cd[4] == "U" ||
-//				$cd[4] == "Q" ||
-//				$cd[4] == "K" )
-//		{
-//			$idname="answer$cd[2]";
-//		}
-//		else
-//		{
-//			$idname="java".$cd[2];
-//		}
 
 		// Addition of "scenario" by Ron L.J. van den Burg.
 		// Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
@@ -672,11 +628,15 @@ END;
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='';\n"
       . "    document.getElementById('display$cd[0]').value='on';\n"
+      . "    countDisplayedQuestionsInGroup[".$cd[8]."]++;\n"
+      . "    show_hide_group_$cd[8]();\n"
       . "    }\n"
       . "   else\n"
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='none';\n"
       . "    document.getElementById('display$cd[0]').value='';\n"
+      . "    countDisplayedQuestionsInGroup[".$cd[8]."]--;\n"
+      . "    show_hide_group_$cd[8]();\n"
       . "    }\n";
 			$cqcount++;
 		}
@@ -741,12 +701,20 @@ if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalida
 	echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
+// initialize hide group script
+$initShowHideGroupScript = "<script type='text/javascript'>\n"
+	. "\tcountDisplayedQuestionsInGroup = new Array();\n"
+	."</script>\n";
+
+echo $initShowHideGroupScript;
+
 foreach ($_SESSION['grouplist'] as $gl)
 {
 	$gid=$gl[0];
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
 	echo "\n\n<!-- START THE GROUP -->\n";
+	echo "\n\n<div id='group-$gid'>\n";
 	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 	echo "\n";
 
@@ -756,6 +724,9 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 	echo "\n";
 
+	// count the number of non-conditionnal and conditionnal questions in this group
+	$count_nocond_questions=0;
+	$count_cond_questions=0;
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
@@ -774,7 +745,16 @@ foreach ($_SESSION['grouplist'] as $gl)
 					$man_class = '';
 				}
 
-				if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+				if ($qa[3] != 'Y')
+				{
+					$n_q_display = '';
+					$count_cond_questions++;
+				} 
+				else 
+				{ 
+					$n_q_display = ' style="display: none;"';
+					$count_nocond_questions++;
+				}
 
 				echo '
 	<!-- NEW QUESTION -->
@@ -791,7 +771,37 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 
 	echo "\n\n<!-- END THE GROUP -->\n";
+
+	if ($hide_groupdescr_allinone == true)
+	{
+		$show_hide_group_script = "\n\n" 
+			."<script type='text/javascript'>\n"
+			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+			."\tfunction show_hide_group_$gid() {\n"
+			."\t\tif (countDisplayedQuestionsInGroup[$gid] > 0) {\n"
+			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
+			."\t\t} else {\n"
+			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
+			."\t\t}\n"
+			."\t}\n"
+			."</script>\n"
+			."\n";
+	}
+	else
+	{ // add an empty function if we shouldn't hide groupdescr
+		$show_hide_group_script = "\n\n" 
+			."<script type='text/javascript'>\n"
+			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+			."\tfunction show_hide_group_$gid() {\n"
+			."\t}\n"
+			."</script>\n"
+			."\n";
+	}
+
+	echo $show_hide_group_script;
+
 	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+	echo "\n\n</div>\n";
 	echo "\n";
 }
 //echo "&nbsp;\n";

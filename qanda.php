@@ -56,10 +56,13 @@ function retrieveConditionInfo($ia)
 				      ."{$dbprefix}questions.type, "
 				      ."{$dbprefix}questions.sid, "
 				      ."{$dbprefix}questions.gid, "
-				      ."{$dbprefix}conditions.method "
+				      ."{$dbprefix}conditions.method, "
+				      ."questionssrc.gid as srcgid "
 				."FROM {$dbprefix}conditions, "
-				     ."{$dbprefix}questions "
+				     ."{$dbprefix}questions ,"
+				     ."{$dbprefix}questions as questionssrc "
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+				."AND {$dbprefix}conditions.qid=questionssrc.qid "
 				."AND {$dbprefix}conditions.qid=$ia[0] "
 				."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
 				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' "
@@ -75,10 +78,11 @@ function retrieveConditionInfo($ia)
 				      ."'' as type, "
 				      ."0 as sid, "
 				      ."0 as gid, "
-				      ."{$dbprefix}conditions.method "
-				."FROM {$dbprefix}conditions "
-				."WHERE "
-				." {$dbprefix}conditions.qid=$ia[0] "
+				      ."{$dbprefix}conditions.method,"
+				      ."questionssrc.gid as srcgid "
+				."FROM {$dbprefix}conditions, {$dbprefix}questions as questionssrc "
+				."WHERE {$dbprefix}conditions.qid=questionssrc.qid "
+				."AND {$dbprefix}conditions.qid=$ia[0] "
 				."AND {$dbprefix}conditions.cfieldname LIKE '{%' "
 				."ORDER BY {$dbprefix}conditions.scenario, "
 				 ."{$dbprefix}conditions.cqid, "
@@ -109,7 +113,8 @@ function retrieveConditionInfo($ia)
 						$crow['type'],
 						$crow['sid']."X".$crow['gid']."X".$crow['cqid'],
 						$crow['method'],
-						$crow['scenario']);
+						$crow['scenario'],
+						$crow['srcgid']);
 		}
 		return $conditions;
 	}
