@@ -335,4 +335,17 @@ function sanitize_languagecodeS($codestringtosanitize) {
 	return implode(" ",$codearray);
 }
 
+
+function sanitize_signedint($integer, $min='', $max='')
+{
+    $int  = (int) $integer; 
+
+    if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
+    { 
+        return FALSE;                              // Oops! Outside limits.
+    }
+
+    return $int;
+};
+
 ?>

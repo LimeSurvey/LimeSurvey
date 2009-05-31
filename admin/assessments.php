@@ -79,8 +79,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	        $query = "UPDATE {$dbprefix}assessments
 			          SET scope='".db_quote($_POST['scope'])."',
 			          gid=".sanitize_int($_POST['gid']).",
-			          minimum='".sanitize_int($_POST['minimum'])."',
-			          maximum='".sanitize_int($_POST['maximum'])."',
+			          minimum='".sanitize_signedint($_POST['minimum'])."',
+			          maximum='".sanitize_signedint($_POST['maximum'])."',
 			          name='".db_quote($myFilter->process($_POST['name_'.$assessmentlang]))."',
 			          message='".db_quote($myFilter->process($_POST['assessmentmessage_'.$assessmentlang]))."'
 			          WHERE language='$assessmentlang' and id=".sanitize_int($_POST['id']);
