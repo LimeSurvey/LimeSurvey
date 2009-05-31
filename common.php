@@ -75,21 +75,28 @@ if (rand(1,50)==1)
     cleanTempDirectory();   
 }
 
+
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
-if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami") //Deal with Xitami Issue
+
+//Deal with Xitami server issues 
+//Todo: find out if this still is an issue with the latest Xitami server version
+if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami") 
 {
 	$_SERVER['PHP_SELF'] = substr($_SERVER['SERVER_URL'], 0, -1) .$_SERVER['SCRIPT_NAME'];
 }
 
-// Array of JS and CSS scripts to include in header
-// is updated by questions in qanda.php
+// Deal with server systems having not set a default time zone
+if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
+@date_default_timezone_set(@date_default_timezone_get());
+
+// Array of JS and CSS scripts to include in client header
 $js_header_includes = array();
 $css_header_includes =  array();
  
 // JS scripts and CSS to include in admin header
-// updated by admin scripts. Caution this is a string not an array
+// updated by admin scripts
 $js_adminheader_includes = array();   
 $css_adminheader_includes = array();   
 
