@@ -3607,6 +3607,7 @@ if (isset($summary) && $summary)
 					
 					//edit labels and put them into antoher array
                     $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                    $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
                     
                 }	//end while -> loop through results
                 
@@ -4187,10 +4188,21 @@ if (isset($summary) && $summary)
                         {$i++;}
                     }
                 
+                    $lblout=array();
+                    if (getLanguageRTL($language))
+                    {
+                        $lblout=$lblrtl;     
+                    }
+                    else
+                    {
+                        $lblout=$lbl;  
+                    }
+                    
+                     
                     //create new 3D pie chart
 					$DataSet = new pData; 
                     $DataSet->AddPoint($gdata,"Serie1");  
-                    $DataSet->AddPoint($lbl,"Serie2");  
+                    $DataSet->AddPoint($lblout,"Serie2");  
                     $DataSet->AddAllSeries();
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
@@ -4238,6 +4250,7 @@ if (isset($summary) && $summary)
 		unset($grawdata);
         unset($label);
 		unset($lbl);
+        unset($lblout);
 		unset($justcode);
 		unset ($alist);		
 		

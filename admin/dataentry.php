@@ -1785,7 +1785,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		}
 		$updateqr = substr($updateqr, 0, -3);
 		if (isset($_POST['datestamp']) && $_POST['datestamp']) {$updateqr .= ", datestamp='".auto_escape($_POST['datestamp'])."'";}
-		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr=".auto_escape($_POST['ipaddr'])."'";}
+		if (isset($_POST['ipaddr']) && $_POST['ipaddr']) {$updateqr .= ", ipaddr='".auto_escape($_POST['ipaddr'])."'";}
 		if (isset($_POST['token']) && $_POST['token']) {$updateqr .= ", token='".auto_escape($_POST['token'])."'";}
 		if (isset($_POST['language']) && $_POST['language']) {$updateqr .= ", startlanguage='".auto_escape($_POST['language'])."'";}
 		if (isset($_POST['submitdate']) && $_POST['submitdate'] && $_POST['submitdate'] != "N") {$updateqr .= ", submitdate='".auto_escape($_POST['submitdate'])."'";}

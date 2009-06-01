@@ -441,28 +441,58 @@
     }
 
    function user_sort($a, $b) {
-   // smarts is all-important, so sort it first
-   
-   if($a['description'] >$b['description']) {
-     return 1;
-   }
-   else {
-        return -1;
-        }
+       // smarts is all-important, so sort it first
+       
+       if($a['description'] >$b['description']) {
+         return 1;
+       }
+       else {
+            return -1;
+            }
    }
     
     
 /*    // future languages
-
 	    // Afrikaans
  	    $supportedLanguages['za']['nativedescription'] = 'Afrikaans';
-
 	    // Irish
 	    $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
-                                                                            
         // Serbian
 	    $supportedLanguages['yu']['nativedescription'] = 'Srpski';
-
-
 */
+
+    
+    /**
+    * This function  support the ability NOT to reverse numbers (for example when you output 
+    * a phrase as a parameter for a SWF file that can't handle RTL languages itself, but 
+    * obviously any numbers should remain the same as in the original phrase).
+    *  Note that it can be used just as well for UTF-8 usages if you want the numbers to remain intact
+    *          
+    * @param string $str
+    * @param boolean $reverse_numbers   
+    * @return string
+    */
+    function utf8_strrev($str, $reverse_numbers=false) {
+      preg_match_all('/./us', $str, $ar);
+      if ($reverse_numbers)
+        return join('',array_reverse($ar[0]));
+      else {
+          $temp = array();
+          foreach ($ar[0] as $value) {
+             if (is_numeric($value) && !empty($temp[0]) && is_numeric($temp[0])) {
+                foreach ($temp as $key => $value2) {
+                   if (is_numeric($value2))
+                     $pos = ($key + 1);
+                   else
+                      break;
+                }
+                $temp2 = array_splice($temp, $pos);
+                $temp = array_merge($temp, array($value), $temp2);
+             } else
+                array_unshift($temp, $value);
+          }
+          return implode('', $temp);
+      }
+    }
+
 ?>

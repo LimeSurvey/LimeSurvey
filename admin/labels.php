@@ -135,8 +135,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
 		$labelsoutput.= "\n\t</th></tr></table>\n";
 
-
-		$labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$row['lid']}'>\n";
+        if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
+		$labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$panecookie}'>\n";
 
 		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
 

@@ -68,13 +68,6 @@ require_once ($rootdir.'/classes/php-gettext/gettextinc.php');
 require_once ($rootdir.'/classes/core/surveytranslator.php');
 require_once ($rootdir.'/classes/core/sanitize.php');
 
-//Every 50th time clean up the temp directory of old files (older than 1 day)
-//depending on the load the  probability might be set higher or lower
-if (rand(1,50)==1) 
-{
-    cleanTempDirectory();   
-}
-
 
 $dbprefix=strtolower($dbprefix);
 define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
@@ -90,6 +83,14 @@ if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == "Xitami"
 // Deal with server systems having not set a default time zone
 if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
 @date_default_timezone_set(@date_default_timezone_get());
+
+
+//Every 50th time clean up the temp directory of old files (older than 1 day)
+//depending on the load the  probability might be set higher or lower
+if (rand(1,50)==1) 
+{
+    cleanTempDirectory();   
+}
 
 // Array of JS and CSS scripts to include in client header
 $js_header_includes = array();
@@ -141,7 +142,7 @@ if ($sourcefrom == "admin")
 
 //BEFORE SESSIONCONTOL BECAUSE OF THE CONNECTION
 //CACHE DATA
-$connect=&ADONewConnection($databasetype);
+$connect=ADONewConnection($databasetype);
 $database_exists = FALSE;
 switch ($databasetype)
 {

@@ -1,6 +1,6 @@
 <?php
 /*
-V4.98 13 Feb 2008  (c) 2000-2008 John Lim. All rights reserved.
+V5.08 6 Apr 2009   (c) 2000-2009 John Lim. All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -50,7 +50,7 @@ class ADODB_oci8po extends ADODB_oci8 {
 	}
 	
 	// emulate handling of parameters ? ?, replacing with :bind0 :bind1
-	function _query($sql,$inputarr)
+	function _query($sql,$inputarr=false)
 	{
 		if (is_array($inputarr)) {
 			$i = 0;
@@ -98,11 +98,12 @@ class ADORecordset_oci8po extends ADORecordset_oci8 {
 	}
 	
 	// lowercase field names...
-	function &_FetchField($fieldOffset = -1)
+	function _FetchField($fieldOffset = -1)
 	{
 		 $fld = new ADOFieldObject;
  		 $fieldOffset += 1;
-		 $fld->name = strtolower(OCIcolumnname($this->_queryID, $fieldOffset));
+		 $fld->name = OCIcolumnname($this->_queryID, $fieldOffset);
+		 if (ADODB_ASSOC_CASE == 0) $fld->name = strtolower($fld->name);
 		 $fld->type = OCIcolumntype($this->_queryID, $fieldOffset);
 		 $fld->max_length = OCIcolumnsize($this->_queryID, $fieldOffset);
 		 if ($fld->type == 'NUMBER') {
@@ -149,7 +150,7 @@ class ADORecordset_oci8po extends ADORecordset_oci8 {
 	}	
 	
 	/* Optimize SelectLimit() by using OCIFetch() instead of OCIFetchInto() */
-	function &GetArrayLimit($nrows,$offset=-1) 
+	function GetArrayLimit($nrows,$offset=-1) 
 	{
 		if ($offset <= 0) {
 			$arr = $this->GetArray($nrows);

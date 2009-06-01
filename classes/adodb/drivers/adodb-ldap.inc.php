@@ -1,6 +1,6 @@
 <?php
 /*
-  V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+  V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
    Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -39,28 +39,33 @@ class ADODB_ldap extends ADOConnection {
 
 	# Options configuration information
 	var $LDAP_CONNECT_OPTIONS;
-	
+
 	# error on binding, eg. "Binding: invalid credentials"
 	var $_bind_errmsg = "Binding: %s";
-
+	
 	function ADODB_ldap() 
 	{		
 	}
   		
 	// returns true or false
+	
 	function _connect( $host, $username, $password, $ldapbase)
 	{
 	global $LDAP_CONNECT_OPTIONS;
 		
 		if ( !function_exists( 'ldap_connect' ) ) return null;
 		
-		$conn_info = array( $host,$this->port);
+		if (strpos('ldap://',$host) === 0 || strpos('ldaps://',$host) === 0) {
+			$this->_connectionID = @ldap_connect($host);
+		} else {
+			$conn_info = array( $host,$this->port);
 		
-		if ( strstr( $host, ':' ) ) {
-		    $conn_info = split( ':', $host );
-		} 
+			if ( strstr( $host, ':' ) ) {
+			    $conn_info = split( ':', $host );
+			} 
 		
-		$this->_connectionID = @ldap_connect( $conn_info[0], $conn_info[1] );
+			$this->_connectionID = @ldap_connect( $conn_info[0], $conn_info[1] );
+		}
 		if (!$this->_connectionID) {
 			$e = 'Could not connect to ' . $conn_info[0];
 			$this->_errorMsg = $e;
@@ -79,7 +84,7 @@ class ADODB_ldap extends ADOConnection {
 		}
 		
 		if (!$bind) {
-			$e = sprintf($this->_bind_errmsg,ldap_error($this->_connectionID));;
+			$e = sprintf($this->_bind_errmsg,ldap_error($this->_connectionID));
 			$this->_errorMsg = $e;
 			if ($this->debug) ADOConnection::outp($e);
 			return false;
@@ -149,13 +154,13 @@ class ADODB_ldap extends ADOConnection {
 	}
 	
 	/* returns _queryID or false */
-	function _query($sql,$inputarr)
+	function _query($sql,$inputarr=false)
 	{
 		$rs = @ldap_search( $this->_connectionID, $this->database, $sql );
-		$this->_errorMsg = ($rs) ? '' : 'Search error on '.$sql.': '. ldap_error($this->_connectionID);
+		$this->_errorMsg = ($rs) ? '' : 'Search error on '.$sql.': '.ldap_error($this->_connectionID);
 		return $rs; 
 	}
-	
+
 	function ErrorMsg()
 	{
 		return $this->_errorMsg;
@@ -165,7 +170,7 @@ class ADODB_ldap extends ADOConnection {
 	{
 		return @ldap_errno($this->_connectionID);
 	}
-
+	
     /* closes the LDAP connection */
 	function _close()
 	{
@@ -323,7 +328,7 @@ class ADORecordSet_ldap extends ADORecordSet{
     /*
     Return whole recordset as a multi-dimensional associative array
 	*/
-	function &GetAssoc($force_array = false, $first2cols = false) 
+	function GetAssoc($force_array = false, $first2cols = false) 
 	{
 		$records = $this->_numOfRows;
         $results = array();
@@ -343,7 +348,7 @@ class ADORecordSet_ldap extends ADORecordSet{
 		return $results; 
 	}
     
-    function &GetRowAssoc()
+    function GetRowAssoc()
 	{
         $results = array();
         foreach ( $this->fields as $k=>$v ) {

@@ -1381,7 +1381,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'publicgraphs'=>$_POST['publicgraphs'],
                             'assessments'=>$_POST['assessments']
                             );
-        $isquery = $connect->GetInsertSQL(db_table_name_nq('surveys'), $insertarray, get_magic_quotes_gpc());    
+        $dbtablename=db_table_name_nq('surveys');                    
+        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray, get_magic_quotes_gpc());    
 		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); 
 
 

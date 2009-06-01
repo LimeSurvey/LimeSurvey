@@ -1,6 +1,6 @@
 <?php
 /*
- @version V4.98 13 Feb 2008 (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+ @version V5.06 16 Oct 2008  (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
  Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -37,7 +37,7 @@ class ADODB_fbsql extends ADOConnection {
 			return fbsql_affected_rows($this->_connectionID);
 	}
   
-  	function &MetaDatabases()
+  	function MetaDatabases()
 	{
 		$qid = fbsql_list_dbs($this->_connectionID);
 		$arr = array();
@@ -80,7 +80,7 @@ class ADODB_fbsql extends ADOConnection {
 		return true;	
 	}
 	
- 	function &MetaColumns($table) 
+ 	function MetaColumns($table) 
 	{
 		if ($this->metaColumnsSQL) {
 			
@@ -127,7 +127,7 @@ class ADODB_fbsql extends ADOConnection {
 	
 	
 	// returns queryID or false
-	function _query($sql,$inputarr)
+	function _query($sql,$inputarr=false)
 	{
 		return fbsql_query("$sql;",$this->_connectionID);
 	}
@@ -187,7 +187,7 @@ class ADORecordSet_fbsql extends ADORecordSet{
 	
 
 
-	function &FetchField($fieldOffset = -1) {
+	function FetchField($fieldOffset = -1) {
 		if ($fieldOffset != -1) {
 			$o =  @fbsql_fetch_field($this->_queryID, $fieldOffset);
 			//$o->max_length = -1; // fbsql returns the max length less spaces -- so it is unrealiable

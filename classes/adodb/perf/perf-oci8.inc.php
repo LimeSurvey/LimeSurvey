@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -16,11 +16,14 @@ V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights rese
 if (!defined('ADODB_DIR')) die();
 
 class perf_oci8 extends ADODB_perf{
+
+	var $noShowIxora = 15; // if the sql for suspicious sql is taking too long, then disable ixora
 	
 	var $tablesSQL = "select segment_name as \"tablename\", sum(bytes)/1024 as \"size_in_k\",tablespace_name as \"tablespace\",count(*) \"extents\" from sys.user_extents 
 	   group by segment_name,tablespace_name";
 	 
 	var $version;
+	
 	var $createTableSQL = "CREATE TABLE adodb_logsql (
 		  created date NOT NULL,
 		  sql0 varchar(250) NOT NULL,
@@ -68,6 +71,7 @@ AND    b.name = 'sorts (memory)'",
 		"select value from v\$sysstat where name='physical writes'"),
 	
 	'Data Cache',
+	
 		'data cache buffers' => array( 'DATAC',
 		"select a.value/b.value  from v\$parameter a, v\$parameter b 
 			where a.name = 'db_cache_size' and b.name= 'db_block_size'",
@@ -75,8 +79,15 @@ AND    b.name = 'sorts (memory)'",
 		'data cache blocksize' => array('DATAC',
 			"select value from v\$parameter where name='db_block_size'",
 			'' ),			
+	
 	'Memory Pools',
-		'data cache size' => array('DATAC',
+		'SGA Max Size' => array( 'DATAC',
+		"select value from v\$parameter where name = 'sga_max_size'",
+			'The sga_max_size is the maximum value to which sga_target can be set.' ),
+	'SGA target' => array( 'DATAC',
+		"select value from v\$parameter where name = 'sga_target'",
+			'If sga_target is defined then data cache, shared, java and large pool size can be 0. This is because all these pools are consolidated into one sga_target.' ),
+	'data cache size' => array('DATAC',
 			"select value from v\$parameter where name = 'db_cache_size'",
 			'db_cache_size' ),
 		'shared pool size' => array('DATAC',
@@ -109,7 +120,7 @@ AND    b.name = 'sorts (memory)'",
 			where name = 'free memory' and pool = 'shared pool'",
 		'Percentage of data cache actually in use - should be over 85%'),
 		
-				'shared pool utilization ratio' => array('RATIOU', 
+		'shared pool utilization ratio' => array('RATIOU', 
 		'select round((sga.bytes/case when p.value=0 then sga.bytes else to_number(p.value) end)*100,2)
 		from v$sgastat sga, v$parameter p
 		where sga.name = \'free memory\' and sga.pool = \'shared pool\'
@@ -156,7 +167,7 @@ having count(*) > 100)",'These are sql statements that should be using bind vari
 		'random page cost' => array('COST',
 			"select value from v\$parameter where name = 'optimizer_index_cost_adj'",
 			'=WarnPageCost'),
-	
+		
 	'Backup',
 		'Achivelog Mode' => array('BACKUP', 'select log_mode from v$database', 'To turn on archivelog:<br>
 	<pre>
@@ -185,7 +196,7 @@ FROM v\$parameter v1, v\$parameter v2 WHERE v1.name='log_archive_dest' AND v2.na
 		$savelog = $conn->LogSQL(false);	
 		$this->version = $conn->ServerInfo();
 		$conn->LogSQL($savelog);	
-		$this->conn =& $conn;
+		$this->conn = $conn;
 	}
 	
 	function WarnPageCost($val)
@@ -229,7 +240,7 @@ FROM v\$parameter v1, v\$parameter v2 WHERE v1.name='log_archive_dest' AND v2.na
 	function Explain($sql,$partial=false) 
 	{
 		$savelog = $this->conn->LogSQL(false);
-		$rs =& $this->conn->SelectLimit("select ID FROM PLAN_TABLE");
+		$rs = $this->conn->SelectLimit("select ID FROM PLAN_TABLE");
 		if (!$rs) {
 			echo "<p><b>Missing PLAN_TABLE</b></p>
 <pre>
@@ -282,7 +293,7 @@ CREATE TABLE PLAN_TABLE (
 		$this->conn->BeginTrans();
 		$id = "ADODB ".microtime();
 
-		$rs =& $this->conn->Execute("EXPLAIN PLAN SET STATEMENT_ID='$id' FOR $sql");
+		$rs = $this->conn->Execute("EXPLAIN PLAN SET STATEMENT_ID='$id' FOR $sql");
 		$m = $this->conn->ErrorMsg();
 		if ($m) {
 			$this->conn->RollbackTrans();
@@ -290,7 +301,7 @@ CREATE TABLE PLAN_TABLE (
 			$s .= "<p>$m</p>";
 			return $s;
 		}
-		$rs =& $this->conn->Execute("
+		$rs = $this->conn->Execute("
 		select 
   '<pre>'||lpad('--', (level-1)*2,'-') || trim(operation) || ' ' || trim(options)||'</pre>'  as Operation, 
   object_name,COST,CARDINALITY,bytes
@@ -310,7 +321,7 @@ CONNECT BY prior id=parent_id and statement_id='$id'");
 	{
 		if ($this->version['version'] < 9) return 'Oracle 9i or later required';
 		
-		 $rs =& $this->conn->Execute("
+		 $rs = $this->conn->Execute("
 select  a.size_for_estimate as cache_mb_estimate,
 	case when a.size_factor=1 then 
    		'&lt;&lt;= current'
@@ -430,7 +441,11 @@ order by
 		if (isset($_GET['sql'])) return $this->_SuspiciousSQL($numsql);
 		
 		$s = '';
+		$timer = time();
 		$s .= $this->_SuspiciousSQL($numsql);
+		$timer = time() - $timer;
+		
+		if ($timer > $this->noShowIxora) return $s;
 		$s .= '<p>';
 		
 		$save = $ADODB_CACHE_MODE;
@@ -438,7 +453,7 @@ order by
 		if ($this->conn->fetchMode !== false) $savem = $this->conn->SetFetchMode(false);
 		
 		$savelog = $this->conn->LogSQL(false);
-		$rs =& $this->conn->SelectLimit($sql);
+		$rs = $this->conn->SelectLimit($sql);
 		$this->conn->LogSQL($savelog);
 		
 		if (isset($savem)) $this->conn->SetFetchMode($savem);
@@ -502,14 +517,18 @@ order by
 		}
 		
 		$s = '';		
+		$timer = time();
 		$s .= $this->_ExpensiveSQL($numsql);
+		$timer = time() - $timer;
+		if ($timer > $this->noShowIxora) return $s;
+		
 		$s .= '<p>';
 		$save = $ADODB_CACHE_MODE;
 		$ADODB_CACHE_MODE = ADODB_FETCH_NUM;
 		if ($this->conn->fetchMode !== false) $savem = $this->conn->SetFetchMode(false);
 		
 		$savelog = $this->conn->LogSQL(false);
-		$rs =& $this->conn->Execute($sql);
+		$rs = $this->conn->Execute($sql);
 		$this->conn->LogSQL($savelog);
 		
 		if (isset($savem)) $this->conn->SetFetchMode($savem);
@@ -525,7 +544,6 @@ order by
 	
 	function clearsql() 
 	{
-	$this->conn->debug=1;
 		$perf_table = adodb_perf::table();
 	// using the naive "delete from $perf_table where created<".$this->conn->sysTimeStamp will cause the table to lock, possibly
 	// for a long time
@@ -537,14 +555,16 @@ BEGIN
 	LOOP
 	  cnt := cnt + 1;
 	  DELETE FROM $perf_table WHERE ROWID=rec.rr;
-	  IF cnt = 10000 THEN
+	  IF cnt = 1000 THEN
 	  	COMMIT;
 		cnt := 0;
 	  END IF;
 	END LOOP;
+	commit;
 END;";
 
 		$ok = $this->conn->Execute($sql);
 	}
+	
 }
 ?>
