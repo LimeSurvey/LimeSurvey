@@ -430,6 +430,22 @@ $enableLsrc = false;
 $export4lsrc = false;
 
 
+/**
+*  Statistics chart settings
+*  Different languages need different fonts to properly create charts - this is what the following settings are for 
+*/
+
+/**
+*  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
+*  Set this to specific font-file (for example 'vera.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
+*/
+$chartfontfile='auto';
+
+/**
+*  $chartfontsize - set the size of the font to created the charts in statistics 
+*/
+$chartfontsize =10;
+
 
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');

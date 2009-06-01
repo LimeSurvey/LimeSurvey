@@ -107,6 +107,22 @@ if (!$surveyid)
 // Set language for questions and labels to base language of this survey
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
+
+//pick the best font file if font setting is 'auto'
+if ($chartfontfile=='auto')
+{
+    $chartfontfile='vera.ttf';
+    if ( $language=='ar')
+    {
+        $chartfontfile='KacstOffice.ttf';
+    }
+    elseif  ($language=='fa' )
+    {
+        $chartfontfile='KacstFarsi.ttf';
+    }
+
+}
+
 //hide/show the filter
 //filtersettings by default aren't shown when showing the results
 $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
@@ -4143,13 +4159,13 @@ if (isset($summary) && $summary)
                     { 
                         $graph = new pChart(1,1); 
                         
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
                         $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
                          
                         if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                         $graph = new pChart(690+$legendsize[0],$gheight); 
                         $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);  
                         $graph->setGraphArea(50,30,500,$gheight-60);  
                         $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);  
                         $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
@@ -4157,14 +4173,14 @@ if (isset($summary) && $summary)
                         $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
                         $graph->drawGrid(4,TRUE,230,230,230,50);     
                                           // Draw the 0 line
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",6);
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
                         $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                         // Draw the bar graph
                         $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                         //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
                         // Finish the graph
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
                         $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
                         $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
@@ -4220,9 +4236,9 @@ if (isset($summary) && $summary)
                         $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
 					    
                         // Draw the pie chart  
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);  
                         $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
-                        $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);  
                         $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
                         $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
                         $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));                         
