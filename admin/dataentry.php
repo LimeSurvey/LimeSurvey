@@ -697,7 +697,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 				$fnrcount = $fnrresult->RecordCount();
 				for ($j=1; $j<=$fnrcount; $j++)
 				{
-					$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "{$fnrrow['code']}", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
+					$fnames[] = array("$field$j", "$ftitle ($j)", "{$fnrow['question']}", "{$fnrow['type']}", "$field", "$j", "$j", "{$fnrow['qid']}", "{$fnrow['lid']}");
 				}
 			}
 			elseif ($fnrow['type'] == "1")
@@ -1117,7 +1117,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					for ($j=1; $j<=$anscount; $j++) //go through each ranking and check for matching answer
 					{
 						$k=$j-1;
-						if (isset($currentvalues) && $currentvalues[$k])
+						if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
 						{
 							foreach ($answers as $ans)
 							{
@@ -1129,13 +1129,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							}
 						}
 						$ranklist .= "\t\t\t\t\t\t$j:&nbsp;<input class='ranklist' id='RANK_$thisqid$j'";
-						if (isset($currentvalues) && $currentvalues[$k])
+						if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
 						{
 							$ranklist .= " value='".$thistext."'";
 						}
 						$ranklist .= " onFocus=\"this.blur()\"  />\n"
 						. "\t\t\t\t\t\t<input type='hidden' id='d$myfname$j' name='d$myfname$j' value='";
-						if (isset($currentvalues) && $currentvalues[$k])
+						if (isset($currentvalues) && isset($currentvalues[$k]) && $currentvalues[$k])
 						{
 							$ranklist .= $thiscode;
 							$chosen[]=array($thiscode, $thistext);
