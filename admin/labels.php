@@ -311,13 +311,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table id='labels' style='width:860px !important; margin:0 auto;' class='answertable'>\n"
+                ."\t<table id='labels' class='answertable' align='center'>\n"
                 ."<thead align='center'>"
         		."<tr>\n"
-        		."\t<th  align='right' class='settingcaption'>\n"
+        		."\t<th align='right' class='settingcaption'>\n"
         		.$clang->gT("Code")
         		."\t</th>\n";
-                $labelsoutput.="<th align='right'>".$clang->gT("Assessment value").'</th>';
+                $labelsoutput.="<th align='right' class='settingcaption'>".$clang->gT("Assessment value").'</th>';
         		$labelsoutput.="\t<th class='settingcaption'>\n"
         		.$clang->gT("Title")
         		."\t</th>\n"
@@ -419,11 +419,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."\t<input type='text' maxlength='3000' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
 			    . getEditor("addlabel", "inserttitle", "[".$clang->gT("Label:", "js")."](".$lslanguage.")",'','','',$action)
     			."\t</td>\n"
-    			."\t<td>\n"
+    			."\t<td colspan='2'>\n"
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
-    			."\t</td>\n"
-    			."\t<td style='text-align:center;'>\n"
-			    ."<input type='button' onclick=\"document.getElementById('formfixorder').submit();\" value=\"".$clang->gT('Fix Order')."\" />\n"
                 ."<script type='text/javascript'>\n"
     			."<!--\n"
     			."document.getElementById('addnewlabelcode').focus();\n"
@@ -512,17 +509,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
 	
 	// Here starts the hidden Fix Sort order form
-    $labelsoutput.= "</td></tr><tr><td colspan='4'>"
-        ."<form id='formfixorder' style='margin-bottom:0;' action='admin.php?action=labels' method='post'>"
-		."<table width='100%' style='border: solid; border-width: 0px; border-color: #555555' cellspacing='0'><tbody align='center'>\n"
-		."\t<tr><td width='80%'></td>"
-//		."<td></td><td><input type='submit' name='method' value='"
-		."<td></td><td><input type='hidden' name='method' value='"
-		.$clang->gT("Fix Sort")."' /></td>\n"
-		."</tr></tbody></table>"
-		."\t<input type='hidden' name='lid' value='$lid' />\n"
-		."\t<input type='hidden' name='action' value='modlabelsetanswers' />\n"
-		."</form></td></tr>\n";
+    $labelsoutput.= "</td></tr>\n";
 		if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
 		{
 			$labelsoutput.= "<tr>\n"
@@ -810,6 +797,7 @@ function modlabelsetanswers($lid)
 				$count++;
 				if ($count>count($codeids)-1) {$count=0;}
 			}
+            fixorder($lid);   
 		}
 		else
 		{
@@ -849,11 +837,7 @@ function modlabelsetanswers($lid)
 		{
 			$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete label","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 		}
-		break;
-		
-		// Fix Sortorder button
-		case $clang->gT("Fix Sort", "unescaped"):
-		fixorder($lid);
+        fixorder($lid);
 		break;
 	}
 }
