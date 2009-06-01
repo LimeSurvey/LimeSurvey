@@ -220,11 +220,11 @@ if (!$exportstyle)
 	$exportoutput .= "<br />\n"
 	."\t\t\t<input type='checkbox' value='Y' name='convertyto1' id='convertyto1' style='margin-left: 25px'>"
 	."<font size='1'><label for='convertyto1'>"
-	.$clang->gT("Convert Y to")."</label><input type='text' name='convertyto' size='1' value='1' maxlength='1' style='width:10px'>";
+	.$clang->gT("Convert Y to")."</label><input type='text' name='convertyto' size='3' value='1' maxlength='1' style='width:10px'>";
 	$exportoutput .= "<br />\n"
 	."\t\t\t<input type='checkbox' value='Y' name='convertnto2' id='convertnto2' style='margin-left: 25px'>"
 	."<font size='1'><label for='convertnto2'>"
-	.$clang->gT("Convert N to")."</label><input type='text' name='convertnto' size='1' value='2' maxlength='1' style='width:10px'>";
+	.$clang->gT("Convert N to")."</label><input type='text' name='convertnto' size='3' value='2' maxlength='1' style='width:10px'>";
 
 	$exportoutput .= "<br />\n"
 	."\t\t\t<input type='radio' class='radiobtn' checked name='answers' value='long' id='ansfull'>"

@@ -55,8 +55,6 @@ $rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey
                             // If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
                             // then try setting this to 1 .
 
-// MOD_REWRITE ?
-
 // Site Info
 $sitename           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
 $scriptname         =   'admin.php';      // The name of the admin script
@@ -411,6 +409,28 @@ $standard_templates_readonly    =  true;
 
 
 
+//PDF Export Settings
+$usepdfexport   = 1;                       //Set 0 to disable; 1 to enable 
+$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
+$pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
+$notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
+$pdforientation = 'P';                     // Set L for Landscape or P for portrait format
+
+
+
+// RemoteControl Settings
+/**
+* This value determines if the RemoteControl is enabled (true) or not (false)
+*/
+$enableLsrc = false;
+
+/**
+* This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu      
+*/
+$export4lsrc = false;
+
+
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------
@@ -437,20 +457,8 @@ require_once(dirname(__FILE__).'/config.php');
                                               // Note: For OS/2 the $tempdir may need to be defined as an actual directory
                                               // example: "x:/limesurvey/tmp". We don't know why.
     $fckeditordir   =   "$homeurl/scripts/fckeditor.264";
-
-//PDF Export Settings
-$usepdfexport   = 1;                       //Set 0 to disable; 1 to enable 
-$pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
-$pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
-$pdfdefaultfont = 'freemono';              //Default font for the pdf Export
-$pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
-$notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
-$pdforientation = 'P';                     // Set L for Landscape or P for portrait format
-
-// This value determines if you can save survey structures (as .csv) into your lsrc folder in export menu
-$export4lsrc = false;
-// This value determines if the RemoteControl is enabled (true) or not (false)
-$enableLsrc = false;
+    $pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
+    $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
 
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.

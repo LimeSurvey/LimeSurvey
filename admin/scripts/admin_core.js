@@ -6,13 +6,13 @@ $(document).ready(function(){
                               showOn: 'button',
                               changeYear: true, 
                               changeMonth: true, 
-                              duration: 'fast',
+                              duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
         $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
                               showOn: 'button',
                               changeYear: true, 
                               changeMonth: true, 
-                              duration: 'fast',
+                              duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
     }
 });
