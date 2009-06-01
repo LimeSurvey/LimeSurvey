@@ -125,6 +125,12 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
     $tokenoutput .="\n";
 	while ($brow = $bresult->FetchRow())
 	{
+
+        $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
+        $brow['validfrom']=$datetimeobj->convert('Y-m-d H:i');   
+        $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
+        $brow['validuntil']=$datetimeobj->convert('Y-m-d H:i');   
+
         $tokenoutput .= '"'.trim($brow['tid'])."\",";
 		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
 		$tokenoutput .= '"'.trim($brow['lastname'])."\",";
@@ -132,8 +138,8 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 		$tokenoutput .= '"'.trim($brow['emailstatus'])."\",";
 		$tokenoutput .= '"'.trim($brow['token'])."\",";
 		$tokenoutput .= '"'.trim($brow['language'])."\",";
-        $tokenoutput .= '"'.trim(convertDateTimeFormat($brow['validfrom'],'Y-m-d H:i:s','Y-m-d H:i'))."\",";
-        $tokenoutput .= '"'.trim(convertDateTimeFormat($brow['validuntil'],'Y-m-d H:i:s','Y-m-d H:i'))."\"";
+        $tokenoutput .= '"'.trim($brow['validfrom'])."\",";
+        $tokenoutput .= '"'.trim($brow['validuntil'])."\"";
         foreach ($attrfieldnames as $attr_name)
 		{
             $tokenoutput .=',"'.trim($brow[$attr_name])."\"";
