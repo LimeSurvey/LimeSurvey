@@ -2657,7 +2657,7 @@ function templatereplace($line)
 	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
-	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions - 2;
+	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
 	if ($totalquestionsAsked < 1)
 	{
 		if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
