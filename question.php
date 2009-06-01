@@ -240,7 +240,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         
-        if (trim($thissurvey['surveyls_endtext'])=='')
+        if (FlattenText($thissurvey['surveyls_endtext'])=='')
         {
             $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
