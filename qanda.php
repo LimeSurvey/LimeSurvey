@@ -5277,7 +5277,7 @@ function do_array_multitext($ia)
 				. "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
 				. "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 				. "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
-				. html_escape($labelans[$thiskey]).'" '
+				. FlattenText($labelans[$thiskey]).'" '
 				. "onchange=\"getElementById('java{$myfname2}').value=this.value;checkconditions(this.value, this.name, this.type)\" size=\"$inputwidth\" "
 				. $numbersonly 
 				. ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
