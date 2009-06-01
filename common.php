@@ -6100,7 +6100,7 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 			$clang->gT('Total numbers of sent reminders'));
 
     $thissurvey=getSurveyInfo($surveyid);               
-    $attdescriptiondata=$thissurvey['attributedescriptions'];
+    $attdescriptiondata=!empty($thissurvey['attributedescriptions']) ? $thissurvey['attributedescriptions'] : "";
     $attdescriptiondata=explode("\n",$attdescriptiondata);
     $attributedescriptions=array(); 
     $basic_attrs_and_names=array();
