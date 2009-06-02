@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-02 20:37+0100\n"
-"PO-Revision-Date: 2009-06-02 20:37+0100\n"
+"PO-Revision-Date: 2009-06-03 00:12+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobraca & Edita Paulisic <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "Provjeri integritet baze podataka"
 #: E:\_LimeSurvey\svn/common.php:361
 #: E:\_LimeSurvey\svn/common.php:363
 msgid "List Surveys"
-msgstr "Popis upitnika"
+msgstr "Popis anketa"
 
 #: E:\_LimeSurvey\svn/common.php:372
 #: E:\_LimeSurvey\svn/common.php:373
@@ -85,12 +85,12 @@ msgstr "Uređivač predložaka"
 
 #: E:\_LimeSurvey\svn/common.php:402
 msgid "Surveys"
-msgstr "Upitnici"
+msgstr "Ankete"
 
 #: E:\_LimeSurvey\svn/common.php:412
 #: E:\_LimeSurvey\svn/common.php:413
 msgid "Create or Import New Survey"
-msgstr "Stvori ili uvezi novi upitnik"
+msgstr "Stvori ili uvezi novu anketu"
 
 #: E:\_LimeSurvey\svn/common.php:423
 #: E:\_LimeSurvey\svn/common.php:425
@@ -109,20 +109,20 @@ msgstr "Dobrodošli na %s!"
 
 #: E:\_LimeSurvey\svn/common.php:440
 msgid "Some piece-of-cake steps to create your very own first survey:"
-msgstr "Kratke upute kako kreirati vaš prvi upitnik:"
+msgstr "Kratke upute oko stvaranja vaše prve ankete:"
 
 #: E:\_LimeSurvey\svn/common.php:442
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
-msgstr "Kreirajte novi upitnik tako da kliknete na ikonu %s u gornjem desnom kutu."
+msgstr "Kreirajte novu anketu tako da kliknete na ikonu %s u gornjem desnom kutu."
 
 #: E:\_LimeSurvey\svn/common.php:442
 msgid "Add survey"
-msgstr "Dodaj upitnik"
+msgstr "Dodaj anketu"
 
 #: E:\_LimeSurvey\svn/common.php:443
 msgid "Create a new group inside your survey."
-msgstr "Kreirajte novu grupu unutar upitnika."
+msgstr "Kreirajte novu grupu unutar ankete."
 
 #: E:\_LimeSurvey\svn/common.php:444
 msgid "Create one or more question inside the new group."
@@ -131,11 +131,11 @@ msgstr "Kreirajte jedno ili više pitanja unutar nove grupe."
 #: E:\_LimeSurvey\svn/common.php:445
 #, php-format
 msgid "Done. Test your survey using the %s icon."
-msgstr "Gotovo. Testirajte upitnik putem %s ikone."
+msgstr "Gotovo. Testirajte anketu putem %s ikone."
 
 #: E:\_LimeSurvey\svn/common.php:445
 msgid "Test survey"
-msgstr "Testiraj upitnik"
+msgstr "Testiraj anketu"
 
 #: E:\_LimeSurvey\svn/common.php:679
 msgid "Active"
@@ -297,11 +297,11 @@ msgstr "Detaljna obavijest putem e-maila sa kodovima rezultata"
 
 #: E:\_LimeSurvey\svn/common.php:1388
 msgid "Cannot be modified (Survey is active)"
-msgstr "Ne može se promijeniti (upitnik je aktivan)"
+msgstr "Ne može se promijeniti (anketa je aktivna)"
 
 #: E:\_LimeSurvey\svn/common.php:1769
 msgid "Return to Survey Administration"
-msgstr "Povratak u Administraciju upitnika"
+msgstr "Povratak u Administraciju ankete"
 
 #: E:\_LimeSurvey\svn/common.php:1775
 msgid "Show summary information"
@@ -328,7 +328,7 @@ msgstr "Prikaži posljednjih 50 odgovora"
 
 #: E:\_LimeSurvey\svn/common.php:1816
 msgid "Dataentry Screen for Survey"
-msgstr "Ekran za ručno unošenje podataka u upitnik"
+msgstr "Ekran za ručno unošenje podataka u bazu odgovora ankete"
 
 #: E:\_LimeSurvey\svn/common.php:1820
 msgid "Get statistics from these responses"
@@ -353,7 +353,7 @@ msgstr "Izvezi rezultate u R komandnu datoteku"
 
 #: E:\_LimeSurvey\svn/common.php:1843
 msgid "Import answers from a deactivated survey table"
-msgstr "Uvezi odgovore iz deaktivirane tabele upitnika"
+msgstr "Uvezi odgovore iz deaktivirane tablice ankete"
 
 #: E:\_LimeSurvey\svn/common.php:1848
 msgid "View Saved but not submitted Responses"
@@ -361,15 +361,15 @@ msgstr "Pregledaj odgovore koji su snimljeni ali nisu poslani"
 
 #: E:\_LimeSurvey\svn/common.php:1852
 msgid "Import a VV survey file"
-msgstr "Uvezi VV upitnik datoteku"
+msgstr "Uvezi VV anketnu datoteku"
 
 #: E:\_LimeSurvey\svn/common.php:1858
 msgid "Export a VV survey file"
-msgstr "Izvezi VV upitnik datoteku"
+msgstr "Izvezi VV anketnu datoteku"
 
 #: E:\_LimeSurvey\svn/common.php:1873
 msgid "Iterate survey"
-msgstr "Iteracija upitnika"
+msgstr "Iteracija ankete"
 
 #: E:\_LimeSurvey\svn/common.php:1943
 msgid "Preset"
@@ -530,19 +530,19 @@ msgstr "Komentar"
 
 #: E:\_LimeSurvey\svn/common.php:2648
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr "Upozorenje: Izvršavanje JavaScript koda je isključeno u vašem pregledniku. Moguće je da nećete biti u prilici odgovoriti na sva pitanja u ovom upitniku. Molimo da izmjenite parametre u svom pretraživaču. "
+msgstr "Upozorenje: Izvršavanje JavaScript koda je isključeno u vašem pregledniku. Moguće je da nećete biti u prilici odgovoriti na sva pitanja u ovoj anketi. Molimo da izmjenite parametre u svom pretraživaču. "
 
 #: E:\_LimeSurvey\svn/common.php:2663
 msgid "There are no questions in this survey"
-msgstr "Nema pitanja u ovom upitniku"
+msgstr "Nema pitanja u ovoj anketi"
 
 #: E:\_LimeSurvey\svn/common.php:2667
 msgid "There is 1 question in this survey"
-msgstr "Postoji 1 pitanje u ovom upitniku"
+msgstr "Postoji 1 pitanje u ovoj anketi"
 
 #: E:\_LimeSurvey\svn/common.php:2671
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
-msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovom upitniku."
+msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovoj anketi."
 
 #: E:\_LimeSurvey\svn/common.php:2694
 #: E:\_LimeSurvey\svn/index.php:2391
@@ -555,11 +555,11 @@ msgstr "Informacija o privatnosti"
 
 #: E:\_LimeSurvey\svn/common.php:2720
 msgid "This survey is anonymous."
-msgstr "Ovaj upitnik je anoniman."
+msgstr "Ova anketa je anonimna."
 
 #: E:\_LimeSurvey\svn/common.php:2720
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
-msgstr "Zapis sa vašim odgovorima na upitnik ne sadrži nikakve informacije o Vama osim u slučaju da neko pitanje to eksplicitno traži od vas. U slučaju da ste koristili token kako bi pristupili ovom upitniku, budite sigurni da token nije snimljen zajedno sa vašim odgovorima. Ovi podaci se drže u drugoj bazi podataka i biti će samo ažurirani sa informacijom da li ste (ili niste) kompletirali upitnik. Ne postoji način da se tokeni povežu sa odgovorima iz ovog upitnika."
+msgstr "Zapis sa vašim odgovorima na anketu ne sadrži nikakve informacije o Vama osim u slučaju da neko pitanje to eksplicitno traži od vas. U slučaju da ste koristili token kako bi pristupili ovoj anketi, budite sigurni da token nije snimljen zajedno sa vašim odgovorima. Ovi podaci se drže u drugoj tablici baze podataka i biti će samo ažurirani sa informacijom da li ste (ili niste) kompletirali anketu. Ne postoji način da se tokeni povežu sa danim odgovorima na pitanja iz ove ankete."
 
 #: E:\_LimeSurvey\svn/common.php:2730
 msgid "Are you sure you want to clear all your responses?"
@@ -574,7 +574,7 @@ msgstr "Izađi i obriši odgovore"
 #: E:\_LimeSurvey\svn/index.php:557
 #: E:\_LimeSurvey\svn/index.php:561
 msgid "Load Unfinished Survey"
-msgstr "Učitaj nedovršeni upitnik"
+msgstr "Učitaj nedovršenu anketu"
 
 #: E:\_LimeSurvey\svn/common.php:2756
 #: E:\_LimeSurvey\svn/common.php:2769
@@ -587,7 +587,7 @@ msgstr "Hvala vam!"
 
 #: E:\_LimeSurvey\svn/common.php:2831
 msgid "You have completed answering the questions in this survey."
-msgstr "Završili ste sa odgovaranjem na pitanja u ovom upitniku."
+msgstr "Završili ste sa odgovaranjem na pitanja u ovoj anketi."
 
 #: E:\_LimeSurvey\svn/common.php:2831
 msgid "Click on 'Submit' now to complete the process and save your answers."
@@ -604,7 +604,7 @@ msgstr "Odgovori obrisani"
 #: E:\_LimeSurvey\svn/common.php:2873
 #: E:\_LimeSurvey\svn/common.php:2880
 msgid "Restart this Survey"
-msgstr "Pokrenite upitnik ispočetka"
+msgstr "Pokrenite anketu ispočetka"
 
 #: E:\_LimeSurvey\svn/common.php:2883
 #: E:\_LimeSurvey\svn/index.php:594
@@ -615,7 +615,7 @@ msgstr "Zatvori ovaj prozor"
 
 #: E:\_LimeSurvey\svn/common.php:2885
 msgid "Save Your Unfinished Survey"
-msgstr "Snimi svoj nezavršeni upitnik"
+msgstr "Snimi svoju nedovršenu anketu"
 
 #: E:\_LimeSurvey\svn/common.php:2886
 msgid "Enter a name and password for this survey and click save below."
@@ -623,7 +623,7 @@ msgstr "Unesite tražene podatke te kliknite na 'Snimi sada'."
 
 #: E:\_LimeSurvey\svn/common.php:2886
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr "Vaš upitnik će biti snimljen, te možete ga završiti kasnije koristeći unesene podatke."
+msgstr "Vaša anketa će biti snimljena, te možete je završiti kasnije koristeći korisničke podatke (korisničko ime i lozinku)."
 
 #: E:\_LimeSurvey\svn/common.php:2886
 msgid "If you give an email address, an email containing the details will be sent to you."
@@ -631,7 +631,7 @@ msgstr "Ako navedete e-mail adresu, zaprimiti ćete poruku koji sadrži detalje.
 
 #: E:\_LimeSurvey\svn/common.php:2894
 msgid "Return To Survey"
-msgstr "Povratak u upitnik"
+msgstr "Povratak u anketu"
 
 #: E:\_LimeSurvey\svn/common.php:2899
 #: E:\_LimeSurvey\svn/save.php:322
@@ -666,15 +666,15 @@ msgstr "Snimi sada"
 
 #: E:\_LimeSurvey\svn/common.php:2921
 msgid "Load A Previously Saved Survey"
-msgstr "Učitaj prethodno snimljen upitnik"
+msgstr "Učitaj prethodno snimljenu anketu"
 
 #: E:\_LimeSurvey\svn/common.php:2922
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Sa ovog ekrana možete učitati prethodno snimljen upitnik."
+msgstr "Sa ovog ekrana možete učitati prethodno snimljenu anketu."
 
 #: E:\_LimeSurvey\svn/common.php:2922
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr "Unesite 'ime' koje ste koristili kada ste snimili upitnik kao i lozinku."
+msgstr "Unesite 'ime' koje ste koristili kada ste snimili anketu, i lozinku."
 
 #: E:\_LimeSurvey\svn/common.php:2925
 msgid "Saved name"
@@ -686,11 +686,11 @@ msgstr "Učitaj sada"
 
 #: E:\_LimeSurvey\svn/common.php:2943
 msgid "You must be registered to complete this survey"
-msgstr "Samo registrirane osobe imaju pravo pristupa upitniku."
+msgstr "Morate biti registrirani da bi imali pravo pristupa anketi."
 
 #: E:\_LimeSurvey\svn/common.php:2944
 msgid "You may register for this survey if you wish to take part."
-msgstr "Ukoliko želite sudjelovati u ispunjavanju upitnika morate se registrirati."
+msgstr "Ukoliko želite sudjelovati u ispunjavanju ankete morate se registrirati."
 
 #: E:\_LimeSurvey\svn/common.php:2944
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
@@ -1134,7 +1134,7 @@ msgstr "Snimanje nije uspjelo"
 #: E:\_LimeSurvey\svn/group.php:117
 #: E:\_LimeSurvey\svn/question.php:206
 msgid "Your survey responses have not been recorded. This survey is not yet active."
-msgstr "Vaši odgovori na upitnik nisu pohranjeni. Ovaj upitnik nije aktivan."
+msgstr "Vaši odgovori na anketu nisu pohranjeni. Ova anketa nije aktivna."
 
 #: E:\_LimeSurvey\svn/group.php:122
 #: E:\_LimeSurvey\svn/question.php:212
@@ -1163,19 +1163,19 @@ msgstr "ili"
 #: E:\_LimeSurvey\svn/group.php:206
 #: E:\_LimeSurvey\svn/question.php:270
 msgid "View the statistics for this survey."
-msgstr "pogledaj statistiku ovog upitnika."
+msgstr "pogledaj statistiku ove ankete."
 
 #: E:\_LimeSurvey\svn/group.php:257
 #: E:\_LimeSurvey\svn/question.php:66
 msgid "Sorry. There is no matching survey."
-msgstr "Ispričavamo se. Ne postoji odgvorarajući upitnik."
+msgstr "Ispričavamo se. Ne postoji odgvorarajuća anketa."
 
 #: E:\_LimeSurvey\svn/group.php:282
 #: E:\_LimeSurvey\svn/group.php:959
 #: E:\_LimeSurvey\svn/question.php:93
 #: E:\_LimeSurvey\svn/question.php:535
 msgid "This survey is not currently active. You will not be able to save your responses."
-msgstr "Ovaj upitnik trenutno nije aktivan. Nećete biti u mogućnosti snimiti odgovore."
+msgstr "Ova anketa trenutno nije aktivna. Nećete biti u mogućnosti snimiti odgovore."
 
 #: E:\_LimeSurvey\svn/group.php:908
 #: E:\_LimeSurvey\svn/question.php:474
@@ -1206,7 +1206,7 @@ msgstr "Prethodna sesija je označena kao završena."
 
 #: E:\_LimeSurvey\svn/index.php:103
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
-msgstr "Preglednik je poslao informaciju da ste ranije već ispunjavali ovaj upitnik. Sesija će biti poništena pa ćete moći upitnik ispočetka ispuniti."
+msgstr "Preglednik je poslao informaciju da ste ranije već ispunjavali ovu anketu. Sesija će biti poništena pa ćete moći anketu ispočetka ispuniti."
 
 #: E:\_LimeSurvey\svn/index.php:222
 #: E:\_LimeSurvey\svn/index.php:251
@@ -1241,27 +1241,27 @@ msgstr "Ili ste bili dugo neaktivni ili je nastao problem sa Vašom vezom na Int
 
 #: E:\_LimeSurvey\svn/index.php:343
 msgid "No available surveys"
-msgstr "Trenutno nema raspoloživih upitnika"
+msgstr "Trenutno nema dostupnih anketa"
 
 #: E:\_LimeSurvey\svn/index.php:346
 msgid "You have not provided a survey identification number"
-msgstr "Niste unijeli identifikacijski broj upitnika"
+msgstr "Niste unijeli identifikacijski broj ankete"
 
 #: E:\_LimeSurvey\svn/index.php:348
 msgid "The following surveys are available:"
-msgstr "Popis dostupnih upitnika:"
+msgstr "Popis dostupnih anketa:"
 
 #: E:\_LimeSurvey\svn/index.php:434
 msgid "This survey is no longer available."
-msgstr "Ovaj upitnik više nije dostupan."
+msgstr "Ova anketa više nije dostupna."
 
 #: E:\_LimeSurvey\svn/index.php:451
 msgid "This survey is not yet started."
-msgstr "Ovaj upitnik trenutno nije aktivan"
+msgstr "Ova anketa nije još započela."
 
 #: E:\_LimeSurvey\svn/index.php:471
 msgid "You have already completed this survey."
-msgstr "Već ste popunili ovaj upitnik."
+msgstr "Već ste ispunili ovu anketu."
 
 #: E:\_LimeSurvey\svn/index.php:522
 msgid "You did not provide a name"
@@ -1281,7 +1281,7 @@ msgstr "Odgovor na sigurnosno pitanje nije točan."
 
 #: E:\_LimeSurvey\svn/index.php:589
 msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
-msgstr "Ovaj upitnik je zatvorenog tipa, te morate koristiti valjan token za pristup. Molimo kontaktirajte administratora za pomoć."
+msgstr "Ova anketa je zatvorenog tipa, te morate koristiti valjan token za pristup. Molimo kontaktirajte administratora za pomoć."
 
 #: E:\_LimeSurvey\svn/index.php:590
 #: E:\_LimeSurvey\svn/index.php:1801
@@ -1297,7 +1297,7 @@ msgstr "Za više informacija slobodno kontaktirajte %s"
 
 #: E:\_LimeSurvey\svn/index.php:615
 msgid "We are sorry but you are not allowed to enter this survey."
-msgstr "Nemate ovlasti za pristup ovom upitniku."
+msgstr "Nemate ovlasti za pristup ovoj anketi."
 
 #: E:\_LimeSurvey\svn/index.php:616
 msgid "Your token seems to be valid but can be used only during a certain time period."
@@ -1305,27 +1305,27 @@ msgstr "Token izgleda ispravan međutim možete ga iskoristiti samo u određenom
 
 #: E:\_LimeSurvey\svn/index.php:738
 msgid "Survey Saved"
-msgstr "Upitnik je spremljen"
+msgstr "Anketa je spremljena"
 
 #: E:\_LimeSurvey\svn/index.php:771
 msgid "There is no matching saved survey"
-msgstr "Ne postoji odgovarajući spremljeni upitnik"
+msgstr "Ne postoji podudarajuća spremljena anketa"
 
 #: E:\_LimeSurvey\svn/index.php:1515
 msgid "Answer Submission for Survey"
-msgstr "Zaprimljeni su odgovori za upitnik"
+msgstr "Zaprimljeni su odgovori na anketu"
 
 #: E:\_LimeSurvey\svn/index.php:1517
 msgid "Survey Submitted"
-msgstr "Upitnik je poslan"
+msgstr "Anketa je poslana"
 
 #: E:\_LimeSurvey\svn/index.php:1518
 msgid "A new response was entered for your survey"
-msgstr "Novi odgovor je unjet u Vaš upitnik"
+msgstr "Novi odgovor je unesen u vašu anketu"
 
 #: E:\_LimeSurvey\svn/index.php:1521
 msgid "Click the following link to reload the survey:"
-msgstr "Izaberite sljedeći link kako bi učitali upitnik:"
+msgstr "Izaberite sljedeći link kako bi učitali anketu:"
 
 #: E:\_LimeSurvey\svn/index.php:1525
 msgid "Click the following link to see the individual response:"
@@ -1349,7 +1349,7 @@ msgstr "Vaši odgovori nisu izgubljeni već su poslani administratoru i biti će
 
 #: E:\_LimeSurvey\svn/index.php:1611
 msgid "An error occurred saving a response to survey id"
-msgstr "Dogodila se greška prilikom snimanja odgovora u id upitnika"
+msgstr "Dogodila se greška prilikom snimanja odgovora u id ankete"
 
 #: E:\_LimeSurvey\svn/index.php:1612
 msgid "DATA TO BE ENTERED"
@@ -1373,7 +1373,7 @@ msgstr "Probaj poslati ponovo"
 
 #: E:\_LimeSurvey\svn/index.php:1683
 msgid "Please confirm access to survey by answering the security question below and click continue."
-msgstr "Molim potvrdite pristup upitniku odgovarajući na sigurnosno pitanje. Nakon unosa kliknite na Nastavi."
+msgstr "Molim potvrdite pristup anketi odgovarajući na sigurnosno pitanje. Nakon unosa kliknite na Nastavi."
 
 #: E:\_LimeSurvey\svn/index.php:1706
 msgid "Security question:"
@@ -1384,7 +1384,7 @@ msgstr "Sigurnosno pitanje:"
 #: E:\_LimeSurvey\svn/index.php:1836
 #: E:\_LimeSurvey\svn/index.php:1871
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr "Ovaj upitnik je pod kontrolom sustava. Potreban vam je ispravan token za učešće."
+msgstr "Pristup ovoj anketi je kontroliran. Potreban vam je ispravan token za učešće."
 
 #: E:\_LimeSurvey\svn/index.php:1741
 msgid "If you have been issued a token, please enter it in the box below and click continue."
@@ -1411,7 +1411,7 @@ msgstr "Token:"
 
 #: E:\_LimeSurvey\svn/index.php:2008
 msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "Ovaj upitnik još uvijek nema pitanja i ne može biti testiran niti popunjen."
+msgstr "Ova anketa još uvijek nema pitanja i ne može biti testirana niti ispunjena."
 
 #: E:\_LimeSurvey\svn/index.php:2370
 #: E:\_LimeSurvey\svn/index.php:2767
@@ -1430,7 +1430,7 @@ msgstr "PDF izvoz"
 
 #: E:\_LimeSurvey\svn/printanswers.php:146
 msgid "Survey Name (ID)"
-msgstr "ID Upitnika:"
+msgstr "ID ankete:"
 
 #: E:\_LimeSurvey\svn/printanswers.php:166
 msgid "Token ID"
@@ -1779,15 +1779,15 @@ msgstr "E-mail koji ste unijeli je već registriran."
 
 #: E:\_LimeSurvey\svn/register.php:152
 msgid "Thank you for registering to participate in this survey."
-msgstr "Hvala Vam na registraciji za sudjelovanje u ovom upitniku."
+msgstr "Hvala što ste se registrali za sudjelovanje u ovoj anketi."
 
 #: E:\_LimeSurvey\svn/register.php:152
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "Na e-mail koji ste unijeli, poslana je poruka sa detaljima za pristup ovom upitniku."
+msgstr "Na e-mail koji ste unijeli, poslana je poruka sa detaljima za pristup ovoj anketi. Slijedite link koji je naveden u poslanoj poruci."
 
 #: E:\_LimeSurvey\svn/register.php:152
 msgid "Survey Administrator"
-msgstr "Administrator upitnika"
+msgstr "Administrator ankete"
 
 #: E:\_LimeSurvey\svn/save.php:194
 msgid "Please try again."
@@ -1807,23 +1807,23 @@ msgstr "Vaše lozinke se ne poklapaju."
 
 #: E:\_LimeSurvey\svn/save.php:263
 msgid "This name has already been used for this survey. You must use a unique save name."
-msgstr "Ovo ime je već korišćeno za trenutni upitnik. Morate koristiti jedinstveno ime za snimanje."
+msgstr "Ovo ime je već korišteno u ovoj anketi. Morate koristiti jedinstveno ime za snimanje."
 
 #: E:\_LimeSurvey\svn/save.php:319
 msgid "Saved Survey Details"
-msgstr "Detalji spremljenog upitnika"
+msgstr "Detalji spremljene ankete"
 
 #: E:\_LimeSurvey\svn/save.php:320
 msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
-msgstr "Hvala na dosadašnjim odgovorima na pitanja iz upitnika. Sljedeći detalji se mogu koristiti kako bi se vratili ovom upitniku i nastavili gdje ste stali. Molimo da sačuvate ovu elektroničku poruku - sustav nije u mogućnosti da pronađe i ponovo pošalje lozinku."
+msgstr "Hvala na dosadašnjim odgovorima na pitanja iz ankete. Sljedeći detalji se mogu koristiti kako bi se vratili ovoj anketi i nastavili gdje ste stali. Molimo da sačuvate ovu elektroničku poruku - sustav nije u mogućnosti da pronađe i ponovo pošalje lozinku."
 
 #: E:\_LimeSurvey\svn/save.php:324
 msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
-msgstr "Učitajte ponovo vaš upitnik klikom na sljedeći URL (ili ga kopirajte u web preglednik):"
+msgstr "Učitajte ponovo vašu anketu klikom na sljedeći URL (ili ga kopirajte u web preglednik):"
 
 #: E:\_LimeSurvey\svn/save.php:339
 msgid "Your survey was successfully saved."
-msgstr "Vaš upitnik uspješno je snimljen."
+msgstr "Vaša anketa uspješno je snimljena."
 
 #: E:\_LimeSurvey\svn/save.php:582
 msgid "Cannot submit results - there are none to submit."
@@ -1835,7 +1835,7 @@ msgstr "Ova greška se javlja u slučaju da ste poslali svoje odgovore i pritisn
 
 #: E:\_LimeSurvey\svn/save.php:583
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
-msgstr "Ako ste primili ovu poruku tokom popunjavanja upitnika, potrebno je odabrati gumb '<-BACK' u vašem pretraživaču i zatim izabrati 'refresh' po učitavanju stranice. U ovom slučaju podatci sa posljednje strane neće biti spremljeni ali će svi prethodni podaci biti spremljeni. Ovaj problem se javlja u slučaju da je poslužitelj preopterećen. Ispričavamo se zbog poteškoća."
+msgstr "Ako ste primili ovu poruku tijekom ispunjavanja ankete, potrebno je odabrati gumb '<-BACK' u vašem pretraživaču i zatim izabrati 'refresh' po učitavanju stranice. U ovom slučaju podatci sa posljednje strane neće biti spremljeni ali će svi prethodni podaci biti spremljeni. Ovaj problem se javlja u slučaju da je poslužitelj preopterećen. Ispričavamo se zbog poteškoća."
 
 #: E:\_LimeSurvey\svn/statistics_user.php:625
 msgid "Please wait ..."
@@ -1851,7 +1851,7 @@ msgstr "Preuzimam pitanja i odgovore..."
 
 #: E:\_LimeSurvey\svn/statistics_user.php:649
 msgid "Total records in survey"
-msgstr "Ukupan broj zapisa u upitniku"
+msgstr "Ukupan broj zapisa u anketi"
 
 #: E:\_LimeSurvey\svn/statistics_user.php:666
 msgid "Generating summaries ..."
@@ -1979,39 +1979,39 @@ msgstr "Niste ovlašteni mijenjati podatke korisnika!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:42
 msgid "You are not allowed to create new surveys!"
-msgstr "Niste ovlašteni kreirati nove upitnike!"
+msgstr "Niste ovlašteni kreirati nove ankete!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:47
 msgid "You are not allowed to delete this survey!"
-msgstr "Niste ovlašteni obrisati ovaj upitnik!"
+msgstr "Niste ovlašteni obrisati ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:52
 msgid "You are not allowed to add new questions for this survey!"
-msgstr "Niste ovlašteni dodavati nova pitanja u ovaj upitnik!"
+msgstr "Niste ovlašteni dodavati nova pitanja u ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:57
 msgid "You are not allowed to activate this survey!"
-msgstr "Niste ovlašteni aktivirati ovaj upitnik!"
+msgstr "Niste ovlašteni aktivirati ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:62
 msgid "You are not allowed to deactivate this survey!"
-msgstr "Niste ovlašteni deaktivirati ovaj upitnik!"
+msgstr "Niste ovlašteni deaktivirati ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:67
 msgid "You are not allowed to add a group to this survey!"
-msgstr "Niste ovlašteni dodajeti grupe pitanja u ovaj upitnik!"
+msgstr "Niste ovlašteni dodavati grupe pitanja u ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
-msgstr "Niste ovlašteni mijenjati redoslijed grupa pitanja u ovom upitniku!"
+msgstr "Niste ovlašteni mijenjati redoslijed grupa pitanja u ovoj anketi!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:77
 msgid "You are not allowed to edit this survey!"
-msgstr "Niste ovlašteni menjati ovaj upitnik!"
+msgstr "Niste ovlašteni mijenjati ovu anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:82
 msgid "You are not allowed to edit groups in this survey!"
-msgstr "Niste ovlašteni menjati grupe u ovom upitniku!"
+msgstr "Niste ovlašteni mijenjati grupe u ovj anketi!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
@@ -2028,7 +2028,7 @@ msgstr "Niste ovlašteni obrišeti ovu grupu!"
 #: E:\_LimeSurvey\svn/admin/access_denied.php:102
 #: E:\_LimeSurvey\svn/admin/cmdline_importsurvey.php:73
 msgid "You are not allowed to import a survey!"
-msgstr "Niste ovlašteni uvoziti upitnik!"
+msgstr "Niste ovlašteni uvoziti anketu!"
 
 #: E:\_LimeSurvey\svn/admin/access_denied.php:108
 msgid "You are not allowed to import a group!"
@@ -2085,11 +2085,11 @@ msgstr "Ovo pitanje ima pravilo za popunjavanje, ali se pravilo odnosti na pitan
 #: E:\_LimeSurvey\svn/admin/activate.php:508
 #: E:\_LimeSurvey\svn/admin/activate.php:541
 msgid "Activate Survey"
-msgstr "Aktiviraj upitnik"
+msgstr "Aktiviraj anketu"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:221
 msgid "Survey does not pass consistency check"
-msgstr "Upitnik nije prošao provjeru kozistentnosti."
+msgstr "Anketa nije prošla provjeru kozistentnosti."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:226
 msgid "The following problems have been found:"
@@ -2097,7 +2097,7 @@ msgstr "Pronađeni su sljedeći problemi."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:233
 msgid "The survey cannot be activated until these problems have been resolved."
-msgstr "Ovaj upitnik ne može biti aktiviran dok sljedeći problemi nisu riješeni."
+msgstr "Ova anketa ne može biti aktivirana dok navedeni problemi nisu riješeni."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:244
 #: E:\_LimeSurvey\svn/admin/deactivate.php:27
@@ -2112,11 +2112,11 @@ msgstr "PROČITAJTE PAŽLJIVO PRIJE NASTAVKA RADA"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:247
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
-msgstr "Trebali bi aktivirati upitnik onda kada ste apsolutno sigurni da je vaše podešavanje upitnika kompletno i nemate potrebu ikakvog mijenjanja."
+msgstr "Trebali bi aktivirati anketu onda kada ste apsolutno sigurni da je vaše podešavanje ankete završeno i nemate potrebu ikakvog mijenjanja."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:248
 msgid "Once a survey is activated you can no longer:"
-msgstr "Jednom kada se upitnik aktivira više niste u mogućnosti vršiti ove akcije:"
+msgstr "Jednom kada se anketa aktivira više niste u mogućnosti vršiti ove akcije:"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:248
 msgid "Add or delete groups"
@@ -2148,15 +2148,15 @@ msgstr "Dodaj, obriši ili promijeni predefinirane odgovore na pitanja (osim za 
 
 #: E:\_LimeSurvey\svn/admin/activate.php:249
 msgid "Change survey name or description"
-msgstr "Promijeni naziv upitnika ili opis"
+msgstr "Promijeni naziv ankete ili opis"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:250
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Jednom kada se odgovori unesu u ovaj upitnik, u slučaju da želite dodati ili obrisati grupu pitanja ili pitanje, potrebno je deaktivirati ovaj upitnik,kako bi premjestili sve podatke koji su do sada unjeti u zasebnu tablicu arhive."
+msgstr "Jednom kada se odgovori unesu u ovu anketu, u slučaju da želite dodati ili obrisati grupu pitanja ili pitanje, potrebno je deaktivirati ovu anketu,kako bi premjestili sve podatke koji su do sada uneseni u zasebnu tablicu arhive."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:510
 msgid "Survey could not be actived."
-msgstr "Upitnik ne može biti aktiviran."
+msgstr "Anketa ne može biti aktivirana."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:511
 #: E:\_LimeSurvey\svn/admin/browse.php:69
@@ -2181,11 +2181,11 @@ msgstr "Glavni administratorski panel"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:542
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr "Upitnik je aktiviran. Tablica sa rezultatima je uspješno kreirana."
+msgstr "Anketa je aktivirana. Tablica sa rezultatima je uspješno kreirana."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:556
 msgid "This survey allows public registration. A token table must also be created."
-msgstr "Ovaj upitnik zahtjeva javnu registraciju. Tabela tokena mora biti kreirana."
+msgstr "Ova anketa zahtjeva javnu registraciju. Tabela tokena mora biti kreirana."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:557
 msgid "Initialise Tokens"
@@ -2193,7 +2193,7 @@ msgstr "Inicijaliziraj tokene"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:561
 msgid "This survey is now active, and responses can be recorded."
-msgstr "Ovaj upitnik još uvijek nije aktivan i odgovori se ne mogu snimati."
+msgstr "Ova anketa još uvijek nije aktivan i odgovori se ne mogu snimati."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:562
 msgid "Open-access mode"
@@ -2201,7 +2201,7 @@ msgstr "Otvoreni pristup mod rada"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:562
 msgid "No invitation code is needed to complete the survey."
-msgstr "Nije potreban kod pozivnice za ispunjavanje ovog upitnika."
+msgstr "Nije potreban kod pozivnice za ispunjavanje ove ankete."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:562
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
@@ -2235,7 +2235,7 @@ msgstr "Ankete"
 #: E:\_LimeSurvey\svn/admin/assessments.php:117
 #, php-format
 msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr "Obavijest: Način zadatka za ovaj upitnik nije omogućen. Možeš ga aktivirati unutar %s upitnika, podešavanja %s (tab 'Izvješćivanje i upravljanje podacima')."
+msgstr "Obavijest: Način zadatka za ovu anketu nije omogućen. Možeš ga aktivirati unutar %s ankete, podešavanja %s (tab 'Izvješćivanje i upravljanje podacima')."
 
 #: E:\_LimeSurvey\svn/admin/assessments.php:125
 msgid "No SID Provided"
@@ -2344,15 +2344,15 @@ msgstr "Ili vaša odabrana baza još uvijek nije kreirana ili postoji problem u 
 
 #: E:\_LimeSurvey\svn/admin/browse.php:80
 msgid "You have not selected a survey to browse."
-msgstr "Niste odabrali upitnik za pregled."
+msgstr "Niste odabrali anketu za pregled."
 
 #: E:\_LimeSurvey\svn/admin/browse.php:112
 msgid "This survey has not been activated. There are no results to browse."
-msgstr "Ovaj upitnik još nije aktiviran. Ne postoje rezultati za pregled."
+msgstr "Ova anketa još nije aktivirana. Ne postoje rezultati za pregled."
 
 #: E:\_LimeSurvey\svn/admin/browse.php:127
 msgid "There is no matching survey."
-msgstr "Ne postoji odgovarajući upitnik."
+msgstr "Ne postoji odgovarajuća anketa."
 
 #: E:\_LimeSurvey\svn/admin/browse.php:169
 #: E:\_LimeSurvey\svn/admin/browse.php:417
@@ -2466,7 +2466,7 @@ msgstr "Mijenjaj ovaj token"
 #: E:\_LimeSurvey\svn/admin/browse.php:800
 #, php-format
 msgid "%d responses for this survey"
-msgstr "%d odgovora na upitnik"
+msgstr "%d odgovora na anketu"
 
 #: E:\_LimeSurvey\svn/admin/browse.php:801
 #, php-format
@@ -2493,7 +2493,7 @@ msgstr "Upravljanje uvjetima"
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:109
 msgid "You have not selected a survey"
-msgstr "Niste izabrali upitnik"
+msgstr "Niste izabrali anketu"
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:111
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:125
@@ -2510,7 +2510,7 @@ msgstr "Dizajner uvjeta"
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:145
 msgid "Return to survey administration"
-msgstr "Povratak u Administraciju upitnika"
+msgstr "Povratak u Administraciju ankete"
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:149
 msgid "Show conditions for this question"
@@ -2906,7 +2906,7 @@ msgstr "Neuspješno brisanje odgovora"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1042
 msgid "Default"
-msgstr "Osnovno"
+msgstr "Osnovni"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1051
 msgid "Failed to make answer not default"
@@ -2919,7 +2919,7 @@ msgstr "Neuspješno postavljanje odgovora u osnovno stanje"
 #: E:\_LimeSurvey\svn/admin/database.php:1176
 #: E:\_LimeSurvey\svn/admin/database.php:1419
 msgid "Invitation to participate in survey"
-msgstr "Pozivnica za sudjelovanje u upitniku"
+msgstr "Pozivnica za sudjelovanje u anketi"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1177
 #: E:\_LimeSurvey\svn/admin/database.php:1420
@@ -2945,9 +2945,9 @@ msgid ""
 msgstr ""
 "Poštovani/a,\n"
 "\n"
-"pozivam Vas na sudjelovanje u istraživanju putem upitnika.\n"
+"pozivam Vas na sudjelovanje u istraživanju putem ankete.\n"
 "\n"
-"Naziv upitnika je: \"{SURVEYNAME}\"\n"
+"Naziv ankete je: \"{SURVEYNAME}\"\n"
 "\"{SURVEYDESCRIPTION}\"\n"
 "Za sudjelovanje molim da kliknete na navedeni URL (ili ga kopirajte u web preglednik):\n"
 "{SURVEYURL}\n"
@@ -2960,7 +2960,7 @@ msgstr ""
 #: E:\_LimeSurvey\svn/admin/database.php:1178
 #: E:\_LimeSurvey\svn/admin/database.php:1421
 msgid "Reminder to participate in survey"
-msgstr "Podsjetnik za sudjelovanje u upitniku"
+msgstr "Podsjetnik za sudjelovanje u anketi"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1179
 #: E:\_LimeSurvey\svn/admin/database.php:1422
@@ -2988,11 +2988,11 @@ msgid ""
 msgstr ""
 "Poštovani/a,\n"
 "\n"
-"nedavno sam Vas pozvao da sudjelujete u istraživanju putem upitnika, no nažalost do danas upitnik niste ispunili.\n"
+"nedavno sam Vas pozvao da sudjelujete u istraživanju putem online ankete, no nažalost do danas niste je ispunili.\n"
 "\n"
-"Ovom prilikom želim Vas podsjetiti da je upitnik još uvijek dostupan u slučaju da kanite sudjelovati u istraživanju.\n"
+"Ovom prilikom želim Vas podsjetiti da je anketa još uvijek dostupna u slučaju da želite sudjelovati u istraživanju.\n"
 "\n"
-"Naziv upitnika:\"{SURVEYNAME}\"\n"
+"Naziv ankete:\"{SURVEYNAME}\"\n"
 "\"{SURVEYDESCRIPTION}\"\n"
 "Za sudjelovanje molim kliknete na navedeni URL (ili ga kopirajte u web preglednik):\n"
 "{SURVEYURL}\n"
@@ -3004,7 +3004,7 @@ msgstr ""
 #: E:\_LimeSurvey\svn/admin/database.php:1180
 #: E:\_LimeSurvey\svn/admin/database.php:1423
 msgid "Confirmation of completed survey"
-msgstr "Potvrda o ispunjenom upitniku"
+msgstr "Potvrda o ispunjenoj anketi"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1181
 #: E:\_LimeSurvey\svn/admin/database.php:1424
@@ -3021,7 +3021,7 @@ msgid ""
 msgstr ""
 "Poštovani/a,\n"
 "\n"
-"ovaj e-mail je potvrda da ste uspješno ispunili upitnik {SURVEYNAME} i da su Vaši odgovori pohranjeni. Hvala Vam na sudjelovanju.\n"
+"ovaj e-mail je potvrda da ste uspješno ispunili anketu {SURVEYNAME} i da su Vaši odgovori pohranjeni. Hvala Vam na sudjelovanju.\n"
 "\n"
 "Za eventualna pitanja možete me kontaktirati putem e-mail adrese {ADMINEMAIL}.\n"
 "\n"
@@ -3031,7 +3031,7 @@ msgstr ""
 #: E:\_LimeSurvey\svn/admin/database.php:1182
 #: E:\_LimeSurvey\svn/admin/database.php:1425
 msgid "Survey Registration Confirmation"
-msgstr "Potvrda o registraciji za sudjelovanje u upitniku"
+msgstr "Potvrda o registraciji za sudjelovanje u anketi"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1183
 #: E:\_LimeSurvey\svn/admin/database.php:1426
@@ -3048,28 +3048,28 @@ msgid ""
 msgstr ""
 "Poštovani(a) {FIRSTNAME},\n"
 "\n"
-"Vi, ili netko drugi koristeći vašu e-mail adresu, prijavio se za sudjelovanje u online upitniku {SURVEYNAME}.\n"
+"Vi, ili netko drugi koristeći vašu e-mail adresu, prijavio se za sudjelovanje u online anketi {SURVEYNAME}.\n"
 "\n"
-"Za popunjavanje upitnika kliknite na navedeni URL (ili ga kopirajte u web preglednik):\n"
+"Za popunjavanje ankete kliknite na navedeni URL (ili ga kopirajte u web preglednik):\n"
 "{SURVEYURL}\n"
 "\n"
-"U slučaju da se niste prijavili za sudjelovanje ili imate druga pitanja o ovom upitniku, molimo da kontaktirate vlasnika upitnika ({ADMINNAME}) na e-mail {ADMINEMAIL}."
+"U slučaju da se niste prijavili za sudjelovanje ili imate želite dodatnu informaciju o ovoj anketi, molimo da kontaktirate administratora ankete ({ADMINNAME}) na e-mail {ADMINEMAIL}."
 
 #: E:\_LimeSurvey\svn/admin/database.php:1199
 msgid "Survey could not be updated"
-msgstr "Upitnik nije moguće promijeniti"
+msgstr "Anketu nije moguće promijeniti"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1214
 msgid "ERROR deleting Survey id"
-msgstr "GREŠKA pri brisanju id-a upitnika"
+msgstr "GREŠKA pri brisanju id-a ankete"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1285
 msgid "Survey could not be created because it did not have a title"
-msgstr "Upitnik nije moguće kreirati jer nije naveden naslov upitnika"
+msgstr "Anketu nije moguće kreirati jer nije naveden naslov ankete"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1442
 msgid "Survey could not be created"
-msgstr "Upitnik nije moguće kreirati"
+msgstr "Anketu nije moguće kreirati"
 
 #: E:\_LimeSurvey\svn/admin/database.php:1456
 msgid "Your personal settings were successfully saved."
@@ -3086,7 +3086,7 @@ msgstr "Unos podataka"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:83
 msgid "You have not selected a survey for data-entry."
-msgstr "Niste izabrali upitnik kako bi ručno unijeli podatke."
+msgstr "Niste izabrali anketu za koju bi ručno unijeli podatke."
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:147
 msgid "The token you have provided is not valid or has already been used."
@@ -3102,7 +3102,7 @@ msgstr "Izaberite sljedeći link kako bi izvršili promjene"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:160
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr "Ovaj upitnik je anonimnog tipa, stoga niste u mogućnosti ispravljati odgovore."
+msgstr "Ova anketa je anonimnog tipa, stoga niste u mogućnosti ispravljati odgovore."
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:187
 msgid "Try again"
@@ -3140,11 +3140,11 @@ msgstr "Vaši odgovori uspješno su pohranjeni, te ćete o tome biti obaviješte
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:537
 msgid "A token entry for the saved survey has been created too."
-msgstr "Token zapis za spremljeni upitnik je takođe kreiran."
+msgstr "Token zapis za spremljenu anketu je također kreiran."
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:559
 msgid "An email has been sent with details about your saved survey"
-msgstr "E-mail sa detaljima o spremljenom upitniku je poslan"
+msgstr "E-mail sa detaljima o spremljenoj anketi je poslan"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:571
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1800
@@ -3196,7 +3196,7 @@ msgstr "Zapis obrisan"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1897
 msgid "Datestamp"
-msgstr "Datum otisak"
+msgstr "Vremenska oznaka"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1908
 msgid "IP-Address"
@@ -3239,29 +3239,29 @@ msgstr "Molim izaberite..."
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:2992
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Ovaj upitnik još uvijek nije aktivan. Vaš odgovor ne može biti snimljen"
+msgstr "Ova anketa još uvijek nije aktivana. Vaš odgovor ne može biti snimljen"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:3002
 msgid "The survey you selected does not exist"
-msgstr "Upitnik koji ste izabrali ne postoji"
+msgstr "Anketa koju ste izabrali ne postoji"
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:25
 #: E:\_LimeSurvey\svn/admin/deactivate.php:34
 #: E:\_LimeSurvey\svn/admin/deactivate.php:112
 msgid "Deactivate Survey"
-msgstr "Deaktiviraj upitnik"
+msgstr "Deaktiviraj anketu"
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:29
 msgid "In an active survey, a table is created to store all the data-entry records."
-msgstr "U slučaju aktivnog upitnika, tabela je kreirana za spremanje svih zapisa."
+msgstr "Kod aktivne ankete, tabela je kreirana za spremanje svih zapisa."
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:30
 msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr "Kada deaktivirate upitnik, svi podaci unjeti u originalne tablice će biti premješteni drugo mjesto i kada aktivirate upitnik ponovo, tabela će biti prazna. Nećete biti u mogućnosti pristupiti ovim podacima koristeći LimeSurvey."
+msgstr "Kada deaktivirate anketu, svi podaci uneseni u originalne tablice će biti premješteni na drugo mjesto i kada aktivirate anketu ponovo, tablica će biti prazna. Nećete biti u mogućnosti pristupiti ovim podacima koristeći LimeSurvey."
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:31
 msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
-msgstr "Deaktiviranim podacima iz upitnika može pristupiti sistem administrator koristeći pristup bazi podataka kroz alat kao što je phpmysqladmin. Ako vaš upitnik koristi tokene ova tabela će takođe biti preimenovana i može joj pristupiti administrator sistema."
+msgstr "Deaktiviranim podacima iz ankete može pristupiti sistem administrator koristeći pristup bazi podataka kroz alat kao što je phpmyadmin. Ako vaša anketa koristi tokene ova tabela će takođe biti preimenovana i može joj pristupiti samo administrator sistema."
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:32
 msgid "Your responses table will be renamed to:"
@@ -3273,7 +3273,7 @@ msgstr "Potrebno je izvesti (export) odgovore prije deaktivacije."
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:115
 msgid "Survey Has Been Deactivated"
-msgstr "Upitnik je deaktiviran"
+msgstr "Anketa je deaktivirana"
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:120
 msgid "The responses table has been renamed to: "
@@ -3281,7 +3281,7 @@ msgstr "Tabela sa odgovorima je preimenovana u: "
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:121
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr "Odgovori na ovaj upitnik nisu više dostupni koristeći LimeSurvey."
+msgstr "Odgovori na ovu anketu nisu više dostupni koristeći LimeSurvey."
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:122
 msgid "You should note the name of this table in case you need to access this information later."
@@ -3289,39 +3289,39 @@ msgstr "Zapišite naziv ove tabele u slučaju da trebate da pristupiti ovim info
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:125
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "Tokeni vezani za tablicu ovog upitnika su preimenovani u: "
+msgstr "Tokeni vezani za tablicu ove ankete su preimenovani u: "
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:22
 msgid "Delete Survey"
-msgstr "Obriši upitnik"
+msgstr "Obriši anketu"
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:28
 msgid "You have not selected a survey to delete"
-msgstr "Niste izabrali upitnik za brisanje."
+msgstr "Niste izabrali anketu za brisanje."
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:42
 msgid "You are about to delete this survey"
-msgstr "Pred brisanjem ste ovog upitnika"
+msgstr "Pred brisanjem ste ove ankete"
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:43
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
-msgstr "Sljedeći proces će obrisati ovaj upitnik, kao i sve grupe, pitanja, odgovore i pravila."
+msgstr "Sljedeći proces će obrisati ovu anketu, kao i sve grupe, pitanja, odgovore i pravila."
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:44
 msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
-msgstr "Preporučujemo da prije brisanja ovog upitnika, izvezete kompletan upitnik sa glavnog administratorskog ekrana."
+msgstr "Preporučujemo da prije brisanja ove ankete, izvezete kompletanu anketu sa glavnog administratorskog ekrana."
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:48
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
-msgstr "Ovaj upitnik je aktivan i tabela sa odgovorima postoji. U slučaju da obrišete ovaj upitnik, odgovori će biti obrisani. Preporučamo da izvezete odgovore prije brisanja ovog upitnika."
+msgstr "Ova anketa je aktivna i tabela sa odgovorima postoji. U slučaju da obrišete ovu anketu, odgovori će biti obrisani. Preporučamo da izvezete odgovore prije brisanja ove ankete."
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:53
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
-msgstr "Ovaj upitnik ima tabelu tokena vezanu za sebe. Ako obrišete ovaj upitnik tabela sa tokenima će također biti obrisana. Preporučamo da izvezete ili napravite kopiju tokena prije brisanja upitnika."
+msgstr "Ova anketa ima tabelu tokena vezanu za sebe. Ako obrišete ovu anketu, tabela sa tokenima će također biti obrisana. Preporučamo da izvezete ili napravite kopiju tokena prije brisanja ankete."
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
-msgstr "Upitnik je obrisan."
+msgstr "Anketa je obrisana."
 
 #: E:\_LimeSurvey\svn/admin/dumpdb.php:55
 msgid "Export database"
@@ -3441,19 +3441,19 @@ msgstr "Izvezi podatke"
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:328
 msgid "Column Control"
-msgstr "Kotrola kolona"
+msgstr "Kontrola stupaca"
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:333
 msgid "Choose Columns"
-msgstr "Izaberi kolone"
+msgstr "Odaberi stupce"
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:338
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr "Vaš upitnik sadrži više od 255 kolona odgovora. Tablične aplikacije kao Excel su limitirane učitavanjem maksimalno 255 kolona. Izaberite kolone koje želite izvesti iz liste."
+msgstr "Vaša anketa sadrži više od 255 stupaca odgovora. Tablične aplikacije kao Excel su limitirane učitavanjem maksimalno 255 stupaca. Izaberite stupce koje želite izvesti iz liste."
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:344
 msgid "Choose the columns you wish to export."
-msgstr "Izaberite kolone koje želite izvesti."
+msgstr "Izaberite stupce koje želite izvesti."
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:384
 msgid "Token Control"
@@ -3465,7 +3465,7 @@ msgstr "Izaberite polja tokena"
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:395
 msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
-msgstr "Vaš upitnik može izvesti priključene podatke o tokenima sa svakim odgovorom. Izaberite dodatna polja koja želite izvesti."
+msgstr "Vaša anketa može izvesti priključene podatke o tokenima sa svakim odgovorom. Izaberite dodatna polja koja želite izvesti."
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:402
 #: E:\_LimeSurvey\svn/admin/exportresults.php:1121
@@ -3589,12 +3589,12 @@ msgstr "Podaci bi trebali biti uvezeni."
 #: E:\_LimeSurvey\svn/admin/export_structure_csv.php:44
 #: E:\_LimeSurvey\svn/admin/export_structure_lsrc.php:44
 msgid "Export Survey"
-msgstr "Izvezi upitnik"
+msgstr "Izvezi anketu"
 
 #: E:\_LimeSurvey\svn/admin/export_structure_csv.php:48
 #: E:\_LimeSurvey\svn/admin/export_structure_lsrc.php:48
 msgid "No SID has been provided. Cannot dump survey"
-msgstr "SID nije unesen. Nemoguće uklanjanje upitnika"
+msgstr "SID nije unesen. Nemoguće uklanjanje ankete"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:118
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:139
@@ -3625,19 +3625,19 @@ msgstr "Atributa tokena: %s"
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:151
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:167
 msgid "Survey expiration date (YYYY-MM-DD)"
-msgstr "Datum isteka upitnika (YYYY-MM-DD)"
+msgstr "Datum isteka ankete (YYYY-MM-DD)"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:127
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:152
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:168
 msgid "Survey expiration date (DD-MM-YYYY)"
-msgstr "Datum isteka upitnika (DD-MM-YYYY)"
+msgstr "Datum isteka ankete (DD-MM-YYYY)"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:128
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:153
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:169
 msgid "Survey expiration date (MM-DD-YYYY)"
-msgstr "Datum isteka upitnika (MM-DD-YYYY)"
+msgstr "Datum isteka ankete (MM-DD-YYYY)"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:136
 msgid "Token code for this participant"
@@ -3645,19 +3645,19 @@ msgstr "Token ovog sudionika"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:141
 msgid "Name of the survey"
-msgstr "Naziv upitnika"
+msgstr "Naziv ankete"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:142
 msgid "Description of the survey"
-msgstr "Opis upitnika"
+msgstr "Opis ankete"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:148
 msgid "Name of the survey administrator"
-msgstr "Administrator upitnika"
+msgstr "Administrator ankete"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:149
 msgid "Email address of the survey administrator"
-msgstr "E-mail adresa administratora upitnika"
+msgstr "E-mail adresa administratora ankete"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:150
 msgid "URL of the survey"
@@ -3687,7 +3687,7 @@ msgstr "Neka pitanja su isključena."
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:555
 #, php-format
 msgid "Survey Format is %s:"
-msgstr "Format upitnika je %s:"
+msgstr "Format ankete je %s:"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:555
 #: E:\_LimeSurvey\svn/admin/html.php:2394
@@ -3703,7 +3703,7 @@ msgstr "Samo odgovori sa prethodnih stranica su dostupni"
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:566
 #, php-format
 msgid "Survey mode is set to %s:"
-msgstr "Način upitnika je podešen na %s:"
+msgstr "Način ankete je podešen na %s:"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:566
 #: E:\_LimeSurvey\svn/admin/html.php:2391
@@ -3772,7 +3772,7 @@ msgstr "Status"
 #: E:\_LimeSurvey\svn/admin/html.php:44
 #: E:\_LimeSurvey\svn/admin/html.php:449
 msgid "Survey"
-msgstr "Upitnik"
+msgstr "Anketa"
 
 #: E:\_LimeSurvey\svn/admin/html.php:45
 msgid "Date Created"
@@ -3821,44 +3821,44 @@ msgstr "Nije još aktivan"
 #: E:\_LimeSurvey\svn/admin/html.php:136
 #: E:\_LimeSurvey\svn/admin/html.php:481
 msgid "This survey is active but expired."
-msgstr "Ovaj upitnik je aktivan ali je istekao."
+msgstr "Ova anketa je aktivna ali je istekla."
 
 #: E:\_LimeSurvey\svn/admin/html.php:138
 #: E:\_LimeSurvey\svn/admin/html.php:483
 msgid "This survey is active but expired"
-msgstr "Ovaj upitnik je aktivan ali je istekao"
+msgstr "Ova anketa je aktivna ali je istekla"
 
 #: E:\_LimeSurvey\svn/admin/html.php:147
 #: E:\_LimeSurvey\svn/admin/html.php:149
 #: E:\_LimeSurvey\svn/admin/html.php:504
 #: E:\_LimeSurvey\svn/admin/html.php:506
 msgid "De-activate this Survey"
-msgstr "Deaktiviraj ovaj upitnik"
+msgstr "Deaktiviraj ovu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:153
 #: E:\_LimeSurvey\svn/admin/html.php:156
 #: E:\_LimeSurvey\svn/admin/html.php:495
 #: E:\_LimeSurvey\svn/admin/html.php:497
 msgid "This survey is currently active"
-msgstr "Ovaj upitnik je trenutno aktivan"
+msgstr "Ova anketa je trenutno aktivna"
 
 #: E:\_LimeSurvey\svn/admin/html.php:165
 #: E:\_LimeSurvey\svn/admin/html.php:166
 #: E:\_LimeSurvey\svn/admin/html.php:464
 #: E:\_LimeSurvey\svn/admin/html.php:465
 msgid "Activate this Survey"
-msgstr "Aktiviraj ovaj upitnik"
+msgstr "Aktiviraj ovu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:170
 #: E:\_LimeSurvey\svn/admin/html.php:172
 #: E:\_LimeSurvey\svn/admin/html.php:456
 #: E:\_LimeSurvey\svn/admin/html.php:458
 msgid "This survey is not currently active"
-msgstr "Ovaj upitnik nije trenutno aktivan"
+msgstr "Ova anketa nije trenutno aktivna"
 
 #: E:\_LimeSurvey\svn/admin/html.php:202
 msgid "No Surveys available - please create one."
-msgstr "Nema dostupnih upitnika - molimo kreirajte jedan."
+msgstr "Nema dostupnih anketa - molimo kreirajte jednu."
 
 #: E:\_LimeSurvey\svn/admin/html.php:230
 msgid "Your personal settings"
@@ -3910,11 +3910,11 @@ msgstr "Korisnici"
 
 #: E:\_LimeSurvey\svn/admin/html.php:378
 msgid "Active Surveys"
-msgstr "Aktivni upitnici"
+msgstr "Aktivne ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:385
 msgid "De-activated Surveys"
-msgstr "Deaktivirani upitnici"
+msgstr "Deaktivirane ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:392
 msgid "Active Token Tables"
@@ -3931,53 +3931,53 @@ msgstr "Prikaži PHPInfo"
 #: E:\_LimeSurvey\svn/admin/html.php:471
 #: E:\_LimeSurvey\svn/admin/html.php:473
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr "Upitnik se ne može aktivirati. Ili nemate privilegije ili ne postoje pitanja."
+msgstr "Anketa se ne može aktivirati. Ili nemate privilegije ili ne postoje pitanja."
 
 #: E:\_LimeSurvey\svn/admin/html.php:488
 #: E:\_LimeSurvey\svn/admin/html.php:490
 msgid "This survey is active but has a start date."
-msgstr "Ovaj upitnik je aktivan ali ima početni datum."
+msgstr "Ova anketa je aktivna ali ima početni datum."
 
 #: E:\_LimeSurvey\svn/admin/html.php:521
 #: E:\_LimeSurvey\svn/admin/html.php:523
 msgid "Survey Security Settings"
-msgstr "Sigurnosna podešavanja upitnika"
+msgstr "Sigurnosna podešavanja ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:532
 msgid "Test This Survey"
-msgstr "Testiraj ovaj upitnik"
+msgstr "Testiraj ovu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:536
 msgid "Execute This Survey"
-msgstr "Pokreni ovaj upitnik"
+msgstr "Pokreni ovu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:588
 msgid "This survey is not active, data entry is not allowed"
-msgstr "Ovaj upitnik nije aktivan, unos podataka nije dozvoljen"
+msgstr "Ova anketa nije aktivna, unos podataka nije dozvoljen"
 
 #: E:\_LimeSurvey\svn/admin/html.php:602
 #: E:\_LimeSurvey\svn/admin/html.php:603
 #: E:\_LimeSurvey\svn/admin/html.php:612
 #: E:\_LimeSurvey\svn/admin/html.php:613
 msgid "Printable Version of Survey"
-msgstr "Verzija upitnika za ispis"
+msgstr "Verzija ankete za ispis"
 
 #: E:\_LimeSurvey\svn/admin/html.php:641
 #: E:\_LimeSurvey\svn/admin/html.php:642
 msgid "Edit survey settings"
-msgstr "Izmijeni postavke upitnika"
+msgstr "Izmijeni postavke ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:656
 #: E:\_LimeSurvey\svn/admin/html.php:657
 msgid "Delete Current Survey"
-msgstr "Obriši trenutni upitnik"
+msgstr "Obriši trenutnu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:670
 #: E:\_LimeSurvey\svn/admin/html.php:671
 #: E:\_LimeSurvey\svn/admin/html.php:678
 #: E:\_LimeSurvey\svn/admin/html.php:680
 msgid "Reset Survey Logic"
-msgstr "Obriši upitnik"
+msgstr "Obriši logiku ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:675
 msgid "This survey's questions don't use conditions"
@@ -4005,7 +4005,7 @@ msgstr "Promijeni redoslijed grupa pitanja"
 #: E:\_LimeSurvey\svn/admin/html.php:711
 #: E:\_LimeSurvey\svn/admin/html.php:2071
 msgid "Export Survey Structure"
-msgstr "Izvezi upitnik"
+msgstr "Izvezi strukturu ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:724
 #: E:\_LimeSurvey\svn/admin/html.php:725
@@ -4015,12 +4015,12 @@ msgstr "Podesi vrednovanja ankete"
 #: E:\_LimeSurvey\svn/admin/html.php:737
 #: E:\_LimeSurvey\svn/admin/html.php:738
 msgid "Set Survey Quotas"
-msgstr "Podesi ograničenja (kvote) upitnika"
+msgstr "Podesi ograničenja (kvote) ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:750
 #: E:\_LimeSurvey\svn/admin/html.php:751
 msgid "Browse Responses For This Survey"
-msgstr "Prođi kroz odgovore za ovaj upitnik"
+msgstr "Pogledaj odgovore ove ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:767
 #: E:\_LimeSurvey\svn/admin/html.php:768
@@ -4033,32 +4033,32 @@ msgstr "Grupe pitanja"
 
 #: E:\_LimeSurvey\svn/admin/html.php:794
 msgid "Add new question group to survey"
-msgstr "Dodaj novu grupu pitanja u upitnik"
+msgstr "Dodaj novu grupu pitanja u anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:799
 #: E:\_LimeSurvey\svn/admin/html.php:800
 msgid "Hide details of this Survey"
-msgstr "Sakrij detalje ovog upitnika"
+msgstr "Sakrij detalje ove ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:802
 #: E:\_LimeSurvey\svn/admin/html.php:803
 msgid "Show details of this survey"
-msgstr "Prikaži detalje ovog upitnika"
+msgstr "Prikaži detalje ove ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:807
 #: E:\_LimeSurvey\svn/admin/html.php:808
 msgid "Close this survey"
-msgstr "Zatvori ovaj upitnik"
+msgstr "Zatvori ovu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:837
 #: E:\_LimeSurvey\svn/admin/html.php:2662
 msgid "Answers to this survey are anonymized."
-msgstr "Odgovori na ovaj upitnik su anonimni."
+msgstr "Odgovori na ovu anketu su anonimni."
 
 #: E:\_LimeSurvey\svn/admin/html.php:838
 #: E:\_LimeSurvey\svn/admin/html.php:2661
 msgid "This survey is NOT anonymous."
-msgstr "Ovaj upitnik NIJE anoniman."
+msgstr "Ova anketa NIJE anonimna."
 
 #: E:\_LimeSurvey\svn/admin/html.php:839
 msgid "It is presented question by question."
@@ -4074,7 +4074,7 @@ msgstr "Prikaz svih pitanja na jednoj stranici."
 
 #: E:\_LimeSurvey\svn/admin/html.php:842
 msgid "Responses will be date stamped"
-msgstr "Zabilježiti će se datum ispunjavanja upitnika"
+msgstr "Zabilježiti će se datum ispunjavanja ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:843
 msgid "IP Addresses will be logged"
@@ -4086,15 +4086,15 @@ msgstr "URL sa kojeg je pristupljeno biti će zapisan"
 
 #: E:\_LimeSurvey\svn/admin/html.php:845
 msgid "It uses cookies for access control."
-msgstr "Koriste se cookies za kontolu pristupa"
+msgstr "Koriste se cookies za kontrolu pristupa."
 
 #: E:\_LimeSurvey\svn/admin/html.php:846
 msgid "If tokens are used, the public may register for this survey"
-msgstr "U slučaju da se koriste tokeni, pristup upitniku može biti javan"
+msgstr "Ukoliko se koriste tokeni, za javni pristup anketi potrebna je registracija"
 
 #: E:\_LimeSurvey\svn/admin/html.php:847
 msgid "Participants can save partially finished surveys"
-msgstr "Sudionici mogu snimiti parcijalno završene upitnike"
+msgstr "Sudionici mogu snimiti parcijalno završene ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:863
 msgid "Regenerate Question Codes:"
@@ -4115,12 +4115,12 @@ msgstr "Po grupama pitanja"
 
 #: E:\_LimeSurvey\svn/admin/html.php:878
 msgid "Survey URL"
-msgstr "URL upitnika"
+msgstr "URL ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:884
 #: E:\_LimeSurvey\svn/admin/html.php:891
 msgid "Survey URL For Language:"
-msgstr "URL upitnika za jezike:"
+msgstr "URL ankete za jezik:"
 
 #: E:\_LimeSurvey\svn/admin/html.php:884
 #: E:\_LimeSurvey\svn/admin/html.php:891
@@ -4183,11 +4183,11 @@ msgstr "Broj pitanja/grupa"
 
 #: E:\_LimeSurvey\svn/admin/html.php:973
 msgid "Survey currently active"
-msgstr "Upitnik trenutno aktivan"
+msgstr "Anketa je trenutno aktivna"
 
 #: E:\_LimeSurvey\svn/admin/html.php:987
 msgid "Survey table name"
-msgstr "Naziv tablice upitnika"
+msgstr "Naziv tablice ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:990
 msgid "Hints"
@@ -4195,7 +4195,7 @@ msgstr "Savjet"
 
 #: E:\_LimeSurvey\svn/admin/html.php:994
 msgid "Survey cannot be activated yet."
-msgstr "Upitnik još uvijek ne može biti aktivan."
+msgstr "Anketa zasad ne može biti aktivirana."
 
 #: E:\_LimeSurvey\svn/admin/html.php:997
 msgid "You need to add groups"
@@ -4289,7 +4289,7 @@ msgstr "Kopiraj trenutno pitanje"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1281
 msgid "Copy question is not possible in an Active survey"
-msgstr "Kopiranje pitanja nije moguće u Aktivnom upitniku"
+msgstr "Kopiranje pitanja nije moguće u Aktivnoja anketi"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1295
 msgid "Set Conditions for this Question"
@@ -4418,7 +4418,7 @@ msgstr "Novi odgovor"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1797
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
-msgstr "Ne možete dodati odgovor ili mijenjati kodove odgovora na ovo pitanje zbog upitnika koji nije aktivan."
+msgstr "Ne možete dodati odgovor ili mijenjati kodove odgovora na ovo pitanje jer je anketa aktivna."
 
 #: E:\_LimeSurvey\svn/admin/html.php:1818
 #: E:\_LimeSurvey\svn/admin/html.php:2217
@@ -4436,7 +4436,7 @@ msgstr "Korisnik dodan."
 #: E:\_LimeSurvey\svn/admin/html.php:2196
 #: E:\_LimeSurvey\svn/admin/html.php:2245
 msgid "Set Survey Rights"
-msgstr "Podesi privilegije upitnika"
+msgstr "Podesi privilegije ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1842
 #: E:\_LimeSurvey\svn/admin/html.php:1848
@@ -4481,7 +4481,7 @@ msgstr "Nije moguće obrisati korisnika. Korisničko ime nije uneseno."
 
 #: E:\_LimeSurvey\svn/admin/html.php:1957
 msgid "Edit Survey Properties"
-msgstr "Promijeni podešavanja upitnika."
+msgstr "Promijeni podešavanja ankete."
 
 #: E:\_LimeSurvey\svn/admin/html.php:1958
 #: E:\_LimeSurvey\svn/admin/html.php:2023
@@ -4495,7 +4495,7 @@ msgstr "Izvoz"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2022
 msgid "Edit Survey Property"
-msgstr "Promena podataka o upitniku"
+msgstr "Promijeni podatake o anketi"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2024
 msgid "Browse Response"
@@ -4503,7 +4503,7 @@ msgstr "Pregled odgovora"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2076
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr "LimeSurvey datoteka upitnika (*.csv)"
+msgstr "LimeSurvey datoteka ankete (*.csv)"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2080
 msgid "queXML Survey XML Format (*.xml)"
@@ -4519,7 +4519,7 @@ msgstr "Izvezi predložak"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2120
 msgid "Survey Security"
-msgstr "Sigurnost upitnika"
+msgstr "Sigurnost ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2123
 msgid "User Group"
@@ -4543,15 +4543,15 @@ msgstr "Molim najprije odaberite korisničku grupu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2278
 msgid "Update survey rights successful."
-msgstr "Uspješno dodavanje privilegija upitnika."
+msgstr "Uspješno izmijenjene privilegije anketi."
 
 #: E:\_LimeSurvey\svn/admin/html.php:2282
 msgid "Failed to update survey rights!"
-msgstr "Neuspješno dodavanje privilegija upitnika."
+msgstr "Izmijena privilegija ankete je neuspješna!"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2312
 msgid "Edit survey settings - Step 1 of 2"
-msgstr "Uređivanje upitnika - Korak 1 od 2"
+msgstr "Uređivanje ankete - Korak 1 od 2"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2318
 #: E:\_LimeSurvey\svn/admin/html.php:3192
@@ -4620,12 +4620,12 @@ msgstr "Prikaži grafikone u javno dostupnoj statistici?"
 #: E:\_LimeSurvey\svn/admin/html.php:2483
 #: E:\_LimeSurvey\svn/admin/html.php:3329
 msgid "List survey publicly:"
-msgstr "Javno objavi upitnik:"
+msgstr "Javno objavi anketu:"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2496
 #: E:\_LimeSurvey\svn/admin/html.php:3347
 msgid "Automatically load URL when survey complete?"
-msgstr "Automatski učitaj završni URL nakon ispunjenog upitnika?"
+msgstr "Automatski učitaj završni URL kad se anketa ispuni?"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2513
 #: E:\_LimeSurvey\svn/admin/html.php:3370
@@ -4635,7 +4635,7 @@ msgstr "Publiciranje i kontrola pristupa"
 #: E:\_LimeSurvey\svn/admin/html.php:2518
 #: E:\_LimeSurvey\svn/admin/html.php:3374
 msgid "Only users with tokens may enter the survey?"
-msgstr "Samo korsnici sa tokenima mogu pristupiti upitniku?"
+msgstr "Samo korisnici sa tokenima mogu pristupiti anketi?"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2529
 #: E:\_LimeSurvey\svn/admin/html.php:3381
@@ -4661,7 +4661,7 @@ msgstr "Koristi CAPTCHA za "
 #: E:\_LimeSurvey\svn/admin/html.php:3414
 #: E:\_LimeSurvey\svn/admin/html.php:3416
 msgid "Survey Access"
-msgstr "Pristup upitniku"
+msgstr "Pristup anketi"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2580
 #: E:\_LimeSurvey\svn/admin/html.php:2584
@@ -4716,7 +4716,7 @@ msgstr "Ne možeš koristiti anonimne odgovore kad je uključena opcija za obave
 #: E:\_LimeSurvey\svn/admin/html.php:2653
 #: E:\_LimeSurvey\svn/admin/html.php:3459
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Ako postavite ovaj upitnik na anonimno i stvorite tablicu tokena, LimeSurvey će označiti dovršene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurao anonimnost sudjelovanja ispitanika."
+msgstr "Ako postavite ovu anketu na anonimno i stvorite tablicu tokena, LimeSurvey će označiti dovršene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurao anonimnost ispitanika."
 
 #: E:\_LimeSurvey\svn/admin/html.php:2663
 #: E:\_LimeSurvey\svn/admin/html.php:2687
@@ -4816,7 +4816,7 @@ msgstr "Ovo će zamijeniti postojeći tekst. Nastavak?"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2865
 msgid "Edit survey settings - Step 2 of 2"
-msgstr "Uređivanje upitnika - Korak 2 od 2"
+msgstr "Uređivanje ankete - Korak 2 od 2"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2886
 #: E:\_LimeSurvey\svn/admin/html.php:3227
@@ -4848,7 +4848,7 @@ msgstr "Format datuma:"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3014
 msgid "Current survey has questions with conditions outside their own group"
-msgstr "Trenutni upitnik sadrži pitanja sa uvjetima izvan njihove grupe pitanja"
+msgstr "Trenutna anketa sadrži pitanja sa uvjetima izvan njihove grupe pitanja"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3014
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
@@ -4877,11 +4877,11 @@ msgstr "Na početak"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3182
 msgid "Error: You have to enter a title for this survey."
-msgstr "Greška: Morate unjeti naziv ovog upitnika"
+msgstr "Greška: Morate unijeti naziv ove ankete"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3186
 msgid "Create or Import Survey"
-msgstr "Stvori ili uvezi novi upitnik"
+msgstr "Stvori ili uvezi novu anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3217
 msgid "This setting cannot be changed later!"
@@ -4896,7 +4896,7 @@ msgstr "(Ovo polje je obavezno)"
 #: E:\_LimeSurvey\svn/admin/html.php:3436
 #: E:\_LimeSurvey\svn/admin/html.php:3513
 msgid "Create Survey"
-msgstr "Kreirajte upitnik"
+msgstr "Kreirajte anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3390
 #: E:\_LimeSurvey\svn/admin/html.php:3395
@@ -4912,7 +4912,7 @@ msgstr "Imena atributa tokena:"
 #: E:\_LimeSurvey\svn/admin/html.php:3528
 #: E:\_LimeSurvey\svn/admin/http_importsurvey.php:25
 msgid "Import Survey"
-msgstr "Uvezi upitnik"
+msgstr "Uvezi anketu"
 
 #: E:\_LimeSurvey\svn/admin/html.php:3524
 msgid "Select CSV/SQL File:"
@@ -4965,7 +4965,7 @@ msgstr "Čitam datoteku.."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:39
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr "SID (upitnika) nije dostavljen. Nije moguć uvoz grupe."
+msgstr "SID (ankete) nije dostavljen. Nije moguć uvoz grupe."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:56
 msgid "Reading file..."
@@ -4977,15 +4977,15 @@ msgstr "Ova datoteka nije u formatu LimeSurvey grupe. Uvoz nije uspio."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:253
 msgid "You can't import a group which doesn't support the current survey's base language."
-msgstr "Nije moguće uvoziti grupu koja ne podržava odabrani jezik baze upitnika."
+msgstr "Nije moguće uvoziti grupu koja ne podržava trenutni bazni jezik ankete."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:269
 msgid "You can't import a question which doesn't support the current survey's base language."
-msgstr "Nije moguće uvoziti pitanje koje ne podržava odabrani jezik baze upitnika."
+msgstr "Nije moguće uvoziti pitanje koje ne podržava trenutni bazni jezik ankete."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:287
 msgid "You can't import label sets which don't support the current survey's base language"
-msgstr "Nije moguće set oznaka koji ne podržava jezik trenutne baze upitnika."
+msgstr "Nije moguće set oznaka koji ne podržava trenutni bazni jezik ankete."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:662
 msgid "Import partially successful."
@@ -4993,7 +4993,7 @@ msgstr "Uvoz je djelomično uspješanj."
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:663
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr "Ovi jezici u ovoj grupi pitanja nisu uvezeni zato što upitnik nema takav jezik."
+msgstr "Slijedeći jezici u ovoj grupi pitanja nisu uvezeni zato što anketa ne sadrži takav jezik:"
 
 #: E:\_LimeSurvey\svn/admin/importgroup.php:674
 msgid "Group Import Summary"
@@ -5073,11 +5073,11 @@ msgstr "Brza statistika"
 
 #: E:\_LimeSurvey\svn/admin/importoldresponses.php:51
 msgid "Import responses from an old (deactivated) survey table into an active survey"
-msgstr "Uvezi odgovore iz starog (deaktiviranog) upitnika u aktivan upitnik"
+msgstr "Uvezi odgovore iz stare (deaktivirane) ankete u aktivnu anketu"
 
 #: E:\_LimeSurvey\svn/admin/importoldresponses.php:55
 msgid "Target Survey ID"
-msgstr "Ciljni ID upitnika"
+msgstr "Ciljni ID ankete"
 
 #: E:\_LimeSurvey\svn/admin/importoldresponses.php:60
 msgid "Source table"
@@ -5094,7 +5094,7 @@ msgstr "Jeste li sigurni?"
 
 #: E:\_LimeSurvey\svn/admin/importoldresponses.php:76
 msgid "Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr "Oprez: Možete uvesti sve stare odgovore sa istom brojem stupaca koje ima vaš aktivni upitnik. Morate obratiti pažnju da odgovori se podudaraju sa pitanjima u tekućem upitniku."
+msgstr "Oprez: Možete uvesti sve stare odgovore sa istom brojem stupaca koje ima vaša aktivna anketa. Morate obratiti pažnju da odgovori se podudaraju sa pitanjima u tekućoj anketi."
 
 #: E:\_LimeSurvey\svn/admin/importquestion.php:24
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:585
@@ -5103,7 +5103,7 @@ msgstr "Uvezi pitanje"
 
 #: E:\_LimeSurvey\svn/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "SID (upitnika) nije dostavljen. nije moguć uvoz pitanja."
+msgstr "SID (ankete) nije dostavljen. Nije moguć uvoz pitanja."
 
 #: E:\_LimeSurvey\svn/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
@@ -5115,7 +5115,7 @@ msgstr "Ova datoteka nije LimeSurvey datoteka sa pitanjima. Uvoz nije uspio."
 
 #: E:\_LimeSurvey\svn/admin/importquestion.php:230
 msgid "You can't import a question which doesn't support the current survey's base language"
-msgstr "Nije moguće uvoziti pitanje koje ne podržava jezik trenutne baze upitnika."
+msgstr "Nije moguće uvoziti pitanje koje ne podržava trenutni bazni jezik ankete."
 
 #: E:\_LimeSurvey\svn/admin/importquestion.php:460
 msgid "Faulty line in import - fields and data don't match"
@@ -5150,7 +5150,7 @@ msgstr "Ova datoteka nije u LimeSurvey formatu. Uvoz podataka nije uspio."
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:567
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:597
 msgid "Import of this survey file failed"
-msgstr "Uvoz ovog upitnika nije uspio"
+msgstr "Uvoz ove ankete nije uspio"
 
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:373
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:381
@@ -5159,7 +5159,7 @@ msgstr "Datoteka ne sadrži LimeSurvey podatke u pravilnom formatu."
 
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:768
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
-msgstr "Grupa u CSV/SQL datoteci ne čini dio istog upitnika. Uvoz je zaustavljen."
+msgstr "Grupa u CSV/SQL datoteci ne čini dio iste ankete. Uvoz je zaustavljen."
 
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:833
 #, php-format
@@ -5180,7 +5180,7 @@ msgstr "Uvjet za %d preskočen (%d ne postoji)"
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1286
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1315
 msgid "Survey Import Summary"
-msgstr "Sažeti prika uvoza upitnika"
+msgstr "Sažeti prikaz uvoza ankete"
 
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1299
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1326
@@ -5204,7 +5204,7 @@ msgstr "Ograničenja"
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1305
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1330
 msgid "Import of Survey is completed."
-msgstr "Uvoz upitnika je završen."
+msgstr "Uvoz ankete je završen."
 
 #: E:\_LimeSurvey\svn/admin/importsurvey.php:1306
 msgid "Go to survey"
@@ -5231,7 +5231,7 @@ msgstr "Natrag"
 
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:52
 msgid "Import Survey Resources"
-msgstr "Uvezi upitnik"
+msgstr "Uvezi anketu"
 
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:58
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:237
@@ -5307,7 +5307,7 @@ msgstr "Uvezi odgovore"
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:356
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:539
 msgid "Resources Import Summary"
-msgstr "Sažeti prikaz uvoza upitnika"
+msgstr "Sažeti prikaz uvoza ankete"
 
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:178
 #: E:\_LimeSurvey\svn/admin/import_resources_zip.php:357
@@ -5410,7 +5410,7 @@ msgstr "Svi atributi pitanja zadovoljili su standarde konzistentnosti"
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:104
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:204
 msgid "No matching survey"
-msgstr "Nema podudarajućeg upitnika"
+msgstr "Nema podudarajuće ankete"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:116
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:198
@@ -5424,7 +5424,7 @@ msgstr "Sljedeće (assessments) ankete bi trebale biti obrisane"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:128
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr "Svi zadaci upitnika zadovoljili su standarde konzistentnosti"
+msgstr "Svi zadaci ankete zadovoljili su standarde konzistentnosti"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:138
 msgid "All Group assessments meet consistency standards"
@@ -5448,11 +5448,11 @@ msgstr "Nedostaju specifična podešavanja jezika"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:180
 msgid "The following surveys should be deleted"
-msgstr "Sljedeći upitnici bi trebali biti obrisani"
+msgstr "Sljedeće ankete bi trebale biti obrisane"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:186
 msgid "All survey settings meet consistency standards"
-msgstr "Svi upitnici su zadovoljili standarde koezistentnosti"
+msgstr "Sve ankete su zadovoljili standarde koezistentnosti"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:209
 msgid "The following questions should be deleted"
@@ -5484,11 +5484,11 @@ msgstr "Da - Izbriši ih!"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:312
 msgid "Deleting Surveys"
-msgstr "Brisanje upitnika"
+msgstr "Brisanje ankete"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:314
 msgid "Deleting Survey ID"
-msgstr "Brisanje upitnika ID"
+msgstr "Brisanje ankete ID"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:321
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:329
@@ -5653,11 +5653,11 @@ msgstr "Bilješka: Unos novih markera treba biti napravljen u tabu prvog jezika.
 
 #: E:\_LimeSurvey\svn/admin/labels.php:458
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
-msgstr "Ne možete mijenjati kodove, dodati ili obrisati unose unutar ovog seta markera zato što se oni koriste u aktivnom upitniku."
+msgstr "Ne možete mijenjati kodove, dodati ili obrisati unose unutar ovog seta markera zato što se oni koriste u aktivnoj anketi."
 
 #: E:\_LimeSurvey\svn/admin/labels.php:518
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
-msgstr "Neki upitnici trenutno koriste ovaj set markera. Promjena kodova, dodavanje ili brisanje unosa u ovom setu markera mogu dovesti do neželjenih rezultata drugim upitnicima."
+msgstr "Neki ankete trenutno koriste ovaj set markera. Promjena kodova, dodavanje ili brisanje unosa u ovom setu markera mogu dovesti do neželjenih rezultata u drugim anketama."
 
 #: E:\_LimeSurvey\svn/admin/labels.php:589
 msgid "Failed to Copy already defined labels to added languages"
@@ -5736,16 +5736,16 @@ msgstr "Zaboravili ste lozinku?"
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:125
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1774
 msgid "Submit Your Survey."
-msgstr "Pošalji svoj upitnik."
+msgstr "Pošalji svoju anketu."
 
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:127
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1774
 msgid "Thank you for completing this survey."
-msgstr "Zahvaljujemo Vam se na popunjavanju ovog upitnika."
+msgstr "Zahvaljujemo se na ispunjavanju ove ankete."
 
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:140
 msgid "Please fax your completed survey to:"
-msgstr "Molimo pošaljite faksom ispunjen upitnik na:"
+msgstr "Molimo pošaljite faksom ispunjenu anketu na broj:"
 
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:145
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1768
@@ -5889,12 +5889,12 @@ msgstr "Molim izaberite odgovarajući odgovor za svaku stavku."
 
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1698
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
-msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovom upitniku."
+msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovoj anketi."
 
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1772
 #, php-format
 msgid "Please fax your completed survey to: %s"
-msgstr "Molimo pošaljite ispunjen upitnik putem telefaksa na: %s"
+msgstr "Molimo pošaljite ispunjenu anketu putem telefaksa na broj: %s"
 
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:30
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:158
@@ -5946,7 +5946,7 @@ msgstr "Tip pitanja:"
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:396
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:442
 msgid "Survey is currently active."
-msgstr "Upitnik je trenutno aktivan."
+msgstr "Anketa je trenutno aktivna."
 
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:478
 msgid "Position:"
@@ -6025,7 +6025,7 @@ msgstr "Akcija ograničenja"
 #: E:\_LimeSurvey\svn/admin/quota.php:553
 #: E:\_LimeSurvey\svn/admin/quota.php:851
 msgid "Terminate Survey"
-msgstr "Zaključaj upitnik"
+msgstr "Zaključaj anketu"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:411
 #: E:\_LimeSurvey\svn/admin/quota.php:555
@@ -6059,7 +6059,7 @@ msgstr "Ispravi ograničenja"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:524
 msgid "Survey Quotas"
-msgstr "Ograničenja upitnika"
+msgstr "Ograničenja ankete"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:530
 #: E:\_LimeSurvey\svn/admin/quota.php:670
@@ -6084,7 +6084,7 @@ msgstr "Dodatj novi odgovor"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:635
 msgid "No quotas have been set for this survey"
-msgstr "Nisu podešena ograničenja za ovaj upitnik."
+msgstr "Nisu podešena ograničenja za ovu anketu."
 
 #: E:\_LimeSurvey\svn/admin/quota.php:646
 #: E:\_LimeSurvey\svn/admin/quota.php:923
@@ -6106,12 +6106,12 @@ msgstr "Odabir pitanja"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:692
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Nema podržanih tipova pitanja u ovom upitniku"
+msgstr "Nema podržanih tipova pitanja u ovoj anketi"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:705
 #: E:\_LimeSurvey\svn/admin/quota.php:781
 msgid "Survey Quota"
-msgstr "Ograničenje upitnika"
+msgstr "Ograničenje ankete"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:712
 msgid "Select Question"
@@ -6131,19 +6131,19 @@ msgstr "Novo ograničenje"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:896
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Žao nam je ali vaši odgovori prelaze ograničenja ovog upitnika."
+msgstr "Žao nam je ali vaši odgovori prelaze ograničenja ove ankete."
 
 #: E:\_LimeSurvey\svn/admin/resetsurveylogic.php:42
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr "Pred brisanjem ste svih uvjeta u ovom upitniku"
+msgstr "Pred brisanjem ste svih uvjeta u ovoj anketi"
 
 #: E:\_LimeSurvey\svn/admin/resetsurveylogic.php:43
 msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
-msgstr "Preporučujemo da prije nastavka, izvezete kompletan upitnik sa glavnog administratorskog ekrana."
+msgstr "Preporučujemo da prije nastavka, izvezete kompletanu anketu sa glavnog administratorskog ekrana."
 
 #: E:\_LimeSurvey\svn/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
-msgstr "Svi uvjeti u ovom upitniku su obrisani."
+msgstr "Svi uvjeti u ovoj anketi su obrisani."
 
 #: E:\_LimeSurvey\svn/admin/results.php:189
 #: E:\_LimeSurvey\svn/admin/results.php:190
@@ -6253,7 +6253,7 @@ msgstr "Broj zapisa u ovom upitu:"
 
 #: E:\_LimeSurvey\svn/admin/statistics.php:2202
 msgid "Total records in survey:"
-msgstr "Ukupan broj zapisa u upitniku:"
+msgstr "Ukupan broj zapisa u anketi:"
 
 #: E:\_LimeSurvey\svn/admin/statistics.php:2209
 msgid "Percentage of total:"
@@ -6322,7 +6322,7 @@ msgstr "Ispiši stranicu s odgovorima"
 #: E:\_LimeSurvey\svn/admin/templates.php:79
 #: E:\_LimeSurvey\svn/admin/templates.php:554
 msgid "Printable survey page"
-msgstr "Verzija upitnika za ispis"
+msgstr "Verzija ankete za ispis"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:153
 #, php-format
@@ -6372,7 +6372,7 @@ msgstr "Primjer predloška"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:349
 msgid "Welcome to this sample survey"
-msgstr "Dobrodošli u primjer upitnika"
+msgstr "Dobrodošli u ovaj radni primjer ankete"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:349
 msgid "You should have a great time doing this"
@@ -6404,7 +6404,7 @@ msgstr "Imaj na umu da sekcija zadataka će biti prikazana ukoliko su pravila za
 
 #: E:\_LimeSurvey\svn/admin/templates.php:372
 msgid "Survey name (ID)"
-msgstr "Naziv upitnika (ID)"
+msgstr "Naziv ankete (ID)"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:374
 msgid "Your answer"
@@ -6738,23 +6738,23 @@ msgstr "Tablica sa tokenima ne može se kreirati."
 #: E:\_LimeSurvey\svn/admin/tokens.php:306
 #: E:\_LimeSurvey\svn/admin/tokens.php:325
 msgid "A token table has been created for this survey."
-msgstr "Tablica tokena je uspješno kreirana za ovaj upitnik."
+msgstr "Tablica tokena je uspješno kreirana za ovu anketu."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:350
 msgid "Tokens have not been initialised for this survey."
-msgstr "Tokeni nisu inicijalizirani za ovaj upitnik."
+msgstr "Tokeni nisu inicijalizirani za ovu anketu."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:355
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
-msgstr "U slučaju da inicijalizirate tokene za ovaj upitnik, pristup upitniku će biti omogućen samo korisnicima koji token unesu ručno ili putem URL-a."
+msgstr "U slučaju da inicijalizirate tokene za ovu anketu, pristup anketi će biti omogućen samo korisnicima koji token unesu ručno ili putem URL-a."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:362
 msgid "Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Napomena: Ako ovaj upitnik postavite kao anoniman, LimeSurvey će označiti iskorištene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurala anonimnost ispitanika."
+msgstr "Napomena: Ako ovu anketu postavite kao anonimnu, LimeSurvey će označiti iskorištene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurala anonimnost ispitanika."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:366
 msgid "Do you want to create a token table for this survey?"
-msgstr "Da li želite kreirati tablicu tokena za ovaj upitnik?"
+msgstr "Da li želite kreirati tablicu tokena za ovu anketu?"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:369
 msgid "Initialise tokens"
@@ -6837,7 +6837,7 @@ msgstr "Ukupno poslano pozivnica"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:518
 msgid "Total surveys completed"
-msgstr "Ukupno popunjenih upitnika"
+msgstr "Ukupno ispunjenih anketa"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:557
 msgid "Edit email settings"
@@ -6894,7 +6894,7 @@ msgstr "Naslov email-a za javnu registraciju"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:605
 msgid "Survey registration confirmation"
-msgstr "Potvrda o registraciji za sudjelovanje u upitniku"
+msgstr "Potvrda o registraciji za sudjelovanje u anketi"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:608
 #: E:\_LimeSurvey\svn/admin/tokens.php:610
@@ -7018,7 +7018,7 @@ msgstr "Neispravna e-mail adresa:"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:924
 msgid "Do Survey"
-msgstr "Pokreni upitnik"
+msgstr "Ispuni anketu"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:931
 msgid "Edit token entry"
@@ -7046,7 +7046,7 @@ msgstr "Obriši tablicu tokena"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:985
 msgid "If you delete this table tokens will no longer be required to access this survey."
-msgstr "U slučaju da obrišete ovu tabelu, tokeni više neće biti potrebni kako bi se pristupilo upitniku."
+msgstr "U slučaju da obrišete ovu tabelu, tokeni više neće biti potrebni kako bi se pristupilo anketi."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:985
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
@@ -7058,7 +7058,7 @@ msgstr "Obriši tokene"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1012
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
-msgstr "Tablica tokena je obrisana i tokeni više nisu potrebni kako bi se pristupilo ovom upitniku."
+msgstr "Tablica tokena je obrisana i tokeni više nisu potrebni kako bi se pristupilo ovoj anketi."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1012
 msgid "A backup of this table has been made and can be accessed by your system administrator."
@@ -7122,7 +7122,7 @@ msgstr "Postoji {EMAILCOUNT} e-maila koji nisu poslana."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1274
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
-msgstr "Ne postoje e-mail-ovi koji zadovoljavaju uvjete slanja. Nisu zadovoljeni sljedeći kriteriji - postojanje e-mail adrese, još uvijek neposlana pozivnica,već popunjen upitnik i posjedovanje tokena."
+msgstr "Ne postoje e-mail-ovi koji zadovoljavaju uvjete slanja. Nisu zadovoljeni sljedeći kriteriji - postojanje e-mail adrese, još uvijek neposlana pozivnica,već popunjena anketa i posjedovanje tokena."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1290
 msgid "Email Reminder"
@@ -7166,7 +7166,7 @@ msgstr "Podsjetnik poslan:"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1583
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
-msgstr "Ne postoje email-ovi koji zadovoljavaju uslove slanja. Nisu zadovoljeni sljedeći kriteriji - postojanje email adrese, poslana pozivnica i neispunjen upitnik."
+msgstr "Ne postoje e-mail-ovi koji zadovoljavaju uvjete slanja. Nisu zadovoljeni sljedeći kriteriji - postojanje e-mail adrese, poslana pozivnica i neispunjena anketa."
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:1599
 msgid "Create Tokens"
@@ -7803,7 +7803,7 @@ msgstr "Datoteka:"
 
 #: E:\_LimeSurvey\svn/admin/vvimport.php:85
 msgid "Survey ID:"
-msgstr "ID Upitnika:"
+msgstr "ID ankete:"
 
 #: E:\_LimeSurvey\svn/admin/vvimport.php:86
 msgid "Exclude record IDs?"
