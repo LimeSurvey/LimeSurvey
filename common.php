@@ -3550,11 +3550,7 @@ function getHeader()
         }
         $header.= ">\n\t<head>\n"
                 . $css_header
-        		. "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$rooturl."/scripts/calendar/calendar-blue.css\" title=\"win2k-cold-1\" />\n"
-        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar_stripped.js\"></script>\n"
-        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/lang/calendar-".$surveylanguage.".js\"></script>\n"
                 . "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
-        		. "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/calendar/calendar-setup_stripped.js\"></script>\n"
 			    . $js_header;
 			
         return $header;        
