@@ -3923,7 +3923,7 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 	                		$statisticsoutput .= "\t\t";
 	                		
-	                		//NEW: create new row "sum"
+	                		// create new row "sum"
 	                		//calculate sum of items 1-5
 	                		$sumitems = $grawdata[$i] 
 	                		+ $grawdata[$i-1] 

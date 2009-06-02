@@ -85,15 +85,6 @@ if ($surveyid)
     }
 }
 
-
-     
-//DEFAULT SETTINGS FOR TEMPLATES
-if (!$publicdir) {$publicdir=".";}
-$templaterootdir="$publicdir/templates";
-
-
-
-
 //we collect all the output within this variable
 $statisticsoutput ='';
 
@@ -127,6 +118,25 @@ if (isset($publicgraphs) && $publicgraphs == 1)
 // Set language for questions and labels to base language of this survey
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
+
+
+//pick the best font file if font setting is 'auto'
+if ($chartfontfile=='auto')
+{
+    $chartfontfile='vera.ttf';
+    if ( $language=='ar')
+    {
+        $chartfontfile='KacstOffice.ttf';
+    }
+    elseif  ($language=='fa' )
+    {
+        $chartfontfile='KacstFarsi.ttf';
+    }
+
+}
+
+
+
 //set survey language for translations
 $clang = SetSurveyLanguage($surveyid, $language);
 
@@ -159,7 +169,7 @@ echo $embedded_headerfunc();
  * only show questions where question attribute "public_statistics" is set to "1"
  */
 $query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
-."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("survey_$surveyid").", ".db_table_name("question_attributes")."\n"
+."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("question_attributes")."\n"
 ."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
 ."AND ".db_table_name("groups").".language='".$language."'\n"
 ."AND ".db_table_name("questions").".language='".$language."'\n"
@@ -168,11 +178,6 @@ $query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
 ."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n"
 ."AND ".db_table_name("question_attributes").".value='1'\n";
 
-//check filter setting in config file
-if ($filterout_incomplete_answers == true) 
-{
-	$query .= " AND ".db_table_name("survey_$surveyid").".submitdate is not null";
-}
 	
 //execute query
 $result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
@@ -1704,7 +1709,8 @@ if (isset($summary) && $summary)
 					$justcode[]=$al[0];
 					
 					//edit labels and put them into antoher array
-                    $lbl[] = wordwrap(FlattenText($fname), 25, "\n");
+                    $lbl[] = wordwrap(FlattenText("$al[1] ($row[0])"), 25, "\n"); // NMO 2009-03-24
+                    $lblrtl[] = utf8_strrev(wordwrap(FlattenText("$al[1] )$row[0]("), 25, "\n")); // NMO 2009-03-24
                     
                 }	//end while -> loop through results
                 
@@ -1824,7 +1830,7 @@ if (isset($summary) && $summary)
                 
                 //data available
                 else
-                {        	
+                {               	
                 	//check if data should be aggregated
                 	if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                 	{
@@ -2029,7 +2035,7 @@ if (isset($summary) && $summary)
 	                		}
 	                		
 	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
-	                		$statisticsoutput .= "<tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
+	                		$statisticsoutput .= "<tfoot><tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
@@ -2039,7 +2045,7 @@ if (isset($summary) && $summary)
 	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
 	                		//there has to be a whitespace within the table cell to display correctly
-	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";  
+	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr></tfoot>";  
 	                		
 	                	}
 	                	
@@ -2088,8 +2094,8 @@ if (isset($summary) && $summary)
             			{
             				//create product of item * value
             				$am += (($x+1) * $stddevarray[$x]);
-            			}
-
+            }
+            			
             			//prevent division by zero
             			if(isset($stddevarray) && array_sum($stddevarray) > 0)
             			{
@@ -2189,7 +2195,6 @@ if (isset($summary) && $summary)
                     if ($data != 0){$i++;}
                 }	
 				$totallines=$i;
-				
 				if ($totallines>15) 
 				{
 					$gheight=320+(6.7*($totallines-15));
@@ -2221,8 +2226,7 @@ if (isset($summary) && $summary)
                         $counter++;
                         if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
                     }
-//                    $DataSet->AddPoint($justcode,"LabelX");
-//                    $DataSet->SetAbsciseLabelSerie("LabelX");
+
                     if ($maxyvalue<10) {++$maxyvalue;}
                     $counter=0;
                     foreach ($lbl as $label)
@@ -2231,44 +2235,40 @@ if (isset($summary) && $summary)
                         $counter++;
                     }
                     
-                    //$DataSet->SetAbsciseLabelSerie();  
-
-                    
-
-                   
-                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
                     {
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }  
                     else
                     { 
-                    $graph = new pChart(1,1); 
-                    
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
-                    $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
-                     
-                    if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
-                    $graph = new pChart(690+$legendsize[0],$gheight); 
-                    $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",8);  
-                    $graph->setGraphArea(50,30,500,$gheight-60);  
-                    $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,240,240,240);  
-                    $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
-                    $graph->drawGraphArea(255,255,255,TRUE);  
-                    $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
-                    $graph->drawGrid(4,TRUE,230,230,230,50);     
-                                      // Draw the 0 line
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",6);
-                    $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+                        $graph = new pChart(1,1); 
+                        
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                        $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
+                         
+                        if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
+                        $graph = new pChart(690+$legendsize[0],$gheight); 
+                        $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);  
+                        $graph->setGraphArea(50,30,500,$gheight-60);  
+                        $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);  
+                        $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);  
+                        $graph->drawGraphArea(255,255,255,TRUE);  
+                        $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);  
+                        $graph->drawGrid(4,TRUE,230,230,230,50);     
+                                          // Draw the 0 line
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                        $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
-                    // Draw the bar graph
-                    $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                        // Draw the bar graph
+                        $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                         //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");   
-                    // Finish the graph
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);
-                    $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
-                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        // Finish the graph
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                        $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+
+                        $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }
 				}	//end if (bar chart)
 				
@@ -2288,32 +2288,44 @@ if (isset($summary) && $summary)
                         {$i++;}
                     }
                 
+                    $lblout=array();
+                    if (getLanguageRTL($language))
+                    {
+                        $lblout=$lblrtl;     
+                    }
+                    else
+                    {
+                        $lblout=$lbl;  
+                    }
+                    
+                     
                     //create new 3D pie chart
 					$DataSet = new pData; 
                     $DataSet->AddPoint($gdata,"Serie1");  
-                    $DataSet->AddPoint($lbl,"Serie2");  
+                    $DataSet->AddPoint($lblout,"Serie2");  
                     $DataSet->AddAllSeries();
                     $DataSet->SetAbsciseLabelSerie("Serie2");
 					
-                    if ($MyCache->IsInCache("pic",$DataSet->GetData()))
+                    if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
                     {
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData())); 
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData())); 
                     }  
                     else
                     { 
 					
-                    $graph = new pChart(690,$gheight);  
+                        $gheight=ceil($gheight);
+                        $graph = new pChart(690,$gheight);  
                         $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-					$graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,240,240,240);  
-                    $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
-					
-                    // Draw the pie chart  
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",10);  
-                    $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
-                    $graph->setFontProperties($rootdir."/classes/pchart/fonts/tahoma.ttf",9);  
-                    $graph->drawPieLegend(430,15,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
-                        $MyCache->WriteToCache("pic",$DataSet->GetData(),$graph);
-                        $cachefilename=basename($MyCache->GetFileFromCache("pic",$DataSet->GetData()));                         
+					    $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);  
+                        $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);  
+					    
+                        // Draw the pie chart  
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);  
+                        $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);  
+                        $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);  
+                        $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);  
+                        $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
+                        $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));                         
                     }
 					
 				}	//end else -> pie charts
@@ -2338,6 +2350,7 @@ if (isset($summary) && $summary)
 		unset($grawdata);
         unset($label);
 		unset($lbl);
+        unset($lblout);
 		unset($justcode);
 		unset ($alist);		
 		

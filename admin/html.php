@@ -3328,8 +3328,8 @@ if ($action == "newsurvey")
         //List survey publicly
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("List survey publicly:")."</span>\n"
         . "<span class='settingentry'><select name='public'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N'>".$clang->gT("No")."</option>\n"
         . "</select></span>\n"
         . "</div>\n";
 
