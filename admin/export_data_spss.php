@@ -47,7 +47,7 @@ $typeMap = array(
 'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
 'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A', 'hide'=>1),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
 'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
@@ -183,7 +183,7 @@ if  ($subaction=='dldata') {
                 } else {
                     echo( "'0'");
                 }           
-            } elseif (($fields[$fieldno]['LStype'] == 'O' || $fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
+            } elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
             {
                 if ($row[$fieldno] == 'Y')
                 {
@@ -300,13 +300,13 @@ if  ($subaction=='dlstructure') {
     {
     	$answers=array();
     	if (strpos("!LO",$field['LStype']) !== false) {
-    		if (($field['LStype'] == '!' || $field['LStype'] == 'L') && (substr($field['code'],-5) == 'other') || (substr($field['code'],-5) == 'comment')) {
+    		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
     			//We have a comment field, so free text
     		} else {
 			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
 			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
 			    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-			    and {$dbprefix}questions.qid='".$field['qid']."'";
+			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
 			    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
 			    $num_results = $result->RecordCount();
 			    if ($num_results > 0)
@@ -325,7 +325,7 @@ if  ($subaction=='dlstructure') {
 		    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
 		    {$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
 		    {$dbprefix}questions.language='".$language."' and 
-		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
+		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid ORDER BY sortorder ASC";
 		    $result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
 		    $num_results = $result->RecordCount();
 		    if ($num_results > 0)
@@ -371,7 +371,7 @@ if  ($subaction=='dlstructure') {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
 	    }
-	    if ($field['LStype'] == "P" && substr($field['code'],-7) != 'comment')
+	    if ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));
