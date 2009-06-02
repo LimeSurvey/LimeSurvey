@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.85RC2!
+Welcome to LimeSurvey v1.85RC3!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -73,6 +73,50 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.85RC2 (build 6935) to 1.85RC3 (build 7008) [2009/06/02]  - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: spanish (kadejo)
+#Updated translation: Polish translation update (elisa-ls)
+
++New feature: buttons to adjust the preview size for templates according to some standard web screen sizes (jcleeland)
++New feature: templates system automatically generates required css and js files if they don't exist in a directory (jcleeland)
++New feature: Definable date format for each survey language (c_schmitz)
++New feature: New setting for statistics charts to set font and font size config.php.  If set to auto the best possible font for a language is chosen. Also RTL languages are now properly reversed for chart display (c_schmitz)
++New feature: User-definable dateformat & separate user profile screen for administration users (c_schmitz)
+
+#Updated feature #03013: Group titles don't disappear when hiding all questions in a group. This can be switched off in config.php by the new '' parameter. (lemeur)
+#Updated feature: List survey publicly now activated by default when creating a new survey (c_schmitz)
+
+-Fixed issue #3160: No default "Thank You"-message in "Question by Question"-Format when end-text is empty (c_schmitz)
+-Fixed an conflict introduced in 1.85RC2 between the other_comment_mandatory attribute and the min_answers feature for multiple_choice questions. (lemeur)
+-Fixed an issue with list dropdown (flexible) questions which resets the othercomment field when using the back button (lemeur)
+-Fixed bug $dropdownthreshold not globalled at beginning of retrieveJSidname function causing warning message (jcleeland)
+-Fixed issue 03247: Quota Message isn't working properly (jcleeland)
+-Fixed issue: minor html_entity_decode correction (jcleeland)
+-Fixed issue when updating password (html_entity_decode requires 3 entries) (jcleeland)
+-Fixed issue: error message when adding token, and no attribute list available (jcleeland)
+-Fixed issue: errors occuring when editing entry with ranking question (jcleeland)
+-Fixed issue: javascript error when attempting to load jquery on missing textarea in standard templates (jcleeland)
+-Fixed issue #3179: serious bug on questions using 'No-Answer'-like conditions which could prevent recording the answer in database and break the mandatory question check. (lemeur)
+-Fixed issue #3204 other/othercomment export for both R and SPSS (mennodekker)
+-Fixed issue #3210: Total-Sum in assessment calculation is wrong (c_schmitz)
+-Fixed issue #3214: Strict errors in sha256.php in installation (c_schmitz)
+-Fixed issue #3221: Notices when running sample survey (c_schmitz)
+-Fixed issue #3225: MySQL error when update saved response  (c_schmitz)
+-Fixed issue #3227: Negative values cannot be used in assessment rules (c_schmitz)
+-Fixed issue #3229: New statistic layout isn't available for all question types  (c_schmitz)
+-Fixed issue #3232: small translation issue for the question validation notice (lemeur)
+-Fixed issue #3237: IE 7 Alignment problem on label setting - Removed the "Fix sortorder" button. Sort order fixing is done automatically now on add/delete (c_schmitz)
+-Fixed issue #3238: Notice at adding a new labelset  (c_schmitz)
+-Fixed issue #3243: Number of Questions-Calculation is wrong (c_schmitz)
+-Fixed issue #3248: Label text array (mouse pointer over the input fields) (c_schmitz)
+-Fixed issue #559: Ranking does not work fully in Opera when trying to select repeatedly the first entry (c_schmitz)
+-Fixed issue 02882: Limesurvey does not verify if there is 'text' written in 'Other' option. Now the other_comment_mandatory attribute is implemented for list radio and list dropdown question types (with or without labels. (lemeur)
+-Fixed issue 3224: Other comment fields are not reseted when another option than Other is selected for List Radio/Dropdown questions. (lemeur)
+-Fixed issue: Public statistics failing with larger surveys (c_schmitz)
+-Fixed ordering of labelsets in R and SPSS export, partial fix for #02984 (mennodekker)
 
 Changes from 1.85RC1 (build 6875) to  1.85RC2 (build 6935) [2009/05/25]  - Legend: + new feature, # update feature, - bug fix
 
