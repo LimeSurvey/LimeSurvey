@@ -48,6 +48,8 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+
+
 if ($action != 'showprintablesurvey')
 {
   $adminoutput = helpscreenscript();
@@ -55,8 +57,15 @@ if ($action != 'showprintablesurvey')
   ."\t<tr>\n"
   ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
 } else {$adminoutput='';}
-include_once('login_check.php');
 
+if($casEnabled)
+{
+	include_once("login_check_cas.php");
+}
+else
+{
+	include_once('login_check.php');
+}
 
 if ( $action == 'CSRFwarn')
 {
@@ -520,7 +529,8 @@ elseif ($action == 'replacementfields')
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n";
-
+	if(!isset($_SESSION['checksessionpost']))
+		$_SESSION['checksessionpost'] = '';
 	$adminoutput .= "<script type=\"text/javascript\">\n"
 	. "<!--\n"
 	. "\tfor(i=0; i<document.forms.length; i++)\n"
