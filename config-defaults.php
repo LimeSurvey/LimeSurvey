@@ -429,6 +429,22 @@ $enableLsrc = false;
 */
 $export4lsrc = false;
 
+// CAS Settings
+/**
+ * Please note that CAS functionality is very basic and you have to modify the client to your needs. 
+ * At least the hard work is done. 
+ * The Client is deployed in Limesurvey and a file login_check_cas.php does what login_check.php does in normal mode.
+ * 
+ * $casEnabled determines if CAS should be used or not for Authentication. 
+ * $casAuthServer the servername of the cas Auth Server. Without http://
+ * $casAuthPort CAS Server listening Port
+ * $casAuthUri relative uri from $casAuthServer to cas workingdirectory
+ */
+$casEnabled = false;
+$casAuthServer = 'localhost';
+$casAuthPort = 8443;
+$casAuthUri = '/cas-server/';
+
 
 /**
 *  Statistics chart settings
