@@ -99,49 +99,6 @@ $showpopups         =   1;                // Show popup messages if mandatory or
                                           // 1=Show popup message, 0=Show message on page instead.
 
 
-/**
- * SESSION SAVE PATH  -  Use only as LAST resort.
- *
- * NOTE: Setting session_save path to TRUE is a significant security
- *       risk, but may be temporarily necessary.
- *       Putting session details within the limesurvey setup and
- *       making them world readable is very bad.
- *
- * Sometimes hosting deals can have issues with sessions. ie: You
- * can't login because the session isn't saved or even worse,
- * respondents can't complete surveys.
- * If this is the case, you should CONTACT YOUR HOSTING COMPANY to
- * let them know and ask them to fix it.
- * If you get no joy from your hosting company, you can try the
- * changing $session_save_path to TRUE.
- */
-$session_save_path = false; // use only as a LAST resort if hosting company won't fix session problem.
-
-/**
- * SESSION_DIR
- * If you must use your own session directory, it's best if you place
- * it in a directory above the web root that way it is not accessible
- * from a browser.
- * Unfortunately this is not always possible on commercial hosts. To
- * make it as hard as possible for people to see your sensitive
- * session details give your session directory a long, randomly
- * generated name.
- *
- * Make sure SESSION_DIR ends with a slash '/'
- * All paths must be relative to the LimeSurvey directory.
- * Only use letters (a-z A-Z), numbers (0-9), hyphens, underscores
- * and full stops ( - _ . ) in your directory name.
- *
- * If you have access to the directory above the web root:
- * use something like this:
- *       '../ao32rpskdfnp9328hr/' for your session dir.
- * otherwise, leave blank and 
- * By default LimeSurvey will create a randomly generated directory
- * name.
- */
-$session_dir = ''; // make sure you have a trailing slash.
-
-
 
 // Email Settings
 // These settings determine how LimeSurvey will send emails

@@ -3634,14 +3634,15 @@ function getAdminHeader($meta=false)
         $strAdminHeader.=$meta;
         }
 	$strAdminHeader.="\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
-	. "\t\t<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-	. "\t\t<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
-    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-    . "\t\t<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n"
-    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
-    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
-    . "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
+	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
+	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"    
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
     if (getLanguageRTL($_SESSION['adminlang']))
     {
         $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";

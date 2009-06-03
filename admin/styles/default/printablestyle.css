@@ -1,3 +1,11 @@
 @media print{
   #exportbutton {display: none;}
 }
+
+.statisticstable {
+page-break-after:always;
+}
+
+td {
+	color: #fff;
+}
