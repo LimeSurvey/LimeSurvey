@@ -3630,7 +3630,7 @@ if (isset($summary) && $summary)
 			}	//end foreach -> loop through answer data
 
 			//no filtering of incomplete answers and NO multiple option questions
-            if ((incompleteAnsFilterstate() == "filter") and ($qtype != "M") and ($qtype != "P"))
+            if ((incompleteAnsFilterstate() != "filter") and ($qtype != "M") and ($qtype != "P"))
             {
             	//is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
                 if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
