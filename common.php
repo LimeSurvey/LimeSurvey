@@ -629,7 +629,7 @@ function db_tables_exist($table)
 */
 function getsurveylist($returnarray=false)
 {
-    global $surveyid, $dbprefix, $scriptname, $connect, $clang;
+    global $surveyid, $dbprefix, $scriptname, $connect, $clang, $timeadjust;
     $surveyidquery = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url "
 					." FROM ".db_table_name('surveys')." AS a "
 					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
@@ -652,6 +652,7 @@ function getsurveylist($returnarray=false)
     $surveynames = $surveyidresult->GetRows();
     $activesurveys='';
     $inactivesurveys='';
+    $expiredsurveys='';
     if ($surveynames)
     {
         foreach($surveynames as $sv)
@@ -663,14 +664,20 @@ function getsurveylist($returnarray=false)
         			if ($sv['sid'] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
                     $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
             }
-              else
-              {
-              $activesurveys .= "\t\t\t<option ";
-        			if($_SESSION['loginID'] == $sv['owner_id']) {$activesurveys .= " style=\"font-weight: bold;\"";}
-        			if ($sv['sid'] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
-                    $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
-              
-              }
+            elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+            {
+			        $expiredsurveys .="\t\t\t<option ";
+			        if ($_SESSION['loginID'] == $sv['owner_id']) {$expiredsurveys .= " style=\"font-weight: bold;\"";}
+			        if ($sv['sid'] == $surveyid) {$expiredsurveys .= " selected='selected'"; $svexist = 1;}
+			        $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+			}
+            else
+            {
+                $activesurveys .= "\t\t\t<option ";
+        		if($_SESSION['loginID'] == $sv['owner_id']) {$activesurveys .= " style=\"font-weight: bold;\"";}
+        		if ($sv['sid'] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
+                $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
+            }
         }
 		}
     //Only show each activesurvey group if there are some 
@@ -679,13 +686,18 @@ function getsurveylist($returnarray=false)
       $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
       $surveyselecter .= $activesurveys . "\t\t\t</optgroup>";
     }
+    if ($expiredsurveys!='')
+    {
+	  $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Expired")."' class='expiredsurveyselect'>\n";
+	  $surveyselecter .= $expiredsurveys . "\t\t\t</optgroup>";
+	}
     if ($inactivesurveys!='') 
     {  
       $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
       $surveyselecter .= $inactivesurveys . "\t\t\t</optgroup>";
     }    
     if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-      else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
 }
 
