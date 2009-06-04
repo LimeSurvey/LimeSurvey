@@ -18,7 +18,10 @@ h3
 {
 	margin-top: 0%;
 }
-
+*
+{
+    page-break-after: auto;
+}
 
 p.q-type-help
 {
