@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-04 21:21+0100\n"
-"PO-Revision-Date: 2009-06-04 21:21+0100\n"
+"POT-Creation-Date: 2009-06-05 20:52+0100\n"
+"PO-Revision-Date: 2009-06-05 20:52+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobraca & Edita Paulisic <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -212,7 +212,7 @@ msgstr "Niz (fleksibilni markeri) po stupcima"
 
 #: E:\_LimeSurvey\svn/common.php:882
 msgid "Language Switch"
-msgstr "Promena jezika"
+msgstr "Promjena jezika"
 
 #: E:\_LimeSurvey\svn/common.php:883
 msgid "Multiple Numerical Input"
@@ -411,14 +411,14 @@ msgstr "URL Preporuke"
 #: E:\_LimeSurvey\svn/common.php:2483
 #: E:\_LimeSurvey\svn/qanda.php:831
 #: E:\_LimeSurvey\svn/qanda.php:1162
-#: E:\_LimeSurvey\svn/qanda.php:1426
-#: E:\_LimeSurvey\svn/qanda.php:1650
-#: E:\_LimeSurvey\svn/qanda.php:1722
-#: E:\_LimeSurvey\svn/qanda.php:1826
-#: E:\_LimeSurvey\svn/qanda.php:1944
-#: E:\_LimeSurvey\svn/qanda.php:2471
-#: E:\_LimeSurvey\svn/qanda.php:2847
-#: E:\_LimeSurvey\svn/qanda.php:2962
+#: E:\_LimeSurvey\svn/qanda.php:1427
+#: E:\_LimeSurvey\svn/qanda.php:1652
+#: E:\_LimeSurvey\svn/qanda.php:1724
+#: E:\_LimeSurvey\svn/qanda.php:1828
+#: E:\_LimeSurvey\svn/qanda.php:1946
+#: E:\_LimeSurvey\svn/qanda.php:2473
+#: E:\_LimeSurvey\svn/qanda.php:2849
+#: E:\_LimeSurvey\svn/qanda.php:2964
 #: E:\_LimeSurvey\svn/statistics_user.php:732
 #: E:\_LimeSurvey\svn/statistics_user.php:1385
 #: E:\_LimeSurvey\svn/statistics_user.php:1474
@@ -429,9 +429,9 @@ msgstr "Ostalo"
 #: E:\_LimeSurvey\svn/common.php:2134
 #: E:\_LimeSurvey\svn/common.php:2140
 #: E:\_LimeSurvey\svn/common.php:2156
-#: E:\_LimeSurvey\svn/qanda.php:4013
-#: E:\_LimeSurvey\svn/qanda.php:4479
-#: E:\_LimeSurvey\svn/qanda.php:4532
+#: E:\_LimeSurvey\svn/qanda.php:4015
+#: E:\_LimeSurvey\svn/qanda.php:4483
+#: E:\_LimeSurvey\svn/qanda.php:4537
 #: E:\_LimeSurvey\svn/statistics_user.php:1229
 #: E:\_LimeSurvey\svn/statistics_user.php:1354
 msgid "Yes"
@@ -439,9 +439,9 @@ msgstr "Da"
 
 #: E:\_LimeSurvey\svn/common.php:2141
 #: E:\_LimeSurvey\svn/common.php:2157
-#: E:\_LimeSurvey\svn/qanda.php:4022
-#: E:\_LimeSurvey\svn/qanda.php:4481
-#: E:\_LimeSurvey\svn/qanda.php:4550
+#: E:\_LimeSurvey\svn/qanda.php:4024
+#: E:\_LimeSurvey\svn/qanda.php:4485
+#: E:\_LimeSurvey\svn/qanda.php:4555
 #: E:\_LimeSurvey\svn/statistics_user.php:1230
 #: E:\_LimeSurvey\svn/statistics_user.php:1355
 msgid "No"
@@ -452,32 +452,32 @@ msgstr "Ne"
 #: E:\_LimeSurvey\svn/common.php:5140
 #: E:\_LimeSurvey\svn/common.php:5145
 #: E:\_LimeSurvey\svn/qanda.php:944
-#: E:\_LimeSurvey\svn/qanda.php:1313
-#: E:\_LimeSurvey\svn/qanda.php:1500
-#: E:\_LimeSurvey\svn/qanda.php:1756
-#: E:\_LimeSurvey\svn/qanda.php:1978
-#: E:\_LimeSurvey\svn/qanda.php:2112
-#: E:\_LimeSurvey\svn/qanda.php:2179
-#: E:\_LimeSurvey\svn/qanda.php:4033
-#: E:\_LimeSurvey\svn/qanda.php:4115
-#: E:\_LimeSurvey\svn/qanda.php:4191
-#: E:\_LimeSurvey\svn/qanda.php:4268
-#: E:\_LimeSurvey\svn/qanda.php:4348
-#: E:\_LimeSurvey\svn/qanda.php:4410
-#: E:\_LimeSurvey\svn/qanda.php:4484
-#: E:\_LimeSurvey\svn/qanda.php:4570
-#: E:\_LimeSurvey\svn/qanda.php:4761
-#: E:\_LimeSurvey\svn/qanda.php:4844
-#: E:\_LimeSurvey\svn/qanda.php:4934
-#: E:\_LimeSurvey\svn/qanda.php:4954
-#: E:\_LimeSurvey\svn/qanda.php:5040
-#: E:\_LimeSurvey\svn/qanda.php:5624
-#: E:\_LimeSurvey\svn/qanda.php:5625
-#: E:\_LimeSurvey\svn/qanda.php:5910
-#: E:\_LimeSurvey\svn/qanda.php:5976
-#: E:\_LimeSurvey\svn/qanda.php:6098
-#: E:\_LimeSurvey\svn/qanda.php:6333
-#: E:\_LimeSurvey\svn/qanda.php:6387
+#: E:\_LimeSurvey\svn/qanda.php:1314
+#: E:\_LimeSurvey\svn/qanda.php:1502
+#: E:\_LimeSurvey\svn/qanda.php:1758
+#: E:\_LimeSurvey\svn/qanda.php:1980
+#: E:\_LimeSurvey\svn/qanda.php:2114
+#: E:\_LimeSurvey\svn/qanda.php:2181
+#: E:\_LimeSurvey\svn/qanda.php:4035
+#: E:\_LimeSurvey\svn/qanda.php:4117
+#: E:\_LimeSurvey\svn/qanda.php:4193
+#: E:\_LimeSurvey\svn/qanda.php:4271
+#: E:\_LimeSurvey\svn/qanda.php:4351
+#: E:\_LimeSurvey\svn/qanda.php:4414
+#: E:\_LimeSurvey\svn/qanda.php:4488
+#: E:\_LimeSurvey\svn/qanda.php:4575
+#: E:\_LimeSurvey\svn/qanda.php:4766
+#: E:\_LimeSurvey\svn/qanda.php:4850
+#: E:\_LimeSurvey\svn/qanda.php:4940
+#: E:\_LimeSurvey\svn/qanda.php:4960
+#: E:\_LimeSurvey\svn/qanda.php:5046
+#: E:\_LimeSurvey\svn/qanda.php:5630
+#: E:\_LimeSurvey\svn/qanda.php:5631
+#: E:\_LimeSurvey\svn/qanda.php:5916
+#: E:\_LimeSurvey\svn/qanda.php:5982
+#: E:\_LimeSurvey\svn/qanda.php:6104
+#: E:\_LimeSurvey\svn/qanda.php:6339
+#: E:\_LimeSurvey\svn/qanda.php:6393
 #: E:\_LimeSurvey\svn/statistics_user.php:1481
 #: E:\_LimeSurvey\svn/statistics_user.php:1570
 #: E:\_LimeSurvey\svn/statistics_user.php:1854
@@ -489,41 +489,41 @@ msgid "No answer"
 msgstr "Bez odgovora"
 
 #: E:\_LimeSurvey\svn/common.php:2148
-#: E:\_LimeSurvey\svn/qanda.php:4090
+#: E:\_LimeSurvey\svn/qanda.php:4092
 #: E:\_LimeSurvey\svn/statistics_user.php:1348
 msgid "Male"
 msgstr "Muški"
 
 #: E:\_LimeSurvey\svn/common.php:2149
-#: E:\_LimeSurvey\svn/qanda.php:4071
+#: E:\_LimeSurvey\svn/qanda.php:4073
 #: E:\_LimeSurvey\svn/statistics_user.php:1347
 msgid "Female"
 msgstr "Ženski"
 
 #: E:\_LimeSurvey\svn/common.php:2158
-#: E:\_LimeSurvey\svn/qanda.php:4480
-#: E:\_LimeSurvey\svn/qanda.php:4540
+#: E:\_LimeSurvey\svn/qanda.php:4484
+#: E:\_LimeSurvey\svn/qanda.php:4545
 #: E:\_LimeSurvey\svn/statistics_user.php:1231
 msgid "Uncertain"
 msgstr "Neodlučan"
 
 #: E:\_LimeSurvey\svn/common.php:2164
-#: E:\_LimeSurvey\svn/qanda.php:4756
-#: E:\_LimeSurvey\svn/qanda.php:4803
+#: E:\_LimeSurvey\svn/qanda.php:4761
+#: E:\_LimeSurvey\svn/qanda.php:4809
 #: E:\_LimeSurvey\svn/statistics_user.php:1248
 msgid "Increase"
 msgstr "Povećaj"
 
 #: E:\_LimeSurvey\svn/common.php:2165
-#: E:\_LimeSurvey\svn/qanda.php:4758
-#: E:\_LimeSurvey\svn/qanda.php:4826
+#: E:\_LimeSurvey\svn/qanda.php:4763
+#: E:\_LimeSurvey\svn/qanda.php:4832
 #: E:\_LimeSurvey\svn/statistics_user.php:1250
 msgid "Decrease"
 msgstr "Smanji"
 
 #: E:\_LimeSurvey\svn/common.php:2166
-#: E:\_LimeSurvey\svn/qanda.php:4757
-#: E:\_LimeSurvey\svn/qanda.php:4814
+#: E:\_LimeSurvey\svn/qanda.php:4762
+#: E:\_LimeSurvey\svn/qanda.php:4820
 #: E:\_LimeSurvey\svn/statistics_user.php:1249
 msgid "Same"
 msgstr "Isto"
@@ -1633,139 +1633,139 @@ msgid "Format: %s"
 msgstr "Format: %s"
 
 #: E:\_LimeSurvey\svn/qanda.php:1122
-#: E:\_LimeSurvey\svn/qanda.php:1294
-#: E:\_LimeSurvey\svn/qanda.php:1482
-#: E:\_LimeSurvey\svn/qanda.php:6313
-#: E:\_LimeSurvey\svn/qanda.php:6367
+#: E:\_LimeSurvey\svn/qanda.php:1295
+#: E:\_LimeSurvey\svn/qanda.php:1484
+#: E:\_LimeSurvey\svn/qanda.php:6319
+#: E:\_LimeSurvey\svn/qanda.php:6373
 msgid "Please choose"
 msgstr "Molim odaberite"
 
-#: E:\_LimeSurvey\svn/qanda.php:1392
-#: E:\_LimeSurvey\svn/qanda.php:1573
-#: E:\_LimeSurvey\svn/qanda.php:1791
-#: E:\_LimeSurvey\svn/qanda.php:2013
+#: E:\_LimeSurvey\svn/qanda.php:1393
+#: E:\_LimeSurvey\svn/qanda.php:1575
+#: E:\_LimeSurvey\svn/qanda.php:1793
+#: E:\_LimeSurvey\svn/qanda.php:2015
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Ispunili ste polje \"ostalo\" za pitanje \"%s\". Molim ispunite i pripadajuće polje \"drugi komentar\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:1506
-#: E:\_LimeSurvey\svn/qanda.php:1917
+#: E:\_LimeSurvey\svn/qanda.php:1508
+#: E:\_LimeSurvey\svn/qanda.php:1919
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan za ovaj jezik."
 
-#: E:\_LimeSurvey\svn/qanda.php:2066
+#: E:\_LimeSurvey\svn/qanda.php:2068
 msgid "Please choose one of the following"
 msgstr "Molim odaberite jednu opciju od ponuđenih"
 
-#: E:\_LimeSurvey\svn/qanda.php:2067
+#: E:\_LimeSurvey\svn/qanda.php:2069
 msgid "Please enter your comment here"
 msgstr "Molimo unesite komentar ovde"
 
-#: E:\_LimeSurvey\svn/qanda.php:2354
+#: E:\_LimeSurvey\svn/qanda.php:2356
 msgid "Remove this item"
 msgstr "Ukloni ovaj element"
 
-#: E:\_LimeSurvey\svn/qanda.php:2398
+#: E:\_LimeSurvey\svn/qanda.php:2400
 msgid "Your Choices"
 msgstr "Vaši izbori"
 
-#: E:\_LimeSurvey\svn/qanda.php:2407
-#: E:\_LimeSurvey\svn/qanda.php:2413
+#: E:\_LimeSurvey\svn/qanda.php:2409
+#: E:\_LimeSurvey\svn/qanda.php:2415
 msgid "Your Ranking"
 msgstr "Vaše rangiranje"
 
-#: E:\_LimeSurvey\svn/qanda.php:2421
+#: E:\_LimeSurvey\svn/qanda.php:2423
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Kliknite na ikonu škarica sa desne strane ranga kako bi izbrisali zadnje uneseni odabir"
 
-#: E:\_LimeSurvey\svn/qanda.php:2436
+#: E:\_LimeSurvey\svn/qanda.php:2438
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Molim rangirajte najmanje %d odgovor(a) za pitanje \"%s\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:2747
-#: E:\_LimeSurvey\svn/qanda.php:3047
+#: E:\_LimeSurvey\svn/qanda.php:2749
+#: E:\_LimeSurvey\svn/qanda.php:3049
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Molim odaberi najviše %d odgovora za pitanje \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2768
-#: E:\_LimeSurvey\svn/qanda.php:3072
+#: E:\_LimeSurvey\svn/qanda.php:2770
+#: E:\_LimeSurvey\svn/qanda.php:3074
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Molim odaberite najmanje %d odgovor(a) za pitanje \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2802
-#: E:\_LimeSurvey\svn/qanda.php:3102
+#: E:\_LimeSurvey\svn/qanda.php:2804
+#: E:\_LimeSurvey\svn/qanda.php:3104
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Popunili ste polje \"ostalo\" za pitanje \"%s\". Molim ispunite i pripadajuće polje \"drugi komentar\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:2944
-#: E:\_LimeSurvey\svn/qanda.php:2972
+#: E:\_LimeSurvey\svn/qanda.php:2946
+#: E:\_LimeSurvey\svn/qanda.php:2974
 msgid "Make a comment on your choice here:"
 msgstr "Unesite komentar na vaš izbor ovde:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3196
-#: E:\_LimeSurvey\svn/qanda.php:3467
-#: E:\_LimeSurvey\svn/qanda.php:4493
-#: E:\_LimeSurvey\svn/qanda.php:6161
+#: E:\_LimeSurvey\svn/qanda.php:3198
+#: E:\_LimeSurvey\svn/qanda.php:3469
+#: E:\_LimeSurvey\svn/qanda.php:4497
+#: E:\_LimeSurvey\svn/qanda.php:6167
 msgid "Error: This question has no answers."
 msgstr "Greška: Ovo pitanje nema odgovora."
 
-#: E:\_LimeSurvey\svn/qanda.php:3546
+#: E:\_LimeSurvey\svn/qanda.php:3548
 msgid "Only numbers may be entered in these fields"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: E:\_LimeSurvey\svn/qanda.php:3550
+#: E:\_LimeSurvey\svn/qanda.php:3552
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Svih ulaza ne može biti više od %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3554
+#: E:\_LimeSurvey\svn/qanda.php:3556
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Svih unosa mora biti točno %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3558
+#: E:\_LimeSurvey\svn/qanda.php:3560
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Zbroj svih unosa mora biti najmanje %s"
 
-#: E:\_LimeSurvey\svn/qanda.php:3637
+#: E:\_LimeSurvey\svn/qanda.php:3639
 msgid "Total: "
 msgstr "Ukupno:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3640
+#: E:\_LimeSurvey\svn/qanda.php:3642
 msgid "Remaining: "
 msgstr "Preostalo:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3686
-#: E:\_LimeSurvey\svn/qanda.php:3694
-#: E:\_LimeSurvey\svn/qanda.php:3730
-#: E:\_LimeSurvey\svn/qanda.php:3741
+#: E:\_LimeSurvey\svn/qanda.php:3688
+#: E:\_LimeSurvey\svn/qanda.php:3696
+#: E:\_LimeSurvey\svn/qanda.php:3732
+#: E:\_LimeSurvey\svn/qanda.php:3743
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odgovor je neispravan. Ukupnost svih odgovora ne može ići iznad"
 
-#: E:\_LimeSurvey\svn/qanda.php:3707
-#: E:\_LimeSurvey\svn/qanda.php:3715
+#: E:\_LimeSurvey\svn/qanda.php:3709
+#: E:\_LimeSurvey\svn/qanda.php:3717
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odgovor je neispravan. Zbroj svih unosa mora biti najmanje %s."
 
-#: E:\_LimeSurvey\svn/qanda.php:3810
+#: E:\_LimeSurvey\svn/qanda.php:3812
 msgid "Only numbers may be entered in this field"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: E:\_LimeSurvey\svn/qanda.php:5081
-#: E:\_LimeSurvey\svn/qanda.php:5305
-#: E:\_LimeSurvey\svn/qanda.php:5594
-#: E:\_LimeSurvey\svn/qanda.php:5738
-#: E:\_LimeSurvey\svn/qanda.php:6413
+#: E:\_LimeSurvey\svn/qanda.php:5087
+#: E:\_LimeSurvey\svn/qanda.php:5311
+#: E:\_LimeSurvey\svn/qanda.php:5600
+#: E:\_LimeSurvey\svn/qanda.php:5744
+#: E:\_LimeSurvey\svn/qanda.php:6419
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan i/ili ne postoji za ovaj jezik."
 
-#: E:\_LimeSurvey\svn/qanda.php:5732
+#: E:\_LimeSurvey\svn/qanda.php:5738
 msgid "Error: There are no answers defined for this question."
 msgstr "Greška: Nema definiranih odgovora u ovom pitanju."
 
@@ -6165,108 +6165,108 @@ msgstr "Identifikator"
 msgid "Date Saved"
 msgstr "Datum spremanja"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:134
+#: E:\_LimeSurvey\svn/admin/statistics.php:154
 msgid "Quick statistics"
 msgstr "Brza statistika"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:142
+#: E:\_LimeSurvey\svn/admin/statistics.php:162
 msgid "Filter settings"
 msgstr "Podešavanja filtera"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:226
+#: E:\_LimeSurvey\svn/admin/statistics.php:246
 msgid "General Filters"
 msgstr "Općeniti filteri"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:236
-#: E:\_LimeSurvey\svn/admin/statistics.php:479
-#: E:\_LimeSurvey\svn/admin/statistics.php:598
+#: E:\_LimeSurvey\svn/admin/statistics.php:256
+#: E:\_LimeSurvey\svn/admin/statistics.php:504
+#: E:\_LimeSurvey\svn/admin/statistics.php:623
 msgid "Number greater than"
 msgstr "Broj veći od"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:240
-#: E:\_LimeSurvey\svn/admin/statistics.php:485
-#: E:\_LimeSurvey\svn/admin/statistics.php:604
+#: E:\_LimeSurvey\svn/admin/statistics.php:260
+#: E:\_LimeSurvey\svn/admin/statistics.php:510
+#: E:\_LimeSurvey\svn/admin/statistics.php:629
 msgid "Number less than"
 msgstr "Broj manji od"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:265
-#: E:\_LimeSurvey\svn/admin/statistics.php:653
+#: E:\_LimeSurvey\svn/admin/statistics.php:285
+#: E:\_LimeSurvey\svn/admin/statistics.php:678
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Datum (GGGG-MM-DD) je jednak"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:269
-#: E:\_LimeSurvey\svn/admin/statistics.php:659
+#: E:\_LimeSurvey\svn/admin/statistics.php:289
+#: E:\_LimeSurvey\svn/admin/statistics.php:684
 msgid "OR between"
 msgstr "ILI između"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:529
-#: E:\_LimeSurvey\svn/admin/statistics.php:559
-#: E:\_LimeSurvey\svn/admin/statistics.php:582
-#: E:\_LimeSurvey\svn/admin/statistics.php:990
+#: E:\_LimeSurvey\svn/admin/statistics.php:554
+#: E:\_LimeSurvey\svn/admin/statistics.php:584
+#: E:\_LimeSurvey\svn/admin/statistics.php:607
+#: E:\_LimeSurvey\svn/admin/statistics.php:1015
 msgid "Responses containing"
 msgstr "Odgovori sadrže"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1873
+#: E:\_LimeSurvey\svn/admin/statistics.php:1898
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "Nije instalirana GD biblioteka.Za prikaz grafikona potrebno je da GD biblioteka ispravno radi."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1874
-#: E:\_LimeSurvey\svn/admin/statistics.php:1878
+#: E:\_LimeSurvey\svn/admin/statistics.php:1899
+#: E:\_LimeSurvey\svn/admin/statistics.php:1903
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "posjetite http://us2.php.net/manual/en/ref.image.php za više informacija"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1877
+#: E:\_LimeSurvey\svn/admin/statistics.php:1902
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr "Nije instalirana Freetype biblioteka. Za prikaz grafikona potrebno je da Freetype biblioteka ispravno radi."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1888
+#: E:\_LimeSurvey\svn/admin/statistics.php:1913
 msgid "View summary of all available fields"
 msgstr "Pregledaj sažetak za sve odgovore"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1891
+#: E:\_LimeSurvey\svn/admin/statistics.php:1916
 msgid "Show graphs"
 msgstr "Prikaži grafikone"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1897
+#: E:\_LimeSurvey\svn/admin/statistics.php:1922
 msgid "Include:"
 msgstr "Dodaj:"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1921
+#: E:\_LimeSurvey\svn/admin/statistics.php:1946
 msgid "Don't consider NON completed responses"
 msgstr "NE uzimaj u obzir odgovore koji nisu dovršeni."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:1925
+#: E:\_LimeSurvey\svn/admin/statistics.php:1950
 msgid "View stats"
 msgstr "Prikaži statistiku"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2140
+#: E:\_LimeSurvey\svn/admin/statistics.php:2168
 msgid "Getting result count ..."
 msgstr "Preuzimam broj rezultata..."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2199
+#: E:\_LimeSurvey\svn/admin/statistics.php:2227
 msgid "Results"
 msgstr "Rezultati"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2200
+#: E:\_LimeSurvey\svn/admin/statistics.php:2228
 msgid "Number of records in this query:"
 msgstr "Broj zapisa u ovom upitu:"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2202
+#: E:\_LimeSurvey\svn/admin/statistics.php:2230
 msgid "Total records in survey:"
 msgstr "Ukupan broj zapisa u anketi:"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2209
+#: E:\_LimeSurvey\svn/admin/statistics.php:2237
 msgid "Percentage of total:"
 msgstr "Postotak totala:"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2226
-#: E:\_LimeSurvey\svn/admin/statistics.php:3461
-#: E:\_LimeSurvey\svn/admin/statistics.php:3477
+#: E:\_LimeSurvey\svn/admin/statistics.php:2254
+#: E:\_LimeSurvey\svn/admin/statistics.php:3489
+#: E:\_LimeSurvey\svn/admin/statistics.php:3505
 msgid "Browse"
 msgstr "Pregled"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:2642
-#: E:\_LimeSurvey\svn/admin/statistics.php:3355
+#: E:\_LimeSurvey\svn/admin/statistics.php:2670
+#: E:\_LimeSurvey\svn/admin/statistics.php:3383
 #, php-format
 msgid "Field summary for %s"
 msgstr "Sažetak polja za %s"
@@ -7567,7 +7567,7 @@ msgstr "E-mail adresa već postoji."
 #: E:\_LimeSurvey\svn/admin/usercontrol.php:563
 #: E:\_LimeSurvey\svn/admin/usercontrol.php:603
 msgid "Update user rights successful."
-msgstr "Promena privilegija korisnika uspješna."
+msgstr "Promjena privilegija korisnika uspješna."
 
 #: E:\_LimeSurvey\svn/admin/usercontrol.php:613
 msgid "You are not allowed to change your own rights!"
@@ -7777,23 +7777,11 @@ msgstr "Neuspjela izmjena!"
 msgid "Adding User to group"
 msgstr "Dodaj korisnika u grupu"
 
-#: E:\_LimeSurvey\svn/admin/vvexport.php:53
-msgid "Filter incomplete answers"
-msgstr "Filtriraj ne kompletne odgovore"
-
-#: E:\_LimeSurvey\svn/admin/vvexport.php:55
-msgid "Enable"
-msgstr "Uključi"
-
-#: E:\_LimeSurvey\svn/admin/vvexport.php:56
-msgid "Disable"
-msgstr "Isključi"
-
-#: E:\_LimeSurvey\svn/admin/vvexport.php:60
+#: E:\_LimeSurvey\svn/admin/vvexport.php:69
 msgid "File Extension"
 msgstr "Datotečna ekstenzija"
 
-#: E:\_LimeSurvey\svn/admin/vvexport.php:65
+#: E:\_LimeSurvey\svn/admin/vvexport.php:74
 msgid "Export Responses"
 msgstr "Izvezi odgovore"
 
@@ -8142,6 +8130,12 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "Filter incomplete answers"
+#~ msgstr "Filtriraj ne kompletne odgovore"
+#~ msgid "Enable"
+#~ msgstr "Uključi"
+#~ msgid "Disable"
+#~ msgstr "Isključi"
 #~ msgid "Fix Order"
 #~ msgstr "Fiksni redoslijed"
 #~ msgid "Fix Sort"
