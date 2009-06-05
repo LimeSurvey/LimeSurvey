@@ -4231,6 +4231,7 @@ function do_array_5point($ia)
 		{
 			$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 		}
+		$answer_t_content .= $htmltbody2;
 		$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
 		. "\t\t\t<th class=\"answertext\" width=\"$answerwidth%\">\n\t\t\t\t$answertext\n"
 		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -4382,6 +4383,7 @@ function do_array_10point($ia)
 		{
 			$htmltbody2 = "\t</thead>\n\n\t<tbody id='javatbd$myfname' style='display: '>\n\t\t<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />\n";
 		}
+		$answer_t_content .= $htmltbody2;
 		$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
 		. "\t\t\t<th class=\"answertext\">\n\t\t\t\t$answertext\n"
 		. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
@@ -4526,6 +4528,7 @@ function do_array_yesnouncertain($ia)
 			{
 				$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 			}
+			$answer_t_content .= $htmltbody2;
 			$answer_t_content .= "\t\t<tr class=\"$trbc\">\n"
 			. "\t\t\t<th class=\"answertext\">$answertext</th>\n"
 			. "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-Y\">\n"
@@ -4796,6 +4799,7 @@ function do_array_increasesamedecrease($ia)
 				$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />";
 			}
 		}
+		$answer_body .= $htmltbody2;
 		$answer_body .= "\t\t<tr class=\"$trbc\">\n"
 		. "\t\t\t<th class=\"answertext\">$answertext</th>\n"
 		. "\t\t\t<td>\n"
