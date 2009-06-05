@@ -1268,6 +1268,7 @@ function do_list_dropdown($ia)
 
 			$answer .= '                                   </optgroup>';
 		}
+		$opt_select='';
 		foreach ($defaultopts as $optionarray)
 		{
 			if ($_SESSION[$ia[1]] == $optionarray['code'])
@@ -1435,7 +1436,7 @@ function do_list_flexible_dropdown($ia)
 	if ($code_filter=arraySearchByKey('code_filter', $qidattributes, 'attribute', 1))
 	{
 		$filter=$code_filter['value'];
-		if(in_array($filter, $_SESSION['insertarray']))
+		if(isset($_SESSION['insertarray']) && in_array($filter, $_SESSION['insertarray']))
 		{
 			$filter=trim($_SESSION[$filter]);
 		}
@@ -1464,9 +1465,10 @@ function do_list_flexible_dropdown($ia)
 
 	if (labelset_exists($lid,$_SESSION['s_lang']))
 	{
+	    $opt_select='';
 		while ($ansrow = $ansresult->FetchRow())
 		{
-			if ($_SESSION[$ia[1]] == $ansrow['code'])
+		    if ($_SESSION[$ia[1]] == $ansrow['code'])
 			{
 				$opt_select = SELECTED;
 			}
@@ -1479,7 +1481,7 @@ function do_list_flexible_dropdown($ia)
 
 		if (!$_SESSION[$ia[1]] && (!isset($defexists) || !$defexists))
 		{
-			$answer = '					<option value=""'.$opt_select.'>'.$clang->gT('Please choose')."...</option>\n".$answer;
+			$answer = '					<option value="" '.$opt_select.'>'.$clang->gT('Please choose')."...</option>\n".$answer;
 		}
 
 		if (isset($other) && $other=='Y')
@@ -1503,7 +1505,7 @@ function do_list_flexible_dropdown($ia)
 	}
 	else 
 	{
-		$answer .= '					<option>'.$clang->gT('Error: The labelset used for this question is not available in this language.').'</option>
+		$answer .= '					<option>'.$clang->gT('Error: The labelset used for this question is not available in this language.').$_SESSION['s_lang'].'</option>
 ';
 	}
 
@@ -1844,7 +1846,7 @@ function do_list_flexible_radio($ia)
 	if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
 	{
 		$filter=$code_filter['value'];
-		if(in_array($filter, $_SESSION['insertarray']))
+		if(isset($_SESSION['insertarray']) && in_array($filter, $_SESSION['insertarray']))
 		{
 			$filter=trim($_SESSION[$filter]);
 		}
