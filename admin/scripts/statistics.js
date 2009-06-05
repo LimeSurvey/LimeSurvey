@@ -32,3 +32,18 @@ function showhidefilters(value) {
    show('filterchoices');
  }
 }
+
+function selectCheckboxes(Div, CheckBoxName, Button)
+{	
+	var aDiv = document.getElementById(Div);
+	var nInput = aDiv.getElementsByTagName("input");
+	var Value = document.getElementById(Button).checked;
+	//alert(Value);
+	
+	for(var i = 0; i < nInput.length; i++)
+	{
+		if(nInput[i].getAttribute("name")==CheckBoxName)
+		nInput[i].checked = Value;
+	}
+}
+
