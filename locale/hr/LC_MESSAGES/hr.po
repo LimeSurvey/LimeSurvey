@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-05 20:52+0100\n"
-"PO-Revision-Date: 2009-06-05 20:52+0100\n"
+"PO-Revision-Date: 2009-06-07 00:20+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
-"Language-Team: Igor Dobraca & Edita Paulisic <idobraca@rovinj.net>\n"
+"Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1442,7 +1442,7 @@ msgstr "ID tokena"
 
 #: E:\_LimeSurvey\svn/printanswers.php:174
 msgid "Date Stamp"
-msgstr "Datum poslužitelja"
+msgstr "Datum ispunjavanja"
 
 #: E:\_LimeSurvey\svn/printanswers.php:271
 msgid "First Scale"
@@ -3200,11 +3200,11 @@ msgstr "Zapis obrisan"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1897
 msgid "Datestamp"
-msgstr "Vremenska oznaka"
+msgstr "Datum ispunjavanja"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1908
 msgid "IP-Address"
-msgstr "IP-adresa"
+msgstr "IP adresa"
 
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1957
 #: E:\_LimeSurvey\svn/admin/dataentry.php:2060
@@ -3293,7 +3293,7 @@ msgstr "Zapišite naziv ove tablice u slučaju da ćete trebati pristupiti ovim 
 
 #: E:\_LimeSurvey\svn/admin/deactivate.php:125
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr "Tokeni vezani za tablicu ove ankete su preimenovani u: "
+msgstr "Tablica tokena vezana za ovu anketu je preimenovana u: "
 
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:22
 msgid "Delete Survey"
@@ -4728,15 +4728,15 @@ msgstr "Ne može biti promjenjeno."
 #: E:\_LimeSurvey\svn/admin/html.php:2681
 #: E:\_LimeSurvey\svn/admin/html.php:3469
 msgid "Date Stamp?"
-msgstr "Datum otiska?"
+msgstr "Datum ispunjavanja?"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2685
 msgid "Responses will not be date stamped."
-msgstr "Odgovori neće imati datum otiska."
+msgstr "Odgovori neće sadržavati datum ispunjavanja."
 
 #: E:\_LimeSurvey\svn/admin/html.php:2686
 msgid "Responses will be date stamped."
-msgstr "Odgovori će imati datum otiska."
+msgstr "Odgovori će sadržavati datum ispunjavanja."
 
 #: E:\_LimeSurvey\svn/admin/html.php:2705
 #: E:\_LimeSurvey\svn/admin/html.php:3476
