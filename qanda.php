@@ -3218,7 +3218,7 @@ function do_multipleshorttext($ia)
 			}
 	
 			// --> START NEW FEATURE - SAVE
-			$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
+			$answer_main .= '" onKeyUp="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
 			. "\t</li>\n";
 			// --> END NEW FEATURE - SAVE
 	
@@ -3490,7 +3490,7 @@ function do_multiplenumeric($ia)
 				}
 
 				// --> START NEW FEATURE - SAVE
-				$answer_main .= '" onchange="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t\t\t".$suffix."\n\t\t</span>\n\t</li>\n";
+				$answer_main .= '" onKeyUp="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t\t\t".$suffix."\n\t\t</span>\n\t</li>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			else
@@ -3807,7 +3807,7 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onkeyup='checkconditions(this.value, this.name, this.type)'"
+	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onChange='checkconditions(this.value, this.name, this.type)'"
 	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n"
 	. "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
 	// --> END NEW FEATURE - SAVE
@@ -3859,7 +3859,7 @@ function do_shortfreetext($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
+	."\" maxlength=\"$maxsize\" onKeyUp=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
@@ -5527,7 +5527,7 @@ function do_array_multiflexi($ia)
 					. "\t\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 					. "\t\t\t\t\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
 					. html_escape($labelans[$thiskey]).'"'
-					. " onchange=\"checkconditions(this.value, this.name, this.type)\">\n"
+					. " onChange=\"checkconditions(this.value, this.name, this.type)\">\n"
 					. "\t\t\t\t\t\t<option value=\"\">...</option>\n";
 
 					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
