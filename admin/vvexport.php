@@ -75,7 +75,7 @@ if (!$subaction == "export")
         ."  <input type='hidden' name='subaction' value='export' />"
         ." </td>"
         ."</tr>"
-        ."<tr><td colspan='2' align='center' style='padding: 10px 0 10px 5px'><span style='font-size: 7pt'>* For easy opening in MS Excel, change the extension to 'tab' or 'txt'</span></td></tr>\n"
+        ."<tr><td colspan='2' align='center' style='padding: 10px 0 10px 5px'><span style='font-size: 7pt'>* ".$clang->gT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'")."</span></td></tr>\n"
         ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
         ."</table>";
 }
