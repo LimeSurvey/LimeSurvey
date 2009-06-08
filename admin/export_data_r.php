@@ -294,7 +294,7 @@ if  ($subaction=='dlstructure') {
 	foreach ($fields as $field)
     {
     	$answers=array();
-    	if (strpos("!LO",$field['LStype']) !== false) {
+    	if (strpos("!LOR",$field['LStype']) !== false) {
     		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
     			//We have a comment field, so free text
     		} else {

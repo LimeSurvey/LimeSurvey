@@ -115,6 +115,8 @@ function spss_fieldmap($prefix = 'V') {
 		$fieldtype = '';
 		$val_size = 1;
 		$hide = 0;
+		$export_scale = '';
+		$code='';
 		 
 		#Determine field type
 		if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -142,7 +144,6 @@ function spss_fieldmap($prefix = 'V') {
 		}
 		 
 		#Get qid (question id)
-		$code='';
 		$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl');
 		if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
 			$qid = 0;
@@ -169,6 +170,11 @@ function spss_fieldmap($prefix = 'V') {
 					$hide = $typeMap[$ftype]['hide'];
 					$diff++;
 				}
+				//Get default scale for this type
+				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
+				//But allow override
+				$aQuestionAttribs = getQAttributes($qid);
+				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 				
 		}
@@ -176,9 +182,9 @@ function spss_fieldmap($prefix = 'V') {
 		$fid = $fieldno - $diff;
 		$lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
 		$tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-		    'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
+		    'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
 		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-		    'title'=>$ftitle, 'hide'=>$hide);
+		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale);
 		$fields[] = $tempArray;
 	}
 	return $fields;
@@ -205,17 +211,19 @@ function spss_getquery() {
 		$query .= ",\n	       {$dbprefix}survey_$surveyid.*
 	    FROM {$dbprefix}survey_$surveyid
 	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
-		if (incompleteAnsFilterstate() === true)
-		{
-			$query .= " WHERE {$dbprefix}survey_$surveyid.submitdate is not null ";
-		}
 	} else {
 		$query = "SELECT *
 	    FROM {$dbprefix}survey_$surveyid";
-		if (incompleteAnsFilterstate() === true)
-		{
+	}
+	switch (incompleteAnsFilterstate()) {
+		case 'inc':
+			//Inclomplete answers only
+			$query .= ' WHERE submitdate is null ';
+			break;
+		case 'filter':
+			//Inclomplete answers only
 			$query .= ' WHERE submitdate is not null ';
-		}
+			break;
 	}
 	return $query;
 }

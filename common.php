@@ -3456,6 +3456,11 @@ function questionAttributes($returnByName=false)
     "types"=>"15ABCEFGHKLMNOPRWYZ!:",
     "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
     "caption"=>$clang->gT('Insert page break in printable view'));
+    
+    $qattributes["scale_export"]=array(
+    "types"=>"!LOFWZWH1:MPOGYCE",
+    "help"=>$clang->gT("1=nominal 2=ordinal 3=scale."),
+    "caption"=>$clang->gT('Export scale type 1=nominal 2=ordinal 3=scale.'));
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {

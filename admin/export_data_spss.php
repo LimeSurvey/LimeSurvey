@@ -37,15 +37,15 @@ $headerComment = '';
 $tempFile = '';
 
 include_once('login_check.php');
-
+//for scale 1=nominal, 2=ordinal, 3=scale
 $typeMap = array(
-'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F'),
-'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F'),
-'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F'),
+'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
 'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
 '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
 'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
-'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
+'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
 'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
 'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
@@ -62,11 +62,11 @@ $typeMap = array(
 'M'=>Array('name'=>'Multiple Options','size'=>1,'SPSStype'=>'F'),
 'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'F'),
 'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F'),
+'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
 'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F'),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 );
 
@@ -299,7 +299,7 @@ if  ($subaction=='dlstructure') {
 	foreach ($fields as $field)
     {
     	$answers=array();
-    	if (strpos("!LO",$field['LStype']) !== false) {
+    	if (strpos("!LOR",$field['LStype']) !== false) {
     		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
     			//We have a comment field, so free text
     		} else {
@@ -416,7 +416,19 @@ if  ($subaction=='dlstructure') {
 	    		}
 	    	}
 	    }
-    } 
+    }
+
+    foreach ($fields as $field){
+    	if($field['scale']!=='') {
+    		switch ($field['scale']) {
+    			case 2:
+    				echo "VARIABLE LEVEL {$field['id']}(ORDINAL).\n";
+    				break;
+    			case 3:
+    				echo "VARIABLE LEVEL {$field['id']}(SCALE).\n";
+    		}
+    	}
+    }
     
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 	foreach ($fields as $field){
