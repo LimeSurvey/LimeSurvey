@@ -3,7 +3,7 @@
 		<td align="center" bgcolor="#eef6ff">
         	{CHECKJAVASCRIPT}
 			<h1>{SURVEYNAME}</h1><br />
-			<p class='surveydescription'>{SURVEYDESCRIPTION}</P>
+			<p class='surveydescription'>{SURVEYDESCRIPTION}</p>
 		</td>
 	</tr>
 	<tr>
