@@ -157,9 +157,12 @@ $enableLdap = false;
 //
 // $filterout_incomplete_answers
 //  * default behaviour of LimeS regarding answer records with no submitdate
-//  * can be overwritten by module parameters
-//         ('Filter-Out incomplete answers' checkbox when implemented)
-$filterout_incomplete_answers = true;
+//  * can be overwritten by module parameters choose one of the following://         
+//		* filter: 		Show only complete answers
+//		* show: 		Show both complete and incomplete answers
+//		* incomplete: 	Show only incomplete answers
+
+$filterout_incomplete_answers = 'show';
 //
 // $stripQueryFromRefurl (default is false)
 //  * default behaviour is to record the full referer url when requested

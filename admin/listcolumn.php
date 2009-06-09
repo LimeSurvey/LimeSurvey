@@ -44,7 +44,16 @@ if ($sql && $sql != "NULL")
 	$query .= " AND ".auto_unescape(urldecode($sql));
 }
 
-if (incompleteAnsFilterstate() === true) {$query .= " AND submitdate is not null";}
+switch (incompleteAnsFilterstate()) {
+		case 'inc':
+			//Inclomplete answers only
+			$query .= ' WHERE submitdate is null ';
+			break;
+		case 'filter':
+			//Inclomplete answers only
+			$query .= ' WHERE submitdate is not null ';
+			break;
+	}
 
 if ($order == "alpha")
 {
