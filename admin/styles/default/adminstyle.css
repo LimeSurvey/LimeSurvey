@@ -291,7 +291,7 @@ textarea {
 
 .warningtitle {
 	font-weight: 700;
-	color: #FFA07A;
+	color: #ee303a;
 }
 
 .successtitle {
@@ -774,6 +774,7 @@ table.statisticstable, table.statisticssummary {
     width: 20em;  
     margin-right: 0.5em;  
     text-align: right;
+    font-weight: bold;
 }
 
 #personalsettings li {  
