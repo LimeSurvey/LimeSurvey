@@ -394,7 +394,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			."</form>";
 		}
 		else{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username and/or email address already exists.")."<br />\n";
+			$addsummary .= "<br /><strong>".$clang->gT("Failed to add user.")."</strong><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
 		}
 	}
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";

@@ -2888,6 +2888,7 @@ function templatereplace($line)
 			$restart_extra = "";
 			$restart_token = returnglobal('token');
 			if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
+              else $restart_extra = "&amp;newtest=Y";
 			if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
 			$line=str_replace("{RESTART}",  "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
 		}
