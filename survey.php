@@ -758,9 +758,8 @@ foreach ($_SESSION['grouplist'] as $gl)
 
 				echo '
 	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-';
-				$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>';
+				$question= $qa[0];
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
