@@ -846,6 +846,7 @@ function mandatory_message($ia)
 
 function mandatory_popup($ia, $notanswered=null)
 {
+    global $showpopups;
 	//This sets the mandatory popup message to show if required
 	//Called from question.php, group.php or survey.php
 	if ($notanswered === null) {unset($notanswered);}
@@ -878,6 +879,7 @@ function mandatory_popup($ia, $notanswered=null)
 
 function validation_popup($ia, $notvalidated=null)
 {
+    global $showpopups;        
 	//This sets the validation popup message to show if required
 	//Called from question.php, group.php or survey.php
 	if ($notvalidated === null) {unset($notvalidated);}
