@@ -144,9 +144,9 @@ $emailcharset = "UTF-8";                  // You can change this to change the c
 $modrewrite         =   0;  
 
 // CMS Integration Settings
-// Set $embedded to true and specify the header and footer functions if the survey is to be displayed embedded in a CMS
+// Set $embedded to true and specify the header and footer functions - for example if the survey is to be displayed embedded in a CMS
 $embedded = false;
-$embedded_inc = '';             // path to the header to include if any
+$embedded_inc = '';             // path to a php file to include 
 $embedded_headerfunc = '';      // e.g. COM_siteHeader for geeklog
 $embedded_footerfunc = '';      // e.g. COM_siteFooter for geeklog
 

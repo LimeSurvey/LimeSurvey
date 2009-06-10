@@ -158,7 +158,7 @@ $statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
 ."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1'"
 ." cellspacing='0'>\n"
 ."<tr><td align='center' class='settingcaption' height='22'>"
-."<input type='image' src='$imagefiles/plus.gif' align='right' onclick='show(\"filtersettings\")' /><input type='image' src='$imagefiles/minus.gif' align='right' onclick='hide(\"filtersettings\")' />"
+."<input type='image' src='$imagefiles/plus.gif' align='right' id='showfilter' /><input type='image' src='$imagefiles/minus.gif' align='right' id='hidefilter' />"
 .$clang->gT("Filter settings")
 ."</td></tr>\n"
 ."</table>\n"
@@ -239,14 +239,24 @@ foreach ($rows as $row)
 //some more output: I = filter by ID
 //{VIEWALL} is a placemarker and is replaced by the html to choose to view all answers. Later there is a str_replace
 // to insert this code into this top section
-$statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'>
-       <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
-       <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
-	     <tr><td align='center' class='settingcaption'>
-	       <font size='1' face='verdana'>".$clang->gT("General Filters")."</font>
-		  </td></tr>
-         <tr><td>
-        <table align='center'><tr>\n";
+$statisticsoutput .= "\t\t<tr><td align='center'><div id='filtersettings'";
+
+if (isset($_POST['display']) && $_POST['display'])  
+{
+    $statisticsoutput .=' style="display:none;" ';
+}
+
+
+
+
+$statisticsoutput .= ">
+                       <table cellspacing='0' cellpadding='0' width='100%'>{VIEWALL}</table>
+                       <table cellspacing='0' cellpadding='0' width='100%' id='filterchoices'>
+	                     <tr><td align='center' class='settingcaption'>
+	                       <font size='1' face='verdana'>".$clang->gT("General Filters")."</font>
+		                  </td></tr>
+                         <tr><td>
+                        <table align='center'><tr>\n";
 
 $myfield = "id";
 $myfield2=$myfield."G";	//greater than field
@@ -339,7 +349,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
 		}
 		
-//$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+//$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
 		
 		//."<input type='button' name='btn_$flt[1]' onclick='selectAll(grp_$flt[1]);' />"
@@ -419,7 +429,7 @@ foreach ($filters as $flt)
 
 		//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
-		$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+		$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
 
 		/*
 		 * one of these conditions has to be true
@@ -490,7 +500,7 @@ foreach ($filters as $flt)
 				$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 					
 				//checkbox
-				$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield1'";
+				$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield1'";
 					
 				//check SGQA -> do we want to pre-check the checkbox?
 				if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
@@ -544,7 +554,7 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 					
 				$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
-				$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
 				if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 				{$statisticsoutput .= " checked='checked'";}
 					
@@ -574,7 +584,7 @@ foreach ($filters as $flt)
 				
 			$myfield2="T$myfield";
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
-			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+			$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
 			if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 
@@ -596,7 +606,7 @@ foreach ($filters as $flt)
 				
 			$myfield2="T$myfield";
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
-			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+			$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
 
 			if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
@@ -665,7 +675,7 @@ foreach ($filters as $flt)
 			$statisticsoutput .= "\t\t\t\t<td align='center' valign='top'>";
 
 			//no statistics available yet!
-			//."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+			//."<input type='checkbox'  name='summary[]' value='$myfield2'";
 
 			//if (isset($summary) && (array_search("D{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			//{$statisticsoutput .= " checked='checked'";}
@@ -794,7 +804,7 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 				$statisticsoutput .= "\t\t\t\t<td align='center'>"
-				."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				//pre-check
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
@@ -847,7 +857,7 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 
 				$statisticsoutput .= "\t\t\t\t<td align='center'>"; //heading
-				$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					
@@ -897,7 +907,7 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 					
 				$statisticsoutput .= "\t\t\t\t<td align='center'>"
-				."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE)
 				{$statisticsoutput .= " checked='checked'";}
@@ -957,7 +967,7 @@ foreach ($filters as $flt)
 				if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 					
 				$statisticsoutput .= "\t\t\t\t<td align='center'>"
-				."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					
@@ -1006,7 +1016,7 @@ foreach ($filters as $flt)
 					$statisticsoutput .= " -->\n";
 					if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 					$statisticsoutput .= "\t\t\t\t<td align='center'>"
-					."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+					."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					$statisticsoutput .= " />&nbsp;<strong>"
 					.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
@@ -1063,7 +1073,7 @@ foreach ($filters as $flt)
 					$statisticsoutput .= " -->\n";
 					if ($counter2 == 4) {$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n"; $counter2=0;}
 					$statisticsoutput .= "\t\t\t\t<td align='center'>"
-					."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+					."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					$statisticsoutput .= " />&nbsp;<strong>"
 					.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1]." [".$frow['title']."]")." - ".$row[0]."/".$frow['code'])
@@ -1115,7 +1125,7 @@ foreach ($filters as $flt)
 				}
 					
 				$statisticsoutput .= "\t\t\t\t<td align='center'>"
-				."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					
@@ -1203,7 +1213,7 @@ foreach ($filters as $flt)
 					
 				$statisticsoutput .= " -->\n"
 				."\t\t\t\t<td align='center'>"
-				."<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				."<input type='checkbox'  name='summary[]' value='$myfield2'";
 					
 				//pre-check
 				if (isset($summary) && array_search($myfield2, $summary) !== FALSE) {$statisticsoutput .= " checked='checked'";}
@@ -1256,7 +1266,7 @@ foreach ($filters as $flt)
 		case "Z":
 				
 			$statisticsoutput .= "\t\t\t\t<td align='center'>";
-			$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+			$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
 
 			//pre-check
 			if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
@@ -1324,7 +1334,7 @@ foreach ($filters as $flt)
 
 				//output checkbox and question/label text
 				$statisticsoutput .= "\t\t\t\t<td align='center'>";
-				$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
 
 				//pre-check
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
@@ -1419,7 +1429,7 @@ foreach ($filters as $flt)
 
 				//output checkbox and question/label text
 				$statisticsoutput .= "\t\t\t\t<td align='center'>";
-				$statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield2'";
+				$statisticsoutput .= "<input type='checkbox' name='summary[]' value='$myfield2'";
 
 				//pre-check
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
@@ -1684,7 +1694,7 @@ else
  //the checkboxes for question types "W" and "Z" are created later
  if($flt[2] != "W" && $flt[2] != "Z")
  {
- $cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+ $cr_statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
  }
  	
  	
@@ -1786,7 +1796,7 @@ else
  case "Z":
 
  $cr_statisticsoutput .= "\t\t\t\t<td align='center'>";
- $cr_statisticsoutput .= "<input type='checkbox' class='checkboxbtn' name='summary[]' value='$myfield'";
+ $cr_statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
  	
  //pre-check
  if (isset($summary) && (array_search("{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE  || array_search("M{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE || array_search("N{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
@@ -1909,8 +1919,8 @@ if ($grapherror!='')
 
 $viewalltext = "<tr><td align='center' class='settingcaption'>\n"
 ."\t\t<font size='1'>&nbsp;</font></td></tr>\n"
-."<tr><td align='center'><ul class='myul'><li><input type='checkbox' class='radiobtn' id='viewsummaryall' name='summary' value='$allfield'"
-." onclick='showhidefilters(this.checked)' /><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></li>"
+."<tr><td align='center'><ul class='myul'><li><input type='checkbox' id='viewsummaryall' name='summary' value='$allfield' />"
+."<label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label></li>"
 ."<li><input type='checkbox' id='usegraph' name='usegraph' ";
 if (isset($_POST['usegraph'])) {$viewalltext .= "checked='checked'";}
 $viewalltext .= "/><label for='usegraph'>".$clang->gT("Show graphs")."</label><br />";
@@ -1920,9 +1930,9 @@ if ($grapherror!='')
 }
 $viewalltext.="</li>\n"
 ."<li><label for='filterinc'>".$clang->gT("Include:")."</label><select name='filterinc' id='filterinc'>\n"
-."<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
-."<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
-."<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
+."<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
+."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
+."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
 ."</select></li></ul></td></tr>\n";
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
 
@@ -1978,16 +1988,6 @@ if (isset($_POST['display']) && $_POST['display'])
 	//progress bar starts with 35%
 	$process_status = 35;
 	$prb->show();	// show the ProgressBar
-
-	//don't show any output, we just want to watch the bar growing
-	$statisticsoutput .= "<script type='text/javascript'>
-    <!--
-     hide('filtersettings');
-     
-     
-	
-    //-->
-    </script>\n";
 
 	// 1: Get list of questions with answers chosen
 	//"Getting Questions and Answers ..." is shown above the bar

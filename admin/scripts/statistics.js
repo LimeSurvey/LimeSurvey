@@ -1,10 +1,3 @@
-function hide(element) {
-    $('#'+element).slideUp('normal');
-}
-function show(element) {
-    $('#'+element).slideDown('normal');
-}
-
 $(document).ready(function(){
      $('#filterinc').change(function(){
          if ($('#filterinc').val()=="filter") {
@@ -23,6 +16,26 @@ $(document).ready(function(){
             $('#usegraph').attr('checked',false);
         }
      })
+     $('#viewsummaryall').click( function(){
+        if ($('#viewsummaryall').attr('checked')==true)
+        { 
+            $('#filterchoices').hide();
+        }
+        else
+        {
+            $('#filterchoices').show();
+            
+        }
+     })
+     $('#hidefilter').click( function(){
+            $('#filtersettings').slideUp();
+     })
+     $('#showfilter').click( function(){
+            $('#filtersettings').slideDown();
+     })
+     
+     
+     
 });
 
 function showhidefilters(value) {
