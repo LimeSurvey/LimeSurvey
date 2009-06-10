@@ -39,6 +39,10 @@ body.default {
     color:#1d2d45;
 }
 
+li {
+  list-style-type:disc;
+}
+
 h1 {
     font-size:1.5em;
     font-weight:bold;
@@ -874,4 +878,9 @@ div#wrapper {
  margin-left:18em;
  margin-top:1em;
  margin-bottom:1em;
+}
+
+.questiontext li, .questionhelp li {
+  list-style-type:disc;
+  text-indent: 0;
 }
