@@ -5,6 +5,8 @@ line-height:17px;
 background-color:#999;
 }
 
+
+
 table.question {
 border:1px;
 border-color:#aaa;
@@ -598,4 +600,75 @@ div#wrapper{
  margin-left:18em;
  margin-top:1em;
  margin-bottom:1em;
+}
+
+#statsContainer {
+	width:80%;
+	margin:0 auto;
+	background-color:#FFFFFF;
+	padding: 0px;
+	min-width: 690px
+}
+
+#statsHeader{
+	color:#000000;
+	text-align:center;
+	padding: 10px 0px;
+	height:72px;
+	background-image: url(Logo-LimeSurvey.png);
+	background-repeat: no-repeat;
+	background-position: 35px 18px;
+	
+}
+
+.statsSurveyTitle {
+	text-align:center;
+	font-size:1.0em;
+	font-weight:bold;
+	padding: 25px 0px 0px 0px;
+	float:right;
+	width:65%;
+	text-align:left;
+}
+
+.statsNumRecords {
+	font-size:.9em;
+	float:right;
+	width:65%;
+	text-align:left;
+}
+
+table.statisticstable{
+	width: 90%; 
+	border: 0px solid;
+	text-align:left;
+	background-color:#fff;
+	margin:0px auto;
+	padding-bottom: 8px;
+	
+}
+
+table.statisticstable td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #CCC;
+}
+
+
+
+table.statisticstable img{
+	margin:10px auto;
+}
+
+div.fieldSummary{
+	font-size:.9em;
+	padding: 10px 10px 4px 0px;
+	display: block;
+	text-align:left;
+}
+div.questionTitle{
+	font-size:1.0em;
+	padding: 20px 20px 20px 20px;
+	font-weight: normal;
+	background-color:#efefef;
 }

@@ -1,6 +1,7 @@
 body {
 font-size:8pt;
 font-family:verdana;
+background-color:#c0c0c0;
 }
 
 .answertextright {
@@ -15,7 +16,7 @@ font-size:10pt;
 A:hover {
 text-decoration:underline;
 font-family:verdana;
-color:#FFF;
+
 }
 
 .questionhelp {
@@ -642,4 +643,165 @@ div#wrapper{
  margin-left:18em;
  margin-top:1em;
  margin-bottom:1em;
+}
+
+#statsContainer {
+	width:80%;
+	margin:8px auto;
+	background-color:#eeeeee;
+	padding: 0px;
+	min-width: 690px;
+	border: 1px solid #000000;
+}
+
+#statsHeader{
+	color:#FFF;
+	background-color:#042455;
+	text-align:center;
+	padding: 10px 0px;
+	height:96px;	
+}
+
+.statsSurveyTitle {
+	font-size:1.5em;
+	font-weight:bold;
+	padding: 24px 0px 0px 0px;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+}
+
+.statsNumRecords {
+	font-size:1.2em;
+	clear:right;
+	float:right;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#CCCCCC;
+	padding-top:10px;
+}
+
+table.statisticstable{
+	width: 90%; 
+	text-align:left;
+	margin:0px auto;
+	padding-bottom: 8px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	border: 1px solid #999;
+	background-color:#EFEFEF;
+	
+}
+
+table.statisticstable td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #ccc;
+	font-size:12px;
+}
+
+table.statisticstable img{
+	margin:12px auto;
+}
+
+table.statisticstable strong{
+	font-weight: bold;
+}
+
+div.fieldSummary{
+	font-size:.9em;
+	padding: 0px 0px 0px 6px;
+	text-align:left;
+}
+div.questionTitle{
+	font-size:1.0em;
+	padding: 20px 20px 20px 20px;
+	font-weight: bold;
+	background-color:#CCCCCC;
+	line-height: 1.5em;
+}
+
+td.statsImageholder {
+	background-color:#FFF;
+}
+
+
+#statsContainer {
+	width:80%;
+	margin:8px auto;
+	background-color:#eeeeee;
+	padding: 0px;
+	min-width: 690px;
+	border: 1px solid #000000;
+}
+
+#statsHeader{
+	color:#FFF;
+	background-color:#042455;
+	text-align:center;
+	padding: 10px 0px;
+	height:96px;	
+}
+
+.statsSurveyTitle {
+	font-size:1.5em;
+	font-weight:bold;
+	padding: 24px 0px 0px 0px;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+}
+
+.statsNumRecords {
+	font-size:1.2em;
+	clear:right;
+	float:right;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#CCCCCC;
+	padding-top:10px;
+}
+
+table.statisticstable{
+	width: 90%; 
+	text-align:left;
+	margin:0px auto;
+	padding-bottom: 8px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	border: 1px solid #999;
+	background-color:#EFEFEF;
+	
+}
+
+table.statisticstable td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #ccc;
+	font-size:12px;
+}
+
+table.statisticstable img{
+	margin:12px auto;
+}
+
+table.statisticstable strong{
+	font-weight: bold;
+}
+
+div.fieldSummary{
+	font-size:.9em;
+	padding: 0px 0px 0px 6px;
+	text-align:left;
+}
+div.questionTitle{
+	font-size:1.0em;
+	padding: 20px 20px 20px 20px;
+	font-weight: bold;
+	background-color:#CCCCCC;
+	line-height: 1.5em;
+}
+
+td.statsImageholder {
+	background-color:#FFF;
 }

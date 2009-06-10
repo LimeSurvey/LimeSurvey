@@ -1,3 +1,4 @@
+
 <?php
 /*
 * LimeSurvey
@@ -72,6 +73,10 @@ if ($surveyid)
     else 
     {
         $surveyinfo=getSurveyInfo($surveyid);
+		// CHANGE JSW_NZ - let's get the survey title for display
+	    $thisSurveyTitle = $surveyinfo["name"];
+		// CHANGE JSW_NZ - let's get css from individual template.css - so define path
+		$thisSurveyCssPath = $surveyinfo["template"];
        if ($surveyinfo['publicstatistics']!='Y')
        {
           safe_die('The public statistics for this survey are deactivated.'); 
@@ -154,6 +159,7 @@ if ( !$embedded )
         }
         $header.= ">\n\t<head>\n"
         	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />"
+			. "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />"
         	. "</head><body>";
         	
         echo $header;     
@@ -643,13 +649,15 @@ for (reset($_POST); $key=key($_POST); next($_POST))
 }
 
 //show some main data at the beginnung
-$statisticsoutput .= "<br />\n<table align='center' width='95%' border='1'  "
-."cellpadding='2' cellspacing='0' >\n"
-."\t<tr><td colspan='2' align='center'><strong>"
-.$clang->gT("Total records in survey").": $totalrecords</strong></td></tr>\n";
+// CHANGE JSW_NZ - let's allow html formatted questions to show
+$statisticsoutput .= "\n<div id='statsContainer'><div id='statsHeader' \n"
+."\t<div class='statsSurveyTitle'>"
+."$thisSurveyTitle</div>\n"
+."\t<div class='statsNumRecords'>"
+.$clang->gT("Total records in survey")." : $totalrecords</div>\n";
 
 //close table
-$statisticsoutput .= "</table><br />\n";
+$statisticsoutput .= "</div>\n";
 
 
 //push progress bar from 35 to 40
@@ -705,7 +713,9 @@ if (isset($summary) && $summary)
 			{
 				$qtitle=$nrow[0];
 				$qtype=$nrow[1];
-				$qquestion=FlattenText($nrow[2]);
+				// CHANGE JSW_NZ - allow html formatted questions to show
+				//$qquestion=FlattenText($nrow[2]);
+				$qquestion=$nrow[2];
 				$qlid=$nrow[3];
 				$qother=$nrow[4];
 			}
@@ -816,7 +826,9 @@ if (isset($summary) && $summary)
 			{				
 			    $qtitle=FlattenText($nrow[0]); //clean up title
 				$qtype=$nrow[1]; 
-				$qquestion=FlattenText($nrow[2]); //clean up question
+				// CHANGE JSW_NZ - allow html formatted questions to show
+				//$qquestion=FlattenText($nrow[2]);
+				$qquestion=$nrow[2];
 				$qiqid=$nrow[3]; 
 				$qlid=$nrow[4];
 			}
@@ -838,10 +850,13 @@ if (isset($summary) && $summary)
 			}
 			
 			//outputting headline
-			$statisticsoutput .= "\n<table align='center' width='95%' border='1'  cellpadding='2' cellspacing='0' >\n"
-			."\t<tr><td colspan='2' align='center'><strong>".$clang->gT("Field summary for")." $qtitle:</strong>"
+			$statisticsoutput .= "\n<table class='statisticstable'>\n"
+			."\t<tr><td colspan='2' align='center'><div class='fieldSummary'>"
+			//headline
+			.$clang->gT("Field summary for")." $qtitle:</div>"
 			."</td></tr>\n"
-			."\t<tr><td colspan='2' align='center'><strong>$qquestion</strong></td></tr>\n"
+			."\t<tr><td colspan='2' align='center'><div class='questionTitle'>"
+			."$qquestion</div></td></tr>\n"
 			."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
 			.$clang->gT("Calculation")."</strong></td>\n"
 			."\t\t<td width='50%' align='center' ><strong>"
@@ -1101,12 +1116,12 @@ if (isset($summary) && $summary)
 				
 				//footer of question type "N"
 				$statisticsoutput .= "\t<tr>\n"
-				."\t\t<td colspan='4' align='center' bgcolor='#EEEEEE'>\n"
+				."\t\t<td colspan='4' align='center' bgcolor='#FFFFFF'>\n"
 				."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
 				."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
 				."</font>\n"
 				."\t\t</td>\n"
-				."\t</tr>\n</table>\n";
+				."\t</tr>\n<tr style='height:30px; border-bottom: 0px solid #FFF'><td colspan='4'></td></tr></table>\n";
 				
 				//clean up
 				unset($showem);
@@ -1160,7 +1175,9 @@ if (isset($summary) && $summary)
 			{
 				$qtitle=FlattenText($nrow[0]);
 				$qtype=$nrow[1];
-				$qquestion=FlattenText($nrow[2]);
+				// CHANGE JSW_NZ - let's allow html formatted questions to show
+				//$qquestion=FlattenText($nrow[2]);
+				$qquestion=$nrow[2];
 				$qiqid=$nrow[3];
 				$qlid=$nrow[4];
                 $qlid1=$nrow[5];
@@ -1490,16 +1507,16 @@ if (isset($summary) && $summary)
 		if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 		{
 			//output
-			$statisticsoutput .= "<table width='95%' align='center' border='1'  cellpadding='2' cellspacing='0' class='statisticstable'>\n"
-			."\t<tr><td colspan='4' align='center'><strong>"
+			$statisticsoutput .= "<table class='statisticstable'>\n"
+			."\t<tr><td colspan='4' align='center'><div class='fieldSummary'>"
 			
 			//headline
-			.$clang->gT("Field summary for")." $qtitle:</strong>"
+			.$clang->gT("Field summary for")." $qtitle:</div>"
 			."</td></tr>\n"
-			."\t<tr><td colspan='4' align='center'><strong>"
+			."\t<tr><td colspan='4' align='center'><div class='questionTitle'>"
 			
 			//question title
-			."$qquestion</strong></td></tr>\n"
+			."$qquestion</div></td></tr>\n"
 			."\t<tr>\n\t\t<td width='50%' align='center' >";
 			
 			// this will count the answers considered completed
@@ -2341,7 +2358,7 @@ if (isset($summary) && $summary)
 			}
 			
 			//close table/output
-			$statisticsoutput .= "</table><br /> \n";
+			$statisticsoutput .= "</table><div><br /> \n";
 			
 		}	//end if -> collect and display results
 		

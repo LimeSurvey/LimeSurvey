@@ -824,3 +824,77 @@ div#wrapper{
  margin-top:1em;
  margin-bottom:1em;
 }
+
+
+#statsContainer {
+	width:80%;
+	margin:0 auto;
+	background-color:#FFFFFF;
+	padding: 0px;
+	min-width: 690px;
+	border: 1px solid #ccc;
+}
+
+#statsHeader{
+	color:#000000;
+	text-align:center;
+	padding: 10px 0px;
+	height:96px;
+	background-color: #AABBCC;
+	font-family: Verdana, Geneva, sans-serif;
+}
+
+.statsSurveyTitle {
+	font-size:1.0em;
+	font-weight:bold;
+	padding: 35px 0px 0px 0px;
+	float:right;
+	width:100%;
+	text-align:center;
+}
+
+.statsNumRecords {
+	font-size:.9em;
+	clear:right;
+	float:right;
+	width:100%;
+	text-align:center;
+}
+
+table.statisticstable{
+	width: 90%; 
+	border: 1px solid #ccc;
+	text-align:left;
+	background-color:#fff;
+	margin:0px auto;
+	padding-bottom: 8px;
+	
+}
+
+table.statisticstable td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #CCC;
+	
+}
+
+table.statisticstable img{
+	margin:10px auto;
+}
+
+div.fieldSummary{
+	font-size:.9em;
+	padding: 10px 10px 6px 0px;
+	display: block;
+	text-align:left;
+}
+div.questionTitle{
+	font-size:1.0em;
+	padding: 20px 20px 20px 20px;
+	font-weight: normal;
+	background-color:#EEEEEE;
+}
+
+td.statsImageholder {
+	background-color:#EEEEEE;
+}

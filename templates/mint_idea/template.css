@@ -784,3 +784,86 @@ div#wrapper{
  margin-top:1em;
  margin-bottom:1em;
 }
+
+
+#statsContainer {
+	width:80%;
+	margin:8px auto;
+	padding: 0px;
+	min-width: 690px;
+	border: 1px solid #666;
+}
+
+#statsHeader{
+	color:#FFF;
+	text-align:center;
+	padding: 10px 0px;
+	height:96px;
+	background: url('limesurvey_logo.png') -5px 45px no-repeat; 
+}
+
+.statsSurveyTitle {
+	font-size:1.1em;
+	font-weight:bold;
+	padding: 24px 0px 0px 0px;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+}
+
+.statsNumRecords {
+	font-size:1em;
+	clear:right;
+	float:right;
+	width:100%;
+	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#CCCCCC;
+	padding-top:10px;
+}
+
+table.statisticstable{
+	width: 90%; 
+	text-align:left;
+	margin:0px auto;
+	padding-bottom: 8px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	border: 1px solid #666;
+	color:#FFF;
+
+	
+}
+
+table.statisticstable td{
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #666;
+	font-size:12px;
+}
+
+table.statisticstable img{
+	margin:12px auto;
+}
+
+table.statisticstable strong{
+	font-weight: bold;
+}
+
+div.fieldSummary{
+	font-size:0.9em;
+	padding: 0px 0px 0px 6px;
+	text-align:left;
+	color: #FFEFB0;
+}
+div.questionTitle{
+	font-size:1em;
+	padding: 20px 20px 20px 20px;
+	font-weight: bold;
+	line-height: 1.5em;
+	color:#FFF4D5;
+	background-color:#091724;
+}
+
+td.statsImageholder {
+	background-color:#EFEFEF;
+}
