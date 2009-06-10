@@ -358,7 +358,6 @@ function setman_multiflex($ia)
 	}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-
 	while ($ansrow = $ansresult->FetchRow())
 	{
 		//Don't add to mandatory list if the row is filtered out with the array_filter option
@@ -372,7 +371,12 @@ function setman_multiflex($ia)
 			}
 			else
 			{
-				//This one's not hidden. so add it to the mandatory list
+			    //This one's not hidden. so add it to the mandatory list
+    			foreach($lset as $ls)
+    			{
+    				$mandatorys[]=$ia[1].$ansrow['code']."_".$ls['code'];
+    				$mandatoryfns[]=$ia[1];
+    			}
 			}
 		} else { //There is no array_filter option, so we should definitely add to the mandatory list here!
 			foreach($lset as $ls)
@@ -3644,7 +3648,8 @@ function do_multiplenumeric($ia)
 		}
 		$answer .= $question_tip.'<ul class="'.$label_width.$class_computed."\">\n".$answer_main."</ul>\n".$answer_computed;
 	}
-	
+	$answer_computed = isset($answer_computed)?$answer_computed:'';
+	$answer .= $answer_computed;
 //just added these here so its easy to change in one place
 	$errorClass = 'tip error';
 	$goodClass = ' tip good';
