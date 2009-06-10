@@ -601,7 +601,7 @@ class LsrcHelper {
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
-		require($homedir."/classes/core/sha256.php"); 
+		require(dirname(__FILE__)."/../classes/core/sha256.php"); 
 		
 		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name=".$connect->qstr(sanitize_user($sUser));
 		// echo $query;
@@ -3239,12 +3239,12 @@ class LsrcHelper {
 	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
 		global $connect ;
-//		global $dbprefix ;
+		//global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
 		
-		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK $dbprefix ");
 		
 		//$getGidSql = "SELECT gid FROM {$dbprefix}  ";
 		$getGidSql = "SELECT gid 
@@ -3254,10 +3254,15 @@ class LsrcHelper {
         $getGidRs = db_execute_num($getGidSql);
         $gidRow=$getGidRs->FetchRow();
         $gid = $gidRow[0];
+        
+        if($gid=='')#
+        {
+        	$this->debugLsrc("No Group for importing the question, available!");
+			return "No Group for importing the question, available! Import failed.";
+        }
+        
 		if($newGroup)
 			++$gid;        
-		        
-			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		$the_full_file_path = $queDir.$sMod.".csv";
 		
@@ -3587,14 +3592,16 @@ class LsrcHelper {
 		if (isset($questionarray) && $questionarray) {
 		    $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
 		    unset($questionarray[0]);
-		
+
 		    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
 		    //and save it for later
 		    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
 		    $qres = db_execute_assoc($qmaxqo) or $this->debugLsrc ("Error: ".": Failed to find out maximum question order value\n$qmaxqo\n".$connect->ErrorMsg());
 		    $qrow=$qres->FetchRow();
 		    $newquestionorder=$qrow['maxqo']+1;
-		
+			
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			
 			foreach ($questionarray as $qa) {
 		        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
 				$newfieldcontents=$qacfieldcontents;
@@ -3615,13 +3622,16 @@ class LsrcHelper {
 				    $questionrowdata["gid"] = $newgid;
 		            $questionrowdata["question_order"] = $newquestionorder;
 		
-		            
+		            $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		            // Now we will fix up the label id 
 				    $type = $questionrowdata["type"]; //Get the type
 					if ($type == "F" || $type == "H" || $type == "W" || 
 					    $type == "Z" || $type == "1" || $type == ":" ||
 						$type == ";" ) 
 		                {//IF this is a flexible label array, update the lid entry
+		                	
+		                	$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		                	
 					    if (isset($labelreplacements)) {
 						    foreach ($labelreplacements as $lrp) {
 							    if ($lrp[0] == $questionrowdata["lid"]) {
@@ -3647,6 +3657,7 @@ class LsrcHelper {
 		            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 				    $qres = $connect->Execute($qinsert) or $this->debugLsrc ("Error: ".": Failed to insert question\n$qinsert\n".$connect->ErrorMsg());
 		
+				    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		            // set the newqid only if is not set
 		            if (!isset($newqid))
 				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");

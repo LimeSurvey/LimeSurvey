@@ -927,7 +927,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 	include("lsrc.config.php");
 	
 	$lsrcHelper = new lsrcHelper();
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK");
 	
 	// check for appropriate rights
 	if(!$lsrcHelper->checkUser($sUser, $sPass))

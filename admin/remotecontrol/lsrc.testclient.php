@@ -278,7 +278,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory);
+			$sReturn = $client->sImportMatrix($user, $pass, $iVid, $qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
