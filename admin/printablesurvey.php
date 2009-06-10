@@ -400,10 +400,18 @@ while ($degrow = $degresult->FetchRow())
 			}
 
 			$x=0;
-			$distinctquery="SELECT DISTINCT cqid, method, ".db_table_name("questions").".title, ".db_table_name("questions").".question FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} AND language='{$surveyprintlang}' ORDER BY cqid";
+			$distinctquery="SELECT cqid, method
+                            FROM ".db_table_name("conditions")."
+                            WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']} 
+                                AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} 
+                            group by cqid, method
+                            ORDER BY cqid";
 			$distinctresult=db_execute_assoc($distinctquery);
 			while ($distinctrow=$distinctresult->FetchRow())
 			{
+                $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND language='{$surveyprintlang}'";
+                $subresult=$connect->GetRow($subquery);
+                
 				if($x > 0)
 				{
 					$explanation .= ' <em>'.$clang->gT('and').'</em> ';
@@ -639,7 +647,7 @@ while ($degrow = $degresult->FetchRow())
 				unset($conditions);
 				// Following line commented out because answer_section  was lost, but is required for some question types
 				//$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
-				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$distinctrow['title']."]' (".strip_tags($distinctrow['question'])."$answer_section)" ;
+				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
 				//$distinctrow
 				$x++;
 			}

@@ -313,8 +313,7 @@ $qtypesarray = array();
 
 foreach ($_SESSION['fieldarray'] as $ia)
 {
-// REMOVEME     $titlejsid[$ia[2]] = $ia[1];
-		$qtypesarray[$ia[1]] = $ia[4];
+    $qtypesarray[$ia[1]] = $ia[4];
 
 	if ($ia[5] == $gid)
 	{
