@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-08 22:31+0100\n"
-"PO-Revision-Date: 2009-06-08 22:42+0100\n"
+"POT-Creation-Date: 2009-06-11 21:40+0100\n"
+"PO-Revision-Date: 2009-06-11 22:03+0100\n"
 "Last-Translator: Elzbieta Lesinska <elesinska[at]wp.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -211,10 +211,10 @@ msgstr "Nieaktywna"
 #: c:\LimeSurvey-S/common.php:1337
 #: c:\LimeSurvey-S/common.php:1362
 #: c:\LimeSurvey-S/common.php:1429
-#: c:\LimeSurvey-S/common.php:4214
-#: c:\LimeSurvey-S/common.php:4248
-#: c:\LimeSurvey-S/common.php:4287
-#: c:\LimeSurvey-S/common.php:4323
+#: c:\LimeSurvey-S/common.php:4215
+#: c:\LimeSurvey-S/common.php:4249
+#: c:\LimeSurvey-S/common.php:4288
+#: c:\LimeSurvey-S/common.php:4324
 msgid "Please Choose..."
 msgstr "Wybierz..."
 
@@ -229,8 +229,8 @@ msgstr "Wybierz..."
 #: c:\LimeSurvey-S/common.php:1338
 #: c:\LimeSurvey-S/common.php:1363
 #: c:\LimeSurvey-S/common.php:1430
-#: c:\LimeSurvey-S/common.php:4249
-#: c:\LimeSurvey-S/common.php:4288
+#: c:\LimeSurvey-S/common.php:4250
+#: c:\LimeSurvey-S/common.php:4289
 msgid "None"
 msgstr "Żadne"
 
@@ -329,7 +329,7 @@ msgstr "Wielokrotny krótki tekst"
 # C:\limesurvey/admin/exportresults.php:538
 # C:\limesurvey/admin/statistics.php:1050
 #: c:\LimeSurvey-S/common.php:890
-#: c:\LimeSurvey-S/statistics_user.php:754
+#: c:\LimeSurvey-S/statistics_user.php:764
 msgid "Ranking"
 msgstr "Ranking"
 
@@ -444,7 +444,7 @@ msgstr "Pokaż odpowiedzi"
 # C:\limesurvey/admin/html.php:1102
 # C:\limesurvey/admin/html.php:2577
 #: c:\LimeSurvey-S/common.php:1809
-#: c:\LimeSurvey-S/common.php:5511
+#: c:\LimeSurvey-S/common.php:5512
 msgid "Please select a language:"
 msgstr "Wybierz język:"
 
@@ -455,7 +455,7 @@ msgstr "Wybierz język:"
 # C:\limesurvey/admin/html.php:2593
 # C:\limesurvey/admin/tokens.php:699
 #: c:\LimeSurvey-S/common.php:1814
-#: c:\LimeSurvey-S/common.php:5527
+#: c:\LimeSurvey-S/common.php:5528
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -531,7 +531,7 @@ msgstr "Eksportuj jako VV"
 # C:\limesurvey/admin/userrighthandling.php:197
 #: c:\LimeSurvey-S/common.php:1885
 msgid "Iterate survey"
-msgstr "Utwórz ankietę"
+msgstr "Powtórz badanie"
 
 # C:\limesurvey/common.php:1358
 #: c:\LimeSurvey-S/common.php:1955
@@ -633,20 +633,20 @@ msgstr "Odsyłający URL"
 #: c:\LimeSurvey-S/common.php:2359
 #: c:\LimeSurvey-S/common.php:2473
 #: c:\LimeSurvey-S/common.php:2483
-#: c:\LimeSurvey-S/qanda.php:831
-#: c:\LimeSurvey-S/qanda.php:1162
-#: c:\LimeSurvey-S/qanda.php:1427
-#: c:\LimeSurvey-S/qanda.php:1652
-#: c:\LimeSurvey-S/qanda.php:1724
-#: c:\LimeSurvey-S/qanda.php:1828
-#: c:\LimeSurvey-S/qanda.php:1946
-#: c:\LimeSurvey-S/qanda.php:2473
-#: c:\LimeSurvey-S/qanda.php:2849
-#: c:\LimeSurvey-S/qanda.php:2964
-#: c:\LimeSurvey-S/statistics_user.php:732
-#: c:\LimeSurvey-S/statistics_user.php:1385
-#: c:\LimeSurvey-S/statistics_user.php:1474
-#: c:\LimeSurvey-S/statistics_user.php:1515
+#: c:\LimeSurvey-S/qanda.php:835
+#: c:\LimeSurvey-S/qanda.php:1168
+#: c:\LimeSurvey-S/qanda.php:1432
+#: c:\LimeSurvey-S/qanda.php:1657
+#: c:\LimeSurvey-S/qanda.php:1729
+#: c:\LimeSurvey-S/qanda.php:1833
+#: c:\LimeSurvey-S/qanda.php:1951
+#: c:\LimeSurvey-S/qanda.php:2478
+#: c:\LimeSurvey-S/qanda.php:2854
+#: c:\LimeSurvey-S/qanda.php:2969
+#: c:\LimeSurvey-S/statistics_user.php:742
+#: c:\LimeSurvey-S/statistics_user.php:1402
+#: c:\LimeSurvey-S/statistics_user.php:1491
+#: c:\LimeSurvey-S/statistics_user.php:1532
 msgid "Other"
 msgstr "Inne (jakie?)"
 
@@ -718,11 +718,11 @@ msgstr "Inne (jakie?)"
 #: c:\LimeSurvey-S/common.php:2134
 #: c:\LimeSurvey-S/common.php:2140
 #: c:\LimeSurvey-S/common.php:2156
-#: c:\LimeSurvey-S/qanda.php:4015
-#: c:\LimeSurvey-S/qanda.php:4483
-#: c:\LimeSurvey-S/qanda.php:4537
-#: c:\LimeSurvey-S/statistics_user.php:1229
-#: c:\LimeSurvey-S/statistics_user.php:1354
+#: c:\LimeSurvey-S/qanda.php:4021
+#: c:\LimeSurvey-S/qanda.php:4533
+#: c:\LimeSurvey-S/qanda.php:4591
+#: c:\LimeSurvey-S/statistics_user.php:1246
+#: c:\LimeSurvey-S/statistics_user.php:1371
 msgid "Yes"
 msgstr "Tak"
 
@@ -790,11 +790,11 @@ msgstr "Tak"
 # C:\limesurvey/admin/tokens.php:1047
 #: c:\LimeSurvey-S/common.php:2141
 #: c:\LimeSurvey-S/common.php:2157
-#: c:\LimeSurvey-S/qanda.php:4024
-#: c:\LimeSurvey-S/qanda.php:4485
-#: c:\LimeSurvey-S/qanda.php:4555
-#: c:\LimeSurvey-S/statistics_user.php:1230
-#: c:\LimeSurvey-S/statistics_user.php:1355
+#: c:\LimeSurvey-S/qanda.php:4030
+#: c:\LimeSurvey-S/qanda.php:4535
+#: c:\LimeSurvey-S/qanda.php:4609
+#: c:\LimeSurvey-S/statistics_user.php:1247
+#: c:\LimeSurvey-S/statistics_user.php:1372
 msgid "No"
 msgstr "Nie"
 
@@ -847,42 +847,42 @@ msgstr "Nie"
 # C:\limesurvey/admin/statistics.php:1425
 #: c:\LimeSurvey-S/common.php:2142
 #: c:\LimeSurvey-S/common.php:2150
-#: c:\LimeSurvey-S/common.php:5145
-#: c:\LimeSurvey-S/common.php:5150
-#: c:\LimeSurvey-S/qanda.php:944
-#: c:\LimeSurvey-S/qanda.php:1314
-#: c:\LimeSurvey-S/qanda.php:1502
-#: c:\LimeSurvey-S/qanda.php:1758
-#: c:\LimeSurvey-S/qanda.php:1980
-#: c:\LimeSurvey-S/qanda.php:2114
-#: c:\LimeSurvey-S/qanda.php:2181
-#: c:\LimeSurvey-S/qanda.php:4035
-#: c:\LimeSurvey-S/qanda.php:4117
-#: c:\LimeSurvey-S/qanda.php:4193
-#: c:\LimeSurvey-S/qanda.php:4271
-#: c:\LimeSurvey-S/qanda.php:4351
-#: c:\LimeSurvey-S/qanda.php:4414
-#: c:\LimeSurvey-S/qanda.php:4488
-#: c:\LimeSurvey-S/qanda.php:4575
-#: c:\LimeSurvey-S/qanda.php:4766
-#: c:\LimeSurvey-S/qanda.php:4850
-#: c:\LimeSurvey-S/qanda.php:4940
-#: c:\LimeSurvey-S/qanda.php:4960
-#: c:\LimeSurvey-S/qanda.php:5046
-#: c:\LimeSurvey-S/qanda.php:5630
-#: c:\LimeSurvey-S/qanda.php:5631
-#: c:\LimeSurvey-S/qanda.php:5916
-#: c:\LimeSurvey-S/qanda.php:5982
-#: c:\LimeSurvey-S/qanda.php:6104
-#: c:\LimeSurvey-S/qanda.php:6339
-#: c:\LimeSurvey-S/qanda.php:6393
-#: c:\LimeSurvey-S/statistics_user.php:1481
-#: c:\LimeSurvey-S/statistics_user.php:1570
-#: c:\LimeSurvey-S/statistics_user.php:1854
-#: c:\LimeSurvey-S/statistics_user.php:1868
-#: c:\LimeSurvey-S/statistics_user.php:1902
-#: c:\LimeSurvey-S/statistics_user.php:1937
-#: c:\LimeSurvey-S/statistics_user.php:1978
+#: c:\LimeSurvey-S/common.php:5146
+#: c:\LimeSurvey-S/common.php:5151
+#: c:\LimeSurvey-S/qanda.php:950
+#: c:\LimeSurvey-S/qanda.php:1320
+#: c:\LimeSurvey-S/qanda.php:1507
+#: c:\LimeSurvey-S/qanda.php:1763
+#: c:\LimeSurvey-S/qanda.php:1985
+#: c:\LimeSurvey-S/qanda.php:2119
+#: c:\LimeSurvey-S/qanda.php:2186
+#: c:\LimeSurvey-S/qanda.php:4041
+#: c:\LimeSurvey-S/qanda.php:4123
+#: c:\LimeSurvey-S/qanda.php:4221
+#: c:\LimeSurvey-S/qanda.php:4310
+#: c:\LimeSurvey-S/qanda.php:4396
+#: c:\LimeSurvey-S/qanda.php:4464
+#: c:\LimeSurvey-S/qanda.php:4538
+#: c:\LimeSurvey-S/qanda.php:4629
+#: c:\LimeSurvey-S/qanda.php:4821
+#: c:\LimeSurvey-S/qanda.php:4905
+#: c:\LimeSurvey-S/qanda.php:4995
+#: c:\LimeSurvey-S/qanda.php:5015
+#: c:\LimeSurvey-S/qanda.php:5101
+#: c:\LimeSurvey-S/qanda.php:5685
+#: c:\LimeSurvey-S/qanda.php:5686
+#: c:\LimeSurvey-S/qanda.php:5972
+#: c:\LimeSurvey-S/qanda.php:6040
+#: c:\LimeSurvey-S/qanda.php:6162
+#: c:\LimeSurvey-S/qanda.php:6397
+#: c:\LimeSurvey-S/qanda.php:6451
+#: c:\LimeSurvey-S/statistics_user.php:1498
+#: c:\LimeSurvey-S/statistics_user.php:1587
+#: c:\LimeSurvey-S/statistics_user.php:1871
+#: c:\LimeSurvey-S/statistics_user.php:1885
+#: c:\LimeSurvey-S/statistics_user.php:1919
+#: c:\LimeSurvey-S/statistics_user.php:1954
+#: c:\LimeSurvey-S/statistics_user.php:1995
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
@@ -903,8 +903,8 @@ msgstr "Brak odpowiedzi"
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
 #: c:\LimeSurvey-S/common.php:2148
-#: c:\LimeSurvey-S/qanda.php:4092
-#: c:\LimeSurvey-S/statistics_user.php:1348
+#: c:\LimeSurvey-S/qanda.php:4098
+#: c:\LimeSurvey-S/statistics_user.php:1365
 msgid "Male"
 msgstr "Mężczyzna"
 
@@ -925,8 +925,8 @@ msgstr "Mężczyzna"
 # C:\limesurvey/admin/statistics.php:1322
 # C:\limesurvey/admin/stats.php:671
 #: c:\LimeSurvey-S/common.php:2149
-#: c:\LimeSurvey-S/qanda.php:4073
-#: c:\LimeSurvey-S/statistics_user.php:1347
+#: c:\LimeSurvey-S/qanda.php:4079
+#: c:\LimeSurvey-S/statistics_user.php:1364
 msgid "Female"
 msgstr "Kobieta"
 
@@ -946,9 +946,9 @@ msgstr "Kobieta"
 # C:\limesurvey/admin/statistics.php:1285
 # C:\limesurvey/admin/stats.php:567
 #: c:\LimeSurvey-S/common.php:2158
-#: c:\LimeSurvey-S/qanda.php:4484
-#: c:\LimeSurvey-S/qanda.php:4545
-#: c:\LimeSurvey-S/statistics_user.php:1231
+#: c:\LimeSurvey-S/qanda.php:4534
+#: c:\LimeSurvey-S/qanda.php:4599
+#: c:\LimeSurvey-S/statistics_user.php:1248
 msgid "Uncertain"
 msgstr "Nie wiem"
 
@@ -967,9 +967,9 @@ msgstr "Nie wiem"
 # C:\limesurvey/admin/statistics.php:1296
 # C:\limesurvey/admin/stats.php:589
 #: c:\LimeSurvey-S/common.php:2164
-#: c:\LimeSurvey-S/qanda.php:4761
-#: c:\LimeSurvey-S/qanda.php:4809
-#: c:\LimeSurvey-S/statistics_user.php:1248
+#: c:\LimeSurvey-S/qanda.php:4816
+#: c:\LimeSurvey-S/qanda.php:4864
+#: c:\LimeSurvey-S/statistics_user.php:1265
 msgid "Increase"
 msgstr "Wzrost"
 
@@ -988,9 +988,9 @@ msgstr "Wzrost"
 # C:\limesurvey/admin/statistics.php:1298
 # C:\limesurvey/admin/stats.php:599
 #: c:\LimeSurvey-S/common.php:2165
-#: c:\LimeSurvey-S/qanda.php:4763
-#: c:\LimeSurvey-S/qanda.php:4832
-#: c:\LimeSurvey-S/statistics_user.php:1250
+#: c:\LimeSurvey-S/qanda.php:4818
+#: c:\LimeSurvey-S/qanda.php:4887
+#: c:\LimeSurvey-S/statistics_user.php:1267
 msgid "Decrease"
 msgstr "Spadek"
 
@@ -1009,9 +1009,9 @@ msgstr "Spadek"
 # C:\limesurvey/admin/statistics.php:1297
 # C:\limesurvey/admin/stats.php:594
 #: c:\LimeSurvey-S/common.php:2166
-#: c:\LimeSurvey-S/qanda.php:4762
-#: c:\LimeSurvey-S/qanda.php:4820
-#: c:\LimeSurvey-S/statistics_user.php:1249
+#: c:\LimeSurvey-S/qanda.php:4817
+#: c:\LimeSurvey-S/qanda.php:4875
+#: c:\LimeSurvey-S/statistics_user.php:1266
 msgid "Same"
 msgstr "Bez zmian"
 
@@ -1121,7 +1121,7 @@ msgstr "Odpowiedzi wyczyszczone"
 # C:\limesurvey/common.php:1999
 # C:\limesurvey/common.php:2005
 #: c:\LimeSurvey-S/common.php:2885
-#: c:\LimeSurvey-S/common.php:2892
+#: c:\LimeSurvey-S/common.php:2893
 msgid "Restart this Survey"
 msgstr "Uruchom ponownie tę ankietę"
 
@@ -1133,7 +1133,7 @@ msgstr "Uruchom ponownie tę ankietę"
 # C:\limesurvey/question.php:134
 # C:\limesurvey/register.php:149
 # C:\limesurvey/survey.php:144
-#: c:\LimeSurvey-S/common.php:2895
+#: c:\LimeSurvey-S/common.php:2896
 #: c:\LimeSurvey-S/index.php:594
 #: c:\LimeSurvey-S/index.php:620
 #: c:\LimeSurvey-S/register.php:154
@@ -1141,27 +1141,27 @@ msgid "Close this Window"
 msgstr "Zamknij to okno"
 
 # C:\limesurvey/common.php:2018
-#: c:\LimeSurvey-S/common.php:2897
+#: c:\LimeSurvey-S/common.php:2898
 msgid "Save Your Unfinished Survey"
 msgstr "Zapisz niedokończoną ankietę"
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2898
+#: c:\LimeSurvey-S/common.php:2899
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Wprowadź login oraz hasło dla tej ankiety oraz zapisz."
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2898
+#: c:\LimeSurvey-S/common.php:2899
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Postęp wypełniania ankiety zostanie zapisany. W przyszłości, aby móc kontynuować udzielanie odpowiedzi, zaloguj się, podając właściwe hasło."
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2898
+#: c:\LimeSurvey-S/common.php:2899
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Jeśli wprowadzisz adres email, posłuży on do wysłania szczegółów rejestracji oraz, w razie konieczności, do odzyskania zapomnianego hasła."
 
 # C:\limesurvey/common.php:2016
-#: c:\LimeSurvey-S/common.php:2906
+#: c:\LimeSurvey-S/common.php:2907
 msgid "Return To Survey"
 msgstr "Wróć do ankiety"
 
@@ -1169,7 +1169,7 @@ msgstr "Wróć do ankiety"
 # C:\limesurvey/save.php:296
 # C:\limesurvey/admin/dataentry.php:358
 # C:\limesurvey/admin/userrighthandling.php:693
-#: c:\LimeSurvey-S/common.php:2911
+#: c:\LimeSurvey-S/common.php:2912
 #: c:\LimeSurvey-S/save.php:322
 msgid "Name"
 msgstr "Nazwa"
@@ -1184,19 +1184,19 @@ msgstr "Nazwa"
 # C:\limesurvey/admin/usercontrol.php:341
 # C:\limesurvey/admin/userrighthandling.php:152
 # C:\limesurvey/admin/userrighthandling.php:328
-#: c:\LimeSurvey-S/common.php:2914
-#: c:\LimeSurvey-S/common.php:2940
+#: c:\LimeSurvey-S/common.php:2915
+#: c:\LimeSurvey-S/common.php:2941
 #: c:\LimeSurvey-S/save.php:323
 msgid "Password"
 msgstr "Hasło"
 
 # C:\limesurvey/common.php:2029
-#: c:\LimeSurvey-S/common.php:2917
+#: c:\LimeSurvey-S/common.php:2918
 msgid "Repeat Password"
 msgstr "Powtórz hasło"
 
 # C:\limesurvey/common.php:2032
-#: c:\LimeSurvey-S/common.php:2920
+#: c:\LimeSurvey-S/common.php:2921
 msgid "Your Email"
 msgstr "Twój email"
 
@@ -1204,9 +1204,9 @@ msgstr "Twój email"
 # C:\limesurvey/common.php:2057
 # C:\limesurvey/common.php:2102
 # C:\limesurvey/index.php:1098
-#: c:\LimeSurvey-S/common.php:2925
-#: c:\LimeSurvey-S/common.php:2945
-#: c:\LimeSurvey-S/common.php:2996
+#: c:\LimeSurvey-S/common.php:2926
+#: c:\LimeSurvey-S/common.php:2946
+#: c:\LimeSurvey-S/common.php:2997
 #: c:\LimeSurvey-S/index.php:1767
 #: c:\LimeSurvey-S/index.php:1919
 msgid "Security Question"
@@ -1216,47 +1216,47 @@ msgstr "Pytanie bezpieczeństwa"
 # C:\limesurvey/admin/html.php:1600
 # C:\limesurvey/admin/html.php:1653
 # C:\limesurvey/admin/userrighthandling.php:274
-#: c:\LimeSurvey-S/common.php:2928
+#: c:\LimeSurvey-S/common.php:2929
 msgid "Save Now"
 msgstr "Zapisz teraz"
 
 # C:\limesurvey/common.php:2045
-#: c:\LimeSurvey-S/common.php:2933
+#: c:\LimeSurvey-S/common.php:2934
 msgid "Load A Previously Saved Survey"
 msgstr "Załaduj poprzednio zapisaną ankietę"
 
 # C:\limesurvey/common.php:2046
-#: c:\LimeSurvey-S/common.php:2934
+#: c:\LimeSurvey-S/common.php:2935
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Możesz wczytać uprzednio zapisaną ankietę."
 
 # C:\limesurvey/common.php:2046
-#: c:\LimeSurvey-S/common.php:2934
+#: c:\LimeSurvey-S/common.php:2935
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Wprowadź identyfikator oraz hasło użyte przy zapisywaniu postępu wypełnienia ankiety."
 
 # C:\limesurvey/common.php:2049
-#: c:\LimeSurvey-S/common.php:2937
+#: c:\LimeSurvey-S/common.php:2938
 msgid "Saved name"
 msgstr "Zapisana nazwa"
 
 # C:\limesurvey/common.php:2062
-#: c:\LimeSurvey-S/common.php:2950
+#: c:\LimeSurvey-S/common.php:2951
 msgid "Load Now"
 msgstr "Załaduj teraz"
 
 # C:\limesurvey/common.php:2067
-#: c:\LimeSurvey-S/common.php:2955
+#: c:\LimeSurvey-S/common.php:2956
 msgid "You must be registered to complete this survey"
 msgstr "Musisz się zarejestrować, aby wypełnić tę ankietę"
 
 # C:\limesurvey/common.php:2068
-#: c:\LimeSurvey-S/common.php:2956
+#: c:\LimeSurvey-S/common.php:2957
 msgid "You may register for this survey if you wish to take part."
 msgstr "Jeśli chcesz wypełnić ankietę, musisz się zarejestrować."
 
 # C:\limesurvey/common.php:2068
-#: c:\LimeSurvey-S/common.php:2956
+#: c:\LimeSurvey-S/common.php:2957
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Wprowadź swoje dane, a niezwłocznie zostanie wysłany email z linkiem do ankiety."
 
@@ -1268,8 +1268,8 @@ msgstr "Wprowadź swoje dane, a niezwłocznie zostanie wysłany email z linkiem 
 # C:\limesurvey/admin/spss.php:94
 # C:\limesurvey/admin/tokens.php:559
 # C:\limesurvey/admin/tokens.php:1121
-#: c:\LimeSurvey-S/common.php:2963
-#: c:\LimeSurvey-S/common.php:6108
+#: c:\LimeSurvey-S/common.php:2964
+#: c:\LimeSurvey-S/common.php:6109
 msgid "First Name"
 msgstr "Imię"
 
@@ -1281,8 +1281,8 @@ msgstr "Imię"
 # C:\limesurvey/admin/spss.php:97
 # C:\limesurvey/admin/tokens.php:563
 # C:\limesurvey/admin/tokens.php:1127
-#: c:\LimeSurvey-S/common.php:2970
-#: c:\LimeSurvey-S/common.php:6109
+#: c:\LimeSurvey-S/common.php:2971
+#: c:\LimeSurvey-S/common.php:6110
 msgid "Last Name"
 msgstr "Nazwisko"
 
@@ -1290,7 +1290,7 @@ msgstr "Nazwisko"
 # C:\limesurvey/admin/exportresults.php:468
 # C:\limesurvey/admin/exportresults.php:469
 # C:\limesurvey/admin/saved.php:108
-#: c:\LimeSurvey-S/common.php:2977
+#: c:\LimeSurvey-S/common.php:2978
 msgid "Email Address"
 msgstr "Adres e-mail"
 
@@ -1346,7 +1346,7 @@ msgstr "Adres e-mail"
 # C:\limesurvey/admin/userrighthandling.php:826
 # C:\limesurvey/admin/userrighthandling.php:978
 # C:\limesurvey/admin/userrighthandling.php:983
-#: c:\LimeSurvey-S/common.php:3021
+#: c:\LimeSurvey-S/common.php:3022
 #: c:\LimeSurvey-S/index.php:1710
 #: c:\LimeSurvey-S/index.php:1771
 #: c:\LimeSurvey-S/index.php:1922
@@ -1354,16 +1354,16 @@ msgid "Continue"
 msgstr "Kontynuuj"
 
 # C:\limesurvey/common.php:2133
-#: c:\LimeSurvey-S/common.php:3028
+#: c:\LimeSurvey-S/common.php:3029
 msgid "Your Assessment"
 msgstr "Twoja ocena"
 
-#: c:\LimeSurvey-S/common.php:3242
 #: c:\LimeSurvey-S/common.php:3243
+#: c:\LimeSurvey-S/common.php:3244
 msgid "Sort answers alphabetically"
 msgstr "Sortuj odpowiedzi alfabetycznie"
 
-#: c:\LimeSurvey-S/common.php:3247
+#: c:\LimeSurvey-S/common.php:3248
 msgid "The percentage width of the answer column"
 msgstr "Procentowa szerokość kolumny odpowiedzi"
 
@@ -1371,148 +1371,148 @@ msgstr "Procentowa szerokość kolumny odpowiedzi"
 # C:\limesurvey/admin/results.php:212
 # C:\limesurvey/admin/results.php:214
 # C:\limesurvey/admin/results.php:282
-#: c:\LimeSurvey-S/common.php:3248
+#: c:\LimeSurvey-S/common.php:3249
 msgid "Answer width"
 msgstr "Szerokość pola odpowiedzi"
 
 # C:\limesurvey/admin/activate.php:241
-#: c:\LimeSurvey-S/common.php:3252
+#: c:\LimeSurvey-S/common.php:3253
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "Filtr odpowiedzi dla pytań wielokrotnego wyboru"
 
-#: c:\LimeSurvey-S/common.php:3253
+#: c:\LimeSurvey-S/common.php:3254
 msgid "Array filter"
 msgstr "Filtruj"
 
-#: c:\LimeSurvey-S/common.php:3257
 #: c:\LimeSurvey-S/common.php:3258
+#: c:\LimeSurvey-S/common.php:3259
 msgid "Category Separator"
 msgstr "Separator kategorii"
 
-#: c:\LimeSurvey-S/common.php:3262
+#: c:\LimeSurvey-S/common.php:3263
 msgid "Filter the available answers by this value"
 msgstr "Filtruj dostępne odpowiedzi wg wartości"
 
 # C:\limesurvey/admin/statistics.php:1571
-#: c:\LimeSurvey-S/common.php:3263
+#: c:\LimeSurvey-S/common.php:3264
 msgid "Code filter"
 msgstr "Filtruj kod"
 
-#: c:\LimeSurvey-S/common.php:3267
+#: c:\LimeSurvey-S/common.php:3268
 msgid "Number of columns to display"
 msgstr "Liczba pokazywanych kolumn"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: c:\LimeSurvey-S/common.php:3268
+#: c:\LimeSurvey-S/common.php:3269
 msgid "Display columns"
 msgstr "Pokaż kolumny"
 
-#: c:\LimeSurvey-S/common.php:3272
+#: c:\LimeSurvey-S/common.php:3273
 msgid "How many rows to display"
 msgstr "Liczba wierszy do pokazania"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: c:\LimeSurvey-S/common.php:3273
+#: c:\LimeSurvey-S/common.php:3274
 msgid "Display rows"
 msgstr "Pokaż wiersze"
 
-#: c:\LimeSurvey-S/common.php:3277
+#: c:\LimeSurvey-S/common.php:3278
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Ukryj podpowiedź domyślnie pokazywaną przy pytaniu"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:760
-#: c:\LimeSurvey-S/common.php:3278
+#: c:\LimeSurvey-S/common.php:3279
 msgid "Hide tip"
 msgstr "Ukryj podpowiedź"
 
-#: c:\LimeSurvey-S/common.php:3282
+#: c:\LimeSurvey-S/common.php:3283
 msgid "Limit the number of possible answers"
 msgstr "Limit liczby potencjalnych odpowiedzi"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: c:\LimeSurvey-S/common.php:3283
+#: c:\LimeSurvey-S/common.php:3284
 msgid "Maximum answers"
 msgstr "Maksymalnie odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3287
+#: c:\LimeSurvey-S/common.php:3288
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksymalna suma dla wielokrotnej wartości liczbowej"
 
-#: c:\LimeSurvey-S/common.php:3288
+#: c:\LimeSurvey-S/common.php:3289
 msgid "Maximum sum value"
 msgstr "Maksymalna suma"
 
-#: c:\LimeSurvey-S/common.php:3292
+#: c:\LimeSurvey-S/common.php:3293
 msgid "Maximum characters allowed"
 msgstr "Dozwolona maksymalna liczba znaków"
 
-#: c:\LimeSurvey-S/common.php:3293
+#: c:\LimeSurvey-S/common.php:3294
 msgid "Maximum characters"
 msgstr "Maksymalnie znaków"
 
-#: c:\LimeSurvey-S/common.php:3297
+#: c:\LimeSurvey-S/common.php:3298
 msgid "Ensure a minimum number of possible answers"
 msgstr "Zapewnij minimalną liczbę potencjalnych odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3298
+#: c:\LimeSurvey-S/common.php:3299
 msgid "Minimum answers"
 msgstr "Minimalnie odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3302
+#: c:\LimeSurvey-S/common.php:3303
 msgid "Make the \"other comment\" field mandatory when the \"other\" field has been marked"
 msgstr "Pole \"komentarz\" ma być obowiązkowe, gdy zaznaczono pole \"inne\""
 
 # C:\limesurvey/common.php:1677
 # C:\limesurvey/admin/dataentry.php:1730
-#: c:\LimeSurvey-S/common.php:3303
+#: c:\LimeSurvey-S/common.php:3304
 msgid "Other comment mandatory"
 msgstr "Dodatkowy komentarz obowiązkowy"
 
 # C:\limesurvey/common.php:704
-#: c:\LimeSurvey-S/common.php:3307
+#: c:\LimeSurvey-S/common.php:3308
 msgid "Allow only numerical input"
 msgstr "Zezwól tylko na wartość liczbową"
 
 # C:\limesurvey/admin/statistics.php:156
 # C:\limesurvey/admin/statistics.php:305
-#: c:\LimeSurvey-S/common.php:3308
+#: c:\LimeSurvey-S/common.php:3309
 msgid "Numbers only"
 msgstr "Tylko liczby"
 
-#: c:\LimeSurvey-S/common.php:3312
+#: c:\LimeSurvey-S/common.php:3313
 msgid "Present answers in random order"
 msgstr "Prezentuj odpowiedzi w losowej kolejności"
 
-#: c:\LimeSurvey-S/common.php:3313
+#: c:\LimeSurvey-S/common.php:3314
 msgid "Random answer order"
 msgstr "Losowa kolejność wariantów odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3317
+#: c:\LimeSurvey-S/common.php:3318
 msgid "Width of text input box"
 msgstr "Szerokość pola tekstowego"
 
-#: c:\LimeSurvey-S/common.php:3318
+#: c:\LimeSurvey-S/common.php:3319
 msgid "Input box width"
 msgstr "Szerokość pola"
 
-#: c:\LimeSurvey-S/common.php:3322
+#: c:\LimeSurvey-S/common.php:3323
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi równać się"
 
-#: c:\LimeSurvey-S/common.php:3323
+#: c:\LimeSurvey-S/common.php:3324
 msgid "Equals sum value"
 msgstr "Suma wprowadzanych wartości"
 
-#: c:\LimeSurvey-S/common.php:3327
+#: c:\LimeSurvey-S/common.php:3328
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi być większa niż"
 
-#: c:\LimeSurvey-S/common.php:3328
+#: c:\LimeSurvey-S/common.php:3329
 msgid "Minimum sum value"
 msgstr "Minimalna suma dla wprowadzanych wartości"
 
@@ -1524,41 +1524,41 @@ msgstr "Minimalna suma dla wprowadzanych wartości"
 # C:\limesurvey/admin/html.php:2188
 # C:\limesurvey/admin/html.php:2193
 # C:\limesurvey/admin/html.php:2198
-#: c:\LimeSurvey-S/common.php:3332
 #: c:\LimeSurvey-S/common.php:3333
+#: c:\LimeSurvey-S/common.php:3334
 msgid "Use slider layout"
 msgstr "Użyj formy suwaka"
 
-#: c:\LimeSurvey-S/common.php:3337
 #: c:\LimeSurvey-S/common.php:3338
+#: c:\LimeSurvey-S/common.php:3339
 msgid "Slider minimum value"
 msgstr "Minimalna wartość suwaka"
 
-#: c:\LimeSurvey-S/common.php:3342
 #: c:\LimeSurvey-S/common.php:3343
+#: c:\LimeSurvey-S/common.php:3344
 msgid "Slider maximum value"
 msgstr "Maksymalna wartość suwaka"
 
-#: c:\LimeSurvey-S/common.php:3347
 #: c:\LimeSurvey-S/common.php:3348
+#: c:\LimeSurvey-S/common.php:3349
 msgid "Slider accuracy"
 msgstr "Dokładność suwaka"
 
-#: c:\LimeSurvey-S/common.php:3352
 #: c:\LimeSurvey-S/common.php:3353
+#: c:\LimeSurvey-S/common.php:3354
 msgid "Slider initial value"
 msgstr "Wartość początkowa suwaka"
 
-#: c:\LimeSurvey-S/common.php:3357
+#: c:\LimeSurvey-S/common.php:3358
 msgid "Add a prefix to the answer field"
 msgstr "Dodaj prefiks do pola odpowiedzi"
 
 # C:\limesurvey/common.php:1558
-#: c:\LimeSurvey-S/common.php:3358
+#: c:\LimeSurvey-S/common.php:3359
 msgid "Answer prefix"
 msgstr "Prefiks odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3362
+#: c:\LimeSurvey-S/common.php:3363
 msgid "Add a suffix to the answer field"
 msgstr "Dodaj sufiks do pola odpowiedzi"
 
@@ -1567,65 +1567,65 @@ msgstr "Dodaj sufiks do pola odpowiedzi"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/common.php:3363
+#: c:\LimeSurvey-S/common.php:3364
 msgid "Answer suffix"
 msgstr "Sufiks odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3367
+#: c:\LimeSurvey-S/common.php:3368
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Użyj odpowiednich pól zamiast okna kalendarza"
 
 # C:\limesurvey/common.php:1249
 # C:\limesurvey/admin/saved.php:149
-#: c:\LimeSurvey-S/common.php:3368
+#: c:\LimeSurvey-S/common.php:3369
 msgid "Display select boxes"
 msgstr "Pokaż pola wyboru"
 
-#: c:\LimeSurvey-S/common.php:3372
+#: c:\LimeSurvey-S/common.php:3373
 msgid "Minimum year value for dropdown list"
 msgstr "Minimalny rok dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3373
+#: c:\LimeSurvey-S/common.php:3374
 msgid "Minimum dropdown year"
 msgstr "Minimalny rok dla listy"
 
-#: c:\LimeSurvey-S/common.php:3377
+#: c:\LimeSurvey-S/common.php:3378
 msgid "Maximum year value for dropdown list"
 msgstr "Maksymalny rok dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3378
+#: c:\LimeSurvey-S/common.php:3379
 msgid "Maximum dropdown year"
 msgstr "Maksymalny rok dla listy"
 
-#: c:\LimeSurvey-S/common.php:3382
+#: c:\LimeSurvey-S/common.php:3383
 msgid "Excludes all other options if this is selected"
 msgstr "Wyklucza wszystkie inne opcje w przypadku tego wyboru"
 
-#: c:\LimeSurvey-S/common.php:3383
+#: c:\LimeSurvey-S/common.php:3384
 msgid "Exclusive option"
 msgstr "Opcja wykluczająca"
 
-#: c:\LimeSurvey-S/common.php:3387
+#: c:\LimeSurvey-S/common.php:3388
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maksymalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: c:\LimeSurvey-S/common.php:3388
+#: c:\LimeSurvey-S/common.php:3389
 msgid "Maximum value"
 msgstr "Maksimum"
 
-#: c:\LimeSurvey-S/common.php:3392
+#: c:\LimeSurvey-S/common.php:3393
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1097
-#: c:\LimeSurvey-S/common.php:3393
+#: c:\LimeSurvey-S/common.php:3394
 msgid "Minimum value"
 msgstr "Minimum"
 
-#: c:\LimeSurvey-S/common.php:3397
+#: c:\LimeSurvey-S/common.php:3398
 msgid "Step value for array (multi-flexible) question type"
 msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 
@@ -1645,115 +1645,115 @@ msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: c:\LimeSurvey-S/common.php:3398
+#: c:\LimeSurvey-S/common.php:3399
 msgid "Step value"
 msgstr "Wartość kroku"
 
-#: c:\LimeSurvey-S/common.php:3402
+#: c:\LimeSurvey-S/common.php:3403
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "Użyj pola wyboru dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/login_check.php:58
-#: c:\LimeSurvey-S/common.php:3403
+#: c:\LimeSurvey-S/common.php:3404
 msgid "Checkbox layout"
 msgstr "Układ pola wyboru"
 
-#: c:\LimeSurvey-S/common.php:3407
+#: c:\LimeSurvey-S/common.php:3408
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "Użyj podwójnej listy rozwijanej zamiast podwójnej skali"
 
-#: c:\LimeSurvey-S/common.php:3408
+#: c:\LimeSurvey-S/common.php:3409
 msgid "Dual dropdown"
 msgstr "Podwójna lista rozwijana"
 
-#: c:\LimeSurvey-S/common.php:3412
+#: c:\LimeSurvey-S/common.php:3413
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefiks|Sufiks dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3413
+#: c:\LimeSurvey-S/common.php:3414
 msgid "Prefix|Suffix"
 msgstr "Prefiks|Sufiks"
 
-#: c:\LimeSurvey-S/common.php:3417
+#: c:\LimeSurvey-S/common.php:3418
 msgid "Header for scale A"
 msgstr "Nagłówek dla skali A"
 
-#: c:\LimeSurvey-S/common.php:3418
+#: c:\LimeSurvey-S/common.php:3419
 msgid "Header scale A"
 msgstr "Nagłówek skali A"
 
-#: c:\LimeSurvey-S/common.php:3422
+#: c:\LimeSurvey-S/common.php:3423
 msgid "Header for scale B"
 msgstr "Nagłówek dla skali B"
 
-#: c:\LimeSurvey-S/common.php:3423
+#: c:\LimeSurvey-S/common.php:3424
 msgid "Header scale B"
 msgstr "Nagłówek skali B"
 
-#: c:\LimeSurvey-S/common.php:3427
+#: c:\LimeSurvey-S/common.php:3428
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Answer-Separator|Separator-pośredni dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3428
+#: c:\LimeSurvey-S/common.php:3429
 msgid "Dropdown separators"
 msgstr "Separatory dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3432
+#: c:\LimeSurvey-S/common.php:3433
 msgid "Replaces the 'other' label with text"
 msgstr "Zastępuje etykietę 'inne' tekstem"
 
-#: c:\LimeSurvey-S/common.php:3433
+#: c:\LimeSurvey-S/common.php:3434
 msgid "\"Other\" caption"
 msgstr "Nagłówek \"Inne\""
 
-#: c:\LimeSurvey-S/common.php:3437
+#: c:\LimeSurvey-S/common.php:3438
 msgid "Show statistics of a certain question to the user"
 msgstr "Pokaż użytkownikowi statystyki pytania"
 
 # C:\limesurvey/admin/importoldresponses.php:58
 # C:\limesurvey/admin/statistics.php:99
 # C:\limesurvey/admin/stats.php:101
-#: c:\LimeSurvey-S/common.php:3438
+#: c:\LimeSurvey-S/common.php:3439
 msgid "Show in public statistics"
 msgstr "Pokaż w statystyce"
 
-#: c:\LimeSurvey-S/common.php:3442
+#: c:\LimeSurvey-S/common.php:3443
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako maksimum dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3443
+#: c:\LimeSurvey-S/common.php:3444
 msgid "Max value from SGQA"
 msgstr "Wartość maksymalna z SGQA"
 
-#: c:\LimeSurvey-S/common.php:3447
+#: c:\LimeSurvey-S/common.php:3448
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako minimum dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3448
+#: c:\LimeSurvey-S/common.php:3449
 msgid "Min value from SGQA"
 msgstr "Wartość minimalna z SGQA"
 
-#: c:\LimeSurvey-S/common.php:3452
+#: c:\LimeSurvey-S/common.php:3453
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako sumy dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3453
+#: c:\LimeSurvey-S/common.php:3454
 msgid "Value equals SGQA"
 msgstr "Wartość równa SGQA"
 
-#: c:\LimeSurvey-S/common.php:3457
+#: c:\LimeSurvey-S/common.php:3458
 msgid "Insert a page break before this question in printable view by setting this to 1."
 msgstr "Wstaw podział strony przed tym pytaniem w widoku wydruku ustawiając 1."
 
-#: c:\LimeSurvey-S/common.php:3458
+#: c:\LimeSurvey-S/common.php:3459
 msgid "Insert page break in printable view"
 msgstr "Wstaw podział strony w widoku wydruku"
 
-#: c:\LimeSurvey-S/common.php:3462
+#: c:\LimeSurvey-S/common.php:3463
 msgid "1=nominal 2=ordinal 3=scale."
 msgstr "1=nominalna 2=porządkowa 3=skala."
 
-#: c:\LimeSurvey-S/common.php:3463
+#: c:\LimeSurvey-S/common.php:3464
 msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 msgstr "Eksportowany typ skali 1=nominalna 2=porządkowa 3=skala."
 
@@ -1761,43 +1761,43 @@ msgstr "Eksportowany typ skali 1=nominalna 2=porządkowa 3=skala."
 # C:\limesurvey/admin/conditions.php:659
 # C:\limesurvey/admin/html.php:999
 # C:\limesurvey/admin/statistics.php:1630
-#: c:\LimeSurvey-S/common.php:3606
+#: c:\LimeSurvey-S/common.php:3607
 msgid "Version"
 msgstr "Wersja"
 
 # C:\limesurvey/common.php:2399
-#: c:\LimeSurvey-S/common.php:3615
+#: c:\LimeSurvey-S/common.php:3616
 msgid "Online Manual"
 msgstr "Podręcznik online"
 
 # C:\limesurvey/common.php:2402
-#: c:\LimeSurvey-S/common.php:3618
+#: c:\LimeSurvey-S/common.php:3619
 msgid "Support this project - Donate to "
 msgstr "Wspomóż ten projekt - przekaż darowiznę "
 
 # C:\limesurvey/common.php:2405
-#: c:\LimeSurvey-S/common.php:3621
+#: c:\LimeSurvey-S/common.php:3622
 msgid "Visit our website!"
 msgstr "Odwiedź naszą stronę!"
 
-#: c:\LimeSurvey-S/common.php:3748
+#: c:\LimeSurvey-S/common.php:3749
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nie został wysłany (funkcja wysyłania jest nieaktywna w trybie demo)"
 
 # C:\limesurvey/common.php:2750
 # C:\limesurvey/common.php:2755
-#: c:\LimeSurvey-S/common.php:4097
-#: c:\LimeSurvey-S/common.php:4103
+#: c:\LimeSurvey-S/common.php:4098
+#: c:\LimeSurvey-S/common.php:4104
 msgid "Executing"
 msgstr "Wykonuję"
 
 # C:\limesurvey/common.php:2750
-#: c:\LimeSurvey-S/common.php:4097
+#: c:\LimeSurvey-S/common.php:4098
 msgid "Failed! Reason: "
 msgstr "Błąd! Powód:"
 
 # C:\limesurvey/common.php:2755
-#: c:\LimeSurvey-S/common.php:4103
+#: c:\LimeSurvey-S/common.php:4104
 msgid "Success!"
 msgstr "Udane!"
 
@@ -1870,7 +1870,7 @@ msgstr "Udane!"
 # C:\limesurvey/admin/vvimport.php:96
 # C:\limesurvey/admin/install/createdb.php:68
 # C:\limesurvey/admin/install/createdb.php:100
-#: c:\LimeSurvey-S/common.php:5159
+#: c:\LimeSurvey-S/common.php:5160
 #: c:\LimeSurvey-S/index.php:470
 #: c:\LimeSurvey-S/save.php:581
 msgid "Error"
@@ -1880,7 +1880,7 @@ msgstr "Błąd"
 # C:\limesurvey/admin/exportresults.php:468
 # C:\limesurvey/admin/exportresults.php:469
 # C:\limesurvey/admin/saved.php:108
-#: c:\LimeSurvey-S/common.php:6110
+#: c:\LimeSurvey-S/common.php:6111
 msgid "Email address"
 msgstr "Adres e-mail"
 
@@ -1888,28 +1888,28 @@ msgstr "Adres e-mail"
 # C:\limesurvey/admin/tokens.php:123
 # C:\limesurvey/admin/tokens.php:141
 # C:\limesurvey/admin/tokens.php:154
-#: c:\LimeSurvey-S/common.php:6111
+#: c:\LimeSurvey-S/common.php:6112
 msgid "Token code"
 msgstr "Kod tokena"
 
 # C:\limesurvey/admin/exportresults.php:836
 # C:\limesurvey/admin/tokens.php:576
 # C:\limesurvey/admin/tokens.php:1151
-#: c:\LimeSurvey-S/common.php:6112
+#: c:\LimeSurvey-S/common.php:6113
 msgid "Language code"
 msgstr "Kod języka"
 
 # C:\limesurvey/admin/tokens.php:829
-#: c:\LimeSurvey-S/common.php:6113
+#: c:\LimeSurvey-S/common.php:6114
 msgid "Invitation sent date"
 msgstr "Data wysłania zaproszenia"
 
 # C:\limesurvey/admin/tokens.php:991
-#: c:\LimeSurvey-S/common.php:6114
+#: c:\LimeSurvey-S/common.php:6115
 msgid "Last Reminder sent date"
 msgstr "Data wysłania ostatniego przypomnienia"
 
-#: c:\LimeSurvey-S/common.php:6115
+#: c:\LimeSurvey-S/common.php:6116
 msgid "Total numbers of sent reminders"
 msgstr "Liczby wysłanych przypomnień"
 
@@ -1921,7 +1921,7 @@ msgstr "Liczby wysłanych przypomnień"
 # C:\limesurvey/admin/spss.php:79
 # C:\limesurvey/admin/tokens.php:301
 # C:\limesurvey/admin/tokens.php:591
-#: c:\LimeSurvey-S/common.php:6135
+#: c:\LimeSurvey-S/common.php:6136
 #, php-format
 msgid "Attribute %s"
 msgstr "Atrybut %s"
@@ -2006,20 +2006,20 @@ msgstr "Nie ma takiej ankiety."
 # C:\limesurvey/question.php:530
 # C:\limesurvey/survey.php:491
 #: c:\LimeSurvey-S/group.php:282
-#: c:\LimeSurvey-S/group.php:959
+#: c:\LimeSurvey-S/group.php:958
 #: c:\LimeSurvey-S/question.php:93
 #: c:\LimeSurvey-S/question.php:535
 msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Ta ankieta nie jest aktywna. Twoje odpowiedzi nie zostaną zapisane."
 
 # C:\limesurvey/qanda.php:467
-#: c:\LimeSurvey-S/group.php:908
+#: c:\LimeSurvey-S/group.php:907
 #: c:\LimeSurvey-S/question.php:474
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
 msgstr "Na jedno lub więcej obligatoryjnych pytań nie udzielono odpowiedzi. Nie można kontynuować. "
 
 # C:\limesurvey/qanda.php:490
-#: c:\LimeSurvey-S/group.php:914
+#: c:\LimeSurvey-S/group.php:913
 #: c:\LimeSurvey-S/question.php:480
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
 msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy. Przed przejściem do następnego pytania prosimy o dokonanie poprawek."
@@ -2412,27 +2412,27 @@ msgstr "Twoja odpowiedź"
 # C:\limesurvey/qanda.php:253
 # C:\limesurvey/qanda.php:261
 # C:\limesurvey/qanda.php:269
-#: c:\LimeSurvey-S/qanda.php:509
-#: c:\LimeSurvey-S/qanda.php:510
-#: c:\LimeSurvey-S/qanda.php:518
-#: c:\LimeSurvey-S/qanda.php:519
-#: c:\LimeSurvey-S/qanda.php:527
-#: c:\LimeSurvey-S/qanda.php:528
-#: c:\LimeSurvey-S/qanda.php:536
-#: c:\LimeSurvey-S/qanda.php:537
-#: c:\LimeSurvey-S/qanda.php:545
-#: c:\LimeSurvey-S/qanda.php:546
+#: c:\LimeSurvey-S/qanda.php:513
+#: c:\LimeSurvey-S/qanda.php:514
+#: c:\LimeSurvey-S/qanda.php:522
+#: c:\LimeSurvey-S/qanda.php:523
+#: c:\LimeSurvey-S/qanda.php:531
+#: c:\LimeSurvey-S/qanda.php:532
+#: c:\LimeSurvey-S/qanda.php:540
+#: c:\LimeSurvey-S/qanda.php:541
+#: c:\LimeSurvey-S/qanda.php:549
+#: c:\LimeSurvey-S/qanda.php:550
 msgid "Choose one of the following answers"
 msgstr "Wybierz jedną z następujących odpowiedzi"
 
 # C:\limesurvey/qanda.php:1278
-#: c:\LimeSurvey-S/qanda.php:553
+#: c:\LimeSurvey-S/qanda.php:557
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
 msgstr "Kliknij element po lewej, zaczynając od ocenianego najwyżej, poprzez kolejne, aż do ocenianego najniżej."
 
 # C:\limesurvey/qanda.php:443
-#: c:\LimeSurvey-S/qanda.php:557
-#: c:\LimeSurvey-S/qanda.php:558
+#: c:\LimeSurvey-S/qanda.php:561
+#: c:\LimeSurvey-S/qanda.php:562
 #, php-format
 msgid "Rank at least %d items"
 msgstr "Oceń co najmniej %d elementów"
@@ -2440,110 +2440,110 @@ msgstr "Oceń co najmniej %d elementów"
 # C:\limesurvey/qanda.php:282
 # C:\limesurvey/qanda.php:296
 # C:\limesurvey/qanda.php:313
-#: c:\LimeSurvey-S/qanda.php:572
-#: c:\LimeSurvey-S/qanda.php:573
-#: c:\LimeSurvey-S/qanda.php:615
-#: c:\LimeSurvey-S/qanda.php:616
+#: c:\LimeSurvey-S/qanda.php:576
+#: c:\LimeSurvey-S/qanda.php:577
+#: c:\LimeSurvey-S/qanda.php:619
+#: c:\LimeSurvey-S/qanda.php:620
 msgid "Check any that apply"
 msgstr "Wybierz właściwe odpowiedzi"
 
 # C:\limesurvey/qanda.php:287
-#: c:\LimeSurvey-S/qanda.php:580
-#: c:\LimeSurvey-S/qanda.php:581
-#: c:\LimeSurvey-S/qanda.php:623
-#: c:\LimeSurvey-S/qanda.php:624
+#: c:\LimeSurvey-S/qanda.php:584
+#: c:\LimeSurvey-S/qanda.php:585
+#: c:\LimeSurvey-S/qanda.php:627
+#: c:\LimeSurvey-S/qanda.php:628
 #, php-format
 msgid "Check between %d and %d answers"
 msgstr "Wybierz od %d do %d odpowiedzi"
 
 # C:\limesurvey/qanda.php:287
-#: c:\LimeSurvey-S/qanda.php:585
-#: c:\LimeSurvey-S/qanda.php:586
-#: c:\LimeSurvey-S/qanda.php:628
-#: c:\LimeSurvey-S/qanda.php:629
+#: c:\LimeSurvey-S/qanda.php:589
+#: c:\LimeSurvey-S/qanda.php:590
+#: c:\LimeSurvey-S/qanda.php:632
+#: c:\LimeSurvey-S/qanda.php:633
 #, php-format
 msgid "Check at most %d answers"
 msgstr "Wybierz co najwyżej %d odpowiedzi"
 
 # C:\limesurvey/qanda.php:287
-#: c:\LimeSurvey-S/qanda.php:590
-#: c:\LimeSurvey-S/qanda.php:591
-#: c:\LimeSurvey-S/qanda.php:633
-#: c:\LimeSurvey-S/qanda.php:634
+#: c:\LimeSurvey-S/qanda.php:594
+#: c:\LimeSurvey-S/qanda.php:595
+#: c:\LimeSurvey-S/qanda.php:637
+#: c:\LimeSurvey-S/qanda.php:638
 #, php-format
 msgid "Check at least %d answers"
 msgstr "Wybierz co najmniej %d odpowiedzi"
 
 # C:\limesurvey/qanda.php:305
-#: c:\LimeSurvey-S/qanda.php:602
-#: c:\LimeSurvey-S/qanda.php:603
+#: c:\LimeSurvey-S/qanda.php:606
+#: c:\LimeSurvey-S/qanda.php:607
 msgid "Choose your language"
 msgstr "Wybierz język"
 
 # C:\limesurvey/qanda.php:376
 # C:\limesurvey/admin/printablesurvey.php:249
-#: c:\LimeSurvey-S/qanda.php:708
-#: c:\LimeSurvey-S/qanda.php:709
+#: c:\LimeSurvey-S/qanda.php:712
+#: c:\LimeSurvey-S/qanda.php:713
 msgid "*"
 msgstr "*"
 
 # C:\limesurvey/qanda.php:409
-#: c:\LimeSurvey-S/qanda.php:777
+#: c:\LimeSurvey-S/qanda.php:781
 msgid "This question must be answered correctly"
 msgstr "Należy odpowiedzieć na to pytanie w odpowiedni sposób"
 
 # C:\limesurvey/qanda.php:426
-#: c:\LimeSurvey-S/qanda.php:796
+#: c:\LimeSurvey-S/qanda.php:800
 msgid "This question is mandatory"
 msgstr "To pytanie jest obligatoryjne"
 
 # C:\limesurvey/qanda.php:436
-#: c:\LimeSurvey-S/qanda.php:808
+#: c:\LimeSurvey-S/qanda.php:812
 msgid "Please complete all parts"
 msgstr "Prosimy udzielić odpowiedzi na wszystkie części"
 
 # C:\limesurvey/qanda.php:443
-#: c:\LimeSurvey-S/qanda.php:811
+#: c:\LimeSurvey-S/qanda.php:815
 msgid "Please check the items"
 msgstr "Proszę zaznaczyć elementy"
 
 # C:\limesurvey/qanda.php:439
-#: c:\LimeSurvey-S/qanda.php:814
+#: c:\LimeSurvey-S/qanda.php:818
 msgid "Please rank all items"
 msgstr "Należy uporządkować wszystkie elementy"
 
 # C:\limesurvey/qanda.php:443
-#: c:\LimeSurvey-S/qanda.php:818
+#: c:\LimeSurvey-S/qanda.php:822
 msgid "Please check at least one item."
 msgstr "Proszę zaznaczyć przynajmniej jeden element"
 
-#: c:\LimeSurvey-S/qanda.php:833
+#: c:\LimeSurvey-S/qanda.php:837
 #, php-format
 msgid "If you choose '%s' you must provide a description."
 msgstr "Przy wyborze '%s' należy wprowadzić dodatkowy opis."
 
 # C:\limesurvey/qanda.php:463
-#: c:\LimeSurvey-S/qanda.php:856
+#: c:\LimeSurvey-S/qanda.php:861
 msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Nie możesz kontynuować, zanim nie wprowadzisz tekstu do jednego lub więcej pól."
 
 # C:\limesurvey/qanda.php:467
-#: c:\LimeSurvey-S/qanda.php:863
+#: c:\LimeSurvey-S/qanda.php:868
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
 msgstr "Na jedno lub więcej obligatoryjnych pytań nie udzielono odpowiedzi. Nie można kontynuować. "
 
 # C:\limesurvey/qanda.php:490
-#: c:\LimeSurvey-S/qanda.php:889
+#: c:\LimeSurvey-S/qanda.php:895
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Na jedno lub więcej pytań nie udzielono odpowiedzi wg wymaganej formy. Przed przejściem do następnego pytania prosimy o dokonanie poprawek."
 
-#: c:\LimeSurvey-S/qanda.php:983
+#: c:\LimeSurvey-S/qanda.php:989
 msgid "Day"
 msgstr "Dzień"
 
 # C:\limesurvey/admin/statistics.php:1378
 # C:\limesurvey/admin/statistics.php:1494
-#: c:\LimeSurvey-S/qanda.php:1000
+#: c:\LimeSurvey-S/qanda.php:1006
 msgid "Month"
 msgstr "Miesiąc"
 
@@ -2551,43 +2551,43 @@ msgstr "Miesiąc"
 # C:\limesurvey/admin/printablesurvey.php:129
 # C:\limesurvey/admin/statistics.php:186
 # C:\limesurvey/admin/statistics.php:327
-#: c:\LimeSurvey-S/qanda.php:1002
+#: c:\LimeSurvey-S/qanda.php:1008
 msgid "Jan"
 msgstr "Sty"
 
-#: c:\LimeSurvey-S/qanda.php:1003
+#: c:\LimeSurvey-S/qanda.php:1009
 msgid "Feb"
 msgstr "Lut"
 
-#: c:\LimeSurvey-S/qanda.php:1004
+#: c:\LimeSurvey-S/qanda.php:1010
 msgid "Mar"
 msgstr "Mar"
 
-#: c:\LimeSurvey-S/qanda.php:1005
+#: c:\LimeSurvey-S/qanda.php:1011
 msgid "Apr"
 msgstr "Kwi"
 
-#: c:\LimeSurvey-S/qanda.php:1006
+#: c:\LimeSurvey-S/qanda.php:1012
 msgid "May"
 msgstr "Maj"
 
-#: c:\LimeSurvey-S/qanda.php:1007
+#: c:\LimeSurvey-S/qanda.php:1013
 msgid "Jun"
 msgstr "Cze"
 
-#: c:\LimeSurvey-S/qanda.php:1008
+#: c:\LimeSurvey-S/qanda.php:1014
 msgid "Jul"
 msgstr "Lip"
 
-#: c:\LimeSurvey-S/qanda.php:1009
+#: c:\LimeSurvey-S/qanda.php:1015
 msgid "Aug"
 msgstr "Sie"
 
-#: c:\LimeSurvey-S/qanda.php:1010
+#: c:\LimeSurvey-S/qanda.php:1016
 msgid "Sep"
 msgstr "Wrz"
 
-#: c:\LimeSurvey-S/qanda.php:1011
+#: c:\LimeSurvey-S/qanda.php:1017
 msgid "Oct"
 msgstr "Paź"
 
@@ -2653,7 +2653,7 @@ msgstr "Paź"
 # C:\limesurvey/admin/stats.php:572
 # C:\limesurvey/admin/stats.php:644
 # C:\limesurvey/admin/tokens.php:1047
-#: c:\LimeSurvey-S/qanda.php:1012
+#: c:\LimeSurvey-S/qanda.php:1018
 msgid "Nov"
 msgstr "Lis"
 
@@ -2662,19 +2662,19 @@ msgstr "Lis"
 # C:\limesurvey/admin/html.php:1335
 # C:\limesurvey/admin/labels.php:335
 # C:\limesurvey/admin/labels.php:652
-#: c:\LimeSurvey-S/qanda.php:1013
+#: c:\LimeSurvey-S/qanda.php:1019
 msgid "Dec"
 msgstr "Gru"
 
 # C:\limesurvey/admin/conditions.php:697
 # C:\limesurvey/admin/statistics.php:660
-#: c:\LimeSurvey-S/qanda.php:1030
+#: c:\LimeSurvey-S/qanda.php:1036
 msgid "Year"
 msgstr "Rok"
 
 # C:\limesurvey/admin/html.php:1854
 # C:\limesurvey/admin/html.php:2393
-#: c:\LimeSurvey-S/qanda.php:1104
+#: c:\LimeSurvey-S/qanda.php:1110
 #, php-format
 msgid "Format: %s"
 msgstr "Format: %s"
@@ -2699,48 +2699,48 @@ msgstr "Format: %s"
 # C:\limesurvey/admin/dataentry.php:2077
 # C:\limesurvey/admin/dataentry.php:2097
 # C:\limesurvey/admin/dataentry.php:2128
-#: c:\LimeSurvey-S/qanda.php:1122
-#: c:\LimeSurvey-S/qanda.php:1295
-#: c:\LimeSurvey-S/qanda.php:1484
-#: c:\LimeSurvey-S/qanda.php:6319
-#: c:\LimeSurvey-S/qanda.php:6373
+#: c:\LimeSurvey-S/qanda.php:1128
+#: c:\LimeSurvey-S/qanda.php:1301
+#: c:\LimeSurvey-S/qanda.php:1489
+#: c:\LimeSurvey-S/qanda.php:6377
+#: c:\LimeSurvey-S/qanda.php:6431
 msgid "Please choose"
 msgstr "Wybierz"
 
-#: c:\LimeSurvey-S/qanda.php:1393
-#: c:\LimeSurvey-S/qanda.php:1575
-#: c:\LimeSurvey-S/qanda.php:1793
-#: c:\LimeSurvey-S/qanda.php:2015
+#: c:\LimeSurvey-S/qanda.php:1398
+#: c:\LimeSurvey-S/qanda.php:1580
+#: c:\LimeSurvey-S/qanda.php:1798
+#: c:\LimeSurvey-S/qanda.php:2020
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Zaznaczono pole \"inne\" w pytaniu \"%s\". Proszę również wpisać treść w odpowiednie pole \"komentarz\"."
 
-#: c:\LimeSurvey-S/qanda.php:1508
-#: c:\LimeSurvey-S/qanda.php:1919
+#: c:\LimeSurvey-S/qanda.php:1513
+#: c:\LimeSurvey-S/qanda.php:1924
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Błąd: zestaw etykiet wykorzystywany w pytaniu nie jest dostępny w tym języku."
 
 # C:\limesurvey/qanda.php:990
-#: c:\LimeSurvey-S/qanda.php:2068
+#: c:\LimeSurvey-S/qanda.php:2073
 msgid "Please choose one of the following"
 msgstr "Wybierz jedną z poniższych odpowiedzi"
 
 # C:\limesurvey/qanda.php:991
-#: c:\LimeSurvey-S/qanda.php:2069
+#: c:\LimeSurvey-S/qanda.php:2074
 msgid "Please enter your comment here"
 msgstr "Wprowadź komentarz"
 
 # C:\limesurvey/qanda.php:1236
 # C:\limesurvey/admin/dataentry.php:855
 # C:\limesurvey/admin/dataentry.php:1851
-#: c:\LimeSurvey-S/qanda.php:2356
+#: c:\LimeSurvey-S/qanda.php:2361
 msgid "Remove this item"
 msgstr "Usuń ten element"
 
 # C:\limesurvey/qanda.php:1283
 # C:\limesurvey/admin/dataentry.php:877
 # C:\limesurvey/admin/dataentry.php:1884
-#: c:\LimeSurvey-S/qanda.php:2400
+#: c:\LimeSurvey-S/qanda.php:2405
 msgid "Your Choices"
 msgstr "Dostępne elementy"
 
@@ -2748,35 +2748,35 @@ msgstr "Dostępne elementy"
 # C:\limesurvey/qanda.php:1298
 # C:\limesurvey/admin/dataentry.php:882
 # C:\limesurvey/admin/dataentry.php:1889
-#: c:\LimeSurvey-S/qanda.php:2409
-#: c:\LimeSurvey-S/qanda.php:2415
+#: c:\LimeSurvey-S/qanda.php:2414
+#: c:\LimeSurvey-S/qanda.php:2420
 msgid "Your Ranking"
 msgstr "Twój ranking"
 
 # C:\limesurvey/qanda.php:1306
-#: c:\LimeSurvey-S/qanda.php:2423
+#: c:\LimeSurvey-S/qanda.php:2428
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Aby cofnąć wybór, kliknij na ikonę nożyczek, znajdującą się obok wybranego elementu z prawej strony"
 
-#: c:\LimeSurvey-S/qanda.php:2438
+#: c:\LimeSurvey-S/qanda.php:2443
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Proszę ocenić co najmniej %d elementów w pytaniu \"%s\"."
 
-#: c:\LimeSurvey-S/qanda.php:2749
-#: c:\LimeSurvey-S/qanda.php:3049
+#: c:\LimeSurvey-S/qanda.php:2754
+#: c:\LimeSurvey-S/qanda.php:3054
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Wybierz co najwyżej '%d' odpowiedzi w pytaniu \"%s\""
 
-#: c:\LimeSurvey-S/qanda.php:2770
-#: c:\LimeSurvey-S/qanda.php:3074
+#: c:\LimeSurvey-S/qanda.php:2775
+#: c:\LimeSurvey-S/qanda.php:3079
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Proszę wybrać co najmniej %d odpowiedzi w pytaniu \"%s\""
 
-#: c:\LimeSurvey-S/qanda.php:2804
-#: c:\LimeSurvey-S/qanda.php:3104
+#: c:\LimeSurvey-S/qanda.php:2809
+#: c:\LimeSurvey-S/qanda.php:3109
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Zaznaczono pole \"inne\" w pytaniu \"%s\". Proszę również wpisać treść w odpowiednie pole \"komentarz\"."
@@ -2784,80 +2784,80 @@ msgstr "Zaznaczono pole \"inne\" w pytaniu \"%s\". Proszę również wpisać tre
 # C:\limesurvey/qanda.php:1483
 # C:\limesurvey/qanda.php:1509
 # C:\limesurvey/admin/printablesurvey.php:395
-#: c:\LimeSurvey-S/qanda.php:2946
-#: c:\LimeSurvey-S/qanda.php:2974
+#: c:\LimeSurvey-S/qanda.php:2951
+#: c:\LimeSurvey-S/qanda.php:2979
 msgid "Make a comment on your choice here:"
 msgstr "Wprowadź komentarz do swojej odpowiedzi:"
 
 # C:\limesurvey/qanda.php:426
-#: c:\LimeSurvey-S/qanda.php:3198
-#: c:\LimeSurvey-S/qanda.php:3469
-#: c:\LimeSurvey-S/qanda.php:4497
-#: c:\LimeSurvey-S/qanda.php:6167
+#: c:\LimeSurvey-S/qanda.php:3203
+#: c:\LimeSurvey-S/qanda.php:3474
+#: c:\LimeSurvey-S/qanda.php:4547
+#: c:\LimeSurvey-S/qanda.php:6225
 msgid "Error: This question has no answers."
 msgstr "Błąd: To pytanie nie ma zdefiniowanych wariantów odpowiedzi."
 
 # C:\limesurvey/qanda.php:1627
-#: c:\LimeSurvey-S/qanda.php:3548
+#: c:\LimeSurvey-S/qanda.php:3553
 msgid "Only numbers may be entered in these fields"
 msgstr "Można wprowadzać tylko liczby"
 
-#: c:\LimeSurvey-S/qanda.php:3552
+#: c:\LimeSurvey-S/qanda.php:3557
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Suma wszystkich nie może być wyższa niż %d"
 
-#: c:\LimeSurvey-S/qanda.php:3556
+#: c:\LimeSurvey-S/qanda.php:3561
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Suma wszystkich musi być równa %d"
 
-#: c:\LimeSurvey-S/qanda.php:3560
+#: c:\LimeSurvey-S/qanda.php:3565
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Suma wszystkich musi równać się co najmniej %s"
 
 # C:\limesurvey/admin/assessments.php:109
 # C:\limesurvey/admin/assessments.php:128
-#: c:\LimeSurvey-S/qanda.php:3639
+#: c:\LimeSurvey-S/qanda.php:3644
 msgid "Total: "
 msgstr "Razem"
 
 # C:\limesurvey/common.php:708
 # C:\limesurvey/admin/exportresults.php:538
 # C:\limesurvey/admin/statistics.php:1050
-#: c:\LimeSurvey-S/qanda.php:3642
+#: c:\LimeSurvey-S/qanda.php:3647
 msgid "Remaining: "
 msgstr "Pozostało:"
 
-#: c:\LimeSurvey-S/qanda.php:3688
-#: c:\LimeSurvey-S/qanda.php:3696
-#: c:\LimeSurvey-S/qanda.php:3732
-#: c:\LimeSurvey-S/qanda.php:3743
+#: c:\LimeSurvey-S/qanda.php:3694
+#: c:\LimeSurvey-S/qanda.php:3702
+#: c:\LimeSurvey-S/qanda.php:3738
+#: c:\LimeSurvey-S/qanda.php:3749
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odpowiedź błędna. Liczba ogólna nie powinna przekraczać"
 
-#: c:\LimeSurvey-S/qanda.php:3709
-#: c:\LimeSurvey-S/qanda.php:3717
+#: c:\LimeSurvey-S/qanda.php:3715
+#: c:\LimeSurvey-S/qanda.php:3723
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Niepoprawna odpowiedź. Suma wszystkich pozycji powinna wynosić co najmniej %s."
 
 # C:\limesurvey/qanda.php:1627
-#: c:\LimeSurvey-S/qanda.php:3812
+#: c:\LimeSurvey-S/qanda.php:3818
 msgid "Only numbers may be entered in this field"
 msgstr "Można wprowadzać tylko liczby"
 
-#: c:\LimeSurvey-S/qanda.php:5087
-#: c:\LimeSurvey-S/qanda.php:5311
-#: c:\LimeSurvey-S/qanda.php:5600
-#: c:\LimeSurvey-S/qanda.php:5744
-#: c:\LimeSurvey-S/qanda.php:6419
+#: c:\LimeSurvey-S/qanda.php:5142
+#: c:\LimeSurvey-S/qanda.php:5366
+#: c:\LimeSurvey-S/qanda.php:5655
+#: c:\LimeSurvey-S/qanda.php:5799
+#: c:\LimeSurvey-S/qanda.php:6477
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Błąd: Zestaw etykiet wykorzystywany w bieżącym pytaniu nie jest dostępny dla bieżącego języka lub nie istnieje."
 
 # C:\limesurvey/admin/labels.php:127
-#: c:\LimeSurvey-S/qanda.php:5738
+#: c:\LimeSurvey-S/qanda.php:5793
 msgid "Error: There are no answers defined for this question."
 msgstr "Błąd: musisz podać warianty odpowiedzi dla tego pytania."
 
@@ -2957,119 +2957,119 @@ msgid "If you receive this message in the middle of completing a survey, you sho
 msgstr "Jeśli widzisz ten komunikat podczas wypełniania ankiety, wybierz przycisk [<- Wstecz ] w Twojej przeglądarce, a następnie odśwież [F5] okno przeglądarki. Podczas gdy odpowiedzi z ostatniej strony zostały utracone, to wszystkie wcześniejsze dalej znajdują się w pamięci i mogą być zapisane. Problem ten pojawia się, gdy serwer jest przeciążony. Przepraszamy za niedogodności."
 
 # C:\limesurvey/admin/statistics.php:736
-#: c:\LimeSurvey-S/statistics_user.php:625
+#: c:\LimeSurvey-S/statistics_user.php:631
 msgid "Please wait ..."
 msgstr "Trwa ładowanie..."
 
 # C:\limesurvey/admin/usercontrol.php:352
-#: c:\LimeSurvey-S/statistics_user.php:627
+#: c:\LimeSurvey-S/statistics_user.php:633
 msgid "Go back"
 msgstr "Wróć"
 
 # C:\limesurvey/admin/statistics.php:750
-#: c:\LimeSurvey-S/statistics_user.php:636
+#: c:\LimeSurvey-S/statistics_user.php:642
 msgid "Getting questions and answers ..."
 msgstr "Wczytywanie pytań i odpowiedzi..."
 
 # C:\limesurvey/admin/statistics.php:888
-#: c:\LimeSurvey-S/statistics_user.php:649
+#: c:\LimeSurvey-S/statistics_user.php:657
 msgid "Total records in survey"
 msgstr "Liczba rekordów w ankiecie"
 
 # C:\limesurvey/admin/statistics.php:960
-#: c:\LimeSurvey-S/statistics_user.php:666
+#: c:\LimeSurvey-S/statistics_user.php:674
 msgid "Generating summaries ..."
 msgstr "Generowanie podsumowania..."
 
 # C:\limesurvey/admin/statistics.php:1073
 # C:\limesurvey/admin/statistics.php:1371
-#: c:\LimeSurvey-S/statistics_user.php:842
-#: c:\LimeSurvey-S/statistics_user.php:1497
+#: c:\LimeSurvey-S/statistics_user.php:856
+#: c:\LimeSurvey-S/statistics_user.php:1514
 msgid "Field summary for"
 msgstr "Statystyki dla pytania"
 
 # C:\limesurvey/admin/statistics.php:1077
-#: c:\LimeSurvey-S/statistics_user.php:846
+#: c:\LimeSurvey-S/statistics_user.php:861
 msgid "Calculation"
 msgstr "Kalkulacja"
 
 # C:\limesurvey/admin/statistics.php:1079
-#: c:\LimeSurvey-S/statistics_user.php:848
+#: c:\LimeSurvey-S/statistics_user.php:863
 msgid "Result"
 msgstr "Wynik"
 
 # C:\limesurvey/admin/statistics.php:1094
-#: c:\LimeSurvey-S/statistics_user.php:920
-#: c:\LimeSurvey-S/statistics_user.php:1586
-#: c:\LimeSurvey-S/statistics_user.php:2038
+#: c:\LimeSurvey-S/statistics_user.php:935
+#: c:\LimeSurvey-S/statistics_user.php:1603
+#: c:\LimeSurvey-S/statistics_user.php:2055
 msgid "Sum"
 msgstr "Suma"
 
 # C:\limesurvey/admin/statistics.php:1095
-#: c:\LimeSurvey-S/statistics_user.php:921
-#: c:\LimeSurvey-S/statistics_user.php:2158
+#: c:\LimeSurvey-S/statistics_user.php:936
+#: c:\LimeSurvey-S/statistics_user.php:2175
 msgid "Standard deviation"
 msgstr "Odchylenie standardowe"
 
 # C:\limesurvey/admin/statistics.php:1096
-#: c:\LimeSurvey-S/statistics_user.php:922
+#: c:\LimeSurvey-S/statistics_user.php:937
 msgid "Average"
 msgstr "Średnia"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1097
-#: c:\LimeSurvey-S/statistics_user.php:923
+#: c:\LimeSurvey-S/statistics_user.php:938
 msgid "Minimum"
 msgstr "Minimum"
 
 # C:\limesurvey/admin/statistics.php:1378
 # C:\limesurvey/admin/statistics.php:1494
-#: c:\LimeSurvey-S/statistics_user.php:964
-#: c:\LimeSurvey-S/statistics_user.php:1582
-#: c:\LimeSurvey-S/statistics_user.php:1596
-#: c:\LimeSurvey-S/statistics_user.php:1669
+#: c:\LimeSurvey-S/statistics_user.php:979
+#: c:\LimeSurvey-S/statistics_user.php:1599
+#: c:\LimeSurvey-S/statistics_user.php:1613
+#: c:\LimeSurvey-S/statistics_user.php:1686
 msgid "Count"
 msgstr "Liczba"
 
 # C:\limesurvey/admin/statistics.php:1138
-#: c:\LimeSurvey-S/statistics_user.php:998
+#: c:\LimeSurvey-S/statistics_user.php:1013
 msgid "1st quartile (Q1)"
 msgstr "1 kwartyl (Q1)"
 
 # C:\limesurvey/admin/statistics.php:1160
-#: c:\LimeSurvey-S/statistics_user.php:1032
+#: c:\LimeSurvey-S/statistics_user.php:1047
 msgid "2nd quartile (Median)"
 msgstr "2 kwartyl (Mediana)"
 
 # C:\limesurvey/admin/statistics.php:1188
-#: c:\LimeSurvey-S/statistics_user.php:1075
+#: c:\LimeSurvey-S/statistics_user.php:1090
 msgid "3rd quartile (Q3)"
 msgstr "3 kwartyl (Q3)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: c:\LimeSurvey-S/statistics_user.php:1091
+#: c:\LimeSurvey-S/statistics_user.php:1106
 msgid "Maximum"
 msgstr "Maksimum"
 
 # C:\limesurvey/admin/statistics.php:1208
-#: c:\LimeSurvey-S/statistics_user.php:1105
+#: c:\LimeSurvey-S/statistics_user.php:1120
 msgid "Null values are ignored in calculations"
 msgstr "Wartości zerowe zostały pominięte"
 
 # C:\limesurvey/admin/statistics.php:1209
-#: c:\LimeSurvey-S/statistics_user.php:1106
+#: c:\LimeSurvey-S/statistics_user.php:1121
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 i Q3 obliczane przy pomocy %s"
 
 # C:\limesurvey/admin/statistics.php:1209
-#: c:\LimeSurvey-S/statistics_user.php:1106
+#: c:\LimeSurvey-S/statistics_user.php:1121
 msgid "minitab method"
 msgstr "metoda minitab"
 
 # C:\limesurvey/admin/statistics.php:1208
-#: c:\LimeSurvey-S/statistics_user.php:1121
+#: c:\LimeSurvey-S/statistics_user.php:1136
 msgid "Not enough values for calculation"
 msgstr "Zbyt mało danych do obliczeń"
 
@@ -3078,21 +3078,21 @@ msgstr "Zbyt mało danych do obliczeń"
 # C:\limesurvey/admin/statistics.php:1022
 # C:\limesurvey/admin/statistics.php:1037
 # C:\limesurvey/admin/statistics.php:1376
-#: c:\LimeSurvey-S/statistics_user.php:1580
-#: c:\LimeSurvey-S/statistics_user.php:1594
-#: c:\LimeSurvey-S/statistics_user.php:1667
+#: c:\LimeSurvey-S/statistics_user.php:1597
+#: c:\LimeSurvey-S/statistics_user.php:1611
+#: c:\LimeSurvey-S/statistics_user.php:1684
 msgid "Answer"
 msgstr "Odpowiedź"
 
 # C:\limesurvey/admin/statistics.php:1380
-#: c:\LimeSurvey-S/statistics_user.php:1584
-#: c:\LimeSurvey-S/statistics_user.php:1598
-#: c:\LimeSurvey-S/statistics_user.php:1671
+#: c:\LimeSurvey-S/statistics_user.php:1601
+#: c:\LimeSurvey-S/statistics_user.php:1615
+#: c:\LimeSurvey-S/statistics_user.php:1688
 msgid "Percentage"
 msgstr "Procent"
 
 # C:\limesurvey/index.php:490
-#: c:\LimeSurvey-S/statistics_user.php:1752
+#: c:\LimeSurvey-S/statistics_user.php:1769
 msgid "Non completed"
 msgstr "Niezakończone"
 
@@ -3101,20 +3101,20 @@ msgstr "Niezakończone"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/statistics_user.php:2038
+#: c:\LimeSurvey-S/statistics_user.php:2055
 msgid "Answers"
 msgstr "Odpowiedzi"
 
-#: c:\LimeSurvey-S/statistics_user.php:2044
+#: c:\LimeSurvey-S/statistics_user.php:2061
 msgid "Number of cases"
 msgstr "Liczba przypadków"
 
-#: c:\LimeSurvey-S/statistics_user.php:2158
+#: c:\LimeSurvey-S/statistics_user.php:2175
 msgid "Arithmetic mean"
 msgstr "Średnia arytmetyczna"
 
 # C:\limesurvey/admin/statistics.php:1571
-#: c:\LimeSurvey-S/statistics_user.php:2368
+#: c:\LimeSurvey-S/statistics_user.php:2385
 msgid "Completed"
 msgstr "Ukończone"
 
@@ -3533,8 +3533,8 @@ msgstr "Nie, dziękujemy."
 
 # C:\limesurvey/admin/admin.php:289
 # C:\limesurvey/admin/admin.php:300
-#: c:\LimeSurvey-S/admin/admin.php:572
-#: c:\LimeSurvey-S/admin/admin.php:585
+#: c:\LimeSurvey-S/admin/admin.php:567
+#: c:\LimeSurvey-S/admin/admin.php:580
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Podręcznik Online"
 
@@ -3542,7 +3542,7 @@ msgstr "LimeSurvey Podręcznik Online"
 # C:\limesurvey/admin/exportresults.php:240
 # C:\limesurvey/admin/exportresults.php:246
 # C:\limesurvey/admin/exportresults.php:297
-#: c:\LimeSurvey-S/admin/admin.php:633
+#: c:\LimeSurvey-S/admin/admin.php:628
 msgid "Help"
 msgstr "Pomoc"
 
@@ -5249,7 +5249,7 @@ msgstr "Kody pytań"
 
 #: c:\LimeSurvey-S/admin/exportresults.php:203
 msgid "Convert spaces in question text to underscores"
-msgstr "Konwertuj spacje na podkreślenia w tekściei pytania"
+msgstr "Konwertuj spacje na podkreślenia w tekście pytania"
 
 #: c:\LimeSurvey-S/admin/exportresults.php:205
 msgid "Include"
@@ -7016,7 +7016,7 @@ msgstr "Ustawić cookie, aby zapobiec powtórnemu uczestnictwu?"
 #: c:\LimeSurvey-S/admin/html.php:2576
 #: c:\LimeSurvey-S/admin/html.php:3410
 msgid "Use CAPTCHA for"
-msgstr "Użyj CAPTCHA dla"
+msgstr "Użyj CAPTCHA do"
 
 # C:\limesurvey/common.php:354
 # C:\limesurvey/admin/html.php:246
@@ -7565,34 +7565,34 @@ msgstr "Import zestawu etykiet zakończony."
 msgid "Quick Statistics"
 msgstr "Statystyka"
 
-# C:\limesurvey/admin/importoldresponses.php:64
+# C:\limesurvey/common.php:1267
 #: c:\LimeSurvey-S/admin/importoldresponses.php:51
-msgid "Import responses from an old (deactivated) survey table into an active survey"
-msgstr "Zaimportuj odpowiedzi ze starej (nie aktywnej) ankiety do ankiety aktywnej"
+msgid "Import responses from an deactivated survey table"
+msgstr "Importuj odpowiedzi z tabeli deaktywowanej ankiety"
 
 # C:\limesurvey/admin/importoldresponses.php:68
 #: c:\LimeSurvey-S/admin/importoldresponses.php:55
-msgid "Target Survey ID"
-msgstr "ID docelowej ankiety"
+msgid "Target survey ID:"
+msgstr "ID docelowej ankiety:"
 
 # C:\limesurvey/admin/importoldresponses.php:73
 #: c:\LimeSurvey-S/admin/importoldresponses.php:60
-msgid "Source table"
-msgstr "Tabela źródłowa"
+msgid "Source table:"
+msgstr "Tabela źródłowa:"
 
 # C:\limesurvey/admin/importoldresponses.php:83
-#: c:\LimeSurvey-S/admin/importoldresponses.php:70
+#: c:\LimeSurvey-S/admin/importoldresponses.php:67
 msgid "Import Responses"
 msgstr "Importuj odpowiedzi"
 
 # C:\limesurvey/admin/importoldresponses.php:83
 # C:\limesurvey/admin/labels.php:252
-#: c:\LimeSurvey-S/admin/importoldresponses.php:70
+#: c:\LimeSurvey-S/admin/importoldresponses.php:67
 #: c:\LimeSurvey-S/admin/labels.php:262
 msgid "Are you sure?"
 msgstr "Czy na pewno?"
 
-#: c:\LimeSurvey-S/admin/importoldresponses.php:76
+#: c:\LimeSurvey-S/admin/importoldresponses.php:69
 msgid "Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
 msgstr "Ostrzeżenie: Możesz zaimportować wszystkie stare odpowiedzi z taką samą liczbą kolumn co aktywna ankieta. Musisz się upewnić, że odpowiedzi te są przyporządkowane do pytań aktywnej ankiety."
 
@@ -8395,24 +8395,24 @@ msgstr "Przypomnij hasło"
 
 # C:\limesurvey/admin/printablesurvey.php:690
 #: c:\LimeSurvey-S/admin/printablesurvey.php:125
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1774
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1784
 msgid "Submit Your Survey."
 msgstr "Wyślij ankietę."
 
 # C:\limesurvey/admin/printablesurvey.php:691
 #: c:\LimeSurvey-S/admin/printablesurvey.php:127
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1774
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1784
 msgid "Thank you for completing this survey."
 msgstr "Dziękujemy za wypełnienie ankiety. "
 
 # C:\limesurvey/admin/printablesurvey.php:691
-#: c:\LimeSurvey-S/admin/printablesurvey.php:140
+#: c:\LimeSurvey-S/admin/printablesurvey.php:141
 msgid "Please fax your completed survey to:"
 msgstr "Wyślij wypełnioną ankietę na numer faksu:"
 
 # C:\limesurvey/admin/statistics.php:736
-#: c:\LimeSurvey-S/admin/printablesurvey.php:145
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1768
+#: c:\LimeSurvey-S/admin/printablesurvey.php:147
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1778
 #, php-format
 msgid "Please submit by %s"
 msgstr "Prosimy o dostarczenie ankiety przed %s"
@@ -8422,8 +8422,8 @@ msgstr "Prosimy o dostarczenie ankiety przed %s"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/admin/printablesurvey.php:418
-#: c:\LimeSurvey-S/admin/printablesurvey.php:446
+#: c:\LimeSurvey-S/admin/printablesurvey.php:428
+#: c:\LimeSurvey-S/admin/printablesurvey.php:456
 msgid "Answer was"
 msgstr "Odpowiedź była"
 
@@ -8432,7 +8432,7 @@ msgstr "Odpowiedź była"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/admin/printablesurvey.php:422
+#: c:\LimeSurvey-S/admin/printablesurvey.php:432
 msgid "Answer was NOT"
 msgstr "Odpowiedź NIE była"
 
@@ -8441,25 +8441,25 @@ msgstr "Odpowiedź NIE była"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/admin/printablesurvey.php:426
+#: c:\LimeSurvey-S/admin/printablesurvey.php:436
 msgid "Answer was less than"
 msgstr "Odpowiedź była mniejsza niż"
 
-#: c:\LimeSurvey-S/admin/printablesurvey.php:430
+#: c:\LimeSurvey-S/admin/printablesurvey.php:440
 msgid "Answer was less than or equal to"
 msgstr "Odpowiedź była mniejsza lub równa"
 
-#: c:\LimeSurvey-S/admin/printablesurvey.php:434
+#: c:\LimeSurvey-S/admin/printablesurvey.php:444
 msgid "Answer was greater than or equal to"
 msgstr "Odpowiedź była większa lub równa"
 
 # C:\limesurvey/admin/statistics.php:152
 # C:\limesurvey/admin/statistics.php:301
-#: c:\LimeSurvey-S/admin/printablesurvey.php:438
+#: c:\LimeSurvey-S/admin/printablesurvey.php:448
 msgid "Answer was greater than"
 msgstr "Odpowiedź była większa niż"
 
-#: c:\LimeSurvey-S/admin/printablesurvey.php:442
+#: c:\LimeSurvey-S/admin/printablesurvey.php:452
 msgid "Answer matched (regexp)"
 msgstr "Odpowiedź spełnia warunki (regexp)"
 
@@ -8467,22 +8467,22 @@ msgstr "Odpowiedź spełnia warunki (regexp)"
 # C:\limesurvey/admin/importlabel.php:215
 # C:\limesurvey/admin/importsurvey.php:1021
 # C:\limesurvey/admin/labels.php:273
-#: c:\LimeSurvey-S/admin/printablesurvey.php:592
-#: c:\LimeSurvey-S/admin/printablesurvey.php:599
+#: c:\LimeSurvey-S/admin/printablesurvey.php:602
+#: c:\LimeSurvey-S/admin/printablesurvey.php:609
 msgid "Label"
 msgstr "Etykieta"
 
-#: c:\LimeSurvey-S/admin/printablesurvey.php:624
+#: c:\LimeSurvey-S/admin/printablesurvey.php:634
 msgid "RANK"
 msgstr "RANGOWANIE"
 
 # C:\limesurvey/admin/printablesurvey.php:231
-#: c:\LimeSurvey-S/admin/printablesurvey.php:642
+#: c:\LimeSurvey-S/admin/printablesurvey.php:652
 msgid "at question"
 msgstr "w pytaniu"
 
 # C:\limesurvey/admin/dataentry.php:1591
-#: c:\LimeSurvey-S/admin/printablesurvey.php:650
+#: c:\LimeSurvey-S/admin/printablesurvey.php:660
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Pozwól na udzielanie odpowiedzi, gdy spełnione są warunki:"
 
@@ -8492,72 +8492,72 @@ msgstr "Pozwól na udzielanie odpowiedzi, gdy spełnione są warunki:"
 # C:\limesurvey/admin/printablesurvey.php:346
 # C:\limesurvey/admin/printablesurvey.php:388
 # C:\limesurvey/admin/printablesurvey.php:527
-#: c:\LimeSurvey-S/admin/printablesurvey.php:713
-#: c:\LimeSurvey-S/admin/printablesurvey.php:714
-#: c:\LimeSurvey-S/admin/printablesurvey.php:738
-#: c:\LimeSurvey-S/admin/printablesurvey.php:745
-#: c:\LimeSurvey-S/admin/printablesurvey.php:763
-#: c:\LimeSurvey-S/admin/printablesurvey.php:764
-#: c:\LimeSurvey-S/admin/printablesurvey.php:835
-#: c:\LimeSurvey-S/admin/printablesurvey.php:837
-#: c:\LimeSurvey-S/admin/printablesurvey.php:898
-#: c:\LimeSurvey-S/admin/printablesurvey.php:899
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1130
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1134
+#: c:\LimeSurvey-S/admin/printablesurvey.php:723
+#: c:\LimeSurvey-S/admin/printablesurvey.php:724
+#: c:\LimeSurvey-S/admin/printablesurvey.php:748
+#: c:\LimeSurvey-S/admin/printablesurvey.php:755
+#: c:\LimeSurvey-S/admin/printablesurvey.php:773
+#: c:\LimeSurvey-S/admin/printablesurvey.php:774
+#: c:\LimeSurvey-S/admin/printablesurvey.php:845
+#: c:\LimeSurvey-S/admin/printablesurvey.php:847
+#: c:\LimeSurvey-S/admin/printablesurvey.php:908
+#: c:\LimeSurvey-S/admin/printablesurvey.php:909
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1140
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1144
 msgid "Please choose *only one* of the following:"
 msgstr "Proszę wybrać jedną odpowiedź z poniższych:"
 
 # C:\limesurvey/admin/printablesurvey.php:275
-#: c:\LimeSurvey-S/admin/printablesurvey.php:730
-#: c:\LimeSurvey-S/admin/printablesurvey.php:732
+#: c:\LimeSurvey-S/admin/printablesurvey.php:740
+#: c:\LimeSurvey-S/admin/printablesurvey.php:742
 msgid "Please enter a date:"
 msgstr "Proszę wprowadzić datę"
 
 # C:\limesurvey/admin/printablesurvey.php:402
-#: c:\LimeSurvey-S/admin/printablesurvey.php:925
+#: c:\LimeSurvey-S/admin/printablesurvey.php:935
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Proszę ponumerować elementy wg stopnia istotności począwszy od 1 do"
 
 # C:\limesurvey/admin/printablesurvey.php:402
-#: c:\LimeSurvey-S/admin/printablesurvey.php:926
+#: c:\LimeSurvey-S/admin/printablesurvey.php:936
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Proszę ponumerować elementy wg stopnia istotności począwszy od 1 do"
 
 # C:\limesurvey/admin/printablesurvey.php:421
-#: c:\LimeSurvey-S/admin/printablesurvey.php:949
-#: c:\LimeSurvey-S/admin/printablesurvey.php:950
+#: c:\LimeSurvey-S/admin/printablesurvey.php:959
+#: c:\LimeSurvey-S/admin/printablesurvey.php:960
 msgid "Please choose *all* that apply:"
 msgstr "Proszę wybrać wszystkie, które pasują"
 
 # C:\limesurvey/admin/printablesurvey.php:425
-#: c:\LimeSurvey-S/admin/printablesurvey.php:955
-#: c:\LimeSurvey-S/admin/printablesurvey.php:956
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1028
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1029
+#: c:\LimeSurvey-S/admin/printablesurvey.php:965
+#: c:\LimeSurvey-S/admin/printablesurvey.php:966
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1038
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1039
 msgid "Please choose *at most* "
 msgstr "Proszę wybrać najwyżej"
 
 # C:\limesurvey/admin/printablesurvey.php:425
-#: c:\LimeSurvey-S/admin/printablesurvey.php:955
-#: c:\LimeSurvey-S/admin/printablesurvey.php:956
+#: c:\LimeSurvey-S/admin/printablesurvey.php:965
+#: c:\LimeSurvey-S/admin/printablesurvey.php:966
 msgid "answers:"
 msgstr "odpowiedzi:"
 
 # C:\limesurvey/admin/printablesurvey.php:481
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1022
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1023
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1032
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1033
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Proszę wybrać wszystkie pasujące odpowiedzi oraz dodać komentarz"
 
 # C:\limesurvey/admin/printablesurvey.php:481
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1028
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1029
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1038
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1039
 msgid "answers and provide a comment:"
 msgstr "odpowiedzi i dodać komentarz:"
 
 # C:\limesurvey/admin/printablesurvey.php:496
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1066
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1068
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1076
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1078
 msgid "Please write your answer(s) here:"
 msgstr "Proszę wpisać odpowiedź/odpowiedzi tutaj:"
 
@@ -8565,14 +8565,14 @@ msgstr "Proszę wpisać odpowiedź/odpowiedzi tutaj:"
 # C:\limesurvey/admin/printablesurvey.php:515
 # C:\limesurvey/admin/printablesurvey.php:519
 # C:\limesurvey/admin/printablesurvey.php:523
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1085
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1087
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1094
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1095
 #: c:\LimeSurvey-S/admin/printablesurvey.php:1097
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1104
 #: c:\LimeSurvey-S/admin/printablesurvey.php:1107
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1110
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1117
 #: c:\LimeSurvey-S/admin/printablesurvey.php:1120
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1123
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1130
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1133
 msgid "Please write your answer here:"
 msgstr "Proszę wpisać odpowiedź tutaj:"
 
@@ -8582,30 +8582,30 @@ msgstr "Proszę wpisać odpowiedź tutaj:"
 # C:\limesurvey/admin/printablesurvey.php:590
 # C:\limesurvey/admin/printablesurvey.php:610
 # C:\limesurvey/admin/printablesurvey.php:647
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1144
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1161
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1198
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1206
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1233
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1247
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1273
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1287
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1472
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1481
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1552
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1554
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1646
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1647
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1154
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1171
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1208
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1216
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1243
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1257
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1283
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1297
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1482
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1491
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1562
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1564
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1656
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1657
 msgid "Please choose the appropriate response for each item:"
 msgstr "Proszę wybrać odpowiednią odpowiedź przy każdym elemencie:"
 
 # C:\limesurvey/common.php:1868
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1698
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1708
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 
 # C:\limesurvey/admin/printablesurvey.php:691
-#: c:\LimeSurvey-S/admin/printablesurvey.php:1772
+#: c:\LimeSurvey-S/admin/printablesurvey.php:1782
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Wyślij wypełnioną ankietę na numer faksu: %s"
@@ -8986,84 +8986,101 @@ msgid "Filter settings"
 msgstr "Ustawienia filtrów"
 
 # C:\limesurvey/common.php:699
-#: c:\LimeSurvey-S/admin/statistics.php:246
+#: c:\LimeSurvey-S/admin/statistics.php:256
 msgid "General Filters"
 msgstr "Podstawowe filtry"
 
 # C:\limesurvey/admin/statistics.php:152
 # C:\limesurvey/admin/statistics.php:301
-#: c:\LimeSurvey-S/admin/statistics.php:256
-#: c:\LimeSurvey-S/admin/statistics.php:504
-#: c:\LimeSurvey-S/admin/statistics.php:623
+#: c:\LimeSurvey-S/admin/statistics.php:266
+#: c:\LimeSurvey-S/admin/statistics.php:514
+#: c:\LimeSurvey-S/admin/statistics.php:633
 msgid "Number greater than"
 msgstr "Liczba większa niż"
 
 # C:\limesurvey/admin/statistics.php:156
 # C:\limesurvey/admin/statistics.php:305
-#: c:\LimeSurvey-S/admin/statistics.php:260
-#: c:\LimeSurvey-S/admin/statistics.php:510
-#: c:\LimeSurvey-S/admin/statistics.php:629
+#: c:\LimeSurvey-S/admin/statistics.php:270
+#: c:\LimeSurvey-S/admin/statistics.php:520
+#: c:\LimeSurvey-S/admin/statistics.php:639
 msgid "Number less than"
 msgstr "Liczba mniejsza niż"
 
 # C:\limesurvey/admin/statistics.php:178
 # C:\limesurvey/admin/statistics.php:319
-#: c:\LimeSurvey-S/admin/statistics.php:285
-#: c:\LimeSurvey-S/admin/statistics.php:678
+#: c:\LimeSurvey-S/admin/statistics.php:295
+#: c:\LimeSurvey-S/admin/statistics.php:688
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Data (RRRR-MM-DD) równa"
 
 # C:\limesurvey/admin/statistics.php:182
 # C:\limesurvey/admin/statistics.php:323
-#: c:\LimeSurvey-S/admin/statistics.php:289
-#: c:\LimeSurvey-S/admin/statistics.php:684
+#: c:\LimeSurvey-S/admin/statistics.php:299
+#: c:\LimeSurvey-S/admin/statistics.php:694
 msgid "OR between"
 msgstr "LUB pomiędzy"
 
 # C:\limesurvey/admin/statistics.php:254
 # C:\limesurvey/admin/statistics.php:276
 # C:\limesurvey/admin/statistics.php:292
-#: c:\LimeSurvey-S/admin/statistics.php:554
-#: c:\LimeSurvey-S/admin/statistics.php:584
-#: c:\LimeSurvey-S/admin/statistics.php:607
-#: c:\LimeSurvey-S/admin/statistics.php:1015
+#: c:\LimeSurvey-S/admin/statistics.php:564
+#: c:\LimeSurvey-S/admin/statistics.php:594
+#: c:\LimeSurvey-S/admin/statistics.php:617
+#: c:\LimeSurvey-S/admin/statistics.php:1025
 msgid "Responses containing"
 msgstr "Odpowiedzi zawierające"
 
-#: c:\LimeSurvey-S/admin/statistics.php:1898
+#: c:\LimeSurvey-S/admin/statistics.php:1908
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "Nie zainstalowano biblioteki GD. Pokazywanie wykresów nie działa prawidłowo bez biblioteki GD."
 
-#: c:\LimeSurvey-S/admin/statistics.php:1899
-#: c:\LimeSurvey-S/admin/statistics.php:1903
+#: c:\LimeSurvey-S/admin/statistics.php:1909
+#: c:\LimeSurvey-S/admin/statistics.php:1913
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "więcej informacji znajdziesz na stronie: http://us2.php.net/manual/en/ref.image.php"
 
-#: c:\LimeSurvey-S/admin/statistics.php:1902
+#: c:\LimeSurvey-S/admin/statistics.php:1912
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr "Nie zainstalowano biblioteki Freetype. Do prawidłowego pokazywania wykresów potrzebna jest biblioteka Freetype."
 
 # C:\limesurvey/admin/statistics.php:651
-#: c:\LimeSurvey-S/admin/statistics.php:1913
+#: c:\LimeSurvey-S/admin/statistics.php:1923
 msgid "View summary of all available fields"
 msgstr "Pokaż statystyki dla wszystkich pytań"
 
 # C:\limesurvey/admin/browse.php:548
 # C:\limesurvey/admin/tokens.php:501
-#: c:\LimeSurvey-S/admin/statistics.php:1916
+#: c:\LimeSurvey-S/admin/statistics.php:1926
 msgid "Show graphs"
 msgstr "Pokaż wykresy"
 
-#: c:\LimeSurvey-S/admin/statistics.php:1922
+#: c:\LimeSurvey-S/admin/statistics.php:1932
 msgid "Include:"
 msgstr "Uwzględnij:"
 
-#: c:\LimeSurvey-S/admin/statistics.php:1946
+# C:\limesurvey/admin/browse.php:602
+# C:\limesurvey/admin/dataentry.php:390
+# C:\limesurvey/admin/dataentry.php:1351
+#: c:\LimeSurvey-S/admin/statistics.php:1933
+msgid "All records"
+msgstr "Wszystkie rekordy"
+
+# C:\limesurvey/admin/templates.php:187
+# C:\limesurvey/admin/templates.php:370
+#: c:\LimeSurvey-S/admin/statistics.php:1934
+msgid "Completed records only"
+msgstr "Tylko zakończone rekordy"
+
+#: c:\LimeSurvey-S/admin/statistics.php:1935
+msgid "Incomplete records only"
+msgstr "Tylko niezakończone rekordy"
+
+#: c:\LimeSurvey-S/admin/statistics.php:1956
 msgid "Don't consider NON completed responses"
 msgstr "Nie uwzględniaj ankiet nieukończonych"
 
 # C:\limesurvey/admin/statistics.php:659
-#: c:\LimeSurvey-S/admin/statistics.php:1950
+#: c:\LimeSurvey-S/admin/statistics.php:1960
 msgid "View stats"
 msgstr "Pokaż statystyki"
 
@@ -10758,10 +10775,23 @@ msgstr "Na podany adres wysłano email z wygenerowanym hasłem."
 msgid "Set User Rights"
 msgstr "Zarządzanie prawami użytkownika"
 
+# C:\limesurvey/admin/html.php:1444
+# C:\limesurvey/admin/html.php:1450
+# C:\limesurvey/admin/html.php:1504
+# C:\limesurvey/admin/usercontrol.php:164
+# C:\limesurvey/admin/usercontrol.php:168
 # C:\limesurvey/admin/usercontrol.php:224
+# C:\limesurvey/admin/userrighthandling.php:976
+# C:\limesurvey/admin/userrighthandling.php:982
 #: c:\LimeSurvey-S/admin/usercontrol.php:397
-msgid "Username and/or email address already exists."
-msgstr "Nazwa użytkownika i/lub adres email juz istnieje."
+msgid "Failed to add user."
+msgstr "Użytkownik nie został dodany."
+
+# C:\limesurvey/admin/html.php:1444
+# C:\limesurvey/admin/userrighthandling.php:976
+#: c:\LimeSurvey-S/admin/usercontrol.php:397
+msgid "The user name already exists."
+msgstr "Ta nazwa użytkownika już istnieje."
 
 # C:\limesurvey/admin/usercontrol.php:240
 #: c:\LimeSurvey-S/admin/usercontrol.php:415
@@ -11119,7 +11149,7 @@ msgstr "Zmień numer nowego rekordu."
 # C:\limesurvey/admin/vvimport.php:63
 #: c:\LimeSurvey-S/admin/vvimport.php:91
 msgid "Replace the existing record."
-msgstr "Zastąp istniejący rekord"
+msgstr "Zastąp istniejący rekord."
 
 #: c:\LimeSurvey-S/admin/vvimport.php:93
 msgid "Import as not finalized answers?"
@@ -11149,7 +11179,7 @@ msgstr "Pominięto rekord ID %d z powodu zdublowania ID."
 #: c:\LimeSurvey-S/admin/vvimport.php:278
 #, php-format
 msgid "Import Failed on Record %d because [%s]"
-msgstr "Błąd przy imporcie rekordu %d (powód: [%s])"
+msgstr "Błąd przy imporcie rekordu %d z powodu [%s]"
 
 # C:\limesurvey/admin/vvimport.php:230
 #: c:\LimeSurvey-S/admin/vvimport.php:292
@@ -11186,7 +11216,7 @@ msgstr "Utwórz bazę danych"
 # C:\limesurvey/admin/install/index.php:61
 # C:\limesurvey/admin/install/index.php:73
 #: c:\LimeSurvey-S/admin/install/createdb.php:33
-#: c:\LimeSurvey-S/admin/install/createdb.php:84
+#: c:\LimeSurvey-S/admin/install/createdb.php:87
 #: c:\LimeSurvey-S/admin/install/index.php:43
 #: c:\LimeSurvey-S/admin/install/index.php:55
 msgid "Populate Database"
@@ -11194,32 +11224,32 @@ msgstr "Zapełnij bazę danych"
 
 # C:\limesurvey/admin/createdb.php:55
 # C:\limesurvey/admin/install/createdb.php:55
-#: c:\LimeSurvey-S/admin/install/createdb.php:40
+#: c:\LimeSurvey-S/admin/install/createdb.php:43
 #, php-format
 msgid "Database `%s` has been successfully populated."
 msgstr "Baza danych `%s` została pomyślnie zapełniona."
 
 # C:\limesurvey/admin/createdb.php:69
 # C:\limesurvey/admin/install/createdb.php:69
-#: c:\LimeSurvey-S/admin/install/createdb.php:55
+#: c:\LimeSurvey-S/admin/install/createdb.php:58
 msgid "Database Information not provided. This script must be run from admin.php only."
-msgstr "Dostęp do bazy zabroniony. Skrypt może być uruchamiany jedynie za pomocą admin.php!"
+msgstr "Brak informacji o bazie danych. Skrypt może być uruchamiany jedynie z poziomu admin.php!"
 
 # C:\limesurvey/admin/createdb.php:93
 # C:\limesurvey/admin/install/createdb.php:93
-#: c:\LimeSurvey-S/admin/install/createdb.php:81
+#: c:\LimeSurvey-S/admin/install/createdb.php:84
 msgid "Database has been created."
-msgstr "Baza danych została utworzona"
+msgstr "Baza danych została utworzona."
 
 # C:\limesurvey/admin/createdb.php:94
 # C:\limesurvey/admin/install/createdb.php:94
-#: c:\LimeSurvey-S/admin/install/createdb.php:82
+#: c:\LimeSurvey-S/admin/install/createdb.php:85
 msgid "Please click below to populate the database"
 msgstr "Kliknij poniżej, aby zapełnić bazę danych"
 
 # C:\limesurvey/admin/createdb.php:101
 # C:\limesurvey/admin/install/createdb.php:101
-#: c:\LimeSurvey-S/admin/install/createdb.php:89
+#: c:\LimeSurvey-S/admin/install/createdb.php:92
 msgid "Could not create database"
 msgstr "Nie można utworzyć bazy danych"
 
@@ -11234,12 +11264,12 @@ msgstr "Ustawienia LimeSurvey"
 # C:\limesurvey/admin/install/index.php:52
 #: c:\LimeSurvey-S/admin/install/index.php:34
 msgid "Welcome to LimeSurvey Setup!"
-msgstr "Witamy w instalacji LimeSurvey!"
+msgstr "Witamy w programie instalacyjnym LimeSurvey!"
 
 # C:\limesurvey/admin/install/index.php:53
 #: c:\LimeSurvey-S/admin/install/index.php:35
 msgid "The database defined in config.php does not exist."
-msgstr "Baza danych zdefiniowana w pliku config.php nie istnieje"
+msgstr "Baza danych zdefiniowana w pliku config.php nie istnieje."
 
 # C:\limesurvey/admin/install/index.php:54
 #: c:\LimeSurvey-S/admin/install/index.php:36
@@ -11336,7 +11366,7 @@ msgstr "holenderski"
 
 #: c:\LimeSurvey-S/classes/core/surveytranslator.php:210
 msgid "Dutch Informal"
-msgstr "Holenderski nieformalny"
+msgstr "holenderski nieformalny"
 
 # C:\limesurvey/classes/core/surveytranslator.php:91
 #: c:\LimeSurvey-S/classes/core/surveytranslator.php:216
