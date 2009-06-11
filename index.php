@@ -995,7 +995,15 @@ function checkconfield($value)
 	//$value is the fieldname for the field we are checking for conditions
 	foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
 	{
-		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
+//		if ($sfa[1] == $value && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
+
+		// we know the true fieldname $value (for instance SGQA for each checkboxes)
+		// and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
+		// ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
+		//     the $_SESSION['fieldnamesInfo'] translation table
+		$masterFieldName = $_SESSION['fieldnamesInfo'][$value];
+
+		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 		{
 			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
 				." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
