@@ -226,7 +226,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-	global $clang, $imagefiles, $homeurl, $rooturl, $fckeditordir;
+	global $clang, $imagefiles, $homeurl, $rooturl, $fckeditordir, $fckeditexpandtoolbar;
 
 	$htmlcode = '';
 	$imgopts = '';
@@ -246,6 +246,13 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 		. "$oFCKeditorVarName.Config[\"ToolbarCanCollapse\"]=false;\n"
 		. "$oFCKeditorVarName.Height = \"50\"\n";
 	}
+	else
+	{
+		if (!isset($fckeditexpandtoolbar) || $fckeditexpandtoolbar == true)
+		{
+			$toolbaroption .= "$oFCKeditorVarName.Config[\"ToolbarStartExpanded\"]=true;\n";
+		}
+	}
 
 	if ( $fieldtype == 'email-inv' ||
 		$fieldtype == 'email-reg' ||
@@ -254,6 +261,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 	{
 		$htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n";
 	}
+
 
 	$htmlcode .= ""
 	. "<script type=\"text/javascript\">\n"
