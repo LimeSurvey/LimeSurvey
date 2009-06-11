@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-11 00:49+0100\n"
-"PO-Revision-Date: 2009-06-11 00:50+0100\n"
+"PO-Revision-Date: 2009-06-11 10:27+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:301
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Achtung: Sie benutzen immer noch das Standardkennword ('password'). Bitte ändern Sie Ihr Passwort und loggen Sie sich erneut ein."
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:303
 msgid "Administration"
@@ -706,7 +706,7 @@ msgstr "Nachname"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2978
 msgid "Email Address"
-msgstr "Email-Addresse"
+msgstr "Email-Adresse"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3022
 #: D:\web\xampp\htdocs\limesurvey/index.php:1710
@@ -734,7 +734,7 @@ msgstr "Antwortlänge"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3253
 msgid "Filter an array's answers from a Multiple Options Question"
-msgstr "Filtere eine Matrixfrage mit Hilfe einer Mutiple-Choice Frage"
+msgstr "Filtere eine Matrixfrage mit Hilfe einer Multiple-Choice Frage"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3254
 msgid "Array filter"
@@ -1008,7 +1008,7 @@ msgstr "Ersetzt den Text 'Anderer Wert' mit einem eigenen Text"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3434
 msgid "\"Other\" caption"
-msgstr "\"Andere Anwort\" Beschriftung"
+msgstr "\"Andere Antwort\" Beschriftung"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:3438
 msgid "Show statistics of a certain question to the user"
@@ -2150,7 +2150,7 @@ msgstr "Gruppenname bearbeiten"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/activate.php:249
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
-msgstr "Vordefinierte Antworten bearbeiten (ausser bei Fragen mit  Mehrfach-Auswahl)"
+msgstr "Vordefinierte Antworten bearbeiten (außer bei Fragen mit Mehrfach-Auswahl)"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/activate.php:249
 msgid "Change survey name or description"
@@ -2908,7 +2908,7 @@ msgstr "Löschen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:1036
 msgid "Failed to delete answer"
-msgstr "Konnte Anwort nicht löschen"
+msgstr "Konnte Antwort nicht löschen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/database.php:1042
 msgid "Default"
@@ -3468,7 +3468,7 @@ msgstr "Spalten auswählen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:338
 msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
-msgstr "Ihre Umfrage enthält mehr als 255 Antwortspalten. Spreadsheet Programme wie Excel importieren max. 255 Spalten. Wählen Sie die zu exportierenden Spalten aus der unten stehenden Liste."
+msgstr "Ihre Umfrage enthält mehr als 255 Antwortspalten. Tabellenkalkulationsprogramme wie Excel importieren max. 255 Spalten. Wählen Sie die zu exportierenden Spalten aus der unten stehenden Liste."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:344
 msgid "Choose the columns you wish to export."
@@ -3881,7 +3881,7 @@ msgstr "Ihre persönlichen Einstellungen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:238
 msgid "Interface language"
-msgstr "Administrations-Sprache"
+msgstr "Administrationssprache"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:251
 msgid "HTML editor mode"
@@ -4863,7 +4863,7 @@ msgstr "Datumsformat:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3014
 msgid "Current survey has questions with conditions outside their own group"
-msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen ausserhalb der eigenen Gruppe."
+msgstr "Die aktuelle Umfrage besitzt Fragen mit Bedingungen außerhalb der eigenen Gruppe."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/html.php:3014
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
@@ -4943,7 +4943,7 @@ msgstr "Starte HTML-Editor im Popup-Fenster"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr "Focus auf das HTML Editor Popup -Fenster setzen"
+msgstr "Fokus auf das HTML Editor Popup-Fenster setzen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/htmleditor-popup.php:37
 #: D:\web\xampp\htdocs\limesurvey/admin/htmleditor-popup.php:45
@@ -5008,7 +5008,7 @@ msgstr "Import teilweise erfolgreich."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:663
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
-msgstr "Die folgenden Sprachen in der Grupper wurden nicht importiert, da die Umfrage eine solche Sprache nicht enthält:"
+msgstr "Die folgenden Sprachen dieser Gruppe wurden nicht importiert, da die Umfrage eine solche Sprache nicht enthält:"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:674
 msgid "Group Import Summary"
@@ -5291,7 +5291,7 @@ msgstr "Importierte Dateiliste"
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:151
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr "Dieses ZIP-Archiv entält keine gültigen Ressourcen-Dateien. Import fehlgeschlagen."
+msgstr "Dieses ZIP-Archiv enthält keine gültigen Ressourcen-Dateien. Import fehlgeschlagen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:152
 #: D:\web\xampp\htdocs\limesurvey/admin/import_resources_zip.php:331
@@ -5491,7 +5491,7 @@ msgstr "Es sind keine Datenänderungen notwendig."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:243
 msgid "Should we proceed with the delete?"
-msgstr "Möchten Sie mit dem Löschen forfahren?"
+msgstr "Möchten Sie mit dem Löschen fortfahren?"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:286
 msgid "Yes - Delete Them!"
@@ -5508,7 +5508,7 @@ msgstr "Lösche Umfrage ID"
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:321
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:329
 msgid "Deleting Assessments"
-msgstr "Lösche Assessments"
+msgstr "Lösche Bewertungsregen"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:323
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:331
@@ -5708,7 +5708,7 @@ msgstr "Fehler beim Aktualisieren des Labels"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/labels.php:804
 msgid "Can't update labels because you are using duplicated codes"
-msgstr "Aktualisierung nicht möglich: idente Beschriftungscodes können nicht mehrfach verwendet werden"
+msgstr "Aktualisierung nicht möglich: gleiche Beschriftungscodes können nicht mehrfach verwendet werden"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/labels.php:838
 msgid "Failed to delete label"
@@ -6223,7 +6223,7 @@ msgstr "Antworten enthalten"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1908
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
-msgstr "Sie haben die GD Bibiliothek nicht installiert. Sie benötigen diese, um Statistikgrafiken zu zeigen."
+msgstr "Sie haben die GD Bibliothek nicht installiert. Sie benötigen diese, um Statistikgrafiken zu zeigen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1909
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1913
@@ -6232,7 +6232,7 @@ msgstr "Besuchen Sie http://us2.php.net/manual/en/ref.image.php um weitere Infor
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1912
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
-msgstr "Sie haben die Freetype Bibiliothek nicht installiert. Sie benötigen diese, um Statistikgrafiken zu zeigen."
+msgstr "Sie haben die Freetype Bibliothek nicht installiert. Sie benötigen diese, um Statistikgrafiken zu zeigen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1923
 msgid "View summary of all available fields"
@@ -6384,7 +6384,7 @@ msgstr "Verzeichnis konnte nicht nach  `%s` umbenannt werden."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:214
 msgid "Maybe you don't have permission."
-msgstr "Evenuell haben Sie keine Rechte."
+msgstr "Eventuell haben Sie nicht die benötigten Rechte."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:250
 #: D:\web\xampp\htdocs\limesurvey/admin/templates.php:262
@@ -8035,7 +8035,7 @@ msgstr "Französisch"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:240
 msgid "Galician"
-msgstr "Galizisch"
+msgstr "Galicisch"
 
 #: D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:246
 msgid "German"
