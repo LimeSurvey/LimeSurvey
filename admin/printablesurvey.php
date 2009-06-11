@@ -135,10 +135,12 @@ $survey_output = array(
 
 
 
+$survey_output['FAX_TO'] ='';        
 if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 {
 	$survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
 }
+
 
 if ($surveystartdate!='')
 {
