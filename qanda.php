@@ -2683,15 +2683,16 @@ function do_multiplechoice($ia)
 
 		if ($maxansw > 0)
 		{
-		//TODO: implement the other_comment_mandatory attribute 
-		// and a new db field for other cbox
 		//
 		// For multiplechoice question there is no DB field for the other Checkbox
 		// so in fact I need to assume that other_comment_mandatory is set to true
-		// otherwise, the min/max asnwer script will conflict with the 
-		// MANDATORY status of the question
-		// ==> hence the 1==1
-			if (1==1 ||$other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+		// I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
+		// For the maxanswer script, I will alert the participant
+		// if the limit is reached when he checks the other cbox 
+		// even if the -other- input field is still empty
+		// This will be differetn for the minansw script
+		// ==> hence the 1==2
+			if (1==2 ||$other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
 			{
 				$maxanswscript .= "\t\t\t\t\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n"; 
 			}
@@ -2702,13 +2703,10 @@ function do_multiplechoice($ia)
 		}
 		if ($minansw > 0)
 		{ 
-		//TODO: implement the other_comment_mandatory attribute 
-		// and a new db field for other cbox
 		//
 		// For multiplechoice question there is no DB field for the other Checkbox
 		// so in fact I need to assume that other_comment_mandatory is set to true
-		// otherwise, the min/max asnwer script will conflict with the 
-		// MANDATORY status of the question
+		// We only count the -other- as valid if both the cbox and the other text is filled
 		// ==> hence the 1==1
 			if (1==1 || $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
 			{
