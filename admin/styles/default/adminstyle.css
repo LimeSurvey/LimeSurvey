@@ -807,4 +807,12 @@ div.messagebox .warningheader {
     margin: 5px 0;
     padding:2px;  
 }
+      
+.conditiontbl td {
+    text-align:left;
+}
 
+
+.conditiontbl td:first-child {
+    text-align:right;
+}

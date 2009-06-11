@@ -660,13 +660,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 .ui-slider-1 { 
     width: 200px; 
-    height: 23px; 
-    padding: 1px; 
-    position: relative; 
-    background-image: url(../../images/slider-bg-1.png); 
-    background-repeat: no-repeat; 
-    background-position: center center; 
+    height: 9px; 
+    margin-bottom: 20px; 
 }
+
 
 .ui-slider-2 { 
     width: 200px; 
@@ -682,9 +679,10 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     width: 100px; 
     overflow: hidden; 
     position: absolute; 
-    top: -17px; 
-    margin-left:+15px; 
-    font-family: 'Myriad Pro'; 
+    top: -19px; 
+    margin-left:10px; 
+    font-family: 'Arial'; 
+    font-size: 9pt; 
     color: #284a6e; 
     font-weight: bold; 
     text-align: left;
