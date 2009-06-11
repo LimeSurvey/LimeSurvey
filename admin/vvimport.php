@@ -229,32 +229,32 @@ else
             
             $fielddata=array_combine($fieldnames,$fieldvalues);
             
-            if ($fielddata['[submitdate]']=='NULL') unset ($fielddata['[submitdate]']); 
+            if ($fielddata[db_quote_id('submitdate')]=='NULL') unset ($fielddata[db_quote_id('submitdate')]); 
             
             $recordexists=false;     
             if (isset($fielddata['[id]']))
             {
-                $result = $connect->Execute("select id from $surveytable where id=".$fielddata['[id]']);     
+                $result = $connect->Execute("select id from $surveytable where id=".$fielddata[db_quote_id('id')]);     
                 $recordexists=$result->RecordCount()>0;
                 if ($recordexists)  // record with same id exists
                 {
                     if ($insertstyle=="ignore") 
                     {
-                        $vvoutput .=sprintf($clang->gT("Record ID %d was skipped because of duplicate ID."), $fielddata['[id]']).'<br/>';
+                        $vvoutput .=sprintf($clang->gT("Record ID %d was skipped because of duplicate ID."), $fielddata[db_quote_id('id')]).'<br/>';
                         continue;
                     }
                     if ($insertstyle=="replace")
                     {
-                        $result = $connect->Execute("delete from $surveytable where id=".$fielddata['[id]']);
+                        $result = $connect->Execute("delete from $surveytable where id=".$fielddata['id']);
                         $recordexists=false;     
                     } 
                 }
             }
 			if ($insertstyle=="renumber")
 			{
-                unset($fielddata['[id]']);
+                unset($fielddata['id']);
             }
-            if (isset($fielddata['[id]']))
+            if (isset($fielddata['id']))
             {
                if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." ON");}   //Checked
             }
@@ -266,7 +266,7 @@ else
 			    $insert .= "('".implode("', '", array_values($fielddata))."')\n";
 			    $result = $connect->Execute($insert);
 
-            if (isset($fielddata['[id]']))
+            if (isset($fielddata['id']))
             {
                if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." OFF");}   //Checked
             }
