@@ -1006,6 +1006,10 @@ function checkconfield($value)
 			$evalNextScenario = true;
 			while ($evalNextScenario === true && $scenariorow=$scenarioresult->FetchRow())
 			{
+				$aAllCondrows=Array();
+				$cqval=Array();
+				$container=Array();
+
 				$scenario = $scenariorow['scenario'];
 				$currentcfield="";
 				$query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
