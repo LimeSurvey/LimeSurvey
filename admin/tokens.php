@@ -1913,13 +1913,13 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	switch($subaction)
 	{
 		case "edit":
-			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update Token")."' />\n"
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Update token entry")."' />\n"
 			."\t\t<input type='hidden' name='subaction' value='updatetoken' />\n"
 			."\t\t<input type='hidden' name='tid' value='{$tokenid}' />\n"
 			."\t\t<input type='hidden' name='urlextra' value='&amp;start=".$_GET['start']."&amp;limit=".$_GET['limit']."&amp;order=".$_GET['order']."' />\n";
 			break;
 		case "addnew":
-			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add Token")."' />\n"
+			$tokenoutput .= "\t\t<input type='submit' value='".$clang->gT("Add token entry")."' />\n"
 			."\t\t<input type='hidden' name='subaction' value='inserttoken' />\n";
 			break;
 	}
