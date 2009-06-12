@@ -183,6 +183,7 @@ else
 	}
 	$importcount=0;
 	$recordcount=0;
+    $fieldnames=array_map('db_quote_id',$fieldnames);
 	foreach($bigarray as $row)
 	{
 		if (trim($row) != "")
@@ -225,7 +226,6 @@ else
 			// make this safe for DB (*after* we undo first excel's
 			// and then our escaping).
 			$fieldvalues=array_map('db_quote',$fieldvalues);
-			$fieldnames=array_map('db_quote_id',$fieldnames);
             
             $fielddata=array_combine($fieldnames,$fieldvalues);
             
