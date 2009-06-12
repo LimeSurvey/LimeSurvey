@@ -2083,7 +2083,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				if ($arow['type'] == "P")
 				{
 					$_SESSION['insertarray'][] = $fieldname.$abrow['code']."comment";
-				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname."comment" => $fieldname)); 
+				$_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."comment" => $fieldname)); 
 				}
 			}
 			if (isset($alsoother) && $alsoother) //Add an extra field for storing "Other" answers
