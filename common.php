@@ -5803,31 +5803,21 @@ function checkquestionfordisplay($qid, $gid=null)
 				while($row2=$result2->FetchRow())
 				{
 					$cq_gid=$row2['gid'];
-				//Find out the "type" of the question this condition uses
-				$thistype=$row2['type'];
-			}
+					//Find out the "type" of the question this condition uses
+					$thistype=$row2['type'];
+				}
 			}
 
 
-			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
-			{
-				//Don't do anything - this cq is in the current group
-			}
-			elseif ($thistype == "M" || $thistype == "P")
+			
+			// Fix the cfieldname and cvalue in case of type M or P questions
+			if ($thistype == "M" || $thistype == "P")
 			{
 				// For multiple choice type questions, the "answer" value will be "Y"
 				// if selected, the fieldname will have the answer code appended.
-				$fieldname=$row['cfieldname'].$row['value'];
-				$cvalue="Y";     
-				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
+				$row['cfieldname']=$row['cfieldname'].$row['value'];
+				$row['value']="Y";     
 			}
-			elseif ($thistype == "+M" || $thistype == "+P")
-			{
-				$fieldname=$row['cfieldname'];
-				$cvalue=$row['value'];
-				if (isset($_SESSION[$fieldname])) { $cfieldname=$_SESSION[$fieldname]; } else { $cfieldname=""; }
-			}
-
 			
 			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
 			{
@@ -5895,7 +5885,6 @@ function checkquestionfordisplay($qid, $gid=null)
 			else
 			{
 							$conditionCanBeEvaluated=false;
-							//$cfieldname=' ';
 						}
 					}
 					elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
@@ -5919,30 +5908,30 @@ function checkquestionfordisplay($qid, $gid=null)
 				else
 				{ // if _SESSION[$targetconditionfieldname[1]] is not set then evaluate condition as FALSE
 					$conditionCanBeEvaluated=false;
-					//$cfieldname=' ';
 				}
 			}
 			else
 			{
-				//For all other questions, the "answer" value will be the answer code.
 				$cvalue=$row['value'];
-
 				if ($conditionSourceType == 'question')
 				{
-				if (isset($_SESSION[$row['cfieldname']]))
-				{
-					$cfieldname=$_SESSION[$row['cfieldname']];
-				} 
-				else 
-				{
-					//$cfieldname=' ';
-					$conditionCanBeEvaluated=false;
+					if (isset($_SESSION[$row['cfieldname']]))
+					{
+						$cfieldname=$_SESSION[$row['cfieldname']];
+					} 
+					elseif ($thistype == "M" || $thistype == "P" || $thistype == "+M" || $thistype == "+P")
+					{
+						$cfieldname="";
+					}
+					else 
+					{
+						$conditionCanBeEvaluated=false;
+					}
 				}
-			}
 				elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
 				{
 					if ( isset($_SESSION['token']) &&
-						in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 					{
 						$cfieldname=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);	
 					}
@@ -5953,7 +5942,7 @@ function checkquestionfordisplay($qid, $gid=null)
 
 				}
 				else
-			{
+				{
 					$conditionCanBeEvaluated=false;
 				}
 			}
