@@ -688,7 +688,7 @@ getreferringurl();
 if ($thissurvey['tokenanswerspersistence'] == 'Y' &&
 	!isset($_SESSION['srid']) && 
 	$thissurvey['private'] == "N" &&
-	$thissurvey['active'] == "Y" && $token !='')
+	$thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
 	// load previous answers if any (dataentry with nosubmit)
 	$srquery="SELECT id FROM {$thissurvey['tablename']}"
