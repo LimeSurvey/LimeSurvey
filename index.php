@@ -2129,6 +2129,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			    foreach($lset as $ls)
 			    {
 				    $_SESSION['insertarray'][] = $fieldname.$abrow['code']."_".$ls['code'];
+				    $_SESSION['fieldnamesInfo'] = array_merge($_SESSION['fieldnamesInfo'], Array($fieldname.$abrow['code']."_".$ls['code'] => $fieldname)); 
 			    }
 			}
 		}
