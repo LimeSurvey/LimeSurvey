@@ -3521,11 +3521,11 @@ if (isset($summary) && $summary)
 							{
 								//four columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></th>\n"
-								."\t\t<th width='20%' align='center' >"
+								."\t\t<th width='15%' align='center' >"
 								."<strong>".$clang->gT("Count")."</strong></th>\n"
 								."\t\t<th width='20%' align='center' >"
 								."<strong>".$clang->gT("Percentage")."</strong></th>\n"
-								."\t\t<th width='10%' align='center' >"
+								."\t\t<th width='15%' align='center' >"
 								."<strong>".$clang->gT("Sum")."</strong></th>\n"
 								."\t</tr></thead>\n";
 
@@ -3743,18 +3743,18 @@ if (isset($summary) && $summary)
 				 * 2 (25%) = count (absolute)
 				 * 3 (25%) = percentage
 				 */
-				$statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >" . $label[$i] ."\n"
+				$statisticsoutput .= "\t<tr>\n\t\t<td align='center' >" . $label[$i] ."\n"
 				."\t\t</td>\n"
                 
 				//output absolute number of records
-				."\t\t<td width='20%' align='center' >" . $grawdata[$i] . "\n";
+				."\t\t<td align='center' >" . $grawdata[$i] . "\n";
 
 
 				//no data
 				if ($gdata[$i] == "N/A")
 				{
 					//output when having no data
-					$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+					$statisticsoutput .= "\t\t</td><td  align='center' >";
 					 
 					//percentage = 0
 					$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
@@ -3823,7 +3823,7 @@ if (isset($summary) && $summary)
 							}
 							 
 							//output
-							$statisticsoutput .= "\t\t</td><td width='20%' align='center'>";
+							$statisticsoutput .= "\t\t</td><td align='center'>";
 							 
 							//output percentage
 							$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
@@ -3860,11 +3860,11 @@ if (isset($summary) && $summary)
 							}
 							 
 							//output percentage
-							$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 								
 							//output again (no real aggregation here)
-							$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
 							$statisticsoutput .= "\t\t";
 						}
@@ -3903,11 +3903,11 @@ if (isset($summary) && $summary)
 							$aggregatedgdata = $percentage + $percentage2;
 							 
 							//output percentage
-							$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 								
 							//output aggregated data
-							$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 							$statisticsoutput .= "\t\t";
 						}
@@ -3943,11 +3943,11 @@ if (isset($summary) && $summary)
 							$aggregatedgdata = $percentage + $percentage2;
 							 
 							//output percentage
-							$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 								
 							//output aggregated data
-							$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 							$statisticsoutput .= "\t\t";
 							 
@@ -3979,17 +3979,17 @@ if (isset($summary) && $summary)
 							}
 							 
 							$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
-							$statisticsoutput .= "<tfoot><tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
-							$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
-							$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
-							$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
+							$statisticsoutput .= "<tr><td align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
+							$statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
+							$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
+							$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
 							 
 							$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
-							$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
-							$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
-							$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
+							$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
+							$statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
+							$statisticsoutput .= "<td align='center' >$casepercentage%</td>";
 							//there has to be a whitespace within the table cell to display correctly
-							$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr></tfoot>";
+							$statisticsoutput .= "<td align='center' >&nbsp</td></tr>";
 							 
 						}
 
@@ -3999,7 +3999,7 @@ if (isset($summary) && $summary)
 					else
 					{
 						//output percentage
-						$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+						$statisticsoutput .= "\t\t</td><td align='center' >";
 						$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
 						$statisticsoutput .= "\t\t";
 					}
@@ -4100,9 +4100,9 @@ if (isset($summary) && $summary)
 
 					//calculate standard deviation
 					$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Arithmetic mean")."</td>";	//German: "Fallzahl"
-					$statisticsoutput .= "<td align='center' colspan='3'> $am</td>";
+					$statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
 					$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
-					$statisticsoutput .= "<td align='center' colspan='3'>$stddev</td></tr>";
+					$statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
 				}
 			}
 
