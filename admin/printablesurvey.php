@@ -91,7 +91,7 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 }
 
 
-if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$notsupportlanguages))
+if(isset($usepdfexport) && $usepdfexport == 2 && !in_array($surveyprintlang,$notsupportlanguages))
 {
 	$pdf_form = '
 <form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
