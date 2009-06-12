@@ -1848,9 +1848,9 @@ function browsemenubar($title='')
 		. "title='' alt='' /></a>\n"
 		. "\t\t\t<a href='$scriptname?action=exportspss&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
 		. "title=\"".$clang->gTview("Export results to an SPSS command file")."\" "
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a SPSS command file", "js")."')\">"
+		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a SPSS/PASW command file", "js")."')\">"
 		. "<img src='$imagefiles/exportspss.png' "
-		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS command file")."' /></a>\n"
+		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS/PASW command file")."' /></a>\n"
         . "\t\t\t<a href='$scriptname?action=exportr&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
         . "title=\"".$clang->gTview("Export result to a SPSS command file")."\" "
         . "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a R data file", "js")."')\">"
@@ -3662,9 +3662,12 @@ function getAdminHeader($meta=false)
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n";
+    if ($_SESSION['adminlang']!='en')
+    {
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+    }
+    $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"    
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
