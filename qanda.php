@@ -738,12 +738,18 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	$qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 	
 	$c = 1;
+// START: <EMBED> work-around step 1
+	$qtitle_custom = preg_replace( '/(<embed[^>]+>)(<\/embed>)/i' , '\1NOT_EMPTY\2' , $qtitle_custom );
+// END <EMBED> work-around step 1
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
 		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1 , $matches );
 		$c = $matches;
 	};
+// START <EMBED> work-around step 2
+	$qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
+// END <EMBED> work-around step 2
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
