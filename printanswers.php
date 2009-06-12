@@ -132,7 +132,7 @@ if (isset($_SESSION['s_lang']))
 }
 	//SHOW HEADER
     $printoutput = '';
-    if(isset($usepdfexport) && $usepdfexport == 1)
+    if(isset($usepdfexport) && $usepdfexport == 2)
     {
         $printoutput .= "<form action='printanswers.php?printableexport=pdf' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
     }
