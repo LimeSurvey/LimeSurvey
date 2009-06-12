@@ -1001,7 +1001,14 @@ function checkconfield($value)
 		// and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
 		// ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
 		//     the $_SESSION['fieldnamesInfo'] translation table
-		$masterFieldName = $_SESSION['fieldnamesInfo'][$value];
+		if ($value != 'token')
+		{
+			$masterFieldName = $_SESSION['fieldnamesInfo'][$value];
+		}
+		else
+		{
+			$masterFieldName = 'token';
+		}
 
 		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
 		{
