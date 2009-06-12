@@ -4330,7 +4330,7 @@ function showSpeaker($hinttext)
 	{
 		$shortstring = FlattenText($hinttext);
 
-		$shortstring = htmlspecialchars(mb_substr($hinttext, 0, $maxchars));
+        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));          
 
 		//output with hoover effect
 		$reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "

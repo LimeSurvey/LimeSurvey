@@ -2037,33 +2037,30 @@ $conditionsoutput .= "</table>\n";
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
-	$hinttext=str_replace("'", "`", $hinttext);
-	$hinttext=str_replace("\r","",$hinttext);
-	$hinttext=str_replace("\n","",$hinttext);
-	$hinttext=strip_tags($hinttext);
 
 	if(!isset($max))
 	{
-		$max = 12;
+		$max = 20;
 	}
-
-	if(strlen($hinttext) > ($max))
+    $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
+    $jshinttext=javascript_escape($hinttext,true,true);
+    
+	if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
 	{
-		$shortstring = strip_tags($hinttext);
+        $shortstring = FlattenText($hinttext);
 
-		//create short string
-		$shortstring = substr($hinttext, 0, $max);
+        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));          
 
-		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' title=\"".html_escape($hinttext)."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" >"
-           ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />";
+        //output with hoover effect
+        $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
+        ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
+        ." \"$shortstring...\" </span>"
+        ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+        ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
 	}
 	else
 	{
-		$reshtml= "<span alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\"> \"$hinttext\"</span>";
+        $reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";                
 	}
 
   return $reshtml; 
