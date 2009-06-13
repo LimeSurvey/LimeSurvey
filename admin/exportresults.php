@@ -433,7 +433,7 @@ $tokenTableExists=tokenTableExists($surveyid);
 
 if ($tokenTableExists)
 {
-    $attributeFieldAndNames=GetTokenFieldsAndNames($surveyid);
+    $attributeFieldAndNames=GetTokenFieldsAndNames($surveyid,true);
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 

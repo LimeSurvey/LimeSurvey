@@ -6226,4 +6226,17 @@ function use_firebug()
         return '<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>';
     };
 };
- 
+
+/**
+* This is a convenience function for the coversion of datetime values
+*  
+* @param mixed $value
+* @param mixed $fromdateformat
+* @param mixed $todateformat
+* @return string
+*/
+function convertDateTimeFormat($value, $fromdateformat, $todateformat)
+{
+    $datetimeobj = new Date_Time_Converter($value , $fromdateformat);
+    return $datetimeobj->convert($todateformat);                
+}

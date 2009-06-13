@@ -126,10 +126,16 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 	while ($brow = $bresult->FetchRow())
 	{
 
-        $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
-        $brow['validfrom']=$datetimeobj->convert('Y-m-d H:i');   
-        $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
-        $brow['validuntil']=$datetimeobj->convert('Y-m-d H:i');   
+        if (trim($brow['validfrom']!=''))
+        {
+            $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
+            $brow['validfrom']=$datetimeobj->convert('Y-m-d H:i');   
+        }
+        if (trim($brow['validuntil']!=''))
+        {
+            $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
+            $brow['validuntil']=$datetimeobj->convert('Y-m-d H:i');   
+        }
 
         $tokenoutput .= '"'.trim($brow['tid'])."\",";
 		$tokenoutput .= '"'.trim($brow['firstname'])."\",";
