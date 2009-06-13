@@ -371,8 +371,14 @@ $standard_templates_readonly    =  true;
 
 
 
-//PDF Export Settings
-$usepdfexport   = 1;                       //Set 0 to disable; 1 to enable 
+/**
+*  PDF Export Settings   
+*  This feature activates PDF export for printable survey and Print Answers
+*  The PDF export is totally experimental. The output is mostly ugly.
+*  At this point no support can be given - if you want to help to fix it please get in touch with us
+*/
+
+$usepdfexport   = 0;                       //Set 0 to disable; 1 to enable 
 $pdfdefaultfont = 'freemono';              //Default font for the pdf Export
 $pdffontsize    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $notsupportlanguages = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
