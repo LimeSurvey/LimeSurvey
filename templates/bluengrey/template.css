@@ -278,7 +278,7 @@ width:100%;
 }
 
 .printouttable td {
-border-color:#fff #fff #ddf;
+border-color:#fff #fff #ddf #000;
 border-style:solid;
 border-width:1px;
 }
