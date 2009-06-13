@@ -184,6 +184,22 @@ else
 	$importcount=0;
 	$recordcount=0;
     $fieldnames=array_map('db_quote_id',$fieldnames);
+    
+    //now find out which fields are datefields, these have to be null if the imported string is empty
+    $fieldmap=createFieldMap($surveyid);
+    $datefields=array();
+    $numericfields=array();
+    foreach ($fieldmap as $field)
+    {
+        if ($field['type']=='D')
+        {
+            $datefields[]=$field['fieldname'];
+        }
+        if ($field['type']=='N' || $field['type']=='K')
+        {
+            $numericfields[]=$field['fieldname'];
+        }    
+    }
 	foreach($bigarray as $row)
 	{
 		if (trim($row) != "")
@@ -229,6 +245,21 @@ else
             
             $fielddata=array_combine($fieldnames,$fieldvalues);
             
+            foreach ($datefields as $datefield)
+            {
+                if ($fielddata[db_quote_id($datefield)]=='')
+                {
+                    unset($fielddata[db_quote_id($datefield)]); 
+                }
+            }
+            
+            foreach ($numericfields as $numericfield)
+            {
+                if ($fielddata[db_quote_id($numericfield)]=='')
+                {
+                    unset($fielddata[db_quote_id($numericfield)]); 
+                }
+            }
             if ($fielddata[db_quote_id('submitdate')]=='NULL') unset ($fielddata[db_quote_id('submitdate')]); 
             
             $recordexists=false;     
