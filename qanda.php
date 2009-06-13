@@ -3022,38 +3022,7 @@ function do_multiplechoice_withcomments($ia)
 		$inputnames[]=$myfname;
 		$inputnames[]=$myfname2;
 	}
-	$label_width = round($label_width * 0.5);
-	if($label_width < 2) $label_width = 2;
-	switch($label_width / 2)
-	{
-		case 1: 
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15:	$label_width = $label_width;
-				break;
-		default:	++$label_width;
-	}
-	if($label_width > 20)
-	{
-		$label_width = 'X-large';
-	}
-	else
-	{
-		$label_width = 'X'.$label_width;
-	}
-
-	$answer .= '<ul class="'.$label_width."\">\n".$answer_main."</ul>\n";
+	$answer .= "<ul>\n".$answer_main."</ul>\n";
 
 
 	if ( $maxansw > 0 )
@@ -3241,51 +3210,8 @@ function do_multipleshorttext($ia)
 			$inputnames[]=$myfname;
 		}
 	}
-	$label_width = round($label_width * 0.6);
-	if($label_width < 2) $label_width = 2;
-	switch($label_width / 2)
-	{
-		case 1: 
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15:	$label_width = $label_width;
-				break;
-		default:	++$label_width;
-	}
-	if (!empty($numbersonly))
-	{
-		$class_num_only = ' numbers-only';
-		if($label_width > 30)
-		{
-			$label_width = 'X-large';
-		}
-	}
-	else
-	{
-		if($label_width > 20)
-		{
-			$label_width = 'X-large';
-		}
-		$class_num_only = '';
-	}
 
-	if($label_width != 'X-large')
-	{
-		$label_width = 'X'.$label_width;
-	}
-
-	$answer .= '<ul class="'.$label_width.$class_num_only."\">\n".$answer_main."</ul>\n";
+	$answer .= "<ul>\n".$answer_main."</ul>\n";
 
 	return array($answer, $inputnames);
 }
@@ -3575,96 +3501,21 @@ function do_multiplenumeric($ia)
 			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %s'),$min_num_value)."</p>\n";
 		}
 
-		$label_width = round($label_width * 0.8);
-		if($label_width < 2) $label_width = 2;
-		switch($label_width / 2)
-		{
-			case 1: 
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-			case 11:
-			case 12:
-			case 13:
-			case 14:
-			case 15:	$label_width = $label_width;
-					break;
-			default:	++$label_width;
-		}
 		if ($maxvalue || $equalvalue || $minvalue)
 		{
-			$class_computed = ' computed';
-			if($label_width > 20)
-			{
-				$label_width = 'X-large';
-				$comp_width = $label_width;
-			}
-			else
-			{
-				$comp_width = $label_width;
-				if( isset($prefix) && !empty($prefix) )
-				{
-					$comp_width = $comp_width + round(strlen($prefix) * 0.8);
-				};
-				if(isset($suffix) && !empty($suffix))
-				{
-					$comp_width = $comp_width + round(strlen($suffix) * 0.8);
-				}
-				if($comp_width > 20)
-				{
-					$comp_width = 'X-large';
-				}
-				else
-				{
-					$comp_width = 'X'.$comp_width;
-				}
-			}
+            $answer_computed = '';
+            if ($equalvalue)
+            {
+                $answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"remainingvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Remaining: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size=10 type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
+            }
+			$answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"totalvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Total: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size=10  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
+            $answer_main.=$answer_computed;            
 		}
-		else
-		{
-			if($label_width > 30)
-			{
-				$label_width = 'X-large';
-			}
-			$class_computed = '';
-		}
-
-		if ($slider_layout)
-		{
-			$label_width = 'slider';
-			$comp_width = $label_width;
-		}
-		else
-		{
-			if($label_width != 'X-large')
-			{
-				$label_width = 'X'.$label_width;
-			}
-		}
-		$answer_computed = '';
-		if ($maxvalue || $equalvalue || $minvalue)
-		{
-			$answer_computed  = "\n<ul class=\"multiplenumerichelp $comp_width\">\n";
-			$answer_computed .= "\t<li>\n\t\t<label for=\"totalvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Total: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
-			if ($equalvalue)
-			{
-				$answer_computed .= "\t<li>\n\t\t<label for=\"remainingvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Remaining: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
-			}
-			$answer_computed .= "</ul>\n";
-		}
-		$answer .= $question_tip.'<ul class="'.$label_width.$class_computed."\">\n".$answer_main."</ul>\n".$answer_computed;
+		$answer .= $question_tip."<ul>\n".$answer_main."</ul>\n";
 	}
-	$answer_computed = isset($answer_computed)?$answer_computed:'';
-	$answer .= $answer_computed;
 //just added these here so its easy to change in one place
-	$errorClass = 'tip error';
-	$goodClass = ' tip good';
+	$errorClass = 'tip problem';
+	$goodClass = 'tip good';
 /* ==================================
 Style to be applied to all templates.
 .numeric-multi p.tip.error
@@ -3693,7 +3544,7 @@ Style to be applied to all templates.
 		$answer .= "       totalvalue_".$ia[1]."=(";
 		$answer .= implode(" + ", $javainputnames);
 		$answer .= ")/1000;\n";
-		$answer .= "       document.getElementById('totalvalue_{$ia[1]}').value=parseFloat(totalvalue_{$ia[1]});\n";
+		$answer .= "       $('#totalvalue_{$ia[1]}').val(parseFloat(totalvalue_{$ia[1]}));\n";
 		$answer .= "       var ua = navigator.appVersion.indexOf('MSIE');\n";
 		$answer .= "       var ieAtt = ua != -1 ? 'className' : 'class';\n";
 		$answer .= "       switch(method)\n";

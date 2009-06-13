@@ -1229,61 +1229,6 @@ function longest_string( $new_string , $longest_length )
 	return $longest_length;	
 };
 
-function label_class_width( $longest_length , $type = 'text' )
-{
-/**
- * label_class_width() generates a class identifyer to be inserted into an HTML element
- * 
- * @peram integer representing the length longest string in a list.
- * @peram string representing possible options: 'text' (default), checkbox, numeric
- *
- * @return string representing a CSS class.
- */
-	if($type == 'numeric')
-	{ // numeric input box is generally smaller than so the label can afford to be longer
-		$too_long = 30;
-	}
-	else
-	{
-		$too_long = 20;
-	};
-	if($type == 'checkbox')
-	{ // if a other is being used for a single option list question, there is a preceeding radio button, pushing the label text over by about 3ems
-		$longest_length = $longest_length + 2;
-	}
-	
-	$longest_length = round($longest_length * 0.6);
-	if($longest_length < 2) $longest_length = 2;
-	switch($longest_length / 2)
-	{
-		case 1: 
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-		case 15:	$longest_length = $longest_length;
-				break;
-		default:	++$longest_length;
-	}
-	if($longest_length > $too_long)
-	{
-		$label_width = 'X-large';
-	}
-	else
-	{
-		$label_width = 'X'.$longest_length;
-	};
-	return $label_width;
-};
 
 
 /**

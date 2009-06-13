@@ -463,19 +463,19 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
-[class=multiple-opt-comments] ul
+.multiple-opt-comments ul
 {
 	display: table;
 	padding: 0%;
 	margin: 1em 1em 1em 0.5em;
 }
-[class=multiple-short-txt] ul
+.multiple-short-txt ul
 {
 	display: table;
 	padding: 0%;
 	margin: 1em;
 }
-[class=numeric-multi] ul
+.numeric-multi ul
 {
 	display: table;
 	padding: 0%;
@@ -491,35 +491,35 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 {
 	width: 18em;
 }
- [class=multiple-opt-comments] ul li
-,[class=multiple-short-txt] ul li
-,[class=numeric-multi] ul li
+ .multiple-opt-comments ul li
+,.multiple-short-txt ul li
+,.numeric-multi ul li
 {
 	display: table-row;
 }
-[class=multiple-opt-comments] ul li span.option
+.multiple-opt-comments ul li span.option
 {
 	padding: 0.3em 1em 0% 2em;
 	text-indent: -2em;
 	display: table-cell;
 	vertical-align: baseline;
 }
- [class=multiple-short-txt] ul li label
-,[class=numeric-multi] ul li label
+ .multiple-short-txt ul li label
+,.numeric-multi ul li label
 {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
 	vertical-align: baseline;
 }
-[class=numeric-multi] ul.computed li label
-[class=numeric-multi] ul.slider.computed li label
+.numeric-multi ul.computed li label
+.numeric-multi ul.slider.computed li label
 {
 	padding-right: 0%;
 }
 
- [class=multiple-opt-comments] ul li span.comment
-,[class=multiple-short-txt] ul li span
-,[class=numeric-multi] ul li span
+ .multiple-opt-comments ul li span.comment
+,.multiple-short-txt ul li span
+,.numeric-multi ul li span
 {
 	padding: 0.3em 0% 0% 1em;
 	display: table-cell;
@@ -536,13 +536,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 .numeric-multi ul.multiplenumerichelp.slider	{	display: table;	}
 .numeric-multi ul.multiplenumerichelp.slider li	{	display: table-row;	}
 
- [class=numeric-multi] ul.multiplenumerichelp li label
+ .numeric-multi ul.multiplenumerichelp li label
 ,.numeric-multi ul.multiplenumerichelp.slider li label
 {
 	padding: 0.3em 0% 0% 0%;
 	display: table-cell;
 }
- [class=numeric-multi] ul.multiplenumerichelp li span
+ .numeric-multi ul.multiplenumerichelp li span
 ,.numeric-multi ul.multiplenumerichelp.slider li span
 {
 	padding: 0% 0% 0% 0.5em;

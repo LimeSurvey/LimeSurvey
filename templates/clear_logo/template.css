@@ -397,20 +397,20 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .language {}
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
- [class=multiple-opt-comments] td.answer
-,[class=multiple-short-txt] td.answer
-,[class=numeric-multi] td.answer
+ .multiple-opt-comments td.answer
+,.multiple-short-txt td.answer
+,.numeric-multi td.answer
 {
 }
- [class=multiple-opt-comments] td.answer ul
-,[class=multiple-short-txt] td.answer ul
-,[class=numeric-multi] td.answer ul
+ .multiple-opt-comments td.answer ul
+,.multiple-short-txt td.answer ul
+,.numeric-multi td.answer ul
 {
 	display: table;
 	padding: 0%;
 	margin: 1em;
 }
-[class=numeric-multi] td.answer ul	{	margin: 0% 1em 1.5em 1em;	}
+.numeric-multi td.answer ul	{	margin: 0% 1em 1.5em 1em;	}
 
 .numeric-multi td.answer ul.computed
 {
@@ -421,29 +421,29 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	width: 16em;
 }
- [class=multiple-opt-comments] td.answer ul li
-,[class=multiple-short-txt] td.answer ul li
-,[class=numeric-multi] td.answer ul li
+ .multiple-opt-comments td.answer ul li
+,.multiple-short-txt td.answer ul li
+,.numeric-multi td.answer ul li
 {
 	display: table-row;
 }
- [class=multiple-short-txt] td.answer ul li label
-,[class=multiple-short-txt] td.answer ul li label
-,[class=numeric-multi] td.answer ul li label
+ .multiple-short-txt td.answer ul li label
+,.multiple-short-txt td.answer ul li label
+,.numeric-multi td.answer ul li label
 {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
 	vertical-align: baseline;
 }
-[class=numeric-multi] td.answer ul.computed li label
-[class=numeric-multi] td.answer ul.slider.computed li label
+.numeric-multi td.answer ul.computed li label
+.numeric-multi td.answer ul.slider.computed li label
 {
 	padding-right: 0%;
 }
 
- [class=multiple-opt-comments] td.answer ul li span.comment
-,[class=multiple-short-txt] td.answer ul li span
-,[class=numeric-multi] td.answer ul li span
+ .multiple-opt-comments td.answer ul li span.comment
+,.multiple-short-txt td.answer ul li span
+,.numeric-multi td.answer ul li span
 {
 	padding: 0.3em 0% 0% 1em;
 	display: table-cell;
@@ -451,7 +451,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	font-size: 80%;
 	white-space: nowrap;
 }
-[class=multiple-opt-comments] td.answer ul li span
+.multiple-opt-comments td.answer ul li span
 {
 	padding: 0.3em 1em 0% 0%;
 }
@@ -465,13 +465,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 ,.numeric-multi td.answer ul.multiplenumerichelp.slider	{	display: table; font-size: 80%;	}
 .numeric-multi td.answer ul.multiplenumerichelp.slider li	{	display: table-row;	}
 
- [class=numeric-multi] td.answer ul.multiplenumerichelp li label
+ .numeric-multi td.answer ul.multiplenumerichelp li label
 ,.numeric-multi td.answer ul.multiplenumerichelp.slider li label
 {
 	padding: 0.3em 0% 0% 0%;
 	display: table-cell;
 }
- [class=numeric-multi] td.answer ul.multiplenumerichelp li span
+ .numeric-multi td.answer ul.multiplenumerichelp li span
 ,.numeric-multi td.answer ul.multiplenumerichelp.slider li span
 {
 	padding: 0% 0% 0% 0.3em;

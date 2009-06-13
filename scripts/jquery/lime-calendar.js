@@ -9,7 +9,7 @@ $(document).ready(function(){
                           showOn: 'both',
                           changeYear: true, 
                           changeMonth: true, 
-                          duration: 'fast',
+                          duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
     $('.year').change(dateUpdater);
