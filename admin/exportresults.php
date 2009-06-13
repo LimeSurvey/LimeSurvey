@@ -460,7 +460,7 @@ switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c
 		$result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
 		$row = $result->FetchRow();
 		
-		$sheet =& $workbook->addWorksheet($row['surveyls_title']);
+		$sheet =& $workbook->addWorksheet(utf8_decode($row['surveyls_title']));
 		$sheet->setInputEncoding('utf-8');
 		$separator="~|";
 		break;
