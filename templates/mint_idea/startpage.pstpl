@@ -1,20 +1,23 @@
-    <title>
-	   SURVEY: {SURVEYNAME}
-	</title>
-    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-<!--[if IE]>
-    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>SURVEY: {SURVEYNAME}</title>
+		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
 <![endif]-->
-<!--[if lt IE 7]>
-    <link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
+<!--[if lte IE 6]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 <![endif]-->
+
+    <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
     <style type="text/css" media="aural tty">
-progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+        progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
+    <script type="text/javascript" src="{TEMPLATEURL}template.js"></script>    
 </head>
-<body>
+	<body>
 
     <div id="layout">
       

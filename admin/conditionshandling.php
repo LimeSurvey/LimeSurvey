@@ -484,8 +484,8 @@ foreach ($qrows as $qrow)
 	{
 		// remember all previous questions
 		// all question types are supported.
-		$questionlist[]=$qrow["qid"];
-	}
+			$questionlist[]=$qrow["qid"];
+		}
 	elseif ($qrow["qid"] == $qid)
 	{
 		break;
@@ -959,7 +959,7 @@ if ($questionscount > 0)
 					{
 						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 					}
-				}
+						}
 				elseif ($rows['type'] != "M" &&
 						$rows['type'] != "P" &&
 						$rows['type'] != "J" &&
@@ -1186,7 +1186,8 @@ if ($subaction=='' ||
 
 	if ($scenariocount > 0)
 	{
-		$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-checkgroup.js\"></script>\n";
+        $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+        $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-checkgroup.js';
 		while ($scenarionr=$scenarioresult->FetchRow())
 		{
 			$scenariotext = "";
@@ -1317,8 +1318,7 @@ if ($subaction=='' ||
 				{
 					if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
 					$markcidstyle="";
-					if (is_null(array_search($rows['cid'], $markcidarray)) || // PHP4
-							array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
+					if (array_search($rows['cid'], $markcidarray) === FALSE) // PHP5
 						// === required cause key 0 would otherwise be interpreted as FALSE
 					{
 						$markcidstyle="";
@@ -1386,19 +1386,19 @@ if ($subaction=='' ||
 					else
 					{
 						$leftOperandType = 'prevquestion';
-						foreach ($cquestions as $cqn)
+					foreach ($cquestions as $cqn)
+					{
+						if ($cqn[3] == $rows['cfieldname'])
 						{
-							if ($cqn[3] == $rows['cfieldname'])
-							{
-								$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
-								$conditionsList[]=array("cid"=>$rows['cid'],
-										"text"=>$cqn[0]." ({$rows['value']})");
-							}
-							else
-							{
-								//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
-							}
+							$conditionsoutput .= "\t\t\t$cqn[0] (qid{$rows['cqid']})\n";
+							$conditionsList[]=array("cid"=>$rows['cid'],
+									"text"=>$cqn[0]." ({$rows['value']})");
 						}
+						else
+						{
+							//$conditionsoutput .= "\t\t\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
+						}
+					}
 					}
 
 					$conditionsoutput .= "\t\t\t\t\t</font></td>\n"
@@ -1473,7 +1473,7 @@ if ($subaction=='' ||
 								$rows['value'] == '')
 						{
 							$conditionsoutput .= "\t\t\t\t\t\t".$clang->gT("No answer")."\n";
-						}
+						} 
 						else
 						{
 							$conditionsoutput .= "\t\t\t\t\t\t".html_escape($rows['value'])."\n";
@@ -1528,7 +1528,7 @@ if ($subaction=='' ||
 						{
 							$conditionsoutput .= ""
 							."\t\t\t\t\t<input type='hidden' name='EDITcanswers[]' id='editModeTargetVal{$rows['cid']}' value='".html_escape($rows['value'])."' />\n";
-						}
+					}
 						elseif ($rightOperandType == 'prevQsgqa')
 						{
 							$conditionsoutput .= ""
@@ -1741,14 +1741,14 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// Source condition selection
 	$conditionsoutput .= ""
-		."\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
+		. "\t\t<td align='right' valign='middle'>".$clang->gT("Question")."</td>\n"
 		."\t\t<td valign='top' align='left'>\n"
 		."\t\t\t<div id=\"conditionsource\" class=\"tabs-nav\">\n"
 		."\t\t\t<ul>\n"
 		."\t\t\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
 		."\t\t\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
 		."\t\t\t</ul>\n";
-	
+		
 	// Previous question tab
 	$conditionsoutput .= "\t\t\t\t<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
 	if (isset($cquestions))
@@ -1762,10 +1762,10 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 				if (isset($p_canswers))
 				{
 					$canswersToSelect = "";
-					foreach ($p_canswers as $checkval)
-					{
+						foreach ($p_canswers as $checkval)
+						{
 						$canswersToSelect .= ";$checkval";
-					}
+						}
 					$canswersToSelect = substr($canswersToSelect,1);
 					$js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
 				}
@@ -1883,12 +1883,11 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
 
 
-	$js_adminheader_includes .= ""
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-		. "<script type=\"text/javascript\" src=\"../scripts/jquery/lime-conditions-tabs.js\"></script>\n"
-		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui-tibo.css\" />\n";
-		//		. "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs.css\" />\n";
-	//		. "<!--[if lte IE 7]><link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery.tabs-ie.css\" /><![endif]-->\n";
+    $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
+    $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+    
+	$css_adminheader_includes[]= $homeurl."/styles/default/jquery-ui-tibo.css";
 
 	if ($subaction == "editthiscondition" && isset($p_cid))
 	{
@@ -1902,7 +1901,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$submitSubaction = "insertcondition";
 		$submitcid = "";
 	}
-
+	
 	$conditionsoutput .= ""
 		."\t\t</td>"
 		."\t</tr>\n"
@@ -1929,13 +1928,13 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$js_getAnswers_onload = '';
 	}
 
-	$conditionsoutput .= "<script type='text/javascript'>\n"
-		. "<!--\n"
-		. "\t".$js_getAnswers_onload."\n";
-	if (isset($p_method))
-	{
-		$conditionsoutput .= "\tdocument.getElementById('method').value='".$p_method."';\n";
-	}
+		$conditionsoutput .= "<script type='text/javascript'>\n"
+			. "<!--\n"
+			. "\t".$js_getAnswers_onload."\n";
+		if (isset($p_method))
+		{
+			$conditionsoutput .= "\tdocument.getElementById('method').value='".$p_method."';\n";
+		}
 
 	if ($subaction == "editthiscondition")
 	{ // in edit mode we read previous values in order to dusplay them in the corresponding inputs
@@ -2019,14 +2018,14 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		}
 	}
 
-	if (isset($p_scenario))
-	{
-		$conditionsoutput .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
-	}
-	$conditionsoutput .= "-->\n"
-		. "</script>\n";
+		if (isset($p_scenario))
+		{
+			$conditionsoutput .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
+		}
+		$conditionsoutput .= "-->\n"
+			. "</script>\n";
 	$conditionsoutput .= "</td></tr>\n";
-}
+	}
 //END: DISPLAY THE ADD or EDIT CONDITION FORM
 
 
@@ -2038,33 +2037,30 @@ $conditionsoutput .= "</table>\n";
 function showSpeaker($hinttext)
 {
 	global $clang, $imagefiles, $max;
-	$hinttext=str_replace("'", "`", $hinttext);
-	$hinttext=str_replace("\r","",$hinttext);
-	$hinttext=str_replace("\n","",$hinttext);
-	$hinttext=strip_tags($hinttext);
 
 	if(!isset($max))
 	{
-		$max = 12;
+		$max = 20;
 	}
-
-	if(strlen($hinttext) > ($max))
+    $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
+    $jshinttext=javascript_escape($hinttext,true,true);
+    
+	if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
 	{
-		$shortstring = strip_tags($hinttext);
+        $shortstring = FlattenText($hinttext);
 
-		//create short string
-		$shortstring = substr($hinttext, 0, $max);
+        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));          
 
-		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' title=\"".html_escape($hinttext)."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" >"
-           ." \"$shortstring...\" </span>"
-           ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\" "
-           ." onclick=\"alert('".$clang->gT("Question","js").": ".javascript_escape($hinttext,true,true)."')\" />";
+        //output with hoover effect
+        $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
+        ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
+        ." \"$shortstring...\" </span>"
+        ."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
+        ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
 	}
 	else
 	{
-		$reshtml= "<span alt=\"".html_escape($hinttext)."\" title=\"".html_escape($hinttext)."\"> \"$hinttext\"</span>";
+        $reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";                
 	}
 
   return $reshtml; 

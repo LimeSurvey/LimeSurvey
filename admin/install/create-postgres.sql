@@ -157,7 +157,7 @@ CREATE TABLE prefix_quota_members (
   sid integer,
   qid integer,
   quota_id integer,
-  code character varying(5)
+  code character varying(11)
 );
 
 ALTER TABLE ONLY prefix_quota_members
@@ -248,8 +248,6 @@ CREATE TABLE prefix_surveys (
     autoredirect character(1) DEFAULT 'N'::bpchar,
     allowprev character(1) DEFAULT 'Y'::bpchar,
     ipaddr character(1) DEFAULT 'N'::bpchar,
-    useexpiry character(1) DEFAULT 'N'::bpchar NOT NULL,
-    usestartdate character(1) DEFAULT 'N'::bpchar NOT NULL,
     refurl character(1) DEFAULT 'N'::bpchar,
     datecreated date,
     listpublic character(1) DEFAULT 'N'::bpchar,
@@ -287,7 +285,8 @@ CREATE TABLE prefix_surveys_languagesettings (
     surveyls_email_register_subj character varying(255),
     surveyls_email_register text,
     surveyls_email_confirm_subj character varying(255),
-    surveyls_email_confirm text
+    surveyls_email_confirm text,
+    surveyls_dateformat integer DEFAULT 1 NOT NULL
 );
 
 
@@ -331,8 +330,8 @@ CREATE TABLE prefix_user_in_groups (
 --
 
 CREATE TABLE prefix_users (
-    uid serial NOT NULL,
-    users_name character varying(64) DEFAULT ''::character varying NOT NULL,
+    uid serial PRIMARY KEY NOT NULL,
+    users_name character varying(64) DEFAULT ''::character varying UNIQUE NOT NULL,
     "password" bytea NOT NULL,
     full_name character varying(50) NOT NULL,
     parent_id integer NOT NULL,
@@ -346,9 +345,9 @@ CREATE TABLE prefix_users (
     manage_template integer DEFAULT 0 NOT NULL,
     manage_label integer DEFAULT 0 NOT NULL,
     htmleditormode character(7) DEFAULT 'default'::bpchar,
-	"one_time_pw" bytea
+	one_time_pw bytea,
+    "dateformat" integer DEFAULT 1 NOT NULL
 );
-
 
 CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
@@ -511,18 +510,8 @@ CREATE INDEX prefix_labels_ixcode_idx ON prefix_labels USING btree (code);
 -- Table `settings_global`
 --
 
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '136');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '137');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
-
---
--- Table `users`
---
-
-INSERT INTO prefix_users(
-            users_name, "password", full_name, parent_id, lang, email, 
-            create_survey, create_user, delete_user, superadmin, configurator, 
-            manage_template, manage_label,htmleditormode)
-            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
 
 
 
@@ -539,4 +528,20 @@ create index questions_idx3 on prefix_questions (gid);
 create index quota_idx2 on prefix_quota (sid);
 create index saved_control_idx2 on prefix_saved_control (sid);
 create index user_in_groups_idx1 on prefix_user_in_groups  (ugid, uid);
+
+
+
+--
+-- Create admin user
+--
+
+INSERT INTO prefix_users(
+            users_name, "password", full_name, parent_id, lang, email, 
+            create_survey, create_user, delete_user, superadmin, configurator, 
+            manage_template, manage_label,htmleditormode)
+            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
+
+
+
+
 

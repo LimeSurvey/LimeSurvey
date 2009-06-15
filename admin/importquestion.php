@@ -101,16 +101,6 @@ else    // unknown file - show error message
       return;
   }
 
-if ($importversion != $dbversionnumber)
-{
-    $importquestion .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-    $importquestion .= $clang->gT("Sorry, importing questions is limited to the same version. Import failed.")."<br /><br />\n";
-    $importquestion .= "</font></td></tr></table>\n";
-    $importquestion .= "</body>\n</html>\n";
-    unlink($the_full_file_path);
-    return;
-}
-
 for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
 {
 	unset($bigarray[$i]);

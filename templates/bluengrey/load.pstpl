@@ -1,7 +1,9 @@
-<center>
+
+<div id='loadtable'><center>
 <font color="red">{LOADERROR}</font>
-<strong><font size="+1">{LOADHEADING}</font></strong><br /><br />
+<h3>{LOADHEADING}</h3><br />
 {LOADMESSAGE}<br />
 {LOADFORM}<br />
 {RETURNTOSURVEY}
 </center>
+</div>

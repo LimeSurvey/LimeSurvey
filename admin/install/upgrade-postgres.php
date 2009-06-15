@@ -105,15 +105,16 @@ global $modifyoutput;
         
         modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }   
-            
+           
     if ($oldversion < 134)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD usetokens char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_surveys ADD attributedescriptions TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         upgrade_token_tables134();
-        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();  
+               
     } 
      if ($oldversion < 135)
     {
@@ -132,12 +133,30 @@ global $modifyoutput;
   						   quotals_url character varying(255),
   						   quotals_urldescrip character varying(255));"); echo $modifyoutput; flush();
 	   modify_database("", "ALTER TABLE ONLY prefix_quota_languagesettings
-  	   					   ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
-       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+  	   					    ADD CONSTRAINT prefix_quota_languagesettings_pkey PRIMARY KEY (quotals_id);"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+               
+	}
+    
+    if ($oldversion < 137) //New date format specs
+    {
+       modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_users ADD \"dateformat\" integer NOT NULL default 1"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_surveys set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_surveys set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN usestartdate"); echo $modifyoutput; flush();
+       modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN useexpiry"); echo $modifyoutput; flush();
+       modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
+	
+	if ($oldversion < 138) //Modify quota field
+	{
+	    modify_database("", "ALTER TABLE prefix_quota_members ALTER COLUMN code TYPE character varying(11)"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
-    
-    
     return true;
 }
 
@@ -179,8 +198,8 @@ function upgrade_token_tables134()
     {
         while ( $sv = $surveyidresult->FetchRow() )
         {
-            modify_database("","ALTER TABLE ".$sv0." ADD validfrom datetime"); echo $modifyoutput; flush();
-            modify_database("","ALTER TABLE ".$sv0." ADD validuntil datetime"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD validfrom timestamp"); echo $modifyoutput; flush();
+            modify_database("","ALTER TABLE ".$sv[0]." ADD validuntil timestamp"); echo $modifyoutput; flush();
         }
     }
 }

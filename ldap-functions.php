@@ -79,10 +79,10 @@ function ldap_bindCnx($ds, $server_id = null) {
 function ldap_readattr($attr) {
 
 	if (is_array($attr)) { 
-		return trim(addslashes($attr[0]));
+		return trim($attr[0]);
 	}
 	else {
-		return trim(addslashes($attr));
+		return trim($attr);
 	}
 }
 
@@ -102,14 +102,25 @@ function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
 
 
 function ldap_doTokenSearch($ds, $ldapq, &$ResArray) {
-	global $ldap_queries;
+	global $ldap_queries,$surveyid;
 	$totalrescount=0;
 	$userattrs=array();
 
+	// First let's lowercase the ldap query values
+	prepareLdapQuery($ldapq);
+
 	// Retrieve the ldap user attribute-list to read
 	$userparams = array('firstname_attr','lastname_attr',
-			'email_attr','token_attr', 'language',
-			'attr1', 'attr2');
+			'email_attr','token_attr', 'language');
+//			'attr1', 'attr2');
+
+	$aTokenAttr=GetAttributeFieldNames($surveyid);
+	foreach ($aTokenAttr as $thisattrfieldname)
+	{
+		$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+		$userparams[] = "attr".$attridx;
+	}
+	
 	foreach ($userparams as $id => $attr) {
 		if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
 		  $ldap_queries[$ldapq][$attr] != '') {
@@ -293,6 +304,14 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray) {
 	} // End of no group filtering
 
 	return $totalrescount;
+}
+
+function prepareLdapQuery($queryId)
+{
+	global $ldap_queries;
+	$QueryName=$ldap_queries[$queryId]['name'];
+	$ldap_queries[$queryId] = array_map('strtolower',$ldap_queries[$queryId]);
+	$ldap_queries[$queryId]['name']=$QueryName;
 }
 
 ?>

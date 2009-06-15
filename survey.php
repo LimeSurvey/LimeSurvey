@@ -105,7 +105,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 		$thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
 		$content='';
-		$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+			$content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 		//Check for assessments
 		$assessments = doAssessment($surveyid);
@@ -126,7 +126,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         
         
         //Survey end text
-        if (trim($thissurvey['surveyls_endtext'])=='')
+        if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
         {
             $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
@@ -174,10 +174,10 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         $_SESSION['sid']=$surveyid;
 
 		sendcacheheaders();
-		if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		if (!$embedded && isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		{
 			
-            $url = insertansReplace($thissurvey['url']);
+            $url = insertansReplace($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -315,49 +315,12 @@ if(isset($vpopup)) {echo $vpopup;}
 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
-echo "\n\n<!-- INPUT NAMES -->\n"
-."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
-.implode("|", $inputnames)
-."' />\n";
+echo "\n<!-- INPUT NAMES -->\n"
+    ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
+    .implode("|", $inputnames)
+    ."' />\n";
 
-echo "\n";
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "    function ValidDate(oObject)\n";
-echo "    {// Regular expression used to check if date is in correct format\n";
-echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "     var pattern = new RegExp(str_regexp);\n";
-echo "     if ((oObject.value.match(pattern)!=null))\n";
-echo "     {var date_array = oObject.value.split('-');\n";
-echo "      var day = date_array[2];\n";
-echo "      var month = date_array[1];\n";
-echo "      var year = date_array[0];\n";
-echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      str_regexp = /4|6|9|11/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day <= 28 && month == 2)\n";
-echo "      { return true;\n";
-echo "      }        \n";
-echo "     }\n";
-echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "     oObject.focus();\n";
-echo "     oObject.select();\n";
-echo "     return false;\n";
-echo "    }\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
-// <-- END NEW FEATURE - SAVE
+// <-- END FEATURE - SAVE
 
 echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 
@@ -404,106 +367,62 @@ if ((isset($conditions) && is_array($conditions)) ||
 {
 	if (!isset($endzone)) 
 	{
-		$endzone="";
+	    $endzone="";
 	}
-
+	
 print <<<END
-		if (type == 'radio' || type == 'select-one')
-		{
-			var hiddenformname='java'+name;
-			document.getElementById(hiddenformname).value=value;
-		}
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
 
-	if (type == 'checkbox')
-	{
-		var hiddenformname='java'+name;
-		var chkname='answer'+name;
-		if (document.getElementById(chkname).checked)
-		{
-			document.getElementById(hiddenformname).value='Y';
-		} else
-		{
-			document.getElementById(hiddenformname).value='';
-		}
-	}
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+            var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
 END;
 	$java="";
 	$cqcount=1;
 
-	/* $conditions element structure
+    /* $conditions element structure
 	* $conditions element structure
 	* $condition[n][0] => qid = question id
 	* $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
 	* $condition[n][2] => field name of element [1] (Except for type M or P)
-	* $condition[n][3] => value to be evaluated on answers labeled.
-	* $condition[n][4] => type of question
+    * $condition[n][3] => value to be evaluated on answers labeled. 
+    * $condition[n][4] => type of question
 	* $condition[n][5] => SGQ code of element [1] (sub-part of [2])
 	* $condition[n][6] => method used to evaluate
-	* $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
-	 */
-
+    * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
+    * $condition[n][8] => group id of the question having the condition set ($condition[n][0])
+    */
+	
 	foreach ($conditions as $cd)
 	{
-		if (trim($cd[6])=='') {$cd[6]='==';} 
+	  if (trim($cd[6])=='') {$cd[6]='==';} 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
 		{
 			$java .= $endzone;
 			$endzone = "";
 			$cqcount=1;
-			$java .= "\n   if (((";
-		}
+      $java .= "\n   if (((";
+    }
 
-		if (!isset($oldcq) || !$oldcq)
-		{
-			$oldcq = $cd[2];
-		}
+    if (!isset($oldcq) || !$oldcq)
+    {
+        $oldcq = $cd[2];
+	}
 
 		$idname=retrieveJSidname($cd);
-		// TIBO TODO: the block below is replaced by the function above
-//		//Just in case the dropdown threshold is being applied, check number of answers here
-//		if ($cd[4] == "L")
-//		{
-//			$cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
-//			$cccresult=$connect->Execute($cccquery); // Checked
-//			$cccount=$cccresult->RecordCount();
-//		}
-//		if ($cd[4] == "R")
-//		{
-//			$idname="fvalue_".$cd[1].substr($cd[2], strlen($cd[2])-1,1);
-//		}
-//		elseif ($cd[4] == "5" ||
-//				$cd[4] == "A" ||
-//				$cd[4] == "B" ||
-//				$cd[4] == "C" ||
-//				$cd[4] == "E" ||
-//				$cd[4] == "F" ||
-//				$cd[4] == "H" ||
-//				$cd[4] == "G" ||
-//				$cd[4] == "Y" ||
-//				$cd[4] == "1" ||
-//				($cd[4] == "L" && $cccount <= $dropdownthreshold))
-//		{
-//			$idname="java$cd[2]";
-//		}
-//		elseif ($cd[4] == "M" || 
-//				$cd[4] == "P")
-//		{
-//			$idname="java$cd[5]$cd[3]";
-//		}
-//		elseif ($cd[4] == "D" ||
-//				$cd[4] == "N" ||
-//				$cd[4] == "S" ||
-//				$cd[4] == "T" ||
-//				$cd[4] == "U" ||
-//				$cd[4] == "Q" ||
-//				$cd[4] == "K" )
-//		{
-//			$idname="answer$cd[2]";
-//		}
-//		else
-//		{
-//			$idname="java".$cd[2];
-//		}
 
 		// Addition of "scenario" by Ron L.J. van den Burg.
 		// Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
@@ -512,15 +431,15 @@ END;
 			$java .= ")) || ((";
 		}
 		else
-		{
+    {
 			if ($cqcount > 1 && $oldcq ==$cd[2])
 			{
 				$java .= " || ";
-			}
+    }
 			elseif ($cqcount >1 && $oldcq != $cd[2])
-			{
+    {
 				$java .= ") && (";
-			}
+    }
 		}
 		$oldscenario = $cd[7];
 
@@ -537,7 +456,7 @@ END;
 			// first check if token is readable in session
 			if ( isset($_SESSION['token']) &&
 					in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-			{
+    {
 				$tokenAttrSourceValue=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
 				// local evaluation avoids transmitting
 				// the comparison values to the client in Javascript
@@ -548,7 +467,7 @@ END;
 					$JSsourceElt = "document"; // let's use an always existing Elt
 					$JSsourceVal = "'".javascript_escape($tokenAttrSourceValue)."'";
 
-				}
+    }
 				else
 				{ // local eval possible
 					$localEvaluationPossible = true;
@@ -557,45 +476,45 @@ END;
 					{ // the comparison right operand is a RegExp
 //						$java .= "document.getElementById('$idname') != null  && match_regex(document.getElementById('$idname').value,'$cd[3]')";
 						if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
-						{
+    {
 							$localEvaluation = 'true';
-						}
-						else
-						{
+    }
+    else
+    {
 							$localEvaluation = 'false';
-						}
+    }
 					}
 					elseif (preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
 					{ // the comparison right operand is a Token Attribute
 						if ( isset($_SESSION['token']) &&
 								in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-						{
+    {
 							$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
 							if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($comparedtokenattrValue)) return true; else return false;'))
 							{
 								$localEvaluation = 'true';
 								//$localEvaluation = "'tokenmatch' == 'tokenmatch'";
-							}
-							else	
-							{
+    }
+    else
+    {
 								$localEvaluation = 'false';
 							}
 						}
 						else
-						{
+	    {
 							$localEvaluation = 'false';
-						}
+	    }
 					}
 					else
 					{ // the comparison right operand is a constant
 						if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($cd[3])) return true; else return false;'))
-						{
+	    {
 							$localEvaluation = 'true';
-						}
+	    }
 						else	
 						{
 							$localEvaluation = 'false';
-						}
+    }
 					}
 				}
 			}
@@ -616,9 +535,9 @@ END;
 		}
 
 		if ($localEvaluationPossible == true && isset($localEvaluation))
-		{
+    {
 			$java .= "$localEvaluation";
-		}
+    }
 		else
 		{
 			if ($cd[3] == '' || $cd[3] == ' ')
@@ -626,21 +545,21 @@ END;
 //				$java .= "document.getElementById('$idname') != null && ( document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value )";
 				$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
 			}
-			elseif($cd[4] == "M" || $cd[4] == "P")
+	elseif($cd[4] == "M" || $cd[4] == "P")
 			{ // Type M and P questions are processed specifically
-				$java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'";
-			}
-			else
-			{
-				// NEW
+		$java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'";
+	}
+	else
+	{
+      // NEW
 				// If the value is enclosed by @
-				// the value of this question must be evaluated instead.
-				if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
+      // the value of this question must be evaluated instead.
+      if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
 				{ // when the right operand is the answer of a previous question
-					$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
+		$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
 					preg_match('/^([0-9]+)X([0-9]+)X([0-9]+)$/',$sgq_from_sgqa,$qidMatched);
 					$qid_from_sgq=$qidMatched[3];
-					$q2type=$qtypesarray[$sgq_from_sgqa];
+		$q2type=$qtypesarray[$sgq_from_sgqa];
 					$idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
 					$cqidattributes = getQuestionAttributes($cd[1]);
 
@@ -649,12 +568,12 @@ END;
 
 //						$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
 						$java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
-					}
-					else
-					{
+      }
+      else
+      {
 //						$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
 						$java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
-					}
+	    }
 
 				}
 				elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $comparedtokenattr))
@@ -663,58 +582,62 @@ END;
 							in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 					{
 						$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
-						{ // Numerical questions
+		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+		{ // Numerical questions
 //							$java .= "document.getElementById('$idname') != null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
-						}
-						else
-						{
+		}
+		else
+		{
 							$java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '".javascript_escape($comparedtokenattrValue)."'";
-						}
-					}
-					else
-					{
+		}
+      }
+      else
+      {
 						$java .= " 'impossible to evaluate tokenAttr' == 'tokenAttr'";
 					}
 				}
 				else
 				{
-					if ($cd[6] == 'RX')
-					{
+        if ($cd[6] == 'RX')
+        {
 //						$java .= "document.getElementById('$idname') != null  && match_regex(document.getElementById('$idname').value,'$cd[3]')";
 						$java .= "$JSsourceElt != null  && match_regex($JSsourceVal,'$cd[3]')";
-					}
-					else
-					{
-						$cqidattributes = getQuestionAttributes($cd[1]);
-						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
-						{ // Numerical questions
+        }
+        else
+        {
+		$cqidattributes = getQuestionAttributes($cd[1]);
+		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+		{ // Numerical questions
 //							$java .= "document.getElementById('$idname') != null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
-						}
-						else
-						{
+		}
+		else
+		{
 //							$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '$cd[3]'";
 							$java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '$cd[3]'";
-						}
-					}
-				}	
-			}
+        }
+      }
+    }
+    }
 		}
 
 		if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
 		{
 			$endzone = ")))\n"
-				. "    {\n"
-				. "    document.getElementById('question$cd[0]').style.display='';\n"
-				. "    document.getElementById('display$cd[0]').value='on';\n"
-				. "    }\n"
-				. "   else\n"
-				. "    {\n"
-				. "    document.getElementById('question$cd[0]').style.display='none';\n"
-				. "    document.getElementById('display$cd[0]').value='';\n"
-				. "    }\n";
+      . "    {\n"
+      . "    document.getElementById('question$cd[0]').style.display='';\n"
+      . "    document.getElementById('display$cd[0]').value='on';\n"
+      . "    countDisplayedQuestionsInGroup[".$cd[8]."]++;\n"
+      . "    show_hide_group_$cd[8]();\n"
+      . "    }\n"
+      . "   else\n"
+      . "    {\n"
+      . "    document.getElementById('question$cd[0]').style.display='none';\n"
+      . "    document.getElementById('display$cd[0]').value='';\n"
+      . "    countDisplayedQuestionsInGroup[".$cd[8]."]--;\n"
+      . "    show_hide_group_$cd[8]();\n"
+      . "    }\n";
 			$cqcount++;
 		}
 		$oldq = $cd[0]; //Update oldq for next loop
@@ -766,12 +689,32 @@ echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
 
+//Display the "mandatory" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+}
+
+//Display the "validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
+
+// initialize hide group script
+$initShowHideGroupScript = "<script type='text/javascript'>\n"
+	. "\tcountDisplayedQuestionsInGroup = new Array();\n"
+	."</script>\n";
+
+echo $initShowHideGroupScript;
+
 foreach ($_SESSION['grouplist'] as $gl)
 {
 	$gid=$gl[0];
 	$groupname=$gl[1];
 	$groupdescription=$gl[2];
 	echo "\n\n<!-- START THE GROUP -->\n";
+	echo "\n\n<div id='group-$gid'>\n";
 	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 	echo "\n";
 
@@ -781,6 +724,9 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 	echo "\n";
 
+	// count the number of non-conditionnal and conditionnal questions in this group
+	$count_nocond_questions=0;
+	$count_cond_questions=0;
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
@@ -799,13 +745,21 @@ foreach ($_SESSION['grouplist'] as $gl)
 					$man_class = '';
 				}
 
-				if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+				if ($qa[3] != 'Y')
+				{
+					$n_q_display = '';
+					$count_cond_questions++;
+				} 
+				else 
+				{ 
+					$n_q_display = ' style="display: none;"';
+					$count_nocond_questions++;
+				}
 
 				echo '
 	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-';
-				$question="<label for='$qa[7]'>" . $qa[0] . "</label>";
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>';
+				$question= $qa[0];
 				$answer=$qa[1];
 				$help=$qa[2];
 				$questioncode=$qa[5];
@@ -816,7 +770,37 @@ foreach ($_SESSION['grouplist'] as $gl)
 	}
 
 	echo "\n\n<!-- END THE GROUP -->\n";
+
+	if ($hide_groupdescr_allinone == true)
+	{
+		$show_hide_group_script = "\n\n" 
+			."<script type='text/javascript'>\n"
+			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+			."\tfunction show_hide_group_$gid() {\n"
+			."\t\tif (countDisplayedQuestionsInGroup[$gid] > 0) {\n"
+			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
+			."\t\t} else {\n"
+			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
+			."\t\t}\n"
+			."\t}\n"
+			."</script>\n"
+			."\n";
+	}
+	else
+	{ // add an empty function if we shouldn't hide groupdescr
+		$show_hide_group_script = "\n\n" 
+			."<script type='text/javascript'>\n"
+			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+			."\tfunction show_hide_group_$gid() {\n"
+			."\t}\n"
+			."</script>\n"
+			."\n";
+	}
+
+	echo $show_hide_group_script;
+
 	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
+	echo "\n\n</div>\n";
 	echo "\n";
 }
 //echo "&nbsp;\n";

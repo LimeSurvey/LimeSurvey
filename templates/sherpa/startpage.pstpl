@@ -1,16 +1,24 @@
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<title>
 			SURVEY: {SURVEYNAME}
 		</title>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
-<!--[if IE]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_all-versions.css" />
+
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
 <![endif]-->
-<!--[if lt IE 7]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}IE_fix_older-than-7.css" />
+<!--[if lte IE 6]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
 <![endif]-->
-	</head>
+
+    <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
+    <style type="text/css" media="aural tty">
+        progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+    </style>
+    
+</head>
 	<body>
 
 	<table align="center" cellpadding="0" cellspacing="0">

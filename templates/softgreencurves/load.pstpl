@@ -1,7 +1,0 @@
-<center>
-<font color="red">{LOADERROR}</font><br />
-<strong><font size="+1">{LOADHEADING}</font></strong><br /><br />
-{LOADMESSAGE}<br />
-{LOADFORM}<br />
-{RETURNTOSURVEY}
-</center>

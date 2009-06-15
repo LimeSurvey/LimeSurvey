@@ -18,17 +18,16 @@
 require_once(dirname(__FILE__).'/../classes/core/startup.php');
 
 // XML code for LS1.70 is based on the experimental PHP4 domxml
-// extension. PHP5 uses the PHP5/dom extension.
+// extension. PHP5 uses the PHP5/dom extension unless the old domxml is activated
 // the following file is a wrapper to use PHP4/domxml scripts 
 // with PHP5/dom or PHP6/dom
 // see http://alexandre.alapetite.net/doc-alex/domxml-php4-php5/index.en.html#licence
-if (version_compare(PHP_VERSION,'5','>='))
+if (version_compare(PHP_VERSION,'5','>=')&& !(function_exists('domxml_new_doc')))
 {
     require_once(dirname(__FILE__).'/classes/core/domxml-php4-to-php5.php');
 }
 require_once(dirname(__FILE__).'/../config-defaults.php');  
 require_once(dirname(__FILE__).'/../common.php');
-require_once($rootdir.'/classes/core/html_entity_decode_php4.php');  // has been secured
 
 
 require_once('htmleditor-functions.php');
@@ -49,6 +48,8 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+
+
 if ($action != 'showprintablesurvey')
 {
   $adminoutput = helpscreenscript();
@@ -56,8 +57,15 @@ if ($action != 'showprintablesurvey')
   ."\t<tr>\n"
   ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
 } else {$adminoutput='';}
-include_once('login_check.php');
 
+if($casEnabled)
+{
+	include_once("login_check_cas.php");
+}
+else
+{
+	include_once('login_check.php');
+}
 
 if ( $action == 'CSRFwarn')
 {
@@ -76,7 +84,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action == 'delquestion'       || $action == 'delquestionall' || $action == 'insertnewsurvey'   ||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
-      $action == 'updategroup'       || $action == 'deactivate'     ||
+      $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
       $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' ||
       $action == 'delattribute'      || $action == 'addattribute'   || $action == 'editattribute')
   {
@@ -224,12 +232,7 @@ elseif ($action == 'importquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('importquestion.php');}
         else { include('access_denied.php');}    
-    }    
-elseif ($action == 'listcolumn')
-    {
-    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('listcolumn.php');}
-        else { include('access_denied.php');}    
-    }    
+    }       
 elseif ($action == 'previewquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('preview.php');}
@@ -307,6 +310,7 @@ elseif ($action=='showprintablesurvey')
 elseif ($action=='assessments' || $action=='assessmentdelete' || $action=='assessmentedit' || $action=='assessmentadd' || $action=='assessmentupdate')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
+	$_SESSION['FileManagerContext']="edit:assessments:$surveyid";
         include('assessments.php');
     }
         else { include('access_denied.php');}    
@@ -394,6 +398,13 @@ elseif ($action == 'replacementfields')
 				include('access_denied.php');
 			}
 		break;
+		case 'assessments':
+			if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
+				$_SESSION['FileManagerContext']="edit:assessments:$surveyid";
+				include('fck_LimeReplacementFields.php');
+			}
+			else { include('access_denied.php');}    
+		break;
 		default:
 		break;
 	}
@@ -404,7 +415,7 @@ elseif ($action == 'replacementfields')
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && 
-     (isset($surveyid) || $action=='listurveys' || $action=='changelang' ||  $action=='changehtmleditormode' || $action=='checksettings' ||       //Still to check
+     (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' || $action=='checksettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
       $action=='newsurvey' || $action=='listsurveys' ||   
       $action=='surveyrights' || $action=='quotas') )
@@ -513,7 +524,8 @@ elseif ($action == 'replacementfields')
   $adminoutput.= "\t\t</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n";
-
+	if(!isset($_SESSION['checksessionpost']))
+		$_SESSION['checksessionpost'] = '';
 	$adminoutput .= "<script type=\"text/javascript\">\n"
 	. "<!--\n"
 	. "\tfor(i=0; i<document.forms.length; i++)\n"

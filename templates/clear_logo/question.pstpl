@@ -7,7 +7,7 @@
 				<tr>
 					<td width="100%" class="answer">{ANSWER}</td>
 				</tr>
-                                <tr><td>{QUESTIONHELP}</td></tr>
+                                <tr><td class='questionhelp'>{QUESTIONHELP}</td></tr>
 			</table>
 		</td>
 	</tr>

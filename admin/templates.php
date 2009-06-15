@@ -15,39 +15,68 @@
 
 
 include_once("login_check.php");
-//Standard Template Files
+
+//  Standard templates
+$standardtemplates=array('basic',
+                         'bluengrey',
+                         'business_grey',
+                         'clear_logo',
+                         'default',
+                         'eirenicon',
+                         'limespired',
+                         'mint_idea',
+                         'sherpa',
+                         'vallendar');
+
+//Standard Template Subfiles
 //Only these files may be edited or saved
-$files[]=array("name"=>"assessment.pstpl");
-$files[]=array("name"=>"clearall.pstpl");
-$files[]=array("name"=>"completed.pstpl");
-$files[]=array("name"=>"endgroup.pstpl");
-$files[]=array("name"=>"endpage.pstpl");
-$files[]=array("name"=>"groupdescription.pstpl");
-$files[]=array("name"=>"load.pstpl");
-$files[]=array("name"=>"navigator.pstpl");
-$files[]=array("name"=>"printanswers.pstpl");
-$files[]=array("name"=>"privacy.pstpl");
-$files[]=array("name"=>"question.pstpl");
-$files[]=array("name"=>"register.pstpl");
-$files[]=array("name"=>"save.pstpl");
-$files[]=array("name"=>"surveylist.pstpl");
-$files[]=array("name"=>"startgroup.pstpl");
-$files[]=array("name"=>"startpage.pstpl");
-$files[]=array("name"=>"survey.pstpl");
-$files[]=array("name"=>"welcome.pstpl");
+$files[]=array('name'=>'assessment.pstpl');
+$files[]=array('name'=>'clearall.pstpl');
+$files[]=array('name'=>'completed.pstpl');
+$files[]=array('name'=>'endgroup.pstpl');
+$files[]=array('name'=>'endpage.pstpl');
+$files[]=array('name'=>'groupdescription.pstpl');
+$files[]=array('name'=>'load.pstpl');
+$files[]=array('name'=>'navigator.pstpl');
+$files[]=array('name'=>'printanswers.pstpl');
+$files[]=array('name'=>'privacy.pstpl');
+$files[]=array('name'=>'question.pstpl');
+$files[]=array('name'=>'question_start.pstpl');
+$files[]=array('name'=>'register.pstpl');
+$files[]=array('name'=>'save.pstpl');
+$files[]=array('name'=>'surveylist.pstpl');
+$files[]=array('name'=>'startgroup.pstpl');
+$files[]=array('name'=>'startpage.pstpl');
+$files[]=array('name'=>'survey.pstpl');
+$files[]=array('name'=>'welcome.pstpl');
+$files[]=array('name'=>'print_survey.pstpl');
+$files[]=array('name'=>'print_group.pstpl');
+$files[]=array('name'=>'print_question.pstpl');
+
+//Standard CSS Files
+//These files may be edited or saved
+$cssfiles[]=array('name'=>'template.css');
+$cssfiles[]=array('name'=>'ie_fix_6.css');
+$cssfiles[]=array('name'=>'ie_fix_7.css');
+$cssfiles[]=array('name'=>'ie_fix_8.css');
+$cssfiles[]=array('name'=>'print_template.css');
+$cssfiles[]=array('name'=>'print_ie_fix_6.css');
+$cssfiles[]=array('name'=>'print_ie_fix_all.css');
+$cssfiles[]=array('name'=>'template.js');
 
 //Standard Screens
 //Only these may be viewed
 
-$screens[]=array("name"=>$clang->gT("Survey List Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Welcome Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Question Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Completed Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Clear All Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Register Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Load Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Save Page", "unescaped"));
-$screens[]=array("name"=>$clang->gT("Print Answers Page", "unescaped"));
+$screens[]=array('name'=>$clang->gT('Survey List Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Welcome Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Question Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Completed Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Clear All Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Register Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Load Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Save Page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Print answers page', 'unescaped'));
+$screens[]=array('name'=>$clang->gT('Printable survey page', 'unescaped'));
 
 
 // Set this so common.php doesn't throw notices about undefined variables
@@ -72,40 +101,57 @@ if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
 
-if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+$js_adminheader_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
+$js_adminheader_includes[]= $homeurl."/scripts/templates.js";
 
+// find out language for code editor 
+$availableeditorlanguages=array('bg','cs' ,'de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
+$extension = substr(strrchr($editfile, "."), 1);        
+if ($extension=='css' || $extension=='js') {$highlighter=$extension;} else {$highlighter='html';};
+if(in_array($_SESSION['adminlang'],$availableeditorlanguages)) {$codelanguage=$_SESSION['adminlang'];}
+    else  {$codelanguage='en';}     
 
 if (isset ($_POST['changes'])) {
-	    $changedtext=$_POST['changes'];
-	    if(get_magic_quotes_gpc())
-	    {
-	       $changedtext = str_replace("\'", stripslashes("'"), $changedtext);
-	       $changedtext = str_replace('\"', stripslashes('"'), $changedtext);
-	    }
+	$changedtext=$_POST['changes'];
+    $changedtext=str_replace ('<?','',$changedtext);
+	if(get_magic_quotes_gpc())
+	{
+	   $changedtext = stripslashes($changedtext);
 	}
+}
+
+if (isset ($_POST['changes_cp'])) {
+    $changedtext=$_POST['changes_cp'];
+    $changedtext=str_replace ('<?','',$changedtext);
+    if(get_magic_quotes_gpc())
+    {
+       $changedtext = stripslashes($changedtext);
+    }
+}
+
 
 
 $template_a=gettemplatelist();
 foreach ($template_a as $tp) {
-    $templates[]=array("name"=>$tp, "dir"=>$tpldir."/".$tp);
+	$templates[]=array("name"=>$tp, "dir"=>$templaterootdir."/".$tp);
 }
 unset($template_a);
-    
+
 // check if a template like this exists
 if (recursive_in_array($templatename,$templates)===false)
 {
-   $templatename = "default";
+   $templatename = $defaulttemplate;
 }
-    
-if ($subaction == "delete" && $templatename!='default' ) 
+
+if ($subaction == "delete" && is_template_editable($templatename)==true) 
 {
-   rmdirr($tpldir."/".$templatename);
+   rmdirr($templaterootdir."/".$templatename);
    
-   $templatequery = "UPDATE {$dbprefix}surveys set template='default' where template='$templatename'\n";    
+   $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";    
    $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
    
    $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
-   $templatename = "default";
+   $templatename = $defaulttemplate;
 }
 
 if ($action == "templateupload")
@@ -119,8 +165,8 @@ if ($action=="templatesavechanges" && $changedtext) {
 	$changedtext=str_replace("\r\n", "\n", $changedtext);
 	if ($editfile) {
         // Check if someone tries to submit a file other than one of the allowed filenames
-        if (multiarray_search($files,'name',$editfile)===false) {die('Invalid template filename');}  // Die you sneaky bastard!
-		$savefilename=$tpldir."/".$templatename."/".$editfile;
+        if (multiarray_search($files,'name',$editfile)===false && multiarray_search($cssfiles,'name',$editfile)===false) {die('Invalid template filename');}  // Die you sneaky bastard!
+		$savefilename=$templaterootdir."/".$templatename."/".$editfile;
 		if (is_writable($savefilename)) {
 			if (!$handle = fopen($savefilename, 'w')) {
 				echo "Could not open file ($savefilename)";
@@ -140,8 +186,8 @@ if ($action=="templatesavechanges" && $changedtext) {
 if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 	//Copies all the files from one template directory to a new one
 	//This is a security issue because it is allowing copying from get variables...
-	$newdirname=$tpldir."/".$newname;
-	$copydirname=$tpldir."/".$copydir;
+	$newdirname=$templaterootdir."/".$newname;
+	$copydirname=$templaterootdir."/".$copydir;
 	$mkdirresult=mkdir_p($newdirname);
 	if ($mkdirresult == 1) {
 		$copyfiles=getListOfFiles($copydirname);
@@ -162,8 +208,8 @@ if ($action == "templatecopy" && isset($newname) && isset($copydir)) {
 }
 
 if ($action == "templaterename" && isset($newname) && isset($copydir)) {
-	$newdirname=$tpldir."/".$newname;
-	$olddirname=$tpldir."/".$copydir;
+	$newdirname=$templaterootdir."/".$newname;
+	$olddirname=$templaterootdir."/".$copydir;
 	if (rename($olddirname, $newdirname)==false) {
         echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $newname)." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
 	} else {
@@ -181,7 +227,7 @@ if ($action == "templateuploadfile")
 			
       } else
       {
-	  $the_full_file_path = $tpldir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+	  $the_full_file_path = $templaterootdir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
       if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
       {
          if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
@@ -223,14 +269,14 @@ if ($action == "templateuploadfile")
 }
 
 if ($action == "templatefiledelete") {
-	$the_full_file_path = $tpldir."/".$templatename."/".$otherfile; //This is where the temp file is
+	$the_full_file_path = $templaterootdir."/".$templatename."/".$otherfile; //This is where the temp file is
 	unlink($the_full_file_path);
 }
 
 if ($action == "templatezip") {
 	require("classes/phpzip/phpzip.inc.php");
 	$z = new PHPZip();
-	$templatedir="$tpldir/$templatename/";
+	$templatedir="$templaterootdir/$templatename/";
 	$zipfile="$tempdir/$templatename.zip";
 	$z -> Zip($templatedir, $zipfile);
 	if (is_file($zipfile)) {
@@ -255,26 +301,38 @@ $normalfiles=array("DUMMYENTRY", ".", "..", "preview.png");
 foreach ($files as $fl) {
 	$normalfiles[]=$fl["name"];
 }
-if (file_exists($tpldir."/".$templatename."/template.css")) { $normalfiles[]="template.css"; }
-
-
+foreach ($cssfiles as $fl) {
+    $normalfiles[]=$fl["name"];
+}
 
 //Page Display Instructions
-$SurveyList=array("startpage.pstpl", "surveylist.pstpl", "endpage.pstpl");
-$Welcome=array("startpage.pstpl", "welcome.pstpl", "privacy.pstpl", "navigator.pstpl", "endpage.pstpl");
-$Question=array("startpage.pstpl", "survey.pstpl", "startgroup.pstpl", "groupdescription.pstpl", "question.pstpl", "endgroup.pstpl", "navigator.pstpl", "endpage.pstpl");
-$CompletedTemplate=array("startpage.pstpl", "assessment.pstpl", "completed.pstpl", "endpage.pstpl");
-$Clearall=array("startpage.pstpl", "clearall.pstpl", "endpage.pstpl");
-$Register=array("startpage.pstpl", "survey.pstpl", "register.pstpl", "endpage.pstpl");
-$Save=array("startpage.pstpl", "save.pstpl", "endpage.pstpl");
-$Load=array("startpage.pstpl", "load.pstpl", "endpage.pstpl");
-$printtemplate=array("startpage.pstpl", "printanswers.pstpl", "endpage.pstpl");
+$SurveyList=array('startpage.pstpl', 'surveylist.pstpl', 'endpage.pstpl');
+$Welcome=array('startpage.pstpl', 'welcome.pstpl', 'privacy.pstpl', 'navigator.pstpl', 'endpage.pstpl');
+$Question=array('startpage.pstpl', 'survey.pstpl', 'startgroup.pstpl', 'groupdescription.pstpl',  'question_start.pstpl', 'question.pstpl', 'endgroup.pstpl', 'navigator.pstpl', 'endpage.pstpl');
+$CompletedTemplate=array('startpage.pstpl', 'assessment.pstpl', 'completed.pstpl', 'endpage.pstpl');
+$Clearall=array('startpage.pstpl', 'clearall.pstpl', 'endpage.pstpl');
+$Register=array('startpage.pstpl', 'survey.pstpl', 'register.pstpl', 'endpage.pstpl');
+$Save=array('startpage.pstpl', 'save.pstpl', 'endpage.pstpl');
+$Load=array('startpage.pstpl', 'load.pstpl', 'endpage.pstpl');
+$printtemplate=array('startpage.pstpl', 'printanswers.pstpl', 'endpage.pstpl');
+$printablesurveytemplate=array('print_survey.pstpl', 'print_group.pstpl', 'print_question.pstpl');
 
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
-	$thisfile="$tpldir/$templatename/".$file['name'];
+	$thisfile="$templaterootdir/$templatename/".$file['name'];
 	if (!is_file($thisfile)) {
-		$copyfile="$tpldir/default/".$file['name'];
+		$copyfile="$templaterootdir/default/".$file['name'];
+		$newfile=$thisfile;
+		if (!@copy($copyfile, $newfile)) {
+            echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
+		}
+	}
+}
+//CHECK ALL CSS & JS FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
+foreach ($cssfiles as $file) {
+	$thisfile="$templaterootdir/$templatename/".$file['name'];
+	if (!is_file($thisfile)) {
+		$copyfile="$templaterootdir/default/".$file['name'];
 		$newfile=$thisfile;
 		if (!@copy($copyfile, $newfile)) {
             echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file['name'])."\");\n//-->\n</script>";
@@ -288,23 +346,24 @@ if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unse
 //FAKE DATA FOR TEMPLATES
 $thissurvey['name']=$clang->gT("Template Sample");
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
-$thissurvey['welcome']="Welcome to this sample survey.<br />\n You should have a great time doing this<br />";
+$thissurvey['welcome']=$clang->gT('Welcome to this sample survey').'<br />'.$clang->gT('You should have a great time doing this').'<br />';
 $thissurvey['allowsave']="Y";
+$thissurvey['active']="Y";
 $thissurvey['templatedir']=$templatename;
 $thissurvey['format']="G";
-$thissurvey['url']="http://www.limesurvey.org/";
-$thissurvey['surveyls_url']=$thissurvey['url'];
-$thissurvey['urldescrip']=$clang->gT("Some URL description");
+$thissurvey['surveyls_url']="http://www.limesurvey.org/";
+$thissurvey['surveyls_urldescription']=$clang->gT("Some URL description");
 $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname=$clang->gT("Group 1: The first lot of questions");
-$groupdescription="This group description is fairly vacuous, but quite important.";
-$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" next &gt;&gt; \" name=\"move\" />\n";
-if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; prev\" name=\"move\" />\n".$navigator;}
+$groupdescription=$clang->gT("This group description is fairly vacuous, but quite important.");
+$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" Next &gt;&gt; \" name=\"move\" />\n";
+if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; Previous\" name=\"move\" />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
-$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />".$clang->gT("Your survey responses have been recorded.")."<br /><br />\n";  
+$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />"
+            .$clang->gT("Your survey responses have been recorded.")."<br /><br />\n";  
 $notanswered="5";
 $privacy="";
 $surveyid="1295";
@@ -353,9 +412,8 @@ switch($screenname) {
 	$myoutput[]="";
 	foreach ($SurveyList as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/$qs"));
 	}
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 
     break;
 
@@ -369,25 +427,26 @@ switch($screenname) {
 	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\" />\n";
 	$myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\" />\n";
 	$myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n";
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/startpage.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/survey.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/startgroup.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/groupdescription.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/startpage.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/survey.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/startgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/groupdescription.pstpl"));
 
 	$question="How many roads must a man walk down?";
 	$questioncode="1a";
-	$answer="<input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label><br /><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label><br /><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label><br />\n";
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/question.pstpl"));
+	$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
+    $myoutput[]='<div id="question1" class="list-radio">';
+    $myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
-	$question="Please explain your details:";
+	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
 	$questioncode="2";
-	$answer="<textarea class='textarea'>Some text in this answer</textarea>";
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/question.pstpl"));
+	$answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
+    $myoutput[]='<div id="question2" class="text-long mandatory">';
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endgroup.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/navigator.pstpl"));
-	$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/endpage.pstpl"));
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/endgroup.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/navigator.pstpl"));
+	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/endpage.pstpl"));
 
 	break;
 	case $clang->gT("Welcome Page", "unescaped"):
@@ -395,9 +454,8 @@ switch($screenname) {
 	$myoutput[]="";
 	foreach ($Welcome as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/$qs"));
 	}
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Register Page", "unescaped"):
@@ -405,24 +463,23 @@ switch($screenname) {
 	foreach($Register as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/survey.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/survey.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/register.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/register.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Save Page", "unescaped"):
@@ -430,20 +487,19 @@ switch($screenname) {
 	foreach($Save as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/save.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/save.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Load Page", "unescaped"):
@@ -451,20 +507,19 @@ switch($screenname) {
 	foreach($Load as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/load.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/load.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Clear All Page", "unescaped"):
@@ -472,20 +527,19 @@ switch($screenname) {
 	foreach ($Clearall as $qs) {
 		$files[]=array("name"=>$qs);
 	}
-	foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/startpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/clearall.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/clearall.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
-	foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
+	foreach(file("$templaterootdir/$templatename/endpage.pstpl") as $op)
 	{
 		$myoutput[]=templatereplace($op);
 	}
 	$myoutput[]= "\n";
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
 	case $clang->gT("Completed Page", "unescaped"):
@@ -493,31 +547,35 @@ switch($screenname) {
 	$myoutput[]="";
 	foreach ($CompletedTemplate as $qs) {
 		$files[]=array("name"=>$qs);
-		$myoutput = array_merge($myoutput, doreplacement("$tpldir/$templatename/$qs"));
+		$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/$qs"));
 	}
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
 	break;
 
-
-    case $clang->gT("Print Answers Page", "unescaped"):
+    case $clang->gT("Printable survey page", "unescaped"):
+    unset($files);
+    foreach ($printablesurveytemplate as $qs) {
+        $files[]=array("name"=>$qs);
+    }
+    break;   
+    
+    case $clang->gT("Print answers page", "unescaped"):
     unset($files);
     foreach ($printtemplate as $qs) {
         $files[]=array("name"=>$qs);
     }
-    foreach(file("$tpldir/$templatename/startpage.pstpl") as $op)
+    foreach(file("$templaterootdir/$templatename/startpage.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
-    foreach(file("$tpldir/$templatename/printanswers.pstpl") as $op)
+    foreach(file("$templaterootdir/$templatename/printanswers.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
-    foreach(file("$tpldir/$templatename/endpage.pstpl") as $op)
+    foreach(file("$templaterootdir/$templatename/endpage.pstpl") as $op)
     {
         $myoutput[]=templatereplace($op);
     }
     $myoutput[]= "\n";
-    if (file_exists($tpldir."/".$templatename."/template.css")) { $files[]=array("name"=>"template.css"); }
     break;
 }
 $myoutput[]="</html>";
@@ -529,8 +587,13 @@ if (is_array($files)) {
 			$match=1;
 		}
 	}
-	if ($match != 1) {
-		if (count($files) == 1) {
+    foreach ($cssfiles as $f) {
+        if ($editfile == $f["name"]) {
+            $match=1;
+        }
+    }	
+    if ($match == 0) {
+		if (count($files) > 0) {
 			$editfile=$files[0]["name"];
 		} else {
 			$editfile="";
@@ -538,7 +601,7 @@ if (is_array($files)) {
 	}
 }
 //Get list of 'otherfiles'
-$dirloc=$tpldir."/".$templatename;
+$dirloc=$templaterootdir."/".$templatename;
 if ($handle = opendir($dirloc)) {
 	while(false !== ($file = readdir($handle))) {
 		if (!array_search($file, $normalfiles)) {
@@ -553,7 +616,8 @@ if ($handle = opendir($dirloc)) {
 //****************************************************************
 //** OUTPUT STARTS HERE
 //****************************************************************
-$templatesoutput= "<script type='text/javascript'>\n"
+$templatesoutput = "<script type=\"text/javascript\"> var adminlanguage='$codelanguage'; var highlighter='$highlighter'; </script>\n";
+$templatesoutput.= "<script type='text/javascript'>\n"
 ."<!--\n"
 ."function copyprompt(text, defvalue, copydirectory, action)\n"
 ."\t{\n"
@@ -604,8 +668,14 @@ $templatesoutput.= "<div class='menubar'>\n"
 
 if (isset($flashmessage))
 {
-  $templatesoutput.='<span style="font-weight:bold;">'.$flashmessage.'</span>';  
+  $templatesoutput.='<span class="flashmessage">'.$flashmessage.'</span>'; 
 }
+elseif (is_template_editable($templatename)==false)
+{
+  $templatesoutput.='<span class="flashmessage">'.sprintf($clang->gT('Note: This is a standard template. If you want to edit it %s please copy it first%s.'),"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>').'</span>'; 
+}
+
 $templatesoutput.= "</div>\n"
 . "\t\t\t<div class='menubar-right'>\n"
 
@@ -632,34 +702,27 @@ $templatesoutput.= "</div>\n"
 
 //TEMPLATE DETAILS
 $templatesoutput.= "\t\t\t<div class='menubar'>\n"
-. "\t\t\t<div class='menubar-title'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
-. "\t\t\t\t</div>\n"
-. "\t\t\t<div class='menubar-main'>\n"
-. "\t\t\t<div class='menubar-left'>\n";
-if (is_writable($tpldir."/".$templatename) && ($templatename != "default") ) {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficgreen.png' alt='' " 
-            		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template can be modified", "js")."')\" />\n";
-} else {
-	$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/trafficred.png' alt='' '" 
-            		  ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("This template cannot be modified", "js")."')\" />\n";
-}
-$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='40'/>\n"
+. "<div class='menubar-title'>\n"
+. "<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
+. "</div>\n"
+. "<div class='menubar-main'>\n"
+. "<div class='menubar-left'>\n";
+$templatesoutput.= "<img src='$imagefiles/blank.gif' alt='' width='104' height='40'/>\n"
 ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-if ($templatename == "default" && $debug<2) 
+if (!is_template_editable($templatename)) 
 {
-    $templatesoutput.="<img name='EditName' src='$imagefiles/edit_disabled.png' alt='' title=''" 
-    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't edit the default template.", "js")."')\" "
+    $templatesoutput.="<img name='RenameTemplate' src='$imagefiles/edit_disabled.png' alt='' title=''" 
+    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't rename a standard template.", "js")."')\" "
          ." />"
          ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='' title=''" 
-         ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete the default template.", "js")."')\" "
+         ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete a standard template.", "js")."')\" "
          ." />";
 }
 else 
     {	
         $templatesoutput.= "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
-    		 "<img name='EditName' src='$imagefiles/edit.png' alt='' title=''" .
+    		 "<img name='RenameTemplate' src='$imagefiles/edit.png' alt='' title=''" .
     		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
              " /></a>";
         $templatesoutput.= "<a href='#' "
@@ -674,27 +737,27 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
     ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
     ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
     ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Import template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Import template", "js")."')\">" 
-    ."<img name='Export' src='$imagefiles/import.png' alt='' title='' /></a>\n"
-    ."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+    ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='' title='' /></a>\n"
+."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
     ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
-    ."onclick=\"javascript: copyprompt('".$clang->gT("Make a copy of this template")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
+    ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
     ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
-    ."</div>\n"
-    ."<div class='menubar-right'>\n"
-    ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
-    . "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
-    . makeoptions($screens, "name", "name", html_escape($screenname) )
-    . "</select>\n"
-    ."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
-    ."<img src='$imagefiles/seperator.gif' alt='' />"
-    ."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
-    ."</div></div></div>\n"
-    ."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
-    ."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
-    . "\t<tr>\n"
-    . "\t\t<td>\n";
+."</div>\n"
+."<div class='menubar-right'>\n"
+."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
+. "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
+. makeoptions($screens, "name", "name", html_escape($screenname) )
+. "</select>\n"
+."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
+."<img src='$imagefiles/seperator.gif' alt='' />"
+."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
+."</div></div></div>\n"
+."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
+."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
+. "\t<tr>\n"
+. "\t\t<td>\n";
 
-    
+
 if ($subaction=='templateupload')
 {    
     $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
@@ -707,7 +770,7 @@ if ($subaction=='templateupload')
         . "\t<input type='hidden' name='action' value='templateupload' />\n"
         . "\t<table width='60%' class='form2columns'>\n"
         . "\t<tbody align='center'>"
-        . "\t\t<tr><th  colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
+        . "\t\t<tr><th colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
         . "\t\t<tr><td>&nbsp;</td></tr>\n"
         . "\t\t<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
         . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
@@ -723,57 +786,62 @@ else
 {
         
 
-    //FILE CONTROL DETAILS
-    $templatesoutput.= "\t\t\t<table class='menubar'>\n"
+//FILE CONTROL DETAILS
+if (is_template_editable($templatename)==true)
+{
+    $templatesoutput.= "\t\t\t<table class='templatecontrol'>\n"
     . "\t\t\t<tr>\n"
-    . "\t\t\t\t<td colspan='2' height='8'>\n"
-    . "\t\t\t\t\t<strong>".$clang->gT("File Control:")."</strong>\n"
-    . "\t\t\t\t</td>\n"
+    . "\t\t\t\t<th colspan='3'>\n"
+    . "\t\t\t\t\t<strong>".sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile)."</strong>\n"
+    . "\t\t\t\t</th>\n"
     . "\t\t\t</tr>\n"
-    . "\t\t\t<tr>"
-    . "\t\t\t\t<td align='center' >\n";
-
-    $templatesoutput.= "\t\t\t\t<table width='100%' border='0'>\n"
-    ."\t\t\t\t\t<tr>\n"
-    ."\t\t\t\t\t\t<td align='center' valign='top' width='80%'>"
-    . "\t\t\t\t<table width='100%' align='center' class='menubar'><tr><td>"
-    ."<strong>".$clang->gT("Standard Files:")."</strong></td>"
-    ."<td align='center'><strong>".$clang->gT("Now editing:");
-    if (trim($editfile)!='') {$templatesoutput.= " <i>$editfile</i>";}
-    $templatesoutput.= "</strong></td>"
-    ."<td align='right' ><strong>".$clang->gT("Other Files:")."</strong></td></tr>\n"
-    ."<tr><td valign='top'><select size='12' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
-    .makeoptions($files, "name", "name", $editfile)
-    ."</select>\n"
-    ."\t\t\t\t\t\t</td>\n"
-    ."\t\t\t\t\t\t<td align='center' valign='top'>\n"
-    . "<form name='editTemplate' method='post' action='admin.php'>\n"
-    . "\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-    . "\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-    . "\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-    . "\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
-    ."<textarea name='changes' id='changes' cols='110' rows='12'>";
+    . "\t\t\t<tr><th class='subheader' width='150'>"
+    .$clang->gT("Standard Files:")."</th>"
+        ."<td align='center' valign='top' rowspan='3'>\n"
+        ."<form name='editTemplate' method='post' action='admin.php'>\n"
+        ."\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
+        ."\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+        ."\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
+        ."\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
+        ."<textarea name='changes' id='changes' rows='15' class='codepress html'>";
     if ($editfile) {
-	    $templatesoutput.= textarea_encode(filetext($editfile));
+        $templatesoutput.= textarea_encode(filetext($editfile));
     }
     $templatesoutput.= "</textarea><br />\n";
-    if (is_writable("$tpldir/$templatename")) {
-	    $templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
-	    if ($templatename == "default" && $debug<2) {
-		    $templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to the default template.")."'";
-	    }
-	    $templatesoutput.= " />";
+    if (is_writable("$templaterootdir/$templatename")) {
+        $templatesoutput.= "<input align='right' type='submit' value='".$clang->gT("Save Changes")."'";
+        if (!is_template_editable($templatename)) {
+            $templatesoutput.= " disabled='disabled' alt='".$clang->gT("Changes cannot be saved to a standard template.")."'";
+        }
+        $templatesoutput.= " />";
+    }
+    else
+    {
+        $templatesoutput.='<span class="flashmessage">'.$clang->gT("You can't save changes because the template directory is not writable.").'</span>';
     }
     $templatesoutput.= "<br />\n"
-    ."\t\t\t\t\t\t</form></td><td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
-    ."<table width='90' align='right' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr><tr><td align='right'>"
-    . "<select size='12' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
+    ."</form></td>";
+    $templatesoutput.= "<th class='subheader' colspan='2' align='right' width='200'>".$clang->gT("Other Files:")."</th></tr>\n";
+        
+    $templatesoutput.="<tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+        .makeoptions($files, "name", "name", $editfile)
+        ."</select><br /><br/>\n"
+        .$clang->gT("CSS & Javascript files:")
+        ."<br/><select size='8' name='cssfiles' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+        .makeoptions($cssfiles, "name", "name", $editfile)
+        . "</select>\n"
+        
+        ."</td>\n"
+        ."<td valign='top' align='right' width='20%'><form action='admin.php' method='post'>"
+    ."<table width='90' align='left' border='0' cellpadding='0' cellspacing='0'>\n<tr><td></td></tr>"
+    . "<tr><td><select size='11' style='min-width:130px;'name='otherfile' id='otherfile'>\n"
     .makeoptions($otherfiles, "name", "name", "")
     ."</select>"
-    ."</td></tr><tr><td align='right'>"
+    ."</td></tr>"
+    ."<tr><td>"
     ."<input type='submit' value='".$clang->gT("Delete")."' onclick=\"javascript:return confirm('".$clang->gT("Are you sure you want to delete this file?","js")."')\"";
-    if ($templatename == "default") {
-		    $templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Files in the default template cannot be deleted.")."'";
+    if (!is_template_editable($templatename))  {
+		    $templatesoutput.= " style='color: #BBBBBB;' disabled='disabled' alt='".$clang->gT("Files in a standard template cannot be deleted.")."'";
     }
     $templatesoutput.= " />\n"
     ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
@@ -781,53 +849,64 @@ else
     ."<input type='hidden' name='action' value='templatefiledelete' />\n"
     . "</td></tr></table></form></td>\n"
     ."</tr>\n"
-    ."</table></td></tr><tr><td align='right' valign='top'>"
-    ."<form enctype='multipart/form-data' name='importsurvey' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>\n"
-    ."<table><tr> <td align='right' valign='top' style='border: solid 1 #000080'>\n"
-    ."<strong>".$clang->gT("Upload a File").":</strong></td></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"30\" /><br />"
+    ."<tr>"
+    ."<td valign='top'>"
+    ."<form enctype='multipart/form-data' name='importtemplatefile' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>\n"
+    ."<table><tr> <th class='subheader' valign='top' style='border: solid 1 #000080'>\n"
+    .$clang->gT("Upload a file:")."</th></tr><tr><td><input name=\"the_file\" type=\"file\" size=\"30\" /><br />"
     ."<input type='submit' value='".$clang->gT("Upload")."'";
-    if ($templatename == "default") {
+    if (!is_template_editable($templatename))  {
 	    $templatesoutput.= " disabled='disabled'";
     }
+    
     $templatesoutput.= " />\n"
     ."<input type='hidden' name='editfile' value='$editfile' />\n"
     ."<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
     ."<input type='hidden' name='templatename' value='$templatename' />\n"
-    ."<input type='hidden' name='action' value='templateuploadfile' />\n"
+        ."<input type='hidden' name='action' value='templateuploadfile' />\n"
     ."</td></tr></table></form>\n"
     ."\t\t\t\t\t\t</td>\n"
     ."\t\t\t\t\t</tr>\n"
     ."\t\t\t\t</table>\n"
     ."\t\t\t</td>\n"
     ."\t</tr>"
-    ."</table>"
-    ."</td></tr></table>";
+    ."</table>";
+}
 
-    //SAMPLE ROW
-    $templatesoutput.= "\t\t\t<table class='menubar'>\n"
-    . "\t\t\t<tr>\n"
-    . "\t\t\t\t<td colspan='2' height='8'>\n"
-    . "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
-    . "\t\t\t\t</td>\n"
-    . "\t\t\t</tr>\n"
-    ."\t<tr>\n"
-    ."\t\t<td width='90%' align='center' >\n";
+//SAMPLE ROW
+$templatesoutput.= "\t\t\t<table class='menubar'>\n"
+. "\t\t\t<tr>\n"
+. "\t\t\t\t<td colspan='2' height='8'>\n"
+. "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
+. "\t\t\t\t\t<input type='button' value='iPhone' id='iphone'>\n"
+. "\t\t\t\t\t<input type='button' value='640x480' id='640'>\n"
+. "\t\t\t\t\t<input type='button' value='800x600' id='800'>\n"
+. "\t\t\t\t\t<input type='button' value='1024x768' id='1024'>\n"
+. "\t\t\t\t\t<input type='button' value='".$clang->gt("Full")."' id='full'>\n"
+. "\t\t\t\t</td>\n"
+. "\t\t\t</tr>\n"
+."\t<tr>\n"
+."\t\t<td width='90%' align='center' >\n";
 
 
-    unlink_wc($tempdir, "template_temp_*.html"); //Delete any older template files
-    $time=date("ymdHis");
-    $fnew=fopen("$tempdir/template_temp_$time.html", "w+");
-    fwrite ($fnew, getHeader());
-    $myoutput=str_replace('template.css',"template.css?t=$time",$myoutput);
-    foreach($myoutput as $line) {
-	    fwrite($fnew, $line);
-    }
-    fclose($fnew);
-    $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-    $templatesoutput.= "<br />\n"
-    ."<iframe src='$tempurl/template_temp_$time.html' width='95%' height='400' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
-    ."<br />&nbsp;<br />"
-    ."</td></tr></table>\n";
+// The following lines are forcing the browser to refresh the templates on each save
+$time=date("ymdHis");
+$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
+fwrite ($fnew, getHeader());
+foreach ($cssfiles as $cssfile)
+{
+    $myoutput=str_replace($cssfile['name'],$cssfile['name']."?t=$time",$myoutput);
+}
+
+foreach($myoutput as $line) {
+	fwrite($fnew, $line);
+}
+fclose($fnew);
+$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
+$templatesoutput.= "<br />\n"
+."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='500' name='sample' style='background-color: white'>Embedded Frame</iframe>\n"
+."<br />&nbsp;<br />"
+."</td></tr></table>\n";
 }
 
 function doreplacement($file) { //Produce sample page from template file
@@ -838,64 +917,7 @@ function doreplacement($file) { //Produce sample page from template file
 	return $output;
 }
 
-function unlink_wc($dir, $pattern){
-	if ($dh = opendir($dir)) {
 
-		//List and put into an array all files
-		while (false !== ($file = readdir($dh))){
-			if ($file != "." && $file != "..") {
-				$files[] = $file;
-			}
-		}
-		closedir($dh);
-
-
-		//Split file name and extenssion
-		if(strpos($pattern,".")) {
-			$baseexp=substr($pattern,0,strpos($pattern,"."));
-			$typeexp=substr($pattern,strpos($pattern,".")+1,strlen($pattern));
-		}else{
-			$baseexp=$pattern;
-			$typeexp="";
-		}
-
-		//Escape all regexp Characters
-		$baseexp=preg_quote($baseexp);
-		$typeexp=preg_quote($typeexp);
-
-		// Allow ? and *
-		$baseexp=str_replace(array("\*","\?"), array(".*","."), $baseexp);
-		$typeexp=str_replace(array("\*","\?"), array(".*","."), $typeexp);
-
-		//Search for pattern match
-		$i=0;
-		foreach($files as $file) {
-			$filename=basename($file);
-			if(strpos($filename,".")) {
-				$base=substr($filename,0,strpos($filename,"."));
-				$type=substr($filename,strpos($filename,".")+1,strlen($filename));
-			}else{
-				$base=$filename;
-				$type="";
-			}
-
-			if(preg_match("/^".$baseexp."$/i",$base) && preg_match("/^".$typeexp."$/i",$type))  {
-				$matches[$i]=$file;
-				$i++;
-			}
-		}
-		if (isset($matches)) {
-			while(list($idx,$val) = each($matches)){
-				if (substr($dir,-1) == "/"){
-					unlink($dir.$val);
-				}else{
-					unlink($dir."/".$val);
-				}
-			}
-		}
-
-	}
-}
 
 function getListOfFiles($wh){
 	//Returns an array containing all files in a directory
@@ -923,9 +945,9 @@ function textarea_encode($html_code)
 
 //Load this editfile
 function filetext($templatefile) {
-	global $tpldir, $templatename;
+	global $templaterootdir, $templatename;
 	$output="";
-	foreach(file("$tpldir/$templatename/$templatefile") as $line) {
+	foreach(file("$templaterootdir/$templatename/$templatefile") as $line) {
 		$output .= $line;
 	}
 	return $output;
@@ -933,23 +955,20 @@ function filetext($templatefile) {
 
 function makegraph($currentstep, $total)
 {
-	global $thissurvey, $publicurl, $templatename, $clang;
-	$shchart="$publicurl/templates/{$thissurvey['templatedir']}/chart.jpg";
-	$graph = "<table class='graph' width='100' align='center' cellpadding='2'><tr><td>\n"
-	. "<table width='180' align='center' cellpadding='0' cellspacing='0' border='0' class='innergraph'>\n"
-	. "<tr><td align='right' width='40'>0%&nbsp;</td>\n";
-	$size=intval(($currentstep-1)/$total*100);
-	$graph .= "<td width='100' align='left'>\n"
-	. "<table cellspacing='0' cellpadding='0' border='0' width='100%'>\n"
-	. "<tr><td>\n"
-    . "<img src='$shchart' width='$size' align='left' alt='".sprintf($clang->gT("%s %% complete"), $size)."' />\n"
-	. "</td></tr>\n"
-	. "</table>\n"
-	. "</td>\n"
-	. "<td align='left' width='40'>&nbsp;100%</td></tr>\n"
-	. "</table>\n"
-	. "</td></tr>\n</table>\n";
-	return $graph;
+    global $thissurvey;
+    global $publicurl, $clang;
+
+    $shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
+
+    $size = intval(($currentstep-1)/$total*100);
+    $graph = '<div id="progress-graph">
+    <span class="hide">You have completed '.$size.'% of this survey</span>
+
+            <div class="zero">0%</div>
+            <div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="You have completed '.$size.'% of this survey" /></div>
+            <div class="cent">100%</div>
+        </div>';
+    return $graph;
 }
 
 function mkdir_p($target){
@@ -1033,4 +1052,23 @@ function recursive_in_array($needle, $haystack) {
     return false;
 }
 
-?>
+/**
+* This function checks if a certain template may be by modified, copied, deleted according to the settings in config.php
+* @param mixed $templatename
+*/
+function is_template_editable($templatename)   
+{
+    global $standardtemplates, $standard_templates_readonly, $debug, $defaulttemplate;
+    if($debug>1) // Debug mode set to developer 
+    {
+        return true;
+    }
+    elseif ((in_array($templatename,$standardtemplates) && $standard_templates_readonly==true))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}

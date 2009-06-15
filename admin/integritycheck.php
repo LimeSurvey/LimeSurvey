@@ -24,16 +24,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     $integritycheck=''; 
     if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
     {
-        $integritycheck .= "<table><tr><td height='1'></td></tr></table>\n"
-        . "<table align='center' class='menu2columns' style='border: 1px solid #555555' "
-        . "cellpadding='1' cellspacing='0' width='450'>\n"
-        . "\t<tr>\n"
-        . "\t\t<td colspan='2' align='center'>\n"
-        . "\t\t\t<strong>".$clang->gT("Data Consistency Check")."<br /><font size='1'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</font></strong>\n"
-        . "\t\t</td>\n"
-        . "\t</tr>\n"
-        . "\t<tr><td align='center'>"
-        . "<br />\n";
+        $integritycheck .= "<div class='messagebox'>"
+        . "<div class='header'>".$clang->gT("Data Consistency Check")."<br /><span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
+        . "<ul>\n";
         // Check conditions
         //  $query = "SELECT {$dbprefix}questions.sid, {$dbprefix}conditions.* "
         //          ."FROM {$dbprefix}conditions, {$dbprefix}questions "
@@ -66,15 +59,15 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         if (isset($cdelete) && $cdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following conditions should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<li>".$clang->gT("The following conditions should be deleted").":</li><br /><span style='font-size:7pt;'>\n";
             foreach ($cdelete as $cd) {
                 $integritycheck .= "CID: {$cd['cid']} ".$clang->gT("because")." {$cd['reason']}<br />\n";
             }
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "<br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All conditions meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All conditions meet consistency standards")."</li>\n";
         }
     
         // Check question_attributes to delete
@@ -90,13 +83,13 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
         } // while
         if (isset($qadelete) && $qadelete) {
-            $integritycheck .= "<strong>".$clang->gT("The following question attributes should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<li>".$clang->gT("The following question attributes should be deleted").":</li><br /><span style='font-size:7pt;'>\n";
             foreach ($qadelete as $qad) {$integritycheck .= "QAID `{$qad['qaid']}` ATTRIBUTE `{$qad['attribute']}` ".$clang->gT("because")." `{$qad['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All question attributes meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All question attributes meet consistency standards")."</li>\n";
         }
     
         // Check assessments
@@ -126,23 +119,23 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         if (isset($assdelete) && $assdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<li>".$clang->gT("The following assessments should be deleted").":</li><span style='font-size:7pt;'>\n";
             foreach ($assdelete as $ass) {$integritycheck .= "ID `{$ass['id']}` ASSESSMENT `{$ass['assessment']}` ".$clang->gT("because")." `{$ass['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All Survey (Total) assessments meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All Survey (Total) assessments meet consistency standards")."</li>\n";
         }
         if (isset($asgdelete) && $asgdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following assessments should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<strong>".$clang->gT("The following assessments should be deleted").":</strong><br /><span style='font-size:7pt;'>\n";
             foreach ($asgdelete as $asg) {$integritycheck .= "ID `{$asg['id']}` ASSESSMENT `{$asg['assessment']}` ".$clang->gT("because")." `{$asg['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All Group assessments meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All Group assessments meet consistency standards")."</li>\n";
         }
     
         // Check answers
@@ -161,13 +154,13 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         if (isset($adelete) && $adelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following answers should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<strong>".$clang->gT("The following answers should be deleted").":</strong><br /><span style='font-size:7pt;'>\n";
             foreach ($adelete as $ad) {$integritycheck .= "QID `{$ad['qid']}` CODE `{$ad['code']}` ".$clang->gT("because")." `{$ad['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All answers meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All answers meet consistency standards")."</li>\n";
         }
     
         // Check surveys
@@ -184,13 +177,13 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         if (isset($sdelete) && $sdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following surveys should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<strong>".$clang->gT("The following surveys should be deleted").":</strong><br /><span style='font-size:7pt;'>\n";
             foreach ($sdelete as $sd) {$integritycheck .= "SID `{$sd['sid']}` ".$clang->gT("because")." `{$sd['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All survey settings meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All survey settings meet consistency standards")."</li>\n";
         }
     
         //check questions
@@ -213,13 +206,13 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         if (isset($qdelete) && $qdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following questions should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<strong>".$clang->gT("The following questions should be deleted").":</strong><br /><span style='font-size:7pt;'>\n";
             foreach ($qdelete as $qd) {$integritycheck .= "QID `{$qd['qid']}` ".$clang->gT("because")." `{$qd['reason']}`<br />\n";}
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All questions meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All questions meet consistency standards")."</li>\n";
         }
         //check groups
         $query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
@@ -234,14 +227,15 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }
         if (isset($gdelete) && $gdelete)
         {
-            $integritycheck .= "<strong>".$clang->gT("The following groups should be deleted").":</strong><br /><font size='1'>\n";
+            $integritycheck .= "<li>".$clang->gT("The following groups should be deleted").":</li><span style='font-size:7pt;'>\n";
             $integritycheck .= implode(", ", $gdelete);
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         else
         {
-            $integritycheck .= "<strong>".$clang->gT("All groups meet consistency standards")."</strong><br />\n";
+            $integritycheck .= "<li>".$clang->gT("All groups meet consistency standards")."</li>\n";
         }
+        $integritycheck .='</ul>' ;
         //NOW CHECK FOR STRAY SURVEY RESPONSE TABLES AND TOKENS TABLES
         if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) && !isset($assdelete) && !isset($qadelete)) {
             $integritycheck .= "<br />".$clang->gT("No database action required");
@@ -292,9 +286,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                               ."<input type='submit' value='".$clang->gT("Yes - Delete Them!")."'>\n"
                               ."</form>\n";
         }
-        $integritycheck .= "<br /><br />\n"
-        ."</td></tr></table>\n"
-        ."<table><tr><td height='1'></td></tr></table>\n";
+        $integritycheck .= "</div><br />\n";
     }
     elseif ($ok == "Y")
     {
@@ -303,7 +295,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         . "cellpadding='1' cellspacing='0' width='450'>\n"
         . "\t<tr>\n"
         . "\t\t<td colspan='2' align='center'>\n"
-        . "\t\t\t<strong>".$clang->gT("Data Consistency Check")."<br /><font size='1'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</strong>\n"
+        . "\t\t\t<strong>".$clang->gT("Data Consistency Check")."<br /><span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</strong>\n"
         . "\t\t</td>\n"
         . "\t</tr>\n"
         . "\t<tr><td align='center'>";
@@ -317,7 +309,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $sdelete=returnglobal('sdelete');
     
         if (isset($sdelete)) {
-            $integritycheck .= $clang->gT("Deleting Surveys").":<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Surveys").":<br /><spanstyle='font-size:7pt;'>\n";
             foreach ($sdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting Survey ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}surveys WHERE sid=$ass";
@@ -326,7 +318,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         }    
     
         if (isset($assdelete)) {
-            $integritycheck .= $clang->gT( "Deleting Assessments").":<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT( "Deleting Assessments").":<br /><spanstyle='font-size:7pt;'>\n";
             foreach ($assdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
@@ -334,7 +326,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
         }
         if (isset($asgdelete)) {
-            $integritycheck .= $clang->gT("Deleting Assessments").":<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Assessments").":<br /><spanstyle='font-size:7pt;'>\n";
             foreach ($asgdelete as $asg) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$asg."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
@@ -342,7 +334,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
         }
         if (isset($qadelete)) {
-            $integritycheck .= $clang->gT("Deleting Question_Attributes").":<br /><fontsize='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Question_Attributes").":<br /><spanstyle='font-size:7pt;'>\n";
             foreach ($qadelete as $qad) {
                 $integritycheck .= "Deleting QAID:".$qad."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
@@ -350,41 +342,41 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             }
         }
         if (isset($cdelete)) {
-            $integritycheck .= $clang->gT("Deleting Conditions").":<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Conditions").":<br /><span style='font-size:7pt;'>\n";
             foreach ($cdelete as $cd) {
                 $integritycheck .= $clang->gT("Deleting cid").":".$cd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}conditions WHERE cid=$cd";
                 $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         if (isset($adelete)) {
-            $integritycheck .= $clang->gT("Deleting Answers").":<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Answers").":<br /><span style='font-size:7pt;'>\n";
             foreach ($adelete as $ad) {
                 list($ad1, $ad2)=explode("|", $ad);
                 $integritycheck .= $clang->gT("Deleting answer with qid").":".$ad1." and code: ".$ad2."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}answers WHERE qid=$ad1 AND code='$ad2'";
                 $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         if (isset($qdelete)) {
-            $integritycheck .= $clang->gT("Deleting Questions").":<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Questions").":<br /><span style='font-size:7pt;'>\n";
             foreach ($qdelete as $qd) {
                 $integritycheck .= $clang->gT("Deleting qid").":".$qd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}questions WHERE qid=$qd";
                 $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         if (isset($gdelete)) {
-            $integritycheck .= $clang->gT("Deleting Groups").":<br /><font size='1'>\n";
+            $integritycheck .= $clang->gT("Deleting Groups").":<br /><span style='font-size:7pt;'>\n";
             foreach ($gdelete as $gd) {
                 $integritycheck .= $clang->gT("Deleting group id").":".$gd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}groups WHERE gid=$gd";
                 $result=$connect->Execute($sql) or safe_die ("Couldn't Delete ($sql)<br />".$connect->ErrorMsg());
             }
-            $integritycheck .= "</font><br />\n";
+            $integritycheck .= "</span><br />\n";
         }
         $integritycheck .= $clang->gT("Check database again?")."<br />\n"
                           ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"

@@ -29,15 +29,23 @@ if ($sumrows5['export'] != "1")
 }
 if (!$subaction == "export")
 {
-	if (incompleteAnsFilterstate() === true)
+	if(incompleteAnsFilterstate() == "inc")
+	{
+	    $selecthide="";
+	    $selectshow="";
+	    $selectinc="selected='selected'";
+	}
+	elseif (incompleteAnsFilterstate() == "filter")
 	{
 		$selecthide="selected='selected'";
 		$selectshow="";
+		$selectinc="";
 	}
 	else
 	{
 		$selecthide="";
 		$selectshow="selected='selected'";
+		$selectinc="";
 	}
 
 	$vvoutput = "<br /><form method='post' action='admin.php?action=vvexport&sid=$surveyid'>"
@@ -50,15 +58,16 @@ if (!$subaction == "export")
         ." <td><input type='text' size='10' value='$surveyid' name='sid' readonly='readonly' /></td>"
         ."</tr>"
     	."<tr>"
-	    ." <td align='right'>".$clang->gT("Filter incomplete answers")." </td>"
+	    ." <td align='right'>".$clang->gT("Export").":</td>"
 	    ." <td><select name='filterinc'>\n"
-		."  <option value='filter' $selecthide>".$clang->gT("Enable")."</option>\n"
-		."  <option value='show' $selectshow>".$clang->gT("Disable")."</option>\n"
+		."  <option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
+		."  <option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+		."  <option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
 		." </select></td>\n"
 		."</tr>"
 		."<tr>"
-		." <td align='right'>".$clang->gT("File Extension")." </td>\n"
-		." <td><input type='text' name='extension' size='3' value='csv'></td>\n"
+		." <td align='right'>".$clang->gT("File Extension").": </td>\n"
+		." <td><input type='text' name='extension' size='3' value='csv'><span style='font-size: 7pt'>*</span></td>\n"
 		."</tr>\n"
         ."<tr>"
         ." <td colspan='2' align='center'>"
@@ -66,6 +75,7 @@ if (!$subaction == "export")
         ."  <input type='hidden' name='subaction' value='export' />"
         ." </td>"
         ."</tr>"
+        ."<tr><td colspan='2' align='center' style='padding: 10px 0 10px 5px'><span style='font-size: 7pt'>* ".$clang->gT("For easy opening in MS Excel, change the extension to 'tab' or 'txt'")."</span></td></tr>\n"
         ."<tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>"
         ."</table>";
 }
@@ -103,9 +113,13 @@ elseif (isset($surveyid) && $surveyid)
 	$vvoutput = $firstline."\n";
 	$vvoutput .= $secondline."\n";
 	$query = "SELECT * FROM $surveytable";
-	if (incompleteAnsFilterstate() === true)
+	if (incompleteAnsFilterstate() == "inc") 
 	{
-		$query .= " WHERE submitdate is not null ";
+	    $query .= " WHERE submitdate IS NULL ";
+	}
+    elseif (incompleteAnsFilterstate() == "filter")
+	{
+		$query .= " WHERE submitdate >= ".$connect->DBDate('1980-01-01'). " ";
 	}
 	$result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
 

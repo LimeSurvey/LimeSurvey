@@ -26,7 +26,7 @@ while (!feof($handle))
 }
 fclose($handle);
 
-
+if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
 // Now we try to determine the dataformat of the survey file.
  
 if (isset($bigarray[1]) && isset($bigarray[4])&& (substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
@@ -554,6 +554,8 @@ if (isset($surveyrowdata['datecreated'])) {$surveyrowdata['datecreated']=$connec
 unset($surveyrowdata['expires']);
 unset($surveyrowdata['attribute1']);
 unset($surveyrowdata['attribute2']);
+unset($surveyrowdata['usestartdate']);
+unset($surveyrowdata['useexpiry']);
 unset($surveyrowdata['url']);           
 if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
 $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
@@ -662,7 +664,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
          		$labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                 if ($importversion<=132)
                 {
-                   $labelrowdata["assessment_value"]=(int)$answerrowdata["code"];
+                   $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
                 }            
 				$labellid=$labelrowdata['lid'];
 		        if ($importversion<=100)
@@ -1092,12 +1094,24 @@ if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE 
         		$fieldcontents=convertToArray($qar, "', '", "('", "')");
             }		
         $asrowdata=array_combine($fieldorders,$fieldcontents);
+        if (isset($asrowdata['link']))
+        {
+            if (trim($asrowdata['link'])!='') $asrowdata['message']=$asrowdata['message'].'<br /><a href="'.$asrowdata['link'].'">'.$asrowdata['link'].'</a>';
+            unset($asrowdata['link']);
+        }
 		$oldsid=$asrowdata["sid"];
 		$oldgid=$asrowdata["gid"];
-		foreach ($substitutions as $subs) {
-			if ($oldsid==$subs[0]) {$newsid=$subs[3];}
-			if ($oldgid==$subs[1]) {$newgid=$subs[4];}
-		}
+        if  ($oldgid>0)
+        {
+            foreach ($substitutions as $subs) {
+                if ($oldsid==$subs[0]) {$newsid=$subs[3];}
+                if ($oldgid==$subs[1]) {$newgid=$subs[4];}
+            }
+        }
+        else
+        {
+            $newgid=0;
+        }
 
 		$asrowdata["sid"]=$newsid;
 		$asrowdata["gid"]=$newgid;
@@ -1275,7 +1289,7 @@ if ($importingfrom == "http")
 	    {
 	    $importsurvey .= "\t<li>".$clang->gT("Languages").": $countlanguages</li>\n";
 	    }
-	$importsurvey .= "\t<li>".$clang->gT("Groups").": $countgroups</li>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Question groups").": $countgroups</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Questions").": $countquestions</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Answers").": $countanswers</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Conditions").": $countconditions</li>\n";
@@ -1290,7 +1304,7 @@ if ($importingfrom == "http")
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
-	if ($importwarning != "") $importsurvey .= "<br><strong>".$clang->gT("Warnings").":</strong><br><ul style=\"text-align:left;\">" . $importwarning . "</ul><br>\n";
+	if ($importwarning != "") $importsurvey .= "<br /><strong>".$clang->gT("Warnings").":</strong><br /><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
 	$importsurvey .= "</td></tr></table><br /></table>\n";
 	unlink($the_full_file_path);
 	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
@@ -1319,4 +1333,9 @@ else
 
 }
 
-?>
+function removeBOM($str=""){
+        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $str=substr($str, 3);
+        }
+        return $str;
+} 

@@ -71,6 +71,10 @@ if (substr($bigarray[0], 0, 23) != "# LimeSurvey Group Dump" && substr($bigarray
 	unlink($the_full_file_path);
 	return;
 }
+else
+{
+    $importversion=(int)trim(substr($bigarray[1],12));
+}
 
 for ($i=0; $i<9; $i++)
 {
@@ -455,7 +459,6 @@ if (isset($grouparray) && $grouparray)
             $newgid = $connect->Insert_ID("{$dbprefix}groups",'gid');
             $countgroups++;
         }
-        break; //makes sure only the first group is imported
     }
     // GROUPS is DONE
     
@@ -669,7 +672,7 @@ else
     $importgroup .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
 }
 $importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
-."<ul>\n\t<li>".$clang->gT("Groups").": ";
+."<ul>\n\t<li>".$clang->gT("Groups:");
 if (isset($countgroups)) {$importgroup .= $countgroups;}
 $importgroup .= "</li>\n"
     ."\t<li>".$clang->gT("Questions").": ";

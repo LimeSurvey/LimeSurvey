@@ -39,45 +39,67 @@ if(isset($_GET['wsdl']))
 //we initiate a SoapServer Objekt
 if($useCert && $sslCert!=''){
 	
-	// I don't know for sure how this works... no developerdocumentation on this.
-	$context["ssl"]["local_cert"] = $sslCert;
-	$context["ssl"]["verify_peer"] = FALSE;
-	$context["ssl"]["allow_self_signed"] = TRUE;
-	$context["ssl"]["cafile"] = "D://xampp//htdocs//apache//conf//keys//cacert.pem";
+	/**
+	 * TODO: no documentation in PHP manual... no doc here... Can't tell you what to do in order to get Communication working with fixed Certificates
+	 * Can't even say, which certificates, however it says in the docu that this should be a .pem RSA encoded file with .key and .crt together.
+	 * 
+	 */
+	$context = array(
+		'ssl'=> array(
+				'verify_peer' => false,
+				'allow_self_signed'	=> true,
+				'local_cert' => $sslCert,
+				'passphrase' => 'hisuser',
+				'capture_peer_cert' => true
+				
+			)	
+	);
 	
   	$stream_context = stream_context_create($context);
 	
   	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1, 
-	 			'stream_context' => $stream_context,
-	 			'local_cert' => $sslCert));
+	 			'stream_context' => $stream_context));
 }
 else{
 	$server = new SoapServer($wsdl, array('soap_version' => SOAP_1_1));
 }
 
-//adds the functions to the SoapServer Object, 
-//the sChangeSurvey function should be commented out for productive Use
-//$server->addFunction("sChangeSurvey");
-$server->addFunction("sDeleteSurvey");
-$server->addFunction("sActivateSurvey");
-$server->addFunction("sCreateSurvey");
-$server->addFunction("sInsertToken");
-$server->addFunction("sTokenReturn");
-$server->addFunction("sInsertParticipants");
-$server->addFunction("sImportGroup");
-$server->addFunction("sAvailableModules");
-$server->addFunction("sImportQuestion");
-$server->addFunction("sImportMatrix");
-$server->addFunction("sImportFreetext");
-$server->addFunction("sSendEmail");
-$server->addFunction("sGetFieldmap");
-// handle the soap request!
-$server->handle();
- 
+	/**
+	 * adds the functions to the SoapServer Object, 
+	 * 
+	 * the sChangeSurvey function should be commented out for productive Use 
+	 */
+	//$server->addFunction("sChangeSurvey");
+	$server->addFunction("sDeleteSurvey");
+	$server->addFunction("sActivateSurvey");
+	$server->addFunction("sCreateSurvey");
+	$server->addFunction("sInsertToken");
+	$server->addFunction("sTokenReturn");
+	$server->addFunction("sInsertParticipants");
+	$server->addFunction("sImportGroup");
+	$server->addFunction("sAvailableModules");
+	$server->addFunction("sImportQuestion");
+	$server->addFunction("sImportMatrix");
+	$server->addFunction("sImportFreetext");
+	$server->addFunction("sSendEmail");
+	$server->addFunction("sGetFieldmap");
+	// handle the soap request!
+if($enableLsrc==true)
+{
+	$server->handle();
+}
 /**
- *	Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
- *
-*/
+ * 
+ * Function to change tables in Limesurvey Database, this is too sensitive for productive use, but useful for development and testing
+ * @param $sUser
+ * @param $sPass
+ * @param $table
+ * @param $key
+ * @param $value
+ * @param $where
+ * @param $mode
+ * @return unknown_type
+ */
 function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0') 
 {
 	include("lsrc.config.php");
@@ -97,20 +119,17 @@ function sChangeSurvey($sUser, $sPass, $table, $key, $value, $where, $mode='0')
 	
 	return $lsrcHelper->changeTable($table, $key, $value, $where, $mode);
 }
-/*
- * TODO: return Fieldmap of the survey
- */
-function sFieldMap($sUser, $sPass, $iVid)
-{
-	exit;
-}
-/*
- * Function to send reminder, invitation or custom mails to participants of a specific survey
- * $iVid = Survey ID
- * $type = invite, remind, custom
- * $subject = subject of custom mails
- * $emailText = Text of custom mails
+/**
  * 
+ * Function to send reminder, invitation or custom mails to participants of a specific survey
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $type
+ * @param $maxLsrcEmails
+ * @param $subject
+ * @param $emailText
+ * @return unknown_type
  */
 function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject='', $emailText='')
 {
@@ -221,13 +240,15 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 }
 
 /**
- *	Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
- *	$iVid= Survey ID
- *	$dStart = datetime
- *	$dE = datetime
- *	$sUser = have to be an existing admin or superadmin in limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
-*/
+ * 
+ * Function to activate a survey in the database and change some Values (starttime, endtime. Required parameters are:
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $dStart
+ * @param $dEnd
+ * @return unknown_type
+ */
 function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 {
 	include("lsrc.config.php");
@@ -267,16 +288,14 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 		exit;
 	}
 	
-	if($dStart!='')
+	if($dStart!='' && substr($dStart,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE start ");
-		$lsrcHelper->changeTable('surveys','usestartdate','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','startdate',$dStart,'sid='.$iVid);
 	}
-	if($dEnd!='')
+	if($dEnd!='' && substr($dEnd,0,10)!='1980-01-01')
 	{
 		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", CHANGE end ");
-		$lsrcHelper->changeTable('surveys','useexpiry','Y','sid='.$iVid);
 		$lsrcHelper->changeTable('surveys','expires',$dEnd,'sid='.$iVid);
 	}
 	
@@ -285,16 +304,23 @@ function sActivateSurvey($sUser, $sPass, $iVid, $dStart, $dEnd)
 }
 
 /**
- *	Function to import a survey into the database and change some Values. Required parameters are:
- *	$iVid  = Survey ID
- *	$sVtit = Survey Titel
- *	$sVbes = Surveydescription
- *  $sVwel = Welcometext
- *	$sUser = have to be an existing accounts with appropriate rights in limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
- *  $sVtyp = Veranstaltungstyp (Vorlesung, Seminar, Uebung, Exkursion)
-*/
-function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
+ * 
+ * Function to import a survey into the database and change some Values. Required parameters are:
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sVtit
+ * @param $sVbes
+ * @param $sVwel
+ * @param $sMail
+ * @param $sName
+ * @param $sUrl
+ * @param $sUbes
+ * @param $sVtyp
+ * @param $autoRd
+ * @return unknown_type
+ */
+function sCreateSurvey($sUser, $sPass, $iVid, $sVtit, $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp, $autoRd='N' ) 
 {
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
@@ -305,6 +331,10 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	{//if no welcometext is given, set this one
 		$sVwel	= "Herzlich Willkommen zur Evaluation von \"".$sVtit."\"";
 	}
+//	if($sVend=='')
+//	{//if no endtext is given, set this one
+//		$sVend	= "Vielen Dank für Ihre Teilnahme an der Umfrage!";
+//	}
 	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{// check for appropriate rights
@@ -342,6 +372,8 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_url", $sUrl, "surveyls_survey_id='$iVid'");
 		if($autoRd=='Y')
 			$lsrcHelper->changeTable("surveys", "autoredirect", "Y", "sid='$iVid'");
+		if($sVend!='')
+			$lsrcHelper->changeTable("surveys_languagesettings", "surveyls_endtext", $sVend, "surveyls_survey_id='$iVid'");
 			
 		$lsrcHelper->changeTable("surveys", "datecreated", date("Y-m-d"), "sid='$iVid'");
 		
@@ -355,12 +387,15 @@ function sCreateSurvey($sUser, $sPass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $
 	
 }//end of function sCreateSurvey
 
+
 /**
- *	Function to insert Tokens to an existing Survey, makes it "closed"
- *	$iVid = Survey ID
- *	$sToken = String of tokens in this pattern: token1,token2,token3,token4,token5 and so on...
- *	$sUser = have to be an existing admin or superadmin in Limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
+ * 
+ * Function to insert Tokens to an existing Survey, makes it "closed"
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sToken
+ * @return unknown_type
  */
 function sInsertToken($sUser, $sPass, $iVid, $sToken) 
 {
@@ -402,7 +437,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
-        if ($databasetype=='odbc_mssql')
+        if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
 		{
 			$createtokentable.= "email C(320) ,\n "
 			."emailstatus C(300) DEFAULT 'OK',\n ";
@@ -424,7 +459,8 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		. "mpid I ";
 		
 		$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 		$dict = NewDataDictionary($connect);
 		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
 		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
@@ -470,11 +506,13 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 } //end of function sInsertToken  
 
 /**
- *	Function to insert Participants data while auto creating tokens for everyone...
- *	$iVid = Survey ID
- *	$sParticipantData = String of datasets in this pattern: FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME... and so on...
- *	$sUser = have to be an existing admin or superadmin in Limesurvey
- *	$sPass = password have to be the right one for the existing user in limesurvey
+ * TODO: redo better... maybe some other function for compatibility
+ * Function to insert Participants data while auto creating tokens for everyone...
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sParticipantData
+ * @return unknown_type
  */
 function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
 {
@@ -513,7 +551,7 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		. "firstname C(40) ,\n "
 		. "lastname C(40) ,\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
-        if ($databasetype=='odbc_mssql')
+        if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
 		{
 			$createtokentable.= "email C(320) ,\n "
 			."emailstatus C(300) DEFAULT 'OK',\n ";
@@ -535,7 +573,8 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 		. "mpid I ";
 		
 		$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
-        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 		$dict = NewDataDictionary($connect);
 		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
 		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
@@ -557,12 +596,14 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 	// write the tokens to the token_table
 	$iCountParticipants =  count($asDataset);
 	$iInsertedParticipants=0;
+	
 	foreach($asDataset as $sData)
 	{
 		if($sData!='')
 		{
-			$asDatafield = explode($sDatafieldSeperator, $sData);
+			$asDatafield = explode($sDatafieldSeperator, $sData);			
 			$checkCnt=1;
+			// token generieren
 			while($checkCnt>0)
 			{
 				$value = randomkey(5); //change randomkey value for different tokenlength (up to 36 chars max.)
@@ -570,17 +611,26 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 				$result = db_execute_assoc($cQuery);
 				$checkCnt = $result->RecordCount();
 			}
+			if(!isset($asDatafield[5]) || $asDatafield[5]=='')
+			{
+				$asDatafield[5]= $value;
+			}
+			
 			$iDataLength = count($asDatafield);
 			for($n=0;$n>=$iDataLength;++$n)
 			{
-				if($asDatafield[$n]==''){$asDatafield[$n]=null;}
+				
+				if($asDatafield[$n]=='')
+				{
+					$asDatafield[$n]=null;
+				}
 			}
 			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid 
 					."(firstname,lastname,email,emailstatus,token,"
 					."language,sent,completed,attribute_1,attribute_2,mpid)"
-					."VALUES ('".utf8_decode($asDatafield[0])."' , 
-					'".utf8_decode($asDatafield[1])."' , '".$asDatafield[2]."' , NULL , '".$value."',
-					'".$_SESSION['lang']."', 'N', 'N', '".utf8_decode($asDatafield[3])."' , '".utf8_decode($asDatafield[4])."' , NULL); ";
+					."VALUES ('".$asDatafield[0]."' , 
+					'".$asDatafield[1]."' , '".$asDatafield[2]."' , 'OK' , '".$asDatafield[5]."',
+					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
 				
 			$connect->Execute($sInsertParti);	
 			++$iInsertedParticipants;
@@ -593,7 +643,12 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 } //end of function sInsertParticipants
 
 /**
+ * 
  * function to return unused Tokens as String, seperated by commas, to get the people who did not complete the Survey
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @return unknown_type
  */ 
 function sTokenReturn($sUser, $sPass, $iVid) 
 {
@@ -664,10 +719,15 @@ function sTokenReturn($sUser, $sPass, $iVid)
 }//end of function sTokenReturn  
 
 /**
+ * 
  * function to import an exported group of questions into a survey
- *
- * @param unknown_type $iVid
- * @param unknown_type $sMod
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sMod
+ * @param $gName
+ * @param $gDesc
+ * @return unknown_type
  */
 function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')
 {
@@ -713,16 +773,14 @@ function sImportGroup($sUser, $sPass, $iVid, $sMod, $gName='', $gDesc='')
 }
 
 /**
+ * 
  * function to import a fixed question 
- *
- * @param String $sUser
- * @param String $sPass
- * @param Int $iVid
- * @param String $sMod
- * @param String $qTitle
- * @param String $qText
- * @param String $qHelp
- * @return String
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 {
@@ -768,16 +826,17 @@ function sImportQuestion($sUser, $sPass, $iVid, $sMod, $mandatory='N')
 }
 
 /**
- * function to import a questiongroup with one freetext question and change it 
- *
- * @param String $sUser
- * @param String $sPass
- * @param Int $iVid
- * @param String $sMod
- * @param String $qTitle
- * @param String $qText
- * @param String $qHelp
- * @return String
+ * 
+ * function to import one freetext question and change it 
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $qTitle
+ * @param $qText
+ * @param $qHelp
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='Freitext', $mandatory='N')
 {
@@ -835,16 +894,18 @@ function sImportFreetext($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sMod='
 }
 
 /**
+ * 
  * function to import a five scale Matrix question and set 1 to n items
- *
- * @param unknown_type $sUser
- * @param unknown_type $sPass
- * @param unknown_type $iVid
- * @param unknown_type $sMod
- * @param unknown_type $qTitle
- * @param unknown_type $qHelp
- * @param unknown_type $sItems comma seperated values
- * @return unknown
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $qTitle
+ * @param $qText
+ * @param $qHelp
+ * @param $sItems
+ * @param $sMod
+ * @param $mandatory
+ * @return unknown_type
  */
 function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, $sMod='Matrix5', $mandatory='N')
 {
@@ -866,7 +927,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 	include("lsrc.config.php");
 	
 	$lsrcHelper = new lsrcHelper();
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK");
 	
 	// check for appropriate rights
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
@@ -913,11 +974,11 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 }
 
 /**
+ * 
  * function to collect all available Modules and send them comma seperated to the client
- *
  * @param String $sUser
  * @param String $sPass
- * String $mode ("mod" or "core")
+ * @param String $mode ("mod" or "core")
  * @return commma seperated list of available Modules (groups)
  */
 function sAvailableModules($sUser, $sPass, $mode='mod')
@@ -1009,8 +1070,8 @@ function sAvailableModules($sUser, $sPass, $mode='mod')
 }
 
 /**
+ * 
  * function to delete a survey
- *
  * @param unknown_type $sUser
  * @param unknown_type $sPass
  * @param unknown_type $iVid
@@ -1052,8 +1113,13 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	
 }
 
-/*
- * Fieldmap as csv for a surveyid
+/**
+ * 
+ * This function pulls a CSV representation of the Field map
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @return unknown_type
  */
 function sGetFieldmap($sUser, $sPass, $iVid)
 {
@@ -1076,7 +1142,7 @@ function sGetFieldmap($sUser, $sPass, $iVid)
 		exit;
 	}
 	
-	$returnCSV = $lsrcHelper->FieldMap2CSV($iVid);
+	$returnCSV = "".$lsrcHelper->FieldMap2CSV($iVid);
 	return $returnCSV;
 	
 }

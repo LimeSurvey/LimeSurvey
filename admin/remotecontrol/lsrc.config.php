@@ -51,12 +51,12 @@ $lsrcOverSSL=true; //default: false
 // IMPORTANT NOTE: your Client need the same certificate to connect with.
 $useCert=false; //default: false
 // path to your local certificate
-$sslCert='cacert.pem';
-
+$sslCert='D:\\xampp\apache\privkey.pem';
+//C:\\path\myCert.pem
 
 ### Variables
 // path to the wsdl definition for this server... normally it is in the same directory, so you don't need to change it. 
-$wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/lsrc/lsrc.wsdl";
+$wsdl= $homedir."/remotecontrol/lsrc.wsdl"; //default: $homedir."/remotecontrol/lsrc.wsdl";
 
 /**
  * These are the Dirs where the prepared survey csv's are or have to be. 

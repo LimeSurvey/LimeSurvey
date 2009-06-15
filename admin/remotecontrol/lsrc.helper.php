@@ -13,12 +13,16 @@
 * $Id$
 * 
 */
+/**
+ * @author Wahrendorff
+ *
+ */
 class LsrcHelper {
 	
 	/**
 	 * simple debug function to make life a bit easier
 	 *
-	 * @param unknown_type $text
+	 * @param string $text
 	 */
 	function debugLsrc($text)
 	{
@@ -39,13 +43,13 @@ class LsrcHelper {
 	function getSurveyOwner($iVid)
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
 		if($lsrcHelper->surveyExists($iVid))
 		{
-			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=$iVid";
+			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=".sanitize_int($iVid)."";
 			$rs = db_execute_assoc($query2num);
 			return $rs->FetchRow();
 			
@@ -65,7 +69,7 @@ class LsrcHelper {
 	{//be aware that this function may be a security risk
 	
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		if($mode=='' || !isset($mode) || $mode=='0')
@@ -89,7 +93,7 @@ class LsrcHelper {
 		}
 		if($mode==1 || $mode=='1')
 		{
-			$query2insert = "INSERT INTO ".$dbprefix.$table." (".$key.") VALUES (".$value.");";
+			$query2insert = "INSERT INTO {$dbprefix}{$table} ({$key}) VALUES ({$value});";
 			$this->debugLsrc("wir sind in Line ".__LINE__.", inserting ($query2insert)");   
 			if($connect->Execute($query2insert))
 			{
@@ -106,16 +110,20 @@ class LsrcHelper {
 		
 	}
 
-	/*
-	 * Function to send Emails to participants of a specific survey
+	/**
+	 * 
+	 * Enter description here...
+	 * @param $surveyid
+	 * @param $type
+	 * @param $maxLsrcEmails
+	 * @return unknown_type
 	 */
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
 		global $connect,$sitename ;
-		global $dbprefix ;
-
+//		global $dbprefix ;
+		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
-		include("../../classes/core/html_entity_decode_php4.php");
 		$lsrcHelper= new LsrcHelper();
 		
 		
@@ -209,7 +217,7 @@ class LsrcHelper {
 			    {
 					$_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode_php4($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
+		            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
 				
 				}
 		
@@ -511,7 +519,7 @@ class LsrcHelper {
 								else
 								{
 									$fieldsarray["{SURVEYURL}"]="<a href='$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/index.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
-									$_POST['message_'.$emrow['language']] = html_entity_decode_php4($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
+									$_POST['message_'.$emrow['language']] = html_entity_decode($_POST['message_'.$emrow['language']], ENT_QUOTES, $emailcharset);
 								}
 							}
 							
@@ -593,9 +601,9 @@ class LsrcHelper {
 		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
-		require($homedir."/classes/core/sha256.php"); 
+		require(dirname(__FILE__)."/../classes/core/sha256.php"); 
 		
-		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name='".$sUser."' ";
+		$query="SELECT uid, password, lang, superadmin FROM {$dbprefix}users WHERE users_name=".$connect->qstr(sanitize_user($sUser));
 		// echo $query;
 		$result = db_execute_assoc($query);
 		$gv = $result->FetchRow();
@@ -605,7 +613,7 @@ class LsrcHelper {
 		}
 		else
 		{
-			if((SHA256::hash($sPass)==$gv['password']))
+			if((SHA256::hashing($sPass)==$gv['password']))
 			{
 				$_SESSION['loginID']=$gv['uid'];
 				$_SESSION['lang']=$gv['lang'];
@@ -641,7 +649,7 @@ class LsrcHelper {
 	function surveyExists($sid)//XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		
@@ -669,7 +677,7 @@ class LsrcHelper {
 	function importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		
 		include("lsrc.config.php");
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -1090,7 +1098,7 @@ class LsrcHelper {
 		
 		if ($importversion<=100)
 		// find the old language field and replace its contents with the new language shortcuts
-		    {
+		{
 		    $oldlanguage=$surveyrowdata['language'];
 		    $newlanguage='en'; //Default
 		    switch ($oldlanguage) 
@@ -1222,9 +1230,9 @@ class LsrcHelper {
 			    	throw new SoapFault("Server: ", "$e : $connect->ErrorMsg()");
 			    	exit;
 			    }
+			
 		
-		
-		    }
+		}
 		
 		
 		
@@ -1237,8 +1245,15 @@ class LsrcHelper {
 		$values=array_values($surveyrowdata);
 		$values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
 		$insert = "INSERT INTO {$dbprefix}surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
+		try
+		{
 		$iresult = $connect->Execute($insert) or $this->debugLsrc(""."Import of this survey file failed on Line: ".__LINE__."\n[$insert]{$surveyarray[0]}\n" . $connect->ErrorMsg()) and exit;
-		
+		}
+	 	catch(exception $e)
+	    {
+	    	throw new SoapFault("Server: ", "$e : $connect->ErrorMsg()");
+	    	exit;
+	    }
 		$oldsid=$surveyid;
 		
 		// Now import the survey language settings
@@ -1942,7 +1957,7 @@ class LsrcHelper {
 	function activateSurvey($surveyid)//XXX activateSurvey
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$_GET['sid'] = $surveyid;
@@ -2273,7 +2288,7 @@ class LsrcHelper {
 						$createsurvey .= " F";
 						break;
 						case "S":  //SHORT TEXT
-						if ($databasetype=='mysql')	{$createsurvey .= " X";}
+						if ($databasetype=='mysql' || $databasetype=='mysqli')	{$createsurvey .= " X";}
 						   else  {$createsurvey .= " C(255)";}
 						break;
 						case "L":  //LIST (RADIO)
@@ -2378,7 +2393,7 @@ class LsrcHelper {
 					while ($abrow = $abresult->FetchRow())
 					{
 						$createsurvey .= "  `{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['code']}`";
-		                if ($databasetype=='mysql')    
+		                if ($databasetype=='mysql' || $databasetype=='mysqli')    
 		                {
 		                    $createsurvey .= " X";
 		                }
@@ -2457,7 +2472,8 @@ class LsrcHelper {
 			$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 			$tabname = "{$dbprefix}survey_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
 		
-			$taboptarray = array('mysql' => 'ENGINE'.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+            $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+                                 'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
 			$dict = NewDataDictionary($connect);
 			$sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
 			$execresult=$dict->ExecuteSQLArray($sqlarray,1);
@@ -2576,7 +2592,7 @@ class LsrcHelper {
 	function importGroup($surveyid, $sMod) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+//		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3212,18 +3228,23 @@ class LsrcHelper {
 		    //return $newgid;
 	}
 	
-	/*
-	 * function to import a single question
+	/**
+	 * 
+	 * Enter description here...
+	 * @param $surveyid
+	 * @param $sMod
+	 * @param $newGroup
+	 * @return unknown_type
 	 */
 	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
 		global $connect ;
-		global $dbprefix ;
+		//global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
 		
-		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK ");
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", START OK $dbprefix ");
 		
 		//$getGidSql = "SELECT gid FROM {$dbprefix}  ";
 		$getGidSql = "SELECT gid 
@@ -3233,10 +3254,15 @@ class LsrcHelper {
         $getGidRs = db_execute_num($getGidSql);
         $gidRow=$getGidRs->FetchRow();
         $gid = $gidRow[0];
+        
+        if($gid=='')#
+        {
+        	$this->debugLsrc("No Group for importing the question, available!");
+			return "No Group for importing the question, available! Import failed.";
+        }
+        
 		if($newGroup)
 			++$gid;        
-		        
-			$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		
 		$the_full_file_path = $queDir.$sMod.".csv";
 		
@@ -3566,14 +3592,16 @@ class LsrcHelper {
 		if (isset($questionarray) && $questionarray) {
 		    $qafieldorders=convertCSVRowToArray($questionarray[0],',','"');
 		    unset($questionarray[0]);
-		
+
 		    //Assuming we will only import one question at a time we will now find out the maximum question order in this group 
 		    //and save it for later
 		    $qmaxqo = "SELECT MAX(question_order) AS maxqo FROM ".db_table_name('questions')." WHERE sid=$newsid AND gid=$newgid";
 		    $qres = db_execute_assoc($qmaxqo) or $this->debugLsrc ("Error: ".": Failed to find out maximum question order value\n$qmaxqo\n".$connect->ErrorMsg());
 		    $qrow=$qres->FetchRow();
 		    $newquestionorder=$qrow['maxqo']+1;
-		
+			
+		    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+			
 			foreach ($questionarray as $qa) {
 		        $qacfieldcontents=convertCSVRowToArray($qa,',','"');
 				$newfieldcontents=$qacfieldcontents;
@@ -3594,13 +3622,16 @@ class LsrcHelper {
 				    $questionrowdata["gid"] = $newgid;
 		            $questionrowdata["question_order"] = $newquestionorder;
 		
-		            
+		            $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		            // Now we will fix up the label id 
 				    $type = $questionrowdata["type"]; //Get the type
 					if ($type == "F" || $type == "H" || $type == "W" || 
 					    $type == "Z" || $type == "1" || $type == ":" ||
 						$type == ";" ) 
 		                {//IF this is a flexible label array, update the lid entry
+		                	
+		                	$this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
+		                	
 					    if (isset($labelreplacements)) {
 						    foreach ($labelreplacements as $lrp) {
 							    if ($lrp[0] == $questionrowdata["lid"]) {
@@ -3626,6 +3657,7 @@ class LsrcHelper {
 		            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 				    $qres = $connect->Execute($qinsert) or $this->debugLsrc ("Error: ".": Failed to insert question\n$qinsert\n".$connect->ErrorMsg());
 		
+				    $this->debugLsrc("wir sind in ".__FILE__." - ".__FUNCTION__." Line ".__LINE__.", OK "); 
 		            // set the newqid only if is not set
 		            if (!isset($newqid))
 				        $newqid=$connect->Insert_ID("{$dbprefix}questions","qid");
@@ -3691,7 +3723,7 @@ class LsrcHelper {
 	function deleteSurvey($surveyid)
 	{
 		global $connect ;
-		global $dbprefix ;
+		// global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");   
@@ -3754,10 +3786,11 @@ class LsrcHelper {
     * This function pulls a CSV representation of the Field map
     * 
     * @param mixed $surveyid - the survey ID you want the Fieldmap for
+    * @return String $fieldmap
     */
     function FieldMap2CSV($surveyid)
     {
-        $fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name');   
+        $fields=array("fieldname", "type", "sid", "gid", "qid", "aid",'title','question','group_name','lid','lid1');   
         $fieldmap=createFieldMap($surveyid,'full',true);
         
         $result='"'.implode('","',$fields).'"'."\n";
@@ -3776,7 +3809,8 @@ class LsrcHelper {
                 $destfieldmap[$field]='';
               }
            }
-           $result.=implode(',',array_map('CSVEscape',$entry))."\n";
+           $entry=array_map('CSVEscape',array_values($destfieldmap));
+           $result.=implode(',',$entry)."\n";
         }
         return $result;  
     }

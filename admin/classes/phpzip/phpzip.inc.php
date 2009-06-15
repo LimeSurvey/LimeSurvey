@@ -36,7 +36,7 @@ class PHPZip
 					if (is_file($filename))
 					{
 						$fd = fopen ($filename, "r");
-						$content = fread ($fd, filesize ($filename));
+						$content = @fread ($fd, filesize ($filename));
 						fclose ($fd);
 
 						if (is_array($dir)) $filename = basename($filename);

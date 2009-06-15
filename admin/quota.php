@@ -256,7 +256,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		     	}
                 else
                 {
-                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                    $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
                 }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -266,7 +266,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                 $query = "INSERT INTO ".db_table_name('quota_languagesettings')." (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
 		        	      VALUES ('$quotaid', '$lang', '".db_quote($_POST['quota_name'])."', '".db_quote($_POST['quotals_message_'.$lang])."', '".db_quote($_POST['quotals_url_'.$lang])."', '".db_quote($_POST['quotals_urldescrip_'.$lang])."')";
 				if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('quota_languagesettings').' ON; '.$query . 'SET IDENTITY INSERT '.db_table_name('quota_languagesettings').' OFF;';
-	    		$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 			}
 		} //End insert language based components
 		$viewquota = "1";
@@ -313,7 +313,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		     	}
                 else
                 {
-                    $_POST['quotals_message_'.$lang] = html_entity_decode_php4($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
+                    $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
                 }
                 
                 // Fix bug with FCKEditor saving strange BR types
@@ -327,7 +327,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 						  quotals_urldescrip='".db_quote($_POST['quotals_urldescrip_'.$lang])."'
 				          WHERE quotals_quota_id = '{$_POST['quota_id']}'
 						  AND quotals_language = '$lang'";
-				$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 			}
 		} //End insert language based components
 
@@ -360,7 +360,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		$_POST  = array_map('db_quote', $_POST);
 		$query = "DELETE FROM ".db_table_name('quota')." WHERE id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
-		
+
 		$query = "DELETE FROM ".db_table_name('quota_languagesettings')." WHERE quotals_quota_id='{$_POST['quota_id']}'";
 		$connect->Execute($query) or safe_die($connect->ErrorMsg());
 		
@@ -432,7 +432,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	    $myFilter = new InputFilter('','',1,1,1);
 
 		$quotasoutput .= '
-			<div class="tab-pane" id="tab-pane-1">'."\n\n";
+			<div class="tab-pane" id="tab-pane-quota-'.$surveyid.'">'."\n\n";
     	foreach ($langs as $lang)
     	{
     	    //Get this one
@@ -453,7 +453,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         							<tbody>
           								<tr class="evenrow">
           								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
           								        </blockquote></td>
           								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$langquotainfo['quotals_message'].'</textarea></td>
 										</tr>
@@ -465,7 +465,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+                								<p><strong>'.$clang->gT("URL description").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="30" maxlength="255" value="'.$langquotainfo['quotals_urldescrip'].'" /></td>
           								</tr>
@@ -482,7 +482,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		 			  	    <td valign="top">
 		 			  	        <table width="100%" border="0">
 		 			  	            <tbody>
-									    <tr align="left" class="evenrow"> 
+          								<tr align="left" class="evenrow"> 
             								<td>&nbsp;</td>
             								<td><table width="30%"><tr><td align="left"><input name="submit" type="submit" value="'.$clang->gT("Update Quota").'" />
             								<input type="hidden" name="sid" value="'.$surveyid.'" />
@@ -504,6 +504,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	}
 	
 	$totalquotas=0;
+	$totalcompleted=0;
+	$csvoutput=array();
 	if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	{
 
@@ -553,9 +555,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 					$quotasoutput .= $clang->gT("Terminate Survey With Warning");
 				}
 				$totalquotas+=$quotalisting['qlimit'];
+				$completed=get_quotaCompletedCount($surveyid, $quotalisting['id']);
+				$highlight=($completed >= $quotalisting['qlimit']) ? "" : "style='color: red'"; //Incomplete quotas displayed in red
+				$totalcompleted=$totalcompleted+$completed;
+			    $csvoutput[]=$quotalisting['name'].",".$quotalisting['qlimit'].",".$completed.",".($quotalisting['qlimit']-$completed)."\r\n";
+
 				$quotasoutput .='</td>
             		<td align="center">'.$quotalisting['qlimit'].'</td>
-            		<td align="center">'.get_quotaCompletedCount($surveyid, $quotalisting['id']).'</td>
+            		<td align="center" '.$highlight.'>'.$completed.'</td>
             		<td align="center" style="padding: 3px;">
             		<table width="100%"><tr><td align="center">
             		<form action="'.$scriptname.'" method="post">
@@ -640,6 +647,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
+            				</tr>
+            				<tr>
+            				<td>&nbsp;</td>
+            				<td align="center"><a name="quota_end">&nbsp;</a></td>
+            				<td align="center">&nbsp;</td>
+            				<td align="center">'.$totalquotas.'</td>
+            				<td align="center">'.$totalcompleted.'</td>
+            				<td align="center" style="padding: 3px;"<input type="button" value="'.$clang->gT("Quick CSV Report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')"></td>
           					</tr>
         					</tbody>
       						</table>
@@ -648,7 +663,17 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 							</table>';
 	}
 
-
+    if(isset($_GET['quickreport']) && $_GET['quickreport'])
+    {
+        header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
+		header("Content-type: text/comma-separated-values; charset=UTF-8");
+    	echo $clang->gT("Quota Name").",".$clang->gT("Limit").",".$clang->gT("Completed").",".$clang->gT("Remaining")."\r\n";
+		foreach($csvoutput as $line)
+	    {
+		  echo $line;
+		}
+	die;
+	}
 	if($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid'])))
 	{
 		if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
@@ -835,11 +860,11 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								</tr>
           							</tbody>
           						</table>
-          					</td>
+            								</td>
           				</tr>
 					</table>
 					';
-		
+            								
 		$langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		array_push($langs,$baselang);
@@ -850,8 +875,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		$thissurvey=getSurveyInfo($surveyid);
 
 		$quotasoutput .= '
-			<div class="tab-pane" id="tab-pane-1">'."\n\n";
-    	foreach ($langs as $lang)
+            <div class="tab-pane" id="tab-pane-quota-'.$surveyid.'">'."\n\n";        
+        foreach ($langs as $lang)
     	{
             $quotasoutput .= '
 				<div class="tab-page">
@@ -866,10 +891,10 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         							<tbody>
           								<tr class="evenrow">
           								    <td align="right" valign="top"><blockquote>
-          								        <p><strong>'.$clang->gT("Quota Message").':</strong></p>
+          								        <p><strong>'.$clang->gT("Quota message").':</strong></p>
           								        </blockquote></td>
           								    <td align="left"> <textarea name="quotals_message_'.$lang.'" cols="60" rows="6">'.$clang->gT("Sorry your responses have exceeded a quota on this survey.").'</textarea></td>
-										</tr>
+          								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
                 								<p><strong>'.$clang->gT("URL").':</strong></p>
@@ -878,14 +903,14 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
           								</tr>
           								<tr class="evenrow"> 
             								<td align="right"><blockquote> 
-                								<p><strong>'.$clang->gT("URL Description").':</strong></p>
+                								<p><strong>'.$clang->gT("URL description").':</strong></p>
               									</blockquote></td>
             								<td align="left"> <input name="quotals_urldescrip_'.$lang.'" type="text" size="50" maxlength="255" value="'.$thissurvey['urldescrip'].'" /></td>
           								</tr>
-       								</tbody>
-      							</table>
-    						</td>
-  						</tr>
+       							</tbody>
+      						</table>
+    					</td>
+  					</tr>
 					</table>
 				</div>';
 		};

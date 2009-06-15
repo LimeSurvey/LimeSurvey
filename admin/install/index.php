@@ -73,7 +73,10 @@ function checkforupgrades()
 {
     global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
     $adminoutput='';
-    include ('upgrade-'.$databasetype.'.php');
+    $upgradedbtype=$databasetype;
+    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';         
+    if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';         
+    include ('upgrade-'.$upgradedbtype.'.php');
     $tables = $connect->MetaTables();
 
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";

@@ -1,6 +1,6 @@
 <?php
 /* 
-V4.990 11 July 2008  (c) 2000-2008 John Lim (jlim#natsoft.com). All rights reserved.
+V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. 
@@ -13,6 +13,7 @@ Set tabs to 4 for best viewing.
    	http://phpbuilder.com/columns/alberto20000919.php3
 	
 */
+
 
 // security - hide paths
 if (!defined('ADODB_DIR')) die();
@@ -33,11 +34,6 @@ if (!defined('ADODB_DIR')) die();
 //	 http://support.microsoft.com/default.aspx?scid=kb;EN-US;q220918
 // Alternatively use:
 // 	   CONVERT(char(12),datecol,120)
-//
-// Also if your month is showing as month-1, 
-//   e.g. Jan 13, 2002 is showing as 13/0/2002, then see
-//     http://phplens.com/lens/lensforum/msgs.php?id=7048&x=1
-//   it's a localisation problem.
 //----------------------------------------------------------------
 
 
@@ -107,6 +103,7 @@ class ADODB_mssql extends ADOConnection {
 	var $identitySQL = 'select SCOPE_IDENTITY()'; // 'select SCOPE_IDENTITY'; # for mssql 2000
 	var $uniqueOrderBy = true;
 	var $_bindInputArray = true;
+	var $forceNewConnect = false;
 	
 	function ADODB_mssql() 
 	{		
@@ -209,14 +206,18 @@ class ADODB_mssql extends ADOConnection {
 	}
 	
 
-	function &SelectLimit($sql,$nrows=-1,$offset=-1, $inputarr=false,$secs2cache=0)
+	function SelectLimit($sql,$nrows=-1,$offset=-1, $inputarr=false,$secs2cache=0)
 	{
 		if ($nrows > 0 && $offset <= 0) {
 			$sql = preg_replace(
 				'/(^\s*select\s+(distinctrow|distinct)?)/i','\\1 '.$this->hasTop." $nrows ",$sql);
-			$rs =& $this->Execute($sql,$inputarr);
+				
+			if ($secs2cache)
+				$rs = $this->CacheExecute($secs2cache, $sql, $inputarr);
+			else
+				$rs = $this->Execute($sql,$inputarr);
 		} else
-			$rs =& ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,$secs2cache);
+			$rs = ADOConnection::SelectLimit($sql,$nrows,$offset,$inputarr,$secs2cache);
 	
 		return $rs;
 	}
@@ -287,8 +288,8 @@ class ADODB_mssql extends ADOConnection {
 	{
 		if ($this->transOff) return true; 
 		$this->transCnt += 1;
-	   	$this->Execute('BEGIN TRAN');
-	   	return true;
+	   	$ok = $this->Execute('BEGIN TRAN');
+	   	return $ok;
 	}
 		
 	function CommitTrans($ok=true) 
@@ -296,15 +297,15 @@ class ADODB_mssql extends ADOConnection {
 		if ($this->transOff) return true; 
 		if (!$ok) return $this->RollbackTrans();
 		if ($this->transCnt) $this->transCnt -= 1;
-		$this->Execute('COMMIT TRAN');
-		return true;
+		$ok = $this->Execute('COMMIT TRAN');
+		return $ok;
 	}
 	function RollbackTrans()
 	{
 		if ($this->transOff) return true; 
 		if ($this->transCnt) $this->transCnt -= 1;
-		$this->Execute('ROLLBACK TRAN');
-		return true;
+		$ok = $this->Execute('ROLLBACK TRAN');
+		return $ok;
 	}
 	
 	function SetTransactionMode( $transaction_mode ) 
@@ -337,7 +338,7 @@ class ADODB_mssql extends ADOConnection {
 	}
 	
 	
-	function &MetaIndexes($table,$primary=false)
+	function MetaIndexes($table,$primary=false)
 	{
 		$table = $this->qstr($table);
 
@@ -369,7 +370,7 @@ class ADODB_mssql extends ADOConnection {
 
 		$indexes = array();
 		while ($row = $rs->FetchRow()) {
-			if (!$primary && $row[5]) continue;
+			if ($primary && !$row[5]) continue;
 			
             $indexes[$row[0]]['unique'] = $row[6];
             $indexes[$row[0]]['columns'][] = $row[1];
@@ -394,7 +395,7 @@ from sysforeignkeys
 where upper(object_name(fkeyid)) = $table
 order by constraint_name, referenced_table_name, keyno";
 		
-		$constraints =& $this->GetArray($sql);
+		$constraints = $this->GetArray($sql);
 		
 		$ADODB_FETCH_MODE = $save;
 		
@@ -440,7 +441,7 @@ order by constraint_name, referenced_table_name, keyno";
 
 	// "Stein-Aksel Basma" <basma@accelero.no>
 	// tested with MSSQL 2000
-	function &MetaPrimaryKeys($table)
+	function MetaPrimaryKeys($table)
 	{
 	global $ADODB_FETCH_MODE;
 	
@@ -465,14 +466,14 @@ order by constraint_name, referenced_table_name, keyno";
 	}
 
 	
-	function &MetaTables($ttype=false,$showSchema=false,$mask=false) 
+	function MetaTables($ttype=false,$showSchema=false,$mask=false) 
 	{
 		if ($mask) {
 			$save = $this->metaTablesSQL;
 			$mask = $this->qstr(($mask));
 			$this->metaTablesSQL .= " AND name like $mask";
 		}
-		$ret =& ADOConnection::MetaTables($ttype,$showSchema);
+		$ret = ADOConnection::MetaTables($ttype,$showSchema);
 		
 		if ($mask) {
 			$this->metaTablesSQL = $save;
@@ -512,11 +513,11 @@ order by constraint_name, referenced_table_name, keyno";
 	   else return -1;
 	}
 	
-	// returns true or false
-	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename)
+	// returns true or false, newconnect supported since php 5.1.0.
+	function _connect($argHostname, $argUsername, $argPassword, $argDatabasename,$newconnect=false)
 	{
 		if (!function_exists('mssql_pconnect')) return null;
-		$this->_connectionID = mssql_connect($argHostname,$argUsername,$argPassword);
+		$this->_connectionID = mssql_connect($argHostname,$argUsername,$argPassword,$newconnect);
 		if ($this->_connectionID === false) return false;
 		if ($argDatabasename) return $this->SelectDB($argDatabasename);
 		return true;	
@@ -539,6 +540,11 @@ order by constraint_name, referenced_table_name, keyno";
 		return true;	
 	}
 	
+	function _nconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
+    {
+		return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename, true);
+    }
+
 	function Prepare($sql)
 	{
 		$sqlarr = explode('?',$sql);
@@ -663,7 +669,7 @@ order by constraint_name, referenced_table_name, keyno";
 	}
 	
 	// returns query ID if successful, otherwise false
-	function _query($sql,$inputarr)
+	function _query($sql,$inputarr=false)
 	{
 		$this->_errorMsg = false;
 		if (is_array($inputarr)) {
@@ -743,12 +749,12 @@ order by constraint_name, referenced_table_name, keyno";
 	}
 	
 	// mssql uses a default date like Dec 30 2000 12:00AM
-	function UnixDate($v)
+	static function UnixDate($v)
 	{
 		return ADORecordSet_array_mssql::UnixDate($v);
 	}
 	
-	function UnixTimeStamp($v)
+	static function UnixTimeStamp($v)
 	{
 		return ADORecordSet_array_mssql::UnixTimeStamp($v);
 	}	
@@ -820,7 +826,7 @@ class ADORecordset_mssql extends ADORecordSet {
 		fields in a certain query result. If the field offset isn't specified, the next field that wasn't yet retrieved by
 		fetchField() is retrieved.	*/
 
-	function &FetchField($fieldOffset = -1) 
+	function FetchField($fieldOffset = -1) 
 	{
 		if ($fieldOffset != -1) {
 			$f = @mssql_fetch_field($this->_queryID, $fieldOffset);
@@ -938,12 +944,12 @@ class ADORecordset_mssql extends ADORecordSet {
 		return $rez;
 	}
 	// mssql uses a default date like Dec 30 2000 12:00AM
-	function UnixDate($v)
+	static function UnixDate($v)
 	{
 		return ADORecordSet_array_mssql::UnixDate($v);
 	}
 	
-	function UnixTimeStamp($v)
+	static function UnixTimeStamp($v)
 	{
 		return ADORecordSet_array_mssql::UnixTimeStamp($v);
 	}
@@ -958,7 +964,7 @@ class ADORecordSet_array_mssql extends ADORecordSet_array {
 	}
 	
 		// mssql uses a default date like Dec 30 2000 12:00AM
-	function UnixDate($v)
+	static function UnixDate($v)
 	{
 	
 		if (is_numeric(substr($v,0,1)) && ADODB_PHPVER >= 0x4200) return parent::UnixDate($v);
@@ -989,7 +995,7 @@ class ADORecordSet_array_mssql extends ADORecordSet_array {
 		return  mktime(0,0,0,$themth,$theday,$rr[3]);
 	}
 	
-	function UnixTimeStamp($v)
+	static function UnixTimeStamp($v)
 	{
 	
 		if (is_numeric(substr($v,0,1)) && ADODB_PHPVER >= 0x4200) return parent::UnixTimeStamp($v);

@@ -59,7 +59,6 @@ while ($desrow = $desresult->FetchRow())
 	$surveydesc = $desrow['surveyls_description'];
 	$surveyactive = $desrow['active'];
 	$surveytable = db_table_name("survey_".$desrow['sid']);
-	$surveyuseexpiry = $desrow['useexpiry'];
 	$surveyexpirydate = $desrow['expires'];
 	$surveystartdate = $desrow['startdate'];
 	$surveyfaxto = $desrow['faxto'];
@@ -68,7 +67,18 @@ if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc)
 
 
 //define('PRINT_TEMPLATE' , '/templates/print/' , true);
-define('PRINT_TEMPLATE' , '/templates/'.$template.'/' , true);
+if(is_file($templaterootdir.'/'.$template.'/print_survey.pstpl'))
+{
+	define('PRINT_TEMPLATE_DIR' , $templaterootdir.'/'.$template.'/' , true);
+	define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/'.$template.'/' , true);
+}
+else
+{
+	define('PRINT_TEMPLATE_DIR' , $templaterootdir.'/default/' , true);
+	define('PRINT_TEMPLATE_URL' , $rooturl.'/templates/default/' , true);
+}
+
+
 
 $fieldmap=createFieldMap($surveyid);
 
@@ -80,16 +90,16 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 	$surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 }
 
-
+$pdf_form='';
 if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$notsupportlanguages))
 {
 	$pdf_form = '
-<form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
-	<input type="submit" value="'.$clang->gT('PDF Export').'"/>
-	<input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'"/>
-	<input type="hidden" name="printableexport" value="true"/>
-</form>
-';
+    <form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
+	    <input type="submit" value="'.$clang->gT('PDF Export').'"/>
+	    <input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'"/>
+	    <input type="hidden" name="printableexport" value="true"/>
+    </form>
+    ';
 }
 
 $headelements = '
@@ -99,12 +109,9 @@ $headelements = '
 		<script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
 <![endif]-->
 
-		<script type="text/javascript" src="'.$rooturl.'/scripts/tabpane/js/tabpane.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/tooltips.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/lang/calendar-'.$_SESSION['adminlang'].'.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/calendar/calendar-setup.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/scripts/validation.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
+		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/admin_core.js"></script>
 
 		<link rel="stylesheet" type="text/css" media="all" href="'.$rooturl.'/scripts/calendar/calendar-blue.css" title="win2k-cold-1" />
 ';
@@ -120,7 +127,7 @@ $survey_output = array(
 			,'THANKS' => $clang->gT("Thank you for completing this survey.")
 			,'PDF_FORM' => $pdf_form
 			,'HEADELEMENTS' => $headelements
-			,'TEMPLATEURL' => $rooturl.PRINT_TEMPLATE
+			,'TEMPLATEURL' => PRINT_TEMPLATE_URL
 			,'FAXTO' => $surveyfaxto
 			,'PRIVACY' => ''
 			,'GROUPS' => ''
@@ -128,12 +135,14 @@ $survey_output = array(
 
 
 
+$survey_output['FAX_TO'] ='';        
 if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 {
 	$survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
 }
 
-if ($surveyuseexpiry=="Y")
+
+if ($surveystartdate!='')
 {
     $survey_output['SUBMIT_BY'] = sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
 }
@@ -191,7 +200,7 @@ function populate_template( $template , $input  , $line = '')
  *
  * How:
  */
- 	$full_path = $rootdir.PRINT_TEMPLATE.'print_'.$template.'.pstpl';
+ 	$full_path = PRINT_TEMPLATE_DIR.'print_'.$template.'.pstpl';
 	$full_constant = 'TEMPLATE'.$template.'.pstpl';
 	if(!defined($full_constant))
 	{
@@ -247,9 +256,9 @@ function populate_template( $template , $input  , $line = '')
 
 function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 {
-	global $rooturl;
+	global $rooturl, $rootdir;
 
-	if($type == 'other')
+	if($type == 'other' or $type == 'othercomment')
 	{
 		$x = 1;
 	};
@@ -293,15 +302,16 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'radio':
 		case 'checkbox':if(!defined('IMAGE_'.$type.'_SIZE'))
 				{
-					$image_dimensions = getimagesize($rootdir.PRINT_TEMPLATE.'print_img_'.$type.'.png');
+					$image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
 					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
 				};
-				$output = '<img src="'.$rooturl.PRINT_TEMPLATE.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
+				$output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
 		case 'rank':
 		case 'other':
+		case 'othercomment':
 		case 'text':
 		case 'textarea':$output = '<div class="input-'.$type.'"'.$style.$div_title.'>{NOTEMPTY}</div>';
 				break;
@@ -321,6 +331,7 @@ function star_replace($input)
 }
 
 $total_questions = 0;
+$mapquestionsNumbers=Array();
 
 // =========================================================
 // START doin the business:
@@ -380,7 +391,7 @@ while ($degrow = $degresult->FetchRow())
 		$scenarioresult=db_execute_assoc($scenarioquery);
 
 		while ($scenariorow=$scenarioresult->FetchRow())
-        	{
+        {
         		if($s == 0 && $scenarioresult->RecordCount() > 1)
 			{	
 				$explanation .= '<p class="scenario">'.try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
@@ -391,10 +402,18 @@ while ($degrow = $degresult->FetchRow())
 			}
 
 			$x=0;
-			$distinctquery="SELECT DISTINCT cqid, method, ".db_table_name("questions").".title FROM ".db_table_name("conditions").", ".db_table_name("questions")." WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid AND ".db_table_name("conditions").".qid={$deqrow['qid']} AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} AND language='{$surveyprintlang}' ORDER BY cqid";
+			$distinctquery="SELECT cqid, method
+                            FROM ".db_table_name("conditions")."
+                            WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']} 
+                                AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']} 
+                            group by cqid, method
+                            ORDER BY cqid";
 			$distinctresult=db_execute_assoc($distinctquery);
 			while ($distinctrow=$distinctresult->FetchRow())
 			{
+                $subquery='select title, question from '.db_table_name("questions")." where qid={$distinctrow['cqid']} AND language='{$surveyprintlang}'";
+                $subresult=$connect->GetRow($subquery);
+                
 				if($x > 0)
 				{
 					$explanation .= ' <em>'.$clang->gT('and').'</em> ';
@@ -406,20 +425,40 @@ while ($degrow = $degresult->FetchRow())
 
 				if($distinctrow['method']=='==')
 				{
-					$explanation .= $clang->gT("if you answered")." ";
+					$explanation .= $clang->gT("Answer was")." ";
 				}
-				elseif($distinctrow['method']='!=')
+				elseif($distinctrow['method']=='!=')
 				{
-					$explanation .= $clang->gT("if you have NOT answered")." ";
+					$explanation .= $clang->gT("Answer was NOT")." ";
+				}
+				elseif($distinctrow['method']=='<')
+				{
+					$explanation .= $clang->gT("Answer was less than")." ";
+				}
+				elseif($distinctrow['method']=='<=')
+				{
+					$explanation .= $clang->gT("Answer was less than or equal to")." ";
+				}
+				elseif($distinctrow['method']=='>=')
+				{
+					$explanation .= $clang->gT("Answer was greater than or equal to")." ";
+				}
+				elseif($distinctrow['method']=='>')
+				{
+					$explanation .= $clang->gT("Answer was greater than")." ";
+				}
+				elseif($distinctrow['method']=='RX')
+				{
+					$explanation .= $clang->gT("Answer matched (regexp)")." ";
 				}
 				else
 				{
-					$explanation .= $clang->gT("if you answered")." ";
+					$explanation .= $clang->gT("Answer was")." ";
 				}
 
 				$conquery="SELECT cid, cqid, ".db_table_name("questions").".title,\n"
 				."".db_table_name("questions").".question, value, ".db_table_name("questions").".type,\n"
-				."".db_table_name("questions").".lid, cfieldname\n"
+				."".db_table_name("questions").".lid, ".db_table_name("questions").".lid1, cfieldname\n"
 				."FROM ".db_table_name("conditions").", ".db_table_name("questions")."\n"
 				."WHERE ".db_table_name("conditions").".cqid=".db_table_name("questions").".qid\n"
 				."AND ".db_table_name("conditions").".cqid={$distinctrow['cqid']}\n"
@@ -451,6 +490,8 @@ while ($degrow = $degresult->FetchRow())
 							break;
 						case "A":
 						case "B":
+						case ":":
+						case ";":
 							$conditions[]=$conrow['value'];
 							break;
 						case "C":
@@ -468,11 +509,50 @@ while ($degrow = $degresult->FetchRow())
 								case "D": $conditions[]=$clang->gT("Decrease"); break;
 								case "S": $conditions[]=$clang->gT("Same"); break;
 							}
-						case "F":
 						case "1":
+							$labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+							if ($labelIndex == 0)
+							{ // TIBO
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									$postans=$frow['title'];
+									$conditions[]=$frow['title'];
+								} // while
+							}
+							elseif ($labelIndex == 1)
+							{
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid1']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									$postans=$frow['title'];
+									$conditions[]=$frow['title'];
+								} // while
+							}
+							break;
+						case "L":
+						case "!":
+						case "O":
+						case "M":
+						case "P":
+						case "R":
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+							$ansresult=db_execute_assoc($ansquery);
+							while ($ansrow=$ansresult->FetchRow())
+							{
+								$conditions[]=$ansrow['answer'];
+							}
+							$conditions = array_unique($conditions);
+							break;
+						case "F":
 						case "H":
 						case "W":
-						case "L":
 						default:
 							$value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
 							$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
@@ -486,6 +566,8 @@ while ($degrow = $degresult->FetchRow())
 							} // while
 							break;
 					} // switch
+					
+					// Now let's complete the answer text with the answer_section
 					$answer_section="";
 					switch($conrow['type'])
 					{
@@ -493,25 +575,69 @@ while ($degrow = $degresult->FetchRow())
 						case "B":
 						case "C":
 						case "E":
+						case "F":
+						case "H":
+						case "K":
 							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
 							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+							//$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
 								$answer_section=" (".$ansrow['answer'].")";
 							}
 							break;
-						default:
-							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+
+						case "1": // dual: (Label 1), (Label 2)
+							$labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
+							//$ansquery="SELECT question FROM ".db_table_name("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
+							$ansresult=db_execute_assoc($ansquery);
+
+							if ($labelIndex == 0)
+							{ 
+								while ($ansrow=$ansresult->FetchRow())
+								{
+									$answer_section=" (".$ansrow['answer']." ".$clang->gT("Label")."1)";
+								}
+							}
+							elseif ($labelIndex == 1)
+							{
+								while ($ansrow=$ansresult->FetchRow())
+								{
+									$answer_section=" (".$ansrow['answer']." ".$clang->gT("Label")."2)";
+								}
+							}
+							break;
+						case ":":
+						case ";": //multi flexi: ( answer [label] )
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$ansquery="SELECT answer FROM ".db_table_name("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$thiscquestion[0]['aid']}' AND language='{$surveyprintlang}'";
 							$ansresult=db_execute_assoc($ansquery);
 							while ($ansrow=$ansresult->FetchRow())
 							{
-								$conditions[]=$ansrow['answer'];
+								$fquery = "SELECT * FROM ".db_table_name("labels")."\n"
+									. "WHERE lid='{$conrow['lid']}'\n"
+									. "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+								$fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
+								while($frow=$fresult->FetchRow())
+								{
+									//$conditions[]=$frow['title'];
+									$answer_section=" (".$ansrow['answer']."[".$frow['title']."])";
+								} // while
 							}
-							$conditions = array_unique($conditions);
+							break;
+						case "R": // (Rank 1), (Rank 2)... TIBO
+							$thiscquestion=arraySearchByKey($conrow['cfieldname'], $fieldmap, "fieldname");
+							$rankid=$thiscquestion[0]['aid'];
+							$answer_section=" (".$clang->gT("RANK")." $rankid)";
+							break;
+						default: // nothing to add
 							break;
 					}
 				}
+
 				if (count($conditions) > 1)
 				{
 					$explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
@@ -521,14 +647,18 @@ while ($degrow = $degresult->FetchRow())
 					$explanation .= "'".$conditions[0]."'";
 				}
 				unset($conditions);
-				$explanation .= " ".$clang->gT("to question")." '".$distinctrow['title']." $answer_section ";
+				// Following line commented out because answer_section  was lost, but is required for some question types
+				//$explanation .= " ".$clang->gT("to question")." '".$mapquestionsNumbers[$distinctrow['cqid']]."' $answer_section ";
+				$explanation .= " ".$clang->gT("at question")." '".$mapquestionsNumbers[$distinctrow['cqid']]." [".$subresult['title']."]' (".strip_tags($subresult['question'])."$answer_section)" ;
+				//$distinctrow
 				$x++;
 			}
 			$s++;
 		}
 		if ($explanation)
 		{
-			$explanation = "[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
+			$explanation = "<b>".$clang->gT('Only answer this question if the following conditions are met:')."</b>"
+			."<br/> ° ".$explanation;//"[".sprintf($clang->gT("Only answer this question %s"), $explanation)."]";
 		}
 		else
 		{
@@ -539,6 +669,7 @@ while ($degrow = $degresult->FetchRow())
 
 		$question = array(
 					 'QUESTION_NUMBER' => $total_questions	// content of the question code field
+					,'QUESTION_CODE' => $deqrow['title']
 					,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])	// content of the question field
 					,'QUESTION_SCENARIO' => $explanation	// if there are conditions on a question, list the conditions.
 					,'QUESTION_MANDATORY' => ''		// translated 'mandatory' identifier
@@ -549,6 +680,8 @@ while ($degrow = $degresult->FetchRow())
 					,'QUESTIONHELP' => ''			// content of the question help field.
 					,'ANSWER' => ''				// contains formatted HTML answer
 				);
+		//TIBO map question qid to their q number
+		$mapquestionsNumbers[$deqrow['qid']]=$total_questions;
 		//END OF GETTING CONDITIONS
 
 		$qid = $deqrow['qid'];
@@ -576,6 +709,12 @@ while ($degrow = $degresult->FetchRow())
 			if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		}
 
+		$qidattributes=getQAttributes($deqrow['qid']);
+		
+		if (isset($qidattributes['page_break']))
+        {
+            $question['QUESTION_CLASS'] .=' breakbefore ';
+        }
 
 		switch($deqrow['type'])
 		{
@@ -623,10 +762,9 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "Z": //LIST Flexible drop-down/radio-button list
-					$qidattributes=getQuestionAttributes($deqrow['qid']);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+					if (isset($qidattributes["display_columns"]))
 					{
-						$dcols=$displaycols['value'];
+						$dcols=$qidattributes['display_columns'];
 					}
 					else
 					{
@@ -670,8 +808,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT("Other")).' '.$clang->gT("Other")."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Other").": ________");}
+						$qAttrib = getQAttributes($deqrow['qid']);
+						if(!isset($qAttrib["other_replace_text"]))
+						{$qAttrib["other_replace_text"]="Other";}
+					
+						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
+						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qAttrib["other_replace_text"]).": ________");}
 					}
 					$question['ANSWER'] .= $wrapper['whole-end'];
 					//Let's break the presentation into columns.
@@ -682,19 +824,18 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case '!': //List - dropdown
-					$qidattributes=getQuestionAttributes($deqrow['qid']);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+                    if (isset($qidattributes["display_columns"]))
 					{
-						$dcols=$displaycols['value'];
+						$dcols=$qidattributes['display_columns'];
 					}
 					else
 					{
 						$dcols=0;
 					}
 
-					if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+                    if (isset($qidattributes["category_separator"]))
 					{
-						$optCategorySeparator = $optCategorySeparator['value'];
+						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
 					{
@@ -751,9 +892,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == 'Y')
 					{
+						$qAttrib = getQAttributes($deqrow['qid']);
+						if(!isset($qAttrib["other_replace_text"]))
+						{$qAttrib["other_replace_text"]="Other";}
 //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT("Other")).' '.$clang->gT("Other")."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
+						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 				//Let's break the presentation into columns.
@@ -801,24 +945,25 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+							
+                if (isset($qidattributes["display_columns"]))
 				{
-					$dcols=$displaycols['value'];
+					$dcols=$qidattributes['display_columns'];
 				}
 				else
 				{
 					$dcols=0;
 				}
-				if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+                if (!isset($qidattributes["max_answers"]))
 				{
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *all* that apply:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *all* that apply:"),"U");}
 				}
 				else
 				{
-					$question['QUESTION_TYPE_HELP'] = $clang->gT('Please choose *at most* ').' <span class="num">'.$maxansw['value'].'</span> '.$clang->gT('answers:');
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers:"),"U");}
+                    $maxansw=$qidattributes["max_answers"];
+					$question['QUESTION_TYPE_HELP'] = $clang->gT('Please choose *at most* ').' <span class="num">'.$maxansw.'</span> '.$clang->gT('answers:');
+					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers:"),"U");}
 				}
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -854,8 +999,12 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					$question['ANSWER'] .= $wrapper['item-start-other'].$clang->gT("Other").":\n\t\t".input_type_image('other').$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Other").": ________");}
+					if(!isset($qidattributes["other_replace_text"]))
+					{
+                        $qidattributes["other_replace_text"]="Other";
+                    }
+					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT($qidattributes["other_replace_text"]).":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 //				};
@@ -878,16 +1027,16 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if (!$maxansw=arraySearchByKey("max_answers", $qidattributes, "attribute", 1))
+				if (!isset($qidattributes['max_answers']))
 				{
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 				}
 				else
 				{
-					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw['value'].'</span> '.$clang->gT("answers and provide a comment:");
-					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw['value'].$clang->gT("answers and provide a comment:"),"U");}
+                    $maxansw=$qidattributes['max_answers'];
+					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
+					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
 				}
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -902,8 +1051,17 @@ while ($degrow = $degresult->FetchRow())
 					$pdfoutput[$j]=array(" o ".$mearow['code']," __________");
 					$j++;
 				}
+				if ($deqrow['other'] == "Y")
+				{ 
+					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".input_type_image('other','',1)."</div>".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
+					// lemeur: PDFOUTPUT HAS NOT BEEN IMPLEMENTED for these fields
+					// not sure who did implement this.
+					$pdfoutput[$j][0]=array(" o "."Other"," __________");
+					$pdfoutput[$j][1]=array(" o "."OtherComment"," __________");
+					$j++;
+				}
 				
-				$question['ANSWER'] = "\n<ul class=\"".label_class_width($longest_string , 'checkbox')."\">\n".$question['ANSWER']."</ul>\n";
+				$question['ANSWER'] = "\n<ul>\n".$question['ANSWER']."</ul>\n";
 				if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 				break;
 
@@ -928,7 +1086,7 @@ while ($degrow = $degresult->FetchRow())
 					$question['ANSWER'] .=  "\t<li>\n\t\t".$mearow['answer']."\n\t\t".input_type_image('text',$mearow['answer'],$width)."\n\t</li>\n";
 					if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['answer'].": ____________________");}
 				}
-				$question['ANSWER'] =  "\n<ul class=\"".label_class_width($longest_string , 'numeric')."\">\n".$question['ANSWER']."</ul>\n";
+				$question['ANSWER'] =  "\n<ul>\n".$question['ANSWER']."</ul>\n";
 				break;
 
 
@@ -1160,27 +1318,26 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ":": //ARRAY (Multi Flexible) (Numbers)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-					$maxvalue=$maxvalue['value'];
+				if (isset($qidattributes['multiflexible_max'])) {
+					$maxvalue=$qidattributes['multiflexible_max'];
 				}
 				else
 				{
 					$maxvalue=10;
 				}
-				if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-					$minvalue=$minvalue['value'];
+                if (isset($qidattributes['multiflexible_min'])) {
+					$minvalue=$qidattributes['multiflexible_min'];
 				} else {
 					$minvalue=1;
 				}
-				if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-					$stepvalue=$stepvalue['value'];
+                if (isset($qidattributes['multiflexible_step'])) {
+					$stepvalue=$qidattributes['multiflexible_step'];
 				}
 				else
 				{
 					$stepvalue=1;
 				}
-				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                if (isset($qidattributes['multiflexible_checkbox'])) {
 					$checkboxlayout=true;
 				} else {
 					$checkboxlayout=false;
@@ -1266,7 +1423,6 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ";": //ARRAY (Multi Flexible) (text)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
 
@@ -1383,25 +1539,23 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-				$qidattributes=getQuestionAttributes($deqrow['qid']);
-				if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
+				if (isset($qidattributes['dualscale_headerA']))
 				{
-					$leftheader= $dsheaderA['value'];
+					$leftheader= $qidattributes['dualscale_headerA'];
 				}
 				else
 				{
 					$leftheader ='';
 				}
-				if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+                if (isset($qidattributes['dualscale_headerB']))
 				{
-					$rightheader= $dsheaderB['value'];
+					$rightheader= $qidattributes['dualscale_headerB'];
 				}
 				else
 				{
 					$rightheader ='';
 				}
 
-				//$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 				$mearesult = db_execute_assoc($meaquery);
@@ -1619,13 +1773,13 @@ $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '
 
 if(isset($_POST['printableexport']))
 {
-	if ($surveyuseexpiry=="Y")
+    if ($surveystartdate!='')  
 	{
     		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
 	};
 	if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 	{
-		if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please fax your completed survey to:")."$surveyfaxto",'B');}
+		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
 	};
 	$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
 	$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");

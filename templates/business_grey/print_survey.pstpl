@@ -6,19 +6,19 @@
 
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_template.css" />
 <!--[if IE]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_IE_fix_all-versions.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_ie_fix_all.css" />
 <![endif]-->
 <!--[if lt IE 7]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_IE_fix_older-than-7.css" />
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_ie_fix_6.css" />
 <![endif]-->
 	</head>
 	<body>
 		<div id="limesurvey">
 			<h1>{SURVEYNAME}</h1>
 	
-			<div class="survey-welcome">{WELCOME}</div>
-
 			<div class="survey-description">{SURVEYDESCRIPTION}</div>
+			
+			<div class="survey-welcome">{WELCOME}</div>
 
 			<p class="x-questions">{THEREAREXQUESTIONS}</p>
 {GROUPS}

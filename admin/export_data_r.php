@@ -85,7 +85,7 @@ if  (!isset($subaction))
                         ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
                         ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
                         ."</ol><br />"
-                        .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.names are attributes of data, like for read.spss{foreign}.")
+                        .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
                         ."<table><tr><td>";
 } else {
 	// Get Base Language:
@@ -184,7 +184,7 @@ if  ($subaction=='dldata') {
                 } else {
                     echo($na);
                 }           
-            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
+            } elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
             {
             	if ($row[$fieldno] == 'Y')
                 {
@@ -261,7 +261,7 @@ if  ($subaction=='dlstructure') {
      * be sent to the client.
      */
 	echo $headerComment;
-    echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n";   
+    echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";   
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
         if($field['LStype'] == 'N' || $field['LStype']=='K') {
@@ -294,29 +294,33 @@ if  ($subaction=='dlstructure') {
 	foreach ($fields as $field)
     {
     	$answers=array();
-    	if (strpos("!LO",$field['LStype']) !== false) {
-		    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
-		    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
-		    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-		    and {$dbprefix}questions.qid='".$field['qid']."'";
-		    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
-		    $num_results = $result->RecordCount();
-		    if ($num_results > 0)
-		    {
-			    $displayvaluelabel = 0;
-			    # Build array that has to be returned
-			    for ($i=0; $i < $num_results; $i++)
+    	if (strpos("!LOR",$field['LStype']) !== false) {
+    		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
+    			//We have a comment field, so free text
+    		} else {
+			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
+			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
+			    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
+			    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
+			    $num_results = $result->RecordCount();
+			    if ($num_results > 0)
 			    {
-				    $row = $result->FetchRow();
-					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    $displayvaluelabel = 0;
+				    # Build array that has to be returned
+				    for ($i=0; $i < $num_results; $i++)
+				    {
+					    $row = $result->FetchRow();
+						$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    }
 			    }
-		    }
+    		}
 	    }
 	    if (strpos("FWZWH1",$field['LStype']) !== false) {
 		    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
 		    {$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
 		    {$dbprefix}questions.language='".$language."' and 
-		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
+		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid ORDER BY sortorder ASC";
 		    $result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
 		    $num_results = $result->RecordCount();
 		    if ($num_results > 0)
@@ -357,7 +361,7 @@ if  ($subaction=='dlstructure') {
 				$answers[] = array('code'=>$i, 'value'=>$i);
 			}				
 		}
-	    if ($field['LStype'] == 'M' && substr($field['code'],5) != 'other' && $field['size'] > 0)
+	    if ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
 	    {
 			$answers[] = array('code'=>1, 'value'=>$clang->gT('Yes'));
 		    $answers[] = array('code'=>0, 'value'=>$clang->gT('Not Selected'));

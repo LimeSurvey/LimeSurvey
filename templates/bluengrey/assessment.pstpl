@@ -1,8 +1,8 @@
 <br />
-<table align="center" width="75%" border="1" style="border-collapse: collapse; border-color: #111111" >
+<table align="center" width="75%" border="1" style="border-collapse: collapse; border-color: #2f5376" >
  <tr>
-  <td bgcolor="#CCCCCC" align="center"><font size="2">
-   <strong>{ASSESSMENT_HEADING}</strong></font>
+  <td bgcolor="#dddddd" align="center"><font size="2">
+   <span style='font-weight:bold;'>{ASSESSMENT_HEADING}</span>
   </td>
  </tr>
  <tr>

@@ -111,7 +111,7 @@ function sanitize_cquestions($string, $min='', $max='')
 {
    if (isset($string))
    {
-   	$string = preg_replace("/[^_.a-zA-Z0-9+]/", "", $string);
+   	$string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
 	$len = strlen($string);
 	if((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
 	return FALSE;
@@ -334,5 +334,18 @@ function sanitize_languagecodeS($codestringtosanitize) {
 	$codearray=array_map("sanitize_languagecode",$codearray);
 	return implode(" ",$codearray);
 }
+
+
+function sanitize_signedint($integer, $min='', $max='')
+{
+    $int  = (int) $integer; 
+
+    if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
+    { 
+        return FALSE;                              // Oops! Outside limits.
+    }
+
+    return $int;
+};
 
 ?>

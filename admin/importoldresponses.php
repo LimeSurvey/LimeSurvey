@@ -46,38 +46,30 @@ if (!$subaction == "import")
 
     //Get the menubar
     $importoldresponsesoutput = browsemenubar($clang->gT("Quick Statistics"));
-	$importoldresponsesoutput .= "<br /><table align='center' class='outlinetable'>
-		<tr>
-			<th colspan='2'>".$clang->gT("Import responses from an old (deactivated) survey table into an active survey")."</th>
-		</tr>
-		<form method='post'>
-		<tr>
-		 <td align='right'>".$clang->gT("Target Survey ID")."</td>
-		 <td> $surveyid<input type='hidden' value='$surveyid' name='sid'></td>
-		</tr>
-		<tr>
-		 <td align='right'>
-		  ".$clang->gT("Source table").":
-		 </td>
-		 <td>
+	$importoldresponsesoutput .= "<br />
+		<div class='header'>
+			".$clang->gT("Import responses from an deactivated survey table")."
+		</div>
+        <form id='personalsettings' method='post'>        
+		<ul>
+		 <li><label for='spansurveyid'>".$clang->gT("Target survey ID:")."</label>
+		 <span id='spansurveyid'> $surveyid<input type='hidden' value='$surveyid' name='sid'></span>
+		</li>
+        <li>
+		 <label for='oldtable'>
+		  ".$clang->gT("Source table:")."
+		 </label>
 		  <select name='oldtable' >
-{$optionElements}
+          {$optionElements}
 		  </select>
-		 </td>
-		</tr>
-		<tr>
-		 <td colspan='2' align='center'>
+		</li>
+        </ul>
 		  <input type='submit' value='".$clang->gT("Import Responses")."' onclick='return confirm(\"".$clang->gT("Are you sure?","js").")'>&nbsp;
- 	 	  <input type='hidden' name='subaction' value='import'>
-		 </td>
-		</tr>
-		<tr>
-			<td colspan='2' align='center'>
-			<font style='color:red;font-weight:bold;'>".$clang->gT("Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey.")."</font>
-			</td>
-		</tr>
+ 	 	  <input type='hidden' name='subaction' value='import'><br /><br />
+			<div class='warningtitle'>".$clang->gT("Warning: You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey.")."</div>
 		</form>
-		</table><br />&nbsp;";
+        </div>
+		<br />";
 }
 elseif (isset($surveyid) && $surveyid && isset($oldtable))
 {
@@ -177,14 +169,6 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 			}
 		}
 		
-		if(count($fields2insert)!=count($fields2import))
-		{ // nicht mehr gebraucht, da nur alte Datenbanken mit gleicher Spaltenanzahl angezeigt werden
-			print_r($fields2insert);
-			print_r($fields2import);
-			echo "Entschuldigung, die Spaltenanzahl stimmt nicht überein. Bitte im Browser \"zurück\" klicken.";
-			echo "Sorry, a count of columns mismatch prevents the old Responses from importing.";
-			exit;
-		}
 		$queryOldValues = "SELECT ".implode(", ",$fields2import)." "
 						. "FROM {$oldtable} ";
 		$resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
@@ -201,7 +185,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
 				else
 				{
 					if(!is_numeric($fieldValue))
-						$values2import[] = "'".mysql_real_escape_string($fieldValue)."'";
+						$values2import[] = "'".db_quote($fieldValue)."'";
 					else
 						$values2import[] = "".$fieldValue."";
 				}

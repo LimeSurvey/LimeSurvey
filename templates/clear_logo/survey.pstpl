@@ -5,7 +5,7 @@
 			<td>
 <table width="100%" cellpadding="2">
 	<tr>
-		<td width="100%" valign="bottom" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.jpg" alt="Logo Image"></td>
+		<td width="100%" valign="bottom" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.jpg" alt="Logo Image" /></td>
 		<td nowrap valign="bottom" align="right"><strong>{SURVEYNAME}</strong><br>{PERCENTCOMPLETE}</td>
 		
 	</tr>

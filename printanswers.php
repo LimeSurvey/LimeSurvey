@@ -24,71 +24,9 @@ if(isset($usepdfexport) && $usepdfexport == 1)
 }
 
 
-// function for condition check, only shoing the questions, where conditions met
-function conditionCheck($id,$qid, $surveyid)
-	{
-		$conditionCheckValue = array();
-		$condCheckQuery = "SELECT qid, cqid, cfieldname, method, value FROM ".db_table_name("conditions")." WHERE qid=$qid ";
-		$condCheckResult = db_execute_assoc($condCheckQuery);
-		$condAnzahl = $condCheckResult->RecordCount();
-		if($condAnzahl==0 || $condAnzahl==FALSE)
-		{
-			//echo $condAnzahl;
-			return true;
-			exit;
-		}
-		else
-		{
-			//echo $condAnzahl;
-		}
-		while ($condRow = $condCheckResult->FetchRow())
-		{	
-			//conditionCheck();
-			$condCheckQuery2 = " SELECT * FROM ".db_table_name("survey_{$surveyid}")." WHERE id=$id ";
-			$condCheckResult2 = db_execute_assoc($condCheckQuery2);
-			
-			$condValue = $condCheckResult2->FetchRow();
-
-			switch ($condRow['method']) {
-				case "==":
-				    if($condRow['value'] == $condValue[$condRow['cfieldname']])
-				    {
-				    	echo $condValue;
-				    	$conditionCheckValue[] = true;
-				    }
-					else
-				    {
-				    	$conditionCheckValue[] = false;
-				    }
-				break;
-				case "!=":
-			 		if($condRow['value']!= $condValue[$condRow['cfieldname']])
-				    {
-				    	$conditionCheckValue[] = true;
-				    }
-				    else
-				    {
-				    	$conditionCheckValue[] = false;
-				    }
-				break;				
-				
-			}
-		}
-		foreach($conditionCheckValue as $value)
-		{
-			if($value==false)
-			{
-				return false;
-				exit;
-			}
-		}
-		return true;
-		exit;
-	}
-
 //DEFAULT SETTINGS FOR TEMPLATES
 if (!$publicdir) {$publicdir=".";}
-$tpldir="$publicdir/templates";
+$templaterootdir="$publicdir/templates";
 
 @session_start();
 if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die(); 
@@ -106,14 +44,14 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
 	sendcacheheaders();
 	doHeader();
 
-	echo templatereplace(file_get_contents("$tpldir/default/startpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
 	echo "\t\t<center><br />\n"
 	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
 	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
     ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
 	."\t\t</center><br />\n";
 
-	echo templatereplace(file_get_contents("$tpldir/default/endpage.pstpl"));
+	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
 	exit;
 };
@@ -157,8 +95,8 @@ $result = db_execute_assoc($query) or safe_die("Error selecting language: <br />
 $language = GetBaseLanguageFromSurveyID($surveyid);
 $thissurvey = getSurveyInfo($surveyid);
 //SET THE TEMPLATE DIRECTORY
-if (!$thissurvey['templatedir']) {$thistpl=$tpldir."/default";} else {$thistpl=$tpldir."/{$thissurvey['templatedir']}";}
-if (!is_dir($thistpl)) {$thistpl=$tpldir."/default";}
+if (!$thissurvey['templatedir']) {$thistpl=$templaterootdir."/default";} else {$thistpl=$templaterootdir."/{$thissurvey['templatedir']}";}
+if (!is_dir($thistpl)) {$thistpl=$templaterootdir."/default";}
 
 if ($thissurvey['printanswers']=='N') die();  //Die quietly if print answers is not permitted
 
@@ -271,10 +209,15 @@ if (isset($_SESSION['s_lang']))
 				if ($fnrow['other'] == "Y" and ($fnrow['type']=="!" or $fnrow['type']=="L" or $fnrow['type']=="M" or $fnrow['type']=="P"))
 				{
 					$fnames[] = array("$field"."other", "$ftitle"."other", "{$fnrow['question']}(other)");
+					if ($fnrow['type'] == "P" and $fnrow['other'] == "Y")
+					{
+						$fnames[] = array("$field"."othercomment", "$ftitle"."othercomment", "{$fnrow['question']}(other comment)");
+					}
 				}
 				}
 				elseif ($fnrow['type'] == ":" || $fnrow['type'] == ";") //MultiFlexi Numbers or Text
 				{
+                    $lset=array();
 					$fnrquery = "SELECT *
 						FROM ".db_table_name('answers')." 
 						WHERE qid={$fnrow['qid']}

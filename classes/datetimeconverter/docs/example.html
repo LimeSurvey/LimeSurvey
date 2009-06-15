@@ -1,0 +1,177 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Date and Time Converter - Examples, Usage, and Syntax</title>
+<style type="text/css">
+<!--
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+.style14 {color: #FFFFFF; font-weight: bold; font-size: 12px; }
+.style30 {color: #006600; font-size: 12px; }
+.style32 {color: #006699; font-size: 12px; }
+.style33 {font-size: 12px}
+.style34 {color: #990000; font-size: 12px; }
+.style35 {color: #000000; font-size: 12px; }
+.style36 {
+	font-size: 18px;
+	font-weight: bold;
+}
+.style37 {color: #CC0000; font-size: 12px;}
+
+
+
+
+
+
+
+.S18 {
+	color: #0000FF;
+}
+span {
+	font-family: 'Verdana';
+	font-size: 10pt;
+}
+.S118 {
+	color: #000033;
+}
+.S119 {
+	color: #004D00;
+}
+.S121 {
+	font-style: italic;
+	color: #7F007F;
+}
+.S122 {
+	color: #FF822E;
+}
+.S123 {
+	font-style: italic;
+	color: #00007F;
+}
+.S125 {
+	font-style: italic;
+	font-family: 'Comic Sans MS';
+	color: #FF55FF;
+	font-size: 9pt;
+}
+.S127 {
+	color: #000000;
+}
+.style38 {color: #A70094}
+.style40 {font-size: 12px; color: #474E6F; }
+.style41 {color: #474E6F}
+
+
+
+
+
+
+
+-->
+</style>
+</head>
+
+<body>
+<p><span class="style36">Date/Time Converter Class Usage/Examples</span><br>
+	<br><br>
+Remember, you can convert <span class="style37"> almost any form of date/time</span>.   It also <span class="style37">accepts date/times that don't have leading zeros</span> (such as n/j/y).  It works fine as long as the numbers aren't bunched together like: 11908  (njy), (not even a human can read that), but 11 9 08 or 11/9/08 or 11/9 08 will work. 
+</p>
+<table width="100%" border="0" cellpadding="10">
+	<tr>
+		<td width="13%" align="center" bgcolor="#003300"><span class="style14">Original Date </span></td>
+		<td width="10%" align="center" bgcolor="#003300"><span class="style14">Original Mask</span></td>
+		<td width="10%" align="center" bgcolor="#003300"><span class="style14">New Mask </span></td>
+		<td width="14%" align="center" bgcolor="#003300"><span class="style14">Output</span></td>
+		<td width="53%" align="left" bgcolor="#003300"><span class="style14">Syntax</span></td>
+	</tr>
+	<tr>
+		<td align="center" bgcolor="#E9E9E9"><span class="style30">11/1/2008 17:40:00</span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style32">n/j/Y H:i:s</span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style40">m/d/y G:i </span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style34">11/01/08 17:40</span></td>
+		<td align="left" bgcolor="#E9E9E9"><span class="style33">
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> Date_Time_Converter</span><span class="S127">(</span><span class="S119">"11/1/2008 17:40:00"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"n/j/Y H:i:s"</span><span class="S127">);</span><br />
+<span class="S121">echo</span><span class="S118"> </span><span class="S123">$obj</span><span class="S127">-&gt;</span><span class="S118">convert</span><span class="S127">(</span><span class="S119">&quot;m/d/y G:i&quot;</span><span class="S127">);</span><span class="S118"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S125">//you may echo the return value of convert() </span><br />
+		</span>
+		
+		</span></td>
+	</tr>
+	<tr>
+		<td align="center" bgcolor="#DBDBDB"><span class="style30">11/20/2005 07:40:00 PM</span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style32">m/d/Y h:i:s A</span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style40">M jS, Y g:ia </span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style34">Nov 20th, 2005 7:40pm</span></td>
+		<td align="left" bgcolor="#DBDBDB"><span class="style33">
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="S118">Date_Time_Converter</span>(</span><span class="S119">"11/20/2005 07:40:00 PM"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"m/d/Y h:i:s A"</span><span class="S127">);</span><br />
+<span class="S123">$obj</span><span class="S127">-&gt;</span><span class="S127"><span class="S118">convert</span>(</span><span class="S119">"M jS, Y g:ia&quot;</span><span class="S127">, true);</span><br />
+<span class="S121">echo</span><span class="S118"> </span><span class="S123">$obj</span><span class="S127">-&gt;</span><span class="S118">date_time</span><span class="S127">;</span><span class="S118"> &nbsp;&nbsp;</span><span class="S125">//or if you set the 2nd argument in convert() to true, you can retreive the value from the public $date_time variable </span>
+	
+	</span></span></td>
+	</tr>
+	<tr>
+		<td height="25" align="center" bgcolor="#DBDBDB"><span class="style30">219</span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style32">nj</span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style33"><span class="style41">m/d</span></span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style34">02/19</span></td>
+		<td align="left" bgcolor="#DBDBDB"><span class="style33">
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="S118">Date_Time_Converter</span>(</span><span class="S119">"219"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"nj"</span><span class="S127">);</span><span class="S118"> &nbsp;&nbsp;</span><span class="S125">//its smart... it knows there's no such month as 21, so it must be 2 </span><br />
+<span class="S121">echo</span><span class="S118"> </span><span class="S123">$obj</span><span class="S127">-&gt;</span><span class="S127"><span class="S118">convert</span>(</span><span class="S119">"m/d"</span><span class="S127">);</span><span class="S118"> </span>
+
+		</span></td>
+	</tr>
+	<tr>
+		<td height="25" align="center" bgcolor="#E9E9E9"><span class="style30">119</span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style32">nj</span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style33"><span class="style41">m-d</span></span></td>
+		<td align="center" bgcolor="#E9E9E9"><span class="style34">11-09</span></td>
+		<td align="left" bgcolor="#E9E9E9"><span class="style33">
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="S118">Date_Time_Converter</span>(</span><span class="S119">"119"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"nj"</span><span class="S127">);</span><span class="S118"> &nbsp;&nbsp;&nbsp;</span><span class="S125">//this defaults to November 9th, not January 19th. </span><br />
+<span class="S121">echo</span><span class="S118"> </span><span class="S123">$obj</span><span class="S127">-&gt;</span><span class="S127"><span class="S118">convert</span>(</span><span class="S119">"m-d"</span><span class="S127">);</span><span class="S118"> </span>
+		
+		</span></td>
+	</tr>
+	<tr>
+		<td height="25" align="center" bgcolor="#DBDBDB"><span class="style30">11 20 2005 07:40:25 PM</span></td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style32">m/d/Y h:i:s A</span></td>
+		<td align="center" bgcolor="#DBDBDB"><p class="style40">F jS 'y, g:i:sa</p>		</td>
+		<td align="center" bgcolor="#DBDBDB"><span class="style34">November 20th '05, 7:40:25pm</span></td>
+		<td align="left" bgcolor="#DBDBDB"><span class="style33">
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="S118">Date_Time_Converter</span>(</span><span class="S119">"11 20 2005 07:40:25 PM"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"m/d/Y h:i:s A"</span><span class="S127">);</span><br />
+<span class="S123"><span class="style38">echo </span>$obj</span><span class="S127">-&gt;<span class="S118">convert</span>(</span><span class="S119">"F jS 'y, g:i:sa"</span><span class="S127">);</span></span></td>
+	</tr>
+	<tr>
+		<td height="25" align="center" bgcolor="#E9E9E9" class="style30">Fri, Feb 9th, 2007</td>
+		<td align="center" bgcolor="#E9E9E9" class="style32">D, M jS, Y</td>
+		<td align="center" bgcolor="#E9E9E9" class="style33"><span class="style35"><span class="style41">Y-m-d</span></span></td>
+		<td align="center" bgcolor="#E9E9E9" class="style34">2007-02-09</td>
+		<td align="left" bgcolor="#E9E9E9" class="style35"><span class="style33"><span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="S118">Date_Time_Converter</span>(</span><span class="S119">"Fri, Feb 9th, 2007"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"D, M jS, Y"</span><span class="S127">);</span><br />
+				<span class="S123"><span class="style38">echo </span>$obj</span><span class="S127">-&gt;</span><span class="S127"><span class="S118">convert</span>(</span><span class="S119">"Y-m-d"</span><span class="S127">);</span><span class="S118"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S125">//you may also provide the day of the week in &quot;D&quot; format (Sun, Mon, Tue) </span></span></td>
+	</tr>
+	<tr>
+		<td height="25" align="center" bgcolor="#DBDBDB" class="style30">11:20 AM </td>
+		<td align="center" bgcolor="#DBDBDB" class="style32">g:i A </td>
+		<td align="center" bgcolor="#DBDBDB" class="style33"><span class="style41">g:i a</span></td>
+		<td align="center" bgcolor="#DBDBDB" class="style34">11:20 am </td>
+		<td align="left" bgcolor="#DBDBDB" class="style35"><p>
+		
+		<span class="S123">$obj</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> </span><span class="S127"><span class="style33"><span class="S118">Date_Time_Converter</span></span>(</span><span class="S119">"11:20 AM"</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"g:i A"</span><span class="S127">);</span> &nbsp; &nbsp; &nbsp; <span class="S125">//time only </span><br />
+<span class="S123"><span class="style33"><span class="style38">echo </span></span>$obj</span><span class="S127">-&gt;</span><span class="S127"><span class="style33"><span class="S118">convert</span></span>(</span><span class="S119">"g:i a"</span><span class="S127">);</span></p>		</td>
+	</tr>
+</table>
+
+
+
+<br><br><br><br>
+
+
+
+</body>
+</html>

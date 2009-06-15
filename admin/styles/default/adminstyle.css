@@ -3,24 +3,30 @@ body {
 	text-align: left;
 	background-color: #5670A1;
 	margin: 0;
+    font-size: 9pt;
 }
-form {
+
+div, form {
 	margin: 0;
 	padding: 0;
 }
+
 ul,ol {
 	text-align: left;
 	font-size: 10pt;
 	color: #000;
 }
+
 p {
     clear: left;
 }
+
 .boxstyle {
 	border-color: #9C0;
 	border-style: solid;
 	border-width: 1px;
 }
+
 .footer {
 	text-align: center;
 	color: #9C0;
@@ -29,16 +35,20 @@ p {
 	margin: 0;
 	padding: 5px;
 }
+
 img {
 	border: 0;
 }
+
 a:hover {
 	color: #819D26;
 	text-decoration: underline;
 }
+
 th, p, div {
 	font-size: 10pt;
 }
+
 .maintitle {
 	font-size: 14pt;
 	font-weight: 700;
@@ -51,21 +61,25 @@ th, p, div {
 	background-repeat: repeat-x;
 	margin: auto;
 }
+
 table.statisticstable {
 	margin: 2px auto;
 }
+
 .basic {
 	color: #1d2d45;
 }
+
 .statisticstable td {
 	vertical-align: top;
 }
+
 div.menubar {
 	background-color: #EEF6FF;
-	width: 99.2%;
+	width: 99.1%;
 	margin-top: 3px;
-	margin-left: 3px;
 }
+
 .menubar-main {
 	background-color: #EEF6FF;
 	width: 100%;
@@ -74,12 +88,14 @@ div.menubar {
 	border-style: solid;
 	border-width: 1px;
 }
+
 .menubar img {
 	vertical-align: middle;
     max-height:40px;
     border:0;
     margin-left:-2px;
 }
+
 .menubar-title {
 	background-color: #EEF6FF;
 	float: left;
@@ -90,6 +106,12 @@ div.menubar {
 	border-style: solid;
 	border-width: 1px;
 }
+
+
+.menubar-title img {
+    margin-bottom:2px;
+}
+
 .menubar-left {
 	background-color: #EEF6FF;
 	text-align: left;
@@ -98,11 +120,13 @@ div.menubar {
 	margin: 0;
 	padding: 0;
 }
+
 .menubar-right {
 	background-color: #EEF6FF;
 	float: right;
 	line-height: 1em;
 }
+
 table.menubar {
 	width: 100%;
 	border-collapse: collapse;
@@ -110,85 +134,104 @@ table.menubar {
 	border-color: #8195BA;
 	border-style: solid;
 	border-width: 1px;
-	/*	Check this setting when merging 
-		I implemented it to correct the layout of the menu bar in statistics.php
-		Mazi*/
 	text-align: left;
 }
+
 .menubar td {
 	color: #265522;
 	font-size: 8pt;
 	border-bottom: 2px solid #D2E0F2;
 }
+
 .menubar select {
 	color: #333;
 	width: 200px;
 }
+
 table.attributetable {
 	width: 100%;
 	text-align: center;
 	border: 1px solid #d2e0f2;
 	border-collapse: collapse;
 }
+
 .attributetable tr:first-child {
 	background-color: #d2e0f2;
 }
+
 table.table2columns {
 	background-color: #FFF;
-	width: 100%;
+	width: 99.3%;
 	text-align: center;
-	border: 1px solid #555;
+	border: 1px solid;
+    border-color: #fff #8195BA #8195BA #D2E0F2;
+    margin-top:-2px;
+    margin-bottom:4px;
+    padding:5px 0;
 }
+
 .table2columns td:first-child {
 	width: 250px;
 }
+
 table.form2columns {
 	width: 100%;
 	text-align: center;
 	border: none;
 	background-color: #f8f8ff;
 }
+
 table.form2columns td:first-child {
 	width: 30%;
 	text-align: right;
 }
+
 table.form2columns td.centered {
 	text-align: center;
 }
+
 .outlinetable {
 	border: 1px solid #111;
 }
+
 .outlinetable td {
 	font-size: 10pt;
 	border: 1px solid #483D8B;
 	background: #EEF6FF;
 }
+
 .outlinetable th {
 	font-size: 10pt;
 	color: #1D2D45;
 	background: #CCE6FF;
 }
+
 td {
 	font-size: 10pt;
 	color: #1D2D45;
 }
+
 .btstyle {
 	font-size: 11px;
 }
+
 .standardbtn {
 	height: 20px;
 	color: #000;
 	font-size: 11px;
 }
+
 .disabledbtn {
 	height: 20px;
 	color: #999;
 	font-size: 11px;
 }
+
 input, select {
 	color: navy;
 	font: 10px verdana, arial, sans-serif;
 }
+
 input[disabled], textarea[disabled], select[disabled] {
 	color: #999;
 	background: #EEE;
@@ -201,21 +244,25 @@ textarea {
 	color: navy;
 	font-family: verdana, arial, sans-serif;
 }
+
 .subtitle {
 	font-size: 10px;
 	color: #FFF;
 }
+
 .listboxtemplates {
 	margin-top: 10px;
 	height: 20px;
 	color: #333;
 	width: 180px;
 }
+
 .boxcaption {
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 40px;
 }
+
 .saveOrderbtn {
 	border: thin solid #00CED1;
 	text-decoration: none;
@@ -226,26 +273,32 @@ textarea {
 	border-left: 1px solid #00BFFF;
 	margin: 5px;
 }
+
 .settingentryhighlight {
 	color: navy;
 	font-weight: 700;
 }
+
 .statusentryhighlight {
 	font-size: 10px;
 	color: #E00;
 }
+
 .errortitle {
 	font-weight: 700;
 	color: #FF0F0F;
 }
+
 .warningtitle {
 	font-weight: 700;
-	color: #FFA07A;
+	color: #ee303a;
 }
+
 .successtitle {
 	font-weight: 700;
 	color: #16B700;
 }
+
 font.settingcaption {
 	vertical-align: top;
 	text-align: right;
@@ -253,6 +306,7 @@ font.settingcaption {
 	font-weight: 700;
 	color: #1D2D45;
 }
+
 span.settingcaption {
 	float: left;
 	width: 350px;
@@ -263,6 +317,7 @@ span.settingcaption {
 	background-color: #F8F8FF;
 	color: #1D2D45;
 }
+
 .settingentry {
 	float: left;
 	width: 600px;
@@ -273,12 +328,14 @@ span.settingcaption {
 	margin-bottom: 10px;
 	background-color: #F8F8FF;
 }
+
 .settingrow {
 	width: 1000px;
 	clear: left;
 	margin-bottom: 20px;
 	background-color: #F8F8FF;
 }
+
 #dhtmlgoodies_tooltip {
 	border: 1px solid #000;
 	position: absolute;
@@ -286,17 +343,21 @@ span.settingcaption {
 	z-index: 20000;
 	-moz-border-radius: 5px;
 	background: #FDFDF5;
-	font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
+	font: 1em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
 	padding: 2px;
 }
+
 #dhtmlgoodies_tooltipShadow {
 	position: absolute;
 	display: none;
 	z-index: 10000;
+    opacity: .35; 
+    filter:Alpha(Opacity=35);    
 	-khtml-opacity: 0.7px;
 	-moz-border-radius: 5px;
 	background: #555;
 }
+
 .movableList {
 	padding-left: 0;
 	margin-left: 0;
@@ -304,6 +365,7 @@ span.settingcaption {
 	padding-top: 0;
 	width: 60em;
 }
+
 .movableNode {
 	list-style-type: none;
 	border: 1px solid #999;
@@ -313,6 +375,7 @@ span.settingcaption {
 	background: #EEEFFF;
 	padding: 0.5em;
 }
+
 .langpopup2 {
 	position: absolute;
 	width: 100px;
@@ -330,6 +393,7 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .langpopup1 {
 	position: absolute;
 	width: 100px;
@@ -347,6 +411,7 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .previewpopup {
 	position: absolute;
 	width: 110px;
@@ -364,17 +429,21 @@ span.settingcaption {
 	border-width: 1px;
 	padding: 8px;
 }
+
 .oddrow {
 	background-color: #EBF2FA;
 }
+
 .choicelist {
 	width: 200px;
 	font-size: 10pt;
 }
+
 .ranklist {
 	width: 200px;
 	margin-top: 3px;
 }
+
 th.admincell {
 	background-color: #F8BDB5;
 }
@@ -386,44 +455,61 @@ form.token label {
 	text-align: right;
 	margin-right: 0.5em;
 }
+
 .submit {
 	float: none !important;
 	margin: 0 auto;
+    margin-bottom: 10px;
 }
-th, .header, .headertwo, table.form2columns th, .settingcaption {
+
+.header, .formheader, .headertwo, table.form2columns th, .settingcaption {
 	text-align: center;
 	font-size: 13px;
 	font-weight: 700;
 	background-color: #D2E0F2;
 	color: #1D2D45;
 }
+
+.formheader
+{
+    width:100%;
+}
+
 a:link, a:visited {
 	color: #819D26;
 	text-decoration: none;
 }
+
 .statisticstable select, .statisticstable textarea {
 	width: 170px;
 }
+
 .alertbox tr:first-child, .evenrow {
 	background-color: #EEF6FF;
 }
+
 .table2columns td+td, table.form2columns td+td, action {
 	text-align: left;
 }
+
 .checkboxbtn, .radiobtn {
 	background-color: transparent;
 }
+
 .langpopup2td, .langpopup1td {
 	background: #FDFDF5;
 }
+
 .langpopup2td:first-child, .langpopup1td:first-child {
 	color: #000;
 	font-size: 10pt;
 }
+
 form.token select, form.token input {
 	margin-top: 1.5em;
 	float: left;
 }
+
 table.alertbox {
     width: 450px;
     margin-left:auto; 
@@ -447,13 +533,48 @@ a.invalidemail {
 	color: red;
 }
 
+.browsetable {
+    border: 1px solid;  
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+}
+
+.browsetable tr:hover { 
+    background-color: #C5D0F2;
+}
+
+.listsurveys {
+    text-align:center;
+    width:70%;
+}
+
+.listsurveys th {
+    background-color: #D2E0F2;     
+    font-size:10pt;
+    padding:2px 4px;
+}
+
+.browsetable th {
+    background-color: #D2E0F2;     
+    font-size:10pt;
+    padding:2px;
+}
+
 .browsetable td {
     width:140px;     
-    min-width:140px;
+    min-width:120px;
+    font-size:8pt;
+    padding:1px 2px; 
 }
+
+.listsurveys td {
+    font-size:8pt;
+    padding:2px 6px; 
+}
+
 
 .browsetable td:first-child {
     min-width:50px;
+    font-weight:bold;
 }
 
 .answertable th {
@@ -471,7 +592,7 @@ a.invalidemail {
 }   
 
 #languagetabs {
-    width:52%;
+    width:60%;
     margin:0 auto;
 }
 
@@ -479,24 +600,50 @@ a.invalidemail {
     background-color:#EAF2FF;
 }
 
-
-
-.browsetokens th
-{
-white-space:nowrap;
-width:auto;
-padding:2px 15px 2px 5px;
-font-size:12px;
+.badtokenlist {
+    width: 400px; 
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    height: 50px; 
+    overflow: auto; 
+    text-align: left;
+    margin-bottom: 0px;
+    font-size: 8pt
 }
 
-.browsetokens th img
+.browsetokens
 {
- padding-right:4px;
+    margin: 5px 2px;
+    border: 1px solid;  
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
 }
 
-.browsetokens td 
-{
-  padding:0 5px;
+.browsetokens th {
+    white-space:nowrap;
+    width:auto;
+    padding:2px 15px 2px 5px;
+    font-size:12px;
+    background-color:#D2E0F2;
+    color: #1D2D45;
+    vertical-align:top;    
+}
+
+.browsetokens tr {
+    height:32px;
+}
+
+.browsetokens th span{
+    white-space:normal;
+}
+
+
+.browsetokens th img {
+    padding-right:4px;
+}
+
+.browsetokens td {
+    padding:0 5px;
+    color: #1D2D45;
 }
 
 .browsetokens td:first-child {
@@ -504,9 +651,7 @@ font-size:12px;
    padding-right: 3px;
 }   
 
-
-.tokensummary tr:first-child
-{
+.tokensummary tr:first-child {
  font-weight:bold;
 }
 
@@ -524,4 +669,150 @@ padding: 2px 5px;
 .annotation
 {
     font-size:10px;
+}
+
+table.templatecontrol {
+    width: 100%;
+    background-color: #EEF6FF;
+    border-color: #8195BA;
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+}
+
+table.templatecontrol select
+{
+    min-width:150px;
+}
+
+.subheader {
+    font-size:10px;
+    font-weight:bold;
+    background-color: #EEF6FF;
+    text-align: left;
+}
+
+.flashmessage
+{
+    font-size:10px;
+    font-weight:bold;
+}
+
+.templatecontrol textarea#changes {
+   font-family: monospace;
+   font-size:0.8em;
+   width:95%;
+}
+
+
+
+table.statisticstable, table.statisticssummary {
+    background-color:#EEF6FF;
+    border-collapse:collapse;
+    border-width: 0px;
+    border-style: none;
+}
+
+.statisticssummary thead th
+{
+    background:#D2E0F2;
+}
+
+.statisticssummary th:first-child,
+.statisticstable td:first-child {
+    text-align:right;
+}
+
+.statisticssummary thead th:first-child
+{
+    text-align:center;
+}
+
+.statisticssummary th, .statisticssummary td, .statisticstable td {
+    padding:3px 10px;
+    
+}
+
+.statisticstable tr {
+    border-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.statisticstable thead th {
+    background:#D2E0F2;
+    text-align:center;
+    color:#1D2D45;
+    padding:4 10px;
+}
+
+.statisticstable tfoot tr {
+    background:#D2E0F2;
+    text-align:center;
+}
+                   
+#filtersettings ul {
+    width:300px;
+    list-style-type:none; 
+}
+
+#filtersettings ul {
+    width:300px;
+    list-style-type:none; 
+    line-height:22px;
+}
+
+#filtersettings ul label, 
+#filtersettings ul select, 
+#filtersettings ul input {
+   vertical-align:middle;
+   margin:0 2px;
+}
+
+#personalsettings label {  
+    float: left;  
+    width: 20em;  
+    margin-right: 0.5em;  
+    text-align: right;
+    font-weight: bold;
+}
+
+#personalsettings li {  
+    list-style-type: none;
+    padding-bottom:5px;
+}
+    
+form#personalsettings {
+  width:750px;
+  margin:0 auto;
+}
+
+div.messagebox {
+    width: 450px;
+    margin:10px auto; 
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    text-align: center;
+    padding:10px;  
+}
+
+div.messagebox .header{
+    padding:10px;  
+}
+
+div.messagebox .warningheader {
+    font-weight:bold;
+    color:#ee0000;
+    background-color: #ffeeee;   
+    margin: 5px 0;
+    padding:2px;  
+}
+      
+.conditiontbl td {
+    text-align:left;
+}
+
+
+.conditiontbl td:first-child {
+    text-align:right;
 }

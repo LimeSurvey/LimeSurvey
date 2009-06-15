@@ -1,7 +1,7 @@
 <?php
 
 /**
-  V4.98 13 Feb 2008  (c) 2000-2008 John Lim (jlim#natsoft.com.my). All rights reserved.
+  V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence.
@@ -150,7 +150,7 @@ class ADODB2_postgres extends ADODB_DataDict {
 		}
 		return $sql;
 	}
-	
+
 
 	function DropIndexSQL ($idxname, $tabname = NULL)
 	{
@@ -168,7 +168,8 @@ class ADODB2_postgres extends ADODB_DataDict {
 	 * @param array/ $tableoptions options for the new table see CreateTableSQL, default ''
 	 * @return array with SQL strings
 	 */
-	/*function AlterColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
+	 /*
+	function AlterColumnSQL($tabname, $flds, $tableflds='',$tableoptions='')
 	{
 		if (!$tableflds) {
 			if ($this->debug) ADOConnection::outp("AlterColumnSQL needs a complete table-definiton for PostgreSQL");
@@ -325,7 +326,7 @@ class ADODB2_postgres extends ADODB_DataDict {
 	}
 
 	// return string must begin with space
-	function _CreateSuffix($fname, &$ftype, $fnotnull,$fdefault,$fautoinc,$fconstraint)
+	function _CreateSuffix($fname, &$ftype, $fnotnull,$fdefault,$fautoinc,$fconstraint,$funsigned)
 	{
 		if ($fautoinc) {
 			$ftype = 'SERIAL';

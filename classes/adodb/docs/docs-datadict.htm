@@ -20,8 +20,8 @@
 </head>
 <body style="background-color: rgb(255, 255, 255);">
 <h2>ADOdb Data Dictionary Library for PHP</h2>
-<p>V4.98 13 Feb 2008 (c) 2000-2008 John Lim (<a
- href="mailto:jlim#natsoft.com.my">jlim#natsoft.com.my</a>).<br>
+<p>V5.06 16 Oct 2008  (c) 2000-2009 John Lim (<a
+ href="mailto:jlim#natsoft.com">jlim#natsoft.com</a>).<br>
 AXMLS (c) 2004 ars Cognita, Inc</p>
 <p><font size="1">This software is dual licensed using BSD-Style and
 LGPL. This means you can use it in compiled proprietary and commercial
@@ -71,7 +71,7 @@ $dict-><b>ExecuteSQLArray</b>($sqlarray);
 <h4>NewDataDictionary($connection, $drivername=false)</h4>
 <p>Creates a new data dictionary object. You pass a database connection object in $connection. The $connection does not have to be actually connected to the database. Some database connection objects are generic (eg. odbtp and odbc). Since 4.53, you can tell ADOdb  the actual database with $drivername. E.g.</p>
 <pre>
-$db =& NewADOConnection('odbtp');
+$db = NewADOConnection('odbtp');
 $datadict = NewDataDictionary($db, 'mssql'); # force mssql
 </pre>
 <h3>Class Functions</h3>
@@ -103,7 +103,7 @@ represented as a string to avoid any rounding errors.</p>
 <pre>  AUTO            For autoincrement number. Emulated with triggers if not available.<br>                  Sets NOTNULL also.<br>  AUTOINCREMENT   Same as auto.<br>  KEY             Primary key field. Sets NOTNULL also. Compound keys are supported.<br>  PRIMARY         Same as KEY.<br>  DEF             Synonym for DEFAULT for lazy typists.<br>  DEFAULT         The default value. Character strings are auto-quoted unless<br>                  the string begins and ends with spaces, eg ' SYSDATE '.<br>  NOTNULL         If field is not null.<br>  DEFDATE         Set default value to call function to get today's date.<br>  DEFTIMESTAMP    Set default to call function to get today's datetime.<br>  NOQUOTE         Prevents autoquoting of default string values.<br>  CONSTRAINTS     Additional constraints defined at the end of the field<br>                  definition.<br></pre>
 <p>The Data Dictonary accepts two formats, the older array
 specification:</p>
-<pre>  $flds = array(<br>    array('COLNAME',   'DECIMAL', '8.4', 'DEFAULT' =&gt; 0, 'NOTNULL'),<br>    array('id',        'I'      , 'AUTO'),<br>    array('`MY DATE`', 'D'      , 'DEFDATE'),<br>    array('NAME',      'C'      , '32', 'CONSTRAINTS' =&gt; 'FOREIGN KEY REFERENCES reftable')<br>  );<br></pre>
+<pre>  $flds = array(<br>    array('COLNAME',   'DECIMAL', '8.4', 'DEFAULT' =gt; 0, 'NOTNULL'),<br>    array('id',        'I'      , 'AUTO'),<br>    array('`MY DATE`', 'D'      , 'DEFDATE'),<br>    array('NAME',      'C'      , '32', 'CONSTRAINTS' =gt; 'FOREIGN KEY REFERENCES reftable')<br>  );<br></pre>
 <p>Or the simpler declarative format:</p>
 <pre>  $flds = "<font color="#660000"><strong><br>    COLNAME DECIMAL(8.4) DEFAULT 0 NOTNULL,<br>    id I AUTO,<br>    `MY DATE` D DEFDATE,<br>    NAME C(32) CONSTRAINTS 'FOREIGN KEY REFERENCES reftable'</strong></font><br>  ";<br></pre>
 <p>Note that if you have special characters in the field name (e.g. My
@@ -129,14 +129,14 @@ of the database type as the array key. In the following example, <em>create
 the table as ISAM with MySQL, and store the table in the "users"
 tablespace if using Oracle</em>. And because we specified REPLACE, drop
 the table first.</p>
-<pre>  $taboptarray = array('mysql' =&gt; 'TYPE=ISAM', 'oci8' =&gt; 'tablespace users', 'REPLACE');</pre>
+<pre>  $taboptarray = array('mysql' =gt; 'TYPE=ISAM', 'oci8' =gt; 'tablespace users', 'REPLACE');</pre>
 <p><a name=foreignkey></a>You can also define foreign key constraints. The following is syntax
 for postgresql:
 </p>
-<pre>  $taboptarray = array('constraints' =&gt; ', FOREIGN KEY (col1) REFERENCES reftable (refcol)');</pre>
+<pre>  $taboptarray = array('constraints' =gt; ', FOREIGN KEY (col1) REFERENCES reftable (refcol)');</pre>
 <h4>function DropTableSQL($tabname)</h4>
 <p>Returns the SQL to drop the specified table.</p>
-<h4>function ChangeTableSQL($tabname, $flds)</h4>
+<h4>function ChangeTableSQL($tabname, $flds, $tableOptions=false, $dropOldFlds=false)</h4>
 <p>Checks to see if table exists, if table does not exist, behaves like
 CreateTableSQL. If table exists, generates appropriate ALTER TABLE
 MODIFY COLUMN commands if field already exists, or ALTER TABLE ADD
@@ -144,6 +144,7 @@ $column if field does not exist.</p>
 <p>The class must be connected to the database for ChangeTableSQL to
 detect the existence of the table. Idea and code contributed by Florian
 Buzin.</p>
+<p>Old fields not defined in $flds are not dropped by default. To drop old fields, set $dropOldFlds to true.
 <h4>function RenameTableSQL($tabname,$newname)</h4>
 <p>Rename a table.  Returns the an array of strings, which is the SQL required to rename a table. Since ADOdb 4.53. Contributed by Ralf Becker.</p>
 <h4> function RenameColumnSQL($tabname,$oldcolumn,$newcolumn,$flds='')</h4>
@@ -164,10 +165,10 @@ information can be embedded in the array. Other options include:</p>
 <p>Drop 1 or more columns.</p>
 <h4>function SetSchema($schema)</h4>
 <p>Set the schema.</p>
-<h4>function &amp;MetaTables()</h4>
-<h4>function &amp;MetaColumns($tab, $upper=true, $schema=false)</h4>
-<h4>function &amp;MetaPrimaryKeys($tab,$owner=false,$intkey=false)</h4>
-<h4>function &amp;MetaIndexes($table, $primary = false, $owner = false)</h4>
+<h4>function MetaTables()</h4>
+<h4>function MetaColumns($tab, $upper=true, $schema=false)</h4>
+<h4>function MetaPrimaryKeys($tab,$owner=false,$intkey=false)</h4>
+<h4>function MetaIndexes($table, $primary = false, $owner = false)</h4>
 <p>These functions are wrappers for the corresponding functions in the
 connection object. However, the table names will be autoquoted by the
 TableName function (see below) before being passed to the connection

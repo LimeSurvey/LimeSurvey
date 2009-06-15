@@ -15,7 +15,7 @@
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-if ($database_exists && $databasetype=='mysql' && $demoModeOnly != true) {
+if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true) {
 
 	$tables = $connect->MetaTables();
 	

@@ -61,7 +61,7 @@ if ($result->RecordCount() < 1)
 else
 	{
 	$fields = $result->FetchRow();
-	if (SHA256::hash($userpass) == $fields['password'])
+	if (SHA256::hashing($userpass) == $fields['password'])
 		{
 			$_SESSION['loginID'] = intval($fields['uid']);
 			$clang = new limesurvey_lang($fields['lang']);

@@ -34,7 +34,7 @@ if ($action == "addgroup")
 //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
     $newgroupoutput .= "<form action='$scriptname' id ='addnewgroupfrom' name='addnewgroupfrom' method='post'>";
     $newgroupoutput .="\n"
-    .  '<div class="tab-pane" id="tab-pane-1">';
+    .  '<div class="tab-pane" id="tab-pane-newgroup">';
     foreach ($grplangs as $grouplang)
     {
         $newgroupoutput .= '<div class="tab-page"> <h2 class="tab">'.GetLanguageNameFromCode($grouplang,false);
@@ -130,7 +130,7 @@ if ($action == "editgroup")
     $editgroup .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
     . "\t\t".$clang->gT("Edit Group")."</td></tr></table>\n"
     . "<form name='editgroup' action='$scriptname' method='post'>\n"
-    . '<div class="tab-pane" id="tab-pane-1">';
+    . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
 
     $esrow = $egresult->FetchRow();
     $editgroup .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($esrow['language'],false);

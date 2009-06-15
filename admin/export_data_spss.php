@@ -37,17 +37,17 @@ $headerComment = '';
 $tempFile = '';
 
 include_once('login_check.php');
-
+//for scale 1=nominal, 2=ordinal, 3=scale
 $typeMap = array(
-'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F'),
-'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F'),
-'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F'),
+'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
 'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
 '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
 'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
-'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F'),
+'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
 'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A', 'hide'=>1),
+'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
 'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
 'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
 'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
@@ -62,11 +62,11 @@ $typeMap = array(
 'M'=>Array('name'=>'Multiple Options','size'=>1,'SPSStype'=>'F'),
 'P'=>Array('name'=>'Multiple Options With Comments','size'=>1,'SPSStype'=>'F'),
 'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F'),
+'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
 'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
 'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F'),
+':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 );
 
@@ -183,7 +183,7 @@ if  ($subaction=='dldata') {
                 } else {
                     echo( "'0'");
                 }           
-            }elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && substr($fields[$fieldno]['code'],-5) != 'other' && substr($fields[$fieldno]['code'],-7) == 'comment') 
+            } elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
             {
                 if ($row[$fieldno] == 'Y')
                 {
@@ -195,7 +195,14 @@ if  ($subaction=='dldata') {
             } elseif (!$fields[$fieldno]['hide']) {
                 $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));
+                    $strTemp=str_replace(array("'","\n","\r"),array("''", ' ', ' '),trim($strTmp));                    
+                    /*
+                     * Temp quick fix for replacing decimal dots with comma's                    
+                    if (my_is_numeric($strTemp)) {
+                    	//$strTemp = (string) $strTemp;
+                    	$strTemp = str_replace('.',',',$strTemp);
+                    }
+                    */
                     echo "'$strTemp'";
                 }
                 else
@@ -273,12 +280,12 @@ if  ($subaction=='dlstructure') {
        ."/VARIABLES=";    
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
-        if($field['LStype'] == 'N' || $field['LStype']=='K') {
+        if($field['SPSStype']=='F' && ($field['LStype'] == 'N' || $field['LStype']=='K')) {
             $field['size'].='.'.($field['size']-1);
         }
 		if (!$field['hide']) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
 	}
-	echo "CACHE.\n"
+	echo ".\nCACHE.\n"
         ."EXECUTE.\n";
     
     //Create the variable labels:
@@ -292,29 +299,33 @@ if  ($subaction=='dlstructure') {
 	foreach ($fields as $field)
     {
     	$answers=array();
-    	if (strpos("!LO",$field['LStype']) !== false) {
-		    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
-		    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
-		    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-		    and {$dbprefix}questions.qid='".$field['qid']."'";
-		    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
-		    $num_results = $result->RecordCount();
-		    if ($num_results > 0)
-		    {
-			    $displayvaluelabel = 0;
-			    # Build array that has to be returned
-			    for ($i=0; $i < $num_results; $i++)
+    	if (strpos("!LOR",$field['LStype']) !== false) {
+    		if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
+    			//We have a comment field, so free text
+    		} else {
+			    $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer, 
+			    {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE 
+			    {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
+			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
+			    $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
+			    $num_results = $result->RecordCount();
+			    if ($num_results > 0)
 			    {
-				    $row = $result->FetchRow();
-					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    $displayvaluelabel = 0;
+				    # Build array that has to be returned
+				    for ($i=0; $i < $num_results; $i++)
+				    {
+					    $row = $result->FetchRow();
+						$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+				    }
 			    }
-		    }
+    		}
 	    }
 	    if (strpos("FWZWH1",$field['LStype']) !== false) {
 		    $query = "SELECT {$dbprefix}questions.lid, {$dbprefix}labels.code, {$dbprefix}labels.title from 
 		    {$dbprefix}questions, {$dbprefix}labels WHERE {$dbprefix}labels.language='".$language."' and
 		    {$dbprefix}questions.language='".$language."' and 
-		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid";
+		    {$dbprefix}questions.qid ='".$field["qid"]."' and {$dbprefix}questions.lid={$dbprefix}labels.lid ORDER BY sortorder ASC";
 		    $result=db_execute_assoc($query) or safe_die("Couldn't get labels<br />$query<br />".$connect->ErrorMsg());   //Checked
 		    $num_results = $result->RecordCount();
 		    if ($num_results > 0)
@@ -405,7 +416,19 @@ if  ($subaction=='dlstructure') {
 	    		}
 	    	}
 	    }
-    } 
+    }
+
+    foreach ($fields as $field){
+    	if($field['scale']!=='') {
+    		switch ($field['scale']) {
+    			case 2:
+    				echo "VARIABLE LEVEL {$field['id']}(ORDINAL).\n";
+    				break;
+    			case 3:
+    				echo "VARIABLE LEVEL {$field['id']}(SCALE).\n";
+    		}
+    	}
+    }
     
     //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 	foreach ($fields as $field){

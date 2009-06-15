@@ -29,7 +29,7 @@ if ($action == "copyquestion")
 	$editquestion .= "<table width='100%' border='0' class='form2columns'>\n\t<tr><th>"
 	. "\t\t".$clang->gT("Copy Question")."</th></tr></table>\n"
 	. "<form name='frmeditquestion' action='$scriptname' method='post'>\n"
-	. '<div class="tab-pane" id="tab-pane-1">';
+	. '<div class="tab-pane" id="tab-pane-copyquestion">';
 	foreach ($questlangs as $language)
 	{
     	$egquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid and language=".db_quoteall($language);
@@ -116,7 +116,7 @@ if ($action == "copyquestion")
 		. "\t\t</td>\n"
 		. "\t</tr>\n"
 		. "\t<tr>\n"
-		. "\t\t<td ><strong>".$clang->gT("Group:")."</strong></td>\n"
+		. "\t\t<td ><strong>".$clang->gT("Question group:")."</strong></td>\n"
 		. "\t\t<td><select name='gid'>\n"
 		. getgrouplist3($eqrow['gid'])
 		. "\t\t\t</select></td>\n"
@@ -214,12 +214,12 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		    {
 			    if ($value != 99)
 			    {
-                    if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
 				    $egquery = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, lid, lid1, question_order, language)"
 				    ." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
 				    ." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['lid']}', '{$basesettings['lid1']}', '{$basesettings['question_order']}','{$key}')";
 				    $egresult = $connect->Execute($egquery);
-                    if ($databasetype=='odbc_mssql') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
+                    if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." OFF");}
 			    }
 		    }
 	    
@@ -231,7 +231,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</td></tr></table>\n"
 	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post'>\n"
-	. '<div class="tab-pane" id="tab-pane-1">';
+	. '<div class="tab-pane" id="tab-pane-editquestion-'.$surveyid.'">';
 	
     if (!$adding)
     {    
@@ -398,16 +398,33 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
  			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
   		}
   		
-  		$editquestion .= "\t\t</td>\n"
-  		. "\t</tr>\n"
-  		. "\t<tr>\n"
-  		. "\t<td align='right'><strong>".$clang->gT("Group:")."</strong></td>\n"
-  		. "\t\t<td align='left'><select name='gid'>\n"
-  		. getgrouplist3($eqrow['gid'])
-  		. "\t\t</select></td>\n"
-  		. "\t</tr>\n";
-  		$editquestion .= "\t<tr id='OtherSelection'>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+  		if ($activated != "Y")
+		{
+			$editquestion .= "\t\t</td>\n"
+				. "\t</tr>\n"
+				. "\t<tr>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
+				. "\t\t<td align='left'><select name='gid'>\n"
+				. getgrouplist3($eqrow['gid'])
+				. "\t\t</select></td>\n"
+				. "\t</tr>\n";
+			$editquestion .= "\t<tr id='OtherSelection'>\n"
+				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+		}
+		else
+		{
+			$editquestion .= "\t\t</td>\n"
+				. "\t</tr>\n"
+				. "\t<tr>\n"
+				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
+				. "\t\t<td align='left'>\n"
+				. getgrouplist4($eqrow['gid'])
+                . "\t<input type='hidden' name='gid' value='{$eqrow['gid']}' />"                
+				. "\t\t</td>\n"
+				. "\t</tr>\n";
+			$editquestion .= "\t<tr id='OtherSelection'>\n"
+				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+		}
   		
   		if ($activated != "Y")
   		{
@@ -564,8 +581,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         . "\t\t<td align='left'><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
         . "\t\t<tr>\t\t<td align='right' width='35%'>".$clang->gT("Convert resources links?")."</td>\n"
         . "\t\t<td><input name='translinksfields' type='checkbox' checked='checked'/></td></tr>\n"
-        . "\t<tr><td colspan='2' align='center'><input type='button' "
-        . "value='".$clang->gT("Import Question")."' onclick=\"$('#importquestion').submit();\"/>\n"
+        . "\t<tr><td colspan='2' align='center'><input type='submit' "
+        . "value='".$clang->gT("Import Question")."' />\n"
         . "\t<input type='hidden' name='action' value='importquestion' />\n"
         . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
         . "\t<input type='hidden' name='gid' value='$gid' />\n"

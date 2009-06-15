@@ -1,20 +1,12 @@
 <?php
 
-require_once(dirname(__FILE__).'/../../../classes/core/html_entity_decode_php4.php');
-require_once('checkphpversion.php');
+require_once('tcpdf.php');      
 
 class PDF extends TCPDF
 {    
     function PDF($orientation='L', $unit='mm', $format='A4')
     {
-        if (version_compare(PHP_VERSION, '5.0.0', '<') && version_compare(PHP_VERSION, '4.0.0', '>'))
-        {
-          parent::TCPDF($orientation,$unit,$format);
-        }
-        else if(version_compare(PHP_VERSION, '5.0.0', '>'))
-        {
-          parent::__construct($orientation,$unit,$format);
-        }
+        parent::__construct($orientation,$unit,$format);
         $this->SetAutoPageBreak(true,10); 
         $this->AliasNbPages();
         
@@ -106,7 +98,7 @@ class PDF extends TCPDF
     
     function delete_html($text)
     {
-       $text = html_entity_decode_php4($text);
+       $text = html_entity_decode($text);
        return strip_tags($text);
     }
 }    

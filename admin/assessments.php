@@ -20,9 +20,9 @@ if (!isset($action)) {$action=returnglobal('action');}
 
 $surveyinfo=getSurveyInfo($surveyid);
 
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"scripts/assessments.js\"></script>\n";
-$js_adminheader_includes .= "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n"
-                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
+$js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+$js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
+//                          . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/default/jquery-ui.css\" />\n";
 
 
 $actsurquery = "SELECT edit_survey_property FROM {$dbprefix}surveys_rights WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
@@ -59,7 +59,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
                 $datarray['id']=$aid;
             }
             
-		    $query = $connect->GetInsertSQL($inserttable, $datarray);
+		    $query = $connect->GetInsertSQL($inserttable, $datarray, get_magic_quotes_gpc());
 		    $result=$connect->Execute($query) or safe_die("Error inserting<br />$query<br />".$connect->ErrorMsg());
             if ($first==true)
             {
@@ -79,8 +79,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	        $query = "UPDATE {$dbprefix}assessments
 			          SET scope='".db_quote($_POST['scope'])."',
 			          gid=".sanitize_int($_POST['gid']).",
-			          minimum='".sanitize_int($_POST['minimum'])."',
-			          maximum='".sanitize_int($_POST['maximum'])."',
+			          minimum='".sanitize_signedint($_POST['minimum'])."',
+			          maximum='".sanitize_signedint($_POST['maximum'])."',
 			          name='".db_quote($myFilter->process($_POST['name_'.$assessmentlang]))."',
 			          message='".db_quote($myFilter->process($_POST['assessmentmessage_'.$assessmentlang]))."'
 			          WHERE language='$assessmentlang' and id=".sanitize_int($_POST['id']);
@@ -93,6 +93,10 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	}
 	
     $assessmentsoutput=PrepareEditorScript();  
+    $assessmentsoutput.="<script type=\"text/javascript\">
+                        <!-- 
+                            var strnogroup='".$clang->gT("There are no groups available.", "js")."';
+                        --></script>";
     $assessmentsoutput.="<table width='100%' border='0' >\n"
         . "\t<tr>\n"
         . "\t\t<td>\n"
@@ -130,7 +134,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
 	}
 	$groupselect .="</select>\n";
-	$headings=array($clang->gT("Scope"), $clang->gT("Group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
+	$headings=array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
 	$inputs=array("<input type='radio' id='radiototal' name='scope' value='T' checked='checked'>".$clang->gT("Total")."</input><input type='radio' id='radiogroup' name='scope' value='G'>".$clang->gT("Group")."</input>",
 	$groupselect,
 	"<input type='text' name='minimum' class='numbersonly' />",
@@ -150,7 +154,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		$scopeselect .= "value='T'>".$clang->gT("Total")."</input>";
         $scopeselect .= "<input type='radio' name='scope' id='radiogroup' value='G'";
 		if ($editdata['scope'] == "G") {$scopeselect .= " checked='checked'";}
-		$scopeselect .= ">".$clang->gT("Group")."</input>";
+		$scopeselect .= ">".$clang->gT("Question group")."</input>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
 		$inputs=array($scopeselect,
 		$groupselect,
@@ -189,7 +193,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
         }
 		else 
         {
-            $assessmentsoutput.= "<td>".$clang->gT("Group")."</td>\n"; 
+            $assessmentsoutput.= "<td>".$clang->gT("Question group")."</td>\n"; 
             $assessmentsoutput.= "<td>".$groups[$assess['gid']]['group_name']." (".$assess['gid'].")</td>\n";
         }
 
@@ -276,7 +280,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	."</form>\n";
     foreach ($assessmentlangs as $assessmentlang)   
     {
-        $assessmentsoutput.=getEditor("question-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
+        $assessmentsoutput.=getEditor("assessment-text","assessmentmessage_$assessmentlang", "[".$clang->gT("Message:", "js")."]",$surveyid,$gid,$qid,$action);
     }
     
 	}

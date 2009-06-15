@@ -1,0 +1,190 @@
+# LimeSurvey Survey Dump
+# DBVersion 136
+# This is a dumped survey from the LimeSurvey Script
+# http://www.limesurvey.org/
+# Do not change this header!
+
+#
+# SURVEYS TABLE
+#
+"sid","owner_id","admin","active","startdate","expires","adminemail","private","faxto","format","template","language","additional_languages","datestamp","usecookie","notification","allowregister","allowsave","printanswers","autonumber_start","autoredirect","allowprev","ipaddr","useexpiry","usestartdate","refurl","datecreated","listpublic","publicstatistics","publicgraphs","htmlemail","tokenanswerspersistence","assessments","usecaptcha","bounce_email","usetokens","attributedescriptions"
+"1","1","Tim Wahrendorff","N","","","wahrendorff@his.de","Y","","G","default","de","","N","N","0","N","Y","N","0","N","Y","N","N","N","N","2009-04-29","N","N","N","Y","N","N","D","wahrendorff@his.de","N",""
+
+#
+# GROUPS TABLE
+#
+"gid","sid","group_name","group_order","description","language"
+"329","1","Angaben zum Teilnehmer","0","","de"
+"330","1","Angaben zur Lehrveranstaltung","1","","de"
+"331","1","Angaben zur Lehrperson","2","","de"
+"332","1","Angaben zur Lernumgebung","3","","de"
+"333","1","Abschließende Bewertung","4","","de"
+
+#
+# QUESTIONS TABLE
+#
+"qid","sid","gid","type","title","question","preg","help","other","mandatory","lid","lid1","question_order","language"
+"1926","1","329","F","1","Arbeitsaufwand/Studierverhalten:<br />","","","N","Y","4","0","0","de"
+"1927","1","329","M","1a","Gründe, nicht an der Lehrveranstaltung teilgenommen zu haben.<br />","","","Y","Y","0","0","1","de"
+"1928","1","329","G","2","Geschlecht<br />","","","N","N","0","0","2","de"
+"1929","1","329","N","3","Alter<br />","","","N","N","0","0","3","de"
+"1930","1","329","N","4","Fachsemester<br />","","","N","N","0","0","4","de"
+"1931","1","329","!","5","<div style=""text-align: left;"">Meine angestrebte Abschlussart</div>","","","N","N","0","0","5","de"
+"1932","1","329","M","7","<div style=""text-align: left;"">Was  ist  der  vorrangige  Grund  für  den  Besuch  dieser Lehrveranstaltung?</div>\n<br />","","(Mehrfachnennung möglich)","Y","N","0","0","6","de"
+"1933","1","330","F","8","Die Veranstaltung fand regelmässig statt.<br />","","","N","Y","3","0","0","de"
+"1934","1","330","F","9","Struktur: <br />\nDie Lehrveranstaltung ist inhaltlich gut aufgebaut und hat ein erkennbares Ziel („Roter Faden“). <br />\n<br />","","","N","Y","3","0","1","de"
+"1935","1","330","F","10","Anforderung: <br />\nDie Leistungsanforderungen sind für mich zu hoch.<br />\n<br />","","","N","Y","3","0","2","de"
+"1936","1","330","F","11","Anforderung: <br />\nDer gewählte Stoffumfang der Lehrveranstaltung ist zu bewältigen.<br />\n<br />","","","N","Y","3","0","3","de"
+"1937","1","330","Z","12","<div style=""text-align: left;"">Arbeitsaufwand/Studierverhalten: <br />\nMein durchschnittlicher Zeitaufwand pro Woche für die Vor- und Nachbereitung der Sitzungen beträgt in Stunden:</div>","","","N","N","5","0","4","de"
+"1938","1","330","Z","13","<div style=""text-align: left;"">Arbeitsaufwand/Studierverhalten: <br />\nWie viele Stunden wären nach Ihrer Schätzung „eigentlich notwendig“?</div>","","","N","N","5","0","5","de"
+"1939","1","330","F","14","<div style=""text-align: left;"">Lernerfolg: <br />\nIch lerne viel in der Veranstaltung.</div>\n<br />","","","N","Y","3","0","6","de"
+"1940","1","330","F","15","<div style=""text-align: left;"">Anwendung: <br />\nWie schätzen Sie die Berufsrelevanz der in dieser Lehrveranstaltung vermittelten Themen ein? </div>\n<br />","","","N","Y","3","0","7","de"
+"1941","1","331","F","16","<div style=""text-align: left;"">Einsatz von Medien: <br />\nDie Lehrperson setzt Lehrmedien (z.B. Folien, Präsentationen, Handouts) angemessen (Lesbarkeit, Umfang) ein.</div>","","","N","Y","3","0","0","de"
+"1942","1","331","F","17","<div style=""text-align: left;"">Veranschaulichung: <br />\nDie Lehrperson kann Kompliziertes verständlich machen. </div>","","","N","Y","3","0","1","de"
+"1943","1","331","F","18","<div style=""text-align: left;"">Engagement (fachlich): <br />\nDie Lehrperson engagiert sich bei der Lehrtätigkeit und versucht, Begeisterung zu vermitteln.</div>","","","N","Y","3","0","2","de"
+"1944","1","331","F","19","<div style=""text-align: left;"">Engagement (persönlich): <br />\nDie Lehrperson zeigt Interesse am Lern- und Prüfungserfolg der Studierenden. </div>","","","N","Y","3","0","3","de"
+"1945","1","331","F","20","<div style=""text-align: left;"">Betreuung (intern): <br />\nDie Lehrperson bezieht Studierende ein.</div>","","","N","Y","3","0","4","de"
+"1946","1","331","F","21","<div style=""text-align: left;"">Betreuung (extern): <br />\nDie Lehrperson ist auch außerhalb der Veranstaltung erreichbar.</div>","","","N","Y","3","0","5","de"
+"1947","1","332","F","22","<div style=""text-align: left;"">Die Veranstaltung hat regelmäßig stattgefunden.</div>","","","N","Y","3","0","0","de"
+"1948","1","332","F","23","<div style=""text-align: left;"">Die Lehrperson hat die Veranstaltung regelmäßig selbst gehalten.</div>","","","N","Y","3","0","1","de"
+"1949","1","332","F","24","<div style=""text-align: left;"">Der Raum bietet ausreichend Plätze für alle Teilnehmer.</div>","","","N","Y","3","0","2","de"
+"1950","1","332","F","25","<div style=""text-align: left;"">Die  Präsentationsmöglichkeiten  (Projektor,  Tafel,  Beamer)  sind ausreichend.</div>","","","N","Y","3","0","3","de"
+"1951","1","333","F","26","<div style=""text-align: left;"">Wie bewerten Sie die Veranstaltung insgesamt? </div>","","","N","Y","6","0","0","de"
+
+#
+# ANSWERS TABLE
+#
+"qid","code","answer","default_value","sortorder","assessment_value","language"
+"1926","1","Ich habe|an der Veranstaltung teilgenommen","N","1","0","de"
+"1927","1","Zeitliche Überschneidung mit anderen Kursen","N","1","0","de"
+"1927","2","Zu viel Kurse","N","2","0","de"
+"1927","3","Zulassung für anderen Kurs erhalten","N","3","0","de"
+"1927","4","Zu hoher Arbeitsaufwand","N","4","0","de"
+"1927","5","Thema nicht interessant","N","5","0","de"
+"1931","bac","Bachelor","N","3","0","de"
+"1931","dipl","Diplom","N","1","0","de"
+"1931","mag","Magister","N","4","0","de"
+"1931","mas","Master","N","2","0","de"
+"1932","1","Pflichtveranstaltung","N","1","0","de"
+"1932","2","Prüfungsrelevanz","N","2","0","de"
+"1932","3","Examensvorbereitung","N","3","0","de"
+"1932","4","Scheinerwerb","N","4","0","de"
+"1932","5","Interesse","N","5","0","de"
+"1932","6","Zeitlich günstig","N","6","0","de"
+"1932","7","Dozent","N","7","0","de"
+"1933","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1934","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1935","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1936","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1937","1","","N","1","0","de"
+"1938","1","","N","1","0","de"
+"1939","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1940","1","sehr hoch|sehr niedrig","N","1","0","de"
+"1941","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1942","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1943","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1944","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1945","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1946","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1947","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1948","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1949","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1950","1","trifft zu|trifft nicht zu","N","1","0","de"
+"1951","1","sehr gut|ungenügend","N","1","0","de"
+
+#
+# CONDITIONS TABLE
+#
+"cid","qid","scenario","cqid","cfieldname","method","value"
+"310","1927","1","1926","1X329X19261","!=","1"
+
+#
+# LABELSETS TABLE
+#
+"lid","label_name","languages"
+"3","1_to_5","de en"
+"4","teilgenommen nicht teilgenommen","de"
+"5","Zeitaufwand","de"
+"6","1 bis 6","de"
+
+#
+# LABELS TABLE
+#
+"lid","code","title","sortorder","language"
+"3","4","4","4","en"
+"6","2","2","2","de"
+"5","2","2 bis 4","2","de"
+"6","1","1","1","de"
+"3","4","4","4","de"
+"3","2","2","2","de"
+"3","1","1","1","de"
+"4","4","Nie","4","de"
+"5","3","4 bis 6","3","de"
+"3","1","1","1","en"
+"4","3","Selten","3","de"
+"3","2","2","2","en"
+"6","4","4","4","de"
+"4","2","Meistens","2","de"
+"3","3","3","3","de"
+"3","3","3","3","en"
+"5","4","6 bis 8","4","de"
+"6","5","5","5","de"
+"5","5","mehr als 8","5","de"
+"5","1","0 bis 2","1","de"
+"4","1","Immer","1","de"
+"6","3","3","3","de"
+"3","5","5","5","en"
+"6","6","6","6","de"
+"3","5","5","5","de"
+
+#
+# QUESTION_ATTRIBUTES TABLE
+#
+"qaid","qid","attribute","value"
+"1908","1926","answer_width","70"
+"1909","1929","maximum_chars","2"
+"1910","1929","suffix","Jahre alt"
+"1911","1929","prefix","Ich bin"
+"1912","1930","maximum_chars","2"
+"1913","1930","prefix","Ich bin im"
+"1914","1930","suffix","Fachsemester"
+"1915","1931","hide_tip","1"
+"1916","1933","answer_width","70"
+"1917","1934","answer_width","70"
+"1918","1935","answer_width","70"
+"1919","1936","answer_width","70"
+"1920","1938","hide_tip","1"
+"1921","1937","hide_tip","1"
+"1922","1939","answer_width","70"
+"1923","1940","answer_width","70"
+"1924","1941","answer_width","70"
+"1925","1942","answer_width","70"
+"1926","1943","answer_width","70"
+"1927","1944","answer_width","70"
+"1928","1945","answer_width","70"
+"1929","1946","answer_width","70"
+"1930","1947","answer_width","70"
+"1931","1948","answer_width","70"
+"1932","1949","answer_width","70"
+"1933","1950","answer_width","70"
+"1934","1951","answer_width","70"
+"1935","1932","hide_tip","1"
+
+#
+# ASSESSMENTS TABLE
+#
+
+#
+# SURVEYS_LANGUAGESETTINGS TABLE
+#
+"surveyls_survey_id","surveyls_language","surveyls_title","surveyls_description","surveyls_welcometext","surveyls_url","surveyls_urldescription","surveyls_endtext","surveyls_email_invite_subj","surveyls_email_invite","surveyls_email_remind_subj","surveyls_email_remind","surveyls_email_register_subj","surveyls_email_register","surveyls_email_confirm_subj","surveyls_email_confirm"
+"1","de","Studiply Vorlage","Studiply Vorlage","Hallo","http://his.de","www.his.de","Tsch&uuml;&szlig;","Einladung zur Teilnahme an einer Umfrage","Hallo {FIRSTNAME},<br /><br />Hiermit möchten wir Sie zu einer Umfrage einladen.<br /><br />Der Titel der Umfrage ist <br />'{SURVEYNAME}'<br /><br />'{SURVEYDESCRIPTION}'<br /><br />Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.<br /><br />Mit freundlichen Grüßen,<br /><br />{ADMINNAME} ({ADMINEMAIL})<br /><br />----------------------------------------------<br />Klicken Sie hier um die Umfrage zu starten:<br />{SURVEYURL}","Erinnerung an Teilnahme an einer Umfrage","Hallo {FIRSTNAME},<br /><br />Vor kurzem haben wir Sie zu einer Umfrage eingeladen.<br /><br />Zu unserem Bedauern haben wir bemerkt, dass Sie die Umfrage noch nicht ausgefüllt haben. Wir möchten Ihnen mitteilen, dass die Umfrage noch aktiv ist und würden uns freuen, wenn Sie teilnehmen könnten.<br /><br />Der Titel der Umfrage ist <br />'{SURVEYNAME}'<br /><br />'{SURVEYDESCRIPTION}'<br /><br />Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den unten stehenden Link.<br /><br /> Mit freundlichen Grüßen,<br /><br />{ADMINNAME} ({ADMINEMAIL})<br /><br />----------------------------------------------<br />Klicken Sie hier um die Umfrage zu starten:<br />{SURVEYURL}","Registrierungsbestätigung für Teilnahmeumfrage","Hallo {FIRSTNAME},<br /><br />Sie (oder jemand, der Ihre Email benutzt hat) haben sich für eine Umfrage mit dem Titel {SURVEYNAME} angemeldet.<br /><br />Um an dieser Umfrage teilzunehmen, klicken Sie bitte auf den folgenden Link.<br /><br />{SURVEYURL}<br /><br />Wenn Sie irgendwelche Fragen zu dieser Umfrage haben oder wenn Sie sich _nicht_ für diese Umfrage angemeldet haben und sie glauben, dass Ihnen diese Email irrtümlicherweise zugeschickt worden ist, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.","Abschlussbestätigung einer Umfrage","Hallo {FIRSTNAME},<br /><br />Vielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. Ihre Antworten wurden bei uns gespeichert.<br /><br />Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte {ADMINNAME} unter {ADMINEMAIL}.<br /><br />Mit freundlichen Grüßen,<br /><br />{ADMINNAME}"
+
+#
+# QUOTA TABLE
+#
+
+#
+# QUOTA_MEMBERS TABLE
+#
+

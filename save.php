@@ -58,6 +58,7 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 
 
 global $connect;
+
 //First, save the posted data to session
 //Doing this ensures that answers on the current page are saved as well.
 //CONVERT POSTED ANSWERS TO SESSION VARIABLES
@@ -172,7 +173,7 @@ function showsaveform()
 	//Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
 	global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $relativeurl, $thisstep;
 	sendcacheheaders();
-	echo "<html>\n";
+    doHeader();   
 	foreach(file("$thistpl/startpage.pstpl") as $op)
 	{
 		echo templatereplace($op);
@@ -197,10 +198,10 @@ function showsaveform()
 		echo templatereplace($op);
 	}
 	//END
-	echo "<input type='hidden' name='sid' value='$surveyid'>\n";
-	echo "<input type='hidden' name='thisstep' value='",$thisstep,"'>\n";
-	echo "<input type='hidden' name='token' value='",$clienttoken,"'>\n";
-	echo "<input type='hidden' name='saveprompt' value='Y'>\n";
+	echo "<input type='hidden' name='sid' value='$surveyid' />\n";
+	echo "<input type='hidden' name='thisstep' value='",$thisstep,"' />\n";
+	echo "<input type='hidden' name='token' value='",$clienttoken,"' />\n";
+	echo "<input type='hidden' name='saveprompt' value='Y' />\n";
 	echo "</form>";
 
 	foreach(file("$thistpl/endpage.pstpl") as $op)
@@ -243,7 +244,7 @@ function savedcontrol()
 		!isset($_SESSION['secanswer']) ||
 		$_POST['loadsecurity'] != $_SESSION['secanswer'])
 	    {
-		    $errormsg .= $clang->gT("The answer to the security question is incorrect")."<br />\n";
+		    $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
 	    }
     }
 
@@ -382,6 +383,17 @@ function createinsertquery()
                 }
                 else  
                 {
+                    if ($fieldexists['type']=='N') //sanitize numerical fields
+                    {
+                        $_SESSION[$value]=sanitize_float($_SESSION[$value]);                         
+                    }
+                    elseif ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    {
+                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
+                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                    }
                 	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
                 }
 
@@ -523,6 +535,16 @@ function createinsertquery()
 						}
 						else
 						{
+                            if ($fieldinfo['type']=='N') //sanitize numerical fields
+                            {
+                                $_POST[$field]=sanitize_float($_POST[$field]);    
+                            }
+                            elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
+                            {
+                                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
+                                $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
+                            }                            
 							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
 						}
 					}

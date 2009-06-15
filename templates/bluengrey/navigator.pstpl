@@ -1,9 +1,9 @@
-<table width="100%" align="center">
+<table align="center" class='navigator'>
 	<tr>
+	    <td>{SAVE}</td> 
 		<td align="center">
 			<font>{NAVIGATOR}</font><br />
-			{CLEARALL}
-			{SAVE}
 		</td>
+	    <td align="right">{CLEARALL}</td> 
 	</tr>
 </table>

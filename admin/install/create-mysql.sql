@@ -145,7 +145,7 @@ CREATE TABLE `prefix_quota_members` (
   `sid` int(11) default NULL,
   `qid` int(11) default NULL,
   `quota_id` int(11) default NULL,
-  `code` varchar(5) collate utf8_unicode_ci default NULL,
+  `code` varchar(11) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
 )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -236,8 +236,6 @@ CREATE TABLE `prefix_surveys` (
   `allowprev` char(1) default 'Y',
   `printanswers` char(1) default 'N',
   `ipaddr` char(1) default 'N',
-  `useexpiry` char(1) NOT NULL default 'N',
-  `usestartdate` char(1) NOT NULL default 'N',
   `refurl` char(1) default 'N',
   `datecreated` date default NULL,
   `publicstatistics` char(1) default 'N',
@@ -277,6 +275,8 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_email_register` TEXT NULL,
   `surveyls_email_confirm_subj` VARCHAR(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
+  `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1, 
+  
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 )
 TYPE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -334,7 +334,9 @@ CREATE TABLE `prefix_users` (
   `manage_template` tinyint(1) NOT NULL default '0',
   `manage_label` tinyint(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
-  `one_time_pw` BLOB
+  `one_time_pw` BLOB,
+  `dateformat` INT UNSIGNED NOT NULL DEFAULT 1 
+  
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
@@ -359,13 +361,13 @@ CREATE TABLE `prefix_templates` (
 -- Table `settings_global`
 --
 
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '136');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '137');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 --
 -- Table `users`
 --
-INSERT INTO `prefix_users` VALUES (NULL, '$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,'default', '');
+INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
 
 
 

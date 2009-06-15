@@ -77,7 +77,7 @@ if (!isset($_SESSION['loginID']))
 
 				if(MailTextMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
 				{
-					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hash($new_pass)."' WHERE uid={$fields['uid']}";
+					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
 					$connect->Execute($query); //Checked
 					$loginsummary .= "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />";
 					$loginsummary .= "<br />".$clang->gT("An email with your login data was sent to you.");
@@ -99,7 +99,7 @@ if (!isset($_SESSION['loginID']))
 		if (isset($postuser) && isset($_POST['password']))
 		{
 			include("database.php");
-			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
+			$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode,dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 			$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 			if ($result->RecordCount() < 1)
@@ -112,7 +112,7 @@ if (!isset($_SESSION['loginID']))
 			else
 			{
 				$fields = $result->FetchRow();
-				if (SHA256::hash($_POST['password']) == $fields['password'])
+				if (SHA256::hashing($_POST['password']) == $fields['password'])
 				{
 					// Anmeldung ERFOLGREICH
 					if (strtolower($_POST['password'])=='password')
@@ -128,6 +128,7 @@ if (!isset($_SESSION['loginID']))
                     $_SESSION['loginID'] = intval($fields['uid']);
 					$_SESSION['user'] = $fields['users_name'];
 					$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+                    $_SESSION['dateformat'] = $fields['dateformat'];
 					// Compute a checksession random number to test POSTs
 					$_SESSION['checksessionpost'] = randomkey(10);
 					if (isset($postloginlang) && $postloginlang)
@@ -194,7 +195,7 @@ if (!isset($_SESSION['loginID']))
 		}
 
 		include("database.php");
-		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+		$query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
 		$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
 		if ($result->RecordCount() < 1)
@@ -222,7 +223,7 @@ if (!isset($_SESSION['loginID']))
 				."(users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) "
 				."VALUES ("
 				. $connect->qstr($mappeduser).", "
-				. "'".SHA256::hash($new_pass)."', "
+				. "'".SHA256::hashing($new_pass)."', "
 				. "'".db_quote($WebserverAuth_autouserprofile['full_name'])."', "
 				. getInitialAdmin_uid()." , "
 				. "'".$WebserverAuth_autouserprofile['lang']."', "
@@ -281,6 +282,7 @@ if (!isset($_SESSION['loginID']))
 			$_SESSION['user'] = $fields['users_name'];
 			$_SESSION['adminlang'] = $fields['lang'];
 			$_SESSION['htmleditormode'] = $fields['htmleditormode'];
+            $_SESSION['dateformat'] = $fields['dateformat'];
 			$_SESSION['checksessionpost'] = randomkey(10);
 			$_SESSION['pw_notify']=false;
 			$clang = new limesurvey_lang($_SESSION['adminlang']);
@@ -311,12 +313,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
 	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
 
-	$new_user = html_entity_decode_php4($postnew_user);
-	$new_email = html_entity_decode_php4($postnew_email);
-	$new_full_name = html_entity_decode_php4($postnew_full_name);
+	$new_user = html_entity_decode($postnew_user,ENT_QUOTES,'UTF-8');
+	$new_email = html_entity_decode($postnew_email,ENT_QUOTES,'UTF-8');        
+	$new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');        
 	$new_user = $postnew_user; // TODO: check if html decode should be used here
 	$new_email = $postnew_email; // TODO: check if html decode should be used here
-	$new_full_name = html_entity_decode_php4($postnew_full_name);
+	$new_full_name = html_entity_decode($postnew_full_name,ENT_QUOTES,'UTF-8');        
 	$valid_email = true;
 
 	if(!validate_email($new_email))
@@ -332,7 +334,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	elseif($valid_email)
 	{
 		$new_pass = createPassword();
-		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hash($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
+		$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 		$uresult = $connect->Execute($uquery); //Checked
 
 		if($uresult)
@@ -392,7 +394,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			."</form>";
 		}
 		else{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username and/or email address already exists.")."<br />\n";
+			$addsummary .= "<br /><strong>".$clang->gT("Failed to add user.")."</strong><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
 		}
 	}
 	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -476,10 +478,10 @@ elseif ($action == "moduser")
 		($sresultcount > 0 && $_SESSION['USER_RIGHT_CREATE_USER'])) && !($demoModeOnly == true && $postuserid == 1)
 	  )
 	{
-		$users_name = html_entity_decode_php4($postuser);
-		$email = html_entity_decode_php4($postemail);
-		$pass = html_entity_decode_php4($_POST['pass']);
-		$full_name = html_entity_decode_php4($postfull_name);
+		$users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');        
+		$email = html_entity_decode($postemail,ENT_QUOTES, 'UTF-8');        
+		$pass = html_entity_decode($_POST['pass'],ENT_QUOTES, 'UTF-8');        
+		$full_name = html_entity_decode($postfull_name,ENT_QUOTES, 'UTF-8');        
 		$valid_email = true;
 
 		if(!validate_email($email))
@@ -495,7 +497,7 @@ elseif ($action == "moduser")
 			{
 				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."' WHERE uid=".$postuserid;
 			} else {
-				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hash($pass)."' WHERE uid=".$postuserid;
+				$uquery = "UPDATE ".db_table_name('users')." SET email='".db_quote($email)."', full_name='".db_quote($full_name)."', password='".SHA256::hashing($pass)."' WHERE uid=".$postuserid;
 			}
 			
 			$uresult = $connect->Execute($uquery);//Checked
@@ -620,19 +622,24 @@ elseif ($action == "usertemplates")
 	// SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
       if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
       {
-                      $templaterights = array();
-                      $tquery = "SELECT * FROM ".$dbprefix."templates";
-                      $tresult = db_execute_assoc($tquery);
-                      while ($trow = $tresult->FetchRow()) {
-                              if (isset($_POST[$trow["folder"]."_use"]))
-                                      $templaterights[$trow["folder"]] = 1;
-                              else
-                                      $templaterights[$trow["folder"]] = 0;
+              $templaterights = array();
+              $tquery = "SELECT * FROM ".$dbprefix."templates";
+              $tresult = db_execute_assoc($tquery);
+              while ($trow = $tresult->FetchRow()) {
+                      if (isset($_POST[$trow["folder"]."_use"]))
+                            $templaterights[$trow["folder"]] = 1;
+                      else
+                              $templaterights[$trow["folder"]] = 0;
+              }
+              foreach ($templaterights as $key => $value) {
+                      $uquery = "INSERT INTO {$dbprefix}templates_rights (uid,".db_quote_id('folder').",".db_quote_id('use').")  VALUES ({$postuserid},'".$key."',$value)";
+                      $uresult = $connect->execute($uquery);
+                      if (!$uresult)
+                      {
+                            $uquery = "UPDATE {$dbprefix}templates_rights  SET  ".db_quote_id('use')."=$value where ".db_quote_id('folder')."='$key' AND uid=".$postuserid;
+                            $uresult = $connect->execute($uquery);
                       }
-                      foreach ($templaterights as $key => $value) {
-                              $uquery = "INSERT INTO {$dbprefix}templates_rights SET `uid`={$postuserid}, `folder`='".$key."', `use`=".$value." ON DUPLICATE KEY UPDATE `use`=".$value;
-                              $uresult = $connect->execute($uquery);
-                      }
+              }
 		      if ($uresult)
 		      {
 			      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";

@@ -37,15 +37,45 @@ function focusFirst(Event)
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
  * 
- * This can be used to start other functions on pageload as well. Just copy the lines and replace the function name.
+ * This can be used to start other functions on pageload as well. Just put it inside the 'ready' function block
  */
 
-/** UnComment if you want to use the focusFirst function
+/** Uncomment if you want to use the focusFirst function
 
-//var ie is set in startpage.pstpl to true (Internet Explorer) or false (other Browser than IE) with conditional comments. IE needs his own attachEvent.
-if(ie) 
-	{window.attachEvent("onload", focusFirst);}
-else // EventListener are supported from gecko and webkit Browsers (Firefox, Iceweasel, Safari, Chrome etc.)
-	{document.addEventListener("load", focusFirst, true);}
+$(document).ready(function(){
+   focusFirst();
+})
 	
 **/
+
+
+
+function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+{
+   var arVersion = navigator.appVersion.split("MSIE")
+   var version = parseFloat(arVersion[1])
+   if ((version >= 5.5) && (version<7) && (document.body.filters)) 
+   {
+      for(var i=0; i<document.images.length; i++)
+      {
+         var img = document.images[i]
+         var imgName = img.src.toUpperCase()
+         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+         {
+            var imgID = (img.id) ? "id='" + img.id + "' " : "";
+            var imgClass = (img.className) ? "class='" + img.className + "' " : "";
+            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' ";
+            var imgStyle = "display:inline-block;" + img.style.cssText;
+            if (img.align == "left") imgStyle = "float:left;" + imgStyle;
+            if (img.align == "right") imgStyle = "float:right;" + imgStyle;
+            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle;
+            var strNewHTML = "<span " + imgID + imgClass + imgTitle
+            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+            + "(src='" + img.src + "', sizingMethod='scale');\"></span>" 
+            img.outerHTML = strNewHTML
+            i = i-1
+         }
+      }
+   }    
+}

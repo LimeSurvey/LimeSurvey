@@ -49,7 +49,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 	}
 	else
 	{
-		if ($databasetype=='mysql') {$connect->Execute("ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");} //Set the collation also for manually created DBs
+		if ($databasetype=='mysql' || $databasetype=='mysqli') {$connect->Execute("ALTER DATABASE `$databasename` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");} //Set the collation also for manually created DBs
 		
 		print("\nDatabase $databasename on $databasetype EXISTS, not created \n");
 		
@@ -65,8 +65,10 @@ if (isset($argv[1]) && $argv[1]=='install')
 	require_once($homedir."/classes/core/sha256.php");
 	
 	$success = 0;  // Let's be optimistic
-	
-	$sqlfile = dirname(__FILE__).'/create-'.$databasetype.'.sql' ;
+
+    $createdbtype=$databasetype;
+    if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';         	
+	$sqlfile = dirname(__FILE__).'/create-'.$createdbtype.'.sql' ;
 	
 	if (!empty($sqlfile)) {
 		if (!is_readable($sqlfile)) {
@@ -97,7 +99,7 @@ if (isset($argv[1]) && $argv[1]=='install')
 				$command .= $line;
 				$command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
 				$command = str_replace('$defaultuser', $defaultuser, $command); // variables By Moses
-				$command = str_replace('$defaultpass', SHA256::hash($defaultpass), $command); // variables By Moses
+				$command = str_replace('$defaultpass', SHA256::hashing($defaultpass), $command); // variables By Moses
 				$command = str_replace('$siteadminname', $siteadminname, $command);
 				$command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
 				$command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
@@ -152,7 +154,10 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
 
 {
    
-    include ('upgrade-'.$databasetype.'.php');
+    $upgradedbtype=$databasetype;
+    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';     
+        
+    include ('upgrade-'.$upgradedbtype.'.php');
     $tables = $connect->MetaTables();
     
     $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";

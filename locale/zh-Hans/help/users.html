@@ -1,41 +1,19 @@
-<body bgcolor="#E5E5E5">
-
-<p><font face="Verdana" style="font-size: 8pt; font-weight: 700">眤タ浪跌LimeSurvey <u>穦巨</u> 礶.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">眤浪跌のэ砞﹚のノめ舦.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt">LimeSurvey 砞﹚籔 Apache ヘ魁╰参皌ㄏノ. 狦眤獶ㄏノ Apache 呼狝竟, 眤ゐ斗瞶穦砞﹚眤惠沮禥狝竟琂Τよ猭砞﹚ヘ魁舦.</font></p>
-
-<p><font face="Verdana"><font style="font-size: 8pt"><u><strong>币笆砞﹚<br>
-</strong></u>眤程 LimeSurvey 磅︽砞﹚, ウ穦 '币笆' 
-砞﹚. 讽ウ '币笆', 祘Α穦т碝 Apache &quot;htpasswd&quot; 
-磅︽郎ミ 'ノめ' 郎. 籔ウョ admin ヘ魁ミ 'htaccess' 郎玗Τhtpasswd 郎ず﹚ノめㄏノ恨瞶舦. 程戳琌ㄏノconfig.php 郎  '箇砞' 砞ノめ嘿の盞絏琌. 讽眤Θ币笆砞﹚聅凝竟穦璶―眤块ノめ嘿の盞絏磅︽LimeSurvey祘Α恨瞶.</font></font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>穝糤ノめ</strong></u><br>
-讽眤Θ币笆砞﹚の '祅' ╰参, 眤琩╰参瞷Τノめ, 穝糤ノめ, 埃ノめ┪эノめ戈. 巨よ猭虏ノ. 陪ボノめ, click &quot;э&quot; 秙э兜ヘず甧, ┪click &quot;埃&quot; 秙埃ウ. 狦ノめ緇逆眤碞ぃ埃緇逆.</font></p>
-
-<p>
-<font face="Verdana" style="font-size: 8pt; font-weight: 700; text-decoration: underline">
-闽超砞﹚<br>
-</font><font face="Verdana" style="font-size: 8pt">闽超 LimeSurveys 
-砞﹚, click &quot;闽超砞﹚&quot; 秙. セ穦埃 
-ヘ魁ずhtpasswd  htaccess 郎のノめ戈.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong> LimeSurvey 
-砞﹚</strong></u><br>
-ゼΤ艶Ч╰参ぇ玡眔產猔種琌 LimeSurvey 砞﹚琌 '獶堵フ' 匡拒ノめ匡拒ㄏノ场恨瞶┪Ч礚舦ㄏノウ ⊿Τ材匡拒. 
-ㄏら眤ノめ砞﹚ぃ糷Ωㄏノ舦. 猔種穦砞﹚続ノ砰ノめ, 珹 PLAIN-TEXT PASSWORDS.</font></p>
-
-<p><font face="Verdana" style="font-size: 8pt"><u><strong>и禘耞</strong></u><br>
-狦眤礚猭币笆砞﹚:</font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" id="AutoNumber1">
-  <tr>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">1.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">絋玂眤 admin ヘ魁ず局Τ弄/糶舦. LimeSurvey 杆惠璶硂柑ミ.htpasswd の .htaccess 郎.</font></td>
-  </tr>
-  <tr>
-    <td valign="top"><font style="font-size: 8pt" face="Verdana">2.</font></td>
-    <td><font face="Verdana" style="font-size: 8pt">絋玂眤Τ舦巨 htpasswd 磅︽郎 跌怠狝竟, htpasswd 捌セ穦 /limesurvey/admin ヘ魁ず.  Linux 狝竟, 祘Α穦笆ㄏノ&quot;find&quot  琩тhtpasswd 磅︽郎;.</font></td>
-  </tr>
-</table>
-&nbsp;<p>&nbsp;</p>
+<html><HEAD></HEAD>
+<BODY bgColor=#e5e5e5>
+<P><FONT style="FONT-SIZE: 8pt; FONT-WEIGHT: 700" face=Verdana>您正在检视LimeSurvey <U>会员操作</U> 画面.</FONT></P>
+<P><FONT style="FONT-SIZE: 8pt" face=Verdana>在此您可以检视及修改安全设定及用户存取权限.</FONT></P>
+<P><FONT style="FONT-SIZE: 8pt" face=Verdana>LimeSurvey 安全设定与 Apache 目录的安全系统配合使用. 如果您并非使用 Apache 网站伺服器, 您毋须理会此安全设定，您只需根据贵站台伺服器的既有方法去设定站台目录的存取权限.</FONT></P>
+<P><FONT face=Verdana><FONT style="FONT-SIZE: 8pt"><U><STRONG>启动安全设定<BR></STRONG></U>您最初在 LimeSurvey 执行安全设定, 它会 '启动' 安全设定. 当它 '启动', 程式会找寻 Apache "htpasswd" 的可执行档，并建立 '用户' 档案. 与此同时，它亦在 admin 目录建立 'htaccess' 档，侷限只有htpasswd 档内指定的用户才可使用管理权限. 最初期是使用config.php 档案 的 '预设' 设的的用户名称及密码是. 当您成功启动安全设定后，浏览器会要求您输入用户名称及密码，才可以执行LimeSurvey程式的管理功能.</FONT></FONT></P>
+<P><FONT style="FONT-SIZE: 8pt" face=Verdana><U><STRONG>新增用户</STRONG></U><BR>当您成功启动安全设定及 '登入' 系统后, 您可以查看系统上的现有用户, 新增用户, 删除用户或修改用户资料. 操作方法简明易用. 首先显示用户列表, click "修改" 按钮可修改项目内容, 或click "删除" 按钮去删除它. 如果用户表格上只馀下一个栏位，您就不能删除馀下的栏位了.</FONT></P>
+<P><FONT style="FONT-SIZE: 8pt; FONT-WEIGHT: 700; TEXT-DECORATION: underline" face=Verdana>关闭安全设定<BR></FONT><FONT style="FONT-SIZE: 8pt" face=Verdana>关闭 LimeSurveys 安全设定, click "关闭安全设定" 按钮. 本功能会删除 目录内的htpasswd 、 htaccess 档及用户资料.</FONT></P>
+<P><FONT style="FONT-SIZE: 8pt" face=Verdana><U><STRONG>LimeSurvey 安全设定的限制</STRONG></U><BR>在未有更灵活更完美的安全系统之前，值得大家注意的是， LimeSurvey 安全设定是 '非黑即白' 的选择，因为用户只可选择使用全部管理功能，或者完全无权使用它，此外， 没有第三个选择。. 即使日后您可为用户设定不同层次的使用权限. 注意︰会员安全设定的功能适用于全体的用户, 包括 PLAIN-TEXT PASSWORDS.</FONT></P>
+<P><FONT style="FONT-SIZE: 8pt" face=Verdana><U><STRONG>自我诊断</STRONG></U><BR>如果您无法启动安全设定:</FONT></P>
+<TABLE style="BORDER-COLLAPSE: collapse" id=AutoNumber1 border=0 cellSpacing=0 borderColor=#111111 cellPadding=0>
+<TBODY>
+<TR>
+<TD vAlign=top><FONT style="FONT-SIZE: 8pt" face=Verdana>1.</FONT></TD>
+<TD><FONT style="FONT-SIZE: 8pt" face=Verdana>确保您在 admin 目录内拥有读/写权限，因为. LimeSurvey 在安装时需要在这裡建立.htpasswd 及 .htaccess 档案.</FONT></TD></TR>
+<TR>
+<TD vAlign=top><FONT style="FONT-SIZE: 8pt" face=Verdana>2.</FONT></TD>
+<TD><FONT style="FONT-SIZE: 8pt" face=Verdana>确保您有权操作 htpasswd 的可执行档， 在视窗伺服器, htpasswd 的副本会放在 /limesurvey/admin 的目录内. 在 Linux 伺服器, 程式会自动使用"find" 去查找htpasswd 的可执行档;.</FONT></TD></TR></TBODY></TABLE>&nbsp;
+<P>&nbsp;</P></BODY></html>

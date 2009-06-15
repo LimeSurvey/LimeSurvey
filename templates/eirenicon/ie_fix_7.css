@@ -1,0 +1,130 @@
+/* The following styles are for all versions of IE */
+ .choice-5-pt-radio ul
+,.yes-no ul
+,.gender ul
+{
+	margin-left: 3em;
+}
+
+
+.multiple-short-txt ul.numbers-only li span
+{
+	width: 10em;
+}
+.numeric-multi div.multinum-slider
+{
+	margin-top: 4em;
+}
+
+ .multiple-short-txt ul
+,.multiple-opt-comments ul
+,.numeric-multi ul
+{
+	margin-left: 1em;
+	padding-left: 0%;
+}
+.multiple-short-txt ul li
+,.multiple-opt-comments ul li
+,.numeric-multi ul li
+{
+	margin-left: 0%;
+	padding-left: 0%;
+}
+.numeric-multi ul.computed	{	margin-right: 2em;	}
+.numeric-multi ul label
+{
+	margin-bottom: -2.25em;
+	margin-top: 0.3em;
+	display: block;
+}
+ .multiple-short-txt ul label
+,.multiple-opt-comments ul span.option
+{
+	margin-bottom: -2.3em;
+	display: block;
+}
+ .multiple-opt-comments ul.X-large span.option
+,.multiple-short-txt ul.X-large span
+,.numeric-multi ul.X-large span
+{
+	margin-bottom: 0%;
+}
+ .multiple-opt-comments ul span.comment
+,.multiple-short-txt ul span
+,.numeric-multi ul span
+{
+	display: block;
+	margin-bottom: 0.7em;
+}
+.multiple-opt-comments ul.X2  span.option , .multiple-short-txt ul.X2 label  , .numeric-multi ul.X2 label  { width: 2em;}
+.multiple-opt-comments ul.X2  span.comment  , .multiple-short-txt ul.X2 span   , .numeric-multi ul.X2 span   { margin-left: 2.5em; }
+
+.multiple-opt-comments ul.X4  span.option , .multiple-short-txt ul.X4 label  , .numeric-multi ul.X4 label  { width: 4em;}
+.multiple-opt-comments ul.X4  span.comment  , .multiple-short-txt ul.X4 span   , .numeric-multi ul.X4 span   { margin-left: 4.5em; }
+
+.multiple-opt-comments ul.X6  span.option , .multiple-short-txt ul.X6 label  , .numeric-multi ul.X6 label  { width: 6em;}
+.multiple-opt-comments ul.X6  span.comment  , .multiple-short-txt ul.X6 span   , .numeric-multi ul.X6 span   { margin-left: 6.5em; }
+
+.multiple-opt-comments ul.X8  span.option , .multiple-short-txt ul.X8 label  , .numeric-multi ul.X8 label  { width: 8em;}
+.multiple-opt-comments ul.X8  span.comment  , .multiple-short-txt ul.X8 span   , .numeric-multi ul.X8 span   { margin-left: 8.5em; }
+
+.multiple-opt-comments ul.X10 span.option , .multiple-short-txt ul.X10 label , .numeric-multi ul.X10 label { width: 10em;}
+.multiple-opt-comments ul.X10 span.comment  , .multiple-short-txt ul.X10 span  , .numeric-multi ul.X10 span  { margin-left: 10.5em; }
+
+.multiple-opt-comments ul.X12 span.option , .multiple-short-txt ul.X12 label , .numeric-multi ul.X12 label { width: 12em;}
+.multiple-opt-comments ul.X12 span.comment  , .multiple-short-txt ul.X12 span  , .numeric-multi ul.X12 span  { margin-left: 12.5em; }
+
+.multiple-opt-comments ul.X14 span.option , .multiple-short-txt ul.X14 label , .numeric-multi ul.X14 label { width: 14em;}
+.multiple-opt-comments ul.X14 span.comment  , .multiple-short-txt ul.X14 span  , .numeric-multi ul.X14 span  { margin-left: 14.5em; }
+
+.multiple-opt-comments ul.X16 span.option , .multiple-short-txt ul.X16 label , .numeric-multi ul.X16 label { width: 16em;}
+.multiple-opt-comments ul.X16 span.comment  , .multiple-short-txt ul.X16 span  , .numeric-multi ul.X16 span  { margin-left: 16.5em; }
+
+.multiple-opt-comments ul.X18 span.option , .multiple-short-txt ul.X18 label , .numeric-multi ul.X18 label { width: 18em;}
+.multiple-opt-comments ul.X18 span.comment  , .multiple-short-txt ul.X18 span  , .numeric-multi ul.X18 span  { margin-left: 18.5em; }
+
+.multiple-opt-comments ul.X20 span.option , .multiple-short-txt ul.X20 label , .numeric-multi ul.X20 label { width: 20em;}
+.multiple-opt-comments ul.X20 span.comment  , .multiple-short-txt ul.X20 span  , .numeric-multi ul.X20 span  { margin-left: 20.5em; }
+
+.multiple-opt-comments ul.X22 span.option , .multiple-short-txt ul.X22 label , .numeric-multi ul.X22 label { width: 22em;}
+.multiple-opt-comments ul.X22 span.comment  , .multiple-short-txt ul.X22 span  , .numeric-multi ul.X22 span  { margin-left: 22.5em; }
+
+.multiple-opt-comments ul.X24 span.option , .multiple-short-txt ul.X24 label , .numeric-multi ul.X24 label { width: 24em;}
+.multiple-opt-comments ul.X24 span.comment  , .multiple-short-txt ul.X24 span  , .numeric-multi ul.X24 span  { margin-left: 24.5em; }
+
+.multiple-opt-comments ul.X26 span.option , .multiple-short-txt ul.X26 label , .numeric-multi ul.X26 label { width: 26em;}
+.multiple-opt-comments ul.X26 span.comment  , .multiple-short-txt ul.X26 span  , .numeric-multi ul.X26 span  { margin-left: 26.5em; }
+
+.multiple-opt-comments ul.X28 span.option , .multiple-short-txt ul.X28 label , .numeric-multi ul.X28 label { width: 28em;}
+.multiple-opt-comments ul.X28 span.comment  , .multiple-short-txt ul.X28 span  , .numeric-multi ul.X28 span  { margin-left: 28.5em; }
+
+.multiple-opt-comments ul.X30 span.option , .multiple-short-txt ul.X30 label , .numeric-multi ul.X30 label { width: 30em;}
+.multiple-opt-comments ul.X30 span.comment  , .multiple-short-txt ul.X30 span  , .numeric-multi ul.X30 span  { margin-left: 30.5em; }
+
+.multiple-opt-comments ul.X-large span.option , .multiple-short-txt ul.X-large label , .numeric-multi ul.X-large label { margin-bottom: 0%;}
+.multiple-opt-comments ul.X-large span.comment { margin-left: 1.3em; }
+.multiple-short-txt ul.X-large span  , .numeric-multi ul.X-large span  { margin-left: 2em; }
+
+.numeric-multi dl.multiplenumerichelp.X-large { display: static; }
+
+.numeric-multi ul.multiplenumerichelp	{	display: block;	float: left;	}
+.numeric-multi ul.multiplenumerichelp li	{	display: block;	}
+
+.numeric-multi ul.multiplenumerichelp li label
+{
+	margin: 0% 0% -1.6em 0%;
+	width: 3.5em;
+	display: block;
+}
+.numeric-multi ul.multiplenumerichelp li span
+{
+	margin: 0% 0% 0% 4em;
+	display: block;
+	width: 8em;
+}
+
+.innergraph img {
+height:16px;
+vertical-align:top;
+margin:0px 0px 0px 0px;
+}

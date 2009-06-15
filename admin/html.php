@@ -38,20 +38,21 @@ if ($action == "listsurveys")
 	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 
 	if($result->RecordCount() > 0) {
-        $listsurveys= "<br /><table cellpadding='1' width='800'>
+        $listsurveys= "<br /><table class='listsurveys'>
 				  <tr>
-				    <th height=\"22\" width='22'>&nbsp;</th>
-				    <th height=\"22\"><strong>".$clang->gT("Survey")."</strong></th>
-				    <th><strong>".$clang->gT("Date Created")."</strong></th>
-				    <th><strong>".$clang->gT("Owner")."</strong></th>
-				    <th><strong>".$clang->gT("Access")."</strong></th>
-				    <th><strong>".$clang->gT("Answer Privacy")."</strong></th>
-				    <th><strong>".$clang->gT("Status")."</strong></th>
-				    <th><strong>".$clang->gT("Full Responses")."</strong></th>
-                                    <th><strong>".$clang->gT("Partial Responses")."</strong></th>
-                                    <th><strong>".$clang->gT("Total Responses")."</strong></th>
+				    <th>".$clang->gT("Status")."</th>
+				    <th style='width:20%;'>".$clang->gT("Survey")."</th>
+				    <th>".$clang->gT("Date Created")."</th>
+				    <th>".$clang->gT("Owner") ."</th>
+				    <th>".$clang->gT("Access")."</th>
+				    <th>".$clang->gT("Anonymous answers")."</th>
+				    <th>".$clang->gT("Status")."</th>
+				    <th>".$clang->gT("Full Responses")."</th>
+                    <th>".$clang->gT("Partial Responses")."</th>
+                    <th>".$clang->gT("Total Responses")."</th>
 				  </tr>";
         $gbc = "evenrow"; 
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 		while($rows = $result->FetchRow())
 		{
@@ -61,9 +62,9 @@ if ($action == "listsurveys")
 			
 			if($rows['private']=="Y")
 			{
-				$privacy=$clang->gT("Anonymous") ;
+				$privacy=$clang->gT("Yes") ;
 			}
-			else $privacy =$clang->gT("Not Anonymous") ;
+			else $privacy =$clang->gT("No") ;
 
 			
 			if (tokenTableExists($rows['sid']))
@@ -77,11 +78,11 @@ if ($action == "listsurveys")
 
 			if($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$status=$clang->gT("Expired") ;
 				} 
-                elseif ($rows['usestartdate']=='Y' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+                elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
                 {
                     $status=$clang->gT("Not yet active") ;
                 }                
@@ -105,7 +106,9 @@ if ($action == "listsurveys")
 			}
 			else $status =$clang->gT("Inactive") ;
 
-			$datecreated=$rows['datecreated'] ;
+			
+            $datetimeobj = new Date_Time_Converter($rows['datecreated'] , "Y-m-d H:i:s");
+            $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);                 
 
 			if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
 			{
@@ -127,10 +130,10 @@ if ($action == "listsurveys")
 
 			if ($rows['active']=="Y")
 			{
-				if ($rows['useexpiry']=='Y' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
+				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$listsurveys .= "<td><img src='$imagefiles/expired.png' title='' "
-					. "alt='".$clang->gT("This survey is active but expired.")."' align='left' width='20'"
+					. "alt='".$clang->gT("This survey is active but expired.")."' "
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
 				}
@@ -143,11 +146,11 @@ if ($action == "listsurveys")
 						. "title=\"".$clang->gTview("De-activate this Survey")."\" "
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("De-activate this Survey", "js")."');return false\">"
 						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
-						. "alt='".$clang->gT("De-activate this Survey")."'  border='0' hspace='0' align='left' width='20' /></a></td>\n";
+						. "alt='".$clang->gT("De-activate this Survey")."' /></a></td>\n";
 					} else 
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' title='' "
-						. "alt='".$clang->gT("This survey is currently active")."' align='left' border='0' hspace='0' align='left' width='20' "
+						. "alt='".$clang->gT("This survey is currently active")."' "
 						. "onmouseout=\"hideTooltip()\""
 						. "title=\"".$clang->gTview("This survey is currently active")."\""
 						. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is currently active", "js")."');return false\" /></td>\n";
@@ -160,17 +163,17 @@ if ($action == "listsurveys")
 					. "onmouseout=\"hideTooltip()\""
 					. "title=\"".$clang->gTview("Activate this Survey")."\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("Activate this Survey", "js")."');return false\">" .
-					"<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' border='0' hspace='0' align='left' width='20' /></a></td>\n" ;	
+					"<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' /></a></td>\n" ;	
 				} else 
 				{
 					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
-					. "title='' alt='".$clang->gT("This survey is not currently active")."' border='0' hspace='0' align='left'"
+					. "title='' alt='".$clang->gT("This survey is not currently active")."'"
 					. "onmouseout=\"hideTooltip()\""
 					. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is not currently active", "js")."');return false\" /></td>\n";
 				}			
 			}
 			
-			$listsurveys.="<td><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
+			$listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$ownername."</td>".
 					    "<td>".$visibility."</td>" .
@@ -180,9 +183,9 @@ if ($action == "listsurveys")
 					    if ($rows['active']=="Y")
 					    {
 						$complete = $responses - $partial_responses;
-                                                $listsurveys .= "<td align='center'>".$complete."</td>";
-                                                $listsurveys .= "<td align='center'>".$partial_responses."</td>";
-                                                $listsurveys .= "<td align='center'>".$responses."</td>";
+                                                $listsurveys .= "<td>".$complete."</td>";
+                                                $listsurveys .= "<td>".$partial_responses."</td>";
+                                                $listsurveys .= "<td>".$responses."</td>";
 					    }else{
 						$listsurveys .= "<td>&nbsp;</td>";
 						$listsurveys .= "<td>&nbsp;</td>";
@@ -199,18 +202,8 @@ if ($action == "listsurveys")
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
 
-if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
+if ($action == "personalsettings")
 {
-	//GET NUMBER OF SURVEYS
-	$query = "SELECT sid FROM ".db_table_name('surveys');
-	$result = $connect->Execute($query); //Checked
-	$surveycount=$result->RecordCount();
-	$query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
-	$result = $connect->Execute($query); //Checked
-	$activesurveycount=$result->RecordCount();
-	$query = "SELECT users_name FROM ".db_table_name('users');
-	$result = $connect->Execute($query); //Checked
-	$usercount = $result->RecordCount();
 
 	// prepare data for the htmleditormode preference
 	$edmod1='';
@@ -233,59 +226,17 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 		break;
 	}
 
-	$tablelist = $connect->MetaTables();
-	foreach ($tablelist as $table)
-	{
-		$stlength=strlen($dbprefix).strlen("old");
-		if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
-		{
-			$oldtokenlist[]=$table;
-		}
-		elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
-		{
-			$tokenlist[]=$table;
-		}
-		elseif (substr($table, 0, $stlength) == $dbprefix."old")
-		{
-			$oldresultslist[]=$table;
-		}
-	}
-	if(isset($oldresultslist) && is_array($oldresultslist))
-	{$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
-	if(isset($oldtokenlist) && is_array($oldtokenlist))
-	{$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
-	if(isset($tokenlist) && is_array($tokenlist))
-	{$activetokens=count($tokenlist);} else {$activetokens=0;}
-	$cssummary = "<table><tr><td height='1'></td></tr></table>\n"
-	. "<form action='$scriptname' method='post'>"
-	. "<table class='table2columns'"
-	. "cellpadding='1' cellspacing='0' width='600'>\n"
-	. "<tr>\n"
-	. "<td colspan='2' align='center' bgcolor='#F8F8FF'>\n"
-	. "<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
-	. "</td>\n"
-	. "</tr>\n";
-	// Database name & default language
-	$cssummary .= "<tr>\n"
-	. "<td width='50%' align='right'>\n"
-	. "<strong>".$clang->gT("Database Name").":</strong>\n"
-	. "</td><td>\n"
-	. "$databasename\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Default Language").":</strong>\n"
-	. "</td><td>\n"
-	. "".getLanguageNameFromCode($defaultlang)."\n"
-	. "</td>\n"
-	. "</tr>\n";
+	$cssummary = "<div class='formheader'>"
+	. "<strong>".$clang->gT("Your personal settings")."</strong>\n"
+	. "</div>\n"
+    . "<div>\n"
+    . "<form action='$scriptname' id='personalsettings' method='post'>"
+    . "<ul>\n";
+
 	// Current language
-	$cssummary .=  "<tr>\n"
-	. "<td align='right' >\n"
-	. "<strong>".$clang->gT("Current Language").":</strong>\n"
-	. "</td><td>\n"
-	. "<select name='lang' onchange='form.submit()'>\n";
+	$cssummary .=  "<li>\n"
+	. "<label for='lang'>".$clang->gT("Interface language").":</label>\n"
+	. "<select id='lang' name='lang'>\n";
 	foreach (getlanguagedata() as $langkey=>$languagekind)
 	{
 		$cssummary .= "<option value='$langkey'";
@@ -293,74 +244,173 @@ if ($action == "checksettings" || $action == "changelang" || $action=="changehtm
 		$cssummary .= ">".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
 	}
 	$cssummary .= "</select>\n"
-	. "<input type='hidden' id='action' name='action' value='changelang' />\n"
-	. "</td>\n"
-	. "</tr>\n";
+	. "</li>\n";
+    
 	// Current htmleditormode
-	$cssummary .=  "<tr>\n"
-	. "<td align='right' >\n"
-	. "<strong>".$clang->gT("Preferred HTML editor mode").":</strong>\n"
-	. "</td><td>\n"
-	. "<select name='htmleditormode' onchange='document.getElementById(\"action\").value=\"changehtmleditormode\";form.submit();'>\n"
-	. "<option value='default' $edmod1>".$clang->gT("Default HTML editor mode")."</option>\n"
-	. "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n"
+	$cssummary .=  "<li>\n"
+	. "<label for='htmleditormode'>".$clang->gT("HTML editor mode").":</label>\n"
+	. "<select id='htmleditormode' name='htmleditormode'>\n"
+	. "<option value='default' $edmod1>".$clang->gT("Default")."</option>\n"
 	. "<option value='inline' $edmod3>".$clang->gT("Inline HTML editor")."</option>\n"
-	. "<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n";
+	. "<option value='popup' $edmod4>".$clang->gT("Popup HTML editor")."</option>\n"
+    . "<option value='none' $edmod2>".$clang->gT("No HTML editor")."</option>\n";
 	$cssummary .= "</select>\n"
-	. ""
-	. "</td>\n"
-	. "</tr>\n";
-	// Other infos
-	$cssummary .=  "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Users").":</strong>\n"
-	. "</td><td>\n"
-	. "$usercount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$surveycount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Active Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$activesurveycount\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("De-activated Surveys").":</strong>\n"
-	. "</td><td>\n"
-	. "$deactivatedsurveys\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("Active Token Tables").":</strong>\n"
-	. "</td><td>\n"
-	. "$activetokens\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "<tr>\n"
-	. "<td align='right'>\n"
-	. "<strong>".$clang->gT("De-activated Token Tables").":</strong>\n"
-	. "</td><td>\n"
-	. "$deactivatedtokens\n"
-	. "</td>\n"
-	. "</tr>\n"
-	. "</table></form>\n"
-	. "<table><tr><td height='1'></td></tr></table>\n";
+	. "</li>\n";
+
+    // Date format
+    $cssummary .=  "<li>\n"
+    . "<label for='dateformat'>".$clang->gT("Date format").":</label>\n"
+    . "<select name='dateformat' id='dateformat'>\n";
+    foreach (getDateFormatData() as $index=>$dateformatdata)
+    {
+           $cssummary.= "<option value='{$index}'";
+           if ($index==$_SESSION['dateformat'])
+           {
+               $cssummary.= "selected='selected'";
+           }
+           
+           $cssummary.= ">".$dateformatdata['dateformat'].'</option>';
+    }    
+    $cssummary .= "</select>\n"
+    . "</li>\n"
+    . "</ul>\n"
+    . "<input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='".$clang->gT("Save settings")
+    ."' /></form></div>";
+}
+
+
+if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
+{
+    //GET NUMBER OF SURVEYS
+    $query = "SELECT sid FROM ".db_table_name('surveys');
+    $result = $connect->Execute($query); //Checked
+    $surveycount=$result->RecordCount();
+    $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE active='Y'";
+    $result = $connect->Execute($query); //Checked
+    $activesurveycount=$result->RecordCount();
+    $query = "SELECT users_name FROM ".db_table_name('users');
+    $result = $connect->Execute($query); //Checked
+    $usercount = $result->RecordCount();
+
+    // prepare data for the htmleditormode preference
+    $edmod1='';
+    $edmod2='';
+    $edmod3='';
+    $edmod4='';
+    switch ($_SESSION['htmleditormode'])
+    {
+        case 'none':
+            $edmod2="selected='selected'";
+        break;
+        case 'inline':
+            $edmod3="selected='selected'";
+        break;
+        case 'popup':
+            $edmod4="selected='selected'";
+        break;
+        default:
+            $edmod1="selected='selected'";
+        break;
+    }
+
+    $tablelist = $connect->MetaTables();
+    foreach ($tablelist as $table)
+    {
+        $stlength=strlen($dbprefix).strlen("old");
+        if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+        {
+            $oldtokenlist[]=$table;
+        }
+        elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+        {
+            $tokenlist[]=$table;
+        }
+        elseif (substr($table, 0, $stlength) == $dbprefix."old")
+        {
+            $oldresultslist[]=$table;
+        }
+    }
+    if(isset($oldresultslist) && is_array($oldresultslist))
+    {$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
+    if(isset($oldtokenlist) && is_array($oldtokenlist))
+    {$deactivatedtokens=count($oldtokenlist);} else {$deactivatedtokens=0;}
+    if(isset($tokenlist) && is_array($tokenlist))
+    {$activetokens=count($tokenlist);} else {$activetokens=0;}
+    $cssummary = "<br /><form action='$scriptname' method='post'>"
+    . "<table class='statisticssummary'>\n"
+    . "<thead><tr>\n"
+    . "<th colspan='2' align='center'>\n"
+    . "<strong>".$clang->gT("LimeSurvey System Summary")."</strong>\n"
+    . "</th>\n"
+    . "</tr></thead>\n";
+    // Database name & default language
+    $cssummary .= "<tr>\n"
+    . "<td width='50%' align='right'>\n"
+    . "<strong>".$clang->gT("Database Name").":</strong>\n"
+    . "</td><td>\n"
+    . "$databasename\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Default Language").":</strong>\n"
+    . "</td><td>\n"
+    . "".getLanguageNameFromCode($defaultlang)."\n"
+    . "</td>\n"
+    . "</tr>\n";
+    // Other infos
+    $cssummary .=  "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Users").":</strong>\n"
+    . "</td><td>\n"
+    . "$usercount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$surveycount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Active Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$activesurveycount\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("De-activated Surveys").":</strong>\n"
+    . "</td><td>\n"
+    . "$deactivatedsurveys\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("Active Token Tables").":</strong>\n"
+    . "</td><td>\n"
+    . "$activetokens\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "<tr>\n"
+    . "<td align='right'>\n"
+    . "<strong>".$clang->gT("De-activated Token Tables").":</strong>\n"
+    . "</td><td>\n"
+    . "$deactivatedtokens\n"
+    . "</td>\n"
+    . "</tr>\n"
+    . "</table></form><br />\n";
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
     $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."' /></form></td></tr></table>";
     }
 }
+
+
+
 
 if ($surveyid)
 {
@@ -425,14 +475,14 @@ if ($surveyid)
 		}
 		elseif ($activated == "Y")
 		{
-			if (($surveyinfo['useexpiry']=='Y') && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+			if ($surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
 			{
 				$surveysummary .= "<img src='$imagefiles/expired.png' title='' "
 				. "alt='".$clang->gT("This survey is active but expired.")."' "
 				. "onmouseout=\"hideTooltip()\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("This survey is active but expired", "js")."');return false\" />\n";
 			}
-            elseif (($surveyinfo['usestartdate']=='Y') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+            elseif (($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
             {
                 $surveysummary .= "<img src='$imagefiles/notyetstarted.png' title='' "
                 . "alt='".$clang->gT("This survey is active but has a start date.")."' "
@@ -639,9 +689,9 @@ if ($surveyid)
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
 			. "onmouseout=\"hideTooltip()\" "
-			. "title=\"".$clang->gTview("Change Group Order")."\" "
-			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")."');return false\">"
-			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change Group Order")."' name='ordergroups' /></a>\n";
+			. "title=\"".$clang->gTview("Change question group order")."\" "
+			. "onmouseover=\"showTooltip(event,'".$clang->gT("Change question group order", "js")."');return false\">"
+			. "<img src='$imagefiles/reorder.png' title='' alt='".$clang->gT("Change question group order")."' name='ordergroups' /></a>\n";
 		}
 		else
 		{
@@ -719,7 +769,7 @@ if ($surveyid)
 		}
 		$surveysummary .= "</div>\n"
 		. "<div class='menubar-right'>\n";
-		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Groups").":</font>\n"
+		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Question groups").":</font>\n"
 		. "<select name='groupselect' "
 		. "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 
@@ -741,7 +791,7 @@ if ($surveyid)
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
             . "onmouseout=\"hideTooltip()\""
             . "title=\"".$clang->gTview("Add New Group to Survey")."\""
-            . "onmouseover=\"showTooltip(event,'".$clang->gT("Add New Group to Survey", "js")."');return false\"> "
+            . "onmouseover=\"showTooltip(event,'".$clang->gT("Add new question group to survey", "js")."');return false\"> "
             . "<img src='$imagefiles/add.png' title='' alt='' name='AddNewGroup' /></a>\n";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
@@ -779,8 +829,7 @@ if ($surveyid)
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$surveysummary .= "<table width='100%' align='center' bgcolor='#FFFFFF' border='0'>\n"
-		. "<tr id='surveydetails' $showstyle><td><table class='table2columns'><tr><td align='right' valign='top' width='15%'>"
+		$surveysummary .= "<table class='table2columns' $showstyle><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
 		. "(".$clang->gT("ID")." {$surveyinfo['sid']})</strong></td></tr>\n";
@@ -861,9 +910,11 @@ if ($surveyid)
 		$surveysummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Start date:")."</strong></td>\n";
-        if ($surveyinfo['usestartdate']== "Y")
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+        if (trim($surveyinfo['startdate'])!= '')
         {
-            $startdate=$surveyinfo['startdate'];
+            $datetimeobj = new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
+            $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
         }
         else
         {
@@ -872,9 +923,10 @@ if ($surveyid)
         $surveysummary .= "<td align='left'>$startdate</td></tr>\n"		
         . "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Expiry Date:")."</strong></td>\n";
-		if ($surveyinfo['useexpiry']== "Y")
+        if (trim($surveyinfo['expires'])!= '')
 		{
-			$expdate=$surveyinfo['expires'];
+            $datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
+            $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
 		}
 		else
 		{
@@ -950,7 +1002,7 @@ if ($surveyid)
 			}
 		}
 		$surveysummary .=  $surveysummary2
-		. "</table></td></tr></table>\n";
+		. "</table>\n";
 	}
 	else
 	{
@@ -980,7 +1032,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	{
         $grow = array_map('strip_tags', $grow);
 		//$grow = array_map('htmlspecialchars', $grow);
-		$groupsummary .= '<strong>'.$clang->gT("Group").'</strong>&nbsp;'
+		$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
 		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font>\n"
 		. "</div>\n"
         . "<div class='menubar-main'>\n"
@@ -994,7 +1046,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		{
 			$groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
 			. "onmouseout=\"hideTooltip()\""
-			. "title=\"".$clang->gTview("Edit Current Group")."\""
+			. "title=\"".$clang->gTview("Edit current question group")."\""
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current Group", "js")."');return false\">" .
 			"<img src='$imagefiles/edit.png' title='' alt='' name='EditGroup' /></a>\n" ;
 		}
@@ -1010,7 +1062,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 //				$groupsummary .= "<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
 				$groupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid")."}\""
 				. "onmouseout=\"hideTooltip()\""
-				. "title=\"".$clang->gTview("Delete Current Group")."\""
+				. "title=\"".$clang->gTview("Delete current question group")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current Group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete.png' alt='' name='DeleteWholeGroup' title=''  /></a>\n";
 				//get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid");
@@ -1019,8 +1071,8 @@ if ($surveyid && $gid )   // Show the group toolbar
 			{
 				$groupsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\" "
 				. "onmouseout=\"hideTooltip()\""
-				. "title=\"".$clang->gTview("Delete Current Group")."\""
-				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete Current Group", "js")."');return false\">"
+				. "title=\"".$clang->gTview("Delete current question group")."\""
+				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled","js")."-".$clang->gT("Delete current question group", "js")."');return false\">"
 				. "<img src='$imagefiles/delete_disabled.png' alt='' name='DeleteWholeGroup' title='' /></a>\n";
 			}
 		}
@@ -1046,7 +1098,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         {
 
             $groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
-            . "title=\"".$clang->gTview("Export Current Group")."\" "
+            . "title=\"".$clang->gTview("Export current question group")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
             "<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup'  /></a>\n";
         }
@@ -1187,7 +1239,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			else
 			{
 				$questionsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-				"onclick=\"alert('".$clang->gT("Impossible to delete this question because  there is at least one question having a condition on it","js")."')\""
+				"onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
 				. "onmouseout=\"hideTooltip()\""
 				. "title=\"".$clang->gTview("Disabled - Delete Current Question")."\""
 				. "onmouseover=\"showTooltip(event,'".$clang->gT("Disabled - Delete Current Question", "js")."');return false\">"
@@ -1531,7 +1583,7 @@ if (returnglobal('viewanswer'))
 	. "<input type='hidden' name='viewanswer' value='Y' />\n"
 	. "<input type='hidden' name='sortorder' value='' />\n"
 	. "<input type='hidden' name='action' value='modanswer' />\n";
-	$vasummary .= "<div class='tab-pane' id='tab-pane-1'>";
+	$vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
 	$first=true;
 	$sortorderids=''; 
 	$codeids='';
@@ -1685,7 +1737,7 @@ if (returnglobal('viewanswer'))
 		if ($anscount > 0)
 		{
 			$vasummary .= "<tr><td colspan='6'><center>"
-   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save All")."' />\n"
+   			."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save Changes")."' />\n"
 			."</center></td></tr>\n";
 		}
 		$position=sprintf("%05d", $position);
@@ -2073,7 +2125,7 @@ if($action == "surveysecurity")
 		. "</tr>\n";
 		
 		if (isset($usercontrolSameGroupPolicy) &&
-			$usercontrolSameGroupPolicy === true)
+			$usercontrolSameGroupPolicy == true)
 		{
 			$authorizedGroupsList=getusergrouplist('simplegidarray');
 		}
@@ -2089,7 +2141,7 @@ if($action == "surveysecurity")
 				while ($resul3row = $result3->FetchRow())
 				{
 					if (!isset($usercontrolSameGroupPolicy) ||
-						$usercontrolSameGroupPolicy === false ||
+						$usercontrolSameGroupPolicy == false ||
 						in_array($resul3row['ugid'],$authorizedGroupsList))
 					{
 						$group_ids[] = $resul3row['ugid'];
@@ -2156,13 +2208,13 @@ if($action == "surveysecurity")
 		. "<tr>\n"
 
 		. "<td colspan='2' align='right'>"
-		. "<strong>".$clang->gT("User").": </strong><select name='uid'>\n"
+		. "<strong>".$clang->gT("User").": </strong><select id='uidselect' name='uid'>\n"
 		//. $surveyuserselect
 		. getsurveyuserlist()
 		. "</select>\n"
 		. "</td>\n"
 
-		. "<td align='center'><input type='submit' value='".$clang->gT("Add User")."' />"
+		. "<td align='center'><input type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) {alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
 		. "<input type='hidden' name='action' value='addsurveysecurity' /></td></form>\n"
 		. "</tr>\n";
 		//. "</table>\n";
@@ -2171,13 +2223,13 @@ if($action == "surveysecurity")
 		. "<tr>\n"
 
 		. "<td colspan='2' align='right'>"
-		. "<strong>".$clang->gT("Groups").": </strong><select name='ugid'>\n"
+		. "<strong>".$clang->gT("Groups").": </strong><select id='ugidselect' name='ugid'>\n"
 		//. $surveyuserselect
 		. getsurveyusergrouplist()
 		. "</select>\n"
 		. "</td>\n"
 
-		. "<td align='center'><input type='submit' value='".$clang->gT("Add User Group")."' />"
+		. "<td align='center'><input type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
 		. "<input type='hidden' name='action' value='addusergroupsurveysecurity' /></td></form>\n"
 		. "</tr>\n"
 		. "</table>\n";
@@ -2252,8 +2304,8 @@ if ($action == "editsurvey")
 		while ($esrow = $esresult->FetchRow())
 		{
 			$esrow = array_map('htmlspecialchars', $esrow);
-			$editsurvey = include2var('./scripts/addremove.js');
-			$editsurvey .= "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
+
+			$editsurvey = "<form id='addnewsurvey' name='addnewsurvey' action='$scriptname' method='post'>\n";
 
 			// header
 			$editsurvey .= "<table width='100%' border='0'>\n<tr><td colspan='4' class='settingcaption'>"
@@ -2261,7 +2313,7 @@ if ($action == "editsurvey")
 
 
 			// beginning TABs section
-			$editsurvey .= "<div class='tab-pane' id='tab-pane-1'>\n";
+			$editsurvey .= "<div class='tab-pane' id='tab-pane-survey-$surveyid'>\n";
 			// General & Contact TAB
 			$editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
 
@@ -2487,28 +2539,26 @@ if ($action == "editsurvey")
         
 
             // Start date
-            $editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
-            . "<span class='settingentry'><select name='usestartdate'><option value='Y'";
-            if (isset($esrow['usestartdate']) && $esrow['usestartdate'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if (!isset($esrow['usestartdate']) || $esrow['usestartdate'] != "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option></select></span></div>"
-            . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
-            . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value=\"{$esrow['startdate']}\" /><button type='reset' id='f_trigger_a'>...</button></span></div>\n";
+            $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+            $startdate='';
+            if (trim($esrow['startdate'])!= '')
+            {
+                $datetimeobj = new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+                $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            }            
+            
+            $editsurvey .= "<div class='settingrow'><span class='settingcaption'><label for='startdate_$surveyid'>".$clang->gT("Start date:")."</label></span>\n"
+            . "<span class='settingentry'><input type='text' class='popupdate' id='startdate_$surveyid' size='12' name='startdate' value=\"{$startdate}\" /></span></div>\n";
 
-
-			// Expiration
-			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
-			. "<span class='settingentry'><select name='useexpiry'><option value='Y'";
-			if (isset($esrow['useexpiry']) && $esrow['useexpiry'] == "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-			. "<option value='N'";
-			if (!isset($esrow['useexpiry']) || $esrow['useexpiry'] != "Y") {$editsurvey .= " selected='selected'";}
-			$editsurvey .= ">".$clang->gT("No")."</option></select></span></div>"
-			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
-			. "<span class='settingentry'><input type='text' id='f_date_b' size='12' name='expires' value=\"{$esrow['expires']}\" /><button type='reset' id='f_trigger_b'>...</button></span></div>\n";
-
+			// Expiration date
+            $expires='';
+            if (trim($esrow['expires'])!= '')
+            {
+                $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+                $expires=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            }            
+			$editsurvey .="<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
+			. "<span class='settingentry'><input type='text' class='popupdate' id='enddate_$surveyid' size='12' name='expires' value=\"{$expires}\" /></span></div>\n";
 			//COOKIES
 			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"
 			. "<span class='settingentry'><select name='usecookie'>\n"
@@ -2760,8 +2810,8 @@ if ($action == "editsurvey")
 		. "<table width='100%' class='form2columns'>\n"
 		. "<tbody align='center'>"
 		. "<tr><td></td><td>\n"
-		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")'/ value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources></td><td><td></tr>\n"
-		. "<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")'/ value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources></td><td><td></tr>\n"
+		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></td><td><td></tr>\n"
+		. "<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></td><td><td></tr>\n"
 		. "<tr><td>&nbsp;</td></tr><tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
 		. "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
 		. "<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"
@@ -2779,26 +2829,6 @@ if ($action == "editsurvey")
 			$editsurvey .= "<table><tr><td colspan='4' align='center'><input type='button' onclick='if (UpdateLanguageIDs(mylangs,\"".$clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?","js")."\")) {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' value='".$clang->gT("Save and Continue")." >>' />\n"
 			. "</td></tr>\n"
 			. "</table>\n";
-
-			// Here we do the setup the date javascript
-			$editsurvey .= "<script type=\"text/javascript\">\n"
-			. "Calendar.setup({\n"
-			. "inputField     :    \"f_date_b\",\n"     // id of the input field
-			. "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
-			. "showsTime      :    false,\n"            // will display a time selector
-			. "button         :    \"f_trigger_b\",\n"  // trigger for the calendar (button ID)
-			. "singleClick    :    true,\n"             // double-click mode
-			. "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
-			. "});\n"
-            . "Calendar.setup({\n"
-            . "inputField     :    \"f_date_a\",\n"     // id of the input field
-            . "ifFormat       :    \"%Y-%m-%d\",\n"     // format of the input field
-            . "showsTime      :    false,\n"            // will display a time selector
-            . "button         :    \"f_trigger_a\",\n"  // trigger for the calendar (button ID)
-            . "singleClick    :    true,\n"             // double-click mode
-            . "step           :    1\n"                 // show all years in drop-down boxes (instead of every other year as default)
-            . "});\n"
-            . "</script>\n";
 		}
 
 	}
@@ -2834,7 +2864,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
         . "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
 		. "".$clang->gT("Edit survey settings - Step 2 of 2")."</td></tr></table>\n";
 		$editsurvey .= "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
-		. '<div class="tab-pane" id="tab-pane-1">';
+		. '<div class="tab-pane" id="tab-pane-surveyls-'.$surveyid.'">';
 		foreach ($grplangs as $grouplang)
 		{
             // this one is created to get the right default texts fo each language
@@ -2864,9 +2894,21 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("End URL:")."</span>\n"
             . "<span class='settingentry'><input type='text' size='80' name='url_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_url']}\" />\n"
             . "</span></div>"
-			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL Description:")."</span>\n"
+			. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("URL description:")."</span>\n"
 			. "<span class='settingentry'><input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
-			. "</span></div></div>";
+			. "</span></div>"
+            . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Date format:")."</span>\n"
+            . "<span class='settingentry'><select size='1' name='dateformat_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n";
+            foreach (getDateFormatData() as $index=>$dateformatdata)
+            {
+               $editsurvey.= "<option value='{$index}'";
+               if ($esrow['surveyls_dateformat']==$index) {
+                    $editsurvey.=" selected='selected'"; 
+               }
+               $editsurvey.= ">".$dateformatdata['dateformat'].'</option>';
+            }
+            $editsurvey.= "</select></span></div>"
+            . "</div>";
 		}
 		$editsurvey .= '</div>';
 		$editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
@@ -2994,6 +3036,31 @@ if ($action == "ordergroups")
 		$ogresult = db_execute_assoc($ogquery) or safe_die($connect->ErrorMsg());//Checked
 
 		$ogarray = $ogresult->GetArray();
+		//FIX BROKEN ORDER
+		//Check if all group_order numbers are consecutive
+		$consecutive=true;
+		$lastnumber=-1;
+		foreach($ogarray as $group)
+		{
+		    if(($group['group_order']-1) != $lastnumber)
+		    {
+			    $consecutive=false;
+			}
+		    $lastnumber=$group['group_order'];
+		}
+		//Fix bad ordering
+		if($ogarray[0]['group_order'] > 0 || !$consecutive) 
+		{
+		    $i=0;
+		    foreach($ogarray as $group)
+		    {
+		        $fixorderq = "UPDATE ".db_table_name('groups')." SET group_order=$i WHERE sid=$surveyid AND group_order = ".$group['group_order']; 
+		        $foresult = db_execute_assoc($fixorderq) or safe_die($connect->ErrorMsg());
+		        $ogarray[$i]['group_order']=$i;
+				$i++;
+			}
+		}
+		//END FIX BROKEN ORDER
 		$miniogarray=$ogarray;
     	$groupcount = count($ogarray);
 		for($i=0; $i < $groupcount ; $i++)
@@ -3109,6 +3176,8 @@ if ($action == "newsurvey")
 {
 	if($_SESSION['USER_RIGHT_CREATE_SURVEY'])
 	{
+        $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+        
 		$newsurvey = PrepareEditorScript();
 		$newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
@@ -3117,7 +3186,7 @@ if ($action == "newsurvey")
 		. "".$clang->gT("Create or Import Survey")."</td></tr></table>\n";
 
 		// begin Tabs section
-		$newsurvey .= "<div class='tab-pane' id='tab-pane-1'>\n";
+		$newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
 
 		// General and Contact TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
@@ -3189,21 +3258,28 @@ if ($action == "newsurvey")
 		. "<option value='A'>".$clang->gT("All in one")."</option>\n"
 		. "</select></span>\n"
 		. "</div>\n";
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template:")."</span>\n"
-		. "<span class='settingentry'><select name='template'>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template:")."</span>\n"
+        . "<span class='settingentry'><select name='template'  "
+        . " onkeyup='this.onchange();' onchange='document.getElementById(\"preview\").src=\"".$publicurl."/templates/\"+this.value+\"/preview.png\";'>\n";
 		foreach (gettemplatelist() as $tname)
 		{
 			
 			if ($_SESSION["loginID"] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights($_SESSION["loginID"], $tname) == 1 )  {
 				$newsurvey .= "<option value='$tname'";
 				if (isset($esrow) && $esrow['template'] && $tname == $esrow['template']) {$newsurvey .= " selected='selected'";}
-				elseif ((!isset($esrow) || !$esrow['template']) && $tname == "default") {$newsurvey .= " selected='selected'";}
+				elseif ((!isset($esrow) || !$esrow['template']) && $tname == $defaulttemplate) {$newsurvey .= " selected='selected'";}
 				$newsurvey .= ">$tname</option>\n";
 			}
 			
 		}
 		$newsurvey .= "</select></span>\n"
-		. "</div>\n";
+                    . "</div>\n"
+                    . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Template Preview:")."</span>\n"
+                    . "<span class='settingentry'><img id='preview' src='$publicurl/templates/{$defaulttemplate}/preview.png' />\n"
+                    . "</span>\n"
+                    . "</div>\n";
+        
+    
 
 		//ALLOW SAVES
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Allow Saves?")."</span>\n"
@@ -3252,8 +3328,8 @@ if ($action == "newsurvey")
         //List survey publicly
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("List survey publicly:")."</span>\n"
         . "<span class='settingentry'><select name='public'>\n"
-        . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
+        . "<option value='Y' selected='selected'>".$clang->gT("Yes")."</option>\n"
+        . "<option value='N'>".$clang->gT("No")."</option>\n"
         . "</select></span>\n"
         . "</div>\n";
 
@@ -3272,7 +3348,18 @@ if ($action == "newsurvey")
 		. "<span class='settingentry'><select name='autoredirect'>\n"
 		. "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-		. "</select></span></div>";
+		. "</select></span></div>"
+
+        //Default date format
+        . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Date format:")."</span>\n"
+        . "<span class='settingentry'><select size='1' name='dateformat' />\n";
+        foreach (getDateFormatData() as $index=>$dateformatdata)
+        {
+           $newsurvey.= "<option value='{$index}'";
+           $newsurvey.= ">".$dateformatdata['dateformat'].'</option>';
+        }
+        $newsurvey.= "</select></span></div>";
+        
 
 		// End Presention and navigation TAB
 		// Create Survey Button 
@@ -3298,22 +3385,14 @@ if ($action == "newsurvey")
         . "</select></span>\n</div>\n";
 
         // Timed Start
-        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Timed start?")."</span>\n"
-        . "<span class='settingentry'><select name='usestartdate'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-        . "<option value='N' selected='selected'>".$clang->gT("No")."</option></select></span></div>\n"
-        . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
-        . "<span class='settingentry'><input type='text' id='f_date_a' size='12' name='startdate' value='"
-        . date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_a'>...</button>"
-        . "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Start date:")."</span>\n"
+        . "<span class='settingentry'><input type='text' class='popupdate' id='startdate' size='12' name='startdate' value='' />"
+        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></span></div>\n";
 
 		// Expiration
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expires?")."</span>\n"
-		. "<span class='settingentry'><select name='useexpiry'><option value='Y'>".$clang->gT("Yes")."</option>\n"
-		. "<option value='N' selected='selected'>".$clang->gT("No")."</option></select></span></div>\n"
-		. "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
-		. "<span class='settingentry'><input type='text' id='f_date_b' size='12' name='expires' value='"
-		. date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)."' /><button type='reset' id='f_trigger_b'>...</button>"
-		. "<font size='1'> ".$clang->gT("Date Format").": YYYY-MM-DD</font></span></div>\n";
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Expiry Date:")."</span>\n"
+		. "<span class='settingentry'><input type='text' class='popupdate' id='enddate' size='12' name='expires' value='' />"
+		. "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></span></div>\n";
 
 		//COOKIES
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Set cookie to prevent repeated participation?")."</span>\n"
@@ -3460,25 +3539,6 @@ if ($action == "newsurvey")
 		// End TAB pane 
 		$newsurvey .= "</div>\n";
 
-		// Here we do setup the date javascript
-		$newsurvey .= "<script type=\"text/javascript\">\n"
-        . "Calendar.setup({\n"
-        . "inputField     :    \"f_date_a\",\n"    // id of the input field
-        . "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-        . "showsTime      :    false,\n"                    // will display a time selector
-        . "button         :    \"f_trigger_a\",\n"         // trigger for the calendar (button ID)
-        . "singleClick    :    true,\n"                   // double-click mode
-        . "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-        . "});\n"
-		. "Calendar.setup({\n"
-		. "inputField     :    \"f_date_b\",\n"    // id of the input field
-		. "ifFormat       :    \"%Y-%m-%d\",\n"   // format of the input field
-		. "showsTime      :    false,\n"                    // will display a time selector
-		. "button         :    \"f_trigger_b\",\n"         // trigger for the calendar (button ID)
-		. "singleClick    :    true,\n"                   // double-click mode
-		. "step           :    1\n"                        // show all years in drop-down boxes (instead of every other year as default)
-		. "});\n"
-		. "</script>\n";
 	}
 	else
 	{

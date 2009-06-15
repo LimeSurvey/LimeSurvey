@@ -32,8 +32,13 @@ echo "\t<tr bgcolor='#CCCCCC'><td align='center'>$setfont\n";
 // In Step2 fill the database with data
 if (returnglobal('createdbstep2')==$clang->gT("Populate Database"))
 {
-   if ($databasetype=='mysql') {@$connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");} //Set the collation also for manually created DBs
-   if (modify_database(dirname(__FILE__).'/create-'.$databasetype.'.sql'))
+   $createdbtype=$databasetype;
+   if ($databasetype=='mysql' || $databasetype=='mysqli') {
+       @$connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+       $createdbtype='mysql';
+   }
+   if ($createdbtype=='mssql_n' || $createdbtype=='odbc_mssql' || $createdbtype=='odbtp') $createdbtype='mssql';
+   if (modify_database(dirname(__FILE__).'/create-'.$createdbtype.'.sql'))
    {
    echo sprintf($clang->gT("Database `%s` has been successfully populated."),$dbname)."</font></strong></font><br /><br />\n";
    echo "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick='location.href=\"../$scriptname\"'>";
@@ -62,10 +67,12 @@ if (!$database_exists) //Database named in config-defaults.php does not exist
 	// TODO SQL: Portable to other databases??
 	switch ($databasetype)
 	{
+        case 'mysqli':
 		case 'mysql': $createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
 		break;
+		case 'mssql_n':
 		case 'odbc_mssql':
-		case 'mssql': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
+		case 'odbtp': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
 		break;
 		default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
 	}

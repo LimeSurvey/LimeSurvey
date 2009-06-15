@@ -2,14 +2,14 @@
 	<tr>
 		<td align="center" bgcolor="#eef6ff">
         	{CHECKJAVASCRIPT}
-			<font face="verdana" size="4" color="#328639"><strong>{SURVEYNAME}</strong></font><br />
-			<font size="2" color="#1d2d45">{SURVEYDESCRIPTION}</font>
+			<h1>{SURVEYNAME}</h1><br />
+			<p class='surveydescription'>{SURVEYDESCRIPTION}</p>
 		</td>
 	</tr>
 	<tr>
 		<td align="center" bgcolor="#FFFFFF">
-			<font face="verdana" size="2" color="#1d2d45">{WELCOME}<br /><br />
+			<p class='surveywelcome'>{WELCOME}</p><br />
 			<i>{THEREAREXQUESTIONS}</i>
-		</font></td>
+		</td>
 	</tr>
 </table>

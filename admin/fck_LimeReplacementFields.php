@@ -114,6 +114,7 @@ switch ($fieldtype)
 {
 	case 'survey-desc':
 	case 'survey-welc':
+	case 'survey-endtext':
 		$replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
 		$replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
 		$replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
@@ -168,6 +169,9 @@ switch ($fieldtype)
 		$replFields[]=array('EXPIRY-MDY',$clang->gT("Survey expiration date (MM-DD-YYYY)"));
 	case 'editanswer':
 		$isInstertansEnabled=true;
+	break;
+	case 'assessment-text':
+		$replFields[]=array('TOTAL',$clang->gT("Total score for this assessment rule"));
 	break;
 }
 

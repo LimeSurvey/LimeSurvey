@@ -13,17 +13,14 @@
 * $Id$
 * 
 */
-/*
- * TODO: make this testclient new... it's ugly code...
- */
-$wsdl = $_REQUEST['wsdl'];
+$wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey_dev';
+$limeUrl='https://localhost/limesource/limesurvey';
 
-//We need authentication for every function, so just write the logindata once for all
+//We need authentication for every function, so just write the logindata once for all (this is the default)
 $user ="admin";
 $pass ="password";
 
@@ -137,24 +134,32 @@ function soapCheck ($path2wsdl)
 	return $soapCheck;
 }
 
-// We initiate a SOAPclient Object and give the ssl-certificate, if wished:
+//// We initiate a SOAPclient Object and give the ssl-certificate, if wished:
+//$cert = 'D:\\xampp\apache\privkey.pem';
 if(isset($cert) && $cert!="")
 {
 	ini_set("allow_url_fopen", 1);
 	$file = fopen($wsdl,"r");
 	if(class_exists(SoapClient) && $file!=FALSE)
 	{
-		$context["ssl"]["local_cert"] = $cert;
-		//		$context["ssl"]["verify_peer"] = TRUE;
-		$context["ssl"]["allow_self_signed"] = TRUE;
-		//		$context["ssl"]["cafile"] = "D://xampp//htdocs//apache//conf//keys//allinOne.pem";
-		//		$context["ssl"]["capath"] = "D://xampp//htdocs//apache//conf//keys";
+		/**
+		 * TODO: no documentation in PHP manual... no doc here... Can't tell you what to do in order to get Communication working with fixed Certificates
+		 * Can't even say, which certificates, how they have to be (.pem, .crt, .key etc.?) 
+		 * Own Microkosmos for Geeks only... Sad truth...
+		 */
+		$context = array(
+			'ssl'=> array(
+				'verify_peer' => false,
+				'allow_self_signed'	=> true,
+				'local_cert' => $cert
+			)
+		);
 		$stream_context = stream_context_create($context);
 
 		$client = new SoapClient($wsdl, array('soap_version' => SOAP_1_1,
 				'trace' => 1, 
-		//'stream_context' => $stream_context,
-				'local_cert' => $cert));
+				'stream_context' => $stream_context
+		));
 	}
 }
 else
@@ -172,14 +177,14 @@ if($file!=FALSE)
 	try
 	{	$mods = $client->sAvailableModules($user, "password", "mod");}
 	catch (SoapFault $fault)
-	{	$mods .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+	{	$mods .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }
 if($file!=FALSE)
 {
 	try
 	{	$cores = $client->sAvailableModules($user, "password", "core");}
 	catch (SoapFault $fault)
-	{	$cores .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+	{	$cores .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
 }
 
 $iVid = $_REQUEST['sid'];
@@ -273,7 +278,7 @@ while(list($key, $value) = each($_REQUEST))
 		try
 		{
 
-			$sReturn = $client->sImportMatrix($user, $pass, $iVid,  $qText, $qHelp, $items, "Matrix5", $mandatory);
+			$sReturn = $client->sImportMatrix($user, $pass, $iVid, $qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -356,6 +361,7 @@ while(list($key, $value) = each($_REQUEST))
 		$sVbes = $_REQUEST['sdes'];
 		$sVtit = $_REQUEST['stit'];
 		$sVwel = $_REQUEST['sVwel'];
+		$sVend = $_REQUEST['sVend'];
 		$sMail = $_REQUEST['sEmail'];
 		$sName = $_REQUEST['sName'];
 		$sUrl = $_REQUEST['sUrl'];
@@ -364,7 +370,7 @@ while(list($key, $value) = each($_REQUEST))
 
 		try
 		{
-			$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
+			$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
 		}
 		catch (SoapFault $fault)
 		{
@@ -508,6 +514,8 @@ Message is left blank):</b> <br />
 <input type='text' name='sdes' size='30' maxlength='150' /> <br />
 <b>Willkommenstext / Welcome Message:</b> <br />
 <textarea name='sVwel' cols='50' rows='3'></textarea> <br />
+<b>Endtext / endtext:</b> <br />
+<textarea name='sVend' cols='50' rows='3'></textarea> <br />
 <b>Admin Name:</b> <br />
 <input type='text' name='sName' size='30' maxlength='150' /> <br />
 <b>Admin Email:</b> <br />

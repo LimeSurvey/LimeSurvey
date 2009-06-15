@@ -20,7 +20,7 @@
  * @return $string
  */
 function strip_tags_full($string) {
-	$string=html_entity_decode_php4($string, ENT_QUOTES, "UTF-8");
+	$string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
 	//combining these into one mb_ereg_replace call ought to speed things up
 	$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
 	//The backslashes must be escaped twice, once for php, and again for the regexp
@@ -115,6 +115,8 @@ function spss_fieldmap($prefix = 'V') {
 		$fieldtype = '';
 		$val_size = 1;
 		$hide = 0;
+		$export_scale = '';
+		$code='';
 		 
 		#Determine field type
 		if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -142,7 +144,6 @@ function spss_fieldmap($prefix = 'V') {
 		}
 		 
 		#Get qid (question id)
-		$code='';
 		$noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl');
 		if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
 			$qid = 0;
@@ -151,19 +152,29 @@ function spss_fieldmap($prefix = 'V') {
 		} else{
 			//GET FIELD DATA
 			$fielddata=arraySearchByKey($fieldname, $fieldmap, 'fieldname', 1);
-			$qid=$fielddata['qid'];
-			$ftype=$fielddata['type'];
-			$fsid=$fielddata['sid'];
-			$fgid=$fielddata['gid'];
-			$code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
-			$varlabel=$fielddata['question'];
-			$ftitle=$fielddata['title'];
-			if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-			if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
-			if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
-			if (isset($typeMap[$ftype]['hide'])) {
-				$hide = $typeMap[$ftype]['hide'];
-				$diff++;
+			if (count($fielddata)==0) {
+			  //Field in database but no longer in survey... how is this possible?
+			  //@TODO: think of a fix.
+			} else {
+				$qid=$fielddata['qid'];
+				$ftype=$fielddata['type'];
+				$fsid=$fielddata['sid'];
+				$fgid=$fielddata['gid'];
+				$code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
+				$varlabel=$fielddata['question'];
+				$ftitle=$fielddata['title'];
+				if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
+				if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
+				if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
+				if (isset($typeMap[$ftype]['hide'])) {
+					$hide = $typeMap[$ftype]['hide'];
+					$diff++;
+				}
+				//Get default scale for this type
+				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
+				//But allow override
+				$aQuestionAttribs = getQAttributes($qid);
+				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 				
 		}
@@ -171,9 +182,9 @@ function spss_fieldmap($prefix = 'V') {
 		$fid = $fieldno - $diff;
 		$lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
 		$tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-		    'qid'=>$qid, 'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
+		    'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
 		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-		    'title'=>$ftitle, 'hide'=>$hide);
+		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale);
 		$fields[] = $tempArray;
 	}
 	return $fields;
@@ -192,7 +203,7 @@ function spss_getquery() {
 		{$dbprefix}tokens_$surveyid.lastname    ,
 		{$dbprefix}tokens_$surveyid.email";
         $tokenattributes=GetTokenFieldsAndNames($surveyid,true);
-        foreach ($tokenattributes as $attributefield=>$attributedescription)
+        foreach ($tokenattributes as $attributefield=>$attributedescription) {
 		    if (in_array($attributefield, $token_fields)) {
 			    $query .= ",\n		{$dbprefix}tokens_$surveyid.$attributefield";
 		    }
@@ -200,17 +211,19 @@ function spss_getquery() {
 		$query .= ",\n	       {$dbprefix}survey_$surveyid.*
 	    FROM {$dbprefix}survey_$surveyid
 	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
-		if (incompleteAnsFilterstate() === true)
-		{
-			$query .= " WHERE {$dbprefix}survey_$surveyid.submitdate is not null ";
-		}
 	} else {
 		$query = "SELECT *
 	    FROM {$dbprefix}survey_$surveyid";
-		if (incompleteAnsFilterstate() === true)
-		{
+	}
+	switch (incompleteAnsFilterstate()) {
+		case 'inc':
+			//Inclomplete answers only
+			$query .= ' WHERE submitdate is null ';
+			break;
+		case 'filter':
+			//Inclomplete answers only
 			$query .= ' WHERE submitdate is not null ';
-		}
+			break;
 	}
 	return $query;
 }

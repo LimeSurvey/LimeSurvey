@@ -750,7 +750,7 @@ if ($action == "mailsendusergroup")
     	$to = '';
     	while ($egurow = $eguresult->FetchRow())
     	{
-    		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. ', ' ;
+    		$to .= $egurow['users_name']. ' <'.$egurow['email'].'>'. '; ' ;
     		$addressee .= $egurow['users_name'].', ';
     	}
     	$to = substr("$to", 0, -2);
@@ -1055,8 +1055,8 @@ function refreshtemplates() {
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked 
 		
 		if ($result->RecordCount() == 0) {
-			$query2 = "INSERT INTO ".$dbprefix."templates SET folder='".$tp."', creator=".$_SESSION['loginID'] ;
-			$connect->Execute($query2);  //Checked
+			$query2 = "INSERT INTO ".$dbprefix."templates (".db_quote_id('folder').",".db_quote_id('creator').") VALUES ('".$tp."', ".$_SESSION['loginID'].')' ;
+			$connect->Execute($query2) or safe_die($connect->ErrorMsg()); //Checked     
 		}
 	}
 	return true;

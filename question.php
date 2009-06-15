@@ -225,7 +225,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         //field for limereplace stuff, and do transformations!
         $thissurvey['surveyls_url']=insertansReplace($thissurvey['surveyls_url']);
 		$thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-		
+
         $content='';
         $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
@@ -240,7 +240,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         
-        if (trim($thissurvey['surveyls_endtext'])=='')
+        if (FlattenText($thissurvey['surveyls_endtext'])=='')
         {
             $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
@@ -288,10 +288,10 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         $_SESSION['finished']=true;
         $_SESSION['sid']=$surveyid;
 
-        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
             //Automatically redirect the page to the "url" setting for the survey
-            $url = insertansReplace($thissurvey['url']);
+            $url = insertansReplace($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -417,45 +417,6 @@ echo "\n\n<!-- INPUT NAMES -->\n";
 echo "\t<input type='hidden' name='fieldnames' value='";
 echo implode("|", $inputnames);
 echo "' id='fieldnames'  />\n";
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo "\t<script type='text/javascript'>\n";
-echo "\t<!--\n";
-echo "\t\t\t\tfunction ValidDate(oObject)\n";
-echo "\t\t\t\t{// Regular expression used to check if date is in correct format\n";
-echo "\t\t\t\t\tvar str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "\t\t\t\t\tvar pattern = new RegExp(str_regexp);\n";
-echo "\t\t\t\t\tif ((oObject.value.match(pattern)!=null))\n";
-echo "\t\t\t\t\t{var date_array = oObject.value.split('-');\n";
-echo "\t\t\t\t\t\tvar day = date_array[2];\n";
-echo "\t\t\t\t\t\tvar month = date_array[1];\n";
-echo "\t\t\t\t\t\tvar year = date_array[0];\n";
-echo "\t\t\t\t\t\tstr_regexp = /1|3|5|7|8|10|12/;\n";
-echo "\t\t\t\t\t\tpattern = new RegExp(str_regexp);\n";
-echo "\t\t\t\t\t\tif ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "\t\t\t\t\t\t{ return true;\n";
-echo "\t\t\t\t\t\t}\n";
-echo "\t\t\t\t\t\tstr_regexp = /4|6|9|11/;\n";
-echo "\t\t\t\t\t\tpattern = new RegExp(str_regexp);\n";
-echo "\t\t\t\t\t\tif ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "\t\t\t\t\t\t{ return true;\n";
-echo "\t\t\t\t\t\t}\n";
-echo "\t\t\t\t\t\tif (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "\t\t\t\t\t\t{ return true;\n";
-echo "\t\t\t\t\t\t}\n";
-echo "\t\t\t\t\t\tif (day <= 28 && month == 2)\n";
-echo "\t\t\t\t\t\t{ return true;\n";
-echo "\t\t\t\t\t\t}        \n";
-echo "\t\t\t\t\t}\n";
-echo "\t\t\t\t\twindow.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "\t\t\t\t\toObject.focus();\n";
-echo "\t\t\t\t\toObject.select();\n";
-echo "\t\t\t\t\treturn false;\n";
-echo "\t\t\t\t}\n";
-//echo "\t\t}\n";
-echo "\t//-->\n";
-echo "\t</script>\n\n";
-// <-- END NEW FEATURE - SAVE
-
 echo "\n\n<!-- START THE SURVEY -->\n";
 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
@@ -506,6 +467,18 @@ else
 	echo "\t\t\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
+
+	//Display the "mandatory" message on page if necessary
+	if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+	{
+		echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+	}
+
+	//Display the "validation" message on page if necessary
+	if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+	{
+		echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+	}
 
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))

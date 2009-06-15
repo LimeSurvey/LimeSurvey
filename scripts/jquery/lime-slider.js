@@ -16,15 +16,15 @@ $(document).ready(function(){
 		var slider_suffix = $('#slider-suffix-' + basename).attr('value');
 		var sliderparams = Array();
 
-		sliderparams['min'] = slider_min;
-		sliderparams['max'] = slider_max;
+		sliderparams['min'] = slider_min*1; // to force numerical we multiply with 1
+		sliderparams['max'] = slider_max*1; // to force numerical we multiply with 1
 		// not using the stepping param because it is not smooth
 		// using Math.round workaround instead
 		//sliderparams['stepping'] = slider_stepping;
 		//sliderparams['animate'] = true;
 		if (slider_startvalue != 'NULL')
 		{
-			sliderparams['startValue']= slider_startvalue;
+			sliderparams['value']= slider_startvalue*1;
 		}
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
@@ -51,7 +51,7 @@ $(document).ready(function(){
 		
 		if (slider_startvalue != 'NULL')
 		{
-				var thevalue = $('#slider-'+basename).slider('value') / slider_divisor;
+				var thevalue = slider_startvalue / slider_divisor;
 				$('#slider-callout-'+basename).css('left', $('#slider-handle-'+basename).css('left')).text(slider_prefix + thevalue + slider_suffix);
 		}
 	})

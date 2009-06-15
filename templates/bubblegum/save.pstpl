@@ -1,7 +1,0 @@
-<center>
-<font color="red">{SAVEERROR}</font>
-<strong><font size="+1">{SAVEHEADING}</font></strong><br /><br />
-{SAVEMESSAGE}<br /><br />
-{SAVEFORM}<br />
-{RETURNTOSURVEY}
-</center>

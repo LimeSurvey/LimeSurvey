@@ -79,27 +79,26 @@ if ($subaction != "upload")
 
 		$vvoutput= "<br />
 		<form enctype='multipart/form-data' method='post' action='admin.php?sid=$surveyid'>
-		<table class='outlinetable' align='center'>		
+		<table class='form2columns' style='width:95%;' align='center'>		
 		<tr><th colspan=2>".$clang->gT("Import a VV survey file")."</th></tr>
 		<tr><td>".$clang->gT("File:")."</td><td><input type='file' size=50 name='the_file'></td></tr>
 		<tr><td>".$clang->gT("Survey ID:")."</td><td><input type='text' size=10 name='sid' value='$surveyid' readonly></td></tr>
 		<tr><td>".$clang->gT("Exclude record IDs?")."</td><td><input type='checkbox' name='noid' value='noid' checked=checked onchange='form.insertmethod.disabled=this.checked;' ></td></tr>
         <!-- this next item should only appear if noid is not checked -->
 		<tr><td>".$clang->gT("When an imported record matches an existing record ID:")."</td><td><select id='insertmethod' name='insert' disabled='disabled'>
-        <option value='error' selected='selected'>".$clang->gT("Report an error (and skip the new record).")."</option>
+        <option value='ignore' selected='selected'>".$clang->gT("Report and skip the new record.")."</option>
         <option value='renumber'>".$clang->gT("Renumber the new record.")."</option>
-        <option value='ignore'>".$clang->gT("Ignore the new record.")."</option>
         <option value='replace'>".$clang->gT("Replace the existing record.")."</option>
         </select></td></tr>
 		<tr><td>".$clang->gT("Import as not finalized answers?")."</td><td><input type='checkbox' name='finalized' value='notfinalized' ></td></tr>
 		<tr><td>".$clang->gT("Character set of the file:")."</td><td><select id='vvcharset' name='vvcharset'>
 		$charsetsout
 		</select></td></tr>
-		<tr><td colspan='2' align='center' ><input type='submit' value='".$clang->gT("Import")."'>
+		<tr</td><td><td><input type='submit' value='".$clang->gT("Import")."'>
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
-        <tr><td colspan='2' align='center'>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
+        <tr></td><td><td>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
 		</table>
 		</form><br />";
 	}
@@ -184,6 +183,23 @@ else
 	}
 	$importcount=0;
 	$recordcount=0;
+    $fieldnames=array_map('db_quote_id',$fieldnames);
+    
+    //now find out which fields are datefields, these have to be null if the imported string is empty
+    $fieldmap=createFieldMap($surveyid);
+    $datefields=array();
+    $numericfields=array();
+    foreach ($fieldmap as $field)
+    {
+        if ($field['type']=='D')
+        {
+            $datefields[]=$field['fieldname'];
+        }
+        if ($field['type']=='N' || $field['type']=='K')
+        {
+            $numericfields[]=$field['fieldname'];
+        }    
+    }
 	foreach($bigarray as $row)
 	{
 		if (trim($row) != "")
@@ -223,45 +239,81 @@ else
 			{
 				unset($fieldvalues[count($fieldvalues)-1]);
 			}
-			// make this safe for mysql (*after* we undo first excel's
+			// make this safe for DB (*after* we undo first excel's
 			// and then our escaping).
 			$fieldvalues=array_map('db_quote',$fieldvalues);
-			$fieldnames=array_map('db_quote',$fieldnames);
-			// okay, now we should be good to go.
-			if ($insertstyle=="ignore" && !$noid)
-			$insert = "INSERT IGNORE";
-			else if ($insertstyle=="replace" && !$noid)
-			$insert = "REPLACE";
-			else $insert = "INSERT";
-			$insert .= " INTO $surveytable\n";
-			$insert .= "(`".implode("`, `", $fieldnames)."`)\n";
-			$insert .= "VALUES\n";
-			$insert .= "('".implode("', '", $fieldvalues)."')\n";
-			if (!$result = $connect->Execute($insert))
+            
+            $fielddata=array_combine($fieldnames,$fieldvalues);
+            
+            foreach ($datefields as $datefield)
+            {
+                if ($fielddata[db_quote_id($datefield)]=='')
+                {
+                    unset($fielddata[db_quote_id($datefield)]); 
+                }
+            }
+            
+            foreach ($numericfields as $numericfield)
+            {
+                if ($fielddata[db_quote_id($numericfield)]=='')
+                {
+                    unset($fielddata[db_quote_id($numericfield)]); 
+                }
+            }
+            if ($fielddata[db_quote_id('submitdate')]=='NULL') unset ($fielddata[db_quote_id('submitdate')]); 
+            
+            $recordexists=false;     
+            if (isset($fielddata['[id]']))
+            {
+                $result = $connect->Execute("select id from $surveytable where id=".$fielddata[db_quote_id('id')]);     
+                $recordexists=$result->RecordCount()>0;
+                if ($recordexists)  // record with same id exists
+                {
+                    if ($insertstyle=="ignore") 
+                    {
+                        $vvoutput .=sprintf($clang->gT("Record ID %d was skipped because of duplicate ID."), $fielddata[db_quote_id('id')]).'<br/>';
+                        continue;
+                    }
+                    if ($insertstyle=="replace")
+                    {
+                        $result = $connect->Execute("delete from $surveytable where id=".$fielddata['id']);
+                        $recordexists=false;     
+                    } 
+                }
+            }
+			if ($insertstyle=="renumber")
 			{
-				$idkey = array_search('id',$fieldnames);
-				if ($insertstyle=="renumber" && $idkey!==FALSE)
-				{
-					// try again, without the 'id' field.
-					unset($fieldnames[$idkey]);
-					unset($fieldvalues[$idkey]);
-					$insert = "INSERT INTO $surveytable\n";
-					$insert .= "(".implode(", ", $fieldnames).")\n";
-					$insert .= "VALUES\n";
-					$insert .= "('".implode("', '", $fieldvalues)."')\n";
-					$result = $connect->Execute($insert);
-				}
-			}
+                unset($fielddata['id']);
+            }
+            if (isset($fielddata['id']))
+            {
+               if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." ON");}   //Checked
+            }
+			    // try again, without the 'id' field.
+
+			    $insert = "INSERT INTO $surveytable\n";
+			    $insert .= "(".implode(", ", array_keys($fielddata)).")\n";
+			    $insert .= "VALUES\n";
+			    $insert .= "('".implode("', '", array_values($fielddata))."')\n";
+			    $result = $connect->Execute($insert);
+
+            if (isset($fielddata['id']))
+            {
+               if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n') {$connect->Execute('SET IDENTITY_INSERT '.$surveytable." OFF");}   //Checked
+            }
+                
+                
 			if (!$result)
 			{
-				$vvoutput .= "<table align='center' class='outlintable'>\n"
-                            ."<tr><td>".sprintf($clang->gT("Import Failed on Record %d because [%s]"), $recordcount, utf8_encode($connect->ErrorMsg()))
+				$vvoutput .= "<table align='center' class='outlintable'>\n$insert"
+                            ."<tr><td>".sprintf($clang->gT("Import Failed on Record %d because [%s]"), $recordcount, htmlspecialchars(utf8_encode($connect->ErrorMsg())))
                             ."</td>\n</tr></table>\n";
 			}
 			else
 			{
 				$importcount++;
 			}
+            
 
 		}
 	}

@@ -1,0 +1,8 @@
+
+<!-- START: question_start.pstpl -->
+<span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br /><span class="questionhelp">{QUESTION_HELP}</span>
+
+{QUESTION_MAN_MESSAGE}
+{QUESTION_VALID_MESSAGE}
+
+<!-- FINISH: question_start.pstpl -->

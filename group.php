@@ -147,23 +147,6 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 			    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"));
 		    }
         }
-        /* Todo: Check the possibility to branch if the survey was completed or not */
-        
-	   if (trim($thissurvey['surveyls_endtext'])=='')
-       {
-            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-                        . $clang->gT("Your survey responses have been recorded.")."<br />\n";           
-       }
-       else
-       {
-            $completed = $thissurvey['surveyls_endtext'];
-       }
-
-    
-    	$completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
-		           . $clang->gT("Your survey responses have been recorded.")."<br />\n"
-			       . "<a href='javascript:window.close()'>"
-			       . $clang->gT("Close this Window")."</a></font><br /><br />\n";
 
 		//Update the token if needed and send a confirmation email
 		if (isset($clienttoken) && $clienttoken)
@@ -193,7 +176,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         
-        if (trim($thissurvey['surveyls_endtext'])=='')
+        if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
         {
             $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
                         . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";           
@@ -229,21 +212,12 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         $_SESSION['sid']=$surveyid;
 
 		sendcacheheaders();
-		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['url'])
+		if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		{
 			//Automatically redirect the page to the "url" setting for the survey
-			
-			/* this part doesn't have sense because $mytoken is not declared nor asigned value anywhere
-            $redir = $thissurvey['url'];
-            
-            // Add the token to the redirect just in case
-            if (isset($mytoken)) 
-            {
-			$redir .= "?token=".$mytoken;
-			}
-			header("Location: {$redir}");	*/
 
-            $url = insertansReplace($thissurvey['url']);
+			$url = $thissurvey['surveyls_url'];
+            $url = insertansReplace($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
 			$url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -339,8 +313,7 @@ $qtypesarray = array();
 
 foreach ($_SESSION['fieldarray'] as $ia)
 {
-// REMOVEME     $titlejsid[$ia[2]] = $ia[1];
-		$qtypesarray[$ia[1]] = $ia[4];
+    $qtypesarray[$ia[1]] = $ia[4];
 
 	if ($ia[5] == $gid)
 	{
@@ -410,69 +383,22 @@ if (isset($vpopup)) {echo $vpopup;}
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
 
 $hiddenfieldnames=implode("|", $inputnames);
-print <<<END
-<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
 
-<!-- INPUT NAMES -->
-<input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />
-END;
+echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
+      <!-- INPUT NAMES -->
+      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 
-echo "\n\n<!-- JAVASCRIPT FOR MODIFIED QUESTIONS -->\n";
-echo " <script type='text/javascript'>\n";
-echo " <!--\n";
-echo "    function ValidDate(oObject)\n";
-echo "    {// Regular expression used to check if date is in correct format\n";
-echo "     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/;\n";
-echo "     var pattern = new RegExp(str_regexp);\n";
-echo "     if ( oObject.value=='')\n";
-echo "     { return true;\n";
-echo "     }\n";
-echo "     if ((oObject.value.match(pattern)!=null))\n";
-echo "     {var date_array = oObject.value.split('-');\n";
-echo "      var day = date_array[2];\n";
-echo "      var month = date_array[1];\n";
-echo "      var year = date_array[0];\n";
-echo "      str_regexp = /1|3|5|7|8|10|12/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 31 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      str_regexp = /4|6|9|11/;\n";
-echo "      pattern = new RegExp(str_regexp);\n";
-echo "      if ( day <= 30 && (month.match(pattern)!=null))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day == 29 && month == 2 && (year % 4 == 0))\n";
-echo "      { return true;\n";
-echo "      }\n";
-echo "      if (day <= 28 && month == 2)\n";
-echo "      { return true;\n";
-echo "      }        \n";
-echo "     }\n";
-echo "     window.alert('".$clang->gT("Date is not valid!")."');\n";
-echo "     oObject.focus();\n";
-echo "     oObject.select();\n";
-echo "     return false;\n";
-echo "    }\n";
-echo " //-->\n";
-echo " </script>\n\n";
-// <-- END NEW FEATURE - SAVE
+// <-- END FEATURE - SAVE
 
 // <-- START THE SURVEY -->
 
-//foreach(file("$thistpl/survey.pstpl") as $op)
-//{
-//	echo "\t".templatereplace($op);
-//}
 	echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
 
-print <<<END
-<input type='hidden' id='runonce' value='0' />
-<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-<script type='text/javascript'>
-<!--
-
-END;
+echo "<input type='hidden' id='runonce' value='0' />
+    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+    <script type='text/javascript'>
+    <!--\n";
+    
 // Find out if there are any array_filter questions in this group
 $array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
 // Put in the radio button reset javascript for the array filter unselect
@@ -570,7 +496,7 @@ for ($i=0;$i<count($conditions);$i++)
 	{ // Source of this simple condition is TokenAttr
 		if ( isset($_SESSION['token']) &&
 			in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-		{
+	{
 			$tokenAttrSourceValue=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
 			// local evaluation avoids transmitting
 			// the comparison values to the client in Javascript
@@ -585,19 +511,19 @@ for ($i=0;$i<count($conditions);$i++)
 					$localEvaluationPossible = true;
 
 					if (isset($_SESSION[$comparedfieldname[1]]))
-					{
+	{
 						$answercvalue=$_SESSION[$comparedfieldname[1]];
 						if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($answercvalue)) return true; else return false;'))
 						{
 							$localEvaluation = 'true';
-						}
+	}
 						else
-						{
+	{
 							$localEvaluation = 'false';
-						}
+	}
 					}
 					else
-					{
+	{
 						$localEvaluation = 'false';
 					}
 				}
@@ -616,16 +542,16 @@ for ($i=0;$i<count($conditions);$i++)
 				if ($cd[6] == 'RX')
 				{ // the comparison right operand is a RegExp
 					if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
-					{
+		{
 						$localEvaluation = 'true';
-					}
-					else
-					{
+		}
+		else
+		{
 						$localEvaluation = 'false';
-					}
-				}
+		}
+	}
 				elseif (preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
-				{
+	{
 					// the following is Not usefull
 					// because $conditionSourceOnPreviousPage is only used when right operand is Token Attr
 					// but "TokenAttr oper TokenAttr" conditions are evaluated locally here
@@ -638,7 +564,7 @@ for ($i=0;$i<count($conditions);$i++)
 						{ // conditin matches
 							$localEvaluation = 'true';
 							//$localEvaluation = "'tokenmatch' == 'tokenmatch'
-						}
+	}
 						else
 						{ // no match
 							$localEvaluation = 'false';
@@ -652,13 +578,13 @@ for ($i=0;$i<count($conditions);$i++)
 				else
 				{ // the comparison right operand is a constant
 					if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($cd[3])) return true; else return false;'))
-					{
+	{
 						$localEvaluation = 'true';
-					}
+	}
 					else
-					{
+	{
 						$localEvaluation = 'false';
-					}
+		}
 				}
 			}
 			
@@ -680,10 +606,10 @@ for ($i=0;$i<count($conditions);$i++)
 		{
 			$newjava_runonce = false; // this param is cumulated for all conditions on this fieldname
 		}
-		else
-		{
+	else
+	{
 			$conditionSourceOnPreviousPage = true; // this param is specific to this basic condition
-		}
+	}
 
 		$localEvaluationPossible = false;
 		unset($localEvaluation);
@@ -726,40 +652,39 @@ for ($i=0;$i<count($conditions);$i++)
 	} // end local evaluations of conditions
 	else
 	{
-		// The [3] element is for the value used to be compared with
-		// If it is '' (empty) means not answered
-		// then a space or a false are interpreted as no answer
-		// as we let choose if the questions is answered or not
-		// and doesnt care the answer, so we wait for a == or !=
-		// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
-		// condition editor seems not updated yet
-		if ($cd[3] == '' || $cd[3] == ' ')
-		{ 
-			if ($cd[6] == '==')
-			{
-//			$newjava .= "document.getElementById('$idname') != null && (document.getElementById('$idname').value == ' ' || !document.getElementById('$idname').value)";
+// The [3] element is for the value used to be compared with
+	// If it is '' (empty) means not answered
+	// then a space or a false are interpreted as no answer
+	// as we let choose if the questions is answered or not
+	// and doesnt care the answer, so we wait for a == or !=
+	// TempFix by lemeur ==> add a check on cd[3]=' ' as well because
+	// condition editor seems not updated yet
+	if ($cd[3] == '' || $cd[3] == ' ')
+	{
+		if ($cd[6] == '==')
+		{
 				$newjava .= "$JSsourceElt != null && ($JSsourceVal == ' ' || !$JSsourceVal)";
 			}
 			else 
-			{
-				// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
-				$newjava .= "$JSsourceElt != null && $JSsourceVal";
-			}
-		} // end specific case of No Answer
-		elseif ($cd[4] == "M" || 
-				$cd[4] == "P")
 		{
-			//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
+			// strange thing, isn't it ? well 0, ' ', '' or false are all false logic values then...
+				$newjava .= "$JSsourceElt != null && $JSsourceVal";
+		}
+		} // end specific case of No Answer
+	elseif ($cd[4] == "M" || 
+			$cd[4] == "P")
+	{
+		//$newjava .= "!document.getElementById('$idname') || document.getElementById('$idname').value == ' '";
 			$newjava .= "$JSsourceElt != null && $JSsourceVal $cd[6] 'Y'"; // 
 		} // end specific case of M or P questions
 		else
-		{
-			/* NEW
-			 * If the value is enclossed by @
-			 * the value of this question must be evaluated instead.
-			 */
+	{
+		/* NEW
+		 * If the value is enclossed by @
+		 * the value of this question must be evaluated instead.
+		 */
 			if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
-			{
+		{
 				$sgq_from_sgqa = $_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
 				$qid_from_sgq=$comparedfieldname[2];
 				$q2type=$qtypesarray[$sgq_from_sgqa];
@@ -775,14 +700,14 @@ for ($i=0;$i<count($conditions);$i++)
 					$newjava .= "(parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('$idname2').value))";
 				}
 				else
-				{ 
+			    { 
 					//				$newjava .= "(document.getElementById('" . $idname. "').value $cd[6] document.getElementById('".$idname2."').value)";
 					$newjava .= "($JSsourceVal $cd[6] document.getElementById('$idname2').value)";
-				}
+			    }
 
 			} // end target @SGQA@
 			elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
-			{ 
+		{
 				if ( isset($_SESSION['token']) && 
 						in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 				{
@@ -849,27 +774,27 @@ for ($i=0;$i<count($conditions);$i++)
 			else
 			{ // right operand is a Constant or an Answer Code
 				$newjava .= "$JSsourceElt != null &&";
-				if ($cd[3]) //Well supose that we are comparing a non empty value
-				{
+			if ($cd[3]) //Well supose that we are comparing a non empty value
+			{
 					$newjava .= "$JSsourceVal != '' && ";
-				}
-				if ($cd[6] == 'RX')
-				{
+			}
+			if ($cd[6] == 'RX')
+			{
 					$newjava .= "match_regex($JSsourceVal,'$cd[3]')";
+			}
+			else
+			{
+				$cqidattributes = getQuestionAttributes($cd[1]);
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+				{ // Numerical questions
+						//$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
+						$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";
 				}
 				else
 				{
-					$cqidattributes = getQuestionAttributes($cd[1]);
-					if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
-					{ // Numerical questions
-						//$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
-						$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";
-					}
-					else
-					{
 						$newjava .= "$JSsourceVal $cd[6] '$cd[3]'";
-					}
 				}
+			}
 			} // end target as Constant or Answer Code
 		} // generic cases for javasript evals
 	} // end not local eval
@@ -976,6 +901,17 @@ if ($groupdescription)
 }
 echo "\n";
 
+//Display the "mandatory" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
+}
+
+//Display the "validation" message on page if necessary
+if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+{
+	echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
+}
 
 echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 if (isset($qanda) && is_array($qanda))
