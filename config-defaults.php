@@ -39,7 +39,7 @@ $databaseuser       =   'root';        // The name of a user with rights to crea
 $databasepass       =   '';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
                                        // a database with other applications. Suggested prefix is 'lime_'
-$databasetabletype  =   'myISAM';	   // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
+$databasetabletype  =   'myISAM';	     // Storage engine mysql should use when creating survey results tables and token tables (if mysql is used). If available, InnoDB is recommended. Default is myISAM.
 $databasepersistent =   false;	       // If you want to enable persistent database connections set this to 'true' - this might be faster for some database drivers. Default is false.
 
 // FILE LOCATIONS
@@ -67,7 +67,7 @@ $lwcdropdowns       =   'R';              // SHOW LISTS WITH COMMENT in Public S
 $dropdownthreshold  =   '25';             // The number of answers to a list type question before it switches from Radio Buttons to List
                                           // Only applicable, of course, if you have chosen 'R' for $dropdowns and/or $lwcdropdowns
 $repeatheadings     =   '25';             // The number of answers to show before repeating the headings in array (flexible) questions. Set to 0 to turn this feature off
-$minrepeatheadings  =   3;                // The minimum number of remaing answers that are required before repeating the headings in array (flexible) questions.
+$minrepeatheadings  =   3;                // The minimum number of remaining answers that are required before repeating the headings in array (flexible) questions.
 $defaultlang        =   'en';             // The default language to use - the available languages are the directory names in the /locale dir - for example de = German
 
 $translationmode    =   0;                // If interface translations are not working this might be because of a bug in your PHP version. 
@@ -78,7 +78,7 @@ $allowexportalldb   =   1;                // 0 will only export prefixed tables 
 $allowmandbackwards =   1;                // Allow moving backwards (ie: << prev) through survey if a mandatory question
                                           // has not been answered. 1=Allow, 0=Deny
 $deletenonvalues    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
-$printanswershonorsconditions = 1;	  // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic 
+$printanswershonorsconditions = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic 
 $shownoanswer       =   1;                // Show 'no answer' for non mandatory questions
 $admintheme         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 
