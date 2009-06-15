@@ -115,8 +115,8 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","CREATE TABLE `prefix_quota` (
  				            `id` int(11) NOT NULL auto_increment,
   							`sid` int(11) default NULL,
-  							`name` varchar(255) collate utf8_unicode_ci default NULL,
   							`qlimit` int(8) default NULL,
+  							`name` varchar(255) collate utf8_unicode_ci default NULL,
   							`action` int(2) default NULL,
   							`active` int(1) NOT NULL default '1',
   							PRIMARY KEY  (`id`)
@@ -308,10 +308,15 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "ALTER TABLE `prefix_users` ADD `dateformat` int(1) NOT NULL default '1'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_surveys` set `startdate`=null where `usestartdate`='N'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_surveys` set `expires`=null where `useexpiry`='N'"); echo $modifyoutput; flush();
-        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `usestartdate`"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `useexpiry`"); echo $modifyoutput; flush();
+        modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `usestartdate`"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='137' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
-    }  
+    }
+	if ($oldversion < 138) //Modify quota field
+	{
+	    modify_database("", "ALTER TABLE `prefix_quota_members` CHANGE `code` `code` VARCHAR(11) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
       
     return true;
 }

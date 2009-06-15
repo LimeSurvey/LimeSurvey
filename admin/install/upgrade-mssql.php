@@ -323,6 +323,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN useexpiry"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
+
+	if ($oldversion < 138) //Modify quota field
+	{
+	    modify_database("", "ALTER TABLE [prefix_quota_members] ALTER COLUMN [code] VARCHAR(11) NULL"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET [tg_value]='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
+      
     return true;
 }
 
