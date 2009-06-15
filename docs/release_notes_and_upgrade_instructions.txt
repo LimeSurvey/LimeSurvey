@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.85RC3!
+Welcome to LimeSurvey v1.85(+)!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -72,6 +72,71 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.85RC3 (build 7008) to 1.85 stable (build 7115)
++New Feature: Experimental CAS Client (wahrendorff)
++New Feature: Now it is possible to select whole groups in statistics with one click. (wahrendorff)
++New feature: Define level of variable to make SPSS export easier Fixed bug #02984 (mennodekker)
++New feature: Survey list in administration toolbar now groups surveys by "active", "expired" and "inactive" - moves expired surveys out of list of current active. (jcleeland)
+#Updated translation: Chinese Simplified - Help Files - kindly provided by yooyooh from Shang Hai
+#Updated translation: Chinese Simplified - kindly provided by yooyooh from Shang Hai
+#Updated translation: French (b00z00)
+#Updated translation: Spanish (kadejo)
+#Updated translation: Croatian (idobraca)
+#Updated translation: Italian (idobraca)
+#Updated translation: Danish by Robin Sharp. (jaycburton)
+#Updated translation: German (c_schmitz)
+#Updated translation: Italian by Giovanni Chiozza. (jaycburton)
+#Updated translation: Welsh by Sion Pennant. (jaycburton)
+#Updated translation: Polish translation update (elisa-ls)
+#Updated feature: the inline editor toolbar now starts expanded by default. This is switchable with teh  parameter in config.php. (lemeur)
+#Changed feature: Modified CSS print output for statistics so that each question appears on a separate page when printing statistics (c_schmitz)
+#Changed feature: PDF export by default is off (still experimental) (c_schmitz)
+-Fixed issue #3134: {RESTART} does not work on active surveys (c_schmitz)
+-Fixed issue #3231: Mandatory questions are not marked properly (c_schmitz)
+-Fixed issue #3330: Calendar Datepicker file doesn't exist for german-informal language (el-matador-69)
+-Fixed issue #3347: Typo in config-defaults.php (el-matador-69)
+-Fixed issue which could affect mandatory checks and deletenonvalue feature when conditions were set on multi-flexi questions (lemeur)
+-Fixed issue #2456: Answering the multiple numerical question doesn't update conditions when typing answers (jcleeland)
+-Fixed issue #3250: Array not being returned when code_filter chosen (jcleeland)
+-Fixed issue #3271: Exportvv doesn't filter incomplete answers even if requested. Fixed the bug and updated terminology to match browse and statistics functions. (jcleeland)
+-Fixed issue #3293: VV-Export: Hint isn't translateable (jcleeland)
+-Fixed issue #2974: "Don't consider NON completed reponses" has no effect. According to message 7722. Personally still don't get what the bug was. (jcleeland)
+-Fixed issue #3026: Array_filter is broken for several array question types (jcleeland)
+-Fixed issue printable survey in firefox was page-breaking after every css box. Modified print_template.css and changed page-break-after from always to auto. (jcleeland)
+-Fixed issue #3328: bug in conditions based on multiple choices questions in question-by-question survey format. This bug could also affect group by group surveys in some cases. (lemeur)
+-Fixed issue #3195: Minor label problem in 'all in one' mode (c_schmitz)
+-Fixed issue #3226: SQL select distinct error on print view with MSSQL-server DB (c_schmitz)
+-Fixed issue #3246: IE8: Small layout problem at condition designer (c_schmitz)
+-Fixed issue #3264: No bullets in bullet point lists (c_schmitz)
+-Fixed issue #3286: Public statistics page being an ugly doll - pretty patch kindly provided by jsw_nz (c_schmitz)
+-Fixed issue #3294: Notices at VV-import (c_schmitz)
+-Fixed issue #3295: {FAX_TO} in printable survey is shown even if a FAX number wasn't set (c_schmitz)
+-Fixed issue #3299: Layout not right at Multiple Numerical when question is mandatory (c_schmitz)
+-Fixed issue #3303: conditions can break mandatory check (lemeur)
+-Fixed issue #3304: Multiple choice question with the maximum answers attribute doesn't work when the limit is reached while checking the -other- checkbox (lemeur)
+-Fixed issue #3308: On the statistics page the filter settings are not fading out in IE (c_schmitz)
+-Fixed issue #3313:  doesn't seem to work as it should (with multiple options questions and questions with the -other- input field) (lemeur)
+-Fixed issue #3315: Data entry screen being too noisy with HTML (c_schmitz)
+-Fixed issue #3316: MSSQL install DB script missing a character, and crashes on default user insert (c_schmitz)
+-Fixed issue #3322: Minor layout issue at statistics (c_schmitz)
+-Fixed issue #3324: Limesurvey cannot handle filepaths with '$'  (c_schmitz)
+-Fixed issue #3327: Token exported twice (c_schmitz)
+-Fixed issue #3329: Encoding problem with shortened question texts in statistics and conditions designer (c_schmitz)
+-Fixed issue #3314: missing left black border at bluengrey Template (wahrendorff)
+-Fixed issue #3341: survey title encoding Problem, when exporting to spreedsheet (wahrendorff)
+-Fixed issue with installation and using mysqli driver (c_schmitz)
+-Fixed issue: #3296: Quotas set for array question types on answers with answer code more than 4 characters long do not work and shuts down interface  (jcleeland)
+-Fixed issue: Error on survey start with token and datefomr/dateuntil were set (c_schmitz)
+-Fixed issue: Prevents fresh installation due to non-working admin user (c_schmitz)
+-Fixed issue: When exporting tokens the dateuntil and datefrom was set even when null (c_schmitz)
+-Fixed some Javascript notices in the code that checks if Other input fields have been filled conforming to other_comment_mandatory attribute (lemeur)
+-Fixed: A small typo in german translation at VV-Import (el-matador-69)
+-Fixed: uppercase closing tag, while opening tag was lowercase (wahrendorff)
+-fixed #03215 (eric_t_cruiser)
+-fixed bug #03241: Mandatory requirement not working on Array (Multi-flexbile) (Number) with Checkbox layout is 1 (jcleeland)
+
 
 
 Changes from 1.85RC2 (build 6935) to 1.85RC3 (build 7008) [2009/06/02]  - Legend: + new feature, # update feature, - bug fix
