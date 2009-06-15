@@ -145,7 +145,7 @@ CREATE TABLE `prefix_quota_members` (
   `sid` int(11) default NULL,
   `qid` int(11) default NULL,
   `quota_id` int(11) default NULL,
-  `code` varchar(5) collate utf8_unicode_ci default NULL,
+  `code` varchar(11) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
 )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;

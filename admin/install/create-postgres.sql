@@ -157,7 +157,7 @@ CREATE TABLE prefix_quota_members (
   sid integer,
   qid integer,
   quota_id integer,
-  code character varying(5)
+  code character varying(11)
 );
 
 ALTER TABLE ONLY prefix_quota_members

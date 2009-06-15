@@ -21,7 +21,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 ##################################################################################
 
 $versionnumber = "1.85RC3";
-$dbversionnumber = 137;
+$dbversionnumber = 138;
 $buildnumber = "";
 
 ##################################################################################

@@ -31,7 +31,7 @@ CREATE TABLE [prefix_quota_members] (
   [sid] int ,
   [qid] int ,
   [quota_id] int ,
-  [code] varchar(5) ,
+  [code] varchar(11) ,
   PRIMARY KEY  ([id])
 );
 
