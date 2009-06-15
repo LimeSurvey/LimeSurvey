@@ -856,6 +856,10 @@ text-align: right;
 }
 
 #tokenform li {
+    list-style-type: none;
+}
+
+#tokenform li {
   padding-bottom:5px;
 }
 

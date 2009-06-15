@@ -90,16 +90,16 @@ if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 	$surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 }
 
-
+$pdf_form='';
 if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$notsupportlanguages))
 {
 	$pdf_form = '
-<form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
-	<input type="submit" value="'.$clang->gT('PDF Export').'"/>
-	<input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'"/>
-	<input type="hidden" name="printableexport" value="true"/>
-</form>
-';
+    <form action="'.$scriptname.'?action=showprintablesurvey&amp;sid='.$surveyid.'&amp;lang='.$surveyprintlang.'" method="post">
+	    <input type="submit" value="'.$clang->gT('PDF Export').'"/>
+	    <input type="hidden" name="checksessionbypost" value="'.$_SESSION['checksessionpost'].'"/>
+	    <input type="hidden" name="printableexport" value="true"/>
+    </form>
+    ';
 }
 
 $headelements = '
@@ -1061,7 +1061,7 @@ while ($degrow = $degresult->FetchRow())
 					$j++;
 				}
 				
-				$question['ANSWER'] = "\n<ul class=\"".label_class_width($longest_string , 'checkbox')."\">\n".$question['ANSWER']."</ul>\n";
+				$question['ANSWER'] = "\n<ul>\n".$question['ANSWER']."</ul>\n";
 				if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 				break;
 
@@ -1086,7 +1086,7 @@ while ($degrow = $degresult->FetchRow())
 					$question['ANSWER'] .=  "\t<li>\n\t\t".$mearow['answer']."\n\t\t".input_type_image('text',$mearow['answer'],$width)."\n\t</li>\n";
 					if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['answer'].": ____________________");}
 				}
-				$question['ANSWER'] =  "\n<ul class=\"".label_class_width($longest_string , 'numeric')."\">\n".$question['ANSWER']."</ul>\n";
+				$question['ANSWER'] =  "\n<ul>\n".$question['ANSWER']."</ul>\n";
 				break;
 
 

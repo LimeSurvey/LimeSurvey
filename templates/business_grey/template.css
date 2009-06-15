@@ -1,129 +1,125 @@
 body {
-color:#444;
-background-color:#B7B7B7;
-font-family:arial;
-font-size:9pt;
+    color:#333;
+    background-color:#B7B7B7;
+    font-family:arial;
+    font-size:9pt;
 }
 
 .answertextright {
-text-align:left;
+    text-align:left;
 }
 
 .submit {
-background-color:#CCF;
-font-size:9pt;
-font-family:arial;
+    background-color:#CCF;
+    font-size:9pt;
+    font-family:arial;
+}
+
+
+.saveall {
+    background-color:#CCF;
+    font-size:8pt;
+    font-family:arial;
 }
 
 .text {
-background-color:#EFEFEF;
-color:#777;
-font-size:9pt;
-font-family:arial;
+    background-color:#EFEFEF;
+    color:#777;
+    font-size:9pt;
+    font-family:arial;
 }
 
 .select {
-background-color:#EFEFEF;
-color:#555;
-font-family:arial;
-font-size:9pt;
+    background-color:#EFEFEF;
+    color:#555;
+    font-family:arial;
+    font-size:9pt;
 }
 
-.textarea {
-background-color:#EFEFEF;
-color:#666;
-font-size:9pt;
-font-family:arial;
-width:400px;
+textarea {
+    background-color:#EFEFEF;
+    color:#666;
+    font-size:9pt;
+    font-family:arial;
+    width:450px;
 }
 
 .clearall {
-font-size:7pt;
+    font-size:7pt;
 }
 
-.clearall
-A:link {
-text-decoration:none;
-font-family:arial;
-color:#555;
+.clearall a:link {
+    text-decoration:none;
+    font-family:arial;
+    color:#555;
 }
 
-.clearall
-A:visited {
-text-decoration:none;
-font-family:arial;
-color:#666;
+.clearall a:visited {
+    text-decoration:none;
+    font-family:arial;
+    color:#666;
 }
 
-.clearall
-A:active {
-text-decoration:none;
-font-family:arial;
-color:#EEE;
+.clearall a:active {
+    text-decoration:none;
+    font-family:arial;
+    color:#EEE;
 }
 
-.clearall
-A:hover {
-text-decoration:underline;
-font-family:arial;
-color:#222;
+.clearall a:hover {
+    text-decoration:underline;
+    font-family:arial;
+    color:#222;
 }
 
 
 .innergraph {
-background-color:EFEFEF;
-color:#777;
-font-family:arial;
-font-size:8pt;
-direction: ltr;
+    background-color:EFEFEF;
+    color:#777;
+    font-family:arial;
+    font-size:8pt;
+    direction: ltr;
 }
 
 .array1 {
-background-color:#D1D1D1;
-color:#777;
+    background-color:#D1D1D1;
+    color:#777;
 }
 
 .array2 {
-background-color:#EFEFEF;
-color:#777;
+    background-color:#EFEFEF;
+    color:#777;
 }
 
 .questionhelp {
-font-size:10px;
-font-style:italic;
+    font-size:10px;
+    font-style:italic;
 }
 
 .questiontext{
-font-family:verdana;
-font-size:12px;
-font-weight:bold;
+    font-family:verdana;
+    font-size:12px;
+    font-weight:bold;
 }
 
 .warningjs {
-font-size:12px;
-font-weight:700;
-color:RED;
+    font-size:12px;
+    font-weight:700;
+    color:RED;
 }
 
 .asterisk {
-color:red;
-font-size:9pt;
-font-family:verdana;
+    color:red;
+    font-size:9pt;
+    font-family:verdana;
 }
 
-/*.graph {
-border:solid;
-background-color:EFEFEF;
-border-color:#777;
-border-width:1px;
-}*/
-td.graph
-{
+td.graph {
 	background-color: #e1e1e1;
 	padding: 0.2em 0%;
 }
-#progress-graph
-{
+
+#progress-graph {
 	line-height: 1.5em;
 	width: 17em;
 	font-size: 85%;
@@ -133,101 +129,84 @@ td.graph
 	padding: 0.5em 0.5em 0.4em 1em;
 	text-align: left;
 	background-color:#DDD;
-	border: 1px solid maroon;
+	border: 1px solid #666;
 }
-.hide
-{
+.hide {
 	font-weight: normal;
 	position: absolute;
 	top: -9999px;
 	left: -9999px;
 }
+
 #progress-graph div.zero
 {
 	width: 2.6em;
 	margin-right: 0%;
 }
-#progress-graph div.graph
-{
+#progress-graph div.graph {
 	width: 10em;
 	height: 1.5em;
-	border: 1px solid maroon;
+	border: 1px solid #666;
 	margin-top: -1.7em;
 	margin-left: 2.6em;
 	margin-right: 0%;
 }
-#progress-graph div.cent
-{
+
+#progress-graph div.cent {
 	width: 3em;
 	margin-top: -1.5em;
 	margin-left: 13.3em;
 	margin-right: 0%;	
 }
-/*
-.innergraph img {
-height:12px;
-vertical-align:top;
-}
 
-.innergraph table {
-height:12px;
-border:1px solid #000;
-table-layout:fixed !important;
-}
-
-.innergraph td {
-height:12px;
-}
-
-*/
 .printouttable {
-width:100%;
+    width:100%;
 }
 
 .printouttable td {
-border-color:#fff #fff #ddf;
-border-style:solid;
-border-width:1px;
+    border-color:#fff #fff #ddf;
+    border-style:solid;
+    border-width:1px;
 }
 
 .printouttable td:first-child {
-background-color:#ddf;
-font-weight:700;
-text-align:right;
-padding-right:5px;
-padding-left:5px;
+    background-color:#ddf;
+    font-weight:700;
+    text-align:right;
+    padding-right:5px;
+    padding-left:5px;
 }
 
 .printouttitle {
-padding-right:5px;
-padding-left:5px;
-font-size:18px;
+    padding-right:5px;
+    padding-left:5px;
+    font-size:18px;
 }
 
 .surveytitle {
-font-size:1.2em;
-height:1.5em;
+    font-size:1.2em;
+    height:1.5em;
 }
 
 .surveytitle:hover {
-background-color:#F0F0F0;
+    background-color:#F0F0F0;
 }
 
 .languagechanger {
-font-size:1em;
+    font-size:1em;
 }
 
 .rank,.question {
-background-color:#E1E1E1;
-color:#777;
+    background-color:#E1E1E1;
+    color:#777;
 }
 
 table.question {
-width: 100%;
+    width: 100%;
 }
 
 table.question tr.array1:hover,table.question tr.array2:hover {
-background-color:#A7A9D1;
+    background-color:#A7A9D1;
 }
 
 
@@ -641,12 +620,31 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 /** UI Base **/
 .ui-wrapper { border: 1px solid #50A029; }
 .ui-wrapper input, .ui-wrapper textarea { border: 0; }
-/** UI Slider **/
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../../images/slider-handle.gif);  }
-.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
+
+
+
+/************** Slider ********************/       
+
+.ui-slider-disabled .ui-slider-handle {
+    opacity: 0.5; 
+    filter: alpha(opacity=50); 
+}
+
+.ui-slider-1 { 
+    width: 200px; position: relative; height: 10px;
+}
+.slider_callout { 
+    height: 20px; 
+    width: 100px; 
+    overflow: hidden; 
+    position: absolute; 
+    top: -20px; 
+    margin-left:+15px; 
+    color: #284a6e; 
+    font-size: 0.75em; 
+    font-weight: bold; 
+    text-align: left;
+}
 
 #tokenform
 {

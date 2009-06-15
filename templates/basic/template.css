@@ -571,6 +571,7 @@ text-align: right;
 #tokenform li
 {
   padding-bottom:5px;
+  list-style-type: none;       
 }
 
 #tokenform img

@@ -705,13 +705,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	vertical-align: bottom;
 	text-align: center;
+    background-color: #F5F9F9;
 }
 #limesurvey table.question .answer tbody td
 {
 	text-align: center;
 }
  #limesurvey table.question tbody th.answertext
-,#limesurvey table.question tbody th.arraycaptionleft
 {
 	text-align: right;
 	font-weight: normal;
@@ -759,17 +759,54 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	clear: both;
 }
 
-/* Jquery CSS
+    /* Jquery CSS
  */
 /** UI Base **/
-.ui-wrapper { border: 1px solid #50A029; }
-.ui-wrapper input, .ui-wrapper textarea { border: 0; }
+.ui-wrapper { 
+    border: 1px solid #50A029; 
+}
+.ui-wrapper input, .ui-wrapper textarea { 
+    border: 0; 
+}
 /** UI Slider **/
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../../images/slider-handle.gif);  }
-.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
+.ui-slider-handle { 
+    position: absolute; 
+    height: 23px; 
+    width: 12px; 
+    top: 0px; 
+    left: 0px; 
+    background-image: url(slider-handle.gif);  
+}
+
+.ui-slider-1 { 
+    width: 200px; 
+    height: 9px; 
+    margin-bottom: 20px; 
+}
+
+
+.ui-slider-2 { 
+    width: 200px; 
+    height: 23px; 
+    position: relative; 
+    background-image: url(../../images/slider-bg-2.png); 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+}
+
+.slider_callout { 
+    height: 20px; 
+    width: 100px; 
+    overflow: hidden; 
+    position: absolute; 
+    top: -19px; 
+    margin-left:10px; 
+    font-family: 'Arial'; 
+    font-size: 9pt; 
+    color: #284a6e; 
+    font-weight: bold; 
+    text-align: left;
+}
 
 #tokenform
 {
@@ -897,4 +934,24 @@ div.questionTitle{
 
 td.statsImageholder {
 	background-color:#EEEEEE;
+}
+
+.array-flexible-column col.even
+,.array-flexible-column th.even{
+    background-color: #AABBCC;
+}
+
+.array-flexible-column thead th{
+    font-weight:normal;
+}
+
+.array-flexible-column td{
+    text-align:center;
+}
+
+
+#limesurvey table.question tbody th.arraycaptionleft
+{
+    font-weight: bold;
+    text-align:right;
 }

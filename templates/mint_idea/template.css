@@ -719,17 +719,56 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	margin-bottom: 1em;
 }
 
-/* Jquery CSS
+  /* Jquery CSS
  */
 /** UI Base **/
-.ui-wrapper { border: 1px solid #50A029; }
-.ui-wrapper input, .ui-wrapper textarea { border: 0; }
+.ui-wrapper { 
+    border: 1px solid #50A029; 
+}
+.ui-wrapper input, .ui-wrapper textarea { 
+    border: 0; 
+}
 /** UI Slider **/
-.ui-slider-handle { position: absolute; height: 23px; width: 12px; top: 0px; left: 0px; background-image: url(../../images/slider-handle.gif);  }
-.ui-slider-disabled .ui-slider-handle { opacity: 0.5; filter: alpha(opacity=50); }
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #E8EAEB; font-weight: bold; text-align: left;}
+.ui-slider-handle { 
+    position: absolute; 
+    height: 23px; 
+    width: 12px !important; 
+    top: 0px; 
+    left: 0px; 
+}
+
+.ui-slider-1 { 
+    width: 200px; 
+    height: 9px; 
+    margin-bottom: 20px; 
+}
+
+
+.ui-widget-content { border: 1px solid #a6c9e2; background: #123 url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50% bottom repeat-x; color: #222222; }
+
+.ui-slider-2 { 
+    width: 200px; 
+    height: 23px; 
+    position: relative; 
+    background-image: url(../../images/slider-bg-2.png); 
+    background-repeat: no-repeat; 
+    background-position: center center; 
+}
+
+.slider_callout { 
+    height: 20px; 
+    width: 100px; 
+    overflow: hidden; 
+    position: absolute; 
+    top: -22px; 
+    margin-left:10px; 
+    font-family: 'Arial'; 
+    font-size: 10pt; 
+    color: #eeeeff; 
+    font-weight: bold; 
+    text-align: left;
+}
+
 
 #tokenform
 {

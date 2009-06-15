@@ -3260,6 +3260,13 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
 
+
+    $qattributes["other_numbers_only"]=array(
+    "types"=>"LMP",
+    "help"=>$clang->gT('Allow only numerical input for `Other` text'),
+    "caption"=>$clang->gT('Numbers only for `Other`'));
+
+
     $qattributes["random_order"]=array(
     "types"=>"!LMOPQKRWZFHABCE1:;",
     "help"=>$clang->gT('Present answers in random order'),

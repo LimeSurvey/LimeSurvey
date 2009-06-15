@@ -1613,12 +1613,10 @@ function do_list_radio($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
 	global $shownoanswer;
 
-	$qidattributes=getQuestionAttributes($ia[0]);
+	$qidattributes=getQAttributes($ia[0]);
 
-	if (isset($defexists))
-	{
-		unset ($defexists);
-	}
+	unset ($defexists);
+
 	$query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
 	$result = db_execute_assoc($query);  //Checked
 	while($row = $result->FetchRow())
@@ -1627,13 +1625,13 @@ function do_list_radio($ia)
 	}
 	
 	//question attribute random order set?
-	if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
+	if (isset($qidattributes['random_order']))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	
 	//question attribute alphasort set?
-	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+	elseif (isset($qidattributes['alphasort']))
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
 	}	
@@ -1647,18 +1645,19 @@ function do_list_radio($ia)
 	$ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />$ansquery<br />'.$connect->ErrorMsg());  //Checked
 	$anscount = $ansresult->RecordCount();
 
-	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
+    
+    if (isset($qidattributes['display_columns']))
 	{
-		$dcols = $displaycols['value'];
+		$dcols = $qidattributes['display_columns'];
 	}
 	else
 	{
 		$dcols= 1;
 	}
 
-	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
+    if (isset($qidattributes['other_replace_text']))
 	{
-		$othertext=$clang->gT($othertexts['value']);
+		$othertext=$clang->gT($qidattributes['other_replace_text']);
 	}
 	else
 	{
@@ -1688,11 +1687,11 @@ function do_list_radio($ia)
 		{
 			$check_ans = '';
 		}
-//		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
-// TIBO switch to the following line in order to reset the othercomment field when the other option is unselected
+        //		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+        // TIBO switch to the following line in order to reset the othercomment field when the other option is unselected
 		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
-'.$wrapper['item-end'];
+        '.$wrapper['item-end'];
 
 		++$rowcounter;
 		if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
@@ -1712,6 +1711,18 @@ function do_list_radio($ia)
 
 	if (isset($other) && $other=='Y')
 	{
+        
+        
+        if (isset($qidattributes['other_numbers_only']))
+        {
+                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+        }
+        else
+        {
+                $numbersonly = '';
+        }
+        
+        
 		if ($_SESSION[$ia[1]] == '-oth-')
 		{
 			$check_ans = CHECKED;
@@ -1731,12 +1742,12 @@ function do_list_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start-other'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
 		</label>
-'.$wrapper['item-end'];
+        '.$wrapper['item-end'];
 
 		$inputnames[]=$thisfieldname;
 
@@ -1769,7 +1780,7 @@ function do_list_radio($ia)
 
 		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
-'.$wrapper['item-end'];
+        '.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
 
 
@@ -1793,7 +1804,8 @@ function do_list_radio($ia)
 <input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
 	$checkotherscript = "";
-	if (isset($other) && $other == 'Y' && $other_comment_mandatory=arraySearchByKey('other_comment_mandatory', $qidattributes, 'attribute', 1))
+    
+	if (isset($other) && $other == 'Y' && isset($qidattributes['other_comment_mandatory']))
 	{
 		$checkotherscript = "<script type='text/javascript'>\n"
 			. "\t\t\t<!--\n"
@@ -2496,14 +2508,23 @@ function do_multiplechoice($ia)
 	{
 		$dcols = 1;
 	}
+    
+    if (arraySearchByKey('other_numbers_only', $qidattributes, 'attribute', 1))
+    {
+        $numbersonly = 'return goodchars(event,"0123456789.")';
+    }
+    else
+    {
+        $numbersonly = '';
+    }    
 
 	// Check if the max_answers attribute is set
 	$maxansw = 0;
 	$callmaxanswscriptcheckbox = '';
 	$callmaxanswscriptother = '';
-	$maxanswscript = '';
+	$maxanswscript = '';                                                    
 	if ($excludeothers=arraySearchByKey('exclude_all_others', $qidattributes, 'attribute', ''))
-	{
+	{          
 		foreach($excludeothers as $excludeother) {
 		$excludeallothers[]=$excludeother['value'];
 	}
@@ -2599,7 +2620,7 @@ function do_multiplechoice($ia)
 		{
 			$answer .= CHECKED;
 		}
-		// --> START NEW FEATURE - SAVE
+
 		$answer .= " onclick='cancelBubbleThis(event);";
 		if(in_array($ansrow['code'], $excludeallothers))
 		{
@@ -2688,7 +2709,7 @@ function do_multiplechoice($ia)
 		{
 			$answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
 		}
-		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;' ".$callmaxanswscriptother.' />
+		$answer .= " onkeypress='document.getElementById(\"answer{$myfname}cbox\").checked=true;$numbersonly' ".$callmaxanswscriptother.' />
 		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
 		if ($maxansw > 0)
@@ -2854,6 +2875,16 @@ function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+    
+    if (arraySearchByKey('other_numbers_only', $qidattributes, 'attribute', 1))
+    {
+        $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+    }
+    else
+    {
+        $numbersonly = '';
+    }        
+    
 	if ($othertexts=arraySearchByKey('other_replace_text', $qidattributes, 'attribute', 1))
 	{
 		$othertext=$clang->gT($othertexts['value']);
@@ -2975,7 +3006,7 @@ function do_multiplechoice_withcomments($ia)
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
 		$answer_main .= "\t<li class=\"other\">\n\t\t<span class=\"option\">\n"
-		. "\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t\t".$othertext.":\n\t\t\t\t<input class=\"text other\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		. "\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t\t".$othertext.":\n\t\t\t\t<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
@@ -2990,7 +3021,7 @@ function do_multiplechoice_withcomments($ia)
 
 		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer_main .= '"  onkeyup="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
+		$answer_main .= '" onkeyup="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
 
 		if ($maxansw > 0)
 		{
@@ -3116,12 +3147,10 @@ function do_multipleshorttext($ia)
 	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
 	{
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
-		$class_num_only = ' numbers-only';
 	}
 	else
 	{
 		$numbersonly = '';
-		$class_num_only = '';
 	}
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
@@ -4071,7 +4100,7 @@ function do_array_5point($ia)
 	}
 	$answer .= "\t</colgroup>\n\n"
 	. "\t<thead>\n\t\t<tr class=\"array1\">\n"
-	. "\t\t\t<td>&nbsp;</td>\n";
+	. "\t\t\t<th>&nbsp;</th>\n";
 	for ($xc=1; $xc<=5; $xc++)
 	{
 		$answer .= "\t\t\t<th>$xc</th>\n";
@@ -4247,7 +4276,7 @@ function do_array_10point($ia)
 	}
 	$answer .= "\t</colgroup>\n\n"
 	. "\t<thead>\n\t\t<tr class=\"array1\">\n"
-	. "\t\t\t<td>&nbsp;</td>\n";
+	. "\t\t\t<th>&nbsp;</th>\n";
 	for ($xc=1; $xc<=10; $xc++)
 	{
 		$answer .= "\t\t\t<th>$xc</th>\n";
@@ -5027,16 +5056,14 @@ function do_array_multitext($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 
-        if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
-        {
-                $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
-                $class_num_only = ' numbers-only';
-        }
-        else
-        {
-                $numbersonly = '';
-                $class_num_only = '';
-        }
+    if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
+    {
+            $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
+    }
+    else
+    {
+            $numbersonly = '';
+    }
 
 	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1))
 	{
@@ -5796,7 +5823,7 @@ function do_array_flexible_dual($ia)
 		
 
 		$myheader2 = "\n\t\t<tr class=\"array1\">\n"
-		. "\t\t\t<td>&nbsp;</td>\n\n";
+		. "\t\t\t<th>&nbsp;</th>\n\n";
 		$odd_even = '';
 		foreach ($labelans as $ld)
 		{
@@ -5844,7 +5871,7 @@ function do_array_flexible_dual($ia)
 		if ($leftheader != '' || $rightheader !='')
 		{
 			$myheader1 = "\t\t<tr class=\"array1 groups\">\n"
-			. "\t\t\t<td>&nbsp;</td>\n"
+			. "\t\t\t<th>&nbsp;</th>\n"
 			. "\t\t\t<th colspan=\"".count($labelans)."\" class=\"dsheader\">$leftheader</th>\n";
 
 			if (count($labelans1)>0)
@@ -5857,7 +5884,7 @@ function do_array_flexible_dual($ia)
 
 			if ($ia[6] != 'Y' && $shownoanswer == 1)
 			{
-				$myheader1 .= "\t\t\t<td>&nbsp;</td>\n";
+				$myheader1 .= "\t\t\t<th>&nbsp;</th>\n";
 			}
 			$myheader1 .= "\t\t</tr>\n";
 		}
@@ -5866,7 +5893,7 @@ function do_array_flexible_dual($ia)
 			$myheader1 = '';
 		}
 
-		$answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an duel array type question\">\n"
+		$answer .= "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an dual array type question\">\n"
 		. $mycolumns
 		. "\n\t<thead>\n"
 		. $myheader1
@@ -5882,14 +5909,14 @@ function do_array_flexible_dual($ia)
 				if ( ($anscount - $fn + 1) >= $minrepeatheadings )
 				{
 					$answer .= "\t\t\t\t<tr  class=\"repeat\">\n"
-					. "\t\t\t<td>&nbsp;</td>\n";
+					. "\t\t\t<th>&nbsp;</th>\n";
 					foreach ($labelans as $ld)
 					{
 						$answer .= "\t\t\t<th>".$ld."</td>\n";
 					}
 					if (count($labelans1)>0) // if second label set is used
 					{
-						$answer .= "<td>&nbsp;</td>\n";		// separator	
+						$answer .= "<th>&nbsp;</th>\n";		// separator	
 						foreach ($labelans1 as $ld)
 						{
 						$answer .= "\t\t\t<th>".$ld."</th>\n";

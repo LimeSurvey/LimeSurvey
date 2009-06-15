@@ -785,22 +785,28 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 }
 
 /************** Slider ********************/
-.ui-slider-handle { 
-    position: absolute; 
-    height: 23px; 
-    width: 12px; 
-    top: 0px; 
-    left: 0px; 
-    background-image: url(slider-handle.gif);  
-}
+
 
 .ui-slider-disabled .ui-slider-handle {
-    opacity: 0.5; filter: alpha(opacity=50); 
+    opacity: 0.5; 
+    filter: alpha(opacity=50); 
 }
 
-.ui-slider-1 { width: 200px; height: 23px; padding: 1px; position: relative; background-image: url(../../images/slider-bg-1.png); background-repeat: no-repeat; background-position: center center; }
-.ui-slider-2 { width: 200px; height: 23px; position: relative; background-image: url(../../images/slider-bg-2.png); background-repeat: no-repeat; background-position: center center; }
-.slider_callout { height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
+.ui-slider-1 { 
+    width: 200px; position: relative; height: 10px;
+}
+.slider_callout { 
+    height: 20px; 
+    width: 100px; 
+    overflow: hidden; 
+    position: absolute; 
+    top: -20px; 
+    margin-left:+15px; 
+    color: #284a6e; 
+    font-size: 0.75em; 
+    font-weight: bold; 
+    text-align: left;
+}
 
 div.privacynote {
     text-align:center;
