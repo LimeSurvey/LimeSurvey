@@ -838,7 +838,7 @@ function mandatory_message($ia)
 						}
 						else
 						{
-							$othertext=$clang->gT('Other');
+							$othertext=$clang->gT('Other:');
 						}
 						$qtitle .= "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
 					}
@@ -1171,7 +1171,7 @@ function do_list_dropdown($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
@@ -1661,7 +1661,7 @@ function do_list_radio($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
@@ -1851,7 +1851,7 @@ function do_list_flexible_radio($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
@@ -2497,7 +2497,7 @@ function do_multiplechoice($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
@@ -2703,7 +2703,7 @@ function do_multiplechoice($ia)
 			$answer .= CHECKED;
 		}
 		$answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
-		<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>
+		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
 		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
 		if (isset($_SESSION[$myfname]))
 		{
@@ -2891,7 +2891,7 @@ function do_multiplechoice_withcomments($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 	// Check if the max_answers attribute is set
 	$maxansw=0;
@@ -3006,7 +3006,7 @@ function do_multiplechoice_withcomments($ia)
 		$myfname2 = $myfname.'comment';
 		$anscount = $anscount + 2;
 		$answer_main .= "\t<li class=\"other\">\n\t\t<span class=\"option\">\n"
-		. "\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t\t".$othertext.":\n\t\t\t\t<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+		. "\t\t\t<label for=\"answer$myfname\" class=\"answertext\">\n\t\t\t\t".$othertext."\n\t\t\t\t<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
 		{
 			$answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';

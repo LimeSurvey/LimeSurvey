@@ -1574,7 +1574,7 @@ if ($subaction=='' ||
 	}
 	else
 	{ // no condition ==> disable delete all conditions button, and display a simple comment
-		$conditionsoutput .= "<tr><td valign='middle' align='center'>".$clang->gT("Always display this condition")."\n"
+		$conditionsoutput .= "<tr><td valign='middle' align='center'>".$clang->gT("This question is always shown.")."\n"
 			. "</td></tr>\n";
 	}
 	$conditionsoutput .= ""

@@ -123,7 +123,7 @@ if ($action == "copyquestion")
 		. "\t</tr>\n";
 
 		$editquestion .= "\t<tr id='OtherSelection' style='display: none'>\n"
-		. "\t\t<td><strong>".$clang->gT("Other:")."</strong></td>\n";
+		. "\t\t<td><strong>".$clang->gT("Option 'Other':")."</strong></td>\n";
 
 		$editquestion .= "\t\t<td>\n"
 		. "\t\t\t".$clang->gT("Yes")." <input type='radio' class='radiobtn' name='other' value='Y'";
@@ -409,7 +409,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 				. "\t\t</select></td>\n"
 				. "\t</tr>\n";
 			$editquestion .= "\t<tr id='OtherSelection'>\n"
-				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+				. "\t\t<td align='right'><strong>".$clang->gT("Option 'Other':")."</strong></td>\n";
 		}
 		else
 		{
@@ -423,7 +423,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 				. "\t\t</td>\n"
 				. "\t</tr>\n";
 			$editquestion .= "\t<tr id='OtherSelection'>\n"
-				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+				. "\t\t<td align='right'><strong>".$clang->gT("Option 'Other':")."</strong></td>\n";
 		}
   		
   		if ($activated != "Y")

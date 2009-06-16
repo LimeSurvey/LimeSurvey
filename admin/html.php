@@ -1482,7 +1482,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<tr>"
 			. "<td align='right' valign='top'><strong>"
-			. $clang->gT("Other:")."</strong></td>\n"
+			. $clang->gT("Option 'Other':")."</strong></td>\n"
 			. "<td align='left'>";
 			$questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
 			$questionsummary .= "</td></tr>\n";
