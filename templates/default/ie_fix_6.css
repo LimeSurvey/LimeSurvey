@@ -25,7 +25,7 @@
 
 
 .multiple-short-txt ul label {
-    margin-left: -1.8em;
+    margin-left: 0em;
     float:left;
     display: block;
     width: 40%;      
@@ -35,7 +35,7 @@
 
 .multiple-opt-comments ul li label{
     float: left;
-    width: 50%; 
+    width: 35%; 
     display:block; 
     margin:0;
     padding:0;    
@@ -44,7 +44,8 @@
 
 
 .multiple-opt-comments ul li span.comment{
-    float:right;
+    float:left;
+    width:40%;
     display:block;
     margin:0;
     padding:0; 

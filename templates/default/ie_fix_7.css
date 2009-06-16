@@ -24,7 +24,7 @@
 
 
 .multiple-short-txt ul label {
-    margin-left: -1.8em;
+    margin-left: 0em;
     float:left;
     display: block;
     width: 40%;      
@@ -34,7 +34,7 @@
 
 .multiple-opt-comments ul li label{
     float: left;
-    width: 50%; 
+    width: 35%; 
     display:block; 
     margin:0;
     padding:0;    
@@ -43,7 +43,8 @@
 
 
 .multiple-opt-comments ul li span.comment{
-    float:right;
+    float:left;
+    width:40%;
     display:block;
     margin:0;
     padding:0; 
@@ -66,8 +67,10 @@
     margin:0px 0px 0px 0px;
 }
 
-.choice-5-pt-radio ul {
-    margin-left:15px;
+.numeric-multi label {
+    width:400px;
+    text-align:right;
+    
 }
 .multiple-short-txt td.answer,
 .date td.answer,
@@ -77,6 +80,12 @@
 .choice-5-pt-radio td.answer,
 .gender td.answer {
     padding-bottom:10px;
+}
+
+.choice-5-pt-radio label
+{
+    margin:0 ;
+    padding:0;
 }
 
 .date button {
@@ -91,7 +100,7 @@ td.questionhelp {
 
 .numeric-multi ul li label {
     float: left;  
-    width: 50%;  
+    width: 60%;  
     text-align: right; 
 }
 

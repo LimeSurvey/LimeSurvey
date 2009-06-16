@@ -39,9 +39,14 @@ body.default {
     color:#1d2d45;
 }
 
-li {
-  list-style-type:disc;
+ul {
+  list-style:disc inside;
 }
+
+ol {
+  list-style:decimal inside;
+}
+
 
 h1 {
     font-size:1.5em;
@@ -68,11 +73,6 @@ h3 {
 a:link,a:visited {
     color:#819d26;
     text-decoration:none;
-}
-
-.questionhelp {
-    font-size:10px;
-    background-color:#eef6ff;
 }
 
 .success {
@@ -206,14 +206,36 @@ font-size:1em;
     font-family:verdana;
 }
 
-.questiontext {
+
+
+/* Basic formatting for the three keyparts of an question */
+td.questiontext {
     font-family:verdana;
     font-size:12px;
     font-weight:bold;
     background-color: #eef6ff;
     text-align: left;
-    padding:5px 10px;
+    padding:0.5em 1em;
 }
+
+td.answer {
+    padding:0.5em 1.5em;          
+}
+
+td.questionhelp {
+    font-size:10px;
+    background-color:#eef6ff;
+    padding-left:1em;
+}
+
+td.questionhelp img {
+  margin:4px;
+  padding-right:5px;
+  vertical-align:middle;
+  margin-left:0px;
+}
+
+/* End formatting for the three keyparts of an question */
 
 
 .error, .errormandatory, .warningjs {
@@ -288,30 +310,21 @@ table.question tr.array1:hover,table.question tr.array2:hover {
     padding-left: 0%;
 }
 
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
-,.multiple-opt li
-,.multiple-opt-comments li
-,.multiple-short-txt li
-,.numeric-multi li
-,.yes-no li
-,.gender li {
+ .choice-5-pt-radio .answer li
+,.list-radio-flexible .answer li
+,.list-radio .answer li
+,.list-with-comment .answer li
+,.multiple-opt .answer li
+,.multiple-opt-comments .answer li
+,.multiple-short-txt .answer li
+,.numeric-multi .answer li
+,.yes-no .answer li
+,.gender .answer li {
     list-style-type: none;
     text-align: left;
     margin: 0% 0% 0.5em 0.5em;
 }
- .choice-5-pt-radio li
-,.list-radio-flexible li
-,.list-radio li
-,.list-with-comment li
-,.yes-no li
-,.gender li
-{
-    margin-left: 2em;
-    text-indent: -2.1em;
-}
+
 /* END:  General list styles - - - -  - - -  - - - -
 - - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
 
@@ -325,18 +338,18 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ,.gender ul
 {
     text-align: left;
-	font-size: 80%;
-	margin-top: 0.5em;
-	margin-left: 0%;
-	padding-left: 0%;
+    font-size: 80%;
+    margin-top: 0.5em;
+    margin-left: 0%;
+    padding-left: 0%;
 }
  .choice-5-pt-radio ul li
 ,.yes-no ul li
 ,.gender ul li
 {
-	display: inline;
-	padding: 0% 2em 0% 0%;
-	margin-left: 0%;
+    display: inline;
+    padding: 0% 2em 0% 0%;
+    margin-left: 0%;
 }
 
 /* STYLES NOT YET DEFINED - - - - -
@@ -357,19 +370,19 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 .numeric p.question
 {
-	font-size: 80%;
+    font-size: 80%;
     margin-left: 1em;
 }
 .numeric-multi ul
 {
-	font-size: 80%;
+    font-size: 80%;
 }
 
  .numeric-multi span
 ,.multiple-short-txt .question .answer ul li span
 {
-	font-size: 90%;
-/*	font-style: italic;*/
+    font-size: 90%;
+/*    font-style: italic;*/
 }
  .numeric-multi p.tip.problem {
     color: #f30;
@@ -378,7 +391,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 
 .numeric-multi input.tip.problem {
     background-color: #f30;
-    border: 1px solid #7F9DB9;     
+    border: 2px solid #7F9DB9;     
     font-weight: bold;
     color:#fff;
 }
@@ -392,7 +405,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 
 .numeric-multi input.tip.good {
     background-color: #090;
-    border: 1px solid #7F9DB9;     
+    border: 2px solid #7F9DB9;     
     font-weight: bold;
     color:#fff;    
 }
@@ -478,88 +491,90 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .language {}
 
 /* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
- .multiple-opt-comments td.answer
-,.multiple-short-txt td.answer
-,.numeric-multi td.answer
-{
-}
+
  .multiple-opt-comments ul
 ,.multiple-short-txt ul
-,.numeric-multi ul
-{
-	display: table;
-	padding: 0%;
-	margin: 1em;
+,.numeric-multi ul {
+    display: table;
+    padding: 0%;
+    margin: 1em;
 }
-.numeric-multi ul	{	margin: 0% 1em 1.5em 1em;	}
+
+.numeric-multi .answer ul {    
+    margin: 0% 1em 1.5em 1em;    
+}
+
+
+.numeric-multi .answer ul input {
+     width:5em;
+     padding:0px;
+}
 
 .numeric-multi ul.computed
 {
-	float:left;
-	padding-right: 2em;
+    float:left;
+    padding-right: 2em;
 }
 .numeric-multi ul.slider.computed
 {
-	width: 22em;
+    width: 22em;
 }
  .multiple-opt-comments ul li
 ,.multiple-short-txt ul li
 ,.numeric-multi ul li
 {
-	display: table-row;
+    display: table-row;
 }
 .multiple-opt-comments ul li span.option
 {
-	padding: 0.3em 1em 0% 2em;
-    text-indent: -2em;
-	display: table-cell;
-	vertical-align: baseline;
+    display: table-cell;
+    vertical-align: baseline;
 }
 .multiple-short-txt ul li label,
 .numeric-multi ul li label
 {
-	padding: 0.3em 1em 0% 0%;
-	display: table-cell;
-	vertical-align: baseline;
+    padding: 0.3em 1em 0% 0%;
+    display: table-cell;
+    vertical-align: baseline;
 }
 .numeric-multi ul.computed li label,
 .numeric-multi ul.slider.computed li label
 {
-	padding-right: 0%;
+    padding-right: 0%;
 }
 
 .multiple-opt-comments ul li span.comment
 ,.multiple-short-txt ul li span
 ,.numeric-multi ul li span
 {
-	padding: 0.3em 0% 0% 1em;
-	display: table-cell;
-	vertical-align: baseline;
-	white-space: nowrap;
+    padding: 0.3em 0% 0% 1em;
+    display: table-cell;
+    vertical-align: baseline;
+    white-space: nowrap;
 }
 .multiple-opt-comments ul li span
 {
-	padding: 0.3em 1em 0% 0%;
+    padding: 0.3em 1em 0% 0%;
 }
 .numeric-multi div.multinum-slider
 {
     margin-top: 1.5em;
-	width: 20em;
+    width: 20em;
 }
 
-.numeric-multi ul.multiplenumerichelp.slider	{	display: table;	}
-.numeric-multi ul.multiplenumerichelp.slider li	{	display: table-row;	}
+.numeric-multi ul.multiplenumerichelp.slider    {    display: table;    }
+.numeric-multi ul.multiplenumerichelp.slider li    {    display: table-row;    }
 
 .numeric-multi ul.multiplenumerichelp li label
 ,.numeric-multi ul.multiplenumerichelp.slider li label
 {
-	padding: 0.3em 0% 0% 0%;
-	display: table-cell;
+    padding: 0.3em 0% 0% 0%;
+    display: table-cell;
 }
 .numeric-multi ul.multiplenumerichelp li span
 ,.numeric-multi ul.multiplenumerichelp.slider li span {
-	padding: 0% 0% 0% 0.3em;
-	display: table-cell;
+    padding: 0% 0% 0% 0.3em;
+    display: table-cell;
 }
 
 .numeric-multi li.multiplenumerichelp span input {
@@ -776,16 +791,9 @@ p.tip {
  margin-bottom:10px;
 }
 
-td.answer ul {
- padding-left:13px;
- margin-top:10px;
-}
-
-
 td.answer li label,
 td.answer li input  {
  vertical-align:middle;
- margin-left:3px;
 }
 
 .rank input {
@@ -801,16 +809,7 @@ td.rank label, td.rank td strong {
  font-weight:bold;
 }
 
-.questionhelp img {
-  margin:4px;
-  padding-right:5px;
-  vertical-align:middle;
-  margin-left:0px;
-}
 
-td.questionhelp {
-padding-left:5px;
-}   
 
 .list-dropdown select {
   margin-left:10px;
@@ -820,9 +819,6 @@ padding-left:5px;
   margin-bottom:10px;
 }
 
-.list-radio ul {
-  margin-left:5px;
-}
 
 .text-long textarea, .text-huge textarea {
     margin-top: 10px;
@@ -892,12 +888,6 @@ div#wrapper {
  margin-bottom:1em;
 }
 
-.questiontext li, .questionhelp li {
-  list-style-type:disc;
-  text-indent: 0;
-}
-
-.yes-no td.answer
-{
+.yes-no td.answer {
     padding-bottom:10px;
 }
