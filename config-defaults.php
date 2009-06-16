@@ -337,7 +337,7 @@ $column_style = 'ul';
 $max_columns = 8;
 
 /**
- * befaore 1.85RC3, the group description of a group of questions with all questions
+ * before 1.85RC3, the group description of a group of questions with all questions
  * hidden by conditions was displayed in all-in-one survey mode.
  * Since 1.85RC3, the global parameter 'hide_groupdescr_allinone' can be set to control
  * if the group description should be hidden in this case.
