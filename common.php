@@ -1633,19 +1633,18 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
 	}
 }
 
-
-function fixsortorderQuestions($qid,$gid=0) //Function rewrites the sortorder for questions
+/**
+* This function rewrites the sortorder for questions inside the named group
+* 
+* @param integer $groupid the group id
+* @param integer $surveyid the survey id
+*/
+function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
-	global $dbprefix, $connect, $surveyid;
-    $qid=sanitize_int($qid);
-    $gid=sanitize_int($gid);
+	global $connect;
+    $gid = sanitize_int($groupid);
+    $surveyid = sanitize_int($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
-	if ($gid == 0)
-    {
-    	$result = db_execute_assoc("SELECT gid FROM ".db_table_name('questions')." WHERE qid='{$qid}' and language='{$baselang}'");  //Checked
-    	$row=$result->FetchRow();
-    	$gid=$row['gid'];
-    }
 	$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");      //Checked    
 	$position=0;
 	while ($cdrow=$cdresult->FetchRow())

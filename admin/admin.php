@@ -80,8 +80,8 @@ if ( $action == 'FakeGET')
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-  if ($action == 'delsurvey'         || $action == 'delgroup'       || $action == 'delgroupall'       ||
-      $action == 'delquestion'       || $action == 'delquestionall' || $action == 'insertnewsurvey'   ||
+  if ($action == 'delsurvey'         || $action == 'delgroup'       || 
+      $action == 'delquestion'       || $action == 'insertnewsurvey'||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
       $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||

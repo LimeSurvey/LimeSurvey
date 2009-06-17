@@ -1716,7 +1716,7 @@ class LsrcHelper {
 		   $gres = db_execute_assoc($gquery);
 		   while ($grow = $gres->FetchRow()) 
 		        {
-		     	   //fixsortorderQuestions(0,$grow['gid']); //XXX changed: commented out
+		     	   //fixsortorderQuestions($grow['gid'], $surveyid); //XXX changed: commented out
 		     	   // and fully written out:
 		        	$qid=sanitize_int(0);
 				    $gid=sanitize_int($grow['gid']);
@@ -3128,7 +3128,7 @@ class LsrcHelper {
 		   $gres = db_execute_assoc($gquery);
 		   while ($grow = $gres->FetchRow()) 
 		        {
-		        	//fixsortorderQuestions(0,$grow['gid']);
+		        	//fixsortorderQuestions($grow['gid'], $surveyid);
 		        	$qid=sanitize_int(0);
 				    $gid=sanitize_int($grow['gid']);
 					$baselang = GetBaseLanguageFromSurveyID($surveyid);

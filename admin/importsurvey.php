@@ -1043,7 +1043,7 @@ if (isset($grouparray) && $grouparray) {
    $gres = db_execute_assoc($gquery);
    while ($grow = $gres->FetchRow()) 
         {
-        fixsortorderQuestions(0,$grow['gid']);
+        fixsortorderQuestions($grow['gid'], $surveyid);
         }
 
         //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents

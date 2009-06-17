@@ -44,6 +44,13 @@ function db_rename_table($oldtable, $newtable)
 * Gets the maximum question_order field value for a group
 * @gid: The id of the group
 */
+
+/**
+* Gets the maximum question_order field value for a group   
+* 
+* @param mixed $gid
+* @return mixed
+*/
 function get_max_question_order($gid)
 {
 	global $connect ;
@@ -367,7 +374,8 @@ if(isset($surveyid))
 					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
 				$result = $connect->Execute($query);
 			}
-		}
+            fixsortorderQuestions($postgid, $surveyid);
+ 		}
 	}
 	elseif ($action == "renumberquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
@@ -561,8 +569,8 @@ if(isset($surveyid))
 					// if the group has changed then fix the sortorder of old and new group
 					if ($oldgid!=$postgid) 
 	                		{
-	                    			fixsortorderQuestions(0,$oldgid);
-	                    			fixsortorderQuestions(0,$postgid);
+	                    			fixsortorderQuestions($oldgid, $surveyid);
+	                    			fixsortorderQuestions($postgid, $surveyid);
 
 						// If some questions have conditions set on this question's answers
 						// then change the cfieldname accordingly
@@ -742,6 +750,7 @@ if(isset($surveyid))
 					$ir1 = $connect->Execute($i1);
 				} // while
 			}
+            fixsortorderQuestions($postgid, $surveyid);
 		}
 	}
 	elseif ($action == "delquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -771,7 +780,7 @@ if(isset($surveyid))
 			$cresult = $connect->Execute($cquery);
 			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 			$result = $connect->Execute($query);
-			fixsortorderQuestions(0,$gid);
+			fixsortorderQuestions($gid, $surveyid);
 			if ($result)
 			{
 				$qid="";
@@ -785,43 +794,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "delquestionall" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
-	{
-		if (!isset($qid)) {$qid=returnglobal('qid');}
-		//check if any other questions have conditions which rely on this question. Don't delete if there are.
-		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
-		$ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg());
-		$cccount=$ccresult->RecordCount();
-		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-		if ($cccount) //there are conditions dependant on this question
-		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
-		}
-		else
-		{
-			//First delete all the answers
-			if (!isset($total)) {$total=0;}
-			$query = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-			$query = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-		}
-		if ($total==3)
-		{
-			$qid="";
-			$postqid="";
-			$_GET['qid']="";
-		}
-		else
-		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
-		}
-	}
-
-	elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
+    elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 
         if (isset($_POST['sortorder'])) 
