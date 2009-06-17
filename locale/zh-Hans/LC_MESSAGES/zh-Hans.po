@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-simplified language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 14:29+0800\n"
-"PO-Revision-Date: 2009-06-15 14:31+0800\n"
-"Last-Translator: yooyooh <yooyooh@gmail.com>\n"
+"POT-Creation-Date: 2009-06-18 03:18+0800\n"
+"PO-Revision-Date: 2009-06-18 03:20+0800\n"
+"Last-Translator: yooyooh <yooyoog@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,10 +149,10 @@ msgstr "非活动的"
 #: d:\web\lime/common.php:1289
 #: d:\web\lime/common.php:1314
 #: d:\web\lime/common.php:1381
-#: d:\web\lime/common.php:4170
-#: d:\web\lime/common.php:4204
-#: d:\web\lime/common.php:4243
-#: d:\web\lime/common.php:4279
+#: d:\web\lime/common.php:4176
+#: d:\web\lime/common.php:4210
+#: d:\web\lime/common.php:4249
+#: d:\web\lime/common.php:4285
 msgid "Please Choose..."
 msgstr "请选择..."
 
@@ -160,8 +160,8 @@ msgstr "请选择..."
 #: d:\web\lime/common.php:1290
 #: d:\web\lime/common.php:1315
 #: d:\web\lime/common.php:1382
-#: d:\web\lime/common.php:4205
-#: d:\web\lime/common.php:4244
+#: d:\web\lime/common.php:4211
+#: d:\web\lime/common.php:4250
 msgid "None"
 msgstr "无"
 
@@ -298,122 +298,116 @@ msgstr "带有结果码的详细邮件通知"
 msgid "Cannot be modified (Survey is active)"
 msgstr "无法修改（调查已启用）"
 
-#: d:\web\lime/common.php:1733
+#: d:\web\lime/common.php:1732
 msgid "Return to Survey Administration"
 msgstr "返回调查管理"
 
-#: d:\web\lime/common.php:1739
+#: d:\web\lime/common.php:1738
 msgid "Show summary information"
 msgstr "显示摘要信息"
 
-#: d:\web\lime/common.php:1745
-#: d:\web\lime/common.php:1752
+#: d:\web\lime/common.php:1744
+#: d:\web\lime/common.php:1751
 msgid "Display Responses"
 msgstr "显示调查结果"
 
-#: d:\web\lime/common.php:1761
-#: d:\web\lime/common.php:5467
+#: d:\web\lime/common.php:1760
+#: d:\web\lime/common.php:5473
 msgid "Please select a language:"
 msgstr "请选择语言："
 
-#: d:\web\lime/common.php:1766
-#: d:\web\lime/common.php:5483
+#: d:\web\lime/common.php:1765
+#: d:\web\lime/common.php:5489
 msgid "Cancel"
 msgstr "取消"
 
-#: d:\web\lime/common.php:1776
+#: d:\web\lime/common.php:1775
 msgid "Display Last 50 Responses"
 msgstr "显示最近50个调查结果"
 
-#: d:\web\lime/common.php:1780
+#: d:\web\lime/common.php:1779
 msgid "Dataentry Screen for Survey"
 msgstr "调查数据录入界面"
 
-#: d:\web\lime/common.php:1784
+#: d:\web\lime/common.php:1783
 msgid "Get statistics from these responses"
 msgstr "根据调查结果得出统计资料"
 
-#: d:\web\lime/common.php:1791
+#: d:\web\lime/common.php:1790
 msgid "Export Results to Application"
 msgstr "把结果导出到应用程序"
 
-#: d:\web\lime/common.php:1796
+#: d:\web\lime/common.php:1795
 msgid "Export results to a SPSS/PASW command file"
 msgstr "导出结果为SPSS/PASW命令文件"
 
-#: d:\web\lime/common.php:1798
+#: d:\web\lime/common.php:1797
 msgid "Export result to a SPSS/PASW command file"
 msgstr "导出结果为SPSS/PASW命令文件"
 
-#: d:\web\lime/common.php:1801
-#: d:\web\lime/common.php:1803
+#: d:\web\lime/common.php:1800
+#: d:\web\lime/common.php:1802
 msgid "Export results to a R data file"
 msgstr "导出结果为R数据文件"
 
-#: d:\web\lime/common.php:1807
+#: d:\web\lime/common.php:1806
 msgid "Import answers from a deactivated survey table"
 msgstr "从一个停用的调查表中导入答案"
 
-#: d:\web\lime/common.php:1812
+#: d:\web\lime/common.php:1811
 msgid "View Saved but not submitted Responses"
 msgstr "观点已保存，但未提交答案"
 
-#: d:\web\lime/common.php:1816
+#: d:\web\lime/common.php:1815
 msgid "Import a VV survey file"
 msgstr "导入VV调查文件"
 
-#: d:\web\lime/common.php:1822
+#: d:\web\lime/common.php:1821
 msgid "Export a VV survey file"
 msgstr "导出VV调查文件"
 
-#: d:\web\lime/common.php:1837
+#: d:\web\lime/common.php:1836
 msgid "Iterate survey"
 msgstr "迭代调查"
 
-#: d:\web\lime/common.php:1907
+#: d:\web\lime/common.php:1906
 msgid "Preset"
 msgstr "预置"
 
-#: d:\web\lime/common.php:1908
+#: d:\web\lime/common.php:1907
 #: d:\web\lime/index.php:1766
 #: d:\web\lime/index.php:1911
 msgid "Token"
 msgstr "操作代码"
 
-#: d:\web\lime/common.php:1909
+#: d:\web\lime/common.php:1908
 msgid "Date Last Action"
 msgstr "上次操作时间"
 
-#: d:\web\lime/common.php:1910
+#: d:\web\lime/common.php:1909
 msgid "Date Started"
 msgstr "开始时间"
 
-#: d:\web\lime/common.php:1911
+#: d:\web\lime/common.php:1910
 #: d:\web\lime/printanswers.php:178
 msgid "IP Address"
 msgstr "IP 地址"
 
-#: d:\web\lime/common.php:1912
+#: d:\web\lime/common.php:1911
 #: d:\web\lime/printanswers.php:182
 msgid "Referring URL"
 msgstr "参照URL"
 
-#: d:\web\lime/common.php:1960
-#: d:\web\lime/common.php:2078
-#: d:\web\lime/common.php:2134
-#: d:\web\lime/common.php:2311
-#: d:\web\lime/common.php:2425
-#: d:\web\lime/common.php:2435
-#: d:\web\lime/qanda.php:841
-#: d:\web\lime/qanda.php:1174
+#: d:\web\lime/common.php:1959
+#: d:\web\lime/common.php:2077
+#: d:\web\lime/common.php:2133
+#: d:\web\lime/common.php:2310
+#: d:\web\lime/common.php:2424
+#: d:\web\lime/common.php:2434
 #: d:\web\lime/qanda.php:1439
-#: d:\web\lime/qanda.php:1665
-#: d:\web\lime/qanda.php:1737
-#: d:\web\lime/qanda.php:1842
-#: d:\web\lime/qanda.php:1960
-#: d:\web\lime/qanda.php:2488
-#: d:\web\lime/qanda.php:2863
-#: d:\web\lime/qanda.php:2978
+#: d:\web\lime/qanda.php:1748
+#: d:\web\lime/qanda.php:1972
+#: d:\web\lime/qanda.php:3009
 #: d:\web\lime/statistics_user.php:742
 #: d:\web\lime/statistics_user.php:1402
 #: d:\web\lime/statistics_user.php:1491
@@ -421,58 +415,58 @@ msgstr "参照URL"
 msgid "Other"
 msgstr "其它"
 
-#: d:\web\lime/common.php:2086
-#: d:\web\lime/common.php:2092
-#: d:\web\lime/common.php:2108
-#: d:\web\lime/qanda.php:3882
-#: d:\web\lime/qanda.php:4394
-#: d:\web\lime/qanda.php:4452
+#: d:\web\lime/common.php:2085
+#: d:\web\lime/common.php:2091
+#: d:\web\lime/common.php:2107
+#: d:\web\lime/qanda.php:3911
+#: d:\web\lime/qanda.php:4423
+#: d:\web\lime/qanda.php:4481
 #: d:\web\lime/statistics_user.php:1246
 #: d:\web\lime/statistics_user.php:1371
 msgid "Yes"
 msgstr "是"
 
-#: d:\web\lime/common.php:2093
-#: d:\web\lime/common.php:2109
-#: d:\web\lime/qanda.php:3891
-#: d:\web\lime/qanda.php:4396
-#: d:\web\lime/qanda.php:4470
+#: d:\web\lime/common.php:2092
+#: d:\web\lime/common.php:2108
+#: d:\web\lime/qanda.php:3920
+#: d:\web\lime/qanda.php:4425
+#: d:\web\lime/qanda.php:4499
 #: d:\web\lime/statistics_user.php:1247
 #: d:\web\lime/statistics_user.php:1372
 msgid "No"
 msgstr "否"
 
-#: d:\web\lime/common.php:2094
-#: d:\web\lime/common.php:2102
-#: d:\web\lime/common.php:5101
-#: d:\web\lime/common.php:5106
+#: d:\web\lime/common.php:2093
+#: d:\web\lime/common.php:2101
+#: d:\web\lime/common.php:5107
+#: d:\web\lime/common.php:5112
 #: d:\web\lime/qanda.php:956
 #: d:\web\lime/qanda.php:1326
 #: d:\web\lime/qanda.php:1514
-#: d:\web\lime/qanda.php:1771
-#: d:\web\lime/qanda.php:1994
-#: d:\web\lime/qanda.php:2129
-#: d:\web\lime/qanda.php:2196
-#: d:\web\lime/qanda.php:3902
-#: d:\web\lime/qanda.php:3984
-#: d:\web\lime/qanda.php:4082
-#: d:\web\lime/qanda.php:4171
-#: d:\web\lime/qanda.php:4257
-#: d:\web\lime/qanda.php:4325
-#: d:\web\lime/qanda.php:4399
-#: d:\web\lime/qanda.php:4490
-#: d:\web\lime/qanda.php:4682
-#: d:\web\lime/qanda.php:4766
-#: d:\web\lime/qanda.php:4856
-#: d:\web\lime/qanda.php:4876
-#: d:\web\lime/qanda.php:4962
-#: d:\web\lime/qanda.php:5546
-#: d:\web\lime/qanda.php:5547
-#: d:\web\lime/qanda.php:5833
-#: d:\web\lime/qanda.php:5901
-#: d:\web\lime/qanda.php:6023
-#: d:\web\lime/qanda.php:6258
-#: d:\web\lime/qanda.php:6312
+#: d:\web\lime/qanda.php:1782
+#: d:\web\lime/qanda.php:2006
+#: d:\web\lime/qanda.php:2141
+#: d:\web\lime/qanda.php:2208
+#: d:\web\lime/qanda.php:3931
+#: d:\web\lime/qanda.php:4013
+#: d:\web\lime/qanda.php:4111
+#: d:\web\lime/qanda.php:4200
+#: d:\web\lime/qanda.php:4286
+#: d:\web\lime/qanda.php:4354
+#: d:\web\lime/qanda.php:4428
+#: d:\web\lime/qanda.php:4519
+#: d:\web\lime/qanda.php:4711
+#: d:\web\lime/qanda.php:4795
+#: d:\web\lime/qanda.php:4885
+#: d:\web\lime/qanda.php:4905
+#: d:\web\lime/qanda.php:4991
+#: d:\web\lime/qanda.php:5573
+#: d:\web\lime/qanda.php:5574
+#: d:\web\lime/qanda.php:5860
+#: d:\web\lime/qanda.php:5928
+#: d:\web\lime/qanda.php:6050
+#: d:\web\lime/qanda.php:6285
+#: d:\web\lime/qanda.php:6339
 #: d:\web\lime/statistics_user.php:1498
 #: d:\web\lime/statistics_user.php:1587
 #: d:\web\lime/statistics_user.php:1871
@@ -483,646 +477,654 @@ msgstr "否"
 msgid "No answer"
 msgstr "拒答"
 
-#: d:\web\lime/common.php:2100
-#: d:\web\lime/qanda.php:3959
+#: d:\web\lime/common.php:2099
+#: d:\web\lime/qanda.php:3988
 #: d:\web\lime/statistics_user.php:1365
 msgid "Male"
 msgstr "男"
 
-#: d:\web\lime/common.php:2101
-#: d:\web\lime/qanda.php:3940
+#: d:\web\lime/common.php:2100
+#: d:\web\lime/qanda.php:3969
 #: d:\web\lime/statistics_user.php:1364
 msgid "Female"
 msgstr "女"
 
-#: d:\web\lime/common.php:2110
-#: d:\web\lime/qanda.php:4395
-#: d:\web\lime/qanda.php:4460
+#: d:\web\lime/common.php:2109
+#: d:\web\lime/qanda.php:4424
+#: d:\web\lime/qanda.php:4489
 #: d:\web\lime/statistics_user.php:1248
 msgid "Uncertain"
 msgstr "不确定"
 
-#: d:\web\lime/common.php:2116
-#: d:\web\lime/qanda.php:4677
-#: d:\web\lime/qanda.php:4725
+#: d:\web\lime/common.php:2115
+#: d:\web\lime/qanda.php:4706
+#: d:\web\lime/qanda.php:4754
 #: d:\web\lime/statistics_user.php:1265
 msgid "Increase"
 msgstr "增加"
 
-#: d:\web\lime/common.php:2117
-#: d:\web\lime/qanda.php:4679
-#: d:\web\lime/qanda.php:4748
+#: d:\web\lime/common.php:2116
+#: d:\web\lime/qanda.php:4708
+#: d:\web\lime/qanda.php:4777
 #: d:\web\lime/statistics_user.php:1267
 msgid "Decrease"
 msgstr "减少"
 
-#: d:\web\lime/common.php:2118
-#: d:\web\lime/qanda.php:4678
-#: d:\web\lime/qanda.php:4736
+#: d:\web\lime/common.php:2117
+#: d:\web\lime/qanda.php:4707
+#: d:\web\lime/qanda.php:4765
 #: d:\web\lime/statistics_user.php:1266
 msgid "Same"
 msgstr "相同"
 
-#: d:\web\lime/common.php:2328
+#: d:\web\lime/common.php:2327
 msgid "Comment"
 msgstr "评论"
 
-#: d:\web\lime/common.php:2612
+#: d:\web\lime/common.php:2611
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "注意：您的浏览器已禁用JavaScript。您可能无法回答问卷中所有的问题。请核实浏览器参数。"
 
-#: d:\web\lime/common.php:2627
+#: d:\web\lime/common.php:2626
 msgid "There are no questions in this survey"
 msgstr "本调查没有问题"
 
-#: d:\web\lime/common.php:2631
+#: d:\web\lime/common.php:2630
 msgid "There is 1 question in this survey"
 msgstr "本调查有一个问题"
 
-#: d:\web\lime/common.php:2635
+#: d:\web\lime/common.php:2634
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "本调查包括{NUMBEROFQUESTIONS}个问题。"
 
-#: d:\web\lime/common.php:2658
+#: d:\web\lime/common.php:2657
 #: d:\web\lime/index.php:2411
 msgid "Submit"
 msgstr "提交 "
 
-#: d:\web\lime/common.php:2684
+#: d:\web\lime/common.php:2683
 msgid "A Note On Privacy"
 msgstr "隐私注解"
 
-#: d:\web\lime/common.php:2684
+#: d:\web\lime/common.php:2683
 msgid "This survey is anonymous."
 msgstr "本调查采取匿名方式。"
 
-#: d:\web\lime/common.php:2684
+#: d:\web\lime/common.php:2683
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "保存您问卷答案的记录不会包含任何关于您的识别信息，除非问卷中有特定问题涉及。如果您参与的调查需要使用识别操作码访问，您可以完全放心，该识别操作码不会和您的答案保存在一起。它通过单独的数据库来管理，只是用来识别你是否完成了这个调查。匹配调查的问卷答案和识别操作码是不可能的事情。"
 
-#: d:\web\lime/common.php:2694
+#: d:\web\lime/common.php:2693
 msgid "Are you sure you want to clear all your responses?"
 msgstr "您确定要清除所有答案吗？"
 
-#: d:\web\lime/common.php:2695
+#: d:\web\lime/common.php:2694
 msgid "Exit and Clear Survey"
 msgstr "退出并清除调查"
 
-#: d:\web\lime/common.php:2719
-#: d:\web\lime/common.php:2725
+#: d:\web\lime/common.php:2718
+#: d:\web\lime/common.php:2724
 #: d:\web\lime/index.php:557
 #: d:\web\lime/index.php:561
 msgid "Load Unfinished Survey"
 msgstr "加载未完成调查"
 
-#: d:\web\lime/common.php:2720
-#: d:\web\lime/common.php:2733
+#: d:\web\lime/common.php:2719
+#: d:\web\lime/common.php:2732
 msgid "Resume Later"
 msgstr "稍后继续"
 
-#: d:\web\lime/common.php:2795
+#: d:\web\lime/common.php:2794
 msgid "Thank You!"
 msgstr "谢谢您！"
 
-#: d:\web\lime/common.php:2795
+#: d:\web\lime/common.php:2794
 msgid "You have completed answering the questions in this survey."
 msgstr "您已经完成了本次调查的全部问题。"
 
-#: d:\web\lime/common.php:2795
+#: d:\web\lime/common.php:2794
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "现在点击“提交”完成这一过程，并保存您的回答。"
 
-#: d:\web\lime/common.php:2801
+#: d:\web\lime/common.php:2800
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "如果您想检查或修改答案，您可以通过点击 [<< prev]按钮浏览并实现。"
 
-#: d:\web\lime/common.php:2830
+#: d:\web\lime/common.php:2829
 msgid "Answers Cleared"
 msgstr "答案已清除"
 
-#: d:\web\lime/common.php:2837
-#: d:\web\lime/common.php:2845
+#: d:\web\lime/common.php:2836
+#: d:\web\lime/common.php:2844
 msgid "Restart this Survey"
 msgstr "重新开始本次调查"
 
-#: d:\web\lime/common.php:2848
+#: d:\web\lime/common.php:2847
 #: d:\web\lime/index.php:594
 #: d:\web\lime/index.php:620
 #: d:\web\lime/register.php:154
 msgid "Close this Window"
 msgstr "关闭窗口"
 
-#: d:\web\lime/common.php:2850
+#: d:\web\lime/common.php:2849
 msgid "Save Your Unfinished Survey"
 msgstr "保存您未完成的调查"
 
-#: d:\web\lime/common.php:2851
+#: d:\web\lime/common.php:2850
 msgid "Enter a name and password for this survey and click save below."
 msgstr "为本次调查输入一个用户名和密码并点击下面的保存。"
 
-#: d:\web\lime/common.php:2851
+#: d:\web\lime/common.php:2850
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "您的调查将使用该名字和密码保存，以后您可利用它们继续登录并完成调查。"
 
-#: d:\web\lime/common.php:2851
+#: d:\web\lime/common.php:2850
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "如果您提供了邮件地址，您就会收到一封包含详细资料的邮件。"
 
-#: d:\web\lime/common.php:2859
+#: d:\web\lime/common.php:2858
 msgid "Return To Survey"
 msgstr "返回调查"
 
-#: d:\web\lime/common.php:2864
+#: d:\web\lime/common.php:2863
 #: d:\web\lime/save.php:322
 msgid "Name"
 msgstr "名字"
 
-#: d:\web\lime/common.php:2867
-#: d:\web\lime/common.php:2893
+#: d:\web\lime/common.php:2866
+#: d:\web\lime/common.php:2892
 #: d:\web\lime/save.php:323
 msgid "Password"
 msgstr "密码"
 
-#: d:\web\lime/common.php:2870
+#: d:\web\lime/common.php:2869
 msgid "Repeat Password"
 msgstr "重复密码"
 
-#: d:\web\lime/common.php:2873
+#: d:\web\lime/common.php:2872
 msgid "Your Email"
 msgstr "您的邮件"
 
-#: d:\web\lime/common.php:2878
-#: d:\web\lime/common.php:2898
-#: d:\web\lime/common.php:2949
+#: d:\web\lime/common.php:2877
+#: d:\web\lime/common.php:2897
+#: d:\web\lime/common.php:2948
 #: d:\web\lime/index.php:1786
 #: d:\web\lime/index.php:1938
 msgid "Security Question"
 msgstr "安全问题"
 
-#: d:\web\lime/common.php:2881
+#: d:\web\lime/common.php:2880
 msgid "Save Now"
 msgstr "现在保存"
 
-#: d:\web\lime/common.php:2886
+#: d:\web\lime/common.php:2885
 msgid "Load A Previously Saved Survey"
 msgstr "加载以前保存的调查"
 
-#: d:\web\lime/common.php:2887
+#: d:\web\lime/common.php:2886
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "您可以在此界面加载以前保存的调查。"
 
-#: d:\web\lime/common.php:2887
+#: d:\web\lime/common.php:2886
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "输入您用来保存调查的用户名和密码。"
 
-#: d:\web\lime/common.php:2890
+#: d:\web\lime/common.php:2889
 msgid "Saved name"
 msgstr "保存的名称"
 
-#: d:\web\lime/common.php:2903
+#: d:\web\lime/common.php:2902
 msgid "Load Now"
 msgstr "现在加载"
 
-#: d:\web\lime/common.php:2908
+#: d:\web\lime/common.php:2907
 msgid "You must be registered to complete this survey"
 msgstr "您必须注册才能完成此调查"
 
-#: d:\web\lime/common.php:2909
+#: d:\web\lime/common.php:2908
 msgid "You may register for this survey if you wish to take part."
 msgstr "如果您想参与调查，请先注册。"
 
-#: d:\web\lime/common.php:2909
+#: d:\web\lime/common.php:2908
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "在下面填写您的详细资料，然后一封包含参与该调查的链接的邮件会立刻发送。"
 
-#: d:\web\lime/common.php:2916
-#: d:\web\lime/common.php:6053
+#: d:\web\lime/common.php:2915
+#: d:\web\lime/common.php:6059
 msgid "First Name"
 msgstr "名"
 
-#: d:\web\lime/common.php:2923
-#: d:\web\lime/common.php:6054
+#: d:\web\lime/common.php:2922
+#: d:\web\lime/common.php:6060
 msgid "Last Name"
 msgstr "姓"
 
-#: d:\web\lime/common.php:2930
+#: d:\web\lime/common.php:2929
 msgid "Email Address"
 msgstr "电邮地址"
 
-#: d:\web\lime/common.php:2974
+#: d:\web\lime/common.php:2973
 #: d:\web\lime/index.php:1729
 #: d:\web\lime/index.php:1790
 #: d:\web\lime/index.php:1941
 msgid "Continue"
 msgstr "继续"
 
-#: d:\web\lime/common.php:2981
+#: d:\web\lime/common.php:2980
 msgid "Your Assessment"
 msgstr "您的评价"
 
+#: d:\web\lime/common.php:3194
 #: d:\web\lime/common.php:3195
-#: d:\web\lime/common.php:3196
 msgid "Sort answers alphabetically"
 msgstr "按字母排列答案项"
 
-#: d:\web\lime/common.php:3200
+#: d:\web\lime/common.php:3199
 msgid "The percentage width of the answer column"
 msgstr "答案列的宽度百分比"
 
-#: d:\web\lime/common.php:3201
+#: d:\web\lime/common.php:3200
 msgid "Answer width"
 msgstr "答案宽度"
 
-#: d:\web\lime/common.php:3205
+#: d:\web\lime/common.php:3204
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "从多选题筛选阵列答案"
 
-#: d:\web\lime/common.php:3206
+#: d:\web\lime/common.php:3205
 msgid "Array filter"
 msgstr "阵列筛选"
 
+#: d:\web\lime/common.php:3209
 #: d:\web\lime/common.php:3210
-#: d:\web\lime/common.php:3211
 msgid "Category Separator"
 msgstr "类别分隔符"
 
-#: d:\web\lime/common.php:3215
+#: d:\web\lime/common.php:3214
 msgid "Filter the available answers by this value"
 msgstr "按值筛选现有答案项"
 
-#: d:\web\lime/common.php:3216
+#: d:\web\lime/common.php:3215
 msgid "Code filter"
 msgstr "代码筛选"
 
-#: d:\web\lime/common.php:3220
+#: d:\web\lime/common.php:3219
 msgid "Number of columns to display"
 msgstr "显示的列数："
 
-#: d:\web\lime/common.php:3221
+#: d:\web\lime/common.php:3220
 msgid "Display columns"
 msgstr "显示列"
 
-#: d:\web\lime/common.php:3225
+#: d:\web\lime/common.php:3224
 msgid "How many rows to display"
 msgstr "显示的行数"
 
-#: d:\web\lime/common.php:3226
+#: d:\web\lime/common.php:3225
 msgid "Display rows"
 msgstr "显示行"
 
-#: d:\web\lime/common.php:3230
+#: d:\web\lime/common.php:3229
 msgid "Hide the tip that is normally shown with a question"
 msgstr "隐藏问题提示"
 
-#: d:\web\lime/common.php:3231
+#: d:\web\lime/common.php:3230
 msgid "Hide tip"
 msgstr "隐藏提示"
 
-#: d:\web\lime/common.php:3235
+#: d:\web\lime/common.php:3234
 msgid "Limit the number of possible answers"
 msgstr "限制答案项数目"
 
-#: d:\web\lime/common.php:3236
+#: d:\web\lime/common.php:3235
 msgid "Maximum answers"
 msgstr "最多答案项"
 
-#: d:\web\lime/common.php:3240
+#: d:\web\lime/common.php:3239
 msgid "Maximum sum value of multiple numeric input"
 msgstr "多重数值输入的最大合计值"
 
-#: d:\web\lime/common.php:3241
+#: d:\web\lime/common.php:3240
 msgid "Maximum sum value"
 msgstr "最大合计值"
 
-#: d:\web\lime/common.php:3245
+#: d:\web\lime/common.php:3244
 msgid "Maximum characters allowed"
 msgstr "允许的最大字符数"
 
-#: d:\web\lime/common.php:3246
+#: d:\web\lime/common.php:3245
 msgid "Maximum characters"
 msgstr "最大字符数"
 
-#: d:\web\lime/common.php:3250
+#: d:\web\lime/common.php:3249
 msgid "Ensure a minimum number of possible answers"
 msgstr "确保最少答案项数目"
 
-#: d:\web\lime/common.php:3251
+#: d:\web\lime/common.php:3250
 msgid "Minimum answers"
 msgstr "最少答案项"
 
-#: d:\web\lime/common.php:3255
+#: d:\web\lime/common.php:3254
 msgid "Make the \"other comment\" field mandatory when the \"other\" field has been marked"
 msgstr "当标记 \"其它\" 字段时设置\"其它评论\"字段为必填"
 
-#: d:\web\lime/common.php:3256
+#: d:\web\lime/common.php:3255
 msgid "Other comment mandatory"
 msgstr "必填的其它评论"
 
-#: d:\web\lime/common.php:3260
+#: d:\web\lime/common.php:3259
 msgid "Allow only numerical input"
 msgstr "仅限数值输入"
 
-#: d:\web\lime/common.php:3261
+#: d:\web\lime/common.php:3260
 msgid "Numbers only"
 msgstr "仅限数字"
 
 #: d:\web\lime/common.php:3265
+msgid "Allow only numerical input for `Other` text"
+msgstr "`其它`文本仅限数值输入"
+
+#: d:\web\lime/common.php:3266
+msgid "Numbers only for `Other`"
+msgstr "`其它`仅限数字"
+
+#: d:\web\lime/common.php:3271
 msgid "Present answers in random order"
 msgstr "随机提供答案"
 
-#: d:\web\lime/common.php:3266
+#: d:\web\lime/common.php:3272
 msgid "Random answer order"
 msgstr "随机答案顺序"
 
-#: d:\web\lime/common.php:3270
+#: d:\web\lime/common.php:3276
 msgid "Width of text input box"
 msgstr "文本输入框宽度"
 
-#: d:\web\lime/common.php:3271
+#: d:\web\lime/common.php:3277
 msgid "Input box width"
 msgstr "输入框宽度"
 
-#: d:\web\lime/common.php:3275
+#: d:\web\lime/common.php:3281
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "多重数值输入和必须等于该值"
 
-#: d:\web\lime/common.php:3276
+#: d:\web\lime/common.php:3282
 msgid "Equals sum value"
 msgstr "等于合计值"
 
-#: d:\web\lime/common.php:3280
+#: d:\web\lime/common.php:3286
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "多重数值输入必须大于该值"
 
-#: d:\web\lime/common.php:3281
+#: d:\web\lime/common.php:3287
 msgid "Minimum sum value"
 msgstr "最小合计值"
 
-#: d:\web\lime/common.php:3285
-#: d:\web\lime/common.php:3286
+#: d:\web\lime/common.php:3291
+#: d:\web\lime/common.php:3292
 msgid "Use slider layout"
 msgstr "使用滑块布局"
 
-#: d:\web\lime/common.php:3290
-#: d:\web\lime/common.php:3291
+#: d:\web\lime/common.php:3296
+#: d:\web\lime/common.php:3297
 msgid "Slider minimum value"
 msgstr "滑块最小值"
 
-#: d:\web\lime/common.php:3295
-#: d:\web\lime/common.php:3296
+#: d:\web\lime/common.php:3301
+#: d:\web\lime/common.php:3302
 msgid "Slider maximum value"
 msgstr "滑块最大值"
 
-#: d:\web\lime/common.php:3300
-#: d:\web\lime/common.php:3301
+#: d:\web\lime/common.php:3306
+#: d:\web\lime/common.php:3307
 msgid "Slider accuracy"
 msgstr "滑块精度"
 
-#: d:\web\lime/common.php:3305
-#: d:\web\lime/common.php:3306
+#: d:\web\lime/common.php:3311
+#: d:\web\lime/common.php:3312
 msgid "Slider initial value"
 msgstr "滑块初始值"
 
-#: d:\web\lime/common.php:3310
+#: d:\web\lime/common.php:3316
 msgid "Add a prefix to the answer field"
 msgstr "为答案项字段添加前缀"
 
-#: d:\web\lime/common.php:3311
+#: d:\web\lime/common.php:3317
 msgid "Answer prefix"
 msgstr "答案项前缀"
 
-#: d:\web\lime/common.php:3315
+#: d:\web\lime/common.php:3321
 msgid "Add a suffix to the answer field"
 msgstr "为答案项字段添加后缀"
 
-#: d:\web\lime/common.php:3316
+#: d:\web\lime/common.php:3322
 msgid "Answer suffix"
 msgstr "答案项后缀"
 
-#: d:\web\lime/common.php:3320
+#: d:\web\lime/common.php:3326
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "使用可访问选择框替代弹出日历"
 
-#: d:\web\lime/common.php:3321
+#: d:\web\lime/common.php:3327
 msgid "Display select boxes"
 msgstr "显示选择框"
 
-#: d:\web\lime/common.php:3325
+#: d:\web\lime/common.php:3331
 msgid "Minimum year value for dropdown list"
 msgstr "下拉列表最小年份值"
 
-#: d:\web\lime/common.php:3326
+#: d:\web\lime/common.php:3332
 msgid "Minimum dropdown year"
 msgstr "最小下拉年份"
 
-#: d:\web\lime/common.php:3330
+#: d:\web\lime/common.php:3336
 msgid "Maximum year value for dropdown list"
 msgstr "下拉列表最大年份值"
 
-#: d:\web\lime/common.php:3331
+#: d:\web\lime/common.php:3337
 msgid "Maximum dropdown year"
 msgstr "最大下拉年份"
 
-#: d:\web\lime/common.php:3335
+#: d:\web\lime/common.php:3341
 msgid "Excludes all other options if this is selected"
 msgstr "如果选择了本项则排除所有其它选项"
 
-#: d:\web\lime/common.php:3336
+#: d:\web\lime/common.php:3342
 msgid "Exclusive option"
 msgstr "排除选项"
 
-#: d:\web\lime/common.php:3340
+#: d:\web\lime/common.php:3346
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最大值"
 
-#: d:\web\lime/common.php:3341
+#: d:\web\lime/common.php:3347
 msgid "Maximum value"
 msgstr "最大值"
 
-#: d:\web\lime/common.php:3345
+#: d:\web\lime/common.php:3351
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最小值"
 
-#: d:\web\lime/common.php:3346
+#: d:\web\lime/common.php:3352
 msgid "Minimum value"
 msgstr "最小值"
 
-#: d:\web\lime/common.php:3350
+#: d:\web\lime/common.php:3356
 msgid "Step value for array (multi-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的步进值"
 
-#: d:\web\lime/common.php:3351
+#: d:\web\lime/common.php:3357
 msgid "Step value"
 msgstr "步进值"
 
-#: d:\web\lime/common.php:3355
+#: d:\web\lime/common.php:3361
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "为阵列（多重弹性）问题类型使用复选框布局"
 
-#: d:\web\lime/common.php:3356
+#: d:\web\lime/common.php:3362
 msgid "Checkbox layout"
 msgstr "复选框布局"
 
-#: d:\web\lime/common.php:3360
+#: d:\web\lime/common.php:3366
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "用双下拉替代双尺度"
 
-#: d:\web\lime/common.php:3361
+#: d:\web\lime/common.php:3367
 msgid "Dual dropdown"
 msgstr "双下拉"
 
-#: d:\web\lime/common.php:3365
+#: d:\web\lime/common.php:3371
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "下拉列表的前缀|后缀"
 
-#: d:\web\lime/common.php:3366
+#: d:\web\lime/common.php:3372
 msgid "Prefix|Suffix"
 msgstr "前缀|后缀"
 
-#: d:\web\lime/common.php:3370
+#: d:\web\lime/common.php:3376
 msgid "Header for scale A"
 msgstr "尺度A标题"
 
-#: d:\web\lime/common.php:3371
+#: d:\web\lime/common.php:3377
 msgid "Header scale A"
 msgstr "尺度A标题"
 
-#: d:\web\lime/common.php:3375
+#: d:\web\lime/common.php:3381
 msgid "Header for scale B"
 msgstr "尺度B标题"
 
-#: d:\web\lime/common.php:3376
+#: d:\web\lime/common.php:3382
 msgid "Header scale B"
 msgstr "尺度B标题"
 
-#: d:\web\lime/common.php:3380
+#: d:\web\lime/common.php:3386
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "下拉列表的答案后分隔符|下拉列表内分隔符"
 
-#: d:\web\lime/common.php:3381
+#: d:\web\lime/common.php:3387
 msgid "Dropdown separators"
 msgstr "下拉隔离符"
 
-#: d:\web\lime/common.php:3385
+#: d:\web\lime/common.php:3391
 msgid "Replaces the 'other' label with text"
 msgstr "用文本替换'其它' 标签"
 
-#: d:\web\lime/common.php:3386
+#: d:\web\lime/common.php:3392
 msgid "\"Other\" caption"
 msgstr "\"其它\"标题"
 
-#: d:\web\lime/common.php:3390
+#: d:\web\lime/common.php:3396
 msgid "Show statistics of a certain question to the user"
 msgstr "向用户显示特定问题的统计"
 
-#: d:\web\lime/common.php:3391
+#: d:\web\lime/common.php:3397
 msgid "Show in public statistics"
 msgstr "在公开统计内显示"
 
-#: d:\web\lime/common.php:3395
+#: d:\web\lime/common.php:3401
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "把先前问题总计作为本题最大值的SGQA标识符"
 
-#: d:\web\lime/common.php:3396
+#: d:\web\lime/common.php:3402
 msgid "Max value from SGQA"
 msgstr "SGQA最大值"
 
-#: d:\web\lime/common.php:3400
+#: d:\web\lime/common.php:3406
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "把先前问题总计用作最小值的本题SGQA标识符"
 
-#: d:\web\lime/common.php:3401
+#: d:\web\lime/common.php:3407
 msgid "Min value from SGQA"
 msgstr "SGQA最小值"
 
-#: d:\web\lime/common.php:3405
+#: d:\web\lime/common.php:3411
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "把先前问题总计用作总计的本题SGQA标识符"
 
-#: d:\web\lime/common.php:3406
+#: d:\web\lime/common.php:3412
 msgid "Value equals SGQA"
 msgstr "值等于SGQA"
 
-#: d:\web\lime/common.php:3410
+#: d:\web\lime/common.php:3416
 msgid "Insert a page break before this question in printable view by setting this to 1."
 msgstr "通过设置为1在可打印视图内的该问题前插入分页符"
 
-#: d:\web\lime/common.php:3411
+#: d:\web\lime/common.php:3417
 msgid "Insert page break in printable view"
 msgstr "在可打印视图内插入分页符"
 
-#: d:\web\lime/common.php:3415
+#: d:\web\lime/common.php:3421
 msgid "1=nominal 2=ordinal 3=scale."
 msgstr "1=定类 2=定序 3=尺度。"
 
-#: d:\web\lime/common.php:3416
+#: d:\web\lime/common.php:3422
 msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 msgstr "导出尺度类型 1=定类 2=定序 3=尺度。"
 
-#: d:\web\lime/common.php:3559
+#: d:\web\lime/common.php:3565
 msgid "Version"
 msgstr "版本"
 
-#: d:\web\lime/common.php:3568
+#: d:\web\lime/common.php:3574
 msgid "Online Manual"
 msgstr "在线手册"
 
-#: d:\web\lime/common.php:3571
+#: d:\web\lime/common.php:3577
 msgid "Support this project - Donate to "
 msgstr "支持本项目 - 捐赠"
 
-#: d:\web\lime/common.php:3574
+#: d:\web\lime/common.php:3580
 msgid "Visit our website!"
 msgstr "请访问我们的网站！"
 
-#: d:\web\lime/common.php:3704
+#: d:\web\lime/common.php:3710
 msgid "Email was not sent because demo-mode is activated."
 msgstr "演示模式 - 邮件未能发送。"
 
-#: d:\web\lime/common.php:4053
 #: d:\web\lime/common.php:4059
+#: d:\web\lime/common.php:4065
 msgid "Executing"
 msgstr "执行中"
 
-#: d:\web\lime/common.php:4053
+#: d:\web\lime/common.php:4059
 msgid "Failed! Reason: "
 msgstr "失败！原因："
 
-#: d:\web\lime/common.php:4059
+#: d:\web\lime/common.php:4065
 msgid "Success!"
 msgstr "成功！"
 
-#: d:\web\lime/common.php:5115
+#: d:\web\lime/common.php:5121
 #: d:\web\lime/index.php:470
 #: d:\web\lime/save.php:581
 msgid "Error"
 msgstr "错误"
 
-#: d:\web\lime/common.php:6055
+#: d:\web\lime/common.php:6061
 msgid "Email address"
 msgstr "邮件地址"
 
-#: d:\web\lime/common.php:6056
+#: d:\web\lime/common.php:6062
 msgid "Token code"
 msgstr "操作代码编码"
 
-#: d:\web\lime/common.php:6057
+#: d:\web\lime/common.php:6063
 msgid "Language code"
 msgstr "语言编码"
 
-#: d:\web\lime/common.php:6058
+#: d:\web\lime/common.php:6064
 msgid "Invitation sent date"
 msgstr "邀请发送日期"
 
-#: d:\web\lime/common.php:6059
+#: d:\web\lime/common.php:6065
 msgid "Last Reminder sent date"
 msgstr "提醒邮件最后发送日期"
 
-#: d:\web\lime/common.php:6060
+#: d:\web\lime/common.php:6066
 msgid "Total numbers of sent reminders"
 msgstr "发送提醒邮件总数"
 
-#: d:\web\lime/common.php:6080
+#: d:\web\lime/common.php:6086
 #, php-format
 msgid "Attribute %s"
 msgstr "属性%s"
@@ -1553,6 +1555,15 @@ msgstr "请排序所有项"
 msgid "Please check at least one item."
 msgstr "请至少选择一项。"
 
+#: d:\web\lime/qanda.php:841
+#: d:\web\lime/qanda.php:1174
+#: d:\web\lime/qanda.php:1664
+#: d:\web\lime/qanda.php:1854
+#: d:\web\lime/qanda.php:2500
+#: d:\web\lime/qanda.php:2894
+msgid "Other:"
+msgstr "其他："
+
 #: d:\web\lime/qanda.php:843
 #, php-format
 msgid "If you choose '%s' you must provide a description."
@@ -1638,137 +1649,137 @@ msgstr "格式：%s"
 #: d:\web\lime/qanda.php:1134
 #: d:\web\lime/qanda.php:1307
 #: d:\web\lime/qanda.php:1496
-#: d:\web\lime/qanda.php:6238
-#: d:\web\lime/qanda.php:6292
+#: d:\web\lime/qanda.php:6265
+#: d:\web\lime/qanda.php:6319
 msgid "Please choose"
 msgstr "请选择"
 
 #: d:\web\lime/qanda.php:1404
 #: d:\web\lime/qanda.php:1587
-#: d:\web\lime/qanda.php:1806
-#: d:\web\lime/qanda.php:2029
+#: d:\web\lime/qanda.php:1818
+#: d:\web\lime/qanda.php:2041
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "您选择了问题 \"%s\"的\"其它\" 答案项。请再填写相应的\"其它评论\"字段。"
 
 #: d:\web\lime/qanda.php:1520
-#: d:\web\lime/qanda.php:1933
+#: d:\web\lime/qanda.php:1945
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "错误：本语言未含此问题的标签集。"
 
-#: d:\web\lime/qanda.php:2083
+#: d:\web\lime/qanda.php:2095
 msgid "Please choose one of the following"
 msgstr "请选择以下一项"
 
-#: d:\web\lime/qanda.php:2084
+#: d:\web\lime/qanda.php:2096
 msgid "Please enter your comment here"
 msgstr "请在此发表评论"
 
-#: d:\web\lime/qanda.php:2371
+#: d:\web\lime/qanda.php:2383
 msgid "Remove this item"
 msgstr "删除这一项"
 
-#: d:\web\lime/qanda.php:2415
+#: d:\web\lime/qanda.php:2427
 msgid "Your Choices"
 msgstr "您的选择"
 
-#: d:\web\lime/qanda.php:2424
-#: d:\web\lime/qanda.php:2430
+#: d:\web\lime/qanda.php:2436
+#: d:\web\lime/qanda.php:2442
 msgid "Your Ranking"
 msgstr "您的排序"
 
-#: d:\web\lime/qanda.php:2438
+#: d:\web\lime/qanda.php:2450
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "点击每一项右边的剪刀可删除排序列表的最后输入项"
 
-#: d:\web\lime/qanda.php:2453
+#: d:\web\lime/qanda.php:2465
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "请排序至少 '%d'项（限问题\"%s\"）。"
 
-#: d:\web\lime/qanda.php:2762
-#: d:\web\lime/qanda.php:3032
+#: d:\web\lime/qanda.php:2783
+#: d:\web\lime/qanda.php:3063
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "请最多选择'%d' 个答案（限问题\"%s\"）"
 
-#: d:\web\lime/qanda.php:2783
-#: d:\web\lime/qanda.php:3057
+#: d:\web\lime/qanda.php:2804
+#: d:\web\lime/qanda.php:3088
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "请至少选择'%d'个答案（限问题\"%s\"）"
 
-#: d:\web\lime/qanda.php:2818
-#: d:\web\lime/qanda.php:3087
+#: d:\web\lime/qanda.php:2839
+#: d:\web\lime/qanda.php:3118
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "您标记了问题 \"%s\"的\"其它\" 字段。请再填写相应的\"其它评论\"字段。"
 
-#: d:\web\lime/qanda.php:2960
-#: d:\web\lime/qanda.php:2988
+#: d:\web\lime/qanda.php:2991
+#: d:\web\lime/qanda.php:3019
 msgid "Make a comment on your choice here:"
 msgstr "请为您的选择做个评论："
 
-#: d:\web\lime/qanda.php:3182
-#: d:\web\lime/qanda.php:3410
-#: d:\web\lime/qanda.php:4408
-#: d:\web\lime/qanda.php:6086
+#: d:\web\lime/qanda.php:3211
+#: d:\web\lime/qanda.php:3439
+#: d:\web\lime/qanda.php:4437
+#: d:\web\lime/qanda.php:6113
 msgid "Error: This question has no answers."
 msgstr "错误：该问题没有答案项。"
 
-#: d:\web\lime/qanda.php:3489
+#: d:\web\lime/qanda.php:3518
 msgid "Only numbers may be entered in these fields"
 msgstr "这些字段只能输入数字"
 
-#: d:\web\lime/qanda.php:3493
+#: d:\web\lime/qanda.php:3522
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "所有输入项不能超过 %d"
 
-#: d:\web\lime/qanda.php:3497
+#: d:\web\lime/qanda.php:3526
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "所有输入项总计须等于 %d"
 
-#: d:\web\lime/qanda.php:3501
+#: d:\web\lime/qanda.php:3530
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "所有输入项总计至少%s"
 
-#: d:\web\lime/qanda.php:3509
+#: d:\web\lime/qanda.php:3538
 msgid "Remaining: "
 msgstr "剩余："
 
-#: d:\web\lime/qanda.php:3511
+#: d:\web\lime/qanda.php:3540
 msgid "Total: "
 msgstr "总计："
 
-#: d:\web\lime/qanda.php:3555
-#: d:\web\lime/qanda.php:3563
-#: d:\web\lime/qanda.php:3599
-#: d:\web\lime/qanda.php:3610
+#: d:\web\lime/qanda.php:3584
+#: d:\web\lime/qanda.php:3592
+#: d:\web\lime/qanda.php:3628
+#: d:\web\lime/qanda.php:3639
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "答案无效。所有输入项总计不能超过"
 
-#: d:\web\lime/qanda.php:3576
-#: d:\web\lime/qanda.php:3584
+#: d:\web\lime/qanda.php:3605
+#: d:\web\lime/qanda.php:3613
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "答案无效。所有输入项总计至少是%s。"
 
-#: d:\web\lime/qanda.php:3679
+#: d:\web\lime/qanda.php:3708
 msgid "Only numbers may be entered in this field"
 msgstr "本字段只能输入数字"
 
-#: d:\web\lime/qanda.php:5003
-#: d:\web\lime/qanda.php:5227
-#: d:\web\lime/qanda.php:5516
-#: d:\web\lime/qanda.php:5660
-#: d:\web\lime/qanda.php:6338
+#: d:\web\lime/qanda.php:5032
+#: d:\web\lime/qanda.php:5254
+#: d:\web\lime/qanda.php:5543
+#: d:\web\lime/qanda.php:5687
+#: d:\web\lime/qanda.php:6365
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "错误：此问题的标签集在这种语言下不可用或不存在。"
 
-#: d:\web\lime/qanda.php:5654
+#: d:\web\lime/qanda.php:5681
 msgid "Error: There are no answers defined for this question."
 msgstr "错误：没有为这个问题定义答案。"
 
@@ -2703,8 +2714,8 @@ msgid "Edit this condition"
 msgstr "编辑条件"
 
 #: d:\web\lime/admin/conditionshandling.php:1577
-msgid "Always display this condition"
-msgstr "总是显示条件"
+msgid "This question is always shown."
+msgstr "本题一直显示。"
 
 #: d:\web\lime/admin/conditionshandling.php:1616
 msgid "Copy the selected conditions to"
@@ -2783,7 +2794,7 @@ msgstr "更新条件"
 msgid "Clear"
 msgstr "清除"
 
-#: d:\web\lime/admin/database.php:119
+#: d:\web\lime/admin/database.php:126
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -2793,143 +2804,141 @@ msgstr ""
 "\\n"
 "在下面的语言中缺少组名"
 
-#: d:\web\lime/admin/database.php:162
+#: d:\web\lime/admin/database.php:169
 msgid "Error: The database reported the following error:"
 msgstr "错误：数据库报告下面的错误："
 
-#: d:\web\lime/admin/database.php:212
+#: d:\web\lime/admin/database.php:219
 msgid "Group could not be updated"
 msgstr "无法更新组"
 
-#: d:\web\lime/admin/database.php:237
-#: d:\web\lime/admin/database.php:262
-#: d:\web\lime/admin/database.php:278
+#: d:\web\lime/admin/database.php:244
+#: d:\web\lime/admin/database.php:269
+#: d:\web\lime/admin/database.php:285
 msgid "Group could not be deleted"
 msgstr "无法删除组"
 
-#: d:\web\lime/admin/database.php:288
+#: d:\web\lime/admin/database.php:295
 msgid "The question could not be added. You must enter at least enter a question code."
 msgstr "不能添加问题，您至少须输入一个问题编码。"
 
-#: d:\web\lime/admin/database.php:359
-#: d:\web\lime/admin/database.php:665
-#: d:\web\lime/admin/database.php:694
+#: d:\web\lime/admin/database.php:366
+#: d:\web\lime/admin/database.php:673
+#: d:\web\lime/admin/database.php:702
 msgid "Question could not be created."
 msgstr "无法创建问题。"
 
-#: d:\web\lime/admin/database.php:474
+#: d:\web\lime/admin/database.php:482
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "无法更新问题。有其他问题的条件基于此问题的答案项，更改类型会引起问题。您必须在更改此题类型之前删除这些条件。"
 
-#: d:\web\lime/admin/database.php:557
-#: d:\web\lime/admin/database.php:615
+#: d:\web\lime/admin/database.php:565
+#: d:\web\lime/admin/database.php:623
 msgid "Question could not be updated"
 msgstr "无法更新问题"
 
-#: d:\web\lime/admin/database.php:577
+#: d:\web\lime/admin/database.php:585
 msgid "Answers can't be deleted"
 msgstr "不能删除答案项"
 
-#: d:\web\lime/admin/database.php:587
+#: d:\web\lime/admin/database.php:595
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "这个问题依赖于其他问题的答案项，不能移动到该组之上："
 
-#: d:\web\lime/admin/database.php:588
-#: d:\web\lime/admin/database.php:600
+#: d:\web\lime/admin/database.php:596
+#: d:\web\lime/admin/database.php:608
 msgid "in position"
 msgstr "在适当的位置"
 
-#: d:\web\lime/admin/database.php:589
-#: d:\web\lime/admin/database.php:601
+#: d:\web\lime/admin/database.php:597
+#: d:\web\lime/admin/database.php:609
 msgid "See conditions:"
 msgstr "查看条件："
 
-#: d:\web\lime/admin/database.php:599
+#: d:\web\lime/admin/database.php:607
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "一些问题依赖于这个问题的答案项。您不能把这个问题移动到该组之下："
 
-#: d:\web\lime/admin/database.php:625
+#: d:\web\lime/admin/database.php:633
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "不能添加问题，您必须在必须填写的字段中插入码号"
 
-#: d:\web\lime/admin/database.php:758
-#: d:\web\lime/admin/database.php:799
+#: d:\web\lime/admin/database.php:767
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "无法删除问题，有其他问题的条件基于此题。请在删除此题之前，删除这些条件。"
 
-#: d:\web\lime/admin/database.php:783
-#: d:\web\lime/admin/database.php:820
+#: d:\web\lime/admin/database.php:792
 msgid "Question could not be deleted"
 msgstr "无法删除问题"
 
-#: d:\web\lime/admin/database.php:835
+#: d:\web\lime/admin/database.php:808
 msgid "Add new Answer"
 msgstr "添加新的答案项"
 
-#: d:\web\lime/admin/database.php:850
+#: d:\web\lime/admin/database.php:823
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "填加答案项错误：您不能多次使用同一个答案项编码。"
 
-#: d:\web\lime/admin/database.php:877
-#: d:\web\lime/admin/database.php:902
+#: d:\web\lime/admin/database.php:850
+#: d:\web\lime/admin/database.php:875
 msgid "Failed to insert answer"
 msgstr "插入答案项失败"
 
-#: d:\web\lime/admin/database.php:911
+#: d:\web\lime/admin/database.php:884
 msgid "Invalid or empty answer code supplied"
 msgstr "提供了无效或空的答案项编码"
 
-#: d:\web\lime/admin/database.php:916
+#: d:\web\lime/admin/database.php:889
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: d:\web\lime/admin/database.php:984
+#: d:\web\lime/admin/database.php:957
 msgid "Failed to update answers"
 msgstr "更新答案项失败"
 
-#: d:\web\lime/admin/database.php:1003
+#: d:\web\lime/admin/database.php:976
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "答案项编码为0或空是不允许的，也不会保存。"
 
-#: d:\web\lime/admin/database.php:1004
+#: d:\web\lime/admin/database.php:977
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "发现重复编码，这些条目无法更新"
 
-#: d:\web\lime/admin/database.php:1008
+#: d:\web\lime/admin/database.php:981
 msgid "Up"
 msgstr "上"
 
-#: d:\web\lime/admin/database.php:1020
+#: d:\web\lime/admin/database.php:993
 msgid "Dn"
 msgstr "下"
 
-#: d:\web\lime/admin/database.php:1032
+#: d:\web\lime/admin/database.php:1005
 msgid "Del"
 msgstr "刪除"
 
-#: d:\web\lime/admin/database.php:1036
+#: d:\web\lime/admin/database.php:1009
 msgid "Failed to delete answer"
 msgstr "删除答案项无效"
 
-#: d:\web\lime/admin/database.php:1042
+#: d:\web\lime/admin/database.php:1015
 msgid "Default"
 msgstr "默认"
 
-#: d:\web\lime/admin/database.php:1051
+#: d:\web\lime/admin/database.php:1024
 msgid "Failed to make answer not default"
 msgstr "使答案项不为默认失败"
 
-#: d:\web\lime/admin/database.php:1065
+#: d:\web\lime/admin/database.php:1038
 msgid "Failed to make answer default"
 msgstr "使答案项为默认失败"
 
-#: d:\web\lime/admin/database.php:1176
-#: d:\web\lime/admin/database.php:1419
+#: d:\web\lime/admin/database.php:1149
+#: d:\web\lime/admin/database.php:1392
 msgid "Invitation to participate in survey"
 msgstr "参加调查的邀请"
 
-#: d:\web\lime/admin/database.php:1177
-#: d:\web\lime/admin/database.php:1420
+#: d:\web\lime/admin/database.php:1150
+#: d:\web\lime/admin/database.php:1393
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2967,13 +2976,13 @@ msgstr ""
 "点击这里做调查：\n"
 "{SURVEYURL}"
 
-#: d:\web\lime/admin/database.php:1178
-#: d:\web\lime/admin/database.php:1421
+#: d:\web\lime/admin/database.php:1151
+#: d:\web\lime/admin/database.php:1394
 msgid "Reminder to participate in survey"
 msgstr "参加调查的提醒"
 
-#: d:\web\lime/admin/database.php:1179
-#: d:\web\lime/admin/database.php:1422
+#: d:\web\lime/admin/database.php:1152
+#: d:\web\lime/admin/database.php:1395
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3016,13 +3025,13 @@ msgstr ""
 "点击这里做调查：\n"
 "{SURVEYURL}"
 
-#: d:\web\lime/admin/database.php:1180
-#: d:\web\lime/admin/database.php:1423
+#: d:\web\lime/admin/database.php:1153
+#: d:\web\lime/admin/database.php:1396
 msgid "Confirmation of completed survey"
 msgstr "完成调查的确认"
 
-#: d:\web\lime/admin/database.php:1181
-#: d:\web\lime/admin/database.php:1424
+#: d:\web\lime/admin/database.php:1154
+#: d:\web\lime/admin/database.php:1397
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3043,13 +3052,13 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: d:\web\lime/admin/database.php:1182
-#: d:\web\lime/admin/database.php:1425
+#: d:\web\lime/admin/database.php:1155
+#: d:\web\lime/admin/database.php:1398
 msgid "Survey Registration Confirmation"
 msgstr "调查注册确认"
 
-#: d:\web\lime/admin/database.php:1183
-#: d:\web\lime/admin/database.php:1426
+#: d:\web\lime/admin/database.php:1156
+#: d:\web\lime/admin/database.php:1399
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3071,23 +3080,23 @@ msgstr ""
 "\n"
 "如果您有其他问题，或者您没有注册参与并认为这封邮件有误，请通过{ADMINEMAIL}联系{ADMINNAME}。"
 
-#: d:\web\lime/admin/database.php:1199
+#: d:\web\lime/admin/database.php:1172
 msgid "Survey could not be updated"
 msgstr "无法更新调查"
 
-#: d:\web\lime/admin/database.php:1214
+#: d:\web\lime/admin/database.php:1187
 msgid "ERROR deleting Survey id"
 msgstr "删除调查id时出错"
 
-#: d:\web\lime/admin/database.php:1285
+#: d:\web\lime/admin/database.php:1258
 msgid "Survey could not be created because it did not have a title"
 msgstr "无法创建没有标题的调查"
 
-#: d:\web\lime/admin/database.php:1442
+#: d:\web\lime/admin/database.php:1415
 msgid "Survey could not be created"
 msgstr "无法创建调查"
 
-#: d:\web\lime/admin/database.php:1456
+#: d:\web\lime/admin/database.php:1429
 msgid "Your personal settings were successfully saved."
 msgstr "成功保存您的个人设置。"
 
@@ -4383,8 +4392,8 @@ msgid "Edit/Add second Label Sets"
 msgstr "编辑/添加第二标签集"
 
 #: d:\web\lime/admin/html.php:1485
-msgid "Other:"
-msgstr "其他："
+msgid "Option 'Other':"
+msgstr "选项 '其它'："
 
 #: d:\web\lime/admin/html.php:1494
 msgid "Mandatory:"
@@ -5745,165 +5754,165 @@ msgstr "登录"
 msgid "Forgot Your Password?"
 msgstr "忘记密码？"
 
-#: d:\web\lime/admin/printablesurvey.php:125
-#: d:\web\lime/admin/printablesurvey.php:1784
+#: d:\web\lime/admin/printablesurvey.php:123
+#: d:\web\lime/admin/printablesurvey.php:1782
 msgid "Submit Your Survey."
 msgstr "提交您的问卷."
 
-#: d:\web\lime/admin/printablesurvey.php:127
-#: d:\web\lime/admin/printablesurvey.php:1784
+#: d:\web\lime/admin/printablesurvey.php:125
+#: d:\web\lime/admin/printablesurvey.php:1782
 msgid "Thank you for completing this survey."
 msgstr "感谢您完成此项调查。"
 
-#: d:\web\lime/admin/printablesurvey.php:141
+#: d:\web\lime/admin/printablesurvey.php:139
 msgid "Please fax your completed survey to:"
 msgstr "请将您完成的问卷传真到："
 
-#: d:\web\lime/admin/printablesurvey.php:147
-#: d:\web\lime/admin/printablesurvey.php:1778
+#: d:\web\lime/admin/printablesurvey.php:145
+#: d:\web\lime/admin/printablesurvey.php:1776
 #, php-format
 msgid "Please submit by %s"
 msgstr "请按提交%s"
 
-#: d:\web\lime/admin/printablesurvey.php:428
-#: d:\web\lime/admin/printablesurvey.php:456
+#: d:\web\lime/admin/printablesurvey.php:426
+#: d:\web\lime/admin/printablesurvey.php:454
 msgid "Answer was"
 msgstr "答案是"
 
-#: d:\web\lime/admin/printablesurvey.php:432
+#: d:\web\lime/admin/printablesurvey.php:430
 msgid "Answer was NOT"
 msgstr "答案不是"
 
-#: d:\web\lime/admin/printablesurvey.php:436
+#: d:\web\lime/admin/printablesurvey.php:434
 msgid "Answer was less than"
 msgstr "答案小于"
 
-#: d:\web\lime/admin/printablesurvey.php:440
+#: d:\web\lime/admin/printablesurvey.php:438
 msgid "Answer was less than or equal to"
 msgstr "答案小于或等于"
 
-#: d:\web\lime/admin/printablesurvey.php:444
+#: d:\web\lime/admin/printablesurvey.php:442
 msgid "Answer was greater than or equal to"
 msgstr "答案大于或等于"
 
-#: d:\web\lime/admin/printablesurvey.php:448
+#: d:\web\lime/admin/printablesurvey.php:446
 msgid "Answer was greater than"
 msgstr "答案大于"
 
-#: d:\web\lime/admin/printablesurvey.php:452
+#: d:\web\lime/admin/printablesurvey.php:450
 msgid "Answer matched (regexp)"
 msgstr "匹配答案（正则表达式）"
 
-#: d:\web\lime/admin/printablesurvey.php:602
-#: d:\web\lime/admin/printablesurvey.php:609
+#: d:\web\lime/admin/printablesurvey.php:600
+#: d:\web\lime/admin/printablesurvey.php:607
 msgid "Label"
 msgstr "标签"
 
-#: d:\web\lime/admin/printablesurvey.php:634
+#: d:\web\lime/admin/printablesurvey.php:632
 msgid "RANK"
 msgstr "排序"
 
-#: d:\web\lime/admin/printablesurvey.php:652
+#: d:\web\lime/admin/printablesurvey.php:650
 msgid "at question"
 msgstr "问题"
 
-#: d:\web\lime/admin/printablesurvey.php:660
+#: d:\web\lime/admin/printablesurvey.php:658
 msgid "Only answer this question if the following conditions are met:"
 msgstr "只有符合下面条件方可回答本题："
 
-#: d:\web\lime/admin/printablesurvey.php:723
-#: d:\web\lime/admin/printablesurvey.php:724
-#: d:\web\lime/admin/printablesurvey.php:748
-#: d:\web\lime/admin/printablesurvey.php:755
-#: d:\web\lime/admin/printablesurvey.php:773
-#: d:\web\lime/admin/printablesurvey.php:774
+#: d:\web\lime/admin/printablesurvey.php:721
+#: d:\web\lime/admin/printablesurvey.php:722
+#: d:\web\lime/admin/printablesurvey.php:746
+#: d:\web\lime/admin/printablesurvey.php:753
+#: d:\web\lime/admin/printablesurvey.php:771
+#: d:\web\lime/admin/printablesurvey.php:772
+#: d:\web\lime/admin/printablesurvey.php:843
 #: d:\web\lime/admin/printablesurvey.php:845
-#: d:\web\lime/admin/printablesurvey.php:847
-#: d:\web\lime/admin/printablesurvey.php:908
-#: d:\web\lime/admin/printablesurvey.php:909
-#: d:\web\lime/admin/printablesurvey.php:1140
-#: d:\web\lime/admin/printablesurvey.php:1144
+#: d:\web\lime/admin/printablesurvey.php:906
+#: d:\web\lime/admin/printablesurvey.php:907
+#: d:\web\lime/admin/printablesurvey.php:1138
+#: d:\web\lime/admin/printablesurvey.php:1142
 msgid "Please choose *only one* of the following:"
 msgstr "请只选择下面的一项："
 
+#: d:\web\lime/admin/printablesurvey.php:738
 #: d:\web\lime/admin/printablesurvey.php:740
-#: d:\web\lime/admin/printablesurvey.php:742
 msgid "Please enter a date:"
 msgstr "请填写日期:"
 
-#: d:\web\lime/admin/printablesurvey.php:935
+#: d:\web\lime/admin/printablesurvey.php:933
 msgid "Please number each box in order of preference from 1 to"
 msgstr "请为每一项按喜好排序从1到"
 
-#: d:\web\lime/admin/printablesurvey.php:936
+#: d:\web\lime/admin/printablesurvey.php:934
 msgid "Please number each box in order of preference from 1 to "
 msgstr "请为每一项按喜好排序从1到"
 
-#: d:\web\lime/admin/printablesurvey.php:959
-#: d:\web\lime/admin/printablesurvey.php:960
+#: d:\web\lime/admin/printablesurvey.php:957
+#: d:\web\lime/admin/printablesurvey.php:958
 msgid "Please choose *all* that apply:"
 msgstr "请选择所有符合条件的："
 
-#: d:\web\lime/admin/printablesurvey.php:965
-#: d:\web\lime/admin/printablesurvey.php:966
-#: d:\web\lime/admin/printablesurvey.php:1038
-#: d:\web\lime/admin/printablesurvey.php:1039
+#: d:\web\lime/admin/printablesurvey.php:963
+#: d:\web\lime/admin/printablesurvey.php:964
+#: d:\web\lime/admin/printablesurvey.php:1036
+#: d:\web\lime/admin/printablesurvey.php:1037
 msgid "Please choose *at most* "
 msgstr "请选择*至多* "
 
-#: d:\web\lime/admin/printablesurvey.php:965
-#: d:\web\lime/admin/printablesurvey.php:966
+#: d:\web\lime/admin/printablesurvey.php:963
+#: d:\web\lime/admin/printablesurvey.php:964
 msgid "answers:"
 msgstr "答案项："
 
-#: d:\web\lime/admin/printablesurvey.php:1032
-#: d:\web\lime/admin/printablesurvey.php:1033
+#: d:\web\lime/admin/printablesurvey.php:1030
+#: d:\web\lime/admin/printablesurvey.php:1031
 msgid "Please choose all that apply and provide a comment:"
 msgstr "请选择所有符合的选项并说明理由："
 
-#: d:\web\lime/admin/printablesurvey.php:1038
-#: d:\web\lime/admin/printablesurvey.php:1039
+#: d:\web\lime/admin/printablesurvey.php:1036
+#: d:\web\lime/admin/printablesurvey.php:1037
 msgid "answers and provide a comment:"
 msgstr "回答并提交评论："
 
+#: d:\web\lime/admin/printablesurvey.php:1074
 #: d:\web\lime/admin/printablesurvey.php:1076
-#: d:\web\lime/admin/printablesurvey.php:1078
 msgid "Please write your answer(s) here:"
 msgstr "请在此填写您的回答:"
 
+#: d:\web\lime/admin/printablesurvey.php:1093
 #: d:\web\lime/admin/printablesurvey.php:1095
-#: d:\web\lime/admin/printablesurvey.php:1097
-#: d:\web\lime/admin/printablesurvey.php:1104
-#: d:\web\lime/admin/printablesurvey.php:1107
-#: d:\web\lime/admin/printablesurvey.php:1117
-#: d:\web\lime/admin/printablesurvey.php:1120
-#: d:\web\lime/admin/printablesurvey.php:1130
-#: d:\web\lime/admin/printablesurvey.php:1133
+#: d:\web\lime/admin/printablesurvey.php:1102
+#: d:\web\lime/admin/printablesurvey.php:1105
+#: d:\web\lime/admin/printablesurvey.php:1115
+#: d:\web\lime/admin/printablesurvey.php:1118
+#: d:\web\lime/admin/printablesurvey.php:1128
+#: d:\web\lime/admin/printablesurvey.php:1131
 msgid "Please write your answer here:"
 msgstr "请在此填写您的回答:"
 
-#: d:\web\lime/admin/printablesurvey.php:1154
-#: d:\web\lime/admin/printablesurvey.php:1171
-#: d:\web\lime/admin/printablesurvey.php:1208
-#: d:\web\lime/admin/printablesurvey.php:1216
-#: d:\web\lime/admin/printablesurvey.php:1243
-#: d:\web\lime/admin/printablesurvey.php:1257
-#: d:\web\lime/admin/printablesurvey.php:1283
-#: d:\web\lime/admin/printablesurvey.php:1297
-#: d:\web\lime/admin/printablesurvey.php:1482
-#: d:\web\lime/admin/printablesurvey.php:1491
+#: d:\web\lime/admin/printablesurvey.php:1152
+#: d:\web\lime/admin/printablesurvey.php:1169
+#: d:\web\lime/admin/printablesurvey.php:1206
+#: d:\web\lime/admin/printablesurvey.php:1214
+#: d:\web\lime/admin/printablesurvey.php:1241
+#: d:\web\lime/admin/printablesurvey.php:1255
+#: d:\web\lime/admin/printablesurvey.php:1281
+#: d:\web\lime/admin/printablesurvey.php:1295
+#: d:\web\lime/admin/printablesurvey.php:1480
+#: d:\web\lime/admin/printablesurvey.php:1489
+#: d:\web\lime/admin/printablesurvey.php:1560
 #: d:\web\lime/admin/printablesurvey.php:1562
-#: d:\web\lime/admin/printablesurvey.php:1564
-#: d:\web\lime/admin/printablesurvey.php:1656
-#: d:\web\lime/admin/printablesurvey.php:1657
+#: d:\web\lime/admin/printablesurvey.php:1654
+#: d:\web\lime/admin/printablesurvey.php:1655
 msgid "Please choose the appropriate response for each item:"
 msgstr "请为每一项选择合适的答案项:"
 
-#: d:\web\lime/admin/printablesurvey.php:1708
+#: d:\web\lime/admin/printablesurvey.php:1706
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "本调查包括{NUMBEROFQUESTIONS}个问题。"
 
-#: d:\web\lime/admin/printablesurvey.php:1782
+#: d:\web\lime/admin/printablesurvey.php:1780
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "请将您完成的调查传真到：%s"
@@ -8162,6 +8171,8 @@ msgstr "泰语"
 msgid "Vietnamese"
 msgstr "越南语"
 
+#~ msgid "Always display this condition"
+#~ msgstr "总是显示条件"
 #~ msgid "Update Token"
 #~ msgstr "更新操作代码"
 #~ msgid "Add Token"
