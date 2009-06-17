@@ -87,7 +87,7 @@ if (isset($_POST['usegraph']))
 
 // This gets all the 'to be shown questions' from the POST and puts these into an array
 $summary=returnglobal('summary');
-//print_r($summary);
+
 //if $summary isn't an array we create one
 if (isset($summary) && !is_array($summary)) {
 	$summary = explode("+", $summary);
@@ -107,47 +107,6 @@ if (!$surveyid)
 // Set language for questions and labels to base language of this survey
 $language = GetBaseLanguageFromSurveyID($surveyid);
 
-if(isset($_POST['pdf']) && $_POST['pdf'])
-{
-	require_once('classes/tcpdf/config/lang/eng.php');
-	require_once('classes/tcpdf/mypdf.php');
-	
-	// create new PDF document
-	$pdf = new MyPDF(); 
-	$surveyInfo = getSurveyInfo($surveyid,$language);
-	
-	// set document information
-	$pdf->SetCreator(PDF_CREATOR);
-	$pdf->SetAuthor('LimeSurvey');
-	$pdf->SetTitle('Statistic Survey '.$surveyid);
-	$pdf->SetSubject($surveyInfo['surveyls_title']);
-	$pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
-	$pdf->SetDisplayMode('fullpage', 'two');
-	// set default header data
-	$pdf->SetHeaderData("statistics.png", 10, "LimeSurvey ".$clang->gT("Quick statistics") , $clang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
-	
-	// set header and footer fonts
-	$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-	$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-	
-	// set default monospaced font
-	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-	
-	//set margins
-	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-	
-	//set auto page breaks
-	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-	
-	//set image scale factor
-	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
-	
-	//set some language-dependent strings
-	$pdf->setLanguageArray($l); 
-	 
-}
 
 //pick the best font file if font setting is 'auto'
 if ($chartfontfile=='auto')
@@ -1999,7 +1958,6 @@ $statisticsoutput.=" /><label for='noncompleted'>".$clang->gT("Don't consider NO
 //very last lines of output
 $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 ."\t\t\t<input type='submit' value='".$clang->gT("View stats")."' />\n"
-."\t\t\t<input type='submit' name='pdf' value='".$clang->gT("As PDF")."' />\n"
 ."\t\t\t<input type='button' value='".$clang->gT("Clear")."' onclick=\"window.open('$scriptname?action=statistics&amp;sid=$surveyid', '_top')\" />\n"
 ."\t\t<br />&nbsp;\n"
 ."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -2015,29 +1973,26 @@ $statisticsoutput .= "\t\t<tr><td align='center'>\n\t\t\t<br />\n"
 // DISPLAY RESULTS
 if (isset($_POST['display']) && $_POST['display'])
 {
-	if(!isset($_POST['pdf']))
-	{
-		// Create progress bar which is shown while creating the results
-		$prb = new ProgressBar();
-		$prb->pedding = 2;	// Bar Pedding
-		$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
-	
-		$prb->setFrame();	// set ProgressBar Frame
-		$prb->frame['left'] = 50;	// Frame position from left
-		$prb->frame['top'] = 	80;	// Frame position from top
-		$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
-		$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
-		$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
-	
-		//progress bar starts with 35%
-		$process_status = 35;
-		$prb->show();	// show the ProgressBar
-	
-		// 1: Get list of questions with answers chosen
-		//"Getting Questions and Answers ..." is shown above the bar
-		$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
-		$prb->moveStep(5);
-	}
+	// Create progress bar which is shown while creating the results
+	$prb = new ProgressBar();
+	$prb->pedding = 2;	// Bar Pedding
+	$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
+
+	$prb->setFrame();	// set ProgressBar Frame
+	$prb->frame['left'] = 50;	// Frame position from left
+	$prb->frame['top'] = 	80;	// Frame position from top
+	$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
+	$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
+	$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
+
+	//progress bar starts with 35%
+	$process_status = 35;
+	$prb->show();	// show the ProgressBar
+
+	// 1: Get list of questions with answers chosen
+	//"Getting Questions and Answers ..." is shown above the bar
+	$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
+	$prb->moveStep(5);
 
 	// creates array of post variable names
 	for (reset($_POST); $key=key($_POST); next($_POST)) { $postvars[]=$key;}
@@ -2204,13 +2159,15 @@ if (isset($_POST['display']) && $_POST['display'])
 
 	}	//end foreach -> loop through filter options to create SQL
 
-	if(!isset($_POST['pdf']))
-	{
-		// 2: Do SQL query
-		//"Getting Result Count ..." is shown above the progress bar
-		$prb->setLabelValue('txt1',$clang->gT('Getting result count ...'));
-		$prb->moveStep(35);
-	}
+
+
+
+
+	// 2: Do SQL query
+	//"Getting Result Count ..." is shown above the progress bar
+	$prb->setLabelValue('txt1',$clang->gT('Getting result count ...'));
+	$prb->moveStep(35);
+
 	//count number of answers
 	$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid");
 
@@ -2281,26 +2238,6 @@ if (isset($_POST['display']) && $_POST['display'])
 		."<td>$percent%</td></tr>\n";
 	}
 
-	// add summary to pdf if exporting
-	if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-	{
-		$array = array();
-		//$array[] = array($clang->gT("Results"),"");
-		$array[] = array($clang->gT("Number of records in this query:"), $results);
-		$array[] = array($clang->gT("Total records in survey:"), $total);
-		
-		if($total)
-		$array[] = array($clang->gT("Percentage of total:"), $percent."%");
-		
-		$pdf->addPage('P','A4');
-		
-		$pdf->Bookmark($pdf->delete_html($clang->gT("Results")), 0, 0);
-		$pdf->titleintopdf($clang->gT("Results"),$clang->gT("Survey")." ".$surveyid);
-		$pdf->tableintopdf($array);
-		
-		$pdf->addPage('P','A4');
-	}
-	
 	//put everything from $selects array into a string connected by AND
 	if (isset ($selects) && $selects) {$sql=implode(" AND ", $selects);}
 
@@ -2321,7 +2258,6 @@ if (isset($_POST['display']) && $_POST['display'])
 		."\t\t</form></td>\n"
 		."\t\t<td width='50%'><form action='$scriptname?action=exportresults' method='post' target='_blank'>\n"
 		."\t\t<input type='submit' value='".$clang->gT("Export")."'  />\n"
-		//."\t\t<input type='submit' name='statistics2pdf' value='".$clang->gT("to PDF File")."'  />\n"
 		."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n";
 
@@ -2425,12 +2361,10 @@ $process_status = 40;
 //Show Summary results
 if (isset($summary) && $summary)
 {
-	if(!isset($_POST['pdf']))
-	{
-		//"Generating Summaries ..." is shown above the progress bar
-		$prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
-		$prb->moveStep($process_status);
-	}
+	//"Generating Summaries ..." is shown above the progress bar
+	$prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
+	$prb->moveStep($process_status);
+
 	//let's run through the survey
 	$runthrough=$summary;
 
@@ -2451,12 +2385,9 @@ if (isset($summary) && $summary)
 	foreach ($runthrough as $rt)
 	{
 		//update progress bar
-		if(!isset($_POST['pdf']))
-		{
-			if ($process_status < 100) $process_status++;
-			$prb->moveStep($process_status);
-		}
-		
+		if ($process_status < 100) $process_status++;
+		$prb->moveStep($process_status);
+
 		$firstletter = substr($rt, 0, 1);
 		// 1. Get answers for question ##############################################################
 
@@ -2745,21 +2676,6 @@ if (isset($summary) && $summary)
 				.$clang->gT("Result")."</strong></th>\n"
 				."\t</tr></thead>\n";
 
-				if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-				{
-					$headPDF = array();
-					$tablePDF = array();
-					$footPDF = array();
-					
-					$pdfTitle = sprintf($clang->gT("Field summary for %s"),$qtitle);
-					$titleDesc = $qquestion;
-
-					$headPDF[] = array($clang->gT("Calculation"),$clang->gT("Result"));
-					
-//					$pdf->addPage();
-//					$pdf->equalTable($array);
-				}
-				
 				//this field is queried using mathematical functions
 				$fieldname=substr($rt, 1, strlen($rt));
 
@@ -3016,12 +2932,6 @@ if (isset($summary) && $summary)
 						."\t\t<td align='center' >$shw[0]</td>\n"
 						."\t\t<td align='center' >$shw[1]</td>\n"
 						."\t</tr>\n";
-						
-						if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-						{
-							//$array = array();
-							$tablePDF[] = array($shw[0],$shw[1]);
-						}
 					}
 						
 					//footer of question type "N"
@@ -3033,22 +2943,6 @@ if (isset($summary) && $summary)
 					."\t\t</td>\n"
 					."\t</tr>\n</table>\n";
 						
-					if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-					{
-						
-						$footPDF[] = array($clang->gT("Null values are ignored in calculations"));
-						$footPDF[] = array(sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>"));
-						$pdf->addPage('P','A4');
-						$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
-						$pdf->titleintopdf($pdfTitle,$titleDesc);
-						
-						$pdf->headTable($headPDF, $tablePDF);
-						
-//						$pdf->tablehead($headPDF);
-//						$pdf->equalTable($tablePDF);
-//						
-						$pdf->tablehead($footPDF);
-					}
 					//clean up
 					unset($showem);
 						
@@ -3062,17 +2956,6 @@ if (isset($summary) && $summary)
 					."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
 					."\t</tr>\n</table><br />\n";
 					unset($showem);
-					if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-					{
-						$tablePDF = array();
-						$tablePDF[] = array($clang->gT("Not enough values for calculation"));
-						$pdf->addPage('P','A4');
-						$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
-						$pdf->titleintopdf($pdfTitle,$titleDesc);
-						
-						$pdf->equalTable($tablePDF);
-						
-					}
 				}
 
 			}	//end else -> check last character, greater/less/equals don't need special treatment
@@ -3507,24 +3390,6 @@ if (isset($summary) && $summary)
 				
 			// this will count the answers considered completed
 			$TotalCompleted = 0;
-			
-			if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-			{
-//				$headPDF = array();
-//				$headPDF[] = array();
-//				$tablePDF = array();
-//				$tablePDF[] = array();
-				$pdfTitle = $pdf->delete_html(sprintf($clang->gT("Field summary for %s"),$qtitle));
-				$titleDesc = $pdf->delete_html($qquestion);
-				
-				$pdf->addPage('P','A4');
-				$pdf->Bookmark($pdf->delete_html($qquestion), 1, 0); 
-				$pdf->titleintopdf($pdfTitle,$titleDesc);
-				$tablePDF = array();
-				$footPDF = array();
-				//$pdf->equalTable($tablePDF);
-				
-			}
 				
 			//loop thorugh the array which contains all answer data
 			foreach ($alist as $al)
@@ -3665,14 +3530,6 @@ if (isset($summary) && $summary)
 								."\t</tr></thead>\n";
 
 								$showheadline = false;
-								if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-								{
-									$headPDF = array();
-									$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"),$clang->gT("Sum"));
-									
-									//$pdf->tablehead($headPDF);
-									
-								}
 							}
 							else
 							{
@@ -3685,14 +3542,6 @@ if (isset($summary) && $summary)
 								."\t</tr></thead>\n";
 
 								$showheadline = false;
-								if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-								{
-									$headPDF = array();
-									$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
-									
-									//$pdf->tablehead($headPDF);
-									
-								}
 							}
 								
 						}
@@ -3764,14 +3613,6 @@ if (isset($summary) && $summary)
 							."\t</tr></thead>\n";
 
 							$showheadline = false;
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$headPDF = array();
-								$headPDF[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
-								
-								//$pdf->tablehead($headPDF);
-								
-							}
 						}
 						//answer text
 						$fname="$al[1] ($al[0])";
@@ -3924,10 +3765,6 @@ if (isset($summary) && $summary)
 					{
 						$statisticsoutput .= "\t\t</td><td>";
 					}
-					if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-					{
-						$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
-					}
 				}
 
 				//data available
@@ -3993,11 +3830,6 @@ if (isset($summary) && $summary)
 							 
 							//adjust output
 							$statisticsoutput .= "\t\t</td><td>";
-						
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
-							}
 						}
 
 						//item 3 - just show results twice
@@ -4035,11 +3867,6 @@ if (isset($summary) && $summary)
 							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
 							$statisticsoutput .= "\t\t";
-							
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
-							}
 						}
 
 						//FIRST value -> add percentage of item 1 + item 2
@@ -4083,10 +3910,6 @@ if (isset($summary) && $summary)
 							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 							$statisticsoutput .= "\t\t";
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-							}
 						}
 
 						//LAST value -> add item 4 + item 5
@@ -4127,12 +3950,7 @@ if (isset($summary) && $summary)
 							$statisticsoutput .= "\t\t</td><td align='center' >";
 							$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
 							$statisticsoutput .= "\t\t";
-							
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
-							}
-							
+							 
 							// create new row "sum"
 							//calculate sum of items 1-5
 							$sumitems = $grawdata[$i]
@@ -4160,24 +3978,19 @@ if (isset($summary) && $summary)
 								$casepercentage = "0";
 							}
 							 
-							$statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+							$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 							$statisticsoutput .= "<tr><td align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 							$statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
 							$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
 							$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
 							 
-							$statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+							$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 							$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 							$statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
 							$statisticsoutput .= "<td align='center' >$casepercentage%</td>";
 							//there has to be a whitespace within the table cell to display correctly
-							$statisticsoutput .= "<td align='center' >&nbsp;</td></tr>";
-							
-							if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-							{
-								$footPDF[] = array($clang->gT("Sum")." (".$clang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
-								$footPDF[] = array($clang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
-							}
+							$statisticsoutput .= "<td align='center' >&nbsp</td></tr>";
+							 
 						}
 
 					}	//end if -> show aggregated data
@@ -4189,21 +4002,12 @@ if (isset($summary) && $summary)
 						$statisticsoutput .= "\t\t</td><td align='center' >";
 						$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
 						$statisticsoutput .= "\t\t";
-						
-						if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-						{
-							//$tablePDF = array();
-							$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
-							
-							//$pdf->tableintopdf($tablePDF);
-							
-						}
 					}
 					 
 				}	//end else -> $gdata[$i] != "N/A"
 
 				//end output per line. there has to be a whitespace within the table cell to display correctly
-				$statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+				$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
 
 				//increase counter
 				$i++;
@@ -4299,27 +4103,7 @@ if (isset($summary) && $summary)
 					$statisticsoutput .= "<td>&nbsp;</td><td align='center'> $am</td><td>&nbsp;</td></tr>";
 					$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Standard deviation")."</td>";    //German: "Fallzahl"
 					$statisticsoutput .= "<td>&nbsp;</td><td align='center'>$stddev</td><td>&nbsp;</td></tr>";
-					
-					if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-					{
-						$tablePDF[] = array($clang->gT("Arithmetic mean"),$am,'','');
-						$tablePDF[] = array($clang->gT("Standard deviation"),$stddev,'','');
-					}
 				}
-			}
-			if(isset($_POST['pdf']) && $_POST['pdf']) //XXX TODO PDF
-			{
-				//$tablePDF = array();
-				$tablePDF = array_merge_recursive($tablePDF, $footPDF);
-				$pdf->headTable($headPDF,$tablePDF);			
-				//$pdf->tableintopdf($tablePDF);
-				
-//				if(isset($footPDF))
-//				foreach($footPDF as $foot)
-//				{
-//					$footA = array($foot);
-//					$pdf->tablehead($footA);
-//				}
 			}
 
 
@@ -4498,16 +4282,6 @@ if (isset($summary) && $summary)
 
 				//add graph to output
 				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1'></td></tr>";
-				if(isset($_POST['pdf']) && $_POST['pdf'] && isset($_POST['usegraph']))
-				{
-					//echo "../tmp/".$cachefilename;
-						//$cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
-						$pdf->AddPage('P','A4');
-						
-						$pdf->titleintopdf($pdfTitle,$titleDesc);
-					$pdf->Image("../tmp/".$cachefilename, 5, 70, 200, 200, '', $rooturl."/admin/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true); 
-
-				}
 			}
 				
 			//close table/output
@@ -4527,19 +4301,10 @@ if (isset($summary) && $summary)
 	}	// end foreach -> loop through all questions
 
 	//output
-	$statisticsoutput .= "<br />&nbsp;\n";
+	$statisticsoutput .= "<br />&nbsp\n";
 
 }	//end if -> show summary results
 
-  /**
- * TODO: PDF output for statistics
- */
-if(isset($_POST['pdf']) && $_POST['pdf'])
-{
-
-$pdf->lastPage(); 
-$pdf->Output($clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', 'D');
-}
 
 //done! set progress bar to 100%
 if (isset($prb))
