@@ -232,7 +232,12 @@ elseif ($action == 'importquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('importquestion.php');}
         else { include('access_denied.php');}    
-    }       
+    }    
+elseif ($action == 'listcolumn')
+    {
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('listcolumn.php');}
+        else { include('access_denied.php');}    
+    }    
 elseif ($action == 'previewquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('preview.php');}
