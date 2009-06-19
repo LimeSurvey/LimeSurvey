@@ -960,6 +960,10 @@ if (isset($grouparray) && $grouparray) {
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
 									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
+									$fieldnames[]=array("oldcfieldname"=>'+'.$oldsid."X".$oldgid."X".$oldqid.$code,
+									"newcfieldname"=>'+'.$newsid."X".$newgid."X".$newqid.$code,
+									"oldfieldname"=>"+".$oldsid."X".$oldgid."X".$oldqid.$code,
+									"newfieldname"=>"+".$newsid."X".$newgid."X".$newqid.$code);
 									if ($type == "P") {
 										$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment",
 										"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment",

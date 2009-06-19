@@ -640,7 +640,14 @@ if (isset($grouparray) && $grouparray)
             unset($conditionrowdata["cid"]); 
             
             // recreate the cfieldname with the new IDs
-            $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    if (preg_match("/^\+/",$oldcsid))
+	    {
+		    $newcfieldname = '+'.$newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    }
+	    else
+	    {
+		    $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    }
             
             $conditionrowdata["cfieldname"] = $newcfieldname;
             if (!isset($conditionrowdata["method"]) || trim($conditionrowdata["method"])=='') 
