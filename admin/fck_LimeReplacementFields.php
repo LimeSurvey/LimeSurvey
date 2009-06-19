@@ -575,4 +575,5 @@ $limereplacementoutput .= "\t\t</table>\n"
 			. "</html>";
 
 echo $limereplacementoutput;
+exit;
 ?>
