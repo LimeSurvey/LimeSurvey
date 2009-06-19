@@ -640,7 +640,6 @@ END;
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='none';\n"
       . "    document.getElementById('display$cd[0]').value='';\n"
-      . "    countDisplayedConditionnalQuestionsInGroup_".$cd[8]."--;\n"
       . "    }\n";
 			$cqcount++;
 		}
