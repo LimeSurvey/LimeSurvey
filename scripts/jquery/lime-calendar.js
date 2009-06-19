@@ -43,6 +43,7 @@ function dateUpdater() {
          parseddate=$.datepicker.parseDate( 'dd-mm-yy', $('#day'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#year'+thisid).val());
          $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
          $('#answer'+thisid).change();
+         $('#qattribute_answer'+thisid).val('');
     }
 }
 
