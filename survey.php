@@ -361,6 +361,20 @@ print <<<END
     
 END;
 
+// initialize the variables used to check if we should hide groupdescr
+// for groups having all questions hidden by conditions
+foreach ($conditions as $cd)
+{
+	$aUniqGroupIds[]=$cd[8];
+}
+$aUniqGroupIds=array_unique($aUniqGroupIds);
+foreach ($aUniqGroupIds as $agroupid)
+{
+	// in fact this is the count of questions that are displayed and have conditions set
+	// if there is at least one non conditional question, then hide/show will just do nothing
+	echo "\tcountDisplayedConditionnalQuestionsInGroup_{$agroupid}=0;\n";	
+}
+
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) || 
     (isset($array_filterqs) && is_array($array_filterqs)))
@@ -474,7 +488,6 @@ END;
 
 					if ($cd[6] == 'RX')
 					{ // the comparison right operand is a RegExp
-//						$java .= "document.getElementById('$idname') != null  && match_regex(document.getElementById('$idname').value,'$cd[3]')";
 						if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
     {
 							$localEvaluation = 'true';
@@ -542,7 +555,6 @@ END;
 		{
 			if ($cd[3] == '' || $cd[3] == ' ')
 			{ // empty == no answer is a specific case and must be evaluated differently
-//				$java .= "document.getElementById('$idname') != null && ( document.getElementById('$idname').value $cd[6] ' ' || !document.getElementById('$idname').value )";
 				$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
 			}
 	elseif($cd[4] == "M" || $cd[4] == "P")
@@ -566,25 +578,22 @@ END;
 					if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 					{ // Numerical questions
 
-//						$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
 						$java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
       }
       else
       {
-//						$java .= "document.getElementById('$idname') != null && document.getElementById('".$idname2."') !=null && document.getElementById('$idname').value $cd[6] document.getElementById('".$idname2."').value";
 						$java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
 	    }
 
 				}
 				elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $comparedtokenattr))
-				{ //TIBO
+				{ 
 					if ( isset($_SESSION['token']) &&
 							in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 					{
 						$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
 		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
-//							$java .= "document.getElementById('$idname') != null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
 		}
 		else
@@ -601,7 +610,6 @@ END;
 				{
         if ($cd[6] == 'RX')
         {
-//						$java .= "document.getElementById('$idname') != null  && match_regex(document.getElementById('$idname').value,'$cd[3]')";
 						$java .= "$JSsourceElt != null  && match_regex($JSsourceVal,'$cd[3]')";
         }
         else
@@ -609,12 +617,10 @@ END;
 		$cqidattributes = getQuestionAttributes($cd[1]);
 		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
 		{ // Numerical questions
-//							$java .= "document.getElementById('$idname') != null && parseFloat(document.getElementById('$idname').value) $cd[6] parseFloat('$cd[3]')";
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
 		}
 		else
 		{
-//							$java .= "document.getElementById('$idname') != null && document.getElementById('$idname').value $cd[6] '$cd[3]'";
 							$java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '$cd[3]'";
         }
       }
@@ -628,15 +634,13 @@ END;
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='';\n"
       . "    document.getElementById('display$cd[0]').value='on';\n"
-      . "    countDisplayedQuestionsInGroup[".$cd[8]."]++;\n"
-      . "    show_hide_group_$cd[8]();\n"
+      . "    countDisplayedConditionnalQuestionsInGroup_".$cd[8]."++;\n"
       . "    }\n"
       . "   else\n"
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='none';\n"
       . "    document.getElementById('display$cd[0]').value='';\n"
-      . "    countDisplayedQuestionsInGroup[".$cd[8]."]--;\n"
-      . "    show_hide_group_$cd[8]();\n"
+      . "    countDisplayedConditionnalQuestionsInGroup_".$cd[8]."--;\n"
       . "    }\n";
 			$cqcount++;
 		}
@@ -685,6 +689,10 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
+foreach ($aUniqGroupIds as $agroupid)
+{
+	echo "\t\tshow_hide_group_{$agroupid}();\n";	
+}
 echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
@@ -700,13 +708,6 @@ if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalida
 {
 	echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
-
-// initialize hide group script
-$initShowHideGroupScript = "<script type='text/javascript'>\n"
-	. "\tcountDisplayedQuestionsInGroup = new Array();\n"
-	."</script>\n";
-
-echo $initShowHideGroupScript;
 
 foreach ($_SESSION['grouplist'] as $gl)
 {
@@ -775,9 +776,9 @@ foreach ($_SESSION['grouplist'] as $gl)
 	{
 		$show_hide_group_script = "\n\n" 
 			."<script type='text/javascript'>\n"
-			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
 			."\tfunction show_hide_group_$gid() {\n"
-			."\t\tif (countDisplayedQuestionsInGroup[$gid] > 0) {\n"
+			."\t\tif (countDisplayedConditionnalQuestionsInGroup_$gid > 0) {\n"
 			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
 			."\t\t} else {\n"
 			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
@@ -787,10 +788,14 @@ foreach ($_SESSION['grouplist'] as $gl)
 			."\n";
 	}
 	else
-	{ // add an empty function if we shouldn't hide groupdescr
+	{ 
+		// The groupdescr will not be hidden
+		// * either because the option to hide it when all conditional
+		//   questions are hidden is not set
+		// * or if at least one question of the group is not conditionnal
 		$show_hide_group_script = "\n\n" 
 			."<script type='text/javascript'>\n"
-			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
+//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
 			."\tfunction show_hide_group_$gid() {\n"
 			."\t}\n"
 			."</script>\n"
