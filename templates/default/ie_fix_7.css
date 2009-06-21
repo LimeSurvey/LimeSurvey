@@ -67,11 +67,6 @@
     margin:0px 0px 0px 0px;
 }
 
-.numeric-multi label {
-    width:400px;
-    text-align:right;
-    
-}
 .multiple-short-txt td.answer,
 .date td.answer,
 .yes-no td.answer,
@@ -100,7 +95,7 @@ td.questionhelp {
 
 .numeric-multi ul li label {
     float: left;  
-    width: 60%;  
+    width: 50%;  
     text-align: right; 
 }
 
