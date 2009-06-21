@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Italian language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 17:16+0100\n"
-"PO-Revision-Date: 2009-06-15 17:17+0100\n"
+"POT-Creation-Date: 2009-06-21 13:20+0100\n"
+"PO-Revision-Date: 2009-06-21 13:21+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Edita Paulisic e Igor Dobraca <idobraca@veleri.hr>\n"
 "MIME-Version: 1.0\n"
@@ -149,10 +149,10 @@ msgstr "Inattiva"
 #: E:\_LimeSurvey\svn/common.php:1289
 #: E:\_LimeSurvey\svn/common.php:1314
 #: E:\_LimeSurvey\svn/common.php:1381
-#: E:\_LimeSurvey\svn/common.php:4177
-#: E:\_LimeSurvey\svn/common.php:4211
-#: E:\_LimeSurvey\svn/common.php:4250
-#: E:\_LimeSurvey\svn/common.php:4286
+#: E:\_LimeSurvey\svn/common.php:4176
+#: E:\_LimeSurvey\svn/common.php:4210
+#: E:\_LimeSurvey\svn/common.php:4249
+#: E:\_LimeSurvey\svn/common.php:4285
 msgid "Please Choose..."
 msgstr "Seleziona..."
 
@@ -160,8 +160,8 @@ msgstr "Seleziona..."
 #: E:\_LimeSurvey\svn/common.php:1290
 #: E:\_LimeSurvey\svn/common.php:1315
 #: E:\_LimeSurvey\svn/common.php:1382
-#: E:\_LimeSurvey\svn/common.php:4212
-#: E:\_LimeSurvey\svn/common.php:4251
+#: E:\_LimeSurvey\svn/common.php:4211
+#: E:\_LimeSurvey\svn/common.php:4250
 msgid "None"
 msgstr "Nessuno"
 
@@ -298,121 +298,115 @@ msgstr "e-mail di notifica dettagliata con codici risultati"
 msgid "Cannot be modified (Survey is active)"
 msgstr "Impossibile modificare (Sondaggio attivo)"
 
-#: E:\_LimeSurvey\svn/common.php:1733
+#: E:\_LimeSurvey\svn/common.php:1732
 msgid "Return to Survey Administration"
 msgstr "Amministrazione generale"
 
-#: E:\_LimeSurvey\svn/common.php:1739
+#: E:\_LimeSurvey\svn/common.php:1738
 msgid "Show summary information"
 msgstr "Riepilogo"
 
-#: E:\_LimeSurvey\svn/common.php:1745
-#: E:\_LimeSurvey\svn/common.php:1752
+#: E:\_LimeSurvey\svn/common.php:1744
+#: E:\_LimeSurvey\svn/common.php:1751
 msgid "Display Responses"
 msgstr "Mostra risposte"
 
-#: E:\_LimeSurvey\svn/common.php:1761
-#: E:\_LimeSurvey\svn/common.php:5474
+#: E:\_LimeSurvey\svn/common.php:1760
+#: E:\_LimeSurvey\svn/common.php:5473
 msgid "Please select a language:"
 msgstr "Seleziona una lingua:"
 
-#: E:\_LimeSurvey\svn/common.php:1766
-#: E:\_LimeSurvey\svn/common.php:5490
+#: E:\_LimeSurvey\svn/common.php:1765
+#: E:\_LimeSurvey\svn/common.php:5489
 msgid "Cancel"
 msgstr "Annulla"
 
-#: E:\_LimeSurvey\svn/common.php:1776
+#: E:\_LimeSurvey\svn/common.php:1775
 msgid "Display Last 50 Responses"
 msgstr "Ultime 50 risposte"
 
-#: E:\_LimeSurvey\svn/common.php:1780
+#: E:\_LimeSurvey\svn/common.php:1779
 msgid "Dataentry Screen for Survey"
 msgstr "Maschera inserimento manuale dati"
 
-#: E:\_LimeSurvey\svn/common.php:1784
+#: E:\_LimeSurvey\svn/common.php:1783
 msgid "Get statistics from these responses"
 msgstr "Statistiche"
 
-#: E:\_LimeSurvey\svn/common.php:1791
+#: E:\_LimeSurvey\svn/common.php:1790
 msgid "Export Results to Application"
 msgstr "Esporta risultati"
 
-#: E:\_LimeSurvey\svn/common.php:1796
+#: E:\_LimeSurvey\svn/common.php:1795
 msgid "Export results to a SPSS/PASW command file"
 msgstr "Esporta i risultati ad un file SPSS/PASW"
 
-#: E:\_LimeSurvey\svn/common.php:1798
+#: E:\_LimeSurvey\svn/common.php:1797
 msgid "Export result to a SPSS/PASW command file"
 msgstr "Esporta i risultati ad un file SPSS/PASW"
 
-#: E:\_LimeSurvey\svn/common.php:1801
-#: E:\_LimeSurvey\svn/common.php:1803
+#: E:\_LimeSurvey\svn/common.php:1800
+#: E:\_LimeSurvey\svn/common.php:1802
 msgid "Export results to a R data file"
 msgstr "Esporta i risultati ad un file R"
 
-#: E:\_LimeSurvey\svn/common.php:1807
+#: E:\_LimeSurvey\svn/common.php:1806
 msgid "Import answers from a deactivated survey table"
 msgstr "Importa risposte da un questionario disattivato "
 
-#: E:\_LimeSurvey\svn/common.php:1812
+#: E:\_LimeSurvey\svn/common.php:1811
 msgid "View Saved but not submitted Responses"
 msgstr "Visualizza risposte salvate ma non inviate"
 
-#: E:\_LimeSurvey\svn/common.php:1816
+#: E:\_LimeSurvey\svn/common.php:1815
 msgid "Import a VV survey file"
 msgstr "Importa un'indagine con formato VV."
 
-#: E:\_LimeSurvey\svn/common.php:1822
+#: E:\_LimeSurvey\svn/common.php:1821
 msgid "Export a VV survey file"
 msgstr "Esporta il  file VV delle risposte"
 
-#: E:\_LimeSurvey\svn/common.php:1837
+#: E:\_LimeSurvey\svn/common.php:1836
 msgid "Iterate survey"
 msgstr "Ripetere indagine"
 
-#: E:\_LimeSurvey\svn/common.php:1907
+#: E:\_LimeSurvey\svn/common.php:1906
 msgid "Preset"
 msgstr "Preset"
 
-#: E:\_LimeSurvey\svn/common.php:1908
+#: E:\_LimeSurvey\svn/common.php:1907
 #: E:\_LimeSurvey\svn/index.php:1766
 #: E:\_LimeSurvey\svn/index.php:1911
 msgid "Token"
 msgstr "Identificativi"
 
-#: E:\_LimeSurvey\svn/common.php:1909
+#: E:\_LimeSurvey\svn/common.php:1908
 msgid "Date Last Action"
 msgstr "Data ultimo evento"
 
-#: E:\_LimeSurvey\svn/common.php:1910
+#: E:\_LimeSurvey\svn/common.php:1909
 msgid "Date Started"
 msgstr "Data inizata"
 
-#: E:\_LimeSurvey\svn/common.php:1911
+#: E:\_LimeSurvey\svn/common.php:1910
 #: E:\_LimeSurvey\svn/printanswers.php:178
 msgid "IP Address"
 msgstr "Indirizzo IP"
 
-#: E:\_LimeSurvey\svn/common.php:1912
+#: E:\_LimeSurvey\svn/common.php:1911
 #: E:\_LimeSurvey\svn/printanswers.php:182
 msgid "Referring URL"
 msgstr "URL di riferimento"
 
-#: E:\_LimeSurvey\svn/common.php:1960
-#: E:\_LimeSurvey\svn/common.php:2078
-#: E:\_LimeSurvey\svn/common.php:2134
-#: E:\_LimeSurvey\svn/common.php:2311
-#: E:\_LimeSurvey\svn/common.php:2425
-#: E:\_LimeSurvey\svn/common.php:2435
-#: E:\_LimeSurvey\svn/qanda.php:841
-#: E:\_LimeSurvey\svn/qanda.php:1174
+#: E:\_LimeSurvey\svn/common.php:1959
+#: E:\_LimeSurvey\svn/common.php:2077
+#: E:\_LimeSurvey\svn/common.php:2133
+#: E:\_LimeSurvey\svn/common.php:2310
+#: E:\_LimeSurvey\svn/common.php:2424
+#: E:\_LimeSurvey\svn/common.php:2434
 #: E:\_LimeSurvey\svn/qanda.php:1439
-#: E:\_LimeSurvey\svn/qanda.php:1664
 #: E:\_LimeSurvey\svn/qanda.php:1748
-#: E:\_LimeSurvey\svn/qanda.php:1854
 #: E:\_LimeSurvey\svn/qanda.php:1972
-#: E:\_LimeSurvey\svn/qanda.php:2500
-#: E:\_LimeSurvey\svn/qanda.php:2894
 #: E:\_LimeSurvey\svn/qanda.php:3009
 #: E:\_LimeSurvey\svn/statistics_user.php:742
 #: E:\_LimeSurvey\svn/statistics_user.php:1402
@@ -421,9 +415,9 @@ msgstr "URL di riferimento"
 msgid "Other"
 msgstr "Altro"
 
-#: E:\_LimeSurvey\svn/common.php:2086
-#: E:\_LimeSurvey\svn/common.php:2092
-#: E:\_LimeSurvey\svn/common.php:2108
+#: E:\_LimeSurvey\svn/common.php:2085
+#: E:\_LimeSurvey\svn/common.php:2091
+#: E:\_LimeSurvey\svn/common.php:2107
 #: E:\_LimeSurvey\svn/qanda.php:3911
 #: E:\_LimeSurvey\svn/qanda.php:4423
 #: E:\_LimeSurvey\svn/qanda.php:4481
@@ -432,8 +426,8 @@ msgstr "Altro"
 msgid "Yes"
 msgstr "Sì"
 
-#: E:\_LimeSurvey\svn/common.php:2093
-#: E:\_LimeSurvey\svn/common.php:2109
+#: E:\_LimeSurvey\svn/common.php:2092
+#: E:\_LimeSurvey\svn/common.php:2108
 #: E:\_LimeSurvey\svn/qanda.php:3920
 #: E:\_LimeSurvey\svn/qanda.php:4425
 #: E:\_LimeSurvey\svn/qanda.php:4499
@@ -442,10 +436,10 @@ msgstr "Sì"
 msgid "No"
 msgstr "NO"
 
-#: E:\_LimeSurvey\svn/common.php:2094
-#: E:\_LimeSurvey\svn/common.php:2102
-#: E:\_LimeSurvey\svn/common.php:5108
-#: E:\_LimeSurvey\svn/common.php:5113
+#: E:\_LimeSurvey\svn/common.php:2093
+#: E:\_LimeSurvey\svn/common.php:2101
+#: E:\_LimeSurvey\svn/common.php:5107
+#: E:\_LimeSurvey\svn/common.php:5112
 #: E:\_LimeSurvey\svn/qanda.php:956
 #: E:\_LimeSurvey\svn/qanda.php:1326
 #: E:\_LimeSurvey\svn/qanda.php:1514
@@ -483,654 +477,654 @@ msgstr "NO"
 msgid "No answer"
 msgstr "Non so"
 
-#: E:\_LimeSurvey\svn/common.php:2100
+#: E:\_LimeSurvey\svn/common.php:2099
 #: E:\_LimeSurvey\svn/qanda.php:3988
 #: E:\_LimeSurvey\svn/statistics_user.php:1365
 msgid "Male"
 msgstr "Maschio"
 
-#: E:\_LimeSurvey\svn/common.php:2101
+#: E:\_LimeSurvey\svn/common.php:2100
 #: E:\_LimeSurvey\svn/qanda.php:3969
 #: E:\_LimeSurvey\svn/statistics_user.php:1364
 msgid "Female"
 msgstr "Femmina"
 
-#: E:\_LimeSurvey\svn/common.php:2110
+#: E:\_LimeSurvey\svn/common.php:2109
 #: E:\_LimeSurvey\svn/qanda.php:4424
 #: E:\_LimeSurvey\svn/qanda.php:4489
 #: E:\_LimeSurvey\svn/statistics_user.php:1248
 msgid "Uncertain"
 msgstr "Non so"
 
-#: E:\_LimeSurvey\svn/common.php:2116
+#: E:\_LimeSurvey\svn/common.php:2115
 #: E:\_LimeSurvey\svn/qanda.php:4706
 #: E:\_LimeSurvey\svn/qanda.php:4754
 #: E:\_LimeSurvey\svn/statistics_user.php:1265
 msgid "Increase"
 msgstr "Aumenta"
 
-#: E:\_LimeSurvey\svn/common.php:2117
+#: E:\_LimeSurvey\svn/common.php:2116
 #: E:\_LimeSurvey\svn/qanda.php:4708
 #: E:\_LimeSurvey\svn/qanda.php:4777
 #: E:\_LimeSurvey\svn/statistics_user.php:1267
 msgid "Decrease"
 msgstr "Diminuisci"
 
-#: E:\_LimeSurvey\svn/common.php:2118
+#: E:\_LimeSurvey\svn/common.php:2117
 #: E:\_LimeSurvey\svn/qanda.php:4707
 #: E:\_LimeSurvey\svn/qanda.php:4765
 #: E:\_LimeSurvey\svn/statistics_user.php:1266
 msgid "Same"
 msgstr "Uguale"
 
-#: E:\_LimeSurvey\svn/common.php:2328
+#: E:\_LimeSurvey\svn/common.php:2327
 msgid "Comment"
 msgstr "Commento"
 
-#: E:\_LimeSurvey\svn/common.php:2612
+#: E:\_LimeSurvey\svn/common.php:2611
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Attenzione: Javascript è disabilitato nel tuo browser. Potrebbe non essere possibile rispondere a tutte le domande del questionario. Verifica le impostazioni del  browser."
 
-#: E:\_LimeSurvey\svn/common.php:2627
+#: E:\_LimeSurvey\svn/common.php:2626
 msgid "There are no questions in this survey"
 msgstr "Non vi sono domande nel questionario"
 
-#: E:\_LimeSurvey\svn/common.php:2631
+#: E:\_LimeSurvey\svn/common.php:2630
 msgid "There is 1 question in this survey"
 msgstr "Vi è 1 domanda in questo questionario."
 
-#: E:\_LimeSurvey\svn/common.php:2635
+#: E:\_LimeSurvey\svn/common.php:2634
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Vi sono {NUMBEROFQUESTIONS} domande in questa indagine."
 
-#: E:\_LimeSurvey\svn/common.php:2658
+#: E:\_LimeSurvey\svn/common.php:2657
 #: E:\_LimeSurvey\svn/index.php:2411
 msgid "Submit"
 msgstr "Invia"
 
-#: E:\_LimeSurvey\svn/common.php:2684
+#: E:\_LimeSurvey\svn/common.php:2683
 msgid "A Note On Privacy"
 msgstr "Nota sulla privacy"
 
-#: E:\_LimeSurvey\svn/common.php:2684
+#: E:\_LimeSurvey\svn/common.php:2683
 msgid "This survey is anonymous."
 msgstr "Questa indagine è anonima."
 
-#: E:\_LimeSurvey\svn/common.php:2684
+#: E:\_LimeSurvey\svn/common.php:2683
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Il record delle risposte fornite non contiene alcuna informazione che ti identifichi a meno che non sia prevista, all'interno del questionario, qualche domanda che possa identificarti. Anche se hai risposto ad un questionario con identificativi di accesso non vi è alcun collegamento tra questi e le tue risposte. Gli identificativi sono gestiti in un differente database aggiornato solo per tener conto se hai completato o meno il questionario. Non vi è alcuna possibilità di collegare gli identificativi alle tue risposte."
 
-#: E:\_LimeSurvey\svn/common.php:2694
+#: E:\_LimeSurvey\svn/common.php:2693
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Procedere nell'eliminazione di tutte le risposte?"
 
-#: E:\_LimeSurvey\svn/common.php:2695
+#: E:\_LimeSurvey\svn/common.php:2694
 msgid "Exit and Clear Survey"
 msgstr "Azzera e esci dal questionario"
 
-#: E:\_LimeSurvey\svn/common.php:2719
-#: E:\_LimeSurvey\svn/common.php:2725
+#: E:\_LimeSurvey\svn/common.php:2718
+#: E:\_LimeSurvey\svn/common.php:2724
 #: E:\_LimeSurvey\svn/index.php:557
 #: E:\_LimeSurvey\svn/index.php:561
 msgid "Load Unfinished Survey"
 msgstr "Carica questionario non terminato"
 
-#: E:\_LimeSurvey\svn/common.php:2720
-#: E:\_LimeSurvey\svn/common.php:2733
+#: E:\_LimeSurvey\svn/common.php:2719
+#: E:\_LimeSurvey\svn/common.php:2732
 msgid "Resume Later"
 msgstr "Riprendere successivamente"
 
-#: E:\_LimeSurvey\svn/common.php:2795
+#: E:\_LimeSurvey\svn/common.php:2794
 msgid "Thank You!"
 msgstr "Grazie!"
 
-#: E:\_LimeSurvey\svn/common.php:2795
+#: E:\_LimeSurvey\svn/common.php:2794
 msgid "You have completed answering the questions in this survey."
 msgstr "Hai completato le risposte alle domande presenti nel questionario."
 
-#: E:\_LimeSurvey\svn/common.php:2795
+#: E:\_LimeSurvey\svn/common.php:2794
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Fai clic su \"Invia\" per completare il processo e salvare le risposte. "
 
-#: E:\_LimeSurvey\svn/common.php:2801
+#: E:\_LimeSurvey\svn/common.php:2800
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Se vuoi controllare le risposte date e, eventualmente, cambiarne qualcuna fai clic sul pulsante \"Indietro\" fino a che non trovi la/le risposta/e da modificare."
 
-#: E:\_LimeSurvey\svn/common.php:2830
+#: E:\_LimeSurvey\svn/common.php:2829
 msgid "Answers Cleared"
 msgstr "Risposte azzerate"
 
-#: E:\_LimeSurvey\svn/common.php:2837
-#: E:\_LimeSurvey\svn/common.php:2845
+#: E:\_LimeSurvey\svn/common.php:2836
+#: E:\_LimeSurvey\svn/common.php:2844
 msgid "Restart this Survey"
 msgstr "Avvia di nuovo l'indagine"
 
-#: E:\_LimeSurvey\svn/common.php:2848
+#: E:\_LimeSurvey\svn/common.php:2847
 #: E:\_LimeSurvey\svn/index.php:594
 #: E:\_LimeSurvey\svn/index.php:620
 #: E:\_LimeSurvey\svn/register.php:154
 msgid "Close this Window"
 msgstr "Chiudi finestra"
 
-#: E:\_LimeSurvey\svn/common.php:2850
+#: E:\_LimeSurvey\svn/common.php:2849
 msgid "Save Your Unfinished Survey"
 msgstr "Salva il tuo questionario non terminato"
 
-#: E:\_LimeSurvey\svn/common.php:2851
+#: E:\_LimeSurvey\svn/common.php:2850
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Scegliere un nome ed una password per questo questionario e fare clic su Salva"
 
-#: E:\_LimeSurvey\svn/common.php:2851
+#: E:\_LimeSurvey\svn/common.php:2850
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "I questionario sarà salvato con il nome e la password prescelti; potrà successivamente essere completato registrandosi con con lo stesso nome e password."
 
-#: E:\_LimeSurvey\svn/common.php:2851
+#: E:\_LimeSurvey\svn/common.php:2850
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Se fornisci un indirizzo e-mail, ti sarà inviato un messaggio con i dettagli."
 
-#: E:\_LimeSurvey\svn/common.php:2859
+#: E:\_LimeSurvey\svn/common.php:2858
 msgid "Return To Survey"
 msgstr "Ritorna al questionario"
 
-#: E:\_LimeSurvey\svn/common.php:2864
+#: E:\_LimeSurvey\svn/common.php:2863
 #: E:\_LimeSurvey\svn/save.php:322
 msgid "Name"
 msgstr "Nome"
 
-#: E:\_LimeSurvey\svn/common.php:2867
-#: E:\_LimeSurvey\svn/common.php:2893
+#: E:\_LimeSurvey\svn/common.php:2866
+#: E:\_LimeSurvey\svn/common.php:2892
 #: E:\_LimeSurvey\svn/save.php:323
 msgid "Password"
 msgstr "Password"
 
-#: E:\_LimeSurvey\svn/common.php:2870
+#: E:\_LimeSurvey\svn/common.php:2869
 msgid "Repeat Password"
 msgstr "Ripeti la password"
 
-#: E:\_LimeSurvey\svn/common.php:2873
+#: E:\_LimeSurvey\svn/common.php:2872
 msgid "Your Email"
 msgstr "Indirizzo e-mail"
 
-#: E:\_LimeSurvey\svn/common.php:2878
-#: E:\_LimeSurvey\svn/common.php:2898
-#: E:\_LimeSurvey\svn/common.php:2949
+#: E:\_LimeSurvey\svn/common.php:2877
+#: E:\_LimeSurvey\svn/common.php:2897
+#: E:\_LimeSurvey\svn/common.php:2948
 #: E:\_LimeSurvey\svn/index.php:1786
 #: E:\_LimeSurvey\svn/index.php:1938
 msgid "Security Question"
 msgstr "Domanda di Sicurezza"
 
-#: E:\_LimeSurvey\svn/common.php:2881
+#: E:\_LimeSurvey\svn/common.php:2880
 msgid "Save Now"
 msgstr "Salva"
 
-#: E:\_LimeSurvey\svn/common.php:2886
+#: E:\_LimeSurvey\svn/common.php:2885
 msgid "Load A Previously Saved Survey"
 msgstr "Riprendi il questionario non completato e precedentemente salvato"
 
-#: E:\_LimeSurvey\svn/common.php:2887
+#: E:\_LimeSurvey\svn/common.php:2886
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Puoi caricare un questionario precedentemente salvato da questa schermata."
 
-#: E:\_LimeSurvey\svn/common.php:2887
+#: E:\_LimeSurvey\svn/common.php:2886
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Scrivi il nome  e la password che hai utilizzato per salvare il questionario."
 
-#: E:\_LimeSurvey\svn/common.php:2890
+#: E:\_LimeSurvey\svn/common.php:2889
 msgid "Saved name"
 msgstr "Nome salvato"
 
-#: E:\_LimeSurvey\svn/common.php:2903
+#: E:\_LimeSurvey\svn/common.php:2902
 msgid "Load Now"
 msgstr "Riprendi adesso"
 
-#: E:\_LimeSurvey\svn/common.php:2908
+#: E:\_LimeSurvey\svn/common.php:2907
 msgid "You must be registered to complete this survey"
 msgstr "Devi essere registrato per partecipare a questa indagine"
 
-#: E:\_LimeSurvey\svn/common.php:2909
+#: E:\_LimeSurvey\svn/common.php:2908
 msgid "You may register for this survey if you wish to take part."
 msgstr "Ti puoi registrare per questa indagine se desideri parteciparvi."
 
-#: E:\_LimeSurvey\svn/common.php:2909
+#: E:\_LimeSurvey\svn/common.php:2908
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Scrivi i tuoi dati qui sotto. Ti verrà inviata una e-mail contenente il link che ti consentirà di partecipare a questa indagine."
 
-#: E:\_LimeSurvey\svn/common.php:2916
-#: E:\_LimeSurvey\svn/common.php:6060
+#: E:\_LimeSurvey\svn/common.php:2915
+#: E:\_LimeSurvey\svn/common.php:6059
 msgid "First Name"
 msgstr "Nome"
 
-#: E:\_LimeSurvey\svn/common.php:2923
-#: E:\_LimeSurvey\svn/common.php:6061
+#: E:\_LimeSurvey\svn/common.php:2922
+#: E:\_LimeSurvey\svn/common.php:6060
 msgid "Last Name"
 msgstr "Cognome"
 
-#: E:\_LimeSurvey\svn/common.php:2930
+#: E:\_LimeSurvey\svn/common.php:2929
 msgid "Email Address"
 msgstr "Indirizzo e-mail"
 
-#: E:\_LimeSurvey\svn/common.php:2974
+#: E:\_LimeSurvey\svn/common.php:2973
 #: E:\_LimeSurvey\svn/index.php:1729
 #: E:\_LimeSurvey\svn/index.php:1790
 #: E:\_LimeSurvey\svn/index.php:1941
 msgid "Continue"
 msgstr "Continua"
 
-#: E:\_LimeSurvey\svn/common.php:2981
+#: E:\_LimeSurvey\svn/common.php:2980
 msgid "Your Assessment"
 msgstr "La tua valutazione"
 
+#: E:\_LimeSurvey\svn/common.php:3194
 #: E:\_LimeSurvey\svn/common.php:3195
-#: E:\_LimeSurvey\svn/common.php:3196
 msgid "Sort answers alphabetically"
 msgstr "Ordina le risposte in modo alfabetico"
 
-#: E:\_LimeSurvey\svn/common.php:3200
+#: E:\_LimeSurvey\svn/common.php:3199
 msgid "The percentage width of the answer column"
 msgstr "Percentuale di lunghezza della colonna della risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3201
+#: E:\_LimeSurvey\svn/common.php:3200
 msgid "Answer width"
 msgstr "Lunghezza risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3205
+#: E:\_LimeSurvey\svn/common.php:3204
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "Filtra un serie di  risposte da una domande a risposta multipla"
 
-#: E:\_LimeSurvey\svn/common.php:3206
+#: E:\_LimeSurvey\svn/common.php:3205
 msgid "Array filter"
 msgstr "Filtro array"
 
+#: E:\_LimeSurvey\svn/common.php:3209
 #: E:\_LimeSurvey\svn/common.php:3210
-#: E:\_LimeSurvey\svn/common.php:3211
 msgid "Category Separator"
 msgstr "Separatore categorie"
 
-#: E:\_LimeSurvey\svn/common.php:3215
+#: E:\_LimeSurvey\svn/common.php:3214
 msgid "Filter the available answers by this value"
 msgstr "Filtra le risposte disponibili con questo valore"
 
-#: E:\_LimeSurvey\svn/common.php:3216
+#: E:\_LimeSurvey\svn/common.php:3215
 msgid "Code filter"
 msgstr "Codifica filtro"
 
-#: E:\_LimeSurvey\svn/common.php:3220
+#: E:\_LimeSurvey\svn/common.php:3219
 msgid "Number of columns to display"
 msgstr "Il numero delle colonne da visualizzare"
 
-#: E:\_LimeSurvey\svn/common.php:3221
+#: E:\_LimeSurvey\svn/common.php:3220
 msgid "Display columns"
 msgstr "Mostra le colonne"
 
-#: E:\_LimeSurvey\svn/common.php:3225
+#: E:\_LimeSurvey\svn/common.php:3224
 msgid "How many rows to display"
 msgstr "Quante righe vuoi vedere"
 
-#: E:\_LimeSurvey\svn/common.php:3226
+#: E:\_LimeSurvey\svn/common.php:3225
 msgid "Display rows"
 msgstr "Mostra righe"
 
-#: E:\_LimeSurvey\svn/common.php:3230
+#: E:\_LimeSurvey\svn/common.php:3229
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Nascondi i suggerimenti che normalmente sono visualizzati assieme alla domanda"
 
-#: E:\_LimeSurvey\svn/common.php:3231
+#: E:\_LimeSurvey\svn/common.php:3230
 msgid "Hide tip"
 msgstr "Nascondi suggerimenti"
 
-#: E:\_LimeSurvey\svn/common.php:3235
+#: E:\_LimeSurvey\svn/common.php:3234
 msgid "Limit the number of possible answers"
 msgstr "Limita il numero delle possibili risposte"
 
-#: E:\_LimeSurvey\svn/common.php:3236
+#: E:\_LimeSurvey\svn/common.php:3235
 msgid "Maximum answers"
 msgstr "Risposta massima"
 
-#: E:\_LimeSurvey\svn/common.php:3240
+#: E:\_LimeSurvey\svn/common.php:3239
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Valore massimo della somma dei valori relativi all'input numerico multiplo"
 
-#: E:\_LimeSurvey\svn/common.php:3241
+#: E:\_LimeSurvey\svn/common.php:3240
 msgid "Maximum sum value"
 msgstr "Massimo valore della somma"
 
-#: E:\_LimeSurvey\svn/common.php:3245
+#: E:\_LimeSurvey\svn/common.php:3244
 msgid "Maximum characters allowed"
 msgstr "Numero max caratteri ammessi"
 
-#: E:\_LimeSurvey\svn/common.php:3246
+#: E:\_LimeSurvey\svn/common.php:3245
 msgid "Maximum characters"
 msgstr "Max caratteri"
 
-#: E:\_LimeSurvey\svn/common.php:3250
+#: E:\_LimeSurvey\svn/common.php:3249
 msgid "Ensure a minimum number of possible answers"
 msgstr "Assicurare un numero minimo di possibili risposte"
 
-#: E:\_LimeSurvey\svn/common.php:3251
+#: E:\_LimeSurvey\svn/common.php:3250
 msgid "Minimum answers"
 msgstr "Risposta minima"
 
-#: E:\_LimeSurvey\svn/common.php:3255
+#: E:\_LimeSurvey\svn/common.php:3254
 msgid "Make the \"other comment\" field mandatory when the \"other\" field has been marked"
 msgstr "Fare che \"altro commento\" campo obbligatorio quando l' \"altro\" campo è stato marcato"
 
-#: E:\_LimeSurvey\svn/common.php:3256
+#: E:\_LimeSurvey\svn/common.php:3255
 msgid "Other comment mandatory"
 msgstr "Altro commento obbligatorio"
 
-#: E:\_LimeSurvey\svn/common.php:3260
+#: E:\_LimeSurvey\svn/common.php:3259
 msgid "Allow only numerical input"
 msgstr "Permette inserimento solo numerico"
 
-#: E:\_LimeSurvey\svn/common.php:3261
+#: E:\_LimeSurvey\svn/common.php:3260
 msgid "Numbers only"
 msgstr "Solo numeri"
 
-#: E:\_LimeSurvey\svn/common.php:3266
+#: E:\_LimeSurvey\svn/common.php:3265
 msgid "Allow only numerical input for `Other` text"
 msgstr "Permette inserimento solo numerico in  campo `Altro`"
 
-#: E:\_LimeSurvey\svn/common.php:3267
+#: E:\_LimeSurvey\svn/common.php:3266
 msgid "Numbers only for `Other`"
 msgstr "Solo numeri in campo `Altro`"
 
-#: E:\_LimeSurvey\svn/common.php:3272
+#: E:\_LimeSurvey\svn/common.php:3271
 msgid "Present answers in random order"
 msgstr "Presentare le risposte in ordine casuale"
 
-#: E:\_LimeSurvey\svn/common.php:3273
+#: E:\_LimeSurvey\svn/common.php:3272
 msgid "Random answer order"
 msgstr "Ordine risposte casuale"
 
-#: E:\_LimeSurvey\svn/common.php:3277
+#: E:\_LimeSurvey\svn/common.php:3276
 msgid "Width of text input box"
 msgstr "Larghezza della input box testuale"
 
-#: E:\_LimeSurvey\svn/common.php:3278
+#: E:\_LimeSurvey\svn/common.php:3277
 msgid "Input box width"
 msgstr "Larghezza input box"
 
-#: E:\_LimeSurvey\svn/common.php:3282
+#: E:\_LimeSurvey\svn/common.php:3281
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "La somma degli importi multipli numerici deve esser uguale a questo valore"
 
-#: E:\_LimeSurvey\svn/common.php:3283
+#: E:\_LimeSurvey\svn/common.php:3282
 msgid "Equals sum value"
 msgstr "Di valore somma uguali"
 
-#: E:\_LimeSurvey\svn/common.php:3287
+#: E:\_LimeSurvey\svn/common.php:3286
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Gli importi multipli numerici devono esser maggiori di questo valore"
 
-#: E:\_LimeSurvey\svn/common.php:3288
+#: E:\_LimeSurvey\svn/common.php:3287
 msgid "Minimum sum value"
 msgstr "Valore minimo somma"
 
+#: E:\_LimeSurvey\svn/common.php:3291
 #: E:\_LimeSurvey\svn/common.php:3292
-#: E:\_LimeSurvey\svn/common.php:3293
 msgid "Use slider layout"
 msgstr "Usa il layout tipo slider"
 
+#: E:\_LimeSurvey\svn/common.php:3296
 #: E:\_LimeSurvey\svn/common.php:3297
-#: E:\_LimeSurvey\svn/common.php:3298
 msgid "Slider minimum value"
 msgstr "Minimo valore dello slider"
 
+#: E:\_LimeSurvey\svn/common.php:3301
 #: E:\_LimeSurvey\svn/common.php:3302
-#: E:\_LimeSurvey\svn/common.php:3303
 msgid "Slider maximum value"
 msgstr "Massimo valore dello slider"
 
+#: E:\_LimeSurvey\svn/common.php:3306
 #: E:\_LimeSurvey\svn/common.php:3307
-#: E:\_LimeSurvey\svn/common.php:3308
 msgid "Slider accuracy"
 msgstr "Accuratezza dello slider"
 
+#: E:\_LimeSurvey\svn/common.php:3311
 #: E:\_LimeSurvey\svn/common.php:3312
-#: E:\_LimeSurvey\svn/common.php:3313
 msgid "Slider initial value"
 msgstr "Valore iniziale dello slider"
 
-#: E:\_LimeSurvey\svn/common.php:3317
+#: E:\_LimeSurvey\svn/common.php:3316
 msgid "Add a prefix to the answer field"
 msgstr "Aggiungi un prefisso al campo della risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3318
+#: E:\_LimeSurvey\svn/common.php:3317
 msgid "Answer prefix"
 msgstr "Prefisso risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3322
+#: E:\_LimeSurvey\svn/common.php:3321
 msgid "Add a suffix to the answer field"
 msgstr "Aggiungi un suffisso al campo della risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3323
+#: E:\_LimeSurvey\svn/common.php:3322
 msgid "Answer suffix"
 msgstr "Suffisso risposta"
 
-#: E:\_LimeSurvey\svn/common.php:3327
+#: E:\_LimeSurvey\svn/common.php:3326
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Usare le caselle selezionabili al posto del popup calendario "
 
-#: E:\_LimeSurvey\svn/common.php:3328
+#: E:\_LimeSurvey\svn/common.php:3327
 msgid "Display select boxes"
 msgstr "Mostra le caselle selezionate"
 
-#: E:\_LimeSurvey\svn/common.php:3332
+#: E:\_LimeSurvey\svn/common.php:3331
 msgid "Minimum year value for dropdown list"
 msgstr "V alroe minimo annuale per la lista dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3333
+#: E:\_LimeSurvey\svn/common.php:3332
 msgid "Minimum dropdown year"
 msgstr "Minimo annuale dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3337
+#: E:\_LimeSurvey\svn/common.php:3336
 msgid "Maximum year value for dropdown list"
 msgstr "Massimo valore annuale per la lista dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3338
+#: E:\_LimeSurvey\svn/common.php:3337
 msgid "Maximum dropdown year"
 msgstr "Massimo annuale dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3342
+#: E:\_LimeSurvey\svn/common.php:3341
 msgid "Excludes all other options if this is selected"
 msgstr "Escludi tutte le altre opzioni se questo è selezionato"
 
-#: E:\_LimeSurvey\svn/common.php:3343
+#: E:\_LimeSurvey\svn/common.php:3342
 msgid "Exclusive option"
 msgstr "Opzione esclusiva"
 
-#: E:\_LimeSurvey\svn/common.php:3347
+#: E:\_LimeSurvey\svn/common.php:3346
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Valore massimo per l'array del tipo di domanda (multi flessibile)"
 
-#: E:\_LimeSurvey\svn/common.php:3348
+#: E:\_LimeSurvey\svn/common.php:3347
 msgid "Maximum value"
 msgstr "Valore massimo"
 
-#: E:\_LimeSurvey\svn/common.php:3352
+#: E:\_LimeSurvey\svn/common.php:3351
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Valore minimo per l'array del tipo di domanda (multi flessibile)"
 
-#: E:\_LimeSurvey\svn/common.php:3353
+#: E:\_LimeSurvey\svn/common.php:3352
 msgid "Minimum value"
 msgstr "Valore minimo"
 
-#: E:\_LimeSurvey\svn/common.php:3357
+#: E:\_LimeSurvey\svn/common.php:3356
 msgid "Step value for array (multi-flexible) question type"
 msgstr "Valore passo per l'array del tipo di domanda (multi flessibile)"
 
-#: E:\_LimeSurvey\svn/common.php:3358
+#: E:\_LimeSurvey\svn/common.php:3357
 msgid "Step value"
 msgstr "Valore passo"
 
-#: E:\_LimeSurvey\svn/common.php:3362
+#: E:\_LimeSurvey\svn/common.php:3361
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "Usare layout del Checkbox per l'array del tipo di domanda (multi flessibile)"
 
-#: E:\_LimeSurvey\svn/common.php:3363
+#: E:\_LimeSurvey\svn/common.php:3362
 msgid "Checkbox layout"
 msgstr "Controlla i dati"
 
-#: E:\_LimeSurvey\svn/common.php:3367
+#: E:\_LimeSurvey\svn/common.php:3366
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "Usa il dual Dropdown al posto del dual Scale"
 
-#: E:\_LimeSurvey\svn/common.php:3368
+#: E:\_LimeSurvey\svn/common.php:3367
 msgid "Dual dropdown"
 msgstr "Dual dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3372
+#: E:\_LimeSurvey\svn/common.php:3371
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefisso|Suffisso per le liste dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3373
+#: E:\_LimeSurvey\svn/common.php:3372
 msgid "Prefix|Suffix"
 msgstr "Prefisso|Suffisso"
 
-#: E:\_LimeSurvey\svn/common.php:3377
+#: E:\_LimeSurvey\svn/common.php:3376
 msgid "Header for scale A"
 msgstr "Testata per scala A"
 
-#: E:\_LimeSurvey\svn/common.php:3378
+#: E:\_LimeSurvey\svn/common.php:3377
 msgid "Header scale A"
 msgstr "Testata scala A"
 
-#: E:\_LimeSurvey\svn/common.php:3382
+#: E:\_LimeSurvey\svn/common.php:3381
 msgid "Header for scale B"
 msgstr "Testata per scala A"
 
-#: E:\_LimeSurvey\svn/common.php:3383
+#: E:\_LimeSurvey\svn/common.php:3382
 msgid "Header scale B"
 msgstr "Testata scala B"
 
-#: E:\_LimeSurvey\svn/common.php:3387
+#: E:\_LimeSurvey\svn/common.php:3386
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Risposta-Separatore|Inter-Dropdown lista-Separatore per liste dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3388
+#: E:\_LimeSurvey\svn/common.php:3387
 msgid "Dropdown separators"
 msgstr "Separatori Dropdown"
 
-#: E:\_LimeSurvey\svn/common.php:3392
+#: E:\_LimeSurvey\svn/common.php:3391
 msgid "Replaces the 'other' label with text"
 msgstr "Rimpiazza l'etichetta 'altro' con testo"
 
-#: E:\_LimeSurvey\svn/common.php:3393
+#: E:\_LimeSurvey\svn/common.php:3392
 msgid "\"Other\" caption"
 msgstr "\"Altro\" intestazione"
 
-#: E:\_LimeSurvey\svn/common.php:3397
+#: E:\_LimeSurvey\svn/common.php:3396
 msgid "Show statistics of a certain question to the user"
 msgstr "Mostra statistiche di un certa domanda all'utente"
 
-#: E:\_LimeSurvey\svn/common.php:3398
+#: E:\_LimeSurvey\svn/common.php:3397
 msgid "Show in public statistics"
 msgstr "Mostra in statistiche pubbliche"
 
-#: E:\_LimeSurvey\svn/common.php:3402
+#: E:\_LimeSurvey\svn/common.php:3401
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "Identificatore SGQA per usare il totale della domanda precedente come massimo di questa domanda"
 
-#: E:\_LimeSurvey\svn/common.php:3403
+#: E:\_LimeSurvey\svn/common.php:3402
 msgid "Max value from SGQA"
 msgstr "Massimo valore da SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3407
+#: E:\_LimeSurvey\svn/common.php:3406
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "Identificatore SGQA per usare il totale della domanda precedente come minimo di questa domanda"
 
-#: E:\_LimeSurvey\svn/common.php:3408
+#: E:\_LimeSurvey\svn/common.php:3407
 msgid "Min value from SGQA"
 msgstr "Minimo valore da SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3412
+#: E:\_LimeSurvey\svn/common.php:3411
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "Identificatore SGQA per usare il di una precedente domanda come totale per questa domanda"
 
-#: E:\_LimeSurvey\svn/common.php:3413
+#: E:\_LimeSurvey\svn/common.php:3412
 msgid "Value equals SGQA"
 msgstr "Valore eguaglia SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3417
+#: E:\_LimeSurvey\svn/common.php:3416
 msgid "Insert a page break before this question in printable view by setting this to 1."
 msgstr "Inserisci un salto pagina prima di questa domanda, nella vista stampabile, settando questo a 1."
 
-#: E:\_LimeSurvey\svn/common.php:3418
+#: E:\_LimeSurvey\svn/common.php:3417
 msgid "Insert page break in printable view"
 msgstr "Inserire un salto pagina nella vista stampabile"
 
-#: E:\_LimeSurvey\svn/common.php:3422
+#: E:\_LimeSurvey\svn/common.php:3421
 msgid "1=nominal 2=ordinal 3=scale."
 msgstr "1=nominale 2=ordinale 3=scala."
 
-#: E:\_LimeSurvey\svn/common.php:3423
+#: E:\_LimeSurvey\svn/common.php:3422
 msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 msgstr "Esportazione tipo di scala 1=nominale 2=ordinale 3=scala."
 
-#: E:\_LimeSurvey\svn/common.php:3566
+#: E:\_LimeSurvey\svn/common.php:3565
 msgid "Version"
 msgstr "Versione"
 
-#: E:\_LimeSurvey\svn/common.php:3575
+#: E:\_LimeSurvey\svn/common.php:3574
 msgid "Online Manual"
 msgstr "Manuale on line "
 
-#: E:\_LimeSurvey\svn/common.php:3578
+#: E:\_LimeSurvey\svn/common.php:3577
 msgid "Support this project - Donate to "
 msgstr "Supporta questo progetto: Dona a "
 
-#: E:\_LimeSurvey\svn/common.php:3581
+#: E:\_LimeSurvey\svn/common.php:3580
 msgid "Visit our website!"
 msgstr "Visita il nostro sito web!"
 
-#: E:\_LimeSurvey\svn/common.php:3711
+#: E:\_LimeSurvey\svn/common.php:3710
 msgid "Email was not sent because demo-mode is activated."
 msgstr "L' E-Mail non è stata inviata dato che si stà ancora operando in un ambiente DEMO (modalità)"
 
-#: E:\_LimeSurvey\svn/common.php:4060
-#: E:\_LimeSurvey\svn/common.php:4066
+#: E:\_LimeSurvey\svn/common.php:4059
+#: E:\_LimeSurvey\svn/common.php:4065
 msgid "Executing"
 msgstr "In esecuzione"
 
-#: E:\_LimeSurvey\svn/common.php:4060
+#: E:\_LimeSurvey\svn/common.php:4059
 msgid "Failed! Reason: "
 msgstr "Fallito! Ragione:"
 
-#: E:\_LimeSurvey\svn/common.php:4066
+#: E:\_LimeSurvey\svn/common.php:4065
 msgid "Success!"
 msgstr "Riuscito!"
 
-#: E:\_LimeSurvey\svn/common.php:5122
+#: E:\_LimeSurvey\svn/common.php:5121
 #: E:\_LimeSurvey\svn/index.php:470
 #: E:\_LimeSurvey\svn/save.php:581
 msgid "Error"
 msgstr "Errore"
 
-#: E:\_LimeSurvey\svn/common.php:6062
+#: E:\_LimeSurvey\svn/common.php:6061
 msgid "Email address"
 msgstr "Indirizzo e-mail"
 
-#: E:\_LimeSurvey\svn/common.php:6063
+#: E:\_LimeSurvey\svn/common.php:6062
 msgid "Token code"
 msgstr "Identificativo"
 
-#: E:\_LimeSurvey\svn/common.php:6064
+#: E:\_LimeSurvey\svn/common.php:6063
 msgid "Language code"
 msgstr "Codice della lingua"
 
-#: E:\_LimeSurvey\svn/common.php:6065
+#: E:\_LimeSurvey\svn/common.php:6064
 msgid "Invitation sent date"
 msgstr "Data d'invio dell'invito"
 
-#: E:\_LimeSurvey\svn/common.php:6066
+#: E:\_LimeSurvey\svn/common.php:6065
 msgid "Last Reminder sent date"
 msgstr "Data d'invio dell'sollecito"
 
-#: E:\_LimeSurvey\svn/common.php:6067
+#: E:\_LimeSurvey\svn/common.php:6066
 msgid "Total numbers of sent reminders"
 msgstr "Numero totale di promemoria inviati"
 
-#: E:\_LimeSurvey\svn/common.php:6087
+#: E:\_LimeSurvey\svn/common.php:6086
 #, php-format
 msgid "Attribute %s"
 msgstr "Attributo %s"
@@ -1560,6 +1554,15 @@ msgstr "Seleziona tutti i campi"
 #: E:\_LimeSurvey\svn/qanda.php:828
 msgid "Please check at least one item."
 msgstr "Si prega di selezionare almeno una opzione/punto"
+
+#: E:\_LimeSurvey\svn/qanda.php:841
+#: E:\_LimeSurvey\svn/qanda.php:1174
+#: E:\_LimeSurvey\svn/qanda.php:1664
+#: E:\_LimeSurvey\svn/qanda.php:1854
+#: E:\_LimeSurvey\svn/qanda.php:2500
+#: E:\_LimeSurvey\svn/qanda.php:2894
+msgid "Other:"
+msgstr "Altro:"
 
 #: E:\_LimeSurvey\svn/qanda.php:843
 #, php-format
@@ -2230,12 +2233,12 @@ msgstr "Passa alla modalità accesso-non pubblico"
 msgid "No, thanks."
 msgstr "No, grazie."
 
-#: E:\_LimeSurvey\svn/admin/admin.php:567
-#: E:\_LimeSurvey\svn/admin/admin.php:580
+#: E:\_LimeSurvey\svn/admin/admin.php:572
+#: E:\_LimeSurvey\svn/admin/admin.php:585
 msgid "LimeSurvey Online Manual"
 msgstr "Manuale on line di LimeSurvey"
 
-#: E:\_LimeSurvey\svn/admin/admin.php:628
+#: E:\_LimeSurvey\svn/admin/admin.php:633
 msgid "Help"
 msgstr "Guida in linea"
 
@@ -2711,8 +2714,8 @@ msgid "Edit this condition"
 msgstr "Modifica questa condizione"
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:1577
-msgid "Always display this condition"
-msgstr "Mostra sempre questa condizione"
+msgid "This question is always shown."
+msgstr "Questa domanda viene sempre visualizzata."
 
 #: E:\_LimeSurvey\svn/admin/conditionshandling.php:1616
 msgid "Copy the selected conditions to"
@@ -2791,7 +2794,7 @@ msgstr "Aggiorna condizione"
 msgid "Clear"
 msgstr "Annulla"
 
-#: E:\_LimeSurvey\svn/admin/database.php:119
+#: E:\_LimeSurvey\svn/admin/database.php:126
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -2801,143 +2804,141 @@ msgstr ""
 "\\n"
 " Manca il nome del gruppo per le seguenti lingue"
 
-#: E:\_LimeSurvey\svn/admin/database.php:162
+#: E:\_LimeSurvey\svn/admin/database.php:169
 msgid "Error: The database reported the following error:"
 msgstr "Errore: il database ha segnalato il seguente errore:"
 
-#: E:\_LimeSurvey\svn/admin/database.php:212
+#: E:\_LimeSurvey\svn/admin/database.php:219
 msgid "Group could not be updated"
 msgstr "Impossibile aggiornare gruppo"
 
-#: E:\_LimeSurvey\svn/admin/database.php:237
-#: E:\_LimeSurvey\svn/admin/database.php:262
-#: E:\_LimeSurvey\svn/admin/database.php:278
+#: E:\_LimeSurvey\svn/admin/database.php:244
+#: E:\_LimeSurvey\svn/admin/database.php:269
+#: E:\_LimeSurvey\svn/admin/database.php:285
 msgid "Group could not be deleted"
 msgstr "Impossibile eliminare gruppo"
 
-#: E:\_LimeSurvey\svn/admin/database.php:288
+#: E:\_LimeSurvey\svn/admin/database.php:295
 msgid "The question could not be added. You must enter at least enter a question code."
 msgstr "La domanda non può essere aggiunta. Deve esser inserite almento un codice domanda."
 
-#: E:\_LimeSurvey\svn/admin/database.php:359
-#: E:\_LimeSurvey\svn/admin/database.php:665
-#: E:\_LimeSurvey\svn/admin/database.php:694
+#: E:\_LimeSurvey\svn/admin/database.php:366
+#: E:\_LimeSurvey\svn/admin/database.php:673
+#: E:\_LimeSurvey\svn/admin/database.php:702
 msgid "Question could not be created."
 msgstr "Impossibile creare domande."
 
-#: E:\_LimeSurvey\svn/admin/database.php:474
+#: E:\_LimeSurvey\svn/admin/database.php:482
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Impossibile aggiornare domande. Le condizioni di alcune domande dipendono dalla risposta di questa domanda. Cambiare il tipo di domanda causerà dei problemi al sistema. Elimina le condizioni prima di modificare il tipo di domanda."
 
-#: E:\_LimeSurvey\svn/admin/database.php:557
-#: E:\_LimeSurvey\svn/admin/database.php:615
+#: E:\_LimeSurvey\svn/admin/database.php:565
+#: E:\_LimeSurvey\svn/admin/database.php:623
 msgid "Question could not be updated"
 msgstr "Impossibile aggiornare domanda"
 
-#: E:\_LimeSurvey\svn/admin/database.php:577
+#: E:\_LimeSurvey\svn/admin/database.php:585
 msgid "Answers can't be deleted"
 msgstr "Impossibile eliminare le risposte"
 
-#: E:\_LimeSurvey\svn/admin/database.php:587
+#: E:\_LimeSurvey\svn/admin/database.php:595
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "La domanda si basa su risposte ad altra domanda e non può essere spostata nel gruppo con ID:"
 
-#: E:\_LimeSurvey\svn/admin/database.php:588
-#: E:\_LimeSurvey\svn/admin/database.php:600
+#: E:\_LimeSurvey\svn/admin/database.php:596
+#: E:\_LimeSurvey\svn/admin/database.php:608
 msgid "in position"
 msgstr "in posizione"
 
-#: E:\_LimeSurvey\svn/admin/database.php:589
-#: E:\_LimeSurvey\svn/admin/database.php:601
+#: E:\_LimeSurvey\svn/admin/database.php:597
+#: E:\_LimeSurvey\svn/admin/database.php:609
 msgid "See conditions:"
 msgstr "Vedi condizioni:"
 
-#: E:\_LimeSurvey\svn/admin/database.php:599
+#: E:\_LimeSurvey\svn/admin/database.php:607
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Alcune domande si basano sulle risposte a questa domanda. Non può essere spostata nel gruppo con ID:"
 
-#: E:\_LimeSurvey\svn/admin/database.php:625
+#: E:\_LimeSurvey\svn/admin/database.php:633
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Impossibile aggiungere domanda. Inserire un codice nel campo obbligatorio"
 
-#: E:\_LimeSurvey\svn/admin/database.php:758
-#: E:\_LimeSurvey\svn/admin/database.php:799
+#: E:\_LimeSurvey\svn/admin/database.php:767
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Impossibile eliminare la domanda. Alcune domande dipendono dalle condizioni imposte a questa domanda. Elimina le condizioni prima di eliminare la domanda"
 
-#: E:\_LimeSurvey\svn/admin/database.php:783
-#: E:\_LimeSurvey\svn/admin/database.php:820
+#: E:\_LimeSurvey\svn/admin/database.php:792
 msgid "Question could not be deleted"
 msgstr "Impossibile eliminare la domanda"
 
-#: E:\_LimeSurvey\svn/admin/database.php:835
+#: E:\_LimeSurvey\svn/admin/database.php:808
 msgid "Add new Answer"
 msgstr "Aggiungi una nuova risposta "
 
-#: E:\_LimeSurvey\svn/admin/database.php:850
+#: E:\_LimeSurvey\svn/admin/database.php:823
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Errore nell'aggiungere risposte: non si può usare lo stesso codice risposta più di una volta."
 
-#: E:\_LimeSurvey\svn/admin/database.php:877
-#: E:\_LimeSurvey\svn/admin/database.php:902
+#: E:\_LimeSurvey\svn/admin/database.php:850
+#: E:\_LimeSurvey\svn/admin/database.php:875
 msgid "Failed to insert answer"
 msgstr "Inserimento risposte fallito"
 
-#: E:\_LimeSurvey\svn/admin/database.php:911
+#: E:\_LimeSurvey\svn/admin/database.php:884
 msgid "Invalid or empty answer code supplied"
 msgstr "Codice della risposta non valido o assente "
 
-#: E:\_LimeSurvey\svn/admin/database.php:916
+#: E:\_LimeSurvey\svn/admin/database.php:889
 msgid "Save Changes"
 msgstr "Salva modifiche"
 
-#: E:\_LimeSurvey\svn/admin/database.php:984
+#: E:\_LimeSurvey\svn/admin/database.php:957
 msgid "Failed to update answers"
 msgstr "Aggiornamento delle risposte fallito"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1003
+#: E:\_LimeSurvey\svn/admin/database.php:976
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Risposte con codice 0 (zero) o vuoto non sono permesse e non saranno salvate"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1004
+#: E:\_LimeSurvey\svn/admin/database.php:977
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Trovato codici duplicati, queste immissioni non saranno aggiornate"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1008
+#: E:\_LimeSurvey\svn/admin/database.php:981
 msgid "Up"
 msgstr "Su"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1020
+#: E:\_LimeSurvey\svn/admin/database.php:993
 msgid "Dn"
 msgstr "Giù"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1032
+#: E:\_LimeSurvey\svn/admin/database.php:1005
 msgid "Del"
 msgstr "Elimina"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1036
+#: E:\_LimeSurvey\svn/admin/database.php:1009
 msgid "Failed to delete answer"
 msgstr "Eliminazione risposta fallita"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1042
+#: E:\_LimeSurvey\svn/admin/database.php:1015
 msgid "Default"
 msgstr "Default"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1051
+#: E:\_LimeSurvey\svn/admin/database.php:1024
 msgid "Failed to make answer not default"
 msgstr "Impostazione della risposta come quella di non default fallita"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1065
+#: E:\_LimeSurvey\svn/admin/database.php:1038
 msgid "Failed to make answer default"
 msgstr "Impostazione della risposta come quella di default fallita"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1176
-#: E:\_LimeSurvey\svn/admin/database.php:1419
+#: E:\_LimeSurvey\svn/admin/database.php:1149
+#: E:\_LimeSurvey\svn/admin/database.php:1392
 msgid "Invitation to participate in survey"
 msgstr "Invito a partecipare ad una indagine on line"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1177
-#: E:\_LimeSurvey\svn/admin/database.php:1420
+#: E:\_LimeSurvey\svn/admin/database.php:1150
+#: E:\_LimeSurvey\svn/admin/database.php:1393
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2975,13 +2976,13 @@ msgstr ""
 "Fai clic qui per accedere al questionario:\n"
 "{SURVEYURL}"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1178
-#: E:\_LimeSurvey\svn/admin/database.php:1421
+#: E:\_LimeSurvey\svn/admin/database.php:1151
+#: E:\_LimeSurvey\svn/admin/database.php:1394
 msgid "Reminder to participate in survey"
 msgstr "Sollecito a partecipare all'indagine on line"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1179
-#: E:\_LimeSurvey\svn/admin/database.php:1422
+#: E:\_LimeSurvey\svn/admin/database.php:1152
+#: E:\_LimeSurvey\svn/admin/database.php:1395
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3024,13 +3025,13 @@ msgstr ""
 "Fai clic qui per accedere all'indagine:\n"
 "{SURVEYURL}"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1180
-#: E:\_LimeSurvey\svn/admin/database.php:1423
+#: E:\_LimeSurvey\svn/admin/database.php:1153
+#: E:\_LimeSurvey\svn/admin/database.php:1396
 msgid "Confirmation of completed survey"
 msgstr "Conferma del completamento dell'indagine on line"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1181
-#: E:\_LimeSurvey\svn/admin/database.php:1424
+#: E:\_LimeSurvey\svn/admin/database.php:1154
+#: E:\_LimeSurvey\svn/admin/database.php:1397
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3052,13 +3053,13 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1182
-#: E:\_LimeSurvey\svn/admin/database.php:1425
+#: E:\_LimeSurvey\svn/admin/database.php:1155
+#: E:\_LimeSurvey\svn/admin/database.php:1398
 msgid "Survey Registration Confirmation"
 msgstr "Conferma registrazione all'indagine on line"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1183
-#: E:\_LimeSurvey\svn/admin/database.php:1426
+#: E:\_LimeSurvey\svn/admin/database.php:1156
+#: E:\_LimeSurvey\svn/admin/database.php:1399
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3080,23 +3081,23 @@ msgstr ""
 "\n"
 "Se hai qualche domanda, o se non ti sei registrato e ritieni che questa e-mail ti sia pervenuta per errore, ti preghiamo di contattare  {ADMINNAME} all'indirizzo {ADMINEMAIL}."
 
-#: E:\_LimeSurvey\svn/admin/database.php:1199
+#: E:\_LimeSurvey\svn/admin/database.php:1172
 msgid "Survey could not be updated"
 msgstr "Impossibile aggiornare l'indagine"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1214
+#: E:\_LimeSurvey\svn/admin/database.php:1187
 msgid "ERROR deleting Survey id"
 msgstr "ERRORE nell'eliminazione del'ID dell'Indagine"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1285
+#: E:\_LimeSurvey\svn/admin/database.php:1258
 msgid "Survey could not be created because it did not have a title"
 msgstr "L'indagine non può essere creata in quanto non è stato inserito un titolo"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1442
+#: E:\_LimeSurvey\svn/admin/database.php:1415
 msgid "Survey could not be created"
 msgstr "Impossibile creare l'indagine"
 
-#: E:\_LimeSurvey\svn/admin/database.php:1456
+#: E:\_LimeSurvey\svn/admin/database.php:1429
 msgid "Your personal settings were successfully saved."
 msgstr "Le tue impostazioni di accesso personali sono state salvate con successo."
 
@@ -4371,7 +4372,7 @@ msgid "You need to add answers to this question"
 msgstr "E' necessario inserire delle risposte a questa domanda"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1431
-#: E:\_LimeSurvey\svn/admin/importgroup.php:687
+#: E:\_LimeSurvey\svn/admin/importgroup.php:694
 msgid "Label Set"
 msgstr "Gruppo etichette"
 
@@ -4392,8 +4393,8 @@ msgid "Edit/Add second Label Sets"
 msgstr "Modifica/Aggiungi un secondo gruppo di etichette"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1485
-msgid "Other:"
-msgstr "Altro:"
+msgid "Option 'Other':"
+msgstr "Opzione 'Altro':"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1494
 msgid "Mandatory:"
@@ -5008,39 +5009,39 @@ msgstr "Non si può importare una domanda che non supporta la lingua base dell'i
 msgid "You can't import label sets which don't support the current survey's base language"
 msgstr "Non si può importare un gruppo di etichette che non supporta la lingua base dell'indagine corrente."
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:662
+#: E:\_LimeSurvey\svn/admin/importgroup.php:669
 msgid "Import partially successful."
 msgstr "Importazione avvenuta parzialmente con successo. "
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:663
+#: E:\_LimeSurvey\svn/admin/importgroup.php:670
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Le seguenti lingue in questo gruppo non sono  state importate da l momento che il questionario non contiene tali lingue: "
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:674
+#: E:\_LimeSurvey\svn/admin/importgroup.php:681
 msgid "Group Import Summary"
 msgstr "Riepilogo importazione gruppo"
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:675
+#: E:\_LimeSurvey\svn/admin/importgroup.php:682
 msgid "Groups:"
 msgstr "Gruppi:"
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:684
+#: E:\_LimeSurvey\svn/admin/importgroup.php:691
 msgid "Conditions"
 msgstr "Condizioni"
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:689
+#: E:\_LimeSurvey\svn/admin/importgroup.php:696
 msgid "Labels"
 msgstr "Etichette"
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:692
+#: E:\_LimeSurvey\svn/admin/importgroup.php:699
 msgid "Question Attributes: "
 msgstr "Attributi delle domande: "
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:695
+#: E:\_LimeSurvey\svn/admin/importgroup.php:702
 msgid "Import of group is completed."
 msgstr "Importazione del gruppo completata."
 
-#: E:\_LimeSurvey\svn/admin/importgroup.php:696
+#: E:\_LimeSurvey\svn/admin/importgroup.php:703
 msgid "Go to group"
 msgstr "Vai al gruppo corrispondente"
 
@@ -5072,14 +5073,14 @@ msgstr "Riepilogo importazione gruppo etichette"
 
 #: E:\_LimeSurvey\svn/admin/importlabel.php:206
 #: E:\_LimeSurvey\svn/admin/importquestion.php:510
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1296
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1325
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1300
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1329
 msgid "Label Sets"
 msgstr "Gruppi etichette"
 
 #: E:\_LimeSurvey\svn/admin/importlabel.php:208
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1290
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1319
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1294
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1323
 #: E:\_LimeSurvey\svn/admin/labels.php:154
 msgid "Languages"
 msgstr "Lingue:"
@@ -5192,47 +5193,47 @@ msgstr "La domanda  \"%s - %s\" NON è stata importata perchè il tipo di domand
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "La domanda \"%s - %s\" è stata importata, ma la tipologia è stata impostata a '%s' in quanto è quella più simile."
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1267
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1268
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1271
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1272
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr "Condizione per %d slatata (%d non esiste)"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1286
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1315
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1290
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1319
 msgid "Survey Import Summary"
 msgstr "Riepilogo importazione indagine"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1299
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1326
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1303
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1330
 msgid "Not imported Label Sets"
 msgstr "Insieme di etichette non importate"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1299
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1326
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1303
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1330
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(I set di etichette non sono stati importati in quanto non hai il permesso di creare nuovi set di etichette)."
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1301
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1327
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1305
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1331
 msgid "Question Attributes"
 msgstr "Attributi domande"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1303
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1307
 msgid "Quotas"
 msgstr "Quote"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1305
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1330
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1309
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1334
 msgid "Import of Survey is completed."
 msgstr "Importazione indagine completata."
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1306
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1310
 msgid "Go to survey"
 msgstr "URL del sondaggio"
 
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1307
-#: E:\_LimeSurvey\svn/admin/importsurvey.php:1331
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1311
+#: E:\_LimeSurvey\svn/admin/importsurvey.php:1335
 msgid "Warnings"
 msgstr "Attenzione"
 
@@ -5754,165 +5755,165 @@ msgstr "Login"
 msgid "Forgot Your Password?"
 msgstr "Dimenticata la password?"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:125
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1784
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:123
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1782
 msgid "Submit Your Survey."
 msgstr "Invia il tuo questionario."
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:127
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1784
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:125
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1782
 msgid "Thank you for completing this survey."
 msgstr "Grazie per aver completato il questionario."
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:141
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:139
 msgid "Please fax your completed survey to:"
 msgstr "Invia un fax del questionario completato a:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:147
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1778
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:145
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1776
 #, php-format
 msgid "Please submit by %s"
 msgstr "Per favore Inviare da %s"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:428
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:456
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:426
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:454
 msgid "Answer was"
 msgstr "Risposta era"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:432
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:430
 msgid "Answer was NOT"
 msgstr "Risposta NON era"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:436
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:434
 msgid "Answer was less than"
 msgstr "Risposta era minore di"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:440
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:438
 msgid "Answer was less than or equal to"
 msgstr "Risposta era minore o uguale a "
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:444
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:442
 msgid "Answer was greater than or equal to"
 msgstr "Risposta era maggiore o uguale a"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:448
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:446
 msgid "Answer was greater than"
 msgstr "Risposta era maggiore di"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:452
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:450
 msgid "Answer matched (regexp)"
 msgstr "Risposta combinata/verificata (regexp)"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:602
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:609
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:600
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:607
 msgid "Label"
 msgstr "Etichette"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:634
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:632
 msgid "RANK"
 msgstr "Classifica"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:652
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:650
 msgid "at question"
 msgstr "alla domanda"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:660
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:658
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Rispondi solo se le seguenti condizioni sono rispettate:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:723
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:724
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:748
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:755
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:773
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:774
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:721
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:722
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:746
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:753
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:771
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:772
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:843
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:845
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:847
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:908
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:909
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1140
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1144
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:906
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:907
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1138
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1142
 msgid "Please choose *only one* of the following:"
 msgstr "Scegli *solo una* delle seguenti:"
 
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:738
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:740
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:742
 msgid "Please enter a date:"
 msgstr "Inserisci una data:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:935
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:933
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Numera ciascun campo in ordine di preferenza da 1 a"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:936
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:934
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Numera ciascun campo in ordine di preferenza da 1 a"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:959
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:960
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:957
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:958
 msgid "Please choose *all* that apply:"
 msgstr "Scegli *tutte* le corrispondenti:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:965
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:966
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1038
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1039
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:963
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:964
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1036
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1037
 msgid "Please choose *at most* "
 msgstr "Scegli *la più probabile*"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:965
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:966
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:963
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:964
 msgid "answers:"
 msgstr "risposte:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1032
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1033
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1030
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1031
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Scegli tutte quelle che corrispondono e fornisci un commento:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1038
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1039
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1036
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1037
 msgid "answers and provide a comment:"
 msgstr "risposte e inserisci un commento:"
 
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1074
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1076
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1078
 msgid "Please write your answer(s) here:"
 msgstr "Scrivi la(e) tua(e) risposta(e) qui:"
 
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1093
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1095
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1097
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1104
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1107
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1117
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1120
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1130
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1133
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1102
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1105
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1115
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1118
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1128
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1131
 msgid "Please write your answer here:"
 msgstr "Scrivi le tue risposte qui:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1154
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1171
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1208
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1216
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1243
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1257
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1283
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1297
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1482
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1491
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1152
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1169
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1206
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1214
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1241
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1255
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1281
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1295
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1480
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1489
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1560
 #: E:\_LimeSurvey\svn/admin/printablesurvey.php:1562
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1564
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1656
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1657
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1654
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1655
 msgid "Please choose the appropriate response for each item:"
 msgstr "Scegli la risposta appropriata per ciascun item:"
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1708
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1706
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Vi sono {NUMBEROFQUESTIONS} domande all'interno di questa indagine."
 
-#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1782
+#: E:\_LimeSurvey\svn/admin/printablesurvey.php:1780
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Invia un fax del questionario completato a: %s"
@@ -6010,7 +6011,7 @@ msgid "View Question"
 msgstr "Vedi domanda"
 
 #: E:\_LimeSurvey\svn/admin/quota.php:242
-#: E:\_LimeSurvey\svn/admin/quota.php:299
+#: E:\_LimeSurvey\svn/admin/quota.php:298
 msgid ""
 "Quota could not be added.\\n"
 "\\n"
@@ -6020,137 +6021,137 @@ msgstr ""
 "\\n"
 "Manca il messaggio di percentuale per le seguenti lingue"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:387
+#: E:\_LimeSurvey\svn/admin/quota.php:386
 msgid "Modify Quota"
 msgstr "Modifica Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:391
-#: E:\_LimeSurvey\svn/admin/quota.php:527
-#: E:\_LimeSurvey\svn/admin/quota.php:670
-#: E:\_LimeSurvey\svn/admin/quota.php:836
+#: E:\_LimeSurvey\svn/admin/quota.php:390
+#: E:\_LimeSurvey\svn/admin/quota.php:526
+#: E:\_LimeSurvey\svn/admin/quota.php:669
+#: E:\_LimeSurvey\svn/admin/quota.php:835
 msgid "Quota Name"
 msgstr "Nome Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:397
-#: E:\_LimeSurvey\svn/admin/quota.php:842
+#: E:\_LimeSurvey\svn/admin/quota.php:396
+#: E:\_LimeSurvey\svn/admin/quota.php:841
 msgid "Quota Limit"
 msgstr "Raggiunta il limite di Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:403
-#: E:\_LimeSurvey\svn/admin/quota.php:529
-#: E:\_LimeSurvey\svn/admin/quota.php:848
+#: E:\_LimeSurvey\svn/admin/quota.php:402
+#: E:\_LimeSurvey\svn/admin/quota.php:528
+#: E:\_LimeSurvey\svn/admin/quota.php:847
 msgid "Quota Action"
 msgstr "Azione Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:408
-#: E:\_LimeSurvey\svn/admin/quota.php:553
-#: E:\_LimeSurvey\svn/admin/quota.php:851
+#: E:\_LimeSurvey\svn/admin/quota.php:407
+#: E:\_LimeSurvey\svn/admin/quota.php:552
+#: E:\_LimeSurvey\svn/admin/quota.php:850
 msgid "Terminate Survey"
 msgstr "Concludere il sondaggio"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:411
-#: E:\_LimeSurvey\svn/admin/quota.php:555
-#: E:\_LimeSurvey\svn/admin/quota.php:852
+#: E:\_LimeSurvey\svn/admin/quota.php:410
+#: E:\_LimeSurvey\svn/admin/quota.php:554
+#: E:\_LimeSurvey\svn/admin/quota.php:851
 msgid "Terminate Survey With Warning"
 msgstr "Sondaggio terminato con avvisi"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:416
-#: E:\_LimeSurvey\svn/admin/quota.php:857
+#: E:\_LimeSurvey\svn/admin/quota.php:415
+#: E:\_LimeSurvey\svn/admin/quota.php:856
 msgid "Autoload URL"
 msgstr "URL di autoload "
 
-#: E:\_LimeSurvey\svn/admin/quota.php:456
-#: E:\_LimeSurvey\svn/admin/quota.php:894
+#: E:\_LimeSurvey\svn/admin/quota.php:455
+#: E:\_LimeSurvey\svn/admin/quota.php:893
 msgid "Quota message"
 msgstr "Mesaggio di Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:462
-#: E:\_LimeSurvey\svn/admin/quota.php:900
+#: E:\_LimeSurvey\svn/admin/quota.php:461
+#: E:\_LimeSurvey\svn/admin/quota.php:899
 msgid "URL"
 msgstr "URL"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:468
-#: E:\_LimeSurvey\svn/admin/quota.php:906
+#: E:\_LimeSurvey\svn/admin/quota.php:467
+#: E:\_LimeSurvey\svn/admin/quota.php:905
 msgid "URL description"
 msgstr "Descrizione URL"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:487
+#: E:\_LimeSurvey\svn/admin/quota.php:486
 msgid "Update Quota"
 msgstr "Aggiorna Quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:524
+#: E:\_LimeSurvey\svn/admin/quota.php:523
 msgid "Survey Quotas"
 msgstr "Quote del sondaggio"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:530
-#: E:\_LimeSurvey\svn/admin/quota.php:670
+#: E:\_LimeSurvey\svn/admin/quota.php:529
+#: E:\_LimeSurvey\svn/admin/quota.php:669
 msgid "Limit"
 msgstr "Limite"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:547
+#: E:\_LimeSurvey\svn/admin/quota.php:546
 msgid "Not Active"
 msgstr "Non attivo"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:569
+#: E:\_LimeSurvey\svn/admin/quota.php:568
 msgid "Modify"
 msgstr "Modifica"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:591
-#: E:\_LimeSurvey\svn/admin/quota.php:689
-#: E:\_LimeSurvey\svn/admin/quota.php:705
-#: E:\_LimeSurvey\svn/admin/quota.php:765
-#: E:\_LimeSurvey\svn/admin/quota.php:781
+#: E:\_LimeSurvey\svn/admin/quota.php:590
+#: E:\_LimeSurvey\svn/admin/quota.php:688
+#: E:\_LimeSurvey\svn/admin/quota.php:704
+#: E:\_LimeSurvey\svn/admin/quota.php:764
+#: E:\_LimeSurvey\svn/admin/quota.php:780
 msgid "Add Answer"
 msgstr "Aggiungi risposta "
 
-#: E:\_LimeSurvey\svn/admin/quota.php:635
+#: E:\_LimeSurvey\svn/admin/quota.php:634
 msgid "No quotas have been set for this survey"
 msgstr "Non è stata inserita una quota per questo sondaggio"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:646
-#: E:\_LimeSurvey\svn/admin/quota.php:923
+#: E:\_LimeSurvey\svn/admin/quota.php:645
+#: E:\_LimeSurvey\svn/admin/quota.php:922
 msgid "Add New Quota"
 msgstr "Aggiungi una nuova quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:657
+#: E:\_LimeSurvey\svn/admin/quota.php:656
 msgid "Quick CSV Report"
 msgstr "Quick CSV Report"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:670
+#: E:\_LimeSurvey\svn/admin/quota.php:669
 msgid "Remaining"
 msgstr "Rimanenti"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:689
-#: E:\_LimeSurvey\svn/admin/quota.php:765
+#: E:\_LimeSurvey\svn/admin/quota.php:688
+#: E:\_LimeSurvey\svn/admin/quota.php:764
 msgid "Question Selection"
 msgstr "Selezione della domanda"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:692
+#: E:\_LimeSurvey\svn/admin/quota.php:691
 msgid "Sorry there are no supported question types in this survey."
 msgstr "Spiacente, non vi sono tipi di domanda supportati per questo sondaggio."
 
-#: E:\_LimeSurvey\svn/admin/quota.php:705
-#: E:\_LimeSurvey\svn/admin/quota.php:781
+#: E:\_LimeSurvey\svn/admin/quota.php:704
+#: E:\_LimeSurvey\svn/admin/quota.php:780
 msgid "Survey Quota"
 msgstr "Quota del sondaggio"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:712
+#: E:\_LimeSurvey\svn/admin/quota.php:711
 msgid "Select Question"
 msgstr "Selezione la domanda"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:768
+#: E:\_LimeSurvey\svn/admin/quota.php:767
 msgid "All answers are already selected in this quota."
 msgstr "Tutte le risposte sono già state selezione in questa quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:788
+#: E:\_LimeSurvey\svn/admin/quota.php:787
 msgid "Select Answer"
 msgstr "Seleziona la risposta"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:832
+#: E:\_LimeSurvey\svn/admin/quota.php:831
 msgid "New Quota"
 msgstr "Nuova quota"
 
-#: E:\_LimeSurvey\svn/admin/quota.php:896
+#: E:\_LimeSurvey\svn/admin/quota.php:895
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Spiacente, le tue risposte hanno ecceduto la quota stabilita per questo sondaggio."
 
@@ -8171,6 +8172,8 @@ msgstr "Tailandese"
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
+#~ msgid "Always display this condition"
+#~ msgstr "Mostra sempre questa condizione"
 #~ msgid "Update Token"
 #~ msgstr "Aggiorna identificativi"
 #~ msgid "Add Token"
