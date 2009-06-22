@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-16 21:13+0100\n"
-"PO-Revision-Date: 2009-06-16 21:52+0100\n"
+"POT-Creation-Date: 2009-06-22 21:28+0100\n"
+"PO-Revision-Date: 2009-06-22 21:31+0100\n"
 "Last-Translator: Elzbieta Lesinska <elesinska[at]wp.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -211,10 +211,10 @@ msgstr "Nieaktywna"
 #: c:\LimeSurvey-S/common.php:1289
 #: c:\LimeSurvey-S/common.php:1314
 #: c:\LimeSurvey-S/common.php:1381
-#: c:\LimeSurvey-S/common.php:4177
-#: c:\LimeSurvey-S/common.php:4211
-#: c:\LimeSurvey-S/common.php:4250
-#: c:\LimeSurvey-S/common.php:4286
+#: c:\LimeSurvey-S/common.php:4176
+#: c:\LimeSurvey-S/common.php:4210
+#: c:\LimeSurvey-S/common.php:4249
+#: c:\LimeSurvey-S/common.php:4285
 msgid "Please Choose..."
 msgstr "Wybierz..."
 
@@ -229,8 +229,8 @@ msgstr "Wybierz..."
 #: c:\LimeSurvey-S/common.php:1290
 #: c:\LimeSurvey-S/common.php:1315
 #: c:\LimeSurvey-S/common.php:1382
-#: c:\LimeSurvey-S/common.php:4212
-#: c:\LimeSurvey-S/common.php:4251
+#: c:\LimeSurvey-S/common.php:4211
+#: c:\LimeSurvey-S/common.php:4250
 msgid "None"
 msgstr "Żadne"
 
@@ -421,21 +421,21 @@ msgstr "To ustawienie nie może być modyfikowane (ankieta jest aktywna)"
 # C:\limesurvey/admin/vvexport.php:84
 # C:\limesurvey/admin/vvimport.php:69
 # C:\limesurvey/admin/vvimport.php:80
-#: c:\LimeSurvey-S/common.php:1733
+#: c:\LimeSurvey-S/common.php:1732
 msgid "Return to Survey Administration"
 msgstr "Powrót do ustawień głównych"
 
 # C:\limesurvey/common.php:1246
 # C:\limesurvey/admin/saved.php:147
 # C:\limesurvey/admin/tokens.php:315
-#: c:\LimeSurvey-S/common.php:1739
+#: c:\LimeSurvey-S/common.php:1738
 msgid "Show summary information"
 msgstr "Pokaż raport podsumowujący"
 
 # C:\limesurvey/common.php:1249
 # C:\limesurvey/admin/saved.php:149
-#: c:\LimeSurvey-S/common.php:1745
-#: c:\LimeSurvey-S/common.php:1752
+#: c:\LimeSurvey-S/common.php:1744
+#: c:\LimeSurvey-S/common.php:1751
 msgid "Display Responses"
 msgstr "Pokaż odpowiedzi"
 
@@ -443,8 +443,8 @@ msgstr "Pokaż odpowiedzi"
 # C:\limesurvey/admin/html.php:519
 # C:\limesurvey/admin/html.php:1102
 # C:\limesurvey/admin/html.php:2577
-#: c:\LimeSurvey-S/common.php:1761
-#: c:\LimeSurvey-S/common.php:5474
+#: c:\LimeSurvey-S/common.php:1760
+#: c:\LimeSurvey-S/common.php:5473
 msgid "Please select a language:"
 msgstr "Wybierz język:"
 
@@ -454,13 +454,13 @@ msgstr "Wybierz język:"
 # C:\limesurvey/admin/html.php:1107
 # C:\limesurvey/admin/html.php:2593
 # C:\limesurvey/admin/tokens.php:699
-#: c:\LimeSurvey-S/common.php:1766
-#: c:\LimeSurvey-S/common.php:5490
+#: c:\LimeSurvey-S/common.php:1765
+#: c:\LimeSurvey-S/common.php:5489
 msgid "Cancel"
 msgstr "Anuluj"
 
 # C:\limesurvey/common.php:1252
-#: c:\LimeSurvey-S/common.php:1776
+#: c:\LimeSurvey-S/common.php:1775
 msgid "Display Last 50 Responses"
 msgstr "Pokaż 50 ostatnich odpowiedzi"
 
@@ -469,72 +469,72 @@ msgstr "Pokaż 50 ostatnich odpowiedzi"
 # C:\limesurvey/admin/html.php:480
 # C:\limesurvey/admin/html.php:489
 # C:\limesurvey/admin/html.php:490
-#: c:\LimeSurvey-S/common.php:1780
+#: c:\LimeSurvey-S/common.php:1779
 msgid "Dataentry Screen for Survey"
 msgstr "Wprowadzanie danych"
 
 # C:\limesurvey/common.php:1257
-#: c:\LimeSurvey-S/common.php:1784
+#: c:\LimeSurvey-S/common.php:1783
 msgid "Get statistics from these responses"
 msgstr "Pokaż statystyki"
 
 # C:\limesurvey/common.php:1262
-#: c:\LimeSurvey-S/common.php:1791
+#: c:\LimeSurvey-S/common.php:1790
 msgid "Export Results to Application"
 msgstr "Eksportuj wyniki do aplikacji"
 
 # C:\limesurvey/common.php:1264
 # C:\limesurvey/common.php:1265
-#: c:\LimeSurvey-S/common.php:1796
+#: c:\LimeSurvey-S/common.php:1795
 msgid "Export results to a SPSS/PASW command file"
 msgstr "Eksportuj wyniki do pliku poleceń SPSS/PASW"
 
 # C:\limesurvey/common.php:1264
 # C:\limesurvey/common.php:1265
-#: c:\LimeSurvey-S/common.php:1798
+#: c:\LimeSurvey-S/common.php:1797
 msgid "Export result to a SPSS/PASW command file"
 msgstr "Eksportuj wynik do pliku poleceń SPSS/PASW"
 
 # C:\limesurvey/common.php:1264
 # C:\limesurvey/common.php:1265
-#: c:\LimeSurvey-S/common.php:1801
-#: c:\LimeSurvey-S/common.php:1803
+#: c:\LimeSurvey-S/common.php:1800
+#: c:\LimeSurvey-S/common.php:1802
 msgid "Export results to a R data file"
 msgstr "Eksportuj wyniki do pliku danych R"
 
 # C:\limesurvey/common.php:1267
-#: c:\LimeSurvey-S/common.php:1807
+#: c:\LimeSurvey-S/common.php:1806
 msgid "Import answers from a deactivated survey table"
 msgstr "Importuj odpowiedzi z tabeli nieaktywnej ankiety"
 
 # C:\limesurvey/common.php:1270
 # C:\limesurvey/admin/html.php:607
 # C:\limesurvey/admin/html.php:608
-#: c:\LimeSurvey-S/common.php:1812
+#: c:\LimeSurvey-S/common.php:1811
 msgid "View Saved but not submitted Responses"
 msgstr "Pokaż odpowiedzi zapisanych lecz nieukończonych ankiet"
 
 # C:\limesurvey/common.php:1272
 # C:\limesurvey/admin/vvimport.php:54
-#: c:\LimeSurvey-S/common.php:1816
+#: c:\LimeSurvey-S/common.php:1815
 msgid "Import a VV survey file"
 msgstr "Importuj plik VV"
 
 # C:\limesurvey/common.php:1276
 # C:\limesurvey/admin/vvexport.php:67
-#: c:\LimeSurvey-S/common.php:1822
+#: c:\LimeSurvey-S/common.php:1821
 msgid "Export a VV survey file"
 msgstr "Eksportuj jako VV"
 
 # C:\limesurvey/admin/html.php:2379
 # C:\limesurvey/admin/html.php:2536
 # C:\limesurvey/admin/userrighthandling.php:197
-#: c:\LimeSurvey-S/common.php:1837
+#: c:\LimeSurvey-S/common.php:1836
 msgid "Iterate survey"
 msgstr "Powtórz badanie"
 
 # C:\limesurvey/common.php:1358
-#: c:\LimeSurvey-S/common.php:1907
+#: c:\LimeSurvey-S/common.php:1906
 msgid "Preset"
 msgstr "Domyślny"
 
@@ -555,18 +555,18 @@ msgstr "Domyślny"
 # C:\limesurvey/admin/exportresults.php:827
 # C:\limesurvey/admin/tokens.php:571
 # C:\limesurvey/admin/tokens.php:1139
-#: c:\LimeSurvey-S/common.php:1908
+#: c:\LimeSurvey-S/common.php:1907
 #: c:\LimeSurvey-S/index.php:1766
 #: c:\LimeSurvey-S/index.php:1911
 msgid "Token"
 msgstr "Token"
 
-#: c:\LimeSurvey-S/common.php:1909
+#: c:\LimeSurvey-S/common.php:1908
 msgid "Date Last Action"
 msgstr "Data ostatniej akcji"
 
 # C:\limesurvey/admin/saved.php:107
-#: c:\LimeSurvey-S/common.php:1910
+#: c:\LimeSurvey-S/common.php:1909
 msgid "Date Started"
 msgstr "Data rozpoczęcia"
 
@@ -576,7 +576,7 @@ msgstr "Data rozpoczęcia"
 # C:\limesurvey/admin/dataentry.php:450
 # C:\limesurvey/admin/exportresults.php:812
 # C:\limesurvey/admin/saved.php:106
-#: c:\LimeSurvey-S/common.php:1911
+#: c:\LimeSurvey-S/common.php:1910
 #: c:\LimeSurvey-S/printanswers.php:178
 msgid "IP Address"
 msgstr "Adres IP"
@@ -584,7 +584,7 @@ msgstr "Adres IP"
 # C:\limesurvey/common.php:1362
 # C:\limesurvey/admin/browse.php:181
 # C:\limesurvey/admin/browse.php:369
-#: c:\LimeSurvey-S/common.php:1912
+#: c:\LimeSurvey-S/common.php:1911
 #: c:\LimeSurvey-S/printanswers.php:182
 msgid "Referring URL"
 msgstr "Odsyłający URL"
@@ -627,12 +627,12 @@ msgstr "Odsyłający URL"
 # C:\limesurvey/admin/statistics.php:1358
 # C:\limesurvey/admin/statistics.php:1386
 # C:\limesurvey/admin/statistics.php:1426
-#: c:\LimeSurvey-S/common.php:1960
-#: c:\LimeSurvey-S/common.php:2078
-#: c:\LimeSurvey-S/common.php:2134
-#: c:\LimeSurvey-S/common.php:2311
-#: c:\LimeSurvey-S/common.php:2425
-#: c:\LimeSurvey-S/common.php:2435
+#: c:\LimeSurvey-S/common.php:1959
+#: c:\LimeSurvey-S/common.php:2077
+#: c:\LimeSurvey-S/common.php:2133
+#: c:\LimeSurvey-S/common.php:2310
+#: c:\LimeSurvey-S/common.php:2424
+#: c:\LimeSurvey-S/common.php:2434
 #: c:\LimeSurvey-S/qanda.php:1439
 #: c:\LimeSurvey-S/qanda.php:1748
 #: c:\LimeSurvey-S/qanda.php:1972
@@ -709,9 +709,9 @@ msgstr "Inne"
 # C:\limesurvey/admin/stats.php:562
 # C:\limesurvey/admin/stats.php:639
 # C:\limesurvey/admin/tokens.php:1045
-#: c:\LimeSurvey-S/common.php:2086
-#: c:\LimeSurvey-S/common.php:2092
-#: c:\LimeSurvey-S/common.php:2108
+#: c:\LimeSurvey-S/common.php:2085
+#: c:\LimeSurvey-S/common.php:2091
+#: c:\LimeSurvey-S/common.php:2107
 #: c:\LimeSurvey-S/qanda.php:3911
 #: c:\LimeSurvey-S/qanda.php:4423
 #: c:\LimeSurvey-S/qanda.php:4481
@@ -782,8 +782,8 @@ msgstr "Tak"
 # C:\limesurvey/admin/stats.php:572
 # C:\limesurvey/admin/stats.php:644
 # C:\limesurvey/admin/tokens.php:1047
-#: c:\LimeSurvey-S/common.php:2093
-#: c:\LimeSurvey-S/common.php:2109
+#: c:\LimeSurvey-S/common.php:2092
+#: c:\LimeSurvey-S/common.php:2108
 #: c:\LimeSurvey-S/qanda.php:3920
 #: c:\LimeSurvey-S/qanda.php:4425
 #: c:\LimeSurvey-S/qanda.php:4499
@@ -839,10 +839,10 @@ msgstr "Nie"
 # C:\limesurvey/admin/statistics.php:1038
 # C:\limesurvey/admin/statistics.php:1247
 # C:\limesurvey/admin/statistics.php:1425
-#: c:\LimeSurvey-S/common.php:2094
-#: c:\LimeSurvey-S/common.php:2102
-#: c:\LimeSurvey-S/common.php:5108
-#: c:\LimeSurvey-S/common.php:5113
+#: c:\LimeSurvey-S/common.php:2093
+#: c:\LimeSurvey-S/common.php:2101
+#: c:\LimeSurvey-S/common.php:5107
+#: c:\LimeSurvey-S/common.php:5112
 #: c:\LimeSurvey-S/qanda.php:956
 #: c:\LimeSurvey-S/qanda.php:1326
 #: c:\LimeSurvey-S/qanda.php:1514
@@ -896,7 +896,7 @@ msgstr "Brak odpowiedzi"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: c:\LimeSurvey-S/common.php:2100
+#: c:\LimeSurvey-S/common.php:2099
 #: c:\LimeSurvey-S/qanda.php:3988
 #: c:\LimeSurvey-S/statistics_user.php:1365
 msgid "Male"
@@ -918,7 +918,7 @@ msgstr "Mężczyzna"
 # C:\limesurvey/admin/statistics.php:687
 # C:\limesurvey/admin/statistics.php:1322
 # C:\limesurvey/admin/stats.php:671
-#: c:\LimeSurvey-S/common.php:2101
+#: c:\LimeSurvey-S/common.php:2100
 #: c:\LimeSurvey-S/qanda.php:3969
 #: c:\LimeSurvey-S/statistics_user.php:1364
 msgid "Female"
@@ -939,7 +939,7 @@ msgstr "Kobieta"
 # C:\limesurvey/admin/statistics.php:463
 # C:\limesurvey/admin/statistics.php:1285
 # C:\limesurvey/admin/stats.php:567
-#: c:\LimeSurvey-S/common.php:2110
+#: c:\LimeSurvey-S/common.php:2109
 #: c:\LimeSurvey-S/qanda.php:4424
 #: c:\LimeSurvey-S/qanda.php:4489
 #: c:\LimeSurvey-S/statistics_user.php:1248
@@ -960,7 +960,7 @@ msgstr "Nie wiem"
 # C:\limesurvey/admin/statistics.php:495
 # C:\limesurvey/admin/statistics.php:1296
 # C:\limesurvey/admin/stats.php:589
-#: c:\LimeSurvey-S/common.php:2116
+#: c:\LimeSurvey-S/common.php:2115
 #: c:\LimeSurvey-S/qanda.php:4706
 #: c:\LimeSurvey-S/qanda.php:4754
 #: c:\LimeSurvey-S/statistics_user.php:1265
@@ -981,7 +981,7 @@ msgstr "Wzrost"
 # C:\limesurvey/admin/statistics.php:501
 # C:\limesurvey/admin/statistics.php:1298
 # C:\limesurvey/admin/stats.php:599
-#: c:\LimeSurvey-S/common.php:2117
+#: c:\LimeSurvey-S/common.php:2116
 #: c:\LimeSurvey-S/qanda.php:4708
 #: c:\LimeSurvey-S/qanda.php:4777
 #: c:\LimeSurvey-S/statistics_user.php:1267
@@ -1002,7 +1002,7 @@ msgstr "Spadek"
 # C:\limesurvey/admin/statistics.php:498
 # C:\limesurvey/admin/statistics.php:1297
 # C:\limesurvey/admin/stats.php:594
-#: c:\LimeSurvey-S/common.php:2118
+#: c:\LimeSurvey-S/common.php:2117
 #: c:\LimeSurvey-S/qanda.php:4707
 #: c:\LimeSurvey-S/qanda.php:4765
 #: c:\LimeSurvey-S/statistics_user.php:1266
@@ -1011,27 +1011,27 @@ msgstr "Bez zmian"
 
 # C:\limesurvey/common.php:1677
 # C:\limesurvey/admin/dataentry.php:1730
-#: c:\LimeSurvey-S/common.php:2328
+#: c:\LimeSurvey-S/common.php:2327
 msgid "Comment"
 msgstr "Komentarz"
 
 # C:\limesurvey/common.php:1852
-#: c:\LimeSurvey-S/common.php:2612
+#: c:\LimeSurvey-S/common.php:2611
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Uwaga: uruchamianie skryptów JavaScript w twojej przeglądarce jest wyłączone. Może to uniemożliwić udzielenie odpowiedzi na niektóre pytania zawarte w tej ankiecie. Aby bezproblemowo kontynuować, zmień ustawienia swojej przeglądarki."
 
 # C:\limesurvey/common.php:1864
-#: c:\LimeSurvey-S/common.php:2627
+#: c:\LimeSurvey-S/common.php:2626
 msgid "There are no questions in this survey"
 msgstr "W bieżącej ankiecie nie ma pytań"
 
 # C:\limesurvey/common.php:1864
-#: c:\LimeSurvey-S/common.php:2631
+#: c:\LimeSurvey-S/common.php:2630
 msgid "There is 1 question in this survey"
 msgstr "W tej ankiecie jest 1 pytanie"
 
 # C:\limesurvey/common.php:1868
-#: c:\LimeSurvey-S/common.php:2635
+#: c:\LimeSurvey-S/common.php:2634
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 
@@ -1040,82 +1040,82 @@ msgstr "Ankieta składa się z {NUMBEROFQUESTIONS} pytań"
 # C:\limesurvey/admin/dataentry.php:152
 # C:\limesurvey/admin/dataentry.php:1240
 # C:\limesurvey/admin/dataentry.php:2210
-#: c:\LimeSurvey-S/common.php:2658
+#: c:\LimeSurvey-S/common.php:2657
 #: c:\LimeSurvey-S/index.php:2411
 msgid "Submit"
 msgstr "Wyślij"
 
 # C:\limesurvey/common.php:1906
-#: c:\LimeSurvey-S/common.php:2684
+#: c:\LimeSurvey-S/common.php:2683
 msgid "A Note On Privacy"
 msgstr "Uwaga o prywatności"
 
 # C:\limesurvey/common.php:1906
 # C:\limesurvey/admin/html.php:680
 # C:\limesurvey/admin/html.php:1924
-#: c:\LimeSurvey-S/common.php:2684
+#: c:\LimeSurvey-S/common.php:2683
 msgid "This survey is anonymous."
 msgstr "Ankieta jest anonimowa."
 
 # C:\limesurvey/common.php:1906
-#: c:\LimeSurvey-S/common.php:2684
+#: c:\LimeSurvey-S/common.php:2683
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Zapisane odpowiedzi nie zawierają żadnych informacji osobowych poza tymi, które pochodziły z formularzy ankiety. Wykorzystywanie numerów identyfikacyjnych, tzw. tokenów, wiąże się z zapewnieniem dostępu do ankiety i nie jest w żaden sposób powiązane z udzielonymi odpowiedziami. Numery te przechowywane są w oddzielnej bazie danych i informują wyłącznie o fakcie (lub jego braku) wypełnienia ankiety."
 
 # C:\limesurvey/common.php:1915
-#: c:\LimeSurvey-S/common.php:2694
+#: c:\LimeSurvey-S/common.php:2693
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Czy chcesz wyczyścić wszystkie swoje odpowiedzi?"
 
 # C:\limesurvey/common.php:1916
-#: c:\LimeSurvey-S/common.php:2695
+#: c:\LimeSurvey-S/common.php:2694
 msgid "Exit and Clear Survey"
 msgstr "Wyjdź i wyczyść ankietę"
 
 # C:\limesurvey/common.php:1941
 # C:\limesurvey/index.php:269
 # C:\limesurvey/index.php:273
-#: c:\LimeSurvey-S/common.php:2719
-#: c:\LimeSurvey-S/common.php:2725
+#: c:\LimeSurvey-S/common.php:2718
+#: c:\LimeSurvey-S/common.php:2724
 #: c:\LimeSurvey-S/index.php:557
 #: c:\LimeSurvey-S/index.php:561
 msgid "Load Unfinished Survey"
 msgstr "Otwórz niedokończoną ankietę"
 
-#: c:\LimeSurvey-S/common.php:2720
-#: c:\LimeSurvey-S/common.php:2733
+#: c:\LimeSurvey-S/common.php:2719
+#: c:\LimeSurvey-S/common.php:2732
 msgid "Resume Later"
 msgstr "Dokończ później"
 
 # C:\limesurvey/common.php:1967
-#: c:\LimeSurvey-S/common.php:2795
+#: c:\LimeSurvey-S/common.php:2794
 msgid "Thank You!"
 msgstr "Dziękujemy!"
 
 # C:\limesurvey/common.php:1967
-#: c:\LimeSurvey-S/common.php:2795
+#: c:\LimeSurvey-S/common.php:2794
 msgid "You have completed answering the questions in this survey."
 msgstr "To już wszystkie pytania ankiety."
 
 # C:\limesurvey/common.php:1967
-#: c:\LimeSurvey-S/common.php:2795
+#: c:\LimeSurvey-S/common.php:2794
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Kliknij 'Wyślij', aby zakończyć i zapisać swoje odpowiedzi."
 
 # C:\limesurvey/common.php:1973
-#: c:\LimeSurvey-S/common.php:2801
+#: c:\LimeSurvey-S/common.php:2800
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Jeśli chcesz przejrzeć lub zmienić swoje odpowiedzi, możesz kliknąć na przycisk [<< Wstecz]."
 
 # C:\limesurvey/common.php:1994
-#: c:\LimeSurvey-S/common.php:2830
+#: c:\LimeSurvey-S/common.php:2829
 msgid "Answers Cleared"
 msgstr "Odpowiedzi wyczyszczone"
 
 # C:\limesurvey/common.php:1999
 # C:\limesurvey/common.php:2005
-#: c:\LimeSurvey-S/common.php:2837
-#: c:\LimeSurvey-S/common.php:2845
+#: c:\LimeSurvey-S/common.php:2836
+#: c:\LimeSurvey-S/common.php:2844
 msgid "Restart this Survey"
 msgstr "Uruchom ponownie tę ankietę"
 
@@ -1127,7 +1127,7 @@ msgstr "Uruchom ponownie tę ankietę"
 # C:\limesurvey/question.php:134
 # C:\limesurvey/register.php:149
 # C:\limesurvey/survey.php:144
-#: c:\LimeSurvey-S/common.php:2848
+#: c:\LimeSurvey-S/common.php:2847
 #: c:\LimeSurvey-S/index.php:594
 #: c:\LimeSurvey-S/index.php:620
 #: c:\LimeSurvey-S/register.php:154
@@ -1135,27 +1135,27 @@ msgid "Close this Window"
 msgstr "Zamknij to okno"
 
 # C:\limesurvey/common.php:2018
-#: c:\LimeSurvey-S/common.php:2850
+#: c:\LimeSurvey-S/common.php:2849
 msgid "Save Your Unfinished Survey"
 msgstr "Zapisz niedokończoną ankietę"
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2851
+#: c:\LimeSurvey-S/common.php:2850
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Wprowadź login oraz hasło dla tej ankiety oraz zapisz."
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2851
+#: c:\LimeSurvey-S/common.php:2850
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Postęp wypełniania ankiety zostanie zapisany. W przyszłości, aby móc kontynuować udzielanie odpowiedzi, zaloguj się, podając właściwe hasło."
 
 # C:\limesurvey/common.php:2019
-#: c:\LimeSurvey-S/common.php:2851
+#: c:\LimeSurvey-S/common.php:2850
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Jeśli wprowadzisz adres email, posłuży on do wysłania szczegółów rejestracji oraz, w razie konieczności, do odzyskania zapomnianego hasła."
 
 # C:\limesurvey/common.php:2016
-#: c:\LimeSurvey-S/common.php:2859
+#: c:\LimeSurvey-S/common.php:2858
 msgid "Return To Survey"
 msgstr "Wróć do ankiety"
 
@@ -1163,7 +1163,7 @@ msgstr "Wróć do ankiety"
 # C:\limesurvey/save.php:296
 # C:\limesurvey/admin/dataentry.php:358
 # C:\limesurvey/admin/userrighthandling.php:693
-#: c:\LimeSurvey-S/common.php:2864
+#: c:\LimeSurvey-S/common.php:2863
 #: c:\LimeSurvey-S/save.php:322
 msgid "Name"
 msgstr "Nazwa"
@@ -1178,19 +1178,19 @@ msgstr "Nazwa"
 # C:\limesurvey/admin/usercontrol.php:341
 # C:\limesurvey/admin/userrighthandling.php:152
 # C:\limesurvey/admin/userrighthandling.php:328
-#: c:\LimeSurvey-S/common.php:2867
-#: c:\LimeSurvey-S/common.php:2893
+#: c:\LimeSurvey-S/common.php:2866
+#: c:\LimeSurvey-S/common.php:2892
 #: c:\LimeSurvey-S/save.php:323
 msgid "Password"
 msgstr "Hasło"
 
 # C:\limesurvey/common.php:2029
-#: c:\LimeSurvey-S/common.php:2870
+#: c:\LimeSurvey-S/common.php:2869
 msgid "Repeat Password"
 msgstr "Powtórz hasło"
 
 # C:\limesurvey/common.php:2032
-#: c:\LimeSurvey-S/common.php:2873
+#: c:\LimeSurvey-S/common.php:2872
 msgid "Your Email"
 msgstr "Twój email"
 
@@ -1198,9 +1198,9 @@ msgstr "Twój email"
 # C:\limesurvey/common.php:2057
 # C:\limesurvey/common.php:2102
 # C:\limesurvey/index.php:1098
-#: c:\LimeSurvey-S/common.php:2878
-#: c:\LimeSurvey-S/common.php:2898
-#: c:\LimeSurvey-S/common.php:2949
+#: c:\LimeSurvey-S/common.php:2877
+#: c:\LimeSurvey-S/common.php:2897
+#: c:\LimeSurvey-S/common.php:2948
 #: c:\LimeSurvey-S/index.php:1786
 #: c:\LimeSurvey-S/index.php:1938
 msgid "Security Question"
@@ -1210,47 +1210,47 @@ msgstr "Pytanie bezpieczeństwa"
 # C:\limesurvey/admin/html.php:1600
 # C:\limesurvey/admin/html.php:1653
 # C:\limesurvey/admin/userrighthandling.php:274
-#: c:\LimeSurvey-S/common.php:2881
+#: c:\LimeSurvey-S/common.php:2880
 msgid "Save Now"
 msgstr "Zapisz teraz"
 
 # C:\limesurvey/common.php:2045
-#: c:\LimeSurvey-S/common.php:2886
+#: c:\LimeSurvey-S/common.php:2885
 msgid "Load A Previously Saved Survey"
 msgstr "Załaduj poprzednio zapisaną ankietę"
 
 # C:\limesurvey/common.php:2046
-#: c:\LimeSurvey-S/common.php:2887
+#: c:\LimeSurvey-S/common.php:2886
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Możesz wczytać uprzednio zapisaną ankietę."
 
 # C:\limesurvey/common.php:2046
-#: c:\LimeSurvey-S/common.php:2887
+#: c:\LimeSurvey-S/common.php:2886
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Wprowadź identyfikator oraz hasło użyte przy zapisywaniu postępu wypełnienia ankiety."
 
 # C:\limesurvey/common.php:2049
-#: c:\LimeSurvey-S/common.php:2890
+#: c:\LimeSurvey-S/common.php:2889
 msgid "Saved name"
 msgstr "Zapisana nazwa"
 
 # C:\limesurvey/common.php:2062
-#: c:\LimeSurvey-S/common.php:2903
+#: c:\LimeSurvey-S/common.php:2902
 msgid "Load Now"
 msgstr "Załaduj teraz"
 
 # C:\limesurvey/common.php:2067
-#: c:\LimeSurvey-S/common.php:2908
+#: c:\LimeSurvey-S/common.php:2907
 msgid "You must be registered to complete this survey"
 msgstr "Musisz się zarejestrować, aby wypełnić tę ankietę"
 
 # C:\limesurvey/common.php:2068
-#: c:\LimeSurvey-S/common.php:2909
+#: c:\LimeSurvey-S/common.php:2908
 msgid "You may register for this survey if you wish to take part."
 msgstr "Jeśli chcesz wypełnić ankietę, musisz się zarejestrować."
 
 # C:\limesurvey/common.php:2068
-#: c:\LimeSurvey-S/common.php:2909
+#: c:\LimeSurvey-S/common.php:2908
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Wprowadź swoje dane, a niezwłocznie zostanie wysłany email z linkiem do ankiety."
 
@@ -1262,8 +1262,8 @@ msgstr "Wprowadź swoje dane, a niezwłocznie zostanie wysłany email z linkiem 
 # C:\limesurvey/admin/spss.php:94
 # C:\limesurvey/admin/tokens.php:559
 # C:\limesurvey/admin/tokens.php:1121
-#: c:\LimeSurvey-S/common.php:2916
-#: c:\LimeSurvey-S/common.php:6060
+#: c:\LimeSurvey-S/common.php:2915
+#: c:\LimeSurvey-S/common.php:6059
 msgid "First Name"
 msgstr "Imię"
 
@@ -1275,8 +1275,8 @@ msgstr "Imię"
 # C:\limesurvey/admin/spss.php:97
 # C:\limesurvey/admin/tokens.php:563
 # C:\limesurvey/admin/tokens.php:1127
-#: c:\LimeSurvey-S/common.php:2923
-#: c:\LimeSurvey-S/common.php:6061
+#: c:\LimeSurvey-S/common.php:2922
+#: c:\LimeSurvey-S/common.php:6060
 msgid "Last Name"
 msgstr "Nazwisko"
 
@@ -1284,7 +1284,7 @@ msgstr "Nazwisko"
 # C:\limesurvey/admin/exportresults.php:468
 # C:\limesurvey/admin/exportresults.php:469
 # C:\limesurvey/admin/saved.php:108
-#: c:\LimeSurvey-S/common.php:2930
+#: c:\LimeSurvey-S/common.php:2929
 msgid "Email Address"
 msgstr "Adres e-mail"
 
@@ -1340,7 +1340,7 @@ msgstr "Adres e-mail"
 # C:\limesurvey/admin/userrighthandling.php:826
 # C:\limesurvey/admin/userrighthandling.php:978
 # C:\limesurvey/admin/userrighthandling.php:983
-#: c:\LimeSurvey-S/common.php:2974
+#: c:\LimeSurvey-S/common.php:2973
 #: c:\LimeSurvey-S/index.php:1729
 #: c:\LimeSurvey-S/index.php:1790
 #: c:\LimeSurvey-S/index.php:1941
@@ -1348,16 +1348,16 @@ msgid "Continue"
 msgstr "Kontynuuj"
 
 # C:\limesurvey/common.php:2133
-#: c:\LimeSurvey-S/common.php:2981
+#: c:\LimeSurvey-S/common.php:2980
 msgid "Your Assessment"
 msgstr "Twoja ocena"
 
+#: c:\LimeSurvey-S/common.php:3194
 #: c:\LimeSurvey-S/common.php:3195
-#: c:\LimeSurvey-S/common.php:3196
 msgid "Sort answers alphabetically"
 msgstr "Sortuj odpowiedzi alfabetycznie"
 
-#: c:\LimeSurvey-S/common.php:3200
+#: c:\LimeSurvey-S/common.php:3199
 msgid "The percentage width of the answer column"
 msgstr "Procentowa szerokość kolumny odpowiedzi"
 
@@ -1365,159 +1365,159 @@ msgstr "Procentowa szerokość kolumny odpowiedzi"
 # C:\limesurvey/admin/results.php:212
 # C:\limesurvey/admin/results.php:214
 # C:\limesurvey/admin/results.php:282
-#: c:\LimeSurvey-S/common.php:3201
+#: c:\LimeSurvey-S/common.php:3200
 msgid "Answer width"
 msgstr "Szerokość pola odpowiedzi"
 
 # C:\limesurvey/admin/activate.php:241
-#: c:\LimeSurvey-S/common.php:3205
+#: c:\LimeSurvey-S/common.php:3204
 msgid "Filter an array's answers from a Multiple Options Question"
 msgstr "Filtr odpowiedzi dla pytań wielokrotnego wyboru"
 
-#: c:\LimeSurvey-S/common.php:3206
+#: c:\LimeSurvey-S/common.php:3205
 msgid "Array filter"
 msgstr "Filtruj"
 
+#: c:\LimeSurvey-S/common.php:3209
 #: c:\LimeSurvey-S/common.php:3210
-#: c:\LimeSurvey-S/common.php:3211
 msgid "Category Separator"
 msgstr "Separator kategorii"
 
-#: c:\LimeSurvey-S/common.php:3215
+#: c:\LimeSurvey-S/common.php:3214
 msgid "Filter the available answers by this value"
 msgstr "Filtruj dostępne odpowiedzi wg wartości"
 
 # C:\limesurvey/admin/statistics.php:1571
-#: c:\LimeSurvey-S/common.php:3216
+#: c:\LimeSurvey-S/common.php:3215
 msgid "Code filter"
 msgstr "Filtruj kod"
 
-#: c:\LimeSurvey-S/common.php:3220
+#: c:\LimeSurvey-S/common.php:3219
 msgid "Number of columns to display"
 msgstr "Liczba pokazywanych kolumn"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: c:\LimeSurvey-S/common.php:3221
+#: c:\LimeSurvey-S/common.php:3220
 msgid "Display columns"
 msgstr "Pokaż kolumny"
 
-#: c:\LimeSurvey-S/common.php:3225
+#: c:\LimeSurvey-S/common.php:3224
 msgid "How many rows to display"
 msgstr "Liczba wierszy do pokazania"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
-#: c:\LimeSurvey-S/common.php:3226
+#: c:\LimeSurvey-S/common.php:3225
 msgid "Display rows"
 msgstr "Pokaż wiersze"
 
-#: c:\LimeSurvey-S/common.php:3230
+#: c:\LimeSurvey-S/common.php:3229
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Ukryj podpowiedź domyślnie pokazywaną przy pytaniu"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:760
-#: c:\LimeSurvey-S/common.php:3231
+#: c:\LimeSurvey-S/common.php:3230
 msgid "Hide tip"
 msgstr "Ukryj podpowiedź"
 
-#: c:\LimeSurvey-S/common.php:3235
+#: c:\LimeSurvey-S/common.php:3234
 msgid "Limit the number of possible answers"
 msgstr "Limit liczby potencjalnych odpowiedzi"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: c:\LimeSurvey-S/common.php:3236
+#: c:\LimeSurvey-S/common.php:3235
 msgid "Maximum answers"
 msgstr "Maksymalnie odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3240
+#: c:\LimeSurvey-S/common.php:3239
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksymalna suma dla wielokrotnej wartości liczbowej"
 
-#: c:\LimeSurvey-S/common.php:3241
+#: c:\LimeSurvey-S/common.php:3240
 msgid "Maximum sum value"
 msgstr "Maksymalna suma"
 
-#: c:\LimeSurvey-S/common.php:3245
+#: c:\LimeSurvey-S/common.php:3244
 msgid "Maximum characters allowed"
 msgstr "Dozwolona maksymalna liczba znaków"
 
-#: c:\LimeSurvey-S/common.php:3246
+#: c:\LimeSurvey-S/common.php:3245
 msgid "Maximum characters"
 msgstr "Maksymalnie znaków"
 
-#: c:\LimeSurvey-S/common.php:3250
+#: c:\LimeSurvey-S/common.php:3249
 msgid "Ensure a minimum number of possible answers"
 msgstr "Zapewnij minimalną liczbę potencjalnych odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3251
+#: c:\LimeSurvey-S/common.php:3250
 msgid "Minimum answers"
 msgstr "Minimalnie odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3255
+#: c:\LimeSurvey-S/common.php:3254
 msgid "Make the \"other comment\" field mandatory when the \"other\" field has been marked"
 msgstr "Pole \"komentarz\" ma być obowiązkowe, gdy zaznaczono pole \"inne\""
 
 # C:\limesurvey/common.php:1677
 # C:\limesurvey/admin/dataentry.php:1730
-#: c:\LimeSurvey-S/common.php:3256
+#: c:\LimeSurvey-S/common.php:3255
 msgid "Other comment mandatory"
 msgstr "Dodatkowy komentarz obowiązkowy"
 
 # C:\limesurvey/common.php:704
-#: c:\LimeSurvey-S/common.php:3260
+#: c:\LimeSurvey-S/common.php:3259
 msgid "Allow only numerical input"
 msgstr "Zezwól tylko na wartość liczbową"
 
 # C:\limesurvey/admin/statistics.php:156
 # C:\limesurvey/admin/statistics.php:305
-#: c:\LimeSurvey-S/common.php:3261
+#: c:\LimeSurvey-S/common.php:3260
 msgid "Numbers only"
 msgstr "Tylko liczby"
 
 # C:\limesurvey/common.php:704
-#: c:\LimeSurvey-S/common.php:3266
+#: c:\LimeSurvey-S/common.php:3265
 msgid "Allow only numerical input for `Other` text"
 msgstr "Pozwól tylko na wartości liczbowe w polu `Inne`"
 
 # C:\limesurvey/admin/statistics.php:156
 # C:\limesurvey/admin/statistics.php:305
-#: c:\LimeSurvey-S/common.php:3267
+#: c:\LimeSurvey-S/common.php:3266
 msgid "Numbers only for `Other`"
 msgstr "Tylko liczby jako `Inne`"
 
-#: c:\LimeSurvey-S/common.php:3272
+#: c:\LimeSurvey-S/common.php:3271
 msgid "Present answers in random order"
 msgstr "Prezentuj odpowiedzi w losowej kolejności"
 
-#: c:\LimeSurvey-S/common.php:3273
+#: c:\LimeSurvey-S/common.php:3272
 msgid "Random answer order"
 msgstr "Losowa kolejność wariantów odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3277
+#: c:\LimeSurvey-S/common.php:3276
 msgid "Width of text input box"
 msgstr "Szerokość pola tekstowego"
 
-#: c:\LimeSurvey-S/common.php:3278
+#: c:\LimeSurvey-S/common.php:3277
 msgid "Input box width"
 msgstr "Szerokość pola"
 
-#: c:\LimeSurvey-S/common.php:3282
+#: c:\LimeSurvey-S/common.php:3281
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi równać się"
 
-#: c:\LimeSurvey-S/common.php:3283
+#: c:\LimeSurvey-S/common.php:3282
 msgid "Equals sum value"
 msgstr "Suma wprowadzanych wartości"
 
-#: c:\LimeSurvey-S/common.php:3287
+#: c:\LimeSurvey-S/common.php:3286
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Suma wielokrotnych wartości liczbowych musi być większa niż"
 
-#: c:\LimeSurvey-S/common.php:3288
+#: c:\LimeSurvey-S/common.php:3287
 msgid "Minimum sum value"
 msgstr "Minimalna suma dla wprowadzanych wartości"
 
@@ -1529,41 +1529,41 @@ msgstr "Minimalna suma dla wprowadzanych wartości"
 # C:\limesurvey/admin/html.php:2188
 # C:\limesurvey/admin/html.php:2193
 # C:\limesurvey/admin/html.php:2198
+#: c:\LimeSurvey-S/common.php:3291
 #: c:\LimeSurvey-S/common.php:3292
-#: c:\LimeSurvey-S/common.php:3293
 msgid "Use slider layout"
 msgstr "Użyj formy suwaka"
 
+#: c:\LimeSurvey-S/common.php:3296
 #: c:\LimeSurvey-S/common.php:3297
-#: c:\LimeSurvey-S/common.php:3298
 msgid "Slider minimum value"
 msgstr "Minimalna wartość suwaka"
 
+#: c:\LimeSurvey-S/common.php:3301
 #: c:\LimeSurvey-S/common.php:3302
-#: c:\LimeSurvey-S/common.php:3303
 msgid "Slider maximum value"
 msgstr "Maksymalna wartość suwaka"
 
+#: c:\LimeSurvey-S/common.php:3306
 #: c:\LimeSurvey-S/common.php:3307
-#: c:\LimeSurvey-S/common.php:3308
 msgid "Slider accuracy"
 msgstr "Dokładność suwaka"
 
+#: c:\LimeSurvey-S/common.php:3311
 #: c:\LimeSurvey-S/common.php:3312
-#: c:\LimeSurvey-S/common.php:3313
 msgid "Slider initial value"
 msgstr "Wartość początkowa suwaka"
 
-#: c:\LimeSurvey-S/common.php:3317
+#: c:\LimeSurvey-S/common.php:3316
 msgid "Add a prefix to the answer field"
 msgstr "Dodaj prefiks do pola odpowiedzi"
 
 # C:\limesurvey/common.php:1558
-#: c:\LimeSurvey-S/common.php:3318
+#: c:\LimeSurvey-S/common.php:3317
 msgid "Answer prefix"
 msgstr "Prefiks odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3322
+#: c:\LimeSurvey-S/common.php:3321
 msgid "Add a suffix to the answer field"
 msgstr "Dodaj sufiks do pola odpowiedzi"
 
@@ -1572,65 +1572,65 @@ msgstr "Dodaj sufiks do pola odpowiedzi"
 # C:\limesurvey/admin/importgroup.php:584
 # C:\limesurvey/admin/importquestion.php:427
 # C:\limesurvey/admin/importsurvey.php:1019
-#: c:\LimeSurvey-S/common.php:3323
+#: c:\LimeSurvey-S/common.php:3322
 msgid "Answer suffix"
 msgstr "Sufiks odpowiedzi"
 
-#: c:\LimeSurvey-S/common.php:3327
+#: c:\LimeSurvey-S/common.php:3326
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Użyj odpowiednich pól zamiast okna kalendarza"
 
 # C:\limesurvey/common.php:1249
 # C:\limesurvey/admin/saved.php:149
-#: c:\LimeSurvey-S/common.php:3328
+#: c:\LimeSurvey-S/common.php:3327
 msgid "Display select boxes"
 msgstr "Pokaż pola wyboru"
 
-#: c:\LimeSurvey-S/common.php:3332
+#: c:\LimeSurvey-S/common.php:3331
 msgid "Minimum year value for dropdown list"
 msgstr "Minimalny rok dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3333
+#: c:\LimeSurvey-S/common.php:3332
 msgid "Minimum dropdown year"
 msgstr "Minimalny rok dla listy"
 
-#: c:\LimeSurvey-S/common.php:3337
+#: c:\LimeSurvey-S/common.php:3336
 msgid "Maximum year value for dropdown list"
 msgstr "Maksymalny rok dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3338
+#: c:\LimeSurvey-S/common.php:3337
 msgid "Maximum dropdown year"
 msgstr "Maksymalny rok dla listy"
 
-#: c:\LimeSurvey-S/common.php:3342
+#: c:\LimeSurvey-S/common.php:3341
 msgid "Excludes all other options if this is selected"
 msgstr "Wyklucza wszystkie inne opcje w przypadku tego wyboru"
 
-#: c:\LimeSurvey-S/common.php:3343
+#: c:\LimeSurvey-S/common.php:3342
 msgid "Exclusive option"
 msgstr "Opcja wykluczająca"
 
-#: c:\LimeSurvey-S/common.php:3347
+#: c:\LimeSurvey-S/common.php:3346
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Maksymalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1197
-#: c:\LimeSurvey-S/common.php:3348
+#: c:\LimeSurvey-S/common.php:3347
 msgid "Maximum value"
 msgstr "Maksimum"
 
-#: c:\LimeSurvey-S/common.php:3352
+#: c:\LimeSurvey-S/common.php:3351
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Minimalna wartość dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/assessments.php:108
 # C:\limesurvey/admin/statistics.php:1097
-#: c:\LimeSurvey-S/common.php:3353
+#: c:\LimeSurvey-S/common.php:3352
 msgid "Minimum value"
 msgstr "Minimum"
 
-#: c:\LimeSurvey-S/common.php:3357
+#: c:\LimeSurvey-S/common.php:3356
 msgid "Step value for array (multi-flexible) question type"
 msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 
@@ -1650,115 +1650,115 @@ msgstr "Wartość kroku dla pytania: macierz (dowolny zestaw etykiet)"
 # C:\limesurvey/admin/statistics.php:688
 # C:\limesurvey/admin/statistics.php:1323
 # C:\limesurvey/admin/stats.php:666
-#: c:\LimeSurvey-S/common.php:3358
+#: c:\LimeSurvey-S/common.php:3357
 msgid "Step value"
 msgstr "Wartość kroku"
 
-#: c:\LimeSurvey-S/common.php:3362
+#: c:\LimeSurvey-S/common.php:3361
 msgid "Use Checkbox layout for array (multi-flexible) question type"
 msgstr "Użyj pola wyboru dla pytania: macierz (dowolny zestaw etykiet)"
 
 # C:\limesurvey/admin/login_check.php:58
-#: c:\LimeSurvey-S/common.php:3363
+#: c:\LimeSurvey-S/common.php:3362
 msgid "Checkbox layout"
 msgstr "Układ pola wyboru"
 
-#: c:\LimeSurvey-S/common.php:3367
+#: c:\LimeSurvey-S/common.php:3366
 msgid "Use Dual Dropdown instead of Dual Scale"
 msgstr "Użyj podwójnej listy rozwijanej zamiast podwójnej skali"
 
-#: c:\LimeSurvey-S/common.php:3368
+#: c:\LimeSurvey-S/common.php:3367
 msgid "Dual dropdown"
 msgstr "Podwójna lista rozwijana"
 
-#: c:\LimeSurvey-S/common.php:3372
+#: c:\LimeSurvey-S/common.php:3371
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefiks|Sufiks dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3373
+#: c:\LimeSurvey-S/common.php:3372
 msgid "Prefix|Suffix"
 msgstr "Prefiks|Sufiks"
 
-#: c:\LimeSurvey-S/common.php:3377
+#: c:\LimeSurvey-S/common.php:3376
 msgid "Header for scale A"
 msgstr "Nagłówek dla skali A"
 
-#: c:\LimeSurvey-S/common.php:3378
+#: c:\LimeSurvey-S/common.php:3377
 msgid "Header scale A"
 msgstr "Nagłówek skali A"
 
-#: c:\LimeSurvey-S/common.php:3382
+#: c:\LimeSurvey-S/common.php:3381
 msgid "Header for scale B"
 msgstr "Nagłówek dla skali B"
 
-#: c:\LimeSurvey-S/common.php:3383
+#: c:\LimeSurvey-S/common.php:3382
 msgid "Header scale B"
 msgstr "Nagłówek skali B"
 
-#: c:\LimeSurvey-S/common.php:3387
+#: c:\LimeSurvey-S/common.php:3386
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Answer-Separator|Separator-pośredni dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3388
+#: c:\LimeSurvey-S/common.php:3387
 msgid "Dropdown separators"
 msgstr "Separatory dla listy rozwijanej"
 
-#: c:\LimeSurvey-S/common.php:3392
+#: c:\LimeSurvey-S/common.php:3391
 msgid "Replaces the 'other' label with text"
 msgstr "Zastępuje etykietę 'inne' tekstem"
 
-#: c:\LimeSurvey-S/common.php:3393
+#: c:\LimeSurvey-S/common.php:3392
 msgid "\"Other\" caption"
 msgstr "Nagłówek \"Inne\""
 
-#: c:\LimeSurvey-S/common.php:3397
+#: c:\LimeSurvey-S/common.php:3396
 msgid "Show statistics of a certain question to the user"
 msgstr "Pokaż użytkownikowi statystyki pytania"
 
 # C:\limesurvey/admin/importoldresponses.php:58
 # C:\limesurvey/admin/statistics.php:99
 # C:\limesurvey/admin/stats.php:101
-#: c:\LimeSurvey-S/common.php:3398
+#: c:\LimeSurvey-S/common.php:3397
 msgid "Show in public statistics"
 msgstr "Pokaż w statystyce"
 
-#: c:\LimeSurvey-S/common.php:3402
+#: c:\LimeSurvey-S/common.php:3401
 msgid "SGQA identifier to use total of previous question as maximum for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako maksimum dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3403
+#: c:\LimeSurvey-S/common.php:3402
 msgid "Max value from SGQA"
 msgstr "Wartość maksymalna z SGQA"
 
-#: c:\LimeSurvey-S/common.php:3407
+#: c:\LimeSurvey-S/common.php:3406
 msgid "SGQA identifier to use total of previous question as minimum for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako minimum dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3408
+#: c:\LimeSurvey-S/common.php:3407
 msgid "Min value from SGQA"
 msgstr "Wartość minimalna z SGQA"
 
-#: c:\LimeSurvey-S/common.php:3412
+#: c:\LimeSurvey-S/common.php:3411
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "Kod SGQA do wykorzystania sumy z poprzedniego pytania jako sumy dla tego pytania"
 
-#: c:\LimeSurvey-S/common.php:3413
+#: c:\LimeSurvey-S/common.php:3412
 msgid "Value equals SGQA"
 msgstr "Wartość równa SGQA"
 
-#: c:\LimeSurvey-S/common.php:3417
+#: c:\LimeSurvey-S/common.php:3416
 msgid "Insert a page break before this question in printable view by setting this to 1."
 msgstr "Wstaw podział strony przed tym pytaniem w widoku wydruku ustawiając 1."
 
-#: c:\LimeSurvey-S/common.php:3418
+#: c:\LimeSurvey-S/common.php:3417
 msgid "Insert page break in printable view"
 msgstr "Wstaw podział strony w widoku wydruku"
 
-#: c:\LimeSurvey-S/common.php:3422
+#: c:\LimeSurvey-S/common.php:3421
 msgid "1=nominal 2=ordinal 3=scale."
 msgstr "1=nominalna 2=porządkowa 3=skala."
 
-#: c:\LimeSurvey-S/common.php:3423
+#: c:\LimeSurvey-S/common.php:3422
 msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 msgstr "Eksportowany typ skali 1=nominalna 2=porządkowa 3=skala."
 
@@ -1766,43 +1766,43 @@ msgstr "Eksportowany typ skali 1=nominalna 2=porządkowa 3=skala."
 # C:\limesurvey/admin/conditions.php:659
 # C:\limesurvey/admin/html.php:999
 # C:\limesurvey/admin/statistics.php:1630
-#: c:\LimeSurvey-S/common.php:3566
+#: c:\LimeSurvey-S/common.php:3565
 msgid "Version"
 msgstr "Wersja"
 
 # C:\limesurvey/common.php:2399
-#: c:\LimeSurvey-S/common.php:3575
+#: c:\LimeSurvey-S/common.php:3574
 msgid "Online Manual"
 msgstr "Podręcznik online"
 
 # C:\limesurvey/common.php:2402
-#: c:\LimeSurvey-S/common.php:3578
+#: c:\LimeSurvey-S/common.php:3577
 msgid "Support this project - Donate to "
 msgstr "Wspomóż ten projekt - przekaż darowiznę "
 
 # C:\limesurvey/common.php:2405
-#: c:\LimeSurvey-S/common.php:3581
+#: c:\LimeSurvey-S/common.php:3580
 msgid "Visit our website!"
 msgstr "Odwiedź naszą stronę!"
 
-#: c:\LimeSurvey-S/common.php:3711
+#: c:\LimeSurvey-S/common.php:3710
 msgid "Email was not sent because demo-mode is activated."
 msgstr "Email nie został wysłany (funkcja wysyłania jest nieaktywna w trybie demo)"
 
 # C:\limesurvey/common.php:2750
 # C:\limesurvey/common.php:2755
-#: c:\LimeSurvey-S/common.php:4060
-#: c:\LimeSurvey-S/common.php:4066
+#: c:\LimeSurvey-S/common.php:4059
+#: c:\LimeSurvey-S/common.php:4065
 msgid "Executing"
 msgstr "Wykonuję"
 
 # C:\limesurvey/common.php:2750
-#: c:\LimeSurvey-S/common.php:4060
+#: c:\LimeSurvey-S/common.php:4059
 msgid "Failed! Reason: "
 msgstr "Błąd! Powód:"
 
 # C:\limesurvey/common.php:2755
-#: c:\LimeSurvey-S/common.php:4066
+#: c:\LimeSurvey-S/common.php:4065
 msgid "Success!"
 msgstr "Udane!"
 
@@ -1875,7 +1875,7 @@ msgstr "Udane!"
 # C:\limesurvey/admin/vvimport.php:96
 # C:\limesurvey/admin/install/createdb.php:68
 # C:\limesurvey/admin/install/createdb.php:100
-#: c:\LimeSurvey-S/common.php:5122
+#: c:\LimeSurvey-S/common.php:5121
 #: c:\LimeSurvey-S/index.php:470
 #: c:\LimeSurvey-S/save.php:581
 msgid "Error"
@@ -1885,7 +1885,7 @@ msgstr "Błąd"
 # C:\limesurvey/admin/exportresults.php:468
 # C:\limesurvey/admin/exportresults.php:469
 # C:\limesurvey/admin/saved.php:108
-#: c:\LimeSurvey-S/common.php:6062
+#: c:\LimeSurvey-S/common.php:6061
 msgid "Email address"
 msgstr "Adres e-mail"
 
@@ -1893,28 +1893,28 @@ msgstr "Adres e-mail"
 # C:\limesurvey/admin/tokens.php:123
 # C:\limesurvey/admin/tokens.php:141
 # C:\limesurvey/admin/tokens.php:154
-#: c:\LimeSurvey-S/common.php:6063
+#: c:\LimeSurvey-S/common.php:6062
 msgid "Token code"
 msgstr "Kod tokena"
 
 # C:\limesurvey/admin/exportresults.php:836
 # C:\limesurvey/admin/tokens.php:576
 # C:\limesurvey/admin/tokens.php:1151
-#: c:\LimeSurvey-S/common.php:6064
+#: c:\LimeSurvey-S/common.php:6063
 msgid "Language code"
 msgstr "Kod języka"
 
 # C:\limesurvey/admin/tokens.php:829
-#: c:\LimeSurvey-S/common.php:6065
+#: c:\LimeSurvey-S/common.php:6064
 msgid "Invitation sent date"
 msgstr "Data wysłania zaproszenia"
 
 # C:\limesurvey/admin/tokens.php:991
-#: c:\LimeSurvey-S/common.php:6066
+#: c:\LimeSurvey-S/common.php:6065
 msgid "Last Reminder sent date"
 msgstr "Data wysłania ostatniego przypomnienia"
 
-#: c:\LimeSurvey-S/common.php:6067
+#: c:\LimeSurvey-S/common.php:6066
 msgid "Total numbers of sent reminders"
 msgstr "Liczby wysłanych przypomnień"
 
@@ -1926,7 +1926,7 @@ msgstr "Liczby wysłanych przypomnień"
 # C:\limesurvey/admin/spss.php:79
 # C:\limesurvey/admin/tokens.php:301
 # C:\limesurvey/admin/tokens.php:591
-#: c:\LimeSurvey-S/common.php:6087
+#: c:\LimeSurvey-S/common.php:6086
 #, php-format
 msgid "Attribute %s"
 msgstr "Atrybut %s"
@@ -3551,8 +3551,8 @@ msgstr "Nie, dziękujemy."
 
 # C:\limesurvey/admin/admin.php:289
 # C:\limesurvey/admin/admin.php:300
-#: c:\LimeSurvey-S/admin/admin.php:567
-#: c:\LimeSurvey-S/admin/admin.php:580
+#: c:\LimeSurvey-S/admin/admin.php:571
+#: c:\LimeSurvey-S/admin/admin.php:584
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Podręcznik Online"
 
@@ -3560,7 +3560,7 @@ msgstr "LimeSurvey Podręcznik Online"
 # C:\limesurvey/admin/exportresults.php:240
 # C:\limesurvey/admin/exportresults.php:246
 # C:\limesurvey/admin/exportresults.php:297
-#: c:\LimeSurvey-S/admin/admin.php:628
+#: c:\LimeSurvey-S/admin/admin.php:632
 msgid "Help"
 msgstr "Pomoc"
 
@@ -4435,7 +4435,7 @@ msgid "Clear"
 msgstr "Wyczyść"
 
 # C:\limesurvey/admin/database.php:121
-#: c:\LimeSurvey-S/admin/database.php:119
+#: c:\LimeSurvey-S/admin/database.php:126
 msgid ""
 "Group could not be added.\\n"
 "\\n"
@@ -4446,138 +4446,136 @@ msgstr ""
 "Brakuje nazw grupy dla następujących wersji językowych:"
 
 # C:\limesurvey/admin/database.php:143
-#: c:\LimeSurvey-S/admin/database.php:162
+#: c:\LimeSurvey-S/admin/database.php:169
 msgid "Error: The database reported the following error:"
 msgstr "Błąd: Baza danych zgłasza następujące nieprawidłowości:"
 
 # C:\limesurvey/admin/database.php:175
-#: c:\LimeSurvey-S/admin/database.php:212
+#: c:\LimeSurvey-S/admin/database.php:219
 msgid "Group could not be updated"
 msgstr "Grupa nie może zostać zaktualizowana"
 
 # C:\limesurvey/admin/database.php:196
 # C:\limesurvey/admin/database.php:219
 # C:\limesurvey/admin/database.php:232
-#: c:\LimeSurvey-S/admin/database.php:237
-#: c:\LimeSurvey-S/admin/database.php:262
-#: c:\LimeSurvey-S/admin/database.php:278
+#: c:\LimeSurvey-S/admin/database.php:244
+#: c:\LimeSurvey-S/admin/database.php:269
+#: c:\LimeSurvey-S/admin/database.php:285
 msgid "Group could not be deleted"
 msgstr "Grupa nie może zostać usunięta"
 
 # C:\limesurvey/admin/database.php:480
-#: c:\LimeSurvey-S/admin/database.php:288
+#: c:\LimeSurvey-S/admin/database.php:295
 msgid "The question could not be added. You must enter at least enter a question code."
 msgstr "Nie można dodać pytania. Należy wpisać kod w obowiązkowe pole."
 
 # C:\limesurvey/admin/database.php:278
 # C:\limesurvey/admin/database.php:498
 # C:\limesurvey/admin/database.php:510
-#: c:\LimeSurvey-S/admin/database.php:359
-#: c:\LimeSurvey-S/admin/database.php:665
-#: c:\LimeSurvey-S/admin/database.php:694
+#: c:\LimeSurvey-S/admin/database.php:366
+#: c:\LimeSurvey-S/admin/database.php:673
+#: c:\LimeSurvey-S/admin/database.php:702
 msgid "Question could not be created."
 msgstr "Pytanie nie może zostać utworzone."
 
 # C:\limesurvey/admin/database.php:362
-#: c:\LimeSurvey-S/admin/database.php:474
+#: c:\LimeSurvey-S/admin/database.php:482
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "Pytanie nie może zostać zaktualizowane. W innych pytaniach istnieją powiązania z bieżącym pytaniem. Zmiana typu niniejszego pytania wymaga wpierw usunięcia tych powiązań."
 
 # C:\limesurvey/admin/database.php:412
 # C:\limesurvey/admin/database.php:470
-#: c:\LimeSurvey-S/admin/database.php:557
-#: c:\LimeSurvey-S/admin/database.php:615
+#: c:\LimeSurvey-S/admin/database.php:565
+#: c:\LimeSurvey-S/admin/database.php:623
 msgid "Question could not be updated"
 msgstr "Pytanie nie może zostać zaktualizowane"
 
 # C:\limesurvey/admin/database.php:432
-#: c:\LimeSurvey-S/admin/database.php:577
+#: c:\LimeSurvey-S/admin/database.php:585
 msgid "Answers can't be deleted"
 msgstr "Odpowiedzi nie mogą zostać usunięte"
 
 # C:\limesurvey/admin/database.php:442
-#: c:\LimeSurvey-S/admin/database.php:587
+#: c:\LimeSurvey-S/admin/database.php:595
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "To pytanie jest powiązane z odpowiedziami innego pytania i nie może występować przed grupą o numerze: "
 
 # C:\limesurvey/admin/database.php:443
 # C:\limesurvey/admin/database.php:455
-#: c:\LimeSurvey-S/admin/database.php:588
-#: c:\LimeSurvey-S/admin/database.php:600
+#: c:\LimeSurvey-S/admin/database.php:596
+#: c:\LimeSurvey-S/admin/database.php:608
 msgid "in position"
 msgstr "w pozycji"
 
 # C:\limesurvey/admin/database.php:444
 # C:\limesurvey/admin/database.php:456
-#: c:\LimeSurvey-S/admin/database.php:589
-#: c:\LimeSurvey-S/admin/database.php:601
+#: c:\LimeSurvey-S/admin/database.php:597
+#: c:\LimeSurvey-S/admin/database.php:609
 msgid "See conditions:"
 msgstr "Zobacz warunki:"
 
 # C:\limesurvey/admin/database.php:454
-#: c:\LimeSurvey-S/admin/database.php:599
+#: c:\LimeSurvey-S/admin/database.php:607
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "Niektóre pytania są powiązane z odpowiedziami innych pytań i nie mogą występować po grupie o numerze: "
 
 # C:\limesurvey/admin/database.php:480
-#: c:\LimeSurvey-S/admin/database.php:625
+#: c:\LimeSurvey-S/admin/database.php:633
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "Pytanie nie może zostać zapisane. Należy wpisać kod w obowiązkowe pole"
 
 # C:\limesurvey/admin/database.php:559
 # C:\limesurvey/admin/database.php:600
-#: c:\LimeSurvey-S/admin/database.php:758
-#: c:\LimeSurvey-S/admin/database.php:799
+#: c:\LimeSurvey-S/admin/database.php:767
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "Pytanie nie może być usunięte. W innych pytaniach istnieją powiązania z bieżącym pytaniem. Usunięcie niniejszego pytania wymaga wpierw usunięcia tych powiązań."
 
 # C:\limesurvey/admin/database.php:584
 # C:\limesurvey/admin/database.php:621
-#: c:\LimeSurvey-S/admin/database.php:783
-#: c:\LimeSurvey-S/admin/database.php:820
+#: c:\LimeSurvey-S/admin/database.php:792
 msgid "Question could not be deleted"
 msgstr "Pytanie nie może być usunięte"
 
 # C:\limesurvey/admin/database.php:630
 # C:\limesurvey/admin/html.php:1378
-#: c:\LimeSurvey-S/admin/database.php:835
+#: c:\LimeSurvey-S/admin/database.php:808
 msgid "Add new Answer"
 msgstr "Dodaj nową odpowiedź"
 
 # C:\limesurvey/admin/database.php:645
-#: c:\LimeSurvey-S/admin/database.php:850
+#: c:\LimeSurvey-S/admin/database.php:823
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "Błąd dodawania odpowiedzi: Nie możesz użyć tego samego kodu odpowiedzi więcej niż jeden raz."
 
 # C:\limesurvey/admin/database.php:655
 # C:\limesurvey/admin/database.php:663
-#: c:\LimeSurvey-S/admin/database.php:877
-#: c:\LimeSurvey-S/admin/database.php:902
+#: c:\LimeSurvey-S/admin/database.php:850
+#: c:\LimeSurvey-S/admin/database.php:875
 msgid "Failed to insert answer"
 msgstr "Nie udało się wprowadzić odpowiedzi"
 
 # C:\limesurvey/admin/database.php:668
-#: c:\LimeSurvey-S/admin/database.php:911
+#: c:\LimeSurvey-S/admin/database.php:884
 msgid "Invalid or empty answer code supplied"
 msgstr "Brak lub niewłaściwy kod wariantu odpowiedzi"
 
 # C:\limesurvey/admin/templates.php:542
-#: c:\LimeSurvey-S/admin/database.php:916
+#: c:\LimeSurvey-S/admin/database.php:889
 msgid "Save Changes"
 msgstr "Zapisz zmiany"
 
 # C:\limesurvey/admin/database.php:720
-#: c:\LimeSurvey-S/admin/database.php:984
+#: c:\LimeSurvey-S/admin/database.php:957
 msgid "Failed to update answers"
 msgstr "Nie udało się zaktualizować odpowiedzi"
 
 # C:\limesurvey/admin/database.php:735
-#: c:\LimeSurvey-S/admin/database.php:1003
+#: c:\LimeSurvey-S/admin/database.php:976
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Kod wariantu odpowiedzi o wartości 0 lub brak kodu uniemożliwia zapis"
 
 # C:\limesurvey/admin/database.php:736
-#: c:\LimeSurvey-S/admin/database.php:1004
+#: c:\LimeSurvey-S/admin/database.php:977
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Występują zdublowane kody wariantów odpowiedzi. Aktualizacja niemożliwa."
 
@@ -4589,7 +4587,7 @@ msgstr "Występują zdublowane kody wariantów odpowiedzi. Aktualizacja niemożl
 # C:\limesurvey/admin/labels.php:628
 # C:\limesurvey/admin/questionhandling.php:547
 # C:\limesurvey/admin/questionhandling.php:623
-#: c:\LimeSurvey-S/admin/database.php:1008
+#: c:\LimeSurvey-S/admin/database.php:981
 msgid "Up"
 msgstr "W górę"
 
@@ -4601,7 +4599,7 @@ msgstr "W górę"
 # C:\limesurvey/admin/labels.php:640
 # C:\limesurvey/admin/questionhandling.php:559
 # C:\limesurvey/admin/questionhandling.php:627
-#: c:\LimeSurvey-S/admin/database.php:1020
+#: c:\LimeSurvey-S/admin/database.php:993
 msgid "Dn"
 msgstr "W dół"
 
@@ -4610,44 +4608,44 @@ msgstr "W dół"
 # C:\limesurvey/admin/html.php:1335
 # C:\limesurvey/admin/labels.php:335
 # C:\limesurvey/admin/labels.php:652
-#: c:\LimeSurvey-S/admin/database.php:1032
+#: c:\LimeSurvey-S/admin/database.php:1005
 msgid "Del"
 msgstr "Usuń"
 
 # C:\limesurvey/admin/database.php:768
-#: c:\LimeSurvey-S/admin/database.php:1036
+#: c:\LimeSurvey-S/admin/database.php:1009
 msgid "Failed to delete answer"
 msgstr "Nie udało się usunąć odpowiedzi"
 
 # C:\limesurvey/admin/database.php:774
 # C:\limesurvey/admin/html.php:1302
 # C:\limesurvey/admin/html.php:1339
-#: c:\LimeSurvey-S/admin/database.php:1042
+#: c:\LimeSurvey-S/admin/database.php:1015
 msgid "Default"
 msgstr "Domyślny"
 
 # C:\limesurvey/admin/database.php:783
-#: c:\LimeSurvey-S/admin/database.php:1051
+#: c:\LimeSurvey-S/admin/database.php:1024
 msgid "Failed to make answer not default"
 msgstr "Nie udało się ustawić danej odpowiedzi na niedomyślną"
 
 # C:\limesurvey/admin/database.php:797
-#: c:\LimeSurvey-S/admin/database.php:1065
+#: c:\LimeSurvey-S/admin/database.php:1038
 msgid "Failed to make answer default"
 msgstr "Nie udało się ustawić danej odpowiedzi na domyślną"
 
 # C:\limesurvey/admin/html.php:2162
 # C:\limesurvey/admin/html.php:2456
-#: c:\LimeSurvey-S/admin/database.php:1176
-#: c:\LimeSurvey-S/admin/database.php:1419
+#: c:\LimeSurvey-S/admin/database.php:1149
+#: c:\LimeSurvey-S/admin/database.php:1378
 msgid "Invitation to participate in survey"
 msgstr "Zaproszenie do wypełnienia ankiety"
 
 # C:\limesurvey/admin/html.php:2167
 # C:\limesurvey/admin/html.php:2459
 # C:\limesurvey/admin/tokens.php:730
-#: c:\LimeSurvey-S/admin/database.php:1177
-#: c:\LimeSurvey-S/admin/database.php:1420
+#: c:\LimeSurvey-S/admin/database.php:1150
+#: c:\LimeSurvey-S/admin/database.php:1379
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4687,16 +4685,16 @@ msgstr ""
 
 # C:\limesurvey/admin/html.php:2172
 # C:\limesurvey/admin/html.php:2462
-#: c:\LimeSurvey-S/admin/database.php:1178
-#: c:\LimeSurvey-S/admin/database.php:1421
+#: c:\LimeSurvey-S/admin/database.php:1151
+#: c:\LimeSurvey-S/admin/database.php:1380
 msgid "Reminder to participate in survey"
 msgstr "Przypomnienie o wypełnieniu ankiety"
 
 # C:\limesurvey/admin/html.php:2177
 # C:\limesurvey/admin/html.php:2465
 # C:\limesurvey/admin/tokens.php:880
-#: c:\LimeSurvey-S/admin/database.php:1179
-#: c:\LimeSurvey-S/admin/database.php:1422
+#: c:\LimeSurvey-S/admin/database.php:1152
+#: c:\LimeSurvey-S/admin/database.php:1381
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4742,16 +4740,16 @@ msgstr ""
 
 # C:\limesurvey/admin/html.php:2182
 # C:\limesurvey/admin/html.php:2468
-#: c:\LimeSurvey-S/admin/database.php:1180
-#: c:\LimeSurvey-S/admin/database.php:1423
+#: c:\LimeSurvey-S/admin/database.php:1153
+#: c:\LimeSurvey-S/admin/database.php:1382
 msgid "Confirmation of completed survey"
 msgstr "Potwierdzenie wypełnienia ankiety"
 
 # C:\limesurvey/index.php:942
 # C:\limesurvey/admin/html.php:2187
 # C:\limesurvey/admin/html.php:2471
-#: c:\LimeSurvey-S/admin/database.php:1181
-#: c:\LimeSurvey-S/admin/database.php:1424
+#: c:\LimeSurvey-S/admin/database.php:1154
+#: c:\LimeSurvey-S/admin/database.php:1383
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4775,15 +4773,15 @@ msgstr ""
 
 # C:\limesurvey/admin/html.php:2192
 # C:\limesurvey/admin/html.php:2479
-#: c:\LimeSurvey-S/admin/database.php:1182
-#: c:\LimeSurvey-S/admin/database.php:1425
+#: c:\LimeSurvey-S/admin/database.php:1155
+#: c:\LimeSurvey-S/admin/database.php:1384
 msgid "Survey Registration Confirmation"
 msgstr "Potwierdzenie rejestracji w ankiecie"
 
 # C:\limesurvey/admin/html.php:2197
 # C:\limesurvey/admin/html.php:2482
-#: c:\LimeSurvey-S/admin/database.php:1183
-#: c:\LimeSurvey-S/admin/database.php:1426
+#: c:\LimeSurvey-S/admin/database.php:1156
+#: c:\LimeSurvey-S/admin/database.php:1385
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4806,27 +4804,27 @@ msgstr ""
 "Jeśli masz jakiekolwiek pytania o ankiecie albo jeśli nie rejestrowałeś/-łaś się na stronie z ankietą, prosimy o kontakt z administratorem {ADMINNAME} < {ADMINEMAIL} >."
 
 # C:\limesurvey/admin/database.php:1035
-#: c:\LimeSurvey-S/admin/database.php:1199
+#: c:\LimeSurvey-S/admin/database.php:1172
 msgid "Survey could not be updated"
 msgstr "Ankieta nie może być zaktualizowana"
 
 # C:\limesurvey/admin/database.php:1050
-#: c:\LimeSurvey-S/admin/database.php:1214
+#: c:\LimeSurvey-S/admin/database.php:1187
 msgid "ERROR deleting Survey id"
 msgstr "BŁĄD podczas usuwania ankiety id"
 
 # C:\limesurvey/admin/database.php:1088
-#: c:\LimeSurvey-S/admin/database.php:1285
+#: c:\LimeSurvey-S/admin/database.php:1258
 msgid "Survey could not be created because it did not have a title"
 msgstr "Nie można utworzyć ankiety, ponieważ nie wprowadzono tytułu"
 
 # C:\limesurvey/admin/database.php:1149
-#: c:\LimeSurvey-S/admin/database.php:1442
+#: c:\LimeSurvey-S/admin/database.php:1403
 msgid "Survey could not be created"
 msgstr "Ankieta nie może być utworzona"
 
 # C:\limesurvey/admin/usercontrol.php:121
-#: c:\LimeSurvey-S/admin/database.php:1456
+#: c:\LimeSurvey-S/admin/database.php:1417
 msgid "Your personal settings were successfully saved."
 msgstr "Zapisano ustawienia osobiste."
 
@@ -5552,133 +5550,140 @@ msgstr "Eksportuj ankietę"
 msgid "No SID has been provided. Cannot dump survey"
 msgstr "Brak SID!. Nie można wyeksportować ankiety."
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:118
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:139
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:159
-msgid "Firstname from token"
-msgstr "Imię z tabeli tokenów"
-
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:119
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:140
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:160
+msgid "Firstname from token"
+msgstr "Imię z tabeli tokenów"
+
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:120
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:141
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:161
 msgid "Lastname from token"
 msgstr "Nazwisko z tabeli tokenów"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:120
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:135
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:161
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:121
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:136
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:162
 msgid "Email from the token"
 msgstr "Email z tabeli tokenów"
 
 # C:\limesurvey/admin/html.php:1950
 # C:\limesurvey/admin/html.php:2484
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:124
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:146
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:165
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:125
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:147
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:166
 #, php-format
 msgid "Token attribute: %s"
 msgstr "Atrybut tokenów: %s"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:126
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:151
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:167
-msgid "Survey expiration date (YYYY-MM-DD)"
-msgstr "Data wygaśnięcia ankiety (RRRR-MM-DD)"
-
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:127
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:152
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:168
-msgid "Survey expiration date (DD-MM-YYYY)"
-msgstr "Data wygaśnięcia ankiety (DD-MM-RRRR)"
+msgid "Survey expiration date (YYYY-MM-DD)"
+msgstr "Data wygaśnięcia ankiety (RRRR-MM-DD)"
 
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:128
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:153
 #: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:169
+msgid "Survey expiration date (DD-MM-YYYY)"
+msgstr "Data wygaśnięcia ankiety (DD-MM-RRRR)"
+
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:129
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:154
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:170
 msgid "Survey expiration date (MM-DD-YYYY)"
 msgstr "Data wygaśnięcia ankiety (MM-DD-RRRR)"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:136
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:137
 msgid "Token code for this participant"
 msgstr "Token tego uczestnika"
 
 # C:\limesurvey/admin/browse.php:653
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:141
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:142
 msgid "Name of the survey"
 msgstr "Nazwa ankiety"
 
 # C:\limesurvey/admin/browse.php:653
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:142
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:143
 msgid "Description of the survey"
 msgstr "Opis ankiety"
 
 # C:\limesurvey/register.php:147
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:148
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:149
 msgid "Name of the survey administrator"
 msgstr "Administrator ankiety"
 
 # C:\limesurvey/admin/usercontrol.php:346
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:149
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:150
 msgid "Email address of the survey administrator"
 msgstr "Adres email administratora ankiety"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:150
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:151
 msgid "URL of the survey"
 msgstr "Adres URL ankiety"
 
-# C:\limesurvey/admin/access_denied.php:108
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:174
-msgid "Total score for this assessment rule"
-msgstr "Całkowity wynik tej reguły oceniania"
+# C:\limesurvey/admin/html.php:587
+# C:\limesurvey/admin/html.php:588
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:175
+msgid "Overall assessment score"
+msgstr "Ogólny wynik oceny"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:496
+# C:\limesurvey/admin/html.php:587
+# C:\limesurvey/admin/html.php:588
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:176
+msgid "Assessment group score"
+msgstr "Wynik grupowy oceny"
+
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:498
 msgid "No replacement variable available for this field"
 msgstr "Brak dostępnych zmiennych dla tego pola"
 
 # C:\limesurvey/admin/templates.php:521
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:505
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:507
 msgid "Standard Fields"
 msgstr "Standardowe pola"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:517
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:519
 msgid "Previous Answers Fields"
 msgstr "Odpowiedzi z poprzedniej strony"
 
 # C:\limesurvey/admin/tokens.php:404
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:553
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:565
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:555
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:567
 msgid "Some Question have been disabled"
 msgstr "Niektóre pytania zostały wyłączone"
 
 # C:\limesurvey/common.php:354
 # C:\limesurvey/admin/html.php:246
 # C:\limesurvey/admin/importsurvey.php:1012
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:555
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:557
 #, php-format
 msgid "Survey Format is %s:"
 msgstr "Format ankiety to: %s"
 
 # C:\limesurvey/admin/html.php:1864
 # C:\limesurvey/admin/html.php:2397
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:555
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:557
 #: c:\LimeSurvey-S/admin/html.php:2394
 #: c:\LimeSurvey-S/admin/html.php:3258
 msgid "All in one"
 msgstr "Wszystkie razem"
 
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:557
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:566
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:559
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:568
 msgid "Only Previous pages answers are available"
 msgstr "Dostępne są tylko znaczniki odpowiedzi z poprzedniej strony"
 
 # C:\limesurvey/register.php:147
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:566
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:568
 #, php-format
 msgid "Survey mode is set to %s:"
 msgstr "Tryb ankiety ustalono na: %s"
 
 # C:\limesurvey/admin/html.php:1861
 # C:\limesurvey/admin/html.php:2396
-#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:566
+#: c:\LimeSurvey-S/admin/fck_LimeReplacementFields.php:568
 #: c:\LimeSurvey-S/admin/html.php:2391
 #: c:\LimeSurvey-S/admin/html.php:3257
 msgid "Group by Group"
@@ -6593,7 +6598,7 @@ msgstr "Musisz dodać warianty odpowiedzi do tego pytania"
 # C:\limesurvey/admin/importgroup.php:590
 # C:\limesurvey/admin/labels.php:241
 #: c:\LimeSurvey-S/admin/html.php:1431
-#: c:\LimeSurvey-S/admin/importgroup.php:687
+#: c:\LimeSurvey-S/admin/importgroup.php:694
 msgid "Label Set"
 msgstr "Zestaw etykiet"
 
@@ -7459,17 +7464,17 @@ msgid "You can't import label sets which don't support the current survey's base
 msgstr "Nie można zaimportować zestawu etykiet, który nie jest dostępny dla domyślnej wersji językowej ankiety."
 
 # C:\limesurvey/admin/importgroup.php:565
-#: c:\LimeSurvey-S/admin/importgroup.php:662
+#: c:\LimeSurvey-S/admin/importgroup.php:669
 msgid "Import partially successful."
 msgstr "Import częściowo udany."
 
 # C:\limesurvey/admin/importgroup.php:566
-#: c:\LimeSurvey-S/admin/importgroup.php:663
+#: c:\LimeSurvey-S/admin/importgroup.php:670
 msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Następujące wersje językowe w tej grupie nie zostały zaimportowane, ponieważ w bieżącej ankiecie ich nie zdefiniowano:"
 
 # C:\limesurvey/admin/importgroup.php:577
-#: c:\LimeSurvey-S/admin/importgroup.php:674
+#: c:\LimeSurvey-S/admin/importgroup.php:681
 msgid "Group Import Summary"
 msgstr "Podsumowanie importu grupy"
 
@@ -7477,13 +7482,13 @@ msgstr "Podsumowanie importu grupy"
 # C:\limesurvey/admin/html.php:1768
 # C:\limesurvey/admin/importgroup.php:578
 # C:\limesurvey/admin/importsurvey.php:1017
-#: c:\LimeSurvey-S/admin/importgroup.php:675
+#: c:\LimeSurvey-S/admin/importgroup.php:682
 msgid "Groups:"
 msgstr "Grupy:"
 
 # C:\limesurvey/admin/importgroup.php:587
 # C:\limesurvey/admin/importsurvey.php:1020
-#: c:\LimeSurvey-S/admin/importgroup.php:684
+#: c:\LimeSurvey-S/admin/importgroup.php:691
 msgid "Conditions"
 msgstr "Warunki"
 
@@ -7491,7 +7496,7 @@ msgstr "Warunki"
 # C:\limesurvey/admin/importlabel.php:215
 # C:\limesurvey/admin/importsurvey.php:1021
 # C:\limesurvey/admin/labels.php:273
-#: c:\LimeSurvey-S/admin/importgroup.php:689
+#: c:\LimeSurvey-S/admin/importgroup.php:696
 msgid "Labels"
 msgstr "Etykiety"
 
@@ -7499,17 +7504,17 @@ msgstr "Etykiety"
 # C:\limesurvey/admin/importquestion.php:435
 # C:\limesurvey/admin/questionhandling.php:115
 # C:\limesurvey/admin/questionhandling.php:491
-#: c:\LimeSurvey-S/admin/importgroup.php:692
+#: c:\LimeSurvey-S/admin/importgroup.php:699
 msgid "Question Attributes: "
 msgstr "Atrybuty pytania:"
 
 # C:\limesurvey/admin/importgroup.php:598
-#: c:\LimeSurvey-S/admin/importgroup.php:695
+#: c:\LimeSurvey-S/admin/importgroup.php:702
 msgid "Import of group is completed."
 msgstr "Import grupy zakończony."
 
 # C:\limesurvey/admin/html.php:912
-#: c:\LimeSurvey-S/admin/importgroup.php:696
+#: c:\LimeSurvey-S/admin/importgroup.php:703
 msgid "Go to group"
 msgstr "Idź do grupy"
 
@@ -7553,8 +7558,8 @@ msgstr "Podsumowanie importu zestawu etykiet"
 # C:\limesurvey/admin/importsurvey.php:1021
 #: c:\LimeSurvey-S/admin/importlabel.php:206
 #: c:\LimeSurvey-S/admin/importquestion.php:510
-#: c:\LimeSurvey-S/admin/importsurvey.php:1296
-#: c:\LimeSurvey-S/admin/importsurvey.php:1325
+#: c:\LimeSurvey-S/admin/importsurvey.php:1300
+#: c:\LimeSurvey-S/admin/importsurvey.php:1329
 msgid "Label Sets"
 msgstr "Zestawy etykiet"
 
@@ -7562,8 +7567,8 @@ msgstr "Zestawy etykiet"
 # C:\limesurvey/admin/importsurvey.php:1015
 # C:\limesurvey/admin/labels.php:150
 #: c:\LimeSurvey-S/admin/importlabel.php:208
-#: c:\LimeSurvey-S/admin/importsurvey.php:1290
-#: c:\LimeSurvey-S/admin/importsurvey.php:1319
+#: c:\LimeSurvey-S/admin/importsurvey.php:1294
+#: c:\LimeSurvey-S/admin/importsurvey.php:1323
 #: c:\LimeSurvey-S/admin/labels.php:154
 msgid "Languages"
 msgstr "Języki"
@@ -7706,49 +7711,49 @@ msgstr "Pytanie \"%s - %s\" nie zostało zaimportowane z uwagi na nierozpoznany 
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "Pytanie \"%s - %s\" zostało zaimportowane, lecz jego typ został ustawiony na '%s' jako najbardziej odpowiadający poprzedniemu."
 
-#: c:\LimeSurvey-S/admin/importsurvey.php:1267
-#: c:\LimeSurvey-S/admin/importsurvey.php:1268
+#: c:\LimeSurvey-S/admin/importsurvey.php:1271
+#: c:\LimeSurvey-S/admin/importsurvey.php:1272
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr "Pominięto warunek dla %d (%d nie istnieje)"
 
 # C:\limesurvey/admin/importsurvey.php:1011
-#: c:\LimeSurvey-S/admin/importsurvey.php:1286
-#: c:\LimeSurvey-S/admin/importsurvey.php:1315
+#: c:\LimeSurvey-S/admin/importsurvey.php:1290
+#: c:\LimeSurvey-S/admin/importsurvey.php:1319
 msgid "Survey Import Summary"
 msgstr "Podsumowanie importu ankiety."
 
 # C:\limesurvey/admin/importlabel.php:44
 # C:\limesurvey/admin/labels.php:202
 # C:\limesurvey/admin/labels.php:210
-#: c:\LimeSurvey-S/admin/importsurvey.php:1299
-#: c:\LimeSurvey-S/admin/importsurvey.php:1326
+#: c:\LimeSurvey-S/admin/importsurvey.php:1303
+#: c:\LimeSurvey-S/admin/importsurvey.php:1330
 msgid "Not imported Label Sets"
 msgstr "Nie zaimportowano zestawu etykiet"
 
-#: c:\LimeSurvey-S/admin/importsurvey.php:1299
-#: c:\LimeSurvey-S/admin/importsurvey.php:1326
+#: c:\LimeSurvey-S/admin/importsurvey.php:1303
+#: c:\LimeSurvey-S/admin/importsurvey.php:1330
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Zestawy etykiet nie zostały zaimportowane ze względu na brak uprawnień do tworzenia nowych zestawów.)"
 
 # C:\limesurvey/admin/importsurvey.php:1022
-#: c:\LimeSurvey-S/admin/importsurvey.php:1301
-#: c:\LimeSurvey-S/admin/importsurvey.php:1327
+#: c:\LimeSurvey-S/admin/importsurvey.php:1305
+#: c:\LimeSurvey-S/admin/importsurvey.php:1331
 msgid "Question Attributes"
 msgstr "Atrybuty pytania"
 
-#: c:\LimeSurvey-S/admin/importsurvey.php:1303
+#: c:\LimeSurvey-S/admin/importsurvey.php:1307
 msgid "Quotas"
 msgstr "Kwoty"
 
 # C:\limesurvey/admin/importquestion.php:439
 # C:\limesurvey/admin/importsurvey.php:1025
-#: c:\LimeSurvey-S/admin/importsurvey.php:1305
-#: c:\LimeSurvey-S/admin/importsurvey.php:1330
+#: c:\LimeSurvey-S/admin/importsurvey.php:1309
+#: c:\LimeSurvey-S/admin/importsurvey.php:1334
 msgid "Import of Survey is completed."
 msgstr "Import ankiety zakończony."
 
-#: c:\LimeSurvey-S/admin/importsurvey.php:1306
+#: c:\LimeSurvey-S/admin/importsurvey.php:1310
 msgid "Go to survey"
 msgstr "Przejdź do ankiety"
 
@@ -7770,8 +7775,8 @@ msgstr "Przejdź do ankiety"
 # C:\limesurvey/admin/tokens.php:862
 # C:\limesurvey/admin/tokens.php:1006
 # C:\limesurvey/admin/tokens.php:1026
-#: c:\LimeSurvey-S/admin/importsurvey.php:1307
-#: c:\LimeSurvey-S/admin/importsurvey.php:1331
+#: c:\LimeSurvey-S/admin/importsurvey.php:1311
+#: c:\LimeSurvey-S/admin/importsurvey.php:1335
 msgid "Warnings"
 msgstr "Ostrzeżenia"
 
@@ -8762,7 +8767,7 @@ msgstr "Pokaż pytanie"
 
 # C:\limesurvey/admin/database.php:121
 #: c:\LimeSurvey-S/admin/quota.php:242
-#: c:\LimeSurvey-S/admin/quota.php:299
+#: c:\LimeSurvey-S/admin/quota.php:298
 msgid ""
 "Quota could not be added.\\n"
 "\\n"
@@ -8772,20 +8777,20 @@ msgstr ""
 "\\n"
 "Brakuje informacji o kwocie w następujących wersjach językowych"
 
-#: c:\LimeSurvey-S/admin/quota.php:387
+#: c:\LimeSurvey-S/admin/quota.php:386
 msgid "Modify Quota"
 msgstr "Modyfikuj kwoty"
 
 # C:\limesurvey/admin/labels.php:140
-#: c:\LimeSurvey-S/admin/quota.php:391
-#: c:\LimeSurvey-S/admin/quota.php:527
-#: c:\LimeSurvey-S/admin/quota.php:670
-#: c:\LimeSurvey-S/admin/quota.php:836
+#: c:\LimeSurvey-S/admin/quota.php:390
+#: c:\LimeSurvey-S/admin/quota.php:526
+#: c:\LimeSurvey-S/admin/quota.php:669
+#: c:\LimeSurvey-S/admin/quota.php:835
 msgid "Quota Name"
 msgstr "Nazwa kwoty"
 
-#: c:\LimeSurvey-S/admin/quota.php:397
-#: c:\LimeSurvey-S/admin/quota.php:842
+#: c:\LimeSurvey-S/admin/quota.php:396
+#: c:\LimeSurvey-S/admin/quota.php:841
 msgid "Quota Limit"
 msgstr "Limit kwoty"
 
@@ -8795,127 +8800,127 @@ msgstr "Limit kwoty"
 # C:\limesurvey/admin/labels.php:301
 # C:\limesurvey/admin/saved.php:109
 # C:\limesurvey/admin/userrighthandling.php:730
-#: c:\LimeSurvey-S/admin/quota.php:403
-#: c:\LimeSurvey-S/admin/quota.php:529
-#: c:\LimeSurvey-S/admin/quota.php:848
+#: c:\LimeSurvey-S/admin/quota.php:402
+#: c:\LimeSurvey-S/admin/quota.php:528
+#: c:\LimeSurvey-S/admin/quota.php:847
 msgid "Quota Action"
 msgstr "Akcja po osiągnięciu kwoty"
 
 # C:\limesurvey/admin/html.php:2379
 # C:\limesurvey/admin/html.php:2536
 # C:\limesurvey/admin/userrighthandling.php:197
-#: c:\LimeSurvey-S/admin/quota.php:408
-#: c:\LimeSurvey-S/admin/quota.php:553
-#: c:\LimeSurvey-S/admin/quota.php:851
+#: c:\LimeSurvey-S/admin/quota.php:407
+#: c:\LimeSurvey-S/admin/quota.php:552
+#: c:\LimeSurvey-S/admin/quota.php:850
 msgid "Terminate Survey"
 msgstr "Zakończ badanie"
 
-#: c:\LimeSurvey-S/admin/quota.php:411
-#: c:\LimeSurvey-S/admin/quota.php:555
-#: c:\LimeSurvey-S/admin/quota.php:852
+#: c:\LimeSurvey-S/admin/quota.php:410
+#: c:\LimeSurvey-S/admin/quota.php:554
+#: c:\LimeSurvey-S/admin/quota.php:851
 msgid "Terminate Survey With Warning"
 msgstr "Zakończ badanie komunikatem"
 
-#: c:\LimeSurvey-S/admin/quota.php:416
-#: c:\LimeSurvey-S/admin/quota.php:857
+#: c:\LimeSurvey-S/admin/quota.php:415
+#: c:\LimeSurvey-S/admin/quota.php:856
 msgid "Autoload URL"
 msgstr "Automatycznie pobieraj URL"
 
 # C:\limesurvey/admin/labels.php:140
-#: c:\LimeSurvey-S/admin/quota.php:456
-#: c:\LimeSurvey-S/admin/quota.php:894
+#: c:\LimeSurvey-S/admin/quota.php:455
+#: c:\LimeSurvey-S/admin/quota.php:893
 msgid "Quota message"
 msgstr "Wiadomość o kwocie"
 
-#: c:\LimeSurvey-S/admin/quota.php:462
-#: c:\LimeSurvey-S/admin/quota.php:900
+#: c:\LimeSurvey-S/admin/quota.php:461
+#: c:\LimeSurvey-S/admin/quota.php:899
 msgid "URL"
 msgstr "URL"
 
 # C:\limesurvey/admin/html.php:2200
 # C:\limesurvey/admin/html.php:2527
-#: c:\LimeSurvey-S/admin/quota.php:468
-#: c:\LimeSurvey-S/admin/quota.php:906
+#: c:\LimeSurvey-S/admin/quota.php:467
+#: c:\LimeSurvey-S/admin/quota.php:905
 msgid "URL description"
 msgstr "Opis dla końcowego URL"
 
 # C:\limesurvey/admin/questionhandling.php:478
-#: c:\LimeSurvey-S/admin/quota.php:487
+#: c:\LimeSurvey-S/admin/quota.php:486
 msgid "Update Quota"
 msgstr "Aktualizuj kwotę"
 
 # C:\limesurvey/common.php:354
 # C:\limesurvey/admin/html.php:246
 # C:\limesurvey/admin/importsurvey.php:1012
-#: c:\LimeSurvey-S/admin/quota.php:524
+#: c:\LimeSurvey-S/admin/quota.php:523
 msgid "Survey Quotas"
 msgstr "Kwoty dla badania"
 
-#: c:\LimeSurvey-S/admin/quota.php:530
-#: c:\LimeSurvey-S/admin/quota.php:670
+#: c:\LimeSurvey-S/admin/quota.php:529
+#: c:\LimeSurvey-S/admin/quota.php:669
 msgid "Limit"
 msgstr "Limit"
 
 # C:\limesurvey/admin/html.php:75
 # C:\limesurvey/admin/html.php:141
-#: c:\LimeSurvey-S/admin/quota.php:547
+#: c:\LimeSurvey-S/admin/quota.php:546
 msgid "Not Active"
 msgstr "Nie aktywny"
 
 # C:\limesurvey/admin/usercontrol.php:296
 # C:\limesurvey/admin/userrighthandling.php:147
-#: c:\LimeSurvey-S/admin/quota.php:569
+#: c:\LimeSurvey-S/admin/quota.php:568
 msgid "Modify"
 msgstr "Modyfikacja"
 
 # C:\limesurvey/admin/database.php:630
 # C:\limesurvey/admin/html.php:1378
-#: c:\LimeSurvey-S/admin/quota.php:591
-#: c:\LimeSurvey-S/admin/quota.php:689
-#: c:\LimeSurvey-S/admin/quota.php:705
-#: c:\LimeSurvey-S/admin/quota.php:765
-#: c:\LimeSurvey-S/admin/quota.php:781
+#: c:\LimeSurvey-S/admin/quota.php:590
+#: c:\LimeSurvey-S/admin/quota.php:688
+#: c:\LimeSurvey-S/admin/quota.php:704
+#: c:\LimeSurvey-S/admin/quota.php:764
+#: c:\LimeSurvey-S/admin/quota.php:780
 msgid "Add Answer"
 msgstr "Dodaj odpowiedź"
 
 # C:\limesurvey/admin/tokens.php:211
 # C:\limesurvey/admin/tokens.php:230
-#: c:\LimeSurvey-S/admin/quota.php:635
+#: c:\LimeSurvey-S/admin/quota.php:634
 msgid "No quotas have been set for this survey"
 msgstr "Dla ankiety nie zdefiniowano kwot"
 
 # C:\limesurvey/admin/tokens.php:1271
-#: c:\LimeSurvey-S/admin/quota.php:646
-#: c:\LimeSurvey-S/admin/quota.php:923
+#: c:\LimeSurvey-S/admin/quota.php:645
+#: c:\LimeSurvey-S/admin/quota.php:922
 msgid "Add New Quota"
 msgstr "Dodaj nową kwotę"
 
-#: c:\LimeSurvey-S/admin/quota.php:657
+#: c:\LimeSurvey-S/admin/quota.php:656
 msgid "Quick CSV Report"
 msgstr "Krótki raport CSV"
 
 # C:\limesurvey/common.php:708
 # C:\limesurvey/admin/exportresults.php:538
 # C:\limesurvey/admin/statistics.php:1050
-#: c:\LimeSurvey-S/admin/quota.php:670
+#: c:\LimeSurvey-S/admin/quota.php:669
 msgid "Remaining"
 msgstr "Pozostało"
 
 # C:\limesurvey/admin/html.php:1858
 # C:\limesurvey/admin/html.php:2395
-#: c:\LimeSurvey-S/admin/quota.php:689
-#: c:\LimeSurvey-S/admin/quota.php:765
+#: c:\LimeSurvey-S/admin/quota.php:688
+#: c:\LimeSurvey-S/admin/quota.php:764
 msgid "Question Selection"
 msgstr "Wybór pytania"
 
 # C:\limesurvey/common.php:1864
-#: c:\LimeSurvey-S/admin/quota.php:692
+#: c:\LimeSurvey-S/admin/quota.php:691
 msgid "Sorry there are no supported question types in this survey."
 msgstr "W tej ankiecie nie ma odpowiednich pytań."
 
 # C:\limesurvey/index.php:383
-#: c:\LimeSurvey-S/admin/quota.php:705
-#: c:\LimeSurvey-S/admin/quota.php:781
+#: c:\LimeSurvey-S/admin/quota.php:704
+#: c:\LimeSurvey-S/admin/quota.php:780
 msgid "Survey Quota"
 msgstr "Kwota dla badania"
 
@@ -8923,25 +8928,25 @@ msgstr "Kwota dla badania"
 # C:\limesurvey/common.php:2057
 # C:\limesurvey/common.php:2102
 # C:\limesurvey/index.php:1098
-#: c:\LimeSurvey-S/admin/quota.php:712
+#: c:\LimeSurvey-S/admin/quota.php:711
 msgid "Select Question"
 msgstr "Wybierz pytanie"
 
-#: c:\LimeSurvey-S/admin/quota.php:768
+#: c:\LimeSurvey-S/admin/quota.php:767
 msgid "All answers are already selected in this quota."
 msgstr "Wybrano już wszystkie odpowiedzi przy tej kwocie."
 
 # C:\limesurvey/admin/html.php:1366
-#: c:\LimeSurvey-S/admin/quota.php:788
+#: c:\LimeSurvey-S/admin/quota.php:787
 msgid "Select Answer"
 msgstr "Wybierz odpowiedź"
 
-#: c:\LimeSurvey-S/admin/quota.php:832
+#: c:\LimeSurvey-S/admin/quota.php:831
 msgid "New Quota"
 msgstr "Nowa kwota"
 
 # C:\limesurvey/admin/html.php:2377
-#: c:\LimeSurvey-S/admin/quota.php:896
+#: c:\LimeSurvey-S/admin/quota.php:895
 msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Przepraszamy, ale wyczerpano limit odpowiedzi w tym badaniu."
 
@@ -10786,8 +10791,8 @@ msgstr "Na podany adres wysłano email z wygenerowanym hasłem."
 # C:\limesurvey/admin/userrighthandling.php:447
 #: c:\LimeSurvey-S/admin/usercontrol.php:390
 #: c:\LimeSurvey-S/admin/usercontrol.php:539
-#: c:\LimeSurvey-S/admin/userrighthandling.php:238
-#: c:\LimeSurvey-S/admin/userrighthandling.php:526
+#: c:\LimeSurvey-S/admin/userrighthandling.php:241
+#: c:\LimeSurvey-S/admin/userrighthandling.php:529
 msgid "Set User Rights"
 msgstr "Zarządzanie prawami użytkownika"
 
@@ -10817,7 +10822,7 @@ msgstr "Nie można usunąć konta Superadministratora!"
 # C:\limesurvey/admin/usercontrol.php:296
 # C:\limesurvey/admin/userrighthandling.php:147
 #: c:\LimeSurvey-S/admin/usercontrol.php:471
-#: c:\LimeSurvey-S/admin/userrighthandling.php:183
+#: c:\LimeSurvey-S/admin/userrighthandling.php:186
 msgid "Modifying User"
 msgstr "Modyfikacja użytkownika"
 
@@ -10854,7 +10859,7 @@ msgstr "Nie możesz zmienić własnych uprawnień!"
 # C:\limesurvey/admin/userrighthandling.php:185
 # C:\limesurvey/admin/userrighthandling.php:447
 #: c:\LimeSurvey-S/admin/usercontrol.php:620
-#: c:\LimeSurvey-S/admin/userrighthandling.php:544
+#: c:\LimeSurvey-S/admin/userrighthandling.php:547
 msgid "Set Template Rights"
 msgstr "Zarządzanie prawami do szablonów"
 
@@ -10870,34 +10875,34 @@ msgstr "Błąd podczas aktualizacji szablonów."
 # C:\limesurvey/admin/userrighthandling.php:69
 # C:\limesurvey/admin/userrighthandling.php:533
 # C:\limesurvey/admin/userrighthandling.php:625
-#: c:\LimeSurvey-S/admin/userrighthandling.php:49
-#: c:\LimeSurvey-S/admin/userrighthandling.php:632
-#: c:\LimeSurvey-S/admin/userrighthandling.php:736
+#: c:\LimeSurvey-S/admin/userrighthandling.php:52
+#: c:\LimeSurvey-S/admin/userrighthandling.php:635
+#: c:\LimeSurvey-S/admin/userrighthandling.php:739
 msgid "Mail to all Members"
 msgstr "Wyślij email do wszystkich członków grupy"
 
 # C:\limesurvey/admin/userrighthandling.php:79
-#: c:\LimeSurvey-S/admin/userrighthandling.php:64
+#: c:\LimeSurvey-S/admin/userrighthandling.php:67
 msgid "Edit Current User Group"
 msgstr "Edytuj bieżącą grupę użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:91
-#: c:\LimeSurvey-S/admin/userrighthandling.php:78
+#: c:\LimeSurvey-S/admin/userrighthandling.php:81
 msgid "Delete Current User Group"
 msgstr "Usuń bieżącą grupę użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:48
 # C:\limesurvey/admin/userrighthandling.php:113
-#: c:\LimeSurvey-S/admin/userrighthandling.php:89
+#: c:\LimeSurvey-S/admin/userrighthandling.php:92
 msgid "User Groups"
 msgstr "Grupy użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:109
-#: c:\LimeSurvey-S/admin/userrighthandling.php:97
+#: c:\LimeSurvey-S/admin/userrighthandling.php:100
 msgid "Add New User Group"
 msgstr "Dodaj nową grupę użytkowników"
 
-#: c:\LimeSurvey-S/admin/userrighthandling.php:120
+#: c:\LimeSurvey-S/admin/userrighthandling.php:123
 msgid "Set templates that this user may access"
 msgstr "Prawa dostępu do szablonów dla użytkownika"
 
@@ -10906,215 +10911,215 @@ msgstr "Prawa dostępu do szablonów dla użytkownika"
 # C:\limesurvey/admin/html.php:2400
 # C:\limesurvey/admin/templates.php:445
 # C:\limesurvey/admin/templates.php:456
-#: c:\LimeSurvey-S/admin/userrighthandling.php:134
+#: c:\LimeSurvey-S/admin/userrighthandling.php:137
 msgid "Template Name"
 msgstr "Nazwa szablonu"
 
 # C:\limesurvey/admin/html.php:1891
 # C:\limesurvey/admin/html.php:2423
-#: c:\LimeSurvey-S/admin/userrighthandling.php:134
+#: c:\LimeSurvey-S/admin/userrighthandling.php:137
 msgid "Allowed"
 msgstr "Zezwolenie na dostęp"
 
 # C:\limesurvey/common.php:270
 # C:\limesurvey/common.php:272
-#: c:\LimeSurvey-S/admin/userrighthandling.php:152
+#: c:\LimeSurvey-S/admin/userrighthandling.php:155
 msgid "Save Settings"
 msgstr "Zapisz ustawienia"
 
 # C:\limesurvey/admin/userrighthandling.php:151
 # C:\limesurvey/admin/userrighthandling.php:327
-#: c:\LimeSurvey-S/admin/userrighthandling.php:187
-#: c:\LimeSurvey-S/admin/userrighthandling.php:384
+#: c:\LimeSurvey-S/admin/userrighthandling.php:190
+#: c:\LimeSurvey-S/admin/userrighthandling.php:387
 msgid "Full name"
 msgstr "Pełna nazwa"
 
 # C:\limesurvey/register.php:147
-#: c:\LimeSurvey-S/admin/userrighthandling.php:259
+#: c:\LimeSurvey-S/admin/userrighthandling.php:262
 msgid "SuperAdministrator"
 msgstr "Superadministrator"
 
 # C:\limesurvey/admin/userrighthandling.php:200
-#: c:\LimeSurvey-S/admin/userrighthandling.php:265
+#: c:\LimeSurvey-S/admin/userrighthandling.php:268
 msgid "Configurator"
 msgstr "Konfigurator"
 
 # C:\limesurvey/admin/userrighthandling.php:203
-#: c:\LimeSurvey-S/admin/userrighthandling.php:268
+#: c:\LimeSurvey-S/admin/userrighthandling.php:271
 msgid "Create User"
 msgstr "Tworzenie użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:206
 # C:\limesurvey/admin/userrighthandling.php:800
-#: c:\LimeSurvey-S/admin/userrighthandling.php:271
-#: c:\LimeSurvey-S/admin/userrighthandling.php:954
+#: c:\LimeSurvey-S/admin/userrighthandling.php:274
+#: c:\LimeSurvey-S/admin/userrighthandling.php:957
 msgid "Delete User"
 msgstr "Usuwanie użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:212
-#: c:\LimeSurvey-S/admin/userrighthandling.php:274
+#: c:\LimeSurvey-S/admin/userrighthandling.php:277
 msgid "Manage Template"
 msgstr "Zarządzanie szablonami"
 
 # C:\limesurvey/admin/userrighthandling.php:215
-#: c:\LimeSurvey-S/admin/userrighthandling.php:277
+#: c:\LimeSurvey-S/admin/userrighthandling.php:280
 msgid "Manage Labels"
 msgstr "Zarządzanie etykietami"
 
 # C:\limesurvey/register.php:147
-#: c:\LimeSurvey-S/admin/userrighthandling.php:365
+#: c:\LimeSurvey-S/admin/userrighthandling.php:368
 msgid "Setting as Administrator Child"
 msgstr "Ustawianie Administratora-rodzica"
 
 # C:\limesurvey/admin/userrighthandling.php:310
-#: c:\LimeSurvey-S/admin/userrighthandling.php:366
+#: c:\LimeSurvey-S/admin/userrighthandling.php:369
 msgid "Set Parent successful."
 msgstr "Ustawianie rodzica udane."
 
 # C:\limesurvey/admin/userrighthandling.php:323
-#: c:\LimeSurvey-S/admin/userrighthandling.php:379
+#: c:\LimeSurvey-S/admin/userrighthandling.php:382
 msgid "User Control"
 msgstr "Konta użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:329
-#: c:\LimeSurvey-S/admin/userrighthandling.php:386
+#: c:\LimeSurvey-S/admin/userrighthandling.php:389
 msgid "Created by"
 msgstr "Utworzony przez"
 
 # C:\limesurvey/admin/userrighthandling.php:356
 # C:\limesurvey/admin/userrighthandling.php:456
-#: c:\LimeSurvey-S/admin/userrighthandling.php:421
-#: c:\LimeSurvey-S/admin/userrighthandling.php:553
+#: c:\LimeSurvey-S/admin/userrighthandling.php:424
+#: c:\LimeSurvey-S/admin/userrighthandling.php:556
 msgid "Edit User"
 msgstr "Edytuj użytkownika"
 
-#: c:\LimeSurvey-S/admin/userrighthandling.php:535
+#: c:\LimeSurvey-S/admin/userrighthandling.php:538
 msgid "Take Ownership"
 msgstr "Ustaw podległość"
 
 # C:\limesurvey/admin/userrighthandling.php:488
 # C:\limesurvey/admin/userrighthandling.php:510
-#: c:\LimeSurvey-S/admin/userrighthandling.php:587
-#: c:\LimeSurvey-S/admin/userrighthandling.php:609
+#: c:\LimeSurvey-S/admin/userrighthandling.php:590
+#: c:\LimeSurvey-S/admin/userrighthandling.php:612
 msgid "Name:"
 msgstr "Nazwa:"
 
 # C:\limesurvey/admin/userrighthandling.php:508
-#: c:\LimeSurvey-S/admin/userrighthandling.php:607
+#: c:\LimeSurvey-S/admin/userrighthandling.php:610
 msgid "Edit User Group (Owner: "
 msgstr "Edycja grupy użytkowników (właściciel: "
 
 # C:\limesurvey/admin/userrighthandling.php:514
-#: c:\LimeSurvey-S/admin/userrighthandling.php:613
+#: c:\LimeSurvey-S/admin/userrighthandling.php:616
 msgid "Update User Group"
 msgstr "Aktualizuj grupę użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:535
-#: c:\LimeSurvey-S/admin/userrighthandling.php:634
+#: c:\LimeSurvey-S/admin/userrighthandling.php:637
 msgid "Send me a copy:"
 msgstr "Wyślij kopię do mnie:"
 
 # C:\limesurvey/admin/userrighthandling.php:538
-#: c:\LimeSurvey-S/admin/userrighthandling.php:637
+#: c:\LimeSurvey-S/admin/userrighthandling.php:640
 msgid "Subject:"
 msgstr "Temat:"
 
 # C:\limesurvey/admin/userrighthandling.php:542
-#: c:\LimeSurvey-S/admin/userrighthandling.php:641
+#: c:\LimeSurvey-S/admin/userrighthandling.php:644
 msgid "Send"
 msgstr "Wyślij"
 
 # C:\limesurvey/admin/userrighthandling.php:543
-#: c:\LimeSurvey-S/admin/userrighthandling.php:642
+#: c:\LimeSurvey-S/admin/userrighthandling.php:645
 msgid "Reset"
 msgstr "Resetuj"
 
 # C:\limesurvey/admin/userrighthandling.php:555
-#: c:\LimeSurvey-S/admin/userrighthandling.php:654
+#: c:\LimeSurvey-S/admin/userrighthandling.php:657
 msgid "Deleting User Group"
 msgstr "Usuwanie grupy użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:568
 # C:\limesurvey/admin/userrighthandling.php:598
-#: c:\LimeSurvey-S/admin/userrighthandling.php:667
-#: c:\LimeSurvey-S/admin/userrighthandling.php:703
+#: c:\LimeSurvey-S/admin/userrighthandling.php:670
+#: c:\LimeSurvey-S/admin/userrighthandling.php:706
 msgid "Group Name"
 msgstr "Nazwa grupy"
 
 # C:\limesurvey/admin/userrighthandling.php:572
-#: c:\LimeSurvey-S/admin/userrighthandling.php:671
+#: c:\LimeSurvey-S/admin/userrighthandling.php:674
 msgid "Could not delete user group."
 msgstr "Nie można usunąć grupy użytkowników."
 
 # C:\limesurvey/admin/userrighthandling.php:582
-#: c:\LimeSurvey-S/admin/userrighthandling.php:681
+#: c:\LimeSurvey-S/admin/userrighthandling.php:684
 msgid "Could not delete user group. No group selected."
 msgstr "Nie można usunąć grupy użytkowników. Nie wybrano grupy."
 
 # C:\limesurvey/admin/userrighthandling.php:589
-#: c:\LimeSurvey-S/admin/userrighthandling.php:691
+#: c:\LimeSurvey-S/admin/userrighthandling.php:694
 msgid "Adding User Group"
 msgstr "Dodawanie grupy użytkowników"
 
 # C:\limesurvey/admin/userrighthandling.php:602
 # C:\limesurvey/admin/userrighthandling.php:694
 # C:\limesurvey/admin/userrighthandling.php:718
-#: c:\LimeSurvey-S/admin/userrighthandling.php:707
-#: c:\LimeSurvey-S/admin/userrighthandling.php:818
-#: c:\LimeSurvey-S/admin/userrighthandling.php:853
+#: c:\LimeSurvey-S/admin/userrighthandling.php:710
+#: c:\LimeSurvey-S/admin/userrighthandling.php:821
+#: c:\LimeSurvey-S/admin/userrighthandling.php:856
 msgid "Description: "
 msgstr "Opis:"
 
 # C:\limesurvey/admin/userrighthandling.php:605
-#: c:\LimeSurvey-S/admin/userrighthandling.php:710
+#: c:\LimeSurvey-S/admin/userrighthandling.php:713
 msgid "User group successfully added!"
 msgstr "Grupa użytkowników została pomyślnie dodana!"
 
 # C:\limesurvey/admin/userrighthandling.php:610
 # C:\limesurvey/admin/userrighthandling.php:617
-#: c:\LimeSurvey-S/admin/userrighthandling.php:715
-#: c:\LimeSurvey-S/admin/userrighthandling.php:722
+#: c:\LimeSurvey-S/admin/userrighthandling.php:718
+#: c:\LimeSurvey-S/admin/userrighthandling.php:725
 msgid "Failed to add Group!"
 msgstr "Nie można dodać nowej grupy."
 
 # C:\limesurvey/admin/userrighthandling.php:611
-#: c:\LimeSurvey-S/admin/userrighthandling.php:716
+#: c:\LimeSurvey-S/admin/userrighthandling.php:719
 msgid "Group already exists!"
 msgstr "Grupa już istnieje!"
 
 # C:\limesurvey/admin/userrighthandling.php:618
-#: c:\LimeSurvey-S/admin/userrighthandling.php:723
+#: c:\LimeSurvey-S/admin/userrighthandling.php:726
 msgid "Group name was not supplied!"
 msgstr "Nie podano nazwy grupy!"
 
 # C:\limesurvey/admin/userrighthandling.php:668
-#: c:\LimeSurvey-S/admin/userrighthandling.php:781
+#: c:\LimeSurvey-S/admin/userrighthandling.php:784
 msgid "Message(s) sent successfully!"
 msgstr "Wysyłanie wiadomości udane!"
 
 # C:\limesurvey/admin/userrighthandling.php:669
-#: c:\LimeSurvey-S/admin/userrighthandling.php:782
+#: c:\LimeSurvey-S/admin/userrighthandling.php:785
 msgid "To:"
 msgstr "Do:"
 
 # C:\limesurvey/admin/tokens.php:833
-#: c:\LimeSurvey-S/admin/userrighthandling.php:787
+#: c:\LimeSurvey-S/admin/userrighthandling.php:790
 #, php-format
 msgid "Email to %s failed. Error Message:"
 msgstr "Email do %s nie został wysłany. Komunikat błędu:"
 
 # C:\limesurvey/admin/userrighthandling.php:692
-#: c:\LimeSurvey-S/admin/userrighthandling.php:816
+#: c:\LimeSurvey-S/admin/userrighthandling.php:819
 msgid "Edit User Group Successfully!"
 msgstr "Pomyślnie zaktualizowano grupę użytkowników."
 
 # C:\limesurvey/admin/userrighthandling.php:697
-#: c:\LimeSurvey-S/admin/userrighthandling.php:821
+#: c:\LimeSurvey-S/admin/userrighthandling.php:824
 msgid "Failed to update!"
 msgstr "Aktualizacja nieudana!"
 
 # C:\limesurvey/admin/userrighthandling.php:958
-#: c:\LimeSurvey-S/admin/userrighthandling.php:997
+#: c:\LimeSurvey-S/admin/userrighthandling.php:1000
 msgid "Adding User to group"
 msgstr "Dodawanie użytkownika do grupy"
 
@@ -11566,7 +11571,4 @@ msgstr "tajski"
 #: c:\LimeSurvey-S/classes/core/surveytranslator.php:433
 msgid "Vietnamese"
 msgstr "wietnamski"
-
-#~ msgid "Always display this condition"
-#~ msgstr "Zawsze pokazuj ten warunek"
 
