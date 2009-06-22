@@ -348,7 +348,7 @@ function createinsertquery()
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
-    require_once("./classes/inputfilter/class.inputfilter_clean.php");
+    require_once("classes/inputfilter/class.inputfilter_clean.php");
     $myFilter = new InputFilter('','',1,1,1);
 
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
