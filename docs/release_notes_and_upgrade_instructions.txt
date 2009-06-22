@@ -73,6 +73,45 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85 stable (build 7115) to 1.85+ (build 7162) - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: Chinease Simplified - Help Files encoding with utf8 (yooyooh)
+#Updated translation: Chinease Simplified - Updated Language Files (yooyooh)
+#Updated translation: Minor updates to the Hungarian language file by Gergely Kutenics. (jaycburton)
+#Updated translation: Polish translation update (elisa-ls)
+
+#Updated Feature Statistics: statistics can now be send to a pdf File in addition to browser (wahrendorff)
+#Updated Feature: tcpdf class updated to 4.6.0.15 (wahrendorff)
+#Updated: lsrc test survey.csv file (wahrendorff)
+
+-Fixed #3360: Typo in config-defaults.php (el-matador-69)
+-Fixed #3366: Show other responses open a popup with the admin page (mennodekker)
+-Fixed #3371: in all-in-one survey, groups may remain hidden even if some questions of the group should be displayed (due to conditions). (lemeur)
+-Fixed #3385: PHP Error when creating new survey with single quotes (c_schmitz)
+-Fixed Issue: Lsrc was not able to import the questions of a survey anymore (wahrendorff)
+-Fixed bug: jason's stupid forgotten dbversion update (jcleeland)
+-Fixed issue #3336: Layout problem with lists in question text and question help text (c_schmitz)
+-Fixed issue #3338: Assessments: LimeReplaceMent-Field display issue (lemeur)
+-Fixed issue #3342: Escaping problem at user group description (c_schmitz)
+-Fixed issue #3349: Printable Survey: Layout problem at "Type Q - Multiple Short Text"  (c_schmitz)
+-Fixed issue #3352: Start date doesn't work if it is set to today's date (c_schmitz)
+-Fixed issue #3353: Translated "Other"-field is too long and is placed over input field  (c_schmitz)
+-Fixed issue #3355: Checkbox for "Other" option is missing at Printable-version  (c_schmitz)
+-Fixed issue #3356: Update database on mssql fails (c_schmitz)
+-Fixed issue #3362: Broken conditions after importing whole group or survey using single checkboxes as source of conditions (lemeur)
+-Fixed issue #3365: Can not set survey quotas with MSSQL Server (c_schmitz)
+-Fixed issue #3369: trying to export to queXML doesn't work (c_schmitz)
+-Fixed issue #3370: Assessment calculation is wrong with multiple choice questions having the same answer code (c_schmitz)
+-Fixed issue #3372: dropdown dates can't be validated  (c_schmitz)
+-Fixed issue #3373: multiple options with commentary and multiple short text doesn't work in IE7 in all templates but default (c_schmitz)
+-Fixed issue #3384: Assessments: LimeReplaceMent-Field does not work when editting an existing assesment text (lemeur)
+-Fixed issue #3386: JS-Error with LimeReplacement-Field at Assessments (lemeur)
+-Fixed issue: error notice when activating a survey on mssql showing under certain conditions (c_schmitz)
+-Fixed issue: the {PERC}  tag is now displayed in the LimeReplacementField select box for assessment texts (lemeur)
+
 
 Changes from 1.85RC3 (build 7008) to 1.85 stable (build 7115)
 +New Feature: Experimental CAS Client (wahrendorff)
