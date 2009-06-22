@@ -172,7 +172,8 @@ switch ($fieldtype)
 		$isInstertansEnabled=true;
 	break;
 	case 'assessment-text':
-		$replFields[]=array('TOTAL',$clang->gT("Total score for this assessment rule"));
+		$replFields[]=array('TOTAL',$clang->gT("Overall assessment score"));
+		$replFields[]=array('PERC',$clang->gT("Assessment group score"));
 	break;
 }
 
