@@ -404,6 +404,7 @@ elseif ($action == 'replacementfields')
 			}
 		break;
 		case 'assessments':
+		case 'assessmentedit':
 			if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
 				$_SESSION['FileManagerContext']="edit:assessments:$surveyid";
 				include('fck_LimeReplacementFields.php');
@@ -414,8 +415,6 @@ elseif ($action == 'replacementfields')
 		break;
 	}
     }    
-
-
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
