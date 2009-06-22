@@ -701,7 +701,9 @@ class LsrcHelper {
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
-
+//		foreach($bigarray as $ba)
+//			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$ba);
+			
 		if (isset($bigarray[0])) $bigarray[0]=$this->removeBOM($bigarray[0]);
 		// Now we try to determine the dataformat of the survey file.
 
@@ -745,7 +747,7 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-
+		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".print_r($bigarray));
 
 
 		//SURVEYS
@@ -1431,9 +1433,13 @@ class LsrcHelper {
 		}
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 		$importwarning = "";	// used to save the warnings while processing questions
-		$qtypes = getqtypelist("" ,"array");
+			
+		$qtypes = $this->getqtypelist("" ,"array");
 
-		// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
+		foreach ($qtypes as $type) //XXX FIXME
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$type);
+		
+			// DO GROUPS, QUESTIONS FOR GROUPS, THEN ANSWERS FOR QUESTIONS IN A NESTED FORMAT!
 		if (isset($grouparray) && $grouparray) {
 			$count=0;
 			$currentgid='';
@@ -1472,6 +1478,7 @@ class LsrcHelper {
 					}
 					return false;
 				}
+				$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 				//remove the old group id
 				if ($newgroup) {unset($grouprowdata['gid']);}
 				else {$grouprowdata['gid']=$newgid;}
@@ -1499,13 +1506,17 @@ class LsrcHelper {
 				if (isset($grouprowdata['gid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('groups').' OFF');}
 				//GET NEW GID
 				if ($newgroup) {$newgid=$connect->Insert_ID("{$dbprefix}groups","gid");}
-
+				
 				//NOW DO NESTED QUESTIONS FOR THIS GID
-
+				//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".var_dump($questionarray));
+									
 				if (isset($questionarray) && $questionarray && $newgroup) {
 					$count=0;
 					$currentqid='';
 					foreach ($questionarray as $qa) {
+						
+						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
+						
 						if ($importversion>=111)
 						{
 							$qafieldorders   =convertCSVRowToArray($questionarray[0],',','"');
@@ -1531,6 +1542,7 @@ class LsrcHelper {
 							{
 								//$importwarning .= "<li>" . sprintf(("Question \"%s - %s\" was NOT imported because the question type is unknown."), $questionrowdata["title"], $questionrowdata["question"]) . "</li>";
 								$countquestions--;
+								$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$countquestions);
 								continue;
 							}
 							else	// the upper case worked well                                                                                                                                                                            $qtypes[$questionrowdata["type"]]
@@ -1539,8 +1551,11 @@ class LsrcHelper {
 							}
 						}
 
+						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
 
 						$thisgid=$questionrowdata['gid'];
+						
+						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$thisgid." == ".$gid);
 						if ($thisgid == $gid) {
 							$qid = $questionrowdata['qid'];
 							// Remove qid field
@@ -1601,10 +1616,15 @@ class LsrcHelper {
 
 							$newvalues=array_values($questionrowdata);
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
-
-							$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+							
+							foreach($questionrowdata as $qrd)
+								$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
+							
+								$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 							$qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
-
+							
+							$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK | ".$qinsert);
+							
 							$qres = $connect->Execute($qinsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' OFF');}
 							if ($newquestion)
@@ -1614,7 +1634,7 @@ class LsrcHelper {
 
 							$newrank=0;
 							$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
-
+							$this->debugLsrc("HALLO?!:");
 							//NOW DO NESTED ANSWERS FOR THIS QID
 							if (isset($answerarray) && $answerarray && $newquestion) {
 								$count=0;
@@ -1807,7 +1827,7 @@ class LsrcHelper {
 				$newvalues=array_values($qarowdata);
 				$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 				$qainsert = "insert INTO {$dbprefix}question_attributes (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")";
-				$result=$connect->Execute($qainsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."| ".$connect->ErrorMsg());
+				$result=$connect->Execute($qainsert) or $this->debugLsrc("Import of this survey file failed on Line ".__LINE__."|  $qainsert  |".$connect->ErrorMsg());
 			}
 		}
 
@@ -3885,6 +3905,50 @@ class LsrcHelper {
 			$str=substr($str, 3);
 		}
 		return $str;
+	}
+	function getqtypelist($SelectedCode = "T", $ReturnType = "array")
+	{
+		include("lsrc.config.php");
+		global $publicurl;
+		//global $sourcefrom, $clang;
+		
+	
+			$qtypes = array(
+			"1"=>"Array (Flexible Labels) Dual Scale",
+			"5"=>"5 Point Choice",
+			"A"=>"Array (5 Point Choice)",
+			"B"=>"Array (10 Point Choice)",
+			"C"=>"Array (Yes/No/Uncertain)",
+			"D"=>"Date",
+			"E"=>"Array (Increase, Same, Decrease)",
+			"F"=>"Array (Flexible Labels)",
+			"G"=>"Gender",
+			"H"=>"Array (Flexible Labels) by Column",
+			"I"=>"Language Switch",
+			"K"=>"Multiple Numerical Input",
+			"L"=>"List (Radio)",
+			"M"=>"Multiple Options",
+			"N"=>"Numerical Input",
+			"O"=>"List With Comment",
+			"P"=>"Multiple Options With Comments",
+			"Q"=>"Multiple Short Text",
+			"R"=>"Ranking",
+			"S"=>"Short Free Text",
+			"T"=>"Long Free Text",
+			"U"=>"Huge Free Text",
+			"W"=>"List (Flexible Labels) (Dropdown)",
+			"X"=>"Boilerplate Question",
+			"Y"=>"Yes/No",
+			"Z"=>"List (Flexible Labels) (Radio)",
+			"!"=>"List (Dropdown)",
+			":"=>"Array (Multi Flexible) (Numbers)",
+			";"=>"Array (Multi Flexible) (Text)",
+			);
+	        asort($qtypes);
+			if ($ReturnType == "array") 
+				{return $qtypes;}
+	
+	
 	}
 }
 ?>
