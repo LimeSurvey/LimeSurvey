@@ -541,11 +541,11 @@ function db_random()
     
 }
 
-function db_quote($str)
+function db_quote($str,$ispostvar=false)
 // This functions escapes the string only inside 
 {
-	global $connect;
-	return $connect->escape($str);
+    global $connect;
+    return $connect->escape($str, $ispostvar);
 }
 
 function db_quoteall($str,$ispostvar=false)  
