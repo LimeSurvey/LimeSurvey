@@ -1102,7 +1102,7 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'] 
                             );
               
-        $usquery=$connect->GetUpdateSQL($rs, $updatearray, get_magic_quotes_gpc());                                             
+        $usquery=$connect->GetUpdateSQL($rs, $updatearray);                                             
 		$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
@@ -1355,7 +1355,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'assessments'=>$_POST['assessments']
                             );
         $dbtablename=db_table_name_nq('surveys');                    
-        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray, get_magic_quotes_gpc());    
+        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    
 		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); 
 
 
@@ -1365,45 +1365,33 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['description']=fix_FCKeditor_text($_POST['description']);
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
-	// Prepare default emailsettings	
-	if ($_POST['htmlemail'] == "Y")
-	{
-		$ishtml=true;
-	}
-	else
-	{
-		$ishtml=false;
-	}
-	$bplang = new limesurvey_lang($_POST['language']);	
+	    $bplang = new limesurvey_lang($_POST['language']);	
 
-		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-		."(surveyls_survey_id, surveyls_language, "
-        ." surveyls_title, surveyls_description, "
-        ." surveyls_welcometext, surveyls_urldescription,"
-        ." surveyls_endtext, surveyls_url,"
-		." surveyls_email_invite_subj, surveyls_email_invite, "
-		." surveyls_email_remind_subj, surveyls_email_remind, "
-		." surveyls_email_confirm_subj, surveyls_email_confirm, "
-		." surveyls_email_register_subj, surveyls_email_register, "
-        ." surveyls_dateformat) "
-		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['surveyls_title']}', '{$_POST['description']}',\n"
-		. "'{$_POST['welcome']}','{$_POST['urldescrip']}', "
-        . "'{$_POST['endtext']}','{$_POST['url']}', "
-		.$connect->qstr($bplang->gT("Invitation to participate in survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Reminder to participate in survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Confirmation of completed survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).','
-        . "'{$_POST['dateformat']}'"
-		.")";  
-
-		$isresult = $connect->Execute($isquery);
+        $insertarray=array( 'surveyls_survey_id'=>$surveyid,
+                            'surveyls_language'=>$_POST['language'],
+                            'surveyls_title'=>$_POST['surveyls_title'],
+                            'surveyls_description'=>$_POST['description'],
+                            'surveyls_welcometext'=>$_POST['welcome'],
+                            'surveyls_urldescription'=>$_POST['urldescrip'],
+                            'surveyls_endtext'=>$_POST['endtext'],
+                            'surveyls_url'=>$_POST['url'],
+                            'surveyls_email_invite_subj'=>$bplang->gT("Invitation to participate in survey",'unescaped'),
+                            'surveyls_email_invite'=>$bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),
+                            'surveyls_email_remind_subj'=>$bplang->gT("Reminder to participate in survey",'unescaped'),
+                            'surveyls_email_remind'=>$bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),
+                            'surveyls_email_confirm_subj'=>$bplang->gT("Confirmation of completed survey",'unescaped'),
+                            'surveyls_email_confirm'=>$bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),
+                            'surveyls_email_register_subj'=>$bplang->gT("Survey Registration Confirmation",'unescaped'),
+                            'surveyls_email_register'=>$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),
+                            'surveyls_dateformat'=>$_POST['dateformat']
+                            );
+        $dbtablename=db_table_name_nq('surveys_languagesettings');                    
+        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    
+        $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg());     
 		unset($bplang);
 
 		// Insert into survey_rights
+      
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg());
 		if ($isresult)
