@@ -12,8 +12,8 @@ by you or third parties or a failure of the program to operate with any other pr
 
 This release does have the following requirements:
 
--One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2000 or higher, Postgres 7 or higher 
--PHP 4.3.2 or higher with mbstring library installed. (for localizations)
+-One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2000 or higher, Postgres 8.1 or higher 
+-PHP 5.x or higher with mbstring library installed. (for localizations)
 Check out detailed requirements at http://docs.limesurvey.org/tiki-index.php?page=Installation
 
 
@@ -26,6 +26,10 @@ Please also have a look at the "Installation security hints" section of the onli
 
 
 === UPGRADING=====
+
+We suggest to check out and hold close to the instructions, which can be found in our online manual:
+http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version
+ 
 
 HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
 -------------------------------------------------------------
@@ -52,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 ---------------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -68,7 +72,7 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
    limesurvey/upload directory. 
 9. Run the installer in /admin/install/index.php to update the database.
 10. Copy back all your saved templates. You will have to adjust your templates since the CSS has been changed since version 1.72x. 
-    It is easier to try adapting one of the default templates to your template again instead of fixing your old template. 
+    It is easier to try adapting one of the default templates to your template again instead of fixing your old template! 
 11. Done.
 
 Thank you to everyone who helped with this new release!
