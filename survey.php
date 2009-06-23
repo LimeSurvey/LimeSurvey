@@ -771,7 +771,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 
 	echo "\n\n<!-- END THE GROUP -->\n";
 
-	if ($hide_groupdescr_allinone == true)
+	if ($hide_groupdescr_allinone == true && $count_nocond_questions==0)
 	{
 		$show_hide_group_script = "\n\n" 
 			."<script type='text/javascript'>\n"
