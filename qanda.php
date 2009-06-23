@@ -1059,7 +1059,7 @@ function do_date($ia)
                                 
                                 if (isset($qidattributes['dropdown_dates_year_max']))
                                 {
-                                    $yearmax = $qidattributes['dropdown_dates_year_min'];
+                                    $yearmax = $qidattributes['dropdown_dates_year_max'];
                                 }
                                 else
                                 {
