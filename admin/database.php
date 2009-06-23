@@ -1102,8 +1102,10 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'] 
                             );
               
-        $usquery=$connect->GetUpdateSQL($rs, $updatearray);                                             
-		$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
+        $usquery=$connect->GetUpdateSQL($rs, $updatearray); 
+        if ($usquery) {
+            $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
+        }                                            
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 		{
