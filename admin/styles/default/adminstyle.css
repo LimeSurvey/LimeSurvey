@@ -169,6 +169,7 @@ table.table2columns {
     margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
+    clear:left;
 }
 
 .table2columns td:first-child {
