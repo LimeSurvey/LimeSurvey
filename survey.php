@@ -363,6 +363,7 @@ END;
 
 // initialize the variables used to check if we should hide groupdescr
 // for groups having all questions hidden by conditions
+$aUniqGroupIds=array();
 foreach ($conditions as $cd)
 {
 	$aUniqGroupIds[]=$cd[8];
