@@ -78,6 +78,7 @@ div.menubar {
 	background-color: #EEF6FF;
 	width: 99.1%;
 	margin-top: 3px;
+    clear:left;
 }
 
 .menubar-main {
@@ -536,6 +537,7 @@ a.invalidemail {
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    clear:left;
 }
 
 .browsetable tr:hover { 
