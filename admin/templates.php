@@ -60,8 +60,6 @@ $cssfiles[]=array('name'=>'ie_fix_6.css');
 $cssfiles[]=array('name'=>'ie_fix_7.css');
 $cssfiles[]=array('name'=>'ie_fix_8.css');
 $cssfiles[]=array('name'=>'print_template.css');
-$cssfiles[]=array('name'=>'print_ie_fix_6.css');
-$cssfiles[]=array('name'=>'print_ie_fix_all.css');
 $cssfiles[]=array('name'=>'template.js');
 
 //Standard Screens
