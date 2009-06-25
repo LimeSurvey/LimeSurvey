@@ -148,7 +148,7 @@ $clang = SetSurveyLanguage($surveyid, $language);
 
 //Create header (fixes bug #3097)
 $surveylanguage= $language;
-
+sendcacheheaders();
 if ( !$embedded )
 {
 	$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
