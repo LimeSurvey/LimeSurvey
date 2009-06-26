@@ -1326,7 +1326,7 @@ function do_list_dropdown($ia)
 		$answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
 	}
 	$answer .= '				</select>
-				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="{$_SESSION[$ia[1]]}" />';
+				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
 
 	if (isset($other) && $other=='Y')
 	{
