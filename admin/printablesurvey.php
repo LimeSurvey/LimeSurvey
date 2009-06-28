@@ -1507,8 +1507,9 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
-				$rowclass = alternation($rowclass,'row');
+				    $rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
+                    if (trim($answertext)=='') $answertext='&nbsp;';
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 					//$printablesurveyoutput .="\t\t\t\t\t<td>";
