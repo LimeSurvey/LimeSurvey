@@ -77,6 +77,31 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7162) to 1.85+ (build 7191) [29-06-2009] - Legend: + new feature, # update feature, - bug fix
+
++New feature: In SPSS and R export all token fields are exported on a non-anonymous survey (mennodekker)
+
+#Updated translation: French. (b00z00)
+#Updated translation: Polish translation update (elisa-ls)
+
+-Fixed #3303: "Error updating - Query was empty" when editing survey settings (c_schmitz)
+-Fixed #3391: Google Chrome misplaces content in admin interface (c_schmitz)
+-Fixed #3391: Google Chrome misplaces table in result detail screen (c_schmitz)
+-Fixed #3396: Updated Release Notes (PHP 5.x is required) (el-matador-69)
+-Fixed #3410: Notice at SPSS and R Export cause empty export (mennodekker)
+-Fixed issue #3393: group may remain hidden in all-in-one surveys even if one or more question of the group are not conditionnal. (lemeur)
+-Fixed issue #3395: year_max attribute doesn't work (mennodekker)
+-Fixed issue #3398: Template editor complains about missing files (c_schmitz)
+-Fixed issue #3402: Conditional questions disappear when navigating to a new group and back (list dropdown questions). (lemeur)
+-Fixed issue #3403: Conditional questions disappear when validation failed (list dropdown questions). (lemeur)
+-Fixed issue #3405: {TOTAL} always displays a sum of 0 (c_schmitz)
+-Fixed issue #3407: Umlauts in public statistic are not properly shown on some browsers (c_schmitz)
+-Fixed issue #3412: Expand/Reduce buttons in admin panel at survey-level don't work (c_schmitz)
+-Fixed issue #3414: Indent alignment of lines after the first line in radio list questions (c_schmitz)
+-Fixed a PHP 5.0 incompatibility with some questions types (c_schmitz)
+-Partial Fix for issue #02984: Ability to define level of variable (ordinal) now also available in R export. (mennodekker)
+
+
 Changes from 1.85 stable (build 7115) to 1.85+ (build 7162) - Legend: + new feature, # update feature, - bug fix
 
 #Updated translation: Croatian and Italian language (idobraca)
