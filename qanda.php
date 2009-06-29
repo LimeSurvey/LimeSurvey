@@ -744,8 +744,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
-		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1 , $matches );
-		$c = $matches;
+		$oldtitle=$qtitle_custom;
+		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
+		$c = ($qtitle_custom!=$oldtitle)?1:0;
 	};
 // START <EMBED> work-around step 2
 	$qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
@@ -753,8 +754,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
-		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 , $matches );
-		$c = $matches;
+		$oldtitle=$qtitle_custom;
+		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 ); // I removed the $count param because it is PHP 5.1 only.
+		$c = ($qtitle_custom!=$oldtitle)?1:0;
 	};
 	$qtitle = $qtitle_custom;
 // =====================================================
