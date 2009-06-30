@@ -398,7 +398,7 @@ function spss_fieldmap($prefix = 'V') {
 		if (is_array($answers)) {
 			//Ok we have answers
 			if (isset($answers['size'])) {
-				$temArray['size'] = $answers['size']; 
+				$tempArray['size'] = $answers['size']; 
 				unset($answers['size']);
 			}
 			$tempArray['answers'] = $answers;			
