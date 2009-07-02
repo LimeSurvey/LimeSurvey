@@ -102,17 +102,7 @@ if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$not
     ';
 }
 
-$headelements = '
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-<!--[if lt IE 7]>
-		<script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
-<![endif]-->
-
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
-
-';
+$headelements = getPrintableHeader();
 
 $survey_output = array(
 			 'SITENAME' => $sitename

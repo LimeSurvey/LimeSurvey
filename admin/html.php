@@ -3419,11 +3419,6 @@ if ($action == "newsurvey")
         . "<option value='N'>------------- / ------------ / ---------</option>\n"
         . "</select></span>\n</div>\n";
 
-		// Token attributes names
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Token Attribute Names:")."</span>\n"
-		. "<span class='settingentry'><input type='text' size='25' name='attribute1' />(".$clang->gT("Attribute 1").")<br />"
-		. "<input type='text' size='25' name='attribute2' />(".$clang->gT("Attribute 2").")</span>\n</div>\n";
-
 	// Email format
         $newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Use HTML format for token emails?")."</span>\n"
         . "<span class='settingentry'><select name='htmlemail'>\n"

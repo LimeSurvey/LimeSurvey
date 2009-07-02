@@ -2567,7 +2567,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	return $output;
 }
 
-function templatereplace($line)
+function templatereplace($line, $replacements=array())
 {
 	global $surveylist, $sitename, $clienttoken, $rooturl;
 	global $thissurvey, $imagefiles, $defaulttemplate;
@@ -2600,6 +2600,11 @@ function templatereplace($line)
 		return $line;
 	}
 
+    foreach ($replacements as $replacementkey=>$replacementvalue)
+    {
+        if (strpos($line, '{'.$replacementkey.'}') !== false) $line=str_replace('{'.$replacementkey.'}', $replacementvalue, $line);
+    }
+    
 	if (strpos($line, "{SURVEYLISTHEADING}") !== false) $line=str_replace("{SURVEYLISTHEADING}", $surveylist['listheading'], $line);
 	if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist['list'], $line);
 	if (strpos($line, "{NOSURVEYID}") !== false) $line=str_replace("{NOSURVEYID}", $surveylist['nosid'], $line);
@@ -3655,6 +3660,25 @@ function getAdminHeader($meta=false)
 	. "\t\t</div>\n";
 	return $strAdminHeader;
 }
+
+
+function getPrintableHeader()
+{
+    global $rooturl;
+    $headelements = '
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+    <!--[if lt IE 7]>
+            <script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
+    <![endif]-->
+
+            <script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
+            <script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
+
+    '; 
+    return $headelements;   
+}
+
 
 
 

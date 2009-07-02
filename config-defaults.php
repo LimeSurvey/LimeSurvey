@@ -451,6 +451,7 @@ require_once(dirname(__FILE__).'/config.php');
     $tempurl        =   "$rooturl/tmp";
     $imagefiles     =   "$rooturl/images";    // Location of button bar files for admin script
   	$templaterootdir=   "$rootdir/templates"; // Location of the templates
+    $templaterooturl=   "$rooturl/templates"; // Location of the templates
     $homedir        =   "$rootdir/admin";     // The physical disk location of the admin scripts
     $publicdir      =   "$rootdir";           // The physical disk location of the public scripts
     $tempdir        =   "$rootdir/tmp";       // The physical location where LimeSurvey can store temporary files
