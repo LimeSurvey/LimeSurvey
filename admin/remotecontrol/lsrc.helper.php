@@ -51,7 +51,8 @@ class LsrcHelper {
 		{
 			$query2num = "SELECT owner_id FROM {$dbprefix}surveys WHERE sid=".sanitize_int($iVid)."";
 			$rs = db_execute_assoc($query2num);
-			return $rs->FetchRow();
+			$field=$rs->FetchRow(); 
+  			return $field['owner_id']; 
 				
 		}else{return false;}
 	}
