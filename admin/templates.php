@@ -606,7 +606,7 @@ switch($screenname) {
                                                          'QUESTION_MANDATORY' => $clang->gT('*'),
                                                          'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
                                                          'QUESTION_CLASS' => ' mandatory list-radio',
-                                                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose only one of the following'),
+                                                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
                                                          'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
                                                          'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
                                                          'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
