@@ -47,11 +47,11 @@ if ($sql && $sql != "NULL")
 switch (incompleteAnsFilterstate()) {
 		case 'inc':
 			//Inclomplete answers only
-			$query .= ' WHERE submitdate is null ';
+			$query .= ' AND submitdate is null ';
 			break;
 		case 'filter':
 			//Inclomplete answers only
-			$query .= ' WHERE submitdate is not null ';
+			$query .= ' AND submitdate is not null ';
 			break;
 	}
 
