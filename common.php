@@ -212,7 +212,7 @@ if ($databasetype=='mysql' || $databasetype=='mysqli') {
     $infoarray=$connect->ServerInfo();
     if (version_compare ($infoarray['version'],'4.1','<'))
     {
-      safe_die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey");
+      safe_die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$infoarray['version']);
     }
     @$connect->Execute("SET CHARACTER SET 'utf8'");  //Checked    
 }
@@ -664,6 +664,7 @@ function getsurveylist($returnarray=false)
     {
         foreach($surveynames as $sv)
         {
+            $sv['surveyls_title']=htmlspecialchars(strip_tags($sv['surveyls_title']));
             if($sv['active']!='Y') 
             { 
               $inactivesurveys .= "\t\t\t<option ";
@@ -3333,12 +3334,12 @@ function questionAttributes($returnByName=false)
     
 	$qattributes["dropdown_dates_year_min"]=array(
 	"types"=>"D",
-	"help"=>$clang->gT('Minimum year value for dropdown list'),
+	"help"=>$clang->gT('Minimum year value in calendar'),
     "caption"=>$clang->gT('Minimum dropdown year'));
     
 	$qattributes["dropdown_dates_year_max"]=array(
 	"types"=>"D",
-	"help"=>$clang->gT('Maximum year value for dropdown list'),
+	"help"=>$clang->gT('Maximum year value for calendar'),
     "caption"=>$clang->gT('Maximum dropdown year'));
 	
 	$qattributes["exclude_all_others"]=array(

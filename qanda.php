@@ -1108,11 +1108,30 @@ function do_date($ia)
             {
                 $dateoutput='';  
             }
+
+
+            if (isset($qidattributes['dropdown_dates_year_min'])){ 
+                $minyear=$qidattributes['dropdown_dates_year_min'];
+            }
+            else
+            {
+                $minyear='1980';
+            }
+
+            if (isset($qidattributes['dropdown_dates_year_max'])){ 
+                $maxyear=$qidattributes['dropdown_dates_year_max'];
+            }
+            else
+            {
+                $maxyear='2020';
+            }
             
             $answer ="<p class=\"question\">
 				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
+                        <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
+                        
 			         </p>
 			         <p class=\"tip\">                      
 				         ".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."

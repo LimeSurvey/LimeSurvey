@@ -5,10 +5,12 @@ $(document).ready(function(){
         var basename = e.id.substr(6);         
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
+        yearrange=$('#dateyearrange'+basename).val();
         $(e).datepicker({ dateFormat: format,  
                           showOn: 'both',
                           changeYear: true, 
-                          changeMonth: true, 
+                          changeMonth: true,
+                          yearRange: yearrange, 
                           duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
