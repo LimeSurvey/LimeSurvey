@@ -571,7 +571,9 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                    ."{$dbprefix}groups "
              ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND "
                    ."{$dbprefix}questions.qid=$pq AND "
-                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND " 
+                   ."{$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'"; 
+		
 
 		$result = db_execute_assoc($query) or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
 
