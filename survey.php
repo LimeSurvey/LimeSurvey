@@ -749,12 +749,12 @@ foreach ($_SESSION['grouplist'] as $gl)
 				if ($qa[3] != 'Y')
 				{
 					$n_q_display = '';
-					$count_cond_questions++;
+					$count_nocond_questions++;
 				} 
 				else 
 				{ 
 					$n_q_display = ' style="display: none;"';
-					$count_nocond_questions++;
+					$count_cond_questions++;
 				}
 
 				echo '
