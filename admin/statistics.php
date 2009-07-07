@@ -1700,19 +1700,19 @@ function showSpeaker($hinttext)
 	return $reshtml;
 }
 
-//simple function to square a value
-function square($number)
-{
-	if($number == 0)
-	{
-		$squarenumber = 0;
-	}
-	else
-	{
-		$squarenumber = $number * $number;
-	}
-
-	return $squarenumber;
-}
+////simple function to square a value
+//function square($number)
+//{
+//	if($number == 0)
+//	{
+//		$squarenumber = 0;
+//	}
+//	else
+//	{
+//		$squarenumber = $number * $number;
+//	}
+//
+//	return $squarenumber;
+//}
 
 ?>
