@@ -65,6 +65,9 @@ function CreateXmlFooter()
 
 function SendError( $number, $text )
 {
+	if ( $_GET['Command'] == 'FileUpload' )
+		SendUploadResults( $number, "", "", $text ) ;
+
 	if ( isset( $GLOBALS['HeaderSent'] ) && $GLOBALS['HeaderSent'] )
 	{
 		SendErrorNode( $number, $text ) ;
@@ -88,6 +91,9 @@ function SendError( $number, $text )
 
 function SendErrorNode(  $number, $text )
 {
-	echo '<Error number="' . $number . '" text="' . htmlspecialchars( $text ) . '" />' ;
+	if ($text)
+		echo '<Error number="' . $number . '" text="' . htmlspecialchars( $text ) . '" />' ;
+	else
+		echo '<Error number="' . $number . '" />' ;
 }
 ?>
