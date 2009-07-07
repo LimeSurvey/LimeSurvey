@@ -973,6 +973,7 @@ function do_date($ia)
 	$qidattributes=getQAttributes($ia[0]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+    
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     
 	if (isset($qidattributes['dropdown_dates'])) {
@@ -3272,7 +3273,7 @@ function do_multipleshorttext($ia)
 // ---------------------------------------------------------------
 function do_multiplenumeric($ia)
 {
-	global $dbprefix, $clang, $js_header_includes;
+	global $dbprefix, $clang, $js_header_includes, $css_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
     $answer='';
 	//Must turn on the "numbers only javascript"
@@ -3378,6 +3379,8 @@ function do_multiplenumeric($ia)
 	if (arraySearchByKey('slider_layout', $qidattributes, 'attribute', 1))
 	{
 		$slider_layout=true;
+        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
+        
 
 		$slider_accuracy=arraySearchByKey('slider_accuracy', $qidattributes, 'attribute', 1);
 		if (isset($slider_accuracy['value']))
