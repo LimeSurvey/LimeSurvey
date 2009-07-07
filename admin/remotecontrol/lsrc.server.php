@@ -20,6 +20,10 @@ include_once("lsrc.config.php");
 // functions helping lsrcService to do some things with Limesurvey (import, activation, checks)
 include("lsrc.helper.php");
 
+// translation Object
+require_once($rootdir.'/classes/core/language.php');
+$clang = new limesurvey_lang($defaultlang);
+
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
  */
