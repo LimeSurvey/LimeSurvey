@@ -58,7 +58,7 @@ if ($action != 'showprintablesurvey')
   ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
 } else {$adminoutput='';}
 
-if($casEnabled)
+if($casEnabled==true)
 {
 	include_once("login_check_cas.php");
 }
@@ -142,7 +142,8 @@ elseif ($action=='templates' || $action=='templatecopy' || $action=='templatesav
   { 
       if ($_SESSION['USER_RIGHT_MANAGE_TEMPLATE']==1)  {include('templates.php');}
         else { include('access_denied.php');}
-  }      
+  }    
+    
 
   
   
@@ -307,6 +308,10 @@ elseif ($action=='showprintablesurvey')
     { 
         include('printablesurvey.php'); //No special right needed to show the printable survey
     } 
+elseif ($action=='listcolumn')
+	  { 
+	     include('listcolumn.php');
+	  }  
 elseif ($action=='assessments' || $action=='assessmentdelete' || $action=='assessmentedit' || $action=='assessmentadd' || $action=='assessmentupdate')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
