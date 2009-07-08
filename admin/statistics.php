@@ -1661,18 +1661,27 @@ if (isset($summary) && $summary)
 	{
 		$usegraph = 0;
 	}
-	
-	$outputType = $_POST['outputtype'];
-//	if($outputType=='xls')
-//	{
-//		$type = $outputType;
-//		$_POST["type"] = $outputType;
-//		include_once("statistics_xls.php");
-//		exit;
-//	}
 	include_once("statistics_function.php");
+	$outputType = $_POST['outputtype'];
+	switch($outputType){
+		
+		case 'html':
+			$statisticsoutput .= generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+		break;
+		case 'pdf':
+			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+		break;
+		case 'xls':
+			generate_statistics($surveyid,$summary,$summary,$usegraph,$outputType);
+		break;
+		default:
+			
+		break;
+		
+	}
+	
 	//print_r($summary); exit;
-	$statisticsoutput .= generatepdf($surveyid,$summary,$allfields,$usegraph,$outputType);
+	
 }	//end if -> show summary results
 
 function showSpeaker($hinttext)

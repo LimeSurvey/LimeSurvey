@@ -68,10 +68,10 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 //}
 //else
 //{
-//	include_once("login_check.php");
+
 //}
 
-	//require_once('classes/core/class.progressbar.php');
+//require_once('classes/core/class.progressbar.php');
 	
 	
 	
@@ -83,10 +83,11 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 	
 	
 	
-//generatepdf($_GET['sid'],'all',0,'pdf');
+//generate_statistics('999','all',0,'pdf','F');
 
-function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputType='pdf')
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I')
 {
+	//$allfields ="";
 	global $connect, $dbprefix, $clang,
 	$rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, 
 	$chartfontfile, $chartfontsize, $admintheme;
@@ -109,16 +110,20 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 	
 	// Set language for questions and labels to base language of this survey
-	$language = GetBaseLanguageFromSurveyID($surveyid);
-	
+	//$language = GetBaseLanguageFromSurveyID($surveyid);
+	$language='en';
+    //$surveyid=sanitize_int($surveyid);
+	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
+	$result = db_execute_num($query); //Checked
+	while ($result && ($row=$result->FetchRow())) {$language = $row[0];}
 	
 	
 	if ($usegraph==1)
 	{	
 		//for creating graphs we need some more scripts which are included here
-		require_once('../classes/pchart/pchart/pChart.class');
-		require_once('../classes/pchart/pchart/pData.class');
-		require_once('../classes/pchart/pchart/pCache.class');
+		require_once(dirname(__FILE__).'/../classes/pchart/pchart/pChart.class');
+		require_once(dirname(__FILE__).'/../classes/pchart/pchart/pData.class');
+		require_once(dirname(__FILE__).'/../classes/pchart/pchart/pCache.class');
 		$MyCache = new pCache($tempdir.'/');
 		
 		//pick the best font file if font setting is 'auto'
@@ -136,7 +141,7 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 		
 		}
 	}
-	if($q2show=='all')
+	if($q2show=='all' )
 	{
 		$summarySql=" SELECT gid, lid, qid, type "
 			." FROM {$dbprefix}questions "
@@ -174,7 +179,10 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 			
 			
 			}
+			if($q2show=='all')
 			$summary[]=$myField;
+			
+			//$allfields[]=$myField;
 		}
 	}
 	else
@@ -188,7 +196,7 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 			$summary = explode("+", $summary);
 		}
 	}
-	//print_r($summary);
+	
 	/**
 	 * pdf Config
 	 */
@@ -238,14 +246,19 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 		 * Initiate the Spreadsheet_Excel_Writer
 		 */
 		include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
-		$workbook = new Spreadsheet_Excel_Writer();
+		if($pdfOutput=='F')
+			$workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
+		else
+			$workbook = new Spreadsheet_Excel_Writer();
+		
 		$workbook->setVersion(8);
 		// Inform the module that our data will arrive as UTF-8.
 		// Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
 		if (!empty($tempdir)) {
 			$workbook->setTempDir($tempdir);
 		}
-		$workbook->send('results-survey'.$surveyid.'.xls');
+		if($pdfOutput!='F')
+		$workbook->send('statistic-survey'.$surveyid.'.xls');
 		
 		// Creating the first worksheet
 		$sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
@@ -266,6 +279,7 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 	 *
 	 * Remember there might be some filters applied which have to be put into an SQL statement
 	 */
+	if(isset($postvars))
 	foreach ($postvars as $pv)
 	{
 		//Only do this if there is actually a value for the $pv
@@ -3061,7 +3075,7 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 							$pdf->AddPage('P','A4');
 							
 							$pdf->titleintopdf($pdfTitle,$titleDesc);
-							$pdf->Image("../tmp/".$cachefilename, 5, 70, 200, 200, '', $rooturl."/admin/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true); 
+							$pdf->Image($tempdir."/".$cachefilename, 5, 70, 200, 200, '', $rooturl."/admin/admin.php?sid=$surveyid", 'B', true, 150,'',false,false,0,true); 
 	
 						break;
 						case 'html':
@@ -3102,22 +3116,33 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 	switch($outputType)
 	{
 		case 'xls':
+			
+			//$workbook->
 			$workbook->close();
-			exit;
+			if($pdfOutput=='F')
+				return $tempdir.'/statistic-survey'.$surveyid.'.xls';
+			else
+				return;
 									
 		break;
 		case 'pdf':
 			
 			$pdf->lastPage(); 
-			$pdf->Output($clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', 'D');
+			if($pdfOutput=='F')
+			{ // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
+				$pdf->Output($tempdir."/".$clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+				return $tempdir."/".$clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf';
+			}
+			else
+			return $pdf->Output($clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
 			
 		break;
 		case 'html':
-			return $statisticsoutput;//
+			return $statisticsoutput;
 									
 		break;
 		default:
-			
+			return $statisticsoutput;
 			
 		break;
 	}
@@ -3126,56 +3151,6 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 
  ////XXXXXX***//
 
-
-  /**
- * TODO: PDF output for statistics
- */
-//if($outputType=='pdf')
-//{
-//	$pdf->lastPage(); 
-//	$pdf->Output($clang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', 'D');
-//}
-
-//done! set progress bar to 100%
-//if (isset($prb))
-//{
-//	$prb->setLabelValue('txt1',$clang->gT('Completed'));
-//	$prb->moveStep(100);
-//	$prb->hide();
-//}
-
-
-//function showSpeaker($hinttext)
-//{
-//	global $clang, $imagefiles, $maxchars;
-//
-//	if(!isset($maxchars))
-//	{
-//		$maxchars = 15;
-//	}
-//	$htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
-//	$jshinttext=javascript_escape($hinttext,true,true);
-//
-//	if(strlen($hinttext) > ($maxchars))
-//	{
-//		$shortstring = FlattenText($hinttext);
-//
-//        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));          
-//
-//		//output with hoover effect
-//		$reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-//		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
-//		." \"$shortstring...\" </span>"
-//		."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
-//		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
-//	}
-//	else
-//	{
-//		$reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";
-//	}
-//	return $reshtml;
-//}
-//
 //simple function to square a value
 function square($number)
 {
