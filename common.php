@@ -3696,7 +3696,7 @@ function ReplaceFields ($text,$fieldsarray)
 	return $text;
 }
 
-function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null)
+function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
 {
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
@@ -3802,7 +3802,11 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
         $mail->IsHTML(false);
     	$mail->Body = $textbody;
         }
-
+	
+    // add the attachment if there is one
+    if($attachment!=null)
+    $mail->AddAttachment($attachment);
+    
 	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
