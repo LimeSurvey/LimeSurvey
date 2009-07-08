@@ -6271,3 +6271,17 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
     $datetimeobj = new Date_Time_Converter($value , $fromdateformat);
     return $datetimeobj->convert($todateformat);                
 }
+
+
+/**
+* This function removes the UTF-8 Byte Order Mark from a string
+* 
+* @param string $str
+* @return string
+*/
+function removeBOM($str=""){
+        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $str=substr($str, 3);
+        }
+        return $str;
+} 
