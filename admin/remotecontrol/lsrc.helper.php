@@ -3901,6 +3901,20 @@ class LsrcHelper {
 		}
 		return $result;
 	}
+	
+	function sendStatistic($surveyid, $to, $tempFile)
+	{
+		include("lsrc.config.php");
+		global $sitename;
+		global $clang;
+		
+		$subject = $clang->gT("Statistics Survey #");
+		$message = $clang->gT("This is your personal statistic sheet for survey #");
+		
+		MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+		
+	}
+	
 	function removeBOM($str=""){
 		if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
 			$str=substr($str, 3);

@@ -196,6 +196,27 @@ $iVid = $_REQUEST['sid'];
 reset($_REQUEST);
 while(list($key, $value) = each($_REQUEST))
 {
+	if(substr($key,0,13)=="sendStatistic")
+	{
+		$iVid = $_REQUEST['sid'];
+		$type = $_REQUEST['type'];
+		$email = $_REQUEST['email'];
+		$graph = $_REQUEST['graph'];
+		
+		try
+		{
+			$sReturn = $client->fSendStatistic($user, $pass, $iVid, $email, $type, $graph);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+		
+		
+		
+	}
 	if(substr($key,0,8)=="sendMail")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -643,7 +664,7 @@ for($n=1;$n<10;++$n)
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
-<div style='float:left;margin-bottom:5px'>
+<div style='float:left;margin-bottom:5px;margin-left:5px;'>
 <?php 
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
@@ -660,7 +681,7 @@ echo "</form>";
 echo "</div>";
 
 
-echo "<div style='float:right; margin-bottom:5px'>";
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sTokenReturn function</h3>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
@@ -669,7 +690,7 @@ echo "<input type='submit' name='tokRet' value='Check for unused Tokens!'/>";
 echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
 
-echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sInsertParticipants function</h3>";
 echo "<p>Makes the Survey closed. Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -685,7 +706,7 @@ echo "<input type='submit' name='insPar' value='Insert Personal Data!'/>";
 echo "</form>";
 echo "</div>";
 
-echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sSendEmail function</h3>";
 echo "<p>Sends an Email to users of a specific survey. Invite, Remind and custom emails are possible</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -711,13 +732,30 @@ echo "<input type='submit' name='sendMail' value='Send Email to participants'/>"
 echo "</form>";
 echo "</div>";
 
-echo "<div style='float:right; margin-bottom:5px'>";
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sGetFieldmap function</h3>";
 echo "<p>Gets you the fieldmap from a survey as csv</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
 echo "<input type='submit' name='getField' value='Get me the Fieldmap as CSV!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "</form></div>";
+
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
+echo "<h3>fSendStatistic function</h3>";
+echo "<p>Gets statistic from a survey and sends it to an E-Mail recipient</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
+echo "<b><font color='red'>* </font>E-Mail Adress:</b> <br />";
+echo "<input type='text' name='email' value='' maxlength='50' size='50'/><br />";
+echo "<input type='checkbox' name='graph' value='1' />Include graphs (only with pdf generation) <br />";
+echo "<input type='radio' name='type' value='pdf' checked='checked' />PDF attachement";
+echo "<input type='radio' name='type' value='xls' />Excel attachement";
+echo "<input type='radio' name='type' value='html' />HTML Mail<br/>";
+
+echo "<input type='submit' name='sendStatistic' value='Send a Statistic'/>";
 echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
 //phpinfo();

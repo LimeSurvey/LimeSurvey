@@ -24,6 +24,10 @@ include("lsrc.helper.php");
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang($defaultlang);
 
+// to generate statistics
+include_once($rootdir."/classes/core/sanitize.php");
+include_once($rootdir.'/admin/statistics_function.php');
+		
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
  */
@@ -87,6 +91,7 @@ else{
 	$server->addFunction("sImportFreetext");
 	$server->addFunction("sSendEmail");
 	$server->addFunction("sGetFieldmap");
+	$server->addFunction("fSendStatistic");
 	// handle the soap request!
 if($enableLsrc==true)
 {
@@ -927,7 +932,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 		
 	global $connect ;
 	global $dbprefix ;
-	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	//$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	include("lsrc.config.php");
 	
 	$lsrcHelper = new lsrcHelper();
@@ -1116,7 +1121,115 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	
 	
 }
-
+/**
+ * 
+ * Enter description here...
+ * @param $sUser Limesurvey user
+ * @param $sPass Password
+ * @param $iVid	surveyid
+ * @param $email e-mail adress of the recipient
+ * @param $docType pdf, xls or html
+ * @return "OK" or SoapFault
+ */
+function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
+{
+	global $connect ;
+	global $dbprefix ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to get fieldmaps from other peoples Surveys");
+		exit;
+	}
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey $iVid does not exists");
+		exit;
+	}
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid START OK ");
+	
+	/**
+	 * Build up the fields to generate statistics from
+	 */
+		$summarySql=" SELECT gid, lid, qid, type "
+			." FROM {$dbprefix}questions "
+			." WHERE sid=$surveyid ";
+		
+		$summaryRs = $connect->Execute($summarySql);
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid OK ");
+		foreach($summaryRs as $field)
+		{
+			$myField = $surveyid."X".$field['gid']."X".$field['qid'];
+			
+			// Multiple Options get special treatment
+			if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
+			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+			if ($field['type'] == "N") {$myField = "N$myField";}
+			
+			if ($field['type'] == "Q") {$myField = "Q$myField";}
+			// textfields get special treatment
+			if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
+			//statistics for Date questions are not implemented yet. 
+			if ($field['type'] == "D") {$myField = "D$myField";}
+			if ($field['type'] == "F" || $field['type'] == "H")
+			{
+				$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+				//Get answers. We always use the answer code because the label might be too long elsewise
+				$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$field['qid']."' AND language='{$language}' ORDER BY sortorder, answer";
+				$result = $connect->Execute($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				$counter2=0;
+	
+				//check all the answers
+				while ($row=$result->FetchRow())
+				{
+					$myField = "$myField{$row[0]}";
+				}
+				//$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
+			
+			
+			}
+			$summary[]=$myField;
+		
+		}
+	
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
+	switch ($docType)
+	{
+		case 'pdf':
+			$tempFile = generate_statistics($iVid,$summary,'all',$graph,$docType,'F');
+			
+			$lsrcHelper->sendStatistic($iVid, $email, $tempFile);
+			unlink($tempFile);
+			return "PDF send";
+		break;
+		case 'xls':
+			$tempFile = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
+			
+			$lsrcHelper->sendStatistic($iVid, $email, $tempFile);
+			unlink($tempFile);
+			return 'XLS send';
+			
+		break;
+		case 'html':
+			generate_statistics($iVid,$summary,'all',$graph,$docType, 'F');
+			
+			
+			return 'HTML send';
+		break;
+	}
+	
+	
+	
+	
+}
 /**
  * 
  * This function pulls a CSV representation of the Field map
@@ -1150,4 +1263,5 @@ function sGetFieldmap($sUser, $sPass, $iVid)
 	return $returnCSV;
 	
 }
+
 ?>
