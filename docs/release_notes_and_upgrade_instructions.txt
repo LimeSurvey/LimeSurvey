@@ -77,6 +77,30 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7191) to 1.85+ (build 7253) [08-07-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated feature: FCKeditor updated to release 2.6.4.1 in order to fix several serious security issues. (lemeur)
+#Updated feature: UTF-8 BOMs on token import are now filtered (c_schmitz)
+
+#Update of Croatian and Italian language (idobraca)
+#Updated language: spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: German informal (c_schmitz)
+#Updated translation: Polish update (elisa-ls)
+
+-Fixed #03426: unable to activate a survey as a NON-Superadmin over lsrc (wahrendorff)
+-Fixed #3410: Notice at SPSS and R Export cause empty export (mennodekker)
+-Fixed an issue in the conditions copy screen for multi-languages surveys: questions where displayed several times (lemeur)
+-Fixed an issue with conditions where group descriptions could be displayed in all-in-one surveys even if all questions are hidden (lemeur)
+-Fixed issue #3421: On date questions the calender view only starts with 1999. The dropdown_year_max and dropdown_year_min attributes are used for the popup calendar as well (c_schmitz)
+-Fixed issue #3427: Problem viewing text answers in stats screen (c_schmitz)
+-Fixed issue #3433: CSS class questionhelp (for question tip) is enclosed between escaped double quotes in the clear_logo template (c_schmitz)
+-Fixed issue: Added .js to allowed file upload types (c_schmitz)
+-Fixed issue: Missing CSS include when using the slider layout and so making the slider layout not working at all (c_schmitz)
+-Fixed issue: Template preview for printable survey (c_schmitz)
+-Fixed numerous issues with alert messages (min answers, max answers, mandatory other comment) not displayed when the question text is on several lines (lemeur)
+-Fixed: Problems with gT function on a non-object fixed (wahrendorff)
+
 Changes from 1.85+ (build 7162) to 1.85+ (build 7191) [29-06-2009] - Legend: + new feature, # update feature, - bug fix
 
 +New feature: In SPSS and R export all token fields are exported on a non-anonymous survey (mennodekker)
