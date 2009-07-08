@@ -1630,7 +1630,7 @@ $statisticsoutput.="</td></tr>\n";
 $statisticsoutput .= "<tr>"
 	."<td align='center'>"
 	.$clang->gT("Select Output Format").":<br/>"
-	."<input type='radio' name='outputtype' value='html' checked='checked'>HTML <input type='radio' name='outputtype' value='pdf'>PDF <input type='radio' name='outputtype' value='xls'>Excel"
+	."<input type='radio' name='outputtype' value='html' checked='checked'>HTML <input type='radio' name='outputtype' value='pdf'>PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls'>Excel"
 	."</td>"
 	."</tr>";
 				
@@ -1662,8 +1662,14 @@ if (isset($summary) && $summary)
 		$usegraph = 0;
 	}
 	
-	$outputType= $_POST['outputtype'];
-	
+	$outputType = $_POST['outputtype'];
+//	if($outputType=='xls')
+//	{
+//		$type = $outputType;
+//		$_POST["type"] = $outputType;
+//		include_once("statistics_xls.php");
+//		exit;
+//	}
 	include_once("statistics_function.php");
 	//print_r($summary); exit;
 	$statisticsoutput .= generatepdf($surveyid,$summary,$allfields,$usegraph,$outputType);

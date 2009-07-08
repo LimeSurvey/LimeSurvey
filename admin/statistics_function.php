@@ -232,6 +232,28 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 		//set some language-dependent strings
 		$pdf->setLanguageArray($l); 
 	}
+	if($outputType=='xls')
+	{
+		/**
+		 * Initiate the Spreadsheet_Excel_Writer
+		 */
+		include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
+		$workbook = new Spreadsheet_Excel_Writer();
+		$workbook->setVersion(8);
+		// Inform the module that our data will arrive as UTF-8.
+		// Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+		if (!empty($tempdir)) {
+			$workbook->setTempDir($tempdir);
+		}
+		$workbook->send('results-survey'.$surveyid.'.xls');
+		
+		// Creating the first worksheet
+		$sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
+		$sheet->setInputEncoding('utf-8');
+		$sheet->setColumn(0,20,20);
+		$separator="~|";
+		/**XXX*/
+	}
 	/**
 	 * Start generating
 	 */
@@ -454,6 +476,22 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 	}
 	switch($outputType)
 	{
+		case "xls":
+			$xlsRow = 0;
+			$sheet->write($xlsRow,0,$clang->gT("Number of records in this query:"));
+			$sheet->write($xlsRow,1,$results);
+			++$xlsRow;
+			$sheet->write($xlsRow,0,$clang->gT("Total records in survey:"));
+			$sheet->write($xlsRow,1,$total);
+			
+			if($total)
+			{
+				++$xlsRow;
+				$sheet->write($xlsRow,0,$clang->gT("Percentage of total:"));
+				$sheet->write($xlsRow,1,$percent."%");
+			}
+						
+		break;
 		case 'pdf':
 			
 			// add summary to pdf 
@@ -902,6 +940,28 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 					//outputting
 					switch($outputType)
 					{
+						case 'xls':
+							
+							$headXLS = array();
+							$tableXLS = array();
+							$footXLS = array();
+							
+							$xlsTitle = sprintf($clang->gT("Field summary for %s"),$qtitle);
+							$xlsDesc = $qquestion;
+							++$xlsRow;
+							++$xlsRow;
+							
+							++$xlsRow;
+							$sheet->write($xlsRow, 0,$xlsTitle);
+							++$xlsRow;
+							$sheet->write($xlsRow, 0,$xlsDesc);
+							
+							$headXLS[] = array($clang->gT("Calculation"),$clang->gT("Result"));
+							++$xlsRow;
+							$sheet->write($xlsRow, 0,$clang->gT("Calculation"));
+							$sheet->write($xlsRow, 1,$clang->gT("Result"));
+							
+						break;
 						case 'pdf':
 							
 							$headPDF = array();
@@ -1187,6 +1247,16 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 						{
 							switch($outputType)
 							{
+								case 'xls':
+									
+									++$xlsRow;
+									$sheet->write($xlsRow, 0,$shw[0]);
+									$sheet->write($xlsRow, 1,$shw[1]);
+									
+									
+									$tableXLS[] = array($shw[0],$shw[1]);
+									
+								break;
 								case 'pdf':
 									
 									$tablePDF[] = array($shw[0],$shw[1]);
@@ -1208,6 +1278,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 						}
 						switch($outputType)
 						{
+							case 'xls':
+								
+								++$xlsRow;
+								$sheet->write($xlsRow, 0,$clang->gT("Null values are ignored in calculations"));
+								++$xlsRow;
+								$sheet->write($xlsRow, 0,sprintf($clang->gT("Q1 and Q3 calculated using %s"), $clang->gT("minitab method")));
+								
+								$footXLS[] = array($clang->gT("Null values are ignored in calculations"));
+								$footXLS[] = array(sprintf($clang->gT("Q1 and Q3 calculated using %s"), $clang->gT("minitab method")));
+																
+							break;
 							case 'pdf':
 								
 								$footPDF[] = array($clang->gT("Null values are ignored in calculations"));
@@ -1249,6 +1330,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 					{
 						switch($outputType)
 						{
+							case 'xls':
+								
+								$tableXLS = array();
+								$tableXLS[] = array($clang->gT("Not enough values for calculation"));
+								
+								++$xlsRow;
+								$sheet->write($xlsRow, 0, $clang->gT("Not enough values for calculation"));
+								
+								
+								
+							break;
 							case 'pdf':
 								
 								$tablePDF = array();
@@ -1695,23 +1787,29 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 			//2. Collect and Display results #######################################################################
 			if (isset($alist) && $alist) //Make sure there really is an answerlist, and if so:
 			{
-				//output
-				$statisticsoutput .= "<table class='statisticstable'>\n"
-				."\t<thead><tr><th colspan='4' align='center'><strong>"
 				
-				//headline
-				.sprintf($clang->gT("Field summary for %s"),$qtitle)."</strong>"
-				."</th></tr>\n"
-				."\t<tr><th colspan='4' align='center'><strong>"
-				
-				//question title
-				.$qquestion."</strong></th></tr>\n"
-				."\t<tr>\n\t\t<th width='50%' align='center' >";
 					
 				// this will count the answers considered completed
 				$TotalCompleted = 0;
 				switch($outputType)
 				{
+					case 'xls':
+									
+						$xlsTitle = sprintf($clang->gT("Field summary for %s"),strip_tags($qtitle));
+						$xlsDesc = strip_tags($qquestion);
+						
+						++$xlsRow;
+						++$xlsRow;
+						
+						++$xlsRow;
+						$sheet->write($xlsRow, 0,$xlsTitle);
+						++$xlsRow;
+						$sheet->write($xlsRow, 0,$xlsDesc);
+						
+						$tableXLS = array();
+						$footXLS = array();
+						
+					break;
 					case 'pdf':
 						
 						$pdfTitle = $pdf->delete_html(sprintf($clang->gT("Field summary for %s"),$qtitle));
@@ -1725,7 +1823,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 						
 					break;
 					case 'html':
-												
+						//output
+						$statisticsoutput .= "<table class='statisticstable'>\n"
+						."\t<thead><tr><th colspan='4' align='center'><strong>"
+						
+						//headline
+						.sprintf($clang->gT("Field summary for %s"),$qtitle)."</strong>"
+						."</th></tr>\n"
+						."\t<tr><th colspan='4' align='center'><strong>"
+						
+						//question title
+						.$qquestion."</strong></th></tr>\n"
+						."\t<tr>\n\t\t<th width='50%' align='center' >";						
 					break;
 					default:
 						
@@ -1863,6 +1972,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								{
 									switch($outputType)
 									{
+										case 'xls':
+											
+											$headXLS = array();
+											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"),$clang->gT("Sum"));
+											
+											++$xlsRow;
+											$sheet->write($xlsRow,0,$clang->gT("Answer"));
+											$sheet->write($xlsRow,1,$clang->gT("Count"));
+											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
+											$sheet->write($xlsRow,3,$clang->gT("Sum"));
+											
+										break;
 										case 'pdf':
 											
 											$headPDF = array();
@@ -1893,6 +2014,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								{
 									switch($outputType)
 									{
+										case 'xls':
+											
+											$headXLS = array();
+											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+											
+											++$xlsRow;
+											$sheet->write($xlsRow,0,$clang->gT("Answer"));
+											$sheet->write($xlsRow,1,$clang->gT("Count"));
+											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
+										
+										break;
+										
 										case 'pdf':
 											
 											$headPDF = array();
@@ -1979,6 +2112,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 							{
 								switch($outputType)
 								{
+									case 'xls':
+											
+											$headXLS = array();
+											$headXLS[] = array($clang->gT("Answer"),$clang->gT("Count"),$clang->gT("Percentage"));
+											
+											++$xlsRow;
+											$sheet->write($xlsRow,0,$clang->gT("Answer"));
+											$sheet->write($xlsRow,1,$clang->gT("Count"));
+											$sheet->write($xlsRow,2,$clang->gT("Percentage"));
+										
+									break;
 									case 'pdf':
 										
 										$headPDF = array();
@@ -2144,6 +2288,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 					{
 						switch($outputType)
 						{
+							case 'xls':
+											
+								
+								$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
+								
+								++$xlsRow;
+								$sheet->write($xlsRow,0,$label[$i]);
+								$sheet->write($xlsRow,1,$grawdata[$i]);
+								$sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
+								
+							break;
 							case 'pdf':
 								
 								$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%", "");
@@ -2227,6 +2382,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								}
 								switch($outputType)
 								{
+									case 'xls':
+											
+										
+										$tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$label[$i]);
+										$sheet->write($xlsRow,1,$grawdata[$i]);
+										$sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+										
+									break;
 									case 'pdf':
 										
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%", "");
@@ -2278,6 +2444,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								}
 								switch($outputType)
 								{
+									case 'xls':
+											
+										
+										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$label[$i]);
+										$sheet->write($xlsRow,1,$grawdata[$i]);
+										$sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+										$sheet->write($xlsRow,3,sprintf("%01.2f", $percentage)."%");
+										
+									break;
 									case 'pdf':
 										
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
@@ -2336,6 +2514,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								
 								switch($outputType)
 								{
+									case 'xls':
+											
+										
+										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$label[$i]);
+										$sheet->write($xlsRow,1,$grawdata[$i]);
+										$sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+										$sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+										
+									break;
 									case 'pdf':
 										
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
@@ -2389,6 +2579,18 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								$aggregatedgdata = $percentage + $percentage2;
 								switch($outputType)
 								{
+									case 'xls':
+											
+										
+										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$label[$i]);
+										$sheet->write($xlsRow,1,$grawdata[$i]);
+										$sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+										$sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
+										
+									break;
 									case 'pdf':
 										
 										$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
@@ -2438,6 +2640,24 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 								}
 								switch($outputType)
 								{
+									case 'xls':
+											
+										
+										$footXLS[] = array($clang->gT("Sum")." (".$clang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
+										$footXLS[] = array($clang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$clang->gT("Sum")." (".$clang->gT("Answers").")");
+										$sheet->write($xlsRow,1,$sumitems);
+										$sheet->write($xlsRow,2,$sumpercentage."%");
+										$sheet->write($xlsRow,3,$sumpercentage."%");
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$clang->gT("Number of cases"));
+										$sheet->write($xlsRow,1,$TotalCompleted);
+										$sheet->write($xlsRow,2,$casepercentage."%");
+										//$sheet->write($xlsRow,3,$sumpercentage."%");
+										
+									break;
 									case 'pdf':
 										
 										$footPDF[] = array($clang->gT("Sum")." (".$clang->gT("Answers").")",$sumitems,$sumpercentage."%",$sumpercentage."%");
@@ -2473,6 +2693,17 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 						{
 							switch($outputType)
 							{
+								case 'xls':
+											
+										$tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
+										
+										++$xlsRow;
+										$sheet->write($xlsRow,0,$label[$i]);
+										$sheet->write($xlsRow,1,$grawdata[$i]);
+										$sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
+										//$sheet->write($xlsRow,3,$sumpercentage."%");
+	
+								break;
 								case 'pdf':
 									
 									$tablePDF[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
@@ -2588,6 +2819,20 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 						}
 						switch($outputType)
 						{
+							case 'xls':
+											
+								$tableXLS[] = array($clang->gT("Arithmetic mean"),$am,'','');
+								$tableXLS[] = array($clang->gT("Standard deviation"),$stddev,'','');
+								
+								++$xlsRow;
+								$sheet->write($xlsRow,0,$clang->gT("Arithmetic mean"));
+								$sheet->write($xlsRow,1,$am);
+								
+								++$xlsRow;
+								$sheet->write($xlsRow,0,$clang->gT("Standard deviation"));
+								$sheet->write($xlsRow,1,$stddev);
+
+							break;
 							case 'pdf':
 								
 								$tablePDF[] = array($clang->gT("Arithmetic mean"),$am,'','');
@@ -2804,6 +3049,13 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 					$ci++;
 					switch($outputType)
 					{
+						case 'xls':
+							
+							/**
+							 * No Image for Excel...
+							 */
+							
+						break;
 						case 'pdf':
 							
 							$pdf->AddPage('P','A4');
@@ -2849,6 +3101,11 @@ function generatepdf($surveyid, $q2show='all', $allfields, $usegraph=0, $outputT
 	
 	switch($outputType)
 	{
+		case 'xls':
+			$workbook->close();
+			exit;
+									
+		break;
 		case 'pdf':
 			
 			$pdf->lastPage(); 
