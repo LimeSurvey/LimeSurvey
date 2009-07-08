@@ -2146,6 +2146,7 @@ if ($subaction == "upload" &&
 			if ($recordcount==0)
 			{
 				// Pick apart the first line
+                $buffer=removeBOM($buffer);
                 $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
                 $firstline = convertCSVRowToArray($buffer,',','"');
