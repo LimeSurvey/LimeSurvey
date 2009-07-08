@@ -289,7 +289,7 @@
   <message name="fSendStatisticRequest">
   	<part name="sUser" type="xsd:string"></part>
   	<part name="sPass" type="xsd:string"></part>
-  	<part name="iVid" type="xsd:string"></part>
+  	<part name="iVid" type="xsd:int"></part>
   	<part name="email" type="xsd:string"></part>
   	<part name="doctype" type="xsd:string"></part>
   	<part name="graph" type="xsd:string"></part>
