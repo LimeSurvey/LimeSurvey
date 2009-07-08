@@ -59,4 +59,7 @@ function selectCheckboxes(Div, CheckBoxName, Button)
 		nInput[i].checked = Value;
 	}
 }
-
+function nographs()
+{
+	document.getElementById('usegraph').checked = false;
+}
