@@ -81,7 +81,7 @@ font-size:9pt;
 color:#666;
 font-size:12px;
 font-family:arial;
-width:99%;
+width:90%;
 }
 
 .warningjs {
@@ -686,6 +686,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 
  .text-short input
+ ,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
