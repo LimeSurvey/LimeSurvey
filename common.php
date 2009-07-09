@@ -3221,7 +3221,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display columns'));
     
     $qattributes["display_rows"]=array(
-    "types"=>"TU",
+    "types"=>"QSTU",
     "help"=>$clang->gT('How many rows to display'),
     "caption"=>$clang->gT('Display rows'));
     
@@ -3256,7 +3256,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Other comment mandatory'));
     
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;",
+    "types"=>"Q;S",
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
 
