@@ -383,250 +383,330 @@
   </portType>
   
   <binding name="LsrcBinding" type="tns:LsrcPortType">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
-	
-	<operation name="fSendStatistic">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="fSendStatisticRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="fSendStatisticResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="fSendStatisticFault">
-        <soap:fault name="fSendStatisticFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-	<operation name="sGetFieldmap">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sGetFieldmapRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sGetFieldmapResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sGetFieldmapFault">
-        <soap:fault name="sGetFieldmapFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-	<operation name="sSendEmail">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sSendEmailRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sSendEmailResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sSendEmailFault">
-        <soap:fault name="sDeleteSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-	<operation name="sDeleteSurvey">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sDeleteSurveyRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sDeleteSurveyResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sDeleteSurveyFault">
-        <soap:fault name="sDeleteSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
 
-	<operation name="sImportMatrix">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sImportMatrixRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sImportMatrixResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sImportMatrixFault">
-        <soap:fault name="sImportMatrixFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-	<operation name="sImportFreetext">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sImportFreetextRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sImportFreetextResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sImportFreetextFault">
-        <soap:fault name="sImportFreetextFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    	
-	<operation name="sImportQuestion">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sImportQuestionRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sImportQuestionResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sImportQuestionFault">
-        <soap:fault name="sImportQuestionFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-	<operation name="sAvailableModules">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sAvailableModulesRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sAvailableModulesResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sAvailableModulesFault">
-        <soap:fault name="sAvailableModulesFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
+  	<soap:binding style="rpc"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<operation name="sGetFieldmap">
 
-	<operation name="sImportGroup">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sImportGroupRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sImportGroupResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sImportGroupFault">
-        <soap:fault name="sImportGroupFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    
-	<operation name="sActivateSurvey">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sActivateSurveyRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sActivateSurveyResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sActivateSurveyFault">
-        <soap:fault name="sActivateSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-	
-    <operation name="sChangeSurvey">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sChangeSurveyRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sChangeSurveyResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sChangeSurveyFault">
-        <soap:fault name="sChangeSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    
-    <operation name="sCreateSurvey">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sCreateSurveyRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sCreateSurveyResponse">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sCreateSurveyFault">
-        <soap:fault name="sCreateSurveyFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    
-    <operation name="sInsertToken">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sInsertTokenRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sInsertTokenResponse" >
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sInsertTokenFault">
-        <soap:fault name="sInsertTokenFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    
-    <operation name="sInsertParticipants">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sInsertParticipantsRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sInsertParticipantsResponse" >
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sInsertParticipantsFault">
-        <soap:fault name="sInsertParticipantsFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
-    
-    <operation name="sTokenReturn">
-      <soap:operation soapAction="urn:lsrcNamespaceAction" style="rpc" />
-      <input name="sTokenReturnRequest">
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </input>
-      <output name="sTokenReturnResponse" >
-        <soap:body namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </output>
-      <fault name="sTokenReturnFault">
-        <soap:fault name="sTokenReturnFault" namespace="urn:lsrcNamespace"
-        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
-      </fault>
-    </operation>
+  		<soap:operation soapAction="urn:lsrcNamespace/sGetFieldmap" />
+  		<input name="sGetFieldmapRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sGetFieldmapResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sGetFieldmapFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sGetFieldmapFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sSendEmail">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sSendEmail" />
+  		<input name="sSendEmailRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sSendEmailResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sSendEmailFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sSendEmailFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sDeleteSurvey">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sDeleteSurvey" />
+  		<input name="sDeleteSurveyRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sDeleteSurveyResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sDeleteSurveyFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sDeleteSurveyFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sImportMatrix">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sImportMatrix" />
+  		<input name="sImportMatrixRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sImportMatrixResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sImportMatrixFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sImportMatrixFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sImportFreetext">
+
+  		<soap:operation
+  			soapAction="urn:lsrcNamespace/sImportFreetext" />
+  		<input name="sImportFreetextRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sImportFreetextResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sImportFreetextFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sImportFreetextFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sImportQuestion">
+
+  		<soap:operation
+  			soapAction="urn:lsrcNamespace/sImportQuestion" />
+  		<input name="sImportQuestionRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sImportQuestionResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sImportQuestionFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sImportQuestionFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sAvailableModules">
+
+  		<soap:operation
+  			soapAction="urn:lsrcNamespace/sAvailableModules" />
+  		<input name="sAvailableModulesRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sAvailableModulesResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sAvailableModulesFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sAvailableModulesFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sImportGroup">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sImportGroup" />
+  		<input name="sImportGroupRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sImportGroupResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sImportGroupFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sImportGroupFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sActivateSurvey">
+
+  		<soap:operation
+  			soapAction="urn:lsrcNamespace/sActivateSurvey" />
+  		<input name="sActivateSurveyRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sActivateSurveyResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sActivateSurveyFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sActivateSurveyFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sChangeSurvey">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sChangeSurvey" />
+  		<input name="sChangeSurveyRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sChangeSurveyResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sChangeSurveyFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sChangeSurveyFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sCreateSurvey">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sCreateSurvey" />
+  		<input name="sCreateSurveyRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sCreateSurveyResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sCreateSurveyFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sCreateSurveyFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sInsertToken">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sInsertToken" />
+  		<input name="sInsertTokenRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sInsertTokenResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sInsertTokenFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sInsertTokenFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sInsertParticipants">
+
+  		<soap:operation
+  			soapAction="urn:lsrcNamespace/sInsertParticipants" />
+  		<input name="sInsertParticipantsRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sInsertParticipantsResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sInsertParticipantsFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sInsertParticipantsFault" />
+  		</fault>
+  	</operation>
+
+  	<operation name="sTokenReturn">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/sTokenReturn" />
+  		<input name="sTokenReturnRequest">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="sTokenReturnResponse">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="sTokenReturnFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="sTokenReturnFault" />
+  		</fault>
+  	</operation>
+  	<operation name="fSendStatistic">
+
+  		<soap:operation soapAction="urn:lsrcNamespace/fSendStatistic" />
+  		<input name="fSendStatistic">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</input>
+  		<output name="fSendStatistic">
+
+  			<soap:body use="encoded" namespace="urn:lsrcNamespace"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+  		</output>
+  		<fault name="fSendStatisticsFault">
+
+  			<soap:fault use="encoded"
+  				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+  				name="fSendStatisticsFault" />
+  		</fault>
+  	</operation>
   </binding>
-  
- <service name="LsrcService">
+
+  <service name="LsrcService">
    <documentation>This is the LsrcService 
    for remote starting surveys and registering tokens in LimeSurvey. 
    Make sure to modify the soap:address to the current Location of the lsrcserver.php
