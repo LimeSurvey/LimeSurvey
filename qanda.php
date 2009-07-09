@@ -3212,31 +3212,91 @@ function do_multipleshorttext($ia)
 	}
 	else
 	{
-	 	while ($ansrow = $ansresult->FetchRow())
+		if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
 		{
-			$myfname = $ia[1].$ansrow['code'];
-			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
-			$answer_main .= "\t<li>\n"
-			. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
-			. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
-
-			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+			//question attribute "display_rows" is set -> we need a textarea to be able to show several rows
+			$drows=$displayrows['value'];
+			
+			//extend maximum chars if this is set to short text default of 255
+			if($maxsize == 255)
 			{
-				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+				$maxsize=65525;
 			}
-
-			if (isset($_SESSION[$myfname]))
+			
+			//some JS to check max possible input
+			$answer = "<script type='text/javascript'>
+               <!--
+               function textLimit(field, maxlen) {
+                if (document.getElementById(field).value.length > maxlen)
+                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+                }
+               //-->
+               </script>\n";
+		
+		
+		
+			while ($ansrow = $ansresult->FetchRow())
 			{
-				$answer_main .= $_SESSION[$myfname];
+				$myfname = $ia[1].$ansrow['code'];
+				if ($ansrow['answer'] == "") 
+				{
+					$ansrow['answer'] = "&nbsp;";
+				}
+				
+				//NEW: textarea instead of input=text field
+				$answer_main .= "\t<li>\n"
+				. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
+				. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'
+				<textarea class="textarea" name="'.$myfname.'" id="answer'.$myfname.'" 
+				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type);" '.$numbersonly.'>';
+		
+				if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+				{
+					$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+				}
+	
+				if (isset($_SESSION[$myfname]))
+				{
+					$answer_main .= $_SESSION[$myfname];
+				}
+				
+				$answer_main .= "</textarea>\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
+				. "\t</li>\n";
+				
+				$fn++;
+				$inputnames[]=$myfname;				
+			}			
+				
+		}
+		else
+		{
+		 	while ($ansrow = $ansresult->FetchRow())
+			{
+				$myfname = $ia[1].$ansrow['code'];
+				if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
+				$answer_main .= "\t<li>\n"
+				. "\t\t<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
+				. "\t\t\t<span>\n\t\t\t\t".$prefix."\n\t\t\t\t".'<input class="text" type="text" size="'.$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
+	
+				if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
+				{
+					$label_width = strlen(trim(strip_tags($ansrow['answer'])));
+				}
+	
+				if (isset($_SESSION[$myfname]))
+				{
+					$answer_main .= $_SESSION[$myfname];
+				}
+		
+				// --> START NEW FEATURE - SAVE
+				$answer_main .= '" onkeyup="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
+				. "\t</li>\n";
+				// --> END NEW FEATURE - SAVE
+		
+				$fn++;
+				$inputnames[]=$myfname;
 			}
-	
-			// --> START NEW FEATURE - SAVE
-			$answer_main .= '" onkeyup="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n\t\t\t\t".$suffix."\n\t\t\t</span>\n"
-			. "\t</li>\n";
-			// --> END NEW FEATURE - SAVE
-	
-			$fn++;
-			$inputnames[]=$myfname;
+			
 		}
 	}
 
@@ -3244,7 +3304,6 @@ function do_multipleshorttext($ia)
 
 	return array($answer, $inputnames);
 }
-
 
 
 
@@ -3720,6 +3779,15 @@ function do_numerical($ia)
 function do_shortfreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
+	
+	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
+	{
+		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
+	}
+	else
+	{
+		$numbersonly = '';
+	}
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];
@@ -3752,14 +3820,57 @@ function do_shortfreetext($ia)
 	{
 		$suffix = '';
 	}
-	// --> START NEW FEATURE - SAVE
-	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
-	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
-	// --> END NEW FEATURE - SAVE
+	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
+	{
+		//question attribute "display_rows" is set -> we need a textarea to be able to show several rows
+		$drows=$displayrows['value'];
+		
+		//extend maximum chars if this is set to short text default of 255
+		if($maxsize == 255)
+		{
+			$maxsize=65525;
+		}
+		
+		//if a textarea should be displayed we make it equal width to the long text question
+		//this looks nicer and more continuous
+		if($tiwidth == 50)
+		{
+			$tiwidth=40;
+		}
+		
+		
+		//some JS to check max possible input
+		$answer = "<script type='text/javascript'>
+               <!--
+               function textLimit(field, maxlen) {
+                if (document.getElementById(field).value.length > maxlen)
+                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+                }
+               //-->
+               </script>\n";
 
+		//NEW: textarea instead of input=text field
+		
+		// --> START NEW FEATURE - SAVE
+		$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+		.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type);" '.$numbersonly.'>';
+		// --> END NEW FEATURE - SAVE
+	
+		if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
+	
+		$answer .= "</textarea>\n";
+	}
+	else
+	{
+		//no question attribute set, use common input text field
+		$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
+		.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
+		."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";	
+	}			
+			
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
+
 }
 
 
@@ -3810,16 +3921,11 @@ function do_longfreetext($ia)
                //-->
                </script>\n";
 
-	// --> START ENHANCEMENT - DISPLAY ROWS
-	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
 	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
-
-	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
-	// <-- END ENHANCEMENT - DISPLAY ROWS
 
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
