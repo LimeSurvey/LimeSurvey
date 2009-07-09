@@ -568,6 +568,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 
  .text-short input
+,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea {
     margin-left: 1em;
@@ -824,7 +825,7 @@ padding-left:5px;
   margin-left:5px;
 }
 
-.text-long textarea, .text-huge textarea {
+.text-long textarea, .text-huge textarea, .text-short textarea  {
     margin-top: 10px;
     margin-bottom: 10px;
     margin-right: 10px;
