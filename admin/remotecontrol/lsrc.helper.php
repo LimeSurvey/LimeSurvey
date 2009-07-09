@@ -3902,16 +3902,70 @@ class LsrcHelper {
 		return $result;
 	}
 	
-	function sendStatistic($surveyid, $to, $tempFile)
+	function sendStatistic($surveyid, $to, $tempFile, $html=null)
 	{
 		include("lsrc.config.php");
 		global $sitename;
 		global $clang;
 		
+		
 		$subject = $clang->gT("Statistics Survey #");
 		$message = $clang->gT("This is your personal statistic sheet for survey #");
-		
-		MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+		if($tempFile==null && isset($html))
+		{
+			$css = "<style type='text/css'>"
+				."table.statisticstable, table.statisticssummary {
+				    background-color:#EEF6FF;
+				    border-collapse:collapse;
+				    border-width: 0px;
+				    border-style: none;
+				}
+				
+				.statisticssummary thead th
+				{
+				    background:#D2E0F2;
+				}
+				
+				.statisticssummary th:first-child,
+				.statisticstable td:first-child {
+				    text-align:right;
+				}
+				
+				.statisticssummary thead th:first-child
+				{
+				    text-align:center;
+				}
+				
+				.statisticssummary th, .statisticssummary td, .statisticstable td {
+				    padding:3px 10px;
+				    
+				}
+				
+				.statisticstable tr {
+				    border-color: #fff;
+				    border-style: solid;
+				    border-width: 1px;
+				}
+				
+				.statisticstable thead th
+				{
+				    background:#D2E0F2;
+				    text-align:center;
+				    color:#1D2D45;
+				    padding:4 10px;
+				}
+				
+				.statisticstable tfoot tr {
+				    background:#D2E0F2;
+				    text-align:center;
+				}"
+				."</style>";
+				
+				$message = $css."<center>".$message.$surveyid."<br/>".$html."</center>";
+			MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
+		}
+		else
+			MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
 		
 	}
 	

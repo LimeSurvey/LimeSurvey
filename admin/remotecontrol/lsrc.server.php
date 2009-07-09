@@ -1129,6 +1129,7 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
  * @param $iVid	surveyid
  * @param $email e-mail adress of the recipient
  * @param $docType pdf, xls or html
+ * @param $graph with 1 it includes graphs in pdf files
  * @return "OK" or SoapFault
  */
 function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
@@ -1139,6 +1140,13 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 	include("lsrc.config.php");
 	$lsrcHelper = new lsrcHelper();
 	
+	// Check if all mandatory parameters are present, else abort...
+	if(!is_int($iVid) || $iVid==0 || $email=='')
+	{
+		throw new SoapFault("Server: ", "Mandatory Parameters missing");
+		exit;
+	}
+	
 	if(!$lsrcHelper->checkUser($sUser, $sPass))
 	{
 		throw new SoapFault("Authentication: ", "User or password wrong");
@@ -1146,7 +1154,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 	}
 	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
 	{
-		throw new SoapFault("Authentication: ", "You have no right to get fieldmaps from other peoples Surveys");
+		throw new SoapFault("Authentication: ", "You have no right to send statistics from other peoples Surveys");
 		exit;
 	}
 	if(!$lsrcHelper->surveyExists($iVid))
@@ -1200,7 +1208,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 		
 		}
 	
-		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
 	switch ($docType)
 	{
 		case 'pdf':
@@ -1219,10 +1227,11 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 			
 		break;
 		case 'html':
-			generate_statistics($iVid,$summary,'all',$graph,$docType, 'F');
+			$html = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
 			
+			$lsrcHelper->sendStatistic($iVid, $email, null, $html);
 			
-			return 'HTML send';
+			return $html;//'HTML send';
 		break;
 	}
 	
