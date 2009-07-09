@@ -1214,24 +1214,45 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 		case 'pdf':
 			$tempFile = generate_statistics($iVid,$summary,'all',$graph,$docType,'F');
 			
-			$lsrcHelper->sendStatistic($iVid, $email, $tempFile);
-			unlink($tempFile);
-			return "PDF send";
+			if($lsrcHelper->sendStatistic($iVid, $email, $tempFile))
+			{
+				unlink($tempFile);
+				return 'PDF send';
+			}
+			else
+			{
+				unlink($tempFile);
+				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				exit;
+			}
 		break;
 		case 'xls':
 			$tempFile = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
 			
-			$lsrcHelper->sendStatistic($iVid, $email, $tempFile);
-			unlink($tempFile);
-			return 'XLS send';
-			
+			if($lsrcHelper->sendStatistic($iVid, $email, $tempFile))
+			{
+				unlink($tempFile);
+				return 'XLS send';
+			}
+			else
+			{
+				unlink($tempFile);
+				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				exit;
+			}
 		break;
 		case 'html':
 			$html = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
 			
-			$lsrcHelper->sendStatistic($iVid, $email, null, $html);
-			
-			return $html;//'HTML send';
+			if($lsrcHelper->sendStatistic($iVid, $email, null, $html))
+			{
+				return 'HTML send';
+			}
+			else
+			{
+				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				exit;
+			}
 		break;
 	}
 	

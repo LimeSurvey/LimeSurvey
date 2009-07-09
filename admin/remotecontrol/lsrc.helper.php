@@ -3962,10 +3962,11 @@ class LsrcHelper {
 				."</style>";
 				
 				$message = $css."<center>".$message.$surveyid."<br/>".$html."</center>";
-			MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
+			
+			return MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
 		}
 		else
-			MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+			return MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
 		
 	}
 	
