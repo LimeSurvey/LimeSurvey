@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-07-30 17:15+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2009-06-20 17:24+0100\n"
+"Last-Translator: Gjergj Sheldija <gjergj.sheldija@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,12 +31,8 @@ msgstr "Me falni. Nuk ka kerkim te matur"
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr ""
-"Ky kerkim nuk eshte aktualisht aktiv. Ju nuk do te jeni i afte te ruani "
-"pergjigjet tuaja"
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "Ky kerkim nuk eshte aktualisht aktiv. Ju nuk do te jeni i afte te ruani pergjigjet tuaja"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:74
@@ -48,11 +44,8 @@ msgstr "Nuk e ruajti"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"Pergjigjet e kerkimit tuaj nuk kane qene te rakorduara. Ky kerkim akoma nuk "
-"eshte aktiv"
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "Pergjigjet e anketes tuaj nuk kane qene te rakorduara. Kjo ankete akoma nuk eshte aktive"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
@@ -105,9 +98,8 @@ msgstr "Shqip"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1507
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:81
-#, fuzzy
 msgid "Arabic"
-msgstr "Windows Arabik"
+msgstr "Arabisht"
 
 # D:\web\xampp\htdocs\stable_plus/classes/core/surveytranslator.php:60
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:86
@@ -116,7 +108,7 @@ msgstr "Baske"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:91
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnia"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:66
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:96
@@ -126,7 +118,7 @@ msgstr "Bullgarisht"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:101
 msgid "Catalan"
-msgstr ""
+msgstr "Katalane"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:106
 msgid "Welsh"
@@ -216,16 +208,16 @@ msgstr "Hungarisht"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:197
 msgid "Icelandic"
-msgstr ""
+msgstr "Islandisht"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:202
 msgid "Indonesian"
-msgstr ""
+msgstr "Indonezi"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:123
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:207
 msgid "Italian"
-msgstr "Italiisht"
+msgstr "Italisht"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:127
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:212
@@ -235,7 +227,7 @@ msgstr "Japonisht"
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:135
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:217
 msgid "Korean"
-msgstr ""
+msgstr "Koreane"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:131
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:222
@@ -325,7 +317,7 @@ msgstr "Turqisht"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:313
 msgid "Thai"
-msgstr ""
+msgstr "Filipine"
 
 # D:\web\xampp\htdocs\limesurvey/classes/core/surveytranslator.php:168
 #: /var/www/virtual/limesurvey.org/subversion1x/classes/core/surveytranslator.php:319
@@ -334,26 +326,22 @@ msgstr "Vietnamisht"
 
 # D:\web\xampp\htdocs\stable_plus/common.php:226
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"Kujdes: Juve po perdorni akoma fjalekalimin standard ('password'). Ju lutemi "
-"te ndryshoni fjalekalimin dhe te hyni perseri."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Kujdes: Juve po perdorni akoma fjalekalimin standard ('password'). Ju lutemi te ndryshoni fjalekalimin dhe te hyni perseri."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
 msgid "Administration"
-msgstr "administrim"
+msgstr "Administrim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:245
 msgid "Logged in as"
-msgstr "Aktivizuar si"
+msgstr "Te loguar si"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:251
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:252
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:577
 msgid "Default Administration Page"
-msgstr "Faqja standarte e administrimit nga vet sistemi"
+msgstr "Faqja standarte e administrimit sistemit"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:213
 # D:\web\xampp\htdocs\limesurvey/common.php:214
@@ -382,7 +370,7 @@ msgstr "Kontrollo integritetin e te dhenave"
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:296
 msgid "List Surveys"
-msgstr "Liste kontrollet"
+msgstr "Listo kontrollet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:306
@@ -411,7 +399,7 @@ msgstr "Sondazhet"
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:345
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:346
 msgid "Create or Import New Survey"
-msgstr "Krijoose importo nje kontroll te ri"
+msgstr "Krijo ose importo nje ankete te re"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:356
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:358
@@ -428,7 +416,7 @@ msgstr "C'aktivizim"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:113
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:465
 msgid "Show Help"
-msgstr "Trego Ndihme"
+msgstr "Trego Ndihmen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:579
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:83
@@ -459,7 +447,7 @@ msgstr "Jo aktiv"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:485
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:506
 msgid "Please Choose..."
-msgstr "Te lutem zgjidh"
+msgstr "Te lutem zgjidh..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:588
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:862
@@ -472,9 +460,8 @@ msgid "None"
 msgstr "Asnje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:768
-#, fuzzy
 msgid "Array (Flexible Labels) Dual Scale"
-msgstr "Vektor (etiketa fleksibel)"
+msgstr "Vektor (etiketa fleksibel) Shkalle duale"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:769
 msgid "5 Point Choice"
@@ -514,11 +501,11 @@ msgstr "Vektor (Etiketa fleksibel) nepermjet Kolones"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:778
 msgid "Language Switch"
-msgstr "Sinjal gjuhe"
+msgstr "Zgjidh gjuhen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:779
 msgid "Multiple Numerical Input"
-msgstr "Hyrje Numerike Multiple"
+msgstr "Hyrje Numerike Shumefishte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:780
 msgid "List (Radio)"
@@ -542,7 +529,7 @@ msgstr "Mundesi te shumefishta me Komente"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:785
 msgid "Multiple Short Text"
-msgstr "Mehrfache kurze Texte"
+msgstr "Tekste te shkurte te shumefishta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:786
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1880
@@ -560,7 +547,7 @@ msgstr "Tekst i gjate i lire"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:789
 msgid "Huge Free Text"
-msgstr "Ausführlicher Freitext"
+msgstr "Tekst i lire i madh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:790
 msgid "List (Flexible Labels) (Dropdown)"
@@ -690,12 +677,11 @@ msgstr "Gabim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1169
 msgid "It appears as if some tables or fields are missing from your database."
-msgstr ""
-"Kjo shfaqet nese disa nga tabelat ose fushat mungojne nga te dhenat tuaja"
+msgstr "Kjo shfaqet nese disa nga tabelat ose fushat mungojne nga te dhenat tuaja"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1171
 msgid "Check Database Fields"
-msgstr "Kontrollo fushat e te dhenave"
+msgstr "Kontrollo fushat e database"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1377
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:121
@@ -836,7 +822,7 @@ msgstr "Adresa IP"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:576
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:940
 msgid "Referring URL"
-msgstr "Referuar-URL"
+msgstr "URL Referuese"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1572
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:1679
@@ -1248,14 +1234,8 @@ msgstr "Koment"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:1768
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"Kujdes: Ekzekutimi i JavaScript eshte c'aktivizuar ne kujtesen tuaj. Ju nuk "
-"mund te jeni i afte t'i pergjigjeni te gjitha pyetjeve ne kete kontroll. Te "
-"lutem, verifiko parametrat e kujteses tuaj."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Kujdes: Ekzekutimi i JavaScript eshte c'aktivizuar ne kujtesen tuaj. Ju nuk mund te jeni i afte t'i pergjigjeni te gjitha pyetjeve ne kete kontroll. Te lutem, verifiko parametrat e kujteses tuaj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1289,19 +1269,8 @@ msgstr "Ky kontroll eshte anonim"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1558
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"Rekordi i mbajtur i pergjigjeve te kontrollit tuaj nuk permban ndonje "
-"informacion te detajuar per ju, pavaresisht se nje pyetje e vecante ne "
-"kontroll eshte bere per kete. "
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Rekordi i mbajtur i pergjigjeve te kontrollit tuaj nuk permban ndonje informacion te detajuar per ju, pavaresisht se nje pyetje e vecante ne kontroll eshte bere per kete. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
@@ -1332,19 +1301,12 @@ msgstr "Ju i keni kompletuar pergjigjet e pyetjeve ne kete kontroll"
 # D:\web\xampp\htdocs\limesurvey/common.php:1812
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2332
 msgid "Click on 'Submit' now to complete the process and save your answers."
-msgstr ""
-"Kliko ne \"Submit\" tani per te kompletuar procesin dhe per te ruajtur "
-"pergjigjet tuaja"
+msgstr "Kliko ne 'Submit' tani per te kompletuar procesin dhe per te ruajtur pergjigjet tuaja"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1575
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"Nese ju doni te kontrolloni ndonje nga pergjigjet, dhe/ose t'i ndryshoni "
-"ato, ju mund ta beni ate tani duke klikuar..."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Nese ju doni te kontrolloni ndonje nga pergjigjet, dhe/ose t'i ndryshoni ato, ju mund ta beni ate tani duke klikuar [<< prapa]"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1353,7 +1315,7 @@ msgstr "Pergjigjet u fshine"
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2364
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2370
 msgid "Restart this Survey"
-msgstr "Rifillo kete kontroll"
+msgstr "Rifillo kete Ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2375
 msgid "Save Your Unfinished Survey"
@@ -1366,25 +1328,17 @@ msgstr "Jep nje emer dhe fjalekalim per kete kontroll dhe kliko ruaj me poshte"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1624
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Kontrolli juaj do te ruhet duke perdorur kete emer dhe fjalekalim, dhe mund "
-"te perfundoje me vone duke e loguar me te njejtin emer dhe fjalekalim"
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Kontrolli juaj do te ruhet duke perdorur kete emer dhe fjalekalim, dhe mund te perfundoje me vone duke e loguar me te njejtin emer dhe fjalekalim"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:1852
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Wenn Sie eine Emailadresse angeben, wird Ihnen eine Email mit weitere "
-"Einzelheiten zugesandt."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "If you give an email address, an email containing the details will be sent to you."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
-msgstr "Kthehu ne kontroll"
+msgstr "Kthehu te anketa"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2389
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:307
@@ -1432,18 +1386,17 @@ msgstr "Ruaj tani"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2411
 msgid "Load A Previously Saved Survey"
-msgstr "Ngarko nje kontroll te ruajtur me pare"
+msgstr "Ngarko nje Ankete te ruajtur me pare"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1638
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2412
 msgid "You can load a survey that you have previously saved from this screen."
-msgstr "Ju mund te ngarkoni nje kontroll qe keni ruajtur me pare nga ekrani"
+msgstr "Ju mund te ngarkoni nje ankete qe keni ruajtur me pare nga ekrani"
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1638
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2412
 msgid "Type in the 'name' you used to save the survey, and the password."
-msgstr ""
-"Shkruaj 'emrin' qe ju perdooret per ta ruajtur kontrollin, dhe fjalekalimin"
+msgstr "Shkruaj 'emrin' qe ju perdooret per ta ruajtur kontrollin, dhe fjalekalimin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2415
 msgid "Saved name"
@@ -1456,22 +1409,17 @@ msgstr "Ngarko tani"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2433
 msgid "You must be registered to complete this survey"
-msgstr "Ju duhet te jeni i rregjistruar per ta kompletuar kete kontroll"
+msgstr "Ju duhet te jeni i rregjistruar per ta kompletuar kete ankete"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:1890
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
 msgid "You may register for this survey if you wish to take part."
-msgstr ""
-"Mund te regjistroheni per kete kontroll neqoftese deshironi te merrni pjese."
+msgstr "Mund te regjistroheni per kete ankete neqoftese deshironi te merrni pjese."
 
 # D:\xampp\xampp\htdocs\limesurvey/common.php:1644
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"Jepni me poshte te detajet tuaja, dhe do ju dergohet menjehere nje email qe "
-"permban linkun per te marre pjese ne kerkim."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "Jepni me poshte te detajet tuaja, dhe do ju dergohet menjehere nje email qe permban linkun per te marre pjese ne ankete."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1608,7 +1556,7 @@ msgstr "Ne ekzekutim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:3308
 msgid "Failed! Reason: "
-msgstr "Pa sukses! Arsyeja:"
+msgstr "Problem! Arsyeja:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:3313
 msgid "Success!"
@@ -1621,17 +1569,17 @@ msgstr "Te lutem perpiqu perseri"
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:221
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:145
 msgid "You must supply a name for this saved session."
-msgstr "Ju duhet te jepni nje emer per kete edicion te ruajtur"
+msgstr "Ju duhet te jepni nje emer per kete seskion te ruajtur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:146
 msgid "You must supply a password for this saved session."
-msgstr "Ju duhet te jepni nje fjalekalim per kete edicion te ruajtur"
+msgstr "Ju duhet te jepni nje fjalekalim per kete seksion te ruajtur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:147
 msgid "Your passwords do not match."
-msgstr "Fjalekalimi juaj nuk u kap"
+msgstr "Fjalekalimt tuaja nuk korrespondojne"
 
 # D:\web\xampp\htdocs\limesurvey/index.php:231
 # D:\web\xampp\htdocs\limesurvey/save.php:215
@@ -1644,39 +1592,25 @@ msgid "The answer to the security question is incorrect"
 msgstr "Pergjigja per pyetjen e sigurise eshte jokorrekte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Ky emer tashme ka qene i perdorur per kete kerkim. Ju duhet te perdorni nje "
-"emer ruajtjeje unik"
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Ky emer tashme ka qene i perdorur per kete kerkim. Ju duhet te perdorni nje emer ruajtjeje unik"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
 msgid "Saved Survey Details"
-msgstr "Detaje te kerkimit te ruajtura"
+msgstr "Detaje te anketes te ruajtura"
 
 # D:\xampp\xampp\htdocs\limesurvey/save.php:266
 # D:\xampp\xampp\htdocs\limesurvey/admin/dataentry.php:219
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"Ju ose dikush  qe eshte duke perdorur adresen tuaj te email-it, ka ruajtur "
-"nje kerkim ne progres. Detajet e meposhtme mund te perdoren per t'u kthyer "
-"ne kete kerkim dhe per te vazhduar ku ju e late."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Ju ose dikush  qe eshte duke perdorur adresen tuaj te email-it, ka ruajtur nje ankete ne progres. Detajet e meposhtme mund te perdoren per t'u kthyer ne kete kerkim dhe per te vazhduar ku ju e late."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
-msgstr ""
-"Ringarkoni kerkimin tuaj duke klikuar ne lidhjen e meposhtme URL (ose "
-"kopjojeni ne programin tuaj te lundrimit)."
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
+msgstr "Ringarkoni kerkimin tuaj duke klikuar ne lidhjen e meposhtme URL (ose kopjojeni ne programin tuaj te lundrimit)."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
 msgid "Cannot submit results - there are none to submit."
@@ -1684,29 +1618,12 @@ msgstr "Nuk mund t'i kaloj rezultatet-nuk ka asgje per t'u kaluar"
 
 # D:\web\xampp\htdocs\limesurvey/save.php:444
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Ky gabim mund te ndodhe nese ju i keni kaluar tashme pergjigjet tuaja dhe "
-"shtypni 'refresh' ne kujtesen tuaj. Ne kete rast pergjigjet tuaja kane qene "
-"tashme te ruajtura"
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Ky gabim mund te ndodhe nese ju i keni kaluar tashme pergjigjet tuaja dhe shtypni 'refresh' ne kujtesen tuaj. Ne kete rast pergjigjet tuaja kane qene tashme te ruajtura"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Nese ju e merrni kete mesazh ne mes te kompletimit e kerkimit, ju do te "
-"zgjidhni <-BACK ne memorien tuaj dhe pastaj rifresko/ringarko faqen e "
-"meparshme.  Ndersa ju do humbni pergjigjet nga faqja e fundit e gjithe pjesa "
-"tjeter akoma do te ekzistoje. Ky problem mund te ndodhe nese serveri i "
-"faqeve te internetit eshte duke vuajtur nga mbingarkimi ose perdorimi jo i "
-"sakte. Ne do t'ju keshillojme per kete problem"
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Nese ju e merrni kete mesazh ne mes te kompletimit e kerkimit, ju do te zgjidhni <-BACK ne memorien tuaj dhe pastaj rifresko/ringarko faqen e meparshme.  Ndersa ju do humbni pergjigjet nga faqja e fundit e gjithe pjesa tjeter akoma do te ekzistoje. Ky problem mund te ndodhe nese serveri i faqeve te internetit eshte duke vuajtur nga mbingarkimi ose perdorimi jo i sakte. Ne do t'ju keshillojme per kete problem"
 
 # D:\xampp\xampp\htdocs\limesurvey/index.php:71
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
@@ -1741,13 +1658,8 @@ msgstr "Na falni por edicioni juaj ka perfunduar"
 # D:\web\xampp\htdocs\limesurvey/index.php:69
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-#, fuzzy
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr ""
-"Ose ju keni qene inaktiv per nje kohe te gjate ose ka probleme  me lidhjen "
-"tuaj"
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "Ose ju keni qene inaktiv per nje kohe te gjate ose ka probleme  me lidhjen tuaj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
 msgid "No available surveys"
@@ -1782,19 +1694,13 @@ msgstr "Nuk siguruat nje fjalekalim"
 # D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr ""
-"Ky eshte nje sondazh i rezervuar, keshtuqe ju duhet te keni nje Token te "
-"vlefshem per te marre pjese. Ju lutemi te kontaktoni administratorin per "
-"ndihme."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "Ky eshte nje sondazh i rezervuar, keshtuqe ju duhet te keni nje Token te vlefshem per te marre pjese. Ju lutemi te kontaktoni administratorin per ndihme."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Token qe ju futet ose eshtei pavlefshem ose eshte perdorur me pare."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1826,35 +1732,31 @@ msgstr "%s %% i perfunduar"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
 "{ADMINNAME}"
 msgstr ""
-"Hallo {FIRSTNAME},\n"
+"Miredita {FIRSTNAME},\n"
 "\n"
-"Vielen Dank für die Teilnahme an der Umfrage mit dem Titel {SURVEYNAME}. "
-"Ihre Antworten wurden bei uns gespeichert.\n"
+"Kjo eshte nje email konfirmimi per perfundimin e  {SURVEYNAME}. Pergjigjet tuaja jane ruajtur ne sistemin tone.\n"
 "\n"
-"Wenn Sie irgendwelche Fragen zu dieser Email haben, kontaktieren Sie bitte "
-"{ADMINNAME} unter {ADMINEMAIL}.\n"
+"Nqs keni ndonje pyetje rreth kesaj email, ju lutemi kontaktoni {ADMINNAME} ne {ADMINEMAIL}.\n"
 "\n"
-"Mit freundlichen Grüßen,\n"
+"Me respekte,\n"
 "\n"
 "{ADMINNAME}"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1419
 msgid "Answer Submission for Survey"
-msgstr ""
+msgstr "Pergjigju pyetjeve te anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1421
 msgid "Survey Submitted"
-msgstr "Umfrage wurde ausgefüllt"
+msgstr "Ankete u ruajt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1422
 msgid "A new response was entered for your survey"
@@ -1881,18 +1783,12 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ndodhi nje gabim i papritur dhe pergjigjet tuaja nuk mund te ruhen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Pergjigjet tuaja nuk kane humbur, ato jane postuar me nje email per tek "
-"administratori i kerkimit dhe do te hidhen ne bazen tone te te dhenave me "
-"vone."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Pergjigjet tuaja nuk kane humbur, ato jane postuar me nje email per tek administratori i kerkimit dhe do te hidhen ne bazen tone te te dhenave me vone."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
-msgstr ""
-"Ndodhi nje gabim kur po ruhej nje pergjigjje per identitetin e kerkimit."
+msgstr "Ndodhi nje gabim kur po ruhej nje pergjigjje per identitetin e kerkimit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1516
 msgid "DATA TO BE ENTERED"
@@ -1916,12 +1812,8 @@ msgid "Try to submit again"
 msgstr "Perpiqu ta kalosh perseri"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
-"Ju lutemi te konfirmoni hyrjen ne sondazh duke ju pergjigjur pyetjes se "
-"sigurise meposhte dhe duke klikuar ne vazhdo."
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "Ju lutemi te konfirmoni hyrjen ne sondazh duke ju pergjigjur pyetjes se sigurise meposhte dhe duke klikuar ne vazhdo."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
@@ -1931,34 +1823,20 @@ msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Ky eshte nje kerkim i kontrolluar. Ju nevojitet....."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr ""
-"Nese ju keni qene i pajisur me nje Token, te lutem vendose ate ne kutine me "
-"poshte dhe kliko tek vazhdo"
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "Nese ju keni qene i pajisur me nje Token, te lutem vendose ate ne kutine me poshte dhe kliko tek vazhdo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr ""
-"Nese ju keni qene i pajisur me nje ,,,,,,,te lutem vendose ate ne kutine me "
-"poshte dhe kliko te vazhdoje"
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "Nese ju keni qene i pajisur me nje token ju lutemi vendoseni ate ne kutine me poshte dhe kliko per te vazhduar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr ""
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "Ju lutem beni konfirmimin duke ju pergjigjur pyetjes se sigurise dhe klikoni vazhdo!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Ky kerkim akoma nuk ka ndonje pyetje dhe nuk mund te jete i testuar ose i "
-"kompletuar"
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Ky kerkim akoma nuk ka ndonje pyetje dhe nuk mund te jete i testuar ose i kompletuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
 msgid "Previous"
@@ -1969,19 +1847,17 @@ msgstr "I meparshem"
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:494
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:570
-#, fuzzy
 msgid "Next"
 msgstr "e mepasshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2572
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2585
 msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr ""
+msgstr "Na vjen keq pergjigja juaj ka kaluar kuoten ne kete ankete."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:64
 msgid "The email you used is not valid. Please try again."
-msgstr ""
-"Email-i qe ju perdoret nuk eshte i vlefshem. Te lutem  perpiqu perseri."
+msgstr "Email-i qe ju perdoret nuk eshte i vlefshem. Te lutem  perpiqu perseri."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:79
 msgid "The email you used has already been registered."
@@ -1993,12 +1869,8 @@ msgstr "Faleminerit per rregjistrimin per te marre pjese ne kete kerkim"
 
 # D:\xampp\xampp\htdocs\limesurvey/register.php:135
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Nje email u dergua ne adresen qe ju siguruat, me kontaktin per kete kerkim. "
-"\te lutem ndiq lidhjen ne kte email per te proceduar"
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Nje email u dergua ne adresen qe ju siguruat, me kontaktin per kete kerkim. \te lutem ndiq lidhjen ne kte email per te proceduar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -2048,9 +1920,8 @@ msgid "Please complete all parts"
 msgstr "Te lutem kompleto te gjitha pjeset"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:502
-#, fuzzy
 msgid "Please check the items"
-msgstr "Te lutem kontrollo se paku nje ceshtje"
+msgstr "Te lutem kontrollo elemntet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:504
 msgid "Please rank all items"
@@ -2061,32 +1932,22 @@ msgid "Please check at least one item"
 msgstr "Te lutem kontrollo se paku nje ceshtje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:523
-#, fuzzy, php-format
+#, php-format
 msgid "If you choose '%s' you must provide a description."
-msgstr "Nese zgjidhni 'Tjeter:' duhet te jepni nje pershkrim"
+msgstr "Nese zgjidhni '%s' duhet te jepni nje pershkrim."
 
 # D:\web\xampp\htdocs\limesurvey/qanda.php:454
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:544
 msgid "You cannot proceed until you enter some text for one or more questions."
-msgstr ""
-"Ju nuk mund te procedoni derisa te fusni pak tekst per nje ose me shume "
-"pyetje."
+msgstr "Ju nuk mund te procedoni derisa te fusni pak tekst per nje ose me shume pyetje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Nje ose me teper pyetje percaktuese nuk kane patur pergjigje. Ju nuk mund te "
-"procedoni derisa keto te kompletohen"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Nje ose me teper pyetje percaktuese nuk kane patur pergjigje. Ju nuk mund te procedoni derisa keto te kompletohen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Nje ose me teper pyetje  nuk kane patur pergjigje ne menyre te sakte. Ju nuk "
-"mund te procedoni derisa keto pergjigje te jene te vlefshme"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Nje ose me teper pyetje  nuk kane patur pergjigje ne menyre te sakte. Ju nuk mund te procedoni derisa keto pergjigje te jene te vlefshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
@@ -2149,9 +2010,8 @@ msgid "Year"
 msgstr "Vit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:695
-#, fuzzy
 msgid "Please complete all parts of the date"
-msgstr "Te lutem kompleto te gjitha pjeset"
+msgstr "Te lutem kompleto te gjitha pjeset e dates"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:709
 msgid "Format: YYYY-MM-DD"
@@ -2192,11 +2052,8 @@ msgstr "Te lutem zgjidh"
 # D:\web\xampp\htdocs\limesurvey/qanda.php:952
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
-msgstr ""
-"Gabim: Vendosja e etiketes e perdorur per kete pyetje nuk eshte e vlefshme "
-"ne kete gjuhe"
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Gabim: Vendosja e etiketes e perdorur per kete pyetje nuk eshte e vlefshme ne kete gjuhe"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
 msgid "Please choose one of the following"
@@ -2218,7 +2075,7 @@ msgstr "Kliko nje ceshtje ne listen ne te majte. duke filluar me tuajen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1523
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr "bewertete Element an und machen Sie weiter bis zum niedrigsten."
+msgstr "pika më e lartë me gradë, duke lëvizur nëpër piket tuaja të rangut më të ulet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:936
@@ -2234,17 +2091,14 @@ msgid "Your Ranking"
 msgstr "Renditjet tuaja"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
-#, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
-msgstr "Kliko ne skisoret e tjere ne cdo ceshtje ne te djathte"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
+msgstr "Kliko ne gersheret e tjere ne cdo ceshtje ne te djathte per te fshire hyrjen e fundit ne liste"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1918
 #, php-format
 msgid "Please choose at most '%d' answer(s) for question \"%s\""
-msgstr ""
+msgstr "Ju lutem zgjidhni maksimumin '%d' pergjigje per \"%s\" pyetje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1862
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1889
@@ -2266,15 +2120,15 @@ msgstr "Vetem numrat duhet te hyjne ne kete fushe"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2122
 #, php-format
 msgid "Total of all entries must not exceed %d"
-msgstr ""
+msgstr "Totali i te gjitha hyrjeve nuk duhet te kaloje %d"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2126
 msgid "Total of all entries must equal "
-msgstr ""
+msgstr "Totali i te gjitha hyrjeve duhet te jete i barabarte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2130
 msgid "Total of all entries must be at least "
-msgstr ""
+msgstr "Totali i te gjitha hyrjeve duhet te jete te pakten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2135
 msgid "Total: "
@@ -2288,14 +2142,13 @@ msgstr "Te mbetura:"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "Pergjigja eshte e pa vlefshme. Totali i te gjitha hyrjeve nuk duhet te kaloje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
+msgstr "Pergjigja eshte e pa vlefshme. Totali i pergjigjeve duhet te jete te pakten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2306,12 +2159,8 @@ msgstr "Veten numrat duhet te hyjne ne kete fushe"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"Gabim: Vendosja e etiketes e perdorur per kete pyetje nuk eshte e vlefshme "
-"ne kete gjuhe dhe/ose nuk ekziston"
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Gabim: Vendosja e etiketes e perdorur per kete pyetje nuk eshte e vlefshme ne kete gjuhe dhe/ose nuk ekziston"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
 msgid "Error: There are no answers defined for this question."
@@ -2366,15 +2215,15 @@ msgstr "Kontrollo pergjigjet e ruajtura"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:64
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:68
 msgid "Saved Responses:"
-msgstr "Zwischengespeicherte Antworten:"
+msgstr "Pergjigjet e ruajtura:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:84
 msgid "Identifier"
-msgstr "Identifizierung"
+msgstr "Identifikues"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:86
 msgid "Date Saved"
-msgstr "Datum Gespeichert"
+msgstr "Te dhenat u ruajten"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/saved.php:88
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:322
@@ -2425,26 +2274,24 @@ msgstr "Kontroll  konsistent i dates"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Wenn Fehler gezeigt werden, sollten Sie dieses Script nochmals ausführen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
-msgstr ""
+msgstr "Cqid nuk perkon "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:60
 msgid "No matching CFIELDNAME Group!"
-msgstr ""
+msgstr "Grupi CFIELDNAME nuk perkon!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:64
 msgid "No \"CFIELDNAME\" field set!"
-msgstr ""
+msgstr "Asnje  \"CFIELDNAME\" e plotesuar!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:69
 msgid "The following conditions should be deleted"
-msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
+msgstr "Kushtet e meposhtme duhet te fshihen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:71
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:94
@@ -2454,23 +2301,23 @@ msgstr "Die folgenden Bedingungen sollten gelöscht werden:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:188
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:217
 msgid "because"
-msgstr "Grund:"
+msgstr "arsyeja"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:77
 msgid "All conditions meet consistency standards"
-msgstr "Alle Bedingungen sind konsistent."
+msgstr "Te gjitha kushtet jane konsistente."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:89
 msgid "No matching qid"
-msgstr ""
+msgstr "Nuk ka qid qe perkon"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:93
 msgid "The following question attributes should be deleted"
-msgstr "Die folgenden Fragenattribute sollten gelöscht werden:"
+msgstr "Kushtet e pyetjeve te meposhtme duhet te fshihen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:99
 msgid "All question_attributes meet consistency standards"
-msgstr "Alle Fragenattribute sind konsistent."
+msgstr "Te gjitha atributet e pyejteve jane konsistente"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:111
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:211
@@ -2485,15 +2332,15 @@ msgstr "Nuk ka Grup te tille"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:129
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:139
 msgid "The following assessments should be deleted"
-msgstr "Die folgenden Bewertungen sollten gelöscht werden:"
+msgstr "Vlerësimet e meposhtme duhet te fshihen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:135
 msgid "All Survey (Total) assessments meet consistency standards"
-msgstr ""
+msgstr "Te gjitha vleresimet e anketes (totali) kane konsistence standarte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:145
 msgid "All Group assessments meet consistency standards"
-msgstr "Te tera Grupet arrijne standartet"
+msgstr "Te tera Grupet jane konsistent"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:158
 msgid "No matching question"
@@ -2501,44 +2348,44 @@ msgstr "Nuk ka pyetje te tille"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:164
 msgid "The following answers should be deleted"
-msgstr "Die folgenden Antworten sollten gelöscht werden:"
+msgstr "Pergjigjet e meposhtme duhet te fshihen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:170
 msgid "All answers meet consistency standards"
-msgstr "Alle Antworten sind konsistent."
+msgstr "Të gjitha përgjigjet përmbushin standardet e konsistencës"
 
 # D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:202
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:182
 msgid "Language specific settings missing"
-msgstr "Vendosjet specifike te gjuhes mungojne"
+msgstr "Mungon kontrolli per kete gjuhe"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:187
 msgid "The following surveys should be deleted"
-msgstr "Die folgenden Umfrage können gelöscht werden"
+msgstr "Anketat e meposhtme duhe te fshihen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:193
 msgid "All survey settings meet consistency standards"
-msgstr "Alle Umfrage-Einstellungen sind konsistent."
+msgstr "Të gjitha sondazh jane konsistente."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:216
 msgid "The following questions should be deleted"
-msgstr "Die folgenden Fragen sollten gelöscht werden:"
+msgstr "Pytjet e meposhtme duhet te fshihen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:222
 msgid "All questions meet consistency standards"
-msgstr "Alle Fragen sind konsistent."
+msgstr "Te gjitha pytjet jane konsistente."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:237
 msgid "The following groups should be deleted"
-msgstr "Die folgenden Gruppen sollten gelöscht werden:"
+msgstr "Grupet e meposhtme duhet te fshihen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:243
 msgid "All groups meet consistency standards"
-msgstr "Alle Gruppen sind konsistent."
+msgstr "Te gjithe grupet jane konsistente."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:247
 msgid "No database action required"
-msgstr "Es sind keine Datenänderungen notwendig."
+msgstr "Nuk ka nevoje per nje veprim ne bazen e te dhenave."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:249
 msgid "Should we proceed with the delete?"
@@ -2558,9 +2405,8 @@ msgstr "Po eleminoj ID e sondazhit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:329
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:337
-#, fuzzy
 msgid "Deleting Assessments"
-msgstr "Vleresime"
+msgstr "Duke fshire vleresimet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:331
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:339
@@ -2613,23 +2459,23 @@ msgstr "Kerko serish"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:66
 msgid "Label Sets Administration"
-msgstr ""
+msgstr "Administrimi i setit te etiketave"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:77
 msgid "Labelsets"
-msgstr ""
+msgstr "Seti i etiketave"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:97
 msgid "Add New Label Set"
-msgstr ""
+msgstr "Shtoni set te ri etiketash"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:98
 msgid "Add new label set"
-msgstr ""
+msgstr "Shtoni set te ri etiketash"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:129
 msgid "Error: You have to enter a name for this label set."
-msgstr ""
+msgstr "Gabim: Ju duhet te hyni me nje emer per kete set etiketash"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:135
 msgid "Create or Import New Label Set"
@@ -2641,11 +2487,11 @@ msgstr "Krijo nje set te ri etiketash"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:136
 msgid "Edit Label Set"
-msgstr ""
+msgstr "Rregullo setin e etiketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:147
 msgid "Set Name"
-msgstr ""
+msgstr "Vendos emrin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:156
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1224
@@ -2672,12 +2518,8 @@ msgstr "Hiq"
 
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:154
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"Ju nuk mund ta hiqni kete gjuhe sepse ju nevojitet se paku nje gjuhe ne nje "
-"set etiketash."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "Ju nuk mund ta hiqni kete gjuhe sepse ju nevojitet se paku nje gjuhe ne nje set etiketash."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2701,7 +2543,7 @@ msgstr "Zgjidh skedarin CSV"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:73
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:182
 msgid "Convert Resources links ?"
-msgstr ""
+msgstr " A do te konvertosh linqet e resurseve?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:253
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:666
@@ -2711,11 +2553,11 @@ msgstr "Set Etiketash"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:259
 msgid "Edit label set"
-msgstr ""
+msgstr "Rregullo tabelen e vleresimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:262
 msgid "Delete label set"
-msgstr ""
+msgstr "Fshije tabelen e vleresimit"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/labels.php:231
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:264
@@ -2856,10 +2698,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr "Shtimi i etiketave te reja duhet bere ne dosjen e pare te gjuhes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Ju nuk mundeni te ndryshoni , shtoni ose te fshini kode ne kete tabele, sepse ajo perdoret nga nje ankete aktive."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2869,7 +2709,7 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3115
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:177
 msgid "Please select a file to import!"
-msgstr "Te lutem zgjidh nje skedar per t'i eksportuar"
+msgstr "Te lutem zgjidh nje skedar per importim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2589
@@ -2879,13 +2719,12 @@ msgstr "Librarite ZIP nuk mbeshteten nga PHP, Importo ZIP eshte e ç'aktivizuar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:461
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2598
 msgid "Uploaded Resources Management"
-msgstr ""
+msgstr "Menaxhimi i resurseve eshte ngarkuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2605
-#, fuzzy
 msgid "Browse Uploaded Resources"
-msgstr "Kontrollo pergjigjet e ruajtura"
+msgstr "Shfleto resurset e ngarkuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2606
@@ -2905,19 +2744,16 @@ msgstr "Importo si Arkiv ZIP"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:489
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:830
 msgid "Fix Sort"
-msgstr ""
+msgstr "Fikso renditjen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Disa anketa perdorin kete tabele vleresimi. Nese do te modifikoni ,shtoni ose te fshini hyrjet ne kete tabele mund te keni rezultate te pa deshirueshme ne anketat e tjera."
 
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:467
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
-msgstr ""
+msgstr "Kopjimi eshte i pa mundur etiketat e gjuheve te shtuara jane tashme te percaktuara. "
 
 # D:\web\xampp\htdocs\limesurvey/admin/labels.php:483
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:588
@@ -2926,17 +2762,15 @@ msgstr "E deshtuar per te fshire etiketat per gjuhet e hequra"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:596
 msgid "Update of Label Set failed"
-msgstr ""
+msgstr "Ngarkimi e etiketes se vleresimit ka deshtuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Nuk mund te fshije etiketen e vleresimit- Ka disa pyetje rreth kesaj. Ju duhet te fshini keto pyetje me pare."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
-msgstr ""
+msgstr "Inserti i etiketes se vleresimit deshtoj"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:669
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:601
@@ -2948,25 +2782,23 @@ msgstr "Ruaj"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:711
 msgid "Failed to insert label"
-msgstr ""
+msgstr "Deshtim i insertit te etiketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Ky kod i vleresimit eshte ne perdorim ne kete etikete vleresimi. Ju lutem zgjidhni nje kod tjeter ose ri-shkruani ekzistuesin."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
-msgstr ""
+msgstr "Deshtim ne azhornimin e etiketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:791
 msgid "Can't update labels because you are using duplicated codes"
-msgstr ""
+msgstr "Nuk mund te ngarkoje etiketa pasi qe ju po perdorni kode te duplikuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:825
 msgid "Failed to delete label"
-msgstr ""
+msgstr "Deshtim ne fshirjen e etiketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:65
@@ -2983,12 +2815,8 @@ msgstr "importo grup"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"Nje gabim ndodhi duke ngarkuar skedarin. Kjo mund te jete si shkak i lejeve "
-"te gabuara ne kete direktori %s."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Nje gabim ndodhi duke ngarkuar skedarin. Kjo mund te jete si shkak i lejeve te gabuara ne kete direktori %s."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:41
@@ -3044,7 +2872,7 @@ msgstr "Faqja kryesore e administrimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:39
 msgid "No SID (Survey) has been provided. Cannot import group."
-msgstr ""
+msgstr "Nuk kemi asnje ankete SID. Nuk mund te importohen grupet."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:54
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:651
@@ -3082,47 +2910,37 @@ msgstr "Skedari u ngarkua me sukses."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:56
 msgid "Reading file..."
-msgstr ""
+msgstr "Duke lexuar skedarin... "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:68
 msgid "This file is not a LimeSurvey group file. Import failed."
-msgstr ""
+msgstr "Ky skedar nuk eshte skedar grup i LimeSurvey. Deshtim ne importim."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
-msgstr ""
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Nuk mund te importoni nje grup i cili nuk suporton dot bazen gjuhesore te anketes. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
-msgstr ""
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Nuk mund te importoni nje pyetje e cila nuk suporton dot bazen gjuhesore te anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Nuk mund te importoni etiketa vleresimi te cilat nuk suportojne dot bazen gjuhesore te anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
 msgid "Import partially successful."
-msgstr ""
+msgstr "Importi u krye pjeserisht "
 
 # D:\web\xampp\htdocs\limesurvey/admin/importgroup.php:555
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr ""
-"Gjuhet e meposhtme ne kete grup nuk u importuan, meqe kerkimi nuk permban te "
-"tille gjuhe:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "Gjuhet e meposhtme ne kete grup nuk u importuan, meqe kerkimi nuk permban te tille gjuhe:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
 msgid "Group Import Summary"
-msgstr ""
+msgstr "Permbledhja e importit te grupit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:654
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:723
@@ -3159,11 +2977,11 @@ msgstr "Kushte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:671
 msgid "Question Attributes: "
-msgstr ""
+msgstr "Atributet e pyetjeve:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:674
 msgid "Import of group is completed."
-msgstr ""
+msgstr "Importi i grupit perfundoj "
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1500
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:21
@@ -3397,19 +3215,19 @@ msgstr "Sondazhi ID:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:86
 msgid "Exclude record IDs?"
-msgstr ""
+msgstr "A doni te perjashtoni ID-te e regjistruara?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
+msgstr "Kur ID e nje regjistrimi te importuar perkon me ID e nje regjistrimi ekzistues:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
-msgstr ""
+msgstr "Raporto gabimin (dhe kalo regjistrimin e ri)."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:90
 msgid "Renumber the new record."
-msgstr ""
+msgstr "Ri-numero regjistrimet e reja."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:91
 msgid "Ignore the new record."
@@ -3421,7 +3239,7 @@ msgstr "Zevendesoje Rekordin e ri"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:94
 msgid "Import as not finalized answers?"
-msgstr ""
+msgstr "A doni qe importi te jete ne formen e nje pyetjeje te pa perfunduar?"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1550
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:95
@@ -3431,7 +3249,7 @@ msgstr "Teresia e karaktereve te skedarit:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:98
 msgid "Import"
-msgstr "Importieren"
+msgstr "Import"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/vvimport.php:83
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:111
@@ -3463,16 +3281,12 @@ msgid "Important Note:"
 msgstr "Shenim i Rendesishem:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"Diese Seite bitte NICHT aktualisieren, da ansonsten die Datei nochmal "
-"importiert wird und Duplikate erzeugt werden"
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "MOS e rifreskoni këtë faqe, sepse kjo do të importojë skedarin përsëri dhe për të prodhoje duplikate."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
 msgid "Total records imported:"
-msgstr "Anzahl Datensätze importiert:"
+msgstr "Totali i importuar:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:274
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:38
@@ -3487,7 +3301,7 @@ msgstr "Anzahl Datensätze importiert:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:118
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:341
 msgid "Browse Responses"
-msgstr "Kontrollo pergjigjet"
+msgstr "Shfleto pergjigjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:136
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:36
@@ -3496,7 +3310,7 @@ msgstr "Statistika te shpejta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:142
 msgid "Filter Settings"
-msgstr ""
+msgstr "Konfigurimi i filtrave"
 
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:788
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:228
@@ -3524,7 +3338,7 @@ msgstr "Numer me i vogel se"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:256
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:1536
 msgid "Datestamp"
-msgstr "Stampa e dates"
+msgstr "Datestamp"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:258
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:598
@@ -3556,11 +3370,11 @@ msgstr "Grupe"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:521
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:545
 msgid "Responses Containing"
-msgstr ""
+msgstr "Permbajtja e pergjigjeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1265
 msgid "View summary of all available fields"
-msgstr ""
+msgstr "Shikoni permbledhjen e te gjitha fushave te disponueshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1268
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:636
@@ -3572,7 +3386,6 @@ msgstr "Fltro pergjigjet e paperfunduara:"
 # D:\web\xampp\htdocs\limesurvey/admin/statistics.php:655
 # D:\web\xampp\htdocs\limesurvey/admin/vvexport.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1269
-#, fuzzy
 msgid "Enabled"
 msgstr "Aktive"
 
@@ -3586,10 +3399,8 @@ msgid "Disabled"
 msgstr "I ç'aktivizuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
-msgstr ""
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
+msgstr "Mos e konsideroni JO-ne si nje pergjigje te kompletuar(punon vetem kur pergjigja e pa perfunduar e filtres eshte E Caktivizuar) "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
 msgid "Show Graphs"
@@ -3602,7 +3413,7 @@ msgstr "Shih statistikat"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1017
 msgid "Clear"
-msgstr "Fshij"
+msgstr "Pastro"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1306
 msgid "Please wait ..."
@@ -3625,25 +3436,25 @@ msgstr "Duke Numeruar Rezultatet..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1556
 msgid "Results"
-msgstr "Ergebnisse"
+msgstr "Rezultatet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1559
 msgid "No of records in this query"
-msgstr "Anzahl der Datensätze in dieser Abfrage"
+msgstr "Numri i elementeve per kete query"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1560
 msgid "Total records in survey"
-msgstr "Gesamtzahl der Datensätze dieser Umfrage"
+msgstr "Totali i elementeve per kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1566
 msgid "Percentage of total"
-msgstr "Anteil in Prozent"
+msgstr "Perqindja e totalit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1584
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2683
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2699
 msgid "Browse"
-msgstr "Ansehen"
+msgstr "Shfleto"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1590
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1813
@@ -3667,27 +3478,27 @@ msgstr "Pergjigje"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1970
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2579
 msgid "Field Summary for"
-msgstr "Feld Zusammenfassung für"
+msgstr "Permbledhja per"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1974
 msgid "Calculation"
-msgstr "Berechnung"
+msgstr "Llogaritje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1976
 msgid "Result"
-msgstr "Ergebnis"
+msgstr "Rezultati"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2036
 msgid "Sum"
-msgstr "Summe"
+msgstr "Shuma"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2037
 msgid "Standard Deviation"
-msgstr "Standard Abweichung"
+msgstr "Deviacioni standart"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2038
 msgid "Average"
-msgstr "Durchschnitt"
+msgstr "Mesatarja"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:878
@@ -3698,25 +3509,25 @@ msgstr "Durchschnitt"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2039
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:89
 msgid "Minimum"
-msgstr "Minimum"
+msgstr "Minimumi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2076
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2590
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:3048
 msgid "Count"
-msgstr "Anzahl"
+msgstr "Njehsim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2113
 msgid "1st Quartile (Q1)"
-msgstr "1ter Viertelwert (Q1 unteres Quartil)"
+msgstr "Q1 quantili i pare"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2147
 msgid "2nd Quartile (Median)"
-msgstr "2ter Viertelwert (Mittleres Quartil)"
+msgstr "Q2 quantili i dyte (Mestarja)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2190
 msgid "3rd Quartile (Q3)"
-msgstr "3ter Viertelwert (Q3 Oberes Quartil)"
+msgstr "Q3 quantili i trete"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/assessments.php:99
 # D:\xampp\xampp\htdocs\limesurvey/admin/navigator.php:879
@@ -3731,7 +3542,7 @@ msgstr "Maksimum"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2220
 msgid "Null values are ignored in calculations"
-msgstr "*Null-Werte werden in Berechnungen ausgelassen"
+msgstr "Vlerat e Null janë injoruar në llogaritje"
 
 # D:\web\xampp\htdocs\limesurvey/admin/statistics.php:1173
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2221
@@ -3750,7 +3561,7 @@ msgstr "Vlera te pamjaftueshme per llogaritjen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2592
 msgid "Percentage"
-msgstr "Prozent"
+msgstr "Perqindja"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:2843
 msgid "Non completed"
@@ -3764,7 +3575,7 @@ msgstr "I paperfunduar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:566
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:937
 msgid "Completed"
-msgstr "Abgeschlossen"
+msgstr "Perfunduar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:30
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/grouphandling.php:51
@@ -3829,7 +3640,7 @@ msgstr "Kontroll i Hyrjeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:193
 msgid "You have not selected a survey"
-msgstr "Sie haben keine Umfrage ausgewählt."
+msgstr "Ju nuk keni zgjedhur një sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:211
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2449
@@ -3838,7 +3649,7 @@ msgstr "Kerkimi qe ju zgjodhet nuk ekziston"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:275
 msgid "Token table could not be created."
-msgstr "Zugangsschlüssel Tabelle konnte nicht erstellt werden."
+msgstr "Nuk mund te krijoj tablen e token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:317
@@ -3847,27 +3658,17 @@ msgstr "Krijova nje tabele te Token per kete sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:342
 msgid "Tokens have not been initialised for this survey."
-msgstr ""
+msgstr "Nuk ka token per kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Nese ju do te perdorni token per kete ankete ,anketa do te jete e aksesueshme vetem  per perdoruesit qe kane zgjdhur token."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-#, fuzzy
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Nese ju vendoset nje kerkim per anonimet, pergjgjet e datuara ne kohe dhe "
-"krijimi i tabeles \"token\", nepermjet LimeSurvey do te shenjohen shenjuesat "
-"e kompletuar vetem me \"Y\" ne vend te date/kohes per te siguruar "
-"anonimitetin e pjesemaresve tuaj."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Nese ju vendoset nje kerkim per anonimet, pergjgjet e datuara ne kohe dhe krijimi i tabeles token, nepermjet LimeSurvey do te shenjohen shenjuesat e kompletuar vetem me 'Y' ne vend te date/kohes per te siguruar anonimitetin e pjesemaresve tuaj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
@@ -3884,7 +3685,7 @@ msgstr "Rikthe Opsionet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:378
 msgid "The following old token tables could be restored:"
-msgstr ""
+msgstr "Tabelat vijuese token mund te ribehen:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3214
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:385
@@ -3946,7 +3747,7 @@ msgstr "Eksporto Hyrjet ne nje skedar CSV"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:448
 msgid "Edit Email Templates"
-msgstr ""
+msgstr "Rregulloni Format e email-it"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:450
 msgid "Send email invitation"
@@ -3967,11 +3768,11 @@ msgstr "Elimino Tabelen e Hyrjeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:484
 msgid "Total Records in this Token Table"
-msgstr ""
+msgstr "Totali i regjistrimeve ne kete tabele token."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:491
 msgid "Total With No Unique Token"
-msgstr ""
+msgstr "Totali me token No Unique "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:498
 msgid "Total Invitations Sent"
@@ -3983,7 +3784,7 @@ msgstr "Totali i sondazheve te plotesuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:542
 msgid "Edit Email Settings"
-msgstr ""
+msgstr "Rregullo mjediset e emai-it"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:555
 msgid "Invitation Email Subject:"
@@ -4011,7 +3812,7 @@ msgstr "Perdor gjendjen fillestare"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:562
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1087
 msgid "Invitation Email:"
-msgstr "Mesazhi i ftesesl:"
+msgstr "Mesazhi i fteses:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:563
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1046
@@ -4081,8 +3882,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -4103,9 +3903,7 @@ msgstr ""
 "\n"
 "Kohet e fundit ne u ftuam ju te merrni pjese ne nje kerkim.\n"
 "\n"
-"Ne vume re se ju akoma nuk e keni kompletuar kerkimin, dhe do te deshironim "
-"y'ju kujtonim ju se kerkimi eshte akoma i vlefshem nese ju deshironi te "
-"merrni pjese.\n"
+"Ne vume re se ju akoma nuk e keni kompletuar kerkimin, dhe do te deshironim y'ju kujtonim ju se kerkimi eshte akoma i vlefshem nese ju deshironi te merrni pjese.\n"
 "\n"
 "Kerkimi titullohet \n"
 "'{EMRI I KERKIMIT}'\n"
@@ -4161,79 +3959,67 @@ msgstr "E-mail i rregjistrimit publik:"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "I dashur {EMRI},\n"
 "\n"
-"Ju ose dikush qe po perdor adresen tuaj te postes elektronike, jeni "
-"rregjistruar te merrni pjese ne kerkimin ne rrjet te titulluar {EMRI I "
-"KERKIMIT} .\n"
+"Ju ose dikush qe po perdor adresen tuaj te postes elektronike, jeni rregjistruar te merrni pjese ne kerkimin ne rrjet te titulluar {EMRI I KERKIMIT} .\n"
 "\n"
 "Per ta kompletuar kete kerkim, kliko ne URL e meposhtme.\n"
 "\n"
 "{KERKIMI URL}\n"
 "\n"
-"Nese ju keni ndonje pyetje rreth ketij kerkimi, ose nese ju nuk u "
-"rregjistruat per te marre pjese dhe besoni se ndodhi nje gabim gjate "
-"dergimit te mesazhit, ju lutem kontaktoni  {EMRI I ADMINISTRATORIT} unter "
-"{ADRESA E POSTES ELEKTRONIKE TE ADMINISTRATORIT}."
+"Nese ju keni ndonje pyetje rreth ketij kerkimi, ose nese ju nuk u rregjistruat per te marre pjese dhe besoni se ndodhi nje gabim gjate dergimit te mesazhit, ju lutem kontaktoni  {EMRI I ADMINISTRATORIT} unter {ADRESA E POSTES ELEKTRONIKE TE ADMINISTRATORIT}."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 msgid "Token Email Settings have been saved."
-msgstr ""
+msgstr "Mjediset e email-it token jane ruajtur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:649
 msgid "All token entries have been deleted."
-msgstr "Alle Probanden-Einträge wurden gelöscht."
+msgstr "Te gjithe token u fshine"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:661
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr "Alle Einladungs-Einträge wurden auf Nein zurückgesetzt."
+msgstr "Te gjithe fushat jane vendosur ne 'Jo Ftuar'."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:673
 msgid "All unique token numbers have been removed."
-msgstr "Alle Zugangsschlüssel wurden entfernt."
+msgstr "Të gjithë numrat unik te token janë hequr"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:685
 msgid "Token Database Administration Options"
-msgstr "Probanden Datenbank-Administration"
+msgstr "Opsionet e administrimit te token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr ""
-"Sind sie wirklich sicher, dass Sie für ALLE Einträge den Einladungsstatus "
-"auf Nein zurücksetzen möchten?"
+msgstr "A jeni të vërtetë e sigurt se doni të rivendosni te gjitha ftesat ne JO ?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Set all entries to 'No invitation sent'."
-msgstr "Setze 'Eingeladen' auf Nein für alle Einträge."
+msgstr "Rivendos te gjitha ne 'Ftesa nuk u dergua'."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:697
 msgid "Are you sure you want to delete all unique token numbers?"
-msgstr ""
-"Sind sie wirklich sicher, dass Sie ALLE Zugangsschlüssel entfernen wollen?"
+msgstr "Jeni i sigurt se deshironi te fshini të gjithë numrat unik te token?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:697
 msgid "Delete all unique token numbers"
-msgstr "Alle Zugangsschlüssel entfernen"
+msgstr "Të gjithë numrat unik te token janë fshire"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:701
 msgid "Are you really sure you want to delete ALL token entries?"
-msgstr ""
-"Sind Sie wirklich sicher, dass Sie ALLE Probanden-Einträge löschen wollen?"
+msgstr "A jeni të vërtetë e sigurt se doni te fshini GJITHE token ?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:701
 msgid "Delete all token entries"
-msgstr "Alle Probanden-Einträge löschen."
+msgstr "Fshij te gjithe token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:735
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:597
@@ -4264,7 +4050,7 @@ msgstr "Trego fundin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:756
 msgid "Search"
-msgstr "Suchen"
+msgstr "Kerko"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:764
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:634
@@ -4293,7 +4079,7 @@ msgstr "Trego"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:848
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:852
 msgid "Sort by: "
-msgstr "Sortieren nach: "
+msgstr "Rradhit per: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:818
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1608
@@ -4325,12 +4111,12 @@ msgstr "Gjuha"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1650
 msgid "Invite sent?"
-msgstr "Eingeladen?"
+msgstr "Ftese e derguar?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:842
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1660
 msgid "Completed?"
-msgstr "Ausgefüllt?"
+msgstr "Perfunduar?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:858
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:133
@@ -4339,15 +4125,15 @@ msgstr "Veprime"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:883
 msgid "Edit Token Entry"
-msgstr "Proband bearbeiten"
+msgstr "Edito token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:886
 msgid "Delete Token Entry"
-msgstr "Proband löschen"
+msgstr "Fshij token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:887
 msgid "Do Survey"
-msgstr "Umfrage ausführen/testen"
+msgstr "Bej anketen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:904
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:274
@@ -4356,70 +4142,54 @@ msgstr "Shiko pergjigjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:916
 msgid "Update Response"
-msgstr "Antworten bearbeiten"
+msgstr "Azhorno pergjigjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:931
 msgid "Send invitation email to this entry"
-msgstr "Sende eine Einladungs-E-Mail für diesen Eintrag"
+msgstr "Dërgoni email ftesën tuaj për këtë person"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:940
 msgid "Send reminder email to this entry"
-msgstr "Sende eine Erinnerungs-E-Mail für diesen Eintrag"
+msgstr "Dërgoni email kujtim për këtë person"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:962
 msgid "Delete Tokens Table"
-msgstr "Probandentabelle löschen"
+msgstr "Fshij tabelen e token"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:654
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"Nese ju e fshini kete tabele, shenjuesat as qe jane te kerkuar per te "
-"aksesuar kete kerkim"
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Nese ju e fshini kete tabele, shenjuesat as qe jane te kerkuar per te aksesuar kete kerkim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der "
-"Systemadministrator kann dann auf diese Daten zugreifen."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Një kopje rezervë të kësaj tabelë do të bëhet nëse vazhdojni. Administrator sistemi juaj do të jetë në gjendje të ketë akses në këtë tabele."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
-msgstr "Lösche die Probandentabelle"
+msgstr "Fshij token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"Die Probandentabelle wurde gelöscht, und es sind jetzt keine "
-"Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Tabela e token u fshi dhe nuk nevojiten me token per te aksesuar kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der "
-"Systemadministrator kann auf diese Daten zugreifen."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Nje kopje sigurie e tabelave eshte perfunduar, administratori i sistemit mund ta aksesoje ate."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
-msgstr "Einladung an Probanden versenden"
+msgstr "Email ftese"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1074
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1285
 msgid "From"
-msgstr "Von"
+msgstr "Nga"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1078
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1289
 msgid "Subject"
-msgstr "Betreff"
+msgstr "Subjekti"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1082
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1304
@@ -4431,61 +4201,49 @@ msgstr "Mesazh"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1116
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1365
 msgid "Sending to Token ID"
-msgstr ""
+msgstr "Duke e derguar ne ID token"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1383
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
-#, fuzzy
 msgid "Bypass token with failing email addresses"
 msgstr "Rekordet me adresa e-mail te pavlefshme u hoqen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1105
 msgid "Send Invitations"
-msgstr "Sende Einladungen"
+msgstr "Dergo ftesat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1115
 msgid "Sending Invitations"
-msgstr "Sende Einladungen..."
+msgstr "Duke derguar ftesat..."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1205
 msgid "Invitation sent to:"
-msgstr "Einladung versandt an:"
+msgstr "Ftesa derguar:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:733
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Mesazhi per {FIRSTNAME} {LASTNAME} ({EMAIL})  nuk u dergua"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"Es sind mehr Mails zu versenden, als auf einmal versendbar sind. Unten "
-"klicken um weiter zu senden."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Ka me shume email ne pritje sesa mund te dergohen me nje turn pune. Dergoji ato duke klikuar me poshte."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1468
 msgid "There are {EMAILCOUNT} emails still to be sent."
-msgstr "Es sind noch {EMAILCOUNT} E-Mails zu versenden."
+msgstr "Ka akoma {EMAILCOUNT} email per t'u derguar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen "
-"erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, die "
-"Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Nuk ka email te vlefshme per t'u derguar. Kjo sepse asnjera nuk i ploteson kushtet - te te pasurit nje adrese email, te mos te derguarit te nje ftese, te kete plotesuar anketen dhe te kete nje token."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
-msgstr "Erinnerung an Probanden versenden"
+msgstr "Email kujtese"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1311
 msgid "Reminder Email:"
@@ -4501,11 +4259,11 @@ msgstr "Mbaro me Token ID Nr.:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1340
 msgid "Send Reminders"
-msgstr "Sende Erinnerungen"
+msgstr "Dergo kujtesat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1352
 msgid "Sending Reminders"
-msgstr "Sende Erinnerungen.."
+msgstr "Duke derguar kujtesat.."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1364
 msgid "From Token ID"
@@ -4513,49 +4271,39 @@ msgstr "Nga Token ID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1446
 msgid "Reminder sent to:"
-msgstr "Erinnerung gesendet an:"
+msgstr "Kujtese derguar:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"Es wurden keine E-Mails versendet, da kein Proband die folgenden Bedingungen "
-"erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, "
-"Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Nuk u gjend asnje email e vlefshme. Kjo sepse asnje vlere nuk e ploteson kushtin e - te paturit nje adrese email, te derguarit e nje ftese, por nuk kan plotesuar anketen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
-msgstr "Probanden erstellen"
+msgstr "Krijo Token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"Wenn Sie auf Ja klicken, wird für alle Probanden ohne eindeutigen "
-"Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "Klikimi po do të gjenerojë token për të gjithë ata që në këtë shenjë lista që nuk e kan nje te tille. A është kjo në rregull?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
-msgstr "{TOKENCOUNT} Zugangsschlüssel wurden generiert"
+msgstr "{TOKENCOUNT} per token eshte krijuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1555
 msgid "Token has been deleted."
-msgstr "Zugangsschlüssel wurde gelöscht."
+msgstr "Token u fshi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1556
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:157
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:297
 msgid "Reloading Screen. Please wait."
-msgstr "Seite wird neu geladen. Bitte warten."
+msgstr "Duke ringarkuar. Ju lutem prisni."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1588
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1712
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1764
 msgid "Add or Edit Token Entry"
-msgstr ""
+msgstr "Shtoni ose rregulloni hyrjen token"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1502
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1592
@@ -4563,52 +4311,45 @@ msgid "Auto"
 msgstr "Automatike"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"Sie können dieses Feld leer lassen und automatisch eindeutige "
-"Zugangsschlüssel generieren lassen mit 'Generiere eindeutige "
-"Zugangsschlüssel'"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Ju mund ta lini kete fushe bosh, dhe automatikisht te gjeneroni token duke perdorur 'Krijo Token'"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
-msgstr "Proband aktualisieren"
+msgstr "Azhorno token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1694
 msgid "Add Token"
-msgstr "Zugangschlüssel hinzufügen"
+msgstr "Shto token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1741
 msgid "Updated Token"
-msgstr "Proband aktualisiert"
+msgstr "Token te azhornuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1747
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1795
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1973
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2155
 msgid "Failed"
-msgstr "Fehlgeschlagen"
+msgstr "Deshtoi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "Ndodhet nje hyrje me nje token te njejte ne tabele. I njejti token nuk mund te perdoret per nje sasi te madhe hyrjesh."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
 msgid "Show this token entry"
-msgstr ""
+msgstr "Trego kete hyrje token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1788
 msgid "Added New Token"
-msgstr "Neuer Proband hinzugefügt"
+msgstr "Shto nje token te ri"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1811
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1855
 msgid "Upload CSV File"
-msgstr "Komma getrennte Datei (CSV) hochladen"
+msgstr "Ngarko file CSV"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/tokens.php:1200
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1817
@@ -4617,43 +4358,33 @@ msgid "Note:"
 msgstr "Shenim:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Dosja duhet te jete nje CSV standarte( presje e palimitiuar) me quota te dyfishta rreth vlerave(mungese per openoffice dhe exel).Rreshti i pare duhet te permbaje informacionin kryesor(do te fshihet) Data duhet te kerkohet si  \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
 msgid "Upload LDAP entries"
-msgstr "LDAP Einträge hochladen"
+msgstr "Ngarko te dhena LDAP"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1246
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Kerkimet LDAP jane percaktuar nda administratori ne skedarin Idap.php"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"Hochgeladene Datei nicht gefunden. überprüfen Sie Ihre Berechtigung und den "
-"Pfad des Upload-Verzeichnisses."
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Skedari per ngarkim nuk u gjend. Kontrolloni lejet dhe path te direktorise se upload"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
-msgstr "Importiere CSV-Datei"
+msgstr "Duke importuar skedar CSV"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1876
 msgid "Creating Token Entries"
-msgstr "Erstelle Zugangsschlüssel-Einträge"
+msgstr "Duke krijuar elemente te token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1975
 msgid "Records in CSV"
-msgstr "Datensätze in CSV-Datei"
+msgstr "Elemente ne CSV"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1380
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1976
@@ -4664,7 +4395,7 @@ msgstr "Rekordet plotesojne kerkesat minimale"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1977
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2159
 msgid "Records imported"
-msgstr "Datensätze importiert"
+msgstr "Elemente te importuar"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1382
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1978
@@ -4684,7 +4415,7 @@ msgstr "Lade LDAP Abfrage hoch"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2157
 msgid "Results from LDAP Query"
-msgstr ""
+msgstr "Rezultatet nga pyetesori LDAP"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1420
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2165
@@ -4704,7 +4435,7 @@ msgstr "Zgjidh skedarin CSV per tu ngarkuar:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2200
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2234
 msgid "Filter blank email addresses:"
-msgstr ""
+msgstr "Filter bosh adrese emaili:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1382
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:2201
@@ -4752,8 +4483,7 @@ msgstr "Tokeni qe keni nuk eshte i vlefshem ose eshte perdorur tashme."
 # C:\Dokumente
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
-msgstr ""
-"Ka tashme nje pergjigje rregjistruar ne rekord per kete tabele \"token\""
+msgstr "Ka tashme nje pergjigje rregjistruar ne rekord per kete tabele \"token\""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:118
 msgid "Follow the following link to update it"
@@ -4767,8 +4497,7 @@ msgstr "Edito kete hyrje"
 # D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:124
 msgid "This surveys uses anonymous answers, so you can't update your response."
-msgstr ""
-"Pergjigjet e ketij sondazhi jane anonime keshtuqe nuk mund ti riperterini"
+msgstr "Pergjigjet e ketij sondazhi jane anonime keshtuqe nuk mund ti riperterini"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:151
 msgid "Try again"
@@ -4801,26 +4530,16 @@ msgid "Start Language:"
 msgstr "Fillo gjuhen:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
-"Pergjigjet tuaja jane ruajtur me sukses. Ju do merrni nje mesazh si "
-"konfirmim. Ju lutemi te ruani fjalekalimin tuaj, pasi ne nuk do te jemi ne "
-"gjendje t'ua kujtojme serish."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "Pergjigjet tuaja jane ruajtur me sukses. Ju do merrni nje mesazh si konfirmim. Ju lutemi te ruani fjalekalimin tuaj, pasi ne nuk do te jemi ne gjendje t'ua kujtojme serish."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
-msgstr ""
-"Nje hyrje ne tabelen e tipit token per kerkimin e ruajtur ka qene gjithashtu "
-"e krijuar"
+msgstr "Nje hyrje ne tabelen e tipit token per kerkimin e ruajtur ka qene gjithashtu e krijuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:431
 msgid "An email has been sent with details about your saved survey"
-msgstr ""
-"Nje mesazh ne posten elektronike eshte derguar me detajet rreth kerkimit "
-"tuaj te ruajtur"
+msgstr "Nje mesazh ne posten elektronike eshte derguar me detajet rreth kerkimit tuaj te ruajtur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:445
 msgid "The entry was assigned the following record id: "
@@ -4938,13 +4657,13 @@ msgstr "Adresa e-mail nga Token"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:102
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:115
 msgid "Attribute_1 from token"
-msgstr "Vetia_1 nga token"
+msgstr "Atributi_1 nga token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:87
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:116
 msgid "Attribute_2 from token"
-msgstr "Vetia_2 nga token"
+msgstr "Atributi_2 nga token"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:95
 msgid "Token code for this participant"
@@ -4972,7 +4691,7 @@ msgstr "URL e sondazhit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:403
 msgid "No replacement variable available for this field"
-msgstr ""
+msgstr "Nuk ka variabel te zevendesueshme per kete fushe"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:410
 msgid "Standard Fields"
@@ -4980,7 +4699,7 @@ msgstr "Fusha Standart"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:422
 msgid "Previous Answers Fields"
-msgstr ""
+msgstr "Fusha e pyetjeve te meparshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:451
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:457
@@ -5001,7 +4720,7 @@ msgstr "E gjitha ne nje"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 msgid "Only Previous pages answers are available"
-msgstr ""
+msgstr "Vetem faqet e meparshme jane te disponueshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:458
 #, php-format
@@ -5040,7 +4759,7 @@ msgstr "Faqe e plotesuar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:46
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:447
 msgid "Clear All Page"
-msgstr ""
+msgstr "Fshini te gjithe faqen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:380
@@ -5066,7 +4785,7 @@ msgstr "Shtyp faqen e pergjigjeve"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:258
 #, php-format
 msgid "Failed to copy %s to new template directory."
-msgstr ""
+msgstr "Deshtim kopjimi e %s ne format e drejtorise"
 
 # D:\web\xampp\htdocs\limesurvey/admin/templates.php:101
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/templates.php:136
@@ -5208,23 +4927,20 @@ msgstr "Preshihe:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr ""
-"Importo pergjigjet nga nje tabele kerkimi e vjeter (e c'aktivizuar) ne nje "
-"kerkim aktiv"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Importo pergjigjet nga nje tabele kerkimi e vjeter (e c'aktivizuar) ne nje kerkim aktiv"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
-msgstr ""
+msgstr "Targeti i ID se anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:48
 msgid "Source table"
-msgstr ""
+msgstr "Tabela e burimeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:58
 msgid "Import Responses"
-msgstr ""
+msgstr "Pergjigjet e importuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:55
 msgid "Export database"
@@ -5232,14 +4948,8 @@ msgstr "Eksporto bazen e te dhenave"
 
 # D:\web\xampp\htdocs\limesurvey/admin/dumpdb.php:59
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"Eksportimi i bazes se te dhenave eshte i vlefshem vetem per bazat e te "
-"dhenave te tipit MySQL. Per tipe te tjera baza te dhenash te lutem perdor "
-"mekanizmin backup te pershtatjes per te krijuar nje baze te dhenash tjeter"
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Eksportimi i bazes se te dhenave eshte i vlefshem vetem per bazat e te dhenave te tipit MySQL. Per tipe te tjera baza te dhenash te lutem perdor mekanizmin backup te pershtatjes per te krijuar nje baze te dhenash tjeter"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5257,41 +4967,20 @@ msgid "You are about to delete this survey"
 msgstr "Jeni duke fhire kete sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Ky proces do te fshije kete kerkim, dhe te gjithe grupet e lidhura me te si "
-"pyetjet, pergjigjet dhe konditat"
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Ky proces do te fshije kete kerkim, dhe te gjithe grupet e lidhura me te si pyetjet, pergjigjet dhe konditat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Ne rekomandojme qe perpara se ta fshini kete sondazh ju e eksportoni te "
-"gjithe kete kerkim nga ekrani kryesor i administrimit"
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Ne rekomandojme qe perpara se ta fshini kete sondazh ju e eksportoni te gjithe kete kerkim nga ekrani kryesor i administrimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Ky kerkim eshte aktiv dhe tabela e pergjigjeve ekziston. Nese ju e fshini "
-"kete kerkim, keto pergjigje do te fshihen. ne rekomandojme qe ju te "
-"eksportoni pergjigjet perpara fshirjes se ketij kerkimi"
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Ky kerkim eshte aktiv dhe tabela e pergjigjeve ekziston. Nese ju e fshini kete kerkim, keto pergjigje do te fshihen. ne rekomandojme qe ju te eksportoni pergjigjet perpara fshirjes se ketij kerkimi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"Ky kerkim ka nje tabele te tipit Hyrje te shoqeruar me te. Nese ju e fshini "
-"kete kerkim kjo tabele do te fshihet. ne rekmandojme qe ju ta eksportoni ose "
-"t'i beni backup ketyre tabelave te tipit \"tokens\" perpara fshirjes se "
-"kerkimit."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Ky kerkim ka nje tabele te tipit Hyrje te shoqeruar me te. Nese ju e fshini kete kerkim kjo tabele do te fshihet. ne rekmandojme qe ju ta eksportoni ose t'i beni backup ketyre tabelave te tipit \"tokens\" perpara fshirjes se kerkimit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5329,7 +5018,7 @@ msgstr "Neue Benutzergruppe hinzufügen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "Vendosni format qe mund te aksesoje ky perdorues"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
 msgid "Template Name"
@@ -5376,7 +5065,7 @@ msgstr "Emri Mbiemri"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:387
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:536
 msgid "Set User Rights"
-msgstr ""
+msgstr "Vendosni te drejtat e perdoruesit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:259
 msgid "SuperAdministrator"
@@ -5388,11 +5077,11 @@ msgstr "Super Administratori"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3039
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3108
 msgid "Create Survey"
-msgstr "Erstelle Umfrage"
+msgstr "Krijo ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:265
 msgid "Configurator"
-msgstr "Konfigurator"
+msgstr "Konfigurimi"
 
 # D:\web\xampp\htdocs\limesurvey/common.php:213
 # D:\web\xampp\htdocs\limesurvey/common.php:214
@@ -5407,11 +5096,11 @@ msgstr "Fshi Perdoruesin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:274
 msgid "Manage Template"
-msgstr ""
+msgstr "Menaxhoni format"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:277
 msgid "Manage Labels"
-msgstr ""
+msgstr "Menaxhoni etiketat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:365
 msgid "Setting as Administrator Child"
@@ -5419,7 +5108,7 @@ msgstr "Percakto nje Administrator si Child"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:366
 msgid "Set Parent successful."
-msgstr ""
+msgstr "Vendosni prindin e suksesshem"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:379
 msgid "User Control"
@@ -5436,7 +5125,7 @@ msgstr "Edito Perdoruesin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:535
 msgid "Take Ownership"
-msgstr ""
+msgstr "Merrni pronesine"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:544
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:617
@@ -5465,11 +5154,11 @@ msgstr "Name:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:607
 msgid "Edit User Group (Owner: "
-msgstr ""
+msgstr "Rregulloni grupin e perdoruesve (Pronari:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:613
 msgid "Update User Group"
-msgstr ""
+msgstr "Ngarko grupin e perdoruesve"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1707
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:634
@@ -5496,7 +5185,7 @@ msgstr "Rifillo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:654
 msgid "Deleting User Group"
-msgstr ""
+msgstr "Fshij grupin e perdoruesve "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:667
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:703
@@ -5505,42 +5194,42 @@ msgstr "Emri i Grupit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:671
 msgid "Could not delete user group."
-msgstr ""
+msgstr "Nuk mund te fshij grupin e perdoruesve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:681
 msgid "Could not delete user group. No group selected."
-msgstr ""
+msgstr "Nuk mund te fshij numrin e perdoruesve. Nuk eshte zgjedhur asnje grup"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:691
 msgid "Adding User Group"
-msgstr ""
+msgstr "Shto grupin e perdoruesve "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:707
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:848
 msgid "Description: "
-msgstr ""
+msgstr "Pershkrimi:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:710
 msgid "User group successfully added!"
-msgstr ""
+msgstr "Grupi i perdoruesve u shtua me sukses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:715
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:722
 msgid "Failed to add Group!"
-msgstr ""
+msgstr "Deshtim ne shtimin e grupit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:716
 msgid "Group already exists!"
-msgstr ""
+msgstr "Grupi eshte ekzistues"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:723
 msgid "Group name was not supplied!"
-msgstr ""
+msgstr "Emri i grupit nuk u perfundua"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:781
 msgid "Message(s) sent successfully!"
-msgstr ""
+msgstr "Mesazhi u dergua me sukses!"
 
 # D:\web\xampp\htdocs\limesurvey/admin/userrighthandling.php:668
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:782
@@ -5554,11 +5243,11 @@ msgstr "Mesazhi nuk u dergua!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:811
 msgid "Edit User Group Successfully!"
-msgstr ""
+msgstr "Grupi i perdoruesve u rregullua me sukses!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:816
 msgid "Failed to update!"
-msgstr ""
+msgstr "Deshtim ne ngarkim!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:962
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1783
@@ -5608,45 +5297,40 @@ msgstr "Importo pyetje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:43
 msgid "No SID (Survey) has been provided. Cannot import question."
-msgstr "keine SID (Umfrage) angegeben. Kann Frage nicht importieren."
+msgstr "Nuk eshte dhena asnje SID (ankete) . Nuk mund të importojë pyetje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:57
 msgid "No GID (Group) has been provided. Cannot import question"
-msgstr "keine GID (Gruppe) angegeben. Kann Frage nicht importieren."
+msgstr "Nuk eshte dhena asnje GID (grup) . Nuk mund të importojë pyetje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr "Diese Datei ist keine LimeSurvey-Umfrage-Datei. Import fehlgeschlagen."
+msgstr "Ky nuk është një skedar LimeSurvey. Importimi dështoi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Na falni, importimi i pyetjeve eshte i limituar per versionin e njejte. Importi deshtoj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"Sie können keine Frage importieren, welche nicht zumindest die Basissprache "
-"dieser Umfrage unterstützt."
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Ju nuk mund të importoni një pyetje e cila nuk e mbështet gjuhën baze te sistemit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
-msgstr "Fragen-Import übersicht"
+msgstr "Permbledhje e importimit per kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:503
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1230
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1259
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:202
 msgid "Label Sets"
-msgstr ""
+msgstr "Etiketa e vleresimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:508
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:153
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:588
 msgid "Question Attributes:"
-msgstr ""
+msgstr "Atributet e pyetjeve:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:512
 msgid "Question import is complete."
@@ -5655,7 +5339,7 @@ msgstr "Importimi i pyetjeve perfundoi"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:35
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr ""
+msgstr "Vetem per Demo Mode: Ngarkimi i dosjve eshte i pamundur ne kete sistem."
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:320
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:36
@@ -5670,7 +5354,7 @@ msgstr "Kthim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:52
 msgid "Import Survey Resources"
-msgstr ""
+msgstr "Importo resurset e anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:237
@@ -5681,7 +5365,7 @@ msgstr "Leje te gabuara ne skedarin %s."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:82
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:261
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr ""
+msgstr "Dosja nuk eshte disje ZIP e vlefshme .Importi deshtoj "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:282
@@ -5696,7 +5380,7 @@ msgstr "OK"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:122
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:301
 msgid "Forbidden Extension"
-msgstr ""
+msgstr "Zgjerimet e ndaluara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:146
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:165
@@ -5708,17 +5392,17 @@ msgstr "Lista e skedareve te importuar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
+msgstr "Kjo ZIP nuk permban resurse te vlefshme. Importi deshtoj"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
 msgid "Remember that we do not support subdirectories in ZIP Archive."
-msgstr ""
+msgstr "Kujto qe ne nuk permbajme subdirektori ne arkiven Zip."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:160
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:339
 msgid "Partial"
-msgstr ""
+msgstr "I/e pjesshme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:164
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:172
@@ -5730,12 +5414,12 @@ msgstr "Lista e skedareve gabim"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:175
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:354
 msgid "Imported Resources for"
-msgstr ""
+msgstr "Resurse te importuara per"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:177
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:356
 msgid "Resources Import Summary"
-msgstr ""
+msgstr "Permbledhja e resurseve te importuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:178
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:357
@@ -5878,11 +5562,11 @@ msgstr "Gjuha e zgjedhur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:296
 msgid "Preferred HTML editor mode"
-msgstr ""
+msgstr "Menyra editoriale e preferuar HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:299
 msgid "Default HTML editor mode"
-msgstr ""
+msgstr "Menyra editoriale standarte HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:300
 msgid "No HTML editor"
@@ -5890,11 +5574,11 @@ msgstr "Asnje HTML editor"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:301
 msgid "Inline HTML editor"
-msgstr ""
+msgstr "Editori HTML ne nje rresht"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:302
 msgid "Popup HTML editor"
-msgstr ""
+msgstr "Editori HTML popup"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:310
 msgid "Users"
@@ -5919,15 +5603,12 @@ msgstr "Tabelat e Hyrjeve joaktive"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:271
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:355
 msgid "Show PHPInfo"
-msgstr "Trego informacionin PHP"
+msgstr "Trego PHPInfo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Kerkimi nuk mund te aktivizohet. Ose ju nuk keni leje ose nuk ka pyetje."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Kerkimi nuk mund te aktivizohet. Ose ju nuk keni leje ose nuk ka pyetje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
@@ -5944,8 +5625,7 @@ msgstr "Ekzekuto kete kerkim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:525
 msgid "This survey is not active, data entry is not allowed"
-msgstr ""
-"Ky kerkim nuk eshte aktiv, hyrja ne bazen e te dhenave nuk eshte e lejuar"
+msgstr "Ky kerkim nuk eshte aktiv, hyrja ne bazen e te dhenave nuk eshte e lejuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:539
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:540
@@ -5986,7 +5666,6 @@ msgstr "Ndrysho renditjen e Grupeve"
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3463
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:638
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:639
-#, fuzzy
 msgid "Disabled - Change Group Order"
 msgstr "Ndrysho renditjen e Grupeve"
 
@@ -6019,9 +5698,8 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "Aktivizo/Edito Hyrjet per kete sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
-msgstr ""
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "Shtimi/rregullimi i tokeneve eshte i pa realizueshem sepse anketa nuk eshte e aktivizuar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
 msgid "Add New Group to Survey"
@@ -6029,21 +5707,18 @@ msgstr "Shto nje grup te ri ne kete sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:750
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:751
-#, fuzzy
 msgid "Hide details of this Survey"
-msgstr "Fsheh detajet e ketij sondazhi"
+msgstr "Fsheh detajet per kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:753
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:754
-#, fuzzy
 msgid "Show details of this survey"
-msgstr "Trego detajet e ketij sondazhi"
+msgstr "Trego detaje per kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:758
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:759
-#, fuzzy
 msgid "Close this survey"
-msgstr "Mbylle kete sondazh"
+msgstr "Mbylle kete ankete"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:789
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2465
@@ -6087,9 +5762,7 @@ msgstr "Ky sondazh do perdore cookies per te kontrolluar hyrjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:798
 msgid "If tokens are used, the public may register for this survey"
-msgstr ""
-"Nese perdoren Hyrje, publiku duhet te regjistrohet per te marre pjse ne kete "
-"sondazh"
+msgstr "Nese perdoren Hyrje, publiku duhet te regjistrohet per te marre pjse ne kete sondazh"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:799
 msgid "Participants can save partially finished surveys"
@@ -6202,12 +5875,8 @@ msgid "Edit Current Group"
 msgstr "Edito kete Grup"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Fshirja e ketij grupi do te fshije gjithashtu te tera pyetjet dhe pergjigjet "
-"qe ai permban. Jeni i sigurte qe doni te vazhdoni?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Fshirja e ketij grupi do te fshije gjithashtu te tera pyetjet dhe pergjigjet qe ai permban. Jeni i sigurte qe doni te vazhdoni?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -6216,12 +5885,8 @@ msgstr "Fshi kete Grup"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:889
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"E pamundur per ta fshire kete grup sepse ka te pakten nje pyetje e cila ka "
-"nje kusht ne permbajtjen e saj"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "E pamundur per ta fshire kete grup sepse ka te pakten nje pyetje e cila ka nje kusht ne permbajtjen e saj"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6259,12 +5924,8 @@ msgid "Edit Current Question"
 msgstr "edito pyetjen korente"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Fshirja e kesaj pyetjeje do te fshije gjithashtu pergjigjet qe perfshihen ne "
-"te. Jeni i sigurte se doni te vazhdoni "
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Fshirja e kesaj pyetjeje do te fshije gjithashtu pergjigjet qe perfshihen ne te. Jeni i sigurte se doni te vazhdoni "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
@@ -6272,17 +5933,12 @@ msgstr "Fshi pyetjen korente"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:1049
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr ""
-"E pamundur ta fshij kete pyetje sepse ka se paku nje nje pyetje e cila ka "
-"nje kusht ne te"
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "E pamundur ta fshij kete pyetje sepse ka se paku nje nje pyetje e cila ka nje kusht ne te"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
-#, fuzzy
 msgid "Disabled - Delete Current Question"
-msgstr "Fshi pyetjen korente"
+msgstr "Caktivizuar - Fshij pyetjen aktuale"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1185
 msgid "Export this Question"
@@ -6392,12 +6048,11 @@ msgstr "Ju nevojitet te zgjidhni nje set etiketash per kete pyetje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1366
 msgid "Second Label Set"
-msgstr ""
+msgstr "Etiketa e dyte e vleresimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1370
-#, fuzzy
 msgid "You need to choose a second label set for this question!"
-msgstr "Ju nevojitet te zgjidhni nje vendosje etikete per kete pyetje"
+msgstr "Ju nevojitet te zgjidhni nje etikete te dyte per kete pyetje!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1384
 msgid "Edit/Add second Label Sets"
@@ -6450,12 +6105,8 @@ msgid "Add new Answer"
 msgstr "Shto pergjigjen e re"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Ju nuk mund te shtoni pergjigje ose te editoni kode per kete tip pyetje, "
-"sepse kerkimi eshte aktiv"
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Ju nuk mund te shtoni pergjigje ose te editoni kode per kete tip pyetje, sepse kerkimi eshte aktiv"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6509,11 +6160,11 @@ msgstr "Kontrollo pergjigjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1929
 msgid "LimeSurvey Survey File (*.csv)"
-msgstr ""
+msgstr "LimeSurvey Skedari i anketes (*.csv)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1933
 msgid "queXML Survey XML Format (*.xml)"
-msgstr ""
+msgstr "queXML Anketa  XML Formati (*.xml)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1942
 msgid "Export To File"
@@ -6553,7 +6204,7 @@ msgstr "Mesazh i administratorit:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2211
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2886
 msgid "Bounce Email:"
-msgstr ""
+msgstr "Email-et e kthyer:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2222
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2899
@@ -6576,9 +6227,8 @@ msgid "Question by Question"
 msgstr "Pyetje pas pyetje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2258
-#, fuzzy
 msgid "Template Preview:"
-msgstr "Model i gatshem"
+msgstr "Shfaq modelin:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2926
@@ -6588,12 +6238,11 @@ msgstr "Lejon ruajtje?"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2276
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2937
 msgid "Show [<< Prev] button"
-msgstr "Shfaq butonin [<< Prev]"
+msgstr "Shfaq butonin [<< Prapa]"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2288
-#, fuzzy
 msgid "Participants may print answers?"
-msgstr "Pjesemarrsit mund t'i shtypin pergjigjet?"
+msgstr "Pjesemarrsit mund t'i printojne pergjigjet?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2300
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2953
@@ -6613,7 +6262,7 @@ msgstr "Automatikisht ngarkon URL kur kerkimi perfundon?"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2333
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2983
 msgid "Publication & Access control"
-msgstr ""
+msgstr "Publikimet dhe aksesi i kontrollit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2338
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2986
@@ -6671,7 +6320,7 @@ msgstr "Shpeto & Ngarko"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2407
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3026
 msgid "Token Attribute Names:"
-msgstr "Emrat e atributeve te tipit \"token\":"
+msgstr "Emrat e atributeve te tipit token:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2414
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3031
@@ -6679,10 +6328,8 @@ msgid "Use HTML format for token emails?"
 msgstr "Perdor formatin HTML per mesazht e Hyrjeve?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "Nese fikni email-in , ju duhet te ri-shikoni format per t'ju pershtatur formatit te ri"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
@@ -6700,10 +6347,8 @@ msgid "Anonymous answers?"
 msgstr "Pergjigje anonime?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
-msgstr ""
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
+msgstr "Nuk mund te perdorni pergjigje anonime kur pergjigjet token jane te aktivizuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2490
@@ -6758,7 +6403,7 @@ msgstr "Pergjigjet do te kene  referimin e tyre URL te loguar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3093
 msgid "Enable Token-based answers persistence?"
-msgstr ""
+msgstr "Deshironi te caktivizoni pergjigjet token?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2561
 msgid "This option can't be set if Anonymous answers are used"
@@ -6766,11 +6411,8 @@ msgstr "Ky opsion nuk mund te zgjidhet nese pergjigjet jane anonime"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3359
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Te gjitha pyetjet, pegjigjet, etj per gjuhet e hequra do te humbin. Jeni i "
-"sigurte?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Te gjitha pyetjet, pegjigjet, etj per gjuhet e hequra do te humbin. Jeni i sigurte?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -6792,10 +6434,7 @@ msgstr "Kerkimi aktual ka pyetje me kondita jashte grupit te vet."
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:3595
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "Rirenditja e grupeve eshte restrukturuar per te siguruar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
@@ -6810,13 +6449,12 @@ msgstr "Grupi %s mbeshtete ne Grupin %s, shiko konditat e shenjuara ne:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:788
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2775
-#, fuzzy
 msgid "QID"
-msgstr "ID"
+msgstr "QID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2841
 msgid "Error: You have to enter a title for this survey."
-msgstr "Fehler: Sie müssen einen Titel für diese Umfrage angeben."
+msgstr "Gabim: Ju duhet te jepni nje titull për këtë studim."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2845
 msgid "Create or Import Survey"
@@ -6829,7 +6467,7 @@ msgstr "Kjo vendosje nuk mund te ndryshohet me vone."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2873
 msgid "(This field is mandatory.)"
-msgstr "(Dies ist ein Pflichtfeld.)"
+msgstr "(Fusha eshte e detyrueshme.)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2945
 msgid "Participiants may print answers?"
@@ -6848,11 +6486,11 @@ msgstr "Umfrage importieren"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3119
 msgid "Select CSV/SQL File:"
-msgstr "CSV/SQL-Datei auswählen:"
+msgstr "Zgjidh skedarin CSV/SQL:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3121
 msgid "Convert Resources links and INSERTANS fields ?"
-msgstr ""
+msgstr "Deshironi te konvertoni linqet e resurseve dhe te fushave ku jeni te pavendosur? "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvexport.php:47
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/export_structure_csv.php:44
@@ -6889,17 +6527,11 @@ msgstr "Eksporto pergjigjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:42
 msgid "You are about to delete all conditions on this survey's questions"
-msgstr ""
-"Ju jeni duke eliminuar tere kushtezimet e perdorura ne pyetjet e ketij "
-"sondazhi"
+msgstr "Ju jeni duke eliminuar tere kushtezimet e perdorura ne pyetjet e ketij sondazhi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Ne rekomandojme qe perpara se ta fshini, te eksportoni te gjithe kete "
-"sondazh nga faqja kryesore e administrimit."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Ne rekomandojme qe perpara se ta fshini, te eksportoni te gjithe kete sondazh nga faqja kryesore e administrimit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
@@ -6908,7 +6540,7 @@ msgstr "Te tera kushte e ketij sondazhi jane eliminuar"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:142
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:146
 msgid "if you answered"
-msgstr "falls ihre Antwort "
+msgstr "nqs jeni pergjigjur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:144
 msgid "if you have NOT answered"
@@ -6921,7 +6553,7 @@ msgstr "ose"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:251
 msgid "to question"
-msgstr " war bei der Frage"
+msgstr "pyetjes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:257
 #, php-format
@@ -6941,12 +6573,12 @@ msgstr "Pergjigjuni VETEM kesaj pyetjeje %s"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:620
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:623
 msgid "Please choose *only one* of the following:"
-msgstr "Bitte wählen Sie nur eine der folgenden Antworten aus:"
+msgstr "Ju lutem zgjidhni *vetem* njeren nga:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:301
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:303
 msgid "Please enter a date:"
-msgstr "Bitte ein datum eingeben"
+msgstr "Jepni nje date:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:448
 msgid "Please number each box in order of preference from 1 to"
@@ -6976,7 +6608,7 @@ msgstr "pergjigje:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:537
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:538
 msgid "Please choose all that apply and provide a comment:"
-msgstr "Bitte alle auswählen die zutreffen und einen Kommentar dazuschreiben"
+msgstr "Ju lutem zgjidhni opsionin dhe jepni nje koment :"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:542
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:543
@@ -7035,14 +6667,14 @@ msgstr "Ju lutemi dergojeni sondazhin e plotesur ne kete numer faksi:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:975
 #, php-format
 msgid "Please submit by %s"
-msgstr ""
+msgstr "Ju lutemi ploteso sipas %s"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:189
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:190
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:192
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/results.php:261
 msgid "Answered"
-msgstr "Beantwortet"
+msgstr "Pergjigjur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:62
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1236
@@ -7078,32 +6710,21 @@ msgid "Total"
 msgstr "Totali"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"Nese ju krijoni nje vleresim ne kete faqe, per sondazhin e zgjedhur "
-"aktualisht, vleresimi do te realizohet ne fund te sondazhit pas dergimit te "
-"tij."
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "Nese ju krijoni nje vleresim ne kete faqe, per sondazhin e zgjedhur aktualisht, vleresimi do te realizohet ne fund te sondazhit pas dergimit te tij."
 
 # D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:788
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
-#, fuzzy
 msgid "SID"
-msgstr "ID"
+msgstr "SID"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:69
 msgid "The defined LimeSurvey database does not exist"
 msgstr "Baza e te dhenave LimeSurvey qe kerkoni nuk ekziston"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"Ose baza e te dhenave tuaja te selektuara akoma nuk eshte krijuar, ose ka "
-"nje problem gjate aksesimit me te"
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "Ose baza e te dhenave tuaja te selektuara akoma nuk eshte krijuar, ose ka nje problem gjate aksesimit me te"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
 msgid "You have not selected a survey to browse."
@@ -7135,7 +6756,7 @@ msgstr "1. shkalla"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:237
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:448
 msgid "2. scale"
-msgstr "2.shkalla"
+msgstr "2. shkalla"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:290
 msgid "Delete this entry"
@@ -7219,44 +6840,25 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "LEXO ME KUJDES PARA VEPRIMIT"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr ""
-"Ne nje kerkim aktiv, tabela eshte krijuar per te ruajtur te gjitha rekordet "
-"e hyrjeve te te dhenave"
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "Ne nje kerkim aktiv, tabela eshte krijuar per te ruajtur te gjitha rekordet e hyrjeve te te dhenave"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"Kur ju te c'aktivizoni nje kerkim te gjithe te dhenat e hyra ne tabelen "
-"origjinale do te zhvendosen diku tjeter, dhe kur ju ta aktivizoni kerkimin "
-"perseri, tabela do te jete bosh. ju nuk do te jeni i afte t'ia aksesoni keto "
-"te dhena duke e perdorur menyren LimeSurvey me"
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Kur ju te c'aktivizoni nje kerkim te gjithe te dhenat e hyra ne tabelen origjinale do te zhvendosen diku tjeter, dhe kur ju ta aktivizoni kerkimin perseri, tabela do te jete bosh. ju nuk do te jeni i afte t'ia aksesoni keto te dhena duke e perdorur menyren LimeSurvey me"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"Te dhenat e kerkimit te c'aktivizuar mund te aksesohen vetem nga "
-"administruesit e sistemit duke perdorur nje mjet te tipit \"phpmyadmin\" te "
-"aksesimit te te dhenave ne bazen e te dhenave. Nese kerkimi juaj perdor "
-"tabelat e tipit \"tokens\", kjo tabele gjithashtu do te riemerohet dhe do te "
-"jete e aksesueshme vetem nga administratoret e sistemit."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Te dhenat e kerkimit te c'aktivizuar mund te aksesohen vetem nga administruesit e sistemit duke perdorur nje mjet te tipit \"phpmyadmin\" te aksesimit te te dhenave ne bazen e te dhenave. Nese kerkimi juaj perdor tabelat e tipit \"tokens\", kjo tabele gjithashtu do te riemerohet dhe do te jete e aksesueshme vetem nga administratoret e sistemit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
-msgstr ""
+msgstr "Tabela juaj e pergjigjeve do te ri-emerohet si:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/deactivate.php:59
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:38
 msgid "Also you should export your responses before deactivating."
-msgstr ""
+msgstr "Ju duhet te eksportoni pergjigjet tuaja para caktivizimit."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
@@ -7268,27 +6870,19 @@ msgstr "Tabela e pergjigjeve eshte riemeruar si:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:133
 msgid "The responses to this survey are no longer available using LimeSurvey."
-msgstr ""
-"Pergjigjet ne kete kerkim nuk jane as te vlefshme duke perdorur metoden "
-"LimeSurvey"
+msgstr "Pergjigjet ne kete kerkim nuk jane as te vlefshme duke perdorur metoden LimeSurvey"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
-msgstr ""
-"Ju duhet te mbani shenim emrin e kesaj tabele ne rast se ju nevojitet ta "
-"aksesoni kete informacion me vone"
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr "Ju duhet te mbani shenim emrin e kesaj tabele ne rast se ju nevojitet ta aksesoni kete informacion me vone"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
 msgid "The tokens table associated with this survey has been renamed to: "
-msgstr ""
-"Tabela e tipit 'tokens\" e shoqeruar me kete kerkim eshte riemeruar si:"
+msgstr "Tabela e tipit tokens e shoqeruar me kete kerkim eshte riemeruar si:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
-"Kjo pyetje eshte nje pyetje e tipit me shume pergjigje, por nuk ka pergjigje"
+msgstr "Kjo pyetje eshte nje pyetje e tipit me shume pergjigje, por nuk ka pergjigje"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
@@ -7300,25 +6894,16 @@ msgstr "Kjo pyetje kerkon nje Etikete por asgjie s'eshte vendosur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
-"Kjo pyetje kerkon nje set te dyte etiketash, por asnje s'eshte vendosur"
+msgstr "Kjo pyetje kerkon nje set te dyte etiketash, por asnje s'eshte vendosur"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:143
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
-msgstr ""
-"Ky set etiketash i perdorur ne kete pyetje nuk egziston ose i mungon "
-"perkthimi."
+msgid "The labelset used in this question does not exists or is missing a translation."
+msgstr "Ky set etiketash i perdorur ne kete pyetje nuk egziston ose i mungon perkthimi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Kjo pyetje ka nje kusht, megjithate ky kusht bazohet ne pyetjen qe shfaqet "
-"pas saj"
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Kjo pyetje ka nje kusht, megjithate ky kusht bazohet ne pyetjen qe shfaqet pas saj"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7333,12 +6918,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Ky kerkim nuk mund te aktivizohet derisa problemet te zgjidhen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Ju do te aktivizoni veprimin vetem kur te jeni absolutisht te sigurte qe "
-"instalimi i kerkimit tuaj perfundoi dhe nuk ka nevoje te ndryshoje"
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Ju do te aktivizoni veprimin vetem kur te jeni absolutisht te sigurte qe instalimi i kerkimit tuaj perfundoi dhe nuk ka nevoje te ndryshoje"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
@@ -7365,21 +6946,17 @@ msgstr "Megjithate ju akoma mund:"
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:236
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Edit (change) your questions code, text or type"
-msgstr "Edito(ndrysho) kodin e pyetjeve, tekstin ose tipin"
+msgstr "Edito (ndrysho) kodin e pyetjeve, tekstin ose tipin"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:236
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Edit (change) your group names"
-msgstr "Edito(ndrysho) emrat tuaj te grupeve"
+msgstr "Edito (ndrysho) emrat tuaj te grupeve"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:236
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"Shoi, fshij ose edito pergjigjet e pyetjeve te paracaktuara(perjashto "
-"pyetjet me shume pergjigje"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Shto, fshij ose edito pergjigjet e pyetjeve te paracaktuara (perjashto pyetjet me shume pergjigje)"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:236
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
@@ -7387,15 +6964,8 @@ msgid "Change survey name or description"
 msgstr "Ndrysho emrin e kerkimit ose pershkrimin"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"Menjehere sapo te dhenat kane hyre ne kete kerkim, nese ju doni te shtoni "
-"ose te hiqni grupet ose pyetjet, ju do t'ju duhet te c'aktivizoni kete "
-"kerkim, i cili do te levize te gjithe te dhenat qe tashme kane hyre ne "
-"tabela te vecanta te arkivuara"
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Menjehere sapo te dhenat kane hyre ne kete kerkim, nese ju doni te shtoni ose te hiqni grupet ose pyetjet, ju do t'ju duhet te c'aktivizoni kete kerkim, i cili do te levize te gjithe te dhenat qe tashme kane hyre ne tabela te vecanta te arkivuara"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7406,16 +6976,12 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Kerkimi eshte aktivizuar. Tabela e rezultateve eshte krijuar me sukses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr ""
-"Ky kerkim lejon rregjistrim publik. Nje tabele e tipit \"token\" duhet "
-"gjithashtu te krijohet"
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Ky kerkim lejon rregjistrim publik. Nje tabele e tipit token duhet gjithashtu te krijohet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
 msgid "This survey is now active, and responses can be recorded."
-msgstr ""
-"Ky kerkim tani eshte aktiv, dhe pergjigjet mund te rregjistrohen ne rekorde"
+msgstr "Ky kerkim tani eshte aktiv, dhe pergjigjet mund te rregjistrohen ne rekorde"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:517
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
@@ -7428,12 +6994,8 @@ msgstr "Asnje kod ftese nuk nevojitet per te kompletuar kete kerkim"
 
 # D:\web\xampp\htdocs\limesurvey/admin/activate.php:517
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"Ju mund te aktivizoni menyren e aksesimit te mbyllur duke instaluar nje "
-"tabele te tipt \"token\" me butonin me poshte"
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Ju mund te aktivizoni menyren e aksesimit te mbyllur duke instaluar nje tabele te tipt \"token\" me butonin me poshte"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
 msgid "Optional"
@@ -7447,7 +7009,7 @@ msgstr "Aktivizo menyren e aksesimit te mbyllur"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:51
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr ""
+msgstr "Ky nuk eshte nje skedar LimeSurvey. Importi deshtoj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:372
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:381
@@ -7455,37 +7017,32 @@ msgstr ""
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:564
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:594
 msgid "Import of this survey file failed"
-msgstr ""
+msgstr "Importi i ketij skedari te anketes deshtoj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:373
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:381
 msgid "File does not contain LimeSurvey data in the correct format."
-msgstr ""
+msgstr "Skedari nuk permban te dhena  LimeSurvey ne formatin e duhur."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "Grupi ne skedarin CSV/SQL nuk eshte pjese e se njejtes ankete. Importi i anketes eshte ndalur."
 
 # D:\web\xampp\htdocs\limesurvey/admin/importsurvey.php:742
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "Pyetja \"%s - %s\" NUK u importua, sepse nuk dihej tipi i pyetjes."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
-msgstr ""
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
+msgstr "Pyetja  \"%s - %s\" eshte importuar por shtypja u vendos ne '%s' sepse eshte me e ngjashme."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1249
 msgid "Survey Import Summary"
-msgstr ""
+msgstr "Permbledhja e importit te anketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
@@ -7494,24 +7051,22 @@ msgstr "Set Etiketash i pa importuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "( Etiketat e vleresimit nuk u importuan sepse ju nuk keni leje te krijoni etiketa te reja vleresimi) "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
 msgid "Question Attributes"
-msgstr ""
+msgstr "Atributi i pyetjeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1237
 msgid "Quotas"
-msgstr ""
+msgstr "Kuotat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1239
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1264
 msgid "Import of Survey is completed."
-msgstr ""
+msgstr "Importimi i anketes eshte kompletuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1240
 msgid "Go to survey"
@@ -7524,10 +7079,13 @@ msgstr "Paralajmerime"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
-"Grupi nuk mundi te shtohej.\\n\\n Mungon emri i grupit per gjuhet e meposhtme"
+"Grupi nuk mundi te shtohej.\\n"
+"\\n"
+"Mungon emri i grupit per gjuhet e meposhtme"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/database.php:101
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
@@ -7545,12 +7103,9 @@ msgid "Group could not be deleted"
 msgstr "Grupi nuk mundi te fshihej"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
-#, fuzzy, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr ""
-"Pergjigja nuk mundi te shtohej. Ju duhet te shtoni nje kod ne fushen "
-"mandatore"
+#, php-format
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "Pergjigja nuk mundi te shtohej. Ju duhet te shtoni nje kod ne fushen e detyrueshme (%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -7559,16 +7114,8 @@ msgid "Question could not be created."
 msgstr "Pyetja nuk mundi te krijohej"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Pyetja nuk mundi te apdetohej. Ka kushte per pyetjet e tjera qe mbeshteten "
-"ne pergjigjet e kesaj pyetjeje dhe ndryshimi i tipit do te shkaktoje "
-"probleme. ju duhet t'i fshini keto kondita perpara ndryshimit te tipit te "
-"pyetjes"
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Pyetja nuk mundi te apdetohej. Ka kushte per pyetjet e tjera qe mbeshteten ne pergjigjet e kesaj pyetjeje dhe ndryshimi i tipit do te shkaktoje probleme. ju duhet t'i fshini keto kondita perpara ndryshimit te tipit te pyetjes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7581,12 +7128,8 @@ msgstr "Pergjigjet nuk mund te fshihen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:442
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Kjo pyetje mbeshtetet ne pergjigjet e pyetjeve te tjera dhe nuk mund te "
-"zhvendoset siper grupit Id"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Kjo pyetje mbeshtetet ne pergjigjet e pyetjeve te tjera dhe nuk mund te zhvendoset siper grupit Id"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:443
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:455
@@ -7602,28 +7145,17 @@ msgstr "shiko konditat:"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:454
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Disa pyetje mbeshteten ne pergjigjet e kesaj pyetje. Ju nuk mund ta "
-"zhvendosni kete pyetje poshte grupit Id"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Disa pyetje mbeshteten ne pergjigjet e kesaj pyetje. Ju nuk mund ta zhvendosni kete pyetje poshte grupit Id"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
-"Pyetja nuk mundi te shtohej. Ju duhet te shtoni nje  kod ne fushen mandatore"
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Pyetja nuk mundi te shtohej. Ju duhet te shtoni nje  kod ne fushen mandatore"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Pyetja nuk mundi te fshihej. Ka kondita per pyetje te tjera qe mbeshteten ne "
-"kete pyetje. ju nuk mund ta fshini kete pyetje derisa keto kondita te hiqen"
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Pyetja nuk mundi te fshihej. Ka kondita per pyetje te tjera qe mbeshteten ne kete pyetje. ju nuk mund ta fshini kete pyetje derisa keto kondita te hiqen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7633,9 +7165,7 @@ msgstr "Pyetja nuk mundi te fshihej"
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Gabim gjate shtimit te pergjigjes: Ju nuk mund te perdorni te njejtin kod "
-"pergjigjeje me teper se nje here"
+msgstr "Gabim gjate shtimit te pergjigjes: Ju nuk mund te perdorni te njejtin kod pergjigjeje me teper se nje here"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:932
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:954
@@ -7653,9 +7183,7 @@ msgstr "E deshtuar gjate apdetimit te pergjigjeve"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:605
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "Pergjigjet me kod 0 ose kod bosh nuk lejohen dhe nuk do te ruhen"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:646
@@ -7712,7 +7240,7 @@ msgstr "Set Etiketash:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:274
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:497
 msgid "Second Label Set:"
-msgstr ""
+msgstr "Etiketat e dyta te vleresimit"
 
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:443
 # D:\web\xampp\htdocs\limesurvey/admin/database.php:455
@@ -7735,7 +7263,7 @@ msgstr "Mbas"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:180
 msgid "Select CSV File"
-msgstr ""
+msgstr "Zgjidh nje skedar CSV"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:207
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:335
@@ -7745,7 +7273,7 @@ msgstr "Kopjo pyetjen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:221
 msgid "Note: You MUST enter a new question code!"
-msgstr ""
+msgstr "Shenim: Ju duhet te hyni me nje pyetje kod te ri!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:529
@@ -7758,11 +7286,11 @@ msgstr "Te kopjoj pergjigjen?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:351
 msgid "Copy Attributes?"
-msgstr ""
+msgstr "A doni te kopjoni atribute?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:404
 msgid "Edit Question"
-msgstr ""
+msgstr "Rregulloni pyetjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:456
 msgid "Question Type:"
@@ -7789,18 +7317,12 @@ msgstr "Grupi aktual po perdor pyetje te kushtezuara"
 
 # D:\web\xampp\htdocs\limesurvey/admin/html.php:2504
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Ri-renditja e pyetjeve ne kete grup, eshte ristrukturuar per te siguruar qe "
-"pyetjet ne te cilat konditat bazohen, nuk jane te rakordusrs DHE PAS PYETJES "
-"DO TE KETE percaktuar kushtet"
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Ri-renditja e pyetjeve ne kete grup, eshte ristrukturuar per te siguruar qe pyetjet ne te cilat konditat bazohen, nuk jane te rakordusrs DHE PAS PYETJES DO TE KETE percaktuar kushtet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "See the conditions marked on the following questions"
-msgstr "Es gibt Bedingungen auf den folgenden Fragen"
+msgstr "Shihni kushtet e shënuar në pyetjet e mëposhtme"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:754
 msgid "Place after.."
@@ -7815,67 +7337,61 @@ msgid "No LID has been provided. Cannot dump label set."
 msgstr "Nuk eshte siguruar asnje LID. S'mund te kalosh tek vendosja e etiketes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:106
-#, fuzzy
 msgid "Export results"
 msgstr "Eksporto rezultatet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:108
-#, fuzzy
 msgid "Export result data to SPSS"
-msgstr "Eksporto rezultatin ne nje skedar komande SPSS"
+msgstr "Eksporto rezultatin ne nje skedar SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:109
-#, fuzzy
 msgid "Export SPSS syntax file"
-msgstr "Eksporton nje skedar kontrolli VV"
+msgstr "Eksporton nje skedar SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:110
-#, fuzzy
 msgid "Export SPSS data file"
-msgstr "Eksporto bazen e te dhenave"
+msgstr "Eksporto te dhenat ne format SPSS"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:111
 msgid "Instructions for the impatient"
-msgstr ""
+msgstr "Udhezime per te paduruarit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:113
 msgid "Download the data and the syntax file."
-msgstr ""
+msgstr "Shkarko te dhenat dhe skedarin syntax"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:114
 msgid "Open the syntax file in SPSS in Unicode mode"
-msgstr ""
+msgstr "Hape skedarin sintakse ne SPSS ne Unicode"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
-msgstr ""
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
+msgstr "Rregullo rreshtin e katert dhe ploteso emrin e skedarit me nje path te plote te te dhenave qe ke shkarkuar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
 msgid "Choose 'Run/All' from the menu to run the import."
-msgstr ""
+msgstr "Zgjidh 'Ekzekuto/Te gjitha' nga menuja tek importi "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:118
 msgid "Your data should be imported now."
-msgstr ""
+msgstr "Tani duhet te importosh te dhenat."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:676
 msgid "Record ID"
-msgstr "Umfrage ID"
+msgstr "ID elementit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:678
 msgid "Completion Date"
-msgstr "Abgabe-Datum"
+msgstr "Data e perfundimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:680
 msgid "Start Language"
-msgstr "Start-Sprache"
+msgstr "Gjuha e fillimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:801
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:807
 msgid "Not Selected"
-msgstr "NIcht Gewählt"
+msgstr "Jo te zgjedhur"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/admin.php:512
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/admin.php:525
@@ -7967,18 +7483,12 @@ msgid "Security Alert"
 msgstr "Alarm Sigurie"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Dikush mund te perpiqet te perdore sesionin tuaj LimeSurvey(atak i pritshem CSRF). Nese ju keni klikuar ne nje link te rrezikshem , ju lutem raportoni tek administruesi i sistemit tone."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Dikush mund te perpiqet te perdore sesionin tuaj LimeSurvey duke perdorur kerkesa te rrezikshme GET( sulm i pritshem CSF). Nese ju klikoni ne nje link te rrezikshem ,ju lutem raportoni tek administratori i sistemit tone."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -7986,11 +7496,11 @@ msgstr "Ju nuk lejoheni ta kryeni kete veprim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:48
 msgid "Forgot Password"
-msgstr "Passwort vergessen"
+msgstr "Fjalekalimi u harrua"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:60
 msgid "User name and/or email not found!"
-msgstr "Benutzername und/oder Email-Adresse nicht gefunden!"
+msgstr "Perdoruesi dhe/ose e-mail nuk gjinden!"
 
 # D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:63
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:69
@@ -8034,10 +7544,8 @@ msgid "You logged in successfully."
 msgstr "Ju hyte me sukses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "LimeSurvey eshte ndertuar te perdore autentifikimin e webserverave,por duket qe ju nuk jeni autentifikuar akoma."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
@@ -8045,7 +7553,7 @@ msgstr "Ju lutemi te kontaktoni administratorin e sistemit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:256
 msgid "Auto Import User Failed!"
-msgstr ""
+msgstr "Deshtoj perdoruesi i auto importit!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:307
 msgid "Logout successful."
@@ -8098,19 +7606,19 @@ msgstr "Adresa e-mail egziston."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:560
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:600
 msgid "Update user rights successful."
-msgstr ""
+msgstr "Rifreskimi i te drejtave te perdoruesit ishte i suksesshem."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:610
 msgid "You are not allowed to change your own rights!"
-msgstr ""
+msgstr "Nuk ju lejohet te ndryshoni te drejtat tuaja!"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:637
 msgid "Update usertemplates successful."
-msgstr ""
+msgstr "Rifreskimi i formateve te perdoruesit perfundoj me sukses."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:643
 msgid "Error while updating usertemplates."
-msgstr ""
+msgstr "Gabim gjate rifreskimit te formave te perdoruesit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:37
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:45
@@ -8128,7 +7636,7 @@ msgstr "Editim"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-popup.php:167
 msgid "Do you want to save your changes ?"
-msgstr ""
+msgstr "Deshironi te ruani ndryshimet qe keni bere?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:252
 msgid "Modify Quota"
@@ -8149,7 +7657,7 @@ msgstr "Kufiri i kuotave"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:317
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:611
 msgid "Quota Action"
-msgstr ""
+msgstr "Veprim mbi Kuotat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:273
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:341
@@ -8202,13 +7710,12 @@ msgstr "Shto nje kuote te re"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:452
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:528
-#, fuzzy
 msgid "Question Selection"
-msgstr "Pyetje pas pyetje"
+msgstr "Zgjidh pyetjet"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:455
 msgid "Sorry there are no supported question types in this survey."
-msgstr ""
+msgstr "Na vjen keq nuk ka pyetje ne kete ankete."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:468
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:544
@@ -8221,7 +7728,7 @@ msgstr "Zgjidh pyetjen"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:531
 msgid "All answers are already selected in this quota."
-msgstr ""
+msgstr "Jane zgjedhur te gjitha pergjigjet ne kete citim. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/quota.php:551
 msgid "Select Answer"
@@ -8272,14 +7779,8 @@ msgstr "Ju nuk keni zgjedhur nje pyetje"
 
 # D:\web\xampp\htdocs\limesurvey/admin/conditions.php:81
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"Kushti juaj nuk mund te shtohet! Kjo nuk perfshin pyetjen dhe/ose pergjigjen "
-"ne te cilen  ky kusht u bazuaJu lutem sigurohu nese keni zgjedhur nje pyetje "
-"dhe nje pergjigje."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Kushti juaj nuk mund te shtohet! Kjo nuk perfshin pyetjen dhe/ose pergjigjen ne te cilen  ky kusht u bazuaJu lutem sigurohu nese keni zgjedhur nje pyetje dhe nje pergjigje."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -8346,12 +7847,8 @@ msgid "copy to"
 msgstr "kopjo tek"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr ""
-"Jeni i sigurte se doni te kopjoni keto kondita ne pyetjet qe ju keni "
-"selektuar"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Jeni i sigurte se doni te kopjoni keto kondita ne pyetjet qe ju keni selektuar"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1018
@@ -8359,14 +7856,12 @@ msgid "Add Condition"
 msgstr "Shto kondita"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
-msgstr ""
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
+msgstr "Shenim: Nese perdor nje pergjigje te papercaktuar tek gjendja juaj , vetem te njejtet ose krejt te kundertit  me gjendjen mund te aplikojne."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
-msgstr ""
+msgstr "Vlera konstante ose Shprehje e rregullt"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:133
 msgid "Export Results"
@@ -8442,14 +7937,8 @@ msgid "Choose Columns"
 msgstr "Zgjidh kolonat"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Kerkimi juaj permban me teper se 255 kolona pergjigjesh. Aplikimet tabelore "
-"te tille si Excel-i jane te kufizuar ne nje numer kolonash jo me te madh se "
-"255. zgjidhni kolonat qe doni t'i eksportoni ne listen e meposhtme."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Kerkimi juaj permban me teper se 255 kolona pergjigjesh. Aplikimet tabelore te tille si Excel-i jane te kufizuar ne nje numer kolonash jo me te madh se 255. zgjidhni kolonat qe doni t'i eksportoni ne listen e meposhtme."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
@@ -8460,12 +7949,8 @@ msgid "Choose Token Fields"
 msgstr "Zgjidh fushat e Hyrjes"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"Sondazhi juaj mund te eksportoje te dhenat e Hyrjeve me cdo pergjigje. "
-"Zgjidhni ndonje fushe shtese qe do te deshironit te eksportoni."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Sondazhi juaj mund te eksportoje te dhenat e Hyrjeve me cdo pergjigje. Zgjidhni ndonje fushe shtese qe do te deshironit te eksportoni."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
@@ -8501,7 +7986,7 @@ msgstr "Problem me Hyrjet - mungon tabela e Hyrjeve"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
+msgstr "Ky nuk eshte nje skedar etikete vleresimi LimeSurvey. Importi deshtoj."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8510,16 +7995,12 @@ msgstr "Kthehu te Admin i Etiketave"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/importlabel.php:212
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
-"Kishte nje vendosje etiketash te dublikuara, keshtu qe kjo vendosje nuk u "
-"importua. Ne vend te kesaj do te perdoret etiketa."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Kishte nje vendosje etiketash te dublikuara, keshtu qe kjo vendosje nuk u importua. Ne vend te kesaj do te perdoret etiketa."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
-msgstr ""
+msgstr "Permbledhja e importit te etiketave te vlereimit"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:211
 msgid "Import of Label Set is completed."
@@ -8527,11 +8008,11 @@ msgstr "Importimi i Etiketave u kompletua."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Start HTML Editor in a Popup Window"
-msgstr ""
+msgstr "Fillo editorin HTML ne dritaren popup"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/htmleditor-functions.php:222
 msgid "Give focus to the HTML Editor Popup Window"
-msgstr ""
+msgstr "Fokusohu ne dritaren popup te editorit HTML"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:34
 msgid "Welcome to LimeSurvey Setup!"
@@ -8564,17 +8045,14 @@ msgstr "Popullo bazen e te dhenave"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:102
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:52
-#, fuzzy, php-format
+#, php-format
 msgid "A database named \"%s\" already exists."
 msgstr "Nje baze te dhenash e quajtur \"%s\" ekziston."
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/admin.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
-msgstr ""
-"A deshironi ta permiresoni bazen e te dhenave tani duke krijuar tabelat e "
-"nevojshme?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
+msgstr "A deshironi ta permiresoni bazen e te dhenave tani duke krijuar tabelat e nevojshme?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
 msgid "Database has been successfully upgraded to version "
@@ -8586,10 +8064,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "Baza e te dhenave `%s` u popullua me sukses"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Informacioni i bazes se te dhenave nuk u kaloj. Skripti duhet te ekzekutohet vetem nga admin.php."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -8609,45 +8085,33 @@ msgstr "Asnje SID nuk eshte siguruar. S'mund te kalosh tek kerkimi"
 
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(moduli XML i gatshem vetem ne PHP 4)"
-
 #~ msgid "Check Settings"
 #~ msgstr "Kontrollo vendosjet"
-
 #~ msgid "Save Survey and Return"
 #~ msgstr "Ruaj kontrollin dhe Kthehu"
-
 #~ msgid "Please contact"
 #~ msgstr "Te lutem kontakto"
-
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Sie müssen "
 #~ "einen Zugangsschlüssel angeben um teilzunehmen."
-
 #~ msgid "prev"
 #~ msgstr "E meparshme"
-
 #~ msgid "last"
 #~ msgstr "E fundit"
-
 #~ msgid "answers"
 #~ msgstr "Pergjigjet"
-
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "per te hequr hyrjen e fundit ne listen tuaj te renditur"
-
 #~ msgid "Please choose at most"
 #~ msgstr "Te lutem zgjidh shumicen"
-
 #~ msgid "answer(s) for question"
 #~ msgstr "Pergjigje(et) per pyetje"
-
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Jeni i sigurte se doni ta fshini kete hyrje"
-
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Tabela \"token\" qe ju siguruat nuk eshte e vlefshme"
-
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Pergjigjet e kerkimit tuaj nuk jane ruajtur me kujdes"
+
