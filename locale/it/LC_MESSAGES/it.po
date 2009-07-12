@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Italian language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-05 21:44+0100\n"
-"PO-Revision-Date: 2009-07-05 21:45+0100\n"
+"POT-Creation-Date: 2009-07-12 22:14+0100\n"
+"PO-Revision-Date: 2009-07-12 22:14+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Edita Paulisic e Igor Dobraca <idobraca@veleri.hr>\n"
 "MIME-Version: 1.0\n"
@@ -404,10 +404,10 @@ msgstr "URL di riferimento"
 #: E:\_LimeSurvey\svn/common.php:2311
 #: E:\_LimeSurvey\svn/common.php:2425
 #: E:\_LimeSurvey\svn/common.php:2435
-#: E:\_LimeSurvey\svn/qanda.php:1460
-#: E:\_LimeSurvey\svn/qanda.php:1769
-#: E:\_LimeSurvey\svn/qanda.php:1993
-#: E:\_LimeSurvey\svn/qanda.php:3030
+#: E:\_LimeSurvey\svn/qanda.php:1461
+#: E:\_LimeSurvey\svn/qanda.php:1770
+#: E:\_LimeSurvey\svn/qanda.php:1994
+#: E:\_LimeSurvey\svn/qanda.php:3031
 #: E:\_LimeSurvey\svn/statistics_user.php:742
 #: E:\_LimeSurvey\svn/statistics_user.php:1402
 #: E:\_LimeSurvey\svn/statistics_user.php:1491
@@ -418,9 +418,9 @@ msgstr "Altro"
 #: E:\_LimeSurvey\svn/common.php:2086
 #: E:\_LimeSurvey\svn/common.php:2092
 #: E:\_LimeSurvey\svn/common.php:2108
-#: E:\_LimeSurvey\svn/qanda.php:3932
-#: E:\_LimeSurvey\svn/qanda.php:4444
-#: E:\_LimeSurvey\svn/qanda.php:4502
+#: E:\_LimeSurvey\svn/qanda.php:3935
+#: E:\_LimeSurvey\svn/qanda.php:4447
+#: E:\_LimeSurvey\svn/qanda.php:4505
 #: E:\_LimeSurvey\svn/statistics_user.php:1246
 #: E:\_LimeSurvey\svn/statistics_user.php:1371
 msgid "Yes"
@@ -428,9 +428,9 @@ msgstr "Sì"
 
 #: E:\_LimeSurvey\svn/common.php:2093
 #: E:\_LimeSurvey\svn/common.php:2109
-#: E:\_LimeSurvey\svn/qanda.php:3941
-#: E:\_LimeSurvey\svn/qanda.php:4446
-#: E:\_LimeSurvey\svn/qanda.php:4520
+#: E:\_LimeSurvey\svn/qanda.php:3944
+#: E:\_LimeSurvey\svn/qanda.php:4449
+#: E:\_LimeSurvey\svn/qanda.php:4523
 #: E:\_LimeSurvey\svn/statistics_user.php:1247
 #: E:\_LimeSurvey\svn/statistics_user.php:1372
 msgid "No"
@@ -441,32 +441,32 @@ msgstr "NO"
 #: E:\_LimeSurvey\svn/common.php:5132
 #: E:\_LimeSurvey\svn/common.php:5137
 #: E:\_LimeSurvey\svn/qanda.php:958
-#: E:\_LimeSurvey\svn/qanda.php:1347
-#: E:\_LimeSurvey\svn/qanda.php:1535
-#: E:\_LimeSurvey\svn/qanda.php:1803
-#: E:\_LimeSurvey\svn/qanda.php:2027
-#: E:\_LimeSurvey\svn/qanda.php:2162
-#: E:\_LimeSurvey\svn/qanda.php:2229
-#: E:\_LimeSurvey\svn/qanda.php:3952
-#: E:\_LimeSurvey\svn/qanda.php:4034
-#: E:\_LimeSurvey\svn/qanda.php:4132
-#: E:\_LimeSurvey\svn/qanda.php:4221
-#: E:\_LimeSurvey\svn/qanda.php:4307
-#: E:\_LimeSurvey\svn/qanda.php:4375
-#: E:\_LimeSurvey\svn/qanda.php:4449
-#: E:\_LimeSurvey\svn/qanda.php:4540
-#: E:\_LimeSurvey\svn/qanda.php:4732
-#: E:\_LimeSurvey\svn/qanda.php:4816
-#: E:\_LimeSurvey\svn/qanda.php:4906
-#: E:\_LimeSurvey\svn/qanda.php:4926
-#: E:\_LimeSurvey\svn/qanda.php:5012
-#: E:\_LimeSurvey\svn/qanda.php:5594
-#: E:\_LimeSurvey\svn/qanda.php:5595
-#: E:\_LimeSurvey\svn/qanda.php:5881
-#: E:\_LimeSurvey\svn/qanda.php:5949
-#: E:\_LimeSurvey\svn/qanda.php:6071
-#: E:\_LimeSurvey\svn/qanda.php:6306
-#: E:\_LimeSurvey\svn/qanda.php:6360
+#: E:\_LimeSurvey\svn/qanda.php:1348
+#: E:\_LimeSurvey\svn/qanda.php:1536
+#: E:\_LimeSurvey\svn/qanda.php:1804
+#: E:\_LimeSurvey\svn/qanda.php:2028
+#: E:\_LimeSurvey\svn/qanda.php:2163
+#: E:\_LimeSurvey\svn/qanda.php:2230
+#: E:\_LimeSurvey\svn/qanda.php:3955
+#: E:\_LimeSurvey\svn/qanda.php:4037
+#: E:\_LimeSurvey\svn/qanda.php:4135
+#: E:\_LimeSurvey\svn/qanda.php:4224
+#: E:\_LimeSurvey\svn/qanda.php:4310
+#: E:\_LimeSurvey\svn/qanda.php:4378
+#: E:\_LimeSurvey\svn/qanda.php:4452
+#: E:\_LimeSurvey\svn/qanda.php:4543
+#: E:\_LimeSurvey\svn/qanda.php:4735
+#: E:\_LimeSurvey\svn/qanda.php:4819
+#: E:\_LimeSurvey\svn/qanda.php:4909
+#: E:\_LimeSurvey\svn/qanda.php:4929
+#: E:\_LimeSurvey\svn/qanda.php:5015
+#: E:\_LimeSurvey\svn/qanda.php:5597
+#: E:\_LimeSurvey\svn/qanda.php:5598
+#: E:\_LimeSurvey\svn/qanda.php:5884
+#: E:\_LimeSurvey\svn/qanda.php:5952
+#: E:\_LimeSurvey\svn/qanda.php:6074
+#: E:\_LimeSurvey\svn/qanda.php:6309
+#: E:\_LimeSurvey\svn/qanda.php:6363
 #: E:\_LimeSurvey\svn/statistics_user.php:1498
 #: E:\_LimeSurvey\svn/statistics_user.php:1587
 #: E:\_LimeSurvey\svn/statistics_user.php:1871
@@ -478,41 +478,41 @@ msgid "No answer"
 msgstr "Non so"
 
 #: E:\_LimeSurvey\svn/common.php:2100
-#: E:\_LimeSurvey\svn/qanda.php:4009
+#: E:\_LimeSurvey\svn/qanda.php:4012
 #: E:\_LimeSurvey\svn/statistics_user.php:1365
 msgid "Male"
 msgstr "Maschio"
 
 #: E:\_LimeSurvey\svn/common.php:2101
-#: E:\_LimeSurvey\svn/qanda.php:3990
+#: E:\_LimeSurvey\svn/qanda.php:3993
 #: E:\_LimeSurvey\svn/statistics_user.php:1364
 msgid "Female"
 msgstr "Femmina"
 
 #: E:\_LimeSurvey\svn/common.php:2110
-#: E:\_LimeSurvey\svn/qanda.php:4445
-#: E:\_LimeSurvey\svn/qanda.php:4510
+#: E:\_LimeSurvey\svn/qanda.php:4448
+#: E:\_LimeSurvey\svn/qanda.php:4513
 #: E:\_LimeSurvey\svn/statistics_user.php:1248
 msgid "Uncertain"
 msgstr "Non so"
 
 #: E:\_LimeSurvey\svn/common.php:2116
-#: E:\_LimeSurvey\svn/qanda.php:4727
-#: E:\_LimeSurvey\svn/qanda.php:4775
+#: E:\_LimeSurvey\svn/qanda.php:4730
+#: E:\_LimeSurvey\svn/qanda.php:4778
 #: E:\_LimeSurvey\svn/statistics_user.php:1265
 msgid "Increase"
 msgstr "Aumenta"
 
 #: E:\_LimeSurvey\svn/common.php:2117
-#: E:\_LimeSurvey\svn/qanda.php:4729
-#: E:\_LimeSurvey\svn/qanda.php:4798
+#: E:\_LimeSurvey\svn/qanda.php:4732
+#: E:\_LimeSurvey\svn/qanda.php:4801
 #: E:\_LimeSurvey\svn/statistics_user.php:1267
 msgid "Decrease"
 msgstr "Diminuisci"
 
 #: E:\_LimeSurvey\svn/common.php:2118
-#: E:\_LimeSurvey\svn/qanda.php:4728
-#: E:\_LimeSurvey\svn/qanda.php:4786
+#: E:\_LimeSurvey\svn/qanda.php:4731
+#: E:\_LimeSurvey\svn/qanda.php:4789
 #: E:\_LimeSurvey\svn/statistics_user.php:1266
 msgid "Same"
 msgstr "Uguale"
@@ -1556,11 +1556,11 @@ msgid "Please check at least one item."
 msgstr "Si prega di selezionare almeno una opzione/punto"
 
 #: E:\_LimeSurvey\svn/qanda.php:843
-#: E:\_LimeSurvey\svn/qanda.php:1195
-#: E:\_LimeSurvey\svn/qanda.php:1685
-#: E:\_LimeSurvey\svn/qanda.php:1875
-#: E:\_LimeSurvey\svn/qanda.php:2521
-#: E:\_LimeSurvey\svn/qanda.php:2915
+#: E:\_LimeSurvey\svn/qanda.php:1196
+#: E:\_LimeSurvey\svn/qanda.php:1686
+#: E:\_LimeSurvey\svn/qanda.php:1876
+#: E:\_LimeSurvey\svn/qanda.php:2522
+#: E:\_LimeSurvey\svn/qanda.php:2916
 msgid "Other:"
 msgstr "Altro:"
 
@@ -1581,205 +1581,205 @@ msgstr "Non hai risposto ad una o più domande obbligatorie. Non è possibile co
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
 msgstr "Non hai risposto in modo valido ad una o più domande. Non è possibile continuare finchè queste risposte non siano valide"
 
-#: E:\_LimeSurvey\svn/qanda.php:997
+#: E:\_LimeSurvey\svn/qanda.php:998
 msgid "Day"
 msgstr "Giorno"
 
-#: E:\_LimeSurvey\svn/qanda.php:1014
+#: E:\_LimeSurvey\svn/qanda.php:1015
 msgid "Month"
 msgstr "Mese"
 
-#: E:\_LimeSurvey\svn/qanda.php:1016
+#: E:\_LimeSurvey\svn/qanda.php:1017
 msgid "Jan"
 msgstr "Gen"
 
-#: E:\_LimeSurvey\svn/qanda.php:1017
+#: E:\_LimeSurvey\svn/qanda.php:1018
 msgid "Feb"
 msgstr "Feb"
 
-#: E:\_LimeSurvey\svn/qanda.php:1018
+#: E:\_LimeSurvey\svn/qanda.php:1019
 msgid "Mar"
 msgstr "Mar"
 
-#: E:\_LimeSurvey\svn/qanda.php:1019
+#: E:\_LimeSurvey\svn/qanda.php:1020
 msgid "Apr"
 msgstr "Apr"
 
-#: E:\_LimeSurvey\svn/qanda.php:1020
+#: E:\_LimeSurvey\svn/qanda.php:1021
 msgid "May"
 msgstr "Mag"
 
-#: E:\_LimeSurvey\svn/qanda.php:1021
+#: E:\_LimeSurvey\svn/qanda.php:1022
 msgid "Jun"
 msgstr "Giu"
 
-#: E:\_LimeSurvey\svn/qanda.php:1022
+#: E:\_LimeSurvey\svn/qanda.php:1023
 msgid "Jul"
 msgstr "Lug"
 
-#: E:\_LimeSurvey\svn/qanda.php:1023
+#: E:\_LimeSurvey\svn/qanda.php:1024
 msgid "Aug"
 msgstr "Ago"
 
-#: E:\_LimeSurvey\svn/qanda.php:1024
+#: E:\_LimeSurvey\svn/qanda.php:1025
 msgid "Sep"
 msgstr "Set"
 
-#: E:\_LimeSurvey\svn/qanda.php:1025
+#: E:\_LimeSurvey\svn/qanda.php:1026
 msgid "Oct"
 msgstr "Ott"
 
-#: E:\_LimeSurvey\svn/qanda.php:1026
+#: E:\_LimeSurvey\svn/qanda.php:1027
 msgid "Nov"
 msgstr "Nov"
 
-#: E:\_LimeSurvey\svn/qanda.php:1027
+#: E:\_LimeSurvey\svn/qanda.php:1028
 msgid "Dec"
 msgstr "Dic"
 
-#: E:\_LimeSurvey\svn/qanda.php:1044
+#: E:\_LimeSurvey\svn/qanda.php:1045
 msgid "Year"
 msgstr "Anno"
 
-#: E:\_LimeSurvey\svn/qanda.php:1137
+#: E:\_LimeSurvey\svn/qanda.php:1138
 #, php-format
 msgid "Format: %s"
 msgstr "Formato: %s"
 
-#: E:\_LimeSurvey\svn/qanda.php:1155
-#: E:\_LimeSurvey\svn/qanda.php:1328
-#: E:\_LimeSurvey\svn/qanda.php:1517
-#: E:\_LimeSurvey\svn/qanda.php:6286
-#: E:\_LimeSurvey\svn/qanda.php:6340
+#: E:\_LimeSurvey\svn/qanda.php:1156
+#: E:\_LimeSurvey\svn/qanda.php:1329
+#: E:\_LimeSurvey\svn/qanda.php:1518
+#: E:\_LimeSurvey\svn/qanda.php:6289
+#: E:\_LimeSurvey\svn/qanda.php:6343
 msgid "Please choose"
 msgstr "Seleziona"
 
-#: E:\_LimeSurvey\svn/qanda.php:1425
-#: E:\_LimeSurvey\svn/qanda.php:1608
-#: E:\_LimeSurvey\svn/qanda.php:1839
-#: E:\_LimeSurvey\svn/qanda.php:2062
+#: E:\_LimeSurvey\svn/qanda.php:1426
+#: E:\_LimeSurvey\svn/qanda.php:1609
+#: E:\_LimeSurvey\svn/qanda.php:1840
+#: E:\_LimeSurvey\svn/qanda.php:2063
 #, php-format
 msgid "You've selected the \"other\" answer for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Avete selezionato \"altro\" come risposta alla domanda  \"%s\". Per favore compilare anche il campo collegato  \"altro commento\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:1541
-#: E:\_LimeSurvey\svn/qanda.php:1966
+#: E:\_LimeSurvey\svn/qanda.php:1542
+#: E:\_LimeSurvey\svn/qanda.php:1967
 msgid "Error: The labelset used for this question is not available in this language."
 msgstr "Errore: il gruppo di etichette per questa domanda non è disponibile in questa lingua."
 
-#: E:\_LimeSurvey\svn/qanda.php:2116
+#: E:\_LimeSurvey\svn/qanda.php:2117
 msgid "Please choose one of the following"
 msgstr "Scegli una delle seguenti risposte"
 
-#: E:\_LimeSurvey\svn/qanda.php:2117
+#: E:\_LimeSurvey\svn/qanda.php:2118
 msgid "Please enter your comment here"
 msgstr "Inserisci  qui sotto il tuo commento"
 
-#: E:\_LimeSurvey\svn/qanda.php:2404
+#: E:\_LimeSurvey\svn/qanda.php:2405
 msgid "Remove this item"
 msgstr "Azzera"
 
-#: E:\_LimeSurvey\svn/qanda.php:2448
+#: E:\_LimeSurvey\svn/qanda.php:2449
 msgid "Your Choices"
 msgstr "Le tue scelte"
 
-#: E:\_LimeSurvey\svn/qanda.php:2457
-#: E:\_LimeSurvey\svn/qanda.php:2463
+#: E:\_LimeSurvey\svn/qanda.php:2458
+#: E:\_LimeSurvey\svn/qanda.php:2464
 msgid "Your Ranking"
 msgstr "La tua classifica"
 
-#: E:\_LimeSurvey\svn/qanda.php:2471
+#: E:\_LimeSurvey\svn/qanda.php:2472
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Fai clic sulla icona delle forbici a destra di ogni articolo per togliere l'ultima entrata nella tua lista"
 
-#: E:\_LimeSurvey\svn/qanda.php:2486
+#: E:\_LimeSurvey\svn/qanda.php:2487
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Per favore classificare almeno %d punto(i) per la domanda \"%s\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:2804
-#: E:\_LimeSurvey\svn/qanda.php:3084
+#: E:\_LimeSurvey\svn/qanda.php:2805
+#: E:\_LimeSurvey\svn/qanda.php:3085
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Per favore scegliere al massimo '%d' risposta/e alla domanda \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2825
-#: E:\_LimeSurvey\svn/qanda.php:3109
+#: E:\_LimeSurvey\svn/qanda.php:2826
+#: E:\_LimeSurvey\svn/qanda.php:3110
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Per favore scegliere almeno '%d' risposta/e alla domanda \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2860
-#: E:\_LimeSurvey\svn/qanda.php:3139
+#: E:\_LimeSurvey\svn/qanda.php:2861
+#: E:\_LimeSurvey\svn/qanda.php:3140
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Avete marcato \"altro\" come risposta alla domanda  \"%s\". Per favore compilare anche il campo collegato  \"altro commento\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:3012
-#: E:\_LimeSurvey\svn/qanda.php:3040
+#: E:\_LimeSurvey\svn/qanda.php:3013
+#: E:\_LimeSurvey\svn/qanda.php:3041
 msgid "Make a comment on your choice here:"
 msgstr "Inserisci un commento sulla tua scelta qui:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3232
-#: E:\_LimeSurvey\svn/qanda.php:3460
-#: E:\_LimeSurvey\svn/qanda.php:4458
-#: E:\_LimeSurvey\svn/qanda.php:6134
+#: E:\_LimeSurvey\svn/qanda.php:3233
+#: E:\_LimeSurvey\svn/qanda.php:3463
+#: E:\_LimeSurvey\svn/qanda.php:4461
+#: E:\_LimeSurvey\svn/qanda.php:6137
 msgid "Error: This question has no answers."
 msgstr "Errore: questa domanda non ha risposte."
 
-#: E:\_LimeSurvey\svn/qanda.php:3539
+#: E:\_LimeSurvey\svn/qanda.php:3542
 msgid "Only numbers may be entered in these fields"
 msgstr "Inserire solo numeri "
 
-#: E:\_LimeSurvey\svn/qanda.php:3543
+#: E:\_LimeSurvey\svn/qanda.php:3546
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Il totale delle voci non puo' eccedere %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3547
+#: E:\_LimeSurvey\svn/qanda.php:3550
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Il totale delle voci deve essere uguale a %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3551
+#: E:\_LimeSurvey\svn/qanda.php:3554
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Il totale delle voci deve essere almeno uguale a %s"
 
-#: E:\_LimeSurvey\svn/qanda.php:3559
+#: E:\_LimeSurvey\svn/qanda.php:3562
 msgid "Remaining: "
 msgstr "Rimanenti:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3561
+#: E:\_LimeSurvey\svn/qanda.php:3564
 msgid "Total: "
 msgstr "Totale:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3605
-#: E:\_LimeSurvey\svn/qanda.php:3613
-#: E:\_LimeSurvey\svn/qanda.php:3649
-#: E:\_LimeSurvey\svn/qanda.php:3660
+#: E:\_LimeSurvey\svn/qanda.php:3608
+#: E:\_LimeSurvey\svn/qanda.php:3616
+#: E:\_LimeSurvey\svn/qanda.php:3652
+#: E:\_LimeSurvey\svn/qanda.php:3663
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "La risposta non è valida. Al totale di tutte le voci non andrebbe aggiunto un valore superiore a "
 
-#: E:\_LimeSurvey\svn/qanda.php:3626
-#: E:\_LimeSurvey\svn/qanda.php:3634
+#: E:\_LimeSurvey\svn/qanda.php:3629
+#: E:\_LimeSurvey\svn/qanda.php:3637
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Risposta non valida. Il totale di tutte le voci dovrebbe raggiungere almeno %s."
 
-#: E:\_LimeSurvey\svn/qanda.php:3729
+#: E:\_LimeSurvey\svn/qanda.php:3732
 msgid "Only numbers may be entered in this field"
 msgstr "Inserire solo numeri"
 
-#: E:\_LimeSurvey\svn/qanda.php:5053
-#: E:\_LimeSurvey\svn/qanda.php:5275
-#: E:\_LimeSurvey\svn/qanda.php:5564
-#: E:\_LimeSurvey\svn/qanda.php:5708
-#: E:\_LimeSurvey\svn/qanda.php:6386
+#: E:\_LimeSurvey\svn/qanda.php:5056
+#: E:\_LimeSurvey\svn/qanda.php:5278
+#: E:\_LimeSurvey\svn/qanda.php:5567
+#: E:\_LimeSurvey\svn/qanda.php:5711
+#: E:\_LimeSurvey\svn/qanda.php:6389
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Errore: il gruppo di etichette per questa domanda non è disponibile in questa lingua e/o non esiste."
 
-#: E:\_LimeSurvey\svn/qanda.php:5702
+#: E:\_LimeSurvey\svn/qanda.php:5705
 msgid "Error: There are no answers defined for this question."
 msgstr "Errore: non vi sono risposte definite per questa domanda."
 
@@ -2073,110 +2073,114 @@ msgstr "Qualcuno potrebbe stare tentando di utilizzare la tua sessione di LimeSu
 msgid "You are not allowed to perform this operation!"
 msgstr "Non sei abilitato a compiere questa operazione!"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:86
+#: E:\_LimeSurvey\svn/admin/activate.php:69
+msgid "This group has no answer."
+msgstr "Questo gruppo non ha risposte."
+
+#: E:\_LimeSurvey\svn/admin/activate.php:99
 msgid "This question is a multiple answer type question but has no answers."
 msgstr "Questa domanda è una domanda a scelta multipla senza risposte."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:95
+#: E:\_LimeSurvey\svn/admin/activate.php:108
 msgid "This question does not have a question 'type' set."
 msgstr "Questa domanda non contiene il parametro 'tipologia'"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:105
+#: E:\_LimeSurvey\svn/admin/activate.php:118
 msgid "This question requires a Labelset, but none is set."
 msgstr "Questa domanda richiede un set di etichette. Nessuna etichetta è stata impostata."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:112
+#: E:\_LimeSurvey\svn/admin/activate.php:125
 msgid "This question requires a second Labelset, but none is set."
 msgstr "Questa domanda richiede un secondo set di etichette, ma nessuna etichetta è stata impostata."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:130
+#: E:\_LimeSurvey\svn/admin/activate.php:143
 msgid "The labelset used in this question does not exists or is missing a translation."
 msgstr "Il gruppo di etichette usate in questa domanda non esiste oppure la traduzione è mancante."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:186
+#: E:\_LimeSurvey\svn/admin/activate.php:199
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
 msgstr "Domanda condizionata. La condizione dipende da una domanda successiva."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:217
-#: E:\_LimeSurvey\svn/admin/activate.php:242
-#: E:\_LimeSurvey\svn/admin/activate.php:251
-#: E:\_LimeSurvey\svn/admin/activate.php:508
-#: E:\_LimeSurvey\svn/admin/activate.php:541
+#: E:\_LimeSurvey\svn/admin/activate.php:230
+#: E:\_LimeSurvey\svn/admin/activate.php:259
+#: E:\_LimeSurvey\svn/admin/activate.php:268
+#: E:\_LimeSurvey\svn/admin/activate.php:525
+#: E:\_LimeSurvey\svn/admin/activate.php:558
 msgid "Activate Survey"
 msgstr "Attiva indagine"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:221
+#: E:\_LimeSurvey\svn/admin/activate.php:234
 msgid "Survey does not pass consistency check"
 msgstr "L'indagine non è coerente"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:226
+#: E:\_LimeSurvey\svn/admin/activate.php:239
 msgid "The following problems have been found:"
 msgstr "Sono stati riscontrati i seguenti problemi:"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:233
+#: E:\_LimeSurvey\svn/admin/activate.php:250
 msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "L'indagine non può essere attivata prima di risolvere i problemi emersi"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:244
+#: E:\_LimeSurvey\svn/admin/activate.php:261
 #: E:\_LimeSurvey\svn/admin/deactivate.php:27
 #: E:\_LimeSurvey\svn/admin/deletesurvey.php:41
 msgid "Warning"
 msgstr "Attenzione"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:245
+#: E:\_LimeSurvey\svn/admin/activate.php:262
 #: E:\_LimeSurvey\svn/admin/deactivate.php:27
 msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "LEGGERE ATTENTAMENTE PRIMA DI PROCEDERE"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:247
+#: E:\_LimeSurvey\svn/admin/activate.php:264
 msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
 msgstr "Attivare una indagine solo dopo aver inserito tutti i dati e quando non sono necessarie ulteriori modifiche."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:248
+#: E:\_LimeSurvey\svn/admin/activate.php:265
 msgid "Once a survey is activated you can no longer:"
 msgstr "Una volta attivata l'indagine non si può più: "
 
-#: E:\_LimeSurvey\svn/admin/activate.php:248
+#: E:\_LimeSurvey\svn/admin/activate.php:265
 msgid "Add or delete groups"
 msgstr "Aggiungere o eliminare  gruppi"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:248
+#: E:\_LimeSurvey\svn/admin/activate.php:265
 msgid "Add or remove answers to Multiple Answer questions"
 msgstr "Aggiungere o eliminare risposte a domande a risposta multipla"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:248
+#: E:\_LimeSurvey\svn/admin/activate.php:265
 msgid "Add or delete questions"
 msgstr "aggiungere o eliminare domande"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:249
+#: E:\_LimeSurvey\svn/admin/activate.php:266
 msgid "However you can still:"
 msgstr "Però puoi ancora:"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:249
+#: E:\_LimeSurvey\svn/admin/activate.php:266
 msgid "Edit (change) your questions code, text or type"
 msgstr "Modificare il codice, il testo o il tipo delle domande"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:249
+#: E:\_LimeSurvey\svn/admin/activate.php:266
 msgid "Edit (change) your group names"
 msgstr "modificare i nomi dei gruppi"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:249
+#: E:\_LimeSurvey\svn/admin/activate.php:266
 msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
 msgstr "aggiungere, rimuovere o modificare le domande con risposte predefinite (ad eccezione delle domande a risposta multipla)"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:249
+#: E:\_LimeSurvey\svn/admin/activate.php:266
 msgid "Change survey name or description"
 msgstr "cambiare il nome dell'indagine o la sua descrizione"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:250
+#: E:\_LimeSurvey\svn/admin/activate.php:267
 msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Una volta inseriti tutti i dati, per eliminare o aggiungere nuovi gruppi, è necessario disattivare l'indagine. Tutti i dati inseriti verranno esportati in un altro file."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:510
+#: E:\_LimeSurvey\svn/admin/activate.php:527
 msgid "Survey could not be actived."
 msgstr "Impossibile attivare l'indagine."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:511
+#: E:\_LimeSurvey\svn/admin/activate.php:528
 #: E:\_LimeSurvey\svn/admin/browse.php:69
 #: E:\_LimeSurvey\svn/admin/browse.php:82
 #: E:\_LimeSurvey\svn/admin/browse.php:114
@@ -2197,39 +2201,39 @@ msgstr "Impossibile attivare l'indagine."
 msgid "Main Admin Screen"
 msgstr "Torna alla pagina di amministrazione generale"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:542
+#: E:\_LimeSurvey\svn/admin/activate.php:559
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "L'indagine è stata attivata. Le tabelle dei risultati sono state create con successo."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:556
+#: E:\_LimeSurvey\svn/admin/activate.php:573
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Questa indagine consente una registrazione pubblica. E' necessario creare una tabella degli identificativi."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:557
+#: E:\_LimeSurvey\svn/admin/activate.php:574
 msgid "Initialise Tokens"
 msgstr "Genera gli identificativi"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:561
+#: E:\_LimeSurvey\svn/admin/activate.php:578
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Indagine attiva. Si può procedere con l'inserimento delle domande."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:562
+#: E:\_LimeSurvey\svn/admin/activate.php:579
 msgid "Open-access mode"
 msgstr "Modalità accesso-pubblico"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:562
+#: E:\_LimeSurvey\svn/admin/activate.php:579
 msgid "No invitation code is needed to complete the survey."
 msgstr "Nessun codice di invito è necessario per completare  questo questionario"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:562
+#: E:\_LimeSurvey\svn/admin/activate.php:579
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Si può passare alla modalità di accesso-non pubblico inizializzando la tabella degli identificativi con il pulsante qui sotto."
 
-#: E:\_LimeSurvey\svn/admin/activate.php:563
+#: E:\_LimeSurvey\svn/admin/activate.php:580
 msgid "Switch to closed-access mode"
 msgstr "Passa alla modalità accesso-non pubblico"
 
-#: E:\_LimeSurvey\svn/admin/activate.php:564
+#: E:\_LimeSurvey\svn/admin/activate.php:581
 msgid "No, thanks."
 msgstr "No, grazie."
 
@@ -6553,7 +6557,7 @@ msgid "Upload a file:"
 msgstr "Upload  di un documento:"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:944
-#: E:\_LimeSurvey\svn/admin/tokens.php:2542
+#: E:\_LimeSurvey\svn/admin/tokens.php:2543
 msgid "Upload"
 msgstr "Upload"
 
@@ -7299,8 +7303,8 @@ msgstr "Mostra gli identificativi"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:2002
 #: E:\_LimeSurvey\svn/admin/tokens.php:2049
-#: E:\_LimeSurvey\svn/admin/tokens.php:2246
-#: E:\_LimeSurvey\svn/admin/tokens.php:2479
+#: E:\_LimeSurvey\svn/admin/tokens.php:2247
+#: E:\_LimeSurvey\svn/admin/tokens.php:2480
 msgid "Failed"
 msgstr "Fallito"
 
@@ -7359,98 +7363,98 @@ msgstr "Importazione File CSV"
 msgid "Creating Token Entries"
 msgstr "Crea voce identificativi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2164
+#: E:\_LimeSurvey\svn/admin/tokens.php:2165
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Errore: Il tuo file caricato non riporta all'interno una o piu' colonne obbligatorie:'firstname', 'lastname' or 'email'"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2248
+#: E:\_LimeSurvey\svn/admin/tokens.php:2249
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s record in CSV"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2249
+#: E:\_LimeSurvey\svn/admin/tokens.php:2250
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s record verificano i requisiti minimi "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2250
+#: E:\_LimeSurvey\svn/admin/tokens.php:2251
 #, php-format
 msgid "%s records imported"
 msgstr "%s record importati"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2253
+#: E:\_LimeSurvey\svn/admin/tokens.php:2254
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s record duplicati rimossi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2256
-#: E:\_LimeSurvey\svn/admin/tokens.php:2265
-#: E:\_LimeSurvey\svn/admin/tokens.php:2487
-#: E:\_LimeSurvey\svn/admin/tokens.php:2495
+#: E:\_LimeSurvey\svn/admin/tokens.php:2257
+#: E:\_LimeSurvey\svn/admin/tokens.php:2266
+#: E:\_LimeSurvey\svn/admin/tokens.php:2488
+#: E:\_LimeSurvey\svn/admin/tokens.php:2496
 msgid "List"
 msgstr "Lista"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2264
-#: E:\_LimeSurvey\svn/admin/tokens.php:2494
+#: E:\_LimeSurvey\svn/admin/tokens.php:2265
+#: E:\_LimeSurvey\svn/admin/tokens.php:2495
 msgid "Records with invalid email address removed"
 msgstr "Rimossi i Record con indirizzo e-mail non corretto "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2287
+#: E:\_LimeSurvey\svn/admin/tokens.php:2288
 msgid "Uploading LDAP Query"
 msgstr "Caricamento Query LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2481
+#: E:\_LimeSurvey\svn/admin/tokens.php:2482
 msgid "Results from LDAP Query"
 msgstr "Risultati della query LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2482
+#: E:\_LimeSurvey\svn/admin/tokens.php:2483
 msgid "Records met minumum requirements"
 msgstr "I record verificano i requisiti minimi "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2483
+#: E:\_LimeSurvey\svn/admin/tokens.php:2484
 msgid "Records imported"
 msgstr "Record importati"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2486
+#: E:\_LimeSurvey\svn/admin/tokens.php:2487
 msgid "Duplicate records removed"
 msgstr "Record duplicati rimossi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2505
+#: E:\_LimeSurvey\svn/admin/tokens.php:2506
 msgid "Can't bind to the LDAP directory"
 msgstr "Non può collegare la directory LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2511
+#: E:\_LimeSurvey\svn/admin/tokens.php:2512
 msgid "Can't connect to the LDAP directory"
 msgstr "Impossibile connettersi alla directory LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2538
+#: E:\_LimeSurvey\svn/admin/tokens.php:2539
 msgid "Choose the CSV file to upload:"
 msgstr "Scegliere il file CSV da caricare:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2539
+#: E:\_LimeSurvey\svn/admin/tokens.php:2540
 #: E:\_LimeSurvey\svn/admin/vvimport.php:94
 msgid "Character set of the file:"
 msgstr "Set di caratteri del file:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2540
-#: E:\_LimeSurvey\svn/admin/tokens.php:2574
+#: E:\_LimeSurvey\svn/admin/tokens.php:2541
+#: E:\_LimeSurvey\svn/admin/tokens.php:2575
 msgid "Filter blank email addresses:"
 msgstr "Filtra gli indirizzi di posta elettronica vuoti"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2541
-#: E:\_LimeSurvey\svn/admin/tokens.php:2575
+#: E:\_LimeSurvey\svn/admin/tokens.php:2542
+#: E:\_LimeSurvey\svn/admin/tokens.php:2576
 msgid "Filter duplicate records:"
 msgstr "Filitra i records duplicati:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2555
+#: E:\_LimeSurvey\svn/admin/tokens.php:2556
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Il modulo LDAP non è presente nella configurazione PHP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2561
+#: E:\_LimeSurvey\svn/admin/tokens.php:2562
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP disabilitato o nessuna quesry LDAP definita"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2566
+#: E:\_LimeSurvey\svn/admin/tokens.php:2567
 msgid "Select the LDAP query you want to run:"
 msgstr "Seleziona la query LDAP che vuoi lanciare:"
 
