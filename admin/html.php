@@ -1097,7 +1097,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
         {
 
-            $groupsummary .="<a href='$scriptname?action=dumpgroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
+            $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' onmouseout=\"hideTooltip()\""
             . "title=\"".$clang->gTview("Export current question group")."\" "
             . "onmouseover=\"showTooltip(event,'".$clang->gT("Export Current Group", "js")."');return false\">" .
             "<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportGroup'  /></a>\n";
@@ -1251,7 +1251,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
-			$questionsummary .= "<a href='$scriptname?action=dumpquestion&amp;sid=$surveyid&amp;qid=$qid' onmouseout=\"hideTooltip()\""
+			$questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid' onmouseout=\"hideTooltip()\""
 			. "title=\"".$clang->gTview("Export this Question")."\" " 
 			. "onmouseover=\"showTooltip(event,'".$clang->gT("Export this Question", "js")."');return false\">" .
 			"<img src='$imagefiles/exportcsv.png' title='' alt='' name='ExportQuestion' /></a>\n";
@@ -2071,11 +2071,13 @@ if($action == "exportstructure")
 	    .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
 	    ."<tr>\n"
 	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' onclick=\"this.form.action.value='exportstructurecsv'\";/>"
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' 
+	    onclick=\"this.form.action.value='exportstructurecsv'\" />"
 	    ."<label for='surveycsv'>"
 	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n";
 	    
-	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' 
+	    onclick=\"this.form.action.value='exportstructurequexml'\" />"
 	    ."<label for='queXML'>"
 	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
 	    ."</label>\n";
@@ -2086,7 +2088,8 @@ if($action == "exportstructure")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv' onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv' 
+		    onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
 		    ."</label>\n";
@@ -2103,10 +2106,116 @@ if($action == "exportstructure")
 	    ."<input type='hidden' name='action' value='exportstructurecsv' />\n"
 	    ."</td>\n"
 	    ."</tr>\n";
-	    $exportstructure.="</table><br /></from>\n";
+	    $exportstructure.="</table><br /></form>\n";
     }
 }
 
+// This is the action to export the structure of a group
+if($action == "exportstructureGroup")
+{
+    if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
+    {
+	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n" 
+	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
+	    .$clang->gT("Export Group Structure")."\n</td></tr>\n"
+	    ."<tr>\n"
+	    ."<td style='text-align:center;'>\n";
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv' 
+	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
+	    ."<label for='surveycsv'>"
+	    .$clang->gT("LimeSurvey Group File (*.csv)")."</label><br />\n";
+	    
+//	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+//	    ."<label for='queXML'>"
+//	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
+//	    ."</label>\n";
+	    
+	    // XXX
+	    include("../config.php");
+
+		//echo $export4lsrc;
+	    if($export4lsrc)
+	    {
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv' 
+		    onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
+		    ."<label for='LsrcCsv'>"
+		    .$clang->gT("Save for Lsrc (*.csv)")." "
+		    ."</label>\n";
+	     }
+	    
+	    $exportstructure.="<br />&nbsp;</td>\n"
+	    ."</tr>\n"
+	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
+	    ."<tr>\n"
+	    ."<td align='center'>\n"
+	    ."<input type='submit' value='"
+	    .$clang->gT("Export To File")."' />\n"
+	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
+	    ."<input type='hidden' name='gid' value='$gid' />\n"
+	    ."<input type='hidden' name='action' value='exportstructurecsvGroup' />\n"
+	    ."</td>\n"
+	    ."</tr>\n";
+	    $exportstructure.="</table><br /></form>\n";
+    }
+    else
+    {
+    	include('dumpgroup.php');
+    }
+}
+
+// This is the action to export the structure of a question
+if($action == "exportstructureQuestion")
+{
+    if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
+    {
+	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n" 
+	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
+	    .$clang->gT("Export Question Structure")."\n</td></tr>\n"
+	    ."<tr>\n"
+	    ."<td style='text-align:center;'>\n";
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv' 
+	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
+	    ."<label for='surveycsv'>"
+	    .$clang->gT("LimeSurvey Group File (*.csv)")."</label><br />\n";
+	    
+//	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
+//	    ."<label for='queXML'>"
+//	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
+//	    ."</label>\n";
+	    
+	    // XXX
+	    include("../config.php");
+
+		//echo $export4lsrc;
+	    if($export4lsrc)
+	    {
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv' 
+		    onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
+		    ."<label for='LsrcCsv'>"
+		    .$clang->gT("Save for Lsrc (*.csv)")." "
+		    ."</label>\n";
+	     }
+	    
+	    $exportstructure.="<br />&nbsp;</td>\n"
+	    ."</tr>\n"
+	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
+	    ."<tr>\n"
+	    ."<td align='center'>\n"
+	    ."<input type='submit' value='"
+	    .$clang->gT("Export To File")."' />\n"
+	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
+	    ."<input type='hidden' name='gid' value='$gid' />\n"
+	    ."<input type='hidden' name='qid' value='$qid' />\n"
+	    ."<input type='hidden' name='action' value='exportstructurecsvQuestion' />\n"
+	    ."</td>\n"
+	    ."</tr>\n";
+	    $exportstructure.="</table><br /></form>\n";
+    }
+    else
+    {
+    	include('dumpquestion.php');
+    }
+}
 
 if($action == "surveysecurity")
 {

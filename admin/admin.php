@@ -193,22 +193,42 @@ elseif ($action == 'exportstructurequexml')
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('export_structure_quexml.php');}
         else { include('access_denied.php');}    
-    }    
+    }
+elseif ($action == 'exportstructurecsvGroup')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpgroup.php');}
+        else { include('access_denied.php');}    
+    }
+elseif ($action == 'exportstructureLsrcCsvGroup')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpgroup.php');}
+        else { include('access_denied.php');}    
+    }
+elseif ($action == 'exportstructurecsvQuestion')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpquestion.php');}
+        else { include('access_denied.php');}    
+    }
+elseif ($action == 'exportstructureLsrcCsvQuestion')
+    {
+    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpquestion.php');}
+        else { include('access_denied.php');}    
+    }
 elseif ($action == 'exportsurvresources')
     {
     if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('export_resources_zip.php');}
         else { include('access_denied.php');}    
     }    
-elseif ($action == 'dumpquestion')
-    {
-    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpquestion.php');}
-        else { include('access_denied.php');}    
-    }    
-elseif ($action == 'dumpgroup')
-    {
-    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpgroup.php');}
-        else { include('access_denied.php');}    
-    }    
+//elseif ($action == 'dumpquestion')
+//    {
+//    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpquestion.php');}
+//        else { include('access_denied.php');}    
+//    }    
+//elseif ($action == 'dumpgroup')
+//    {
+//    if($surrows['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('dumpgroup.php');}
+//        else { include('access_denied.php');}    
+//    }    
 elseif ($action == 'deactivate')
     {
     if($surrows['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('deactivate.php');}
