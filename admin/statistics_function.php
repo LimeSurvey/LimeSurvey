@@ -1114,7 +1114,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						$querystart .= " AND ".db_quote_id($fieldname)." != 0";
 					}
 					//filtering enabled?
-					if (incompleteAnsFilterstate() == "inc") {$querystarters .= " AND submitdate is null";}
+					if (incompleteAnsFilterstate() == "inc") {$querystarter .= " AND submitdate is null";}
 					elseif (incompleteAnsFilterstate() == "filter") {$querystarter .= " AND submitdate is not null";}
 	
 					//if $sql values have been passed to the statistics script from another script, incorporate them
