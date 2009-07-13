@@ -1602,7 +1602,18 @@ $viewalltext.="</li>\n"
 ."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
 ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
 ."</select></li></ul></td></tr>\n";
+
+//Output selector
+$viewalltext .= "<tr>"
+	."<td align='center'>"
+	.$clang->gT("Select Output Format").":<br/>"
+	."<input type='radio' name='outputtype' value='html' checked='checked'>HTML <input type='radio' name='outputtype' value='pdf'>PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls'>Excel"
+	."</td>"
+	."</tr>";
+
 $statisticsoutput = str_replace("{VIEWALL}", $viewalltext, $statisticsoutput);
+
+
 
 //add line to separate the the filters from the other options
 $statisticsoutput .= "<tr><td align='center' class='settingcaption'>
@@ -1626,13 +1637,7 @@ $statisticsoutput.=" >";
 //$statisticsoutput.="<label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label></div><br />"
 $statisticsoutput.="</td></tr>\n";
 
-//Output selector
-$statisticsoutput .= "<tr>"
-	."<td align='center'>"
-	.$clang->gT("Select Output Format").":<br/>"
-	."<input type='radio' name='outputtype' value='html' checked='checked'>HTML <input type='radio' name='outputtype' value='pdf'>PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls'>Excel"
-	."</td>"
-	."</tr>";
+
 				
 //very last lines of output
 $statisticsoutput .= "\t\t<tr>"
