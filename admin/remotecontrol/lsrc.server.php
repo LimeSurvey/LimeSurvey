@@ -1132,7 +1132,7 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
  * @param $graph with 1 it includes graphs in pdf files
  * @return "OK" or SoapFault
  */
-function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
+function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph='0')
 {
 	global $connect ;
 	global $dbprefix ;
@@ -1162,7 +1162,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 		throw new SoapFault("Database: ", "Survey $iVid does not exists");
 		exit;
 	}
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid START OK ");
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid email=$email doctype=$docType graph=$graph START OK ");
 	
 	/**
 	 * Build up the fields to generate statistics from
@@ -1208,7 +1208,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 		
 		}
 	
-	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
+	//$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
 	switch ($docType)
 	{
 		case 'pdf':
@@ -1222,7 +1222,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 			else
 			{
 				unlink($tempFile);
-				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
 				exit;
 			}
 		break;
@@ -1237,7 +1237,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 			else
 			{
 				unlink($tempFile);
-				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
 				exit;
 			}
 		break;
@@ -1250,7 +1250,7 @@ function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph=0)
 			}
 			else
 			{
-				throw new SoapFault("Mail System", "Mail could not be send! Check your E-Mail Settings.");
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
 				exit;
 			}
 		break;

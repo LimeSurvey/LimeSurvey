@@ -43,7 +43,7 @@ class LsrcHelper {
 	function getSurveyOwner($iVid)
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
@@ -70,7 +70,7 @@ class LsrcHelper {
 	{//be aware that this function may be a security risk
 
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		if($mode=='' || !isset($mode) || $mode=='0')
@@ -122,7 +122,7 @@ class LsrcHelper {
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
 		global $connect,$sitename ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
@@ -650,7 +650,7 @@ class LsrcHelper {
 	function surveyExists($sid)//XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 
@@ -678,7 +678,8 @@ class LsrcHelper {
 	function importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp) //XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
+		global $clang;
 
 		include("lsrc.config.php");
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -748,7 +749,7 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".print_r($bigarray));
+		//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".print_r($bigarray));
 
 
 		//SURVEYS
@@ -1516,7 +1517,7 @@ class LsrcHelper {
 					$currentqid='';
 					foreach ($questionarray as $qa) {
 						
-						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
+						//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
 						
 						if ($importversion>=111)
 						{
@@ -1618,8 +1619,8 @@ class LsrcHelper {
 							$newvalues=array_values($questionrowdata);
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
 							
-							foreach($questionrowdata as $qrd)
-								$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
+							//foreach($questionrowdata as $qrd)
+								//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
 							
 								$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 							$qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
@@ -1635,7 +1636,7 @@ class LsrcHelper {
 
 							$newrank=0;
 							$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
-							$this->debugLsrc("HALLO?!:");
+							//$this->debugLsrc("HALLO?!:");
 							//NOW DO NESTED ANSWERS FOR THIS QID
 							if (isset($answerarray) && $answerarray && $newquestion) {
 								$count=0;
@@ -2044,7 +2045,7 @@ class LsrcHelper {
 	function activateSurvey($surveyid)//XXX activateSurvey
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$_GET['sid'] = $surveyid;
@@ -2679,7 +2680,7 @@ class LsrcHelper {
 	function importGroup($surveyid, $sMod) //XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3326,7 +3327,7 @@ class LsrcHelper {
 	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
 	{
 		global $connect ;
-		//global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3810,7 +3811,7 @@ class LsrcHelper {
 	function deleteSurvey($surveyid)
 	{
 		global $connect ;
-		// global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
