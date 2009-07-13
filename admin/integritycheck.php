@@ -22,16 +22,15 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     $ok=returnglobal('ok');
     
     $integritycheck=''; 
-    if (!isset($ok) || $ok != "Y") // do the check, but don't delete anything
+    if (!isset($ok) || ($ok != "Y" && $ok != "R")) // do the check, but don't delete anything
     {
         $integritycheck .= "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data Consistency Check")."<br /><span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
+        . "<div class='header'>".$clang->gT("Data Consistency Check")."<br />\n"
+		. "<span style='font-size:7pt;'>".$clang->gT("If errors are showing up you might have to execute this script repeatedly.")."</span></div>\n"
         . "<ul>\n";
-        // Check conditions
-        //  $query = "SELECT {$dbprefix}questions.sid, {$dbprefix}conditions.* "
-        //          ."FROM {$dbprefix}conditions, {$dbprefix}questions "
-        //          ."WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid "
-        //          ."ORDER BY qid, scenario, cqid, cfieldname, value";
+        /**********************************************************************/
+        /*     CHECK CONDITIONS                                               */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}conditions ORDER BY cid";
         $result = db_execute_assoc($query) or safe_die("Couldn't get list of conditions from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
@@ -70,7 +69,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<li>".$clang->gT("All conditions meet consistency standards")."</li>\n";
         }
     
-        // Check question_attributes to delete
+        /**********************************************************************/
+        /*     CHECK QUESTION ATTRIBUTES                                      */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}question_attributes ORDER BY qid";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         while($row = $result->FetchRow())
@@ -92,7 +93,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<li>".$clang->gT("All question attributes meet consistency standards")."</li>\n";
         }
     
-        // Check assessments
+        /**********************************************************************/
+        /*     CHECK ASSESSMENTS                                              */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}assessments WHERE scope='T' ORDER BY sid";
         $result = db_execute_assoc($query) or safe_die ("Couldn't get list of assessments<br />$query<br />".$connect->ErrorMsg());
         while($row = $result->FetchRow())
@@ -163,7 +166,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<li>".$clang->gT("All answers meet consistency standards")."</li>\n";
         }
     
-        // Check surveys
+        /**********************************************************************/
+        /*     CHECK SURVEYS                                                  */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}surveys ORDER BY sid";
         $result = db_execute_assoc($query) or safe_die ("Couldn't get list of answers from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
@@ -186,7 +191,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "<li>".$clang->gT("All survey settings meet consistency standards")."</li>\n";
         }
     
-        //check questions
+        /**********************************************************************/
+        /*     CHECK QUESTIONS                                                */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}questions ORDER BY sid, gid, qid";
         $result = db_execute_assoc($query) or safe_die ("Couldn't get list of questions from database<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
@@ -214,7 +221,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         {
             $integritycheck .= "<li>".$clang->gT("All questions meet consistency standards")."</li>\n";
         }
-        //check groups
+        /**********************************************************************/
+        /*     CHECK GROUPS                                                   */
+        /**********************************************************************/
         $query = "SELECT * FROM {$dbprefix}groups ORDER BY sid, gid";
         $result=db_execute_assoc($query) or safe_die ("Couldn't get list of groups for checking<br />$query<br />".$connect->ErrorMsg());
         while ($row=$result->FetchRow())
@@ -235,13 +244,157 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         {
             $integritycheck .= "<li>".$clang->gT("All groups meet consistency standards")."</li>\n";
         }
+        /**********************************************************************/
+        /*     CHECK OLD SURVEY TABLES                                        */
+        /**********************************************************************/
+        //1: Get list of "old_survey" tables and extract the survey id
+        //2: Check if that survey id still exists
+        //3: If it doesn't offer it for deletion
+        $tables=$connect->MetaTables(false, false, "{$dbprefix}%old%survey%");
+        $oldsids=array();
+        foreach($tables as $table)
+        {
+		    list($one, $two, $three, $sid, $date)=explode("_", $table);
+		    $oldsids[]=$sid;
+		    $fulloldsids[$sid][]=$table;
+		}
+		$oldsids=array_unique($oldsids);
+		$query = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid";
+		$result=$connect->Execute($query) or safe_die("Couldn't get unique survey ids<br />$query<br />");
+        while ($row=$result->FetchRow())
+        {
+           $sids[]=$row['sid'];
+		}
+		foreach($oldsids as $oldsid) 
+		{
+		  if(!in_array($oldsid, $sids))
+		  {
+		      foreach($fulloldsids[$oldsid] as $tablename)
+		      {
+			     $oldsdelete[]=$tablename;
+			  }
+		  } else {
+		      foreach($fulloldsids[$oldsid] as $tablename)
+		      {
+		         list($one, $two, $three, $four, $five)=explode("_", $tablename);
+				 $year=substr($five, 0,4);
+				 $month=substr($five, 4,2);
+				 $day=substr($five, 6, 2);
+				 $hour=substr($five, 8, 2);
+				 $minute=substr($five, 10, 2);
+				 $date=date("D, d M Y  h:i a", mktime($hour, $minute, 0, $month, $day, $year));
+		       	 $jq="SELECT * FROM ".$tablename;
+		       	 $jqresult=$connect->execute($jq) or safe_die($query." failed");
+		       	 $jqcount=$jqresult->RecordCount();
+		       	 if($jqcount == 0) {
+				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " saved at $date";
+				 } else {
+				     $oldsmultidelete[]=$tablename."| SID ".$four." saved at $date containing ". $jqcount." record(s)";
+				 }
+			  }
+		  }
+		}
+        if (isset($oldsdelete) && $oldsdelete)
+        {
+            $integritycheck .= "<li>".$clang->gT("The following old survey tables should be deleted because their parent survey no longer exists").":</li><span style='font-size:7pt;'>\n";
+            $integritycheck .= implode(", ", $oldsdelete);
+            $integritycheck .= "</span><br />\n";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All old survey tables meet consistency standards")."</li>\n";
+        }
+
+        /**********************************************************************/
+        /*     CHECK OLD TOKEN  TABLES                                        */
+        /**********************************************************************/
+        //1: Get list of "old_token" tables and extract the survey id
+        //2: Check if that survey id still exists
+        //3: If it doesn't offer it for deletion
+        $tables=$connect->MetaTables(false, false, "{$dbprefix}%old%token%");
+        $oldtsids=array();
+        $folloldtsids=array();
+        
+        foreach($tables as $table)
+        {
+		    list($one, $two, $three, $sid, $date)=explode("_", $table);
+		    $oldtsids[]=$sid;
+		    $fulloldtsids[$sid][]=$table;
+		}
+		$oldtsids=array_unique($oldtsids);
+		$query = "SELECT sid FROM {$dbprefix}surveys ORDER BY sid";
+		$result=$connect->Execute($query) or safe_die("Couldn't get unique survey ids<br />$query<br />");
+        while ($row=$result->FetchRow())
+        {
+           $tsids[]=$row['sid'];
+		}
+		foreach($oldtsids as $oldtsid) 
+		{
+		  if(!in_array($oldtsid, $tsids))
+		  {
+		      foreach($fulloldtsids[$oldtsid] as $tablename)
+		      {
+			     $oldtdelete[]=$tablename;
+			  }
+		  } else {
+		      foreach($fulloldtsids[$oldtsid] as $tablename)
+		      {
+		         list($one, $two, $three, $four, $five)=explode("_", $tablename);
+				 $year=substr($five, 0,4);
+				 $month=substr($five, 4,2);
+				 $day=substr($five, 6, 2);
+				 $hour=substr($five, 8, 2);
+				 $minute=substr($five, 10, 2);
+				 $date=date("D, d M Y  h:i a", mktime($hour, $minute, 0, $month, $day, $year));
+		       	 $jq="SELECT * FROM ".$tablename;
+		       	 
+		       	 $jqresult=$connect->execute($jq) or safe_die($query." failed");
+		       	 $jqcount=$jqresult->RecordCount();
+		       	 if($jqcount == 0) {
+				     $oldtoptionaldelete[]=$tablename."| SID ".$four." saved at $date";	
+				 } else {
+				     $oldtmultidelete[]=$tablename."| SID ".$four." saved at $date containing ". $jqcount." record(s)";
+				 }
+			  }
+		  }
+		}
+        if (isset($oldtdelete) && $oldtdelete)
+        {
+            $integritycheck .= "<li>".$clang->gT("The following old token tables should be deleted because their parent survey no longer exists").":</li><span style='font-size:7pt;'>\n";
+            $integritycheck .= implode(", ", $oldtdelete);
+            $integritycheck .= "</span><br />\n";
+        }
+        else
+        {
+            $integritycheck .= "<li>".$clang->gT("All old token tables meet consistency standards")."</li>\n";
+        }
+        
+        
+        //Finish the list
         $integritycheck .='</ul>' ;
-        //NOW CHECK FOR STRAY SURVEY RESPONSE TABLES AND TOKENS TABLES
-        if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) && !isset($assdelete) && !isset($qadelete)) {
+        
+        /**********************************************************************/
+        /*     CREATE FORM ELEMENTS CONTAINING PROPOSED ALTERATIONS           */
+        /**********************************************************************/
+        if (!isset($cdelete) && !isset($adelete) && !isset($qdelete) && 
+		    !isset($gdelete) && !isset($asgdelete) && !isset($sdelete) && 
+			!isset($assdelete) && !isset($qadelete) && !isset($oldsdelete) &&
+			!isset($oldtdelete)) {
             $integritycheck .= "<br />".$clang->gT("No database action required");
         } else {
             $integritycheck .= "<br />".$clang->gT("Should we proceed with the delete?")."<br />\n";
             $integritycheck .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n";
+            
+            if (isset($oldsdelete)) {
+			    foreach($oldsdelete as $olds) {
+				    $integritycheck .= "<input type='hidden' name='oldsdelete[]' value='{$olds}' />\n";
+				}
+			}
+            if (isset($oldtdelete)) {
+			    foreach($oldtdelete as $oldt) {
+				    $integritycheck .= "<input type='hidden' name='oldtdelete[]' value='{$oldt}' />\n";
+				}
+			}
             if (isset($cdelete)) {
                 foreach ($cdelete as $cd) {
                     $integritycheck .= "<input type='hidden' name='cdelete[]' value='{$cd['cid']}' />\n";
@@ -287,6 +440,61 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                               ."</form>\n";
         }
         $integritycheck .= "</div><br />\n";
+
+        $integritycheck2 = "<div class='messagebox'>"
+        . "<div class='header'>".$clang->gT("Data Redundancy Check")."<br />"
+		. "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after de-activating a survey. You can delete these if you no longer require them.")."</span>\n"
+		. "</div>\n";
+        if (!isset($oldsoptionaldelete) && !isset($oldsmultidelete) &&  
+		    !isset($oldtoptionaldelete) && !isset($oldtmultidelete) ) {
+            $integritycheck2 .= "<br />".$clang->gT("No database action required");
+        } else {
+
+            $integritycheck2 .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n"
+            . "<ul>\n";
+            if(isset($oldsoptionaldelete)) {
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey tables contain no responses and can be deleted.").".:</li><span style='font-size: 7pt'>\n";
+                foreach($oldsoptionaldelete as $ood) {
+    			    list($tablename, $display)=explode("|", $ood);
+    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsoptionaldelete[]'>$display<br />\n";
+    			}
+                $integritycheck2 .= "</span><br />\n";
+    		}
+    		if(isset($oldsmultidelete)) {
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey response tables exist and may be deleted if no longer required").".:</li><span style='font-size: 7pt'>\n";
+                foreach($oldsmultidelete as $omd) {
+    			    list($tablename, $display)=explode("|", $omd);
+    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsmultidelete[]'>$display<br />\n";
+    			}
+                $integritycheck2 .= "</span><br />\n";
+    		}
+            if(isset($oldtoptionaldelete)) {
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old token tables contain no tokens and can be deleted.").".:</li><span style='font-size: 7pt'>\n";
+                foreach($oldtoptionaldelete as $ood) {
+    			    list($tablename, $display)=explode("|", $ood);
+    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtoptionaldelete[]'>$display<br />\n";
+    			}
+                $integritycheck2 .= "</span><br />\n";
+    		}
+    		if(isset($oldtmultidelete)) {
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old token list tables exist and may be deleted if no longer required").".:</li><span style='font-size: 7pt'>\n";
+                foreach($oldtmultidelete as $omd) {
+    			    list($tablename, $display)=explode("|", $omd);
+    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtmultidelete[]'>$display<br />\n";
+    			}
+                $integritycheck2 .= "</span><br />\n";
+    		}
+            $integritycheck2 .= "<input type='hidden' name='ok' value='R'>\n"
+                              ."<center><input type='submit' value='".$clang->gT("Delete Checked Items!")."'><br />\n"
+                              ."<span style='color: red'>".$clang->gT("Note that you cannot undo a delete if you proceed. The data will be gone.")."</span><br /></center>\n"
+                              ."</form>\n";
+    		
+    		
+    		$integritycheck2 .= "</ul>";
+		}
+		$integritycheck2 .= "</div>";
+
+        $integritycheck .= $integritycheck2;
     }
     elseif ($ok == "Y")
     {
@@ -307,40 +515,70 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $asgdelete=returnglobal('asgdelete');
         $qadelete=returnglobal('qadelete');
         $sdelete=returnglobal('sdelete');
-    
+        $oldsdelete=returnglobal('oldsdelete');
+        $oldtdelete=returnglobal('oldtdelete');
+        
+        
+        if (isset($oldsdelete)) {
+		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldsdelete as $olds) {
+		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
+			    $sql = "DROP TABLE $olds";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $olds ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+		
+        if (isset($oldtdelete)) {
+		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldtdelete as $oldt) {
+		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
+			    $sql = "DROP TABLE $oldt";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $olds ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+
         if (isset($sdelete)) {
-            $integritycheck .= $clang->gT("Deleting Surveys").":<br /><spanstyle='font-size:7pt;'>\n";
+            $integritycheck .= $clang->gT("Deleting Surveys").":<br /><span style='font-size:7pt;'>\n";
             foreach ($sdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting Survey ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}surveys WHERE sid=$ass";
                 $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
+			$integritycheck .= "</span><br />\n";
         }    
     
         if (isset($assdelete)) {
-            $integritycheck .= $clang->gT( "Deleting Assessments").":<br /><spanstyle='font-size:7pt;'>\n";
+            $integritycheck .= $clang->gT( "Deleting Assessments").":<br /><span style='font-size:7pt;'>\n";
             foreach ($assdelete as $ass) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$ass."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$ass";
                 $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
+			$integritycheck .= "</span><br />\n";
         }
+
         if (isset($asgdelete)) {
-            $integritycheck .= $clang->gT("Deleting Assessments").":<br /><spanstyle='font-size:7pt;'>\n";
+            $integritycheck .= $clang->gT("Deleting Assessments").":<br /><span style='font-size:7pt;'>\n";
             foreach ($asgdelete as $asg) {
                 $integritycheck .= $clang->gT("Deleting ID").":".$asg."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}assessments WHERE id=$asg";
                 $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
+			$integritycheck .= "</span><br />\n";
         }
+
         if (isset($qadelete)) {
-            $integritycheck .= $clang->gT("Deleting Question_Attributes").":<br /><spanstyle='font-size:7pt;'>\n";
+            $integritycheck .= $clang->gT("Deleting Question_Attributes").":<br /><span style='font-size:7pt;'>\n";
             foreach ($qadelete as $qad) {
                 $integritycheck .= "Deleting QAID:".$qad."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}question_attributes WHERE qaid=$qad";
                 $result = $connect->Execute($sql) or safe_die ("Couldn't delete ($sql)<br />".$connect->ErrorMsg());
             }
+			$integritycheck .= "</span><br />\n";
         }
+
         if (isset($cdelete)) {
             $integritycheck .= $clang->gT("Deleting Conditions").":<br /><span style='font-size:7pt;'>\n";
             foreach ($cdelete as $cd) {
@@ -381,7 +619,68 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $integritycheck .= $clang->gT("Check database again?")."<br />\n"
                           ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
                           ."</td></tr></table><br />\n";
-    }
+    } elseif ($ok == "R")
+    {
+	    $integritycheck .= "<table><tr><td height='1'></td></tr></table>\n"
+        . "<table align='center' style='border: 1px solid #555555' "
+        . "cellpadding='1' cellspacing='0' width='450'>\n"
+        . "\t<tr>\n"
+        . "\t\t<td colspan='2' align='center'>\n"
+        . "\t\t\t<strong>".$clang->gT("Data Redundancy Check")."<br />\n"
+		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from de-activation")."</strong>\n"
+        . "\t\t</td>\n"
+        . "\t</tr>\n"
+        . "\t<tr><td align='center'>";
+        $oldsmultidelete=returnglobal('oldsmultidelete');
+        $oldtmultidelete=returnglobal('oldtmultidelete');
+        $oldsoptionaldelete=returnglobal('oldsoptionaldelete');
+        $oldtoptionaldelete=returnglobal('oldtoptionaldelete');
+        
+        if (isset($oldsoptionaldelete)) { //OLD Survey Tables with zero entries
+		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldsoptionaldelete as $olds) {
+		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
+			    $sql = "DROP TABLE $olds";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $olds ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+		
+        if (isset($oldsmultidelete)) {
+		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldsmultidelete as $olds) {
+		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
+			    $sql = "DROP TABLE $olds";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $olds ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+		
+        if (isset($oldtmultidelete)) {
+		    $integritycheck .= $clang->gT("Deleting Old Token Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldtmultidelete as $oldt) {
+		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
+			    $sql = "DROP TABLE $oldt";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $oldt ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+
+        if (isset($oldtoptionaldelete)) {
+		    $integritycheck .= $clang->gT("Deleting Old Token Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    foreach ($oldtoptionaldelete as $oldt) {
+		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
+			    $sql = "DROP TABLE $oldt";
+			    $result = $connect->Execute($sql) or safe_die ("Couldn't drop table $oldt ($sql)<br />".$connect->ErrorMsg());
+			}
+			$integritycheck .= "</span><br />\n";
+		}
+
+        $integritycheck .= $clang->gT("Check database again?")."<br />\n"
+                          ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
+                          ."</td></tr></table><br />\n";
+			
+	}
 
     $surveyid=false;    
     }
