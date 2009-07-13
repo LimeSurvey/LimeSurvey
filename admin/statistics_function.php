@@ -85,7 +85,7 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 	
 //generate_statistics('999','all',0,'pdf','F');
 
-function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='D')
+function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='DD')
 {
 	//$allfields ="";
 	global $connect, $dbprefix, $clang,
