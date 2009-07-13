@@ -175,6 +175,13 @@ else
 if($file!=FALSE)
 {
 	try
+	{	$ques = $client->sAvailableModules($user, "password", "que");}
+	catch (SoapFault $fault)
+	{	$ques .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+}
+if($file!=FALSE)
+{
+	try
 	{	$mods = $client->sAvailableModules($user, "password", "mod");}
 	catch (SoapFault $fault)
 	{	$mods .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
@@ -308,8 +315,7 @@ while(list($key, $value) = each($_REQUEST))
 		//these are just outputs for testing
 		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 	}
-
-	if(substr($key,0,8)=="impQuest")
+	if(substr($key,0,8)=="impFree")
 	{
 		$iVid = $_REQUEST['sid'];
 		// $sMod = $_REQUEST['mod'];
@@ -322,6 +328,25 @@ while(list($key, $value) = each($_REQUEST))
 		{
 
 			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+	}
+	if(substr($key,0,8)=="impQuest")
+	{
+		$iVid = $_REQUEST['sid'];
+		// $sMod = $_REQUEST['mod'];
+		$sMod = $_REQUEST['mod'];
+		$mandatory = $_REQUEST['mandatory'];
+			
+		try
+		{
+
+			$sReturn = $client->sImportQuestion($user, $pass, $iVid, $sMod, $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -511,7 +536,7 @@ if(isset($sOutput))
 	echo '</div>';
 }
 ?>
-<div style='margin-bottom: 5px'>
+<div style='float:left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sCreateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
 <b><font color='red'>* </font>VeranstaltungsTyp:</b>
@@ -550,7 +575,7 @@ Message is left blank):</b> <br />
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sActivateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
@@ -565,7 +590,7 @@ Message is left blank):</b> <br />
 <input type='submit' name='activate' value='Start Survey!' /></form>
 </div>
 
-<div style='float: left;  margin-bottom: 5px; margin-left: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px'>
 <h3>sDeleteSurvey function</h3>(attention: no safetyquestion is asked!)<br/>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
@@ -576,7 +601,7 @@ Message is left blank):</b> <br />
 <input type='submit' name='delsurvey' value='Delete Survey!' /></form>
 </div>
 
-<div style='float: right;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportGroup function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
@@ -600,9 +625,8 @@ for($n=0;$n<count($aMods);++$n)
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>
 
-<div
-	style='clear: both; float: left; width: 49%;  margin-bottom: 5px'>
-<h3>sImportQuestion</h3>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
+<h3>sImportFreetext</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
 <br />
@@ -616,11 +640,32 @@ for($n=0;$n<count($aMods);++$n)
 <b>Helptext:</b> <br />
 <textarea name='help' cols='50' rows='3'></textarea> <br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
-<input type='submit' name='impQuest' value='Create Question!' /></form>
+<input type='submit' name='impFree' value='Create Question!' /></form>
 </div>
 
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<h3>sImportQuestion</h3>
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
+	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
+<br />
+<input type='text' name='sid' size='5' maxlength='5'
+	value='<?php echo $iVid ?>' /> <br />
+	<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
+<b><font color='red'>* </font>Question csv to import:</b> <br />
+<select name='mod' size='1'>
+<?php
+$aQues = explode(",", $ques);
+for($n=0;$n<count($aQues);++$n)
+{echo "<option value='".$aQues[$n]."'>".$aQues[$n]."</option>";}
+?>
+</select> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
+<input type='submit' name='impFree' value='Create Question!' /></form>
+</div>
+
+
 <div
-	style='float: right; width: 49%;  margin-bottom: 5px'>
+	style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportMatrix</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
@@ -644,7 +689,7 @@ for($n=1;$n<10;++$n)
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sChangeSurvey function</h3>
 ( this is not part of the lsrc, it just shows the power of it, <br/>it has to be activated in server.php on line ~60 )
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
