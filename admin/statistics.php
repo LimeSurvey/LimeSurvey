@@ -1703,7 +1703,7 @@ function showSpeaker($hinttext)
 
 		//output with hoover effect
 		$reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
+		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" >"
 		." \"$shortstring...\" </span>"
 		."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
 		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";
