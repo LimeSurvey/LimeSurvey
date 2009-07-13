@@ -528,7 +528,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		break;
 		case 'html':
 			
-			$statisticsoutput .= "<br />\n<table class='statisticssummary' align='center' >\n"
+			$statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
 			."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
 			."\t<tr><th>".$clang->gT("Number of records in this query:").'</th>'
 			."<td>$results</td></tr>\n"
