@@ -3559,9 +3559,9 @@ function do_multiplenumeric($ia)
             $answer_computed = '';
             if ($equalvalue)
             {
-                $answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"remainingvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Remaining: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size=10 type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
+                $answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"remainingvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Remaining: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size='10' type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
             }
-			$answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"totalvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Total: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size=10  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
+			$answer_computed .= "\t<li class='multiplenumerichelp'>\n\t\t<label for=\"totalvalue_{$ia[1]}\">\n\t\t\t".$clang->gT('Total: ')."\n\t\t</label>\n\t\t<span>\n\t\t\t$prefix\n\t\t\t<input size='10'  type=\"text\" id=\"totalvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t\t\t$suffix\n\t\t</span>\n\t</li>\n";
             $answer_main.=$answer_computed;            
 		}
 		$answer .= $question_tip."<ul>\n".$answer_main."</ul>\n";
