@@ -1571,6 +1571,7 @@ if ($subaction == "remind" && //XXX
 					."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 					."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
 					."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+					."\t<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
 					."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
 				//Include values for constraints minreminderdelay and maxremindercount if they exist
 				if (isset($_POST['minreminderdelay']) &&
