@@ -45,7 +45,7 @@ function my_is_numeric($value)  {
 
 function spss_export_data ($na = null) {
 	global $length_data;
-	
+
 	// Build array that has to be returned
 	$fields = spss_fieldmap();
 
@@ -56,100 +56,100 @@ function spss_export_data ($na = null) {
 	$num_fields = $result->FieldCount();
 
 	while ($row = $result->FetchRow()) {
-	    $fieldno = 0;
-        while ($fieldno < $num_fields)
-        {
-            if ($fields[$fieldno]['SPSStype']=='DATETIME23.2'){
-                #convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
-                if (isset($row[$fieldno]))
-                {
-                    list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
-                    if ($year != '' && (int)$year >= 1970) 
-                    {
-                        echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
-                    } else 
-                    {
-                        echo ($na);
-                    }
-                }  else 
-                    {
-                        echo ($na);
-                    }  
-            } else if ($fields[$fieldno]['LStype'] == 'Y') 
-            {
-                if ($row[$fieldno] == 'Y')    // Yes/No Question Type
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
-                } else {
-                    echo($na);
-                }     
-            } else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
-            {
-                if ($row[$fieldno] == 'F')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'M'){
-                    echo( "'2'");
-                } else {
-                    echo($na);
-                }                        
-            } else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
-            {     
-                if ($row[$fieldno] == 'Y')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'N'){
-                    echo( "'2'");
-                } else if ($row[$fieldno] == 'U'){
-                    echo( "'3'");
-                } else {
-                    echo($na);
-                }                        
-            } else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
-            {             
-                if ($row[$fieldno] == 'I')
-                {
-                    echo( "'1'");
-                } else if ($row[$fieldno] == 'S'){
-                    echo( "'2'");
-                } else if ($row[$fieldno] == 'D'){
-                    echo( "'3'");
-                } else {
-                    echo($na);
-                }           
-            } elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other')) 
-            {
-            	if ($row[$fieldno] == 'Y')
-                {
-                    echo("'1'");
-                } else
-                {
-                   echo("'0'");
-                }
-            } elseif (!$fields[$fieldno]['hide']) {
-                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-                if (trim($strTmp) != ''){
-                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                    /*
-                     * Temp quick fix for replacing decimal dots with comma's
-					if (my_is_numeric($strTemp)) {
-						$strTemp = str_replace('.',',',$strTemp); 
-					}                      
-                    */ 
-                    echo "'$strTemp'";
-                }
-                else
-                {  
-                    echo $na;
-                }
-            }
-            $fieldno++;
-            if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
-        }
-        echo "\n";
-    }
+		$fieldno = 0;
+		while ($fieldno < $num_fields)
+		{
+			if ($fields[$fieldno]['SPSStype']=='DATETIME23.2'){
+				#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
+				if (isset($row[$fieldno]))
+				{
+					list( $year, $month, $day, $hour, $minute, $second ) = split( '([^0-9])', $row[$fieldno] );
+					if ($year != '' && (int)$year >= 1970)
+					{
+						echo "'".date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) )."'";
+					} else
+					{
+						echo ($na);
+					}
+				}  else
+				{
+					echo ($na);
+				}
+			} else if ($fields[$fieldno]['LStype'] == 'Y')
+			{
+				if ($row[$fieldno] == 'Y')    // Yes/No Question Type
+				{
+					echo( "'1'");
+				} else if ($row[$fieldno] == 'N'){
+					echo( "'2'");
+				} else {
+					echo($na);
+				}
+			} else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
+			{
+				if ($row[$fieldno] == 'F')
+				{
+					echo( "'1'");
+				} else if ($row[$fieldno] == 'M'){
+					echo( "'2'");
+				} else {
+					echo($na);
+				}
+			} else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
+			{
+				if ($row[$fieldno] == 'Y')
+				{
+					echo( "'1'");
+				} else if ($row[$fieldno] == 'N'){
+					echo( "'2'");
+				} else if ($row[$fieldno] == 'U'){
+					echo( "'3'");
+				} else {
+					echo($na);
+				}
+			} else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
+			{
+				if ($row[$fieldno] == 'I')
+				{
+					echo( "'1'");
+				} else if ($row[$fieldno] == 'S'){
+					echo( "'2'");
+				} else if ($row[$fieldno] == 'D'){
+					echo( "'3'");
+				} else {
+					echo($na);
+				}
+			} elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other'))
+			{
+				if ($row[$fieldno] == 'Y')
+				{
+					echo("'1'");
+				} else
+				{
+					echo("'0'");
+				}
+			} elseif (!$fields[$fieldno]['hide']) {
+				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+				if (trim($strTmp) != ''){
+					$strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+					/*
+					 * Temp quick fix for replacing decimal dots with comma's
+					 if (my_is_numeric($strTemp)) {
+						$strTemp = str_replace('.',',',$strTemp);
+						}
+						*/
+					echo "'$strTemp'";
+				}
+				else
+				{
+					echo $na;
+				}
+			}
+			$fieldno++;
+			if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
+		}
+		echo "\n";
+	}
 }
 
 /**
@@ -160,7 +160,7 @@ function spss_export_data ($na = null) {
  */
 function spss_getvalues ($field = array()) {
 	global $surveyid, $dbprefix, $connect, $clang, $language, $length_vallabel;
-	
+
 	if (!isset($field['LStype']) || empty($field['LStype'])) return false;
 	$answers=array();
 	if (strpos("!LOR",$field['LStype']) !== false) {
@@ -257,9 +257,11 @@ function spss_getvalues ($field = array()) {
 	if (count($answers)>0) {
 		//check the max width of the answers
 		$size = 0;
+		$answers['SPSStype'] = $field['SPSStype'];
 		foreach ($answers as $answer) {
 			$len = mb_strlen($answer['code']);
 			if ($len>$size) $size = $len;
+			if ($answers['SPSStype']=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $answers['SPSStype']='A';
 		}
 		$answers['size'] = $size;
 		return $answers;
@@ -398,10 +400,14 @@ function spss_fieldmap($prefix = 'V') {
 		if (is_array($answers)) {
 			//Ok we have answers
 			if (isset($answers['size'])) {
-				$tempArray['size'] = $answers['size']; 
+				$tempArray['size'] = $answers['size'];
 				unset($answers['size']);
 			}
-			$tempArray['answers'] = $answers;			
+			if (isset($answers['SPSStype'])) {
+				$tempArray['SPSStype'] = $answers['SPSStype'];
+				unset($answers['SPSStype']);
+			}
+			$tempArray['answers'] = $answers;
 		}
 		$fields[] = $tempArray;
 	}

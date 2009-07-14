@@ -175,6 +175,7 @@ if  ($subaction=='dlstructure') {
 				break;
 			case 'DATETIME23.2':
 			case 'SDATE':
+				$type="character";
 				//@TODO set $type to format for date
 				break;
 
