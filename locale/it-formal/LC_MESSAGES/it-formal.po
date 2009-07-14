@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Italian language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-13 10:32-0500\n"
-"PO-Revision-Date: 2009-07-13 10:40-0500\n"
+"POT-Creation-Date: 2009-07-14 17:30-0500\n"
+"PO-Revision-Date: 2009-07-14 17:31-0500\n"
 "Last-Translator: LimeSurvey Translations Manager <translations@limesurvey.org>\n"
 "Language-Team: Edita Paulisic e Igor Dobraca <idobraca@veleri.hr>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: c:\limesurvey/svn/common.php:308
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
-msgstr "Attenzione: si sta ancora usando la password di default (\"password\"). E' fortemente consigliato cambiare la password e rifare il login."
+msgstr "Attenzione: sta ancora usando la password di default (\"password\"). E' fortemente consigliato di cambiare la password e rifare il login."
 
 #: c:\limesurvey/svn/common.php:310
 msgid "Administration"
@@ -369,9 +369,8 @@ msgid "Export a VV survey file"
 msgstr "Esporta il  file VV delle risposte"
 
 #: c:\limesurvey/svn/common.php:1837
-#, fuzzy
 msgid "Iterate survey"
-msgstr "Crea nuova indagine"
+msgstr "reiterare l'indagine"
 
 #: c:\limesurvey/svn/common.php:1907
 msgid "Preset"
@@ -615,15 +614,15 @@ msgstr "Salvi il Suo questionario non terminato"
 
 #: c:\limesurvey/svn/common.php:2856
 msgid "Enter a name and password for this survey and click save below."
-msgstr "Scegliere un nome ed una password per questo questionario e fare clic su Salva"
+msgstr "Scegliere un nome ed una password per salvare le risposte fino ad ora compilate."
 
 #: c:\limesurvey/svn/common.php:2856
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
-msgstr "I questionario sarà salvato con il nome e la password prescelti; potrà successivamente essere completato registrandosi con con lo stesso nome e password."
+msgstr "Le Sue risposte saranno salvate usando nome e password forniti. Potrà completare il questionario in un secondo momento rientrando con il codice identificativo in suo possesso.  Una volta entraro, clicchi il pulsante \"Caricare questionario non terminato\" e inserisca nome utente e password forniti in questa pagina.In alternativa l'inserimento di un indirizzo e-mail nel campo qui sotto specificato consentirà l'invio di un messaggio automatico contenente una procedura guidata per riprendere il questionario non terminato."
 
 #: c:\limesurvey/svn/common.php:2856
 msgid "If you give an email address, an email containing the details will be sent to you."
-msgstr "Se fornisce un indirizzo e-mail, Le sarà inviato un messaggio con i dettagli."
+msgstr "L'inserimento di uno specifico nome e di una password garantiranno la riservatezza del questionario durante la sua compilazione."
 
 #: c:\limesurvey/svn/common.php:2864
 msgid "Return To Survey"
@@ -727,14 +726,12 @@ msgid "The percentage width of the answer column"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3206
-#, fuzzy
 msgid "Answer width"
-msgstr "Risposto"
+msgstr "Larghezza della risposta"
 
 #: c:\limesurvey/svn/common.php:3210
-#, fuzzy
 msgid "Filter an array's answers from a Multiple Options Question"
-msgstr "Aggiungere o eliminare risposte a domande a risposta multipla"
+msgstr "Filtrare un array di risposte a domande a risposta multipla"
 
 #: c:\limesurvey/svn/common.php:3211
 msgid "Array filter"
@@ -750,9 +747,8 @@ msgid "Filter the available answers by this value"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3221
-#, fuzzy
 msgid "Code filter"
-msgstr "Copia fallita"
+msgstr "Filtrare il codice"
 
 #: c:\limesurvey/svn/common.php:3225
 msgid "Number of columns to display"
@@ -819,9 +815,8 @@ msgid "Other comment mandatory"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3265
-#, fuzzy
 msgid "Allow only numerical input"
-msgstr "Inserimento numerico multiplo"
+msgstr "Ammette solo inserimenti numerici"
 
 #: c:\limesurvey/svn/common.php:3266
 msgid "Numbers only"
@@ -830,7 +825,7 @@ msgstr "Solo numeri"
 #: c:\limesurvey/svn/common.php:3271
 #, fuzzy
 msgid "Allow only numerical input for `Other` text"
-msgstr "Inserimento numerico multiplo"
+msgstr "Ammette solo inserimenti numerici"
 
 #: c:\limesurvey/svn/common.php:3272
 #, fuzzy
@@ -871,9 +866,8 @@ msgstr ""
 
 #: c:\limesurvey/svn/common.php:3297
 #: c:\limesurvey/svn/common.php:3298
-#, fuzzy
 msgid "Use slider layout"
-msgstr "Usa il default"
+msgstr "Usa slider layout"
 
 #: c:\limesurvey/svn/common.php:3302
 #: c:\limesurvey/svn/common.php:3303
@@ -900,27 +894,24 @@ msgid "Add a prefix to the answer field"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3323
-#, fuzzy
 msgid "Answer prefix"
-msgstr "Risposta  privacy"
+msgstr "Prefisso alla risposta"
 
 #: c:\limesurvey/svn/common.php:3327
 msgid "Add a suffix to the answer field"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3328
-#, fuzzy
 msgid "Answer suffix"
-msgstr "Risposte"
+msgstr "Suffisso alla risposta"
 
 #: c:\limesurvey/svn/common.php:3332
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3333
-#, fuzzy
 msgid "Display select boxes"
-msgstr "Mostra risposte"
+msgstr "Mostra i box selezionati"
 
 #: c:\limesurvey/svn/common.php:3337
 #, fuzzy
@@ -1033,9 +1024,8 @@ msgid "Show statistics of a certain question to the user"
 msgstr ""
 
 #: c:\limesurvey/svn/common.php:3403
-#, fuzzy
 msgid "Show in public statistics"
-msgstr "Statistiche brevi"
+msgstr "Mostra nele statistiche pubbliche"
 
 #: c:\limesurvey/svn/common.php:3407
 msgid "SGQA identifier to use total of previous question as maximum for this question"
@@ -1187,9 +1177,8 @@ msgstr "o"
 
 #: c:\limesurvey/svn/group.php:206
 #: c:\limesurvey/svn/question.php:270
-#, fuzzy
 msgid "View the statistics for this survey."
-msgstr "Nascondi dettagli dell'indagine"
+msgstr "Mostra le statistiche per questa indagine."
 
 #: c:\limesurvey/svn/group.php:257
 #: c:\limesurvey/svn/question.php:66
@@ -1210,9 +1199,8 @@ msgstr "ATTENZIONE NON HA RISPOSTO AD UNA O PIU' DOMANDE OBBLIGATORIE NELLA PAGI
 
 #: c:\limesurvey/svn/group.php:913
 #: c:\limesurvey/svn/question.php:480
-#, fuzzy
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
-msgstr "Non hai risposto in modo valido ad una o più domande. Non è possibile continuare finchè queste risposte non siano valide"
+msgstr "Non ha risposto in modo valido ad una o più domande. Non è possibile continuare finchè queste risposte non siano valide"
 
 #: c:\limesurvey/svn/index.php:78
 msgid "Token mismatch"
@@ -1323,9 +1311,8 @@ msgid "For further information please contact %s"
 msgstr "Per ulteriori informazioni contattare %s"
 
 #: c:\limesurvey/svn/index.php:615
-#, fuzzy
 msgid "We are sorry but you are not allowed to enter this survey."
-msgstr "Non hai i permessi per eliminare questa indagine!"
+msgstr "Non ha i permessi per eliminare questa indagine!"
 
 #: c:\limesurvey/svn/index.php:616
 msgid "Your token seems to be valid but can be used only during a certain time period."
@@ -1484,7 +1471,7 @@ msgstr "Domanda"
 #: c:\limesurvey/svn/printanswers.php:318
 #: c:\limesurvey/svn/printanswers.php:320
 msgid "Your Answer"
-msgstr "La Sua risposta"
+msgstr "La tua risposta"
 
 #: c:\limesurvey/svn/qanda.php:513
 #: c:\limesurvey/svn/qanda.php:514
@@ -1514,7 +1501,7 @@ msgstr "Si prega di selezionare almeno una opzione"
 #: c:\limesurvey/svn/qanda.php:619
 #: c:\limesurvey/svn/qanda.php:620
 msgid "Check any that apply"
-msgstr "Scelga una o più delle seguenti voci"
+msgstr "Scegli una o più delle seguenti voci"
 
 #: c:\limesurvey/svn/qanda.php:584
 #: c:\limesurvey/svn/qanda.php:585
@@ -1530,7 +1517,7 @@ msgstr "Scegliere al massimo %d risposte"
 #: c:\limesurvey/svn/qanda.php:633
 #, php-format
 msgid "Check at most %d answers"
-msgstr "Scelga al massimo %d risposte"
+msgstr "Scegliere al massimo %d risposte"
 
 #: c:\limesurvey/svn/qanda.php:594
 #: c:\limesurvey/svn/qanda.php:595
@@ -1543,7 +1530,7 @@ msgstr "Scegliere al massimo %d risposte"
 #: c:\limesurvey/svn/qanda.php:606
 #: c:\limesurvey/svn/qanda.php:607
 msgid "Choose your language"
-msgstr "Scelga la lingua"
+msgstr "Scegli la lingua"
 
 #: c:\limesurvey/svn/qanda.php:712
 #: c:\limesurvey/svn/qanda.php:713
@@ -1551,9 +1538,8 @@ msgid "*"
 msgstr "*"
 
 #: c:\limesurvey/svn/qanda.php:789
-#, fuzzy
 msgid "This question must be answered correctly"
-msgstr "Devi rispondere correttamente a questa domanda"
+msgstr "Deve rispondere correttamente a questa domanda"
 
 #: c:\limesurvey/svn/qanda.php:808
 msgid "This question is mandatory"
@@ -1596,7 +1582,7 @@ msgstr "Non puoi procedere fino a che non inserisci un testo per una o più doma
 
 #: c:\limesurvey/svn/qanda.php:876
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
-msgstr "Attenzione non ha risposto ad una o più domande obbligatorie. Non è possibile proseguire senza queste risposte."
+msgstr "ATTENZIONE NON HA RISPOSTO AD UNA O PIU' DOMANDE OBBLIGATORIE NELLA PAGINA PRECEDENTE. QUESTE SPECIFICHE INFORMAZIONI SONO ESSENZIALI PER LA VALIDITA' DELL'INTERO QUESTIONARIO. SI RICORDA CHE E' COMUNQUE SEMPRE POSSIBILE SALVARE LA SESSIONE PER RIPRENDERE SUCCESSIVAMENTE"
 
 #: c:\limesurvey/svn/qanda.php:903
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
@@ -1690,15 +1676,15 @@ msgstr "Errore: il gruppo di etichette per questa domanda non è disponibile in 
 
 #: c:\limesurvey/svn/qanda.php:2117
 msgid "Please choose one of the following"
-msgstr "Scelga una delle seguenti risposte"
+msgstr "Scegli una delle seguenti risposte"
 
 #: c:\limesurvey/svn/qanda.php:2118
 msgid "Please enter your comment here"
-msgstr "Inserisca  qui sotto il Suo commento"
+msgstr "Inserisci  qui sotto il tuo commento"
 
 #: c:\limesurvey/svn/qanda.php:2405
 msgid "Remove this item"
-msgstr "Rimuovi questo item"
+msgstr "Azzera"
 
 #: c:\limesurvey/svn/qanda.php:2449
 msgid "Your Choices"
@@ -1739,7 +1725,7 @@ msgstr ""
 #: c:\limesurvey/svn/qanda.php:3013
 #: c:\limesurvey/svn/qanda.php:3041
 msgid "Make a comment on your choice here:"
-msgstr "Inserisca un commento sulla Sua scelta qui:"
+msgstr "Inserisci un commento sulla tua scelta qui:"
 
 #: c:\limesurvey/svn/qanda.php:3233
 #: c:\limesurvey/svn/qanda.php:3463
@@ -1765,7 +1751,7 @@ msgstr "Il totale delle voci deve essere uguale a %d"
 #: c:\limesurvey/svn/qanda.php:3554
 #, php-format
 msgid "Total of all entries must be at least %s"
-msgstr "Il totale dei valori deve essere almeno pari a %s"
+msgstr "Il totale delle voci deve essere almeno pari a %d"
 
 #: c:\limesurvey/svn/qanda.php:3562
 msgid "Remaining: "
@@ -1784,9 +1770,9 @@ msgstr "La risposta non è valida. Il totale di tutte le voci non deve essere ma
 
 #: c:\limesurvey/svn/qanda.php:3629
 #: c:\limesurvey/svn/qanda.php:3637
-#, fuzzy, php-format
+#, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
-msgstr "Risposta non valida. Al totale di tutto le voci andrebbe aggiunto almeno "
+msgstr "Risposta non valida. Il totale delle voci deve essere almeno pari a %s"
 
 #: c:\limesurvey/svn/qanda.php:3732
 msgid "Only numbers may be entered in this field"
@@ -2318,9 +2304,8 @@ msgid "Edit"
 msgstr "Modifica"
 
 #: c:\limesurvey/svn/admin/assessments.php:174
-#, fuzzy
 msgid "Assessment rules"
-msgstr "Definisci regole valutazione"
+msgstr "Definisca le regole di valutazione"
 
 #: c:\limesurvey/svn/admin/assessments.php:175
 msgid "ID"
@@ -2435,9 +2420,8 @@ msgid "Delete this entry"
 msgstr "Elimina risposta"
 
 #: c:\limesurvey/svn/admin/browse.php:327
-#, fuzzy
 msgid "You don't have permission to delete this entry."
-msgstr "Spiacenti, ma non hai il permesso di compiere questa operazione."
+msgstr "Siamo spiacenti, ma non ha il permesso di compiere questa operazione."
 
 #: c:\limesurvey/svn/admin/browse.php:330
 #: c:\limesurvey/svn/admin/browse.php:331
@@ -2547,9 +2531,8 @@ msgstr "Nessuna indagine selezionata"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:111
 #: c:\limesurvey/svn/admin/conditionshandling.php:125
-#, fuzzy
 msgid "Main admin screen"
-msgstr "Torna alla pagina di amministrazione generale"
+msgstr "Torni alla pagina di amministrazione generale"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:123
 msgid "You have not selected a question"
@@ -2644,9 +2627,8 @@ msgid "Only show question {QID} IF"
 msgstr "Mostra Domanda con codice   {QID}   solo SE:"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1162
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
-msgstr "Sei sicuro di voler copiare questa(e) condizione(i) alle domande che hai selezionato?"
+msgstr "E' sicuro di voler copiare questa(e) condizione(i) alle domande che ha selezionato?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1163
 #, fuzzy
@@ -2654,9 +2636,8 @@ msgid "Delete all conditions"
 msgstr "Si stanno per eliminare le Condizioni"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1171
-#, fuzzy
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
-msgstr "Elimina tutti i codici associati agli identificativi?"
+msgstr "Eliminare tutti i codici associati agli identificativi?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1172
 msgid "Renumber scenario automatically"
@@ -2680,12 +2661,10 @@ msgid "Update scenario"
 msgstr "Aggiorna gruppo utente"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1236
-#, fuzzy
 msgid "Are you sure you want to delete all conditions set in this scenario?"
-msgstr "Sei sicuro di voler cancellare quanto hai inserito?"
+msgstr "E' sicuro di voler cancellare quanto ha inserito?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1237
-#, fuzzy
 msgid "Delete this scenario"
 msgstr "Elimina risposta"
 
@@ -2746,9 +2725,8 @@ msgid "Not found"
 msgstr ""
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1496
-#, fuzzy
 msgid "Are you sure you want to delete this condition?"
-msgstr "Sei sicuro di voler cancellare quanto hai inserito?"
+msgstr " E' sicuro di voler cancellare quanto ha inserito?"
 
 #: c:\limesurvey/svn/admin/conditionshandling.php:1497
 #, fuzzy
@@ -3645,9 +3623,8 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr "Apri il file della sintassi in SPSS in modalità Unicode"
 
 #: c:\limesurvey/svn/admin/export_data_spss.php:84
-#, fuzzy
 msgid "Edit the 4th line and complete the filename with a full path to the downloaded data file."
-msgstr "Modifica la quarta linea e completa il nome file con il percorso completo per il file da scaricare"
+msgstr "Modifichi la quarta linea e completi il nome file con il percorso completo del file da scaricare"
 
 #: c:\limesurvey/svn/admin/export_data_spss.php:85
 msgid "Choose 'Run/All' from the menu to run the import."
@@ -3742,7 +3719,7 @@ msgstr "Definisci regole valutazione"
 #: c:\limesurvey/svn/admin/fck_LimeReplacementFields.php:176
 #, fuzzy
 msgid "Assessment group score"
-msgstr "Definisci regole valutazione"
+msgstr "Definisca le regole di valutazione"
 
 #: c:\limesurvey/svn/admin/fck_LimeReplacementFields.php:498
 msgid "No replacement variable available for this field"
@@ -5729,9 +5706,8 @@ msgid "Close Window"
 msgstr "Chiudi finestra"
 
 #: c:\limesurvey/svn/admin/labels.php:299
-#, fuzzy
 msgid "Error: You are trying to use duplicate label codes."
-msgstr "Errore: stai cercando di utilizzare codici di risposta duplicati."
+msgstr "Errore: sta cercando di utilizzare codici di risposta duplicati."
 
 #: c:\limesurvey/svn/admin/labels.php:382
 #: c:\limesurvey/svn/admin/labels.php:420
@@ -5897,9 +5873,8 @@ msgid "at question"
 msgstr "alla domanda"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:648
-#, fuzzy
 msgid "Only answer this question if the following conditions are met:"
-msgstr "Rispondi solo se le seguenti condizioni sono rispettate:"
+msgstr "Risponda solo se le seguenti condizioni sono rispettate:"
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:711
 #: c:\limesurvey/svn/admin/printablesurvey.php:712
@@ -5995,9 +5970,9 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Vi sono {NUMBEROFQUESTIONS} domande in questa indagine."
 
 #: c:\limesurvey/svn/admin/printablesurvey.php:1771
-#, fuzzy, php-format
+#, php-format
 msgid "Please fax your completed survey to: %s"
-msgstr "Invia un fax del questionario completato a:"
+msgstr "Invii un fax del questionario completato a:"
 
 #: c:\limesurvey/svn/admin/questionhandling.php:30
 #: c:\limesurvey/svn/admin/questionhandling.php:158
@@ -6550,9 +6525,8 @@ msgstr "Copia questo stile"
 
 #: c:\limesurvey/svn/admin/templates.php:763
 #: c:\limesurvey/svn/admin/templates.php:830
-#, fuzzy
 msgid "Please enter the name for the copied template:"
-msgstr "Inserisci una data:"
+msgstr "Inserisca una data:"
 
 #: c:\limesurvey/svn/admin/templates.php:763
 #: c:\limesurvey/svn/admin/templates.php:830
@@ -6590,9 +6564,8 @@ msgid "Rename this template"
 msgstr "Rinomina questo stile"
 
 #: c:\limesurvey/svn/admin/templates.php:816
-#, fuzzy
 msgid "Are you sure you want to delete this template?"
-msgstr "Sei sicuro di voler eliminare questo documento?"
+msgstr "E' sicuro di voler eliminare questo documento?"
 
 #: c:\limesurvey/svn/admin/templates.php:818
 #, fuzzy
@@ -7137,7 +7110,7 @@ msgstr "Invito spedito?"
 
 #: c:\limesurvey/svn/admin/tokens.php:843
 msgid "Reminder sent?"
-msgstr "Sollecito inviato ?"
+msgstr "Sollecito inviato?"
 
 #: c:\limesurvey/svn/admin/tokens.php:847
 msgid "Reminder count"
@@ -7476,7 +7449,7 @@ msgstr "Campi opzionali:"
 
 #: c:\limesurvey/svn/admin/tokens.php:2088
 msgid "Upload LDAP entries"
-msgstr "Carica le immissioni LDAP"
+msgstr "Carichi le immissioni LDAP"
 
 #: c:\limesurvey/svn/admin/tokens.php:2095
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
@@ -7599,7 +7572,7 @@ msgstr "Nome utente e/o e-mail non trovati!"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:69
 msgid "Your data:"
-msgstr "I tuoi dati:"
+msgstr "I Suoi dati:"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:71
 msgid "New Password"
@@ -7607,7 +7580,7 @@ msgstr "Nuova password"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:83
 msgid "An email with your login data was sent to you."
-msgstr "Ti è  stata inviata una e-mail con i dati per effettuare il login. "
+msgstr "Le è  stata inviata una e-mail con i dati per effettuare il login."
 
 #: c:\limesurvey/svn/admin/usercontrol.php:88
 #: c:\limesurvey/svn/admin/usercontrol.php:385
@@ -7663,25 +7636,25 @@ msgstr "Nome utente non inserito."
 #: c:\limesurvey/svn/admin/usercontrol.php:360
 #, php-format
 msgid "Hello %s,"
-msgstr "Ciao %s,"
+msgstr "Gentile %s,"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:361
 #, php-format
 msgid "this is an automated email to notify that a user has been created for you on the site '%s'."
-msgstr "questa è una e-mail automatica per notificare che un utente è stato creato per te nel seguente sito '%s'."
+msgstr "questa è una e-mail automatica per notificare che un utente è stato creato per Lei nel seguente sito '%s'."
 
 #: c:\limesurvey/svn/admin/usercontrol.php:362
 msgid "You can use now the following credentials to log into the site:"
-msgstr "Tu puoi usare le seguenti credenziali per collegarti al sito :"
+msgstr "Può usare le seguenti credenziali per collegarti al sito :"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:370
 msgid "Click here to log in."
-msgstr "Premi qui per entrare."
+msgstr "Prema qui per entrare."
 
 #: c:\limesurvey/svn/admin/usercontrol.php:371
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
-msgstr "Per qualsiasi dubbio o informazione circa questa e-mail per favore non esitate a contattare l'amministratore del sito  %s. Grazie !"
+msgstr "Per qualsiasi dubbio o informazione circa questa e-mail per favore non esiti a contattare l'amministratore del sito  %s. Grazie !"
 
 #: c:\limesurvey/svn/admin/usercontrol.php:380
 msgid "An email with a generated password was sent to the user."
@@ -8205,111 +8178,113 @@ msgid "Italian"
 msgstr "Italiano"
 
 #: c:\limesurvey/svn/classes/core/surveytranslator.php:300
+#, fuzzy
+msgid "Italian-Formal"
+msgstr "Italiano"
+
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:306
 msgid "Japanese"
 msgstr "Giapponese"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:306
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:312
 msgid "Korean"
 msgstr "Coreano"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:312
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:318
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:318
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:324
 msgid "Latvian"
 msgstr "Lituano"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:324
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:330
 msgid "Macedonian"
 msgstr "Macedone"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:330
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:336
 msgid "Norwegian (Bokmal)"
 msgstr "Norvegese (Bokmal)"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:336
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:342
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvegese (Nynorsk)"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:342
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:348
 msgid "Persian"
 msgstr "Persiano"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:348
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:354
 msgid "Polish"
 msgstr "Polacco"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:354
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:360
 msgid "Portuguese"
 msgstr "Portoghese"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:360
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:366
 msgid "Portuguese (Brazilian)"
 msgstr "Portoghese (Brasiliano)"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:366
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:372
 msgid "Russian"
 msgstr "Russo"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:372
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:378
 msgid "Romanian"
 msgstr "Rumeno"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:378
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:384
 msgid "Slovak"
 msgstr "Slovacco"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:384
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:390
 msgid "Sinhala"
 msgstr ""
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:390
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:396
 msgid "Slovenian"
 msgstr "Sloveno"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:396
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:402
 msgid "Serbian"
 msgstr "Serbo"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:402
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:408
 msgid "Spanish"
 msgstr "Spagnolo"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:408
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:414
 msgid "Spanish (Mexico)"
 msgstr "Spagnolo (Messicano)"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:414
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:420
 msgid "Swedish"
 msgstr "Svedese"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:420
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:426
 msgid "Turkish"
 msgstr "Turco"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:426
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:432
 msgid "Thai"
 msgstr "Tailandese"
 
-#: c:\limesurvey/svn/classes/core/surveytranslator.php:433
+#: c:\limesurvey/svn/classes/core/surveytranslator.php:439
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
-#, fuzzy
 #~ msgid ""
 #~ "We are sorry but your responses have exceeded a quota on this survey."
 #~ msgstr ""
-#~ "Spiacente, le tue risposte hanno ecceduto la quota stabilita per questo "
-#~ "sondaggio."
+#~ "Siamo spiacenti, le Sue risposte hanno ecceduto la quota stabilita per "
+#~ "questo sondaggio."
 #~ msgid "Attribute 1"
 #~ msgstr "Attributo_1"
 #~ msgid "Attribute 2"
 #~ msgstr "Attributo_2"
-
-#, fuzzy
 #~ msgid "Total score for this assessment rule"
-#~ msgstr "Non sei abilitato a definire regole di valutazione!"
+#~ msgstr "Non è abilitato a definire le regole di valutazione!"
 #~ msgid "Token Attribute Names:"
 #~ msgstr "Nomi dei campi degli attributi degli identificativi:"
 #~ msgid ""
