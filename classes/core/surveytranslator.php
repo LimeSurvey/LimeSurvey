@@ -296,6 +296,12 @@
 	    $supportedLanguages['it']['rtl'] = false;
         $supportedLanguages['it']['dateformat'] = 5;
 
+	    // Italian-Formal
+	    $supportedLanguages['it-formal']['description'] = $clang->gT('Italian-Formal');
+	    $supportedLanguages['it-formal']['nativedescription'] = 'Formale Italiano';
+	    $supportedLanguages['it-formal']['rtl'] = false;
+        $supportedLanguages['it-formal']['dateformat'] = 5;
+
 	    // Japanese
 	    $supportedLanguages['ja']['description'] = $clang->gT('Japanese');
 	    $supportedLanguages['ja']['nativedescription'] = '&#x65e5;&#x672c;&#x8a9e;';
