@@ -576,6 +576,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		//Add the fieldnames
 		if (isset($summary) && $summary)
 		{
+			$statisticsoutput .= "\t<tr ><td>";
 			//The summary array contains the fields that have been selected from the filter screen
 			//  to be displayed in the results page. So we're iterating through them one at a time
 			foreach($summary as $viewfields)
@@ -648,6 +649,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				}
 
 			}	//end foreach	
+			$statisticsoutput .= "\t</td></tr>";
 		}	//end if (summary)
 	}	//end if (results available?)
 	
@@ -1951,7 +1953,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						//"other" handling
 						//"Answers" means that we show an option to list answer to "other" text field
 						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-						{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+						{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
 							
 						/*
 						 * text questions:
@@ -2294,7 +2296,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					."\t\t</td>\n"
 	                
 					//output absolute number of records
-					."\t\t<td align='center' >" . $grawdata[$i] . "\n";
+					."\t\t<td align='center' >" . $grawdata[$i] . "\n</td>";
 	
 	
 					//no data
@@ -2320,7 +2322,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							break;
 							case 'html':
 								//output when having no data
-								$statisticsoutput .= "\t\t</td><td  align='center' >";
+								$statisticsoutput .= "\t\t<td  align='center' >";
 								 
 								//percentage = 0
 								$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
@@ -2329,7 +2331,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								//check if we have to adjust ouput due to $showaggregateddata setting
 								if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
 								{
-									$statisticsoutput .= "\t\t</td><td>";
+									$statisticsoutput .= "\t\t</td>";
 								}					
 							break;
 							default:
@@ -2414,13 +2416,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									break;
 									case 'html':
 										//output
-										$statisticsoutput .= "\t\t</td><td align='center'>";
+										$statisticsoutput .= "\t\t<td align='center'>";
 										 
 										//output percentage
 										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 										 
 										//adjust output
-										$statisticsoutput .= "\t\t</td><td>";			
+										$statisticsoutput .= "\t\t</td>";			
 									break;
 									default:
 										
@@ -2477,13 +2479,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									break;
 									case 'html':
 										//output percentage
-										$statisticsoutput .= "\t\t</td><td align='center' >";
-										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+										$statisticsoutput .= "\t\t<td align='center' >";
+										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 											
 										//output again (no real aggregation here)
-										$statisticsoutput .= "\t\t</td><td align='center' >";
+										$statisticsoutput .= "\t\t<td align='center' >";
 										$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
-										$statisticsoutput .= "\t\t";			
+										$statisticsoutput .= "</td>\t\t";			
 									break;
 									default:
 										
@@ -2547,13 +2549,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									break;
 									case 'html':
 										//output percentage
-										$statisticsoutput .= "\t\t</td><td align='center' >";
-										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+										$statisticsoutput .= "\t\t<td align='center' >";
+										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 											
 										//output aggregated data
-										$statisticsoutput .= "\t\t</td><td align='center' >";
+										$statisticsoutput .= "\t\t<td align='center' >";
 										$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-										$statisticsoutput .= "\t\t";		
+										$statisticsoutput .= "</td>\t\t";		
 									break;
 									default:
 										
@@ -2612,13 +2614,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 									break;
 									case 'html':
 										//output percentage
-										$statisticsoutput .= "\t\t</td><td align='center' >";
-										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
+										$statisticsoutput .= "\t\t<td align='center' >";
+										$statisticsoutput .= sprintf("%01.2f", $percentage) . "%</td>";
 											
 										//output aggregated data
-										$statisticsoutput .= "\t\t</td><td align='center' >";
+										$statisticsoutput .= "\t\t<td align='center' >";
 										$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-										$statisticsoutput .= "\t\t";		
+										$statisticsoutput .= "</td>\t\t";		
 									break;
 									default:
 										
@@ -2679,13 +2681,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								
 									break;
 									case 'html':
-										$statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+										$statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
 										$statisticsoutput .= "<tr><td align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 										$statisticsoutput .= "<td align='center' ><strong>".$sumitems."</strong></td>";
 										$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
-										$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>";
-										 
-										$statisticsoutput .= "\t\t&nbsp;</td>\n\t</tr>\n";
+										$statisticsoutput .= "<td align='center' ><strong>$sumpercentage%</strong></td>"; 
+										$statisticsoutput .= "\t\t&nbsp;\n\t</tr>\n";
+										
 										$statisticsoutput .= "<tr><td align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 										$statisticsoutput .= "<td align='center' >".$TotalCompleted."</td>";
 										$statisticsoutput .= "<td align='center' >$casepercentage%</td>";
@@ -2725,7 +2727,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 								break;
 								case 'html':
 									//output percentage
-									$statisticsoutput .= "\t\t</td><td align='center' >";
+									$statisticsoutput .= "\t\t<td align='center' >";
 									$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
 									$statisticsoutput .= "\t\t";
 									//end output per line. there has to be a whitespace within the table cell to display correctly

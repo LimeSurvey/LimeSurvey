@@ -617,6 +617,7 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield2])) {$statisticsoutput .= $_POST[$myfield2];}
 
 			$statisticsoutput .= "' />";
+			$statisticsoutput .= "\t\t\t\t</td>\n";
 			$allfields[]=$myfield2;
 			break;
 
@@ -739,6 +740,7 @@ foreach ($filters as $flt)
 			if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array("M", $_POST[$myfield])) {$statisticsoutput .= " selected";}
 
 			$statisticsoutput .= ">".$clang->gT("Male")."</option>\n\t\t\t\t</select>\n";
+			$statisticsoutput .= "\t\t\t\t</td>\n";
 			break;
 
 
@@ -1098,7 +1100,7 @@ foreach ($filters as $flt)
 			 */
 		case "F": // ARRAY OF Flexible QUESTIONS
 		case "H": // ARRAY OF Flexible Questions (By Column)
-			$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+			//$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
 
 			//Get answers. We always use the answer code because the label might be too long elsewise
 			$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
@@ -1169,7 +1171,7 @@ foreach ($filters as $flt)
 				$allfields[]=$myfield2;
 			}
 
-			$statisticsoutput .= "\t\t\t\t<td>\n";
+			//$statisticsoutput .= "\t\t\t\t<td>\n";
 			$counter=0;
 			break;
 
@@ -1534,6 +1536,9 @@ foreach ($filters as $flt)
 	//temporary save the type of the previous question
 	//used to adjust linebreaks
 	$previousquestiontype = $flt[2];
+	
+	//Group close
+	//$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
 }
 
 //complete output
@@ -1607,7 +1612,7 @@ $viewalltext.="</li>\n"
 $viewalltext .= "<tr>"
 	."<td align='center'>"
 	.$clang->gT("Select Output Format").":<br/>"
-	."<input type='radio' name='outputtype' value='html' checked='checked'>HTML <input type='radio' name='outputtype' value='pdf'>PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls'>Excel"
+	."<input type='radio' name='outputtype' value='html' checked='checked' />HTML <input type='radio' name='outputtype' value='pdf' />PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls' />Excel"
 	."</td>"
 	."</tr>";
 
@@ -1620,17 +1625,22 @@ $statisticsoutput .= "<tr><td align='center' class='settingcaption'>
 	       <font size='1' face='verdana'>&nbsp;</font>
 		  </td></tr>";
 
-$statisticsoutput .= "</table>
-<table cellpadding='0' cellspacing='0' width='100%'>\n";
+$statisticsoutput .= "</table>";
 
-$statisticsoutput .="\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
+$statisticsoutput .= "<div id='vertical_slide'";
 if ($selecthide!='')
 {
 	$statisticsoutput .= " style='display:none' ";
 }
-
 //this fixes bug #2470
 $statisticsoutput.=" >"; 
+
+$statisticsoutput .= "<table cellpadding='0' cellspacing='0' width='100%'>\n";
+
+$statisticsoutput .="\t\t\t\t<tr><td align='center'> ";
+
+
+
 //$statisticsoutput.="<input type='checkbox' id='noncompleted' name='noncompleted' ";
 //if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
 //$statisticsoutput.=" />";
