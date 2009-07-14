@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Italian language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-12 22:14+0100\n"
-"PO-Revision-Date: 2009-07-12 22:14+0100\n"
+"POT-Creation-Date: 2009-07-14 23:04+0100\n"
+"PO-Revision-Date: 2009-07-14 23:04+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Edita Paulisic e Igor Dobraca <idobraca@veleri.hr>\n"
 "MIME-Version: 1.0\n"
@@ -6557,7 +6557,7 @@ msgid "Upload a file:"
 msgstr "Upload  di un documento:"
 
 #: E:\_LimeSurvey\svn/admin/templates.php:944
-#: E:\_LimeSurvey\svn/admin/tokens.php:2543
+#: E:\_LimeSurvey\svn/admin/tokens.php:2576
 msgid "Upload"
 msgstr "Upload"
 
@@ -6806,8 +6806,8 @@ msgid "Display tokens"
 msgstr "Mostra gli identificativi"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:441
-#: E:\_LimeSurvey\svn/admin/tokens.php:2044
-#: E:\_LimeSurvey\svn/admin/tokens.php:2052
+#: E:\_LimeSurvey\svn/admin/tokens.php:2077
+#: E:\_LimeSurvey\svn/admin/tokens.php:2085
 msgid "Add new token entry"
 msgstr "Aggiungi un identificativo"
 
@@ -7011,7 +7011,7 @@ msgid "Last name"
 msgstr "Cognome"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:839
-#: E:\_LimeSurvey\svn/admin/tokens.php:1871
+#: E:\_LimeSurvey\svn/admin/tokens.php:1886
 msgid "Invite sent?"
 msgstr "Invito spedito?"
 
@@ -7024,12 +7024,12 @@ msgid "Reminder count"
 msgstr "Conteggio dei solleciti:"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:851
-#: E:\_LimeSurvey\svn/admin/tokens.php:1879
+#: E:\_LimeSurvey\svn/admin/tokens.php:1894
 msgid "Completed?"
 msgstr "Completato?"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:855
-#: E:\_LimeSurvey\svn/admin/tokens.php:1886
+#: E:\_LimeSurvey\svn/admin/tokens.php:1901
 msgid "Valid from"
 msgstr "Valido dal"
 
@@ -7189,272 +7189,272 @@ msgstr "Dall'ID del token"
 msgid "Reminder sent to:"
 msgstr "Sollecito inviato a:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1589
+#: E:\_LimeSurvey\svn/admin/tokens.php:1604
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Nessun messaggio e-mail da inviare. I messaggi non soddisfano i seguenti criteri - indirizzo e-mail valido, un invito è già stato inviato ma il questionario  non è stato completato."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1605
+#: E:\_LimeSurvey\svn/admin/tokens.php:1620
 msgid "Create Tokens"
 msgstr "Genera password di identificazione"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1609
+#: E:\_LimeSurvey\svn/admin/tokens.php:1624
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Facendo clic su SI verranno generati automaticamente i codici e le password di identificazione per tutti gli utenti che ne sono ancora sprovvisti. Procedere?"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1644
+#: E:\_LimeSurvey\svn/admin/tokens.php:1659
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} identificativi sono stati creati"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1662
+#: E:\_LimeSurvey\svn/admin/tokens.php:1677
 msgid "Token has been deleted."
 msgstr "Identificativo eliminato."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1663
+#: E:\_LimeSurvey\svn/admin/tokens.php:1678
 #: E:\_LimeSurvey\svn/admin/usercontrol.php:158
 #: E:\_LimeSurvey\svn/admin/usercontrol.php:299
 msgid "Reloading Screen. Please wait."
 msgstr "Aggiornamento in corso. Attendere prego."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1674
+#: E:\_LimeSurvey\svn/admin/tokens.php:1689
 msgid "Manage token attribute fields"
 msgstr "Gestisci i campi degli attributi degli identificativi:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1695
+#: E:\_LimeSurvey\svn/admin/tokens.php:1710
 msgid "<no data>"
 msgstr "<senza data>"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1700
+#: E:\_LimeSurvey\svn/admin/tokens.php:1715
 msgid "Save attribute descriptions"
 msgstr "Salva le descrizioni degli attributi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1707
+#: E:\_LimeSurvey\svn/admin/tokens.php:1722
 msgid "Add token attributes"
 msgstr "Aggiungi attributo degli identificativi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1709
+#: E:\_LimeSurvey\svn/admin/tokens.php:1724
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "Ci sono %s campi attributo utente in questa tabella identificativi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1711
+#: E:\_LimeSurvey\svn/admin/tokens.php:1726
 msgid "Please enter the number of user attribute fields you want to add:"
 msgstr "Per favore inserire il numero di campi attributo utene che vuoi aggiungere:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1713
+#: E:\_LimeSurvey\svn/admin/tokens.php:1728
 msgid "Add fields"
 msgstr "Aggiungi campi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1742
+#: E:\_LimeSurvey\svn/admin/tokens.php:1757
 msgid "Token descriptions were successfully updated."
 msgstr "Le descrizioni degli identificativi sono state aggiornate con successo."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1775
+#: E:\_LimeSurvey\svn/admin/tokens.php:1790
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s campo(i) aggiunto(i) con successo!"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1776
+#: E:\_LimeSurvey\svn/admin/tokens.php:1791
 msgid "Back to attribute field management."
 msgstr "Ritorna alla gestione del campo attributo"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1809
-#: E:\_LimeSurvey\svn/admin/tokens.php:1946
-#: E:\_LimeSurvey\svn/admin/tokens.php:2019
+#: E:\_LimeSurvey\svn/admin/tokens.php:1824
+#: E:\_LimeSurvey\svn/admin/tokens.php:1961
+#: E:\_LimeSurvey\svn/admin/tokens.php:2050
 msgid "Add or Edit Token Entry"
 msgstr "Aggiungi o modifica lo voce relativa al Token"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1813
+#: E:\_LimeSurvey\svn/admin/tokens.php:1828
 msgid "Auto"
 msgstr "Automatico "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1835
+#: E:\_LimeSurvey\svn/admin/tokens.php:1850
 msgid "Email Status"
 msgstr "Stato email:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1854
+#: E:\_LimeSurvey\svn/admin/tokens.php:1869
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Si può scegliere di lasciare questo campo vuoto e generare gli identificativi automaticamente usando il pulsante Genera password di identificazione"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1892
+#: E:\_LimeSurvey\svn/admin/tokens.php:1907
 msgid "until"
 msgstr "fino"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1898
+#: E:\_LimeSurvey\svn/admin/tokens.php:1913
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1922
+#: E:\_LimeSurvey\svn/admin/tokens.php:1937
 msgid "Update token entry"
 msgstr "Modifica identificativo"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1928
+#: E:\_LimeSurvey\svn/admin/tokens.php:1943
 msgid "Add token entry"
 msgstr "Aggiungi un identificativo"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1996
+#: E:\_LimeSurvey\svn/admin/tokens.php:2011
 msgid "The token entry was successfully updated."
 msgstr "L'inserimento dell'identificativo è stato aggiornato con successo."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:1997
-#: E:\_LimeSurvey\svn/admin/tokens.php:2043
-#: E:\_LimeSurvey\svn/admin/tokens.php:2051
+#: E:\_LimeSurvey\svn/admin/tokens.php:2012
+#: E:\_LimeSurvey\svn/admin/tokens.php:2076
+#: E:\_LimeSurvey\svn/admin/tokens.php:2084
 msgid "Display Tokens"
 msgstr "Mostra gli identificativi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2002
-#: E:\_LimeSurvey\svn/admin/tokens.php:2049
-#: E:\_LimeSurvey\svn/admin/tokens.php:2247
-#: E:\_LimeSurvey\svn/admin/tokens.php:2480
+#: E:\_LimeSurvey\svn/admin/tokens.php:2017
+#: E:\_LimeSurvey\svn/admin/tokens.php:2082
+#: E:\_LimeSurvey\svn/admin/tokens.php:2280
+#: E:\_LimeSurvey\svn/admin/tokens.php:2513
 msgid "Failed"
 msgstr "Fallito"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2003
-#: E:\_LimeSurvey\svn/admin/tokens.php:2050
+#: E:\_LimeSurvey\svn/admin/tokens.php:2018
+#: E:\_LimeSurvey\svn/admin/tokens.php:2083
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Esiste già una voce con lo stesso token nella tabella. Lo stesso token non può essere utilizzato in più voci."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2004
+#: E:\_LimeSurvey\svn/admin/tokens.php:2019
 msgid "Show this token entry"
 msgstr "Mostra questo token"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2042
+#: E:\_LimeSurvey\svn/admin/tokens.php:2075
 msgid "Added New Token"
 msgstr "Un nuovo identificativo è stato creato"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2065
-#: E:\_LimeSurvey\svn/admin/tokens.php:2113
+#: E:\_LimeSurvey\svn/admin/tokens.php:2098
+#: E:\_LimeSurvey\svn/admin/tokens.php:2146
 msgid "Upload CSV File"
 msgstr "Fai Upload del File CSV"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2071
-#: E:\_LimeSurvey\svn/admin/tokens.php:2094
+#: E:\_LimeSurvey\svn/admin/tokens.php:2104
+#: E:\_LimeSurvey\svn/admin/tokens.php:2127
 msgid "Note:"
 msgstr "Nota:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2072
+#: E:\_LimeSurvey\svn/admin/tokens.php:2105
 msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Il file deve essere un file CSV standard (delimitato da virgole) con doppi apici su ciascun valore (di default per OpenOffice e Excel). La prima riga deve contenere i dati dell'intestazione dei campi (verrà rimossa). I campi possono essere in qualsiasi ordine."
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2072
+#: E:\_LimeSurvey\svn/admin/tokens.php:2105
 msgid "Mandatory fields:"
 msgstr "Campi obbligatori:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2073
+#: E:\_LimeSurvey\svn/admin/tokens.php:2106
 msgid "Optional fields:"
 msgstr "Campi opzionali:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2088
+#: E:\_LimeSurvey\svn/admin/tokens.php:2121
 msgid "Upload LDAP entries"
 msgstr "Carica le immissioni LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2095
+#: E:\_LimeSurvey\svn/admin/tokens.php:2128
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Le query LDAP sono definite dall'amministratore nel file config-ldap.php"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2128
+#: E:\_LimeSurvey\svn/admin/tokens.php:2161
 msgid "Upload file not found. Check your permissions and path for the upload directory"
 msgstr "Lista di upload non trovata. Controlla i tuoi permessi ed il percorso per vedere se c'è l'indice di upload"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2133
+#: E:\_LimeSurvey\svn/admin/tokens.php:2166
 msgid "Importing CSV File"
 msgstr "Importazione File CSV"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2134
+#: E:\_LimeSurvey\svn/admin/tokens.php:2167
 msgid "Creating Token Entries"
 msgstr "Crea voce identificativi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2165
+#: E:\_LimeSurvey\svn/admin/tokens.php:2198
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Errore: Il tuo file caricato non riporta all'interno una o piu' colonne obbligatorie:'firstname', 'lastname' or 'email'"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2249
+#: E:\_LimeSurvey\svn/admin/tokens.php:2282
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s record in CSV"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2250
+#: E:\_LimeSurvey\svn/admin/tokens.php:2283
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s record verificano i requisiti minimi "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2251
+#: E:\_LimeSurvey\svn/admin/tokens.php:2284
 #, php-format
 msgid "%s records imported"
 msgstr "%s record importati"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2254
+#: E:\_LimeSurvey\svn/admin/tokens.php:2287
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s record duplicati rimossi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2257
-#: E:\_LimeSurvey\svn/admin/tokens.php:2266
-#: E:\_LimeSurvey\svn/admin/tokens.php:2488
-#: E:\_LimeSurvey\svn/admin/tokens.php:2496
+#: E:\_LimeSurvey\svn/admin/tokens.php:2290
+#: E:\_LimeSurvey\svn/admin/tokens.php:2299
+#: E:\_LimeSurvey\svn/admin/tokens.php:2521
+#: E:\_LimeSurvey\svn/admin/tokens.php:2529
 msgid "List"
 msgstr "Lista"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2265
-#: E:\_LimeSurvey\svn/admin/tokens.php:2495
+#: E:\_LimeSurvey\svn/admin/tokens.php:2298
+#: E:\_LimeSurvey\svn/admin/tokens.php:2528
 msgid "Records with invalid email address removed"
 msgstr "Rimossi i Record con indirizzo e-mail non corretto "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2288
+#: E:\_LimeSurvey\svn/admin/tokens.php:2321
 msgid "Uploading LDAP Query"
 msgstr "Caricamento Query LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2482
+#: E:\_LimeSurvey\svn/admin/tokens.php:2515
 msgid "Results from LDAP Query"
 msgstr "Risultati della query LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2483
+#: E:\_LimeSurvey\svn/admin/tokens.php:2516
 msgid "Records met minumum requirements"
 msgstr "I record verificano i requisiti minimi "
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2484
+#: E:\_LimeSurvey\svn/admin/tokens.php:2517
 msgid "Records imported"
 msgstr "Record importati"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2487
+#: E:\_LimeSurvey\svn/admin/tokens.php:2520
 msgid "Duplicate records removed"
 msgstr "Record duplicati rimossi"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2506
+#: E:\_LimeSurvey\svn/admin/tokens.php:2539
 msgid "Can't bind to the LDAP directory"
 msgstr "Non può collegare la directory LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2512
+#: E:\_LimeSurvey\svn/admin/tokens.php:2545
 msgid "Can't connect to the LDAP directory"
 msgstr "Impossibile connettersi alla directory LDAP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2539
+#: E:\_LimeSurvey\svn/admin/tokens.php:2572
 msgid "Choose the CSV file to upload:"
 msgstr "Scegliere il file CSV da caricare:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2540
+#: E:\_LimeSurvey\svn/admin/tokens.php:2573
 #: E:\_LimeSurvey\svn/admin/vvimport.php:94
 msgid "Character set of the file:"
 msgstr "Set di caratteri del file:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2541
-#: E:\_LimeSurvey\svn/admin/tokens.php:2575
+#: E:\_LimeSurvey\svn/admin/tokens.php:2574
+#: E:\_LimeSurvey\svn/admin/tokens.php:2608
 msgid "Filter blank email addresses:"
 msgstr "Filtra gli indirizzi di posta elettronica vuoti"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2542
-#: E:\_LimeSurvey\svn/admin/tokens.php:2576
+#: E:\_LimeSurvey\svn/admin/tokens.php:2575
+#: E:\_LimeSurvey\svn/admin/tokens.php:2609
 msgid "Filter duplicate records:"
 msgstr "Filitra i records duplicati:"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2556
+#: E:\_LimeSurvey\svn/admin/tokens.php:2589
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Il modulo LDAP non è presente nella configurazione PHP"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2562
+#: E:\_LimeSurvey\svn/admin/tokens.php:2595
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP disabilitato o nessuna quesry LDAP definita"
 
-#: E:\_LimeSurvey\svn/admin/tokens.php:2567
+#: E:\_LimeSurvey\svn/admin/tokens.php:2600
 msgid "Select the LDAP query you want to run:"
 msgstr "Seleziona la query LDAP che vuoi lanciare:"
 
@@ -8072,94 +8072,98 @@ msgid "Italian"
 msgstr "Italiano"
 
 #: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:300
+msgid "Italian-Formal"
+msgstr "Italiano (formale)"
+
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:306
 msgid "Japanese"
 msgstr "Giapponese"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:306
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:312
 msgid "Korean"
 msgstr "Coreano"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:312
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:318
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:318
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:324
 msgid "Latvian"
 msgstr "Lituano"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:324
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:330
 msgid "Macedonian"
 msgstr "Macedone"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:330
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:336
 msgid "Norwegian (Bokmal)"
 msgstr "Norvegese (Bokmal)"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:336
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:342
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvegese (Nynorsk)"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:342
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:348
 msgid "Persian"
 msgstr "Persiano"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:348
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:354
 msgid "Polish"
 msgstr "Polacco"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:354
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:360
 msgid "Portuguese"
 msgstr "Portoghese"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:360
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:366
 msgid "Portuguese (Brazilian)"
 msgstr "Portoghese (Brasiliano)"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:366
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:372
 msgid "Russian"
 msgstr "Russo"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:372
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:378
 msgid "Romanian"
 msgstr "Rumeno"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:378
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:384
 msgid "Slovak"
 msgstr "Slovacco"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:384
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:390
 msgid "Sinhala"
 msgstr "Sinhala"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:390
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:396
 msgid "Slovenian"
 msgstr "Sloveno"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:396
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:402
 msgid "Serbian"
 msgstr "Serbo"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:402
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:408
 msgid "Spanish"
 msgstr "Spagnolo"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:408
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:414
 msgid "Spanish (Mexico)"
 msgstr "Spagnolo (Messicano)"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:414
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:420
 msgid "Swedish"
 msgstr "Svedese"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:420
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:426
 msgid "Turkish"
 msgstr "Turco"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:426
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:432
 msgid "Thai"
 msgstr "Tailandese"
 
-#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:433
+#: E:\_LimeSurvey\svn/classes/core/surveytranslator.php:439
 msgid "Vietnamese"
 msgstr "Vietnamita"
 
