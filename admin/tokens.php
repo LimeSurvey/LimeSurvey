@@ -1572,6 +1572,20 @@ if ($subaction == "remind" && //XXX
 					."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
 					."\t<input type='hidden' name='action' value=\"tokens\" />\n"
 					."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+				//Include values for constraints minreminderdelay and maxremindercount if they exist
+				if (isset($_POST['minreminderdelay']) && 
+						$_POST['minreminderdelay'] != '' &&
+						intval($_POST['minreminderdelay']) != 0)
+				{
+				    $tokenoutput .= "\t<input type='hidden' name='minreminderdelay' value=\"".$_POST['minreminderdelay']."\" />\n";
+				}
+				if (isset($_POST['maxremindercount']) &&
+						$_POST['maxremindercount'] != '' &&
+						intval($_POST['maxremindercount']) != 0)
+				{
+					$tokenoutput .= "\t<input type='hidden' name='maxremindercount' value=\"".$_POST['maxremindercount']."\" />\n";
+				}
+				//
 				foreach ($surveylangs as $language)
 				{
 					$message = html_escape($_POST['message_'.$language]);
