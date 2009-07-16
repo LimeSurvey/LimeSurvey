@@ -1096,7 +1096,7 @@ function do_date($ia)
 	} 
     else 
         {
-            $js_header_includes[] = '/scripts/jquery/languages/ui.datepicker-'.$clang->langcode.'.js';
+            $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
             $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
 
             // Format the date  for output
