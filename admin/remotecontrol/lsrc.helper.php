@@ -3323,7 +3323,7 @@ class LsrcHelper {
 	 * @param $newGroup
 	 * @return unknown_type
 	 */
-	function importQuestion($surveyid, $sMod, $newGroup=0) //XXX
+	function importQuestion($surveyid, $sMod, $newGroup=false) //XXX
 	{
 		global $connect ;
 		//global $dbprefix ;
@@ -3337,7 +3337,7 @@ class LsrcHelper {
 		$getGidSql = "SELECT gid
 	                   FROM {$dbprefix}groups 
 	                   WHERE sid=".$surveyid." AND language='".GetBaseLanguageFromSurveyID($surveyid)."'
-	                   ORDER BY gid desc LIMIT 1; ";    
+	                   ORDER BY gid desc ";    
 		$getGidRs = db_execute_num($getGidSql);
 		$gidRow=$getGidRs->FetchRow();
 		$gid = $gidRow[0];
@@ -3348,7 +3348,7 @@ class LsrcHelper {
 			return "No Group for importing the question, available! Import failed.";
 		}
 
-		if($newGroup)
+		if($newGroup===true)
 		++$gid;
 
 		$the_full_file_path = $queDir.$sMod.".csv";
