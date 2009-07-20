@@ -77,6 +77,28 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7253) to 1.85+ (build 7337) [20-07-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: French. (b00z00)
+#Updated translation: Formal Italian by Jay C. Burton. (jaycburton)
+#Updated translation: Dutch by Menno Dekker. (jaycburton)
+#Updated translation: Greek by Manolis Stamatogiannakis. (jaycburton)
+#Updated translation: Italian-Formal by livio. (jaycburton)
+#Updated translation: Albanian translation updates by Gjergi Sheldija. (jaycburton)
+#Updated translation: Polish update (elisa-ls)
+#Updated translation: Some translation improvements by Dimitris Zacharopoulos. (jaycburton)
+#Updated translation: Translation updates by Mark Yeung. (jaycburton)
+
+-Fixed "an attribute value specification must be an attribute value literal unless SHORTTAG YES is specified" HTML error message. (maziminke)
+-Fixed #3485: Datepicker translation doesn't work (mennodekker)
+-Fixed bug #03478: Reminder contraint settings not used after first email batch (jcleeland)
+-Fixed bug #03479: At creating a token it's not possible to enter a token start or an token end date (jcleeland)
+-Fixed issue #03451: a survey with an empty questions-group can be activated which can hang the server at runtime (lemeur)
+-Fixed issue #3471: Data from radio lists with alphanumeric labels is incorrectly exported to R and SPSS (mennodekker)
+-fixed Issue: importQuestion did not import the question. (wahrendorff)
+-fixed: Sherpa Template - Limited textarea width to 90%. Before it was set to 99% which partly broke the layout. (maziminke)
+
 Changes from 1.85+ (build 7191) to 1.85+ (build 7253) [08-07-2009] - Legend: + new feature, # update feature, - bug fix
 
 #Updated feature: FCKeditor updated to release 2.6.4.1 in order to fix several serious security issues. (lemeur)
