@@ -365,14 +365,14 @@ function createinsertquery()
             //Iterate through possible responses
             if (isset($_SESSION[$value]) && !empty($fieldexists))
             {
-                //If deletenonvalues is ON, delete any values that shouldn't exist
+				//If deletenonvalues is ON, delete any values that shouldn't exist
                 if($deletenonvalues==1)
-		{
-			if (!checkconfield($value))
-			{
-				$colnames_hidden[]=$value;
-			}
-		}
+				{
+					if (!checkconfield($value))
+					{
+						$colnames_hidden[]=$value;
+					}
+				}
                 //Only create column name and data entry if there is actually data! 
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
@@ -394,7 +394,13 @@ function createinsertquery()
                         $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
                         $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
                     }
-                	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
+					//These next two functions search for lone < or > symbols, and converts them to &lt;~ or &rt;~
+					//so they get ignored by the strip_tags function
+					$_SESSION[$value]=my_strip_ltags($_SESSION[$value]);
+					$_SESSION[$value]=my_strip_rtags($_SESSION[$value]);
+					$_SESSION[$value]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
+					$_SESSION[$value]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $_SESSION[$value]));
+                	$values[]=$_SESSION[$value];
                 }
 
             }
@@ -545,7 +551,11 @@ function createinsertquery()
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
                                 $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
                             }                            
-							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
+							$_POST[$field]=my_strip_ltags($_POST[$field]);
+							$_POST[$field]=my_strip_rtags($_POST[$field]);
+							$_POST[$field]=strip_tags($myFilter->process($_POST[$field]),true);
+							$_POST[$field]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $_POST[$field]));
+							$query .= db_quote_id($field)." = '".$_POST[$field]."',";
 						}
 					}
 				}
@@ -632,5 +642,30 @@ function submitanswer()
           }
           return $array_remval;
     }
+
+function my_strip_ltags($str) {
+    $strs=explode('<',$str);
+    $res=$strs[0];
+    for($i=1;$i<count($strs);$i++)
+    {
+        if(!strpos($strs[$i],'>'))
+            $res = $res.'&lt;~'.$strs[$i];
+        else
+            $res = $res.'<'.$strs[$i];
+    }
+    return $res;   
+}
+function my_strip_rtags($str) {
+    $strs=explode('>',$str);
+    $res=$strs[0];
+    for($i=1;$i<count($strs);$i++)
+    {
+        if(!strpos($strs[$i],'<'))
+            $res = $res.'&rt;~'.$strs[$i];
+        else
+            $res = $res.'>'.$strs[$i];
+    }
+    return $res;
+}
 
 ?>
