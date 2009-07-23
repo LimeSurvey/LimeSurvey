@@ -4983,7 +4983,7 @@ function do_array_flexible($ia)
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
-				$answer .= "\t\t\t<td>\n"
+				$answer .= "\t\t\t<td class=\"answer_cell_00$ld\">\n"
 				. "\t\t\t\t<label for=\"answer$myfname-$ld\">\n"
 				. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
 				. html_escape(strip_tags($labelans[$thiskey])).'"';
