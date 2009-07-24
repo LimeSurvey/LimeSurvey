@@ -2146,7 +2146,14 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
 		}
 		else
 		{
-			return strip_tags($this_answer);
+			 if (strip_tags($this_answer) == "") 
+			 { 
+			 	return $value;
+			 } 
+			 else 
+			 { 
+			 	return strip_tags($this_answer); 
+			 }
 		}
 	}
 	else
