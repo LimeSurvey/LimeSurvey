@@ -1374,7 +1374,7 @@ if ($subaction=='' ||
 						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
-							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 						}
 						else
 						{
@@ -1447,7 +1447,7 @@ if ($subaction=='' ||
 						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
-							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 						}
 						else
 						{
