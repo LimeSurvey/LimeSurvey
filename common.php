@@ -2148,7 +2148,31 @@ function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y
 		{
 			 if (strip_tags($this_answer) == "") 
 			 { 
-			 	return $value;
+				switch ($this_type)
+				{// for questions with answers beeing
+				// answer code, it is safe to return the
+				// code instead of the blank stripped answer
+					case "A":
+					case "B":
+					case "C":
+					case "E":
+					case "F":
+					case "H":
+					case "1":
+					case "M":
+					case "P":
+					case "!":
+					case "5":
+					case "L":
+					case "O":
+					case "W":
+					case "Z":
+						return $value;
+						break;
+					default:
+						return strip_tags($this_answer); 
+						break;
+				}
 			 } 
 			 else 
 			 { 
