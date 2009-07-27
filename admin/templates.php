@@ -688,6 +688,7 @@ if (is_array($files)) {
 	}
 }
 //Get list of 'otherfiles'
+$otherfiles=array();
 $dirloc=$templaterootdir."/".$templatename;
 if ($handle = opendir($dirloc)) {
 	while(false !== ($file = readdir($handle))) {
