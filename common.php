@@ -123,7 +123,7 @@ $slashlesshome=str_replace(array("\\", "/"), "", $homedir);
 // Uncomment the following line for debug purposes
 // echo $slashlesspath." - ".$slashlesshome;
 
-if (strcasecmp($slashlesshome, $slashlesspath) == 0 || eregi("dump", $_SERVER['PHP_SELF'])) {
+if (strcasecmp($slashlesshome, $slashlesspath) == 0) {
     if (strcasecmp($slashlesshome."install", $slashlesspath) != 0)
 	{
 		$sourcefrom="admin";

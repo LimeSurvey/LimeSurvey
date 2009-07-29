@@ -21,8 +21,11 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($gl)) {$gl=array('null');}
-if (isset($move) && $move == 'moveprev') {$_SESSION['step'] = $thisstep-1;}
-if (isset($move) && $move == 'movenext') {$_SESSION['step'] = $thisstep+1;}
+if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
+if (isset($move) && $move == "movenext") {
+    if ($_SESSION['step']==$thisstep)
+    $_SESSION['step'] = $thisstep+1;
+}
 
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 // Previously we used to keep the session and redirect the user to the
