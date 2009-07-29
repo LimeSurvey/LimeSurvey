@@ -7,7 +7,7 @@ body {
   font-size: 13px;
   line-height:24px;
   color: #e8eaeb; 
-  text-align: center; 
+  /*text-align: center; */
 }
 
 table
@@ -32,7 +32,7 @@ h5 { font-size:100%; }
 #layout { 
   width:790px; 
   margin:0 auto; 
-  text-align:left; 
+  /*text-align:left; */
 }
 #container { 
 padding-top: 12px;
@@ -57,15 +57,21 @@ padding-top: 12px;
 }
 .hide
 {
+	display: none;
+	/*
 	font-weight: normal;
 	position: absolute;
 	top: -9999px;
 	left: -9999px;
+	*/
+	
 }
 #progress-graph div.zero
 {
 	width: 2.6em;
-	margin-right: 0%;
+	margin-right: -1em;
+	
+
 }
 #progress-graph div.graph
 {
@@ -74,14 +80,18 @@ padding-top: 12px;
 	border: 1px solid rgb(50, 68, 85);
 	margin-top: -1.7em;
 	margin-left: 2.6em;
-	margin-right: 0%;
+	margin-right: 2.6em;
+
+	
 }
 #progress-graph div.cent
 {
 	width: 3em;
 	margin-top: -1.5em;
 	margin-left: 13.8em;
-	margin-right: 0%;	
+	margin-right: 13.8em;
+
+
 }
 
 /* header ------------------------------------------------------------------ */
@@ -98,16 +108,17 @@ font-size:260%;
 margin: 0;
 line-height: 130px;
 }
+
 #logo a{
 color: #fff;
 text-decoration: none;
 }
 
 #logo .leaf {
-position: absolute; 
+position: absolute;
 left: 0; top: 20px; 
-z-index: 1; 
 width: 120px; height: 80px;
+z-index: 1; 
 background: url('Logo_LimeSurvey_transparent_25x25.png') 60px 5px no-repeat; 
 cursor: pointer;
 }
@@ -299,11 +310,12 @@ font-weight:700;
 {
  padding-left:5px;
  padding-right:5px;
+ text-align: left;
 }
 
 .textarea
 {
-   width:350px;
+   width:700px;
    height:120px;
 }
 
@@ -407,7 +419,7 @@ select
 ,.gender li
 {
 	list-style-type: none;
-	text-align: left;
+	/*text-align: left;*/
 	margin: 0% 0% 0.5em 0.5em;
 }
  .choice-5-pt-radio li
@@ -905,4 +917,11 @@ div.questionTitle{
 
 td.statsImageholder {
 	background-color:#EFEFEF;
+}
+
+
+.survey-question-answer li{
+	/*padding: 3px 10px 3px 350px;*/
+	/*float:left;*/
+	/*text-align: left;*/
 }
