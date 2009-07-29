@@ -251,17 +251,17 @@ if (!$tokenexists) //If no tokens table exists
 	{
 		$createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
-		. "firstname C(40) ,\n "
-		. "lastname C(40) ,\n ";
+		. "firstname C(40),\n "
+		. "lastname C(40),\n ";
         //MSSQL needs special treatment because of some strangeness in ADODB
         if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
-             {
-                          $createtokentable.= "email C(320) ,\n "
-                                             ."emailstatus C(300) DEFAULT 'OK',\n ";
-             }
+        {
+                      $createtokentable.= "email C(320),\n "
+                                         ."emailstatus C(300) DEFAULT 'OK',\n ";
+        }
         else
             {
-             $createtokentable.= "email X(320) ,\n "
+             $createtokentable.= "email X(320),\n "
                                 ."emailstatus X(300) DEFAULT 'OK',\n ";
             }
 
@@ -305,7 +305,14 @@ if (!$tokenexists) //If no tokens table exists
 		} else {
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 			$dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
+            if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
+            {
+                $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';                
+                $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+            }
 
+            
+            
 			$tokenoutput .= "\t</div></td></tr><tr>\n"
 			."\t\t<td align='center'>\n"
 			."\t\t\t<br /><br />\n"
