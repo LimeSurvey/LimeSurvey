@@ -60,7 +60,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	}
 
 	$baselang = GetBaseLanguageFromSurveyID($postsid);
-	$groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {$dbprefix}questions as q RIGHT JOIN {$dbprefix}groups as g ON q.gid=g.gid WHERE g.sid=$postsid group by g.gid AND g.language='$baselang' AND q.language='$baselang';";
+	$groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {$dbprefix}questions as q RIGHT JOIN {$dbprefix}groups as g ON q.gid=g.gid WHERE g.sid=$postsid AND g.language='$baselang' AND q.language='$baselang' group by g.gid,g.group_name;";
 	$groupresult=db_execute_assoc($groupquery) or safe_die($groupquery."<br />".$connect->ErrorMsg());
 	while ($row=$groupresult->FetchRow())
 	{ //TIBO
