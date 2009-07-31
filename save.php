@@ -396,11 +396,10 @@ function createinsertquery()
                     }
 					//These next two functions search for lone < or > symbols, and converts them to &lt;~ or &rt;~
 					//so they get ignored by the strip_tags function
-					$_SESSION[$value]=my_strip_ltags($_SESSION[$value]);
-					$_SESSION[$value]=my_strip_rtags($_SESSION[$value]);
-					$_SESSION[$value]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
-					$_SESSION[$value]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $_SESSION[$value]));
-                	$values[]=$_SESSION[$value];
+					$tmpvalue=my_strip_ltags($_SESSION[$value]);
+					$tmpvalue=my_strip_rtags($tmpvalue);
+					$tmpvalue=strip_tags($connect->qstr($tmpvalue,get_magic_quotes_gpc()));
+					$values[]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
                 }
 
             }
@@ -551,11 +550,11 @@ function createinsertquery()
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
                                 $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
                             }                            
-							$_POST[$field]=my_strip_ltags($_POST[$field]);
-							$_POST[$field]=my_strip_rtags($_POST[$field]);
-							$_POST[$field]=strip_tags($myFilter->process($_POST[$field]),true);
-							$_POST[$field]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $_POST[$field]));
-							$query .= db_quote_id($field)." = '".$_POST[$field]."',";
+							$tmpvalue=my_strip_ltags($_POST[$field]);
+							$tmpvalue=my_strip_rtags($tmpvalue);
+							$tmpvalue=strip_tags($myFilter->process($tmpvalue),true);
+							$tmpvalue=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
+							$query .= db_quote_id($field)." = '".$tmpvalue."',";
 						}
 					}
 				}
