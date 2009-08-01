@@ -1804,7 +1804,7 @@ function buildsurveysession()
 	{
 
 		//check if token actually does exist
-		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);    //Checked 
 		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
