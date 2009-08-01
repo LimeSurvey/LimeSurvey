@@ -1226,6 +1226,9 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 			if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
 		}
+        // Exception for conditions based on attributes
+        if ($oldcqid==0) {$newcqid=0;}
+        
 		if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
 		{
 			foreach ($substitutions as $subs) {
