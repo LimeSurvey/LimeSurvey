@@ -110,7 +110,7 @@ $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}lab
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
-$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language 
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value
            FROM {$dbprefix}labels, {$dbprefix}questions 
 		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
 		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 

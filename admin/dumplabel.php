@@ -48,7 +48,7 @@ $qquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=$lid";
 $qdump = BuildCSVFromQuery($qquery);
 
 //2: Answers table
-$aquery = "SELECT lid, code, title, sortorder, language FROM {$dbprefix}labels WHERE lid=$lid";
+$aquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=$lid";
 $adump = BuildCSVFromQuery($aquery);
 
 $fn = "limesurvey_labelset_$lid.csv";

@@ -3153,7 +3153,7 @@ function buildLabelSetCheckSumArray()
 	while ($row=$result->FetchRow())
 	{
 		$thisset="";
-		$query2 = "SELECT code, title, sortorder, language
+		$query2 = "SELECT code, title, sortorder, language, assessment_value
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
                    ORDER BY language, sortorder, code";
@@ -5554,7 +5554,7 @@ function safe_die($text)
 {
     //Only allowed tag: <br />
     $textarray=explode('<br />',$text);
-    array_map('htmlspecialchars',$textarray);
+    $textarray=array_map('htmlspecialchars',$textarray);
     die(implode( '<br />',$textarray));
 }
 

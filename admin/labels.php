@@ -27,6 +27,7 @@ if (isset($_POST['method']) && get_magic_quotes_gpc())
 	$_POST['method']  = stripslashes($_POST['method']);
 }
 
+$labelsoutput='';
 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 {
 
