@@ -115,14 +115,13 @@ $lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labe
 		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
 		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
 		   AND sid=$surveyid 
-		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
+		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value";
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
-          FROM {$dbprefix}question_attributes, {$dbprefix}questions 
-		  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid 
-		  AND {$dbprefix}questions.sid=$surveyid";
+$query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
+          FROM {$dbprefix}question_attributes 
+		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
 $qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
