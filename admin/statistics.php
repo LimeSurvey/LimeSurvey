@@ -4266,7 +4266,7 @@ if (isset($summary) && $summary)
 						// Draw the pie chart
 						$graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
 						$graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
-						$graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+						//$graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
 						$graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
 						$MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
 						$cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
