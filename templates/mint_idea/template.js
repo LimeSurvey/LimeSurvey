@@ -33,7 +33,7 @@ function focusFirst(Event)
 	}
 	// put focus on the element we just counted.
 	if (document.forms[0].elements[i].type == "hidden" &&
-		document.forms[0].elements[i].style.visibility == 'visible'
+		document.forms[0].elements[i].style.visibility == 'visible')
 	{
 		document.forms[0].elements[i].focus();
 	}
