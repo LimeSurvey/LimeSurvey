@@ -122,7 +122,7 @@ class LsrcHelper {
 	function emailSender($surveyid, $type, $maxLsrcEmails='') //XXX
 	{
 		global $connect,$sitename ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$surveyid = sanitize_int($surveyid);
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
@@ -392,7 +392,7 @@ class LsrcHelper {
 							"FROM {$dbprefix}surveys_languagesettings ".
 							"WHERE surveyls_survey_id = ".$surveyid." ";
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
 					
 				$sqlResult = db_execute_assoc($sql);
 					
@@ -401,7 +401,7 @@ class LsrcHelper {
 					$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind'];
 					$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
 				}
-
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
 				//$tokenoutput .= ("Sending Reminders")."\n";
 					
 				$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -414,7 +414,7 @@ class LsrcHelper {
 					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
 
 				}
-					
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
 				$SQLemailstatuscondition = " AND emailstatus = 'OK'";
 
 				if (isset($_POST['maxremindercount']) &&
@@ -427,7 +427,7 @@ class LsrcHelper {
 				{
 					$SQLremindercountcondition = "";
 				}
-					
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
 				if (isset($_POST['minreminderdelay']) &&
 				$_POST['minreminderdelay'] != '' &&
 				intval($_POST['minreminderdelay']) != 0)
@@ -446,7 +446,8 @@ class LsrcHelper {
 				{
 					$SQLreminderdelaycondition = "";
 				}
-					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
+				
 				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 					
 				if (isset($starttokenid)) {$ctquery .= " AND tid >= '{$starttokenid}'";}
@@ -458,6 +459,8 @@ class LsrcHelper {
 				$ctfieldcount = $ctresult->FieldCount();
 				$emquery = "SELECT firstname, lastname, email, token, tid, language ";
 				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
 					
 				// TLR change to put date into sent
 				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
@@ -465,10 +468,15 @@ class LsrcHelper {
 				if (isset($starttokenid)) {$emquery .= " AND tid >= '{$starttokenid}'";}
 				if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 				$emquery .= " ORDER BY tid ";
-				$emresult = db_select_limit_assoc($emquery, $maxemails);
-				//$emresult = db_execute_assoc($emquery);
-				$emcount = $emresult->RecordCount();
-					
+				
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind, maxemails?: $maxemails, emquery: $emquery ");
+				
+				//$emresult = db_select_limit_assoc($emquery, $maxemails) or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
+				$emresult = db_execute_assoc($emquery);
+				$emcount = $emresult->RecordCount() or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
+				
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
+				
 				if ($emcount > 0)
 				{
 					while ($emrow = $emresult->FetchRow())
@@ -482,14 +490,23 @@ class LsrcHelper {
 						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
 						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
 						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						
+						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+						$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
 							
 						$emrow['language']=trim($emrow['language']);
 						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 						if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
 						$found = array_search($emrow['language'], $surveylangs);
 						if ($found==false) {$emrow['language']=$baselanguage;}
-							
-						$from = $_POST['from_'.$emrow['language']];
+						
+						 $from = $thissurvey['adminemail']; //$from = $_POST['from_'.$emrow['language']];
+						
 							
 						if (getEmailFormat($surveyid) == 'html')
 						{
@@ -705,7 +722,7 @@ class LsrcHelper {
 //		foreach($bigarray as $ba)
 //			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$ba);
 			
-		if (isset($bigarray[0])) $bigarray[0]=$this->removeBOM($bigarray[0]);
+		if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
 		// Now we try to determine the dataformat of the survey file.
 
 		if (isset($bigarray[1]) && isset($bigarray[4])&& (substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
