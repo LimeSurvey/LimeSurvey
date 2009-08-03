@@ -77,6 +77,39 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian. (idobraca)
+#Updated translation: Czech by Vladimir Braun. (jaycburton)
+#Updated translation: Italian. (idobraca)
+#Updated translation: French. (b00z00)
+#Updated translation: Polish(elisa-ls)
+#Updated translation: Slovak by Marek Hallér. (jaycburton)
+#Updated translation: Spanish (es) (kadejo)
++New feature: CSS class for cells within array (flexible label) question type. This way cells within the table can have a background color assigned using CSS. (maziminke)
+-Fixed bug #03459: Using a "lower than" > character as code within label set leads to a save error in the end user survey form (jcleeland)
+-Fixed issue # 03514: Font size of suffix is too large in template bluengrey (c_schmitz)
+-Fixed issue #3436: Corrupted progress box with RTL languages in mint_idea template - patch by kabapy (c_schmitz)
+-Fixed issue #3439: Javascript is disabled on saving an assessment (c_schmitz)
+-Fixed issue #3445: Disabling going to previous q: does not work if back button used in browser - idea by chrizzler (c_schmitz)
+-Fixed issue #3446: Create indexes on tokens (c_schmitz)
+-Fixed issue #3452: LimeSurvey and PHP 5.3 (c_schmitz)
+-Fixed issue #3468: Error while exporting survey structure on MSSQL server (c_schmitz)
+-Fixed issue #3507: Results for Array (flexible labels) show HTML when viewing a single answer (c_schmitz)
+-Fixed issue #3510: A group made only of conditional questions will fail to show in Internet Explorer with some templates (lemeur)
+-Fixed issue #3513: Dual Scale Matrix: Radio Buttons not centered at Question Preview  (c_schmitz)
+-Fixed issue #3515: Label set assessment values are not exported correctly (c_schmitz)
+-Fixed issue #3518: Can't import conditions based on token:attributtes (c_schmitz)
+-Fixed issue #3519: Graph legends are not visible well on IE6 (c_schmitz)
+-Fixed issue #3526: Unable to use tokens with hyphens in (c_schmitz)
+-Fixed issue #3527: Due to SQL bad syntax, survey can not be activated at all under PostgreSQL (any version). Tested on PostgreSQL and MySQL. (kadejo)
+-Fixed issue in several templates that could prevent the Question-Help to be displayed correctly (lemeur)
+-Fixed issue: Notice if there are not 'Other' files in template editor (c_schmitz)
+-Fixed wording in conditions editor incorrectly reporting 'Inexistant Token table' for conditions based on tokens (lemeur)
+-Fixed bug #3505: "INSERTANS not working when referring to Array (flexible labels) questions". (maziminke)
+
+
+
 Changes from 1.85+ (build 7253) to 1.85+ (build 7337) [20-07-2009] - Legend: + new feature, # update feature, - bug fix
 
 #Updated translation: Croatian and Italian language (idobraca)
