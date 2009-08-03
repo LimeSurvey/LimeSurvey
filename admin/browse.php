@@ -352,7 +352,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 			."\t\t<th align='right' width='50%'>"
 			.strip_tags(strip_javascript($fnames[$i][2]))."</th>\n"
 			."\t\t<td align='left' >"
-			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']), ENT_QUOTES)
+			.htmlspecialchars(strip_tags(strip_javascript(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']))), ENT_QUOTES)
 			."</td>\n"
 			."\t</tr>\n";
 		}
