@@ -257,14 +257,17 @@ function spss_getvalues ($field = array()) {
 	if (count($answers)>0) {
 		//check the max width of the answers
 		$size = 0;
-		$answers['SPSStype'] = $field['SPSStype'];
+		$spssType = 'F'; //Try if we can use num and use alpha as fallback
+		$size = 1;
 		foreach ($answers as $answer) {
 			$len = mb_strlen($answer['code']);
 			if ($len>$size) $size = $len;
-			if ($answers['SPSStype']=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $answers['SPSStype']='A';
+			if ($spssType =='F' && (my_is_numeric($answer['code'])===false || $size>16)) $spssType='A';
 		}
 		$answers['size'] = $size;
+		$answers['SPSStype'] = $spssType;
 		return $answers;
+		
 	} else {
 		return false;
 	}
