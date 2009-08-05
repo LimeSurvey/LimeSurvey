@@ -18,7 +18,8 @@
  *
  */
 class LsrcHelper {
-
+	
+	
 	/**
 	 * simple debug function to make life a bit easier
 	 *
@@ -192,8 +193,8 @@ class LsrcHelper {
 				$ctcount = $ctresult->RecordCount();
 				$ctfieldcount = $ctresult->FieldCount();
 
-				$emquery = "SELECT firstname, lastname, email, token, tid, language";
-				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				$emquery = "SELECT * ";
+				//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 
@@ -228,6 +229,7 @@ class LsrcHelper {
 					$mailsSend = 0;
 					while ($emrow = $emresult->FetchRow())
 					{
+						$c=1;
 						unset($fieldsarray);
 						$to = $emrow['email'];
 						$fieldsarray["{EMAIL}"]=$emrow['email'];
@@ -235,8 +237,11 @@ class LsrcHelper {
 						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 						$fieldsarray["{TOKEN}"]=$emrow['token'];
 						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						while(isset($emrow["attribute_$c"]))
+						{
+							$fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+							++$c;
+						}
 						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -481,6 +486,7 @@ class LsrcHelper {
 				{
 					while ($emrow = $emresult->FetchRow())
 					{
+						$c=1;
 						unset($fieldsarray);
 						$to = $emrow['email'];
 						$fieldsarray["{EMAIL}"]=$emrow['email'];
@@ -488,8 +494,11 @@ class LsrcHelper {
 						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 						$fieldsarray["{TOKEN}"]=$emrow['token'];
 						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						while(isset($emrow["attribute_$c"]))
+						{
+							$fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+							++$c;
+						}
 						
 						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
@@ -722,7 +731,7 @@ class LsrcHelper {
 //		foreach($bigarray as $ba)
 //			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$ba);
 			
-		if (isset($bigarray[0])) $bigarray[0]=removeBOM($bigarray[0]);
+		if (isset($bigarray[0])) $bigarray[0]=$this->removeBOM($bigarray[0]);
 		// Now we try to determine the dataformat of the survey file.
 
 		if (isset($bigarray[1]) && isset($bigarray[4])&& (substr($bigarray[1], 0, 22) == "# SURVEYOR SURVEY DUMP")&& (substr($bigarray[4], 0, 29) == "# http://www.phpsurveyor.org/"))
@@ -3885,7 +3894,18 @@ class LsrcHelper {
 		return true;
 
 	}
-
+	/**
+	* This function removes the UTF-8 Byte Order Mark from a string
+	* 
+	* @param string $str
+	* @return string
+	*/
+	private function removeBOM($str=""){
+	        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+	                $str=substr($str, 3);
+	        }
+	        return $str;
+	} 
 	/**
 	 * This function pulls a CSV representation of the Field map
 	 *
@@ -3918,8 +3938,8 @@ class LsrcHelper {
 		}
 		return $result;
 	}
-
-	function getqtypelist($SelectedCode = "T", $ReturnType = "array")
+	
+	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")
 	{
 		include("lsrc.config.php");
 		global $publicurl;
