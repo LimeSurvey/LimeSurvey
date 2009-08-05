@@ -93,7 +93,7 @@ else{
 	$server->addFunction("sGetFieldmap");
 	$server->addFunction("fSendStatistic");
 	// handle the soap request!
-if($enableLsrc==true)
+if($enableLsrc===true)
 {
 	$server->handle();
 }
@@ -514,6 +514,161 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 	
 } //end of function sInsertToken  
 
+
+/**
+ * The new one...
+ * * Function to insert Participant data while auto creating token if non is supported...
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sParticipantData (FIRSTNAME;LASTNAME;EMAIL;LANG;TOKEN;VALIDFROM;VALIDTO;attrib1,attrib2,attrib3,attrib4,attrib5::)
+ * @return unknown_type
+ */
+function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
+{
+	global $connect ;
+	global $dbprefix ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	// check for appropriate rights
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	// check if there is a $iVid, else abort
+	if(!isset($iVid) || $iVid=='' || $iVid==0 )
+	{
+		throw new SoapFault("Server: ", "No SurveyId given");
+		exit;
+	}
+	
+	// check if the Survey we want to populate with data and tokens already exists, else -> Fault
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey does not exists");
+		exit;
+	}
+	
+	$lsrcHelper->createTokenTable($iVid);
+	
+	//set the Seperators to default if nothing is set in the lsrc.config.php
+	if(!isset($sDatasetSeperator) || $sDatasetSeperator=='')
+	{$sDatasetSeperator = "::";}
+	if(!isset($sDatafieldSeperator) || $sDatafieldSeperator=='')
+	{$sDatafieldSeperator = ";";}
+	
+	// prepare to fill the table lime_tokens_*
+	// this is sensitiv, if the Seperator is not the defined one, almost everything could happen, BE AWARE OF YOUR SEPERATOR!...
+	$asDataset = explode($sDatasetSeperator, $sParticipantData);
+	// write the tokens to the token_table
+	$iCountParticipants =  count($asDataset);
+	$iInsertedParticipants=0;
+	
+	//some extra sql statement comes in here later
+	$attributes='';
+	$attributesData='';
+	$validity='';
+	$validityData='';
+	
+	
+	foreach($asDataset as $sData)
+	{
+		if($sData!='')
+		{
+			$asDatafield = explode($sDatafieldSeperator, $sData);			
+			$checkCnt=1;
+			// token generieren
+			while($checkCnt>0)
+			{
+				$value = randomkey(10); //change randomkey value for different tokenlength (up to 36 chars max.)
+				$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
+				$result = db_execute_assoc($cQuery);
+				$checkCnt = $result->RecordCount();
+			}
+			if(!isset($asDatafield[4]) || $asDatafield[4]=='')
+			{
+				$asDatafield[4]= $value;
+			}
+			
+			
+			
+			if(isset($asDatafield[7]) && $asDatafield[7]!='')
+			{
+				$asAttributes = explode(",", $asDatafield[7]);	
+				$n=0;
+				foreach($asAttributes as $attribute)
+				{
+					
+					++$n;
+					//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
+					
+					$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+					$attributes.=",attribute_$n";
+					$attributesData.= ",'$attribute'";
+					
+					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
+					//modify_database("","$sql");
+					$connect->Execute($sql);
+					
+					
+					$insert = "UPDATE {$dbprefix}tokens_$iVid " 
+							. " SET attribute_$n='$attribute' WHERE token='$asDatafield[4]' ";
+					
+					$lsrcHelper->debugLsrc("$insert");
+					$connect->Execute($insert);
+				}
+			}
+			
+			$iDataLength = count($asDatafield);
+			for($n=0;$n>=$iDataLength;++$n)
+			{
+				
+				if($asDatafield[$n]=='')
+				{
+					$asDatafield[$n]=null;
+				}
+			}
+			if(isset($asDatafield[5]))
+			{
+				$validity .= ',validfrom';
+				$validityData .=",'$asDatafield[5]'";
+			}
+			if(isset($asDatafield[6]))
+			{
+				$validity .= ',validuntil';
+				$validityData .=",'$asDatafield[6]'";
+			}
+			
+			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid
+							."(firstname,lastname,email,token,"
+							."language $validity $attributes) "
+							."VALUES ('{$asDatafield[0]}', '{$asDatafield[1]}' , '{$asDatafield[2]}', '{$asDatafield[4]}' , "
+							."'{$asDatafield[3]}' $validityData $attributesData) ";
+
+			$lsrcHelper->debugLsrc("$sInsertParti");				
+							
+			
+//			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid 
+//					."(firstname,lastname,email,emailstatus,token,"
+//					."language,sent,completed,attribute_1,attribute_2,mpid)"
+//					."VALUES ('".$asDatafield[0]."' , 
+//					'".$asDatafield[1]."' , '".$asDatafield[2]."' , 'OK' , '".$asDatafield[5]."',
+//					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
+//				
+			if($connect->Execute($sInsertParti))
+				++$iInsertedParticipants;
+
+		}
+			
+	}
+
+	return "".$iCountParticipants."Datasets given, ".$iInsertedParticipants." rows inserted. ";
+	
+	
+}
 /**
  * TODO: redo better... maybe some other function for compatibility
  * Function to insert Participants data while auto creating tokens for everyone...
@@ -523,7 +678,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
  * @param $sParticipantData
  * @return unknown_type
  */
-function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
+function sInsertParticipants_old($sUser, $sPass, $iVid, $sParticipantData) 
 {
 	global $connect ;
 	global $dbprefix ;

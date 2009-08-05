@@ -192,8 +192,8 @@ class LsrcHelper {
 				$ctcount = $ctresult->RecordCount();
 				$ctfieldcount = $ctresult->FieldCount();
 
-				$emquery = "SELECT firstname, lastname, email, token, tid, language";
-				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				$emquery = "SELECT * ";
+				//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 
 				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 
@@ -228,6 +228,7 @@ class LsrcHelper {
 					$mailsSend = 0;
 					while ($emrow = $emresult->FetchRow())
 					{
+						$c=1;
 						unset($fieldsarray);
 						$to = $emrow['email'];
 						$fieldsarray["{EMAIL}"]=$emrow['email'];
@@ -235,8 +236,11 @@ class LsrcHelper {
 						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 						$fieldsarray["{TOKEN}"]=$emrow['token'];
 						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
+						while(isset($emrow["attribute_$c"]))
+						{
+							$fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+							++$c;
+						}
 						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
 						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
 						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -456,8 +460,8 @@ class LsrcHelper {
 				$ctresult = $connect->Execute($ctquery) or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
 				$ctcount = $ctresult->RecordCount();
 				$ctfieldcount = $ctresult->FieldCount();
-				$emquery = "SELECT firstname, lastname, email, token, tid, language ";
-				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
+				$emquery = "SELECT * ";
+				//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 					
 				// TLR change to put date into sent
 				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
@@ -473,6 +477,7 @@ class LsrcHelper {
 				{
 					while ($emrow = $emresult->FetchRow())
 					{
+						$c=1;
 						unset($fieldsarray);
 						$to = $emrow['email'];
 						$fieldsarray["{EMAIL}"]=$emrow['email'];
@@ -480,9 +485,20 @@ class LsrcHelper {
 						$fieldsarray["{LASTNAME}"]=$emrow['lastname'];
 						$fieldsarray["{TOKEN}"]=$emrow['token'];
 						$fieldsarray["{LANGUAGE}"]=$emrow['language'];
-						$fieldsarray["{ATTRIBUTE_1}"]=$emrow['attribute_1'];
-						$fieldsarray["{ATTRIBUTE_2}"]=$emrow['attribute_2'];
-							
+						while(isset($emrow["attribute_$c"]))
+						{
+							$fieldsarray["{ATTRIBUTE_$c}"]=$emrow["attribute_$c"];
+							++$c;
+						}
+						
+						$fieldsarray["{ADMINNAME}"]= $thissurvey['adminname'];
+						$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+						$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+						$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
+						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+						
 						$emrow['language']=trim($emrow['language']);
 						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 						if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
@@ -3970,14 +3986,7 @@ class LsrcHelper {
 			return MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
 		
 	}
-	
-	function removeBOM($str=""){
-		if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-			$str=substr($str, 3);
-		}
-		return $str;
-	}
-	function getqtypelist($SelectedCode = "T", $ReturnType = "array")
+	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")
 	{
 		include("lsrc.config.php");
 		global $publicurl;
@@ -4020,6 +4029,64 @@ class LsrcHelper {
 				{return $qtypes;}
 	
 	
+	}
+	 /**
+	* This function removes the UTF-8 Byte Order Mark from a string
+	* 
+	* @param string $str
+	* @return string
+	*/
+	private function removeBOM($str=""){
+        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $str=substr($str, 3);
+        }
+        return $str;
+	} 
+	function createTokenTable($iVid)
+	{
+		global $connect;
+		include("lsrc.config.php");
+		// check if the Token table already exists, if not, create it...
+		if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
+		{
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
+			$createtokentable=
+			"tid int I NOTNULL AUTO PRIMARY,\n "
+			. "firstname C(40) ,\n "
+			. "lastname C(40) ,\n ";
+	        //MSSQL needs special treatment because of some strangeness in ADODB
+	        if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
+			{
+				$createtokentable.= "email text ,\n "
+				."emailstatus text DEFAULT 'OK',\n ";
+			}
+	        else
+			{
+				$createtokentable.= "email text ,\n "
+				."emailstatus text DEFAULT 'OK',\n ";
+			}
+	        
+			$createtokentable.= "token C(36) ,\n "
+			. "language C(25) ,\n "
+			. "sent C(17) DEFAULT 'N',\n "
+			. "remindersent C(17) DEFAULT 'N',\n "
+			. "remindercount int I DEFAULT 0,\n "
+			. "completed C(17) DEFAULT 'N',\n "
+			. "validfrom date ,\n"
+			. "validuntil date ,\n"
+			. "mpid I ";
+			
+			$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+	        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+	                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+			$dict = NewDataDictionary($connect);
+			$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
+			$execresult=$dict->ExecuteSQLArray($sqlarray, false);
+			
+			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
+			$dict->ExecuteSQLArray($createtokentableindex, false);
+		}
+		return;
 	}
 }
 ?>

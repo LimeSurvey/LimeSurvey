@@ -18,7 +18,7 @@ $wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey';
+$limeUrl='http://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all (this is the default)
 $user ="admin";
@@ -709,8 +709,9 @@ for($n=1;$n<10;++$n)
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
-<div style='float:left;margin-bottom:5px;margin-left:5px;'>
+
 <?php 
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -742,7 +743,8 @@ echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' size='5' maxlength='5' value='".$iVid."'/>";
 echo "<br />";
-echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]\" and so on :</b> <br />";
+echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL;LANG[;TOKEN;VALIDFROM;VALIDUNTIL;attrib1,attrib2,attrib3,attrib4,attrib5]
+<br/>::FIRSTNAME;LASTNAME;EMAIL;LANG[;TOKEN;VALIDFROM;VALIDUNTIL;attrib1,attrib2,attrib3,attrib4,attrib5]\" and so on :</b> <br />";
 echo "<textarea name='sParticipantData' cols='50' rows='3'>";
 echo "</textarea> ";
 echo "<br />";
