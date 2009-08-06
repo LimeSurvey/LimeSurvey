@@ -2977,6 +2977,11 @@ function templatereplace($line)
 		."</form>\n";
 		$line=str_replace("{REGISTERFORM}", $registerform, $line);
 	}
+    if (strpos($line, "{ASSESSMENT_CURRENT_TOTAL}") !== false && function_exists('doAssessment')) 
+    {
+        $assessmentdata=doAssessment($surveyid,true);
+        $line=str_replace("{ASSESSMENT_CURRENT_TOTAL}", $assessmentdata['total'], $line);
+    }    
 	if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
 	if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", $clang->gT("Your Assessment"), $line);
 	return $line;

@@ -2415,10 +2415,18 @@ function surveymover()
 	return $surveymover;
 }
 
-function doAssessment($surveyid)
+
+/**
+* Caculate assessement scores 
+* 
+* @param mixed $surveyid
+* @param mixed $returndataonly - only returns an array with data
+*/
+function doAssessment($surveyid, $returndataonly=false)
 {
 	global $dbprefix, $thistpl, $connect;
     $baselang=GetBaseLanguageFromSurveyID($surveyid);
+    $total=0;
     if (!isset($_SESSION['s_lang'])) {$_SESSION['s_lang']=$baselang;}
 	$query = "SELECT * FROM ".db_table_name('assessments')."
 			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
@@ -2479,7 +2487,7 @@ function doAssessment($surveyid)
                             {
                                 if (($field['type'] == "M") || ($field['type'] == "P"))
                                 {
-                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".db_quoteall($field['aid']);
+                                        $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where language='$baselang' and code=".db_quoteall($field['aid'])." and qid=".$field['qid'];
                                 }
                                 else{
                                         $usquery = "SELECT assessment_value FROM ".db_table_name("answers")." where qid=".$field['qid']." and language='$baselang' and code=".db_quoteall($_SESSION[$field['fieldname']]);
@@ -2542,16 +2550,16 @@ function doAssessment($surveyid)
 				{
 					foreach($assessment['group'][$key] as $assessed)
 					{
-						if ($val >= $assessed['min'] && $val <= $assessed['max'])
+						if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false)
 						{
 							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
         					    <table align='center'>
 								 <tr>
-								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
+								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
 								  </th>
 								 </tr>
 								 <tr>
-								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
+								  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
 								 </td>
 								</tr>
 							   </table><br />\n";
@@ -2565,21 +2573,27 @@ function doAssessment($surveyid)
 		{
 			foreach($assessment['total'] as $assessed)
 			{
-				if ($total >= $assessed['min'] && $total <= $assessed['max'])
+				if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
 				{
 					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['name']))."
+						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
 						 </th></tr>
 						 <tr>
-						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $val), stripslashes($assessed['message']))."
+						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
 						  </td>
 						 </tr>
 						</table>\n";
 				}
 			}
 		}
-
-		return $assessments;
+        if ($returndataonly==true)
+        {
+            return array('total'=>$total);
+        }
+        else
+        {
+            return $assessments;
+        }
 	}
 }
 
