@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-06 21:59+0100\n"
-"PO-Revision-Date: 2009-08-06 21:59+0100\n"
+"PO-Revision-Date: 2009-08-07 19:14+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -1823,7 +1823,7 @@ msgstr "Veuillez compléter toutes les parties"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/qanda.php:823
 msgid "Please check the items"
-msgstr "Veuillez cocher au moins un élément"
+msgstr "Veuillez cocher les éléments"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/qanda.php:826
 msgid "Please rank all items"
@@ -1831,7 +1831,7 @@ msgstr "Veuillez classer tous les éléments"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/qanda.php:830
 msgid "Please check at least one item."
-msgstr "Veuillez cocher au moins un élément."
+msgstr "Veuillez cocher au moins un élément"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/qanda.php:843
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/qanda.php:1196
