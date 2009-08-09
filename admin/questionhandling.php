@@ -482,7 +482,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
             . "\t\t\t\t<option value='0'>".$clang->gT("At beginning")."</option>\n";
             while ($oq = $oqresult->FetchRow())
             {
-                $editquestion .= "<option value='".$oq['question_order']."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
+		//Bug Fix: add 1 to question_order
+		$question_order_plus_one = $oq['question_order']+1;
+                $editquestion .= "<option value='".$question_order_plus_one."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
             }
             $editquestion .= "\t\t\t</select>\n"
             . "\t\t</td>\n"

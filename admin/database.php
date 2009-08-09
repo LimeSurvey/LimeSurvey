@@ -301,7 +301,8 @@ if(isset($surveyid))
 			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
-			   $question_order=(sanitize_int($_POST['questionposition'])+1);
+			   //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
+			   $question_order=(sanitize_int($_POST['questionposition']));
 			    //Need to renumber all questions on or after this
 	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$postgid." AND question_order >= ".$question_order;
     	       $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
