@@ -3007,7 +3007,7 @@ function templatereplace($line, $replacements=array())
 			}
 			$registerform .= " /></td></tr>\n";
 		}        */
-		$registerform .= "<tr><td></td><td><input class='submit' type='submit' value='".$clang->gT("Continue")."' />"
+		$registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='".$clang->gT("Continue")."' />"
 		."</td></tr>\n"
 		."</table>\n"
 		."</form>\n";
