@@ -3449,7 +3449,7 @@ function questionAttributes($returnByName=false)
 	"caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;",
     "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
     "caption"=>$clang->gT('Insert page break in printable view'));
     
