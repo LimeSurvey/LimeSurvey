@@ -77,7 +77,7 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
 			if ($row["Extra"] != "") $def .= " $row[Extra]";
 			$def .= ",\n";
 		}
-		$def = ereg_replace(",\n$","", $def);
+		$def = preg_replace("#,\n$#","", $def);
 	
 		$result = db_execute_assoc("SHOW KEYS FROM $tablename");
 		while($row = $result->FetchRow())
@@ -117,7 +117,7 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
 			$result .= "INSERT INTO ".$table." VALUES(";
 			for($j=0; $j<$num_fields; $j++) {
 				$row[$j] = addslashes($row[$j]);
-				$row[$j] = ereg_replace("\n","\\n",$row[$j]);
+				$row[$j] = preg_replace("#\n#","\\n",$row[$j]);
 				if (isset($row[$j])) $result .= "\"$row[$j]\"" ; else $result .= "\"\"";
 				if ($j<($num_fields-1)) $result .= ",";
 			}

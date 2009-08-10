@@ -1229,7 +1229,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
         // Exception for conditions based on attributes
         if ($oldcqid==0) {$newcqid=0;}
         
-		if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
+		if (preg_match('/^@([0-9]+)X([0-9]+)X([^@]+)@/',$thisvalue,$targetcfieldname))
 		{
 			foreach ($substitutions as $subs) {
 				if ($targetcfieldname[1]==$subs[0])  {$targetcfieldname[1]=$subs[3];}

@@ -1704,7 +1704,7 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 		$mycfieldname=$crow['cfieldname'];
 		$cfnregs="";
 
-		if (ereg($surveyid."X".$oldgid."X".$qid."(.*)", $mycfieldname, $cfnregs) > 0) 
+		if (preg_match('/'.$surveyid."X".$oldgid."X".$qid."(.*)/", $mycfieldname, $cfnregs) > 0) 
 		{
 			$newcfn=$surveyid."X".$newgid."X".$qid.$cfnregs[1];
 			$c2query="UPDATE ".db_table_name('conditions')
@@ -3888,7 +3888,7 @@ function getreferringurl()
   // refurl is not set in session, read it from server variable
   if(isset($_SERVER["HTTP_REFERER"]))
   {
-    if(!ereg($_SERVER["SERVER_NAME"], $_SERVER["HTTP_REFERER"]))
+    if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
     {
       if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
       {
@@ -5312,8 +5312,16 @@ function getNextCode($sourcecode)
     
 }
 
-// translink
-function translink($type, $oldid,$newid,$text)
+/**
+* Translink
+* 
+* @param mixed $type
+* @param mixed $oldid
+* @param mixed $newid
+* @param mixed $text
+* @return mixed
+*/
+function translink($type, $oldid, $newid, $text)
 {
 	if (!isset($_POST['translinksfields']))
 	{
@@ -5324,13 +5332,13 @@ function translink($type, $oldid,$newid,$text)
 		{
 			$pattern = "upload/surveys/$oldid/";
 			$replace = "upload/surveys/$newid/";
-			return ereg_replace($pattern, $replace, $text);
+			return preg_replace('#'.$pattern.'#', $replace, $text);
 		}
 		elseif ($type == 'label')
 		{
 			$pattern = "upload/labels/$oldid/";
 			$replace = "upload/labels/$newid/";
-			return ereg_replace($pattern, $replace, $text);
+            return preg_replace('#'.$pattern.'#', $replace, $text);
 		}
 		else
 		{
@@ -5338,6 +5346,14 @@ function translink($type, $oldid,$newid,$text)
 		}
 }
 
+
+/**
+* put your comment there...
+* 
+* @param string $newsid
+* @param string $oldsid
+* @param mixed $fieldnames
+*/
 function transInsertAns($newsid,$oldsid,$fieldnames)
 { 
 	global $connect, $dbprefix;
@@ -5364,7 +5380,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		{
 			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
 			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
-			$description=ereg_replace($pattern, $replacement, $description);
+			$description=preg_replace('/'.$pattern.'/', $replacement, $description);
 		}
 
 		if (strcmp($description,$qentry['description']) !=0 )
@@ -5390,8 +5406,8 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		{
 			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
 			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
-			$question=ereg_replace($pattern, $replacement, $question);
-			$help=ereg_replace($pattern, $replacement, $help);
+			$question=preg_replace('/'.$pattern.'/', $replacement, $question);
+			$help=preg_replace('/'.$pattern.'/', $replacement, $help);
 		}
 
 		if (strcmp($question,$qentry['question']) !=0 ||
@@ -5419,7 +5435,7 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 		{
 			$pattern = "{INSERTANS:".$fnrow['oldfieldname']."}";
 			$replacement = "{INSERTANS:".$fnrow['newfieldname']."}";
-			$answer=ereg_replace($pattern, $replacement, $answer);
+			$answer=preg_replace('/'.$pattern.'/', $replacement, $answer);
 		}
 
 		if (strcmp($answer,$qentry['answer']) !=0)
@@ -5431,6 +5447,13 @@ function transInsertAns($newsid,$oldsid,$fieldnames)
 	} // end while qentry
 }
 
+
+/**
+* put your comment there...
+* 
+* @param mixed $id
+* @param mixed $type
+*/
 function hasResources($id,$type='survey')
 {
 	global $publicdir;
@@ -5469,7 +5492,11 @@ function hasResources($id,$type='survey')
 	return false;
 }
 
-
+/**
+* put your comment there...
+* 
+* @param mixed $length
+*/
 function randomkey($length)
 {
 	$pattern = "23456789abcdefghijkmnpqrstuvwxyz";
@@ -5486,7 +5513,13 @@ function randomkey($length)
 
 
                            
-
+/**
+* put your comment there...
+* 
+* @param mixed $mytext
+* @param mixed $ishtml
+* @return mixed
+*/
 function conditional_nl2br($mytext,$ishtml)
 {
 	if ($ishtml === true)
@@ -5840,7 +5873,7 @@ function checkquestionfordisplay($qid, $gid=null)
 			{
 				//Don't do anything - this cq is in the current group
 			}
-			elseif (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$row['value'],$targetconditionfieldname))
+			elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@',$row['value'].'/',$targetconditionfieldname))
 			{ 
 				if (isset($_SESSION[$targetconditionfieldname[1]]) )
 				{
@@ -5860,7 +5893,7 @@ function checkquestionfordisplay($qid, $gid=null)
 						//$cfieldname=' ';
 					}
 				}
-					elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
+					elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
 					{
 						if ( isset($_SESSION['token']) &&
 							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -5884,7 +5917,7 @@ function checkquestionfordisplay($qid, $gid=null)
 					//$cfieldname=' ';
 				}
 			}
-			elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['value'],$targetconditiontokenattr))
+			elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['value'],$targetconditiontokenattr))
 			{ //TIBO
 				if ( isset($_SESSION['token']) && 
 					in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -5904,7 +5937,7 @@ function checkquestionfordisplay($qid, $gid=null)
 							$conditionCanBeEvaluated=false;
 						}
 					}
-					elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
+					elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
 					{
 						if ( isset($_SESSION['token']) &&
 							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -5945,7 +5978,7 @@ function checkquestionfordisplay($qid, $gid=null)
 						$conditionCanBeEvaluated=false;
 					}
 				}
-				elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$row['cfieldname'],$sourceconditiontokenattr))
+				elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$row['cfieldname'],$sourceconditiontokenattr))
 				{
 					if ( isset($_SESSION['token']) &&
 							in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -5994,7 +6027,7 @@ function checkquestionfordisplay($qid, $gid=null)
 				}
 				else
 				{
-					if (ereg(trim($cvalue),trim($cfieldname)))
+					if (preg_match('/'.trim($cvalue).'/',trim($cfieldname)))
 					{
 						$conditionMatches=true;
 

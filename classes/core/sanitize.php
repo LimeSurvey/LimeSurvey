@@ -206,7 +206,7 @@ function sanitize_html_string($string)
 // make int int!
 function sanitize_int($integer, $min='', $max='')
 {
-	$int = ereg_replace("[^0-9]", "", $integer);
+	$int = preg_replace("#[^0-9]#", "", $integer);
 	if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
     {
 	    return FALSE;

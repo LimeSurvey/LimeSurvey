@@ -544,7 +544,7 @@ for ($i=0;$i<count($conditions);$i++)
 			
 				if ($cd[6] == 'RX')
 				{ // the comparison right operand is a RegExp
-					if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
+					if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
 		{
 						$localEvaluation = 'true';
 		}
@@ -599,7 +599,7 @@ for ($i=0;$i<count($conditions);$i++)
 			$localEvaluation = false;
 		}
 	}
-	elseif (ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid))
+	elseif (preg_match("/[0-9]+X([0-9]+)X.*/",$cd[2],$sourceQuestionGid))
 	{
 		// If the Gid of the question used for the condition is on the same group,
 		// the set the runconce flag to False, because we'll need to evaluate this condition
@@ -709,7 +709,7 @@ for ($i=0;$i<count($conditions);$i++)
 			    }
 
 			} // end target @SGQA@
-			elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
+			elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $targetconditiontokenattr))
 		{
 				if ( isset($_SESSION['token']) && 
 						in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -749,7 +749,7 @@ for ($i=0;$i<count($conditions);$i++)
 							}
 							else
 							{
-								if (ereg(trim($cvalue),trim($prevanswerToCompare)))
+								if (preg_match('/'.trim($cvalue).'/',trim($prevanswerToCompare)))
 								{
 									//$newjava .= "'tokenMatch' == 'tokenMatch'";
 									$newjava .= "true";

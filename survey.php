@@ -489,7 +489,7 @@ END;
 
 					if ($cd[6] == 'RX')
 					{ // the comparison right operand is a RegExp
-						if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
+						if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
     {
 							$localEvaluation = 'true';
     }
@@ -567,7 +567,7 @@ END;
       // NEW
 				// If the value is enclosed by @
       // the value of this question must be evaluated instead.
-      if (ereg('^@([0-9]+X[0-9]+X[^@]+)@', $cd[3], $comparedfieldname))
+      if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/', $cd[3], $comparedfieldname))
 				{ // when the right operand is the answer of a previous question
 		$sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
 					preg_match('/^([0-9]+)X([0-9]+)X([0-9]+)$/',$sgq_from_sgqa,$qidMatched);
@@ -587,7 +587,7 @@ END;
 	    }
 
 				}
-				elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $comparedtokenattr))
+				elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
 				{ 
 					if ( isset($_SESSION['token']) &&
 							in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))

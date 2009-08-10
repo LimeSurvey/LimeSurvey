@@ -1103,7 +1103,7 @@ function checkconfield($value)
 						{//Go through each condition
 							// Replace @SGQA@ condition values
 							// By corresponding value
-							if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
+							if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/',$cqv["matchvalue"], $targetconditionfieldname))
 							{
 								if (isset($_SESSION[$targetconditionfieldname[1]]))
 								{
@@ -1117,7 +1117,7 @@ function checkconfield($value)
 							// Replace {TOKEN:XXX} condition values
 							// By corresponding value
 							if ($local_thissurvey['private'] == 'N' && 
-								ereg('^{TOKEN:([^}]*)}$',$cqv["matchvalue"], $targetconditiontokenattr))
+								preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
 							{
 								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 								{
@@ -1144,7 +1144,7 @@ function checkconfield($value)
 										$comparisonLeftOperand = null;
 									}
 								}
-								elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$cqv['cfieldname'],$sourceconditiontokenattr))
+								elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
 								{
 									if ( isset($_SESSION['token']) &&
 									  in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -1170,8 +1170,8 @@ function checkconfield($value)
 										$addon=1;
 									}
 								}
-//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
-								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && ereg($cqv["matchvalue"],$comparisonLeftOperand))
+//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && preg_match($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && preg_match('/'.$cqv["matchvalue"].'/',$comparisonLeftOperand))
 								{
 										$addon=1;
 								}

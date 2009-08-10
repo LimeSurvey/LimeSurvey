@@ -227,7 +227,7 @@ function extract($dir, $zipfilename){
                          $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
 
                  // LimeSurvey Only extract first dir for the moment
-                         if ( ! eregi("(\/)", zip_entry_name($zip_entry)))
+                         if ( ! preg_match("/(\/)/i", zip_entry_name($zip_entry)))
 			{ 
                          $this->createFile($dir."/".zip_entry_name($zip_entry), $buf,zip_entry_filesize($zip_entry));
 			}
@@ -245,7 +245,7 @@ function extract($dir, $zipfilename){
       }
 
   	function createDir($dir){
-          if (eregi("(\/$)", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
+          if (preg_match("/(\/$)/", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
           else @mkdir ($dir);
       }
       

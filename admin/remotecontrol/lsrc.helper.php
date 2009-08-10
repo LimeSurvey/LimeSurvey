@@ -2001,7 +2001,7 @@ class LsrcHelper {
 					if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 					if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
 				}
-				if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
+				if (preg_match('/^@([0-9]+)X([0-9]+)X([^@]+)@/',$thisvalue,$targetcfieldname))
 				{
 					foreach ($substitutions as $subs) {
 						if ($targetcfieldname[1]==$subs[0])  {$targetcfieldname[1]=$subs[3];}

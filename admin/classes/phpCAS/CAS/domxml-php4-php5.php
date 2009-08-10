@@ -177,7 +177,7 @@ class php4DOMNode
    while ($node=$myDOMNodeList->item($i))
    {
     if (($node->nodeType==XML_ELEMENT_NODE)||
-        (($node->nodeType==XML_TEXT_NODE)&&!ereg('^([[:cntrl:]]|[[:space:]])*$',$node->nodeValue)))
+        (($node->nodeType==XML_TEXT_NODE)&&!preg_match('/^([[:cntrl:]]|[[:space:]])*$/',$node->nodeValue)))
      return false;
     $i++;
    }
