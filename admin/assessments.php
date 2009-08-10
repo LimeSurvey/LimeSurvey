@@ -89,8 +89,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 			          gid=".sanitize_int($_POST['gid']).",
 			          minimum='".sanitize_signedint($_POST['minimum'])."',
 			          maximum='".sanitize_signedint($_POST['maximum'])."',
-			          name='".db_quote($_POST['name_'.$assessmentlang])."',
-			          message='".db_quote($_POST['assessmentmessage_'.$assessmentlang])."'
+			          name='".db_quote($_POST['name_'.$assessmentlang],true)."',
+			          message='".db_quote($_POST['assessmentmessage_'.$assessmentlang],true)."'
 			          WHERE language='$assessmentlang' and id=".sanitize_int($_POST['id']);
 	        $result = $connect->Execute($query) or safe_die("Error updating<br />$query<br />".$connect->ErrorMsg());
         }
