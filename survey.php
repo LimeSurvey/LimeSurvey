@@ -223,7 +223,7 @@ if ($surveyexists <1)
 }
 
 //RUN THIS IF THIS IS THE FIRST TIME
-if (!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))
+if ((!isset($_SESSION['step']) || !$_SESSION['step'] || !isset($totalquestions))  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated))
 	{
 	$totalquestions = buildsurveysession();
 	$_SESSION['step'] = 1;
