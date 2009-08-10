@@ -1722,7 +1722,7 @@ function buildsurveysession()
 			        </tr>";
 	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	                { echo "<tr>
-				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php' /></td>
+				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='$rooturl/verification.php' /></td>
                                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
 				                </td>
 			                </tr>";}
@@ -1783,7 +1783,7 @@ function buildsurveysession()
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 { 
                     echo "<li>
-			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
 		                  </li>";
                 }
                 echo "<li>
@@ -1935,7 +1935,7 @@ function buildsurveysession()
 	            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	            { 
                     echo "<li>
-                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                           </li>";
                 }
 			    echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
