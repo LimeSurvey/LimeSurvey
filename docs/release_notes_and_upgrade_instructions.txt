@@ -77,6 +77,24 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.85+ (build 7393) to 1.85+ (build 7435) [03-08-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: French (b00z00)
+#Updated translation: Slovak by Marek Haller. (jaycburton)
+#Updated translation: Chinese Simplified (yooyooh)
++New feature (minor) Added id to registration form "Continue" button to allow for DOM access (jcleeland)
+-Fixed issue #3533: When not answering a mandatory question in All-in-one survey mode and using captchas you are getting the captcha page again (c_schmitz)
+-Fixed issue #3548: Question attribute page_break cannot be used on all question types (mennodekker)
+-Fixed issue #3491: CAPTCHA - verification not found when rewrite is activated (c_schmitz)
+-Fixed issue #3536: SPSS export incorrectly exports numerical only labelsets as alpha fields (mennodekker)
+-Fixed issue #3545: MSSQL error when trying to view public statistics for a survey. (c_schmitz)
+-Fixed issue #3546: Re-editing an assessment with embedded Flash object causes the Flash object to break (c_schmitz)
+-Fixed issue #3458: Translation problem when you print answers (paraya)
+-Fixed issue #3517: When adding new questions they can't be added at the beginning (paraya)
+-Fixed issue #3444: fields in reminder will not be replaced (wahrendorff)
+-Fixed issue #3493: removeBOM is undefined (wahrendorff)
+
+
 Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + new feature, # update feature, - bug fix
 
 #Updated translation: Croatian. (idobraca)
