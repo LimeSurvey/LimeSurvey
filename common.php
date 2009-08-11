@@ -5876,7 +5876,7 @@ function checkquestionfordisplay($qid, $gid=null)
 			{
 				//Don't do anything - this cq is in the current group
 			}
-			elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@',$row['value'].'/',$targetconditionfieldname))
+			elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@'.'/',$row['value'],$targetconditionfieldname))
 			{ 
 				if (isset($_SESSION[$targetconditionfieldname[1]]) )
 				{
