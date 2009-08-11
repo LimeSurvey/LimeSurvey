@@ -1572,11 +1572,11 @@ msgstr "Ordenar las respuestas alfabéticamente"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3236
 msgid "The percentage width of the answer column"
-msgstr "Porcentaje de anchura de la columna de respuesta"
+msgstr "Porcentaje de anchura de la columna de descripciones"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3237
 msgid "Answer width"
-msgstr "Anchura de la respuesta"
+msgstr "Anchura de la columna de descripciones"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3241
 msgid "Filter an array's answers from a Multiple Options Question"
