@@ -3627,7 +3627,7 @@ function doAdminHeader()
 
 function getAdminHeader($meta=false)
 {
-	global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes, $css_adminheader_includes;
+	global $sitename, $admintheme, $rooturl, $defaultlang, $js_adminheader_includes, $css_adminheader_includes, $homeurl;
 	if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
 	$strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 	."<html ";
@@ -3658,7 +3658,10 @@ function getAdminHeader($meta=false)
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"    
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n";
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
+    . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'
+    . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />';
+    
     if (getLanguageRTL($_SESSION['adminlang']))
     {
         $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
