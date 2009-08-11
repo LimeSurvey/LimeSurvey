@@ -3179,7 +3179,6 @@ if ($action == "newsurvey")
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
         
 		$newsurvey = PrepareEditorScript();
-		$newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
 		// header
 		$newsurvey .= "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
@@ -3187,12 +3186,10 @@ if ($action == "newsurvey")
 
 		// begin Tabs section
 		$newsurvey .= "<div class='tab-pane' id='tab-pane-newsurvey'>\n";
+        $newsurvey  .= "<form name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."');\" >\n";
 
 		// General and Contact TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("General")."</h2>\n";
-// could be used to add a header
-//		$newsurvey .= "<table width='100%' border='0'>\n<tr><td class='settingcaption'>"
-//		. "".$clang->gT("Create Survey")."</td></tr></table>\n";
 
 		// * Survey Language
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Base Language:")."</span>\n"
@@ -3243,7 +3240,7 @@ if ($action == "newsurvey")
 
 		// End General TAB
 		// Create Survey Button 
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></span></div>\n";
         
 		$newsurvey .= "</div>\n";
 
@@ -3352,7 +3349,7 @@ if ($action == "newsurvey")
 
         //Default date format
         . "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Date format:")."</span>\n"
-        . "<span class='settingentry'><select size='1' name='dateformat' />\n";
+        . "<span class='settingentry'><select size='1' name='dateformat'>\n";
         foreach (getDateFormatData() as $index=>$dateformatdata)
         {
            $newsurvey.= "<option value='{$index}'";
@@ -3363,7 +3360,7 @@ if ($action == "newsurvey")
 
 		// End Presention and navigation TAB
 		// Create Survey Button 
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$newsurvey .= "</div>\n";
 
 		// Publication and access control TAB
@@ -3428,7 +3425,7 @@ if ($action == "newsurvey")
 
 		// End Publication and access control TAB
 		// Create Survey Button 
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$newsurvey .= "</div>\n";
 
 		// Notification and Data management TAB
@@ -3497,16 +3494,13 @@ if ($action == "newsurvey")
         
         
 		// end of addnewsurvey form
-		$newsurvey .= ""
-//		. "<div class='settingrow'><span><input type='submit' value='".$clang->gT("Create Survey")."' />\n"
-//		. "<input type='hidden' name='action' value='insertnewsurvey' /></span>\n"
-		. "<input type='hidden' name='action' value='insertnewsurvey' />\n"
-		. "</form>\n";
+		$newsurvey .= "<input type='hidden' name='action' value='insertnewsurvey' />\n";
 
 		// End Notification and Data management TAB
 		// Create Survey Button
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></span></div>\n";
+        $newsurvey .= "<div class='settingrow'><span class='settingcaption'></span><span class='settingentry'><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' /></span></div>\n";
 		$newsurvey .= "</div>\n";
+        $newsurvey .= "</form>\n";
 
 		// Import TAB
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Survey")."</h2>\n";
@@ -3518,8 +3512,8 @@ if ($action == "newsurvey")
 //		. "".$clang->gT("Import Survey")."</th></tr>\n"
 		. "<tr><td>".$clang->gT("Select CSV/SQL File:")."</td>\n"
 		. "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td></tr>\n"
-		. "<tr><td><label>".$clang->gT("Convert resources links and INSERTANS fields?")."</td>\n"
-		. "<td><input name=\"translinksfields\" type=\"checkbox\" checked='checked'/></label></td></tr>\n"
+		. "<tr><td><label>".$clang->gT("Convert resources links and INSERTANS fields?")."</label></td>\n"
+		. "<td><input name=\"translinksfields\" type=\"checkbox\" checked='checked'/></td></tr>\n"
 		. "<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Import Survey")."' />\n"
 		. "<input type='hidden' name='action' value='importsurvey' /></td>\n"
 		. "</tr>\n"

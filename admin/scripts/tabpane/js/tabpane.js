@@ -87,13 +87,12 @@ function WebFXTabPane( el, bUseCookie ) {
 	this.selectedIndex = tabIndex;
 	
 	// loop through child nodes and add them
-	var cs = el.childNodes;
-	var n;
-	for (var i = 0; i < cs.length; i++) {
-		if (cs[i].nodeType == 1 && cs[i].className == "tab-page") {
-			this.addTabPage( cs[i] );
-		}
-	}
+    var c=this;
+	var b=$(el).find(".tab-page");
+        jQuery.each(b, function() {
+                c.addTabPage( this );
+    }
+    );
 }
 
 WebFXTabPane.prototype.classNameTag = "dynamic-tab-pane-control";
