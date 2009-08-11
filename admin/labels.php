@@ -408,12 +408,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             }
 
     		$position=sprintf("%05d", $position);
+            if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
     		if ($activeuse == 0 && $first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
-  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
                 ."<td style='text-align:center;'>"
-                ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' "
+                ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' value='0'"
                 ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('addnewlabelbtn').click(); return false;} return goodchars(event,'1234567890-')\" />"
                 ."\t</td>\n"
     			."\t<td>\n"
@@ -464,6 +465,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			$labelsoutput .= "\t</center></td>\n"
     			."</tr>\n";
     		}
+        unset($_SESSION['nextlabelcode']);
         $first=false;
     	$labelsoutput.="</tbody></table>\n";
 
@@ -693,6 +695,7 @@ function modlabelsetanswers($lid)
 		case $clang->gT("Add new label", "unescaped"):
 		if (isset($_POST['insertcode']) && $_POST['insertcode']!='')
 		{
+            $_SESSION['nextlabelcode']=getNextCode($_POST['insertcode']);
 			$_POST['insertcode'] = db_quoteall($_POST['insertcode'],true);
 			// check that the code doesn't exist yet
    			$query = "SELECT code FROM ".db_table_name('labels')." WHERE lid='$lid' AND code=".$_POST['insertcode'];

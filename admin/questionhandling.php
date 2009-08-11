@@ -230,7 +230,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 	$editquestion .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>";
 	if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</td></tr></table>\n"
-	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post'>\n"
+	. "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n"
 	. '<div class="tab-pane" id="tab-pane-editquestion-'.$surveyid.'">';
 	
     if (!$adding)
