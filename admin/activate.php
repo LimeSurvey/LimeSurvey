@@ -66,7 +66,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	{ //TIBO
 		if ($row['count'] == 0)
 		{
-			$failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group has no answer."));
+			$failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group does not contain any question(s)."));
 		}
 	}
 	

@@ -125,7 +125,7 @@ if (isset($postedfieldnames))
 				}
 				if ($bFinalizeThisAnswer === true)
 				{
-					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);   // Checked    
+					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked    
 				}
 			} 
             else 
