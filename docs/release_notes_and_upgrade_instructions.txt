@@ -78,11 +78,20 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.85+ (build 7393) to 1.85+ (build 7435) [03-08-2009] - Legend: + new feature, # update feature, - bug fix
+Changes from 1.85+ (build 7393) to 1.85+ (build 7454) [12-08-2009] - Legend: + new feature, # update feature, - bug fix
++New feature (minor) Added id to registration form "Continue" button to allow for DOM access (jcleeland)
 #Updated translation: French (b00z00)
 #Updated translation: Slovak by Marek Haller. (jaycburton)
 #Updated translation: Chinese Simplified (yooyooh)
-+New feature (minor) Added id to registration form "Continue" button to allow for DOM access (jcleeland)
+#Updated feature: when adding a label set in the languages listbox appears the session language by defect instead of English (paraya)
+#Updated translation: German (c_schmitz)
+-Fixed an issue with preg_match and conditions (c_schmitz)
+-Fixed issue #3557: Saved answers get deleted across survey when the result id is matching (c_schmitz)
+-Fixed issue: Automatic code counting for labels now working (c_schmitz)
+-Fixed issue: HTML validating correctly now on survey creation (c_schmitz)
+-Fixed issue: Survey data getting lost during survey creation when survey title is not set  (c_schmitz)
+-Fixed issue: When creating a group and the group title was forgotten then the data was lost (c_schmitz)
+-Fixed issue: When creating a question and the question code was forgotten then the data was lost (c_schmitz)
 -Fixed issue #3533: When not answering a mandatory question in All-in-one survey mode and using captchas you are getting the captcha page again (c_schmitz)
 -Fixed issue #3548: Question attribute page_break cannot be used on all question types (mennodekker)
 -Fixed issue #3491: CAPTCHA - verification not found when rewrite is activated (c_schmitz)
