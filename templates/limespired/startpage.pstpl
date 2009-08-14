@@ -23,7 +23,7 @@
 				<div id="header">
 					<div class="rk-1">
 						<div class="rk-2">
-							<a href="http://www.limesurvey.org" class="nounder" title="Limesurvey - The free open source survey tool"><img src="http://www.limesurvey.org/images/blank.png" border="0" alt="" id="logo" /></a>
+							<a href="http://www.limesurvey.org" class="nounder" title="Limesurvey - The free open source survey tool"><img src="{TEMPLATEURL}blank.gif" border="0" alt="" id="logo" /></a>
 						</div>
 					</div>
 				</div>
