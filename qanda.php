@@ -1086,7 +1086,7 @@ function do_date($ia)
                     }        
         }
 
-		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'"maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
 			</p>';
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
@@ -1128,7 +1128,7 @@ function do_date($ia)
             }
             
             $answer ="<p class=\"question\">
-				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
+				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\"maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
                         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -3779,7 +3779,7 @@ function do_shortfreetext($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"answertext\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
+	."\"maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
