@@ -2,7 +2,7 @@
 /*~ class.smtp.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |
-|   Version: 2.0.2                                                          |
+|   Version: 2.0.4                                                          |
 |   Contact: via sourceforge.net support pages (also www.codeworxtech.com)  |
 |      Info: http://phpmailer.sourceforge.net                               |
 |   Support: http://sourceforge.net/projects/phpmailer/                     |
@@ -147,6 +147,51 @@ class SMTP
 
     if($this->do_debug >= 2) {
       echo "SMTP -> FROM SERVER:" . $this->CRLF . $announce;
+    }
+
+    return true;
+  }
+
+  /**
+   * Initiate a TSL communication with the server.
+   *
+   * SMTP CODE 220 Ready to start TLS
+   * SMTP CODE 501 Syntax error (no parameters allowed)
+   * SMTP CODE 454 TLS not available due to temporary reason
+   * @access public
+   * @return bool success
+   */
+  public function StartTLS() {
+    $this->error = null; # to avoid confusion
+
+    if(!$this->connected()) {
+      $this->error = array("error" => "Called StartTLS() without being connected");
+      return false;
+    }
+
+    fputs($this->smtp_conn,"STARTTLS" . $this->CRLF);
+
+    $rply = $this->get_lines();
+    $code = substr($rply,0,3);
+
+    if($this->do_debug >= 2) {
+      echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
+    }
+
+    if($code != 220) {
+      $this->error =
+         array("error"     => "STARTTLS not accepted from server",
+               "smtp_code" => $code,
+               "smtp_msg"  => substr($rply,4));
+      if($this->do_debug >= 1) {
+        echo "SMTP -> ERROR: " . $this->error["error"] . ": " . $rply . $this->CRLF;
+      }
+      return false;
+    }
+
+    //Begin encrypted connection
+    if(!stream_socket_enable_crypto($this->smtp_conn, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+      return false;
     }
 
     return true;

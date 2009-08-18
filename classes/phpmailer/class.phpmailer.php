@@ -2,7 +2,7 @@
 /*~ class.phpmailer.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |
-|   Version: 2.0.2                                                          |
+|   Version: 2.0.4                                                          |
 |   Contact: via sourceforge.net support pages (also www.codeworxtech.com)  |
 |      Info: http://phpmailer.sourceforge.net                               |
 |   Support: http://sourceforge.net/projects/phpmailer/                     |
@@ -28,7 +28,7 @@
  * PHPMailer - PHP email transport class
  * @package PHPMailer
  * @author Andy Prevost
- * @copyright 2004 - 2008 Andy Prevost
+ * @copyright 2004 - 2009 Andy Prevost
  */
 
 class PHPMailer {
@@ -139,7 +139,7 @@ class PHPMailer {
    * Holds PHPMailer version.
    * @var string
    */
-  var $Version           = "2.0.2";
+  var $Version           = "2.0.4";
 
   /**
    * Sets the email address that a reading confirmation will be sent.
@@ -257,6 +257,7 @@ class PHPMailer {
   var $language        = array();
   var $error_count     = 0;
   var $LE              = "\n";
+  var $sign_cert_file  = "";
   var $sign_key_file   = "";
   var $sign_key_pass   = "";
 
@@ -572,10 +573,10 @@ class PHPMailer {
   /**
    * Initiates a connection to an SMTP server.  Returns false if the
    * operation failed.
-   * @access private
+   * @access public
    * @return bool
    */
-  function SmtpConnect() {
+  public function SmtpConnect() {
     if($this->smtp == NULL) {
       $this->smtp = new SMTP();
     }
@@ -588,7 +589,7 @@ class PHPMailer {
     /* Retry while there is no connection */
     while($index < count($hosts) && $connection == false) {
       $hostinfo = array();
-      if(preg_match('/^(.+):([0-9]+)$/', $hosts[$index], $hostinfo)) {
+      if(eregi('^(.+):([0-9]+)$', $hosts[$index], $hostinfo)) {
         $host = $hostinfo[1];
         $port = $hostinfo[2];
       } else {
@@ -596,11 +597,23 @@ class PHPMailer {
         $port = $this->Port;
       }
 
-      if($this->smtp->Connect(((!empty($this->SMTPSecure))?$this->SMTPSecure.'://':'').$host, $port, $this->Timeout)) {
-        if ($this->Helo != '') {
-          $this->smtp->Hello($this->Helo);
-        } else {
-          $this->smtp->Hello($this->ServerHostname());
+      $tls = ($this->SMTPSecure == 'tls');
+      $ssl = ($this->SMTPSecure == 'ssl');
+
+      if($this->smtp->Connect(($ssl ? 'ssl://':'').$host, $port, $this->Timeout)) {
+
+        $hello = ($this->Helo != '' ? $this->Helo : $this->ServerHostname());
+        $this->smtp->Hello($hello);
+
+        if($tls) {
+          if(!$this->smtp->StartTLS()) {
+            $this->SetError($this->Lang("tls"));
+            $this->smtp->Reset();
+            $connection = false;
+          }
+
+          //We must resend HELLO after tls negociation
+          $this->smtp->Hello($hello);
         }
 
         $connection = true;
@@ -620,6 +633,7 @@ class PHPMailer {
 
     return $connection;
   }
+ 
 
   /**
    * Closes the active SMTP session if one exists.
@@ -649,8 +663,20 @@ class PHPMailer {
     } elseif (file_exists($lang_path.'phpmailer.lang-en.php')) {
       include($lang_path.'phpmailer.lang-en.php');
     } else {
-      $this->SetError('Could not load language file');
-      return false;
+      $PHPMAILER_LANG = array();
+      $PHPMAILER_LANG["provide_address"]      = 'You must provide at least one ' .
+      $PHPMAILER_LANG["mailer_not_supported"] = ' mailer is not supported.';
+      $PHPMAILER_LANG["execute"]              = 'Could not execute: ';
+      $PHPMAILER_LANG["instantiate"]          = 'Could not instantiate mail function.';
+      $PHPMAILER_LANG["authenticate"]         = 'SMTP Error: Could not authenticate.';
+      $PHPMAILER_LANG["from_failed"]          = 'The following From address failed: ';
+      $PHPMAILER_LANG["recipients_failed"]    = 'SMTP Error: The following ' .
+      $PHPMAILER_LANG["data_not_accepted"]    = 'SMTP Error: Data not accepted.';
+      $PHPMAILER_LANG["connect_host"]         = 'SMTP Error: Could not connect to SMTP host.';
+      $PHPMAILER_LANG["file_access"]          = 'Could not access file: ';
+      $PHPMAILER_LANG["file_open"]            = 'File Error: Could not open file: ';
+      $PHPMAILER_LANG["encoding"]             = 'Unknown encoding: ';
+      $PHPMAILER_LANG["signing"]              = 'Signing Error: ';
     }
     $this->language = $PHPMAILER_LANG;
 
@@ -864,9 +890,6 @@ class PHPMailer {
       } elseif (count($this->cc) == 0) {
         $result .= $this->HeaderLine('To', 'undisclosed-recipients:;');
       }
-      if(count($this->cc) > 0) {
-        $result .= $this->AddrAppend('Cc', $this->cc);
-      }
     }
 
     $from = array();
@@ -1007,9 +1030,13 @@ class PHPMailer {
       fclose($fp);
       $signed = tempnam("", "signed");
 
-      if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_key_file, array("file://".$this->sign_key_file, $this->sign_key_pass), null)) {
+      if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), null)) {
         $fp = fopen($signed, "r");
         $result = fread($fp, filesize($this->sign_key_file));
+        $result = '';
+        while(!feof($fp)){
+          $result = $result . fread($fp, 1024);
+        }
         fclose($fp);
       } else {
         $this->SetError($this->Lang("signing").openssl_error_string());
@@ -1039,7 +1066,7 @@ class PHPMailer {
       $encoding = $this->Encoding;
     }
     $result .= $this->TextLine('--' . $boundary);
-    $result .= sprintf("Content-Type: %s; charset=%s", $contentType, $charSet);
+    $result .= sprintf("Content-Type: %s; charset = \"%s\"", $contentType, $charSet);
     $result .= $this->LE;
     $result .= $this->HeaderLine('Content-Transfer-Encoding', $encoding);
     $result .= $this->LE;
@@ -1159,14 +1186,14 @@ class PHPMailer {
       $cid         = $this->attachment[$i][7];
 
       $mime[] = sprintf("--%s%s", $this->boundary[1], $this->LE);
-      $mime[] = sprintf("Content-Type: %s; name=\"%s\"%s", $type, $name, $this->LE);
+      $mime[] = sprintf("Content-Type: %s; name=\"%s\"%s", $type, $this->EncodeHeader($this->SecureHeader($name)), $this->LE);
       $mime[] = sprintf("Content-Transfer-Encoding: %s%s", $encoding, $this->LE);
 
       if($disposition == 'inline') {
         $mime[] = sprintf("Content-ID: <%s>%s", $cid, $this->LE);
       }
 
-      $mime[] = sprintf("Content-Disposition: %s; filename=\"%s\"%s", $disposition, $name, $this->LE.$this->LE);
+      $mime[] = sprintf("Content-Disposition: %s; filename=\"%s\"%s", $disposition, $this->EncodeHeader($this->SecureHeader($name)), $this->LE.$this->LE);
 
       /* Encode as string attachment */
       if($bString) {
@@ -1399,7 +1426,7 @@ class PHPMailer {
       } // end of for
       $output .= $newline.$eol;
     } // end of while
-    return trim($output);
+    return $output;
   }
 
   /**
@@ -1710,8 +1737,7 @@ class PHPMailer {
           $ext = $fileParts[1];
           $mimeType = $this->_mime_types($ext);
           if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') { $basedir .= '/'; }
-          if ( strlen($directory) > 1 && substr($basedir,-1) != '/') { $directory .= '/'; }
-          $this->AddEmbeddedImage($basedir.$directory.$filename, md5($filename), $filename, 'base64', $mimeType);
+          if ( strlen($directory) > 1 && substr($directory,-1) != '/') { $directory .= '/'; }
           if ( $this->AddEmbeddedImage($basedir.$directory.$filename, md5($filename), $filename, 'base64',$mimeType) ) {
             $message = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $message);
           }
@@ -1722,7 +1748,7 @@ class PHPMailer {
     $this->Body = $message;
     $textMsg = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s','',$message)));
     if ( !empty($textMsg) && empty($this->AltBody) ) {
-      $this->AltBody = $textMsg;
+      $this->AltBody = html_entity_decode($textMsg);
     }
     if ( empty($this->AltBody) ) {
       $this->AltBody = 'To view this email message, open the email in with HTML compatibility!' . "\n\n";
@@ -1736,93 +1762,92 @@ class PHPMailer {
    */
   function _mime_types($ext = '') {
     $mimes = array(
-      'hqx'  =>  'application/mac-binhex40',
-      'cpt'   =>  'application/mac-compactpro',
-      'doc'   =>  'application/msword',
-      'bin'   =>  'application/macbinary',
-      'dms'   =>  'application/octet-stream',
-      'lha'   =>  'application/octet-stream',
-      'lzh'   =>  'application/octet-stream',
-      'exe'   =>  'application/octet-stream',
-      'class' =>  'application/octet-stream',
-      'psd'   =>  'application/octet-stream',
-      'so'    =>  'application/octet-stream',
-      'sea'   =>  'application/octet-stream',
-      'dll'   =>  'application/octet-stream',
-      'oda'   =>  'application/oda',
-      'pdf'   =>  'application/pdf',
       'ai'    =>  'application/postscript',
-      'eps'   =>  'application/postscript',
-      'ps'    =>  'application/postscript',
-      'smi'   =>  'application/smil',
-      'smil'  =>  'application/smil',
-      'mif'   =>  'application/vnd.mif',
-      'xls'   =>  'application/vnd.ms-excel',
-      'ppt'   =>  'application/vnd.ms-powerpoint',
-      'wbxml' =>  'application/vnd.wap.wbxml',
-      'wmlc'  =>  'application/vnd.wap.wmlc',
+      'aif'   =>  'audio/x-aiff',
+      'aifc'  =>  'audio/x-aiff',
+      'aiff'  =>  'audio/x-aiff',
+      'avi'   =>  'video/x-msvideo',
+      'bin'   =>  'application/macbinary',
+      'bmp'   =>  'image/bmp',
+      'class' =>  'application/octet-stream',
+      'cpt'   =>  'application/mac-compactpro',
+      'css'   =>  'text/css',
       'dcr'   =>  'application/x-director',
       'dir'   =>  'application/x-director',
-      'dxr'   =>  'application/x-director',
+      'dll'   =>  'application/octet-stream',
+      'dms'   =>  'application/octet-stream',
+      'doc'   =>  'application/msword',
       'dvi'   =>  'application/x-dvi',
+      'dxr'   =>  'application/x-director',
+      'eml'   =>  'message/rfc822',
+      'eps'   =>  'application/postscript',
+      'exe'   =>  'application/octet-stream',
+      'gif'   =>  'image/gif',
       'gtar'  =>  'application/x-gtar',
-      'php'   =>  'application/x-httpd-php',
-      'php4'  =>  'application/x-httpd-php',
-      'php3'  =>  'application/x-httpd-php',
-      'phtml' =>  'application/x-httpd-php',
-      'phps'  =>  'application/x-httpd-php-source',
+      'htm'   =>  'text/html',
+      'html'  =>  'text/html',
+      'jpe'   =>  'image/jpeg',
+      'jpeg'  =>  'image/jpeg',
+      'jpg'   =>  'image/jpeg',
+      'hqx'   =>  'application/mac-binhex40',
       'js'    =>  'application/x-javascript',
-      'swf'   =>  'application/x-shockwave-flash',
-      'sit'   =>  'application/x-stuffit',
-      'tar'   =>  'application/x-tar',
-      'tgz'   =>  'application/x-tar',
-      'xhtml' =>  'application/xhtml+xml',
-      'xht'   =>  'application/xhtml+xml',
-      'zip'   =>  'application/zip',
+      'lha'   =>  'application/octet-stream',
+      'log'   =>  'text/plain',
+      'lzh'   =>  'application/octet-stream',
       'mid'   =>  'audio/midi',
       'midi'  =>  'audio/midi',
-      'mpga'  =>  'audio/mpeg',
+      'mif'   =>  'application/vnd.mif',
+      'mov'   =>  'video/quicktime',
+      'movie' =>  'video/x-sgi-movie',
       'mp2'   =>  'audio/mpeg',
       'mp3'   =>  'audio/mpeg',
-      'aif'   =>  'audio/x-aiff',
-      'aiff'  =>  'audio/x-aiff',
-      'aifc'  =>  'audio/x-aiff',
+      'mpe'   =>  'video/mpeg',
+      'mpeg'  =>  'video/mpeg',
+      'mpg'   =>  'video/mpeg',
+      'mpga'  =>  'audio/mpeg',
+      'oda'   =>  'application/oda',
+      'pdf'   =>  'application/pdf',
+      'php'   =>  'application/x-httpd-php',
+      'php3'  =>  'application/x-httpd-php',
+      'php4'  =>  'application/x-httpd-php',
+      'phps'  =>  'application/x-httpd-php-source',
+      'phtml' =>  'application/x-httpd-php',
+      'png'   =>  'image/png',
+      'ppt'   =>  'application/vnd.ms-powerpoint',
+      'ps'    =>  'application/postscript',
+      'psd'   =>  'application/octet-stream',
+      'qt'    =>  'video/quicktime',
+      'ra'    =>  'audio/x-realaudio',
       'ram'   =>  'audio/x-pn-realaudio',
       'rm'    =>  'audio/x-pn-realaudio',
       'rpm'   =>  'audio/x-pn-realaudio-plugin',
-      'ra'    =>  'audio/x-realaudio',
-      'rv'    =>  'video/vnd.rn-realvideo',
-      'wav'   =>  'audio/x-wav',
-      'bmp'   =>  'image/bmp',
-      'gif'   =>  'image/gif',
-      'jpeg'  =>  'image/jpeg',
-      'jpg'   =>  'image/jpeg',
-      'jpe'   =>  'image/jpeg',
-      'png'   =>  'image/png',
-      'tiff'  =>  'image/tiff',
-      'tif'   =>  'image/tiff',
-      'css'   =>  'text/css',
-      'html'  =>  'text/html',
-      'htm'   =>  'text/html',
-      'shtml' =>  'text/html',
-      'txt'   =>  'text/plain',
-      'text'  =>  'text/plain',
-      'log'   =>  'text/plain',
-      'rtx'   =>  'text/richtext',
       'rtf'   =>  'text/rtf',
+      'rtx'   =>  'text/richtext',
+      'rv'    =>  'video/vnd.rn-realvideo',
+      'sea'   =>  'application/octet-stream',
+      'shtml' =>  'text/html',
+      'sit'   =>  'application/x-stuffit',
+      'so'    =>  'application/octet-stream',
+      'smi'   =>  'application/smil',
+      'smil'  =>  'application/smil',
+      'swf'   =>  'application/x-shockwave-flash',
+      'tar'   =>  'application/x-tar',
+      'text'  =>  'text/plain',
+      'txt'   =>  'text/plain',
+      'tgz'   =>  'application/x-tar',
+      'tif'   =>  'image/tiff',
+      'tiff'  =>  'image/tiff',
+      'wav'   =>  'audio/x-wav',
+      'wbxml' =>  'application/vnd.wap.wbxml',
+      'wmlc'  =>  'application/vnd.wap.wmlc',
+      'word'  =>  'application/msword',
+      'xht'   =>  'application/xhtml+xml',
+      'xhtml' =>  'application/xhtml+xml',
+      'xl'    =>  'application/excel',
+      'xls'   =>  'application/vnd.ms-excel',
       'xml'   =>  'text/xml',
       'xsl'   =>  'text/xml',
-      'mpeg'  =>  'video/mpeg',
-      'mpg'   =>  'video/mpeg',
-      'mpe'   =>  'video/mpeg',
-      'qt'    =>  'video/quicktime',
-      'mov'   =>  'video/quicktime',
-      'avi'   =>  'video/x-msvideo',
-      'movie' =>  'video/x-sgi-movie',
-      'doc'   =>  'application/msword',
-      'word'  =>  'application/msword',
-      'xl'    =>  'application/excel',
-      'eml'   =>  'message/rfc822'
+      'zip'   =>  'application/zip'
     );
     return ( ! isset($mimes[strtolower($ext)])) ? 'application/octet-stream' : $mimes[strtolower($ext)];
   }
@@ -1886,7 +1911,8 @@ class PHPMailer {
    * @param string $key_filename Parameter File Name
    * @param string $key_pass Password for private key
    */
-  function Sign($key_filename, $key_pass) {
+  function Sign($cert_filename, $key_filename, $key_pass) {
+    $this->sign_cert_file = $cert_filename;
     $this->sign_key_file = $key_filename;
     $this->sign_key_pass = $key_pass;
   }
