@@ -109,7 +109,7 @@ if (!$exportstyle)
 		elseif ($rows['type']=='1')
 		{
 			// $detailquery="select code from {$dbprefix}answers where qid=".$rows['qid']." and language='$surveybaselang' order by sortorder,code";
-			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code order by a.code ";
+			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid'].") and a.language='$surveybaselang' group by a.code, l.lid order by a.code ";
 			$detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
 			$i=0;
 			while ($detailrows = $detailresult->FetchRow())
@@ -119,7 +119,7 @@ if (!$exportstyle)
 				$i++;
 			}
 			// second scale
-			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code order by a.code ";
+			$detailquery="select a.code, l.lid from {$dbprefix}answers as a, {$dbprefix}labels as l where qid=".$rows['qid']." AND (l.lid =".$rows['lid1'].") and a.language='$surveybaselang' group by a.code, l.lid  order by a.code ";
 			$detailresult=db_execute_assoc($detailquery) or safe_die("Couldn't find detailfields<br />$detailquery<br />".$connect->ErrorMsg());
 			$i=0;
 			while ($detailrows = $detailresult->FetchRow())
