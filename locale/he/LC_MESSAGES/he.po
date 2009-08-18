@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-08-18 17:46+0100\n"
-"PO-Revision-Date: 2009-08-18 17:46+0100\n"
+"PO-Revision-Date: 2009-08-18 18:55+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: Erez, Imry and Yohay, Technion, Haifa, Israel <yochayon@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -1602,7 +1602,6 @@ msgstr "תשובה"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:541
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:549
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:550
-#, fuzzy
 msgid "Choose one of the following answers"
 msgstr "בחר אחד מתוך הבאים"
 
