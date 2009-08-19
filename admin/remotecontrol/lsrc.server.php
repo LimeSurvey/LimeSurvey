@@ -567,15 +567,16 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 	$iCountParticipants =  count($asDataset);
 	$iInsertedParticipants=0;
 	
-	//some extra sql statement comes in here later
-	$attributes='';
-	$attributesData='';
-	$validity='';
-	$validityData='';
+	
 	
 	
 	foreach($asDataset as $sData)
 	{
+		//some extra sql statement comes in here later
+		$attributes='';
+		$attributesData='';
+		$validity='';
+		$validityData='';
 		if($sData!='')
 		{
 			$asDatafield = explode($sDatafieldSeperator, $sData);			
@@ -594,34 +595,6 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 			}
 			
 			
-			
-			if(isset($asDatafield[7]) && $asDatafield[7]!='')
-			{
-				$asAttributes = explode(",", $asDatafield[7]);	
-				$n=0;
-				foreach($asAttributes as $attribute)
-				{
-					
-					++$n;
-					//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
-					
-					$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
-					$attributes.=",attribute_$n";
-					$attributesData.= ",'$attribute'";
-					
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
-					//modify_database("","$sql");
-					$connect->Execute($sql);
-					
-					
-					$insert = "UPDATE {$dbprefix}tokens_$iVid " 
-							. " SET attribute_$n='$attribute' WHERE token='$asDatafield[4]' ";
-					
-					$lsrcHelper->debugLsrc("$insert");
-					$connect->Execute($insert);
-				}
-			}
-			
 			$iDataLength = count($asDatafield);
 			for($n=0;$n>=$iDataLength;++$n)
 			{
@@ -631,12 +604,12 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 					$asDatafield[$n]=null;
 				}
 			}
-			if(isset($asDatafield[5]))
+			if(isset($asDatafield[5]) && $asDatafield[5]!=null)
 			{
 				$validity .= ',validfrom';
 				$validityData .=",'$asDatafield[5]'";
 			}
-			if(isset($asDatafield[6]))
+			if(isset($asDatafield[6]) && $asDatafield[5]!=null)
 			{
 				$validity .= ',validuntil';
 				$validityData .=",'$asDatafield[6]'";
@@ -659,7 +632,38 @@ function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData)
 //					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
 //				
 			if($connect->Execute($sInsertParti))
+			{
 				++$iInsertedParticipants;
+				
+				
+				
+				if(isset($asDatafield[7]) && $asDatafield[7]!='')
+				{
+					$asAttributes = explode(",", $asDatafield[7]);	
+					$n=0;
+					foreach($asAttributes as $attribute)
+					{
+						
+						++$n;
+						//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
+						
+						$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+						$attributes.=",attribute_$n";
+						$attributesData.= ",'$attribute'";
+						
+						$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
+						//modify_database("","$sql");
+						$connect->Execute($sql);
+						
+						
+						$insert = "UPDATE {$dbprefix}tokens_$iVid " 
+								. " SET attribute_$n='$attribute' WHERE token='$asDatafield[4]' ";
+						
+						$lsrcHelper->debugLsrc("$insert");
+						$connect->Execute($insert);
+					}
+				}
+			}
 
 		}
 			
