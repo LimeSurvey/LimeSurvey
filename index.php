@@ -424,7 +424,7 @@ if (!$thissurvey['templatedir'])
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'])
+if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'] && $thissurvey['active']!='N')
 {
 	sendcacheheaders();
 	doHeader();
@@ -441,7 +441,7 @@ if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'])
 }
 
 //MAKE SURE SURVEY IS ALREADY VALID
-if ($thissurvey['startdate']!='' and  date("Y-m-d")<$thissurvey['startdate'])
+if ($thissurvey['startdate']!='' and  date("Y-m-d")<$thissurvey['startdate'] && $thissurvey['active']!='N')
 {
     sendcacheheaders();
     doHeader();
@@ -1480,9 +1480,9 @@ function submittokens()
         {
             $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
         }
-		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+        
+        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+		$fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
 		$subject=Replacefields($subject, $fieldsarray);
 
