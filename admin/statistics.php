@@ -3481,12 +3481,15 @@ if (isset($summary) && $summary)
 
 					//"no answer" handling
 					if ($al[0] == "")
-					{$fname=$clang->gT("No answer");}
-						
+					{
+                        $fname=$clang->gT("No answer");
+                    }
 					//"other" handling
 					//"Answers" means that we show an option to list answer to "other" text field
 					elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-					{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+					{
+                        $fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                    }
 						
 					/*
 					 * text questions:
@@ -3496,7 +3499,14 @@ if (isset($summary) && $summary)
 					 * S = short free text
 					 * Q = multiple short text
 					 */
-					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q")
+                    elseif ($qtype == "P" )
+                    {
+                        $fname= "$al[1] <input type='submit' value='"
+                        . $clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]comment&amp;sql="
+                        . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        
+                    }
+					elseif ($qtype == "S" || $qtype == "U" || $qtype == "T" || $qtype == "Q" )
 					{
 						//show free text answers
 						if ($al[0] == "Answers")
