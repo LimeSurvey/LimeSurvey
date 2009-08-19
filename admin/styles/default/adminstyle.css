@@ -66,6 +66,11 @@ table.statisticstable {
 	margin: 2px auto;
 }
 
+
+table.statisticstable span {   
+     font-weight:bold;
+}
+    
 .basic {
 	color: #1d2d45;
 }
