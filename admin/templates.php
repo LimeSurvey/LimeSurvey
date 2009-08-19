@@ -147,7 +147,7 @@ if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===fal
 
 if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
 if (!isset($subaction)) {$subaction=sanitize_paranoid_string(returnglobal('subaction'));}
-if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
+if (!isset($otherfile)) {$otherfile = sanitize_filename(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
@@ -278,7 +278,7 @@ if ($action == "templateuploadfile")
 			
       } else
       {
-	  $the_full_file_path = $templaterootdir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+	  $the_full_file_path = $templaterootdir."/".$templatename . "/" . sanitize_filename($_FILES['the_file']['name']); 
       if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
       {
          if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
