@@ -554,7 +554,7 @@ function createinsertquery()
 							$tmpvalue=my_strip_rtags($tmpvalue);
 							$tmpvalue=strip_tags($myFilter->process($tmpvalue),true);
 							$tmpvalue=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
-							$query .= db_quote_id($field)." = '".$tmpvalue."',";
+                            $query .= db_quote_id($field)." = ".db_quoteall($tmpvalue).",";
 						}
 					}
 				}
