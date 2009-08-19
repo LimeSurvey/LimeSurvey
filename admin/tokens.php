@@ -1707,7 +1707,7 @@ if ($subaction == "managetokenattributes" &&
     foreach ($tokenfields as $tokenfield=>$tokendescription)
     {
             $nrofattributes++;
-            $tokenoutput.="<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription)."' /></td><td>";
+            $tokenoutput.="<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription,ENT_QUOTES,'UTF-8')."' /></td><td>";
             if ($examplerow!==false)
             {
                 $tokenoutput.=htmlspecialchars($examplerow[$tokenfield]);
@@ -1928,7 +1928,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
         $tokenoutput .= "\t\t<tr>"
         ."<td align='right' width='20%'><strong>".$attr_description.":</strong></td>\n"
         ."\t<td><input type='text' size='55' name='$attr_name' value='";
-        if (isset($$attr_name)) { $tokenoutput .=$$attr_name;}
+        if (isset($$attr_name)) { $tokenoutput .=htmlspecialchars($$attr_name,ENT_QUOTES,'UTF-8');}
         $tokenoutput.="'></td>"
         ."</tr>";
 	}
