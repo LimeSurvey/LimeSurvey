@@ -4425,7 +4425,8 @@ function BuildCSVFromQuery($Query)
 
 function CSVEscape($str) 
 {
-   return '"' . str_replace('"','""', $str) . '"';
+    $str= str_replace('\n','\%n',$str);
+    return '"' . str_replace('"','""', $str) . '"';
 }
 
 function convertCSVRowToArray($string, $seperator, $quotechar) 
@@ -4447,7 +4448,7 @@ function CSVUnquote($field)
 	//print $field.":";
 	$field = preg_replace ("/^\040*\"/", "", $field);
 	$field = preg_replace ("/\"\040*$/", "", $field);
-    $field=str_replace('""','"',$field);
+    $field= str_replace('""','"',$field);
     //print $field."\n";
     return $field;
 }
@@ -5050,7 +5051,8 @@ function captcha_enabled($screen, $captchamode='')
 */
 function convertCsvreturn2return($string)
 {
-        return str_replace('\n', "\n", $string);
+        $string= str_replace('\n', "\n", $string);
+        return str_replace('\%n', '\n', $string);
 }
 
 
