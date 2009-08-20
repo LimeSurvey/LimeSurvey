@@ -142,6 +142,13 @@ $query = "SELECT {$dbprefix}quota_members.*
 		  WHERE {$dbprefix}quota_members.sid=$surveyid";
 $quotamemdump = BuildCSVFromQuery($query);
 
+//13: Quota languagesettings
+$query = "SELECT {$dbprefix}quota_languagesettings.*
+          FROM {$dbprefix}quota_languagesettings, {$dbprefix}quota
+		  WHERE {$dbprefix}quota.id = {$dbprefix}quota_languagesettings.quotals_quota_id
+		  AND {$dbprefix}quota.sid=$surveyid";
+$quotalsdump = BuildCSVFromQuery($query);
+
 $fn = "limesurvey_survey_$surveyid.csv";
 
 header("Content-Type: application/download");
@@ -151,6 +158,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: cache");                          // HTTP/1.0
 
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump, $quotadump, $quotamemdump."\n";
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump, $quotadump, $quotamemdump, $quotalsdump."\n";
 exit;
 ?>

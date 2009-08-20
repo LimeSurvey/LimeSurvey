@@ -319,11 +319,37 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 }
 $bigarray = array_values($bigarray);
 
-//Survey Language Settings
+//QUOTA MEMBERS
+if (array_search("# QUOTA_LANGUAGESETTINGS TABLE\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_LANGUAGESETTINGS TABLE\n", $bigarray);
+}
+elseif (array_search("# QUOTA_LANGUAGESETTINGS TABLE\r\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_LANGUAGESETTINGS TABLE\r\n", $bigarray);
+}
+else
+{
+	$stoppoint = count($bigarray)-1;
+}
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+//	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
+	if ($i<$stoppoint-2)
+	{
+		$quotamembersarray[] = $bigarray[$i];
+	}
+	unset($bigarray[$i]);
+}
+$bigarray = array_values($bigarray);
+
+
+//Whatever is the last table - currently 
+//QUOTA LANGUAGE SETTINGS
 $stoppoint = count($bigarray)-1;
 for ($i=0; $i<$stoppoint-1; $i++)
 {
-	if ($i<=$stoppoint) {$quotamembersarray[] = $bigarray[$i];}
+	if ($i<=$stoppoint) {$quotalsarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
@@ -338,6 +364,8 @@ if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$c
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
 if (isset($quotaarray)) {$countquota=count($quotaarray);} else {$countquota=0;}
+if (isset($quotamembersarray)) {$countquotamembers=count($quotamembersarray);} else {$countquotamembers=0;}
+if (isset($quotalsarray)) {$countquotals=count($quotalsarray);} else {$countquotals=0;}
 
 // CREATE SURVEY
 
@@ -1083,7 +1111,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 	}
 }
 
-if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUTES
     $count=0; 
 	foreach ($assessmentsarray as $qar) {
         if ($importversion>=111)
@@ -1160,7 +1188,7 @@ if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
 	}
 }
 
-if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE ARE QUOTAS
+if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE ARE QUOTA MEMBERS
     $count=0;
 	foreach ($quotamembersarray as $qar) {
         
@@ -1196,6 +1224,34 @@ if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE AR
         $asinsert = "insert INTO {$dbprefix}quota_members (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
 
+	}
+}
+
+if (isset($quotalsarray) && $quotalsarray) {//ONLY DO THIS IF THERE ARE QUOTA LANGUAGE SETTINGS
+    $count=0;
+	foreach ($quotalsarray as $qar) {
+        
+        $fieldorders  =convertCSVRowToArray($quotalsarray[0],',','"');
+        $fieldcontents=convertCSVRowToArray($qar,',','"');
+        if ($count==0) {$count++; continue;}
+	
+        $asrowdata=array_combine($fieldorders,$fieldcontents);
+
+		$newquotaid="";
+		$oldquotaid=$asrowdata['quotals_quota_id'];
+
+		foreach ($quotaids as $quotaid) {
+			if ($oldquotaid==$quotaid[0]) {$newquotaid=$quotaid[1];}
+		}
+		
+		$asrowdata["quotals_quota_id"]=$newquotaid;
+		unset($asrowdata["quotals_id"]);
+
+        $newvalues=array_values($asrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+
+        $asinsert = "INSERT INTO {$dbprefix}quota_languagesettings (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
 	}
 }
 
@@ -1307,7 +1363,7 @@ if ($importingfrom == "http")
     }
 	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n";
-	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota</li>\n</ul>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota ($countquotamembers ".$clang->gT("quota members")." ".$clang->gT("and")." $countquotals ".$clang->gT("quota language settings").")</li>\n</ul>\n";
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
