@@ -829,7 +829,7 @@ if ($surveyid)
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$surveysummary .= "<table class='table2columns' $showstyle><tr><td align='right' valign='top' width='15%'>"
+		$surveysummary .= "<table class='table2columns' $showstyle id='surveydetails'><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
 		. "(".$clang->gT("ID")." {$surveyinfo['sid']})</strong></td></tr>\n";
