@@ -1623,7 +1623,7 @@ if (returnglobal('viewanswer'))
         		."</th>\n"
         		."<th width='15%'>\n"
         		.$clang->gT("Action")
-        		."</strong></th>\n"
+        		."</th>\n"
         		."<th width='10%' align='center'>\n"
         		.$clang->gT("Order");
  	
