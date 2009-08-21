@@ -543,6 +543,7 @@ if ($importversion<=100)
     $surveylsrowdata['surveyls_email_register']=$surveyrowdata['email_register'];
     $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
     $surveylsrowdata['surveyls_email_confirm']=$surveyrowdata['email_confirm'];
+	if(!isset($defaultsurveylanguage)) {$defaultsurveylanguage=$newlanguage;}
     unset($surveyrowdata['short_title']);
     unset($surveyrowdata['description']);
     unset($surveyrowdata['welcome']);
@@ -1177,6 +1178,7 @@ if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
 		$asrowdata["sid"]=$newsid;
 		$oldid = $asrowdata["id"];
 		unset($asrowdata["id"]);
+		$quotadata[]=$asrowdata; //For use later if needed
 
         $newvalues=array_values($asrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -1253,6 +1255,28 @@ if (isset($quotalsarray) && $quotalsarray) {//ONLY DO THIS IF THERE ARE QUOTA LA
         $asinsert = "INSERT INTO {$dbprefix}quota_languagesettings (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
 		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
 	}
+}
+
+//if there are quotas, but no quotals, then we need to create default dummy for each quota (this handles exports from pre-language quota surveys)
+if ($countquota > 0 && (!isset($countquotals) || $countquotals == 0)) {
+	$i=0;
+	$defaultsurveylanguage=isset($defaultsurveylanguage) ? $defaultsurveylanguage : "en";
+	foreach($quotaids as $quotaid) {
+	    $newquotaid=$quotaid[1];
+		$asrowdata=array("quotals_quota_id" => $newquotaid,
+						 "quotals_language" => $defaultsurveylanguage,
+						 "quotals_name" => $quotadata[$i]["name"],
+						 "quotals_message" => $clang->gT("Sorry your responses have exceeded a quota on this survey."),
+						 "quotals_url" => "",
+						 "quotals_urldescrip" => "");
+		$i++;
+	}
+	$newvalues = array_values($asrowdata);
+	$newvalues = array_map(array(&$connect, "qstr"),$newvalues);
+	
+    $asinsert = "INSERT INTO {$dbprefix}quota_languagesettings (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+	$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+	$countquotals=$i;
 }
 
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
