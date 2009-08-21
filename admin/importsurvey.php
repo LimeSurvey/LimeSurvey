@@ -535,13 +535,13 @@ if ($importversion<=100)
     $surveylsrowdata['surveyls_description']=$surveyrowdata['description'];
     $surveylsrowdata['surveyls_welcometext']=$surveyrowdata['welcome'];
     $surveylsrowdata['surveyls_urldescription']=$surveyrowdata['urldescrip'];
-    $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
+    if (isset($surveyrowdata['email_invite_subj'])) $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
     $surveylsrowdata['surveyls_email_invite']=$surveyrowdata['email_invite'];
-    $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
+    if (isset($surveyrowdata['email_remind_subj']))     $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
     $surveylsrowdata['surveyls_email_remind']=$surveyrowdata['email_remind'];
-    $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
+    if (isset($surveyrowdata['email_register_subj']))     $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
     $surveylsrowdata['surveyls_email_register']=$surveyrowdata['email_register'];
-    $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
+    if (isset($surveyrowdata['email_confirm_subj'])) $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
     $surveylsrowdata['surveyls_email_confirm']=$surveyrowdata['email_confirm'];
 	if(!isset($defaultsurveylanguage)) {$defaultsurveylanguage=$newlanguage;}
     unset($surveyrowdata['short_title']);
