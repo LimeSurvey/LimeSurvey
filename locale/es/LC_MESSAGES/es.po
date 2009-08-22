@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-31 07:17+0200\n"
-"PO-Revision-Date: 2009-07-30 23:50-0600\n"
+"POT-Creation-Date: 2009-08-22 07:17+0200\n"
+"PO-Revision-Date: 2009-08-22 00:03-0600\n"
 "Last-Translator: Carlos Juan Martin Perez <kadejo@gmail.com>\n"
 "Language-Team: es-ES <es@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -395,8 +395,8 @@ msgstr "Editor de Plantillas"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:409
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:371
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1291
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1320
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1374
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1403
 msgid "Surveys"
 msgstr "Encuestas"
 
@@ -407,8 +407,8 @@ msgstr "Crear o Importar una Nueva Encuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:430
 #: /var/lib/limesurvey-svn/subversion1x/common.php:432
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:103
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:105
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:104
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:106
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:783
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:785
 msgid "Logout"
@@ -416,8 +416,8 @@ msgstr "Cerrar Sesión"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:436
 #: /var/lib/limesurvey-svn/subversion1x/common.php:438
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:109
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:111
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:110
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:112
 msgid "Show Help"
 msgstr "Mostrar Ayuda"
 
@@ -477,11 +477,11 @@ msgstr "Inactiva"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1290
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1315
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1382
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4232
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4266
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4305
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4341
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:79
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4235
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4269
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4308
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4344
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:80
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:86
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:105
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:360
@@ -493,8 +493,8 @@ msgstr "Por favor seleccione..."
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1291
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1316
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1383
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4267
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4306
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4270
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4309
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:782
 msgid "None"
 msgstr "Ninguno"
@@ -572,7 +572,7 @@ msgid "Multiple Short Text"
 msgstr "Varios textos cortos"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:898
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:764
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:773
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2575
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:709
 msgid "Ranking"
@@ -641,7 +641,7 @@ msgstr "No puede ser modificado (la Encuesta está activa)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1733
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:121
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:68
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:69
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:101
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:112
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:578
@@ -662,7 +662,7 @@ msgid "Display Responses"
 msgstr "Mostrar Todas las Contestaciones"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1761
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5529
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5567
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:563
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:622
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1327
@@ -670,7 +670,7 @@ msgid "Please select a language:"
 msgstr "Por favor, seleccione un idioma:"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1766
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5545
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5583
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1003
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:60
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:568
@@ -784,7 +784,7 @@ msgid "Date Started"
 msgstr "Fecha de inicio"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1911
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:178
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:179
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:85
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:637
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:173
@@ -794,7 +794,7 @@ msgid "IP Address"
 msgstr "Dirección IP"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:1912
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:182
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:183
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:177
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:427
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:663
@@ -813,15 +813,15 @@ msgstr "URL de referencia"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1770
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1994
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3031
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:742
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1402
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1491
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1532
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:751
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1411
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1500
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1541
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2433
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3266
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3357
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3401
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3488
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3489
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:912
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:999
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2174
@@ -854,10 +854,10 @@ msgstr "Otro"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3935
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4447
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4505
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1246
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1371
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:755
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:924
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1255
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1380
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:754
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:923
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3077
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3224
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:232
@@ -895,23 +895,23 @@ msgstr "Otro"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2747
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2761
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2772
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3289
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3298
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3306
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3314
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3322
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3331
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3349
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3376
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3383
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3402
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3425
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3459
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3466
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3473
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3480
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3487
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3494
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3286
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3295
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3303
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3311
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3319
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3328
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3346
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3373
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3380
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3399
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3422
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3456
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3463
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3470
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3477
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3484
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3491
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:468
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:488
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1129
@@ -946,10 +946,10 @@ msgstr "Sí"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3944
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4449
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4523
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1247
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1372
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:761
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:936
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1256
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1381
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:760
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:935
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3078
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3225
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:245
@@ -985,23 +985,23 @@ msgstr "Sí"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2750
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2764
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2775
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3292
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3299
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3307
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3315
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3323
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3332
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3350
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3377
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3384
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3404
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3426
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3460
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3467
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3474
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3481
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3488
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3495
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3289
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3296
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3304
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3312
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3320
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3329
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3347
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3374
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3381
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3401
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3423
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3457
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3464
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3471
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3478
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3485
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3492
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:469
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:490
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1130
@@ -1033,8 +1033,8 @@ msgstr "No"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2094
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2102
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5163
 #: /var/lib/limesurvey-svn/subversion1x/common.php:5168
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5173
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:958
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1348
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1536
@@ -1062,22 +1062,22 @@ msgstr "No"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6074
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6309
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:6363
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1498
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1587
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1871
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1885
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1919
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1954
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1995
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1507
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1596
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1880
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1894
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1928
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1963
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2004
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2496
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2555
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3364
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3484
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3793
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3807
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3843
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3880
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3921
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3485
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3803
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3817
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3853
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3890
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3931
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1451
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2121
 #: /var/lib/limesurvey-svn/subversion1x/admin/results.php:224
@@ -1107,8 +1107,8 @@ msgstr "Sin respuesta"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2100
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4012
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1365
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:744
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1374
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:743
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3218
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:241
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:876
@@ -1128,8 +1128,8 @@ msgstr "Masculino"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2101
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:3993
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1364
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:738
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1373
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:737
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3217
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:240
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:873
@@ -1150,8 +1150,8 @@ msgstr "Femenino"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2110
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4448
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4513
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1248
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:930
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1257
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:929
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3079
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:250
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1393
@@ -1172,8 +1172,8 @@ msgstr "Dudoso"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2116
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4730
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4778
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1265
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:982
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1274
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:981
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3096
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:253
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2001
@@ -1193,8 +1193,8 @@ msgstr "Aumento"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2117
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4732
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4801
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1267
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:992
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1276
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:991
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3098
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:255
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2002
@@ -1214,8 +1214,8 @@ msgstr "Disminución"
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2118
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4731
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4789
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1266
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:987
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1275
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:986
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3097
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_functions.php:254
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:2003
@@ -1464,7 +1464,7 @@ msgstr ""
 "mensaje de correo electrónico con el enlace para participar."
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2952
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6115
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6153
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1839
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:398
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:618
@@ -1474,7 +1474,7 @@ msgid "First Name"
 msgstr "Nombre/s"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:2959
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6116
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6154
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1845
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:400
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:613
@@ -1951,26 +1951,26 @@ msgstr "Colabore con el proyecto - Haga una donación para"
 msgid "Visit our website!"
 msgstr "¡Visite nuestro sitio web!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:3766
+#: /var/lib/limesurvey-svn/subversion1x/common.php:3769
 msgid "Email was not sent because demo-mode is activated."
 msgstr "No se envió el correo porque está activado el modo demostración."
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4115
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4118
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4124
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:114
 msgid "Executing"
 msgstr "Ejecutando"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4115
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4118
 msgid "Failed! Reason: "
 msgstr "¡Error! Motivo:"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:4121
+#: /var/lib/limesurvey-svn/subversion1x/common.php:4124
 msgid "Success!"
 msgstr "¡Éxito!"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:5177
-#: /var/lib/limesurvey-svn/subversion1x/save.php:591
+#: /var/lib/limesurvey-svn/subversion1x/common.php:5182
+#: /var/lib/limesurvey-svn/subversion1x/save.php:590
 #: /var/lib/limesurvey-svn/subversion1x/index.php:470
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:29
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:67
@@ -2042,12 +2042,12 @@ msgstr "¡Éxito!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:233
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:529
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:50
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:371
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:767
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:772
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:799
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:909
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:956
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:399
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:796
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:801
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:828
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:938
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:985
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumpgroup.php:40
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumplabel.php:32
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:650
@@ -2061,32 +2061,32 @@ msgstr "¡Éxito!"
 msgid "Error"
 msgstr "Error"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6117
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6155
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:831
 msgid "Email address"
 msgstr "Correo electrónico"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6118
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6156
 msgid "Token code"
 msgstr "Contraseña del encuestado/a"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6119
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6157
 msgid "Language code"
 msgstr "Código del Idioma"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6120
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6158
 msgid "Invitation sent date"
 msgstr "Fecha de envío de invitación"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6121
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6159
 msgid "Last Reminder sent date"
 msgstr "Fecha de envío del último recordatorio"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6122
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6160
 msgid "Total numbers of sent reminders"
 msgstr "Número total de recordatorios enviados"
 
-#: /var/lib/limesurvey-svn/subversion1x/common.php:6142
+#: /var/lib/limesurvey-svn/subversion1x/common.php:6180
 #, php-format
 msgid "Attribute %s"
 msgstr "Atributo %s"
@@ -2156,11 +2156,11 @@ msgstr ""
 msgid "Your survey was successfully saved."
 msgstr "Su encuesta ha sido guardada correctamente."
 
-#: /var/lib/limesurvey-svn/subversion1x/save.php:592
+#: /var/lib/limesurvey-svn/subversion1x/save.php:591
 msgid "Cannot submit results - there are none to submit."
 msgstr "No se pueden enviar los resultados - no hay resultados que enviar."
 
-#: /var/lib/limesurvey-svn/subversion1x/save.php:593
+#: /var/lib/limesurvey-svn/subversion1x/save.php:592
 msgid ""
 "This error can occur if you have already submitted your responses and "
 "pressed 'refresh' on your browser. In this case, your responses have already "
@@ -2170,7 +2170,7 @@ msgstr ""
 "de \"Refrescar\" en su navegador. En este caso, sus respuestas ya han sido "
 "guardadas previamente."
 
-#: /var/lib/limesurvey-svn/subversion1x/save.php:593
+#: /var/lib/limesurvey-svn/subversion1x/save.php:592
 msgid ""
 "If you receive this message in the middle of completing a survey, you should "
 "choose '<- BACK' on your browser and then refresh/reload the previous page. "
@@ -2883,16 +2883,16 @@ msgstr ""
 msgid "Error: There are no answers defined for this question."
 msgstr "Error. No hay opciones definidas para esta pregunta."
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:137
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:138
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:98
 msgid "PDF Export"
 msgstr "Exportar en PDF"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:146
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:147
 msgid "Survey Name (ID)"
 msgstr "Encuesta Nombre ID"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:166
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:167
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:629
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:158
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:406
@@ -2900,23 +2900,23 @@ msgstr "Encuesta Nombre ID"
 msgid "Token ID"
 msgstr "ID de encuestado/a"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:174
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:175
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:633
 msgid "Date Stamp"
 msgstr "Fecha y Hora"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:271
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:272
 msgid "First Scale"
 msgstr "Primera escala"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:272
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:273
 msgid "Second Scale"
 msgstr "Segunda escala"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:318
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:320
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4337
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4340
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:319
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:321
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4347
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4350
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:415
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1204
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1668
@@ -2926,8 +2926,8 @@ msgstr "Segunda escala"
 msgid "Question"
 msgstr "Pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:318
-#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:320
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:319
+#: /var/lib/limesurvey-svn/subversion1x/printanswers.php:321
 msgid "Your Answer"
 msgstr "Su respuesta"
 
@@ -2935,176 +2935,176 @@ msgstr "Su respuesta"
 msgid "Print your answers."
 msgstr "Imprimir sus respuestas."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:631
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:640
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1984
 msgid "Please wait ..."
 msgstr "Aguarde, por favor..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:633
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:642
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1986
 msgid "Go back"
 msgstr "Volver"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:642
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:651
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1994
 msgid "Getting questions and answers ..."
 msgstr "Obteniendo preguntas y respuestas..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:657
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:666
 msgid "Total records in survey"
 msgstr "Total de elementos en esta encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:674
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:683
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2365
 msgid "Generating summaries ..."
 msgstr "Generando totales..."
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:856
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1514
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:865
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1523
 msgid "Field summary for"
 msgstr "Resumen de"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:861
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:870
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2674
 msgid "Calculation"
 msgstr "Cálculo"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:863
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:872
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2676
 msgid "Result"
 msgstr "Resultado"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:935
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1603
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2055
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:944
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1612
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2064
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2747
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3529
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3982
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3539
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3992
 msgid "Sum"
 msgstr "Suma"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:936
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2175
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:945
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2184
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2748
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4104
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4114
 msgid "Standard deviation"
 msgstr "Desviación estándar"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:937
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:946
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2749
 msgid "Average"
 msgstr "Promedio"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:938
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:947
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2750
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:145
 msgid "Minimum"
 msgstr "Mínimo"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:979
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1599
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1613
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1686
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:988
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1608
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1622
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1695
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2796
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3525
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3539
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3610
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3535
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3549
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3620
 msgid "Count"
 msgstr "Cuenta"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1013
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1022
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2833
 msgid "1st quartile (Q1)"
 msgstr "Primer cuartil (Q1)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1047
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1056
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2867
 msgid "2nd quartile (Median)"
 msgstr "Segundo cuartil (Medio)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1090
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1099
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2910
 msgid "3rd quartile (Q3)"
 msgstr "Tercer cuartil (Q3)"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1106
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1115
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2926
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:145
 msgid "Maximum"
 msgstr "Máximo"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1120
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1129
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2940
 msgid "Null values are ignored in calculations"
 msgstr "Los valores nulos son ignorados en los cálculos"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1121
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1130
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2941
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 y Q3 fueron calculadas utilizando %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1121
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1130
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2941
 msgid "minitab method"
 msgstr "método minitab"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1136
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1145
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2956
 msgid "Not enough values for calculation"
 msgstr "No hay suficientes valores para realizar el cálculo"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1597
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1611
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1684
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1606
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1620
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1693
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2495
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2554
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3523
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3537
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3608
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3533
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3547
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3618
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1622
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1817
 msgid "Answer"
 msgstr "Opción"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1601
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1615
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1688
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3527
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3541
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3612
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1610
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1624
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1697
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3537
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3551
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3622
 msgid "Percentage"
 msgstr "Porcentaje"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1769
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3692
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3717
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:1778
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3702
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3727
 msgid "Non completed"
 msgstr "No completada"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2055
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2064
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:688
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3982
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3992
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:507
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1298
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1327
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1381
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1410
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:586
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:213
 msgid "Answers"
 msgstr "Opciones"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2061
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3988
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2070
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3998
 msgid "Number of cases"
 msgstr "Número de casos"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2175
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4102
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2184
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4112
 msgid "Arithmetic mean"
 msgstr "Media aritmética"
 
-#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2385
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4312
+#: /var/lib/limesurvey-svn/subversion1x/statistics_user.php:2394
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:4322
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:625
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:161
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:409
@@ -3135,7 +3135,7 @@ msgid "Date Saved"
 msgstr "Fecha guardada"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/saved.php:88
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:325
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:326
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:868
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1625
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2124
@@ -3164,7 +3164,7 @@ msgstr "¿Está seguro de que quiere borrar esta entrada?"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2189
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:51
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:222
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:560
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:562
 msgid "Delete"
 msgstr "Borrar"
 
@@ -3369,62 +3369,62 @@ msgstr "¿Comprobar la base de datos de nuevo?"
 msgid "Check Again"
 msgstr "Compruebe de nuevo"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:64
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:65
 msgid "Label Sets Administration"
 msgstr "Administración de Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:75
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:76
 msgid "Labelsets"
 msgstr "Conjuntos de etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:95
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:96
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:97
 msgid "Add new label set"
 msgstr "Agregar un nuevo conjunto de etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:127
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:128
 msgid "Error: You have to enter a name for this label set."
 msgstr "Error: Debe ingresar un nombre para este conjunto de etiquetas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:133
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:134
 msgid "Create or Import New Label Set"
 msgstr "Crear o Importar un conjunto nuevo de etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:133
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:134
 msgid "Create New Label Set"
 msgstr "Crear Nuevo Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:134
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:135
 msgid "Edit Label Set"
 msgstr "Modificar Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:145
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:146
 msgid "Set Name"
 msgstr "Nombre del Conjunto"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:154
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1294
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1323
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:155
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1377
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1406
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:208
 msgid "Languages"
 msgstr "Idiomas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:181
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:165
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:182
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2345
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:150
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:532
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:534
 msgid "Add"
 msgstr "Agregar"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:165
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2345
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:575
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:613
 msgid "Remove"
 msgstr "Quitar"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:164
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:165
 msgid ""
 "You cannot remove this item since you need at least one language in a "
 "labelset."
@@ -3432,158 +3432,158 @@ msgstr ""
 "No puede eliminar este idioma debido a que se necesita al menos un lenguaje "
 "para el conjunto de etiquetas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:182
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:183
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:209
 msgid "Update"
 msgstr "Actualizar"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:200
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:207
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:219
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:201
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:208
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:220
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:231
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:408
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:23
 msgid "Import Label Set"
 msgstr "Importar Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:212
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:71
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:213
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:78
 msgid "Select CSV File:"
 msgstr "Seleccionar Archivo CSV"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:216
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:73
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:582
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:217
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:80
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:584
 msgid "Convert resources links?"
 msgstr "¿Convertir los enlaces de los recursos?"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:251
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:252
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:694
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1431
 msgid "Label Set"
 msgstr "Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:257
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:258
 msgid "Edit label set"
 msgstr "Modificar Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:260
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:261
 msgid "Delete label set"
 msgstr "Borrar Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:262
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:263
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:67
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:264
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:265
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:266
 #: /var/lib/limesurvey-svn/subversion1x/admin/dumplabel.php:30
 msgid "Export Label Set"
 msgstr "Exportar Conjunto de Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:268
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:269
 msgid "Close Window"
 msgstr "Cerrar Ventana"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:295
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:296
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:696
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:207
 msgid "Labels"
 msgstr "Etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:299
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:300
 msgid "Error: You are trying to use duplicate label codes."
 msgstr ""
 "Error. Usted está intentando utilizar códigos duplicados en las etiquetas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:318
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:319
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1611
 msgid "Code"
 msgstr "Código"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:320
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:321
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1615
 msgid "Assessment value"
 msgstr "Valor de asesoría"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:322
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:44
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:140
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:156
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:323
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:51
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:147
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:163
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:833
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1156
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2879
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3221
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3218
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:187
 msgid "Title"
 msgstr "Título"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:328
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:329
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1628
 msgid "Order"
 msgstr "Orden"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:382
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:420
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:383
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:422
 msgid "Label:"
 msgstr "Etiqueta:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:387
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:834
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:388
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:838
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1713
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1717
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1005
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1006
 msgid "Del"
 msgstr "Borrar"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:393
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:810
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:394
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:814
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1726
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2947
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3149
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:981
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:614
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:781
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:982
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:616
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:783
 msgid "Up"
 msgstr "Arriba"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:398
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:822
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:399
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:826
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1731
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2959
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3154
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:993
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:626
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:785
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:994
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:628
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:787
 msgid "Dn"
 msgstr "Abajo"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:405
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:740
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:406
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:744
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:900
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1740
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:889
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:890
 msgid "Save Changes"
 msgstr "Guardar los Cambios"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:412
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:414
 msgid "New label"
 msgstr "Nueva Etiqueta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:423
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:692
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:425
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:695
 msgid "Add new label"
 msgstr "Agregar nueva etiqueta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:449
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:451
 msgid "Note: Inserting new labels must be done on the first language tab."
 msgstr ""
 "Nota: El ingreso de nuevas etiquetas debe hacerse en la primera pestaña de "
 "idioma."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:458
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:518
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:460
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:521
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:362
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:997
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1264
@@ -3597,15 +3597,15 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1797
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2653
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3014
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3454
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3451
 #: /var/lib/limesurvey-svn/subversion1x/admin/resetsurveylogic.php:41
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:27
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:261
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:686
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:688
 msgid "Warning"
 msgstr "Advertencia"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:458
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:460
 msgid ""
 "You cannot change codes, add or delete entries in this label set because it "
 "is being used by an active survey."
@@ -3613,19 +3613,19 @@ msgstr ""
 "No puede cambiar los códigos, agregar o borrar entradas a este conjunto de "
 "etiquetas porque está siendo utilizado por una encuesta activa."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:478
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:491
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:67
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:481
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:494
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:74
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:851
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:856
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2794
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2807
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3515
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:577
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3509
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:579
 msgid "Please select a file to import!"
 msgstr "¡Por favor seleccione un archivo para importar!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:481
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:484
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:854
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2797
 msgid "zip library not supported by PHP, Import ZIP Disabled"
@@ -3633,32 +3633,32 @@ msgstr ""
 "la librería zip no está soportada por PHP, la importación de ZIP está "
 "deshabilitada"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:490
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:493
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2806
 msgid "Uploaded Resources Management"
 msgstr "Gestión de los recursos subidos"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:497
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:500
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2813
 msgid "Browse Uploaded Resources"
 msgstr "Revisar recursos subidos"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:498
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2814
 msgid "Export Resources As ZIP Archive"
 msgstr "Exportar recursos como un archivo ZIP"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:499
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:502
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2815
 msgid "Select ZIP File:"
 msgstr "Seleccione un fichero ZIP:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:501
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:504
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2817
 msgid "Import Resources ZIP Archive"
 msgstr "Importar recursos desde un archivo ZIP"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:518
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:521
 msgid ""
 "Some surveys currently use this label set. Modifying the codes, adding or "
 "deleting entries to this label set may produce undesired results in other "
@@ -3668,21 +3668,21 @@ msgstr ""
 "los códigos, agregar o borrar entradas a este conjunto puede producir "
 "resultados indeseados en dichas encuestas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:589
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:592
 msgid "Failed to Copy already defined labels to added languages"
 msgstr ""
 "No se pudieron copiar las etiquetas ya definidas a los idiomas que se "
 "agregaron."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:607
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:610
 msgid "Failed to delete labels for removed languages"
 msgstr "No se pudieron borrar las etiquetas de los idiomas eliminados"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:615
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:618
 msgid "Update of Label Set failed"
 msgstr "No se pudo actualizar el conjunto de etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:631
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:634
 msgid ""
 "Couldn't Delete Label Set - There are questions that rely on this. You must "
 "delete these questions first."
@@ -3690,23 +3690,23 @@ msgstr ""
 "No se pudo borrar el conjunto de etiquetas - Hay preguntas que lo utilizan. "
 "Debe borrar estas preguntas primero antes de poder continuar."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:667
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:670
 msgid "Insert of Label Set failed"
 msgstr "No se pudo ingresar el conjunto de etiquetas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:688
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:691
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:629
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2914
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:282
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:551
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:553
 msgid "Save"
 msgstr "Guardar"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:727
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:731
 msgid "Failed to insert label"
 msgstr "No se pudo insertar la etiqueta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:734
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:738
 msgid ""
 "This label code is already used in this labelset. Please choose another code "
 "or rename the existing one."
@@ -3714,23 +3714,23 @@ msgstr ""
 "El código de la etiqueta ya está en uso en este mismo conjunto. Por favor, "
 "escoja otro código o renombre el anterior."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:791
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:795
 msgid "Failed to update label"
 msgstr "No se pudo actualizar la etiqueta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:804
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:808
 msgid "Can't update labels because you are using duplicated codes"
 msgstr ""
 "No pueden actualizarse las etiquetas porque está utilizando códigos "
 "duplicados"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:838
+#: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:842
 msgid "Failed to delete label"
 msgstr "No se pudo eliminar la etiqueta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:22
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:65
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:75
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:72
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:82
 msgid "Import Group"
 msgstr "Importar sección"
 
@@ -3766,7 +3766,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:302
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:314
 #: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:29
-#: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:123
+#: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:131
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:34
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:45
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:213
@@ -3823,8 +3823,8 @@ msgstr "No se indicó el SID (Encuesta). No se puede importar la sección."
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:322
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:437
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:506
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1289
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1318
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1372
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1401
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:40
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:42
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:204
@@ -3902,16 +3902,16 @@ msgstr "Secciones:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1112
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:162
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1835
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1297
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1326
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1380
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1409
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:585
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:188
 msgid "Questions"
 msgstr "Preguntas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:691
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1299
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1328
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1382
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1411
 msgid "Conditions"
 msgstr "Condiciones"
 
@@ -4253,19 +4253,20 @@ msgid "Datestamp"
 msgstr "Marca de fecha"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:295
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:688
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:687
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Fecha (AAAA-MM-DD) igual a"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:299
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:694
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:693
 msgid "OR between"
 msgstr "O entre"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:302
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:700
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:699
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:407
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1345
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1390
 msgid "and"
 msgstr "Y"
 
@@ -4280,18 +4281,18 @@ msgstr "Sección de la encuesta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:564
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:594
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:617
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1025
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1024
 msgid "Responses containing"
 msgstr "Respuestas que contienen"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1370
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1465
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1369
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1464
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:590
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:597
 msgid "Label"
 msgstr "Etiqueta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1908
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1907
 msgid ""
 "You do not have the GD Library installed. Showing charts requires the GD "
 "library to function properly."
@@ -4299,12 +4300,12 @@ msgstr ""
 "Usted no tiene la librería GD instalada. Mostrar gráficas necesita "
 "obligatoriamente la librería GD."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1909
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1913
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1908
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1912
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "visite http://es.php.net/manual/es/ref.image.php para más información"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1912
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1911
 msgid ""
 "You do not have the Freetype Library installed. Showing charts requires the "
 "Freetype library to function properly."
@@ -4312,31 +4313,31 @@ msgstr ""
 "Usted no tiene la librería Freetype instalada. Mostrar gráficas necesita "
 "obligatoriamente la librería Freetype."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1923
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1922
 msgid "View summary of all available fields"
 msgstr "Ver resumen de todos los campos disponibles"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1926
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1925
 msgid "Show graphs"
 msgstr "Mostrar gráficas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1932
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1931
 msgid "Include:"
 msgstr "Incluir:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1933
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1932
 msgid "All records"
 msgstr "Todos los registros"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1934
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1933
 msgid "Completed records only"
 msgstr "Únicamente los registros completos"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1935
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1934
 msgid "Incomplete records only"
 msgstr "Solamente los registros incompletos"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1956
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:1946
 msgid "Don't consider NON completed responses"
 msgstr "No considerar respuestas incompletas"
 
@@ -4370,8 +4371,9 @@ msgid "Percentage of total:"
 msgstr "Porcentaje del total:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:2254
-#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3489
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3491
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3505
+#: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:3515
 msgid "Browse"
 msgstr "Revisar"
 
@@ -4389,13 +4391,19 @@ msgid "Field summary for %s"
 msgstr "Resumen de campo para %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:30
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:51
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:58
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:594
 msgid "Add Group"
 msgstr "Agregar Sección"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:41
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:137
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:43
+msgid "Error: You have to enter a group title for each language."
+msgstr ""
+"Error: Debe escribir el título de la sección para cada lenguaje definido en "
+"esta encuesta."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:48
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:144
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1097
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1321
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1605
@@ -4408,33 +4416,33 @@ msgstr "Agregar Sección"
 msgid "Base Language"
 msgstr "Idioma por defecto"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:45
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:52
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:591
 msgid "Required"
 msgstr "Obligatorio"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:46
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:48
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:143
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:145
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:159
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:161
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:53
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:55
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:150
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:152
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:166
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:168
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:592
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:614
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:897
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1160
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2881
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2883
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3223
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3225
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3220
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3222
 msgid "Description:"
 msgstr "Descripción:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:131
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:138
 msgid "Edit Group"
 msgstr "Editar sección"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:165
+#: /var/lib/limesurvey-svn/subversion1x/admin/grouphandling.php:172
 msgid "Update Group"
 msgstr "Actualizar Sección"
 
@@ -4618,8 +4626,8 @@ msgstr "Asunto del correo de invitación:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:585
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1081
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1151
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1380
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1152
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1381
 msgid "Invitation to participate in survey"
 msgstr "Invitación para participar en la encuesta"
 
@@ -4642,8 +4650,8 @@ msgstr "Correo electrónico de invitación:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:591
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1072
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1076
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1152
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1381
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1153
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1382
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4686,8 +4694,8 @@ msgid "Email reminder subject:"
 msgstr "Asunto del correo electrónico de recordatorio:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:596
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1153
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1382
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1154
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1383
 msgid "Reminder to participate in survey"
 msgstr "Recordatorio para participar en la encuesta"
 
@@ -4698,8 +4706,8 @@ msgstr "Correo electrónico recordatorio:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:602
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1317
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1154
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1383
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1155
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1384
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4748,8 +4756,8 @@ msgid "Confirmation email subject:"
 msgstr "Asunto del correo electrónico de confirmación:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:607
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1155
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1384
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1156
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1385
 msgid "Confirmation of completed survey"
 msgstr "Confirmación de encuesta completada"
 
@@ -4762,8 +4770,8 @@ msgid "Confirmation email"
 msgstr "Correo electrónico de confirmación"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:613
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1156
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1385
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1157
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1386
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -4805,8 +4813,8 @@ msgid "Public registration email:"
 msgstr "Correo electrónico de inscripción pública:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:624
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1158
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1387
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1159
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1388
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -5795,7 +5803,7 @@ msgstr "El formato de la Encuesta es %s:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:557
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2394
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3258
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3255
 msgid "All in one"
 msgstr "Todos en Uno"
 
@@ -5811,7 +5819,7 @@ msgstr "El modo de la Encuesta está establecido como %s:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:568
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2391
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3257
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3254
 msgid "Group by Group"
 msgstr "Sección por Sección"
 
@@ -6024,7 +6032,7 @@ msgstr "copia_de_"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:794
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:937
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2399
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3261
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3258
 msgid "Template:"
 msgstr "Plantilla:"
 
@@ -6270,7 +6278,7 @@ msgstr ""
 "también eliminará dicha tabla de encuestados/as. Recomendamos que la exporte "
 "antes de borrar la encuesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:122
+#: /var/lib/limesurvey-svn/subversion1x/admin/deletesurvey.php:130
 msgid "This survey has been deleted."
 msgstr "Se ha eliminado la encuesta."
 
@@ -6357,10 +6365,10 @@ msgid "SuperAdministrator"
 msgstr "Super administrador"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:265
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3246
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3366
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3431
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3508
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3243
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3363
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3428
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3501
 msgid "Create Survey"
 msgstr "Crear Encuesta"
 
@@ -6566,7 +6574,7 @@ msgid "No Username selected."
 msgstr "No se seleccionó ningún usuario."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:24
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:585
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:587
 msgid "Import Question"
 msgstr "Importar Pregunta"
 
@@ -6602,15 +6610,15 @@ msgid "Question Import Summary"
 msgstr "Resumen de la Importación de la Pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:510
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1300
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1329
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1383
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1412
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:206
 msgid "Label Sets"
 msgstr "Conjunto de Etiquetas"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:515
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:499
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:526
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:501
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:528
 msgid "Question Attributes:"
 msgstr "Atributos de la pregunta:"
 
@@ -6876,7 +6884,7 @@ msgstr "Modo del editor HTML"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:253
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1656
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1721
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1015
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1016
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:204
 msgid "Default"
 msgstr "Por defecto"
@@ -7042,7 +7050,7 @@ msgid "Token management"
 msgstr "Gestión de los/as encuestados/as"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:772
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1296
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1379
 msgid "Question groups"
 msgstr "Secciones del cuestionario"
 
@@ -7151,31 +7159,31 @@ msgstr "Introducción:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:905
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2366
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3235
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3232
 msgid "Administrator:"
 msgstr "Administrador/a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:908
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2372
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3241
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3238
 msgid "Fax To:"
 msgstr "Nº de Fax:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:912
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2550
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3388
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3385
 msgid "Start date:"
 msgstr "Fecha de inicio:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:925
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2560
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3393
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3390
 msgid "Expiry Date:"
 msgstr "Fecha de expiración:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:941
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2321
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3198
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3195
 msgid "Base Language:"
 msgstr "Idioma predeterminado:"
 
@@ -7250,7 +7258,7 @@ msgstr "Borrar la sección de preguntas actual"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1090
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1091
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:675
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:677
 msgid "Change Question Order"
 msgstr "Cambiar el orden de las preguntas"
 
@@ -7450,7 +7458,7 @@ msgid "New Answer"
 msgstr "Nueva opción"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1779
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:808
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:809
 msgid "Add new Answer"
 msgstr "Agregar una nueva opción"
 
@@ -7540,7 +7548,7 @@ msgid "Please select a user first"
 msgstr "Por favor seleccione un usuario primero"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2226
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1325
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1408
 msgid "Groups"
 msgstr "Grupos"
 
@@ -7566,92 +7574,92 @@ msgid "General"
 msgstr "General"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2368
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3237
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3234
 msgid "Admin Email:"
 msgstr "Correo electrónico de el/a administrador/a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2370
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3239
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3236
 msgid "Bounce Email:"
 msgstr "Correo electrónico remitente:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2381
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3251
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3248
 msgid "Presentation & Navigation"
 msgstr "Presentación y Navegación"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2384
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3254
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3251
 msgid "Format:"
 msgstr "Formato:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2388
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3256
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3253
 msgid "Question by Question"
 msgstr "Pregunta por Pregunta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2417
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3277
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3274
 msgid "Template Preview:"
 msgstr "Previsualización de la Plantilla:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2423
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3285
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3282
 msgid "Allow Saves?"
 msgstr "¿Permitir Guardar?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2435
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3296
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3293
 msgid "Show [<< Prev] button"
 msgstr "Mostrar el botón [<< Anterior]"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2447
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3304
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3301
 msgid "Participants may print answers?"
 msgstr "¿Los/as participantes podrán imprimir sus respuestas?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2459
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3312
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3309
 msgid "Public statistics?"
 msgstr "¿Estadísticas públicas?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2471
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3320
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3317
 msgid "Show graphs in public statistics?"
 msgstr "¿Mostrar gráficas en estadísticas públicas?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2483
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3329
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3326
 msgid "List survey publicly:"
 msgstr "Mostrar al público la encuesta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2496
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3347
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3344
 msgid "Automatically load URL when survey complete?"
 msgstr "¿Cargar la URL automáticamente cuando se haya completado la encuesta?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2513
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3370
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3367
 msgid "Publication & Access control"
 msgstr "Control de Publicación y Acceso"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2518
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3374
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3371
 msgid "Only users with tokens may enter the survey?"
 msgstr "¿Sólo usuarios con contraseñas pueden entrar a la encuesta?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2529
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3381
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3378
 msgid "Allow public registration?"
 msgstr "¿Permitir inscripción pública?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2563
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3398
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3395
 msgid "Set cookie to prevent repeated participation?"
 msgstr "¿Establecer una cookie para prevenir la participación múltiple?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2576
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3410
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3407
 msgid "Use CAPTCHA for"
 msgstr "Utilizar CAPTCHA en"
 
@@ -7659,10 +7667,10 @@ msgstr "Utilizar CAPTCHA en"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2584
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2588
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2597
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3412
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3409
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3410
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3411
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3413
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3414
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3416
 msgid "Survey Access"
 msgstr "Acceso a la encuesta"
 
@@ -7670,10 +7678,10 @@ msgstr "Acceso a la encuesta"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2584
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2592
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2600
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3409
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3410
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3412
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3413
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3415
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3417
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3414
 msgid "Registration"
 msgstr "Registro"
 
@@ -7681,15 +7689,15 @@ msgstr "Registro"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2588
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2592
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2603
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3409
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3411
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3412
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3414
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3415
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3418
 msgid "Save & Load"
 msgstr "Guardar y recuperar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2611
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3423
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3420
 msgid "Use HTML format for token emails?"
 msgstr "¿Utilizar formato HTML para los correos de los/as encuestados/as?"
 
@@ -7702,17 +7710,17 @@ msgstr ""
 "plantillas de correos para adaptarlas al nuevo formato"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2628
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3435
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3432
 msgid "Notification & Data Management"
 msgstr "Gestión de la notificación y de los datos"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2632
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3438
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3435
 msgid "Admin Notification:"
 msgstr "Notificación a el/la administrador/a:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2640
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3446
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3443
 msgid "Anonymous answers?"
 msgstr "¿Preservar el anonimato de respuesta?"
 
@@ -7725,7 +7733,7 @@ msgstr ""
 "respuestas basada en el encuestado/a."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2653
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3454
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3451
 msgid ""
 "If you turn on the -Anonymous answers- option and create a tokens table, "
 "LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
@@ -7744,7 +7752,7 @@ msgid "Cannot be changed"
 msgstr "No se puede modificar"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2681
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3464
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3461
 msgid "Date Stamp?"
 msgstr "¿Registrar la fecha?"
 
@@ -7757,7 +7765,7 @@ msgid "Responses will be date stamped."
 msgstr "Las respuestas tendrán registro de fecha"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2705
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3471
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3468
 msgid "Save IP Address?"
 msgstr "¿Guardar la dirección IP?"
 
@@ -7770,7 +7778,7 @@ msgid "Responses will have the IP address logged"
 msgstr "Las respuestas tendrán registrada la dirección IP."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2731
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3478
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3475
 msgid "Save Referring URL?"
 msgstr "¿Guardar la URL de referencia?"
 
@@ -7783,7 +7791,7 @@ msgid "Responses will have their referring URL logged."
 msgstr "La respuestas registrarán la URL referente."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2757
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3485
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3482
 msgid "Enable token-based answers persistence?"
 msgstr "¿Habilitar la persistencia de las respuestas de el/la encuestado/a?"
 
@@ -7793,7 +7801,7 @@ msgstr ""
 "Esta opción no puede cambiarse si se utiliza el formato de respuesta anónima"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2768
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3492
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3489
 msgid "Enable assessment mode?"
 msgstr "¿Habilitar el modo de asesoría?"
 
@@ -7813,30 +7821,30 @@ msgid "Edit survey settings - Step 2 of 2"
 msgstr "Editar las opciones de la encuesta - Paso 2 de 2"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2886
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3227
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3229
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3224
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3226
 msgid "Welcome message:"
 msgstr "Mensaje de bienvenida:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2890
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2892
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3231
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3233
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3228
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3230
 msgid "End message:"
 msgstr "Mensaje de despedida:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2894
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3339
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3336
 msgid "End URL:"
 msgstr "URL de salida:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2897
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3343
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3340
 msgid "URL description:"
 msgstr "Descripción de la URL:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2900
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3354
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3351
 msgid "Date format:"
 msgstr "Formato de fecha:"
 
@@ -7871,49 +7879,53 @@ msgid "QID"
 msgstr "QID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3090
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:726
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:728
 msgid "Place after.."
 msgstr "Posicionar después..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3095
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:482
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:731
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:733
 msgid "At beginning"
 msgstr "Al principio"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3182
-msgid "Error: You have to enter a title for this survey."
-msgstr "Error: Debe ingresar un título para la encuesta."
-
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3186
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3185
 msgid "Create or Import Survey"
 msgstr "Crear o Importar Encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3217
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3189
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3243
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3363
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3428
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3501
+msgid "Error: You have to enter a title for this survey."
+msgstr "Error: Debe ingresar un título para la encuesta."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3214
 msgid "This setting cannot be changed later!"
 msgstr "¡Este dato no podrá ser cambiado posteriormente!"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3222
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3219
 msgid "(This field is mandatory.)"
 msgstr "(Este campo es obligatorio)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3390
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3395
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3387
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3392
 #, php-format
 msgid "Date format: %s"
 msgstr "Formato de fecha: %s"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3512
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3523
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3506
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3517
 #: /var/lib/limesurvey-svn/subversion1x/admin/http_importsurvey.php:25
 msgid "Import Survey"
 msgstr "Importar Encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3519
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3513
 msgid "Select CSV/SQL File:"
 msgstr "Seleccione un archivo CSV/SQL:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3521
+#: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3515
 msgid "Convert resources links and INSERTANS fields?"
 msgstr "¿Convertir los enlaces de recursos y los campos INSERTANS?"
 
@@ -8115,8 +8127,8 @@ msgid "There are no groups available."
 msgstr "No hay secciones disponibles."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:113
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1306
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1332
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1389
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1415
 msgid "Assessments"
 msgstr "Evaluaciones"
 
@@ -8351,7 +8363,7 @@ msgid "Current"
 msgstr "Actual"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1037
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:485
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:487
 msgid "After"
 msgstr "Después"
 
@@ -8700,8 +8712,8 @@ msgstr ""
 "La tabla de encuestados/as asociada a la encuesta ha sido renombrada a: "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:69
-msgid "This group has no answer."
-msgstr "Esta sección no tiene respuesta."
+msgid "This group does not contain any question(s)."
+msgstr "Esta sección no tiene aún ninguna pregunta definida."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:99
 msgid "This question is a multiple answer type question but has no answers."
@@ -8870,20 +8882,20 @@ msgstr ""
 "El formato del archivo no es de una encuesta de LimeSurvey. La importación "
 "falló."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:372
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:381
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:548
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:567
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:597
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:400
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:409
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:577
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:596
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:626
 msgid "Import of this survey file failed"
 msgstr "La importación del cuestionario falló."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:373
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:381
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:401
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:409
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "El archivo no contiene datos de LimeSurvey en un formato válido."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:768
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:797
 msgid ""
 "A group in the CSV/SQL file is not part of the same survey. The import of "
 "the survey was stopped."
@@ -8891,7 +8903,7 @@ msgstr ""
 "Una sección en el fichero CSV/SQL no es parte de la misma encuesta, por lo "
 "que la importación de la encuesta ha sido interrumpida."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:833
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:862
 #, php-format
 msgid ""
 "Question \"%s - %s\" was NOT imported because the question type is unknown."
@@ -8899,7 +8911,7 @@ msgstr ""
 "La pregunta \"%s - %s\" NO fue importada porque el tipo de pregunta es "
 "desconocido."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:839
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:868
 #, php-format
 msgid ""
 "Question \"%s - %s\" was imported but the type was set to '%s' because it is "
@@ -8908,24 +8920,30 @@ msgstr ""
 "La pregunta \"%s - %s\" fue importada, pero se le asignó el tipo '%s' porque "
 "era el más similar."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1271
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1272
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1269
+#: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:895
+msgid "Sorry your responses have exceeded a quota on this survey."
+msgstr ""
+"Disculpe, sus respuestas han excedido la cuota definida para esta encuesta."
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1354
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1355
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr "Se omitió la condición por %d (%d no existe)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1290
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1319
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1373
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1402
 msgid "Survey Import Summary"
 msgstr "Resumen de la importación del cuestionario "
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1303
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1330
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1386
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1413
 msgid "Not imported Label Sets"
 msgstr "Conjuntos de etiquetas no importados"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1303
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1330
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1386
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1413
 msgid ""
 "(Label Sets were not imported since you do not have the permission to create "
 "new label sets.)"
@@ -8933,26 +8951,34 @@ msgstr ""
 "(Los conjuntos de etiquetas no fueron importados dado que usted no tiene "
 "permiso para crear nuevos conjuntos de etiquetas)"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1305
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1331
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1388
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1414
 msgid "Question Attributes"
 msgstr "Atributos de la pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1307
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1390
 msgid "Quotas"
 msgstr "Cuotas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1309
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1334
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1390
+msgid "quota members"
+msgstr "miembros de la cuota"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1390
+msgid "quota language settings"
+msgstr "parámetros de lenguaje de la cuota"
+
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1392
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1417
 msgid "Import of Survey is completed."
 msgstr "Se completó con éxito la importación del cuestionario "
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1310
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1393
 msgid "Go to survey"
 msgstr "Ir a la encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1311
-#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1335
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1394
+#: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:1418
 msgid "Warnings"
 msgstr "Advertencias"
 
@@ -8986,13 +9012,13 @@ msgstr ""
 "No se pudo agregar la pregunta. Debe especificar obligatoriamente el código "
 "de la pregunta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:366
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:673
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:702
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:367
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:674
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:703
 msgid "Question could not be created."
 msgstr "No se pudo crear la pregunta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:482
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:483
 msgid ""
 "Question could not be updated. There are conditions for other questions that "
 "rely on the answers to this question and changing the type will cause "
@@ -9004,16 +9030,16 @@ msgstr ""
 "problemas. Debe eliminar dichas condiciones antes para que se le permita "
 "cambiar el tipo de esta pregunta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:565
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:623
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:566
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:624
 msgid "Question could not be updated"
 msgstr "No se pudo actualizar la pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:585
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:586
 msgid "Answers can't be deleted"
 msgstr "No se pueden borrar las opciones"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:595
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:596
 msgid ""
 "This question relies on other question's answers and can't be moved above "
 "groupId:"
@@ -9021,17 +9047,17 @@ msgstr ""
 "Esta pregunta depende de la respuesta de otras y no puede ser colocada por "
 "encima de la sección ID:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:596
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:608
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:597
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:609
 msgid "in position"
 msgstr "en la posición"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:597
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:609
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:598
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:610
 msgid "See conditions:"
 msgstr "Vea las Condiciones:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:607
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:608
 msgid ""
 "Some questions rely on this question's answers. You can't move this question "
 "below groupId:"
@@ -9039,13 +9065,13 @@ msgstr ""
 "Algunas preguntas dependen de la respuesta a ésta, por tanto esta pregunta "
 "no puede moverse por debajo de:"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:633
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:634
 msgid ""
 "Question could not be added. You must insert a code in the mandatory field"
 msgstr ""
 "No se pudo agregar la pregunta. Debe especificar obligatoriamente su código"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:767
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:768
 msgid ""
 "Question could not be deleted. There are conditions for other questions that "
 "rely on this question. You cannot delete this question until those "
@@ -9055,30 +9081,30 @@ msgstr ""
 "dependen de esta pregunta. No podrá borrar esta pregunta hasta que se "
 "eliminen dichas condiciones."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:792
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:793
 msgid "Question could not be deleted"
 msgstr "No se pudo borrar la pregunta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:823
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:824
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr ""
 "Error al agregar la opción: No puede utilizar el mismo código para dos "
 "opciones distintas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:850
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:875
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:851
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:876
 msgid "Failed to insert answer"
 msgstr "No se pudo agregar la opción"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:884
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:885
 msgid "Invalid or empty answer code supplied"
 msgstr "Se indicó un código de opción no válido o se omitió"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:957
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:958
 msgid "Failed to update answers"
 msgstr "Falló la actualización de las opciones"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:976
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:977
 msgid ""
 "Answers with a code of 0 (zero) or blank code are not allowed, and will not "
 "be saved"
@@ -9086,44 +9112,44 @@ msgstr ""
 "Las opciones con código 0 (cero) o en blanco no están permitidas y no serán "
 "guardadas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:977
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:978
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Se hallaron códigos duplicados, estas opciones no serán actualizadas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1009
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1010
 msgid "Failed to delete answer"
 msgstr "No se pudo eliminar la opción"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1024
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1025
 msgid "Failed to make answer not default"
 msgstr "No se pudo quitar la opción por defecto"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1038
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1039
 msgid "Failed to make answer default"
 msgstr "No se pudo establecer la opción por defecto"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1157
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1386
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1158
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1387
 msgid "Survey Registration Confirmation"
 msgstr "Confirmación de Registro en la Encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1174
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1175
 msgid "Survey could not be updated"
 msgstr "No se pudo actualizar la encuesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1189
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1190
 msgid "ERROR deleting Survey id"
 msgstr "ERROR eliminando la encuesta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1260
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1261
 msgid "Survey could not be created because it did not have a title"
 msgstr "No se pudo crear la encuesta porque no se indicó su título"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1405
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1406
 msgid "Survey could not be created"
 msgstr "No se pudo crear la encuesta."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1419
+#: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1420
 msgid "Your personal settings were successfully saved."
 msgstr "Su configuración personal ha sido guardada correctamente."
 
@@ -9169,6 +9195,10 @@ msgstr "Editar pregunta"
 msgid "Add a new question"
 msgstr "Agregar una nueva pregunta"
 
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:233
+msgid "Error: You have to enter a question code."
+msgstr "Error: Debe introducir un código para la pregunta."
+
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:327
 msgid "Question Type:"
 msgstr "Tipo de la Pregunta:"
@@ -9187,27 +9217,27 @@ msgstr "Posición:"
 msgid "At end"
 msgstr "Al final"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:505
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:507
 msgid "Add question"
 msgstr "Agregar pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:510
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:512
 msgid "Update Question"
 msgstr "Actualizar Pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:575
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:577
 msgid "...or import a question"
 msgstr "... o importar una pregunta"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:580
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:582
 msgid "Select CSV File"
 msgstr "Seleccionar Archivo CSV"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:686
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:688
 msgid "Current group is using conditional questions"
 msgstr "La sección actual está utilizando preguntas condicionadas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:686
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:688
 msgid ""
 "Re-ordering questions in this group is restricted to ensure that questions "
 "on which conditions are based aren't reordered after questions having the "
@@ -9217,11 +9247,11 @@ msgstr ""
 "asegurar que las preguntas que dependen de otras no se pongan por detrás de "
 "éstas."
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:686
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:688
 msgid "See the conditions marked on the following questions"
 msgstr "Observe las condiciones marcadas en las siguientes preguntas"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:787
+#: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:789
 msgid "View Question"
 msgstr "Ver Pregunta"
 
@@ -9665,11 +9695,6 @@ msgstr "Seleccione la Opción"
 msgid "New Quota"
 msgstr "Nueva cuota"
 
-#: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:895
-msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr ""
-"Disculpe, sus respuestas han excedido la cuota definida para esta encuesta."
-
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:46
 msgid ""
 "Data for username and one time password was received but the usage of one "
@@ -10014,6 +10039,9 @@ msgstr "Escoger 'Ejecutar/Todo' del menú para realizar la importación."
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:87
 msgid "Your data should be imported now."
 msgstr "Sus datos deberían ser importados ahora."
+
+#~ msgid "This group has no answer."
+#~ msgstr "Esta sección no tiene respuesta."
 
 #~ msgid "Token Attribute Names:"
 #~ msgstr "Nombres de los atributos de los/as encuestados/as:"
