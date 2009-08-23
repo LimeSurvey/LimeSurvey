@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-12 23:01+0100\n"
-"PO-Revision-Date: 2009-08-12 23:51+0100\n"
+"POT-Creation-Date: 2009-08-23 03:20+0100\n"
+"PO-Revision-Date: 2009-08-23 03:29+0100\n"
 "Last-Translator: seb <seb>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "MIME-Version: 1.0\n"
@@ -94,7 +94,7 @@ msgid "This survey is not yet started."
 msgstr "Ce questionnaire n'est pas encore démarré."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/index.php:470
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5180
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5182
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/save.php:590
 msgid "Error"
 msgstr "Erreur"
@@ -727,12 +727,12 @@ msgid "Display Responses"
 msgstr "Afficher les réponses"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:1761
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5565
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5567
 msgid "Please select a language:"
 msgstr "Veuillez sélectionner une langue:"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:1766
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5581
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5583
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -839,8 +839,8 @@ msgstr "Non"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:2094
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:2102
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5166
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5171
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5168
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:5173
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/statistics_user.php:1507
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/statistics_user.php:1596
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/statistics_user.php:1880
@@ -1078,12 +1078,12 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr "Entrez vos informations ci-dessous et un email contenant un lien pour participer à ce questionnaire vous sera envoyé immédiatement."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:2952
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6151
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6153
 msgid "First Name"
 msgstr "Prénom"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:2959
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6152
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6154
 msgid "Last Name"
 msgstr "Nom"
 
@@ -1499,31 +1499,31 @@ msgstr "Échec ! Cause :"
 msgid "Success!"
 msgstr "Succès !"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6153
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6155
 msgid "Email address"
 msgstr "Adresse email"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6154
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6156
 msgid "Token code"
 msgstr "Code d'invitation"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6155
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6157
 msgid "Language code"
 msgstr "Code de langue"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6156
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6158
 msgid "Invitation sent date"
 msgstr "Date d'envoi de l'invitation"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6157
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6159
 msgid "Last Reminder sent date"
 msgstr "Date du dernier rappel envoyé"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6158
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6160
 msgid "Total numbers of sent reminders"
 msgstr "Total des rappels envoyés"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6178
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/common.php:6180
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribut %s"
@@ -2212,11 +2212,11 @@ msgstr "Importer le jeu d'étiquettes"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importlabel.php:31
 #, php-format
 msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
-msgstr "Une erreur s'est produite durant le téléchargement (upload) de votre fichier. Ceci peut être causé par des permissions incorrectes de votre dossier %s."
+msgstr "Une erreur s'est produite durant l'envoi de votre fichier. Ceci peut être causé par des permissions incorrectes de votre dossier %s."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importlabel.php:32
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:29
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:123
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:131
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/dumpquestion.php:38
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1016
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:1018
@@ -2241,7 +2241,7 @@ msgstr "Succès"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importlabel.php:43
 msgid "File upload succeeded."
-msgstr "Fichier téléchargé (upload) avec succès."
+msgstr "Fichier envoyé avec succès."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importlabel.php:44
 msgid "Reading file.."
@@ -2323,7 +2323,7 @@ msgstr "Ce questionnaire est actif et une table de réponses existe. Si vous sup
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "Ce questionnaire a une table d'invitations associée. Si vous supprimez ce questionnaire cette table d'invitations sera supprimée. Nous vous recommandons d'exporter ou de faire une sauvegarde de ces invitations avant de supprimer ce questionnaire."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:122
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/deletesurvey.php:130
 msgid "This survey has been deleted."
 msgstr "Ce questionnaire a été supprimé."
 
@@ -3388,7 +3388,7 @@ msgstr "Ajouter une nouvelle invitation"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2105
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2153
 msgid "Upload CSV File"
-msgstr "Télécharger (upload) le fichier CSV"
+msgstr "Envoyer le fichier CSV"
 
 # E:\www\limesurvey/admin/tokens.php:1200
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2111
@@ -3410,7 +3410,7 @@ msgstr "Champ(s) optionnel(s) :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2128
 msgid "Upload LDAP entries"
-msgstr "Télécharger (upload) les entrées LDAP"
+msgstr "Envoyer des entrées LDAP"
 
 # C:\wamp\www\limesurvey/admin/tokens.php:1246
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2135
@@ -3419,7 +3419,7 @@ msgstr "Les requêtes LDAP sont définies par l'administrateur dans le fichier c
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2168
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr "Fichier téléchargé (upload) non trouvé. Vérifier les permissions et le chemin du répertoire de téléchargement (upload)"
+msgstr "Fichier envoyé non trouvé. Vérifier les permissions et le chemin du répertoire d'envoi"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2173
 msgid "Importing CSV File"
@@ -3470,7 +3470,7 @@ msgstr "Enregistrements avec une adresse email invalide supprimés"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2328
 msgid "Uploading LDAP Query"
-msgstr "Téléchargement (upload) d'une requête LDAP en cours"
+msgstr "Envoi en cours d'une requête LDAP"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2522
 msgid "Results from LDAP Query"
@@ -3503,7 +3503,7 @@ msgstr "Ne peut se connecter à l'annuaire LDAP"
 # D:\www\limesurvey/admin/tokens.php:1547
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2579
 msgid "Choose the CSV file to upload:"
-msgstr "Choisir le fichier CSV à télécharger (upload):"
+msgstr "Choisir le fichier CSV à envoyer :"
 
 # D:\www\limesurvey/admin/tokens.php:1549
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2580
@@ -3523,7 +3523,7 @@ msgstr "Filtrer les enregistrements en double :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2583
 msgid "Upload"
-msgstr "Télécharger (upload)"
+msgstr "Envoyer"
 
 # D:\www\limesurvey/admin/tokens.php:1567
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/tokens.php:2596
@@ -3878,11 +3878,11 @@ msgstr "Librairie ZIP non supportée par PHP, l'importation de ZIP est désactiv
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:493
 msgid "Uploaded Resources Management"
-msgstr "Gestion des ressources téléchargées (upload)"
+msgstr "Gestion des ressources envoyées"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:500
 msgid "Browse Uploaded Resources"
-msgstr "Parcourir les ressources téléchargées (upload)"
+msgstr "Parcourir les ressources envoyées"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/labels.php:501
 msgid "Export Resources As ZIP Archive"
@@ -5158,7 +5158,7 @@ msgstr "Définir des conditions pour cette question"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1310
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1317
 msgid "Preview This Question"
-msgstr "Aperçut de cette question"
+msgstr "Aperçu de cette question"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1357
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/html.php:1422
@@ -6268,7 +6268,7 @@ msgstr "%d réponses partielles"
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/import_resources_zip.php:35
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/import_resources_zip.php:212
 msgid "Demo Mode Only: Uploading file is disabled in this system."
-msgstr "Mode démo uniquement: le téléchargement (upload) de fichier est désactivé sur ce système."
+msgstr "Mode démo uniquement : l'envoi de fichier est désactivé sur ce système."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/import_resources_zip.php:52
 msgid "Import Survey Resources"
@@ -6373,7 +6373,7 @@ msgstr "Fichier"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/import_resources_zip.php:389
 msgid "Demo mode: Uploading templates is disabled."
-msgstr "Mode démo: Le téléchargement (upload) de modèles est désactivé."
+msgstr "Mode démo : L'envoi de modèles est désactivé."
 
 # E:\www\limesurvey/admin/admin.php:102
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/import_resources_zip.php:426
@@ -6562,81 +6562,96 @@ msgstr "La table d'invitations liée à ce questionnaire a été renommée en :"
 msgid "This file is not a LimeSurvey survey file. Import failed."
 msgstr "Ce fichier n'est pas un fichier de questionnaire LimeSurvey. L'import a échoué."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:372
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:381
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:548
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:567
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:597
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:400
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:409
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:577
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:596
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:626
 msgid "Import of this survey file failed"
 msgstr "L'import de ce fichier de questionnaire a échoué"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:373
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:381
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:401
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:409
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Le fichier ne contient pas de donnée LimeSurvey dans le bon format."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:768
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:797
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr "Un groupe dans le fichier CSV/SQL ne fait pas partie du même questionnaire. L'import du questionnaire a été stoppé."
 
 # D:\www\limesurvey/admin/importsurvey.php:740
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:833
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:862
 #, php-format
 msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "La question  \"%s - %s\" n'a PAS été importée car le type de question est inconnu."
 
 # D:\www\limesurvey/admin/importsurvey.php:746
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:839
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:868
 #, php-format
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "La question  \"%s - %s\" a été importée mais le type a été défini à '%s' car c'est le plus ressemblant."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1274
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1275
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1269
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:895
+msgid "Sorry your responses have exceeded a quota on this survey."
+msgstr "Désolé vos réponses dépassent un quota défini pour ce questionnaire"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1354
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1355
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr "Conditions pour %d sautées (%d n'existe pas)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1293
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1322
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1373
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1402
 msgid "Survey Import Summary"
 msgstr "Résumé de l'import de questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1302
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1331
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1382
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1411
 msgid "Conditions"
 msgstr "Conditions"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1306
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1333
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1386
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1413
 msgid "Not imported Label Sets"
 msgstr "Jeu d'étiquettes non importé"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1306
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1333
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1386
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1413
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Jeux d'étiquettes non pas étéimporté car vous n'avez pas la permission de créer de nouveaux jeux d'étiquettes.)"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1308
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1334
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1388
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1414
 msgid "Question Attributes"
 msgstr "Attributs de question"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1310
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1390
 msgid "Quotas"
 msgstr "Quotas"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1312
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1337
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1390
+#, fuzzy
+msgid "quota members"
+msgstr "Membres du quota"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1390
+#, fuzzy
+msgid "quota language settings"
+msgstr "Paramètres linguistiques du quota"
+
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1392
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1417
 msgid "Import of Survey is completed."
 msgstr "L'import de questionnaire est terminée."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1313
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1393
 msgid "Go to survey"
 msgstr "Aller au questionnaire"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1314
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1338
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1394
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/importsurvey.php:1418
 msgid "Warnings"
 msgstr "Avertissements"
 
@@ -6997,10 +7012,6 @@ msgstr "Sélectionner une réponse"
 msgid "New Quota"
 msgstr "Nouveau quota"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/quota.php:895
-msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "Désolé vos réponses dépassent un quota défini pour ce questionnaire"
-
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:68
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:440
 msgid "Survey List Page"
@@ -7102,7 +7113,7 @@ msgstr "Peut-être n'avez-vous pas la permission."
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:726
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:735
 msgid "This file type is not allowed to be uploaded."
-msgstr "Ce type de fichier ne peut être télécharger (upload)."
+msgstr "Ce type de fichier n'est pas autorisé pour l'envoi."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:388
 msgid "Template Sample"
@@ -7224,11 +7235,11 @@ msgstr "Écran :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:861
 msgid "Uploaded template file"
-msgstr "Fichier de modèle téléchargé (upload)"
+msgstr "Fichier de modèle envoyé"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:863
 msgid "Select template ZIP file:"
-msgstr "Sélectionner un fichier de modèle ZIP:"
+msgstr "Sélectionner un fichier ZIP de modèle :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:865
 msgid "Import template ZIP archive"
@@ -7270,11 +7281,11 @@ msgstr "Les fichiers d'un modèle standard ne peuvent pas être supprimés."
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:944
 msgid "Upload a file:"
-msgstr "Télécharger (upload) un fichier :"
+msgstr "Envoyer un fichier :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/templates.php:968
 msgid "Preview:"
-msgstr "Aperçu:"
+msgstr "Aperçu :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/cmdline_importsurvey.php:58
 msgid "User name invalid!"
@@ -7576,60 +7587,60 @@ msgid "Number less than"
 msgstr "Nombre plus petit que "
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:295
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:688
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:687
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Date (AAAA-MM-JJ) égale"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:299
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:694
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:693
 msgid "OR between"
 msgstr "OU entre"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:564
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:594
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:617
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1025
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1024
 msgid "Responses containing"
 msgstr "Réponses contenant "
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1908
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1907
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "La librairie GD n'est pas installée. L'affichage de graphique requiert la librairie GD pour fonctionner correctement."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1909
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1913
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1908
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1912
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "rendez-vous sur http://us2.php.net/manual/en/ref.image.php pour plus d'information"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1912
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1911
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr "La librairie Freetype n'est pas installée. L'affichage de graphique requiert la librairie Freetype pour fonctionner correctement."
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1923
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1922
 msgid "View summary of all available fields"
 msgstr "Visualiser le résumé de tous les champs disponibles"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1926
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1925
 msgid "Show graphs"
 msgstr "Afficher les graphiques"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1932
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1931
 msgid "Include:"
 msgstr "Inclure :"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1933
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1932
 msgid "All records"
 msgstr "Tous les enregistrements"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1934
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1933
 msgid "Completed records only"
 msgstr "Enregistrements complets uniquement"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1935
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1934
 msgid "Incomplete records only"
 msgstr "Enregistrements incomplets uniquement"
 
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1956
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:1946
 msgid "Don't consider NON completed responses"
 msgstr "Ne pas prendre en compte les réponses NON complétées"
 
@@ -7664,8 +7675,9 @@ msgid "Percentage of total:"
 msgstr "Pourcentage du total :"
 
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:2254
-#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:3489
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:3491
 #: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:3505
+#: /home/b00z00/__WEB/limesurvey_dev/limesurvey/admin/statistics.php:3515
 msgid "Browse"
 msgstr "Parcourir"
 
