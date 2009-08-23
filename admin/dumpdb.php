@@ -116,9 +116,17 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
 			@set_time_limit(5);
 			$result .= "INSERT INTO ".$table." VALUES(";
 			for($j=0; $j<$num_fields; $j++) {
-				$row[$j] = addslashes($row[$j]);
-				$row[$j] = preg_replace("#\n#","\\n",$row[$j]);
-				if (isset($row[$j])) $result .= "\"$row[$j]\"" ; else $result .= "\"\"";
+				if (isset($row[$j]) && !is_null($row[$j]))
+                {
+                    $row[$j] = addslashes($row[$j]);
+                    $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
+                    $result .= "\"$row[$j]\"";
+                }
+                else 
+                {
+                    $result .= "NULL";
+                }
+                
 				if ($j<($num_fields-1)) $result .= ",";
 			}
 			$result .= ");\n";
