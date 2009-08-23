@@ -1436,17 +1436,28 @@ function remove_nulls_from_array($array)
 	}
 }
 
-function submittokens()
+
+/**
+* Marks a tokens as completed and sends a confirmation email to the participiant. 
+* If $quotaexit is set to true then the user exited the survey due to a quota 
+* restriction and the according token is only marked as 'Q'
+* 
+* @param mixed $quotaexit
+*/
+function submittokens($quotaexit=false)
 {
 	global $thissurvey, $timeadjust, $emailcharset ;
 	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl, $clang, $clienttoken;
 
-	// Put date into sent and completed
-
+    // Shift the date due to global timeadjust setting
 	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);     
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
-	if (bIsTokenCompletedDatestamped($thissurvey))
+    if ($quotaexit==true)
+    {
+        $utquery .= "SET completed='Q'\n";
+    }
+	elseif (bIsTokenCompletedDatestamped($thissurvey))
 	{
 		$utquery .= "SET completed='$today'\n";
 	}
@@ -1458,71 +1469,74 @@ function submittokens()
 
 	$utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
 
-	// TLR change to put date into sent and completed
-	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
+    if ($quotaexit==false)
+    {  
+	    // TLR change to put date into sent and completed
+	    $cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
 
-	$cnfresult = db_execute_assoc($cnfquery);       //Checked 
-	$cnfrow = $cnfresult->FetchRow();
-	if (isset($cnfrow))
-	{
-		$from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-		$to = $cnfrow['email'];
-		$subject=$thissurvey['email_confirm_subj'];
+	    $cnfresult = db_execute_assoc($cnfquery);       //Checked 
+	    $cnfrow = $cnfresult->FetchRow();
+	    if (isset($cnfrow))
+	    {
+		    $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
+		    $to = $cnfrow['email'];
+		    $subject=$thissurvey['email_confirm_subj'];
 
-		$fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
-		$fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
-		$fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
-		$fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
-		$fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
-		$fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
-        $attrfieldnames=GetAttributeFieldnames($surveyid);
-        foreach ($attrfieldnames as $attr_name)
-        {
-            $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
-        }
-        
-        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-		$fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
+		    $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
+		    $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
+		    $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
+		    $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
+		    $fieldsarray["{FIRSTNAME}"]=$cnfrow['firstname'];
+		    $fieldsarray["{LASTNAME}"]=$cnfrow['lastname'];
+            $attrfieldnames=GetAttributeFieldnames($surveyid);
+            foreach ($attrfieldnames as $attr_name)
+            {
+                $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
+            }
+            
+            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+		    $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
-		$subject=Replacefields($subject, $fieldsarray);
+		    $subject=Replacefields($subject, $fieldsarray);
 
-		$subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
+		    $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
 
-		if (getEmailFormat($surveyid) == 'html')
-		{
-			$ishtml=true;
-		}
-		else
-		{
-			$ishtml=false;
-		}           
+		    if (getEmailFormat($surveyid) == 'html')
+		    {
+			    $ishtml=true;
+		    }
+		    else
+		    {
+			    $ishtml=false;
+		    }           
 
-		if (trim(strip_tags($thissurvey['email_confirm'])) != "")
-		{
-			$message=$thissurvey['email_confirm'];
-			$message=Replacefields($message, $fieldsarray);
+		    if (trim(strip_tags($thissurvey['email_confirm'])) != "")
+		    {
+			    $message=$thissurvey['email_confirm'];
+			    $message=Replacefields($message, $fieldsarray);
 
-			if (!$ishtml)
-			{
-				$message=strip_tags(br2nl(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
-			}
-			else 
-			{
-				$message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
-			}
+			    if (!$ishtml)
+			    {
+				    $message=strip_tags(br2nl(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
+			    }
+			    else 
+			    {
+				    $message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
+			    }
 
-			//Only send confirmation email if there is a valid email address
-    		if (validate_email($cnfrow['email']))
-    		{
-    			MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
-    		}
-		}
-		else
-		{
-            //There is nothing in the message, so don't send a confirmation email
-            //This section only here as placeholder to indicate new feature :-)
-		}
-	}
+			    //Only send confirmation email if there is a valid email address
+    		    if (validate_email($cnfrow['email']))
+    		    {
+    			    MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
+    		    }
+		    }
+		    else
+		    {
+                //There is nothing in the message, so don't send a confirmation email
+                //This section only here as placeholder to indicate new feature :-)
+		    }
+	    }
+    }
 }
 
 function sendsubmitnotification($sendnotification)
@@ -2757,7 +2771,12 @@ function check_quota($checkaction,$surveyid)
 		{
 			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
 			{
-				session_destroy();
+				// If a token is used then mark the token as completed
+                if (isset($clienttoken) && $clienttoken)
+                {
+                    submittokens(true);
+                }
+                session_destroy();
 				sendcacheheaders();
 				if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
 				{
@@ -2769,7 +2788,6 @@ function check_quota($checkaction,$surveyid)
 				echo "\t".$quota['Message']."<br /><br />\n";
 				echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
 				echo "\t</div>\n";
-//				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();
 				exit;
