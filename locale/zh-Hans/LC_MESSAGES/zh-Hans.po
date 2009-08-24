@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-simplified language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-04 09:44+0800\n"
-"PO-Revision-Date: 2009-08-04 09:48+0800\n"
+"POT-Creation-Date: 2009-08-24 08:58+0800\n"
+"PO-Revision-Date: 2009-08-24 09:00+0800\n"
 "Last-Translator: yooyooh <yooyooh@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -149,10 +149,10 @@ msgstr "非活动的"
 #: e:\web\limesurvey/common.php:1290
 #: e:\web\limesurvey/common.php:1315
 #: e:\web\limesurvey/common.php:1382
-#: e:\web\limesurvey/common.php:4232
-#: e:\web\limesurvey/common.php:4266
-#: e:\web\limesurvey/common.php:4305
-#: e:\web\limesurvey/common.php:4341
+#: e:\web\limesurvey/common.php:4235
+#: e:\web\limesurvey/common.php:4269
+#: e:\web\limesurvey/common.php:4308
+#: e:\web\limesurvey/common.php:4344
 msgid "Please Choose..."
 msgstr "请选择..."
 
@@ -160,8 +160,8 @@ msgstr "请选择..."
 #: e:\web\limesurvey/common.php:1291
 #: e:\web\limesurvey/common.php:1316
 #: e:\web\limesurvey/common.php:1383
-#: e:\web\limesurvey/common.php:4267
-#: e:\web\limesurvey/common.php:4306
+#: e:\web\limesurvey/common.php:4270
+#: e:\web\limesurvey/common.php:4309
 msgid "None"
 msgstr "无"
 
@@ -238,7 +238,7 @@ msgid "Multiple Short Text"
 msgstr "多选题短文本"
 
 #: e:\web\limesurvey/common.php:898
-#: e:\web\limesurvey/statistics_user.php:764
+#: e:\web\limesurvey/statistics_user.php:773
 msgid "Ranking"
 msgstr "排序"
 
@@ -312,12 +312,12 @@ msgid "Display Responses"
 msgstr "显示调查结果"
 
 #: e:\web\limesurvey/common.php:1761
-#: e:\web\limesurvey/common.php:5529
+#: e:\web\limesurvey/common.php:5567
 msgid "Please select a language:"
 msgstr "请选择语言："
 
 #: e:\web\limesurvey/common.php:1766
-#: e:\web\limesurvey/common.php:5545
+#: e:\web\limesurvey/common.php:5583
 msgid "Cancel"
 msgstr "取消"
 
@@ -375,8 +375,8 @@ msgid "Preset"
 msgstr "预置"
 
 #: e:\web\limesurvey/common.php:1908
-#: e:\web\limesurvey/index.php:1766
-#: e:\web\limesurvey/index.php:1911
+#: e:\web\limesurvey/index.php:1780
+#: e:\web\limesurvey/index.php:1925
 msgid "Token"
 msgstr "操作代码"
 
@@ -389,12 +389,12 @@ msgid "Date Started"
 msgstr "开始时间"
 
 #: e:\web\limesurvey/common.php:1911
-#: e:\web\limesurvey/printanswers.php:178
+#: e:\web\limesurvey/printanswers.php:179
 msgid "IP Address"
 msgstr "IP 地址"
 
 #: e:\web\limesurvey/common.php:1912
-#: e:\web\limesurvey/printanswers.php:182
+#: e:\web\limesurvey/printanswers.php:183
 msgid "Referring URL"
 msgstr "来源网址"
 
@@ -408,10 +408,10 @@ msgstr "来源网址"
 #: e:\web\limesurvey/qanda.php:1770
 #: e:\web\limesurvey/qanda.php:1994
 #: e:\web\limesurvey/qanda.php:3031
-#: e:\web\limesurvey/statistics_user.php:742
-#: e:\web\limesurvey/statistics_user.php:1402
-#: e:\web\limesurvey/statistics_user.php:1491
-#: e:\web\limesurvey/statistics_user.php:1532
+#: e:\web\limesurvey/statistics_user.php:751
+#: e:\web\limesurvey/statistics_user.php:1411
+#: e:\web\limesurvey/statistics_user.php:1500
+#: e:\web\limesurvey/statistics_user.php:1541
 msgid "Other"
 msgstr "其它"
 
@@ -421,8 +421,8 @@ msgstr "其它"
 #: e:\web\limesurvey/qanda.php:3935
 #: e:\web\limesurvey/qanda.php:4447
 #: e:\web\limesurvey/qanda.php:4505
-#: e:\web\limesurvey/statistics_user.php:1246
-#: e:\web\limesurvey/statistics_user.php:1371
+#: e:\web\limesurvey/statistics_user.php:1255
+#: e:\web\limesurvey/statistics_user.php:1380
 msgid "Yes"
 msgstr "是"
 
@@ -431,15 +431,15 @@ msgstr "是"
 #: e:\web\limesurvey/qanda.php:3944
 #: e:\web\limesurvey/qanda.php:4449
 #: e:\web\limesurvey/qanda.php:4523
-#: e:\web\limesurvey/statistics_user.php:1247
-#: e:\web\limesurvey/statistics_user.php:1372
+#: e:\web\limesurvey/statistics_user.php:1256
+#: e:\web\limesurvey/statistics_user.php:1381
 msgid "No"
 msgstr "否"
 
 #: e:\web\limesurvey/common.php:2094
 #: e:\web\limesurvey/common.php:2102
-#: e:\web\limesurvey/common.php:5163
 #: e:\web\limesurvey/common.php:5168
+#: e:\web\limesurvey/common.php:5173
 #: e:\web\limesurvey/qanda.php:958
 #: e:\web\limesurvey/qanda.php:1348
 #: e:\web\limesurvey/qanda.php:1536
@@ -467,53 +467,53 @@ msgstr "否"
 #: e:\web\limesurvey/qanda.php:6074
 #: e:\web\limesurvey/qanda.php:6309
 #: e:\web\limesurvey/qanda.php:6363
-#: e:\web\limesurvey/statistics_user.php:1498
-#: e:\web\limesurvey/statistics_user.php:1587
-#: e:\web\limesurvey/statistics_user.php:1871
-#: e:\web\limesurvey/statistics_user.php:1885
-#: e:\web\limesurvey/statistics_user.php:1919
-#: e:\web\limesurvey/statistics_user.php:1954
-#: e:\web\limesurvey/statistics_user.php:1995
+#: e:\web\limesurvey/statistics_user.php:1507
+#: e:\web\limesurvey/statistics_user.php:1596
+#: e:\web\limesurvey/statistics_user.php:1880
+#: e:\web\limesurvey/statistics_user.php:1894
+#: e:\web\limesurvey/statistics_user.php:1928
+#: e:\web\limesurvey/statistics_user.php:1963
+#: e:\web\limesurvey/statistics_user.php:2004
 msgid "No answer"
 msgstr "拒答"
 
 #: e:\web\limesurvey/common.php:2100
 #: e:\web\limesurvey/qanda.php:4012
-#: e:\web\limesurvey/statistics_user.php:1365
+#: e:\web\limesurvey/statistics_user.php:1374
 msgid "Male"
 msgstr "男"
 
 #: e:\web\limesurvey/common.php:2101
 #: e:\web\limesurvey/qanda.php:3993
-#: e:\web\limesurvey/statistics_user.php:1364
+#: e:\web\limesurvey/statistics_user.php:1373
 msgid "Female"
 msgstr "女"
 
 #: e:\web\limesurvey/common.php:2110
 #: e:\web\limesurvey/qanda.php:4448
 #: e:\web\limesurvey/qanda.php:4513
-#: e:\web\limesurvey/statistics_user.php:1248
+#: e:\web\limesurvey/statistics_user.php:1257
 msgid "Uncertain"
 msgstr "不确定"
 
 #: e:\web\limesurvey/common.php:2116
 #: e:\web\limesurvey/qanda.php:4730
 #: e:\web\limesurvey/qanda.php:4778
-#: e:\web\limesurvey/statistics_user.php:1265
+#: e:\web\limesurvey/statistics_user.php:1274
 msgid "Increase"
 msgstr "增加"
 
 #: e:\web\limesurvey/common.php:2117
 #: e:\web\limesurvey/qanda.php:4732
 #: e:\web\limesurvey/qanda.php:4801
-#: e:\web\limesurvey/statistics_user.php:1267
+#: e:\web\limesurvey/statistics_user.php:1276
 msgid "Decrease"
 msgstr "减少"
 
 #: e:\web\limesurvey/common.php:2118
 #: e:\web\limesurvey/qanda.php:4731
 #: e:\web\limesurvey/qanda.php:4789
-#: e:\web\limesurvey/statistics_user.php:1266
+#: e:\web\limesurvey/statistics_user.php:1275
 msgid "Same"
 msgstr "相同"
 
@@ -538,7 +538,7 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "本调查包括{NUMBEROFQUESTIONS}个问题。"
 
 #: e:\web\limesurvey/common.php:2694
-#: e:\web\limesurvey/index.php:2411
+#: e:\web\limesurvey/index.php:2425
 msgid "Submit"
 msgstr "提交 "
 
@@ -648,8 +648,8 @@ msgstr "您的邮件"
 #: e:\web\limesurvey/common.php:2914
 #: e:\web\limesurvey/common.php:2934
 #: e:\web\limesurvey/common.php:2985
-#: e:\web\limesurvey/index.php:1786
-#: e:\web\limesurvey/index.php:1938
+#: e:\web\limesurvey/index.php:1800
+#: e:\web\limesurvey/index.php:1952
 msgid "Security Question"
 msgstr "安全问题"
 
@@ -690,12 +690,12 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr "在下面填写您的详细资料，然后一封包含参与该调查的链接的邮件会立刻发送。"
 
 #: e:\web\limesurvey/common.php:2952
-#: e:\web\limesurvey/common.php:6115
+#: e:\web\limesurvey/common.php:6153
 msgid "First Name"
 msgstr "名"
 
 #: e:\web\limesurvey/common.php:2959
-#: e:\web\limesurvey/common.php:6116
+#: e:\web\limesurvey/common.php:6154
 msgid "Last Name"
 msgstr "姓"
 
@@ -704,9 +704,9 @@ msgid "Email Address"
 msgstr "电邮地址"
 
 #: e:\web\limesurvey/common.php:3010
-#: e:\web\limesurvey/index.php:1729
-#: e:\web\limesurvey/index.php:1790
-#: e:\web\limesurvey/index.php:1941
+#: e:\web\limesurvey/index.php:1743
+#: e:\web\limesurvey/index.php:1804
+#: e:\web\limesurvey/index.php:1955
 msgid "Continue"
 msgstr "继续"
 
@@ -1077,54 +1077,54 @@ msgstr "支持本项目 - 捐赠"
 msgid "Visit our website!"
 msgstr "请访问我们的网站！"
 
-#: e:\web\limesurvey/common.php:3766
+#: e:\web\limesurvey/common.php:3769
 msgid "Email was not sent because demo-mode is activated."
 msgstr "演示模式 - 邮件未能发送。"
 
-#: e:\web\limesurvey/common.php:4115
-#: e:\web\limesurvey/common.php:4121
+#: e:\web\limesurvey/common.php:4118
+#: e:\web\limesurvey/common.php:4124
 msgid "Executing"
 msgstr "执行中"
 
-#: e:\web\limesurvey/common.php:4115
+#: e:\web\limesurvey/common.php:4118
 msgid "Failed! Reason: "
 msgstr "失败！原因："
 
-#: e:\web\limesurvey/common.php:4121
+#: e:\web\limesurvey/common.php:4124
 msgid "Success!"
 msgstr "成功！"
 
-#: e:\web\limesurvey/common.php:5177
+#: e:\web\limesurvey/common.php:5182
 #: e:\web\limesurvey/index.php:470
 #: e:\web\limesurvey/save.php:590
 msgid "Error"
 msgstr "错误"
 
-#: e:\web\limesurvey/common.php:6117
+#: e:\web\limesurvey/common.php:6155
 msgid "Email address"
 msgstr "邮件地址"
 
-#: e:\web\limesurvey/common.php:6118
+#: e:\web\limesurvey/common.php:6156
 msgid "Token code"
 msgstr "操作代码编码"
 
-#: e:\web\limesurvey/common.php:6119
+#: e:\web\limesurvey/common.php:6157
 msgid "Language code"
 msgstr "语言编码"
 
-#: e:\web\limesurvey/common.php:6120
+#: e:\web\limesurvey/common.php:6158
 msgid "Invitation sent date"
 msgstr "邀请发送日期"
 
-#: e:\web\limesurvey/common.php:6121
+#: e:\web\limesurvey/common.php:6159
 msgid "Last Reminder sent date"
 msgstr "提醒邮件最后发送日期"
 
-#: e:\web\limesurvey/common.php:6122
+#: e:\web\limesurvey/common.php:6160
 msgid "Total numbers of sent reminders"
 msgstr "发送提醒邮件总数"
 
-#: e:\web\limesurvey/common.php:6142
+#: e:\web\limesurvey/common.php:6180
 #, php-format
 msgid "Attribute %s"
 msgstr "属性%s"
@@ -1135,7 +1135,7 @@ msgid "Save your responses so far"
 msgstr "保存您当前的回答"
 
 #: e:\web\limesurvey/group.php:119
-#: e:\web\limesurvey/index.php:1625
+#: e:\web\limesurvey/index.php:1639
 #: e:\web\limesurvey/question.php:209
 msgid "Did Not Save"
 msgstr "未保存"
@@ -1281,8 +1281,8 @@ msgid "You did not provide a password"
 msgstr "您没有提供密码"
 
 #: e:\web\limesurvey/index.php:539
-#: e:\web\limesurvey/index.php:1699
-#: e:\web\limesurvey/index.php:1887
+#: e:\web\limesurvey/index.php:1713
+#: e:\web\limesurvey/index.php:1901
 #: e:\web\limesurvey/register.php:56
 #: e:\web\limesurvey/save.php:247
 msgid "The answer to the security question is incorrect."
@@ -1293,8 +1293,8 @@ msgid "This is a closed-access survey, so you must supply a valid token.  Please
 msgstr "这是封闭式调查，您必须提供一个有效的操作代码。请联系管理员以获取帮助。"
 
 #: e:\web\limesurvey/index.php:590
-#: e:\web\limesurvey/index.php:1820
-#: e:\web\limesurvey/index.php:1856
+#: e:\web\limesurvey/index.php:1834
+#: e:\web\limesurvey/index.php:1870
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "您提供的操作代码无效，或已经被使用过。"
 
@@ -1320,150 +1320,150 @@ msgstr "调查已保存"
 msgid "There is no matching saved survey"
 msgstr "未发现匹配的已保存调查"
 
-#: e:\web\limesurvey/index.php:1534
+#: e:\web\limesurvey/index.php:1548
 msgid "Answer Submission for Survey"
 msgstr "调查答案提交"
 
-#: e:\web\limesurvey/index.php:1536
+#: e:\web\limesurvey/index.php:1550
 msgid "Survey Submitted"
 msgstr "调查已提交"
 
-#: e:\web\limesurvey/index.php:1537
+#: e:\web\limesurvey/index.php:1551
 msgid "A new response was entered for your survey"
 msgstr "您的调查又新增了一份答复"
 
-#: e:\web\limesurvey/index.php:1540
+#: e:\web\limesurvey/index.php:1554
 msgid "Click the following link to reload the survey:"
 msgstr "点击下面的链接以重载调查："
 
-#: e:\web\limesurvey/index.php:1544
+#: e:\web\limesurvey/index.php:1558
 msgid "Click the following link to see the individual response:"
 msgstr "点击下面链接以查看个人回答："
 
-#: e:\web\limesurvey/index.php:1547
+#: e:\web\limesurvey/index.php:1561
 msgid "Click the following link to edit the individual response:"
 msgstr "点击下面链接以编辑个人回答："
 
-#: e:\web\limesurvey/index.php:1550
+#: e:\web\limesurvey/index.php:1564
 msgid "View statistics by clicking here:"
 msgstr "点击这里查看统计："
 
-#: e:\web\limesurvey/index.php:1626
+#: e:\web\limesurvey/index.php:1640
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "出现意外的错误，无法保存您的回答。"
 
-#: e:\web\limesurvey/index.php:1629
+#: e:\web\limesurvey/index.php:1643
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "您的回答并未丢失，已经电邮给此项调查的管理员，它将在晚些时候录入到数据库。"
 
-#: e:\web\limesurvey/index.php:1630
+#: e:\web\limesurvey/index.php:1644
 msgid "An error occurred saving a response to survey id"
 msgstr "保存调查id答案时出错"
 
-#: e:\web\limesurvey/index.php:1631
+#: e:\web\limesurvey/index.php:1645
 msgid "DATA TO BE ENTERED"
 msgstr "待录入数据"
 
-#: e:\web\limesurvey/index.php:1636
+#: e:\web\limesurvey/index.php:1650
 msgid "SQL CODE THAT FAILED"
 msgstr "执行失败的SQL代码"
 
-#: e:\web\limesurvey/index.php:1638
+#: e:\web\limesurvey/index.php:1652
 msgid "ERROR MESSAGE"
 msgstr "错误信息"
 
-#: e:\web\limesurvey/index.php:1640
+#: e:\web\limesurvey/index.php:1654
 msgid "Error saving results"
 msgstr "保存结果时出错"
 
-#: e:\web\limesurvey/index.php:1648
+#: e:\web\limesurvey/index.php:1662
 msgid "Try to submit again"
 msgstr "请再次提交"
 
-#: e:\web\limesurvey/index.php:1702
+#: e:\web\limesurvey/index.php:1716
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "请回答下面的安全问题以确认调查访问权限，再点击继续。"
 
-#: e:\web\limesurvey/index.php:1725
+#: e:\web\limesurvey/index.php:1739
 msgid "Security question:"
 msgstr "安全问题："
 
-#: e:\web\limesurvey/index.php:1759
-#: e:\web\limesurvey/index.php:1819
-#: e:\web\limesurvey/index.php:1855
-#: e:\web\limesurvey/index.php:1890
+#: e:\web\limesurvey/index.php:1773
+#: e:\web\limesurvey/index.php:1833
+#: e:\web\limesurvey/index.php:1869
+#: e:\web\limesurvey/index.php:1904
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "这是个受控调查。您必须持有有效操作代码方可参与。"
 
-#: e:\web\limesurvey/index.php:1760
+#: e:\web\limesurvey/index.php:1774
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "如果您持有操作代码，请将它输入到下面的文本框内，再点击继续。 "
 
-#: e:\web\limesurvey/index.php:1821
-#: e:\web\limesurvey/index.php:1857
-#: e:\web\limesurvey/index.php:2028
+#: e:\web\limesurvey/index.php:1835
+#: e:\web\limesurvey/index.php:1871
+#: e:\web\limesurvey/index.php:2042
 #, php-format
 msgid "For further information contact %s"
 msgstr "更多资讯，请联系%s"
 
-#: e:\web\limesurvey/index.php:1895
+#: e:\web\limesurvey/index.php:1909
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "如果您持有操作代码，请将它输入到下面的文本框内，再点击继续。"
 
-#: e:\web\limesurvey/index.php:1915
+#: e:\web\limesurvey/index.php:1929
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "请通过回答安全问题来确认操作代码，再点击继续。 "
 
-#: e:\web\limesurvey/index.php:1930
+#: e:\web\limesurvey/index.php:1944
 msgid "Token:"
 msgstr "操作代码："
 
-#: e:\web\limesurvey/index.php:2027
+#: e:\web\limesurvey/index.php:2041
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "此调查为空，无法进行测试或完成。"
 
-#: e:\web\limesurvey/index.php:2390
-#: e:\web\limesurvey/index.php:2787
+#: e:\web\limesurvey/index.php:2404
+#: e:\web\limesurvey/index.php:2805
 msgid "Previous"
 msgstr "上一页"
 
-#: e:\web\limesurvey/index.php:2395
-#: e:\web\limesurvey/index.php:2401
-#: e:\web\limesurvey/index.php:2406
+#: e:\web\limesurvey/index.php:2409
+#: e:\web\limesurvey/index.php:2415
+#: e:\web\limesurvey/index.php:2420
 msgid "Next"
 msgstr "下一页"
 
-#: e:\web\limesurvey/printanswers.php:137
+#: e:\web\limesurvey/printanswers.php:138
 msgid "PDF Export"
 msgstr "导出为PDF"
 
-#: e:\web\limesurvey/printanswers.php:146
+#: e:\web\limesurvey/printanswers.php:147
 msgid "Survey Name (ID)"
 msgstr "调查名称(ID)："
 
-#: e:\web\limesurvey/printanswers.php:166
+#: e:\web\limesurvey/printanswers.php:167
 msgid "Token ID"
 msgstr "操作代码ID"
 
-#: e:\web\limesurvey/printanswers.php:174
+#: e:\web\limesurvey/printanswers.php:175
 msgid "Date Stamp"
 msgstr "日期戳"
 
-#: e:\web\limesurvey/printanswers.php:271
+#: e:\web\limesurvey/printanswers.php:272
 msgid "First Scale"
 msgstr "第一尺度"
 
-#: e:\web\limesurvey/printanswers.php:272
+#: e:\web\limesurvey/printanswers.php:273
 msgid "Second Scale"
 msgstr "第二尺度"
 
-#: e:\web\limesurvey/printanswers.php:318
-#: e:\web\limesurvey/printanswers.php:320
+#: e:\web\limesurvey/printanswers.php:319
+#: e:\web\limesurvey/printanswers.php:321
 msgid "Question"
 msgstr "问题"
 
-#: e:\web\limesurvey/printanswers.php:318
-#: e:\web\limesurvey/printanswers.php:320
+#: e:\web\limesurvey/printanswers.php:319
+#: e:\web\limesurvey/printanswers.php:321
 msgid "Your Answer"
 msgstr "您的答案"
 
@@ -1855,127 +1855,127 @@ msgstr "您已经提交了回答并按了浏览器上的“刷新”，就会出
 msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
 msgstr "如果您在完成调查的过程中收到本信息，您应该选择浏览器上的 '<- 后退'并刷新/重载前面的页面。这样你就仅会丢失最后一页的答案，而其它答案则不会丢失。非常抱歉，服务器超负荷或过度使用就会发生这个问题。"
 
-#: e:\web\limesurvey/statistics_user.php:631
+#: e:\web\limesurvey/statistics_user.php:640
 msgid "Please wait ..."
 msgstr "请等待..."
 
-#: e:\web\limesurvey/statistics_user.php:633
+#: e:\web\limesurvey/statistics_user.php:642
 msgid "Go back"
 msgstr "返回"
 
-#: e:\web\limesurvey/statistics_user.php:642
+#: e:\web\limesurvey/statistics_user.php:651
 msgid "Getting questions and answers ..."
 msgstr "正在获取问题和答案 ..."
 
-#: e:\web\limesurvey/statistics_user.php:657
+#: e:\web\limesurvey/statistics_user.php:666
 msgid "Total records in survey"
 msgstr "调查中总记录数"
 
-#: e:\web\limesurvey/statistics_user.php:674
+#: e:\web\limesurvey/statistics_user.php:683
 msgid "Generating summaries ..."
 msgstr "正在生成摘要..."
 
-#: e:\web\limesurvey/statistics_user.php:856
-#: e:\web\limesurvey/statistics_user.php:1514
+#: e:\web\limesurvey/statistics_user.php:865
+#: e:\web\limesurvey/statistics_user.php:1523
 msgid "Field summary for"
 msgstr "字段摘要"
 
-#: e:\web\limesurvey/statistics_user.php:861
+#: e:\web\limesurvey/statistics_user.php:870
 msgid "Calculation"
 msgstr "计算"
 
-#: e:\web\limesurvey/statistics_user.php:863
+#: e:\web\limesurvey/statistics_user.php:872
 msgid "Result"
 msgstr "结果"
 
-#: e:\web\limesurvey/statistics_user.php:935
-#: e:\web\limesurvey/statistics_user.php:1603
-#: e:\web\limesurvey/statistics_user.php:2055
+#: e:\web\limesurvey/statistics_user.php:944
+#: e:\web\limesurvey/statistics_user.php:1612
+#: e:\web\limesurvey/statistics_user.php:2064
 msgid "Sum"
 msgstr "总和"
 
-#: e:\web\limesurvey/statistics_user.php:936
-#: e:\web\limesurvey/statistics_user.php:2175
+#: e:\web\limesurvey/statistics_user.php:945
+#: e:\web\limesurvey/statistics_user.php:2184
 msgid "Standard deviation"
 msgstr "标准差"
 
-#: e:\web\limesurvey/statistics_user.php:937
+#: e:\web\limesurvey/statistics_user.php:946
 msgid "Average"
 msgstr "均值"
 
-#: e:\web\limesurvey/statistics_user.php:938
+#: e:\web\limesurvey/statistics_user.php:947
 msgid "Minimum"
 msgstr "最小值"
 
-#: e:\web\limesurvey/statistics_user.php:979
-#: e:\web\limesurvey/statistics_user.php:1599
-#: e:\web\limesurvey/statistics_user.php:1613
-#: e:\web\limesurvey/statistics_user.php:1686
+#: e:\web\limesurvey/statistics_user.php:988
+#: e:\web\limesurvey/statistics_user.php:1608
+#: e:\web\limesurvey/statistics_user.php:1622
+#: e:\web\limesurvey/statistics_user.php:1695
 msgid "Count"
 msgstr "计数"
 
-#: e:\web\limesurvey/statistics_user.php:1013
+#: e:\web\limesurvey/statistics_user.php:1022
 msgid "1st quartile (Q1)"
 msgstr "第一四分位点"
 
-#: e:\web\limesurvey/statistics_user.php:1047
+#: e:\web\limesurvey/statistics_user.php:1056
 msgid "2nd quartile (Median)"
 msgstr "第二分位数点（中位数）"
 
-#: e:\web\limesurvey/statistics_user.php:1090
+#: e:\web\limesurvey/statistics_user.php:1099
 msgid "3rd quartile (Q3)"
 msgstr "第三分位数点"
 
-#: e:\web\limesurvey/statistics_user.php:1106
+#: e:\web\limesurvey/statistics_user.php:1115
 msgid "Maximum"
 msgstr "最大值"
 
-#: e:\web\limesurvey/statistics_user.php:1120
+#: e:\web\limesurvey/statistics_user.php:1129
 msgid "Null values are ignored in calculations"
 msgstr "计算中已忽略空值"
 
-#: e:\web\limesurvey/statistics_user.php:1121
+#: e:\web\limesurvey/statistics_user.php:1130
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1和Q4使用%s计算"
 
-#: e:\web\limesurvey/statistics_user.php:1121
+#: e:\web\limesurvey/statistics_user.php:1130
 msgid "minitab method"
 msgstr "minitab 方法"
 
-#: e:\web\limesurvey/statistics_user.php:1136
+#: e:\web\limesurvey/statistics_user.php:1145
 msgid "Not enough values for calculation"
 msgstr "没有足够的数据进行计算"
 
-#: e:\web\limesurvey/statistics_user.php:1597
-#: e:\web\limesurvey/statistics_user.php:1611
-#: e:\web\limesurvey/statistics_user.php:1684
+#: e:\web\limesurvey/statistics_user.php:1606
+#: e:\web\limesurvey/statistics_user.php:1620
+#: e:\web\limesurvey/statistics_user.php:1693
 msgid "Answer"
 msgstr "答案"
 
-#: e:\web\limesurvey/statistics_user.php:1601
-#: e:\web\limesurvey/statistics_user.php:1615
-#: e:\web\limesurvey/statistics_user.php:1688
+#: e:\web\limesurvey/statistics_user.php:1610
+#: e:\web\limesurvey/statistics_user.php:1624
+#: e:\web\limesurvey/statistics_user.php:1697
 msgid "Percentage"
 msgstr "百分比"
 
-#: e:\web\limesurvey/statistics_user.php:1769
+#: e:\web\limesurvey/statistics_user.php:1778
 msgid "Non completed"
 msgstr "未完成"
 
-#: e:\web\limesurvey/statistics_user.php:2055
+#: e:\web\limesurvey/statistics_user.php:2064
 msgid "Answers"
 msgstr "答案"
 
-#: e:\web\limesurvey/statistics_user.php:2061
+#: e:\web\limesurvey/statistics_user.php:2070
 msgid "Number of cases"
 msgstr "实例数"
 
-#: e:\web\limesurvey/statistics_user.php:2175
+#: e:\web\limesurvey/statistics_user.php:2184
 msgid "Arithmetic mean"
 msgstr "算术平均数"
 
-#: e:\web\limesurvey/statistics_user.php:2385
+#: e:\web\limesurvey/statistics_user.php:2394
 msgid "Completed"
 msgstr "已完成"
 
@@ -2074,8 +2074,8 @@ msgid "You are not allowed to perform this operation!"
 msgstr "您没有执行该项操作的权限！"
 
 #: e:\web\limesurvey/admin/activate.php:69
-msgid "This group has no answer."
-msgstr "该组没有答案项。"
+msgid "This group does not contain any question(s)."
+msgstr "该组未含任何问题。"
 
 #: e:\web\limesurvey/admin/activate.php:99
 msgid "This question is a multiple answer type question but has no answers."
@@ -2195,7 +2195,7 @@ msgstr "调查无法启用。"
 #: e:\web\limesurvey/admin/deactivate.php:100
 #: e:\web\limesurvey/admin/deactivate.php:102
 #: e:\web\limesurvey/admin/deletesurvey.php:29
-#: e:\web\limesurvey/admin/deletesurvey.php:123
+#: e:\web\limesurvey/admin/deletesurvey.php:131
 #: e:\web\limesurvey/admin/dumpgroup.php:41
 #: e:\web\limesurvey/admin/dumplabel.php:33
 msgid "Main Admin Screen"
@@ -2829,123 +2829,123 @@ msgstr "无法删除组"
 msgid "The question could not be added. You must enter at least enter a question code."
 msgstr "不能添加问题，您至少须输入一个问题编码。"
 
-#: e:\web\limesurvey/admin/database.php:366
-#: e:\web\limesurvey/admin/database.php:673
-#: e:\web\limesurvey/admin/database.php:702
+#: e:\web\limesurvey/admin/database.php:367
+#: e:\web\limesurvey/admin/database.php:674
+#: e:\web\limesurvey/admin/database.php:703
 msgid "Question could not be created."
 msgstr "无法创建问题。"
 
-#: e:\web\limesurvey/admin/database.php:482
+#: e:\web\limesurvey/admin/database.php:483
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
 msgstr "无法更新问题。有其他问题的条件基于此问题的答案项，更改类型会引起问题。您必须在更改此题类型之前删除这些条件。"
 
-#: e:\web\limesurvey/admin/database.php:565
-#: e:\web\limesurvey/admin/database.php:623
+#: e:\web\limesurvey/admin/database.php:566
+#: e:\web\limesurvey/admin/database.php:624
 msgid "Question could not be updated"
 msgstr "无法更新问题"
 
-#: e:\web\limesurvey/admin/database.php:585
+#: e:\web\limesurvey/admin/database.php:586
 msgid "Answers can't be deleted"
 msgstr "不能删除答案项"
 
-#: e:\web\limesurvey/admin/database.php:595
+#: e:\web\limesurvey/admin/database.php:596
 msgid "This question relies on other question's answers and can't be moved above groupId:"
 msgstr "这个问题依赖于其他问题的答案项，不能移动到该组之上："
 
-#: e:\web\limesurvey/admin/database.php:596
-#: e:\web\limesurvey/admin/database.php:608
+#: e:\web\limesurvey/admin/database.php:597
+#: e:\web\limesurvey/admin/database.php:609
 msgid "in position"
 msgstr "在适当的位置"
 
-#: e:\web\limesurvey/admin/database.php:597
-#: e:\web\limesurvey/admin/database.php:609
+#: e:\web\limesurvey/admin/database.php:598
+#: e:\web\limesurvey/admin/database.php:610
 msgid "See conditions:"
 msgstr "查看条件："
 
-#: e:\web\limesurvey/admin/database.php:607
+#: e:\web\limesurvey/admin/database.php:608
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
 msgstr "一些问题依赖于这个问题的答案项。您不能把这个问题移动到该组之下："
 
-#: e:\web\limesurvey/admin/database.php:633
+#: e:\web\limesurvey/admin/database.php:634
 msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "不能添加问题，您必须在必须填写的字段中插入码号"
 
-#: e:\web\limesurvey/admin/database.php:767
+#: e:\web\limesurvey/admin/database.php:768
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
 msgstr "无法删除问题，有其他问题的条件基于此题。请在删除此题之前，删除这些条件。"
 
-#: e:\web\limesurvey/admin/database.php:792
+#: e:\web\limesurvey/admin/database.php:793
 msgid "Question could not be deleted"
 msgstr "无法删除问题"
 
-#: e:\web\limesurvey/admin/database.php:808
+#: e:\web\limesurvey/admin/database.php:809
 msgid "Add new Answer"
 msgstr "添加新的答案项"
 
-#: e:\web\limesurvey/admin/database.php:823
+#: e:\web\limesurvey/admin/database.php:824
 msgid "Error adding answer: You can't use the same answer code more than once."
 msgstr "填加答案项错误：您不能多次使用同一个答案项编码。"
 
-#: e:\web\limesurvey/admin/database.php:850
-#: e:\web\limesurvey/admin/database.php:875
+#: e:\web\limesurvey/admin/database.php:851
+#: e:\web\limesurvey/admin/database.php:876
 msgid "Failed to insert answer"
 msgstr "插入答案项失败"
 
-#: e:\web\limesurvey/admin/database.php:884
+#: e:\web\limesurvey/admin/database.php:885
 msgid "Invalid or empty answer code supplied"
 msgstr "提供了无效或空的答案项编码"
 
-#: e:\web\limesurvey/admin/database.php:889
+#: e:\web\limesurvey/admin/database.php:890
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: e:\web\limesurvey/admin/database.php:957
+#: e:\web\limesurvey/admin/database.php:958
 msgid "Failed to update answers"
 msgstr "更新答案项失败"
 
-#: e:\web\limesurvey/admin/database.php:976
+#: e:\web\limesurvey/admin/database.php:977
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
 msgstr "答案项编码为0或空是不允许的，也不会保存。"
 
-#: e:\web\limesurvey/admin/database.php:977
+#: e:\web\limesurvey/admin/database.php:978
 msgid "Duplicate codes found, these entries won't be updated"
 msgstr "发现重复编码，这些条目无法更新"
 
-#: e:\web\limesurvey/admin/database.php:981
+#: e:\web\limesurvey/admin/database.php:982
 msgid "Up"
 msgstr "上"
 
-#: e:\web\limesurvey/admin/database.php:993
+#: e:\web\limesurvey/admin/database.php:994
 msgid "Dn"
 msgstr "下"
 
-#: e:\web\limesurvey/admin/database.php:1005
+#: e:\web\limesurvey/admin/database.php:1006
 msgid "Del"
 msgstr "刪除"
 
-#: e:\web\limesurvey/admin/database.php:1009
+#: e:\web\limesurvey/admin/database.php:1010
 msgid "Failed to delete answer"
 msgstr "删除答案项无效"
 
-#: e:\web\limesurvey/admin/database.php:1015
+#: e:\web\limesurvey/admin/database.php:1016
 msgid "Default"
 msgstr "默认"
 
-#: e:\web\limesurvey/admin/database.php:1024
+#: e:\web\limesurvey/admin/database.php:1025
 msgid "Failed to make answer not default"
 msgstr "使答案项不为默认失败"
 
-#: e:\web\limesurvey/admin/database.php:1038
+#: e:\web\limesurvey/admin/database.php:1039
 msgid "Failed to make answer default"
 msgstr "使答案项为默认失败"
 
-#: e:\web\limesurvey/admin/database.php:1151
-#: e:\web\limesurvey/admin/database.php:1380
+#: e:\web\limesurvey/admin/database.php:1152
+#: e:\web\limesurvey/admin/database.php:1381
 msgid "Invitation to participate in survey"
 msgstr "参加调查的邀请"
 
-#: e:\web\limesurvey/admin/database.php:1152
-#: e:\web\limesurvey/admin/database.php:1381
+#: e:\web\limesurvey/admin/database.php:1153
+#: e:\web\limesurvey/admin/database.php:1382
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -2983,13 +2983,13 @@ msgstr ""
 "点击这里做调查：\n"
 "{SURVEYURL}"
 
-#: e:\web\limesurvey/admin/database.php:1153
-#: e:\web\limesurvey/admin/database.php:1382
+#: e:\web\limesurvey/admin/database.php:1154
+#: e:\web\limesurvey/admin/database.php:1383
 msgid "Reminder to participate in survey"
 msgstr "参加调查的提醒"
 
-#: e:\web\limesurvey/admin/database.php:1154
-#: e:\web\limesurvey/admin/database.php:1383
+#: e:\web\limesurvey/admin/database.php:1155
+#: e:\web\limesurvey/admin/database.php:1384
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3032,13 +3032,13 @@ msgstr ""
 "点击这里做调查：\n"
 "{SURVEYURL}"
 
-#: e:\web\limesurvey/admin/database.php:1155
-#: e:\web\limesurvey/admin/database.php:1384
+#: e:\web\limesurvey/admin/database.php:1156
+#: e:\web\limesurvey/admin/database.php:1385
 msgid "Confirmation of completed survey"
 msgstr "完成调查的确认"
 
-#: e:\web\limesurvey/admin/database.php:1156
-#: e:\web\limesurvey/admin/database.php:1385
+#: e:\web\limesurvey/admin/database.php:1157
+#: e:\web\limesurvey/admin/database.php:1386
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3059,13 +3059,13 @@ msgstr ""
 "\n"
 "{ADMINNAME}"
 
-#: e:\web\limesurvey/admin/database.php:1157
-#: e:\web\limesurvey/admin/database.php:1386
+#: e:\web\limesurvey/admin/database.php:1158
+#: e:\web\limesurvey/admin/database.php:1387
 msgid "Survey Registration Confirmation"
 msgstr "调查注册确认"
 
-#: e:\web\limesurvey/admin/database.php:1158
-#: e:\web\limesurvey/admin/database.php:1387
+#: e:\web\limesurvey/admin/database.php:1159
+#: e:\web\limesurvey/admin/database.php:1388
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
@@ -3087,23 +3087,23 @@ msgstr ""
 "\n"
 "如果您有其他问题，或者您没有注册参与并认为这封邮件有误，请通过{ADMINEMAIL}联系{ADMINNAME}。"
 
-#: e:\web\limesurvey/admin/database.php:1174
+#: e:\web\limesurvey/admin/database.php:1175
 msgid "Survey could not be updated"
 msgstr "无法更新调查"
 
-#: e:\web\limesurvey/admin/database.php:1189
+#: e:\web\limesurvey/admin/database.php:1190
 msgid "ERROR deleting Survey id"
 msgstr "删除调查id时出错"
 
-#: e:\web\limesurvey/admin/database.php:1260
+#: e:\web\limesurvey/admin/database.php:1261
 msgid "Survey could not be created because it did not have a title"
 msgstr "无法创建没有标题的调查"
 
-#: e:\web\limesurvey/admin/database.php:1405
+#: e:\web\limesurvey/admin/database.php:1406
 msgid "Survey could not be created"
 msgstr "无法创建调查"
 
-#: e:\web\limesurvey/admin/database.php:1419
+#: e:\web\limesurvey/admin/database.php:1420
 msgid "Your personal settings were successfully saved."
 msgstr "成功保存您的个人设置。"
 
@@ -3351,7 +3351,7 @@ msgstr "本调查已启用，结果表已存在。如果你想删除本调查，
 msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
 msgstr "本调查有相关的操作代码表。如果你删除本调查，相应的操作代码表也会被删除。建议您在删除调查之前备份操作代码表。"
 
-#: e:\web\limesurvey/admin/deletesurvey.php:122
+#: e:\web\limesurvey/admin/deletesurvey.php:130
 msgid "This survey has been deleted."
 msgstr "本调查已删除。"
 
@@ -3714,7 +3714,7 @@ msgstr "调查格式为%s:"
 
 #: e:\web\limesurvey/admin/fck_LimeReplacementFields.php:557
 #: e:\web\limesurvey/admin/html.php:2394
-#: e:\web\limesurvey/admin/html.php:3258
+#: e:\web\limesurvey/admin/html.php:3255
 msgid "All in one"
 msgstr "全部都在一页"
 
@@ -3730,60 +3730,64 @@ msgstr "调查模式设置为 %s:"
 
 #: e:\web\limesurvey/admin/fck_LimeReplacementFields.php:568
 #: e:\web\limesurvey/admin/html.php:2391
-#: e:\web\limesurvey/admin/html.php:3257
+#: e:\web\limesurvey/admin/html.php:3254
 msgid "Group by Group"
 msgstr "按组分页"
 
 #: e:\web\limesurvey/admin/grouphandling.php:30
-#: e:\web\limesurvey/admin/grouphandling.php:51
+#: e:\web\limesurvey/admin/grouphandling.php:58
 msgid "Add Group"
 msgstr "新增题组"
 
-#: e:\web\limesurvey/admin/grouphandling.php:45
+#: e:\web\limesurvey/admin/grouphandling.php:43
+msgid "Error: You have to enter a group title for each language."
+msgstr "错误：您必须为每个语言输入一个组标题。"
+
+#: e:\web\limesurvey/admin/grouphandling.php:52
 msgid "Required"
 msgstr "必须的"
 
-#: e:\web\limesurvey/admin/grouphandling.php:46
-#: e:\web\limesurvey/admin/grouphandling.php:48
-#: e:\web\limesurvey/admin/grouphandling.php:143
-#: e:\web\limesurvey/admin/grouphandling.php:145
-#: e:\web\limesurvey/admin/grouphandling.php:159
-#: e:\web\limesurvey/admin/grouphandling.php:161
+#: e:\web\limesurvey/admin/grouphandling.php:53
+#: e:\web\limesurvey/admin/grouphandling.php:55
+#: e:\web\limesurvey/admin/grouphandling.php:150
+#: e:\web\limesurvey/admin/grouphandling.php:152
+#: e:\web\limesurvey/admin/grouphandling.php:166
+#: e:\web\limesurvey/admin/grouphandling.php:168
 #: e:\web\limesurvey/admin/html.php:897
 #: e:\web\limesurvey/admin/html.php:1160
 #: e:\web\limesurvey/admin/html.php:2881
 #: e:\web\limesurvey/admin/html.php:2883
-#: e:\web\limesurvey/admin/html.php:3223
-#: e:\web\limesurvey/admin/html.php:3225
+#: e:\web\limesurvey/admin/html.php:3220
+#: e:\web\limesurvey/admin/html.php:3222
 msgid "Description:"
 msgstr "描述:"
 
-#: e:\web\limesurvey/admin/grouphandling.php:65
-#: e:\web\limesurvey/admin/grouphandling.php:75
+#: e:\web\limesurvey/admin/grouphandling.php:72
+#: e:\web\limesurvey/admin/grouphandling.php:82
 #: e:\web\limesurvey/admin/importgroup.php:22
 msgid "Import Group"
 msgstr "导入题组"
 
-#: e:\web\limesurvey/admin/grouphandling.php:67
+#: e:\web\limesurvey/admin/grouphandling.php:74
 #: e:\web\limesurvey/admin/html.php:2794
 #: e:\web\limesurvey/admin/html.php:2807
-#: e:\web\limesurvey/admin/html.php:3515
+#: e:\web\limesurvey/admin/html.php:3509
 msgid "Please select a file to import!"
 msgstr "请选择导入文件！"
 
-#: e:\web\limesurvey/admin/grouphandling.php:71
+#: e:\web\limesurvey/admin/grouphandling.php:78
 msgid "Select CSV File:"
 msgstr "选择CSV文件："
 
-#: e:\web\limesurvey/admin/grouphandling.php:73
+#: e:\web\limesurvey/admin/grouphandling.php:80
 msgid "Convert resources links?"
 msgstr "转换资源链接？"
 
-#: e:\web\limesurvey/admin/grouphandling.php:131
+#: e:\web\limesurvey/admin/grouphandling.php:138
 msgid "Edit Group"
 msgstr "编辑组"
 
-#: e:\web\limesurvey/admin/grouphandling.php:165
+#: e:\web\limesurvey/admin/grouphandling.php:172
 msgid "Update Group"
 msgstr "更新组"
 
@@ -4153,37 +4157,37 @@ msgstr "欢迎："
 
 #: e:\web\limesurvey/admin/html.php:905
 #: e:\web\limesurvey/admin/html.php:2366
-#: e:\web\limesurvey/admin/html.php:3235
+#: e:\web\limesurvey/admin/html.php:3232
 msgid "Administrator:"
 msgstr "管理员："
 
 #: e:\web\limesurvey/admin/html.php:908
 #: e:\web\limesurvey/admin/html.php:2372
-#: e:\web\limesurvey/admin/html.php:3241
+#: e:\web\limesurvey/admin/html.php:3238
 msgid "Fax To:"
 msgstr "传真："
 
 #: e:\web\limesurvey/admin/html.php:912
 #: e:\web\limesurvey/admin/html.php:2550
-#: e:\web\limesurvey/admin/html.php:3388
+#: e:\web\limesurvey/admin/html.php:3385
 msgid "Start date:"
 msgstr "开始日期："
 
 #: e:\web\limesurvey/admin/html.php:925
 #: e:\web\limesurvey/admin/html.php:2560
-#: e:\web\limesurvey/admin/html.php:3393
+#: e:\web\limesurvey/admin/html.php:3390
 msgid "Expiry Date:"
 msgstr "结束日期："
 
 #: e:\web\limesurvey/admin/html.php:937
 #: e:\web\limesurvey/admin/html.php:2399
-#: e:\web\limesurvey/admin/html.php:3261
+#: e:\web\limesurvey/admin/html.php:3258
 msgid "Template:"
 msgstr "模板："
 
 #: e:\web\limesurvey/admin/html.php:941
 #: e:\web\limesurvey/admin/html.php:2321
-#: e:\web\limesurvey/admin/html.php:3198
+#: e:\web\limesurvey/admin/html.php:3195
 msgid "Base Language:"
 msgstr "基础语言："
 
@@ -4582,92 +4586,92 @@ msgid "Remove"
 msgstr "删除"
 
 #: e:\web\limesurvey/admin/html.php:2368
-#: e:\web\limesurvey/admin/html.php:3237
+#: e:\web\limesurvey/admin/html.php:3234
 msgid "Admin Email:"
 msgstr "管理员邮件："
 
 #: e:\web\limesurvey/admin/html.php:2370
-#: e:\web\limesurvey/admin/html.php:3239
+#: e:\web\limesurvey/admin/html.php:3236
 msgid "Bounce Email:"
 msgstr "退回邮件："
 
 #: e:\web\limesurvey/admin/html.php:2381
-#: e:\web\limesurvey/admin/html.php:3251
+#: e:\web\limesurvey/admin/html.php:3248
 msgid "Presentation & Navigation"
 msgstr "外观和导航"
 
 #: e:\web\limesurvey/admin/html.php:2384
-#: e:\web\limesurvey/admin/html.php:3254
+#: e:\web\limesurvey/admin/html.php:3251
 msgid "Format:"
 msgstr "格式："
 
 #: e:\web\limesurvey/admin/html.php:2388
-#: e:\web\limesurvey/admin/html.php:3256
+#: e:\web\limesurvey/admin/html.php:3253
 msgid "Question by Question"
 msgstr "按题分页"
 
 #: e:\web\limesurvey/admin/html.php:2417
-#: e:\web\limesurvey/admin/html.php:3277
+#: e:\web\limesurvey/admin/html.php:3274
 msgid "Template Preview:"
 msgstr "模板预览："
 
 #: e:\web\limesurvey/admin/html.php:2423
-#: e:\web\limesurvey/admin/html.php:3285
+#: e:\web\limesurvey/admin/html.php:3282
 msgid "Allow Saves?"
 msgstr "允许保存？"
 
 #: e:\web\limesurvey/admin/html.php:2435
-#: e:\web\limesurvey/admin/html.php:3296
+#: e:\web\limesurvey/admin/html.php:3293
 msgid "Show [<< Prev] button"
 msgstr "显示[<< 前一页]按纽 "
 
 #: e:\web\limesurvey/admin/html.php:2447
-#: e:\web\limesurvey/admin/html.php:3304
+#: e:\web\limesurvey/admin/html.php:3301
 msgid "Participants may print answers?"
 msgstr "参与者可打印答案项？"
 
 #: e:\web\limesurvey/admin/html.php:2459
-#: e:\web\limesurvey/admin/html.php:3312
+#: e:\web\limesurvey/admin/html.php:3309
 msgid "Public statistics?"
 msgstr "公开统计？"
 
 #: e:\web\limesurvey/admin/html.php:2471
-#: e:\web\limesurvey/admin/html.php:3320
+#: e:\web\limesurvey/admin/html.php:3317
 msgid "Show graphs in public statistics?"
 msgstr "在公开统计内显示统计图？"
 
 #: e:\web\limesurvey/admin/html.php:2483
-#: e:\web\limesurvey/admin/html.php:3329
+#: e:\web\limesurvey/admin/html.php:3326
 msgid "List survey publicly:"
 msgstr "公开列出调查："
 
 #: e:\web\limesurvey/admin/html.php:2496
-#: e:\web\limesurvey/admin/html.php:3347
+#: e:\web\limesurvey/admin/html.php:3344
 msgid "Automatically load URL when survey complete?"
 msgstr "调查完成后自动加载URL？"
 
 #: e:\web\limesurvey/admin/html.php:2513
-#: e:\web\limesurvey/admin/html.php:3370
+#: e:\web\limesurvey/admin/html.php:3367
 msgid "Publication & Access control"
 msgstr "发布和参与控制"
 
 #: e:\web\limesurvey/admin/html.php:2518
-#: e:\web\limesurvey/admin/html.php:3374
+#: e:\web\limesurvey/admin/html.php:3371
 msgid "Only users with tokens may enter the survey?"
 msgstr "仅持有操作代码的用户能进入调查？"
 
 #: e:\web\limesurvey/admin/html.php:2529
-#: e:\web\limesurvey/admin/html.php:3381
+#: e:\web\limesurvey/admin/html.php:3378
 msgid "Allow public registration?"
 msgstr "允许开放式注册？"
 
 #: e:\web\limesurvey/admin/html.php:2563
-#: e:\web\limesurvey/admin/html.php:3398
+#: e:\web\limesurvey/admin/html.php:3395
 msgid "Set cookie to prevent repeated participation?"
 msgstr "设置cookie以防止重复参与？"
 
 #: e:\web\limesurvey/admin/html.php:2576
-#: e:\web\limesurvey/admin/html.php:3410
+#: e:\web\limesurvey/admin/html.php:3407
 msgid "Use CAPTCHA for"
 msgstr "使用验证码"
 
@@ -4675,10 +4679,10 @@ msgstr "使用验证码"
 #: e:\web\limesurvey/admin/html.php:2584
 #: e:\web\limesurvey/admin/html.php:2588
 #: e:\web\limesurvey/admin/html.php:2597
-#: e:\web\limesurvey/admin/html.php:3412
+#: e:\web\limesurvey/admin/html.php:3409
+#: e:\web\limesurvey/admin/html.php:3410
+#: e:\web\limesurvey/admin/html.php:3411
 #: e:\web\limesurvey/admin/html.php:3413
-#: e:\web\limesurvey/admin/html.php:3414
-#: e:\web\limesurvey/admin/html.php:3416
 msgid "Survey Access"
 msgstr "调查权限"
 
@@ -4686,10 +4690,10 @@ msgstr "调查权限"
 #: e:\web\limesurvey/admin/html.php:2584
 #: e:\web\limesurvey/admin/html.php:2592
 #: e:\web\limesurvey/admin/html.php:2600
+#: e:\web\limesurvey/admin/html.php:3409
+#: e:\web\limesurvey/admin/html.php:3410
 #: e:\web\limesurvey/admin/html.php:3412
-#: e:\web\limesurvey/admin/html.php:3413
-#: e:\web\limesurvey/admin/html.php:3415
-#: e:\web\limesurvey/admin/html.php:3417
+#: e:\web\limesurvey/admin/html.php:3414
 msgid "Registration"
 msgstr "注册"
 
@@ -4697,15 +4701,15 @@ msgstr "注册"
 #: e:\web\limesurvey/admin/html.php:2588
 #: e:\web\limesurvey/admin/html.php:2592
 #: e:\web\limesurvey/admin/html.php:2603
+#: e:\web\limesurvey/admin/html.php:3409
+#: e:\web\limesurvey/admin/html.php:3411
 #: e:\web\limesurvey/admin/html.php:3412
-#: e:\web\limesurvey/admin/html.php:3414
 #: e:\web\limesurvey/admin/html.php:3415
-#: e:\web\limesurvey/admin/html.php:3418
 msgid "Save & Load"
 msgstr "保存和加载"
 
 #: e:\web\limesurvey/admin/html.php:2611
-#: e:\web\limesurvey/admin/html.php:3423
+#: e:\web\limesurvey/admin/html.php:3420
 msgid "Use HTML format for token emails?"
 msgstr "使用HTML格式的操作代码邮件？"
 
@@ -4714,17 +4718,17 @@ msgid "If you switch email mode, you'll have to review your email templates to f
 msgstr "如果你切换邮件模式，你必须查看邮件模版以使其适合新格式"
 
 #: e:\web\limesurvey/admin/html.php:2628
-#: e:\web\limesurvey/admin/html.php:3435
+#: e:\web\limesurvey/admin/html.php:3432
 msgid "Notification & Data Management"
 msgstr "通知和数据管理"
 
 #: e:\web\limesurvey/admin/html.php:2632
-#: e:\web\limesurvey/admin/html.php:3438
+#: e:\web\limesurvey/admin/html.php:3435
 msgid "Admin Notification:"
 msgstr "管理通知："
 
 #: e:\web\limesurvey/admin/html.php:2640
-#: e:\web\limesurvey/admin/html.php:3446
+#: e:\web\limesurvey/admin/html.php:3443
 msgid "Anonymous answers?"
 msgstr "匿名回答？"
 
@@ -4733,7 +4737,7 @@ msgid "You can't use Anonymous answers when Token-based answers persistence is e
 msgstr "当启用了基于操作代码的持续回答就不能使用匿名调查。"
 
 #: e:\web\limesurvey/admin/html.php:2653
-#: e:\web\limesurvey/admin/html.php:3454
+#: e:\web\limesurvey/admin/html.php:3451
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "如果您设定调查为匿名回答、并创建了操作代码表，Limesurvey将会用'Y'替代日期/时间、来标记已完成的操作代码，以确保参与者的匿名性。 "
 
@@ -4745,7 +4749,7 @@ msgid "Cannot be changed"
 msgstr "不可更改"
 
 #: e:\web\limesurvey/admin/html.php:2681
-#: e:\web\limesurvey/admin/html.php:3464
+#: e:\web\limesurvey/admin/html.php:3461
 msgid "Date Stamp?"
 msgstr "日期戳？"
 
@@ -4758,7 +4762,7 @@ msgid "Responses will be date stamped."
 msgstr "回答会被加上日期标记。"
 
 #: e:\web\limesurvey/admin/html.php:2705
-#: e:\web\limesurvey/admin/html.php:3471
+#: e:\web\limesurvey/admin/html.php:3468
 msgid "Save IP Address?"
 msgstr "保存IP地址？"
 
@@ -4771,7 +4775,7 @@ msgid "Responses will have the IP address logged"
 msgstr "回答者的IP地址会记入日志"
 
 #: e:\web\limesurvey/admin/html.php:2731
-#: e:\web\limesurvey/admin/html.php:3478
+#: e:\web\limesurvey/admin/html.php:3475
 msgid "Save Referring URL?"
 msgstr "保存来源网址？"
 
@@ -4784,7 +4788,7 @@ msgid "Responses will have their referring URL logged."
 msgstr "被访者来源网址将记入日志。"
 
 #: e:\web\limesurvey/admin/html.php:2757
-#: e:\web\limesurvey/admin/html.php:3485
+#: e:\web\limesurvey/admin/html.php:3482
 msgid "Enable token-based answers persistence?"
 msgstr "启用基于操作代码的持续回答？"
 
@@ -4793,7 +4797,7 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr "在进行匿名调查的情况下，该选项不能进行设置"
 
 #: e:\web\limesurvey/admin/html.php:2768
-#: e:\web\limesurvey/admin/html.php:3492
+#: e:\web\limesurvey/admin/html.php:3489
 msgid "Enable assessment mode?"
 msgstr "启用评价模式？"
 
@@ -4838,30 +4842,30 @@ msgid "Edit survey settings - Step 2 of 2"
 msgstr "编辑调查设置 - 第二步（共2步）"
 
 #: e:\web\limesurvey/admin/html.php:2886
-#: e:\web\limesurvey/admin/html.php:3227
-#: e:\web\limesurvey/admin/html.php:3229
+#: e:\web\limesurvey/admin/html.php:3224
+#: e:\web\limesurvey/admin/html.php:3226
 msgid "Welcome message:"
 msgstr "欢迎信息："
 
 #: e:\web\limesurvey/admin/html.php:2890
 #: e:\web\limesurvey/admin/html.php:2892
-#: e:\web\limesurvey/admin/html.php:3231
-#: e:\web\limesurvey/admin/html.php:3233
+#: e:\web\limesurvey/admin/html.php:3228
+#: e:\web\limesurvey/admin/html.php:3230
 msgid "End message:"
 msgstr "结束信息："
 
 #: e:\web\limesurvey/admin/html.php:2894
-#: e:\web\limesurvey/admin/html.php:3339
+#: e:\web\limesurvey/admin/html.php:3336
 msgid "End URL:"
 msgstr "结束URL："
 
 #: e:\web\limesurvey/admin/html.php:2897
-#: e:\web\limesurvey/admin/html.php:3343
+#: e:\web\limesurvey/admin/html.php:3340
 msgid "URL description:"
 msgstr "URL 描述:"
 
 #: e:\web\limesurvey/admin/html.php:2900
-#: e:\web\limesurvey/admin/html.php:3354
+#: e:\web\limesurvey/admin/html.php:3351
 msgid "Date format:"
 msgstr "日期格式："
 
@@ -4894,46 +4898,50 @@ msgstr "请等待.."
 msgid "At beginning"
 msgstr "开始"
 
-#: e:\web\limesurvey/admin/html.php:3182
-msgid "Error: You have to enter a title for this survey."
-msgstr "错误：您必须为这个调查输入一个标题。"
-
-#: e:\web\limesurvey/admin/html.php:3186
+#: e:\web\limesurvey/admin/html.php:3185
 msgid "Create or Import Survey"
 msgstr "创建或导入调查 "
 
-#: e:\web\limesurvey/admin/html.php:3217
+#: e:\web\limesurvey/admin/html.php:3189
+#: e:\web\limesurvey/admin/html.php:3243
+#: e:\web\limesurvey/admin/html.php:3363
+#: e:\web\limesurvey/admin/html.php:3428
+#: e:\web\limesurvey/admin/html.php:3501
+msgid "Error: You have to enter a title for this survey."
+msgstr "错误：您必须为这个调查输入一个标题。"
+
+#: e:\web\limesurvey/admin/html.php:3214
 msgid "This setting cannot be changed later!"
 msgstr "本设定以后不能更改！"
 
-#: e:\web\limesurvey/admin/html.php:3222
+#: e:\web\limesurvey/admin/html.php:3219
 msgid "(This field is mandatory.)"
 msgstr "（这个字段必须回答。）"
 
-#: e:\web\limesurvey/admin/html.php:3246
-#: e:\web\limesurvey/admin/html.php:3366
-#: e:\web\limesurvey/admin/html.php:3431
-#: e:\web\limesurvey/admin/html.php:3508
+#: e:\web\limesurvey/admin/html.php:3243
+#: e:\web\limesurvey/admin/html.php:3363
+#: e:\web\limesurvey/admin/html.php:3428
+#: e:\web\limesurvey/admin/html.php:3501
 msgid "Create Survey"
 msgstr "创建调查"
 
-#: e:\web\limesurvey/admin/html.php:3390
-#: e:\web\limesurvey/admin/html.php:3395
+#: e:\web\limesurvey/admin/html.php:3387
+#: e:\web\limesurvey/admin/html.php:3392
 #, php-format
 msgid "Date format: %s"
 msgstr "日期格式：%s"
 
-#: e:\web\limesurvey/admin/html.php:3512
-#: e:\web\limesurvey/admin/html.php:3523
+#: e:\web\limesurvey/admin/html.php:3506
+#: e:\web\limesurvey/admin/html.php:3517
 #: e:\web\limesurvey/admin/http_importsurvey.php:25
 msgid "Import Survey"
 msgstr "导入调查"
 
-#: e:\web\limesurvey/admin/html.php:3519
+#: e:\web\limesurvey/admin/html.php:3513
 msgid "Select CSV/SQL File:"
 msgstr "选择 csv/sql 文件："
 
-#: e:\web\limesurvey/admin/html.php:3521
+#: e:\web\limesurvey/admin/html.php:3515
 msgid "Convert resources links and INSERTANS fields?"
 msgstr "转换资源链接和INSERTANS字段吗？"
 
@@ -5066,14 +5074,14 @@ msgstr "标签集导入摘要"
 
 #: e:\web\limesurvey/admin/importlabel.php:206
 #: e:\web\limesurvey/admin/importquestion.php:510
-#: e:\web\limesurvey/admin/importsurvey.php:1303
-#: e:\web\limesurvey/admin/importsurvey.php:1332
+#: e:\web\limesurvey/admin/importsurvey.php:1383
+#: e:\web\limesurvey/admin/importsurvey.php:1412
 msgid "Label Sets"
 msgstr "标签集"
 
 #: e:\web\limesurvey/admin/importlabel.php:208
-#: e:\web\limesurvey/admin/importsurvey.php:1297
-#: e:\web\limesurvey/admin/importsurvey.php:1326
+#: e:\web\limesurvey/admin/importsurvey.php:1377
+#: e:\web\limesurvey/admin/importsurvey.php:1406
 #: e:\web\limesurvey/admin/labels.php:155
 msgid "Languages"
 msgstr "语言"
@@ -5112,7 +5120,7 @@ msgid "Warning: You can import all old responses with the same amount of columns
 msgstr "警告：您可导入和当前启用调查具有同样数量列的旧有回答。您应当确认，这些回答可对应您已启用调查内的问题。"
 
 #: e:\web\limesurvey/admin/importquestion.php:24
-#: e:\web\limesurvey/admin/questionhandling.php:585
+#: e:\web\limesurvey/admin/questionhandling.php:587
 msgid "Import Question"
 msgstr "导入问题"
 
@@ -5141,8 +5149,8 @@ msgid "Question Import Summary"
 msgstr "问题导入摘要"
 
 #: e:\web\limesurvey/admin/importquestion.php:515
-#: e:\web\limesurvey/admin/questionhandling.php:499
-#: e:\web\limesurvey/admin/questionhandling.php:526
+#: e:\web\limesurvey/admin/questionhandling.php:501
+#: e:\web\limesurvey/admin/questionhandling.php:528
 msgid "Question Attributes:"
 msgstr "问题属性："
 
@@ -5159,74 +5167,87 @@ msgstr "转至问题"
 msgid "This file is not a LimeSurvey survey file. Import failed."
 msgstr "该文件不是LimeSurvey的调查文件。导入失败。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:372
-#: e:\web\limesurvey/admin/importsurvey.php:381
-#: e:\web\limesurvey/admin/importsurvey.php:548
-#: e:\web\limesurvey/admin/importsurvey.php:567
-#: e:\web\limesurvey/admin/importsurvey.php:597
+#: e:\web\limesurvey/admin/importsurvey.php:400
+#: e:\web\limesurvey/admin/importsurvey.php:409
+#: e:\web\limesurvey/admin/importsurvey.php:577
+#: e:\web\limesurvey/admin/importsurvey.php:596
+#: e:\web\limesurvey/admin/importsurvey.php:626
 msgid "Import of this survey file failed"
 msgstr "调查文件导入失败"
 
-#: e:\web\limesurvey/admin/importsurvey.php:373
-#: e:\web\limesurvey/admin/importsurvey.php:381
+#: e:\web\limesurvey/admin/importsurvey.php:401
+#: e:\web\limesurvey/admin/importsurvey.php:409
 msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "文件内不包含正确格式的LimeSurvey的数据。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:768
+#: e:\web\limesurvey/admin/importsurvey.php:797
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
 msgstr "CSV/SQL文件内组不是来自同一调查。调查导入终止。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:833
+#: e:\web\limesurvey/admin/importsurvey.php:862
 #, php-format
 msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "问题\"%s-%s\"未被导入，因为问题的类型未知。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:839
+#: e:\web\limesurvey/admin/importsurvey.php:868
 #, php-format
 msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "问题 \"%s - %s\"导入成功，但是类型按照相似度被设置为 '%s'。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1274
-#: e:\web\limesurvey/admin/importsurvey.php:1275
+#: e:\web\limesurvey/admin/importsurvey.php:1269
+#: e:\web\limesurvey/admin/quota.php:895
+msgid "Sorry your responses have exceeded a quota on this survey."
+msgstr "抱歉，你的回答已经超出了我们的配额。"
+
+#: e:\web\limesurvey/admin/importsurvey.php:1354
+#: e:\web\limesurvey/admin/importsurvey.php:1355
 #, php-format
 msgid "Condition for %d skipped (%d does not exist)"
 msgstr " %d的条件已跳过 (%d不存在)"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1293
-#: e:\web\limesurvey/admin/importsurvey.php:1322
+#: e:\web\limesurvey/admin/importsurvey.php:1373
+#: e:\web\limesurvey/admin/importsurvey.php:1402
 msgid "Survey Import Summary"
 msgstr "调查导入摘要"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1306
-#: e:\web\limesurvey/admin/importsurvey.php:1333
+#: e:\web\limesurvey/admin/importsurvey.php:1386
+#: e:\web\limesurvey/admin/importsurvey.php:1413
 msgid "Not imported Label Sets"
 msgstr "未导入的标签集"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1306
-#: e:\web\limesurvey/admin/importsurvey.php:1333
+#: e:\web\limesurvey/admin/importsurvey.php:1386
+#: e:\web\limesurvey/admin/importsurvey.php:1413
 msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "（标签设置不会被导入，因为你没有权限创建新的标签集。）"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1308
-#: e:\web\limesurvey/admin/importsurvey.php:1334
+#: e:\web\limesurvey/admin/importsurvey.php:1388
+#: e:\web\limesurvey/admin/importsurvey.php:1414
 msgid "Question Attributes"
 msgstr "问题属性"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1310
+#: e:\web\limesurvey/admin/importsurvey.php:1390
 msgid "Quotas"
 msgstr "配额"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1312
-#: e:\web\limesurvey/admin/importsurvey.php:1337
+#: e:\web\limesurvey/admin/importsurvey.php:1390
+msgid "quota members"
+msgstr "配额成员"
+
+#: e:\web\limesurvey/admin/importsurvey.php:1390
+msgid "quota language settings"
+msgstr "配额语言设定"
+
+#: e:\web\limesurvey/admin/importsurvey.php:1392
+#: e:\web\limesurvey/admin/importsurvey.php:1417
 msgid "Import of Survey is completed."
 msgstr "调查导入已完成。"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1313
+#: e:\web\limesurvey/admin/importsurvey.php:1393
 msgid "Go to survey"
 msgstr "进行调查"
 
-#: e:\web\limesurvey/admin/importsurvey.php:1314
-#: e:\web\limesurvey/admin/importsurvey.php:1338
+#: e:\web\limesurvey/admin/importsurvey.php:1394
+#: e:\web\limesurvey/admin/importsurvey.php:1418
 msgid "Warnings"
 msgstr "警告"
 
@@ -5649,68 +5670,68 @@ msgid "Error: You are trying to use duplicate label codes."
 msgstr "错误：使用了重复的标签编码。"
 
 #: e:\web\limesurvey/admin/labels.php:383
-#: e:\web\limesurvey/admin/labels.php:421
+#: e:\web\limesurvey/admin/labels.php:422
 msgid "Label:"
 msgstr "标签："
 
-#: e:\web\limesurvey/admin/labels.php:413
+#: e:\web\limesurvey/admin/labels.php:414
 msgid "New label"
 msgstr "新标签"
 
-#: e:\web\limesurvey/admin/labels.php:424
-#: e:\web\limesurvey/admin/labels.php:693
+#: e:\web\limesurvey/admin/labels.php:425
+#: e:\web\limesurvey/admin/labels.php:695
 msgid "Add new label"
 msgstr "添加新的标签"
 
-#: e:\web\limesurvey/admin/labels.php:450
+#: e:\web\limesurvey/admin/labels.php:451
 msgid "Note: Inserting new labels must be done on the first language tab."
 msgstr "注意：插入新标签必须在首个语言标签内完成。"
 
-#: e:\web\limesurvey/admin/labels.php:459
+#: e:\web\limesurvey/admin/labels.php:460
 msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
 msgstr "您不能在这个标签集中更改编号，增加或者删除条目，因为该标签集正被一个启用的调查使用。"
 
-#: e:\web\limesurvey/admin/labels.php:519
+#: e:\web\limesurvey/admin/labels.php:521
 msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
 msgstr "目前有问卷在使用这套标签集。在这套标签集中修改编号，增加或者删除条目可能产生无法预料的后果。"
 
-#: e:\web\limesurvey/admin/labels.php:590
+#: e:\web\limesurvey/admin/labels.php:592
 msgid "Failed to Copy already defined labels to added languages"
 msgstr "复制已经定义的标签到新加的语言包失败"
 
-#: e:\web\limesurvey/admin/labels.php:608
+#: e:\web\limesurvey/admin/labels.php:610
 msgid "Failed to delete labels for removed languages"
 msgstr "删除和已经移除的语言相关的标签失败"
 
-#: e:\web\limesurvey/admin/labels.php:616
+#: e:\web\limesurvey/admin/labels.php:618
 msgid "Update of Label Set failed"
 msgstr "更新标签集失败"
 
-#: e:\web\limesurvey/admin/labels.php:632
+#: e:\web\limesurvey/admin/labels.php:634
 msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
 msgstr "无法删除标签集-有问题使用到它。你必须先删除这些问题。"
 
-#: e:\web\limesurvey/admin/labels.php:668
+#: e:\web\limesurvey/admin/labels.php:670
 msgid "Insert of Label Set failed"
 msgstr "标签集插入失败"
 
-#: e:\web\limesurvey/admin/labels.php:728
+#: e:\web\limesurvey/admin/labels.php:731
 msgid "Failed to insert label"
 msgstr "插入标签失败"
 
-#: e:\web\limesurvey/admin/labels.php:735
+#: e:\web\limesurvey/admin/labels.php:738
 msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
 msgstr "在这个标签集中这个标签编码已经被使用。请选其他编码或者重新命名已经存在的编码。"
 
-#: e:\web\limesurvey/admin/labels.php:792
+#: e:\web\limesurvey/admin/labels.php:795
 msgid "Failed to update label"
 msgstr "更新标签失败"
 
-#: e:\web\limesurvey/admin/labels.php:805
+#: e:\web\limesurvey/admin/labels.php:808
 msgid "Can't update labels because you are using duplicated codes"
 msgstr "不能更新标签，因为您使用了重复的编码"
 
-#: e:\web\limesurvey/admin/labels.php:839
+#: e:\web\limesurvey/admin/labels.php:842
 msgid "Failed to delete label"
 msgstr "删除标签失败"
 
@@ -5953,6 +5974,10 @@ msgstr "编辑问题"
 msgid "Add a new question"
 msgstr "添加新问题"
 
+#: e:\web\limesurvey/admin/questionhandling.php:233
+msgid "Error: You have to enter a question code."
+msgstr "错误：您必须为这个问题输入一个编码。"
+
 #: e:\web\limesurvey/admin/questionhandling.php:327
 msgid "Question Type:"
 msgstr "问题类型："
@@ -5971,35 +5996,35 @@ msgstr "位置"
 msgid "At end"
 msgstr "最后"
 
-#: e:\web\limesurvey/admin/questionhandling.php:505
+#: e:\web\limesurvey/admin/questionhandling.php:507
 msgid "Add question"
 msgstr "添加问题"
 
-#: e:\web\limesurvey/admin/questionhandling.php:510
+#: e:\web\limesurvey/admin/questionhandling.php:512
 msgid "Update Question"
 msgstr "更新问题"
 
-#: e:\web\limesurvey/admin/questionhandling.php:575
+#: e:\web\limesurvey/admin/questionhandling.php:577
 msgid "...or import a question"
 msgstr "...或导入问题"
 
-#: e:\web\limesurvey/admin/questionhandling.php:580
+#: e:\web\limesurvey/admin/questionhandling.php:582
 msgid "Select CSV File"
 msgstr "选择CSV文件"
 
-#: e:\web\limesurvey/admin/questionhandling.php:686
+#: e:\web\limesurvey/admin/questionhandling.php:688
 msgid "Current group is using conditional questions"
 msgstr "当前组正使用有条件的问题"
 
-#: e:\web\limesurvey/admin/questionhandling.php:686
+#: e:\web\limesurvey/admin/questionhandling.php:688
 msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "重新排序这个组内的问题要确保条件基于的问题不能排到有条件的问题的后面"
 
-#: e:\web\limesurvey/admin/questionhandling.php:686
+#: e:\web\limesurvey/admin/questionhandling.php:688
 msgid "See the conditions marked on the following questions"
 msgstr "查看下面问题上标记的条件"
 
-#: e:\web\limesurvey/admin/questionhandling.php:787
+#: e:\web\limesurvey/admin/questionhandling.php:789
 msgid "View Question"
 msgstr "查看问题"
 
@@ -6144,10 +6169,6 @@ msgstr "选择答案项"
 msgid "New Quota"
 msgstr "新建配额"
 
-#: e:\web\limesurvey/admin/quota.php:895
-msgid "Sorry your responses have exceeded a quota on this survey."
-msgstr "抱歉，你的回答已经超出了我们的配额。"
-
 #: e:\web\limesurvey/admin/resetsurveylogic.php:42
 msgid "You are about to delete all conditions on this survey's questions"
 msgstr "您要删除这个调查的所有条件？"
@@ -6205,60 +6226,60 @@ msgid "Number less than"
 msgstr "数字小于"
 
 #: e:\web\limesurvey/admin/statistics.php:295
-#: e:\web\limesurvey/admin/statistics.php:688
+#: e:\web\limesurvey/admin/statistics.php:687
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "日期(YYYY-MM-DD)等于"
 
 #: e:\web\limesurvey/admin/statistics.php:299
-#: e:\web\limesurvey/admin/statistics.php:694
+#: e:\web\limesurvey/admin/statistics.php:693
 msgid "OR between"
 msgstr "或介于"
 
 #: e:\web\limesurvey/admin/statistics.php:564
 #: e:\web\limesurvey/admin/statistics.php:594
 #: e:\web\limesurvey/admin/statistics.php:617
-#: e:\web\limesurvey/admin/statistics.php:1025
+#: e:\web\limesurvey/admin/statistics.php:1024
 msgid "Responses containing"
 msgstr "回答包含"
 
-#: e:\web\limesurvey/admin/statistics.php:1908
+#: e:\web\limesurvey/admin/statistics.php:1907
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "您未安装GD链接库。显示统计图需要该链接库以便正常运作。"
 
-#: e:\web\limesurvey/admin/statistics.php:1909
-#: e:\web\limesurvey/admin/statistics.php:1913
+#: e:\web\limesurvey/admin/statistics.php:1908
+#: e:\web\limesurvey/admin/statistics.php:1912
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "更多信息请访问http://us2.php.net/manual/en/ref.image.php"
 
-#: e:\web\limesurvey/admin/statistics.php:1912
+#: e:\web\limesurvey/admin/statistics.php:1911
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr "您未安装Freetype链接库。显示统计图需要该链接库以便正常运作。"
 
-#: e:\web\limesurvey/admin/statistics.php:1923
+#: e:\web\limesurvey/admin/statistics.php:1922
 msgid "View summary of all available fields"
 msgstr "查看所有可用的字段的概要"
 
-#: e:\web\limesurvey/admin/statistics.php:1926
+#: e:\web\limesurvey/admin/statistics.php:1925
 msgid "Show graphs"
 msgstr "显示统计图"
 
-#: e:\web\limesurvey/admin/statistics.php:1932
+#: e:\web\limesurvey/admin/statistics.php:1931
 msgid "Include:"
 msgstr "包括："
 
-#: e:\web\limesurvey/admin/statistics.php:1933
+#: e:\web\limesurvey/admin/statistics.php:1932
 msgid "All records"
 msgstr "所有记录"
 
-#: e:\web\limesurvey/admin/statistics.php:1934
+#: e:\web\limesurvey/admin/statistics.php:1933
 msgid "Completed records only"
 msgstr "仅已完成记录"
 
-#: e:\web\limesurvey/admin/statistics.php:1935
+#: e:\web\limesurvey/admin/statistics.php:1934
 msgid "Incomplete records only"
 msgstr "仅未完成记录"
 
-#: e:\web\limesurvey/admin/statistics.php:1956
+#: e:\web\limesurvey/admin/statistics.php:1946
 msgid "Don't consider NON completed responses"
 msgstr "不要考虑未完成回答"
 
@@ -6287,8 +6308,9 @@ msgid "Percentage of total:"
 msgstr "总计百分比："
 
 #: e:\web\limesurvey/admin/statistics.php:2254
-#: e:\web\limesurvey/admin/statistics.php:3489
+#: e:\web\limesurvey/admin/statistics.php:3491
 #: e:\web\limesurvey/admin/statistics.php:3505
+#: e:\web\limesurvey/admin/statistics.php:3515
 msgid "Browse"
 msgstr "浏览"
 
@@ -8169,6 +8191,8 @@ msgstr "泰语"
 msgid "Vietnamese"
 msgstr "越南语"
 
+#~ msgid "This group has no answer."
+#~ msgstr "该组没有答案项。"
 #~ msgid "Attribute 1"
 #~ msgstr "属性1"
 #~ msgid "Attribute 2"
@@ -8299,8 +8323,6 @@ msgstr "越南语"
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr "不能添加答案项。您必须在必填字段(%s)中插入编号"
-#~ msgid "Error: You have to enter a code for this question."
-#~ msgstr "错误：您必须为这个问题输入一个编码。"
 #~ msgid "Group:"
 #~ msgstr "问题组："
 #~ msgid "Record ID"
