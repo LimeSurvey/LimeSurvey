@@ -77,12 +77,31 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.85+ (build 7454) to 1.85+ (build 7489) [19-08-2009] - Legend: + new feature, # update feature, - bug fix
+Changes from 1.85+ (build 7454) to 1.85+ (build 7523) [24-08-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: Croatian (idobraca)
 #Updated translation: French (b00z00)
+#Updated Language: French. (b00z00)
+#Updated language: Greek (el). By Yiannos Katsirintakis. (kadejo)
+#Updated language: Spanish (es) (kadejo)
+#Updated language: Chinese Simplified (yooyooh)
+#Updated translation: Sinhalese kindly provided by Chinthaka Jayasundara, Kasun Wickramasuriya and Sachini Shakila (c_schmitz)
+#Updated translation: Swedish (maxz)
 -Fixed issue #3573: xhtml does not validate because of missing space in qanda.php (el-matador-69)
 -Fixed issue #3574: Apostrophe (single quote) in free text crashes the survey when magic quotes are off (c_schmitz)
 -Fixed issue #3584: MS SQL Error when trying to export results to application (c_schmitz)
+-Fixed issue #3487: NULL database values for start/expiry dates are not exported correctly (c_schmitz)
+-Fixed issue #3590: Quota cannot be imported or exported (jcleeland)
+-Fixed issue #3389: Respondents can re-start survey (using tokens) after terminating via quota conditions (c_schmitz)
+-Fixed issue #3460: Apostrophes in additional attributes of token table errors on edit (c_schmitz)
+-Fixed issue #3472: Import of JavaScript with "\n" in strings converts "\n" to real newlines (c_schmitz)
+-Fixed issue #3550: Multiple options with comments missing browse buttons in statistics (c_schmitz)
+-Fixed issue #3568: Files with hyphens in their name cannot be deleted (c_schmitz)
+-Fixed issue #3580: Start/end date prevent the preview of a survey even if it is not active yet (c_schmitz)
+-Fixed issue (unreported) where deleting survey did not delete related quota information. (jcleeland)
+-Fixed issue (unreported) when importing a really old PHPSurvey survey (c_schmitz)
+-Fixed issue (unreported) html warning "unresolved </strong>" in viewanswers. Removed offending item. (jcleeland)
+
+
 
 Changes from 1.85+ (build 7393) to 1.85+ (build 7454) [12-08-2009] - Legend: + new feature, # update feature, - bug fix
 +New feature (minor) Added id to registration form "Continue" button to allow for DOM access (jcleeland)
