@@ -134,6 +134,31 @@ if (isset($postedfieldnames))
                 }
 		}
 	}
+    else
+    {
+        // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
+        $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+        $inserts=array_unique($_SESSION['insertarray']);            
+        foreach ($inserts as $value)
+        {
+            //Work out if the field actually exists in this survey
+            $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
+            //Iterate through possible responses
+            if (isset($_SESSION[$value]) && !empty($fieldexists))
+            {
+
+                    if ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    {
+                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
+                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                    }
+            }
+        }
+
+        
+    }
 }
 
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION

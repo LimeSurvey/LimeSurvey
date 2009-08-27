@@ -14,9 +14,10 @@ $(document).ready(function(){
                           duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
-    $('.year').change(dateUpdater);
     $('.month').change(dateUpdater);
     $('.day').change(dateUpdater)
+    $('.year').change(dateUpdater);
+    $('.year').change();
 });
 
 
@@ -48,6 +49,7 @@ function dateUpdater() {
          $('#qattribute_answer'+thisid).val('');
     }
 }
+
 
 function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format 
     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 
