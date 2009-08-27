@@ -378,7 +378,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			//Q - Multiple Short Text
 			elseif (($firstletter == "T" || $firstletter == "Q" ) && $_POST[$pv] != "")
 			{
-				$selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '%".$_POST[$pv]."%'";
+				$selects[]=db_quote_id(substr($pv, 1, strlen($pv)))." like '".$_POST[$pv]."'"; // Deleted the percentage. Makes no sense to me and causes trouble with T and Q questions.
 			}
 				
 			//D - Date
