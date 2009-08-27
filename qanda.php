@@ -1086,7 +1086,7 @@ function do_date($ia)
                     }        
         }
 
-		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'"maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+ 		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="checkconditions(this.value, this.name, this.type)" />
 			</p>';
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
@@ -1109,7 +1109,7 @@ function do_date($ia)
             {
                 $dateoutput='';  
             }
-
+            
 
             if (isset($qidattributes['dropdown_dates_year_min'])){ 
                 $minyear=$qidattributes['dropdown_dates_year_min'];
@@ -1128,7 +1128,7 @@ function do_date($ia)
             }
             
             $answer ="<p class=\"question\">
-				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\"maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
+				        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
                         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -1399,7 +1399,7 @@ function do_list_dropdown($ia)
 //		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onchange='checkconditions(this.value, this.name, this.type);'";
+		$answer .= "  alt='".$clang->gT('Other answer')."' onchange='checkconditions(this.value, this.name, this.type);'";
 		$thisfieldname="$ia[1]other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		$answer .= ' />';
@@ -1543,7 +1543,7 @@ function do_list_flexible_dropdown($ia)
 ';
 	}
 
-	$answer .= '				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+	$answer .= '				<input type="hidden" alt=\"'.$clang->gT('Other text').'\" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
 	if (isset($other) && $other=="Y")
 	{
@@ -1578,7 +1578,7 @@ function do_list_flexible_dropdown($ia)
 		."\t}\n"
 		."//--></script>\n".$answer;
 
-		$answer .= '				<input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+		$answer .= '				<input type="text" id="othertext'.$ia[1].'" alt="'.$clang->gT('Other text').'" name="'.$ia[1].'other" style="display:';
 		if ($_SESSION[$ia[1]] != '-oth-')
 		{
 			$answer .= ' none';
@@ -2718,7 +2718,7 @@ function do_multiplechoice($ia)
 		}
 
 		$answer .= $wrapper['item-start'].'
-		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
+		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
 		{
@@ -3380,7 +3380,7 @@ function do_multiplenumeric($ia)
 	{
 		$slider_layout=true;
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
-        
+
 
 		$slider_accuracy=arraySearchByKey('slider_accuracy', $qidattributes, 'attribute', 1);
 		if (isset($slider_accuracy['value']))
@@ -3727,7 +3727,7 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='checkconditions(this.value, this.name, this.type)'"
+	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='checkconditions(this.value, this.name, this.type)'"
 	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n"
 	. "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
 	// --> END NEW FEATURE - SAVE
@@ -3779,7 +3779,7 @@ function do_shortfreetext($ia)
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"answertext\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-	."\"maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
+	."\" maxlength=\"$maxsize\" alt=\"".$clang->gT('Answer')."\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" />\n\t$suffix\n</p>\n";
 	// --> END NEW FEATURE - SAVE
 
 	$inputnames[]=$ia[1];
@@ -3838,7 +3838,7 @@ function do_longfreetext($ia)
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
 	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
@@ -3903,7 +3903,7 @@ function do_hugefreetext($ia)
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
 	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
