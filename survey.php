@@ -679,8 +679,11 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+                $appendj .= "\t\t$('#$dtbody').val('off');\n";
+                // This line resets the text fields in the hidden row
+                $appendj .= "\t\t$('#$tbody input').val('');\n";
+                // This line resets any radio group in the hidden row
+                $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}

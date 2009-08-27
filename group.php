@@ -410,11 +410,8 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 echo "
     function radio_unselect(radioObj)
   	{   
-  		var radioLength = radioObj.length;
-  		for(var i = 0; i < radioLength; i++)
-  		{
-  			radioObj[i].checked = false;
-  		}
+  		$(radioObj).('option').checked(false);
+        $(radioObj).('input').text('');
   	}\n";    
 }
 
@@ -874,13 +871,16 @@ if (isset($array_filterqs) && is_array($array_filterqs))
                 $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+                $appendj .= "\t\t$('#$dtbody').val('on');\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "\t\t$('#$dtbody').val('off');\n";
+                // This line resets the text fields in the hidden row
+                $appendj .= "\t\t$('#$tbody input').val('');\n";
+                // This line resets any radio group in the hidden row
+				$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}
