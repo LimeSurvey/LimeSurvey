@@ -3743,6 +3743,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
+	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
@@ -3792,7 +3793,8 @@ function do_shortfreetext($ia)
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
-	$qidattributes=getQuestionAttributes($ia[0]);
+	global $clang;
+   	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
 		$maxsize=$maxchars['value'];

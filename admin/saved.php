@@ -71,7 +71,7 @@ $savedsurveyoutput .= "</td></tr></table><br />&nbsp;\n";
 
 function showSavedList($surveyid)
 {
-	global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $surveytable;
+	global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $surveytable, $surrows;
 	$query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
 	."FROM {$dbprefix}saved_control\n"
 	."WHERE sid=$surveyid\n"
@@ -95,12 +95,23 @@ function showSavedList($surveyid)
 				<td>".$row['ip']."</td>
 				<td>".$row['saved_date']."</td>
 				<td><a href='mailto:".$row['email']."'>".$row['email']."</td>
-				<td align='center'>
-				[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."&amp;srid=".$row['srid']."'"
-			." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")'"
-			.">".$clang->gT("Delete")."</a>]
-				[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("Edit")."</a>]
-				</td>
+				<td align='center'>";
+
+                if (($surrows['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+                {
+                    
+                    $savedsurveyoutput .=  "[<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid=".$row['scid']."&amp;srid=".$row['srid']."'"
+                                            ." onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")'"
+                                            .">".$clang->gT("Delete")."</a>]";
+                    $savedsurveyoutput .=  "[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("Edit")."</a>]";
+                }   
+                else
+                {
+                    $savedsurveyoutput .=  "[<a href='".$scriptname."?action=dataentry&amp;subaction=edit&amp;id=".$row['srid']."&amp;sid={$surveyid}&amp;surveytable={$surveytable}'>".$clang->gT("View")."</a>]";
+                    
+                }
+				
+				$savedsurveyoutput .="</td>
 			   </tr>\n";
 		} // while
 		$savedsurveyoutput .= "</table><br />&nbsp\n";

@@ -695,11 +695,7 @@ if ($surveyid)
 		}
 		else
 		{
-            $surveysummary .= "<a href=\"#\""
-            . "onmouseout=\"hideTooltip()\" "
-            . "title=\"".$clang->gTview("Disabled - Change Group Order")."\" "
-            . "onmouseover=\"showTooltip(event,'".$clang->gT("Change Group Order", "js")." (".$clang->gT("disabled", "js").")"."');return false\">"
-            . "<img src='$imagefiles/reorder_disabled.png' title='' alt='".$clang->gT("Change Group Order")." (".$clang->gT("disabled").")"."' name='ordergroups' /></a>";
+            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />";
 		}
 
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
