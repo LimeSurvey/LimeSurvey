@@ -3169,7 +3169,7 @@ function buildLabelSetCheckSumArray()
 
 
 /**
-* Obsolete - please use getQAttributes instead
+* Don't use this funtion directly - please use getQAttributes instead
 * 
 * @param string $qid
 */
@@ -3191,7 +3191,7 @@ function getQuestionAttributes($qid)
 
 /**
  * 
- * returns a flat array with all question attributes for the question only (and the qid we gave it)!
+ * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
  * @author: wahrendorff
  * @param $qid
  * @return array{attribute=>value , attribute=>value}
@@ -3227,7 +3227,7 @@ function questionAttributes($returnByName=false)
 	// help - a short explanation
 
     $qattributes["alphasort"]=array(
-    "types"=>"!LOWZ",
+    "types"=>"!LOWZ",                                   
     "help"=>$clang->gT("Sort answers alphabetically"),
     "caption"=>$clang->gT('Sort answers alphabetically'));
     
@@ -3237,7 +3237,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"ABCEF:;R",
+    "types"=>"ABCEFR:;",
     "help"=>$clang->gT("Filter an array's answers from a Multiple Options Question"),
     "caption"=>$clang->gT('Array filter'));
     
@@ -3252,7 +3252,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Code filter'));
 
 	$qattributes["display_columns"]=array(
-	"types"=>"LMZG",
+	"types"=>"GLMZ",
 	"help"=>$clang->gT('Number of columns to display'),
     "caption"=>$clang->gT('Display columns'));
     
@@ -3262,7 +3262,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display rows'));
     
 	$qattributes["hide_tip"]=array(
-	"types"=>"!LMOPRWZK",
+	"types"=>"!KLMOPRWZ",
 	"help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
   
@@ -3304,12 +3304,12 @@ function questionAttributes($returnByName=false)
 
 
     $qattributes["random_order"]=array(
-    "types"=>"!LMOPQKRWZFHABCE1:;",
+    "types"=>"!ABCEFHKLMOPQRWZ1:;",
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
     
     $qattributes["text_input_width"]=array(
-    "types"=>"NSTUK;Q",
+    "types"=>"KNSTUQ;",
     "help"=>$clang->gT('Width of text input box'),
     "caption"=>$clang->gT('Input box width'));
     
@@ -3349,12 +3349,12 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Slider initial value'));
 
 	$qattributes["prefix"]=array(
-	"types"=>"KNSQ",
+	"types"=>"KNQS",
 	"help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
     
 	$qattributes["suffix"]=array(
-	"types"=>"KNSQ",
+	"types"=>"KNQS",
 	"help"=>$clang->gT('Add a suffix to the answer field'),
     "caption"=>$clang->gT('Answer suffix'));
 	
@@ -3454,7 +3454,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Insert page break in printable view'));
     
     $qattributes["scale_export"]=array(
-    "types"=>"!LOFWZWH1:MPOGYCE",
+    "types"=>"CEFGHLMOPWYZ1!:",
     "help"=>$clang->gT("1=nominal 2=ordinal 3=scale."),
     "caption"=>$clang->gT('Export scale type 1=nominal 2=ordinal 3=scale.'));
 	//This builds a more useful array (don't modify)
