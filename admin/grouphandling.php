@@ -27,7 +27,7 @@ if ($action == "addgroup")
     $newgroupoutput = PrepareEditorScript();
     $newgroupoutput .= ""
                ."<table width='100%' border='0' class='tab-page'><tr>\n"
-               ."\t<td colspan='2' class='settingcaption'>\n\t\t<strong>".$clang->gT("Add Group")."</strong></td>"
+               ."\t<td colspan='2' class='settingcaption'>\n<strong>".$clang->gT("Add Group")."</strong></td>"
                ."</tr></table>\n";
 
 
@@ -41,10 +41,10 @@ if ($action == "addgroup")
         if ($grouplang==$baselang) {$newgroupoutput .= '('.$clang->gT("Base Language").')';}
         $newgroupoutput .= "</h2>"
         . "<table width='100%' border='0' class='form2columns'>"
-        . "\t\t<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
-        . "\t\t<td><input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
+        . "<tr><td align='right'><strong>".$clang->gT("Title").":</strong></td>\n"
+        . "<td><input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
         . "\t<tr><td align='right'><strong>".$clang->gT("Description:")."</strong></td>\n"
-        . "\t\t<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea>"
+        . "<td><textarea cols='80' rows='8' name='description_$grouplang'></textarea>"
 	. getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 	."</td></tr>\n"
         . "</table>";
@@ -66,12 +66,12 @@ if ($action == "addgroup")
     $newgroupoutput.= ""
     . "<form enctype='multipart/form-data' name='importgroup' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
     . "<table width='100%' border='0' class='form2columns'>\n"
-    . "\t\t<tr>"
+    . "<tr>"
     . "\t\n"
-    . "\t\t<td><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
-    . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
-    . "\t\t<tr>\t\t<td>".$clang->gT("Convert resources links?")."</td>\n"
-    . "\t\t<td><input name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></td></tr>\n"
+    . "<td><strong>".$clang->gT("Select CSV File:")."</strong></td>\n"
+    . "<td><input name=\"the_file\" type=\"file\" size=\"35\" /></td></tr>\n"
+    . "<tr><td>".$clang->gT("Convert resources links?")."</td>\n"
+    . "<td><input name=\"translinksfields\" type=\"checkbox\" checked=\"checked\"/></td></tr>\n"
     . "\t<tr><td colspan='2'class='centered'><input type='submit' value='".$clang->gT("Import Group")."' />\n"
     . "\t<input type='hidden' name='action' value='importgroup' />\n"
     . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -128,7 +128,7 @@ if ($action == "editgroup")
     $egresult = db_execute_assoc($egquery);
     $editgroup = PrepareEditorScript();
     $editgroup .= "<table width='100%' border='0'>\n\t<tr><td class='settingcaption'>"
-    . "\t\t".$clang->gT("Edit Group")."</td></tr></table>\n"
+    . "".$clang->gT("Edit Group")."</td></tr></table>\n"
     . "<form name='editgroup' action='$scriptname' method='post'>\n"
     . '<div class="tab-pane" id="tab-pane-group-'.$gid.'">';
 
@@ -138,10 +138,10 @@ if ($action == "editgroup")
     $esrow = array_map('htmlspecialchars', $esrow);
     $editgroup .= '</h2>';
     $editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
-    . "\t\t<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+    . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
     . "\t</span></div>\n"
     . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
-    . "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+    . "<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
     . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
     . "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
 
@@ -154,10 +154,10 @@ if ($action == "editgroup")
         $esrow = array_map('htmlspecialchars', $esrow);
         $editgroup .= '</h2>';
         $editgroup .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Title").":</span>\n"
-        . "\t\t<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+        . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
         . "\t</span></div>\n"
         . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Description:")."</span>\n"
-        . "\t\t<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+        . "<span class='settingentry'><textarea cols='70' rows='8' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
     	. getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
         . "\t</span></div><div class='settingrow'></div></div>"; // THis empty div class is needed for forcing the tabpage border under the button
     }

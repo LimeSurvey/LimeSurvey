@@ -45,9 +45,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	if($ugid && $grpresultcount > 0)
 	{
 		$usergroupsummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid=$ugid', '_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Mail to all Members", "js")."');return false\"> " .
-		"<img src='$imagefiles/invite.png' title='' alt='' name='MailUserGroup' /></a>\n" ;
+		."title='".$clang->gTview("Mail to all Members")."'> " 
+		."<img src='$imagefiles/invite.png' alt='".$clang->gT("Mail to all Members")."' name='MailUserGroup' /></a>\n" ;
 	}
     else
     {
@@ -60,9 +59,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
-		. "onmouseout=\"hideTooltip()\""
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit Current User Group", "js")."');return false\">" .
-		"<img src='$imagefiles/edit.png' title='' alt='' name='EditUserGroup' /></a>\n" ;
+		. "title='".$clang->gTview("Edit Current User Group")."'>" 
+		. "<img src='$imagefiles/edit.png' alt='".$clang->gT("Edit Current User Group")."' name='EditUserGroup' /></a>\n" ;
 	}
 	else
 	{
@@ -74,9 +72,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	{
 //		$usergroupsummary .= "<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\""
 		$usergroupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
-		. "onmouseout=\"hideTooltip()\" "
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Delete Current User Group", "js")."');return false\">"
-		. "<img src='$imagefiles/delete.png' alt='' name='DeleteUserGroup' title='' /></a>\n";
+		. "title='".$clang->gTview("Delete Current User Group")."'>"
+		. "<img src='$imagefiles/delete.png' alt='".$clang->gT("Delete Current User Group")."' name='DeleteUserGroup'  /></a>\n";
 	}
 	else
 	{
@@ -93,9 +90,8 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
     {
         $usergroupsummary .= "<a href='$scriptname?action=addusergroup'"
-        ."onmouseout=\"hideTooltip()\""
-        ."onmouseover=\"showTooltip(event,'".$clang->gT("Add New User Group", "js")."');return false\">" 
-        ."<img src='$imagefiles/add.png' title='' alt='' " 
+        ."title='".$clang->gTview("Add New User Group")."'>" 
+        ."<img src='$imagefiles/add.png' alt='".$clang->gT("Add New User Group")."' " 
         ."name='AddNewUserGroup' onclick=\"window.open('', '_top')\" /></a>\n";
     }
     $usergroupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"

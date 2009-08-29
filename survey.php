@@ -669,14 +669,14 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$appendj .= "\n";
                 $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "document.getElementById('$tbody').style.display='';\n";
+				$appendj .= "document.getElementById('$dtbody').value='on';\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "document.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "document.getElementById('$dtbody').value='off';\n";
+				$appendj .= "radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}
@@ -764,7 +764,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 				$help=$qa[2];
 				$questioncode=$qa[5];
 				echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-				echo "\t\t\t\t</div>\n";
+				echo "</div>\n";
 			}
 		}
 	}
@@ -777,11 +777,11 @@ foreach ($_SESSION['grouplist'] as $gl)
 			."<script type='text/javascript'>\n"
 			."\tcountDisplayedQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
 			."\tfunction show_hide_group_$gid() {\n"
-			."\t\tif (countDisplayedQuestionsInGroup[$gid] > 0) {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
-			."\t\t} else {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
-			."\t\t}\n"
+			."if (countDisplayedQuestionsInGroup[$gid] > 0) {\n"
+			."\tdocument.getElementById('group-$gid').style.display='';\n"
+			."} else {\n"
+			."\tdocument.getElementById('group-$gid').style.display='none';\n"
+			."}\n"
 			."\t}\n"
 			."</script>\n"
 			."\n";
@@ -809,7 +809,7 @@ echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
 
 
 if (is_array($conditions) && count($conditions) != 0 ) 

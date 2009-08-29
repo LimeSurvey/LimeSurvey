@@ -214,24 +214,24 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	if (isset($failedcheck) && $failedcheck)
 	{
 		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
-		$activateoutput .= "\t\t\t\t<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
+		$activateoutput .= "<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
 		$activateoutput .= "\t<tr>\n";
-		$activateoutput .= "\t\t<td align='center' bgcolor='#ffeeee'>\n";
-		$activateoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Error")."</strong><br />\n";
-		$activateoutput .= "\t\t\t".$clang->gT("Survey does not pass consistency check")."</font>\n";
-		$activateoutput .= "\t\t</td>\n";
+		$activateoutput .= "<td align='center' bgcolor='#ffeeee'>\n";
+		$activateoutput .= "\t<font color='red'><strong>".$clang->gT("Error")."</strong><br />\n";
+		$activateoutput .= "\t".$clang->gT("Survey does not pass consistency check")."</font>\n";
+		$activateoutput .= "</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "\t<tr>\n";
-		$activateoutput .= "\t\t<td>\n";
-		$activateoutput .= "\t\t\t<strong>".$clang->gT("The following problems have been found:")."</strong><br />\n";
-		$activateoutput .= "\t\t\t<ul>\n";
+		$activateoutput .= "<td>\n";
+		$activateoutput .= "\t<strong>".$clang->gT("The following problems have been found:")."</strong><br />\n";
+		$activateoutput .= "\t<ul>\n";
 		foreach ($failedcheck as $fc)
 		{
-			$activateoutput .= "\t\t\t\t<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
+			$activateoutput .= "<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
 		}
-		$activateoutput .= "\t\t\t</ul>\n";
-		$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
-		$activateoutput .= "\t\t</td>\n";
+		$activateoutput .= "\t</ul>\n";
+		$activateoutput .= "\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
+		$activateoutput .= "</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "</table><br />&nbsp;\n";
 
@@ -239,16 +239,16 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	}
 
 	$activateoutput .= "<br />\n<div class='messagebox'>\n";
-	$activateoutput .= "\t\t\t\t<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
-	$activateoutput .= "\t\t<div class='warningheader'>\n";
+	$activateoutput .= "<div class='header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
+	$activateoutput .= "<div class='warningheader'>\n";
 	$activateoutput .= $clang->gT("Warning")."<br />\n";
 	$activateoutput .= $clang->gT("READ THIS CAREFULLY BEFORE PROCEEDING")."\n";
-	$activateoutput .= "\t\t\t</div>\n";
+	$activateoutput .= "\t</div>\n";
 	$activateoutput .= $clang->gT("You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing.")."<br /><br />\n";
 	$activateoutput .= $clang->gT("Once a survey is activated you can no longer:")."<ul><li>".$clang->gT("Add or delete groups")."</li><li>".$clang->gT("Add or remove answers to Multiple Answer questions")."</li><li>".$clang->gT("Add or delete questions")."</li></ul>\n";
 	$activateoutput .= $clang->gT("However you can still:")."<ul><li>".$clang->gT("Edit (change) your questions code, text or type")."</li><li>".$clang->gT("Edit (change) your group names")."</li><li>".$clang->gT("Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)")."</li><li>".$clang->gT("Change survey name or description")."</li></ul>\n";
 	$activateoutput .= $clang->gT("Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table.")."<br /><br />\n";
-	$activateoutput .= "\t\t\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"".get2post("$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}")."\" />\n";
+	$activateoutput .= "\t<input type='submit' value=\"".$clang->gT("Activate Survey")."\" onclick=\"".get2post("$scriptname?action=activate&amp;ok=Y&amp;sid={$_GET['sid']}")."\" />\n";
 	$activateoutput .= "</div><br />&nbsp;\n";
 
 }
@@ -538,8 +538,8 @@ else
 		}
 
 		$activateoutput .= "<br />\n<table class='alertbox'>\n";
-		$activateoutput .= "\t\t\t\t<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
-		$activateoutput .= "\t\t\t\t<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
+		$activateoutput .= "<tr><td height='4'><strong>".$clang->gT("Activate Survey")." ($surveyid)</td></tr>\n";
+		$activateoutput .= "<tr><td align='center'><font class='successtitle'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</font><br /><br />\n";
 
 		$acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".returnglobal('sid');
 		$acresult = $connect->Execute($acquery);
@@ -563,7 +563,7 @@ else
 			$activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$scriptname?sid={$postsid}")."\" />\n";
 		}
-		$activateoutput .= "\t\t\t\t</font></font></td></tr></table><br />&nbsp;\n";
+		$activateoutput .= "</font></font></td></tr></table><br />&nbsp;\n";
 	}
 
 }

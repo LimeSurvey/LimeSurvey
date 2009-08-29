@@ -304,41 +304,40 @@ if ($subaction == "id") // Looking at a SINGLE entry
 	$next=$id+1;
 	$last=$id-1;
 	$browseoutput .= "<div class='menubar'>\n"
-	."\t\t<div class='menubar-title'>"
+	."<div class='menubar-title'>"
 	."<strong>".$clang->gT("View Response").":</strong> $id\n"
 	."\t</div><div class='menubar-main'>\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+	."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	if (isset($rlangauge))
     {
-            $browseoutput .="\t\t\t<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Edit this entry", "js")."')\">" .
-			"<img align='left' src='$imagefiles/edit.png' title='' alt='' /></a>\n";
+            $browseoutput .="<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$id&amp;sid=$surveyid&amp;language=$rlangauge' " 
+                           ."title='".$clang->gTview("Edit this entry")."'>"
+			               ."<img align='left' src='$imagefiles/edit.png' alt='".$clang->gT("Edit this entry")."' /></a>\n";
 	}
 	if (($sumrows5['delete_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) && isset($rlangauge))
 	{
 		
-		$browseoutput .=  "\t\t\t<a href='#'" 
-                        ."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this entry", "js")."')\">"
-		                ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='' title='' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" /></a>\n";
+		$browseoutput .= "<a href='#' title='".$clang->gTview("Delete this entry")."' >" 
+                        ."<img align='left' hspace='0' border='0' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post($scriptname.'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid)."}\" /></a>\n";
 	}
     else
     {
-        $browseoutput .=  "\t\t\t<img align='left' hspace='0' border='0' src='$imagefiles/delete_disabled.png' alt='' title='' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You don't have permission to delete this entry.", "js")."')\" />";
+        $browseoutput .=  "<img align='left' hspace='0' border='0' src='$imagefiles/delete_disabled.png' alt='".$clang->gT("You don't have permission to delete this entry.")."'/>";
     }
-	 $browseoutput .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
-		"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Export this Response", "js")."')\">" .
-		"<img name='ExportAnswer' src='$imagefiles/export.png' title='' alt='". $clang->gT("Export this Response")."'align='left' /></a>\n"
-	."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."')\">".
-		"<img name='DataBack' align='left' src='$imagefiles/databack.png' alt='' /></a>\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-	."\t\t\t<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid'" .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."')\">" .
-		"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='' /></a>\n"
-	."\t\t</div>\n"
+    //Export this response
+	$browseoutput .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid&amp;id=$id'" .
+		"title='".$clang->gTview("Export this Response")."' >" .
+		"<img name='ExportAnswer' src='$imagefiles/export.png' alt='". $clang->gT("Export this Response")."' align='left' /></a>\n"
+	    ."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
+	    ."<img src='$imagefiles/blank.gif' width='20' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	    ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$last&amp;sid=$surveyid' " 
+        ."title='".$clang->gTview("Show previous...")."' >"
+		."<img name='DataBack' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
+	    ."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+	    ."<a href='$scriptname?action=browse&amp;subaction=id&amp;id=$next&amp;sid=$surveyid' title='".$clang->gTview("Show next...")."'>"
+		."<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next...")."' /></a>\n"
+	."</div>\n"
 	."\t</div>\n";
     
     $browseoutput .= "<table class='browsetable' width='99%'>\n";
@@ -349,9 +348,9 @@ if ($subaction == "id") // Looking at a SINGLE entry
 		for ($i; $i<$nfncount+1; $i++)
 		{
 			$browseoutput .= "\t<tr>\n"
-			."\t\t<th align='right' width='50%'>"
+			."<th align='right' width='50%'>"
 			.strip_tags(strip_javascript($fnames[$i][2]))."</th>\n"
-			."\t\t<td align='left' >"
+			."<td align='left' >"
 			.htmlspecialchars(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]], '', $dateformatdetails['phpdate']), ENT_QUOTES)
 			."</td>\n"
 			."\t</tr>\n";
@@ -371,10 +370,10 @@ elseif ($subaction == "all")
         $browseoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Browse Responses").":</strong> $surveyname</td></tr>\n"
 		."\n<tr><td><table width='100%' align='center' border='0' bgcolor='#EFEFEF'>\n"
 		."\t<tr>\n"
-		."\t\t<td align='center'>\n"
-		."\t\t\t".$clang->gT("Showing Filtered Results")."<br />\n"
-		."\t\t\t&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
-		."\t\t</font></td>\n"
+		."<td align='center'>\n"
+		."".$clang->gT("Showing Filtered Results")."<br />\n"
+		."&nbsp;[<a href=\"javascript:window.close()\">".$clang->gT("Close")."</a>]"
+		."</font></td>\n"
 		."\t</tr>\n"
 		."</table></td></tr>\n";
 
@@ -576,7 +575,7 @@ elseif ($subaction == "all")
 	if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%' cellpadding='0' cellspacing='1'>\n";}
 	else {$tableheader .= "<table class='browsetable' border='0' cellpadding='1' cellspacing='1' style='border: 1px solid #555555'>\n";}
 	$tableheader .= "\t<thead><tr valign='top'>\n"
-	. "\t\t<th  class='evenrow' width='$cellwidth'><strong>id</strong></th>\n";
+	. "<th  class='evenrow' width='$cellwidth'><strong>id</strong></th>\n";
 	foreach ($fnames as $fn)
 	{
 		if (!isset($currentgroup))  {$currentgroup = $fn[3]; $gbc = "oddrow";}
@@ -586,7 +585,7 @@ elseif ($subaction == "all")
 			if ($gbc == "oddrow") {$gbc = "evenrow";}
 			else {$gbc = "oddrow";}
 		}
-		$tableheader .= "\t\t<th class='$gbc' width='$cellwidth'><strong>"
+		$tableheader .= "<th class='$gbc' width='$cellwidth'><strong>"
 		. strip_tags(strip_javascript("$fn[2]"))
 		. "</strong></th>\n";
 	}
@@ -669,20 +668,21 @@ elseif ($subaction == "all")
 	if (!isset($_POST['sql']))
 	{
 		$browseoutput .= "\t<tr><td align='left' width='200'>\n"
-			."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show start..", "js")."');return false\">" .
-						"<img name='DataBegin' align='left' src='$imagefiles/databegin.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' " .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show previous...", "js")."');return false\">" .
-				"<img name='DataBack' align='left'  src='$imagefiles/databack.png' title='' /></a>\n"
-		."\t\t\t<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show next...", "js")."');return false\">".
-				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' title='' /></a>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
-				"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Show last...", "js")."');return false\">" .
-				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' title='' /></a>\n"
-		."\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
+		                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " 
+                        ."title='".$clang->gTview("Show start..")."' >" 
+						."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
+		                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
+                        ."title='".$clang->gTview("Show previous..")."' >" 
+				        ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
+		."<img src='$imagefiles/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
+        
+		."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
+				"title='".$clang->gT("Show next...")."' >".
+				"<img name='DataForward' align='left' src='$imagefiles/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
+		."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit' " .
+				"title='".$clang->gT("Show last...")."' >" .
+				"<img name='DataEnd' align='left' src='$imagefiles/dataend.png' alt='".$clang->gT("Show last..")."' /></a>\n"
+		."<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n";
 	} else {
 		$browseoutput .= "\t<tr><td align='left'>\n";
 	}
@@ -706,27 +706,27 @@ elseif ($subaction == "all")
 		$selectinc="";
 	}
 
-	$browseoutput .=("\t\t</td>\n"
-	."\t\t<td align='left'>\n"
-	."\t\t<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
-	."\t\t\t<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
-	."\t\t\t".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
-	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
-	."\t\t\t&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
-	."\t\t\t\t<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
-	."\t\t\t\t<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
-	."\t\t\t\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
-	."\t\t\t</select>\n"
-	."\t\t\t&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
-	."\t\t</font>\n"
-	."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-	."\t\t<input type='hidden' name='action' value='browse' />\n"
-	."\t\t<input type='hidden' name='subaction' value='all' />\n");
+	$browseoutput .=("</td>\n"
+	."<td align='left'>\n"
+	."<form action='$scriptname?action=browse' method='post'><font size='1' face='verdana'>\n"
+	."<img src='$imagefiles/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
+	."".$clang->gT("Records Displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
+	."&nbsp;&nbsp; ".$clang->gT("Starting From:")."<input type='text' size='4' value='$start' name='start' id='start' />\n"
+	."&nbsp;&nbsp; ".$clang->gT("Display:")."<select name='filterinc' onchange='javascript:document.getElementById(\"limit\").value=\"\";submit();'>\n"
+	."\t<option value='filter' $selecthide>".$clang->gT("Completed Records Only")."</option>\n"
+	."\t<option value='show' $selectshow>".$clang->gT("All Records")."</option>\n"
+	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete Records Only")."</option>\n"
+	."</select>\n"
+	."&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
+	."</font>\n"
+	."<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='action' value='browse' />\n"
+	."<input type='hidden' name='subaction' value='all' />\n");
 	if (isset($_POST['sql']))
 	{
-		$browseoutput .= "\t\t<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
+		$browseoutput .= "<input type='hidden' name='sql' value='".html_escape($_POST['sql'])."' />\n";
 	}
-	$browseoutput .= 	 "\t\t</form></td>\n"
+	$browseoutput .= 	 "</form></td>\n"
 	."\t</tr>\n"
 	."</table>\n"
 	."<table><tr><td></td></tr></table>\n";
@@ -743,8 +743,8 @@ elseif ($subaction == "all")
 			else {$bgcc = "evenrow";}
 		}
 		$browseoutput .= "\t<tr class='$bgcc' valign='top'>\n"
-		."\t\t<td align='center'>\n"
-		."\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='".$clang->gT("View This Record")."'>"
+		."<td align='center'>\n"
+		."<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}' title='".$clang->gT("View This Record")."'>"
 		."{$dtrow['id']}</a></td>\n";
 
 		$i = 0;
@@ -756,10 +756,10 @@ elseif ($subaction == "all")
 			{
 				$TokenRow = $SQLResult->FetchRow();
 			}
-			$browseoutput .= "\t\t<td align='center'>\n";
+			$browseoutput .= "<td align='center'>\n";
 			if (isset($TokenRow) && $TokenRow)
 			{
-				$browseoutput .= "\t\t<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$TokenRow['tid']}' title='".$clang->gT("Edit this token")."'>";
+				$browseoutput .= "<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$TokenRow['tid']}' title='".$clang->gT("Edit this token")."'>";
 			}
 			$browseoutput .= "{$dtrow['token']}";
 			if (isset($TokenRow) && $TokenRow)
@@ -778,7 +778,7 @@ elseif ($subaction == "all")
                 $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
             }
             if (trim($browsedatafield=='')) $browsedatafield='&nbsp;';
-			$browseoutput .= "\t\t<td align='center'>$browsedatafield</td>\n";
+			$browseoutput .= "<td align='center'>$browsedatafield</td>\n";
 		}
 		$browseoutput .= "\t</tr>\n";
 	}

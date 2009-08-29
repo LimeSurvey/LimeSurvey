@@ -261,6 +261,7 @@ textarea {
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 40px;
+    padding:0 4px;
 }
 
 .saveOrderbtn {
@@ -334,28 +335,6 @@ span.settingcaption {
 	clear: left;
 	margin-bottom: 20px;
 	background-color: #F8F8FF;
-}
-
-#dhtmlgoodies_tooltip {
-	border: 1px solid #000;
-	position: absolute;
-	display: none;
-	z-index: 20000;
-	-moz-border-radius: 5px;
-	background: #FDFDF5;
-	font: 1em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
-	padding: 2px;
-}
-
-#dhtmlgoodies_tooltipShadow {
-	position: absolute;
-	display: none;
-	z-index: 10000;
-    opacity: .35; 
-    filter:Alpha(Opacity=35);    
-	-khtml-opacity: 0.7px;
-	-moz-border-radius: 5px;
-	background: #555;
 }
 
 .movableList {

@@ -117,16 +117,15 @@ function savedmenubar()
 	if (!isset($surveyoptions)) {$surveyoptions="";}
 	$surveyoptions .= "\t<tr>\n"
 	. "\t\t<td>\n"
-	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\" >" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' align='left'></a>\n"
+	. "\t\t\t<a href='$scriptname?sid=$surveyid' title='".$clang->gTview("Return to survey administration")."' >" .
+			"<img name='Administration' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' align='left'></a>\n"
 	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\">" .
-			"<img name='SurveySummary' src='$imagefiles/summary.png' title=''  align='left'></a>\n"
-	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
-	"<img name='ViewAll' src='$imagefiles/document.png' title=''  align='left'></a>\n"
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' " .
+			"title='".$clang->gTview("Show summary information")."'>" .
+			"<img name='SurveySummary' src='$imagefiles/summary.png' alt='".$clang->gT("Show summary information")."' align='left'></a>\n"
+	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' title='".$clang->gTview("Display Responses")."'>" 
+    . "<img name='ViewAll' src='$imagefiles/document.png' alt='".$clang->gT("Display Responses")."' align='left'></a>\n"
 	//. "\t\t\t<input type='image' name='ViewLast' src='$imagefiles/viewlast.png' title='"
 	//. $clang->gT("Display Last 50 Responses")."'  align='left'  onclick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
 	. "\t\t\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt=''>\n"

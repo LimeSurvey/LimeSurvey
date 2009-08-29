@@ -90,7 +90,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 	if ($thissurvey['active'] != "Y")
 	{
-		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+		echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
@@ -424,7 +424,7 @@ if ($bIsGroupDescrPage)
 {
 	$presentinggroupdescription = "yes";
 	echo "\n\n<!-- START THE GROUP DESCRIPTION -->\n";
-	echo "\t\t\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc' />\n";
+	echo "\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc' />\n";
 	echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 	echo "\n<br />\n";
 
@@ -437,9 +437,9 @@ if ($bIsGroupDescrPage)
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 	echo "\t<script type='text/javascript'>\n";
 	echo "\t<!--\n";
-	echo "\t\tfunction checkconditions(value, name, type)\n";
-	echo "\t\t\t{\n";
-	echo "\t\t\t}\n";
+	echo "function checkconditions(value, name, type)\n";
+	echo "\t{\n";
+	echo "\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
 	echo "\n\n<!-- END THE GROUP -->\n";
@@ -447,7 +447,7 @@ if ($bIsGroupDescrPage)
 	echo "\n";
 
 	$_SESSION['step']--;
-	echo "\t\t\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay' />\n";
+	echo "\t<input type='hidden' name='newgroupondisplay' value='Y' id='newgroupondisplay' />\n";
 }
 else
 {
@@ -462,9 +462,9 @@ else
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 	echo "\t<script type='text/javascript'>\n";
 	echo "\t<!--\n";
-	echo "\t\tfunction checkconditions(value, name, type)\n";
-	echo "\t\t\t{\n";
-	echo "\t\t\t}\n";
+	echo "function checkconditions(value, name, type)\n";
+	echo "\t{\n";
+	echo "\t}\n";
 	echo "\t//-->\n";
 	echo "\t</script>\n\n";
 
@@ -532,7 +532,7 @@ echo "\n";
 
 if ($thissurvey['active'] != "Y")
 {
-	echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+	echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 }
 
 echo "\n";

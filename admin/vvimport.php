@@ -98,7 +98,7 @@ if ($subaction != "upload")
 		<input type='hidden' name='action' value='vvimport' />
 		<input type='hidden' name='subaction' value='upload' />
 		</td></tr>
-        <tr></td><td><td>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to Survey Administration")."</a>]</td></tr>
+        <tr></td><td><td>[<a href='$scriptname?action=browse&amp;sid=$surveyid'>".$clang->gT("Return to survey administration")."</a>]</td></tr>
 		</table>
 		</form><br />";
 	}
@@ -109,7 +109,7 @@ if ($subaction != "upload")
 		<tr><td colspan='2' align='center'>
 		<strong>".$clang->gT("Cannot import the VVExport file.")."</strong><br /><br />
 		".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
-		[<a href='$scriptname?sid=4'>".$clang->gT("Return to Survey Administration")."</a>]
+		[<a href='$scriptname?sid=4'>".$clang->gT("Return to survey administration")."</a>]
 		</td></tr>
 		</table>";		
 	}

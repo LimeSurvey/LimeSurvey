@@ -55,7 +55,7 @@ if ($action != 'showprintablesurvey')
   $adminoutput = helpscreenscript();
   $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
   ."\t<tr>\n"
-  ."\t\t<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
+  ."<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
 } else {$adminoutput='';}
 
 if($casEnabled==true)
@@ -546,7 +546,7 @@ elseif ($action == 'replacementfields')
   
   $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
   unset($_SESSION['metaHeader']);    
-  $adminoutput.= "\t\t</td>\n".helpscreen()
+  $adminoutput.= "</td>\n".helpscreen()
               . "\t</tr>\n"
               . "</table>\n";
 	if(!isset($_SESSION['checksessionpost']))
@@ -555,35 +555,35 @@ elseif ($action == 'replacementfields')
 	. "<!--\n"
 	. "\tfor(i=0; i<document.forms.length; i++)\n"
 	. "\t{\n"
-	. "\t\tvar el = document.createElement('input');\n"
-	. "\t\tel.type = 'hidden';\n"
-	. "\t\tel.name = 'checksessionbypost';\n"
-	. "\t\tel.value = '".$_SESSION['checksessionpost']."';\n"
-	. "\t\tdocument.forms[i].appendChild(el);\n"
+	. "var el = document.createElement('input');\n"
+	. "el.type = 'hidden';\n"
+	. "el.name = 'checksessionbypost';\n"
+	. "el.value = '".$_SESSION['checksessionpost']."';\n"
+	. "document.forms[i].appendChild(el);\n"
 	. "\t}\n"
 	. "\n"
 	. "\tfunction addHiddenElement(theform,thename,thevalue)\n"
 	. "\t{\n"
-	. "\t\tvar myel = document.createElement('input');\n"
-	. "\t\tmyel.type = 'hidden';\n"
-	. "\t\tmyel.name = thename;\n"
-	. "\t\ttheform.appendChild(myel);\n"
-	. "\t\tmyel.value = thevalue;\n"
-	. "\t\treturn myel;\n"
+	. "var myel = document.createElement('input');\n"
+	. "myel.type = 'hidden';\n"
+	. "myel.name = thename;\n"
+	. "theform.appendChild(myel);\n"
+	. "myel.value = thevalue;\n"
+	. "return myel;\n"
 	. "\t}\n"
 	. "\n"
 	. "\tfunction sendPost(myaction,checkcode,arrayparam,arrayval)\n"
 	. "\t{\n"
-	. "\t\tvar myform = document.createElement('form');\n"
-	. "\t\tdocument.body.appendChild(myform);\n"
-	. "\t\tmyform.action =myaction;\n"
-	. "\t\tmyform.method = 'POST';\n"
-	. "\t\tfor (i=0;i<arrayparam.length;i++)\n"
-	. "\t\t{\n"
-	. "\t\t\taddHiddenElement(myform,arrayparam[i],arrayval[i])\n"
-	. "\t\t}\n"
-	. "\t\taddHiddenElement(myform,'checksessionbypost',checkcode)\n"
-	. "\t\tmyform.submit();\n"
+	. "var myform = document.createElement('form');\n"
+	. "document.body.appendChild(myform);\n"
+	. "myform.action =myaction;\n"
+	. "myform.method = 'POST';\n"
+	. "for (i=0;i<arrayparam.length;i++)\n"
+	. "{\n"
+	. "\taddHiddenElement(myform,arrayparam[i],arrayval[i])\n"
+	. "}\n"
+	. "addHiddenElement(myform,'checksessionbypost',checkcode)\n"
+	. "myform.submit();\n"
 	. "\t}\n"
 	. "\n"
 	. "//-->\n"
@@ -599,7 +599,7 @@ elseif ($action == 'replacementfields')
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
     $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
-    $adminoutput.= "\t\t</td>\n".helpscreen()
+    $adminoutput.= "</td>\n".helpscreen()
                 . "\t</tr>\n"
                 . "</table>\n"
                 . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
@@ -621,17 +621,17 @@ else
   {
   	$helpoutput= "<script type='text/javascript'>\n"
     ."\tfunction showhelp(action)\n"
-    ."\t\t{\n"
-    ."\t\tvar name='help';\n"
-    ."\t\tif (action == \"hide\")\n"
-    ."\t\t\t{\n"
-    ."\t\t\tdocument.getElementById(name).style.display='none';\n"
-    ."\t\t\t}\n"
-    ."\t\telse if (action == \"show\")\n"
-    ."\t\t\t{\n"
-    ."\t\t\tdocument.getElementById(name).style.display='';\n"
-    ."\t\t\t}\n"
-    ."\t\t}\n"
+    ."{\n"
+    ."var name='help';\n"
+    ."if (action == \"hide\")\n"
+    ."\t{\n"
+    ."\tdocument.getElementById(name).style.display='none';\n"
+    ."\t}\n"
+    ."else if (action == \"show\")\n"
+    ."\t{\n"
+    ."\tdocument.getElementById(name).style.display='';\n"
+    ."\t}\n"
+    ."}\n"
     ."</script>\n"; 
     return $helpoutput;
   }
@@ -644,23 +644,23 @@ else
   	global $homeurl, $langdir,  $imagefiles;
   	global $surveyid, $gid, $qid, $action, $clang;
 
-    $helpoutput="\t\t<td id='help' width='200' valign='top' style='display: none' bgcolor='#F8F8FF'>\n"
-  	."\t\t\t<table width='100%'><tr><td>"
+    $helpoutput="<td id='help' width='200' valign='top' style='display: none' bgcolor='#F8F8FF'>\n"
+  	."\t<table width='100%'><tr><td>"
   	."<table width='100%' align='center' cellspacing='0'>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='#D2E0F2' height='8'>\n"
-  	."\t\t\t\t\t\t<font size='1'><strong>"
+  	."<tr>\n"
+  	."\t<td bgcolor='#D2E0F2' height='8'>\n"
+  	."<font size='1'><strong>"
   	.$clang->gT("Help")."</strong>\n"
-  	."\t\t\t\t\t</font></td>\n"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td align='center' bgcolor='#EEF6FF' style='border-style: solid; border-width: 1px; border-color: #D2E0F2'>\n"
-  	."\t\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
-  	."\t\t\t\t\t\t<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
-  	."\t\t\t\t\t</td>\n"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t\t<tr>\n"
-  	."\t\t\t\t\t<td bgcolor='#EEF6FF' height='100%' style='border-width: 0px;'>\n";
+  	."\t</font></td>\n"
+  	."</tr>\n"
+  	."<tr>\n"
+  	."\t<td align='center' bgcolor='#EEF6FF' style='border-style: solid; border-width: 1px; border-color: #D2E0F2'>\n"
+  	."<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
+  	."<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
+  	."\t</td>\n"
+  	."</tr>\n"
+  	."<tr>\n"
+  	."\t<td bgcolor='#EEF6FF' height='100%' style='border-width: 0px;'>\n";
   	//determine which help document to show
   	if (!$surveyid && $action != "editusers")
   	{
@@ -686,12 +686,12 @@ else
   	{
   		$helpdoc = "$langdir/answer.html";
   	}
-  	$helpoutput.= "\t\t\t\t\t\t<iframe width='200' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
-  	."\t\t\t\t\t\t</iframe>\n"
-  	."\t\t\t\t\t</td>"
-  	."\t\t\t\t</tr>\n"
-  	."\t\t\t</table></td></tr></table>\n"
-  	."\t\t</td>\n";
+  	$helpoutput.= "<iframe width='200' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
+  	."</iframe>\n"
+  	."\t</td>"
+  	."</tr>\n"
+  	."\t</table></td></tr></table>\n"
+  	."</td>\n";
   	return $helpoutput;
   }
   

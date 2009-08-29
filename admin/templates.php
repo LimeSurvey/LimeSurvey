@@ -357,8 +357,8 @@ $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname=$clang->gT("Group 1: The first lot of questions");
 $groupdescription=$clang->gT("This group description is fairly vacuous, but quite important.");
-$navigator="\t\t<input class=\"submit\" type=\"submit\" value=\" Next &gt;&gt; \" name=\"move\" />\n";
-if ($screenname != $clang->gT("Welcome Page")) {$navigator = "\t\t<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; Previous\" name=\"move\" />\n".$navigator;}
+$navigator="<input class=\"submit\" type=\"submit\" value=\" Next &gt;&gt; \" name=\"move\" />\n";
+if ($screenname != $clang->gT("Welcome Page")) {$navigator = "<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; Previous\" name=\"move\" />\n".$navigator;}
 $help="This is some help text";
 $totalquestions="10";
 $surveyformat="Format";
@@ -622,11 +622,11 @@ $templatesoutput.= "<script type='text/javascript'>\n"
 ."function copyprompt(text, defvalue, copydirectory, action)\n"
 ."\t{\n"
 ."\tif (newtemplatename=window.prompt(text, defvalue))\n"
-."\t\t{\n"
-//."\t\tvar url='admin.php?action=template'+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
-//."\t\twindow.open(url, '_top');\n"
-. "\t\t\tsendPost('admin.php','".$_SESSION['checksessionpost']."',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));\n"
-."\t\t}\n"
+."{\n"
+//."var url='admin.php?action=template'+action+'&newname='+newtemplatename+'&copydir='+copydirectory;\n"
+//."window.open(url, '_top');\n"
+. "\tsendPost('admin.php','".$_SESSION['checksessionpost']."',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));\n"
+."}\n"
 ."\t}\n"
 ."function checkuploadfiletype(filename)\n"
 ."\t{\n"
@@ -634,37 +634,37 @@ $templatesoutput.= "<script type='text/javascript'>\n"
 ."\tvar lastdotpos=-1;\n"
 ."\tvar ext='';\n"
 ."\tif ((lastdotpos=filename.lastIndexOf('.')) < 0)\n"
-."\t\t{\n"
-."\t\talert('".$clang->gT('This file type is not allowed to be uploaded.','js')."');\n"
-."\t\treturn false;\n"
-."\t\t}\n"
+."{\n"
+."alert('".$clang->gT('This file type is not allowed to be uploaded.','js')."');\n"
+."return false;\n"
+."}\n"
 ."\telse\n"
-."\t\t{\n"
-."\t\text = ',' + filename.substr(lastdotpos+1) + ',';\n"
-."\t\text = ext.toLowerCase();\n"
-."\t\tif (allowedtypes.indexOf(ext) < 0)\n"
-."\t\t\t{\n"
-."\t\t\talert('".$clang->gT('This file type is not allowed to be uploaded.','js')."');\n"
-."\t\t\treturn false;\n"
-."\t\t\t}\n"
-."\t\telse\n"
-."\t\t\t{\n"
-."\t\t\treturn true;\n"
-."\t\t\t}\n"
-."\t\t}\n"
+."{\n"
+."ext = ',' + filename.substr(lastdotpos+1) + ',';\n"
+."ext = ext.toLowerCase();\n"
+."if (allowedtypes.indexOf(ext) < 0)\n"
+."\t{\n"
+."\talert('".$clang->gT('This file type is not allowed to be uploaded.','js')."');\n"
+."\treturn false;\n"
+."\t}\n"
+."else\n"
+."\t{\n"
+."\treturn true;\n"
+."\t}\n"
+."}\n"
 ."\t}\n"
 ."//-->\n</script>\n";
 $templatesoutput.= "<div class='menubar'>\n"
-. "\t\t\t<div class='menubar-title'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT('Template Editor')."</strong>\n"
-. "\t\t\t\t</div>\n"
-. "\t\t\t<div class='menubar-main'>\n"
-. "\t\t\t<div class='menubar-left'>\n"
-. "\t\t\t\t\t<a href='$scriptname'" 
-. "onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Default Administration Page")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."')\">" 
-. "<img src='$imagefiles/home.png' name='HomeButton' alt='' title='' /></a>\n"
-. "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
-. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />";
+. "\t<div class='menubar-title'>\n"
+. "\t<strong>".$clang->gT('Template Editor')."</strong>\n"
+. "</div>\n"
+. "\t<div class='menubar-main'>\n"
+. "\t<div class='menubar-left'>\n"
+. "\t<a href='$scriptname'" 
+. "title=\"".$clang->gTview("Return to survey administration")."\">" 
+. "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+. "\t<img src='$imagefiles/blank.gif' alt='' width='60' height='10'  />\n"
+. "\t<img src='$imagefiles/seperator.gif' alt=''  />";
 
 if (isset($flashmessage))
 {
@@ -672,12 +672,12 @@ if (isset($flashmessage))
 }
 elseif (is_template_editable($templatename)==false)
 {
-  $templatesoutput.='<span class="flashmessage">'.sprintf($clang->gT('Note: This is a standard template. If you want to edit it %s please copy it first%s.'),"<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
+  $templatesoutput.='<span class="flashmessage">'.sprintf($clang->gT('Note: This is a standard template. If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".$clang->gT("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>').'</span>'; 
 }
 
 $templatesoutput.= "</div>\n"
-. "\t\t\t<div class='menubar-right'>\n"
+. "\t<div class='menubar-right'>\n"
 
 //Logout Button
 
@@ -685,63 +685,57 @@ $templatesoutput.= "</div>\n"
 ."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
 .makeoptions($templates, "name", "name", $templatename)
 ."</select>\n"
-. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
-. " onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Create new template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Create new template", "js")."')\">" 
-. "<img src='$imagefiles/add.png' alt=''  title='' /></a>\n"
+. "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\" " 
+. " title=\"".$clang->gTview("Create new template")."\" >" 
+. "<img src='$imagefiles/add.png' alt='".$clang->gT("Create new template")."' /></a>\n"
 . "<img src='$imagefiles/seperator.gif' alt='' />"
-. "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-. "title=\"".$clang->gTview("Logout")."\" "
-. "onmouseout=\"hideTooltip()\""
-. "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
+. "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
+. "title=\"".$clang->gTview("Logout")."\" >"
 . "<img src='$imagefiles/logout.png' name='Logout'"
-. "title='' alt='".$clang->gT("Logout")."' /></a>"
+. " alt='".$clang->gT("Logout")."' /></a>"
 . "<img src='$imagefiles/blank.gif' alt='' width='20'  />"
 ."</div></div></div>\n"
 ."<font style='size:12px;line-height:2px;'>&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
 
 
 //TEMPLATE DETAILS
-$templatesoutput.= "\t\t\t<div class='menubar'>\n"
+$templatesoutput.= "\t<div class='menubar'>\n"
 . "<div class='menubar-title'>\n"
 . "<strong>".$clang->gT("Template:")." <i>$templatename</i></strong>\n"
 . "</div>\n"
 . "<div class='menubar-main'>\n"
 . "<div class='menubar-left'>\n";
 $templatesoutput.= "<img src='$imagefiles/blank.gif' alt='' width='104' height='40'/>\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
+."\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 if (!is_template_editable($templatename)) 
 {
-    $templatesoutput.="<img name='RenameTemplate' src='$imagefiles/edit_disabled.png' alt='' title=''" 
-    	 ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't rename a standard template.", "js")."')\" "
+    $templatesoutput.="<img name='RenameTemplate' src='$imagefiles/edit_disabled.png' alt='".$clang->gT("You can't rename a standard template.")."' title='".$clang->gTview("You can't rename a standard template.")."'" 
          ." />"
-         ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='' title=''" 
-         ." onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("You can't delete a standard template.", "js")."')\" "
+         ."<img name='EditName' src='$imagefiles/delete_disabled.png' alt='".$clang->gT("You can't delete a standard template.")."' title='".$clang->gTview("You can't delete a standard template.")."'" 
          ." />";
 }
 else 
     {	
-        $templatesoutput.= "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
-    		 "<img name='RenameTemplate' src='$imagefiles/edit.png' alt='' title=''" .
-    		 " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Rename this template", "js")."')\" ".
+        $templatesoutput.= "<a href='#' title='".$clang->gTview("Rename this template")."' onclick=\"javascript: copyprompt('".$clang->gT("Rename this template to:")."', '$templatename', '$templatename', 'rename')\">" .
+    		 "<img name='RenameTemplate' src='$imagefiles/edit.png' alt='".$clang->gT("Rename this template")."'" .
              " /></a>";
-        $templatesoutput.= "<a href='#' "
+        $templatesoutput.= "<a href='#' title='".$clang->gTview("Delete this template")."'"
              ." onclick='if (confirm(\"".$clang->gT("Are you sure you want to delete this template?", "js")."\")) window.open(\"admin.php?action=templates&amp;subaction=delete&amp;templatename=$templatename\", \"_top\")' >" .
-             "<img name='DeleteTemplate' src='$imagefiles/delete.png' alt='' title=''" .
-             " onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Delete this template", "js")."')\" ".
+             "<img name='DeleteTemplate' src='$imagefiles/delete.png' alt='".$clang->gT("Delete this template")."' " .
              " /></a>";
     }
-$templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
-    ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
-    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" 
-    ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
+$templatesoutput.= "\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
+    ."\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
+    ." title=\"".$clang->gTview("Export Template")."\" >" 
+    ."<img name='Export' src='$imagefiles/export.png' alt='".$clang->gT("Export Template")."' /></a>\n"
     ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
-    ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Import template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Import template", "js")."')\">" 
-    ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='' title='' /></a>\n"
-."\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
-    ."<a href='#' onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Copy Template", "js")."')\" title=\"".$clang->gTview("Copy Template")."\" " 
+    ." title=\"".$clang->gTview("Import template")."\" >" 
+    ."<img name='ImportTemplate' src='$imagefiles/import.png' alt='".$clang->gT("Import template")."' title='' /></a>\n"
+."\t<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
+    ."<a href='#' title=\"".$clang->gTview("Copy Template")."\" " 
     ."onclick=\"javascript: copyprompt('".$clang->gT("Please enter the name for the copied template:")."', '".$clang->gT("copy_of_")."$templatename', '$templatename', 'copy')\">" 
-    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='' title='' /></a>"
+    ."<img name='MakeCopy' src='$imagefiles/copy.png' alt='".$clang->gT("Copy Template")."' /></a>"
 ."</div>\n"
 ."<div class='menubar-right'>\n"
 ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
@@ -755,7 +749,7 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
 ."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
 ."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
 . "\t<tr>\n"
-. "\t\t<td>\n";
+. "<td>\n";
 
 
 if ($subaction=='templateupload')
@@ -770,12 +764,12 @@ if ($subaction=='templateupload')
         . "\t<input type='hidden' name='action' value='templateupload' />\n"
         . "\t<table width='60%' class='form2columns'>\n"
         . "\t<tbody align='center'>"
-        . "\t\t<tr><th colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
-        . "\t\t<tr><td>&nbsp;</td></tr>\n"
-        . "\t\t<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
-        . "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-        . "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></td><td></td>\n"
-        . "\t\t</tr>\n"
+        . "<tr><th colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
+        . "<tr><td>&nbsp;</td></tr>\n"
+        . "<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
+        . "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
+        . "<tr><td></td><td><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></td><td></td>\n"
+        . "</tr>\n"
         . "\t</tbody></table></form>\n"; 
 }
 elseif (isset($importtemplateoutput))
@@ -789,20 +783,20 @@ else
 //FILE CONTROL DETAILS
 if (is_template_editable($templatename)==true)
 {
-    $templatesoutput.= "\t\t\t<table class='templatecontrol'>\n"
-    . "\t\t\t<tr>\n"
-    . "\t\t\t\t<th colspan='3'>\n"
-    . "\t\t\t\t\t<strong>".sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile)."</strong>\n"
-    . "\t\t\t\t</th>\n"
-    . "\t\t\t</tr>\n"
-    . "\t\t\t<tr><th class='subheader' width='150'>"
+    $templatesoutput.= "\t<table class='templatecontrol'>\n"
+    . "\t<tr>\n"
+    . "<th colspan='3'>\n"
+    . "\t<strong>".sprintf($clang->gT("Editing template '%s' - File '%s'"),$templatename,$editfile)."</strong>\n"
+    . "</th>\n"
+    . "\t</tr>\n"
+    . "\t<tr><th class='subheader' width='150'>"
     .$clang->gT("Standard Files:")."</th>"
         ."<td align='center' valign='top' rowspan='3'>\n"
         ."<form name='editTemplate' method='post' action='admin.php'>\n"
-        ."\t\t\t<input type='hidden' name='templatename' value='$templatename' />\n"
-        ."\t\t\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
-        ."\t\t\t<input type='hidden' name='editfile' value='$editfile' />\n"
-        ."\t\t\t<input type='hidden' name='action' value='templatesavechanges' />\n"
+        ."\t<input type='hidden' name='templatename' value='$templatename' />\n"
+        ."\t<input type='hidden' name='screenname' value='".html_escape($screenname)."' />\n"
+        ."\t<input type='hidden' name='editfile' value='$editfile' />\n"
+        ."\t<input type='hidden' name='action' value='templatesavechanges' />\n"
         ."<textarea name='changes' id='changes' rows='15' class='codepress html'>";
     if ($editfile) {
         $templatesoutput.= textarea_encode(filetext($editfile));
@@ -865,28 +859,28 @@ if (is_template_editable($templatename)==true)
     ."<input type='hidden' name='templatename' value='$templatename' />\n"
         ."<input type='hidden' name='action' value='templateuploadfile' />\n"
     ."</td></tr></table></form>\n"
-    ."\t\t\t\t\t\t</td>\n"
-    ."\t\t\t\t\t</tr>\n"
-    ."\t\t\t\t</table>\n"
-    ."\t\t\t</td>\n"
+    ."</td>\n"
+    ."\t</tr>\n"
+    ."</table>\n"
+    ."\t</td>\n"
     ."\t</tr>"
     ."</table>";
 }
 
 //SAMPLE ROW
-$templatesoutput.= "\t\t\t<table class='menubar'>\n"
-. "\t\t\t<tr>\n"
-. "\t\t\t\t<td colspan='2' height='8'>\n"
-. "\t\t\t\t\t<strong>".$clang->gT("Preview:")."</strong>\n"
-. "\t\t\t\t\t<input type='button' value='iPhone' id='iphone'>\n"
-. "\t\t\t\t\t<input type='button' value='640x480' id='640'>\n"
-. "\t\t\t\t\t<input type='button' value='800x600' id='800'>\n"
-. "\t\t\t\t\t<input type='button' value='1024x768' id='1024'>\n"
-. "\t\t\t\t\t<input type='button' value='".$clang->gt("Full")."' id='full'>\n"
-. "\t\t\t\t</td>\n"
-. "\t\t\t</tr>\n"
+$templatesoutput.= "\t<table class='menubar'>\n"
+. "\t<tr>\n"
+. "<td colspan='2' height='8'>\n"
+. "\t<strong>".$clang->gT("Preview:")."</strong>\n"
+. "\t<input type='button' value='iPhone' id='iphone'>\n"
+. "\t<input type='button' value='640x480' id='640'>\n"
+. "\t<input type='button' value='800x600' id='800'>\n"
+. "\t<input type='button' value='1024x768' id='1024'>\n"
+. "\t<input type='button' value='".$clang->gt("Full")."' id='full'>\n"
+. "</td>\n"
+. "\t</tr>\n"
 ."\t<tr>\n"
-."\t\t<td width='90%' align='center' >\n";
+."<td width='90%' align='center' >\n";
 
 
 // The following lines are forcing the browser to refresh the templates on each save

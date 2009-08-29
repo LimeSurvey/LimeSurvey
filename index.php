@@ -74,11 +74,11 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
-		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-		."\t\t</center><br />\n";
+	echo "<center><br />\n"
+		."\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
+		."\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
+		."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -98,11 +98,11 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
-		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-		."\t\t</center><br />\n";
+	echo "<center><br />\n"
+		."\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
+		."\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
+		."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -218,11 +218,11 @@ if ($surveyid &&
 		doHeader();
 
 		echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-		echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
-		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
-		."\t\t</center><br />\n";
+		echo "<center><br />\n"
+		."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+		."\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
+		."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
+		."</center><br />\n";
 
 		echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 		doFooter();
@@ -247,11 +247,11 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
-	."\t\t</center><br />\n";
+	echo "<center><br />\n"
+	."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+	."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
+	."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -430,9 +430,9 @@ if ($thissurvey['expiry']!='' and $thissurvey['expiry'] < date("Y-m-d"))
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+	echo "<center><br />\n"
+	."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
 	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -447,9 +447,9 @@ if ($thissurvey['startdate']!='' and $thissurvey['startdate'] >= date("Y-m-d"))
     doHeader();
 
     echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-    echo "\t\t<center><br />\n"
-    ."\t\t\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+    echo "<center><br />\n"
+    ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
     ."<br /><br />\n";
 
     echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -466,10 +466,10 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
+	echo "<center><br />\n"
+	."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+	."\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
 	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -643,9 +643,9 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
 	."\t<!--\n"
-	."\t\tfunction checkconditions(value, name, type)\n"
-	."\t\t\t{\n"
-	."\t\t\t}\n"
+	."function checkconditions(value, name, type)\n"
+	."\t{\n"
+	."\t}\n"
 	."\t//-->\n"
 	."\t</script>\n\n";
 
@@ -2391,23 +2391,23 @@ function surveymover()
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
 		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
 	}
     // here, in some lace, is where I must modify to turn the next button conditionable
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
 		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		$surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
 		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+		$surveymover .= "\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
 		. $clang->gT("Submit")." ' name='move2' />\n";
 	}
 
@@ -2552,7 +2552,7 @@ function doAssessment($surveyid, $returndataonly=false)
 					{
 						if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false)
 						{
-							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
+							$assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
         					    <table align='center'>
 								 <tr>
 								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
@@ -2575,7 +2575,7 @@ function doAssessment($surveyid, $returndataonly=false)
 			{
 				if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
 				{
-					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
+					$assessments .= "\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
 						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
 						 </th></tr>
 						 <tr>

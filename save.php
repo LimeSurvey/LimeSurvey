@@ -181,9 +181,9 @@ function showsaveform()
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
 	."\t<!--\n"
-	."\t\tfunction checkconditions(value, name, type)\n"
-	."\t\t\t{\n"
-	."\t\t\t}\n"
+	."function checkconditions(value, name, type)\n"
+	."\t{\n"
+	."\t}\n"
 	."\t//-->\n"
 	."\t</script>\n\n";
 

@@ -30,9 +30,9 @@ foreach(file("$thistpl/startpage.pstpl") as $op)
 }
 echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 ."\t<script type='text/javascript'>\n"
-."\t\tfunction checkconditions(value, name, type)\n"
-."\t\t\t{\n"
-."\t\t\t}\n"
+."function checkconditions(value, name, type)\n"
+."\t{\n"
+."\t}\n"
 ."\t</script>\n\n";
 
 echo "<form method='post' action='$relativeurl/index.php'>\n";

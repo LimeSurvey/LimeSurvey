@@ -279,7 +279,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 	if ($thissurvey['active'] != "Y")
 	{
-		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+		echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
@@ -803,13 +803,13 @@ for ($i=0;$i<count($conditions);$i++)
 	{
 		$endzone = ")))\n";
 		$endzone .= "\t{\n";
-		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
-		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='on';\n";
+		$endzone .= "document.getElementById('question$cd[0]').style.display='';\n";
+		$endzone .= "document.getElementById('display$cd[0]').value='on';\n";
 		$endzone .= "\t}\n";
 		$endzone .= "\telse\n";
 		$endzone .= "\t{\n";
-		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
-		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='';\n";
+		$endzone .= "document.getElementById('question$cd[0]').style.display='none';\n";
+		$endzone .= "document.getElementById('display$cd[0]').value='';\n";
 		$endzone .= "\t}\n";
 		$cqcount++;
 	}
@@ -870,14 +870,14 @@ if (isset($array_filterqs) && is_array($array_filterqs))
                 $appendj .= "\n";
                 $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "document.getElementById('$tbody').style.display='';\n";
+				$appendj .= "document.getElementById('$dtbody').value='on';\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-				$appendj .= "\t\tradio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "document.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "document.getElementById('$dtbody').value='off';\n";
+				$appendj .= "radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}
@@ -940,7 +940,7 @@ if (isset($qanda) && is_array($qanda))
 		$help=$qa[2];
 		$questioncode=$qa[5];
 		echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-		echo "\t\t\t\t</div>\n";
+		echo "</div>\n";
 	}
 }
 echo "\n\n<!-- END THE GROUP -->\n";
@@ -955,7 +955,7 @@ echo "\n";
 
 if ($thissurvey['active'] != "Y")
 {
-	echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+	echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 }
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
