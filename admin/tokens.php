@@ -271,8 +271,8 @@ if (!$tokenexists) //If no tokens table exists
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
-		. "validfrom D ,\n "
-		. "validuntil D ,\n "
+		. "validfrom T ,\n "
+		. "validuntil T ,\n "
 		. "mpid I ";
 
 
