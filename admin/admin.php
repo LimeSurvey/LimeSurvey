@@ -50,7 +50,7 @@ if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for 
 
 
 
-if ($action != 'showprintablesurvey')
+if ($action != 'showprintablesurvey' && $action != 'ajaxquestionattributes')
 {
   $adminoutput = helpscreenscript();
   $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
@@ -439,11 +439,11 @@ elseif ($action == 'replacementfields')
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && 
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' &&
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' || $action=='checksettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
       $action=='newsurvey' || $action=='listsurveys' ||   
-      $action=='surveyrights' || $action=='quotas') )
+      $action=='surveyrights' || $action=='quotas' ))
 {
 	if ($action=='editsurvey' || $action=='updatesurvey')
 	{
@@ -452,9 +452,9 @@ elseif ($action == 'replacementfields')
 	include('html.php');
 }
 
- if ($action=='addquestion' || $action=='copyquestion' || $action=='editquestion' || 
+ if ($action=='addquestion' || $action=='copyquestion' || $action=='editquestion'  ||
      $action=='orderquestions' || $action=='editattribute' || $action=='delattribute' || 
-     $action=='addattribute' )
+     $action=='addattribute' || $action=='ajaxquestionattributes')
     {if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include('questionhandling.php');}
         else { include('access_denied.php');}    
     }    
@@ -477,7 +477,7 @@ elseif ($action == 'replacementfields')
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput)) 
+      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' ) 
       {
         $adminoutput.= showadminmenu();
       }
@@ -496,6 +496,7 @@ elseif ($action == 'replacementfields')
   if (isset($answersummary  )) {$adminoutput.= $answersummary;}
   if (isset($cssummary      )) {$adminoutput.= $cssummary;}
   if (isset($listcolumnoutput)) {$adminoutput.= $listcolumnoutput;}
+  if (isset($ajaxoutput)) {$adminoutput.= $ajaxoutput;}
 
   
   if (isset($editgroup)) {$adminoutput.= $editgroup;}
@@ -540,15 +541,15 @@ elseif ($action == 'replacementfields')
   if (isset($exportroutput)) {$adminoutput.= $exportroutput;}  
                                                                         
   
-  if (!isset($printablesurveyoutput) && ($subaction!='export'))
+  if (!isset($printablesurveyoutput) && $subaction!='export' && $action!='ajaxquestionattributes')
   {  
-  if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
-  
-  $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
-  unset($_SESSION['metaHeader']);    
-  $adminoutput.= "</td>\n".helpscreen()
-              . "\t</tr>\n"
-              . "</table>\n";
+    if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
+
+    $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+    unset($_SESSION['metaHeader']);    
+    $adminoutput.= "</td>\n".helpscreen()
+                    . "\t</tr>\n"
+                    . "</table>\n";
 	if(!isset($_SESSION['checksessionpost']))
 		$_SESSION['checksessionpost'] = '';
 	$adminoutput .= "<script type=\"text/javascript\">\n"

@@ -149,7 +149,7 @@ if ($action == "copyquestion")
 		. "\t<tr>\n"
 		. "\t\t<td align='right'>";
 
-		$editquestion .= questionjavascript($eqrow['type'], $qattributes);
+		$editquestion .= questionjavascript($eqrow['type']);
 
 		if ($eqrow['type'] == "J" || $eqrow['type'] == "I")
 		{
@@ -290,11 +290,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 		    . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
 		    . "\t\t<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
 		    . getEditor("question-help","help_".$aqrow['language'], "[".$clang->gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
-		    . "\t</span></div>\n"
-		    . "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
-		    . "\t\t<span class='settingentry'>&nbsp;\n"
 		    . "\t</span></div>\n";
-		    $editquestion .= '</div><br />';
+		    $editquestion .= '</div>';
 	    }
 	}
     else
@@ -323,26 +320,25 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         
         
  		//question type:
-  		$editquestion .= "\t<div id='questionbottom'><table><tr>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Question Type:")."</strong></td>\n";
+  		$editquestion .= "\t<div id='questionbottom'><ul>\n"
+  		. "\t\t<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n";
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td align='left'><select id='question_type' name='type' "
+  			$editquestion .= "\t\t<select id='question_type' name='type' "
   			. "onchange='OtherSelection(this.options[this.selectedIndex].value);'>\n"
   			. getqtypelist($eqrow['type'])
-  			. "\t\t</select></td>\n";
+  			. "\t\t</select></li>\n";
   		}
   		else
   		{
   			$qtypelist=getqtypelist('','array');
-            $editquestion .= "\t\t<td align='left'>{$qtypelist[$eqrow['type']]} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
+            $editquestion .= "\t\t<li>{$qtypelist[$eqrow['type']]} - ".$clang->gT("Cannot be modified (Survey is active)")."\n"
   			. "\t\t\t<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n"
-  			. "\t\t</td>\n";
+  			. "\t\t</li>\n";
   		}
   
-  		$editquestion  .="\t</tr><tr id='LabelSets' style='display: none'>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Label Set:")."</strong></td>\n"
-  		. "\t\t<td align='left'>\n";
+  		$editquestion  .="\t<li id='LabelSets' style='display: none'>\n"
+  		. "\t\t<label for='lid'>".$clang->gT("Label Set:")."</label>\n";
 
 		if (!$adding) {$qattributes=questionAttributes();}
         else
@@ -351,7 +347,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         }
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<select name='lid' >\n";
+  			$editquestion .= "\t\t<select id='lid' name='lid' >\n";
   			$labelsets=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
   			if (count($labelsets)>0)
   			{
@@ -368,11 +364,10 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   			}
   			$editquestion .= "\t\t</select>\n";
 
-	  		$editquestion  .="\t</tr><tr id='LabelSets1' style='display: none'>\n"
-  			. "\t\t<td align='right'><strong>".$clang->gT("Second Label Set:")."</strong></td>\n"
-  			. "\t\t<td align='left'>\n";
+	  		$editquestion  .="\t</li><li id='LabelSets1' style='display: none'>\n"
+  			. "\t\t<label for='lid1'>".$clang->gT("Second Label Set:")."</label>\n";
 
-  			$editquestion .= "\t\t<select name='lid1' >\n";
+  			$editquestion .= "\t\t<select id='lid1' name='lid1' >\n";
   			$labelsets1=getlabelsets(GetBaseLanguageFromSurveyID($surveyid));
   			if (count($labelsets1)>0)
   			{
@@ -397,71 +392,64 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
  			. "\t\t\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n"
  			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
   		}
+        $editquestion .= "\t\t</li>\n";
   		
   		if ($activated != "Y")
 		{
-			$editquestion .= "\t\t</td>\n"
-				. "\t</tr>\n"
-				. "\t<tr>\n"
-				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
-				. "\t\t<td align='left'><select name='gid'>\n"
+			$editquestion .= "\t<li>\n"
+				. "\t<label for='gid'>".$clang->gT("Question group:")."</label>\n"
+				. "\t\t<select name='gid' id='gid'>\n"
 				. getgrouplist3($eqrow['gid'])
-				. "\t\t</select></td>\n"
-				. "\t</tr>\n";
-			$editquestion .= "\t<tr id='OtherSelection'>\n"
-				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+				. "\t\t</select>\n"
+				. "\t</li>\n";
+
 		}
 		else
 		{
-			$editquestion .= "\t\t</td>\n"
-				. "\t</tr>\n"
-				. "\t<tr>\n"
-				. "\t<td align='right'><strong>".$clang->gT("Question group:")."</strong></td>\n"
-				. "\t\t<td align='left'>\n"
+			$editquestion .= "\t<li>\n"
+				. "\t<label>".$clang->gT("Question group:")."</label>\n"
 				. getgrouplist4($eqrow['gid'])
                 . "\t<input type='hidden' name='gid' value='{$eqrow['gid']}' />"                
-				. "\t\t</td>\n"
-				. "\t</tr>\n";
-			$editquestion .= "\t<tr id='OtherSelection'>\n"
-				. "\t\t<td align='right'><strong>".$clang->gT("Other:")."</strong></td>\n";
+				. "</li>\n";
 		}
-  		
+        $editquestion .= "\t<li id='OtherSelection'>\n"
+            . "\t\t<label>".$clang->gT("Other:")."</label>\n";  		
+            
   		if ($activated != "Y")
   		{
-  			$editquestion .= "\t\t<td align='left'>\n"
-  			. "\t\t\t<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'";
+  			$editquestion .= "<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'";
   			if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
   			$editquestion .= " />&nbsp;&nbsp;\n"
   			. "\t\t\t<label for='ON'>".$clang->gT("No")."</label><input id='ON' type='radio' class='radiobtn' name='other' value='N'";
   			if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked='checked'";}
-  			$editquestion .= " />\n"
-  			. "\t\t</td>\n";
+  			$editquestion .= " />\n";
   		}
   		else
   		{
-  			$editquestion .= "<td align='left'> [{$eqrow['other']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
-  			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" /></td>\n";
+  			$editquestion .= " [{$eqrow['other']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"
+  			. "\t\t\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" />\n";
   		}
-  		$editquestion .= "\t</tr>\n";
+  		$editquestion .= "\t</li>\n";
   
-  		$editquestion .= "\t<tr id='MandatorySelection'>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Mandatory:")."</strong></td>\n"
-  		. "\t\t<td align='left'>\n"
+  		$editquestion .= "\t<li id='MandatorySelection'>\n"
+  		. "\t\t<label>".$clang->gT("Mandatory:")."</label>\n"
   		. "\t\t\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'";
   		if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />&nbsp;&nbsp;\n"
   		. "\t\t\t<label for='MN'>".$clang->gT("No")."</label><input id='MN' type='radio' class='radiobtn' name='mandatory' value='N'";
   		if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
   		$editquestion .= " />\n"
-  		. "\t\t</td>\n"
-  		. "\t</tr>\n";
+  		. "</li>\n";
   		
-  		$editquestion .= "\t<tr id='Validation'>\n"
-  		. "\t\t<td align='right'><strong>".$clang->gT("Validation:")."</strong></td>\n"
-  		. "\t\t<td align='left'>\n"
-  		. "\t\t<input type='text' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
-  		. "\t\t</td>\n"
-  		. "\t</tr>\n";
+  		$editquestion .= "\t<li id='Validation'>\n"
+  		. "\t\t<label for='preg'>".$clang->gT("Validation:")."</label>\n"
+  		. "\t\t<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
+  		. "\t</li></ul>\n";
+        $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
+                        .'<div id="advancedquestionsettingswrapper" style="display:none;">'
+                        .'<div class="loader"></div>'
+                        .'<div id="advancedquestionsettings">'.$clang->gT("Loading...").'</div>'
+                        .'</div>';
 	
 	
     if ($adding)
@@ -490,16 +478,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         } 
         else      
         {
-            $editquestion .= "<tr><td><input type='hidden' name='questionposition' value='' /></tr></td>";
+            $editquestion .= "<input type='hidden' name='questionposition' value='' />";
         }        
         
-        $qattributes=questionAttributes();
-
-        $editquestion .= "\t<tr id='QTattributes'>
-                            <td align='right'><strong><a name='qtattributes'>".$clang->gT("Question Attributes:")."</a></strong></td>
-                            <td align='left'><select id='QTlist' name='attribute_name' >
-                            </select>
-                            <input type='text' id='QTtext' name='attribute_value'  /></td></tr>\n";
         $editquestion .= "\t<tr>\n"
         . "\t\t<td align='right'></td><td align='left'>";        
         $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Add question")."' />\n"
@@ -507,66 +488,15 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
     }
     else
     {
-        $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Update Question")."' />\n"
+        $editquestion .= "\t<p><input type='submit' value='".$clang->gT("Update Question")."' />\n"
         . "\t<input type='hidden' name='action' value='updatequestion' />\n"
-        . "\t<input type='hidden' name='qid' value='$qid' />";
+        . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     }
-	$editquestion .= "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-    . "</td></tr></table></div></form>\n"
-	. "\t\n";
+	$editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
+    . "</div></div></form><p/>\n";
 	
 
-    if (!$adding) {
-        $qidattributes=getQuestionAttributes($qid);
-	    $editquestion .= "\t\t\t<table id='QTattributes' width='40%' >
-					       <tr>
-					        <td colspan='2' align='center'>
-						      <form action='$scriptname#qtattributes' method='post'><table class='attributetable'>
-						      <tr>
-						        <th colspan='4'><a name='qtattributes'>".$clang->gT("Question Attributes:")."</a></th>
-   					          </tr>
-						      <tr><th colspan='4' height='5'></th></tr>
-                              <tr>  			  
-						      <td nowrap='nowrap' width='50%' ><select id='QTlist' name='attribute_name' >
-						      </select></td><td align='center' width='20%'><input type='text' id='QTtext'  name='attribute_value' /></td>
-						      <td align='center'><input type='submit' value='".$clang->gT("Add")."' />
-						      <input type='hidden' name='action' value='addattribute' />
-						      <input type='hidden' name='sid' value='$surveyid' />
-					          <input type='hidden' name='qid' value='$qid' />
-					          <input type='hidden' name='gid' value='$gid' /></td></tr>
-					          <tr><th colspan='4' height='10'></th></tr>\n";
-	    $editquestion .= "\t\t\t</table></form>\n";
-	    
-        $attributetranslations=questionAttributes(true);
-	    foreach ($qidattributes as $qa)
-	    {
-		    $editquestion .= "\t\t\t<table class='attributetable' width='90%' border='0' cellspacing='0'>"
-		    ."<tr><td width='85%'>"
-		    ."<form action='$scriptname#qtattributes' method='post'>"
-		    ."<table width='100%'><tr><td width='65%'><span title='".$attributetranslations[$qa['attribute']]['help']."'>"
-		    .$attributetranslations[$qa['attribute']]['caption']."</span></td>
-					       <td align='center' width='25%'><input type='text' name='attribute_value' value='"
-		    .$qa['value']."'  /></td>
-					       <td ><input type='submit' value='"
-		    .$clang->gT("Save")."' />
-					       <input type='hidden' name='action' value='editattribute' />\n
-					       <input type='hidden' name='sid' value='$surveyid' />\n
-					       <input type='hidden' name='gid' value='$gid' />\n
-					       <input type='hidden' name='qid' value='$qid' />\n
-					       <input type='hidden' name='qaid' value='".$qa['qaid']."' />\n"
-		    ."\t\t\t</td></tr></table></form></td><td>
-					       <form action='$scriptname#qtattributes' method='post'><table width='100%'><tr><td width='5%'>
-					       <input type='submit' value='"
-		    .$clang->gT("Delete")."' />"
-		    . "\t<input type='hidden' name='action' value='delattribute' />\n"
-		    . "\t<input type='hidden' name='sid' value='$surveyid' />\n"
-		    . "\t<input type='hidden' name='qid' value='$qid' />\n"
-		    . "\t<input type='hidden' name='gid' value='$gid' />\n"
-		    . "\t<input type='hidden' name='qaid' value='".$qa['qaid']."' />\n"
-		    . "</td></tr></table>\n"
-		    . "</form>\n</table>";
-	    }
-    }
+
     if ($adding)
     {
         // Import dialogue
@@ -594,13 +524,8 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         ."</script>\n";
           
     }
-    else
-    {
-        
-        $editquestion .= "</td></tr></table><div>";
-    }
     
-	$editquestion .= questionjavascript($eqrow['type'], $qattributes);
+	$editquestion .= questionjavascript($eqrow['type']);
 }
 
 //Constructing the interface here...
@@ -797,7 +722,7 @@ if($action == "orderquestions")
   	$orderquestions .="<br />" ;
 }	
 
-function questionjavascript($type, $qattributes)
+function questionjavascript($type)
 {
     $newquestionoutput = "<script type='text/javascript'>\n"
     ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
@@ -807,33 +732,7 @@ function questionjavascript($type, $qattributes)
     $newquestionoutput .= "\t\t\tvar qnames = new Array();\n\n";
     $newquestionoutput .= "\t\t\tvar qhelp = new Array();\n\n";
     $newquestionoutput .= "\t\t\tvar qcaption = new Array();\n\n";
-    foreach ($qattributes as $key=>$val)
-    {
-        foreach ($val as $vl)                                                  
-        {
-            $newquestionoutput .= "\t\t\tqtypes[$jc]='".$key."';\n";
-            $newquestionoutput .= "\t\t\tqnames[$jc]='".$vl['name']."';\n";
-            $newquestionoutput .= "\t\t\tqhelp[$jc]='".javascript_escape($vl['help'],false,true)."';\n";
-            $newquestionoutput .= "\t\t\tqcaption[$jc]='".javascript_escape($vl['caption'],false,true)."';\n";
-            $jc++;
-        }
-    }
-    $newquestionoutput .= "\t\t\t function buildQTlist(type)
-                {
-                document.getElementById('QTattributes').style.display='none';
-                for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
-                    {
-                    document.getElementById('QTlist').options[i] = null;
-                    }
-                for (var i=0;i<qtypes.length;i++)
-                    {
-                    if (qtypes[i] == type)
-                        {
-                        document.getElementById('QTattributes').style.display='';
-                        document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qcaption[i]+' - '+qnames[i], qnames[i]);
-                        }
-                    }
-                }";
+
     //The following javascript turns on and off (hides/displays) various fields when the questiontype is changed
     $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
     . "\t{\n"
@@ -894,7 +793,6 @@ function questionjavascript($type, $qattributes)
     . "\t\tdocument.getElementById('Validation').style.display = 'none';\n"
     . "\t\tdocument.getElementById('MandatorySelection').style.display='';\n"
     . "\t\t}\n"
-    . "\tbuildQTlist(QuestionType);\n"
     . "\t}\n"
     . "\tOtherSelection('$type');\n"
     . "</script>\n";
@@ -902,5 +800,53 @@ function questionjavascript($type, $qattributes)
     return $newquestionoutput;
 }
 
+if ($action == "ajaxquestionattributes")  
+{
+        $type=returnglobal('question_type');
+        if (isset($qid))
+        {
+            $attributesettings=getQAttributes($qid);
+        }
+        
+        $availableattributes=questionAttributes();
+        if (isset($availableattributes[$type]))
+        {
+            $ajaxoutput = "<ul>\n";
+            foreach ($availableattributes[$type] as $qa)
+            {
+                if (isset($attributesettings[$qa['name']]))
+                {
+                    $value=$attributesettings[$qa['name']];
+                }
+                else
+                {
+                    $value=$qa['default'];
+                }
+                $ajaxoutput .= "<li>"
+                                ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
+                switch ($qa['inputtype']){
+                    case 'singleselect':    $ajaxoutput .="<select id='{$qa['name']}' name='{$qa['name']}'>";
+                                            foreach($qa['options'] as $optionvalue=>$optiontext)
+                                            {
+                                               $ajaxoutput .="<option value='$optionvalue' ";
+                                               if ($value==$optionvalue)
+                                               {
+                                                $ajaxoutput .=" selected='selected' ";
+                                               }
+                                               $ajaxoutput .=">$optiontext</option>";
+                                            }
+                                            $ajaxoutput .="</select>";
+                                            break;
+                    case 'text':    $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+                                    break;
+                    case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+                                    break;
+                }
+                $ajaxoutput .="</li>\n";
+            }
+            $ajaxoutput .= "</ul>";
+        }
+    
+}
 
 ?>

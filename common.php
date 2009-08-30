@@ -3106,6 +3106,7 @@ function buildLabelSetCheckSumArray()
 function getQuestionAttributes($qid)
 {
 	global $dbprefix, $connect;
+    $qid_attributes=array();
     $qid=sanitize_int($qid);
 	$query = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
 	$result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
@@ -3158,235 +3159,315 @@ function questionAttributes($returnByName=false)
 
     $qattributes["alphasort"]=array(
     "types"=>"!LOWZ",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT("Sort answers alphabetically"),
     "caption"=>$clang->gT('Sort answers alphabetically'));
     
     $qattributes["answer_width"]=array(
     "types"=>"ABCEF1:;",
+    'inputtype'=>'text',
     "help"=>$clang->gT('The percentage width of the answer column'),
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
     "types"=>"ABCEF:;R",
+    'inputtype'=>'text',
     "help"=>$clang->gT("Filter an array's answers from a Multiple Options Question"),
     "caption"=>$clang->gT('Array filter'));
     
     $qattributes["category_separator"]=array(
     "types"=>"!",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Category Separator'),
     "caption"=>$clang->gT('Category Separator'));
         
     $qattributes["code_filter"]=array(
     "types"=>"WZ",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Filter the available answers by this value'),
     "caption"=>$clang->gT('Code filter'));
 
 	$qattributes["display_columns"]=array(
 	"types"=>"LMZG",
+    'inputtype'=>'integer',
+    'default'=>'1',
+    'min'=>'1',
+    'max'=>'100',
 	"help"=>$clang->gT('Number of columns to display'),
     "caption"=>$clang->gT('Display columns'));
     
     $qattributes["display_rows"]=array(
     "types"=>"QSTU",
+    'inputtype'=>'text',
     "help"=>$clang->gT('How many rows to display'),
     "caption"=>$clang->gT('Display rows'));
     
 	$qattributes["hide_tip"]=array(
 	"types"=>"!LMOPRWZK",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
   
 	$qattributes["max_answers"]=array(
 	"types"=>"MPR",
-	"help"=>$clang->gT('Limit the number of possible answers'),
+    'inputtype'=>'integer',
+    'default'=>0,
+	"help"=>$clang->gT('Limit the number of possible answers (0=No limit)'),
     "caption"=>$clang->gT('Maximum answers'));
    
     $qattributes["max_num_value"]=array(
     "types"=>"K",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Maximum sum value of multiple numeric input'),
     "caption"=>$clang->gT('Maximum sum value'));
 
     $qattributes["maximum_chars"]=array(
     "types"=>"STUNQK",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Maximum characters allowed'),
     "caption"=>$clang->gT('Maximum characters'));
 
 	$qattributes["min_answers"]=array(
 	"types"=>"MPR",
-	"help"=>$clang->gT('Ensure a minimum number of possible answers'),
+    'inputtype'=>'integer',
+    'default'=>0,
+	"help"=>$clang->gT('Ensure a minimum number of possible answers (0=No limit)'),
     "caption"=>$clang->gT('Minimum answers'));
 
 	$qattributes["other_comment_mandatory"]=array(
 	"types"=>"PLW!Z",
+    'inputtype'=>'text',
 	"help"=>$clang->gT("Make the \"other comment\" field mandatory when the \"other\" field has been marked"),
     "caption"=>$clang->gT('Other comment mandatory'));
     
     $qattributes["numbers_only"]=array(
     "types"=>"Q;S",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
 
 
     $qattributes["other_numbers_only"]=array(
     "types"=>"LMP",
-    "help"=>$clang->gT('Allow only numerical input for `Other` text'),
-    "caption"=>$clang->gT('Numbers only for `Other`'));
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
+    "help"=>$clang->gT('Allow only numerical input for "Other" text'),
+    "caption"=>$clang->gT('Numbers only for "Other"'));
 
 
     $qattributes["random_order"]=array(
     "types"=>"!LMOPQKRWZFHABCE1:;",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
     
     $qattributes["text_input_width"]=array(
     "types"=>"NSTUK;Q",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Width of text input box'),
     "caption"=>$clang->gT('Input box width'));
     
 	$qattributes["equals_num_value"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Multiple numeric inputs sum must equal this value'),
     "caption"=>$clang->gT('Equals sum value'));
     
 	$qattributes["min_num_value"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Multiple numeric inputs must be greater than this value'),
     "caption"=>$clang->gT('Minimum sum value'));
 
 	$qattributes["slider_layout"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Use slider layout'),
     "caption"=>$clang->gT('Use slider layout'));
     
 	$qattributes["slider_min"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider minimum value'),
     "caption"=>$clang->gT('Slider minimum value'));
     
 	$qattributes["slider_max"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider maximum value'),
     "caption"=>$clang->gT('Slider maximum value'));
     
 	$qattributes["slider_accuracy"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider accuracy'),
     "caption"=>$clang->gT('Slider accuracy'));
     
 	$qattributes["slider_default"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider initial value'),
     "caption"=>$clang->gT('Slider initial value'));
 
 	$qattributes["prefix"]=array(
 	"types"=>"KNSQ",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
     
 	$qattributes["suffix"]=array(
 	"types"=>"KNSQ",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Add a suffix to the answer field'),
     "caption"=>$clang->gT('Answer suffix'));
 	
 	$qattributes["dropdown_dates"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Use accessible select boxes instead of calendar popup'),
     "caption"=>$clang->gT('Display select boxes'));
     
 	$qattributes["dropdown_dates_year_min"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Minimum year value for dropdown list'),
     "caption"=>$clang->gT('Minimum dropdown year'));
     
 	$qattributes["dropdown_dates_year_max"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Maximum year value for dropdown list'),
     "caption"=>$clang->gT('Maximum dropdown year'));
 	
 	$qattributes["exclude_all_others"]=array(
 	"types"=>"M",
-	"help"=>$clang->gT('Excludes all other options if this is selected'),
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+    "help"=>$clang->gT('Excludes all other options if this is selected'),
     "caption"=>$clang->gT('Exclusive option'));
     
 	$qattributes["multiflexible_max"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Maximum value for array(mult-flexible) question type'),
     "caption"=>$clang->gT('Maximum value'));
     
 	$qattributes["multiflexible_min"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Minimum value for array(multi-flexible) question type'),
     "caption"=>$clang->gT('Minimum value'));
     
 	$qattributes["multiflexible_step"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Step value for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Step value'));
     
 	$qattributes["multiflexible_checkbox"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Use Checkbox layout for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Checkbox layout'));
     
 	$qattributes["use_dropdown"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Use Dual Dropdown instead of Dual Scale'),
     "caption"=>$clang->gT('Dual dropdown'));
     
 	$qattributes["dropdown_prepostfix"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
     "caption"=>$clang->gT('Prefix|Suffix'));
     
 	$qattributes["dualscale_headerA"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Header for scale A'),
     "caption"=>$clang->gT('Header scale A'));
     
 	$qattributes["dualscale_headerB"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Header for scale B'),
     "caption"=>$clang->gT('Header scale B'));
     
 	$qattributes["dropdown_separators"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
     "caption"=>$clang->gT('Dropdown separators'));
     
 	$qattributes["other_replace_text"]=array(
 	"types"=>"LMPWZ!",
+    'inputtype'=>'text',
 	"help"=>$clang->gT("Replaces the 'other' label with text"),
     "caption"=>$clang->gT('"Other" caption'));
 	
 	$qattributes["public_statistics"]=array(
 	"types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
 	"help"=>$clang->gT('Show statistics of a certain question to the user'),
     "caption"=>$clang->gT('Show in public statistics'));
 	
 	$qattributes["max_num_value_sgqa"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
 	"caption"=>$clang->gT('Max value from SGQA'));
 	
 	$qattributes["min_num_value_sgqa"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
 	"caption"=>$clang->gT('Min value from SGQA'));
 
 	$qattributes["num_value_equals_sgqa"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
 	"caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["page_break"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
     "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
     "caption"=>$clang->gT('Insert page break in printable view'));
     
     $qattributes["scale_export"]=array(
     "types"=>"!LOFWZWH1:MPOGYCE",
-    "help"=>$clang->gT("1=nominal 2=ordinal 3=scale."),
-    "caption"=>$clang->gT('Export scale type 1=nominal 2=ordinal 3=scale.'));
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Default'),
+                     1=>$clang->gT('Nominal'),
+                     2=>$clang->gT('Ordinal'),
+                     3=>$clang->gT('Scale')),
+    'default'=>0,      
+    "help"=>$clang->gT(""),
+    "caption"=>$clang->gT('Export scale type'));
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
@@ -3395,6 +3476,9 @@ function questionAttributes($returnByName=false)
 		    for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
 		    {
 			    $qat[substr($qvalue['types'], $i, 1)][]=array("name"=>$qname,
+                                                            "inputtype"=>$qvalue['inputtype'],
+                                                            "options"=>isset($qvalue['options'])?$qvalue['options']:'',
+                                                            "default"=>isset($qvalue['default'])?$qvalue['default']:'',
 			                                                "help"=>$qvalue['help'],
                                                             "caption"=>$qvalue['caption']);
 		    }

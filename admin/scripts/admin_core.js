@@ -15,7 +15,7 @@ $(document).ready(function(){
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
     }
- 
+    // Loads the tooltips for the toolbars
     $('img[alt]').qtip({
        style: { name: 'cream', 
                 tip: true, 
@@ -30,11 +30,61 @@ $(document).ready(function(){
                         target: 'bottomRight'}
                 },
        show: {effect: { length:50}}
-    });    
+    });
+
+    if ($('#showadvancedattributes').length>0) updatequestionattributes();
+    
+    $('#showadvancedattributes').click(function(){
+        $('#showadvancedattributes').hide();
+        $('#hideadvancedattributes').show();
+        $('#advancedquestionsettingswrapper').animate({
+          "height": "toggle", "opacity": "toggle"
+        });
+
+    })                                                                                 
+    $('#hideadvancedattributes').click(function(){
+        $('#showadvancedattributes').show();
+        $('#hideadvancedattributes').hide();
+        $('#advancedquestionsettingswrapper').animate({
+          "height": "toggle", "opacity": "toggle"
+        });
+
+    }) 
+    $('#question_type').change(updatequestionattributes);
 });
 
 
 //We have form validation and other stuff..
+
+function updatequestionattributes()
+{
+        $('.loader').show();
+        $('#advancedquestionsettings').html('');
+        $('#advancedquestionsettings').load('admin.php?action=ajaxquestionattributes',{qid:$('#qid').val(),
+                                                                                   question_type:$('#question_type').val(),
+                                                                                   sid:$('#sid').val()
+                                                                                  }, function(){
+            // Loads the tooltips for the toolbars
+            
+            // Loads the tooltips for the toolbars
+           $('.loader').hide();
+            $('label[title]').qtip({
+               style: { name: 'cream', 
+                        tip: true, 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'bottomRight'}
+                        },
+               show: {effect: { length:50}}
+            });}                                                                                        
+    );  
+}
 
 function validatefilename (form, strmessage )
 {

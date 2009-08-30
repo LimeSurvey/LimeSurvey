@@ -34,10 +34,17 @@ p {
 	background: #121a28;
 	margin: 0;
 	padding: 5px;
+    margin-bottom:400px;
 }
 
 img {
 	border: 0;
+}
+
+a {
+    color: #328639;
+    text-decoration: underline;
+    cursor:pointer;
 }
 
 a:hover {
@@ -722,7 +729,7 @@ table.statisticstable, table.statisticssummary {
     background:#D2E0F2;
     text-align:center;
     color:#1D2D45;
-    padding:4 10px;
+    padding:4px 10px;
 }
 
 .statisticstable tfoot tr {
@@ -794,4 +801,25 @@ div.messagebox .warningheader {
 
 .conditiontbl td:first-child {
     text-align:right;
+}
+
+
+#frmeditquestion li label:first-child {
+    width: 44%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+}
+
+#frmeditquestion li {  
+    list-style-type: none;
+    padding-bottom:5px;
+}
+
+div.loader {
+	background-image: url(images/ajax-loader.gif);
+    background-repeat: no-repeat;
+    width:31px;
+    height:31px;
 }

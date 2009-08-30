@@ -1217,7 +1217,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 			{
 			$questionsummary .= "<a href=\"#\" accesskey='d' onclick=\"window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')\""
-			. "title=\"".$clang->gTview("Preview This Question")."\""
+			. "title=\"".$clang->gTview("Preview This Question")."\">"
 			. "<img src='$imagefiles/preview.png' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
 			. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 			} else {
@@ -3573,74 +3573,4 @@ function replacenewline ($texttoreplace)
 
 	return $new_str;
 }
-/*
-function questionjavascript($type, $qattributes)
-	{
-	$newquestion = "<script type='text/javascript'>\n"
-				 . "<!--\n";
-		$jc=0;
-		$newquestion .= "var qtypes = new Array();\n";
-		$newquestion .= "var qnames = new Array();\n\n";
-		foreach ($qattributes as $key=>$val)
-			{
-			foreach ($val as $vl)
-				{
-				$newquestion .= "qtypes[$jc]='".$key."';\n";
-				$newquestion .= "qnames[$jc]='".$vl['name']."';\n";
-				$jc++;
-				}
-			}
-		$newquestion .= " function buildQTlist(type)
-				{
-				document.getElementById('QTattributes').style.display='none';
-				for (var i=document.getElementById('QTlist').options.length-1; i>=0; i--)
-					{
-					document.getElementById('QTlist').options[i] = null;
-					}
-				for (var i=0;i<qtypes.length;i++)
-					{
-					if (qtypes[i] == type)
-						{
-						document.getElementById('QTattributes').style.display='';
-						document.getElementById('QTlist').options[document.getElementById('QTlist').options.length] = new Option(qnames[i], qnames[i]);
-						}
-					}
-				}";
-	$newquestion .="\nfunction OtherSelection(QuestionType)\n"
-				 . "{\n"
-				 . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
-				 . "if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
-				 . "{\n"
-				 . "document.getElementById('OtherSelection').style.display = '';\n"
-				 . "document.getElementById('LabelSets').style.display = 'none';\n"
-				 . "document.getElementById('Validation').style.display = 'none';\n"
-				 . "}\n"
-				 . "else if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == 'W' || QuestionType == 'Z')\n"
-				 . "{\n"
-				 . "document.getElementById('LabelSets').style.display = '';\n"
-				 . "document.getElementById('OtherSelection').style.display = 'none';\n"
-				 . "document.getElementById('Validation').style.display = 'none';\n"
-				 . "}\n"
-				 . "else if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='')\n"
-				 . "{\n"
-				 . "document.getElementById('Validation').style.display = '';\n"
-				 . "document.getElementById('OtherSelection').style.display ='none';\n"
-				 . "document.getElementById('ON').checked = true;\n"
-				 . "document.getElementById('LabelSets').style.display='none';\n"
-				 . "}\n"
-				 . "else\n"
-				 . "{\n"
-				 . "document.getElementById('LabelSets').style.display = 'none';\n"
-				 . "document.getElementById('OtherSelection').style.display = 'none';\n"
-				 . "document.getElementById('ON').checked = true;\n"
-				 . "document.getElementById('Validation').style.display = 'none';\n"
-				 //. "document.addnewquestion.other[1].checked = true;\n"
-				 . "}\n"
-				 . "buildQTlist(QuestionType);\n"
-				 . "}\n"
-				 . "OtherSelection('$type');\n"
-				 . "-->\n"
-				 . "</script>\n";
-
-}      */
 ?>
