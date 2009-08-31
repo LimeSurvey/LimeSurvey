@@ -5800,10 +5800,11 @@ function checkquestionfordisplay($qid, $gid=null)
 		$conditionsfoundforthisscenario=0;
 		while($row=$result->FetchRow())
 		{
-			// Conditions on the same question are Anded together
+			// Conditions on different cfieldnames from the same question are ANDed together
 			// (for instance conditions on several multiple-numerical lines)
+			//
 			// However, if they are related to the same cfieldname
-			// they are Ored. Conditions on the same cfieldname can be either:
+			// they are ORed. Conditions on the same cfieldname can be either:
 			// * conditions on the same 'simple question': 
 			//   - for instance several possible answers on the same radio-button question
 			// * conditions on the same 'multiple choice question': 
@@ -5811,7 +5812,8 @@ function checkquestionfordisplay($qid, $gid=null)
 			//     cfieldname (1X1X1a, 1X1X1b, ...), but the condition uses only the base 
 			//     'SGQ' cfieldname and the expected answers codes as values
 			//   - then, in the following lines for questions M or P, we transform the
-			//     condition SGQ='a' to SGQa='Y'
+			//     condition SGQ='a' to SGQa='Y'. We need also to keep the artificial distinctcfieldname
+			//     value to SGQ so that we can implement ORed conditions between the cbx
 			//  ==> This explains why conditions on multiple choice answers are ORed even if
 			//      in reality they use a different cfieldname for each checkbox
 			//
@@ -5868,10 +5870,18 @@ function checkquestionfordisplay($qid, $gid=null)
 			// Fix the cfieldname and cvalue in case of type M or P questions
 			if ($thistype == "M" || $thistype == "P")
 			{
+				// The distinctcfieldname simply is the virtual cfieldname
+				$row['distinctcfieldname']=$row['cfieldname'];
+
 				// For multiple choice type questions, the "answer" value will be "Y"
 				// if selected, the fieldname will have the answer code appended.
 				$row['cfieldname']=$row['cfieldname'].$row['value'];
 				$row['value']="Y";     
+			}
+			else
+			{ 
+				// the distinctcfieldname simply is the real cfieldname
+				$row['distinctcfieldname']=$row['cfieldname'];
 			}
 			
 			if ( !is_null($gid) && $gid == $cq_gid && $conditionSourceType == 'question')
@@ -6050,9 +6060,9 @@ function checkquestionfordisplay($qid, $gid=null)
 				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
 				// while conditions on different cfieldnames (either different conditions
 				// or conditions on different cfieldnames inside the same question)
-				if (!isset($distinctcqids[$row['cfieldname']]) || $distinctcqids[$row['cfieldname']] == 0)
+				if (!isset($distinctcqids[$row['distinctcfieldname']]) || $distinctcqids[$row['distinctcfieldname']] == 0)
 				{
-					$distinctcqids[$row['cfieldname']] = 1;
+					$distinctcqids[$row['distinctcfieldname']] = 1;
 				}
 			}
 			else
@@ -6061,9 +6071,9 @@ function checkquestionfordisplay($qid, $gid=null)
 				// indexed by cfieldname so that conditions on theb same cfieldname ar Ored
 				// while conditions on different cfieldnames (either different conditions
 				// or conditions on different cfieldnames inside the same question)
-				if (!isset($distinctcqids[$row['cfieldname']]))
+				if (!isset($distinctcqids[$row['distinctcfieldname']]))
 				{
-					$distinctcqids[$row['cfieldname']] = 0;
+					$distinctcqids[$row['distinctcfieldname']] = 0;
 				}
 			}
 		} // while
