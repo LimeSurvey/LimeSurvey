@@ -77,6 +77,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.85+ (build 7524) to 1.85+ (build 7548) [31-08-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: French (b00z00)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Dutch Informal by Gert Mensing. (jaycburton)
+#Updated translation: Dutch by Menno Dekker (jaycburton)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Russian by Alexander Matrunich. (jaycburton)
+#Updated translation: Slovenian by Tomi Zurej. (jaycburton)
+#Updated translation: Swedish (maxz)
+-Fixed issue #3394: Drop down datefield behaving strange when repeatedly submitted and a mandatory block occurs (c_schmitz)
+-Fixed issue #3586: Added alt tags on text input boxes for improved accessibility (c_schmitz)
+-Fixed issue #3588: User with survey right 'Browse responses' can delete/modify saved answers (c_schmitz)
+-Fixed issue #3596: Array_filter attribute not working correctly  when used with a Multiflexi array question (c_schmitz)
+-Fixed issue #3602: Valid from and Valid until fields in tokens don't accept different time than 0:00 (c_schmitz)
+
+
+
 Changes from 1.85+ (build 7454) to 1.85+ (build 7523) [24-08-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: Croatian (idobraca)
 #Updated translation: French (b00z00)
