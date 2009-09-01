@@ -744,8 +744,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
-		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1 , $matches );
-		$c = $matches;
+		$oldtitle=$qtitle_custom;
+		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
+		$c = ($qtitle_custom!=$oldtitle)?1:0;
 	};
 // START <EMBED> work-around step 2
 	$qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
@@ -753,8 +754,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
 	{ 
 		$matches = 0;
-		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 , $matches );
-		$c = $matches;
+		$oldtitle=$qtitle_custom;
+		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 ); // I removed the $count param because it is PHP 5.1 only.
+		$c = ($qtitle_custom!=$oldtitle)?1:0;
 	};
 	$qtitle = $qtitle_custom;
 // =====================================================
@@ -838,7 +840,7 @@ function mandatory_message($ia)
 						}
 						else
 						{
-							$othertext=$clang->gT('Other');
+							$othertext=$clang->gT('Other:');
 						}
 						$qtitle .= "<br />\n".sprintf($clang->gT("If you choose '%s' you must provide a description."), $othertext);
 					}
@@ -971,6 +973,7 @@ function do_date($ia)
 	$qidattributes=getQAttributes($ia[0]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+    
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     
 	if (isset($qidattributes['dropdown_dates'])) {
@@ -1059,7 +1062,7 @@ function do_date($ia)
                                 
                                 if (isset($qidattributes['dropdown_dates_year_max']))
                                 {
-                                    $yearmax = $qidattributes['dropdown_dates_year_min'];
+                                    $yearmax = $qidattributes['dropdown_dates_year_max'];
                                 }
                                 else
                                 {
@@ -1083,7 +1086,7 @@ function do_date($ia)
                     }        
         }
 
-		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" onchange="checkconditions(this.value, this.name, this.type)" />
+ 		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="checkconditions(this.value, this.name, this.type)" />
 			</p>';
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
@@ -1093,7 +1096,7 @@ function do_date($ia)
 	} 
     else 
         {
-            $js_header_includes[] = '/scripts/jquery/languages/ui.datepicker-'.$clang->langcode.'.js';
+            $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
             $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
 
             // Format the date  for output
@@ -1107,10 +1110,29 @@ function do_date($ia)
                 $dateoutput='';  
             }
             
+
+            if (isset($qidattributes['dropdown_dates_year_min'])){ 
+                $minyear=$qidattributes['dropdown_dates_year_min'];
+            }
+            else
+            {
+                $minyear='1980';
+            }
+
+            if (isset($qidattributes['dropdown_dates_year_max'])){ 
+                $maxyear=$qidattributes['dropdown_dates_year_max'];
+            }
+            else
+            {
+                $maxyear='2020';
+            }
+            
             $answer ="<p class=\"question\">
-				        <input class='popupdate' type=\"text\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
+				        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
+                        <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
+                        
 			         </p>
 			         <p class=\"tip\">                      
 				         ".sprintf($clang->gT('Format: %s'),$dateformatdetails['dateformat'])."
@@ -1171,7 +1193,7 @@ function do_list_dropdown($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
@@ -1326,7 +1348,7 @@ function do_list_dropdown($ia)
 		$answer .= '					<option value=" ">'.$clang->gT('No answer')."</option>\n";
 	}
 	$answer .= '				</select>
-				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="{$_SESSION[$ia[1]]}" />';
+				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
 
 	if (isset($other) && $other=='Y')
 	{
@@ -1377,7 +1399,7 @@ function do_list_dropdown($ia)
 //		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onchange='checkconditions(this.value, this.name, this.type);'";
+		$answer .= "  alt='".$clang->gT('Other answer')."' onchange='checkconditions(this.value, this.name, this.type);'";
 		$thisfieldname="$ia[1]other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		$answer .= ' />';
@@ -1521,7 +1543,7 @@ function do_list_flexible_dropdown($ia)
 ';
 	}
 
-	$answer .= '				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
+	$answer .= '				<input type="hidden" alt=\"'.$clang->gT('Other text').'\" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"{$_SESSION[$ia[1]]}\" />\n";
 
 	if (isset($other) && $other=="Y")
 	{
@@ -1556,7 +1578,7 @@ function do_list_flexible_dropdown($ia)
 		."\t}\n"
 		."//--></script>\n".$answer;
 
-		$answer .= '				<input type="text" id="othertext'.$ia[1].'" name="'.$ia[1].'other" style="display:';
+		$answer .= '				<input type="text" id="othertext'.$ia[1].'" alt="'.$clang->gT('Other text').'" name="'.$ia[1].'other" style="display:';
 		if ($_SESSION[$ia[1]] != '-oth-')
 		{
 			$answer .= ' none';
@@ -1661,7 +1683,7 @@ function do_list_radio($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if (isset($other) && $other=='Y') {$anscount++;} //Count up for the Other answer
@@ -1851,7 +1873,7 @@ function do_list_flexible_radio($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
@@ -2463,7 +2485,7 @@ function do_ranking($ia)
 			. "     count={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
 			. "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "     alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
-				    $minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+				    $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
 			. "     return false;\n"
 			. "   } else {\n"	
 			. "     if (oldonsubmit_{$ia[0]}){\n"
@@ -2497,7 +2519,7 @@ function do_multiplechoice($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 
 	if ($displaycols=arraySearchByKey('display_columns', $qidattributes, 'attribute', 1))
@@ -2696,14 +2718,14 @@ function do_multiplechoice($ia)
 		}
 
 		$answer .= $wrapper['item-start'].'
-		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" id="answer'.$myfname.'cbox"';
+		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
 		if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
 		{
 			$answer .= CHECKED;
 		}
 		$answer .= " onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."document.getElementById(\"answer$myfname\").value=\"\";' />
-		<label for=\"answer$myfname\" class=\"answertext\">".$othertext.":</label>
+		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
 		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
 		if (isset($_SESSION[$myfname]))
 		{
@@ -2802,7 +2824,7 @@ function do_multiplechoice($ia)
 		$minanswscript .= 		
 			"\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),  
-				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+				$minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
 			. "return false;\n"
 			. "\t} else {\n"	
 			. "if (oldonsubmit_{$ia[0]}){\n"
@@ -2891,7 +2913,7 @@ function do_multiplechoice_withcomments($ia)
 	}
 	else
 	{
-		$othertext=$clang->gT('Other');
+		$othertext=$clang->gT('Other:');
 	}
 	// Check if the max_answers attribute is set
 	$maxansw=0;
@@ -3086,7 +3108,7 @@ function do_multiplechoice_withcomments($ia)
 		$minanswscript .= 		
 			"\tif (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
 			. "alert('".sprintf($clang->gT("Please choose at least %d answer(s) for question \"%s\"","js"),  
-				$minansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+				$minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
 			. "return false;\n"
 			. "\t} else {\n"	
 			. "if (oldonsubmit_{$ia[0]}){\n"
@@ -3310,7 +3332,7 @@ function do_multipleshorttext($ia)
 // ---------------------------------------------------------------
 function do_multiplenumeric($ia)
 {
-	global $dbprefix, $clang, $js_header_includes;
+	global $dbprefix, $clang, $js_header_includes, $css_header_includes;
 	$qidattributes=getQuestionAttributes($ia[0]);
     $answer='';
 	//Must turn on the "numbers only javascript"
@@ -3416,6 +3438,8 @@ function do_multiplenumeric($ia)
 	if (arraySearchByKey('slider_layout', $qidattributes, 'attribute', 1))
 	{
 		$slider_layout=true;
+        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
+
 
 		$slider_accuracy=arraySearchByKey('slider_accuracy', $qidattributes, 'attribute', 1);
 		if (isset($slider_accuracy['value']))
@@ -3762,7 +3786,7 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='checkconditions(this.value, this.name, this.type)'"
+	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='checkconditions(this.value, this.name, this.type)'"
 	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n"
 	. "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
 	// --> END NEW FEATURE - SAVE
@@ -3778,6 +3802,7 @@ function do_numerical($ia)
 // ---------------------------------------------------------------
 function do_shortfreetext($ia)
 {
+	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	
 	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
@@ -3879,6 +3904,7 @@ function do_shortfreetext($ia)
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
+	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
@@ -3923,7 +3949,7 @@ function do_longfreetext($ia)
 
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
 	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
@@ -3985,7 +4011,7 @@ function do_hugefreetext($ia)
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
 
 	// --> START NEW FEATURE - SAVE
-	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
 	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
@@ -5065,7 +5091,7 @@ function do_array_flexible($ia)
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
-				$answer .= "\t<td>\n"
+				$answer .= "\t\t\t<td class=\"answer_cell_00$ld\">\n"
 				. "<label for=\"answer$myfname-$ld\">\n"
 				. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
 				. html_escape(strip_tags($labelans[$thiskey])).'"';

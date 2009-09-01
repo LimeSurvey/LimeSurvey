@@ -126,6 +126,7 @@ require_once($rootdir.'/classes/core/language.php');  // has been secured
 if (isset($_SESSION['s_lang']))
 {
     $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
+    $language = $_SESSION['s_lang'];
 } else {
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $clang = SetSurveyLanguage( $surveyid, $baselang);

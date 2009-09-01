@@ -5,16 +5,19 @@ $(document).ready(function(){
         var basename = e.id.substr(6);         
         format=$('#dateformat'+basename).val();
         language=$('#datelanguage'+basename).val();
+        yearrange=$('#dateyearrange'+basename).val();
         $(e).datepicker({ dateFormat: format,  
                           showOn: 'both',
                           changeYear: true, 
-                          changeMonth: true, 
+                          changeMonth: true,
+                          yearRange: yearrange, 
                           duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
-    $('.year').change(dateUpdater);
     $('.month').change(dateUpdater);
     $('.day').change(dateUpdater)
+    $('.year').change(dateUpdater);
+    $('.year').change();
 });
 
 
@@ -43,8 +46,10 @@ function dateUpdater() {
          parseddate=$.datepicker.parseDate( 'dd-mm-yy', $('#day'+thisid).val()+'-'+$('#month'+thisid).val()+'-'+$('#year'+thisid).val());
          $('#answer'+thisid).val($.datepicker.formatDate( $('#dateformat'+thisid).val(), parseddate)); 
          $('#answer'+thisid).change();
+         $('#qattribute_answer'+thisid).val('');
     }
 }
+
 
 function ValidDate(oObject, value) {// Regular expression used to check if date is in correct format 
     var str_regexp = /[1-9][0-9]{3}-(0[1-9]|1[0-2])-([0-2][0-9]|3[0-1])/; 

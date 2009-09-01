@@ -58,6 +58,19 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 		$query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
 		$result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
 	}
+
+	$baselang = GetBaseLanguageFromSurveyID($postsid);
+	$groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from {$dbprefix}questions as q RIGHT JOIN {$dbprefix}groups as g ON q.gid=g.gid WHERE g.sid=$postsid AND g.language='$baselang' AND q.language='$baselang' group by g.gid,g.group_name;";
+	$groupresult=db_execute_assoc($groupquery) or safe_die($groupquery."<br />".$connect->ErrorMsg());
+	while ($row=$groupresult->FetchRow())
+	{ //TIBO
+		if ($row['count'] == 0)
+		{
+			$failedgroupcheck[]=array($row['gid'], $row['group_name'], ": ".$clang->gT("This group does not contain any question(s)."));
+		}
+	}
+	
+
 	//CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
 	//THESE QUESTION TYPES ARE:
 	//	# "L" -> LIST
@@ -211,7 +224,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 	}
 
 	//IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
-	if (isset($failedcheck) && $failedcheck)
+	if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))
 	{
 		$activateoutput .= "<br />\n<table bgcolor='#FFFFFF' width='500' align='center' style='border: 1px solid #555555' cellpadding='6' cellspacing='0'>\n";
 		$activateoutput .= "<tr bgcolor='#555555'><td height='4'><font size='1' face='verdana' color='white'><strong>".$clang->gT("Activate Survey")." ($surveyid)</strong></font></td></tr>\n";
@@ -229,9 +242,13 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 		{
 			$activateoutput .= "<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
 		}
-		$activateoutput .= "\t</ul>\n";
-		$activateoutput .= "\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
-		$activateoutput .= "</td>\n";
+		foreach ($failedgroupcheck as $fg)
+		{
+			$activateoutput .= "\t\t\t\t<li> Group gid-{$fg[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fg[0]'>{$fg[1]}</a>\"){$fg[2]}</li>\n";
+		}
+		$activateoutput .= "\t\t\t</ul>\n";
+		$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
+		$activateoutput .= "\t\t</td>\n";
 		$activateoutput .= "\t</tr>\n";
 		$activateoutput .= "</table><br />&nbsp;\n";
 

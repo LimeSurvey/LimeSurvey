@@ -265,8 +265,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				//Now save the language to the database:
                 $query = "INSERT INTO ".db_table_name('quota_languagesettings')." (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
 		        	      VALUES ('$quotaid', '$lang', '".db_quote($_POST['quota_name'])."', '".db_quote($_POST['quotals_message_'.$lang])."', '".db_quote($_POST['quotals_url_'.$lang])."', '".db_quote($_POST['quotals_urldescrip_'.$lang])."')";
-				if ($connect->databaseType == 'odbc_mssql') $query = 'SET IDENTITY_INSERT '.db_table_name('quota_languagesettings').' ON; '.$query . 'SET IDENTITY INSERT '.db_table_name('quota_languagesettings').' OFF;';
-		$connect->Execute($query) or safe_die($connect->ErrorMsg());
+		        $connect->Execute($query) or safe_die($connect->ErrorMsg());
 			}
 		} //End insert language based components
 		$viewquota = "1";
@@ -822,7 +821,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 	if ($subaction == "new_quota")
 	{
-		$quotasoutput .='<form action="'.$scriptname.'#quota_end" method="post" name="addnewquotaform">';
+		$quotasoutput .='<form action="'.$scriptname.'" method="post" name="addnewquotaform">';
 		$quotasoutput.='					<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
   						<tr>
     						<td valign="top">

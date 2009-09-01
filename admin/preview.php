@@ -49,19 +49,19 @@ $ia = array(0 => $qid,
             7 => $qrows['other']);
             
 $answers = retrieveAnswers($ia);
-$thistpl="$publicdir/templates";
+$thistpl="$templaterootdir/".$thissurvey['template'];
 doHeader();
-$form_start = '
-		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-		<script type="text/javascript">
-<!--
-function checkconditions(value, name, type)
-{
-}
-//-->
-		</script>
-		<form method="post" action="index.php" id="limesurvey" name="limesurvey">
-';
+$dummy_js = '
+		            <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+		            <script type="text/javascript">
+            <!--
+            function checkconditions(value, name, type)
+            {
+            }
+            //-->
+		            </script>
+		            <form method="post" action="index.php" id="limesurvey" name="limesurvey">
+            ';
 
 
 
@@ -69,8 +69,11 @@ $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
-$content = templatereplace(file_get_contents("$thistpl/preview.pstpl"));
-$content = str_replace('{FORM_START}' , $form_start , $content);
+$content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));     
+$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));     
+$content .= templatereplace(file_get_contents("$thistpl/question.pstpl"));
+$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;     
+$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));     
 if($qrows['mandatory'] == 'Y')
 {
 	$mandatory = ' mandatory';

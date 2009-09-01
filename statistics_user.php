@@ -148,7 +148,7 @@ $clang = SetSurveyLanguage($surveyid, $language);
 
 //Create header (fixes bug #3097)
 $surveylanguage= $language;
-
+sendcacheheaders();
 if ( !$embedded )
 {
 	$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
@@ -181,8 +181,17 @@ $query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
 ."AND ".db_table_name("questions").".language='".$language."'\n"
 ."AND ".db_table_name("questions").".sid=$surveyid\n"
 ."AND ".db_table_name("questions").".qid=".db_table_name("question_attributes").".qid\n"
-."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n"
-."AND ".db_table_name("question_attributes").".value='1'\n";
+."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n";
+if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' )
+{
+    $query .="AND CAST(CAST(".db_table_name("question_attributes").".value as varchar) as int)='1'\n";
+}
+else
+    {
+        $query .="AND ".db_table_name("question_attributes").".value='1'\n";
+    }
+
+
 
 	
 //execute query

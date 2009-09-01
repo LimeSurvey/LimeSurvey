@@ -125,7 +125,7 @@ if (isset($postedfieldnames))
 				}
 				if ($bFinalizeThisAnswer === true)
 				{
-					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid']);   // Checked    
+					$connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked    
 				}
 			} 
             else 
@@ -134,6 +134,31 @@ if (isset($postedfieldnames))
                 }
 		}
 	}
+    else
+    {
+        // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
+        $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+        $inserts=array_unique($_SESSION['insertarray']);            
+        foreach ($inserts as $value)
+        {
+            //Work out if the field actually exists in this survey
+            $fieldexists = arraySearchByKey($value, $fieldmap, "fieldname", 1);
+            //Iterate through possible responses
+            if (isset($_SESSION[$value]) && !empty($fieldexists))
+            {
+
+                    if ($fieldexists['type']=='D')  // convert the date to the right DB Format
+                    {
+                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
+                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+                    }
+            }
+        }
+
+        
+    }
 }
 
 // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
@@ -348,7 +373,7 @@ function createinsertquery()
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
-    require_once("./classes/inputfilter/class.inputfilter_clean.php");
+    require_once("classes/inputfilter/class.inputfilter_clean.php");
     $myFilter = new InputFilter('','',1,1,1);
 
 	$fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
@@ -365,14 +390,14 @@ function createinsertquery()
             //Iterate through possible responses
             if (isset($_SESSION[$value]) && !empty($fieldexists))
             {
-                //If deletenonvalues is ON, delete any values that shouldn't exist
+				//If deletenonvalues is ON, delete any values that shouldn't exist
                 if($deletenonvalues==1)
-		{
-			if (!checkconfield($value))
-			{
-				$colnames_hidden[]=$value;
-			}
-		}
+				{
+					if (!checkconfield($value))
+					{
+						$colnames_hidden[]=$value;
+					}
+				}
                 //Only create column name and data entry if there is actually data! 
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
@@ -394,7 +419,12 @@ function createinsertquery()
                         $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
                         $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
                     }
-                	$values[]=strip_tags($connect->qstr($_SESSION[$value],get_magic_quotes_gpc()));
+					//These next two functions search for lone < or > symbols, and converts them to &lt;~ or &rt;~
+					//so they get ignored by the strip_tags function
+					$tmpvalue=my_strip_ltags($_SESSION[$value]);
+					$tmpvalue=my_strip_rtags($tmpvalue);
+					$tmpvalue=strip_tags($connect->qstr($tmpvalue,get_magic_quotes_gpc()));
+					$values[]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
                 }
 
             }
@@ -545,7 +575,11 @@ function createinsertquery()
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
                                 $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
                             }                            
-							$query .= db_quote_id($field)." = ".db_quoteall(strip_tags($myFilter->process($_POST[$field])),true).",";
+							$tmpvalue=my_strip_ltags($_POST[$field]);
+							$tmpvalue=my_strip_rtags($tmpvalue);
+							$tmpvalue=strip_tags($myFilter->process($tmpvalue),true);
+							$tmpvalue=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
+                            $query .= db_quote_id($field)." = ".db_quoteall($tmpvalue).",";
 						}
 					}
 				}
@@ -632,5 +666,30 @@ function submitanswer()
           }
           return $array_remval;
     }
+
+function my_strip_ltags($str) {
+    $strs=explode('<',$str);
+    $res=$strs[0];
+    for($i=1;$i<count($strs);$i++)
+    {
+        if(!strpos($strs[$i],'>'))
+            $res = $res.'&lt;~'.$strs[$i];
+        else
+            $res = $res.'<'.$strs[$i];
+    }
+    return $res;   
+}
+function my_strip_rtags($str) {
+    $strs=explode('>',$str);
+    $res=$strs[0];
+    for($i=1;$i<count($strs);$i++)
+    {
+        if(!strpos($strs[$i],'<'))
+            $res = $res.'&rt;~'.$strs[$i];
+        else
+            $res = $res.'>'.$strs[$i];
+    }
+    return $res;
+}
 
 ?>

@@ -319,11 +319,37 @@ for ($i=0; $i<=$stoppoint+1; $i++)
 }
 $bigarray = array_values($bigarray);
 
-//Survey Language Settings
+//QUOTA MEMBERS
+if (array_search("# QUOTA_LANGUAGESETTINGS TABLE\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_LANGUAGESETTINGS TABLE\n", $bigarray);
+}
+elseif (array_search("# QUOTA_LANGUAGESETTINGS TABLE\r\n", $bigarray))
+{
+	$stoppoint = array_search("# QUOTA_LANGUAGESETTINGS TABLE\r\n", $bigarray);
+}
+else
+{
+	$stoppoint = count($bigarray)-1;
+}
+for ($i=0; $i<=$stoppoint+1; $i++)
+{
+//	if ($i<$stoppoint-2 || $i==count($bigarray)-1)
+	if ($i<$stoppoint-2)
+	{
+		$quotamembersarray[] = $bigarray[$i];
+	}
+	unset($bigarray[$i]);
+}
+$bigarray = array_values($bigarray);
+
+
+//Whatever is the last table - currently 
+//QUOTA LANGUAGE SETTINGS
 $stoppoint = count($bigarray)-1;
 for ($i=0; $i<$stoppoint-1; $i++)
 {
-	if ($i<=$stoppoint) {$quotamembersarray[] = $bigarray[$i];}
+	if ($i<=$stoppoint) {$quotalsarray[] = $bigarray[$i];}
 	unset($bigarray[$i]);
 }
 $bigarray = array_values($bigarray);
@@ -338,6 +364,8 @@ if (isset($labelsetsarray)) {$countlabelsets = count($labelsetsarray);} else {$c
 if (isset($question_attributesarray)) {$countquestion_attributes = count($question_attributesarray);} else {$countquestion_attributes=0;}
 if (isset($assessmentsarray)) {$countassessments=count($assessmentsarray);} else {$countassessments=0;}
 if (isset($quotaarray)) {$countquota=count($quotaarray);} else {$countquota=0;}
+if (isset($quotamembersarray)) {$countquotamembers=count($quotamembersarray);} else {$countquotamembers=0;}
+if (isset($quotalsarray)) {$countquotals=count($quotalsarray);} else {$countquotals=0;}
 
 // CREATE SURVEY
 
@@ -507,14 +535,15 @@ if ($importversion<=100)
     $surveylsrowdata['surveyls_description']=$surveyrowdata['description'];
     $surveylsrowdata['surveyls_welcometext']=$surveyrowdata['welcome'];
     $surveylsrowdata['surveyls_urldescription']=$surveyrowdata['urldescrip'];
-    $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
+    if (isset($surveyrowdata['email_invite_subj'])) $surveylsrowdata['surveyls_email_invite_subj']=$surveyrowdata['email_invite_subj'];
     $surveylsrowdata['surveyls_email_invite']=$surveyrowdata['email_invite'];
-    $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
+    if (isset($surveyrowdata['email_remind_subj']))     $surveylsrowdata['surveyls_email_remind_subj']=$surveyrowdata['email_remind_subj'];
     $surveylsrowdata['surveyls_email_remind']=$surveyrowdata['email_remind'];
-    $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
+    if (isset($surveyrowdata['email_register_subj']))     $surveylsrowdata['surveyls_email_register_subj']=$surveyrowdata['email_register_subj'];
     $surveylsrowdata['surveyls_email_register']=$surveyrowdata['email_register'];
-    $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
+    if (isset($surveyrowdata['email_confirm_subj'])) $surveylsrowdata['surveyls_email_confirm_subj']=$surveyrowdata['email_confirm_subj'];
     $surveylsrowdata['surveyls_email_confirm']=$surveyrowdata['email_confirm'];
+	if(!isset($defaultsurveylanguage)) {$defaultsurveylanguage=$newlanguage;}
     unset($surveyrowdata['short_title']);
     unset($surveyrowdata['description']);
     unset($surveyrowdata['welcome']);
@@ -689,7 +718,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		//CHECK FOR DUPLICATE LABELSETS
 		$thisset="";
         
-        $query2 = "SELECT code, title, sortorder, language
+        $query2 = "SELECT code, title, sortorder, language, assessment_value
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY language, sortorder, code";
@@ -960,6 +989,10 @@ if (isset($grouparray) && $grouparray) {
 									"newcfieldname"=>$newsid."X".$newgid."X".$newqid,
 									"oldfieldname"=>$oldsid."X".$oldgid."X".$oldqid.$code,
 									"newfieldname"=>$newsid."X".$newgid."X".$newqid.$code);
+									$fieldnames[]=array("oldcfieldname"=>'+'.$oldsid."X".$oldgid."X".$oldqid.$code,
+									"newcfieldname"=>'+'.$newsid."X".$newgid."X".$newqid.$code,
+									"oldfieldname"=>"+".$oldsid."X".$oldgid."X".$oldqid.$code,
+									"newfieldname"=>"+".$newsid."X".$newgid."X".$newqid.$code);
 									if ($type == "P") {
 										$fieldnames[]=array("oldcfieldname"=>$oldsid."X".$oldgid."X".$oldqid."comment",
 										"newcfieldname"=>$newsid."X".$newgid."X".$newqid.$code."comment",
@@ -1043,7 +1076,7 @@ if (isset($grouparray) && $grouparray) {
    $gres = db_execute_assoc($gquery);
    while ($grow = $gres->FetchRow()) 
         {
-        fixsortorderQuestions(0,$grow['gid']);
+        fixsortorderQuestions($grow['gid'], $surveyid);
         }
 
         //We've built two arrays along the way - one containing the old SID, GID and QIDs - and their NEW equivalents
@@ -1079,7 +1112,7 @@ if (isset($question_attributesarray) && $question_attributesarray) {//ONLY DO TH
 	}
 }
 
-if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUES
+if (isset($assessmentsarray) && $assessmentsarray) {//ONLY DO THIS IF THERE ARE QUESTION_ATTRIBUTES
     $count=0; 
 	foreach ($assessmentsarray as $qar) {
         if ($importversion>=111)
@@ -1145,6 +1178,7 @@ if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
 		$asrowdata["sid"]=$newsid;
 		$oldid = $asrowdata["id"];
 		unset($asrowdata["id"]);
+		$quotadata[]=$asrowdata; //For use later if needed
 
         $newvalues=array_values($asrowdata);
         $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
@@ -1156,7 +1190,7 @@ if (isset($quotaarray) && $quotaarray) {//ONLY DO THIS IF THERE ARE QUOTAS
 	}
 }
 
-if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE ARE QUOTAS
+if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE ARE QUOTA MEMBERS
     $count=0;
 	foreach ($quotamembersarray as $qar) {
         
@@ -1195,6 +1229,56 @@ if (isset($quotamembersarray) && $quotamembersarray) {//ONLY DO THIS IF THERE AR
 	}
 }
 
+if (isset($quotalsarray) && $quotalsarray) {//ONLY DO THIS IF THERE ARE QUOTA LANGUAGE SETTINGS
+    $count=0;
+	foreach ($quotalsarray as $qar) {
+        
+        $fieldorders  =convertCSVRowToArray($quotalsarray[0],',','"');
+        $fieldcontents=convertCSVRowToArray($qar,',','"');
+        if ($count==0) {$count++; continue;}
+	
+        $asrowdata=array_combine($fieldorders,$fieldcontents);
+
+		$newquotaid="";
+		$oldquotaid=$asrowdata['quotals_quota_id'];
+
+		foreach ($quotaids as $quotaid) {
+			if ($oldquotaid==$quotaid[0]) {$newquotaid=$quotaid[1];}
+		}
+		
+		$asrowdata["quotals_quota_id"]=$newquotaid;
+		unset($asrowdata["quotals_id"]);
+
+        $newvalues=array_values($asrowdata);
+        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+
+        $asinsert = "INSERT INTO {$dbprefix}quota_languagesettings (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+		$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+	}
+}
+
+//if there are quotas, but no quotals, then we need to create default dummy for each quota (this handles exports from pre-language quota surveys)
+if ($countquota > 0 && (!isset($countquotals) || $countquotals == 0)) {
+	$i=0;
+	$defaultsurveylanguage=isset($defaultsurveylanguage) ? $defaultsurveylanguage : "en";
+	foreach($quotaids as $quotaid) {
+	    $newquotaid=$quotaid[1];
+		$asrowdata=array("quotals_quota_id" => $newquotaid,
+						 "quotals_language" => $defaultsurveylanguage,
+						 "quotals_name" => $quotadata[$i]["name"],
+						 "quotals_message" => $clang->gT("Sorry your responses have exceeded a quota on this survey."),
+						 "quotals_url" => "",
+						 "quotals_urldescrip" => "");
+		$i++;
+	}
+	$newvalues = array_values($asrowdata);
+	$newvalues = array_map(array(&$connect, "qstr"),$newvalues);
+	
+    $asinsert = "INSERT INTO {$dbprefix}quota_languagesettings (".implode(',',array_keys($asrowdata)).") VALUES (".implode(',',$newvalues).")"; 
+	$result=$connect->Execute($asinsert) or safe_die ("Couldn't insert quota<br />$asinsert<br />".$connect->ErrorMsg());
+	$countquotals=$i;
+}
+
 if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CONDITIONS!
     $count='0';  
 	foreach ($conditionsarray as $car) {
@@ -1222,7 +1306,10 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 			if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 			if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
 		}
-		if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
+        // Exception for conditions based on attributes
+        if ($oldcqid==0) {$newcqid=0;}
+        
+		if (preg_match('/^@([0-9]+)X([0-9]+)X([^@]+)@/',$thisvalue,$targetcfieldname))
 		{
 			foreach ($substitutions as $subs) {
 				if ($targetcfieldname[1]==$subs[0])  {$targetcfieldname[1]=$subs[3];}
@@ -1300,7 +1387,7 @@ if ($importingfrom == "http")
     }
 	$importsurvey .= "\t<li>".$clang->gT("Question Attributes").": $countquestion_attributes</li>\n";
 	$importsurvey .= "\t<li>".$clang->gT("Assessments").": $countassessments</li>\n";
-	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota</li>\n</ul>\n";
+	$importsurvey .= "\t<li>".$clang->gT("Quotas").": $countquota ($countquotamembers ".$clang->gT("quota members")." ".$clang->gT("and")." $countquotals ".$clang->gT("quota language settings").")</li>\n</ul>\n";
 	
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
@@ -1333,9 +1420,3 @@ else
 
 }
 
-function removeBOM($str=""){
-        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-                $str=substr($str, 3);
-        }
-        return $str;
-} 

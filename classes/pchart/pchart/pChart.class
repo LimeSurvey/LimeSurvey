@@ -1032,7 +1032,7 @@
      if ( !isset($DataDescription["Position"]) )
       return(-1);
 
-     $C_TextColor =$this->AllocateColor($this->Picture,0,0,0);
+     $C_TextColor =$this->AllocateColor($this->Picture,1,1,1);
 
      /* <-10->[8]<-4->Text<-10-> */
      $MaxWidth = 0; $MaxHeight = 8;

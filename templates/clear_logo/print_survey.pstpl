@@ -5,12 +5,6 @@
 {HEADELEMENTS}
 
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_template.css" />
-<!--[if IE]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_ie_fix_all.css" />
-<![endif]-->
-<!--[if lt IE 7]>
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}print_ie_fix_6.css" />
-<![endif]-->
 	</head>
 	<body>
 		<div id="limesurvey">

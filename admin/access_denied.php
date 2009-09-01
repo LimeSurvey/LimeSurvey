@@ -82,7 +82,7 @@ if (isset($_SESSION['loginID']))
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to edit groups in this survey!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
-	elseif($action == "browse_response" || $action == "vvexport" || $action == "vvimport")
+	elseif($action == "browse_response" || $action == "listcolumn" || $action == "vvexport" || $action == "vvimport")
 		{		
 		$accesssummary .= "<p>".$clang->gT("You are not allowed to browse responses!")."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";

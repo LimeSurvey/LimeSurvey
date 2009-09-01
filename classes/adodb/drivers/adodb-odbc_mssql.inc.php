@@ -35,7 +35,7 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 	var $substr = 'substring';
 	var $length = 'len';
 	var $ansiOuter = true; // for mssql7 or later
-	var $identitySQL = 'select SCOPE_IDENTITY()'; // 'select SCOPE_IDENTITY'; # for mssql 2000
+	var $identitySQL = 'select @@identity'; // 'select SCOPE_IDENTITY'; # for mssql 2000
 	var $hasInsertID = true;
 	var $connectStmt = 'SET CONCAT_NULL_YIELDS_NULL OFF'; # When SET CONCAT_NULL_YIELDS_NULL is ON, 
 														  # concatenating a null value with a string yields a NULL result
@@ -50,10 +50,9 @@ class  ADODB_odbc_mssql extends ADODB_odbc {
 	function ServerInfo()
 	{
 	global $ADODB_FETCH_MODE;
-		$save = $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+		$save=$this->SetFetchMode(ADODB_FETCH_NUM);
 		$row = $this->GetRow("execute sp_server_info 2");
-		$ADODB_FETCH_MODE = $save;
+		$this->SetFetchMode($save);
 		if (!is_array($row)) return false;
 		$arr['description'] = $row[2];
 		$arr['version'] = ADOConnection::_findvers($arr['description']);

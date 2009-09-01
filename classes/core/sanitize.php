@@ -93,6 +93,45 @@ function nice_addslashes($string)
 }
 
 
+/**
+*     1. Remove leading and trailing dots
+*     2. Remove dodgy characters from filename, including spaces and dots except last.
+*     3. Force extension if specified..
+* 
+* @param mixed $filename
+* @param mixed $forceextension
+* @return string
+*/
+function sanitize_filename($filename, $forceextension="")
+{
+    $defaultfilename = "none";
+    $dodgychars = "[^0-9a-zA-z()_-]"; // allow only alphanumeric, underscore, parentheses and hyphen
+
+    $filename = preg_replace("/^[.]*/","",$filename); // lose any leading dots
+    $filename = preg_replace("/[.]*$/","",$filename); // lose any trailing dots
+    $filename = $filename?$filename:$defaultfilename; // if filename is blank, provide default
+
+    $lastdotpos=strrpos($filename, "."); // save last dot position
+    $filename = preg_replace("/$dodgychars/","_",$filename); // replace dodgy characters
+    $afterdot = "";
+    if ($lastdotpos !== false) { // Split into name and extension, if any.
+        $beforedot = substr($filename, 0, $lastdotpos);
+    if ($lastdotpos < (strlen($filename) - 1))
+        $afterdot = substr($filename, $lastdotpos + 1);
+    }
+    else // no extension
+        $beforedot = $filename;
+
+    if ($forceextension)
+        $filename = $beforedot . "." . $forceextension;
+    elseif ($afterdot)
+        $filename = $beforedot . "." . $afterdot;
+    else
+        $filename = $beforedot;
+
+    return $filename;
+}
+
 
 // paranoid sanitization -- only let the alphanumeric set through
 function sanitize_paranoid_string($string, $min='', $max='')
@@ -206,7 +245,7 @@ function sanitize_html_string($string)
 // make int int!
 function sanitize_int($integer, $min='', $max='')
 {
-	$int = ereg_replace("[^0-9]", "", $integer);
+	$int = preg_replace("#[^0-9]#", "", $integer);
 	if((($min != '') && ($int < $min)) || (($max != '') && ($int > $max)))
     {
 	    return FALSE;

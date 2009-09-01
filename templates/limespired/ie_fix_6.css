@@ -1,15 +1,15 @@
 /* The following styles are for versions of IE 6 and older */
 
 .choice-5-pt-radio ul {
-    margin-left: 2.5em;
+	margin-left: 2.5em;
 }
  .yes-no ul
 ,.gender ul {
-    margin-left: 1em;
+	margin-left: 1em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
-    width: 10em;
+	width: 10em;
 }
 
 
@@ -19,13 +19,13 @@
 ,.multiple-short-txt ul li
 ,.multiple-opt-comments ul li
 ,.numeric-multi ul li {
-    margin-left: 0%;
-    padding-left: 0%;
+	margin-left: 0%;
+	padding-left: 0%;
 }
 
 
 .multiple-short-txt ul label {
-    margin-left: -1.8em;
+    margin-left: 0em;
     float:left;
     display: block;
     width: 40%;      
@@ -35,7 +35,7 @@
 
 .multiple-opt-comments ul li label{
     float: left;
-    width: 50%; 
+    width: 35%; 
     display:block; 
     margin:0;
     padding:0;    
@@ -44,7 +44,8 @@
 
 
 .multiple-opt-comments ul li span.comment{
-    float:right;
+    float:left;
+    width:40%;
     display:block;
     margin:0;
     padding:0; 
@@ -117,6 +118,7 @@ td.questionhelp {
     padding-left:1px;
 }
 
-input.submit {
+input.submit
+{
     padding:0px;
 }

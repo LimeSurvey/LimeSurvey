@@ -284,7 +284,7 @@ function makeSummaryFromRawData($results, $surveyid=null, $gid=null, $qid=null) 
 		if (isset($newarray)) {unset($newarray);}
 		$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['question']=$thisquestion['question'];
 		foreach ($summary as $sum) {
-			ereg("\[(.*)\]", $sum['question'], $regs);
+			preg_match("/\[(.*)\]/", $sum['question'], $regs);
 			$newarray[$thisquestion['sid']."X".$thisquestion['gid']."X".$thisquestion['qid']]['summary'][$regs[1]]=$sum['summary'][$clang->gT("Yes")];
 		}
 		$summary=$newarray;

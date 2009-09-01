@@ -102,19 +102,7 @@ if(isset($usepdfexport) && $usepdfexport == 1 && !in_array($surveyprintlang,$not
     ';
 }
 
-$headelements = '
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
-<!--[if lt IE 7]>
-		<script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
-<![endif]-->
-
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
-		<script type="text/javascript" src="'.$rooturl.'/admin/scripts/admin_core.js"></script>
-
-		<link rel="stylesheet" type="text/css" media="all" href="'.$rooturl.'/scripts/calendar/calendar-blue.css" title="win2k-cold-1" />
-';
+$headelements = getPrintableHeader();
 
 $survey_output = array(
 			 'SITENAME' => $sitename
@@ -1003,7 +991,7 @@ while ($degrow = $degresult->FetchRow())
 					{
                         $qidattributes["other_replace_text"]="Other";
                     }
-					$question['ANSWER'] .= $wrapper['item-start-other']."<div class=\"other-replacetext\">".$clang->gT($qidattributes["other_replace_text"]).":</div>\n\t\t".input_type_image('other').$wrapper['item-end'];
+					$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('checkbox',$mearow['answer']).$clang->gT($qidattributes["other_replace_text"]).":\n\t\t".input_type_image('other').$wrapper['item-end'];
 					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
@@ -1047,13 +1035,13 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$longest_string = longest_string($mearow['answer'] , $longest_string );
-					$question['ANSWER'] .= "\t<li>\n\t\t".input_type_image('checkbox',$mearow['answer']).$mearow['answer']."\n\t\t".input_type_image('text','comment box',60)."\n\t</li>\n";
+					$question['ANSWER'] .= "\t<li><span>\n\t\t".input_type_image('checkbox',$mearow['answer']).$mearow['answer']."</span>\n\t\t".input_type_image('text','comment box',60)."\n\t</li>\n";
 					$pdfoutput[$j]=array(" o ".$mearow['code']," __________");
 					$j++;
 				}
 				if ($deqrow['other'] == "Y")
 				{ 
-					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".input_type_image('other','',1)."</div>".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
+					$question['ANSWER'] .= "\t<li class=\"other\">\n\t\t<div class=\"other-replacetext\">".$clang->gT('Other:').input_type_image('other','',1)."</div>".input_type_image('othercomment','comment box',50)."\n\t</li>\n";
 					// lemeur: PDFOUTPUT HAS NOT BEEN IMPLEMENTED for these fields
 					// not sure who did implement this.
 					$pdfoutput[$j][0]=array(" o "."Other"," __________");
@@ -1083,7 +1071,7 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$longest_string = longest_string($mearow['answer'] , $longest_string );
-					$question['ANSWER'] .=  "\t<li>\n\t\t".$mearow['answer']."\n\t\t".input_type_image('text',$mearow['answer'],$width)."\n\t</li>\n";
+					$question['ANSWER'] .=  "\t<li>\n\t\t<span>".$mearow['answer']."</span>\n\t\t".input_type_image('text',$mearow['answer'],$width)."\n\t</li>\n";
 					if(isset($_POST['printableexport'])){$pdf->intopdf($mearow['answer'].": ____________________");}
 				}
 				$question['ANSWER'] =  "\n<ul>\n".$question['ANSWER']."</ul>\n";
@@ -1509,8 +1497,9 @@ while ($degrow = $degresult->FetchRow())
 				while ($mearow = $mearesult->FetchRow())
 				{
 					$question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
-				$rowclass = alternation($rowclass,'row');
+				    $rowclass = alternation($rowclass,'row');
 					$answertext=$mearow['answer'];
+                    if (trim($answertext)=='') $answertext='&nbsp;';
 					if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 					$question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 					//$printablesurveyoutput .="\t\t\t\t\t<td>";

@@ -18,6 +18,9 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this scr
 if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
+if (get_magic_quotes_gpc())
+    {$_POST  = array_map('recursive_stripslashes', $_POST);}
+
 if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup" || $action == "mailusergroup")
 {
 	if($ugid)
@@ -688,8 +691,8 @@ if ($action == "usergroupindb")
 	
 		$db_group_name = db_quote($_POST['group_name']);
 		$db_group_description = db_quote($_POST['group_description']);
-		$html_group_name = html_escape($_POST['group_name']);
-		$html_group_description = html_escape($_POST['group_description']);
+		$html_group_name = htmlspecialchars($_POST['group_name']);
+		$html_group_description = htmlspecialchars($_POST['group_description']);
 	
 		if(isset($db_group_name) && strlen($db_group_name) > 0)
 		{

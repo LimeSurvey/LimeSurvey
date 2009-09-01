@@ -63,6 +63,7 @@ include_once("login_check.php");
 
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 $language = GetBaseLanguageFromSurveyID($surveyid);
+$surveyinfo=getSurveyInfo($surveyid);
 
 $actsurquery = "SELECT browse_response FROM ".db_table_name("surveys_rights")." WHERE sid=$surveyid AND uid = ".$_SESSION['loginID']; //Getting rights for this survey
 $actsurresult = db_execute_assoc($actsurquery) or safe_die($connect->ErrorMsg());
@@ -792,8 +793,16 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"
 		.$clang->gT("Data Entry")."</strong></td></tr>\n"
-		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'><strong>"
-		.sprintf($clang->gT("Editing response (ID %s)"),$id)."</strong></td></tr>\n"
+		."\t<tr><td style='border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #555555' colspan='2' align='center'><strong>";
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $surveyinfo['owner_id'] == $_SESSION['loginID']) 
+        {
+            $dataentryoutput .= sprintf($clang->gT("Editing response (ID %s)"),$id);
+        }      
+        else
+        {
+            $dataentryoutput .= sprintf($clang->gT("Viewing response (ID %s)"),$id);
+        }
+		$dataentryoutput .="</strong></td></tr>\n"
 		."\t<tr><td colspan='2' height='1'></td></tr>\n";
 
 		foreach ($results as $idrow)
@@ -1535,7 +1544,15 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		}
 		$dataentryoutput .= "</table>\n"
 		."<table width='99%' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n";
-		if ($subaction == "edit")
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID']) 
+        { // if you are not survey owner or super admin you cannot modify responses
+            $dataentryoutput .= "    <tr>
+                        <td align='center'>
+                         <input type='button' value='".$clang->gT("Save")."' disabled='disabled'/>
+                        </td>
+                    </tr>\n";
+        }
+		elseif ($subaction == "edit")
 		{
 			$dataentryoutput .= "	<tr>
 						<td align='center'>
@@ -1613,6 +1630,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 	elseif ($subaction == "update")
 	{
+         if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID']) 
+         {
+             safe_die('You are not allowed to update an existing answer.');
+         }
+
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$dataentryoutput .= "<table width='450' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
 		."\t<tr><td colspan='2' height='4'><strong>"

@@ -80,8 +80,8 @@ if ( $action == 'FakeGET')
 if(isset($_SESSION['loginID']) && $action!='login')
 {
   //VARIOUS DATABASE OPTIONS/ACTIONS PERFORMED HERE
-  if ($action == 'delsurvey'         || $action == 'delgroup'       || $action == 'delgroupall'       ||
-      $action == 'delquestion'       || $action == 'delquestionall' || $action == 'insertnewsurvey'   ||
+  if ($action == 'delsurvey'         || $action == 'delgroup'       || 
+      $action == 'delquestion'       || $action == 'insertnewsurvey'||
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
       $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
@@ -253,7 +253,12 @@ elseif ($action == 'importquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('importquestion.php');}
         else { include('access_denied.php');}    
-    }       
+    }    
+elseif ($action == 'listcolumn')
+    {
+    if($surrows['browse_response'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('listcolumn.php');}
+        else { include('access_denied.php');}    
+    }    
 elseif ($action == 'previewquestion')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('preview.php');}
@@ -424,6 +429,7 @@ elseif ($action == 'replacementfields')
 			}
 		break;
 		case 'assessments':
+		case 'assessmentedit':
 			if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
 				$_SESSION['FileManagerContext']="edit:assessments:$surveyid";
 				include('fck_LimeReplacementFields.php');
@@ -434,8 +440,6 @@ elseif ($action == 'replacementfields')
 		break;
 	}
     }    
-
-
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&

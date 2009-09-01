@@ -44,6 +44,13 @@ function db_rename_table($oldtable, $newtable)
 * Gets the maximum question_order field value for a group
 * @gid: The id of the group
 */
+
+/**
+* Gets the maximum question_order field value for a group   
+* 
+* @param mixed $gid
+* @return mixed
+*/
 function get_max_question_order($gid)
 {
 	global $connect ;
@@ -294,7 +301,8 @@ if(isset($surveyid))
 			if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
 			if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
 			{
-			   $question_order=(sanitize_int($_POST['questionposition'])+1);
+			   //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
+			   $question_order=(sanitize_int($_POST['questionposition']));
 			    //Need to renumber all questions on or after this
 	           $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=".$postgid." AND question_order >= ".$question_order;
     	       $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
@@ -367,7 +375,8 @@ if(isset($surveyid))
 					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
 				$result = $connect->Execute($query);
 			}
-		}
+            fixsortorderQuestions($postgid, $surveyid);
+ 		}
 	}
 	elseif ($action == "renumberquestions" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
@@ -595,8 +604,8 @@ if(isset($surveyid))
 					// if the group has changed then fix the sortorder of old and new group
 					if ($oldgid!=$postgid) 
 	                		{
-	                    			fixsortorderQuestions(0,$oldgid);
-	                    			fixsortorderQuestions(0,$postgid);
+	                    			fixsortorderQuestions($oldgid, $surveyid);
+	                    			fixsortorderQuestions($postgid, $surveyid);
 
 						// If some questions have conditions set on this question's answers
 						// then change the cfieldname accordingly
@@ -776,6 +785,7 @@ if(isset($surveyid))
 					$ir1 = $connect->Execute($i1);
 				} // while
 			}
+            fixsortorderQuestions($postgid, $surveyid);
 		}
 	}
 	elseif ($action == "delquestion" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
@@ -805,7 +815,7 @@ if(isset($surveyid))
 			$cresult = $connect->Execute($cquery);
 			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
 			$result = $connect->Execute($query);
-			fixsortorderQuestions(0,$gid);
+			fixsortorderQuestions($gid, $surveyid);
 			if ($result)
 			{
 				$qid="";
@@ -819,43 +829,7 @@ if(isset($surveyid))
 		}
 	}
 
-	elseif ($action == "delquestionall" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
-	{
-		if (!isset($qid)) {$qid=returnglobal('qid');}
-		//check if any other questions have conditions which rely on this question. Don't delete if there are.
-		$ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid={$_GET['qid']}";
-		$ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg());
-		$cccount=$ccresult->RecordCount();
-		while ($ccr=$ccresult->FetchRow()) {$qidarray[]=$ccr['qid'];}
-		if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
-		if ($cccount) //there are conditions dependant on this question
-		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
-		}
-		else
-		{
-			//First delete all the answers
-			if (!isset($total)) {$total=0;}
-			$query = "DELETE FROM {$dbprefix}answers WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-			$query = "DELETE FROM {$dbprefix}conditions WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-			$query = "DELETE FROM {$dbprefix}questions WHERE qid=$qid";
-			if ($result=$connect->Execute($query)) {$total++;}
-		}
-		if ($total==3)
-		{
-			$qid="";
-			$postqid="";
-			$_GET['qid']="";
-		}
-		else
-		{
-			$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
-		}
-	}
-
-	elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
+    elseif ($action == "modanswer" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
 
         if (isset($_POST['sortorder'])) 
@@ -1163,8 +1137,10 @@ if(isset($surveyid))
                             'usecaptcha'=>$_POST['usecaptcha'] 
                             );
               
-        $usquery=$connect->GetUpdateSQL($rs, $updatearray, get_magic_quotes_gpc());                                             
-		$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
+        $usquery=$connect->GetUpdateSQL($rs, $updatearray); 
+        if ($usquery) {
+            $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());
+        }                                            
 		$sqlstring ='';
 		foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
 		{
@@ -1416,7 +1392,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'assessments'=>$_POST['assessments']
                             );
         $dbtablename=db_table_name_nq('surveys');                    
-        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray, get_magic_quotes_gpc());    
+        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    
 		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); 
 
 
@@ -1426,45 +1402,33 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         $_POST['description']=fix_FCKeditor_text($_POST['description']);
         $_POST['welcome']=fix_FCKeditor_text($_POST['welcome']);
 
-	// Prepare default emailsettings	
-	if ($_POST['htmlemail'] == "Y")
-	{
-		$ishtml=true;
-	}
-	else
-	{
-		$ishtml=false;
-	}
-	$bplang = new limesurvey_lang($_POST['language']);	
+	    $bplang = new limesurvey_lang($_POST['language']);	
 
-		$isquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-		."(surveyls_survey_id, surveyls_language, "
-        ." surveyls_title, surveyls_description, "
-        ." surveyls_welcometext, surveyls_urldescription,"
-        ." surveyls_endtext, surveyls_url,"
-		." surveyls_email_invite_subj, surveyls_email_invite, "
-		." surveyls_email_remind_subj, surveyls_email_remind, "
-		." surveyls_email_confirm_subj, surveyls_email_confirm, "
-		." surveyls_email_register_subj, surveyls_email_register, "
-        ." surveyls_dateformat) "
-		. "VALUES ($surveyid, '{$_POST['language']}', '{$_POST['surveyls_title']}', '{$_POST['description']}',\n"
-		. "'{$_POST['welcome']}','{$_POST['urldescrip']}', "
-        . "'{$_POST['endtext']}','{$_POST['url']}', "
-		.$connect->qstr($bplang->gT("Invitation to participate in survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Reminder to participate in survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Confirmation of completed survey",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),$ishtml)).","
-		.$connect->qstr($bplang->gT("Survey Registration Confirmation",'unescaped')).","
-		.$connect->qstr(conditional2_nl2br($bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),$ishtml)).','
-        . "'{$_POST['dateformat']}'"
-		.")";  
-
-		$isresult = $connect->Execute($isquery);
+        $insertarray=array( 'surveyls_survey_id'=>$surveyid,
+                            'surveyls_language'=>$_POST['language'],
+                            'surveyls_title'=>$_POST['surveyls_title'],
+                            'surveyls_description'=>$_POST['description'],
+                            'surveyls_welcometext'=>$_POST['welcome'],
+                            'surveyls_urldescription'=>$_POST['urldescrip'],
+                            'surveyls_endtext'=>$_POST['endtext'],
+                            'surveyls_url'=>$_POST['url'],
+                            'surveyls_email_invite_subj'=>$bplang->gT("Invitation to participate in survey",'unescaped'),
+                            'surveyls_email_invite'=>$bplang->gT("Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),
+                            'surveyls_email_remind_subj'=>$bplang->gT("Reminder to participate in survey",'unescaped'),
+                            'surveyls_email_remind'=>$bplang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}",'unescaped'),
+                            'surveyls_email_confirm_subj'=>$bplang->gT("Confirmation of completed survey",'unescaped'),
+                            'surveyls_email_confirm'=>$bplang->gT("Dear {FIRSTNAME},\n\nThis email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n\nIf you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n\nSincerely,\n\n{ADMINNAME}",'unescaped'),
+                            'surveyls_email_register_subj'=>$bplang->gT("Survey Registration Confirmation",'unescaped'),
+                            'surveyls_email_register'=>$bplang->gT("Dear {FIRSTNAME},\n\nYou, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n\nTo complete this survey, click on the following URL:\n\n{SURVEYURL}\n\nIf you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}.",'unescaped'),
+                            'surveyls_dateformat'=>$_POST['dateformat']
+                            );
+        $dbtablename=db_table_name_nq('surveys_languagesettings');                    
+        $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    
+        $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg());     
 		unset($bplang);
 
 		// Insert into survey_rights
+      
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg());
 		if ($isresult)

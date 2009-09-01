@@ -60,11 +60,9 @@ $cssfiles[]=array('name'=>'ie_fix_6.css');
 $cssfiles[]=array('name'=>'ie_fix_7.css');
 $cssfiles[]=array('name'=>'ie_fix_8.css');
 $cssfiles[]=array('name'=>'print_template.css');
-$cssfiles[]=array('name'=>'print_ie_fix_6.css');
-$cssfiles[]=array('name'=>'print_ie_fix_all.css');
 $cssfiles[]=array('name'=>'template.js');
 
-//Standard Screens
+//Standard screens
 //Only these may be viewed
 
 $screens[]=array('name'=>$clang->gT('Survey List Page', 'unescaped'));
@@ -78,12 +76,65 @@ $screens[]=array('name'=>$clang->gT('Save Page', 'unescaped'));
 $screens[]=array('name'=>$clang->gT('Print answers page', 'unescaped'));
 $screens[]=array('name'=>$clang->gT('Printable survey page', 'unescaped'));
 
+//Page display blocks
+$SurveyList=array('startpage.pstpl', 
+                  'surveylist.pstpl', 
+                  'endpage.pstpl'
+                  );
+$Welcome=array('startpage.pstpl', 
+               'welcome.pstpl', 
+               'privacy.pstpl', 
+               'navigator.pstpl', 
+               'endpage.pstpl'
+               );
+$Question=array('startpage.pstpl', 
+                'survey.pstpl', 
+                'startgroup.pstpl', 
+                'groupdescription.pstpl',  
+                'question_start.pstpl', 
+                'question.pstpl', 
+                'endgroup.pstpl', 
+                'navigator.pstpl', 
+                'endpage.pstpl'
+                );
+$CompletedTemplate=array(
+                'startpage.pstpl', 
+                'assessment.pstpl', 
+                'completed.pstpl', 
+                'endpage.pstpl'
+                );
+$Clearall=array('startpage.pstpl', 
+                'clearall.pstpl', 
+                'endpage.pstpl'
+                );
+$Register=array('startpage.pstpl', 
+                'survey.pstpl', 
+                'register.pstpl', 
+                'endpage.pstpl'
+                );
+$Save=array('startpage.pstpl', 
+            'save.pstpl', 
+            'endpage.pstpl'
+            );
+$Load=array('startpage.pstpl', 
+            'load.pstpl', 
+            'endpage.pstpl'
+            );
+$printtemplate=array('startpage.pstpl', 
+                     'printanswers.pstpl', 
+                     'endpage.pstpl'
+                     );
+$printablesurveytemplate=array('print_survey.pstpl', 
+                               'print_group.pstpl', 
+                               'print_question.pstpl'
+                               );
+
 
 // Set this so common.php doesn't throw notices about undefined variables
 $thissurvey['active']='N';
 
 
-$file_version="LimeSurvey Template Editor ".$versionnumber;
+$file_version="LimeSurvey template editor ".$versionnumber;
 $_SESSION['s_lang']=$_SESSION['adminlang'];
 
 if (!isset($templatename)) {$templatename = sanitize_paranoid_string(returnglobal('templatename'));}
@@ -96,7 +147,7 @@ if ( isset($screenname) && (multiarray_search($screens,'name',$screenname)===fal
 
 if (!isset($action)) {$action=sanitize_paranoid_string(returnglobal('action'));}
 if (!isset($subaction)) {$subaction=sanitize_paranoid_string(returnglobal('subaction'));}
-if (!isset($otherfile)) {$otherfile = sanitize_paranoid_string(returnglobal('otherfile'));}
+if (!isset($otherfile)) {$otherfile = sanitize_filename(returnglobal('otherfile'));}
 if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
 if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
@@ -105,7 +156,7 @@ $js_adminheader_includes[]= $homeurl."/scripts/edit_area/edit_area_loader.js";
 $js_adminheader_includes[]= $homeurl."/scripts/templates.js";
 
 // find out language for code editor 
-$availableeditorlanguages=array('bg','cs' ,'de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
+$availableeditorlanguages=array('bg','cs','de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
 $extension = substr(strrchr($editfile, "."), 1);        
 if ($extension=='css' || $extension=='js') {$highlighter=$extension;} else {$highlighter='html';};
 if(in_array($_SESSION['adminlang'],$availableeditorlanguages)) {$codelanguage=$_SESSION['adminlang'];}
@@ -227,7 +278,7 @@ if ($action == "templateuploadfile")
 			
       } else
       {
-	  $the_full_file_path = $templaterootdir."/".$templatename . "/" . $_FILES['the_file']['name']; //This is where the temp file is
+	  $the_full_file_path = $templaterootdir."/".$templatename . "/" . sanitize_filename($_FILES['the_file']['name']); 
       if ($extfile = strrchr($_FILES['the_file']['name'], '.'))
       {
          if  (!(stripos(','.$allowedtemplateuploads.',',','. substr($extfile,1).',') === false))
@@ -305,18 +356,6 @@ foreach ($cssfiles as $fl) {
     $normalfiles[]=$fl["name"];
 }
 
-//Page Display Instructions
-$SurveyList=array('startpage.pstpl', 'surveylist.pstpl', 'endpage.pstpl');
-$Welcome=array('startpage.pstpl', 'welcome.pstpl', 'privacy.pstpl', 'navigator.pstpl', 'endpage.pstpl');
-$Question=array('startpage.pstpl', 'survey.pstpl', 'startgroup.pstpl', 'groupdescription.pstpl',  'question_start.pstpl', 'question.pstpl', 'endgroup.pstpl', 'navigator.pstpl', 'endpage.pstpl');
-$CompletedTemplate=array('startpage.pstpl', 'assessment.pstpl', 'completed.pstpl', 'endpage.pstpl');
-$Clearall=array('startpage.pstpl', 'clearall.pstpl', 'endpage.pstpl');
-$Register=array('startpage.pstpl', 'survey.pstpl', 'register.pstpl', 'endpage.pstpl');
-$Save=array('startpage.pstpl', 'save.pstpl', 'endpage.pstpl');
-$Load=array('startpage.pstpl', 'load.pstpl', 'endpage.pstpl');
-$printtemplate=array('startpage.pstpl', 'printanswers.pstpl', 'endpage.pstpl');
-$printablesurveytemplate=array('print_survey.pstpl', 'print_group.pstpl', 'print_question.pstpl');
-
 //CHECK ALL FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($files as $file) {
 	$thisfile="$templaterootdir/$templatename/".$file['name'];
@@ -328,7 +367,7 @@ foreach ($files as $file) {
 		}
 	}
 }
-//CHECK ALL CSS & JS FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
+//CHECK if ALL CSS & JS FILES EXIST, AND IF NOT - COPY IT FROM DEFAULT DIRECTORY
 foreach ($cssfiles as $file) {
 	$thisfile="$templaterootdir/$templatename/".$file['name'];
 	if (!is_file($thisfile)) {
@@ -343,7 +382,9 @@ foreach ($cssfiles as $file) {
 
 if (!$screenname) {$screenname=$clang->gT("Welcome Page", "unescaped");}
 if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unset($_SESSION['step']);} //This helps handle the load/save buttons
-//FAKE DATA FOR TEMPLATES
+
+
+// ===========================   FAKE DATA FOR TEMPLATES
 $thissurvey['name']=$clang->gT("Template Sample");
 $thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
 $thissurvey['welcome']=$clang->gT('Welcome to this sample survey').'<br />'.$clang->gT('You should have a great time doing this').'<br />';
@@ -552,10 +593,56 @@ switch($screenname) {
 	break;
 
     case $clang->gT("Printable survey page", "unescaped"):
-    unset($files);
-    foreach ($printablesurveytemplate as $qs) {
-        $files[]=array("name"=>$qs);
-    }
+        unset($files);
+        foreach ($printablesurveytemplate as $qs) {
+            $files[]=array("name"=>$qs);
+        }
+        $questionoutput=array();
+        foreach(file("$templaterootdir/$templatename/print_question.pstpl") as $op)
+        {
+            $questionoutput[]=templatereplace($op, array(
+                                                         'QUESTION_NUMBER'=>'1',
+                                                         'QUESTION_CODE'=>'Q1',
+                                                         'QUESTION_MANDATORY' => $clang->gT('*'),
+                                                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
+                                                         'QUESTION_CLASS' => ' mandatory list-radio',
+                                                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
+                                                         'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
+                                                         'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
+                                                         'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
+                                                         'QUESTIONHELP'=>'This is some help text for this question.',
+                                                         'ANSWER'=>'<ul>
+                                                                                <li>
+                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">
+                                                                                    First choice
+                                                                            </li>
+
+                                                                                <li>
+                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">
+                                                                                    Second choice
+                                                                            </li>
+                                                                                <li>
+                                                                                <img src="'.$templaterooturl.'/'.$templatename.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">
+                                                                                    Third choice
+                                                                            </li>
+                                                                        </ul>'
+            ));
+        }    
+        $groupoutput=array();
+        foreach(file("$templaterootdir/$templatename/print_group.pstpl") as $op)
+        {
+            $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)));
+        }    
+        foreach(file("$templaterootdir/$templatename/print_survey.pstpl") as $op)
+        {
+            $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
+                                                   'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
+                                                   'SUBMIT_TEXT'=>'',
+                                                   'HEADELEMENTS'=>getPrintableHeader(),
+                                                   'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
+                                                   'THANKS'=>$clang->gT('Thank you for completing this survey.')
+            ));
+        }    
     break;   
     
     case $clang->gT("Print answers page", "unescaped"):
@@ -601,6 +688,7 @@ if (is_array($files)) {
 	}
 }
 //Get list of 'otherfiles'
+$otherfiles=array();
 $dirloc=$templaterootdir."/".$templatename;
 if ($handle = opendir($dirloc)) {
 	while(false !== ($file = readdir($handle))) {

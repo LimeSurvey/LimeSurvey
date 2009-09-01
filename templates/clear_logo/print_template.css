@@ -129,31 +129,36 @@ li.other
 div.input-other
 ,div.input-othercomment
 {
-	
-	margin: -2em 0% 0% 5.5em;
-	width: 15em;
+	width: 20em;
 	height: 2em;
+    display:inline-block;
+    
 }
 
 .multiple-opt div.input-other
 {
-	/*margin-left: 5.5em;*/
+	padding-left: 5.5em;
 }
-.multiple-opt-comments div.input-other
+
+.multiple-opt-comments div.other-replacettext
 {
-	margin-top: 0.3em;
-	margin-left: 0em;
+    display:table-cell;
+}
+
+.multiple-opt-comments div.input-other {
 	width: 10em;
+    display:inline-block;
+    margin-left:5px;
 }
-.multiple-opt-comments div.input-othercomment
-{
-	margin-top: -2.1em;
-	margin-left: 10.5em;
+
+.multiple-opt-comments div.input-othercomment {
 	width: 24em;
+    display:table-cell;
 }
-.other-replacetext
+
+div.other-replacetext
 {
-	display :inline;
+    white-space:nowrap;
 }
 .ranking .q-answer li
 {
@@ -174,45 +179,36 @@ div.input-other
 	line-height: 2em;
 }
 
- .multiple-opt-comments .q-answer li div.input-text
-,.multiple-short-txt .q-answer li div.input-text
-,.numeric-multi .q-answer li div.input-text
-{
-	margin-top: -2em;
+.multiple-opt-comments div.input-text, 
+.multiple-short-txt div.input-text, 
+.numeric-multi div.input-text {
+    display: table-cell;
+
 }
 
-.multiple-opt-comments ul.X2 div.input-text , .multiple-short-txt ul.X2 div.input-text  , .numeric-multi ul.X2 div.input-text { margin-left: 2.5em; }
 
-.multiple-opt-comments ul.X4 div.input-text , .multiple-short-txt ul.X4 div.input-text  , .numeric-multi ul.X4 div.input-text { margin-left: 4.5em; }
+.multiple-opt-comments .q-answer ul li span,
+.multiple-short-txt .q-answer ul li span,
+.numeric-multi .q-answer ul li span
+{
+  display:table-cell;
+  padding-right:5px;
+  
+}
 
-.multiple-opt-comments ul.X6 div.input-text , .multiple-short-txt ul.X6 div.input-text  , .numeric-multi ul.X6 div.input-text { margin-left: 6.5em; }
 
-.multiple-opt-comments ul.X8 div.input-text , .multiple-short-txt ul.X8 div.input-text  , .numeric-multi ul.X8 div.input-text { margin-left: 8.5em; }
+.multiple-opt-comments .q-answer ul li ,
+.multiple-short-txt .q-answer ul li ,
+.numeric-multi .q-answer ul li {
+  display:table-row;
+}
 
-.multiple-opt-comments ul.X10 div.input-text , .multiple-short-txt ul.X10 div.input-text  , .numeric-multi ul.X10 div.input-text { margin-left: 10.5em; }
-
-.multiple-opt-comments ul.X12 div.input-text , .multiple-short-txt ul.X12 div.input-text  , .numeric-multi ul.X12 div.input-text { margin-left: 12.5em; }
-
-.multiple-opt-comments ul.X14 div.input-text , .multiple-short-txt ul.X14 div.input-text  , .numeric-multi ul.X14 div.input-text { margin-left: 14.5em; }
-
-.multiple-opt-comments ul.X16 div.input-text , .multiple-short-txt ul.X16 div.input-text  , .numeric-multi ul.X16 div.input-text { margin-left: 16.5em; }
-
-.multiple-opt-comments ul.X18 div.input-text , .multiple-short-txt ul.X18 div.input-text  , .numeric-multi ul.X18 div.input-text { margin-left: 18.5em; }
-
-.multiple-opt-comments ul.X20 div.input-text , .multiple-short-txt ul.X20 div.input-text  , .numeric-multi ul.X20 div.input-text { margin-left: 20.5em; }
-
-.multiple-opt-comments ul.X22 div.input-text , .multiple-short-txt ul.X22 div.input-text  , .numeric-multi ul.X22 div.input-text { margin-left: 22.5em; }
-
-.multiple-opt-comments ul.X24 div.input-text , .multiple-short-txt ul.X24 div.input-text  , .numeric-multi ul.X24 div.input-text { margin-left: 24.5em; }
-
-.multiple-opt-comments ul.X26 div.input-text , .multiple-short-txt ul.X26 div.input-text  , .numeric-multi ul.X26 div.input-text { margin-left: 26.5em; }
-
-.multiple-opt-comments ul.X28 div.input-text , .multiple-short-txt ul.X28 div.input-text  , .numeric-multi ul.X28 div.input-text { margin-left: 28.5em; }
-
-.multiple-opt-comments ul.X30 div.input-text , .multiple-short-txt ul.X30 div.input-text  , .numeric-multi ul.X30 div.input-text { margin-left: 30.5em; }
-
-.multiple-opt-comments ul.X-large div.input-text , .multiple-short-txt ul.X-large div.input-text  , .numeric-multi ul.X-large div.input-text { margin-left: 2em; margin-top: 0%;}
-
+.multiple-opt-comments .q-answer ul ,
+.multiple-short-txt .q-answer ul ,
+.numeric-multi .q-answer ul {
+ display:table;   
+ border-spacing: 3px;
+}
 
  #limesurvey .q-answer table thead th
 ,#limesurvey .q-answer table .repeat th
@@ -279,7 +275,4 @@ div.array-multi-flexi .q-answer table tbody td div.input-text
 	padding: 0% 0.3em;
 }
 
-div.breakbefore
-{
-    page-break-before: always; 
-}
+

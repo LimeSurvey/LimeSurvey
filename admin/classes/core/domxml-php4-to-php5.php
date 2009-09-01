@@ -79,7 +79,7 @@ function xmldocfile($filename) {return domxml_open_file($filename);}
 function xpath_eval($xpath_context,$eval_str,$contextnode=null) {return $xpath_context->xpath_eval($eval_str,$contextnode);}
 function xpath_new_context($dom_document) {return new php4DOMXPath($dom_document);}
 function xpath_register_ns($xpath_context,$prefix,$namespaceURI) {return $xpath_context->myDOMXPath->registerNamespace($prefix,$namespaceURI);}
-function _entityDecode($text) {return html_entity_decode_php4(strtr($text,array('&apos;'=>'\'')),ENT_QUOTES,'UTF-8');}
+function _entityDecode($text) {return html_entity_decode(strtr($text,array('&apos;'=>'\'')),ENT_QUOTES,'UTF-8');}
 function _error_report($error) {return array('errormessage'=>$error->message,'nodename'=>'','line'=>$error->line,'col'=>$error->column)+($error->file==''?array():array('directory'=>dirname($error->file),'file'=>basename($error->file)));}
 
 class php4DOMAttr extends php4DOMNode

@@ -218,7 +218,6 @@ class PHPZip
 // This comes from http://de.tikiwiki.org/xref-BRANCH-1-9/nav.html?lib/sheet/include/org/apicnet/io/archive/CZip.php.source.html
 function extract($dir, $zipfilename){
           if (function_exists("zip_open")) {
-               //$dir  = eregi_replace("(\..*$)", "", $zipfilename);
 
               $this->createDir($dir);
               $zip  = zip_open($zipfilename);
@@ -226,10 +225,9 @@ function extract($dir, $zipfilename){
                  while ($zip_entry = zip_read($zip)) {
                      if (zip_entry_open($zip, $zip_entry, "r")) {
                          $buf = zip_entry_read($zip_entry, zip_entry_filesize($zip_entry));
-//                         if (eregi("(\/)", zip_entry_name($zip_entry))) $this->createDir($dir."/".eregi_replace("\/.*$", "", zip_entry_name($zip_entry))); 
 
-// LimeSurvey Only extract first dir for the moment
-                         if ( ! eregi("(\/)", zip_entry_name($zip_entry)))
+                 // LimeSurvey Only extract first dir for the moment
+                         if ( ! preg_match("/(\/)/i", zip_entry_name($zip_entry)))
 			{ 
                          $this->createFile($dir."/".zip_entry_name($zip_entry), $buf,zip_entry_filesize($zip_entry));
 			}
@@ -247,7 +245,7 @@ function extract($dir, $zipfilename){
       }
 
   	function createDir($dir){
-          if (eregi("(\/$)", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
+          if (preg_match("/(\/$)/", $dir)) @mkdir (substr($dir, 0, strlen($dir) - 1));
           else @mkdir ($dir);
       }
       

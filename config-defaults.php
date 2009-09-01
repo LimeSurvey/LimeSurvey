@@ -86,7 +86,7 @@ $defaulttemplate    =  'default';         // This setting specifys the default t
 
 $allowedtemplateuploads = 'gif,jpg,png';  // File types allowed to be uploaded in the templates section.
 
-$allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
+$allowedresourcesuploads = '7z,aiff,asf,avi,bmp,csv,doc,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xml,zip,pstpl,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
 
 $debug              =   0;      // Set this to 1 if you are looking for errors. If you still get no errors after enabling this
@@ -337,7 +337,7 @@ $column_style = 'ul';
 $max_columns = 8;
 
 /**
- * befaore 1.85RC3, the group description of a group of questions with all questions
+ * before 1.85RC3, the group description of a group of questions with all questions
  * hidden by conditions was displayed in all-in-one survey mode.
  * Since 1.85RC3, the global parameter 'hide_groupdescr_allinone' can be set to control
  * if the group description should be hidden in this case.
@@ -451,12 +451,13 @@ require_once(dirname(__FILE__).'/config.php');
     $tempurl        =   "$rooturl/tmp";
     $imagefiles     =   "$rooturl/images";    // Location of button bar files for admin script
   	$templaterootdir=   "$rootdir/templates"; // Location of the templates
+    $templaterooturl=   "$rooturl/templates"; // Location of the templates
     $homedir        =   "$rootdir/admin";     // The physical disk location of the admin scripts
     $publicdir      =   "$rootdir";           // The physical disk location of the public scripts
     $tempdir        =   "$rootdir/tmp";       // The physical location where LimeSurvey can store temporary files
                                               // Note: For OS/2 the $tempdir may need to be defined as an actual directory
                                               // example: "x:/limesurvey/tmp". We don't know why.
-    $fckeditordir   =   "$homeurl/scripts/fckeditor.264";
+    $fckeditordir   =   "$homeurl/scripts/fckeditor.2641";
     $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
     $pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
     $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts

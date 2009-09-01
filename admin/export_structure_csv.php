@@ -110,19 +110,18 @@ $lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}lab
 $lsdump = BuildCSVFromQuery($lsquery);
 
 //8: Labels
-$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language 
+$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value
            FROM {$dbprefix}labels, {$dbprefix}questions 
 		   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
 		   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
 		   AND sid=$surveyid 
-		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
+		   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language,{$dbprefix}labels.assessment_value";
 $ldump = BuildCSVFromQuery($lquery);
 
 //9: Question Attributes
-$query = "SELECT DISTINCT {$dbprefix}question_attributes.* 
-          FROM {$dbprefix}question_attributes, {$dbprefix}questions 
-		  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid 
-		  AND {$dbprefix}questions.sid=$surveyid";
+$query = "SELECT {$dbprefix}question_attributes.qaid, {$dbprefix}question_attributes.qid, {$dbprefix}question_attributes.attribute,  {$dbprefix}question_attributes.value
+          FROM {$dbprefix}question_attributes 
+		  WHERE {$dbprefix}question_attributes.qid in (select qid from {$dbprefix}questions where sid=$surveyid group by qid)";
 $qadump = BuildCSVFromQuery($query);
 
 //10: Assessments;
@@ -143,6 +142,13 @@ $query = "SELECT {$dbprefix}quota_members.*
 		  WHERE {$dbprefix}quota_members.sid=$surveyid";
 $quotamemdump = BuildCSVFromQuery($query);
 
+//13: Quota languagesettings
+$query = "SELECT {$dbprefix}quota_languagesettings.*
+          FROM {$dbprefix}quota_languagesettings, {$dbprefix}quota
+		  WHERE {$dbprefix}quota.id = {$dbprefix}quota_languagesettings.quotals_quota_id
+		  AND {$dbprefix}quota.sid=$surveyid";
+$quotalsdump = BuildCSVFromQuery($query);
+
 $fn = "limesurvey_survey_$surveyid.csv";
 
 header("Content-Type: application/download");
@@ -152,6 +158,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: cache");                          // HTTP/1.0
 
-echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump, $quotadump, $quotamemdump."\n";
+echo $dumphead, $sdump, $gdump, $qdump, $adump, $cdump, $lsdump, $ldump, $qadump, $asdump, $slsdump, $quotadump, $quotamemdump, $quotalsdump."\n";
 exit;
 ?>

@@ -327,7 +327,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	if ($oldversion < 138) //Modify quota field
 	{
 	    modify_database("", "ALTER TABLE [prefix_quota_members] ALTER COLUMN [code] VARCHAR(11) NULL"); echo $modifyoutput; flush();
-        modify_database("", "UPDATE [prefix_settings_global] SET [tg_value]='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
       
     return true;

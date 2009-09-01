@@ -17,8 +17,9 @@ $(document).ready(function(){
     }
     // Loads the tooltips for the toolbars
     $('img[alt]').qtip({
-       style: { name: 'cream', 
-                tip: true, 
+       style: { name: 'cream',
+                tip:true, 
+                color:'#111111', 
                 border: {
                      width: 1,
                      radius: 5,
@@ -70,8 +71,9 @@ function updatequestionattributes()
            $('.loader').hide();
             $('label[title]').qtip({
                style: { name: 'cream', 
-                        tip: true, 
-                        border: {
+                         tip: true, 
+                       color:'#111111', 
+                      border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}

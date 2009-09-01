@@ -424,7 +424,7 @@ if (!$thissurvey['templatedir'])
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry']!='' and $thissurvey['expiry'] < date("Y-m-d"))
+if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'] && $thissurvey['active']!='N')
 {
 	sendcacheheaders();
 	doHeader();
@@ -441,7 +441,7 @@ if ($thissurvey['expiry']!='' and $thissurvey['expiry'] < date("Y-m-d"))
 }
 
 //MAKE SURE SURVEY IS ALREADY VALID
-if ($thissurvey['startdate']!='' and $thissurvey['startdate'] >= date("Y-m-d"))
+if ($thissurvey['startdate']!='' and  date("Y-m-d")<$thissurvey['startdate'] && $thissurvey['active']!='N')
 {
     sendcacheheaders();
     doHeader();
@@ -1001,12 +1001,12 @@ function checkconfield($value)
 		// and we want to compare it to the values stored in $_SESSION['fieldarray'] which are simple fieldnames
 		// ==> We first translate $value to the simple fieldname (let's call it the masterFieldName) from
 		//     the $_SESSION['fieldnamesInfo'] translation table
-		if ($value != 'token')
+		if (isset($_SESSION['fieldnamesInfo'][$value]))
 		{
 			$masterFieldName = $_SESSION['fieldnamesInfo'][$value];
 		}
 		else
-		{
+		{ // for token refurl, ipaddr...
 			$masterFieldName = 'token';
 		}
 
@@ -1103,7 +1103,7 @@ function checkconfield($value)
 						{//Go through each condition
 							// Replace @SGQA@ condition values
 							// By corresponding value
-							if (ereg('^@([0-9]+X[0-9]+X[^@]+)@',$cqv["matchvalue"], $targetconditionfieldname))
+							if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/',$cqv["matchvalue"], $targetconditionfieldname))
 							{
 								if (isset($_SESSION[$targetconditionfieldname[1]]))
 								{
@@ -1117,7 +1117,7 @@ function checkconfield($value)
 							// Replace {TOKEN:XXX} condition values
 							// By corresponding value
 							if ($local_thissurvey['private'] == 'N' && 
-								ereg('^{TOKEN:([^}]*)}$',$cqv["matchvalue"], $targetconditiontokenattr))
+								preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
 							{
 								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 								{
@@ -1144,7 +1144,7 @@ function checkconfield($value)
 										$comparisonLeftOperand = null;
 									}
 								}
-								elseif ($local_thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$',$cqv['cfieldname'],$sourceconditiontokenattr))
+								elseif ($local_thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
 								{
 									if ( isset($_SESSION['token']) &&
 									  in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -1170,8 +1170,8 @@ function checkconfield($value)
 										$addon=1;
 									}
 								}
-//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && ereg($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
-								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && ereg($cqv["matchvalue"],$comparisonLeftOperand))
+//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && preg_match($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
+								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && preg_match('/'.$cqv["matchvalue"].'/',$comparisonLeftOperand))
 								{
 										$addon=1;
 								}
@@ -1436,17 +1436,28 @@ function remove_nulls_from_array($array)
 	}
 }
 
-function submittokens()
+
+/**
+* Marks a tokens as completed and sends a confirmation email to the participiant. 
+* If $quotaexit is set to true then the user exited the survey due to a quota 
+* restriction and the according token is only marked as 'Q'
+* 
+* @param mixed $quotaexit
+*/
+function submittokens($quotaexit=false)
 {
 	global $thissurvey, $timeadjust, $emailcharset ;
 	global $dbprefix, $surveyid, $connect;
 	global $sitename, $thistpl, $clang, $clienttoken;
 
-	// Put date into sent and completed
-
+    // Shift the date due to global timeadjust setting
 	$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);     
 	$utquery = "UPDATE {$dbprefix}tokens_$surveyid\n";
-	if (bIsTokenCompletedDatestamped($thissurvey))
+    if ($quotaexit==true)
+	{
+        $utquery .= "SET completed='Q'\n";
+    }
+	elseif (bIsTokenCompletedDatestamped($thissurvey))
 	{
 		$utquery .= "SET completed='$today'\n";
 	}
@@ -1458,6 +1469,8 @@ function submittokens()
 
 	$utresult = $connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
 
+    if ($quotaexit==false)
+    {  
 	// TLR change to put date into sent and completed
 	$cnfquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
 
@@ -1480,9 +1493,9 @@ function submittokens()
         {
             $fieldsarray["{".strtoupper($attr_name)."}"]=$cnfrow[$attr_name];
         }
-		$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-		$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
-		$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
+
+            $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+		    $fieldsarray["{EXPIRY}"]=convertDateTimeFormat($thissurvey["expiry"],'Y-m-d H:i:s',$dateformatdatat['phpdate']);
 
 		$subject=Replacefields($subject, $fieldsarray);
 
@@ -1523,6 +1536,7 @@ function submittokens()
             //This section only here as placeholder to indicate new feature :-)
 		}
 	}
+}
 }
 
 function sendsubmitnotification($sendnotification)
@@ -1722,7 +1736,7 @@ function buildsurveysession()
 			        </tr>";
 	                if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	                { echo "<tr>
-				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='verification.php' /></td>
+				                <td align='center' valign='middle'><label for='captcha'>".$clang->gT("Security question:")."</label></td><td align='left' valign='middle'><table><tr><td valign='center'><img src='$rooturl/verification.php' /></td>
                                 <td valign='middle'><input id='captcha' type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table>
 				                </td>
 			                </tr>";}
@@ -1783,7 +1797,7 @@ function buildsurveysession()
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 { 
                     echo "<li>
-			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+			                <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
 		                  </li>";
                 }
                 echo "<li>
@@ -1804,7 +1818,7 @@ function buildsurveysession()
 	{
 
 		//check if token actually does exist
-		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
+		$tkquery = "SELECT COUNT(*) FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
 		$tkresult = db_execute_num($tkquery);    //Checked 
 		list($tkexist) = $tkresult->FetchRow();
 		if (!$tkexist)
@@ -1935,7 +1949,7 @@ function buildsurveysession()
 	            if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
 	            { 
                     echo "<li>
-                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
+                            <label for='captchaimage'>".$clang->gT("Security Question")."</label><img id='captchaimage' src='$rooturl/verification.php' /><input type='text' size='5' maxlength='3' name='loadsecurity' value='' />
                           </li>";
                 }
 			    echo "<li><input class='submit' type='submit' value='".$clang->gT("Continue")."' /></li>
@@ -2771,6 +2785,11 @@ function check_quota($checkaction,$surveyid)
 		{
 			if ((isset($quota['status']) && $quota['status'] == "matched") && (isset($quota['Action']) && $quota['Action'] == "1"))
 			{
+				// If a token is used then mark the token as completed
+                if (isset($clienttoken) && $clienttoken)
+                {
+                    submittokens(true);
+                }
 				session_destroy();
 				sendcacheheaders();
 				if($quota['AutoloadUrl'] == 1 && $quota['Url'] != "")
@@ -2783,7 +2802,6 @@ function check_quota($checkaction,$surveyid)
 				echo "\t".$quota['Message']."<br /><br />\n";
 				echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
 				echo "\t</div>\n";
-//				echo "\t".$clang->gT("Sorry your responses have exceeded a quota on this survey.")."<br /></center>&nbsp;\n";
 				echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 				doFooter();
 				exit;

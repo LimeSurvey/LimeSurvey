@@ -26,12 +26,17 @@ function focusFirst(Event)
 {
 	var i=0;
 	// count up as long as the elements are hidden
-	while(document.forms[0].elements[i].type == "hidden")
+	while(document.forms[0].elements[i].type == "hidden" &&
+		document.forms[0].elements[i].style.visibility == 'visible')
 	{
 		i++;
 	}
 	// put focus on the element we just counted.
-	document.forms[0].elements[i].focus();
+	if (document.forms[0].elements[i].type == "hidden" &&
+		document.forms[0].elements[i].style.visibility == 'visible')
+	{
+		document.forms[0].elements[i].focus();
+	}
 	return;
 }
 /*

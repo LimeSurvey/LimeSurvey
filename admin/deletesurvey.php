@@ -116,7 +116,15 @@ else //delete the survey
 	$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
 	$sres = $connect->Execute($sdel);
 
+	$sdel = "DELETE {$dbprefix}quota_languagesettings FROM {$dbprefix}quota_languagesettings, {$dbprefix}quota WHERE {$dbprefix}quota_languagesettings.quotals_quota_id={$dbprefix}quota.id and sid=$surveyid";
+	$sres = $connect->Execute($sdel);
 
+	$sdel = "DELETE FROM {$dbprefix}quota WHERE sid=$surveyid";
+	$sres = $connect->Execute($sdel);
+	
+	$sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
+	$sres = $connect->Execute($sdel);
+	
 	$deletesurveyoutput .= "\t<tr>\n";
 	$deletesurveyoutput .= "<td align='center'><br />\n";
 	$deletesurveyoutput .= "\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";

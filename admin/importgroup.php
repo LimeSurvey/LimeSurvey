@@ -349,7 +349,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
         //CHECK FOR DUPLICATE LABELSETS
         $thisset="";
-        $query2 = "SELECT code, title, sortorder, language
+        $query2 = "SELECT code, title, sortorder, language, assessment_value  
                    FROM {$dbprefix}labels
                    WHERE lid=".$newlid."
                    ORDER BY language, sortorder, code";    
@@ -577,7 +577,7 @@ if (isset($grouparray) && $grouparray)
    $gres = db_execute_assoc($gquery);
    while ($grow = $gres->FetchRow()) 
         {
-        fixsortorderQuestions(0,$grow['gid']);
+        fixsortorderQuestions($grow['gid'], $surveyid);
         }
    } 
     
@@ -640,7 +640,14 @@ if (isset($grouparray) && $grouparray)
             unset($conditionrowdata["cid"]); 
             
             // recreate the cfieldname with the new IDs
-            $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    if (preg_match("/^\+/",$oldcsid))
+	    {
+		    $newcfieldname = '+'.$newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    }
+	    else
+	    {
+		    $newcfieldname = $newsid . "X" . $newgid . "X" . $conditionrowdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+	    }
             
             $conditionrowdata["cfieldname"] = $newcfieldname;
             if (!isset($conditionrowdata["method"]) || trim($conditionrowdata["method"])=='') 

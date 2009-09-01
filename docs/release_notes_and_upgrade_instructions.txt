@@ -12,8 +12,8 @@ by you or third parties or a failure of the program to operate with any other pr
 
 This release does have the following requirements:
 
--One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2000 or higher, Postgres 7 or higher 
--PHP 4.3.2 or higher with mbstring library installed. (for localizations)
+-One of these databases:  MySQL 4.1 or higher, Microsoft SQL Server 2000 or higher, Postgres 8.1 or higher 
+-PHP 5.x or higher with mbstring library installed. (for localizations)
 Check out detailed requirements at http://docs.limesurvey.org/tiki-index.php?page=Installation
 
 
@@ -26,6 +26,10 @@ Please also have a look at the "Installation security hints" section of the onli
 
 
 === UPGRADING=====
+
+We suggest to check out and hold close to the instructions, which can be found in our online manual:
+http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version
+ 
 
 HOW TO UPGRADE from earlier versions of LimeSurvey (<=1.08)
 -------------------------------------------------------------
@@ -52,7 +56,7 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 ---------------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
@@ -68,10 +72,224 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.80(+)
    limesurvey/upload directory. 
 9. Run the installer in /admin/install/index.php to update the database.
 10. Copy back all your saved templates. You will have to adjust your templates since the CSS has been changed since version 1.72x. 
-    It is easier to try adapting one of the default templates to your template again instead of fixing your old template. 
+    It is easier to try adapting one of the default templates to your template again instead of fixing your old template! 
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+
+Changes from 1.85+ (build 7524) to 1.85+ (build 7548) [31-08-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: French (b00z00)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Dutch Informal by Gert Mensing. (jaycburton)
+#Updated translation: Dutch by Menno Dekker (jaycburton)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Russian by Alexander Matrunich. (jaycburton)
+#Updated translation: Slovenian by Tomi Zurej. (jaycburton)
+#Updated translation: Swedish (maxz)
+-Fixed issue #3394: Drop down datefield behaving strange when repeatedly submitted and a mandatory block occurs (c_schmitz)
+-Fixed issue #3586: Added alt tags on text input boxes for improved accessibility (c_schmitz)
+-Fixed issue #3588: User with survey right 'Browse responses' can delete/modify saved answers (c_schmitz)
+-Fixed issue #3596: Array_filter attribute not working correctly  when used with a Multiflexi array question (c_schmitz)
+-Fixed issue #3602: Valid from and Valid until fields in tokens don't accept different time than 0:00 (c_schmitz)
+
+
+
+Changes from 1.85+ (build 7454) to 1.85+ (build 7523) [24-08-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: Croatian (idobraca)
+#Updated translation: French (b00z00)
+#Updated Language: French. (b00z00)
+#Updated language: Greek (el). By Yiannos Katsirintakis. (kadejo)
+#Updated language: Spanish (es) (kadejo)
+#Updated language: Chinese Simplified (yooyooh)
+#Updated translation: Sinhalese kindly provided by Chinthaka Jayasundara, Kasun Wickramasuriya and Sachini Shakila (c_schmitz)
+#Updated translation: Swedish (maxz)
+-Fixed issue #3573: xhtml does not validate because of missing space in qanda.php (el-matador-69)
+-Fixed issue #3574: Apostrophe (single quote) in free text crashes the survey when magic quotes are off (c_schmitz)
+-Fixed issue #3584: MS SQL Error when trying to export results to application (c_schmitz)
+-Fixed issue #3487: NULL database values for start/expiry dates are not exported correctly (c_schmitz)
+-Fixed issue #3590: Quota cannot be imported or exported (jcleeland)
+-Fixed issue #3389: Respondents can re-start survey (using tokens) after terminating via quota conditions (c_schmitz)
+-Fixed issue #3460: Apostrophes in additional attributes of token table errors on edit (c_schmitz)
+-Fixed issue #3472: Import of JavaScript with "\n" in strings converts "\n" to real newlines (c_schmitz)
+-Fixed issue #3550: Multiple options with comments missing browse buttons in statistics (c_schmitz)
+-Fixed issue #3568: Files with hyphens in their name cannot be deleted (c_schmitz)
+-Fixed issue #3580: Start/end date prevent the preview of a survey even if it is not active yet (c_schmitz)
+-Fixed issue (unreported) where deleting survey did not delete related quota information. (jcleeland)
+-Fixed issue (unreported) when importing a really old PHPSurvey survey (c_schmitz)
+-Fixed issue (unreported) html warning "unresolved </strong>" in viewanswers. Removed offending item. (jcleeland)
+
+
+
+Changes from 1.85+ (build 7393) to 1.85+ (build 7454) [12-08-2009] - Legend: + new feature, # update feature, - bug fix
++New feature (minor) Added id to registration form "Continue" button to allow for DOM access (jcleeland)
+#Updated translation: French (b00z00)
+#Updated translation: Slovak by Marek Haller. (jaycburton)
+#Updated translation: Chinese Simplified (yooyooh)
+#Updated feature: when adding a label set in the languages listbox appears the session language by defect instead of English (paraya)
+#Updated translation: German (c_schmitz)
+-Fixed an issue with preg_match and conditions (c_schmitz)
+-Fixed issue #3557: Saved answers get deleted across survey when the result id is matching (c_schmitz)
+-Fixed issue: Automatic code counting for labels now working (c_schmitz)
+-Fixed issue: HTML validating correctly now on survey creation (c_schmitz)
+-Fixed issue: Survey data getting lost during survey creation when survey title is not set  (c_schmitz)
+-Fixed issue: When creating a group and the group title was forgotten then the data was lost (c_schmitz)
+-Fixed issue: When creating a question and the question code was forgotten then the data was lost (c_schmitz)
+-Fixed issue #3533: When not answering a mandatory question in All-in-one survey mode and using captchas you are getting the captcha page again (c_schmitz)
+-Fixed issue #3548: Question attribute page_break cannot be used on all question types (mennodekker)
+-Fixed issue #3491: CAPTCHA - verification not found when rewrite is activated (c_schmitz)
+-Fixed issue #3536: SPSS export incorrectly exports numerical only labelsets as alpha fields (mennodekker)
+-Fixed issue #3545: MSSQL error when trying to view public statistics for a survey. (c_schmitz)
+-Fixed issue #3546: Re-editing an assessment with embedded Flash object causes the Flash object to break (c_schmitz)
+-Fixed issue #3458: Translation problem when you print answers (paraya)
+-Fixed issue #3517: When adding new questions they can't be added at the beginning (paraya)
+-Fixed issue #3444: fields in reminder will not be replaced (wahrendorff)
+-Fixed issue #3493: removeBOM is undefined (wahrendorff)
+
+
+Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian. (idobraca)
+#Updated translation: Czech by Vladimir Braun. (jaycburton)
+#Updated translation: Italian. (idobraca)
+#Updated translation: French. (b00z00)
+#Updated translation: Polish(elisa-ls)
+#Updated translation: Slovak by Marek Hallér. (jaycburton)
+#Updated translation: Spanish (es) (kadejo)
++New feature: CSS class for cells within array (flexible label) question type. This way cells within the table can have a background color assigned using CSS. (maziminke)
+-Fixed bug #03459: Using a "lower than" > character as code within label set leads to a save error in the end user survey form (jcleeland)
+-Fixed issue # 03514: Font size of suffix is too large in template bluengrey (c_schmitz)
+-Fixed issue #3436: Corrupted progress box with RTL languages in mint_idea template - patch by kabapy (c_schmitz)
+-Fixed issue #3439: Javascript is disabled on saving an assessment (c_schmitz)
+-Fixed issue #3445: Disabling going to previous q: does not work if back button used in browser - idea by chrizzler (c_schmitz)
+-Fixed issue #3446: Create indexes on tokens (c_schmitz)
+-Fixed issue #3452: LimeSurvey and PHP 5.3 (c_schmitz)
+-Fixed issue #3468: Error while exporting survey structure on MSSQL server (c_schmitz)
+-Fixed issue #3507: Results for Array (flexible labels) show HTML when viewing a single answer (c_schmitz)
+-Fixed issue #3510: A group made only of conditional questions will fail to show in Internet Explorer with some templates (lemeur)
+-Fixed issue #3513: Dual Scale Matrix: Radio Buttons not centered at Question Preview  (c_schmitz)
+-Fixed issue #3515: Label set assessment values are not exported correctly (c_schmitz)
+-Fixed issue #3518: Can't import conditions based on token:attributtes (c_schmitz)
+-Fixed issue #3519: Graph legends are not visible well on IE6 (c_schmitz)
+-Fixed issue #3526: Unable to use tokens with hyphens in (c_schmitz)
+-Fixed issue #3527: Due to SQL bad syntax, survey can not be activated at all under PostgreSQL (any version). Tested on PostgreSQL and MySQL. (kadejo)
+-Fixed issue in several templates that could prevent the Question-Help to be displayed correctly (lemeur)
+-Fixed issue: Notice if there are not 'Other' files in template editor (c_schmitz)
+-Fixed wording in conditions editor incorrectly reporting 'Inexistant Token table' for conditions based on tokens (lemeur)
+-Fixed bug #3505: "INSERTANS not working when referring to Array (flexible labels) questions". (maziminke)
+
+
+
+Changes from 1.85+ (build 7253) to 1.85+ (build 7337) [20-07-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: French. (b00z00)
+#Updated translation: Formal Italian by Jay C. Burton. (jaycburton)
+#Updated translation: Dutch by Menno Dekker. (jaycburton)
+#Updated translation: Greek by Manolis Stamatogiannakis. (jaycburton)
+#Updated translation: Italian-Formal by livio. (jaycburton)
+#Updated translation: Albanian translation updates by Gjergi Sheldija. (jaycburton)
+#Updated translation: Polish update (elisa-ls)
+#Updated translation: Some translation improvements by Dimitris Zacharopoulos. (jaycburton)
+#Updated translation: Translation updates by Mark Yeung. (jaycburton)
+
+-Fixed "an attribute value specification must be an attribute value literal unless SHORTTAG YES is specified" HTML error message. (maziminke)
+-Fixed #3485: Datepicker translation doesn't work (mennodekker)
+-Fixed bug #03478: Reminder contraint settings not used after first email batch (jcleeland)
+-Fixed bug #03479: At creating a token it's not possible to enter a token start or an token end date (jcleeland)
+-Fixed issue #03451: a survey with an empty questions-group can be activated which can hang the server at runtime (lemeur)
+-Fixed issue #3471: Data from radio lists with alphanumeric labels is incorrectly exported to R and SPSS (mennodekker)
+-fixed Issue: importQuestion did not import the question. (wahrendorff)
+-fixed: Sherpa Template - Limited textarea width to 90%. Before it was set to 99% which partly broke the layout. (maziminke)
+
+Changes from 1.85+ (build 7191) to 1.85+ (build 7253) [08-07-2009] - Legend: + new feature, # update feature, - bug fix
+
+#Updated feature: FCKeditor updated to release 2.6.4.1 in order to fix several serious security issues. (lemeur)
+#Updated feature: UTF-8 BOMs on token import are now filtered (c_schmitz)
+
+#Update of Croatian and Italian language (idobraca)
+#Updated language: spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: German informal (c_schmitz)
+#Updated translation: Polish update (elisa-ls)
+
+-Fixed #03426: unable to activate a survey as a NON-Superadmin over lsrc (wahrendorff)
+-Fixed #3410: Notice at SPSS and R Export cause empty export (mennodekker)
+-Fixed an issue in the conditions copy screen for multi-languages surveys: questions where displayed several times (lemeur)
+-Fixed an issue with conditions where group descriptions could be displayed in all-in-one surveys even if all questions are hidden (lemeur)
+-Fixed issue #3421: On date questions the calender view only starts with 1999. The dropdown_year_max and dropdown_year_min attributes are used for the popup calendar as well (c_schmitz)
+-Fixed issue #3427: Problem viewing text answers in stats screen (c_schmitz)
+-Fixed issue #3433: CSS class questionhelp (for question tip) is enclosed between escaped double quotes in the clear_logo template (c_schmitz)
+-Fixed issue: Added .js to allowed file upload types (c_schmitz)
+-Fixed issue: Missing CSS include when using the slider layout and so making the slider layout not working at all (c_schmitz)
+-Fixed issue: Template preview for printable survey (c_schmitz)
+-Fixed numerous issues with alert messages (min answers, max answers, mandatory other comment) not displayed when the question text is on several lines (lemeur)
+-Fixed: Problems with gT function on a non-object fixed (wahrendorff)
+
+Changes from 1.85+ (build 7162) to 1.85+ (build 7191) [29-06-2009] - Legend: + new feature, # update feature, - bug fix
+
++New feature: In SPSS and R export all token fields are exported on a non-anonymous survey (mennodekker)
+
+#Updated translation: French. (b00z00)
+#Updated translation: Polish translation update (elisa-ls)
+
+-Fixed #3303: "Error updating - Query was empty" when editing survey settings (c_schmitz)
+-Fixed #3391: Google Chrome misplaces content in admin interface (c_schmitz)
+-Fixed #3391: Google Chrome misplaces table in result detail screen (c_schmitz)
+-Fixed #3396: Updated Release Notes (PHP 5.x is required) (el-matador-69)
+-Fixed #3410: Notice at SPSS and R Export cause empty export (mennodekker)
+-Fixed issue #3393: group may remain hidden in all-in-one surveys even if one or more question of the group are not conditionnal. (lemeur)
+-Fixed issue #3395: year_max attribute doesn't work (mennodekker)
+-Fixed issue #3398: Template editor complains about missing files (c_schmitz)
+-Fixed issue #3402: Conditional questions disappear when navigating to a new group and back (list dropdown questions). (lemeur)
+-Fixed issue #3403: Conditional questions disappear when validation failed (list dropdown questions). (lemeur)
+-Fixed issue #3405: {TOTAL} always displays a sum of 0 (c_schmitz)
+-Fixed issue #3407: Umlauts in public statistic are not properly shown on some browsers (c_schmitz)
+-Fixed issue #3412: Expand/Reduce buttons in admin panel at survey-level don't work (c_schmitz)
+-Fixed issue #3414: Indent alignment of lines after the first line in radio list questions (c_schmitz)
+-Fixed a PHP 5.0 incompatibility with some questions types (c_schmitz)
+-Partial Fix for issue #02984: Ability to define level of variable (ordinal) now also available in R export. (mennodekker)
+
+
+Changes from 1.85 stable (build 7115) to 1.85+ (build 7162) - Legend: + new feature, # update feature, - bug fix
+
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: spanish (es) (kadejo)
+#Updated translation: German (c_schmitz)
+#Updated translation: Chinease Simplified - Help Files encoding with utf8 (yooyooh)
+#Updated translation: Chinease Simplified - Updated Language Files (yooyooh)
+#Updated translation: Minor updates to the Hungarian language file by Gergely Kutenics. (jaycburton)
+#Updated translation: Polish translation update (elisa-ls)
+
+#Updated Feature Statistics: statistics can now be send to a pdf File in addition to browser (wahrendorff)
+#Updated Feature: tcpdf class updated to 4.6.0.15 (wahrendorff)
+#Updated: lsrc test survey.csv file (wahrendorff)
+
+-Fixed #3360: Typo in config-defaults.php (el-matador-69)
+-Fixed #3366: Show other responses open a popup with the admin page (mennodekker)
+-Fixed #3371: in all-in-one survey, groups may remain hidden even if some questions of the group should be displayed (due to conditions). (lemeur)
+-Fixed #3385: PHP Error when creating new survey with single quotes (c_schmitz)
+-Fixed Issue: Lsrc was not able to import the questions of a survey anymore (wahrendorff)
+-Fixed bug: jason's stupid forgotten dbversion update (jcleeland)
+-Fixed issue #3336: Layout problem with lists in question text and question help text (c_schmitz)
+-Fixed issue #3338: Assessments: LimeReplaceMent-Field display issue (lemeur)
+-Fixed issue #3342: Escaping problem at user group description (c_schmitz)
+-Fixed issue #3349: Printable Survey: Layout problem at "Type Q - Multiple Short Text"  (c_schmitz)
+-Fixed issue #3352: Start date doesn't work if it is set to today's date (c_schmitz)
+-Fixed issue #3353: Translated "Other"-field is too long and is placed over input field  (c_schmitz)
+-Fixed issue #3355: Checkbox for "Other" option is missing at Printable-version  (c_schmitz)
+-Fixed issue #3356: Update database on mssql fails (c_schmitz)
+-Fixed issue #3362: Broken conditions after importing whole group or survey using single checkboxes as source of conditions (lemeur)
+-Fixed issue #3365: Can not set survey quotas with MSSQL Server (c_schmitz)
+-Fixed issue #3369: trying to export to queXML doesn't work (c_schmitz)
+-Fixed issue #3370: Assessment calculation is wrong with multiple choice questions having the same answer code (c_schmitz)
+-Fixed issue #3372: dropdown dates can't be validated  (c_schmitz)
+-Fixed issue #3373: multiple options with commentary and multiple short text doesn't work in IE7 in all templates but default (c_schmitz)
+-Fixed issue #3384: Assessments: LimeReplaceMent-Field does not work when editting an existing assesment text (lemeur)
+-Fixed issue #3386: JS-Error with LimeReplacement-Field at Assessments (lemeur)
+-Fixed issue: error notice when activating a survey on mssql showing under certain conditions (c_schmitz)
+-Fixed issue: the {PERC}  tag is now displayed in the LimeReplacementField select box for assessment texts (lemeur)
 
 
 Changes from 1.85RC3 (build 7008) to 1.85 stable (build 7115)

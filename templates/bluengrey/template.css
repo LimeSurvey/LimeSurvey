@@ -528,6 +528,17 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
 .list-radio
 */
 
+.list-radio .answer li label {
+    display:inline-block;
+    width:85%;
+}
+
+
+.list-radio .answer li input { 
+    vertical-align:top !important;
+    margin-top:2px;
+}
+
   ul.cols-2 , table.cols-2
 , ul.cols-3 , table.cols-3
 , ul.cols-4 , table.cols-4

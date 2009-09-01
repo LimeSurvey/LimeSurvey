@@ -73,6 +73,11 @@ table.statisticstable {
 	margin: 2px auto;
 }
 
+
+table.statisticstable span {   
+     font-weight:bold;
+}
+    
 .basic {
 	color: #1d2d45;
 }
@@ -85,6 +90,7 @@ div.menubar {
 	background-color: #EEF6FF;
 	width: 99.1%;
 	margin-top: 3px;
+    clear:left;
 }
 
 .menubar-main {
@@ -175,6 +181,7 @@ table.table2columns {
     margin-top:-2px;
     margin-bottom:4px;
     padding:5px 0;
+    clear:left;
 }
 
 .table2columns td:first-child {
@@ -522,6 +529,7 @@ a.invalidemail {
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    clear:left;
 }
 
 .browsetable tr:hover { 

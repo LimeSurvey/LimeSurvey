@@ -443,7 +443,7 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " /><strong>".showspeaker(FlattenText($flt[5]))."</strong>"
+		$statisticsoutput .= " />".showspeaker(FlattenText($flt[5]))
 		."<br />\n";
 
 		//numerical question type -> add some HTML to the output
@@ -502,10 +502,10 @@ foreach ($filters as $flt)
 				//check SGQA -> do we want to pre-check the checkbox?
 				if (isset($summary) && (array_search("K{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 				{$statisticsoutput .= " checked='checked'";}
-				$statisticsoutput .= " />&nbsp;<strong>";
+				$statisticsoutput .= " />&nbsp;";
 					
 				//show speaker
-				$statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))."</strong><br />\n";
+				$statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))."<br />\n";
 
 				//input fields
 				$statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
@@ -555,9 +555,9 @@ foreach ($filters as $flt)
 				if (isset($summary) && (array_search("Q{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}", $summary) !== FALSE))
 				{$statisticsoutput .= " checked='checked'";}
 					
-				$statisticsoutput .= " />&nbsp;<strong>";
+				$statisticsoutput .= " />&nbsp;";
 				$statisticsoutput .= showSpeaker($flt[3]." - ".FlattenText($row[1]))
-				."</strong><br />\n"
+				."<br />\n"
 				."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 				."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 				if (isset($_POST[$myfield2]))
@@ -585,9 +585,9 @@ foreach ($filters as $flt)
 			if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 
-			$statisticsoutput .= " />&nbsp;<strong>"
+			$statisticsoutput .= " />&nbsp;"
 			."&nbsp;".showSpeaker($niceqtext)
-			."</strong><br />\n"
+			."<br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 			."\t\t\t\t\t<textarea name='$myfield2' rows='3' cols='80'>";
 
@@ -608,9 +608,9 @@ foreach ($filters as $flt)
 			if (isset($summary) && (array_search("T{$surveyid}X{$flt[1]}X{$flt[0]}", $summary) !== FALSE))
 			{$statisticsoutput .= " checked='checked'";}
 
-			$statisticsoutput .= " />&nbsp;<strong>"
+			$statisticsoutput .= " />&nbsp;"
 			."&nbsp;".showSpeaker($niceqtext)
-			."</strong><br />\n"
+			."<br />\n"
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 			."\t\t\t\t\t<input type='text' name='$myfield2' value='";
 
@@ -679,9 +679,8 @@ foreach ($filters as $flt)
 			//{$statisticsoutput .= " checked='checked'";}
 
 			//$statisticsoutput .= " /><strong>"
-			$statisticsoutput .= "<strong>"
-			.showSpeaker($niceqtext)
-			."</strong><br />\n"
+			$statisticsoutput .= showSpeaker($niceqtext)
+			."<br />\n"
 		
 			."\t\t\t\t\t<font size='1'>".$clang->gT("Date (YYYY-MM-DD) equals").":<br />\n"
 			."\t\t\t\t\t<input name='$myfield3' type='text' value='";
@@ -808,9 +807,9 @@ foreach ($filters as $flt)
 				//pre-check
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					
-				$statisticsoutput .= " />&nbsp;<strong>"
+				$statisticsoutput .= " />&nbsp;"
 				.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-				."</strong><br />\n"
+				."<br />\n"
 				."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 					
 				//there are always exactly 5 values which have to be listed
@@ -860,9 +859,9 @@ foreach ($filters as $flt)
 					
 				if (isset($summary) && array_search($myfield2, $summary)!== FALSE) {$statisticsoutput .= " checked='checked'";}
 					
-				$statisticsoutput .= " />&nbsp;<strong>"
+				$statisticsoutput .= " />&nbsp;"
 				.showSpeaker($niceqtext." ".str_replace("'", "`", $row[1])." - # ".$flt[3])
-				."</strong><br />\n"
+				."<br />\n"
 				."\t\t\t\t<select name='{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]' multiple='multiple'>\n";
 					
 				//here wo loop through 10 entries to create a larger output form
@@ -1608,6 +1607,18 @@ $viewalltext.="</li>\n"
 ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
 ."</select></li></ul></td></tr>\n";
 
+$viewalltext .="\t\t\t\t<tr><td align='center'>    <div id='vertical_slide'";
+if ($selecthide!='')
+{
+    $viewalltext .= " style='display:none' ";
+}
+
+//this fixes bug #2470
+$viewalltext.=" ><input type='checkbox' id='noncompleted' name='noncompleted' ";
+if (isset($_POST['noncompleted'])) {$viewalltext .= "checked='checked'";}
+$viewalltext.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label>\n</div><br /></td></tr>\n";
+
+
 //Output selector
 $viewalltext .= "<tr>"
 	."<td align='center'>"
@@ -1717,8 +1728,8 @@ function showSpeaker($hinttext)
         $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $maxchars, 'UTF-8'));          
 
 		//output with hoover effect
-		$reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" >"
+		$reshtml= "<span style='cursor: hand' title='".$htmlhinttext."' "
+		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\">"
 		." \"$shortstring...\" </span>"
 		."<img style='cursor: hand' src='$imagefiles/speaker.png' align='bottom' alt='$htmlhinttext' title='$htmlhinttext' "
 		." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />";

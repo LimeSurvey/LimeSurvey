@@ -34,21 +34,22 @@ $isInstertansEnabled=false;
 
 $limereplacementoutput="<html>\n"
 	. "\t<head>\n"
-	. "<title>LimeReplacementFields</title>\n"
-	. "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-	. "<meta content=\"noindex, nofollow\" name=\"robots\">\n"
-	. "<script src=\"$fckeditordir/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
-	. "<script language=\"javascript\">\n"
-	. "\tvar mydialog = window.parent ;\n"
-	. "\tvar oEditor = mydialog.InnerDialogLoaded() ;\n"
-	. "\tvar dialog = oEditor.FCK ;\n"
-	. "\tvar FCKLang = oEditor.FCKLang ;\n"
-	. "\tvar FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
-	. "\$(document).ready(function ()\n"
-	. "\t{\n"
-	. "oEditor.FCKLanguageManager.TranslatePage( document ) ;\n"
-	. "LoadSelected() ;\n"
-	. "mydialog.SetOkButton( true ) ;\n"
+	. "\t\t<title>LimeReplacementFields</title>\n"
+	. "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
+	. "\t\t<meta content=\"noindex, nofollow\" name=\"robots\">\n"
+	. "\t\t<script src=\"$fckeditordir/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
+	. "\t\t<script src=\"$rooturl/scripts/jquery/jquery.js\" type=\"text/javascript\"></script>\n"
+	. "\t\t<script language=\"javascript\">\n"
+	. "\t\t\tvar mydialog = window.parent ;\n"
+	. "\t\t\tvar oEditor = mydialog.InnerDialogLoaded() ;\n"
+	. "\t\t\tvar dialog = oEditor.FCK ;\n"
+	. "\t\t\tvar FCKLang = oEditor.FCKLang ;\n"
+	. "\t\t\tvar FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
+	. "\t\t\$(document).ready(function ()\n"
+	. "\t\t\t{\n"
+	. "\t\t\t\toEditor.FCKLanguageManager.TranslatePage( document ) ;\n"
+	. "\t\t\t\tLoadSelected() ;\n"
+	. "\t\t\t\tmydialog.SetOkButton( true ) ;\n"
 	. "\n"
 	. "SelectField( 'cquestions' ) ;\n" 
 	. "\t});\n"
@@ -171,7 +172,8 @@ switch ($fieldtype)
 		$isInstertansEnabled=true;
 	break;
 	case 'assessment-text':
-		$replFields[]=array('TOTAL',$clang->gT("Total score for this assessment rule"));
+		$replFields[]=array('TOTAL',$clang->gT("Overall assessment score"));
+		$replFields[]=array('PERC',$clang->gT("Assessment group score"));
 	break;
 }
 
@@ -575,4 +577,5 @@ $limereplacementoutput .= "</table>\n"
 			. "</html>";
 
 echo $limereplacementoutput;
+exit;
 ?>

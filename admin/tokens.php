@@ -271,8 +271,8 @@ if (!$tokenexists) //If no tokens table exists
 		. "remindersent C(17) DEFAULT 'N',\n "
 		. "remindercount int I DEFAULT 0,\n "
 		. "completed C(17) DEFAULT 'N',\n "
-		. "validfrom D ,\n "
-		. "validuntil D ,\n "
+		. "validfrom T ,\n "
+		. "validuntil T ,\n "
 		. "mpid I ";
 
 
@@ -305,7 +305,14 @@ if (!$tokenexists) //If no tokens table exists
 		} else {
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
 			$dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
+            if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
+            {
+                $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';                
+                $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+            }
 
+            
+            
 			$tokenoutput .= "\t</div></td></tr><tr>\n"
 			."\t\t<td align='center'>\n"
 			."<br /><br />\n"
@@ -1575,7 +1582,22 @@ if ($subaction == "remind" && //XXX
 					."\t<input type='hidden' name='ok' value=\"absolutely\" />\n"
 					."\t<input type='hidden' name='subaction' value=\"remind\" />\n"
 					."\t<input type='hidden' name='action' value=\"tokens\" />\n"
+					."\t<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
 					."\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+				//Include values for constraints minreminderdelay and maxremindercount if they exist
+				if (isset($_POST['minreminderdelay']) &&
+						$_POST['minreminderdelay'] != '' &&
+						intval($_POST['minreminderdelay']) != 0)
+				{
+				    $tokenoutput .= "\t<input type='hidden' name='minreminderdelay' value=\"".$_POST['minreminderdelay']."\" />\n";
+				}
+				if (isset($_POST['maxremindercount']) &&
+						$_POST['maxremindercount'] != '' &&
+						intval($_POST['maxremindercount']) != 0)
+				{
+					$tokenoutput .= "\t<input type='hidden' name='maxremindercount' value=\"".$_POST['maxremindercount']."\" />\n";
+				}
+				//
 				foreach ($surveylangs as $language)
 				{
 					$message = html_escape($_POST['message_'.$language]);
@@ -1689,7 +1711,7 @@ if ($subaction == "managetokenattributes" &&
     foreach ($tokenfields as $tokenfield=>$tokendescription)
     {
             $nrofattributes++;  
-            $tokenoutput.="<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription)."' /></td><td>";
+            $tokenoutput.="<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription,ENT_QUOTES,'UTF-8')."' /></td><td>";
             if ($examplerow!==false)
             {
                 $tokenoutput.=htmlspecialchars($examplerow[$tokenfield]);
@@ -1910,7 +1932,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
         $tokenoutput .= "\t\t<tr>"
         ."<td align='right' width='20%'><strong>".$attr_description.":</strong></td>\n"
         ."\t<td><input type='text' size='55' name='$attr_name' value='";
-        if (isset($$attr_name)) { $tokenoutput .=$$attr_name;}
+        if (isset($$attr_name)) { $tokenoutput .=htmlspecialchars($$attr_name,ENT_QUOTES,'UTF-8');}
         $tokenoutput.="'></td>"
         ."</tr>";  
 	}
@@ -2018,6 +2040,22 @@ if ($subaction == "inserttoken" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
+	//Fix up dates and match to database format
+    if (trim($_POST['validfrom'])=='') {
+        $_POST['validfrom']=null;
+    }
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
+    else
+    {
+        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+    }
+
 	$santitizedtoken=trim(sanitize_xss_string(strip_tags($_POST['token'])));
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
@@ -2029,7 +2067,9 @@ if ($subaction == "inserttoken" &&
 	'token' => $santitizedtoken,
 	'language' => sanitize_languagecode($_POST['language']),
 	'sent' => $_POST['sent'],
-	'completed' => $_POST['completed']);
+	'completed' => $_POST['completed'],
+	'validfrom' => $_POST['validfrom'],
+	'validuntil' => $_POST['validuntil']);
     // add attributes
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     foreach ($attrfieldnames as $attr_name)
@@ -2150,6 +2190,7 @@ if ($subaction == "upload" &&
 			if ($recordcount==0)
 			{
 				// Pick apart the first line
+                $buffer=removeBOM($buffer);
                 $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
                 $firstline = convertCSVRowToArray($buffer,',','"');

@@ -566,7 +566,9 @@ if (isset($postquestionlist) && is_array($postquestionlist))
                    ."{$dbprefix}groups "
              ."WHERE {$dbprefix}questions.gid={$dbprefix}groups.gid AND "
                    ."{$dbprefix}questions.qid=$pq AND "
-                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
+                   ."{$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND " 
+                   ."{$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'"; 
+		
 
 		$result = db_execute_assoc($query) or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
 
@@ -1363,7 +1365,7 @@ if ($subaction=='' ||
 						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
-							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 						}
 						else
 						{
@@ -1436,7 +1438,7 @@ if ($subaction=='' ||
 						$aTokenAttrNames=GetTokenFieldsAndNames($surveyid);
 						if (count($aTokenAttrNames) != 0)
 						{
-							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("Inexistant token table")."]";
+							$thisAttrName=html_escape($aTokenAttrNames[strtolower($extractedTokenAttr[1])])." [".$clang->gT("From token table")."]";
 						}
 						else
 						{
@@ -1563,7 +1565,7 @@ if ($subaction=='' ||
 	}
 	else
 	{ // no condition ==> disable delete all conditions button, and display a simple comment
-		$conditionsoutput .= "<tr><td valign='middle' align='center'>".$clang->gT("Always display this condition")."\n"
+		$conditionsoutput .= "<tr><td valign='middle' align='center'>".$clang->gT("This question is always shown.")."\n"
 			. "</td></tr>\n";
 	}
 	$conditionsoutput .= ""

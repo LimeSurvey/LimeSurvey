@@ -21,8 +21,11 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (!isset($gl)) {$gl=array('null');}
-if (isset($move) && $move == 'moveprev') {$_SESSION['step'] = $thisstep-1;}
-if (isset($move) && $move == 'movenext') {$_SESSION['step'] = $thisstep+1;}
+if (isset($move) && $move == 'moveprev' && $thissurvey['allowprev']=='Y') {$_SESSION['step'] = $thisstep-1;}
+if (isset($move) && $move == "movenext") {
+    if ($_SESSION['step']==$thisstep)
+    $_SESSION['step'] = $thisstep+1;
+}
 
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 // Previously we used to keep the session and redirect the user to the
@@ -541,7 +544,7 @@ for ($i=0;$i<count($conditions);$i++)
 			
 				if ($cd[6] == 'RX')
 				{ // the comparison right operand is a RegExp
-					if (ereg(trim($cd[3]),trim($tokenAttrSourceValue)))
+					if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
 		{
 						$localEvaluation = 'true';
 		}
@@ -596,7 +599,7 @@ for ($i=0;$i<count($conditions);$i++)
 			$localEvaluation = false;
 		}
 	}
-	elseif (ereg("[0-9]+X([0-9]+)X.*",$cd[2],$sourceQuestionGid))
+	elseif (preg_match("/[0-9]+X([0-9]+)X.*/",$cd[2],$sourceQuestionGid))
 	{
 		// If the Gid of the question used for the condition is on the same group,
 		// the set the runconce flag to False, because we'll need to evaluate this condition
@@ -706,7 +709,7 @@ for ($i=0;$i<count($conditions);$i++)
 			    }
 
 			} // end target @SGQA@
-			elseif ($thissurvey['private'] == "N" && ereg('^{TOKEN:([^}]*)}$', $cd[3], $targetconditiontokenattr))
+			elseif ($thissurvey['private'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $targetconditiontokenattr))
 		{
 				if ( isset($_SESSION['token']) && 
 						in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
@@ -746,7 +749,7 @@ for ($i=0;$i<count($conditions);$i++)
 							}
 							else
 							{
-								if (ereg(trim($cvalue),trim($prevanswerToCompare)))
+								if (preg_match('/'.trim($cvalue).'/',trim($prevanswerToCompare)))
 								{
 									//$newjava .= "'tokenMatch' == 'tokenMatch'";
 									$newjava .= "true";
@@ -870,14 +873,17 @@ if (isset($array_filterqs) && is_array($array_filterqs))
                 $appendj .= "\n";
                 $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
-				$appendj .= "document.getElementById('$tbody').style.display='';\n";
-				$appendj .= "document.getElementById('$dtbody').value='on';\n";
+				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+                $appendj .= "\t\t$('#$dtbody').val('on');\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
-				$appendj .= "document.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "document.getElementById('$dtbody').value='off';\n";
-				$appendj .= "radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+				$appendj .= "\t\t$('#$dtbody').val('off');\n";
+                // This line resets the text fields in the hidden row
+                $appendj .= "\t\t$('#$tbody input').val('');\n";
+                // This line resets any radio group in the hidden row
+				$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
 				$appendj .= "\t}\n";
 			}
 		}
