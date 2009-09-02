@@ -724,7 +724,7 @@ class LsrcHelper {
 		while (!feof($handle))
 		{
 			//To allow for very long survey lines (up to 64k)
-			$buffer = fgets($handle, 56550);
+			$buffer = fgets($handle);
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
@@ -3384,7 +3384,7 @@ class LsrcHelper {
 		$handle = fopen($the_full_file_path, "r");
 		while (!feof($handle))
 		{
-			$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
+			$buffer = fgets($handle); //To allow for very long survey welcomes (up to 10k)
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
