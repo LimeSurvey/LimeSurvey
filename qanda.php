@@ -3861,6 +3861,7 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
+    global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
 	{
