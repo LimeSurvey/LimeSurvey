@@ -404,16 +404,6 @@ echo "<input type='hidden' id='runonce' value='0' />
     
 // Find out if there are any array_filter questions in this group
 $array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
-// Put in the radio button reset javascript for the array filter unselect
-if (isset($array_filterqs) && is_array($array_filterqs)) 
-{
-echo "
-    function radio_unselect(radioObj)
-  	{   
-  		$(radioObj).('option').checked(false);
-        $(radioObj).('input').text('');
-  	}\n";    
-}
 
 print <<<END
 	function checkconditions(value, name, type)
@@ -871,17 +861,17 @@ if (isset($array_filterqs) && is_array($array_filterqs))
                 $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\t$('#$dtbody').val('on');\n";
+				$appendj .= "\t\t$('#$dtbody').val('on');\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
 				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
 				$appendj .= "\t\t$('#$dtbody').val('off');\n";
                 // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input').val('');\n";
+                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                 // This line resets any radio group in the hidden row
-				$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-				$appendj .= "\t}\n";
+               $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+				$appendj .= "\t}\n";   
 			}
 		}
 	}
