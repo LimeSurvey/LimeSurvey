@@ -253,7 +253,8 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
 }
 
-$connect->LogSQL(true);          
+require ($homedir.'/globalsettings.php');
+          
 //Admin menus and standards
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
@@ -336,6 +337,15 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		            . "<img src='$imagefiles/summary.png' name='CheckSettings' alt='". $clang->gT("Show System Summary")."'/></a>"
 		            . "<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
 
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global Settings")."\" "
+                        . "onmouseout=\"hideTooltip()\""
+                          . "onmouseover=\"showTooltip(event,'".$clang->gT("Global settings", "js")."');return false\">"
+                        . "\t\t\t\t\t<img src='$imagefiles/global.png' name='GlobalSettings' title='"
+                         . "' alt='". $clang->gT("Global Settings")."' /></a>"
+                         . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
+        }                    
 		// Check data integrity
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
@@ -3399,11 +3409,8 @@ function questionAttributes($returnByName=false)
 	
 	$qattributes["exclude_all_others"]=array(
 	"types"=>"M",
-    'inputtype'=>'singleselect',
-    'options'=>array(0=>$clang->gT('No'),
-                     1=>$clang->gT('Yes')),
-    'default'=>0,      
-    "help"=>$clang->gT('Excludes all other options if this is selected'),
+    'inputtype'=>'text',
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code.'),
     "caption"=>$clang->gT('Exclusive option'));
     
 	$qattributes["multiflexible_max"]=array(
@@ -3517,7 +3524,7 @@ function questionAttributes($returnByName=false)
                      3=>$clang->gT('Scale')),
     'default'=>0,      
     "help"=>$clang->gT(""),
-    "caption"=>$clang->gT('Export scale type'));
+    "caption"=>$clang->gT('SPSS export scale type'));
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {

@@ -269,7 +269,7 @@ if ($action == "personalsettings")
 }
 
 
-if ($action == "checksettings" || $action == "changelang" || $action=="changehtmleditormode")
+if ($action == "checksettings")
 {
     //GET NUMBER OF SURVEYS
     $query = "SELECT sid FROM ".db_table_name('surveys');

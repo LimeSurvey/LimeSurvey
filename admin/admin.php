@@ -129,6 +129,16 @@ elseif ($action == 'checkintegrity')
       if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {include('integritycheck.php');}
         else { include('access_denied.php');}
   }      
+elseif ($action == "globalsettings") 
+  { 
+       if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {globalsettingsdisplay();}
+         else { include("access_denied.php");}
+  }
+elseif ($action == "globalsettingssave") 
+  { 
+      if ($_SESSION['USER_RIGHT_CONFIGURATOR']==1)  {globalsettingssave();}
+        else { include("access_denied.php");}
+  } 
 elseif ($action=='labels' || $action=='newlabelset' || $action=='insertlabelset' ||
         $action=='deletelabelset' || $action=='editlabelset' || $action=='modlabelsetanswers' || 
         $action=='updateset' || $action=='importlabels' ||$action == 'importlabelresources')

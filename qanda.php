@@ -976,7 +976,7 @@ function do_date($ia)
     
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     
-	if (isset($qidattributes['dropdown_dates'])) {
+	if (trim($qidattributes['dropdown_dates'])!='') {
 		if (!empty($_SESSION[$ia[1]]))
 		{
 			list($currentyear, $currentmonth, $currentdate) = explode('-', $_SESSION[$ia[1]]);
@@ -1051,7 +1051,7 @@ function do_date($ia)
                                  * yearmin = Minimum year value for dropdown list, if not set default is 1900
                                  * yearmax = Maximum year value for dropdown list, if not set default is 2020
                                  */
-                                if (isset($qidattributes['dropdown_dates_year_min']))
+                                if (trim($qidattributes['dropdown_dates_year_min'])!='') 
                                 {
                                     $yearmin = $qidattributes['dropdown_dates_year_min'];
                                 }
@@ -1060,7 +1060,7 @@ function do_date($ia)
                                     $yearmin = 1900;
                                 }
                                 
-                                if (isset($qidattributes['dropdown_dates_year_max']))
+                                if (trim($qidattributes['dropdown_dates_year_max'])!='') 
                                 {
                                     $yearmax = $qidattributes['dropdown_dates_year_max'];
                                 }
@@ -1110,8 +1110,7 @@ function do_date($ia)
                 $dateoutput='';  
             }
             
-
-            if (isset($qidattributes['dropdown_dates_year_min'])){ 
+            if (trim($qidattributes['dropdown_dates_year_min'])!='') {
                 $minyear=$qidattributes['dropdown_dates_year_min'];
             }
             else
@@ -1119,7 +1118,7 @@ function do_date($ia)
                 $minyear='1980';
             }
 
-            if (isset($qidattributes['dropdown_dates_year_max'])){ 
+            if (trim($qidattributes['dropdown_dates_year_max'])!='') {
                 $maxyear=$qidattributes['dropdown_dates_year_max'];
             }
             else
@@ -2529,11 +2528,11 @@ function do_multiplechoice($ia)
 	$callmaxanswscriptother = '';
 	$maxanswscript = '';                   
 
-	if ($qidattributes['exclude_all_others']!=0)
+	if (trim($qidattributes['exclude_all_others'])!='')
 	{          
-		foreach($excludeothers as $excludeother) {
-		$excludeallothers[]=$excludeother['value'];
-	}
+		//foreach($excludeothers as $excludeother) {
+		$excludeallothers[]=$qidattributes['exclude_all_others'];
+	//}
 	$excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
@@ -3506,9 +3505,8 @@ function do_multiplenumeric($ia)
 					$answer_main .= $_SESSION[$myfname];
 				}
 
-				// --> START NEW FEATURE - SAVE
 				$answer_main .= '" onkeyup="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
-				// --> END NEW FEATURE - SAVE
+
 			}
 			else
 			{
@@ -3629,8 +3627,6 @@ Style to be applied to all templates.
 		$answer .= "          if (totalvalue_".$ia[1]." > $max_num_value)\n";
 		$answer .= "             {\n";
 		$answer .= "               bob.value = '".$clang->gT("Answer is invalid. The total of all entries should not add up to more than ").$max_num_value."';\n";
-//		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').style.color='red';\n";
-//		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').style.color='red';\n";
 		$answer .= "               document.getElementById('totalvalue_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
 		$answer .= "               document.getElementById('max_num_value_{$ia[1]}').setAttribute(ieAtt,'" . $errorClass . "');\n";
 		$answer .= "             }\n";
@@ -4106,7 +4102,7 @@ function do_array_5point($ia)
 	
 	$qidattributes=getQuestionAttributes($ia[0]);
 	
-	if (isset($qidattributes['answer_width']))
+    if (trim($qidattributes['answer_width'])!='') 
 	{
 		$answerwidth=$qidattributes['answer_width'];
 	}
@@ -4289,7 +4285,7 @@ function do_array_10point($ia)
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-    if (isset($qidattributes['answer_width']))
+    if (trim($qidattributes['answer_width'])!='') 
     {
         $answerwidth=$qidattributes['answer_width'];
 	}
@@ -5010,7 +5006,7 @@ function do_array_multitext($ia)
             $numbersonly = '';
     }
 
-    if (isset($qidattributes['answer_width']))
+    if (trim($qidattributes['answer_width'])!='') 
     {
         $answerwidth=$qidattributes['answer_width'];
 	}

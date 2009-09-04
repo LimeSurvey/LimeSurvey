@@ -699,7 +699,7 @@ while ($degrow = $degresult->FetchRow())
 
 		$qidattributes=getQuestionAttributes($deqrow['qid']);
 		
-		if (isset($qidattributes['page_break']))
+        if ($qidattributes['page_break']!=0) {
         {
             $question['QUESTION_CLASS'] .=' breakbefore ';
         }
@@ -750,7 +750,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "Z": //LIST Flexible drop-down/radio-button list
-					if (isset($qidattributes["display_columns"]))
+                    if (trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -812,7 +812,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case '!': //List - dropdown
-                    if (isset($qidattributes["display_columns"]))
+                    if (trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -820,9 +820,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 						$dcols=0;
 					}
-
-                    if (isset($qidattributes["category_separator"]))
-					{
+                    if (trim($qidattributes['category_separator'])!='') {
 						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
@@ -934,7 +932,7 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 							
-                if (isset($qidattributes["display_columns"]))
+                if (trim($qidattributes['display_columns'])!='') 
 				{
 					$dcols=$qidattributes['display_columns'];
 				}
@@ -942,8 +940,7 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$dcols=0;
 				}
-                if (!isset($qidattributes["max_answers"]))
-				{
+                if (trim($qidattributes['max_answers'])=='') {
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *all* that apply:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *all* that apply:"),"U");}
 				}
@@ -987,7 +984,7 @@ while ($degrow = $degresult->FetchRow())
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					if(!isset($qidattributes["other_replace_text"]))
+                    if (trim($qidattributes['other_replace_text'])=='') 
 					{
                         $qidattributes["other_replace_text"]="Other";
                     }
@@ -1015,9 +1012,8 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-				if (!isset($qidattributes['max_answers']))
-				{
-					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
+                if (trim($qidattributes['max_answers'])=='') {
+                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 				}
 				else
@@ -1306,26 +1302,26 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ":": //ARRAY (Multi Flexible) (Numbers)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				if (isset($qidattributes['multiflexible_max'])) {
+                if (trim($qidattributes['multiflexible_max'])!='') {
 					$maxvalue=$qidattributes['multiflexible_max'];
 				}
 				else
 				{
 					$maxvalue=10;
 				}
-                if (isset($qidattributes['multiflexible_min'])) {
+                if (trim($qidattributes['multiflexible_min'])!='') {
 					$minvalue=$qidattributes['multiflexible_min'];
 				} else {
 					$minvalue=1;
 				}
-                if (isset($qidattributes['multiflexible_step'])) {
+                if (trim($qidattributes['multiflexible_step'])!='') {
 					$stepvalue=$qidattributes['multiflexible_step'];
 				}
 				else
 				{
 					$stepvalue=1;
 				}
-                if (isset($qidattributes['multiflexible_checkbox'])) {
+                if ($qidattributes['multiflexible_checkbox']!=0) {
 					$checkboxlayout=true;
 				} else {
 					$checkboxlayout=false;
@@ -1528,22 +1524,8 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-				if (isset($qidattributes['dualscale_headerA']))
-				{
-					$leftheader= $qidattributes['dualscale_headerA'];
-				}
-				else
-				{
-					$leftheader ='';
-				}
-                if (isset($qidattributes['dualscale_headerB']))
-				{
-					$rightheader= $qidattributes['dualscale_headerB'];
-				}
-				else
-				{
-					$rightheader ='';
-				}
+				$leftheader= $qidattributes['dualscale_headerA'];
+				$rightheader= $qidattributes['dualscale_headerB'];
 
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";

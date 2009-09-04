@@ -812,7 +812,8 @@ div.messagebox .warningheader {
 }
 
 
-#frmeditquestion li label:first-child {
+#frmeditquestion li label:first-child, 
+#frmglobalsettings li label:first-child {
     width: 44%;
     text-align: right;
     margin-right: 0.5em;
@@ -820,7 +821,8 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
-#frmeditquestion li {  
+#frmeditquestion li,
+#frmglobalsettings li {  
     list-style-type: none;
     padding-bottom:5px;
 }
@@ -831,3 +833,4 @@ div.loader {
     width:31px;
     height:31px;
 }
+
