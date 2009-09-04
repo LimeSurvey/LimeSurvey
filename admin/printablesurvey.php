@@ -697,7 +697,7 @@ while ($degrow = $degresult->FetchRow())
 			if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		}
 
-		$qidattributes=getQAttributes($deqrow['qid']);
+		$qidattributes=getQuestionAttributes($deqrow['qid']);
 		
 		if (isset($qidattributes['page_break']))
         {
@@ -796,7 +796,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						$qAttrib = getQAttributes($deqrow['qid']);
+						$qAttrib = getQuestionAttributes($deqrow['qid']);
 						if(!isset($qAttrib["other_replace_text"]))
 						{$qAttrib["other_replace_text"]="Other";}
 					
@@ -880,7 +880,7 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == 'Y')
 					{
-						$qAttrib = getQAttributes($deqrow['qid']);
+						$qAttrib = getQuestionAttributes($deqrow['qid']);
 						if(!isset($qAttrib["other_replace_text"]))
 						{$qAttrib["other_replace_text"]="Other";}
 //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];

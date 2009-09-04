@@ -2555,7 +2555,7 @@ function createFieldMap($surveyid, $style="null", $force_refresh=false) {
 function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	$output=array();
 	foreach($haystack as $hay) {
-		if (array_key_exists($keyname, $hay)) {
+ 		if (array_key_exists($keyname, $hay)) {
 			if ($hay[$keyname] == $needle) {
 				if ($maxanswers == 1) {
 					return $hay;
@@ -3143,51 +3143,45 @@ function buildLabelSetCheckSumArray()
 
 
 /**
-* Don't use this funtion directly - please use getQAttributes instead
-* 
-* @param string $qid
-*/
-function getQuestionAttributes($qid)
-{
-	global $dbprefix, $connect;
-    $qid_attributes=array();
-    $qid=sanitize_int($qid);
-	$query = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
-	$result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
-	$qid_attributes=array();
-	while ($row=$result->FetchRow())
-	{
-		$qid_attributes[]=$row;
-	}
-	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
-	return $qid_attributes;
-}
-
-
-/**
  * 
  * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
- * @author: wahrendorff
- * @param $qid
+ * @author: c_schmitz
+ * @param $qid The question ID
+ * @param $type optional The question type - saves a DB query if you provide it
  * @return array{attribute=>value , attribute=>value}
  */
-function getQAttributes($qid)
-{
-	$array = getQuestionAttributes($qid);
-	//$return = array();
-	$return["qid"]=$qid;
-	foreach($array as $key=>$value)
+function getQuestionAttributes($qid, $type='')
+{   
+     
+    if ($type=='')  // If type is not given find it out
+    {          
+        $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid group by type";
+        $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
+        $row=$result->FetchRow();
+        $type=$row['type'];
+    }
+    
+    $availableattributes=questionAttributes();
+    $availableattributes=$availableattributes[$type];                           
+    
+    foreach($availableattributes as $attribute){
+        $defaultattributes[$attribute['name']]=$attribute['default'];
+    }
+    $setattributes=array();
+    $qid=sanitize_int($qid);
+	$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
+	$result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
+	$setattributes=array();
+	while ($row=$result->FetchRow())
 	{
-		foreach($value as $attribute=>$single)
-		{
-			if($attribute == "attribute")
-			{
-				$return[$single] =  $value["value"] ;
-			}
-		}
+		$setattributes[$row['attribute']]=$row['value'];
 	}
-	return $return;
+	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
+    $qid_attributes=array_merge($defaultattributes,$defaultattributes);
+	return $qid_attributes;
 }
+           
+
 /**
 * Returns array of question type chars with attributes
 * 
@@ -3286,7 +3280,10 @@ function questionAttributes($returnByName=false)
 
 	$qattributes["other_comment_mandatory"]=array(
 	"types"=>"PLW!Z",
-    'inputtype'=>'text',
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT("Make the \"other comment\" field mandatory when the \"other\" field has been marked"),
     "caption"=>$clang->gT('Other comment mandatory'));
     
@@ -3339,7 +3336,10 @@ function questionAttributes($returnByName=false)
 
 	$qattributes["slider_layout"]=array(
 	"types"=>"K",
-    'inputtype'=>'text',
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT('Use slider layout'),
     "caption"=>$clang->gT('Use slider layout'));
     
@@ -3387,11 +3387,13 @@ function questionAttributes($returnByName=false)
     
 	$qattributes["dropdown_dates_year_min"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',      
 	"help"=>$clang->gT('Minimum year value in calendar'),
     "caption"=>$clang->gT('Minimum dropdown year'));
     
 	$qattributes["dropdown_dates_year_max"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',      
 	"help"=>$clang->gT('Maximum year value for calendar'),
     "caption"=>$clang->gT('Maximum dropdown year'));
 	

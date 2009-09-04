@@ -399,10 +399,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
 				. "\t<label for='gid'>".$clang->gT("Question group:")."</label>\n"
 				. "<select name='gid' id='gid'>\n"
 				. getgrouplist3($eqrow['gid'])
-				. "\t\t</select></td>\n"
-				. "\t</tr>\n";
-			$editquestion .= "\t<tr id='OtherSelection'>\n"
-				. "\t\t<td align='right'><strong>".$clang->gT("Option 'Other':")."</strong></td>\n";
+				. "\t\t</select></li>\n";
 		}
 		else
 		{
@@ -807,7 +804,7 @@ if ($action == "ajaxquestionattributes")
         $type=returnglobal('question_type');
         if (isset($qid))
         {
-            $attributesettings=getQAttributes($qid);
+            $attributesettings=getQuestionAttributes($qid);
         }
         
         $availableattributes=questionAttributes();

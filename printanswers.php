@@ -271,14 +271,14 @@ if (isset($_SESSION['s_lang']))
 					$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
 					$header1=$clang->gT('First Scale');
 					$header2=$clang->gT('Second Scale');
-					if ($thisheader=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))      
+					if (trim($qidattributes['dualscale_headerA'])!='')      
 					{
-						$header1=$thisheader['value'];
+						$header1=$clang->gT($qidattributes['dualscale_headerA']);
 					}
-					if ($thisheader=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))      
-					{
-						$header2=$thisheader['value'];
-					}
+                    if (trim($qidattributes['dualscale_headerB'])!='')      
+                    {
+                        $header2=$clang->gT($qidattributes['dualscale_headerB']);
+                    }
 					while ($arows = $aresult->FetchRow())
 					{
 						$fnames[] = array("{$fnrow['sid']}X{$fnrow['gid']}X{$fnrow['qid']}{$arows['code']}#0", "$ftitle ", "{$fnrow['question']} {$arows['answer']} - ".$header1);                

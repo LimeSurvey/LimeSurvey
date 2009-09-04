@@ -697,7 +697,7 @@ for ($i=0;$i<count($conditions);$i++)
 
 				$newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
 				$cqidattributes = getQuestionAttributes($cd[1]);
-				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 				{ // Numerical questions
 					//$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 					$newjava .= "(parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('$idname2').value))";
@@ -717,7 +717,7 @@ for ($i=0;$i<count($conditions);$i++)
 					$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 					if ($conditionSourceOnPreviousPage === false)
 					{
-						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 						{
 							$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($cvalue)."')";
 						}
@@ -788,7 +788,7 @@ for ($i=0;$i<count($conditions);$i++)
 			else
 			{
 				$cqidattributes = getQuestionAttributes($cd[1]);
-				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 				{ // Numerical questions
 						//$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
 						$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";

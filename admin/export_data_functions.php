@@ -383,7 +383,7 @@ function spss_fieldmap($prefix = 'V') {
 				//Get default scale for this type
 				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
 				//But allow override
-				$aQuestionAttribs = getQAttributes($qid);
+				$aQuestionAttribs = getQuestionAttributes($qid);
 				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 
