@@ -203,22 +203,24 @@ function spss_getvalues ($field = array()) {
 		$displayvaluelabel = 0;
 		//Get the labels that could apply!
 		$qidattributes=getQuestionAttributes($field["qid"]);
-		if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-			$maxvalue=$maxvalue['value'];
+        if (trim($qidattributes['multiflexible_max'])!='') {
+            $maxvalue=$qidattributes['multiflexible_max'];
 		} else {
 			$maxvalue=10;
 		}
-		if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-			$minvalue=$minvalue['value'];
+        if (trim($qidattributes['multiflexible_min'])!='')
+        {
+            $minvalue=$qidattributes['multiflexible_min'];
 		} else {
 			$minvalue=1;
 		}
-		if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-			$stepvalue=$stepvalue['value'];
+        if (trim($qidattributes['multiflexible_step'])!='')
+        {
+			$stepvalue=$qidattributes['multiflexible_step'];
 		} else {
 			$stepvalue=1;
 		}
-		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+        if ($qidattributes['multiflexible_checkbox']!=0) {
 			$minvalue=0;
 			$maxvalue=1;
 			$stepvalue=1;

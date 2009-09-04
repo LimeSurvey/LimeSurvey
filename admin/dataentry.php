@@ -925,10 +925,10 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
-					$qidattributes=getQuestionAttributes($fnames[$i][7]);
-					if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
+					$qidattributes=getQuestionAttributes($fnames[$i][7]);   
+					if (trim($qidattributes['category_separator'])!='')
 					{
-						$optCategorySeparator = $optCategorySeparator['value'];
+						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
 					{
@@ -1194,9 +1194,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 
 					case "M": //MULTIPLE OPTIONS checkbox
 					$qidattributes=getQuestionAttributes($fnames[$i][7]);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
+                    if (trim($qidattributes['display_columns'])!='')    
 					{
-						$dcols=$displaycols['value'];
+						$dcols=$qidattributes['display_columns'];
 					}
 					else
 					{
@@ -1468,22 +1468,22 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						break;
 					case ":": //ARRAY (Multi Flexi) (Numbers)
                     	$qidattributes=getQuestionAttributes($fnames[$i][7]);
-                    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-                    		$maxvalue=$maxvalue['value'];
+                        if (trim($qidattributes['multiflexible_max'])!='') {
+                    		$maxvalue=$qidattributes['multiflexible_max'];
                     	} else {
                     		$maxvalue=10;
                     	}
-                    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-                    		$minvalue=$minvalue['value'];
+                        if (trim($qidattributes['multiflexible_min'])!='') {
+                    		$minvalue=$qidattributes['multiflexible_min'];
                     	} else {
                     		$minvalue=1;
                     	}
-                    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-                    		$stepvalue=$stepvalue['value'];
+                        if (trim($qidattributes['multiflexible_step'])!='') {
+                    		$stepvalue=$qidattributes['multiflexible_step'];
                     	} else {
                     		$stepvalue=1;
                     	}
-            			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                        if ($qidattributes['multiflexible_checkbox']!=0) {
             				$minvalue=0;
             				$maxvalue=1;
             				$stepvalue=1;
@@ -2258,9 +2258,9 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "!":
 						
 						$qidattributes=getQuestionAttributes($deqrow['qid']);
-						if ($optCategorySeparator = arraySearchByKey('category_separator', $qidattributes, 'attribute', 1))
-						{
-							$optCategorySeparator = $optCategorySeparator['value'];
+                        if (trim($qidattributes['category_separator'])!='')
+                        {
+                            $optCategorySeparator = $qidattributes['category_separator'];
 						}
 						else
 						{
@@ -2525,12 +2525,12 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "M": //MULTIPLE OPTIONS checkbox (Quite tricky really!)
 					$qidattributes=getQuestionAttributes($deqrow['qid']);
-					if ($displaycols=arraySearchByKey("display_columns", $qidattributes, "attribute", 1))
-					{
-						$dcols=$displaycols['value'];
+                    if (trim($qidattributes['display_columns'])!='') 
+                    {
+						$dcols=$qidattributes['display_columns'];
 					}
-					else
-					{
+					else 
+                    {
 						$dcols=0;
 					}
 					$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$language}' ORDER BY sortorder, answer";
@@ -2731,22 +2731,23 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case ":": //ARRAY (Multi Flexi)
                     	$qidattributes=getQuestionAttributes($deqrow['qid']);
-                    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-                    		$maxvalue=$maxvalue['value'];
+                        if (trim($qidattributes['multiflexible_max'])!='') {
+                            $maxvalue=$qidattributes['multiflexible_max'];
                     	} else {
                     		$maxvalue=10;
                     	}
-                    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-                    		$minvalue=$minvalue['value'];
+                        if (trim($qidattributes['multiflexible_min'])!='') {
+                            $minvalue=$qidattributes['multiflexible_min'];
                     	} else {
                     		$minvalue=1;
                     	}
-                    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-                    		$stepvalue=$stepvalue['value'];
+                        if (trim($qidattributes['multiflexible_step'])!='') {
+                    		$stepvalue=$qidattributes['multiflexible_step'];
                     	} else {
                     		$stepvalue=1;
                     	}
-            			if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                        if ($qidattributes['multiflexible_checkbox']!=0)
+                        {
             				$minvalue=0;
             				$maxvalue=1;
             				$stepvalue=1;

@@ -679,29 +679,33 @@ if ($questionscount > 0)
 				}
 
 			} //while
-		} elseif ($rows['type'] == ":" || $rows['type'] == ";") { // Multiflexi
-			//Get question attribute for $canswers
-			$qidattributes=getQuestionAttributes($rows['qid']);
-        	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-        		$maxvalue=$maxvalue['value'];
-        	} else {
-        		$maxvalue=10;
-        	}
-        	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-        		$minvalue=$minvalue['value'];
-        	} else {
-        		$minvalue=1;
-        	}
-        	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-        		$stepvalue=$stepvalue['value'];
-        	} else {
-        		$stepvalue=1;
-        	}
-		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
-			$minvalue=0;
-			$maxvalue=1;
-			$stepvalue=1;
-		}
+		} 
+        elseif ($rows['type'] == ":" || $rows['type'] == ";") 
+        { // Multiflexi
+        
+		    //Get question attribute for $canswers
+		    $qidattributes=getQuestionAttributes($rows['qid'], $rows['type']);
+            if (trim($qidattributes['multiflexible_max'])!='') {              
+        	    $maxvalue=$qidattributes['multiflexible_max'];
+            } else {
+        	    $maxvalue=10;
+            }
+            if (trim($qidattributes['multiflexible_min'])!='') {              
+        	    $minvalue=$qidattributes['multiflexible_min'];
+            } else {
+        	    $minvalue=1;
+            }
+            if (trim($qidattributes['multiflexible_step'])!='') {              
+        	    $stepvalue=$qidattributes['multiflexible_step'];
+            } else {
+        	    $stepvalue=1;
+            }
+            
+            if ($qidattributes['multiflexible_checkbox']!=0) {
+			    $minvalue=0;
+			    $maxvalue=1;
+			    $stepvalue=1;
+		    }
 			//Get the LIDs
 		    $fquery = "SELECT * "
 						."FROM {$dbprefix}labels "
@@ -730,13 +734,13 @@ if ($questionscount > 0)
 				foreach($lids as $key=>$val) 
 				{
 				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
-				if ($rows['type'] == ":")
-				{
-					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
-					{
-						$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
-					}
-				}
+				    if ($rows['type'] == ":")
+				    {
+					    for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
+					    {
+						    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key, $ii, $ii);
+					    }
+				    }
 				}
 			}
 

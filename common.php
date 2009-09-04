@@ -3426,13 +3426,19 @@ function questionAttributes($returnByName=false)
     
 	$qattributes["multiflexible_checkbox"]=array(
 	"types"=>":",
-    'inputtype'=>'text',
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
 	"help"=>$clang->gT('Use Checkbox layout for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Checkbox layout'));
     
 	$qattributes["use_dropdown"]=array(
 	"types"=>"1",
-    'inputtype'=>'text',
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
 	"help"=>$clang->gT('Use Dual Dropdown instead of Dual Scale'),
     "caption"=>$clang->gT('Dual dropdown'));
     

@@ -563,28 +563,28 @@ foreach ($rows as $row)
 		//Get qidattributes for this question
     	$qidattributes=getQuestionAttributes($flt[0]);
     	
-    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-    		$maxvalue=$maxvalue['value'];
+        if (trim($qidattributes['multiflexible_max'])!='') {
+    		$maxvalue=$qidattributes['multiflexible_max'];
     	} 
     	else {
     		$maxvalue=10;
     	}
     	
-    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-    		$minvalue=$minvalue['value'];
+        if (trim($qidattributes['multiflexible_min'])!='') {
+    		$minvalue=$qidattributes['multiflexible_min'];
     	} 
     	else {
     		$minvalue=1;
     	}
     	
-    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-    		$stepvalue=$stepvalue['value'];
+        if (trim($qidattributes['multiflexible_step'])!='') {
+    		$stepvalue=$qidattributes['multiflexible_step'];
     	} 
     	else {
     		$stepvalue=1;
     	}
     	
-    	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+        if ($qidattributes['multiflexible_checkbox']!=0) {
     		$minvalue=0;
     		$maxvalue=1;
     		$stepvalue=1;
@@ -1284,28 +1284,28 @@ if (isset($summary) && $summary)
 
 				case ":": //Array (Multiple Flexi) (Numbers)
             	$qidattributes=getQuestionAttributes($qiqid);
-            	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-            		$maxvalue=$maxvalue['value'];
+                if (trim($qidattributes['multiflexible_max'])!='') {
+            		$maxvalue=$qidattributes['multiflexible_max'];
             	} 
             	else {
             		$maxvalue=10;
             	}
 				
-            	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-            		$minvalue=$minvalue['value'];
+                if (trim($qidattributes['multiflexible_min'])!='') {
+            		$minvalue=$qidattributes['multiflexible_min'];
             	} 
             	else {
             		$minvalue=1;
             	}
             	
-            	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-            		$stepvalue=$stepvalue['value'];
+                if (trim($qidattributes['multiflexible_step'])!='') {
+            		$stepvalue=$qidattributes['multiflexible_step'];
             	} 
             	else {
             		$stepvalue=1;
             	}
             	
-				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                if ($qidattributes['multiflexible_checkbox']!=0) {
 					$minvalue=0;
 					$maxvalue=1;
 					$stepvalue=1;
@@ -1426,10 +1426,9 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
                     
                     //header available?
-                    if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
-                    {
+                    if (trim($qidattributes['dualscale_headerA'])!='') {
                     	//output
-                        $labelheader= "[".$dsheaderA['value']."]";
+                        $labelheader= "[".$qidattributes['dualscale_headerA']."]";
                     }
                     
                     //no header
@@ -1449,10 +1448,10 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
                     
                     //header available?
-                    if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+                    if (trim($qidattributes['dualscale_headerB'])!='') {
                     {
                     	//output
-                        $labelheader= "[" . $dsheaderB['value'] . "]";
+                        $labelheader= "[" . $qidattributes['dualscale_headerB'] . "]";
                     }
 
                     //no header

@@ -1657,8 +1657,7 @@ function do_list_radio($ia)
 	$anscount = $ansresult->RecordCount();
 
     
-    if (isset($qidattributes['display_columns']))
-	{
+    if (trim($qidattributes['display_columns'])!='') {
 		$dcols = $qidattributes['display_columns'];
 	}
 	else
@@ -1880,9 +1879,8 @@ function do_list_flexible_radio($ia)
 	$result = db_execute_assoc($query);       //Checked
 	while($row = $result->FetchRow()) {$other = $row['other']; $lid = $row['lid'];}
 	$filter='';
-	if ($code_filter=arraySearchByKey("code_filter", $qidattributes, "attribute", 1))
-	{
-		$filter=$code_filter['value'];
+    if (trim($qidattributes['code_filter'])!='') {
+        $filter=$qidattributes['code_filter'];
 		if(isset($_SESSION['insertarray']) && in_array($filter, $_SESSION['insertarray']))
 		{
 			$filter=trim($_SESSION[$filter]);
@@ -1895,7 +1893,7 @@ function do_list_flexible_radio($ia)
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	//question attribute alphasort set?
-	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1))
+    elseif ($qidattributes['alphasort']==1)
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid AND code LIKE '$filter' AND language='".$_SESSION['s_lang']."' ORDER BY title";
 	}
@@ -2077,20 +2075,18 @@ function do_listwithcomment($ia)
 
 	$answer = '';
 
-	$qidattributes=getQuestionAttributes($ia[0]);
+	$qidattributes=getQuestionAttributes($ia[0],'O');
 	if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
 	//question attribute random order set?
     if ($qidattributes['random_order']==1) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
-	
 	//question attribute alphasort set?
-	elseif (arraySearchByKey('alphasort', $qidattributes, 'attribute', 1)) 
+    elseif ($qidattributes['alphasort']==1)
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
 	}
-	
 	//no question attributes -> order by sortorder
 	else
 	{
@@ -2106,11 +2102,11 @@ function do_listwithcomment($ia)
 	if ($lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
 	{
 		$answer .= '
-<div class="list">
-	<p class="tip">'.$hint_list.':</p>
+                    <div class="list">
+	                    <p class="tip">'.$hint_list.':</p>
 
-	<ul>
-';
+	                    <ul>
+                    ';
 
 		while ($ansrow=$ansresult->FetchRow())
 		{
@@ -2408,12 +2404,12 @@ function do_ranking($ia)
 		if (!in_array($ans, $chosen))
 		{
 		    $choicelist .= "\t<option value='{$ans[0]}' id='javatbd{$ia[1]}{$ans[0]}'";
-			if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || 
-			    ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
+			if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || 
+			    (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'A'))
 			{
 			    $choicelist .= " style='display: none'";
-			} elseif (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || 
-			          ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && 
+			} elseif ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || 
+			          (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && 
 					   getArrayFiltersOutGroup($ia[0]) == true))
 		    {
 			    $selected = getArrayFiltersForQuestion($ia[0]);
@@ -2531,8 +2527,9 @@ function do_multiplechoice($ia)
 	$maxansw = 0;
 	$callmaxanswscriptcheckbox = '';
 	$callmaxanswscriptother = '';
-	$maxanswscript = '';                                                    
-	if ($excludeothers=arraySearchByKey('exclude_all_others', $qidattributes, 'attribute', ''))
+	$maxanswscript = '';                   
+
+	if ($qidattributes['exclude_all_others']!=0)
 	{          
 		foreach($excludeothers as $excludeother) {
 		$excludeallothers[]=$excludeother['value'];
@@ -3152,43 +3149,41 @@ function do_multipleshorttext($ia)
     $answer='';
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
-	{
+    if ($qidattributes['other_numbers_only']==1)
+    {
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	}
 	else
 	{
 		$numbersonly = '';
 	}
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
+	if (trim($qidattributes['maximum_chars'])!='')
 	{
-		$maxsize=$maxchars['value'];
+		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
 		$maxsize=255;
 	}
-	if ($textinputwidth=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['text_input_width'])!='')      
 	{
-		$tiwidth=$textinputwidth['value'];
+		$tiwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
 		$tiwidth=20;
 	}
 
-	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
-	{
-		$prefix = $prefix['value'];
+    if (trim($qidattributes['prefix'])!='') {
+        $prefix=$qidattributes['prefix'];
 	}
 	else
 	{
 		$prefix = '';
 	}
 
-	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
-	{
-		$suffix = $suffix['value'];
+    if (trim($qidattributes['suffix'])!='') {
+        $suffix=$qidattributes['suffix'];
 	}
 	else
 	{
@@ -3219,10 +3214,10 @@ function do_multipleshorttext($ia)
 	}
 	else
 	{
-		if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
+		if (trim($qidattributes['display_rows'])!='')
 		{
 			//question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-			$drows=$displayrows['value'];
+			$drows=$qidattributes['display_rows'];
 			
 			//extend maximum chars if this is set to short text default of 255
 			if($maxsize == 255)
@@ -3322,9 +3317,9 @@ function do_multiplenumeric($ia)
     $answer='';
 	//Must turn on the "numbers only javascript"
 	$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['maximum_chars'])!='')
 	{
-		$maxsize=$maxchars['value'];
+		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
@@ -3332,15 +3327,14 @@ function do_multiplenumeric($ia)
 	}
 
 	//EQUALS VALUE
-	if ($equalvalue=arraySearchByKey('equals_num_value', $qidattributes, 'attribute', 1))
-	{
-		$equals_num_value=$equalvalue['value'];
+    if (trim($qidattributes['equals_num_value'])!=''){
+		$equals_num_value=$qidattributes['equals_num_value'];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
 		$calculateValue[]=3;
 	}
-	elseif ($equalvalue=arraySearchByKey('num_value_equals_sgqa', $qidattributes, 'attribute', 1))
+    elseif (trim($qidattributes['num_value_equals_sgqa'])!='')
 	{
-	    $equals_num_value=$_SESSION[$equalvalue['value']];
+	    $equals_num_value=$_SESSION[$qidattributes['num_value_equals_sgqa']];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
 		$calculateValue[]=3;
 	}
@@ -3350,15 +3344,13 @@ function do_multiplenumeric($ia)
 	}
 
     //MIN VALUE
-	if ($minvalue=arraySearchByKey('min_num_value', $qidattributes, 'attribute', 1))
-	{
-		$min_num_value=$minvalue['value'];
+    if (trim($qidattributes['min_num_value'])!=''){
+		$min_num_value=$qidattributes['min_num_value'];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
 		$calculateValue[]=2;
 	}
-	elseif ($minvalue=arraySearchByKey('min_num_value_sgqa', $qidattributes, 'attribute', 1))
-	{
-	    $min_num_value=$_SESSION[$minvalue['value']];
+    elseif (trim($qidattributes['min_num_value_sgqa'])!=''){
+	    $min_num_value=$_SESSION[$qidattributes['min_num_value_sgqa']];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
 		$calculateValue[]=2;
 	}
@@ -3368,15 +3360,13 @@ function do_multiplenumeric($ia)
 	}
 
     //MAX VALUE
-	if ($maxvalue=arraySearchByKey('max_num_value', $qidattributes, 'attribute', 1))
-	{
-		$max_num_value = $maxvalue['value'];
+    if (trim($qidattributes['max_num_value'])!=''){
+		$max_num_value = $qidattributes['max_num_value'];
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(1)'; 
 		$calculateValue[]=1;
 	}
-    elseif ($maxvalue=arraySearchByKey('max_num_value_sgqa', $qidattributes, 'attribute', 1))
-    {
-        $max_num_value = $_SESSION[$maxvalue['value']];	    
+    elseif (trim($qidattributes['max_num_value_sgqa'])!=''){
+        $max_num_value = $_SESSION[$qidattributes['max_num_value_sgqa']];	    
 		$numbersonlyonblur[]='calculateValue'.$ia[1].'(1)'; 
 		$calculateValue[]=1;
 	}
@@ -3385,18 +3375,16 @@ function do_multiplenumeric($ia)
 		$max_num_value = 0;
 	}
 
-	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
-	{
-		$prefix = $prefix['value'];
+    if (trim($qidattributes['prefix'])!='') {
+        $prefix=$qidattributes['prefix'];
 	}
 	else
 	{
 		$prefix = '';
 	}
 
-	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
-	{
-		$suffix = $suffix['value'];
+    if (trim($qidattributes['suffix'])!='') {
+        $suffix=$qidattributes['suffix'];
 	}
 	else
 	{
@@ -3724,25 +3712,23 @@ function do_numerical($ia)
 {
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($prefix=arraySearchByKey("prefix", $qidattributes, "attribute", 1))
-	{
-		$prefix = $prefix['value'];
+    if (trim($qidattributes['prefix'])!='') {
+        $prefix=$qidattributes['prefix'];
 	}
 	else
 	{
 		$prefix = '';
 	}
-	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
-	{
-		$suffix = $suffix['value'];
+    if (trim($qidattributes['suffix'])!='') {
+        $suffix=$qidattributes['suffix'];
 	}
 	else 
 	{
 		$suffix = '';
 	}
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['maximum_chars'])!='')
 	{
-		$maxsize=$maxchars['value'];
+		$maxsize=$qidattributes['maximum_chars'];
 		if ($maxsize>20)
 		{
 			$maxsize=20;
@@ -3752,9 +3738,9 @@ function do_numerical($ia)
 	{
 		$maxsize=20;  // The field length for numerical fields is 20
 	}
-	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
-	{
-		$tiwidth=$maxchars['value'];
+    if (trim($qidattributes['text_input_width'])!='')      
+    {
+        $tiwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
@@ -3781,50 +3767,48 @@ function do_shortfreetext($ia)
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	
-	if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
-	{
+    if ($qidattributes['other_numbers_only']==1)
+    {
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	}
 	else
 	{
 		$numbersonly = '';
 	}
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['maximum_chars'])!='')
 	{
-		$maxsize=$maxchars['value'];
+		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
 		$maxsize=255;
 	}
-	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
-	{
-		$tiwidth=$maxchars['value'];
+    if (trim($qidattributes['text_input_width'])!='')      
+    {
+        $tiwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
 		$tiwidth=50;
 	}
-	if ($prefix=arraySearchByKey('prefix', $qidattributes, 'attribute', 1))
-	{
-		$prefix = $prefix['value'];
+    if (trim($qidattributes['prefix'])!='') {
+        $prefix=$qidattributes['prefix'];
 	}
 	else 
 	{
 		$prefix = '';
 	}
-	if ($suffix=arraySearchByKey('suffix', $qidattributes, 'attribute', 1))
-	{
-		$suffix = $suffix['value'];
+    if (trim($qidattributes['suffix'])!='') {
+        $suffix=$qidattributes['suffix'];
 	}
 	else
 	{
 		$suffix = '';
 	}
-	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
-	{
+    if (trim($qidattributes['display_rows'])!='')
+    {
 		//question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-		$drows=$displayrows['value'];
+		$drows=$qidattributes['display_rows'];
 		
 		//extend maximum chars if this is set to short text default of 255
 		if($maxsize == 255)
@@ -3882,9 +3866,9 @@ function do_longfreetext($ia)
 {
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
-	{
-		$maxsize=$maxchars['value'];
+    if (trim($qidattributes['maximum_chars'])!='')
+    {
+		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
@@ -3892,9 +3876,9 @@ function do_longfreetext($ia)
 	}
 
 	// --> START ENHANCEMENT - DISPLAY ROWS
-	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
-	{
-		$drows=$displayrows['value'];
+    if (trim($qidattributes['display_rows'])!='')
+    {
+		$drows=$qidattributes['display_rows'];
 	}
 	else
 	{
@@ -3903,9 +3887,9 @@ function do_longfreetext($ia)
 	// <-- END ENHANCEMENT - DISPLAY ROWS
 
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
-	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
-	{
-		$tiwidth=$maxchars['value'];
+    if (trim($qidattributes['text_input_width'])!='')      
+    {
+        $tiwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
@@ -3944,9 +3928,9 @@ function do_longfreetext($ia)
 function do_hugefreetext($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxchars=arraySearchByKey('maximum_chars', $qidattributes, 'attribute', 1))
-	{
-		$maxsize=$maxchars['value'];
+    if (trim($qidattributes['maximum_chars'])!='')
+    {
+		$maxsize=$qidattributes['maximum_chars'];
 	}
 	else
 	{
@@ -3954,9 +3938,9 @@ function do_hugefreetext($ia)
 	}
 
 	// --> START ENHANCEMENT - DISPLAY ROWS
-	if ($displayrows=arraySearchByKey('display_rows', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['display_rows'])!='')
 	{
-		$drows=$displayrows['value'];
+		$drows=$qidattributes['display_rows'];
 	}
 	else
 	{
@@ -3965,9 +3949,9 @@ function do_hugefreetext($ia)
 	// <-- END ENHANCEMENT - DISPLAY ROWS
 
 	// --> START ENHANCEMENT - TEXT INPUT WIDTH
-	if ($maxchars=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
-	{
-		$tiwidth=$maxchars['value'];
+    if (trim($qidattributes['text_input_width'])!='')      
+    {
+        $tiwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
@@ -4121,19 +4105,10 @@ function do_array_5point($ia)
 	
 	
 	$qidattributes=getQuestionAttributes($ia[0]);
-	$qAttrib=getQuestionAttributes($ia[0]);
 	
-//	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
-//	{
-//		$answerwidth=$answerwidth['value'];
-//	}
-//	else
-//	{
-//		$answerwidth = 20;
-//	}
-	if (isset($qAttrib['answer_width']))
+	if (isset($qidattributes['answer_width']))
 	{
-		$answerwidth=$qAttrib['answer_width'];
+		$answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -4154,8 +4129,7 @@ function do_array_5point($ia)
 	// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 	
 
-	//if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) 
-    if ($qAttrib['random_order']==1) {
+    if ($qidattributes['random_order']==1) {
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
@@ -4218,13 +4192,12 @@ function do_array_5point($ia)
 
 		$trbc = alternation($trbc , 'row');
 		$htmltbody2 = '';
-		//if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
-		if((isset($qAttrib['array_filter']) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false) || (isset($qAttrib['array_filter']) && $thissurvey['format'] == 'A'))
+		if((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false) || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'A'))
 		{
 			$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\n";
 			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
 		}
-		elseif ((isset($qAttrib['array_filter']) && $thissurvey['format'] == 'S') || (isset($qAttrib['array_filter']) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+		elseif ((trim($qidattributes['array_filter'])!=''  && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
@@ -4316,9 +4289,9 @@ function do_array_10point($ia)
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1))
-	{
-		$answerwidth = $answerwidth['value'];
+    if (isset($qidattributes['answer_width']))
+    {
+        $answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -4383,11 +4356,11 @@ function do_array_10point($ia)
 		}
 		$trbc = alternation($trbc , 'row');
 		$htmltbody2 = "";
-		if ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
+		if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 		{
 			$htmltbody2 = "\t\n\n\t<tbody id='javatbd$myfname' style='display: none'>\n";
 			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-		} else if (($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "S") || ($htmltbody=arraySearchByKey("array_filter", $qidattributes, "attribute", 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
+		} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "S") || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
@@ -4461,9 +4434,9 @@ function do_array_yesnouncertain($ia)
 	$qresult = db_execute_assoc($qquery);	//Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['answer_width'])!='')
 	{
-		$answerwidth=$answerwidth['value'];
+		$answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -4533,11 +4506,11 @@ function do_array_yesnouncertain($ia)
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
 			$trbc = alternation($trbc , 'row');
-			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
 				$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
 				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-			} else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
@@ -4616,116 +4589,7 @@ function do_array_yesnouncertain($ia)
 	$answer .=  $answer_t_content . "\t\n</table>\n";
 	return array($answer, $inputnames);
 }
-/*
-// ---------------------------------------------------------------
-function do_slider($ia)
-{
-	global $shownoanswer;
-	global $dbprefix;
-
-	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($defaultvalue=arraySearchByKey("default_value", $qidattributes, "attribute", 1)) {
-		$defaultvalue=$defaultvalue['value'];
-	} else {$defaultvalue=0;}
-	if ($minimumvalue=arraySearchByKey("minimum_value", $qidattributes, "attribute", 1)) {
-		$minimumvalue=$minimumvalue['value'];
-	} else {
-		$minimumvalue=0;
-	}
-	if ($maximumvalue=arraySearchByKey("maximum_value", $qidattributes, "attribute", 1)) {
-		$maximumvalue=$maximumvalue['value'];
-	} else {
-		$maximumvalue=50;
-	}
-	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1)) {
-		$answerwidth=$answerwidth['value'];
-	} else {
-		$answerwidth=20;
-	}
-	$sliderwidth=100-$answerwidth;
-
-	//Get answers
-	$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
-	$ansresult = db_execute_assoc($ansquery);     //Checked
-	$anscount = $ansresult->RecordCount();
-
-	//Get labels
-	$qquery = "SELECT lid FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
-	$qresult = db_execute_assoc($qquery);      //Checked
-	while($qrow = $qresult->FetchRow()) {$lid = $qrow['lid'];}
-	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-	$lresult = db_execute_assoc($lquery);     //Checked
-
-	$answer = "\t<table class='question'>\n";
-	$answer .= "<tr><th width='$answerwidth%'></th>\n";
-	$lcolspan=$lresult->RecordCount();
-	$lcount=1;
-	while($lrow=$lresult->FetchRow()) {
-		$answer .= "<th align='";
-		if ($lcount == 1) {
-			$answer .= "left";
-		} elseif ($lcount == $lcolspan) {
-			$answer .= "right";
-		} else {
-			$answer .= "center";
-		}
-		$answer .= "' class='array1'><font size='1'>".$lrow['title']."</font></th>\n";
-		$lcount++;
-	}
-	$answer .= "</tr>\n";
-
-
-	$answer .="<tr>\n"
-	. "\t<td>\n"
-	. "";
-	$fn=1;
-	$trbc = '';
-	while ($ansrow = $ansresult->FetchRow())
-	{
-		//A row for each slider control
-		$myfname = $ia[1].$ansrow['code'];
-		$answertext=answer_replace($ansrow['answer']);
-		$trbc = alternation($trbc , 'row');
-		$answer .= "<tr class='$trbc'>\n"
-		. "\t<td align='right'>$answertext</td>\n";
-		$answer .= "\t<td width='$sliderwidth%' colspan='$lcolspan'>"
-		. "<div class=\"slider\" id=\"slider-$myfname\" style='width:100%'>"
-		. "<input class=\"slider-input\" id=\"slider-input-$myfname\" name=\"$myfname\" />"
-		. "</div>";
-		$answer .= "
-<script type=\"text/javascript\">
-
-var s = new Slider(document.getElementById(\"slider-$myfname\"),
-                   document.getElementById(\"slider-input-$myfname\"));
-	s.setValue(";
-		if (isset($_SESSION[$myfname])) {
-			$answer .= $_SESSION[$myfname];
-		} else {
-			$answer .= $defaultvalue;
-		}
-		$answer .= ");
-	s.setMinimum($minimumvalue);
-	s.setMaximum($maximumvalue);
-</script>\n"
-		. "\n";
-		$answer .= "\n"
-		. "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-		$answer .= "' />\n</td></tr>";
-		$inputnames[]=$myfname;
-		$fn++;
-	}
-
-	$answer .="\t</td>\n"
-	. "</tr>\n"
-	. "\t</table>\n";
-
-	$inputnames[]=$ia[1];
-
-	return array($answer, $inputnames);
-}*/
-
-// ---------------------------------------------------------------
+ 
 function do_array_increasesamedecrease($ia)
 {
 	global $dbprefix, $thissurvey, $clang;
@@ -4735,9 +4599,9 @@ function do_array_increasesamedecrease($ia)
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);   //Checked
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
-	{
-		$answerwidth=$answerwidth['value'];
+    if (trim($qidattributes['answer_width'])!='')
+    {
+        $answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -4811,11 +4675,11 @@ function do_array_increasesamedecrease($ia)
 		$trbc = alternation($trbc , 'row');
 
 		$htmltbody2 = "<tbody>\n\r";
-		if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
+		if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
 		{
 			$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 		}
-		elseif(	($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+		elseif ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 		{
 			$selected = getArrayFiltersForQuestion($ia[0]);
 			if (!in_array($ansrow['code'],$selected))
@@ -4905,9 +4769,9 @@ function do_array_flexible($ia)
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
-	{
-		$answerwidth=$answerwidth['value'];
+    if (trim($qidattributes['answer_width'])!='')
+    {
+        $answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -5002,11 +4866,11 @@ function do_array_flexible($ia)
 				$answertext = '<span class="errormandatory">'.$answertext.'</span>';
 			}
 			$htmltbody2 = '';
-			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
 				$htmltbody2 = "<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t<td class=\"answertext\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 			}
-			else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
@@ -5137,7 +5001,7 @@ function do_array_multitext($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 
-    if (arraySearchByKey('numbers_only', $qidattributes, 'attribute', 1))
+    if ($qidattributes['other_numbers_only']==1)
     {
             $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
     }
@@ -5146,17 +5010,17 @@ function do_array_multitext($ia)
             $numbersonly = '';
     }
 
-	if ($answerwidth=arraySearchByKey("answer_width", $qidattributes, "attribute", 1))
-	{
-		$answerwidth=$answerwidth['value'];
+    if (isset($qidattributes['answer_width']))
+    {
+        $answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
 		$answerwidth=20;
 	}
-	if ($inputwidth=arraySearchByKey('text_input_width', $qidattributes, 'attribute', 1))
-	{
-		$inputwidth = $inputwidth['value'];
+    if (trim($qidattributes['text_input_width'])!='')      
+    {
+        $inputwidth=$qidattributes['text_input_width'];
 	}
 	else
 	{
@@ -5272,10 +5136,10 @@ function do_array_multitext($ia)
 			}
 
 			$htmltbody2 = '';
-			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
 				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-			} else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
@@ -5354,26 +5218,26 @@ function do_array_multiflexi($ia)
 	$lquery = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 
 	$qidattributes=getQuestionAttributes($ia[0]);
-	if ($maxvalue=arraySearchByKey('multiflexible_max', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['multiflexible_max'])!='')
 	{
-		$maxvalue=$maxvalue['value'];
+		$maxvalue=$qidattributes['multiflexible_max'];
 	}
 	else
 	{
 		$maxvalue=10;
 	}
-	if ($minvalue=arraySearchByKey('multiflexible_min', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['multiflexible_min'])!='')
 	{
-		$minvalue=$minvalue['value'];
+		$minvalue=$qidattributes['multiflexible_min'];
 	}
 	else
 	{
 		if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
 	}
 
-	if ($stepvalue=arraySearchByKey('multiflexible_step', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['multiflexible_step'])!='')
 	{
-		$stepvalue=$stepvalue['value'];
+		$stepvalue=$qidattributes['multiflexible_step'];
 	}
 	else
 	{
@@ -5381,16 +5245,16 @@ function do_array_multiflexi($ia)
 	}
 
 	$checkboxlayout=false;
-	if (arraySearchByKey('multiflexible_checkbox', $qidattributes, 'attribute', 1))
+    if ($qidattributes['multiflexible_checkbox']!=0)
 	{
 		$minvalue=0;
 		$maxvalue=1;
 		$checkboxlayout=true;
 	} 
 
-	if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
+    if (trim($qidattributes['answer_width'])!='')
 	{
-		$answerwidth=$answerwidth['value'];
+		$answerwidth=$qidattributes['answer_width'];
 	}
 	else
 	{
@@ -5496,14 +5360,16 @@ function do_array_multiflexi($ia)
 			
 			$htmltbody2 = '';
 			$first_hidden_field = '';
-			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+                if (trim($qidattributes['array_filter'])!='')
+
+			if (trim($qidattributes['array_filter'])!='' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
 				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
 				$first_hidden_field = '<input type="hidden" name="tbdisp'.$myfname.'" id="tbdisp'.$myfname."\" value=\"off\" />\n";
 //				$htmltbody2 .= "" . $first_hidden_field; // This is how it used to be. I have moved $first_hidden_field into the first cell of the table so it validates.
 //				$first_hidden_field = ''; // These two lines have been commented because they replace badly validating code.
 			}
-			else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
@@ -5785,7 +5651,7 @@ function do_array_flexible_dual($ia)
 	$lquery1 = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid1  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-	if ($useDropdownLayout=arraySearchByKey('use_dropdown', $qidattributes, 'attribute', 1))
+    if ($qidattributes['use_dropdown']==0)
 	{
 		$useDropdownLayout = true;
 	}
@@ -5794,20 +5660,19 @@ function do_array_flexible_dual($ia)
 		$useDropdownLayout = false;
 	}
 
-	if ($dsheaderA=arraySearchByKey('dualscale_headerA', $qidattributes, 'attribute', 1))
-	{
-		$leftheader= $dsheaderA['value'];
+    if (trim($qidattributes['dualscale_headerA'])!='') {
+		$leftheader= $qidattributes['dualscale_headerA'];
 	}
 	else
 	{
 		$leftheader ='';
 	}
-	if ($dsheaderB=arraySearchByKey('dualscale_headerB', $qidattributes, 'attribute', 1))
+
+    if (trim($qidattributes['dualscale_headerB'])!='')
 	{
-		$rightheader= $dsheaderB['value'];
+		$rightheader= $qidattributes['dualscale_headerB'];
 	}
-	else
-	{
+	else {
 		$rightheader ='';
 	}
 
@@ -5815,9 +5680,9 @@ function do_array_flexible_dual($ia)
 	if ($useDropdownLayout === false && $lresult->RecordCount() > 0)
 	{
 
-		if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1))
-		{
-			$answerwidth=$answerwidth['value'];
+    if (trim($qidattributes['answer_width'])!='')
+    {
+        $answerwidth=$qidattributes['answer_width'];
 		}
 		else
 		{
@@ -6024,12 +5889,12 @@ function do_array_flexible_dual($ia)
 			}
 			$htmltbody2 = '';
 			$hiddenanswers='';
-			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
 				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
 				$hiddenanswers  .="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 			}
-			else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
@@ -6146,8 +6011,9 @@ function do_array_flexible_dual($ia)
 	elseif ($useDropdownLayout === true && $lresult->RecordCount() > 0)
 	{ 
 
-		if ($answerwidth=arraySearchByKey('answer_width', $qidattributes, 'attribute', 1)) {
-			$answerwidth=$answerwidth['value'];
+        if (trim($qidattributes['answer_width'])!='')
+        {
+            $answerwidth=$qidattributes['answer_width'];
 		} else {
 			$answerwidth=20;
 		}
@@ -6207,9 +6073,8 @@ function do_array_flexible_dual($ia)
 
 			// Get attributes for Headers and Prefix/Suffix
 
-			if ($ddprepostfix=arraySearchByKey("dropdown_prepostfix", $qidattributes, "attribute", 1))
-			{
-				list ($ddprefix, $ddsuffix) =explode("|",$ddprepostfix['value']);
+            if (trim($qidattributes['dropdown_prepostfix'])!='') {
+				list ($ddprefix, $ddsuffix) =explode("|",$qidattributes['dropdown_prepostfix']);
 				$ddprefix = $ddprefix;
 				$ddsuffix = $ddsuffix;
 			}
@@ -6218,14 +6083,12 @@ function do_array_flexible_dual($ia)
 				$ddprefix ='';
 				$ddsuffix='';
 			}
-			if ($ddseparators=arraySearchByKey('dropdown_separators', $qidattributes, 'attribute', 1))
-			{
-				list ($postanswSep, $interddSep) =explode('|',$ddseparators['value']);
+            if (trim($qidattributes['dropdown_separators'])!='') {
+				list ($postanswSep, $interddSep) =explode('|',$qidattributes['dropdown_separators']);
 				$postanswSep = $postanswSep;
 				$interddSep = $interddSep;
 			}
-			else
-			{
+			else {
 				$postanswSep = '';
 				$interddSep = '';
 			}
@@ -6295,12 +6158,12 @@ function do_array_flexible_dual($ia)
 
 				$trbc = alternation($trbc , 'row');
 				$htmltbody2 = '';
-				if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'A'))
+				if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'A'))
 				{
 					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
 					$hiddenanswers = "<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\"  />\n<input type=\"hidden\" name=\"tbdisp$myfname1\" id=\"tbdisp$myfname1\" value=\"off\" />\n";
 				}
-				else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+				else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 				{
 					$selected = getArrayFiltersForQuestion($ia[0]);
 					if (!in_array($ansrow['code'],$selected))
