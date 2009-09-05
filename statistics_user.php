@@ -659,7 +659,7 @@ for (reset($_POST); $key=key($_POST); next($_POST))
 
 //show some main data at the beginnung
 // CHANGE JSW_NZ - let's allow html formatted questions to show
-$statisticsoutput .= "\n<div id='statsContainer'><div id='statsHeader' \n"
+$statisticsoutput .= "\n<div id='statsContainer'><div id='statsHeader'> \n"
 ."\t<div class='statsSurveyTitle'>"
 ."$thisSurveyTitle</div>\n"
 ."\t<div class='statsNumRecords'>"
