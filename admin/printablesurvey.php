@@ -24,8 +24,8 @@ function try_debug($line)
 	if($debug > 0)
 	{
 		return '<!-- printablesurvey.php: '.$line.' -->';
-	};
-};
+	}
+}
 $surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
@@ -201,13 +201,13 @@ function populate_template( $template , $input  , $line = '')
 			if(empty($test_empty))
 			{
 				return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
-			};
+			}
 		}
 		else
 		{
 			define($full_constant , '');
 			return "<!--\n\t$full_path is not a propper file or is missing.\n-->";
-		};
+		}
 	}
 	else
 	{
@@ -216,8 +216,8 @@ function populate_template( $template , $input  , $line = '')
 		if(empty($test_empty))
 		{
 			return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
-		};
-	};
+		}
+	}
 
 	if(is_array($input))
 	{
@@ -225,7 +225,7 @@ function populate_template( $template , $input  , $line = '')
 		{
 			$find[] = '{'.$key.'}';
 			$replace[] = $value;
-		};
+		}
 		return str_replace( $find , $replace , $template_content ); 
 	}
 	else
@@ -237,9 +237,9 @@ function populate_template( $template , $input  , $line = '')
 				$line =  'LINE '.$line.': ';
 			}
 			return '<!-- '.$line.'There was nothing to put into the template -->'."\n";
-		};
-	};
-};
+		}
+	}
+}
 
 
 function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
@@ -249,7 +249,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	if($type == 'other' or $type == 'othercomment')
 	{
 		$x = 1;
-	};
+	}
 	$tail = substr($x , -1 , 1);
 	switch($tail)
 	{
@@ -258,7 +258,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'x':	$x_ = $x;
 				break;
 		default:	$x_ = $x / 2;
-	};
+	}
 
 	if($y < 2)
 	{
@@ -267,7 +267,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	else
 	{
 		$y_ = $y * 2;
-	};
+	}
 
 	if(!empty($title))
 	{
@@ -283,7 +283,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'text':	$style = ' style="width:'.$x_.'em; height:'.$y_.'em;"';
 				break;
 		default:	$style = '';
-	};
+	}
 
 	switch($type)
 	{
@@ -293,7 +293,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 					$image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
 					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
-				};
+				}
 				$output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
@@ -305,9 +305,9 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 				break;
 
 		default:	$output = '';
-	};
+	}
 	return $output;
-};
+}
 
 function star_replace($input)
 {
@@ -344,7 +344,7 @@ while ($degrow = $degresult->FetchRow())
 	else
 	{
 		$group_desc = '';
-	};
+	}
 
 	$group = array(
 			 'GROUPNAME' => $degrow['group_name']
@@ -363,7 +363,7 @@ while ($degrow = $degresult->FetchRow())
 	else
 	{
 		$group['ODD_EVEN'] = ' g-row-even';
-	};
+	}
 
 	foreach ($deqrows as $deqrow)
 	{
@@ -699,7 +699,7 @@ while ($degrow = $degresult->FetchRow())
 
 		$qidattributes=getQuestionAttributes($deqrow['qid']);
 		
-        if ($qidattributes['page_break']!=0) {
+        if ($qidattributes['page_break']!=0)
         {
             $question['QUESTION_CLASS'] .=' breakbefore ';
         }
@@ -789,10 +789,10 @@ while ($degrow = $degresult->FetchRow())
 							else
 							{
 								$question['ANSWER'] .= $wrapper['col-devide'];
-							};
+							}
 							$rowcounter = 0;
 							++$colcounter;
-						};
+						}
 					}
 					if ($deqrow['other'] == "Y")
 					{
@@ -871,7 +871,7 @@ while ($degrow = $degresult->FetchRow())
 							else
 							{
 								$question['ANSWER']  .= $wrapper['col-devide'];
-							};
+							}
 							$rowcounter = 0;
 							++$colcounter;
 						}
@@ -925,7 +925,7 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$question['ANSWER'] .="\t<li>\n\t".input_type_image('rank','',4,1)."\n\t\t".$rearow['answer']."\n\t</li>\n";
 					if(isset($_POST['printableexport'])){$pdf->intopdf("__ ".$rearow['answer']);}
-				};
+				}
 				$question['ANSWER'] .= "\n</ul>\n";
 				break;
 
@@ -977,10 +977,10 @@ while ($degrow = $degresult->FetchRow())
 						else
 						{
 							$question['ANSWER'] .= $wrapper['col-devide'];
-						};
+						}
 						$rowcounter = 0;
 						++$colcounter;
-					};
+					}
 				}
 				if ($deqrow['other'] == "Y")
 				{
@@ -992,7 +992,7 @@ while ($degrow = $degresult->FetchRow())
 					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
-//				};
+//				}
 				break;
 				
 /*
@@ -1212,7 +1212,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 						$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$i)."</td>\n";
 						$pdfoutput[$j][$i]=" o ".$i;
-					};
+					}
 					$question['ANSWER'] .= "\t\t</tr>\n";
 					$j++;
 				}
@@ -1718,7 +1718,7 @@ while($rounds < 1)
 						 '/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 						, $survey_output['GROUPS']
 					);
-	};
+	}
 
 	if($replace_count == 0)
 	{
@@ -1735,8 +1735,8 @@ while($rounds < 1)
 					,$survey_output['GROUPS']
 				);
 
-	};
-};
+	}
+}
 
 $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
 
@@ -1747,11 +1747,11 @@ if(isset($_POST['printableexport']))
     if ($surveystartdate!='')  
 	{
     		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
-	};
+	}
 	if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 	{
 		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
-	};
+	}
 	$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
 	$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 }
