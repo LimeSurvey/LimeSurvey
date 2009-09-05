@@ -20,8 +20,6 @@ include_once("login_check.php");
 if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
-CheckOnlineForUpdate();
-
 if ($action == "listsurveys")
 {
 	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "

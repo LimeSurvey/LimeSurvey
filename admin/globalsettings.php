@@ -75,7 +75,13 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
 
 function globalsettingsdisplay() 
 {
-    global $action, $editsurvey, $connect, $scriptname, $clang, $updateversion, $updatebuild, $updateavailable;
+    global $action, $subaction, $editsurvey, $connect, $scriptname, $clang, $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
+    
+    if (isset($subaction) && $subaction == "updatecheck")
+    {
+        updatecheck();
+    }  
+    
     if (isset($action) && $action == "globalsettings")
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -97,6 +103,9 @@ function globalsettingsdisplay()
             . "\t\t\t\t<option value='0'";
             if ($thisupdatecheckperiod==0) {$editsurvey .= "selected='selected'";}
             $editsurvey .=">".$clang->gT("Never")."</option>\n"
+            . "\t\t\t\t<option value='1'";
+            if ($thisupdatecheckperiod==7) {$editsurvey .= "selected='selected'";}
+            $editsurvey .=">".$clang->gT("Every day")."</option>\n"
             . "\t\t\t\t<option value='7'";
             if ($thisupdatecheckperiod==7) {$editsurvey .= "selected='selected'";}
             $editsurvey .=">".$clang->gT("Every week")."</option>\n"
@@ -106,13 +115,17 @@ function globalsettingsdisplay()
             . "<option value='30'"; 
             if ($thisupdatecheckperiod==30) {$editsurvey .= "selected='selected'";}
             $editsurvey .=">".$clang->gT("Every month")."</option>\n"
-            . "</select>&nbsp;<input type='button' value='".$clang->gT("Check now")."' /></li></ul>\n"; 
+            . "</select>&nbsp;<input type='button' onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" value='".$clang->gT("Check now")."' />&nbsp;<span id='lastupdatecheck'>".sprintf($clang->gT("Last check: %s"),$updatelastcheck)."</span></li></ul>\n"; 
             
             if (isset($updateavailable) && $updateavailable==1)
             {
               $editsurvey .=sprintf($clang->gT('There is an update available for LimeSurvey: Version %s'),$updateversion."($updatebuild)").'<br />';
               $editsurvey .=sprintf($clang->gT('You can update manually or use the %s'),"<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
             }                         
+            else
+            {
+              $editsurvey .=$clang->gT('There is currently no newer version of LimeSurvey available.').'<br />';
+            }
             $editsurvey .= "</div>";
             
 
@@ -254,7 +267,7 @@ function globalsettingsdisplay()
 
                 // Auto registration
                 $thisfilterxsshtml=getGlobalSettting('filterxsshtml');
-                $editsurvey .= "\t<li><label for=''>".$clang->gT("Filter HTML for XSS:")."</label>\n"
+                $editsurvey .= "\t<li><label for='filterxsshtml'>".$clang->gT("Filter HTML for XSS:")."</label>\n"
                 . "\t\t<select id='filterxsshtml' name='filterxsshtml'>\n"
                 . "\t\t\t<option value='1'";
                 if ( $thisfilterxsshtml == true) {$editsurvey .= " selected='selected'";}

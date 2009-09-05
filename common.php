@@ -253,6 +253,11 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
 }
 
+$updateavailable=0;
+$updatebuild='';
+$updateversion='';
+$updatelastcheck='';
+ 
 require ($homedir.'/globalsettings.php');
           
 //Admin menus and standards
@@ -280,19 +285,9 @@ if ($sourcefrom == "admin")
 	}
 }
 
-if ($sourcefrom == "admin" && $buildnumber != "") 
+if ($sourcefrom == "admin" && $buildnumber != "" && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
 {
-    $updateinfo=GetUpdateInfo();
-    if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber) 
-    {
-        setGlobalSettting('updateavailable',1);
-        setGlobalSettting('updatebuild',$updateinfo['Targetversion']['build']);
-        setGlobalSettting('updateversion',$updateinfo['Targetversion']['versionnumber']);
-    }
-    else
-    {
-        setGlobalSettting('updateavailable',0);
-    }
+  updatecheck();
 }
 
 
@@ -6454,7 +6449,7 @@ function removeBOM($str=""){
 } 
 
 /**
-* This function requests the latest update information
+* This function requests the latest update information from the LimeSurvey.org website
 *
 * @returns array Contains update information or false if the request failed for some reason 
 */
@@ -6483,7 +6478,12 @@ function GetUpdateInfo()
     return $updateinfo; 
 }
 
-
+   /**
+   * This function converts a standard JSON array to a PHP array without having to resort to JSON_decode which is available from 5.2x and up only
+   * 
+   * @param string $json String with JSON data
+   * @return array 
+   */
    function json_php5decode ($json) { 
 
       //remove curly brackets to beware from regex errors
@@ -6494,3 +6494,24 @@ function GetUpdateInfo()
 
       return json_decode('{'.$json.'}', true);
    }  
+   
+   /**
+   * This function updates the actual global variables if an update is available after using GetUpdateInfo
+   * 
+   */
+   function updatecheck()
+   {
+       global $buildnumber;
+        $updateinfo=GetUpdateInfo();
+        if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber) 
+        {
+            setGlobalSettting('updateavailable',1);
+            setGlobalSettting('updatebuild',$updateinfo['Targetversion']['build']);
+            setGlobalSettting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+            setGlobalSettting('updatelastcheck',date('Y-m-d H:i:s'));
+        }
+        else
+        {
+            setGlobalSettting('updateavailable',0);
+        }
+   }
