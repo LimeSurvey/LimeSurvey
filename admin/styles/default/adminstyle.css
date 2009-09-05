@@ -140,6 +140,18 @@ div.menubar {
 	line-height: 1em;
 }
 
+.menubar-title-right {
+    float: right;
+}
+
+.menubar-title-right a {
+        font-size:10px;
+        font-weight:bold;
+        color:#ee0000 !important;
+        text-decoration: underline !important; 
+        
+    }
+
 table.menubar {
 	width: 100%;
 	border-collapse: collapse;

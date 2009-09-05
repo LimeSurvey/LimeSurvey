@@ -431,6 +431,14 @@ $chartfontfile='auto';
 $chartfontsize =10;
 
 
+/**
+ * $updatecheckperiod - sets how often LimeSurvey checks for updates - the number sets the number of days between updates.
+ * Set to 0 to disable any update checks  
+ * Recommended: 7 
+ */ 
+$updatecheckperiod=7;
+
+
 //DO NOT EVER CHANGE THE FOLLOWING LINE ---------------
 require_once(dirname(__FILE__).'/config.php');
 //-----------------------------------------------------

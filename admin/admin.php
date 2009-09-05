@@ -454,7 +454,7 @@ elseif ($action == 'replacementfields')
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
      !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' &&
-     (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' || $action=='checksettings' ||       //Still to check
+     (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
       $action=='newsurvey' || $action=='listsurveys' ||   
       $action=='surveyrights' || $action=='quotas' ))

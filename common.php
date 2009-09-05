@@ -22,7 +22,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 
 $versionnumber = "1.86RC";
 $dbversionnumber = 138;
-$buildnumber = "";
+$buildnumber = "2345";
 
 ##################################################################################
 
@@ -94,7 +94,7 @@ if(function_exists("date_default_timezone_set") and function_exists("date_defaul
 
 //Every 50th time clean up the temp directory of old files (older than 1 day)
 //depending on the load the  probability might be set higher or lower
-if (rand(1,50)==1) 
+if (rand(1,50)==25) 
 {
     cleanTempDirectory();   
 }
@@ -280,6 +280,23 @@ if ($sourcefrom == "admin")
 	}
 }
 
+if ($sourcefrom == "admin" && $buildnumber != "") 
+{
+    $updateinfo=GetUpdateInfo();
+    if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber) 
+    {
+        setGlobalSettting('updateavailable',1);
+        setGlobalSettting('updatebuild',$updateinfo['Targetversion']['build']);
+        setGlobalSettting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+    }
+    else
+    {
+        setGlobalSettting('updateavailable',0);
+    }
+}
+
+
+
 //SET LOCAL TIME
 if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
@@ -303,19 +320,23 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion;
     
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
         $adminmenu  .="\t<div class='menubar-title'>\n"
                     . "<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
-			{
+		{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
                         . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
                         . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' title='".$clang->gT("Edit your personal preferences")."' /></a>"
                         . "</strong>\n";
-			}
+		}
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
+        {
+            $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</div>';
+        }
        	$adminmenu .= "</div>\n"
                     . "<div class='menubar-main'>\n"
                     . "<div class='menubar-left'>\n"
@@ -332,19 +353,11 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
 					."<img src='$imagefiles/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
-		// Check settings
-		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" >"
-		            . "<img src='$imagefiles/summary.png' name='CheckSettings' alt='". $clang->gT("Show System Summary")."'/></a>"
-		            . "<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
-        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global Settings")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                          . "onmouseover=\"showTooltip(event,'".$clang->gT("Global settings", "js")."');return false\">"
-                        . "\t\t\t\t\t<img src='$imagefiles/global.png' name='GlobalSettings' title='"
-                         . "' alt='". $clang->gT("Global Settings")."' /></a>"
-                         . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
+                    . "<img src='$imagefiles/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
+                    . "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
         }                    
 		// Check data integrity
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
@@ -6439,3 +6452,45 @@ function removeBOM($str=""){
         }
         return $str;
 } 
+
+/**
+* This function requests the latest update information
+*
+* @returns array Contains update information or false if the request failed for some reason 
+*/
+function GetUpdateInfo()
+{
+    global $homedir;
+    require_once($homedir."/classes/http/http.php");     
+    header( 'Content-Type: text/html' );
+    
+    $http_client = new http( HTTP_V11, false);
+    $http_client->host = 'update.limesurvey.org';
+    
+    $updateinfo=false;
+    if ( $http_client->get( '/updates' ) == HTTP_STATUS_OK)
+    {
+        $updateinfo=json_php5decode($http_client->get_response_body());
+        
+    }
+    elseif ($debug>0)
+    {
+        print( 'Error on requesting update info: ' .  $http_client->status );
+        
+    }
+
+    unset( $http_client );
+    return $updateinfo; 
+}
+
+
+   function json_php5decode ($json) { 
+
+      //remove curly brackets to beware from regex errors
+
+      $json = substr($json, strpos($json,'{')+1, strlen($json));
+      $json = substr($json, 0, strrpos($json,'}'));
+      $json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json));
+
+      return json_decode('{'.$json.'}', true);
+   }  
