@@ -208,11 +208,6 @@ function UpdateStep3()
     {
         $output.=$clang->gT('Database was successfuly backed up to ').htmlspecialchars($tempdir.'/db-'.$basefilename.'.sql').'<br />'; 
     }
-
-  
-
-  
-  
   
   $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
   $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with update step 3</button>";

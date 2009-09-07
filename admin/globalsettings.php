@@ -119,12 +119,12 @@ function globalsettingsdisplay()
             
             if (isset($updateavailable) && $updateavailable==1)
             {
-              $editsurvey .=sprintf($clang->gT('There is an update available for LimeSurvey: Version %s'),$updateversion."($updatebuild)").'<br />';
+              $editsurvey .=sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)").'<br />';
               $editsurvey .=sprintf($clang->gT('You can update manually or use the %s'),"<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
             }                         
             else
             {
-              $editsurvey .=$clang->gT('There is currently no newer version of LimeSurvey available.').'<br />';
+              $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.').'<br />';
             }
             $editsurvey .= "</div>";
             

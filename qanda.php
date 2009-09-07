@@ -558,8 +558,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
                 if (trim($qidattributes['min_answers'])!='') 
 				{
 					$qtitle .= "<br />\n<span class=\"questionhelp\">"
-					. sprintf($clang->gT("Rank at least %d items"), $minansw['value'])."</span>";
-					$question_text['help'] .=' '.sprintf($clang->gT("Rank at least %d items"), $minansw['value']);
+					. sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers'])."</span>";
+					$question_text['help'] .=' '.sprintf($clang->gT("Rank at least %d items"), $qidattributes['min_answers']);
 				
 				}
 			}
@@ -568,7 +568,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 			$values=do_multiplechoice($ia);
 			if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
 			{
-                $minansw=trim($qidattributes['max_answers']);
+                $maxansw=trim($qidattributes['max_answers']);
 				$minansw=trim($qidattributes['min_answers']);
 				if (!($maxansw || $minansw))
 				{
@@ -682,9 +682,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 		case 'H': //ARRAY (Flexible) - Column Format
 			$values=do_array_flexiblecolumns($ia);
 			break;
-//		case '^': //SLIDER CONTROL
-//			$values=do_slider($ia);
-//			break;
 		case ':': //ARRAY (Multi Flexi) 1 to 10
 			$values=do_array_multiflexi($ia);
 			break;
@@ -3312,7 +3309,7 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
 	global $dbprefix, $clang, $js_header_includes, $css_header_includes;
-	$qidattributes=getQuestionAttributes($ia[0]);
+	$qidattributes=getQuestionAttributes($ia[0],'K');
     $answer='';
 	//Must turn on the "numbers only javascript"
 	$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
@@ -3339,7 +3336,7 @@ function do_multiplenumeric($ia)
 	}
 	else
 	{
-		$equals_num_value[]=0;
+		$equals_num_value=0;
 	}
 
     //MIN VALUE
@@ -3562,23 +3559,23 @@ function do_multiplenumeric($ia)
 		{
 			$question_tip .= '<p class="tip">'.$clang->gT('Only numbers may be entered in these fields')."</p>\n";
 		}
-		if ($maxvalue)
+		if ($max_num_value)
 		{
 			$question_tip .= '<p id="max_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must not exceed %d'), $max_num_value)."</p>\n";
 		}
-		if ($equalvalue)
+		if ($equals_num_value)
 		{
 			$question_tip .= '<p id="equals_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must equal %d'),$equals_num_value)."</p>\n";
 		}
-		if ($minvalue)
+		if ($min_num_value)
 		{
 			$question_tip .= '<p id="min_num_value_'.$ia[1].'" class="tip">'.sprintf($clang->gT('Total of all entries must be at least %s'),$min_num_value)."</p>\n";
 		}
 
-		if ($maxvalue || $equalvalue || $minvalue)
+		if ($max_num_value || $equals_num_value || $min_num_value)
 		{
             $answer_computed = '';
-            if ($equalvalue)
+            if ($equals_num_value)
             {
                 $answer_computed .= "\t<li class='multiplenumerichelp'>\n<label for=\"remainingvalue_{$ia[1]}\">\n\t".$clang->gT('Remaining: ')."\n</label>\n<span>\n\t$prefix\n\t<input size=10 type='text' id=\"remainingvalue_{$ia[1]}\" disabled=\"disabled\" />\n\t$suffix\n</span>\n\t</li>\n";
             }
@@ -3601,7 +3598,7 @@ Style to be applied to all templates.
 	color: #0f0;
 }
 */
-	if ($maxvalue || $equalvalue || $minvalue) 
+	if ($max_num_value || $equals_num_value || $min_num_value) 
 	{ //Do value validation
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1]."\" />\n";
 		$answer .= '<input type="hidden" name="qattribute_answer'.$ia[1]."\" />\n";

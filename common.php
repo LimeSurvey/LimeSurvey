@@ -3199,7 +3199,7 @@ function getQuestionAttributes($qid, $type='')
 		$setattributes[$row['attribute']]=$row['value'];
 	}
 	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
-    $qid_attributes=array_merge($defaultattributes,$defaultattributes);
+    $qid_attributes=array_merge($defaultattributes,$setattributes);
 	return $qid_attributes;
 }
            
@@ -6517,7 +6517,7 @@ function GetUpdateInfo()
    {
        global $buildnumber;
         $updateinfo=GetUpdateInfo();
-        if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber) 
+        if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber && trim($buildnumber)!='') 
         {
             setGlobalSetting('updateavailable',1);
             setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
