@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
+* $Id: upgrade-mysql.php 7108 2009-06-15 05:43:21Z jcleeland $
 */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)

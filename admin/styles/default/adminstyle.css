@@ -846,3 +846,8 @@ div.loader {
     height:31px;
 }
 
+.background
+{
+    background-color:#f8f8ff;
+    padding:1% 10%;
+}

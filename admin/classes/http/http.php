@@ -1,904 +1,1982 @@
 <?php
-/**************************************************************************************************
-* Class: Advanced HTTP Client
-***************************************************************************************************
-* Version 		: 1.1
-* Released		: 06-20-2002
-* Last Modified : 06-10-2003
-* Author		: GuinuX <guinux@cosmoplazza.com>
-*
-***************************************************************************************************
-* Changes 
-***************************************************************************************************
-* 2003-06-10 : GuinuX 
-*   - Fixed a bug with multiple gets and basic auth
-*   - Added support for Basic proxy Authentification 
-* 2003-05-25: By Michael Mauch <michael.mauch@gmx.de>
-*	- Fixed two occurences of the former "status" member which is now deprecated
-* 2002-09-23: GuinuX
-*	- Fixed a bug to the post method with some HTTP servers
-*	- Thanx to l0rd jenci <lord_jenci@bigfoot.com> for reporting this bug.
-* 2002-09-07: Dirk Fokken <fokken@cross-consulting.com>
-*   - Deleted trailing characters at the end of the file, right after the php closing tag, in order 
-*	  to fix a bug with binary requests.
-* 2002-20-06: GuinuX, Major changes
-*	- Turned to a more OOP style => added class http_header, http_response_header, 
-*		http_request_message, http_response_message.
-*		The members : status, body, response_headers, cookies, _request_headers of the http class 
-*		are Deprecated.
-* 2002-19-06: GuinuX, fixed some bugs in the http::_get_response() method
-* 2002-18-06: By Mate Jovic <jovic@matoma.de>
-*	- Added support for Basic Authentification 
-*  		usage: $http_client = new http( HTTP_V11, false, Array('user','pass') );
-*
-***************************************************************************************************
-* Description:  
-***************************************************************************************************
-*	A HTTP client class
-* 	Supports : 
-*			- GET, HEAD and POST methods 
-*			- Http cookies 
-*			- multipart/form-data AND application/x-www-form-urlencoded
-*			- Chunked Transfer-Encoding 
-*			- HTTP 1.0 and 1.1 protocols 
-*			- Keep-Alive Connections 
-*			- Proxy
-*			- Basic WWW-Authentification and Proxy-Authentification 
-*
-***************************************************************************************************
-* TODO :
-***************************************************************************************************
-*			- Read trailing headers for Chunked Transfer-Encoding 
-***************************************************************************************************
-* usage
-***************************************************************************************************
-* See example scripts.
-*
-***************************************************************************************************
-* License
-***************************************************************************************************
-* GNU Lesser General Public License (LGPL)
-* http://www.opensource.org/licenses/lgpl-license.html
-*
-* For any suggestions or bug report please contact me : guinux@cosmoplazza.com
-***************************************************************************************************/
+/*
+ * http.php
+ *
+ * @(#) $Header: /home/mlemos/cvsroot/http/http.php,v 1.79 2009/09/03 00:09:37 mlemos Exp $
+ *
+ */
 
-	if ( !defined('HTTP_CRLF') ) define( 'HTTP_CRLF', chr(13) . chr(10));
-	define( 'HTTP_V10', '1.0');
-	define( 'HTTP_V11', '1.1');
-	define( 'HTTP_STATUS_CONTINUE', 				100 );
-	define( 'HTTP_STATUS_SWITCHING_PROTOCOLS', 		101 );
-	define( 'HTTP_STATUS_OK', 						200 );
-	define( 'HTTP_STATUS_CREATED', 					201 );
-	define( 'HTTP_STATUS_ACCEPTED', 				202 );
-	define( 'HTTP_STATUS_NON_AUTHORITATIVE', 		203 );
-	define( 'HTTP_STATUS_NO_CONTENT', 				204 );
-	define( 'HTTP_STATUS_RESET_CONTENT', 			205 );
-	define( 'HTTP_STATUS_PARTIAL_CONTENT', 			206 );
-	define( 'HTTP_STATUS_MULTIPLE_CHOICES', 		300 );
-	define( 'HTTP_STATUS_MOVED_PERMANENTLY', 		301 );
-	define( 'HTTP_STATUS_FOUND', 					302 );
-	define( 'HTTP_STATUS_SEE_OTHER', 				303 );
-	define( 'HTTP_STATUS_NOT_MODIFIED', 			304 );
-	define( 'HTTP_STATUS_USE_PROXY', 				305 );
-	define( 'HTTP_STATUS_TEMPORARY_REDIRECT', 		307 );
-	define( 'HTTP_STATUS_BAD_REQUEST', 				400 );
-	define( 'HTTP_STATUS_UNAUTHORIZED', 			401 );
-	define( 'HTTP_STATUS_FORBIDDEN', 				403 );
-	define( 'HTTP_STATUS_NOT_FOUND', 				404 );
-	define( 'HTTP_STATUS_METHOD_NOT_ALLOWED', 		405 );
-	define( 'HTTP_STATUS_NOT_ACCEPTABLE', 			406 );
-	define( 'HTTP_STATUS_PROXY_AUTH_REQUIRED', 		407 );
-	define( 'HTTP_STATUS_REQUEST_TIMEOUT', 			408 );
-	define( 'HTTP_STATUS_CONFLICT', 				409 );
-	define( 'HTTP_STATUS_GONE', 					410 );
-	define( 'HTTP_STATUS_REQUEST_TOO_LARGE',		413 );
-	define( 'HTTP_STATUS_URI_TOO_LONG', 			414 );
-	define( 'HTTP_STATUS_SERVER_ERROR', 			500 );
-	define( 'HTTP_STATUS_NOT_IMPLEMENTED',			501 );
-	define( 'HTTP_STATUS_BAD_GATEWAY',				502 );
-	define( 'HTTP_STATUS_SERVICE_UNAVAILABLE',		503 );
-	define( 'HTTP_STATUS_VERSION_NOT_SUPPORTED',	505 );
+class http_class
+{
+	var $host_name="";
+	var $host_port=0;
+	var $proxy_host_name="";
+	var $proxy_host_port=80;
+	var $socks_host_name = '';
+	var $socks_host_port = 1080;
+	var $socks_version = '5';
 
+	var $protocol="http";
+	var $request_method="GET";
+	var $user_agent='httpclient (http://www.phpclasses.org/httpclient $Revision: 1.79 $)';
+	var $authentication_mechanism="";
+	var $user;
+	var $password;
+	var $realm;
+	var $workstation;
+	var $proxy_authentication_mechanism="";
+	var $proxy_user;
+	var $proxy_password;
+	var $proxy_realm;
+	var $proxy_workstation;
+	var $request_uri="";
+	var $request="";
+	var $request_headers=array();
+	var $request_user;
+	var $request_password;
+	var $request_realm;
+	var $request_workstation;
+	var $proxy_request_user;
+	var $proxy_request_password;
+	var $proxy_request_realm;
+	var $proxy_request_workstation;
+	var $request_body="";
+	var $request_arguments=array();
+	var $protocol_version="1.1";
+	var $timeout=0;
+	var $data_timeout=0;
+	var $debug=0;
+	var $debug_response_body=1;
+	var $html_debug=0;
+	var $support_cookies=1;
+	var $cookies=array();
+	var $error="";
+	var $exclude_address="";
+	var $follow_redirect=0;
+	var $redirection_limit=5;
+	var $response_status="";
+	var $response_message="";
+	var $file_buffer_length=8000;
+	var $force_multipart_form_post=0;
+	var $prefer_curl = 0;
 
-/******************************************************************************************
-* class http_header
-******************************************************************************************/
-	class http_header {
-		var $_headers;
-		var $_debug;
+	/* private variables - DO NOT ACCESS */
 
-		function http_header() {
-			$this->_headers = Array();
-			$this->_debug	= '';
-		} // End Of function http_header()
-		
-		function get_header( $header_name ) {
-			$header_name = $this->_format_header_name( $header_name );
-			if (isset($this->_headers[$header_name]))
-				return $this->_headers[$header_name];
-			else
-				return null;
-		} // End of function get()
-		
-		function set_header( $header_name, $value ) {
-			if ($value != '') {
-				$header_name = $this->_format_header_name( $header_name );
-				$this->_headers[$header_name] = $value;
-			}
-		} // End of function set()
-		
-		function reset() {
-			if ( count( $this->_headers ) > 0 ) $this->_headers = array();
-			$this->_debug 	.= "\n--------------- RESETED ---------------\n";
-		} // End of function clear()
+	var $state="Disconnected";
+	var $use_curl=0;
+	var $connection=0;
+	var $content_length=0;
+	var $response="";
+	var $read_response=0;
+	var $read_length=0;
+	var $request_host="";
+	var $next_token="";
+	var $redirection_level=0;
+	var $chunked=0;
+	var $remaining_chunk=0;
+	var $last_chunk_read=0;
+	var $months=array(
+		"Jan"=>"01",
+		"Feb"=>"02",
+		"Mar"=>"03",
+		"Apr"=>"04",
+		"May"=>"05",
+		"Jun"=>"06",
+		"Jul"=>"07",
+		"Aug"=>"08",
+		"Sep"=>"09",
+		"Oct"=>"10",
+		"Nov"=>"11",
+		"Dec"=>"12");
+	var $session='';
+	var $connection_close=0;
 
-		function serialize_headers() {
-			$str = '';
-			foreach ( $this->_headers as $name=>$value) {
-				$str .= "$name: $value" . HTTP_CRLF;
-			}
-			return $str;
-		} // End of function serialize_headers()
-		
-		function _format_header_name( $header_name ) {
-			$formatted = str_replace( '-', ' ', strtolower( $header_name ) );
-			$formatted = ucwords( $formatted );
-			$formatted = str_replace( ' ', '-', $formatted );
-			return $formatted;
+	/* Private methods - DO NOT CALL */
+
+	Function Tokenize($string,$separator="")
+	{
+		if(!strcmp($separator,""))
+		{
+			$separator=$string;
+			$string=$this->next_token;
 		}
-		
-		function add_debug_info( $data ) {
-			$this->_debug .= $data;
+		for($character=0;$character<strlen($separator);$character++)
+		{
+			if(GetType($position=strpos($string,$separator[$character]))=="integer")
+				$found=(IsSet($found) ? min($found,$position) : $position);
 		}
-
-		function get_debug_info() {
-			return $this->_debug;
+		if(IsSet($found))
+		{
+			$this->next_token=substr($string,$found+1);
+			return(substr($string,0,$found));
 		}
-	
-	} // End Of Class http_header
-
-/******************************************************************************************
-* class http_response_header
-******************************************************************************************/
-	class http_response_header extends http_header {
-		var $cookies_headers;
-		
-		function http_response_header() {
-			$this->cookies_headers = array();
-			http_header::http_header();
-		} // End of function http_response_header()
-		
-		function deserialize_headers( $flat_headers ) {
-			$flat_headers = preg_replace( "/^" . HTTP_CRLF . "/", '', $flat_headers );
-			$tmp_headers = split( HTTP_CRLF, $flat_headers );
-			if (preg_match("'HTTP/(\d\.\d)\s+(\d+).*'i", $tmp_headers[0], $matches )) {
-				$this->set_header( 'Protocol-Version', $matches[1] );
-				$this->set_header( 'Status', $matches[2] );
-			} 
-			array_shift( $tmp_headers );
-			foreach( $tmp_headers as $index=>$value ) {
-				$pos = strpos( $value, ':' );
-				if ( $pos ) {
-					$key = substr( $value, 0, $pos );
-					$value = trim( substr( $value, $pos +1) );
-					if ( strtoupper($key) == 'SET-COOKIE' )
-						$this->cookies_headers[] = $value;
-					else
-						$this->set_header( $key, $value );
-				}
-			}
-		} // End of function deserialize_headers()
-		
-		function reset() {
-			if ( count( $this->cookies_headers ) > 0 ) $this->cookies_headers = array();
-			http_header::reset();
-		}
-
-	} // End of class http_response_header
-
-
-/******************************************************************************************
-* class http_request_message
-******************************************************************************************/
-	class http_request_message extends http_header {
-		var $body;
-		
-		function http_request_message() {
-			$this->body = '';
-			http_header::http_header();
-		} // End of function http_message()
-		
-		function reset() {
-			$this->body = '';
-			http_header::reset();
+		else
+		{
+			$this->next_token="";
+			return($string);
 		}
 	}
 
-/******************************************************************************************
-* class http_response_message
-******************************************************************************************/
-	class http_response_message extends http_response_header {
-		var $body;
-		var $cookies;
-		
-		function http_response_message() {
-			$this->cookies = new http_cookie();
-			$this->body = '';
-			http_response_header::http_response_header();
-		} // End of function http_response_message()
-		
-		function get_status() {
-			if ( $this->get_header( 'Status' ) != null )
-				return (integer)$this->get_header( 'Status' );
-			else
-				return -1;
-		}
-		
-		function get_protocol_version() {
-			if ( $this->get_header( 'Protocol-Version' ) != null )
-				return $this->get_header( 'Protocol-Version' );
-			else
-				return HTTP_V10;
-		}
-		
-		function get_content_type() {
-			$this->get_header( 'Content-Type' );
-		}
-		
-		function get_body() {
-			return $this->body;
-		}
-		
-		function reset() {
-			$this->body = '';
-			http_response_header::reset();
-		}
-
-		function parse_cookies( $host ) {
-			for ( $i = 0; $i < count( $this->cookies_headers ); $i++ )
-				$this->cookies->parse( $this->cookies_headers[$i], $host );
-		}
+	Function CookieEncode($value, $name)
+	{
+		return($name ? str_replace("=", "%25", $value) : str_replace(";", "%3B", $value));
 	}
 
-/******************************************************************************************
-* class http_cookie
-******************************************************************************************/
-	class http_cookie {
-		var $cookies;
+	Function SetError($error)
+	{
+		return($this->error=$error);
+	}
 
-		function http_cookie() {
-			$this->cookies 	= array();
-		} // End of function http_cookies()
-		
-		function _now() {
-			return strtotime( gmdate( "l, d-F-Y H:i:s", time() ) );
-		} // End of function _now()
-		
-		function _timestamp( $date ) {
-			if ( $date == '' ) return $this->_now()+3600;
-			$time = strtotime( $date );
-			return ($time>0?$time:$this->_now()+3600);
-		} // End of function _timestamp()
+	Function SetPHPError($error, &$php_error_message)
+	{
+		if(IsSet($php_error_message)
+		&& strlen($php_error_message))
+			$error.=": ".$php_error_message;
+		return($this->SetError($error));
+	}
 
-		function get( $current_domain, $current_path ) {
-			$cookie_str = '';
-			$now = $this->_now();
-			$new_cookies = array();
-
-			foreach( $this->cookies as $cookie_name => $cookie_data ) {
-				if ($cookie_data['expires'] > $now) {
-					$new_cookies[$cookie_name] = $cookie_data;
-					$domain = preg_quote( $cookie_data['domain'] );
-					$path = preg_quote( $cookie_data['path']  );
-					if ( preg_match( "'.*$domain$'i", $current_domain ) && preg_match( "'^$path.*'i", $current_path ) )
-						$cookie_str .= $cookie_name . '=' . $cookie_data['value'] . '; ';
-				}
-			}
-			$this->cookies = $new_cookies;
-			return $cookie_str;
-		} // End of function get()
-		
-		function set( $name, $value, $domain, $path, $expires ) {
-			$this->cookies[$name] = array(	'value' => $value,
-											'domain' => $domain,
-											'path' => $path,
-											'expires' => $this->_timestamp( $expires )
-											);
-		} // End of function set()
-		
-		function parse( $cookie_str, $host ) {
-			$cookie_str = str_replace( '; ', ';', $cookie_str ) . ';';
-			$data = split( ';', $cookie_str );
-			$value_str = $data[0];
-
-			$cookie_param = 'domain=';
-			$start = strpos( $cookie_str, $cookie_param );
-			if ( $start > 0 ) {
-				$domain = substr( $cookie_str, $start + strlen( $cookie_param ) );
-				$domain = substr( $domain, 0, strpos( $domain, ';' ) );
-			} else
-				$domain = $host;
-
-			$cookie_param = 'expires=';
-			$start = strpos( $cookie_str, $cookie_param );
-			if ( $start > 0 ) {
-				$expires = substr( $cookie_str, $start + strlen( $cookie_param ) );
-				$expires = substr( $expires, 0, strpos( $expires, ';' ) );
-			} else
-				$expires = '';
-			
-			$cookie_param = 'path=';
-			$start = strpos( $cookie_str, $cookie_param );
-			if ( $start > 0 ) {
-				$path = substr( $cookie_str, $start + strlen( $cookie_param ) );
-				$path = substr( $path, 0, strpos( $path, ';' ) );
-			} else
-				$path = '/';
-							
-			$sep_pos = strpos( $value_str, '=');
-			
-			if ($sep_pos){
-				$name = substr( $value_str, 0, $sep_pos );
-				$value = substr( $value_str, $sep_pos+1 );
-				$this->set( $name, $value, $domain, $path, $expires );
-			}
-		} // End of function parse()
-		
-	} // End of class http_cookie	
-	
-/******************************************************************************************
-* class http
-******************************************************************************************/
-	class http {
-		var $_socket;
-		var $host;
-		var $port;
-		var $http_version;
-		var $user_agent;
-		var $errstr;
-		var $connected;
-		var $uri;
-		var $_proxy_host;
-		var $_proxy_port;
-		var $_proxy_login;
-		var $_proxy_pwd;
-		var $_use_proxy;
-		var $_auth_login;
-		var $_auth_pwd;	
-		var $_response; 
-		var $_request;
-		var $_keep_alive;		
-
-		function http( $http_version = HTTP_V10, $keep_alive = false, $auth = false ) {
-			$this->http_version	= $http_version;
-			$this->connected	= false;
-			$this->user_agent	= 'CosmoHttp/1.1 (compatible; MSIE 5.5; Linux)';
-			$this->host			= '';
-			$this->port			= 80;
-			$this->errstr		= '';
-
-			$this->_keep_alive	= $keep_alive;
-			$this->_proxy_host	= '';
-			$this->_proxy_port	= -1;
-			$this->_proxy_login	= '';
-			$this->_proxy_pwd	= '';
-			$this->_auth_login	= '';
-			$this->_auth_pwd	= '';
-			$this->_use_proxy	= false;
-			$this->_response 	= new http_response_message();
-			$this->_request		= new http_request_message();
-			
-		// Basic Authentification added by Mate Jovic, 2002-18-06, jovic@matoma.de
-			if( is_array($auth) && count($auth) == 2 ){
-				$this->_auth_login	= $auth[0];
-				$this->_auth_pwd	= $auth[1];
-			}
-		} // End of Constuctor
-
-		function use_proxy( $host, $port, $proxy_login = null, $proxy_pwd = null ) {
-		// Proxy auth not yet supported
-			$this->http_version	= HTTP_V10;
-			$this->_keep_alive	= false;
-			$this->_proxy_host	= $host;
-			$this->_proxy_port	= $port;
-			$this->_proxy_login	= $proxy_login;
-			$this->_proxy_pwd	= $proxy_pwd;
-			$this->_use_proxy	= true;
-		}
-
-		function set_request_header( $name, $value ) {
-			$this->_request->set_header( $name, $value );
-		}
-
-		function get_response_body() {
-			return $this->_response->body;
-		}
-		
-		function get_response() {
-			return $this->_response;
-		}
-		
-		function head( $uri ) {
-			$this->uri = $uri;
-
-			if ( ($this->_keep_alive && !$this->connected) || !$this->_keep_alive ) {
-				if ( !$this->_connect() ) {
-					$this->errstr = 'Could not connect to ' . $this->host;
-					return -1;
-				}
-			}
-			$http_cookie = $this->_response->cookies->get( $this->host, $this->_current_directory( $uri ) );
-			
-			if ($this->_use_proxy) {
-				$this->_request->set_header( 'Host', $this->host . ':' . $this->port );
-				$this->_request->set_header( 'Proxy-Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				if ( $this->_proxy_login != '' ) $this->_request->set_header( 'Proxy-Authorization', "Basic " . base64_encode( $this->_proxy_login . ":" . $this->_proxy_pwd ) );
-				$uri = 'http://' . $this->host . ':' . $this->port . $uri;
-			} else {
-				$this->_request->set_header( 'Host', $this->host );
-				$this->_request->set_header( 'Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-			}
-
-			if ( $this->_auth_login != '' ) $this->_request->set_header( 'Authorization', "Basic " . base64_encode( $this->_auth_login . ":" . $this->_auth_pwd ) );			
-			$this->_request->set_header( 'User-Agent', $this->user_agent );
-			$this->_request->set_header( 'Accept', '*/*' );
-			$this->_request->set_header( 'Cookie', $http_cookie );
-			
-			$cmd =	"HEAD $uri HTTP/" . $this->http_version . HTTP_CRLF . 
-					$this->_request->serialize_headers() .
-					HTTP_CRLF;
-			fwrite( $this->_socket, $cmd );
-			
-			$this->_request->add_debug_info( $cmd );
-			$this->_get_response( false );
-
-			if ($this->_socket && !$this->_keep_alive) $this->disconnect();
-			if ( $this->_response->get_header( 'Connection' ) != null ) {
-				if ( $this->_keep_alive && strtolower( $this->_response->get_header( 'Connection' ) ) == 'close' ) {
-					$this->_keep_alive = false;
-					$this->disconnect();
-				}
-			}
-			
-			if ( $this->_response->get_status() == HTTP_STATUS_USE_PROXY ) {
-				$location = $this->_parse_location( $this->_response->get_header( 'Location' ) );
-				$this->disconnect();
-				$this->use_proxy( $location['host'], $location['port'] );
-				$this->head( $this->uri );
-			}
-			
-			return $this->_response->get_header( 'Status' );
-		} // End of function head()
-
-		
-		function get( $uri, $follow_redirects = true, $referer = '' ) {
-			$this->uri = $uri;
-			
-			if ( ($this->_keep_alive && !$this->connected) || !$this->_keep_alive ) {
-				if ( !$this->_connect() ) {
-					$this->errstr = 'Could not connect to ' . $this->host;
-					return -1;
-				}
-			}
-			
-			if ($this->_use_proxy) {
-				$this->_request->set_header( 'Host', $this->host . ':' . $this->port );
-				$this->_request->set_header( 'Proxy-Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				if ( $this->_proxy_login != '' ) $this->_request->set_header( 'Proxy-Authorization', "Basic " . base64_encode( $this->_proxy_login . ":" . $this->_proxy_pwd ) );
-				$uri = 'http://' . $this->host . ':' . $this->port . $uri;
-			} else {
-				$this->_request->set_header( 'Host', $this->host );
-				$this->_request->set_header( 'Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				$this->_request->set_header( 'Pragma', 'no-cache' );
-				$this->_request->set_header( 'Cache-Control', 'no-cache' );
-			}
-			
-			if ( $this->_auth_login != '' ) $this->_request->set_header( 'Authorization', "Basic " . base64_encode( $this->_auth_login . ":" . $this->_auth_pwd ) );
-			$http_cookie = $this->_response->cookies->get( $this->host, $this->_current_directory( $uri ) );
-			$this->_request->set_header( 'User-Agent', $this->user_agent );
-			$this->_request->set_header( 'Accept', '*/*' );
-			$this->_request->set_header( 'Referer', $referer );
-			$this->_request->set_header( 'Cookie', $http_cookie );
-			
-			$cmd =	"GET $uri HTTP/" . $this->http_version . HTTP_CRLF . 
-					$this->_request->serialize_headers() .
-					HTTP_CRLF;
-			fwrite( $this->_socket, $cmd );
-
-			$this->_request->add_debug_info( $cmd );
-			$this->_get_response();
-
-			if ($this->_socket && !$this->_keep_alive) $this->disconnect();
-			if (  $this->_response->get_header( 'Connection' ) != null ) {
-				if ( $this->_keep_alive && strtolower( $this->_response->get_header( 'Connection' ) ) == 'close' ) {
-					$this->_keep_alive = false;
-					$this->disconnect();
-				}
-			}
-			if ( $follow_redirects && ($this->_response->get_status() == HTTP_STATUS_MOVED_PERMANENTLY || $this->_response->get_status() == HTTP_STATUS_FOUND || $this->_response->get_status() == HTTP_STATUS_SEE_OTHER ) ) {
-				if ( $this->_response->get_header( 'Location' ) != null  ) {
-					$this->_redirect( $this->_response->get_header( 'Location' ) );
-				}
-			}
-			
-			if ( $this->_response->get_status() == HTTP_STATUS_USE_PROXY ) {
-				$location = $this->_parse_location( $this->_response->get_header( 'Location' ) );
-				$this->disconnect();
-				$this->use_proxy( $location['host'], $location['port'] );
-				$this->get( $this->uri, $referer );
-			}
-
-			return $this->_response->get_status();
-		} // End of function get()
-
-
-
-		function multipart_post( $uri, &$form_fields, $form_files = null, $follow_redirects = true, $referer = '' ) {
-			$this->uri = $uri;
-			
-			if ( ($this->_keep_alive && !$this->connected) || !$this->_keep_alive ) {
-				if ( !$this->_connect() ) {
-					$this->errstr = 'Could not connect to ' . $this->host;
-					return -1;
-				}
-			}
-			$boundary = uniqid('------------------');
-			$http_cookie = $this->_response->cookies->get( $this->host, $this->_current_directory( $uri ) );
-			$body = $this->_merge_multipart_form_data( $boundary, $form_fields, $form_files );
-			$this->_request->body =  $body . HTTP_CRLF;
-			$content_length = strlen( $body ); 
-
-
-			if ($this->_use_proxy) {
-				$this->_request->set_header( 'Host', $this->host . ':' . $this->port );
-				$this->_request->set_header( 'Proxy-Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				if ( $this->_proxy_login != '' ) $this->_request->set_header( 'Proxy-Authorization', "Basic " . base64_encode( $this->_proxy_login . ":" . $this->_proxy_pwd ) );
-				$uri = 'http://' . $this->host . ':' . $this->port . $uri;
-			} else {
-				$this->_request->set_header( 'Host', $this->host );
-				$this->_request->set_header( 'Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				$this->_request->set_header( 'Pragma', 'no-cache' );
-				$this->_request->set_header( 'Cache-Control', 'no-cache' );
-			}
-
-			if ( $this->_auth_login != '' ) $this->_request->set_header( 'Authorization', "Basic " . base64_encode( $this->_auth_login . ":" . $this->_auth_pwd ) );
-			$this->_request->set_header( 'Accept', '*/*' );
-			$this->_request->set_header( 'Content-Type', 'multipart/form-data; boundary=' . $boundary );
-			$this->_request->set_header( 'User-Agent', $this->user_agent );
-			$this->_request->set_header( 'Content-Length', $content_length );
-			$this->_request->set_header( 'Cookie', $http_cookie );
-			$this->_request->set_header( 'Referer', $referer );
-							
-			$req_header	= "POST $uri HTTP/" . $this->http_version . HTTP_CRLF . 
-						$this->_request->serialize_headers() .
-						HTTP_CRLF;
-
-			fwrite( $this->_socket, $req_header );
-			usleep(10);
-			fwrite( $this->_socket, $this->_request->body );
-			
-			$this->_request->add_debug_info( $req_header );
-			$this->_get_response();
-			
-			if ($this->_socket && !$this->_keep_alive) $this->disconnect();
-			if ( $this->_response->get_header( 'Connection' ) != null ) {
-				if ( $this->_keep_alive && strtolower( $this->_response->get_header( 'Connection' ) ) == 'close' ) {
-					$this->_keep_alive = false;
-					$this->disconnect();
-				}
-			}
-			
-			if ( $follow_redirects && ($this->_response->get_status() == HTTP_STATUS_MOVED_PERMANENTLY || $this->_response->get_status() == HTTP_STATUS_FOUND || $this->_response->get_status() == HTTP_STATUS_SEE_OTHER ) ) {
-				if ( $this->_response->get_header( 'Location') != null ) {
-					$this->_redirect( $this->_response->get_header( 'Location') );
-				}
-			}
-			
-			if ( $this->_response->get_status() == HTTP_STATUS_USE_PROXY ) {
-				$location = $this->_parse_location( $this->_response->get_header( 'Location') );
-				$this->disconnect();
-				$this->use_proxy( $location['host'], $location['port'] );
-				$this->multipart_post( $this->uri, $form_fields, $form_files, $referer );
-			}
-
-			return $this->_response->get_status();
-		} // End of function multipart_post()
-
-
-
-		function post( $uri, &$form_data, $follow_redirects = true, $referer = '' ) {
-			$this->uri = $uri;
-
-			if ( ($this->_keep_alive && !$this->connected) || !$this->_keep_alive ) {
-				if ( !$this->_connect() ) {
-					$this->errstr = 'Could not connect to ' . $this->host;
-					return -1;
-				}
-			}
-			$http_cookie = $this->_response->cookies->get( $this->host, $this->_current_directory( $uri ) );
-			$body = substr( $this->_merge_form_data( $form_data ), 1 );
-			$this->_request->body =  $body . HTTP_CRLF . HTTP_CRLF;
-			$content_length = strlen( $body ); 
-
-			if ($this->_use_proxy) {
-				$this->_request->set_header( 'Host', $this->host . ':' . $this->port );
-				$this->_request->set_header( 'Proxy-Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				if ( $this->_proxy_login != '' ) $this->_request->set_header( 'Proxy-Authorization', "Basic " . base64_encode( $this->_proxy_login . ":" . $this->_proxy_pwd ) );
-				$uri = 'http://' . $this->host . ':' . $this->port . $uri;
-			} else {
-				$this->_request->set_header( 'Host', $this->host );
-				$this->_request->set_header( 'Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				$this->_request->set_header( 'Pragma', 'no-cache' );
-				$this->_request->set_header( 'Cache-Control', 'no-cache' );
-			}
-			
-			if ( $this->_auth_login != '' ) $this->_request->set_header( 'Authorization', "Basic " . base64_encode( $this->_auth_login . ":" . $this->_auth_pwd ) );			
-			$this->_request->set_header( 'Accept', '*/*' );
-			$this->_request->set_header( 'Content-Type', 'application/x-www-form-urlencoded' );
-			$this->_request->set_header( 'User-Agent', $this->user_agent );
-			$this->_request->set_header( 'Content-Length', $content_length );
-			$this->_request->set_header( 'Cookie', $http_cookie );
-			$this->_request->set_header( 'Referer', $referer );
-							
-			$req_header	= "POST $uri HTTP/" . $this->http_version . HTTP_CRLF . 
-						$this->_request->serialize_headers() .
-						HTTP_CRLF;
-
-			fwrite( $this->_socket, $req_header );
-			usleep( 10 );
-			fwrite( $this->_socket, $this->_request->body );
-			
-			$this->_request->add_debug_info( $req_header );
-			$this->_get_response();
-
-			if ($this->_socket && !$this->_keep_alive) $this->disconnect();
-			if ( $this->_response->get_header( 'Connection' ) != null ) {
-				if ( $this->_keep_alive && strtolower( $this->_response->get_header( 'Connection' ) ) == 'close' ) {
-					$this->_keep_alive = false;
-					$this->disconnect();
-				}
-			}
-			
-			if ( $follow_redirects && ($this->_response->get_status() == HTTP_STATUS_MOVED_PERMANENTLY || $this->_response->get_status() == HTTP_STATUS_FOUND || $this->_response->get_status() == HTTP_STATUS_SEE_OTHER ) ) {
-				if ( $this->_response->get_header( 'Location' ) != null ) {
-					$this->_redirect( $this->_response->get_header( 'Location' ) );
-				}
-			}
-			
-			if ( $this->_response->get_status() == HTTP_STATUS_USE_PROXY ) {
-				$location = $this->_parse_location( $this->_response->get_header( 'Location' ) );
-				$this->disconnect();
-				$this->use_proxy( $location['host'], $location['port'] );
-				$this->post( $this->uri, $form_data, $referer );
-			}
-
-			return $this->_response->get_status();
-		} // End of function post()
-		
-
-
-		function post_xml( $uri, $xml_data, $follow_redirects = true, $referer = '' ) {
-			$this->uri = $uri;
-
-			if ( ($this->_keep_alive && !$this->connected) || !$this->_keep_alive ) {
-				if ( !$this->_connect() ) {
-					$this->errstr = 'Could not connect to ' . $this->host;
-					return -1;
-				}
-			}
-			$http_cookie = $this->_response->cookies->get( $this->host, $this->_current_directory( $uri ) );
-			$body = $xml_data;
-			$this->_request->body =  $body . HTTP_CRLF . HTTP_CRLF;
-			$content_length = strlen( $body ); 
-
-			if ($this->_use_proxy) {
-				$this->_request->set_header( 'Host', $this->host . ':' . $this->port );
-				$this->_request->set_header( 'Proxy-Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				if ( $this->_proxy_login != '' ) $this->_request->set_header( 'Proxy-Authorization', "Basic " . base64_encode( $this->_proxy_login . ":" . $this->_proxy_pwd ) );
-				$uri = 'http://' . $this->host . ':' . $this->port . $uri;
-			} else {
-				$this->_request->set_header( 'Host', $this->host );
-				$this->_request->set_header( 'Connection', ($this->_keep_alive?'Keep-Alive':'Close') );
-				$this->_request->set_header( 'Pragma', 'no-cache' );
-				$this->_request->set_header( 'Cache-Control', 'no-cache' );
-			}
-			
-			if ( $this->_auth_login != '' ) $this->_request->set_header( 'Authorization', "Basic " . base64_encode( $this->_auth_login . ":" . $this->_auth_pwd ) );			
-			$this->_request->set_header( 'Accept', '*/*' );
-			$this->_request->set_header( 'Content-Type', 'text/xml; charset=utf-8' );
-			$this->_request->set_header( 'User-Agent', $this->user_agent );
-			$this->_request->set_header( 'Content-Length', $content_length );
-			$this->_request->set_header( 'Cookie', $http_cookie );
-			$this->_request->set_header( 'Referer', $referer );
-							
-			$req_header	= "POST $uri HTTP/" . $this->http_version . HTTP_CRLF . 
-						$this->_request->serialize_headers() .
-						HTTP_CRLF;
-
-			fwrite( $this->_socket, $req_header );
-			usleep( 10 );
-			fwrite( $this->_socket, $this->_request->body );
-			
-			$this->_request->add_debug_info( $req_header );
-			$this->_get_response();
-
-			if ($this->_socket && !$this->_keep_alive) $this->disconnect();
-			if ( $this->_response->get_header( 'Connection' ) != null ) {
-				if ( $this->_keep_alive && strtolower( $this->_response->get_header( 'Connection' ) ) == 'close' ) {
-					$this->_keep_alive = false;
-					$this->disconnect();
-				}
-			}
-			
-			if ( $follow_redirects && ($this->_response->get_status() == HTTP_STATUS_MOVED_PERMANENTLY || $this->_response->get_status() == HTTP_STATUS_FOUND || $this->_response->get_status() == HTTP_STATUS_SEE_OTHER ) ) {
-				if ( $this->_response->get_header( 'Location' ) != null ) {
-					$this->_redirect( $this->_response->get_header( 'Location' ) );
-				}
-			}
-			
-			if ( $this->_response->get_status() == HTTP_STATUS_USE_PROXY ) {
-				$location = $this->_parse_location( $this->_response->get_header( 'Location' ) );
-				$this->disconnect();
-				$this->use_proxy( $location['host'], $location['port'] );
-				$this->post( $this->uri, $form_data, $referer );
-			}
-
-			return $this->_response->get_status();
-		} // End of function post_xml()
-		
-		
-		function disconnect() {
-			if ($this->_socket && $this->connected) {
-				 fclose($this->_socket);
-	 			$this->connected = false;
-			 }
-		} // End of function disconnect()
-
-
-		/********************************************************************************
-		 * Private functions 
-		 ********************************************************************************/
-		 
-		function _connect( ) {
-			if ( $this->host == '' ) user_error( 'Class HTTP->_connect() : host property not set !' , E_ERROR );
-			if (!$this->_use_proxy)
-				$this->_socket = fsockopen( $this->host, $this->port, $errno, $errstr, 10 );
-			else
-				$this->_socket = fsockopen( $this->_proxy_host, $this->_proxy_port, $errno, $errstr, 10 );
-			$this->errstr  = $errstr;
-			$this->connected = ($this->_socket == true);
-			return $this->connected;
-		} // End of function connect()
-
-
-		function _merge_multipart_form_data( $boundary, &$form_fields, &$form_files ) {
-			$boundary = '--' . $boundary;
-			$multipart_body = '';
-			foreach ( $form_fields as $name => $data) {
-				$multipart_body .= $boundary . HTTP_CRLF;
-				$multipart_body .= 'Content-Disposition: form-data; name="' . $name . '"' . HTTP_CRLF;
-				$multipart_body .=  HTTP_CRLF;
-				$multipart_body .= $data . HTTP_CRLF;
-			}
-			if ( isset($form_files) ) {
-				foreach ( $form_files as $data) {
-					$multipart_body .= $boundary . HTTP_CRLF;
-					$multipart_body .= 'Content-Disposition: form-data; name="' . $data['name'] . '"; filename="' . $data['filename'] . '"' . HTTP_CRLF;
-					if ($data['content-type']!='') 
-						$multipart_body .= 'Content-Type: ' . $data['content-type'] . HTTP_CRLF;
-					else
-						$multipart_body .= 'Content-Type: application/octet-stream' . HTTP_CRLF;
-					$multipart_body .=  HTTP_CRLF;
-					$multipart_body .= $data['data'] . HTTP_CRLF;
-				}			
-			}
-			$multipart_body .= $boundary . '--' . HTTP_CRLF;
-			return $multipart_body;
-		} // End of function _merge_multipart_form_data()
-		
-
-		function _merge_form_data( &$param_array,  $param_name = '' ) {
-			$params = '';
-			$format = ($param_name !=''?'&'.$param_name.'[%s]=%s':'&%s=%s');
-			foreach ( $param_array as $key=>$value ) {
-				if ( !is_array( $value ) )
-					$params .= sprintf( $format, $key, urlencode( $value ) );
+	Function SetDataAccessError($error,$check_connection=0)
+	{
+		$this->error=$error;
+		if(!$this->use_curl
+		&& function_exists("socket_get_status"))
+		{
+			$status=socket_get_status($this->connection);
+			if($status["timed_out"])
+				$this->error.=": data access time out";
+			elseif($status["eof"])
+			{
+				if($check_connection)
+					$this->error="";
 				else
-					$params .= $this->_merge_form_data( $param_array[$key],  $key );
+					$this->error.=": the server disconnected";
 			}
-			return $params;
-		} // End of function _merge_form_data()
+		}
+	}
 
-		function _current_directory( $uri ) {
-			$tmp = split( '/', $uri );
-			array_pop($tmp);
-			$current_dir = implode( '/', $tmp ) . '/';
-			return ($current_dir!=''?$current_dir:'/');
-		} // End of function _current_directory()		
-		
-		
-		function _get_response( $get_body = true ) {
-			$this->_response->reset();
-			$this->_request->reset();
-			$header = '';
-			$body = '';
-			$continue	= true;
-			
-			while ($continue) {
-				$header = '';
+	Function OutputDebug($message)
+	{
+		$message.="\n";
+		if($this->html_debug)
+			$message=str_replace("\n","<br />\n",HtmlEntities($message));
+		echo $message;
+		flush();
+	}
 
-				// Read the Response Headers
-				while ( (($line = fgets( $this->_socket, 4096 )) != HTTP_CRLF || $header == '') && !feof( $this->_socket ) ) { 
-				    if ($line != HTTP_CRLF) $header .= $line; 
-				}
-				$this->_response->deserialize_headers( $header );
-				$this->_response->parse_cookies( $this->host );
-				
-				$this->_response->add_debug_info( $header );
-				$continue = ($this->_response->get_status() == HTTP_STATUS_CONTINUE);
-				if ($continue) fwrite( $this->_socket, HTTP_CRLF );
+	Function GetLine()
+	{
+		for($line="";;)
+		{
+			if($this->use_curl)
+			{
+				$eol=strpos($this->response,"\n",$this->read_response);
+				$data=($eol ? substr($this->response,$this->read_response,$eol+1-$this->read_response) : "");
+				$this->read_response+=strlen($data);
 			}
-
-			if ( !$get_body ) return;
-
-			// Read the Response Body
-			if ( strtolower( $this->_response->get_header( 'Transfer-Encoding' ) ) != 'chunked' && !$this->_keep_alive ) {
-				while ( !feof( $this->_socket ) ) { 
-				    $body .= fread( $this->_socket, 4096 ); 
+			else
+			{
+				if(feof($this->connection))
+				{
+					$this->SetDataAccessError("reached the end of data while reading from the HTTP server connection");
+					return(0);
 				}
-			} else {
-				if ( $this->_response->get_header( 'Content-Length' ) != null ) {
-					$content_length = (integer)$this->_response->get_header( 'Content-Length' );
-					$body = fread( $this->_socket, $content_length ); 
-				} else {
-					if ( $this->_response->get_header( 'Transfer-Encoding' ) != null ) {
-						if ( strtolower( $this->_response->get_header( 'Transfer-Encoding' ) ) == 'chunked' ) {
-							$chunk_size = (integer)hexdec(fgets( $this->_socket, 4096 ) ); 
-							while($chunk_size > 0) {
-								$body .= fread( $this->_socket, $chunk_size ); 
-								fread( $this->_socket, strlen(HTTP_CRLF) ); 
-								$chunk_size = (integer)hexdec(fgets( $this->_socket, 4096 ) ); 
-							}
-							// TODO : Read trailing http headers
+				$data=fgets($this->connection,100);
+			}
+			if(GetType($data)!="string"
+			|| strlen($data)==0)
+			{
+				$this->SetDataAccessError("it was not possible to read line from the HTTP server");
+				return(0);
+			}
+			$line.=$data;
+			$length=strlen($line);
+			if($length
+			&& !strcmp(substr($line,$length-1,1),"\n"))
+			{
+				$length-=(($length>=2 && !strcmp(substr($line,$length-2,1),"\r")) ? 2 : 1);
+				$line=substr($line,0,$length);
+				if($this->debug)
+					$this->OutputDebug("S $line");
+				return($line);
+			}
+		}
+	}
+
+	Function PutLine($line)
+	{
+		if($this->debug)
+			$this->OutputDebug("C $line");
+		if(!fputs($this->connection,$line."\r\n"))
+		{
+			$this->SetDataAccessError("it was not possible to send a line to the HTTP server");
+			return(0);
+		}
+		return(1);
+	}
+
+	Function PutData($data)
+	{
+		if(strlen($data))
+		{
+			if($this->debug)
+				$this->OutputDebug('C '.$data);
+			if(!fputs($this->connection,$data))
+			{
+				$this->SetDataAccessError("it was not possible to send data to the HTTP server");
+				return(0);
+			}
+		}
+		return(1);
+	}
+
+	Function FlushData()
+	{
+		if(!fflush($this->connection))
+		{
+			$this->SetDataAccessError("it was not possible to send data to the HTTP server");
+			return(0);
+		}
+		return(1);
+	}
+
+	Function ReadChunkSize()
+	{
+		if($this->remaining_chunk==0)
+		{
+			$debug=$this->debug;
+			if(!$this->debug_response_body)
+				$this->debug=0;
+			$line=$this->GetLine();
+			$this->debug=$debug;
+			if(GetType($line)!="string")
+				return($this->SetError("4 could not read chunk start: ".$this->error));
+			$this->remaining_chunk=hexdec($line);
+		}
+		return("");
+	}
+
+	Function ReadBytes($length)
+	{
+		if($this->use_curl)
+		{
+			$bytes=substr($this->response,$this->read_response,min($length,strlen($this->response)-$this->read_response));
+			$this->read_response+=strlen($bytes);
+			if($this->debug
+			&& $this->debug_response_body
+			&& strlen($bytes))
+				$this->OutputDebug("S ".$bytes);
+		}
+		else
+		{
+			if($this->chunked)
+			{
+				for($bytes="",$remaining=$length;$remaining;)
+				{
+					if(strlen($this->ReadChunkSize()))
+						return("");
+					if($this->remaining_chunk==0)
+					{
+						$this->last_chunk_read=1;
+						break;
+					}
+					$ask=min($this->remaining_chunk,$remaining);
+					$chunk=@fread($this->connection,$ask);
+					$read=strlen($chunk);
+					if($read==0)
+					{
+						$this->SetDataAccessError("it was not possible to read data chunk from the HTTP server");
+						return("");
+					}
+					if($this->debug
+					&& $this->debug_response_body)
+						$this->OutputDebug("S ".$chunk);
+					$bytes.=$chunk;
+					$this->remaining_chunk-=$read;
+					$remaining-=$read;
+					if($this->remaining_chunk==0)
+					{
+						if(feof($this->connection))
+							return($this->SetError("reached the end of data while reading the end of data chunk mark from the HTTP server"));
+						$data=@fread($this->connection,2);
+						if(strcmp($data,"\r\n"))
+						{
+							$this->SetDataAccessError("it was not possible to read end of data chunk from the HTTP server");
+							return("");
 						}
-					} 
+					}
 				}
 			}
-			$this->_response->body = $body;
-		} // End of function _get_response()
-
-
-		function _parse_location( $redirect_uri ) {
-			$parsed_url 	= parse_url( $redirect_uri );
-			$scheme 		= (isset($parsed_url['scheme'])?$parsed_url['scheme']:'');
-			$port			= (isset($parsed_url['port'])?$parsed_url['port']:$this->port);
-			$host 			= (isset($parsed_url['host'])?$parsed_url['host']:$this->host);
-			$request_file 	= (isset($parsed_url['path'])?$parsed_url['path']:'');
-			$query_string 	= (isset($parsed_url['query'])?$parsed_url['query']:'');
-			if ( substr( $request_file, 0, 1 ) != '/' )
-				$request_file = $this->_current_directory( $this->uri ) . $request_file;
-			
-			return array(	'scheme' => $scheme,
-							'port' => $port,
-							'host' => $host,
-							'request_file' => $request_file,
-							'query_string' => $query_string
-			);
-
-		} // End of function _parse_location()
-		
-		
-		function _redirect( $uri ) {
-			$location = $this->_parse_location( $uri );
-			if ( $location['host'] != $this->host || $location['port'] != $this->port ) {
-				$this->host = $location['host'];
-				$this->port = $location['port'];
-				if ( !$this->_use_proxy) $this->disconnect();
+			else
+			{
+				$bytes=@fread($this->connection,$length);
+				if(strlen($bytes))
+				{
+					if($this->debug
+					&& $this->debug_response_body)
+						$this->OutputDebug("S ".$bytes);
+				}
+				else
+					$this->SetDataAccessError("it was not possible to read data from the HTTP server", $this->connection_close);
 			}
-			usleep( 100 );
-			$this->get( $location['request_file'] . '?' . $location['query_string'] );
-		} // End of function _redirect()
+		}
+		return($bytes);
+	}
 
-	} // End of class http
+	Function EndOfInput()
+	{
+		if($this->use_curl)
+			return($this->read_response>=strlen($this->response));
+		if($this->chunked)
+			return($this->last_chunk_read);
+		return(feof($this->connection));
+	}
+
+	Function Resolve($domain, &$ip, $server_type)
+	{
+		if(preg_match('/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/',$domain))
+			$ip=$domain;
+		else
+		{
+			if($this->debug)
+				$this->OutputDebug('Resolving '.$server_type.' server domain "'.$domain.'"...');
+			if(!strcmp($ip=@gethostbyname($domain),$domain))
+				$ip="";
+		}
+		if(strlen($ip)==0
+		|| (strlen($this->exclude_address)
+		&& !strcmp(@gethostbyname($this->exclude_address),$ip)))
+			return($this->SetError("could not resolve the host domain \"".$domain."\""));
+		return('');
+	}
+
+	Function Connect($host_name, $host_port, $ssl, $server_type = 'HTTP')
+	{
+		$domain=$host_name;
+		$port = $host_port;
+		if(strlen($error = $this->Resolve($domain, $ip, $server_type)))
+			return($error);
+		if(strlen($this->socks_host_name))
+		{
+			switch($this->socks_version)
+			{
+				case '4':
+					$version = 4;
+					break;
+				case '5':
+					$version = 5;
+					break;
+				default:
+					return('it was not specified a supported SOCKS protocol version');
+					break;
+			}
+			$host_ip = $ip;
+			$port = $this->socks_host_port;
+			$host_server_type = $server_type;
+			$server_type = 'SOCKS';
+			if(strlen($error = $this->Resolve($this->socks_host_name, $ip, $server_type)))
+				return($error);
+		}
+		if($this->debug)
+			$this->OutputDebug('Connecting to '.$server_type.' server IP '.$ip.' port '.$port.'...');
+		if($ssl)
+			$ip="ssl://".$ip;
+		if(($this->connection=($this->timeout ? @fsockopen($ip, $port, $errno, $error, $this->timeout) : @fsockopen($ip, $port, $errno)))==0)
+		{
+			switch($errno)
+			{
+				case -3:
+					return($this->SetError("-3 socket could not be created"));
+				case -4:
+					return($this->SetError("-4 dns lookup on hostname \"".$host_name."\" failed"));
+				case -5:
+					return($this->SetError("-5 connection refused or timed out"));
+				case -6:
+					return($this->SetError("-6 fdopen() call failed"));
+				case -7:
+					return($this->SetError("-7 setvbuf() call failed"));
+				default:
+					return($this->SetPHPError($errno." could not connect to the host \"".$host_name."\"",$php_errormsg));
+			}
+		}
+		else
+		{
+			if($this->data_timeout
+			&& function_exists("socket_set_timeout"))
+				socket_set_timeout($this->connection,$this->data_timeout,0);
+			if(strlen($this->socks_host_name))
+			{
+				if($this->debug)
+					$this->OutputDebug('Connected to the SOCKS server '.$this->socks_host_name);
+				$send_error = 'it was not possible to send data to the SOCKS server';
+				$receive_error = 'it was not possible to receive data from the SOCKS server';
+				switch($version)
+				{
+					case 4:
+						$command = 1;
+						if(!fputs($this->connection, chr($version).chr($command).pack('nN', $host_port, ip2long($host_ip)).$this->user.Chr(0)))
+							$error = $this->SetDataAccessError($send_error);
+						else
+						{
+							$response = fgets($this->connection, 9);
+							if(strlen($response) != 8)
+								$error = $this->SetDataAccessError($receive_error);
+							else
+							{
+								$socks_errors = array(
+									"\x5a"=>'',
+									"\x5b"=>'request rejected',
+									"\x5c"=>'request failed because client is not running identd (or not reachable from the server)',
+									"\x5d"=>'request failed because client\'s identd could not confirm the user ID string in the request',
+								);
+								$error_code = $response[1];
+								$error = (IsSet($socks_errors[$error_code]) ? $socks_errors[$error_code] : 'unknown');
+								if(strlen($error))
+									$error = 'SOCKS error: '.$error;
+							}
+						}
+						break;
+					case 5:
+						if($this->debug)
+							$this->OutputDebug('Negotiating the authentication method ...');
+						$methods = 1;
+						$method = 0;
+						if(!fputs($this->connection, chr($version).chr($methods).chr($method)))
+							$error = $this->SetDataAccessError($send_error);
+						else
+						{
+							$response = fgets($this->connection, 3);
+							if(strlen($response) != 2)
+								$error = $this->SetDataAccessError($receive_error);
+							elseif(Ord($response[1]) != $method)
+								$error = 'the SOCKS server requires an authentication method that is not yet supported';
+							else
+							{
+								if($this->debug)
+									$this->OutputDebug('Connecting to '.$host_server_type.' server IP '.$host_ip.' port '.$host_port.'...');
+								$command = 1;
+								$address_type = 1;
+								if(!fputs($this->connection, chr($version).chr($command)."\x00".chr($address_type).pack('Nn', ip2long($host_ip), $host_port)))
+									$error = $this->SetDataAccessError($send_error);
+								else
+								{
+									$response = fgets($this->connection, 11);
+									if(strlen($response) != 10)
+										$error = $this->SetDataAccessError($receive_error);
+									else
+									{
+										$socks_errors = array(
+											"\x00"=>'',
+											"\x01"=>'general SOCKS server failure',
+											"\x02"=>'connection not allowed by ruleset',
+											"\x03"=>'Network unreachable',
+											"\x04"=>'Host unreachable',
+											"\x05"=>'Connection refused',
+											"\x06"=>'TTL expired',
+											"\x07"=>'Command not supported',
+											"\x08"=>'Address type not supported'
+										);
+										$error_code = $response[1];
+										$error = (IsSet($socks_errors[$error_code]) ? $socks_errors[$error_code] : 'unknown');
+										if(strlen($error))
+											$error = 'SOCKS error: '.$error;
+									}
+								}
+							}
+						}
+						break;
+					default:
+						$error = 'support for SOCKS protocol version '.$this->socks_version.' is not yet implemented';
+						break;
+				}
+				if(strlen($error))
+				{
+					fclose($this->connection);
+					return($error);
+				}
+			}
+			if($this->debug)
+				$this->OutputDebug("Connected to $host_name");
+			if(strlen($this->proxy_host_name)
+			&& !strcmp(strtolower($this->protocol), 'https'))
+			{
+				if(function_exists('stream_socket_enable_crypto')
+				&& in_array('ssl', stream_get_transports()))
+					$this->state = "ConnectedToProxy";
+				else
+				{
+					$this->OutputDebug("It is not possible to start SSL after connecting to the proxy server. If the proxy refuses to forward the SSL request, you may need to upgrade to PHP 5.1 or later with OpenSSL support enabled.");
+					$this->state="Connected";
+				}
+			}
+			else
+				$this->state="Connected";
+			return("");
+		}
+	}
+
+	Function Disconnect()
+	{
+		if($this->debug)
+			$this->OutputDebug("Disconnected from ".$this->host_name);
+		if($this->use_curl)
+		{
+			curl_close($this->connection);
+			$this->response="";
+		}
+		else
+			fclose($this->connection);
+		$this->state="Disconnected";
+		return("");
+	}
+
+	/* Public methods */
+
+	Function GetRequestArguments($url, &$arguments)
+	{
+		$this->error = '';
+		$arguments=array();
+		$url = str_replace(' ', '%20', $url);
+		$parameters=@parse_url($url);
+		if(!$parameters)
+			return($this->SetError("it was not specified a valid URL"));
+		if(!IsSet($parameters["scheme"]))
+			return($this->SetError("it was not specified the protocol type argument"));
+		switch(strtolower($parameters["scheme"]))
+		{
+			case "http":
+			case "https":
+				$arguments["Protocol"]=$parameters["scheme"];
+				break;
+			default:
+				return($parameters["scheme"]." connection scheme is not yet supported");
+		}
+		if(!IsSet($parameters["host"]))
+			return($this->SetError("it was not specified the connection host argument"));
+		$arguments["HostName"]=$parameters["host"];
+		$arguments["Headers"]=array("Host"=>$parameters["host"].(IsSet($parameters["port"]) ? ":".$parameters["port"] : ""));
+		if(IsSet($parameters["user"]))
+		{
+			$arguments["AuthUser"]=UrlDecode($parameters["user"]);
+			if(!IsSet($parameters["pass"]))
+				$arguments["AuthPassword"]="";
+		}
+		if(IsSet($parameters["pass"]))
+		{
+			if(!IsSet($parameters["user"]))
+				$arguments["AuthUser"]="";
+			$arguments["AuthPassword"]=UrlDecode($parameters["pass"]);
+		}
+		if(IsSet($parameters["port"]))
+		{
+			if(strcmp($parameters["port"],strval(intval($parameters["port"]))))
+				return($this->SetError("it was not specified a valid connection host argument"));
+			$arguments["HostPort"]=intval($parameters["port"]);
+		}
+		else
+			$arguments["HostPort"]=0;
+		$arguments["RequestURI"]=(IsSet($parameters["path"]) ? $parameters["path"] : "/").(IsSet($parameters["query"]) ? "?".$parameters["query"] : "");
+		if(strlen($this->user_agent))
+			$arguments["Headers"]["User-Agent"]=$this->user_agent;
+		return("");
+	}
+
+	Function Open($arguments)
+	{
+		if(strlen($this->error))
+			return($this->error);
+		if($this->state!="Disconnected")
+			return("1 already connected");
+		if(IsSet($arguments["HostName"]))
+			$this->host_name=$arguments["HostName"];
+		if(IsSet($arguments["HostPort"]))
+			$this->host_port=$arguments["HostPort"];
+		if(IsSet($arguments["ProxyHostName"]))
+			$this->proxy_host_name=$arguments["ProxyHostName"];
+		if(IsSet($arguments["ProxyHostPort"]))
+			$this->proxy_host_port=$arguments["ProxyHostPort"];
+		if(IsSet($arguments["SOCKSHostName"]))
+			$this->socks_host_name=$arguments["SOCKSHostName"];
+		if(IsSet($arguments["SOCKSHostPort"]))
+			$this->socks_host_port=$arguments["SOCKSHostPort"];
+		if(IsSet($arguments["SOCKSVersion"]))
+			$this->socks_version=$arguments["SOCKSVersion"];
+		if(IsSet($arguments["Protocol"]))
+			$this->protocol=$arguments["Protocol"];
+		switch(strtolower($this->protocol))
+		{
+			case "http":
+				$default_port=80;
+				break;
+			case "https":
+				$default_port=443;
+				break;
+			default:
+				return($this->SetError("2 it was not specified a valid connection protocol"));
+		}
+		if(strlen($this->proxy_host_name)==0)
+		{
+			if(strlen($this->host_name)==0)
+				return($this->SetError("2 it was not specified a valid hostname"));
+			$host_name=$this->host_name;
+			$host_port=($this->host_port ? $this->host_port : $default_port);
+			$server_type = 'HTTP';
+		}
+		else
+		{
+			$host_name=$this->proxy_host_name;
+			$host_port=$this->proxy_host_port;
+			$server_type = 'HTTP proxy';
+		}
+		$ssl=(strtolower($this->protocol)=="https" && strlen($this->proxy_host_name)==0);
+		if($ssl
+		&& strlen($this->socks_host_name))
+			return($this->SetError('establishing SSL connections via a SOCKS server is not yet supported'));
+		$this->use_curl=($ssl && $this->prefer_curl && function_exists("curl_init"));
+		if($this->debug)
+			$this->OutputDebug("Connecting to ".$this->host_name);
+		if($this->use_curl)
+		{
+			$error=(($this->connection=curl_init($this->protocol."://".$this->host_name.($host_port==$default_port ? "" : ":".strval($host_port))."/")) ? "" : "Could not initialize a CURL session");
+			if(strlen($error)==0)
+			{
+				if(IsSet($arguments["SSLCertificateFile"]))
+					curl_setopt($this->connection,CURLOPT_SSLCERT,$arguments["SSLCertificateFile"]);
+				if(IsSet($arguments["SSLCertificatePassword"]))
+					curl_setopt($this->connection,CURLOPT_SSLCERTPASSWD,$arguments["SSLCertificatePassword"]);
+				if(IsSet($arguments["SSLKeyFile"]))
+					curl_setopt($this->connection,CURLOPT_SSLKEY,$arguments["SSLKeyFile"]);
+				if(IsSet($arguments["SSLKeyPassword"]))
+					curl_setopt($this->connection,CURLOPT_SSLKEYPASSWD,$arguments["SSLKeyPassword"]);
+			}
+			$this->state="Connected";
+		}
+		else
+		{
+			$error="";
+			if(strlen($this->proxy_host_name)
+			&& (IsSet($arguments["SSLCertificateFile"])
+			|| IsSet($arguments["SSLCertificateFile"])))
+				$error="establishing SSL connections using certificates or private keys via non-SSL proxies is not supported";
+			else
+			{
+				if($ssl)
+				{
+					if(IsSet($arguments["SSLCertificateFile"]))
+						$error="establishing SSL connections using certificates is only supported when the cURL extension is enabled";
+					elseif(IsSet($arguments["SSLKeyFile"]))
+						$error="establishing SSL connections using a private key is only supported when the cURL extension is enabled";
+					else
+					{
+						$version=explode(".",function_exists("phpversion") ? phpversion() : "3.0.7");
+						$php_version=intval($version[0])*1000000+intval($version[1])*1000+intval($version[2]);
+						if($php_version<4003000)
+							$error="establishing SSL connections requires at least PHP version 4.3.0 or having the cURL extension enabled";
+						elseif(!function_exists("extension_loaded")
+						|| !extension_loaded("openssl"))
+							$error="establishing SSL connections requires the OpenSSL extension enabled";
+					}
+				}
+				if(strlen($error)==0)
+					$error=$this->Connect($host_name, $host_port, $ssl, $server_type);
+			}
+		}
+		if(strlen($error))
+			return($this->SetError($error));
+		$this->session=md5(uniqid(""));
+		return("");
+	}
+
+	Function Close()
+	{
+		if($this->state=="Disconnected")
+			return("1 already disconnected");
+		$error=$this->Disconnect();
+		if(strlen($error)==0)
+			$this->state="Disconnected";
+		return($error);
+	}
+
+	Function PickCookies(&$cookies,$secure)
+	{
+		if(IsSet($this->cookies[$secure]))
+		{
+			$now=gmdate("Y-m-d H-i-s");
+			for($domain=0,Reset($this->cookies[$secure]);$domain<count($this->cookies[$secure]);Next($this->cookies[$secure]),$domain++)
+			{
+				$domain_pattern=Key($this->cookies[$secure]);
+				$match=strlen($this->request_host)-strlen($domain_pattern);
+				if($match>=0
+				&& !strcmp($domain_pattern,substr($this->request_host,$match))
+				&& ($match==0
+				|| $domain_pattern[0]=="."
+				|| $this->request_host[$match-1]=="."))
+				{
+					for(Reset($this->cookies[$secure][$domain_pattern]),$path_part=0;$path_part<count($this->cookies[$secure][$domain_pattern]);Next($this->cookies[$secure][$domain_pattern]),$path_part++)
+					{
+						$path=Key($this->cookies[$secure][$domain_pattern]);
+						if(strlen($this->request_uri)>=strlen($path)
+						&& substr($this->request_uri,0,strlen($path))==$path)
+						{
+							for(Reset($this->cookies[$secure][$domain_pattern][$path]),$cookie=0;$cookie<count($this->cookies[$secure][$domain_pattern][$path]);Next($this->cookies[$secure][$domain_pattern][$path]),$cookie++)
+							{
+								$cookie_name=Key($this->cookies[$secure][$domain_pattern][$path]);
+								$expires=$this->cookies[$secure][$domain_pattern][$path][$cookie_name]["expires"];
+								if($expires==""
+								|| strcmp($now,$expires)<0)
+									$cookies[$cookie_name]=$this->cookies[$secure][$domain_pattern][$path][$cookie_name];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	Function GetFileDefinition($file, &$definition)
+	{
+		$name="";
+		if(IsSet($file["FileName"]))
+			$name=basename($file["FileName"]);
+		if(IsSet($file["Name"]))
+			$name=$file["Name"];
+		if(strlen($name)==0)
+			return("it was not specified the file part name");
+		if(IsSet($file["Content-Type"]))
+		{
+			$content_type=$file["Content-Type"];
+			$type=$this->Tokenize(strtolower($content_type),"/");
+			$sub_type=$this->Tokenize("");
+			switch($type)
+			{
+				case "text":
+				case "image":
+				case "audio":
+				case "video":
+				case "application":
+				case "message":
+					break;
+				case "automatic":
+					switch($sub_type)
+					{
+						case "name":
+							switch(GetType($dot=strrpos($name,"."))=="integer" ? strtolower(substr($name,$dot)) : "")
+							{
+								case ".xls":
+									$content_type="application/excel";
+									break;
+								case ".hqx":
+									$content_type="application/macbinhex40";
+									break;
+								case ".doc":
+								case ".dot":
+								case ".wrd":
+									$content_type="application/msword";
+									break;
+								case ".pdf":
+									$content_type="application/pdf";
+									break;
+								case ".pgp":
+									$content_type="application/pgp";
+									break;
+								case ".ps":
+								case ".eps":
+								case ".ai":
+									$content_type="application/postscript";
+									break;
+								case ".ppt":
+									$content_type="application/powerpoint";
+									break;
+								case ".rtf":
+									$content_type="application/rtf";
+									break;
+								case ".tgz":
+								case ".gtar":
+									$content_type="application/x-gtar";
+									break;
+								case ".gz":
+									$content_type="application/x-gzip";
+									break;
+								case ".php":
+								case ".php3":
+									$content_type="application/x-httpd-php";
+									break;
+								case ".js":
+									$content_type="application/x-javascript";
+									break;
+								case ".ppd":
+								case ".psd":
+									$content_type="application/x-photoshop";
+									break;
+								case ".swf":
+								case ".swc":
+								case ".rf":
+									$content_type="application/x-shockwave-flash";
+									break;
+								case ".tar":
+									$content_type="application/x-tar";
+									break;
+								case ".zip":
+									$content_type="application/zip";
+									break;
+								case ".mid":
+								case ".midi":
+								case ".kar":
+									$content_type="audio/midi";
+									break;
+								case ".mp2":
+								case ".mp3":
+								case ".mpga":
+									$content_type="audio/mpeg";
+									break;
+								case ".ra":
+									$content_type="audio/x-realaudio";
+									break;
+								case ".wav":
+									$content_type="audio/wav";
+									break;
+								case ".bmp":
+									$content_type="image/bitmap";
+									break;
+								case ".gif":
+									$content_type="image/gif";
+									break;
+								case ".iff":
+									$content_type="image/iff";
+									break;
+								case ".jb2":
+									$content_type="image/jb2";
+									break;
+								case ".jpg":
+								case ".jpe":
+								case ".jpeg":
+									$content_type="image/jpeg";
+									break;
+								case ".jpx":
+									$content_type="image/jpx";
+									break;
+								case ".png":
+									$content_type="image/png";
+									break;
+								case ".tif":
+								case ".tiff":
+									$content_type="image/tiff";
+									break;
+								case ".wbmp":
+									$content_type="image/vnd.wap.wbmp";
+									break;
+								case ".xbm":
+									$content_type="image/xbm";
+									break;
+								case ".css":
+									$content_type="text/css";
+									break;
+								case ".txt":
+									$content_type="text/plain";
+									break;
+								case ".htm":
+								case ".html":
+									$content_type="text/html";
+									break;
+								case ".xml":
+									$content_type="text/xml";
+									break;
+								case ".mpg":
+								case ".mpe":
+								case ".mpeg":
+									$content_type="video/mpeg";
+									break;
+								case ".qt":
+								case ".mov":
+									$content_type="video/quicktime";
+									break;
+								case ".avi":
+									$content_type="video/x-ms-video";
+									break;
+								case ".eml":
+									$content_type="message/rfc822";
+									break;
+								default:
+									$content_type="application/octet-stream";
+									break;
+							}
+							break;
+						default:
+							return($content_type." is not a supported automatic content type detection method");
+					}
+					break;
+				default:
+					return($content_type." is not a supported file content type");
+			}
+		}
+		else
+			$content_type="application/octet-stream";
+		$definition=array(
+			"Content-Type"=>$content_type,
+			"NAME"=>$name
+		);
+		if(IsSet($file["FileName"]))
+		{
+			if(GetType($length=@filesize($file["FileName"]))!="integer")
+			{
+				$error="it was not possible to determine the length of the file ".$file["FileName"];
+				if(IsSet($php_errormsg)
+				&& strlen($php_errormsg))
+					$error.=": ".$php_errormsg;
+				if(!file_exists($file["FileName"]))
+					$error="it was not possible to access the file ".$file["FileName"];
+				return($error);
+			}
+			$definition["FILENAME"]=$file["FileName"];
+			$definition["Content-Length"]=$length;
+		}
+		elseif(IsSet($file["Data"]))
+			$definition["Content-Length"]=strlen($definition["DATA"]=$file["Data"]);
+		else
+			return("it was not specified a valid file name");
+		return("");
+	}
+
+	Function ConnectFromProxy($arguments, &$headers)
+	{
+		if(!$this->PutLine('CONNECT '.$this->host_name.':'.($this->host_port ? $this->host_port : 443).' HTTP/1.0')
+		|| (strlen($this->user_agent)
+		&& !$this->PutLine('User-Agent: '.$this->user_agent))
+		|| (IsSet($arguments['Headers']['Proxy-Authorization'])
+		&& !$this->PutLine('Proxy-Authorization: '.$arguments['Headers']['Proxy-Authorization']))
+		|| !$this->PutLine(''))
+		{
+			$this->Disconnect();
+			return($this->error);
+		}
+		$this->state = "ConnectSent";
+		if(strlen($error=$this->ReadReplyHeadersResponse($headers)))
+			return($error);
+		$proxy_authorization="";
+		while(!strcmp($this->response_status, "100"))
+		{
+			$this->state="ConnectSent";
+			if(strlen($error=$this->ReadReplyHeadersResponse($headers)))
+				return($error);
+		}
+		switch($this->response_status)
+		{
+			case "200":
+				if(!@stream_socket_enable_crypto($this->connection, 1, STREAM_CRYPTO_METHOD_SSLv23_CLIENT))
+				{
+					$this->SetPHPError('it was not possible to start a SSL encrypted connection via this proxy', $php_errormsg);
+					$this->Disconnect();
+					return($this->error);
+				}
+				$this->state = "Connected";
+				break;
+			case "407":
+				if(strlen($error=$this->Authenticate($headers, -1, $proxy_authorization, $this->proxy_request_user, $this->proxy_request_password, $this->proxy_request_realm, $this->proxy_request_workstation)))
+					return($error);
+				break;
+			default:
+				return($this->SetError("unable to send request via proxy"));
+		}
+		return("");
+	}
+
+	Function SendRequest($arguments)
+	{
+		if(strlen($this->error))
+			return($this->error);
+		if(IsSet($arguments["ProxyUser"]))
+			$this->proxy_request_user=$arguments["ProxyUser"];
+		elseif(IsSet($this->proxy_user))
+			$this->proxy_request_user=$this->proxy_user;
+		if(IsSet($arguments["ProxyPassword"]))
+			$this->proxy_request_password=$arguments["ProxyPassword"];
+		elseif(IsSet($this->proxy_password))
+			$this->proxy_request_password=$this->proxy_password;
+		if(IsSet($arguments["ProxyRealm"]))
+			$this->proxy_request_realm=$arguments["ProxyRealm"];
+		elseif(IsSet($this->proxy_realm))
+			$this->proxy_request_realm=$this->proxy_realm;
+		if(IsSet($arguments["ProxyWorkstation"]))
+			$this->proxy_request_workstation=$arguments["ProxyWorkstation"];
+		elseif(IsSet($this->proxy_workstation))
+			$this->proxy_request_workstation=$this->proxy_workstation;
+		switch($this->state)
+		{
+			case "Disconnected":
+				return($this->SetError("1 connection was not yet established"));
+			case "Connected":
+				$connect = 0;
+				break;
+			case "ConnectedToProxy":
+				if(strlen($error = $this->ConnectFromProxy($arguments, $headers)))
+					return($error);
+				$connect = 1;
+				break;
+			default:
+				return($this->SetError("2 can not send request in the current connection state"));
+		}
+		if(IsSet($arguments["RequestMethod"]))
+			$this->request_method=$arguments["RequestMethod"];
+		if(IsSet($arguments["User-Agent"]))
+			$this->user_agent=$arguments["User-Agent"];
+		if(!IsSet($arguments["Headers"]["User-Agent"])
+		&& strlen($this->user_agent))
+			$arguments["Headers"]["User-Agent"]=$this->user_agent;
+		if(strlen($this->request_method)==0)
+			return($this->SetError("3 it was not specified a valid request method"));
+		if(IsSet($arguments["RequestURI"]))
+			$this->request_uri=$arguments["RequestURI"];
+		if(strlen($this->request_uri)==0
+		|| substr($this->request_uri,0,1)!="/")
+			return($this->SetError("4 it was not specified a valid request URI"));
+		$this->request_arguments=$arguments;
+		$this->request_headers=(IsSet($arguments["Headers"]) ? $arguments["Headers"] : array());
+		$body_length=0;
+		$this->request_body="";
+		$get_body=1;
+		if($this->request_method=="POST"
+		|| $this->request_method=="PUT")
+		{
+			if(IsSet($arguments['StreamRequest']))
+			{
+				$get_body = 0;
+				$this->request_headers["Transfer-Encoding"]="chunked";
+			}
+			elseif(IsSet($arguments["PostFiles"])
+			|| ($this->force_multipart_form_post
+			&& IsSet($arguments["PostValues"])))
+			{
+				$boundary="--".md5(uniqid(time()));
+				$this->request_headers["Content-Type"]="multipart/form-data; boundary=".$boundary.(IsSet($arguments["CharSet"]) ? "; charset=".$arguments["CharSet"] : "");
+				$post_parts=array();
+				if(IsSet($arguments["PostValues"]))
+				{
+					$values=$arguments["PostValues"];
+					if(GetType($values)!="array")
+						return($this->SetError("5 it was not specified a valid POST method values array"));
+					for(Reset($values),$value=0;$value<count($values);Next($values),$value++)
+					{
+						$input=Key($values);
+						$headers="--".$boundary."\r\nContent-Disposition: form-data; name=\"".$input."\"\r\n\r\n";
+						$data=$values[$input];
+						$post_parts[]=array("HEADERS"=>$headers,"DATA"=>$data);
+						$body_length+=strlen($headers)+strlen($data)+strlen("\r\n");
+					}
+				}
+				$body_length+=strlen("--".$boundary."--\r\n");
+				$files=(IsSet($arguments["PostFiles"]) ? $arguments["PostFiles"] : array());
+				Reset($files);
+				$end=(GetType($input=Key($files))!="string");
+				for(;!$end;)
+				{
+					if(strlen($error=$this->GetFileDefinition($files[$input],$definition)))
+						return("3 ".$error);
+					$headers="--".$boundary."\r\nContent-Disposition: form-data; name=\"".$input."\"; filename=\"".$definition["NAME"]."\"\r\nContent-Type: ".$definition["Content-Type"]."\r\n\r\n";
+					$part=count($post_parts);
+					$post_parts[$part]=array("HEADERS"=>$headers);
+					if(IsSet($definition["FILENAME"]))
+					{
+						$post_parts[$part]["FILENAME"]=$definition["FILENAME"];
+						$data="";
+					}
+					else
+						$data=$definition["DATA"];
+					$post_parts[$part]["DATA"]=$data;
+					$body_length+=strlen($headers)+$definition["Content-Length"]+strlen("\r\n");
+					Next($files);
+					$end=(GetType($input=Key($files))!="string");
+				}
+				$get_body=0;
+			}
+			elseif(IsSet($arguments["PostValues"]))
+			{
+				$values=$arguments["PostValues"];
+				if(GetType($values)!="array")
+					return($this->SetError("5 it was not specified a valid POST method values array"));
+				for(Reset($values),$value=0;$value<count($values);Next($values),$value++)
+				{
+					$k=Key($values);
+					if(GetType($values[$k])=="array")
+					{
+						for($v = 0; $v < count($values[$k]); $v++)
+						{
+							if($value+$v>0)
+								$this->request_body.="&";
+							$this->request_body.=UrlEncode($k)."=".UrlEncode($values[$k][$v]);
+						}
+					}
+					else
+					{
+						if($value>0)
+							$this->request_body.="&";
+						$this->request_body.=UrlEncode($k)."=".UrlEncode($values[$k]);
+					}
+				}
+				$this->request_headers["Content-Type"]="application/x-www-form-urlencoded".(IsSet($arguments["CharSet"]) ? "; charset=".$arguments["CharSet"] : "");
+				$get_body=0;
+			}
+		}
+		if($get_body
+		&& (IsSet($arguments["Body"])
+		|| IsSet($arguments["BodyStream"])))
+		{
+			if(IsSet($arguments["Body"]))
+				$this->request_body=$arguments["Body"];
+			else
+			{
+				$stream=$arguments["BodyStream"];
+				$this->request_body="";
+				for($part=0; $part<count($stream); $part++)
+				{
+					if(IsSet($stream[$part]["Data"]))
+						$this->request_body.=$stream[$part]["Data"];
+					elseif(IsSet($stream[$part]["File"]))
+					{
+						if(!($file=@fopen($stream[$part]["File"],"rb")))
+							return($this->SetPHPError("could not open upload file ".$stream[$part]["File"], $php_errormsg));
+						while(!feof($file))
+						{
+							if(GetType($block=@fread($file,$this->file_buffer_length))!="string")
+							{
+								$error=$this->SetPHPError("could not read body stream file ".$stream[$part]["File"], $php_errormsg);
+								fclose($file);
+								return($error);
+							}
+							$this->request_body.=$block;
+						}
+						fclose($file);
+					}
+					else
+						return("5 it was not specified a valid file or data body stream element at position ".$part);
+				}
+			}
+			if(!IsSet($this->request_headers["Content-Type"]))
+				$this->request_headers["Content-Type"]="application/octet-stream".(IsSet($arguments["CharSet"]) ? "; charset=".$arguments["CharSet"] : "");
+		}
+		if(IsSet($arguments["AuthUser"]))
+			$this->request_user=$arguments["AuthUser"];
+		elseif(IsSet($this->user))
+			$this->request_user=$this->user;
+		if(IsSet($arguments["AuthPassword"]))
+			$this->request_password=$arguments["AuthPassword"];
+		elseif(IsSet($this->password))
+			$this->request_password=$this->password;
+		if(IsSet($arguments["AuthRealm"]))
+			$this->request_realm=$arguments["AuthRealm"];
+		elseif(IsSet($this->realm))
+			$this->request_realm=$this->realm;
+		if(IsSet($arguments["AuthWorkstation"]))
+			$this->request_workstation=$arguments["AuthWorkstation"];
+		elseif(IsSet($this->workstation))
+			$this->request_workstation=$this->workstation;
+		if(strlen($this->proxy_host_name)==0
+		|| $connect)
+			$request_uri=$this->request_uri;
+		else
+		{
+			switch(strtolower($this->protocol))
+			{
+				case "http":
+					$default_port=80;
+					break;
+				case "https":
+					$default_port=443;
+					break;
+			}
+			$request_uri=strtolower($this->protocol)."://".$this->host_name.(($this->host_port==0 || $this->host_port==$default_port) ? "" : ":".$this->host_port).$this->request_uri;
+		}
+		if($this->use_curl)
+		{
+			$version=(GetType($v=curl_version())=="array" ? (IsSet($v["version"]) ? $v["version"] : "0.0.0") : (preg_match("/^libcurl\\/([0-9]+\\.[0-9]+\\.[0-9]+)/",$v,$m) ? $m[1] : "0.0.0"));
+			$curl_version=100000*intval($this->Tokenize($version,"."))+1000*intval($this->Tokenize("."))+intval($this->Tokenize(""));
+			$protocol_version=($curl_version<713002 ? "1.0" : $this->protocol_version);
+		}
+		else
+			$protocol_version=$this->protocol_version;
+		$this->request=$this->request_method." ".$request_uri." HTTP/".$protocol_version;
+		if($body_length
+		|| ($body_length=strlen($this->request_body)))
+			$this->request_headers["Content-Length"]=$body_length;
+		for($headers=array(),$host_set=0,Reset($this->request_headers),$header=0;$header<count($this->request_headers);Next($this->request_headers),$header++)
+		{
+			$header_name=Key($this->request_headers);
+			$header_value=$this->request_headers[$header_name];
+			if(GetType($header_value)=="array")
+			{
+				for(Reset($header_value),$value=0;$value<count($header_value);Next($header_value),$value++)
+					$headers[]=$header_name.": ".$header_value[Key($header_value)];
+			}
+			else
+				$headers[]=$header_name.": ".$header_value;
+			if(strtolower(Key($this->request_headers))=="host")
+			{
+				$this->request_host=strtolower($header_value);
+				$host_set=1;
+			}
+		}
+		if(!$host_set)
+		{
+			$headers[]="Host: ".$this->host_name;
+			$this->request_host=strtolower($this->host_name);
+		}
+		if(count($this->cookies))
+		{
+			$cookies=array();
+			$this->PickCookies($cookies,0);
+			if(strtolower($this->protocol)=="https")
+				$this->PickCookies($cookies,1);
+			if(count($cookies))
+			{
+				$h=count($headers);
+				$headers[$h]="Cookie:";
+				for(Reset($cookies),$cookie=0;$cookie<count($cookies);Next($cookies),$cookie++)
+				{
+					$cookie_name=Key($cookies);
+					$headers[$h].=" ".$cookie_name."=".$cookies[$cookie_name]["value"].";";
+				}
+			}
+		}
+		$next_state = "RequestSent";
+		if($this->use_curl)
+		{
+			if(IsSet($arguments['StreamRequest']))
+				return($this->SetError("Streaming request data is not supported when using Curl"));
+			if($body_length
+			&& strlen($this->request_body)==0)
+			{
+				for($request_body="",$success=1,$part=0;$part<count($post_parts);$part++)
+				{
+					$request_body.=$post_parts[$part]["HEADERS"].$post_parts[$part]["DATA"];
+					if(IsSet($post_parts[$part]["FILENAME"]))
+					{
+						if(!($file=@fopen($post_parts[$part]["FILENAME"],"rb")))
+						{
+							$this->SetPHPError("could not open upload file ".$post_parts[$part]["FILENAME"], $php_errormsg);
+							$success=0;
+							break;
+						}
+						while(!feof($file))
+						{
+							if(GetType($block=@fread($file,$this->file_buffer_length))!="string")
+							{
+								$this->SetPHPError("could not read upload file", $php_errormsg);
+								$success=0;
+								break;
+							}
+							$request_body.=$block;
+						}
+						fclose($file);
+						if(!$success)
+							break;
+					}
+					$request_body.="\r\n";
+				}
+				$request_body.="--".$boundary."--\r\n";
+			}
+			else
+				$request_body=$this->request_body;
+			curl_setopt($this->connection,CURLOPT_HEADER,1);
+			curl_setopt($this->connection,CURLOPT_RETURNTRANSFER,1);
+			if($this->timeout)
+				curl_setopt($this->connection,CURLOPT_TIMEOUT,$this->timeout);
+			curl_setopt($this->connection,CURLOPT_SSL_VERIFYPEER,0);
+			curl_setopt($this->connection,CURLOPT_SSL_VERIFYHOST,0);
+			$request=$this->request."\r\n".implode("\r\n",$headers)."\r\n\r\n".$request_body;
+			curl_setopt($this->connection,CURLOPT_CUSTOMREQUEST,$request);
+			if($this->debug)
+				$this->OutputDebug("C ".$request);
+			if(!($success=(strlen($this->response=curl_exec($this->connection))!=0)))
+			{
+				$error=curl_error($this->connection);
+				$this->SetError("Could not execute the request".(strlen($error) ? ": ".$error : ""));
+			}
+		}
+		else
+		{
+			if(($success=$this->PutLine($this->request)))
+			{
+				for($header=0;$header<count($headers);$header++)
+				{
+					if(!$success=$this->PutLine($headers[$header]))
+						break;
+				}
+				if($success
+				&& ($success=$this->PutLine("")))
+				{
+					if(IsSet($arguments['StreamRequest']))
+						$next_state = "SendingRequestBody";
+					elseif($body_length)
+					{
+						if(strlen($this->request_body))
+							$success=$this->PutData($this->request_body);
+						else
+						{
+							for($part=0;$part<count($post_parts);$part++)
+							{
+								if(!($success=$this->PutData($post_parts[$part]["HEADERS"]))
+								|| !($success=$this->PutData($post_parts[$part]["DATA"])))
+									break;
+								if(IsSet($post_parts[$part]["FILENAME"]))
+								{
+									if(!($file=@fopen($post_parts[$part]["FILENAME"],"rb")))
+									{
+										$this->SetPHPError("could not open upload file ".$post_parts[$part]["FILENAME"], $php_errormsg);
+										$success=0;
+										break;
+									}
+									while(!feof($file))
+									{
+										if(GetType($block=@fread($file,$this->file_buffer_length))!="string")
+										{
+											$this->SetPHPError("could not read upload file", $php_errormsg);
+											$success=0;
+											break;
+										}
+										if(!($success=$this->PutData($block)))
+											break;
+									}
+									fclose($file);
+									if(!$success)
+										break;
+								}
+								if(!($success=$this->PutLine("")))
+									break;
+							}
+							if($success)
+								$success=$this->PutLine("--".$boundary."--");
+						}
+						if($success)
+							$sucess=$this->FlushData();
+					}
+				}
+			}
+		}
+		if(!$success)
+			return($this->SetError("5 could not send the HTTP request: ".$this->error));
+		$this->state=$next_state;
+		return("");
+	}
+
+	Function SetCookie($name, $value, $expires="" , $path="/" , $domain="" , $secure=0, $verbatim=0)
+	{
+		if(strlen($this->error))
+			return($this->error);
+		if(strlen($name)==0)
+			return($this->SetError("it was not specified a valid cookie name"));
+		if(strlen($path)==0
+		|| strcmp($path[0],"/"))
+			return($this->SetError($path." is not a valid path for setting cookie ".$name));
+		if($domain==""
+		|| !strpos($domain,".",$domain[0]=="." ? 1 : 0))
+			return($this->SetError($domain." is not a valid domain for setting cookie ".$name));
+		$domain=strtolower($domain);
+		if(!strcmp($domain[0],"."))
+			$domain=substr($domain,1);
+		if(!$verbatim)
+		{
+			$name=$this->CookieEncode($name,1);
+			$value=$this->CookieEncode($value,0);
+		}
+		$secure=intval($secure);
+		$this->cookies[$secure][$domain][$path][$name]=array(
+			"name"=>$name,
+			"value"=>$value,
+			"domain"=>$domain,
+			"path"=>$path,
+			"expires"=>$expires,
+			"secure"=>$secure
+		);
+		return("");
+	}
+
+	Function SendRequestBody($data, $end_of_data)
+	{
+		if(strlen($this->error))
+			return($this->error);
+		switch($this->state)
+		{
+			case "Disconnected":
+				return($this->SetError("1 connection was not yet established"));
+			case "Connected":
+			case "ConnectedToProxy":
+				return($this->SetError("2 request was not sent"));
+			case "SendingRequestBody":
+				break;
+			case "RequestSent":
+				return($this->SetError("3 request body was already sent"));
+			default:
+				return($this->SetError("4 can not send the request body in the current connection state"));
+		}
+		$length = strlen($data);
+		if($length)
+		{
+			$size = dechex($length)."\r\n";
+			if(!$this->PutData($size)
+			|| !$this->PutData($data))
+				return($this->error);
+		}
+		if($end_of_data)
+		{
+			$size = "0\r\n";
+			if(!$this->PutData($size))
+				return($this->error);
+			$this->state = "RequestSent";
+		}
+		return("");
+	}
+
+	Function ReadReplyHeadersResponse(&$headers)
+	{
+		$headers=array();
+		if(strlen($this->error))
+			return($this->error);
+		switch($this->state)
+		{
+			case "Disconnected":
+				return($this->SetError("1 connection was not yet established"));
+			case "Connected":
+				return($this->SetError("2 request was not sent"));
+			case "ConnectedToProxy":
+				return($this->SetError("2 connection from the remote server from the proxy was not yet established"));
+			case "SendingRequestBody":
+				return($this->SetError("4 request body data was not completely sent"));
+			case "ConnectSent":
+				$connect = 1;
+				break;
+			case "RequestSent":
+				$connect = 0;
+				break;
+			default:
+				return($this->SetError("3 can not get request headers in the current connection state"));
+		}
+		$this->content_length=$this->read_length=$this->read_response=$this->remaining_chunk=0;
+		$this->content_length_set=$this->chunked=$this->last_chunk_read=$chunked=0;
+		$this->connection_close=0;
+		for($this->response_status="";;)
+		{
+			$line=$this->GetLine();
+			if(GetType($line)!="string")
+				return($this->SetError("4 could not read request reply: ".$this->error));
+			if(strlen($this->response_status)==0)
+			{
+				if(!preg_match($match="/^http\\/[0-9]+\\.[0-9]+[ \t]+([0-9]+)[ \t]*(.*)\$/i",$line,$matches))
+					return($this->SetError("3 it was received an unexpected HTTP response status"));
+				$this->response_status=$matches[1];
+				$this->response_message=$matches[2];
+			}
+			if($line=="")
+			{
+				if(strlen($this->response_status)==0)
+					return($this->SetError("3 it was not received HTTP response status"));
+				$this->state=($connect ? "GotConnectHeaders" : "GotReplyHeaders");
+				break;
+			}
+			$header_name=strtolower($this->Tokenize($line,":"));
+			$header_value=Trim(Chop($this->Tokenize("\r\n")));
+			if(IsSet($headers[$header_name]))
+			{
+				if(GetType($headers[$header_name])=="string")
+					$headers[$header_name]=array($headers[$header_name]);
+				$headers[$header_name][]=$header_value;
+			}
+			else
+				$headers[$header_name]=$header_value;
+			if(!$connect)
+			{
+				switch($header_name)
+				{
+					case "content-length":
+						$this->content_length=intval($headers[$header_name]);
+						$this->content_length_set=1;
+						break;
+					case "transfer-encoding":
+						$encoding=$this->Tokenize($header_value,"; \t");
+						if(!$this->use_curl
+						&& !strcmp($encoding,"chunked"))
+							$chunked=1;
+						break;
+					case "set-cookie":
+						if($this->support_cookies)
+						{
+							if(GetType($headers[$header_name])=="array")
+								$cookie_headers=$headers[$header_name];
+							else
+								$cookie_headers=array($headers[$header_name]);
+							for($cookie=0;$cookie<count($cookie_headers);$cookie++)
+							{
+								$cookie_name=trim($this->Tokenize($cookie_headers[$cookie],"="));
+								$cookie_value=$this->Tokenize(";");
+								$domain=$this->request_host;
+								$path="/";
+								$expires="";
+								$secure=0;
+								while(($name=trim(UrlDecode($this->Tokenize("="))))!="")
+								{
+									$value=UrlDecode($this->Tokenize(";"));
+									switch($name)
+									{
+										case "domain":
+											$domain=$value;
+											break;
+										case "path":
+											$path=$value;
+											break;
+										case "expires":
+											if(preg_match("/^((Mon|Monday|Tue|Tuesday|Wed|Wednesday|Thu|Thursday|Fri|Friday|Sat|Saturday|Sun|Sunday), )?([0-9]{2})\\-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\-([0-9]{2,4}) ([0-9]{2})\\:([0-9]{2})\\:([0-9]{2}) GMT\$/",$value,$matches))
+											{
+												$year=intval($matches[5]);
+												if($year<1900)
+													$year+=($year<70 ? 2000 : 1900);
+												$expires="$year-".$this->months[$matches[4]]."-".$matches[3]." ".$matches[6].":".$matches[7].":".$matches[8];
+											}
+											break;
+										case "secure":
+											$secure=1;
+											break;
+									}
+								}
+								if(strlen($this->SetCookie($cookie_name, $cookie_value, $expires, $path , $domain, $secure, 1)))
+									$this->error="";
+							}
+						}
+						break;
+					case "connection":
+						$this->connection_close=!strcmp(strtolower($header_value),"close");
+						break;
+				}
+			}
+		}
+		$this->chunked=$chunked;
+		if($this->content_length_set)
+			$this->connection_close=0;
+		return("");
+	}
+
+	Function Redirect(&$headers)
+	{
+		if($this->follow_redirect)
+		{
+			if(!IsSet($headers["location"])
+			|| (GetType($headers["location"])!="array"
+			&& strlen($location=$headers["location"])==0)
+			|| (GetType($headers["location"])=="array"
+			&& strlen($location=$headers["location"][0])==0))
+				return($this->SetError("3 it was received a redirect without location URL"));
+			if(strcmp($location[0],"/"))
+			{
+				$location_arguments=parse_url($location);
+				if(!IsSet($location_arguments["scheme"]))
+					$location=((GetType($end=strrpos($this->request_uri,"/"))=="integer" && $end>1) ? substr($this->request_uri,0,$end) : "")."/".$location;
+			}
+			if(!strcmp($location[0],"/"))
+				$location=$this->protocol."://".$this->host_name.($this->host_port ? ":".$this->host_port : "").$location;
+			$error=$this->GetRequestArguments($location,$arguments);
+			if(strlen($error))
+				return($this->SetError("could not process redirect url: ".$error));
+			$arguments["RequestMethod"]="GET";
+			if(strlen($error=$this->Close())==0
+			&& strlen($error=$this->Open($arguments))==0
+			&& strlen($error=$this->SendRequest($arguments))==0)
+			{
+				$this->redirection_level++;
+				if($this->redirection_level>$this->redirection_limit)
+					$error="it was exceeded the limit of request redirections";
+				else
+					$error=$this->ReadReplyHeaders($headers);
+				$this->redirection_level--;
+			}
+			if(strlen($error))
+				return($this->SetError($error));
+		}
+		return("");
+	}
+
+	Function Authenticate(&$headers, $proxy, &$proxy_authorization, &$user, &$password, &$realm, &$workstation)
+	{
+		if($proxy)
+		{
+			$authenticate_header="proxy-authenticate";
+			$authorization_header="Proxy-Authorization";
+			$authenticate_status="407";
+			$authentication_mechanism=$this->proxy_authentication_mechanism;
+		}
+		else
+		{
+			$authenticate_header="www-authenticate";
+			$authorization_header="Authorization";
+			$authenticate_status="401";
+			$authentication_mechanism=$this->authentication_mechanism;
+		}
+		if(IsSet($headers[$authenticate_header]))
+		{
+			if(function_exists("class_exists")
+			&& !class_exists("sasl_client_class"))
+				return($this->SetError("the SASL client class needs to be loaded to be able to authenticate".($proxy ? " with the proxy server" : "")." and access this site"));
+			if(GetType($headers[$authenticate_header])=="array")
+				$authenticate=$headers[$authenticate_header];
+			else
+				$authenticate=array($headers[$authenticate_header]);
+			for($response="", $mechanisms=array(),$m=0;$m<count($authenticate);$m++)
+			{
+				$mechanism=$this->Tokenize($authenticate[$m]," ");
+				$response=$this->Tokenize("");
+				if(strlen($authentication_mechanism))
+				{
+					if(!strcmp($authentication_mechanism,$mechanism))
+					{
+						$mechanisms[]=$mechanism;
+						break;
+					}
+				}
+				else
+					$mechanisms[]=$mechanism;
+			}
+			$sasl=new sasl_client_class;
+			if(IsSet($user))
+				$sasl->SetCredential("user",$user);
+			if(IsSet($password))
+				$sasl->SetCredential("password",$password);
+			if(IsSet($realm))
+				$sasl->SetCredential("realm",$realm);
+			if(IsSet($workstation))
+				$sasl->SetCredential("workstation",$workstation);
+			$sasl->SetCredential("uri",$this->request_uri);
+			$sasl->SetCredential("method",$this->request_method);
+			$sasl->SetCredential("session",$this->session);
+			do
+			{
+				$status=$sasl->Start($mechanisms,$message,$interactions);
+			}
+			while($status==SASL_INTERACT);
+			switch($status)
+			{
+				case SASL_CONTINUE:
+					break;
+				case SASL_NOMECH:
+					return($this->SetError(($proxy ? "proxy " : "")."authentication error: ".(strlen($authentication_mechanism) ? "authentication mechanism ".$authentication_mechanism." may not be used: " : "").$sasl->error));
+				default:
+					return($this->SetError("Could not start the SASL ".($proxy ? "proxy " : "")."authentication client: ".$sasl->error));
+			}
+			if($proxy >= 0)
+			{
+				for(;;)
+				{
+					if(strlen($error=$this->ReadReplyBody($body,$this->file_buffer_length)))
+						return($error);
+					if(strlen($body)==0)
+						break;
+				}
+			}
+			$authorization_value=$sasl->mechanism.(IsSet($message) ? " ".($sasl->encode_response ? base64_encode($message) : $message) : "");
+			$request_arguments=$this->request_arguments;
+			$arguments=$request_arguments;
+			$arguments["Headers"][$authorization_header]=$authorization_value;
+			if(!$proxy
+			&& strlen($proxy_authorization))
+				$arguments["Headers"]["Proxy-Authorization"]=$proxy_authorization;
+			if(strlen($error=$this->Close())
+			|| strlen($error=$this->Open($arguments)))
+				return($this->SetError($error));
+			$authenticated=0;
+			if(IsSet($message))
+			{
+				if($proxy < 0)
+				{
+					if(strlen($error=$this->ConnectFromProxy($arguments, $headers)))
+						return($this->SetError($error));
+				}
+				else
+				{
+					if(strlen($error=$this->SendRequest($arguments))
+					|| strlen($error=$this->ReadReplyHeadersResponse($headers)))
+						return($this->SetError($error));
+				}
+				if(!IsSet($headers[$authenticate_header]))
+					$authenticate=array();
+				elseif(GetType($headers[$authenticate_header])=="array")
+					$authenticate=$headers[$authenticate_header];
+				else
+					$authenticate=array($headers[$authenticate_header]);
+				for($mechanism=0;$mechanism<count($authenticate);$mechanism++)
+				{
+					if(!strcmp($this->Tokenize($authenticate[$mechanism]," "),$sasl->mechanism))
+					{
+						$response=$this->Tokenize("");
+						break;
+					}
+				}
+				switch($this->response_status)
+				{
+					case $authenticate_status:
+						break;
+					case "301":
+					case "302":
+					case "303":
+					case "307":
+						if($proxy >= 0)
+							return($this->Redirect($headers));
+					default:
+						if(intval($this->response_status/100)==2)
+						{
+							if($proxy)
+								$proxy_authorization=$authorization_value;
+							$authenticated=1;
+							break;
+						}
+						if($proxy
+						&& !strcmp($this->response_status,"401"))
+						{
+							$proxy_authorization=$authorization_value;
+							$authenticated=1;
+							break;
+						}
+						return($this->SetError(($proxy ? "proxy " : "")."authentication error: ".$this->response_status." ".$this->response_message));
+				}
+			}
+			for(;!$authenticated;)
+			{
+				do
+				{
+					$status=$sasl->Step($response,$message,$interactions);
+				}
+				while($status==SASL_INTERACT);
+				switch($status)
+				{
+					case SASL_CONTINUE:
+						$authorization_value=$sasl->mechanism.(IsSet($message) ? " ".($sasl->encode_response ? base64_encode($message) : $message) : "");
+						$arguments=$request_arguments;
+						$arguments["Headers"][$authorization_header]=$authorization_value;
+						if(!$proxy
+						&& strlen($proxy_authorization))
+							$arguments["Headers"]["Proxy-Authorization"]=$proxy_authorization;
+						if($proxy < 0)
+						{
+							if(strlen($error=$this->ConnectFromProxy($arguments, $headers)))
+								return($this->SetError($error));
+						}
+						else
+						{
+							if(strlen($error=$this->SendRequest($arguments))
+							|| strlen($error=$this->ReadReplyHeadersResponse($headers)))
+								return($this->SetError($error));
+						}
+						switch($this->response_status)
+						{
+							case $authenticate_status:
+								if(GetType($headers[$authenticate_header])=="array")
+									$authenticate=$headers[$authenticate_header];
+								else
+									$authenticate=array($headers[$authenticate_header]);
+								for($response="",$mechanism=0;$mechanism<count($authenticate);$mechanism++)
+								{
+									if(!strcmp($this->Tokenize($authenticate[$mechanism]," "),$sasl->mechanism))
+									{
+										$response=$this->Tokenize("");
+										break;
+									}
+								}
+								if($proxy >= 0)
+								{
+									for(;;)
+									{
+										if(strlen($error=$this->ReadReplyBody($body,$this->file_buffer_length)))
+											return($error);
+										if(strlen($body)==0)
+											break;
+									}
+								}
+								$this->state="Connected";
+								break;
+							case "301":
+							case "302":
+							case "303":
+							case "307":
+								if($proxy >= 0)
+									return($this->Redirect($headers));
+							default:
+								if(intval($this->response_status/100)==2)
+								{
+									if($proxy)
+										$proxy_authorization=$authorization_value;
+									$authenticated=1;
+									break;
+								}
+								if($proxy
+								&& !strcmp($this->response_status,"401"))
+								{
+									$proxy_authorization=$authorization_value;
+									$authenticated=1;
+									break;
+								}
+								return($this->SetError(($proxy ? "proxy " : "")."authentication error: ".$this->response_status." ".$this->response_message));
+						}
+						break;
+					default:
+						return($this->SetError("Could not process the SASL ".($proxy ? "proxy " : "")."authentication step: ".$sasl->error));
+				}
+			}
+		}
+		return("");
+	}
+	
+	Function ReadReplyHeaders(&$headers)
+	{
+		if(strlen($error=$this->ReadReplyHeadersResponse($headers)))
+			return($error);
+		$proxy_authorization="";
+		while(!strcmp($this->response_status, "100"))
+		{
+			$this->state="RequestSent";
+			if(strlen($error=$this->ReadReplyHeadersResponse($headers)))
+				return($error);
+		}
+		switch($this->response_status)
+		{
+			case "301":
+			case "302":
+			case "303":
+			case "307":
+				if(strlen($error=$this->Redirect($headers)))
+					return($error);
+				break;
+			case "407":
+				if(strlen($error=$this->Authenticate($headers, 1, $proxy_authorization, $this->proxy_request_user, $this->proxy_request_password, $this->proxy_request_realm, $this->proxy_request_workstation)))
+					return($error);
+				if(strcmp($this->response_status,"401"))
+					return("");
+			case "401":
+				return($this->Authenticate($headers, 0, $proxy_authorization, $this->request_user, $this->request_password, $this->request_realm, $this->request_workstation));
+		}
+		return("");
+	}
+
+	Function ReadReplyBody(&$body,$length)
+	{
+		$body="";
+		if(strlen($this->error))
+			return($this->error);
+		switch($this->state)
+		{
+			case "Disconnected":
+				return($this->SetError("1 connection was not yet established"));
+			case "Connected":
+			case "ConnectedToProxy":
+				return($this->SetError("2 request was not sent"));
+			case "RequestSent":
+				if(($error=$this->ReadReplyHeaders($headers))!="")
+					return($error);
+				break;
+			case "GotReplyHeaders":
+				break;
+			default:
+				return($this->SetError("3 can not get request headers in the current connection state"));
+		}
+		if($this->content_length_set)
+			$length=min($this->content_length-$this->read_length,$length);
+		if($length>0
+		&& !$this->EndOfInput()
+		&& ($body=$this->ReadBytes($length))=="")
+		{
+			if(strlen($this->error))
+				return($this->SetError("4 could not get the request reply body: ".$this->error));
+		}
+		$this->read_length+=strlen($body);
+		return("");
+	}
+
+	Function SaveCookies(&$cookies, $domain='', $secure_only=0, $persistent_only=0)
+	{
+		$now=gmdate("Y-m-d H-i-s");
+		$cookies=array();
+		for($secure_cookies=0,Reset($this->cookies);$secure_cookies<count($this->cookies);Next($this->cookies),$secure_cookies++)
+		{
+			$secure=Key($this->cookies);
+			if(!$secure_only
+			|| $secure)
+			{
+				for($cookie_domain=0,Reset($this->cookies[$secure]);$cookie_domain<count($this->cookies[$secure]);Next($this->cookies[$secure]),$cookie_domain++)
+				{
+					$domain_pattern=Key($this->cookies[$secure]);
+					$match=strlen($domain)-strlen($domain_pattern);
+					if(strlen($domain)==0
+					|| ($match>=0
+					&& !strcmp($domain_pattern,substr($domain,$match))
+					&& ($match==0
+					|| $domain_pattern[0]=="."
+					|| $domain[$match-1]==".")))
+					{
+						for(Reset($this->cookies[$secure][$domain_pattern]),$path_part=0;$path_part<count($this->cookies[$secure][$domain_pattern]);Next($this->cookies[$secure][$domain_pattern]),$path_part++)
+						{
+							$path=Key($this->cookies[$secure][$domain_pattern]);
+							for(Reset($this->cookies[$secure][$domain_pattern][$path]),$cookie=0;$cookie<count($this->cookies[$secure][$domain_pattern][$path]);Next($this->cookies[$secure][$domain_pattern][$path]),$cookie++)
+							{
+								$cookie_name=Key($this->cookies[$secure][$domain_pattern][$path]);
+								$expires=$this->cookies[$secure][$domain_pattern][$path][$cookie_name]["expires"];
+								if((!$persistent_only
+								&& strlen($expires)==0)
+								|| (strlen($expires)
+								&& strcmp($now,$expires)<0))
+									$cookies[$secure][$domain_pattern][$path][$cookie_name]=$this->cookies[$secure][$domain_pattern][$path][$cookie_name];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	Function SavePersistentCookies(&$cookies, $domain='', $secure_only=0)
+	{
+		$this->SaveCookies($cookies, $domain, $secure_only, 1);
+	}
+
+	Function GetPersistentCookies(&$cookies, $domain='', $secure_only=0)
+	{
+		$this->SavePersistentCookies($cookies, $domain, $secure_only);
+	}
+
+	Function RestoreCookies($cookies, $clear=1)
+	{
+		$new_cookies=($clear ? array() : $this->cookies);
+		for($secure_cookies=0, Reset($cookies); $secure_cookies<count($cookies); Next($cookies), $secure_cookies++)
+		{
+			$secure=Key($cookies);
+			if(GetType($secure)!="integer")
+				return($this->SetError("invalid cookie secure value type (".serialize($secure).")"));
+			for($cookie_domain=0,Reset($cookies[$secure]);$cookie_domain<count($cookies[$secure]);Next($cookies[$secure]),$cookie_domain++)
+			{
+				$domain_pattern=Key($cookies[$secure]);
+				if(GetType($domain_pattern)!="string")
+					return($this->SetError("invalid cookie domain value type (".serialize($domain_pattern).")"));
+				for(Reset($cookies[$secure][$domain_pattern]),$path_part=0;$path_part<count($cookies[$secure][$domain_pattern]);Next($cookies[$secure][$domain_pattern]),$path_part++)
+				{
+					$path=Key($cookies[$secure][$domain_pattern]);
+					if(GetType($path)!="string"
+					|| strcmp(substr($path, 0, 1), "/"))
+						return($this->SetError("invalid cookie path value type (".serialize($path).")"));
+					for(Reset($cookies[$secure][$domain_pattern][$path]),$cookie=0;$cookie<count($cookies[$secure][$domain_pattern][$path]);Next($cookies[$secure][$domain_pattern][$path]),$cookie++)
+					{
+						$cookie_name=Key($cookies[$secure][$domain_pattern][$path]);
+						$expires=$cookies[$secure][$domain_pattern][$path][$cookie_name]["expires"];
+						$value=$cookies[$secure][$domain_pattern][$path][$cookie_name]["value"];
+						if(GetType($expires)!="string"
+						|| (strlen($expires)
+						&& !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\$/", $expires)))
+							return($this->SetError("invalid cookie expiry value type (".serialize($expires).")"));
+						$new_cookies[$secure][$domain_pattern][$path][$cookie_name]=array(
+							"name"=>$cookie_name,
+							"value"=>$value,
+							"domain"=>$domain_pattern,
+							"path"=>$path,
+							"expires"=>$expires,
+							"secure"=>$secure
+						);
+					}
+				}
+			}
+		}
+		$this->cookies=$new_cookies;
+		return("");
+	}
+};
+
 ?>

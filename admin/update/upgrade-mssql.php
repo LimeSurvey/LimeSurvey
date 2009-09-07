@@ -10,7 +10,7 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 *
-* $Id$
+* $Id: upgrade-mssql.php 7556 2009-09-01 23:48:37Z c_schmitz $
 */
 
 // There will be a file for each database (accordingly named to the dbADO scheme)

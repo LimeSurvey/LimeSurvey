@@ -15,8 +15,10 @@
 
 
 if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
+$action='';
 require_once(dirname(__FILE__).'/../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../common.php');
+require_once(dirname(__FILE__).'/../update/updater.php');
 $adminoutput='';  // Alle future output is written into this and then outputted at the end of file
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
 require_once($rootdir.'/classes/core/language.php');
@@ -59,7 +61,7 @@ else
 	//DB EXISTS, CHECK FOR APPROPRIATE UPGRADES
     $connect->database = $databasename;
     $connect->Execute("USE DATABASE `$databasename`");
-	$output=checkforupgrades();
+	$output=CheckForDBUpgrades();
     if ($output== '') {$adminoutput.='<br />LimeSurvey Database is up to date. No action needed';}
       else {$adminoutput.=$output;}
     $adminoutput.="<br />Please <a href='$homeurl/$scriptname'>log in.</a>";
@@ -68,28 +70,6 @@ else
 echo $adminoutput;
 
 
-// This functions checks if the databaseversion in the settings table is the same one as required
-function checkforupgrades()
-{
-    global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
-    $adminoutput='';
-    $upgradedbtype=$databasetype;
-    if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';         
-    if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';         
-    include ('upgrade-'.$upgradedbtype.'.php');
-    $tables = $connect->MetaTables();
-
-    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'";
-    $usresult = db_execute_assoc($usquery);
-    $usrow = $usresult->FetchRow();
-    if (intval($usrow['stg_value'])<$dbversionnumber)
-    {
-     db_upgrade(intval($usrow['stg_value']));
-     $adminoutput="<br />".$clang->gT("Database has been successfully upgraded to version ".$dbversionnumber);
-    }
-
-    return $adminoutput;
-}
                
     
 ?>

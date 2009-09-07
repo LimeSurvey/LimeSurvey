@@ -347,6 +347,11 @@ elseif ($action=='listcolumn')
 	  { 
 	     include('listcolumn.php');
 	  }  
+elseif ($action=='update')
+      { 
+        if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    include($homedir.'/update/updater.php');    
+            else { include('access_denied.php');}    
+      }  
 elseif ($action=='assessments' || $action=='assessmentdelete' || $action=='assessmentedit' || $action=='assessmentadd' || $action=='assessmentupdate')
     {
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {
@@ -453,7 +458,7 @@ elseif ($action == 'replacementfields')
     
  if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) && !isset($savedsurveyoutput) && !isset( $listcolumnoutput  ) &&         
      !isset($dataentryoutput) && !isset($conditionsoutput) && !isset($importoldresponsesoutput) && !isset($exportspssoutput) && !isset($exportroutput) &&
-     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' &&
+     !isset($vvoutput) && !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) &&  !isset($iteratesurveyoutput) && ($action!='ajaxquestionattributes') && ($action!='update') && 
      (isset($surveyid) || $action=='listurveys' || $action=='personalsettings' ||       //Still to check
       $action=='editsurvey' || $action=='updatesurvey' || $action=='ordergroups'  ||
       $action=='newsurvey' || $action=='listsurveys' ||   
@@ -491,7 +496,8 @@ elseif ($action == 'replacementfields')
       !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
       !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput) &&
       !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
-      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' ) 
+      !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) && $action!='ajaxquestionattributes' 
+      && $action!='update') 
       {
         $adminoutput.= showadminmenu();
       }

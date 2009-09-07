@@ -15,32 +15,10 @@
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true) {
+if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true && $action=='dumpdb') {
 
-	$tables = $connect->MetaTables();
-	
-	$export="";
-	$export .="#------------------------------------------"."\n";
-	$export .="# LimeSurvey Database Dump of `$databasename`"."\n";
-	if ($allowexportalldb==0) {
-		$export .="# Only prefixed tables with: ". $dbprefix ."\n";
-	}
-	$export .="# Date of Dump: ". date("d-M-Y") ."\n";
-	$export .="#------------------------------------------"."\n\n\n";
-	
-	foreach($tables as $table) {
-		if ($allowexportalldb==0) {
-			if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
-				$export .= defdump($table);
-				$export .= datadump($table);
-			}
-		}
-		else {
-			$export .= defdump($table);
-			$export .= datadump($table);
-		}
-	}
-	
+	$export=completedump();
+
 	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
 	Header("Content-type: application/octet-stream");
 	Header("Content-Disposition: attachment; filename=$file_name");
@@ -58,7 +36,40 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
     return;           
  }
 
-
+    /**
+    * Creates a full dump of the current LimeSurvey database
+    * 
+    * @returns string Contains the dumped data
+    */
+    function completedump()
+    {
+        global $connect, $databasename, $dbprefix, $allowexportalldb;
+        $tables = $connect->MetaTables();         
+        $export ="#------------------------------------------"."\n";
+        $export .="# LimeSurvey Database Dump of `$databasename`"."\n";
+        if ($allowexportalldb==0) {
+            $export .="# Only prefixed tables with: ". $dbprefix ."\n";
+        }
+        $export .="# Date of Dump: ". date("d-M-Y") ."\n";
+        $export .="#------------------------------------------"."\n\n\n";
+        
+        foreach($tables as $table) {
+            if ($allowexportalldb==0) {
+                if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
+                    $export .= defdump($table);
+                    $export .= datadump($table);
+                }
+            }
+            else {
+                $export .= defdump($table);
+                $export .= datadump($table);
+            }
+        }
+        return $export;
+    }
+ 
+ 
+ 
 	function defdump($tablename)
 	{
 		global $connect;

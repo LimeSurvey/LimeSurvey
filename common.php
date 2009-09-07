@@ -18,11 +18,11 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 
-##################################################################################
+####################### Do NOT touch the following entries #######################
 
 $versionnumber = "1.86RC";
 $dbversionnumber = 138;
-$buildnumber = "2345";
+$buildnumber = "7500"; 
 
 ##################################################################################
 
@@ -253,10 +253,14 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 
 }
 
+
+// Default global values that should not appear in config-defaults.php
 $updateavailable=0;
 $updatebuild='';
 $updateversion='';
 $updatelastcheck='';
+$updatekey='';
+$updatekeyvaliduntil='';
  
 require ($homedir.'/globalsettings.php');
           
@@ -3531,7 +3535,7 @@ function questionAttributes($returnByName=false)
                      2=>$clang->gT('Ordinal'),
                      3=>$clang->gT('Scale')),
     'default'=>0,      
-    "help"=>$clang->gT(""),
+    "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
@@ -6455,26 +6459,36 @@ function removeBOM($str=""){
 */
 function GetUpdateInfo()
 {
-    global $homedir;
+    global $homedir, $debug;
     require_once($homedir."/classes/http/http.php");     
-    header( 'Content-Type: text/html' );
-    
-    $http_client = new http( HTTP_V11, false);
-    $http_client->host = 'update.limesurvey.org';
-    
-    $updateinfo=false;
-    if ( $http_client->get( '/updates' ) == HTTP_STATUS_OK)
-    {
-        $updateinfo=json_php5decode($http_client->get_response_body());
-        
-    }
-    elseif ($debug>0)
-    {
-        print( 'Error on requesting update info: ' .  $http_client->status );
-        
-    }
 
-    unset( $http_client );
+    $http=new http_class;    
+               
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
+    $http->GetRequestArguments("http://update.limesurvey.org//updates/index",$arguments);
+
+    $updateinfo=false;
+    $error=$http->Open($arguments);           
+    $error=$http->SendRequest($arguments);
+
+    if($error=="") {
+        $body=''; $full_body=''; 
+        for(;;){
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }        
+        $updateinfo=json_php5decode($full_body);
+    }
+    else
+    {
+        print( $error );
+    }
+    unset( $http );
     return $updateinfo; 
 }
 
@@ -6505,13 +6519,13 @@ function GetUpdateInfo()
         $updateinfo=GetUpdateInfo();
         if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber) 
         {
-            setGlobalSettting('updateavailable',1);
-            setGlobalSettting('updatebuild',$updateinfo['Targetversion']['build']);
-            setGlobalSettting('updateversion',$updateinfo['Targetversion']['versionnumber']);
-            setGlobalSettting('updatelastcheck',date('Y-m-d H:i:s'));
+            setGlobalSetting('updateavailable',1);
+            setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
+            setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+            setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
         }
         else
         {
-            setGlobalSettting('updateavailable',0);
+            setGlobalSetting('updateavailable',0);
         }
    }
