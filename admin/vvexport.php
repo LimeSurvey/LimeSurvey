@@ -23,10 +23,11 @@ $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surv
 $sumresult5 = db_execute_assoc($sumquery5); //Checked
 $sumrows5 = $sumresult5->FetchRow();
 
-if ($sumrows5['export'] != "1")
+if ($sumrows5['export'] != "1" && $_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
 {
 	return;
 }
+
 if (!$subaction == "export")
 {
 	if(incompleteAnsFilterstate() == "inc")
