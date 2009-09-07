@@ -753,9 +753,17 @@ function loadanswers()
 		{
 			$query .= "AND ".db_table_name('saved_control').".scid={$scid}\n";
 		}
-		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."'
-				  AND ".db_table_name('saved_control').".access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
-	}
+		$query .="AND ".db_table_name('saved_control').".identifier = '".auto_escape($_SESSION['holdname'])."' ";
+        
+        if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n')
+        {
+            $query .="AND CAST(".db_table_name('saved_control').".access_code as varchar)= '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+        }
+        else
+        {
+            $query .="AND ".db_table_name('saved_control').".access_code = '".md5(auto_unescape($_SESSION['holdpass']))."'\n";
+	    }
+    }
 	elseif (isset($_SESSION['srid']))
 	{
 		$query = "SELECT * FROM {$thissurvey['tablename']}
