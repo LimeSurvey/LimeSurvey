@@ -516,7 +516,7 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
 ,.numeric-multi span
 ,.multiple-short-txt ul li span
 {
-	font-size: 75%;
+	font-size: 12px;
 /*	font-style: italic;*/
 }
 .numeric p.question input

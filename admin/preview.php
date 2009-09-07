@@ -69,9 +69,22 @@ $question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
+$q_class = question_class($qrows['type']); 
+if ($qrows['mandatory'] == 'Y')
+{
+    $man_class = ' mandatory';
+}
+else
+{
+    $man_class = '';
+}
+
+
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));     
-$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));     
+$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl")); 
+$content .= '<div id="question'.$qrows['qid'].'" class="'.$q_class.$man_class.'">';    
 $content .= templatereplace(file_get_contents("$thistpl/question.pstpl"));
+$content .= '</div>';
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;     
 $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));     
 if($qrows['mandatory'] == 'Y')
