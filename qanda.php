@@ -5172,8 +5172,7 @@ function do_array_multitext($ia)
 		$answer_cols .= "\n\t</colgroup>\n";
 
 		$answer_head .= "\t\t</tr>\n"
-		. "\t</thead>\n"
-		. "\n\t<tbody>\n";
+		. "\t</thead>\n";
 
 		$answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - an array of text responses\">\n" . $answer_cols . $answer_head;
 
@@ -5218,27 +5217,35 @@ function do_array_multitext($ia)
 				}
 			}
 
-			$htmltbody2 = '';
+			$htmltbody2 = '';  $insertinput='';
 			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
 			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
+                $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n"; 
 			} else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
 			{
 				$selected = getArrayFiltersForQuestion($ia[0]);
 				if (!in_array($ansrow['code'],$selected))
 				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\"";
+                    $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
 					$_SESSION[$myfname] = '';
 				}
 				else
 				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \"><input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">";
+                    $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
 				}
 			}
+            else
+            {
+                        $htmltbody2= "\n\t<tbody>\n";
+
+            }
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 			$trbc = alternation($trbc , 'row');
 			$answer .= $htmltbody2."\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<th class=\"answertext\">\n"
+			. "\t\t\t<th class=\"answertext\">\n".$insertinput
 			. "\t\t\t\t$answertext\n"
 			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
