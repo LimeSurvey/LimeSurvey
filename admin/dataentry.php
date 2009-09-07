@@ -2175,7 +2175,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					break;
 					case "W": //Flexible List drop-down/radio-button
 					case "Z":
-						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} ORDER BY sortorder, code";
+						$deaquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid={$deqrow['lid']} AND language='{$language}' ORDER BY sortorder, code";
 						$dearesult = db_execute_assoc($deaquery);
 						$dataentryoutput .= "\t<select name='$fieldname'>\n";
 						$dataentryoutput .= "\t\t<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n";
