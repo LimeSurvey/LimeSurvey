@@ -78,6 +78,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.85+ (build 7548) to 1.85+ (build 7591) [08-09-2009] - Legend: + new feature, # update feature, - bug fix
+#Update of Croatian language (idobraca)
+#Updated Language: French. (b00z00)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+-Fixed issue #03542: ORed conditions based on multiple choices questions options are not correctly evaluated in 'question by question' surveys and sometimes in 'group by group' surveys (lemeur)
+-Fixed issue #3575: On dataentry screen answers are duplicated if survey has multiple languages (c_schmitz)
+-Fixed issue #3596: Array_filter attribute not working correctly  when used with a Multiflexi array question  (c_schmitz)
+-Fixed issue #3610: Question preview not identical to the survey because question CSS class was missing (c_schmitz)
+-Fixed issue (unreported): Error Message when using Huge free text question type (c_schmitz)
+-Fixed issue 03600: it's possible to delete a token without a warning (pressing the red cross). You should include a security hint: Are you sure to delte this token? (paraya)
+-Fixed issue: Removed obsolete PHP4 limit on import which breaks on very big survey structure data fields (c_schmitz)
+-fixed #3641: general style error at all print templates ==> corrected hevetica to helvetica (el-matador-69)
+-fixed #3644: missing '>' in statistic_user.php leaded to ugly results in all IE Browsers (el-matador-69)
+
 Changes from 1.85+ (build 7524) to 1.85+ (build 7548) [31-08-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: French (b00z00)
 #Updated translation: Polish (elisa-ls)
