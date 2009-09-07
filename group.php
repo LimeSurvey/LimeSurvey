@@ -270,7 +270,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	sendcacheheaders();
 	doHeader();
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>\n";
+	echo "\n<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 	echo "\n\n<!-- START THE SURVEY -->\n";
     echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"))."\n";
 	if ($thissurvey['private'] == "Y")
@@ -387,7 +387,7 @@ if (isset($vpopup)) {echo $vpopup;}
 
 $hiddenfieldnames=implode("|", $inputnames);
 
-echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey'>
+echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 
