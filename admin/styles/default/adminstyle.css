@@ -851,3 +851,13 @@ div.loader {
     background-color:#f8f8ff;
     padding:1% 10%;
 }
+
+#editsurvey textarea,
+#editsurvey input{
+width: 600px;
+}
+
+#editsurvey td{
+padding-left: 15px;
+font-size: 9pt;
+} 
