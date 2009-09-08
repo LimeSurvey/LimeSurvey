@@ -5604,6 +5604,7 @@ function safe_die($text)
 */
 function getQuotaInformation($surveyid,$quotaid='all')
 {
+	global $clang, $clienttoken;
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
 		   	  WHERE ".db_table_name('quota').".id = ".db_table_name('quota_languagesettings').".quotals_quota_id
@@ -5617,17 +5618,25 @@ function getQuotaInformation($surveyid,$quotaid='all')
 	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked 
 	$quota_info = array();
 	$x=0;
-	
+
+	$surveyinfo=getSurveyInfo($surveyid);
+
 	// Check all quotas for the current survey
 	if ($result->RecordCount() > 0)
 	{
 		while ($survey_quotas = $result->FetchRow())
 		{
+			//Modify the URL - thanks janokary
+			$survey_quotas['quotals_url']=str_replace("{SAVEDID}",isset($_SESSION['srid']) ? $_SESSION['srid'] : '', $survey_quotas['quotals_url']);
+			$survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
+			$survey_quotas['quotals_url']=str_replace("{LANG}", $clang->getlangcode(), $survey_quotas['quotals_url']);
+			$survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
+			
 			array_push($quota_info,array('Name' => $survey_quotas['name'],
 										 'Limit' => $survey_quotas['qlimit'],
 										 'Action' => $survey_quotas['action'],
 										 'Message' => $survey_quotas['quotals_message'],
-										 'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), getSurveyInfo($surveyid)),
+										 'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
 										 'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
 										 'AutoloadUrl' => $survey_quotas['autoload_url']));
 			$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
