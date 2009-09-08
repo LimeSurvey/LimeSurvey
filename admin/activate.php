@@ -274,6 +274,7 @@ else
 	//Create the survey responses table
 	$createsurvey = "id I NOTNULL AUTO PRIMARY,\n";
 	$createsurvey .= " submitdate T,\n";
+    $createsurvey .= " lastpage I,\n";
 	$createsurvey .= " startlanguage C(20) NOTNULL ,\n";
 	//Check for any additional fields for this survey and create necessary fields (token and datestamp)
 	$pquery = "SELECT private, allowregister, datestamp, ipaddr, refurl FROM {$dbprefix}surveys WHERE sid={$postsid}";

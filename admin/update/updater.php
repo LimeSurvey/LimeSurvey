@@ -227,15 +227,15 @@ function CheckForDBUpgrades()
 {
     global $connect, $databasetype, $dbprefix, $dbversionnumber, $clang;
     $adminoutput='';
-
-    if (intval($dbversionnumber)<GetGlobalSetting('DBVersion'))
+    $currentDBVersion=GetGlobalSetting('DBVersion');
+    if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         $upgradedbtype=$databasetype;
         if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';         
         if ($upgradedbtype=='mysqli') $upgradedbtype='mysql';         
         include ('upgrade-'.$upgradedbtype.'.php');
         $tables = $connect->MetaTables();
-        db_upgrade(intval($usrow['stg_value']));
+        db_upgrade(intval($currentDBVersion));
         $adminoutput="<br />".$clang->gT("Database has been successfully upgraded to version ".$dbversionnumber);
     }
     return $adminoutput;

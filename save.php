@@ -369,7 +369,7 @@ function savedcontrol()
 function createinsertquery()
 {
 
-	global $thissurvey, $timeadjust, $move;
+	global $thissurvey, $timeadjust, $move, $thisstep;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
@@ -466,6 +466,7 @@ function createinsertquery()
 			// INSERT NEW ROW
 			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
 			."(".implode(', ', array_map('db_quote_id',$colnames));
+            $query .= ",".db_quote_id('lastpage');                 
 			if ($thissurvey['datestamp'] == "Y")
 			{
 				$query .= ",".db_quote_id('datestamp');
@@ -486,6 +487,7 @@ function createinsertquery()
 			}
 			$query .=") ";
 			$query .="VALUES (".implode(", ", $values);
+            $query .= ",".($thisstep+1);          
 			if ($thissurvey['datestamp'] == "Y")
 			{
 				$query .= ", '".$_SESSION['datestamp']."'";
@@ -513,6 +515,7 @@ function createinsertquery()
 			if (isset($postedfieldnames) && $postedfieldnames)
 			{
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
+               $query .= " lastpage = '".($thisstep+1)."',";
 				if ($thissurvey['datestamp'] == "Y")
 				{
 					$query .= " datestamp = '".$_SESSION['datestamp']."',";

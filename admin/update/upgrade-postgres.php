@@ -157,6 +157,12 @@ global $modifyoutput;
         modify_database("", "UPDATE prefix_settings_global SET stg_value='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
 
+	if ($oldversion < 139) //Modify quota field
+	{
+        upgrade_survey_tables139();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	}
+
     return true;
 }
 
@@ -202,6 +208,21 @@ function upgrade_token_tables134()
             modify_database("","ALTER TABLE ".$sv[0]." ADD validuntil timestamp"); echo $modifyoutput; flush();
         }
     }
+}
+
+function upgrade_survey_tables139()
+{
+    global $modifyoutput,$dbprefix;
+    $surveyidquery = db_select_tables_like($dbprefix."survey_%");   
+    $surveyidresult = db_execute_num($surveyidquery);
+    if (!$surveyidresult) {return "Database Error";}
+    else
+        {
+        while ( $sv = $surveyidresult->FetchRow() )
+            {
+            modify_database("","ALTER TABLE ".$sv[0]." ADD lastpage integer"); echo $modifyoutput; flush();
+            }
+        }
 }
 
 ?>

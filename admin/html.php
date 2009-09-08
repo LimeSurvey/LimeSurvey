@@ -2632,7 +2632,7 @@ if ($action == "editsurvey")
 			// BENBUN - END REF URL Block
 
 		// Token answers persistence
-		$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable token-based answers persistence?")."</span>\n"
+		$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable token-based response persistence?")."</span>\n"
 		. "<span class='settingentry'><select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n" 
         . "<option value='Y'";
 		if ($esrow['tokenanswerspersistence'] == "Y") {$editsurvey .= " selected='selected'";}
@@ -3357,7 +3357,7 @@ if ($action == "newsurvey")
 		. "</select></span>\n</div>\n";
 
 		// Token answers persistence
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable token-based answers persistence?")."</span>\n"
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Enable token-based response persistence?")."</span>\n"
 		. "<span class='settingentry'><select name='tokenanswerspersistence'>\n" 
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"

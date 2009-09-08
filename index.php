@@ -787,6 +787,12 @@ function loadanswers()
 				$_SESSION['step']=$value;
                 $thisstep=$value-1;
 			}
+            if ($column =='lastpage' && !isset($_SESSION['step']))
+            {
+                if ($value<1) $value=1;
+                $_SESSION['step']=$value;
+                $thisstep=$value-1;                
+            }
 			if ($column == "scid")
 			{
 				$_SESSION['scid']=$value;
@@ -1354,7 +1360,7 @@ function checkpregs($move,$backok=null)
 			foreach ($fields as $field)
 			{
 				//Get question information
-				if (isset($_POST[$field]) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
+				if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
 				{
 					$fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 					$pregquery="SELECT preg\n"
@@ -1632,9 +1638,7 @@ function submitfailed($errormsg)
 {
 	global $thissurvey, $clang;
 	global $thistpl, $subquery, $surveyid, $connect;
-	sendcacheheaders();
-	doHeader();
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
 	$completed = "<br /><strong><font size='2' color='red'>"
 	. $clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
 	. $clang->gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
@@ -1652,7 +1656,7 @@ function submitfailed($errormsg)
 		. $clang->gT("ERROR MESSAGE","unescaped").":\n"
 		. $errormsg."\n\n";
 		MailTextMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
-		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
+		//echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();
 		session_destroy();

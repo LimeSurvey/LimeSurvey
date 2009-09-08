@@ -21,7 +21,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 ####################### Do NOT touch the following entries #######################
 
 $versionnumber = "1.86RC";
-$dbversionnumber = 138;
+$dbversionnumber = 139;
 $buildnumber = ""; 
 
 ##################################################################################
@@ -3277,7 +3277,6 @@ function questionAttributes($returnByName=false)
 	$qattributes["max_answers"]=array(
 	"types"=>"MPR",
     'inputtype'=>'integer',
-    'default'=>0,
 	"help"=>$clang->gT('Limit the number of possible answers (0=No limit)'),
     "caption"=>$clang->gT('Maximum answers'));
    
@@ -3296,7 +3295,6 @@ function questionAttributes($returnByName=false)
 	$qattributes["min_answers"]=array(
 	"types"=>"MPR",
     'inputtype'=>'integer',
-    'default'=>0,
 	"help"=>$clang->gT('Ensure a minimum number of possible answers (0=No limit)'),
     "caption"=>$clang->gT('Minimum answers'));
 

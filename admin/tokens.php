@@ -486,11 +486,11 @@ if ($sumrows5['edit_survey_property'] ||
 	."<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
     ."title='".$clang->gTview("Drop tokens table")."' >" 
-	."<img name='DeleteTokensButton' src='$imagefiles/delete.png' alt='".$clang->gT("Drop tokens table")."'  /></a>\n";
+	."<img name='DeleteTokensButton' src='$imagefiles/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n";
 }
 
 $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
-                ." title=".$clang->gTview("Show help")."'>" 
+                ." title='".$clang->gTview("Show help")."'>" 
                 ."<img src='$imagefiles/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
 
 

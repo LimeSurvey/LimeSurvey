@@ -4994,7 +4994,7 @@ function do_array_multitext($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 
-    if ($qidattributes['other_numbers_only']==1)
+    if ($qidattributes['numbers_only']==1)
     {
             $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
     }
