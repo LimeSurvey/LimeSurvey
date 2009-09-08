@@ -2260,7 +2260,7 @@ function do_listwithcomment($ia)
 // ---------------------------------------------------------------
 function do_ranking($ia)
 {
-	global $dbprefix, $imagefiles, $clang, $thissurvey;
+	global $dbprefix, $imagefiles, $clang, $thissurvey, $showpopups;
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
 	if (arraySearchByKey("random_order", $qidattributes, "attribute", 1)) {
@@ -2477,15 +2477,28 @@ function do_ranking($ia)
 	if ($minanswattr=arraySearchByKey("min_answers", $qidattributes, "attribute", 1))
 	{ 
 		$minansw=$minanswattr['value'];
+		if(!isset($showpopups) || $showpopups == 0)
+		{
+			$answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\"."),  
+						$minansw, trim(str_replace(array("\n", "\r"), "", $ia[3])))."</div>";
+		}
 		$minanswscript = "<script type='text/javascript'>\n"
 			. "  <!--\n"
 			. "  oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
 			. "  function ensureminansw_{$ia[0]}()\n"
 			. "  {\n"
 			. "     count={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
-			. "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n"
-			. "     alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
-				    $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n"
+			. "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n";
+		if(!isset($showpopups) || $showpopups == 0)
+		{
+			$minanswscript .= "\n
+			document.getElementById('rankingminanswarning{$ia[0]}').style.display='';\n";
+		} else {
+		$minanswscript .="
+			        alert('".sprintf($clang->gT("Please rank at least %d item(s) for question \"%s\".","js"),  
+				    $minansw, trim(javascript_escape(str_replace(array("\n", "\r"), "",$ia[3]),true,true)))."');\n";
+		}
+		$minanswscript .= ""
 			. "     return false;\n"
 			. "   } else {\n"	
 			. "     if (oldonsubmit_{$ia[0]}){\n"
