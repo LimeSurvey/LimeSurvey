@@ -639,15 +639,15 @@ if($action == "orderquestions")
      }
      if ((!empty($_POST['questionmovefrom']) || (isset($_POST['questionmovefrom']) && $_POST['questionmovefrom'] == '0')) && (!empty($_POST['questionmoveto']) || (isset($_POST['questionmoveto']) && $_POST['questionmoveto'] == '0')))
      {
-        $newpos=$_POST['questionmoveto'];
-        $oldpos=$_POST['questionmovefrom'];
+        $newpos=(int)$_POST['questionmoveto'];
+        $oldpos=(int)$_POST['questionmovefrom'];
 	    if($newpos > $oldpos)
 	    {
 		  //Move the question we're changing out of the way
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 	      //Move all question_orders that are less than the newpos down one
-	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order-1 WHERE gid=$gid AND question_order > 0 AND question_order <= $newpos";
+	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order-1 WHERE gid=$gid AND question_order > $oldpos AND question_order <= $newpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=$newpos WHERE gid=$gid AND question_order=-1";
@@ -660,7 +660,7 @@ if($action == "orderquestions")
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 	      //Move all question_orders that are later than the newpos up one
-	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=$gid AND question_order > ".$newpos." AND question_order <= $oldpos";
+	      $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=question_order+1 WHERE gid=$gid AND question_order > $newpos AND question_order <= $oldpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('questions')." SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";

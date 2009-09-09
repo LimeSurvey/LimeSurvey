@@ -824,3 +824,8 @@ div.messagebox .warningheader {
 .conditiontbl td:first-child {
     text-align:right;
 }
+
+/*controls the width of select boxes in group order dialog*/
+.movableNode select {
+    max-width:200px;
+}

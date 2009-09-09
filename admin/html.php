@@ -2967,15 +2967,15 @@ if ($action == "ordergroups")
     // Move the question to specific position
     if ((!empty($_POST['groupmovefrom']) || (isset($_POST['groupmovefrom']) && $_POST['groupmovefrom'] == '0')) && (!empty($_POST['groupmoveto']) || (isset($_POST['groupmoveto']) && $_POST['groupmoveto'] == '0')))
     {
-       $newpos=$_POST['groupmoveto'];
-       $oldpos=$_POST['groupmovefrom'];
+       $newpos=(int)$_POST['groupmoveto'];
+       $oldpos=(int)$_POST['groupmovefrom'];
 	   if($newpos > $oldpos)
 	   {
 	      //Move the group we're changing out of the way
 	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$oldpos";
           $cdresult=$connect->Execute($cdquery) or safe_die($cdquery."<br />".$connect->ErrorMsg());
 	      //Move all question_orders that are less than the newpos down one
-	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order-1 WHERE sid=$surveyid AND group_order > 0 AND group_order <= $newpos";
+	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order-1 WHERE sid=$surveyid AND group_order > $oldpos and group_order<=$newpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=$newpos WHERE sid=$surveyid AND group_order=-1";
@@ -2988,7 +2988,7 @@ if ($action == "ordergroups")
 		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=-1 WHERE sid=$surveyid AND group_order=$oldpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
 	      //Move all question_orders that are later than the newpos up one
-	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order+1 WHERE sid=$surveyid AND group_order > ".$newpos." AND group_order <= $oldpos";
+	      $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=group_order+1 WHERE sid=$surveyid AND group_order > $newpos AND group_order <= $oldpos";
     	  $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());
     	  //Renumber the question we're changing
 		  $cdquery = "UPDATE ".db_table_name('groups')." SET group_order=".($newpos+1)." WHERE sid=$surveyid AND group_order=-1";
@@ -3130,7 +3130,7 @@ if ($action == "ordergroups")
 			$minipos=$miniogarray[0]['group_order']; //Start at the very first group_order
 			foreach($miniogarray as $mo)
 			{
-	   		    if($minipos >= $max_start_order && $minipos < $max_end_order)
+	   		    if($minipos >= $max_start_order && $minipos < $max_end_order && $i!=$mo['group_order'] && $i-1!=$mo['group_order'])
 	   			{
 	       		    $ordergroups.="<option value='".$mo['group_order']."'>".$mo['group_name']."</option>\n";
 	   			}
