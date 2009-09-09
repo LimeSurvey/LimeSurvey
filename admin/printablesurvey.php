@@ -750,7 +750,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "Z": //LIST Flexible drop-down/radio-button list
-                    if (trim($qidattributes['display_columns'])!='') 
+                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -796,12 +796,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						$qAttrib = getQuestionAttributes($deqrow['qid']);
-						if(!isset($qAttrib["other_replace_text"]))
-						{$qAttrib["other_replace_text"]="Other";}
+						$qidattributes = getQuestionAttributes($deqrow['qid']);
+						if(trim($qidattributes["other_replace_text"])=='')
+						{$qidattributes["other_replace_text"]="Other";}
 					
-						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qAttrib["other_replace_text"]).": ________");}
+						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
+						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qidattributes["other_replace_text"]).": ________");}
 					}
 					$question['ANSWER'] .= $wrapper['whole-end'];
 					//Let's break the presentation into columns.
@@ -812,7 +812,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case '!': //List - dropdown
-                    if (trim($qidattributes['display_columns'])!='') 
+                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -820,7 +820,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 						$dcols=0;
 					}
-                    if (trim($qidattributes['category_separator'])!='') {
+                    if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='') {
 						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
@@ -836,7 +836,7 @@ while ($degrow = $degresult->FetchRow())
 					$deacount=$dearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$deacount++;}
 
-					$wrapper = setup_columns($dcols, $deacount);
+					$wrapper = setup_columns(0, $deacount);
 
 					$question['ANSWER'] = $wrapper['whole-start'];
 
@@ -878,12 +878,12 @@ while ($degrow = $degresult->FetchRow())
 					}
 					if ($deqrow['other'] == 'Y')
 					{
-						$qAttrib = getQuestionAttributes($deqrow['qid']);
-						if(!isset($qAttrib["other_replace_text"]))
-						{$qAttrib["other_replace_text"]="Other";}
+						$qidattributes = getQuestionAttributes($deqrow['qid']);
+						if(trim($qidattributes["other_replace_text"])=='')
+						{$qidattributes["other_replace_text"]="Other";}
 //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
+						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 				//Let's break the presentation into columns.
