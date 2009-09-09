@@ -41,6 +41,29 @@ else {
 if (!$publicdir) {$publicdir=".";}
 $templaterootdir="$publicdir/templates";
 
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+	$usrow = $usresult->FetchRow();
+	$stg_SessionName=$usrow['stg_value'];
+	if ($surveyid)
+	{
+		@session_name($stg_SessionName.'-runtime-'.$surveyid);
+	}
+	else
+	{
+		@session_name($stg_SessionName.'-runtime-publicportal');
+	}
+}
+else
+{
+	session_name("LimeSurveyRuntime-$surveyid");
+}
 @session_start();
 
 
@@ -147,12 +170,9 @@ if ($surveyid &&
 					// but if it throws an error then future
 					// session functions won't work because
 					// headers are already sent.
-		$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-		$usresult = db_execute_assoc($usquery,'',true);          //Checked 
-		if ($usresult)
+		if (isset($stg_SessionName) && $stg_SessionName)
 		{
-			$usrow = $usresult->FetchRow();
-			@session_name($usrow['stg_value']);
+			@session_name($stg_SessionName);
 		}
 		else
 		{
