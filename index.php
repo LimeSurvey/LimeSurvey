@@ -27,7 +27,7 @@ $loadpass=returnglobal('loadpass');
 $scid=returnglobal('scid');
 $thisstep=returnglobal('thisstep');
 $move=sanitize_paranoid_string(returnglobal('move'));
-$clienttoken=trim(sanitize_xss_string(strip_tags(returnglobal('token'))));      
+$clienttoken=sanitize_token(returnglobal('token'));      
 if (!isset($thisstep)) {$thisstep = "";}
 
 
@@ -876,7 +876,7 @@ function makelanguagechanger()
       $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
   }
 
-  $token = trim(sanitize_xss_string(strip_tags(returnglobal('token'))));      
+  $token = sanitize_token(returnglobal('token'));      
   if ($token != '')
   {
     $tokenparam = "&token=$token";
