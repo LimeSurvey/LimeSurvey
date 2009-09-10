@@ -3228,14 +3228,17 @@ function questionAttributes($returnByName=false)
     
     $qattributes["answer_width"]=array(
     "types"=>"ABCEF1:;",
-    'inputtype'=>'text',
-    "help"=>$clang->gT('The percentage width of the answer column'),
+    'inputtype'=>'integer',
+    'min'=>'1',
+    'max'=>'100',
+    "help"=>$clang->gT('Set the percentage width of the answer column (1-100)'),
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
     "types"=>"ABCEFR:;",
     'inputtype'=>'text',
-    "help"=>$clang->gT("Filter an array's answers from a Multiple Options Question"),
+    
+    "help"=>$clang->gT("Enter the code of a Multiple options question to filter the answer options in this array."),
     "caption"=>$clang->gT('Array filter'));
     
     $qattributes["category_separator"]=array(
@@ -3277,7 +3280,7 @@ function questionAttributes($returnByName=false)
 	$qattributes["max_answers"]=array(
 	"types"=>"MPR",
     'inputtype'=>'integer',
-	"help"=>$clang->gT('Limit the number of possible answers (0=No limit)'),
+	"help"=>$clang->gT('Limit the number of possible answers'),
     "caption"=>$clang->gT('Maximum answers'));
    
     $qattributes["max_num_value"]=array(
@@ -3447,7 +3450,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
     'default'=>0,      
-	"help"=>$clang->gT('Use Checkbox layout for array (multi-flexible) question type'),
+	"help"=>$clang->gT('Use checkbox layout for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Checkbox layout'));
     
 	$qattributes["use_dropdown"]=array(
@@ -3456,7 +3459,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
     'default'=>0,      
-	"help"=>$clang->gT('Use Dual Dropdown instead of Dual Scale'),
+	"help"=>$clang->gT('Use dual dropdown boxes instead of dual scales'),
     "caption"=>$clang->gT('Dual dropdown'));
     
 	$qattributes["dropdown_prepostfix"]=array(
@@ -3468,13 +3471,13 @@ function questionAttributes($returnByName=false)
 	$qattributes["dualscale_headerA"]=array(
 	"types"=>"1",
     'inputtype'=>'text',
-	"help"=>$clang->gT('Header for scale A'),
+	"help"=>$clang->gT('Enter a header text for scale A'),
     "caption"=>$clang->gT('Header scale A'));
     
 	$qattributes["dualscale_headerB"]=array(
 	"types"=>"1",
     'inputtype'=>'text',
-	"help"=>$clang->gT('Header for scale B'),
+	"help"=>$clang->gT('Enter a header text for scale B'),
     "caption"=>$clang->gT('Header scale B'));
     
 	$qattributes["dropdown_separators"]=array(
@@ -3501,13 +3504,13 @@ function questionAttributes($returnByName=false)
 	$qattributes["max_num_value_sgqa"]=array(
 	"types"=>"K",
     'inputtype'=>'text',
-	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
+	"help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
 	"caption"=>$clang->gT('Max value from SGQA'));
 	
 	$qattributes["min_num_value_sgqa"]=array(
 	"types"=>"K",
     'inputtype'=>'text',
-	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
+	"help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
 	"caption"=>$clang->gT('Min value from SGQA'));
 
 	$qattributes["num_value_equals_sgqa"]=array(
@@ -3522,7 +3525,7 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
     'default'=>0,      
-    "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
+    "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to Yes.'),
     "caption"=>$clang->gT('Insert page break in printable view'));
     
     $qattributes["scale_export"]=array(
@@ -3535,13 +3538,7 @@ function questionAttributes($returnByName=false)
     'default'=>0,      
     "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
-    
-    $qattributes["alternative_layout"]=array(
-    "types"=>"FK",
-    "help"=>$clang->gT("Use an alternative layout for this question"),
-    "caption"=>$clang->gT('Use alternative layout'));
-    
-    
+        
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
