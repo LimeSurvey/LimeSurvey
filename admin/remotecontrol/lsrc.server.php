@@ -493,7 +493,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		if($value!='')
 		{
 			$sInsertToken = "INSERT INTO {$dbprefix}tokens_".$iVid." 
-				(token,language) VALUES ('".$value."' , '".$_SESSION['lang']."'); ";
+				(token,language) VALUES ('".preg_replace('/[^_a-z0-9-]/i', '', $value)."' , '".$_SESSION['lang']."'); ";
 			if(!$connect->Execute($sInsertToken))
 			{
 				throw new SoapFault("Server: ", "Token could not be inserted");

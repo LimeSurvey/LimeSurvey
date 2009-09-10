@@ -1986,7 +1986,7 @@ if ($subaction == "updatetoken" &&
 	$data[] = $_POST['lastname'];
 	$data[] = sanitize_email($_POST['email']);
 	$data[] = $_POST['emailstatus'];
-	$santitizedtoken=sanitize_xss_string(strip_tags($_POST['token']));
+	$santitizedtoken=sanitize_token($_POST['token']);
 	$data[] = $santitizedtoken;
 	$data[] = sanitize_languagecode($_POST['language']);
 	$data[] = $_POST['sent'];
@@ -2052,7 +2052,7 @@ if ($subaction == "inserttoken" &&
         $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
     }
 
-	$santitizedtoken=trim(sanitize_xss_string(strip_tags($_POST['token'])));
+	$santitizedtoken=sanitize_token($_POST['token']);
 	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
 	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
 	."\t<tr><td align='center'>\n";
@@ -2221,20 +2221,20 @@ if ($subaction == "upload" &&
                 foreach ($ignoredcolumns  as $column)
 				{
                     unset($writearray[$column]);
-					}
-					$dupfound=false;
-					$invalidemail=false;
+				}
+				$dupfound=false;
+				$invalidemail=false;
 
                 if ($filterduplicatetoken!=false)
-					{
+				{
 				    $dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".db_quoteall($writearray['email'])." and firstname = ".db_quoteall($writearray['firstname'])." and lastname= ".db_quoteall($writearray['lastname'])."";
-						$dupresult = $connect->Execute($dupquery);
-						if ( $dupresult->RecordCount() > 0)
-						{
-							$dupfound = true;
-						$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
-						}
+					$dupresult = $connect->Execute($dupquery);
+					if ( $dupresult->RecordCount() > 0)
+					{
+						$dupfound = true;
+					$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
 					}
+				}
 
 
 				$writearray['email'] = trim($writearray['email']);
@@ -2262,7 +2262,11 @@ if ($subaction == "upload" &&
 					else
 					{
 					if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
-					if (!isset($writearray['token'])) $line[4] = "";
+					if (!isset($writearray['token'])) {
+                        $writearray['token'] = '';
+                    }else{
+                        $writearray['token']=sanitize_token($writearray['token']);  
+                    }
 					if (!isset($writearray['languagecode']) || $writearray['languagecode'] == "") $writearray['language'] = $baselanguage;
                         else $writearray['language']=$writearray['languagecode'];
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
