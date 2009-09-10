@@ -2469,7 +2469,7 @@ function doAssessment($surveyid)
 			$fieldmap=createFieldMap($surveyid, "full");
 			$i=0;
 			$total=0;
-
+            $groups=array();
 			foreach($fieldmap as $field)
 			{
 				if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P')))
