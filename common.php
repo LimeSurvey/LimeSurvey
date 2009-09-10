@@ -5168,7 +5168,7 @@ function retrieve_Answer($code)
 				$return=$clang->gT("No answer");
 			}
 		}
-		elseif (!$_SESSION[$code])
+		elseif (!$_SESSION[$code] && $_SESSION[$code] !=0)
 		{
 			$return=$clang->gT("No answer");
 		}
