@@ -3266,7 +3266,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Display rows'));
     
 	$qattributes["hide_tip"]=array(
-	"types"=>"!KLMOPRWZ",
+	"types"=>"!KLMNOPRWZ",
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
@@ -3535,6 +3535,13 @@ function questionAttributes($returnByName=false)
     'default'=>0,      
     "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
+    
+    $qattributes["alternative_layout"]=array(
+    "types"=>"FK",
+    "help"=>$clang->gT("Use an alternative layout for this question"),
+    "caption"=>$clang->gT('Use alternative layout'));
+    
+    
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
