@@ -22,7 +22,7 @@ if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run thi
 
 $versionnumber = "1.85+";
 $dbversionnumber = 138;
-$buildnumber = "7523";
+$buildnumber = "";
 
 ##################################################################################
 
@@ -3457,13 +3457,6 @@ function questionAttributes($returnByName=false)
     "types"=>"CEFGHLMOPWYZ1!:",
     "help"=>$clang->gT("1=nominal 2=ordinal 3=scale."),
     "caption"=>$clang->gT('Export scale type 1=nominal 2=ordinal 3=scale.'));
-	
-	$qattributes["e-follows_filter"]=array(
-    "types"=>"F",
-    "help"=>$clang->gT("Only show answers with a certain rating. Syntax: 12345X333X22 (SGQA identifier of previous question) |</=/>X | limit"),
-    "caption"=>$clang->gT('e-follows filter - Syntax example: 12345X333X22|<3|5'));
-	
-	
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {

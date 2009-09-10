@@ -4857,8 +4857,6 @@ function do_array_flexible($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
-
-	
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -4890,61 +4888,7 @@ function do_array_flexible($ia)
 		$ansresult = db_execute_assoc($ansquery);  //Checked
 		if ($ansresult->RecordCount()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
 		// $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-		
-		
-		//efollows	
-		//check if question attribute is set
-		if ($qa_data = arraySearchByKey('e-follows_filter', $qidattributes, 'attribute', 1))
-		{
-			$qa_set = true;
-			
-			
-			//get current DB entry
-			$dbid = $_SESSION['srid'];
-			
-			//get details from question attribute
-			$qa_data = $qa_data['value'];
-			
-			$qa_array = explode("|", $qa_data);
-			
-			$qa_sgq = $qa_array[0];
-		
-			$qa_limit = $qa_array[1];
-		
-			$qa_entries = $qa_array[2];
-			
-			$limit = " LIMIT $qa_entries";
-			
-			//check if data is stored in session
-			if(!isset($_SESSION['sgqkeys']))
-			{
-				$_SESSION['sgqkeys'] = array();
-			}
-			
-			if(array_key_exists($qa_sgq, $_SESSION['sgqkeys']))
-			{
-				$key_exists = true;
-			}
-			else
-			{
-				$key_exists = false;
-				array_push($_SESSION['sgqkeys'], $qa_sgq);				
-				$_SESSION[$qa_sgq] = array();
-			}
-		}
-		else
-		{
-			$qa_set = false;
-			
-			$limit = "";
-			
-			$qa_entries = 999;
-			
-			$key_exists = false;
-		}
-		
-		
-		if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1) || ($qa_set == true && $key_exists == false))
+		if (arraySearchByKey('random_order', $qidattributes, 'attribute', 1))
 		{
 			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 		}
@@ -4952,8 +4896,6 @@ function do_array_flexible($ia)
 		{
 			$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 		}
-		
-		
 		$ansresult = db_execute_assoc($ansquery); //Checked
 		$anscount = $ansresult->RecordCount();
 		$fn=1;
@@ -4986,22 +4928,7 @@ function do_array_flexible($ia)
 
 		$answer = '';
 		$trbc = '';
-		
-	/*	if($qa_set == true && (isset($key_exists) && $key_exists == true))
-		{
-			$ansrow = array();
-						
-			foreach($_SESSION[$qa_sgq] as $temp)
-			{
-				echo $temp;
-				array_push($ansrow, $temp);
-			}
-		}
-		else
-		{
-			$ansrow = $ansresult->FetchRow();
-		}*/
-		while($ansrow = $ansresult->FetchRow())
+		while ($ansrow = $ansresult->FetchRow())
 		{
 			if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
 			{
@@ -5021,176 +4948,124 @@ function do_array_flexible($ia)
 				}
 			}
 			$myfname = $ia[1].$ansrow['code'];
-			
-			//$trbc = alternation($trbc , 'row');
+			$trbc = alternation($trbc , 'row');
 			$answertext=answer_replace($ansrow['answer']);
 			$answertextsave=$answertext;
+			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
+			containing a list of unanswered questions, the current question must be in the array,
+			and there must be no answer available for the item in this session. */
+
+			if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
+
+			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
+				$answertext = '<span class="errormandatory">'.$answertext.'</span>';
+			}
+			$htmltbody2 = '';
+			if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
+			{
+				$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<td class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+			}
+			else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
+			{
+				$selected = getArrayFiltersForQuestion($ia[0]);
+				if (!in_array($ansrow['code'],$selected))
+				{
+					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
+					$_SESSION[$myfname] = "";
+				}
+				else
+				{
+					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: \" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+				}
+			}
+			else 
+			{
+				$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
+			}
+			if (strpos($answertext,'|'))
+			{
+				$answertext=substr($answertext,0, strpos($answertext,'|'));
+			}
+
+			$answer .= $htmltbody2
+			. "\t\t\t\t$answertext\n"
+			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+			if (isset($_SESSION[$myfname]))
+			{
+				$answer .= $_SESSION[$myfname];
+			}
+			$answer .= "\" />\n"
+			. "\t\t\t</th>\n";
+			$thiskey=0;
+			foreach ($labelcode as $ld)
+			{
+				$answer .= "\t\t\t<td class=\"answer_cell_00$ld\">\n"
+				. "\t\t\t\t<label for=\"answer$myfname-$ld\">\n"
+				. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
+				. html_escape(strip_tags($labelans[$thiskey])).'"';
+				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld)
+				{
+					$answer .= CHECKED;
+				}
+				// --> START NEW FEATURE - SAVE
+				$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+				. "\t\t\t\t</label>\n"
+				. "\t\t\t</td>\n";
+				// --> END NEW FEATURE - SAVE
+
+				$thiskey++;
+			}
+			if (strpos($answertextsave,'|')) 
+			{
+				$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
+				$answer .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
+			}
+			elseif ($right_exists)
+			{
+				$answer .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
+			}
+
+			if ($ia[6] != 'Y' && $shownoanswer == 1)
+			{
+				$answer .= "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-\">\n"
+				."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
+				if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
+				{
+					$answer .= CHECKED;
+				}
+				// --> START NEW FEATURE - SAVE
+				$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\"  />\n\t\t\t\t</label>\n\t\t\t</td>\n";
+				// --> END NEW FEATURE - SAVE
+			}
 			
-			//efollows
-			//if($qa_set == true && !in_array($ansrow['code'], $_SESSION['efollowsarray']) && $qa_entries > 0)
-			
-			if($qa_set == true)// && $key_exists == false)
-			{				
-				$sgqa = $qa_sgq.$ansrow['code'];
-				
-				//get data
-				//check if answer to previous question > $qa_limit
-				$checkquery = "SELECT $sgqa FROM {$dbprefix}survey_".$thissurvey['sid']." WHERE $sgqa $qa_limit AND id=$dbid";
-				$checkqueryresult = db_execute_assoc($checkquery);
-			}
-			/*elseif(isset($_SESSION['sgqkeys']) && in_array($ansrow['code'], $_SESSION['sgqkeys']))
-			{
-				echo "drin: ".$ansrow['code'];
-				$isthere = true;
-			}*/
-			if ($qa_set != true || (isset($checkqueryresult) && ($checkqueryresult->RecordCount()>0) && $qa_entries > 0 && $key_exists == false) || (isset($key_exists) && $key_exists == true && in_array($ansrow['code'], $_SESSION['sgqkeys'][$qa_sgq])))
-			{	
-				//alternation moved here
-				$trbc = alternation($trbc , 'row');
-				
-				$qa_entries--;
-				
-				/* Check if this item has not been answered: the 'notanswered' variable must be an array,
-				containing a list of unanswered questions, the current question must be in the array,
-				and there must be no answer available for the item in this session. */
-	
-				if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
-	
-				if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
-					$answertext = '<span class="errormandatory">'.$answertext.'</span>';
-				}
-				$htmltbody2 = '';
-				if ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
-				{
-					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<td class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-				}
-				else if (($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'S') || ($htmltbody=arraySearchByKey('array_filter', $qidattributes, 'attribute', 1) && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-				{
-					$selected = getArrayFiltersForQuestion($ia[0]);
-					if (!in_array($ansrow['code'],$selected))
-					{
-						$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-						$_SESSION[$myfname] = "";
-					}
-					else
-					{
-						$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" style=\"display: \" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
-					}
-				}
-				else 
-				{
-					$htmltbody2 = "\t\t<tr id=\"javatbd$myfname\" class=\"$trbc\">\n\t\t\t<th class=\"answertext\">\n\t\t\t\t<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
-				}
-				if (strpos($answertext,'|'))
-				{
-					$answertext=substr($answertext,0, strpos($answertext,'|'));
-				}
-	
-				$answer .= $htmltbody2
-				. "\t\t\t\t$answertext\n"
-				. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-				if (isset($_SESSION[$myfname]))
-				{
-					$answer .= $_SESSION[$myfname];
-				}
-				$answer .= "\" />\n"
-				. "\t\t\t</th>\n";
-				$thiskey=0;
-				foreach ($labelcode as $ld)
-				{
-					$answer .= "\t\t\t<td class=\"answer_cell_00$ld\">\n"
-					. "\t\t\t\t<label for=\"answer$myfname-$ld\">\n"
-					. "\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
-					. html_escape(strip_tags($labelans[$thiskey])).'"';
-					if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld)
-					{
-						$answer .= CHECKED;
-					}
-					// --> START NEW FEATURE - SAVE
-					$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
-					. "\t\t\t\t</label>\n"
-					. "\t\t\t</td>\n";
-					// --> END NEW FEATURE - SAVE
-	
-					$thiskey++;
-				}
-				if (strpos($answertextsave,'|')) 
-				{
-					$answertext=substr($answertextsave,strpos($answertextsave,'|')+1);
-					$answer .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
-				}
-				elseif ($right_exists)
-				{
-					$answer .= "\t\t\t<td class=\"answertextright\">&nbsp;</td>\n";
-				}
-	
-				if ($ia[6] != 'Y' && $shownoanswer == 1)
-				{
-					$answer .= "\t\t\t<td>\n\t\t\t\t<label for=\"answer$myfname-\">\n"
-					."\t\t\t\t\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
-					if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
-					{
-						$answer .= CHECKED;
-					}
-					// --> START NEW FEATURE - SAVE
-					$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\"  />\n\t\t\t\t</label>\n\t\t\t</td>\n";
-					// --> END NEW FEATURE - SAVE
-				}
-				
-				$answer .= "\t\t</tr>\n";
-				$inputnames[]=$myfname;
-				//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
-				$fn++;
-				
-				
-				//efollows
-				if($qa_set == true)
-				{
-					if($key_exists == false || !array_key_exists($ansrow['code'], $_SESSION[$qa_sgq]))
-					{
-						array_push($_SESSION[$qa_sgq], $ansrow['code']);
-						
-						//ksort($_SESSION[$qa_sgq]);
-						
-						$_SESSION['sgqkeys'][$qa_sgq] = $_SESSION[$qa_sgq];
-						
-						//"<br /><br />----".var_dump($_SESSION['sgqkeys']);
-					} 
-				}
-				
-				/*if(qa_set == true && isset($_SESSION['sgqkeys']) && (!in_array($ansrow['code'], $_SESSION['sgqkeys'])))
-				{
-					array_push($_SESSION['sgqkeys'], $ansrow['code']);
-					echo "<br>- array da UNTEN: ";
-					var_dump($_SESSION['sgqkeys']);
-				}*/
-				
-			}
-	}	//end e-follows limit check
-	
-	
-			$answer_cols = "\t<colgroup class=\"col-responses\">\n"
-			."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
-			
-			$odd_even = '';
-			foreach ($labelans as $c)
-			{
-				$odd_even = alternation($odd_even);
-				$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
-			}
-			if ($right_exists)
-			{
-				$odd_even = alternation($odd_even);
-				$answer_cols .= "\t\t<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
-			}
-			if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
-			{
-				$odd_even = alternation($odd_even);
-				$answer_cols .= "\t\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
-			}
-			$answer_cols .= "\t</colgroup>\n";
-	
-			$answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
+			$answer .= "\t\t</tr>\n";
+			$inputnames[]=$myfname;
+			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
+			$fn++;
+		}
+
+		$answer_cols = "\t<colgroup class=\"col-responses\">\n"
+		."\t<col class=\"col-answers\" width=\"$answerwidth%\" />\n" ;
+		
+		$odd_even = '';
+		foreach ($labelans as $c)
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"$odd_even\" width=\"$cellwidth%\" />\n";
+		}
+		if ($right_exists)
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"answertextright $odd_even\" width=\"$answerwidth%\" />\n";
+		}
+		if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory
+		{
+			$odd_even = alternation($odd_even);
+			$answer_cols .= "\t\t<col class=\"col-no-answer $odd_even\" width=\"$cellwidth%\" />\n";
+		}
+		$answer_cols .= "\t</colgroup>\n";
+
+		$answer = $answer_start . $answer_cols . $answer_head .$answer . "\t</tbody>\n</table>\n";
 	}
 	else
 	{
