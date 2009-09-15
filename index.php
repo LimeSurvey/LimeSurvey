@@ -1684,7 +1684,7 @@ function buildsurveysession()
 	global $surveyid, $dbprefix, $connect;
 	global $register_errormsg, $clang;
 	global $totalBoilerplatequestions;
-	global $templang, $move;
+	global $templang, $move, $rooturl;
 
 	if (!isset($templang) || $templang=='')
 	{
