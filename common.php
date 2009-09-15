@@ -29,6 +29,8 @@ $buildnumber = '$Rev$';
 // Check for most necessary requirements
 // Now check for PHP & db version
 // Do not localize/translate this!
+$buildnumber = trim(substr($buildnumber,6,5)); 
+
 $ver = explode( '.', PHP_VERSION );
 $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';     
