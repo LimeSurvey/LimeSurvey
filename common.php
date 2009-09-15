@@ -6547,7 +6547,7 @@ function GetUpdateInfo()
      
         // Simple delete for a file
         if (is_file($dirname) || is_link($dirname)) {
-            return unlink($dirname);
+            return @unlink($dirname);
         }
      
         // Loop through the folder
@@ -6564,5 +6564,5 @@ function GetUpdateInfo()
      
         // Clean up
         $dir->close();
-        return rmdir($dirname);
+        return @rmdir($dirname);
     }

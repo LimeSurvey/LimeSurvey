@@ -259,9 +259,12 @@ function UpdateStep4()
 
     $error=$http->Open($arguments);           
     $error=$http->SendRequest($arguments);
-    $error=$http->ReadReplyHeaders($headers);
-
-    if($error=="") {
+    $http->ReadReplyHeaders($headers);
+    if ($headers['content-type']=='text/html')
+    {
+        unlink($tempdir.'/update.zip');
+    }
+    elseif($error=='') {
         $body=''; $full_body=''; 
         for(;;){
             $error = $http->ReadReplyBody($body,10000);
@@ -292,10 +295,16 @@ function UpdateStep4()
     }    
     
     //Now unzip the new files over the existing ones.
-  $archive = new PclZip($tempdir.'/update.zip');
-  if ($archive->extract(PCLZIP_OPT_PATH, $rootdir)== 0) {
-    die("Error : ".$archive->errorInfo(true));
-  }    
+  if (file_exists($tempdir.'/update.zip')){
+      $archive = new PclZip($tempdir.'/update.zip');
+      if ($archive->extract(PCLZIP_OPT_PATH, $rootdir)== 0) {
+        die("Error : ".$archive->errorInfo(true));
+        }    
+  }
+  else
+  {
+    $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />'; 
+  }
                                                                 
       
 
