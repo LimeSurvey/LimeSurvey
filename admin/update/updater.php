@@ -257,7 +257,6 @@ function UpdateStep4()
     $http->GetRequestArguments("http://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
     $http->RestoreCookies($_SESSION['updatesession']);      
 
-    $updateinfo=false;
     $error=$http->Open($arguments);           
     $error=$http->SendRequest($arguments);
     $error=$http->ReadReplyHeaders($headers);
@@ -280,8 +279,14 @@ function UpdateStep4()
     foreach ($updateinfo['files'] as $afile)
     {
         if ($afile['type']=='D' && file_exists($rootdir.$afile['file']))
-        {
-            unlink($rootdir.$afile['file']);
+        {   
+            if (is_file($rootdir.$afile['file']))
+            {
+                unlink($rootdir.$afile['file']);
+            }
+            else{
+                rmdirr($rootdir.$afile['file']);
+            }
             $output.=sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />'; 
         }
     }    
