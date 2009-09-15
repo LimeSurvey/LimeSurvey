@@ -78,6 +78,26 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.85+ (build 7591) to 1.85+ (build 7636) [15-09-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: Estonian by Hando Riisikamp (c_schmitz)
+#Updated translation: IT by Giuseppe De Marco. (jaycburton)
+#Updated translation: IT-Formal by Giuseppe De Marco. (jaycburton)
+#Updated feature: Question attribute "hide_tip" now available for question type N (numerical input), bugtracker ticket 3635. (maziminke)
+-Fixed #03663: SurveyID INSERTANS in ExitUrl (both link and url description) isn't converted to new ID (lemeur)
+-Fixed another SQL errors while importing surveys with INSERTANS tags and magic_quotes on. (lemeur)
+-Fixed issue #03529: END URL - thanks janokary (jcleeland)
+-Fixed issue #03645: Ranking question show popup when $showpopus = 0; (jcleeland)
+-Fixed issue #03660: Token import accepts invalid characters in the token value (c_schmitz)
+-Fixed issue #03674: Slider having value "0" is shown as "no answer" when using SGQA at a following question (lemeur)
+-Fixed issue #3596: IE8 crashing on filtered multi flexi text array due to malformed HTML - thank you Microsoft for having wasted several hours of my life with your badly-coded browser (c_schmitz)
+-Fixed issue #3618: Can't load temporary saved survey on MSSQL (c_schmitz)
+-Fixed issue #3637: Per default the form tag will now try to disable auto-completion on surveys - this makes sense where people are using the same PC and browser to fill out surveys. (c_schmitz)
+-Fixed issue #3643: Superadmin cannot VVExport surveys owned by others (thanks to ITEd) (c_schmitz)
+-Fixed issue #3651: Date question behaving erratic on inactive survey when going forward and back. Fixed date question unable to handle very old dates before 1970 (on Windows) and 1901 on Linux (c_schmitz)
+-Fixed issue #3655: Reordering groups & questions does not work under certain conditions (c_schmitz)
+-Fixed issue #3658: Import fails with SQL error when magic_quotes is activated on the server (c_schmitz)
+-Fixed issue #3672: Error message after last 5 point array message (c_schmitz)
+
 Changes from 1.85+ (build 7548) to 1.85+ (build 7591) [08-09-2009] - Legend: + new feature, # update feature, - bug fix
 #Update of Croatian language (idobraca)
 #Updated Language: French. (b00z00)
