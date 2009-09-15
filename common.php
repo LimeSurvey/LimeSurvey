@@ -18,19 +18,12 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 
-####################### Do NOT touch the following entries #######################
-
-$versionnumber = "1.86RC";
-$dbversionnumber = 139;
-$buildnumber = '$Rev$'; 
-
-##################################################################################
+// Include version information
+require($rootdir.'/version.php');
 
 // Check for most necessary requirements
 // Now check for PHP & db version
 // Do not localize/translate this!
-$buildnumber = trim(substr($buildnumber,6,5)); 
-
 $ver = explode( '.', PHP_VERSION );
 $ver_num = $ver[0] . $ver[1] . $ver[2];
 $dieoutput='';     
