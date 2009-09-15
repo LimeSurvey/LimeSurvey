@@ -214,7 +214,8 @@ if ($databasetype=='mysql' || $databasetype=='mysqli') {
     {
       safe_die ("<br />Error: You need at least MySQL version 4.1 to run LimeSurvey. Your version:".$infoarray['version']);
     }
-    @$connect->Execute("SET CHARACTER SET 'utf8'");  //Checked    
+    @$connect->Execute("SET CHARACTER SET 'utf8'");  //Checked 
+    @$connect->Execute("SET NAMES 'utf8'");  //Checked         
 }
 
 // Setting dateformat for mssql driver. It seems if you don't do that the in- and output format could be different
