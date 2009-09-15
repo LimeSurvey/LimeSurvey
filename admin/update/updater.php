@@ -246,6 +246,11 @@ function UpdateStep4()
     // this is the last step - Download the zip file, unpackit  and replace files accordingly
     // Create DB and file backups now
     require_once("classes/pclzip/pclzip.lib.php");
+
+ //   require_once('classes/pclzip/pcltrace.lib.php');
+ //   require_once('classes/pclzip/pclzip-trace.lib.php');
+  
+ // PclTraceOn(2);    
     require_once($homedir."/classes/http/http.php");     
 
     $http=new http_class;    
@@ -297,7 +302,7 @@ function UpdateStep4()
     //Now unzip the new files over the existing ones.
   if (file_exists($tempdir.'/update.zip')){
       $archive = new PclZip($tempdir.'/update.zip');
-      if ($archive->extract(PCLZIP_OPT_PATH, $rootdir)== 0) {
+      if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
         die("Error : ".$archive->errorInfo(true));
         }    
   }
@@ -305,7 +310,7 @@ function UpdateStep4()
   {
     $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />'; 
   }
-                                                                
+  //  PclTraceDisplay();                                                              
       
 
   $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
