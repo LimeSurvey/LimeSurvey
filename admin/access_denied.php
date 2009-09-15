@@ -115,26 +115,29 @@ if (isset($_SESSION['loginID']))
 		}
 	elseif($action == "CSRFwarn")
 		{		
-		$accesssummary .= "<p><font color='red'>".$clang->gT("Security Alert")."</font>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.")."</p>";
+		$accesssummary .= "<p><span color='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	elseif($action == "FakeGET")
 		{		
-		$accesssummary .= "<p><font color='red'>".$clang->gT("Security Alert")."</font>: ".$clang->gT("Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.")."</p>";
+		$accesssummary .= "<p><span class='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
 		$accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	else
 		{
-		$accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";		
-		if(!empty($sid))
-			$accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		elseif(!empty($ugid))
-		//elseif(isset($_GET['ugid']))
-			{
-			$accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-					}
-		else 
-			$accesssummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		    $accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";		
+		    if(!empty($sid))
+            {
+                $accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            }
+		    elseif(!empty($ugid))
+		    {
+			    $accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		    }
+		    else
+            { 
+			    $accesssummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            }
 		}
 		
 	}
