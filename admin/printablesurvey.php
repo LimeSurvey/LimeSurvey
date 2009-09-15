@@ -1697,8 +1697,9 @@ while ($degrow = $degresult->FetchRow())
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
 
 // START recursive tag stripping.
-
-$server_is_newer = version_compare(PHP_VERSION , '5.1.0' , '>'); // PHP 5.1.0 introduced the count peramater for preg_replace() and thus allows this procedure to run with only one regular expression. Previous version of PHP need two regular expressions to do the same thing and thus will run a bit slower.
+// PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression. 
+// Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
+$server_is_newer = version_compare(PHP_VERSION , '5.1.0' , '>'); 
 $rounds = 0;
 while($rounds < 1)
 {
@@ -1707,11 +1708,13 @@ while($rounds < 1)
 	{
 		$survey_output['GROUPS'] = preg_replace(
 							 array(
-								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+                                 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+							    ,'/<th[^>]*>(?:&nbsp;|&#160;| )?<\/th>/isU'
 								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 							 )
 							,array(
 								 '[[EMPTY-TABLE-CELL]]'
+                                ,'[[EMPTY-TABLE-CELL-HEADER]]'
 								,''
 							 )
 							,$survey_output['GROUPS']
@@ -1724,10 +1727,12 @@ while($rounds < 1)
 		$survey_output['GROUPS'] = preg_replace(
 							 array(
 								 '/<td>(?:&nbsp;|&#160;| )?<\/td>/isU'
+                                ,'/<th[^>]*>(?:&nbsp;|&#160;| )?<\/th>/isU'
 								,'/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 							 )
 							,array(
 								 '[[EMPTY-TABLE-CELL]]'
+                                ,'[[EMPTY-TABLE-CELL-HEADER]]'
 								,''
 							 )
 							,$survey_output['GROUPS']
@@ -1744,10 +1749,12 @@ while($rounds < 1)
 		$survey_output['GROUPS'] = preg_replace(
 					 array(
 						 '/\[\[EMPTY-TABLE-CELL\]\]/'
+                        ,'/\[\[EMPTY-TABLE-CELL-HEADER\]\]/'
 						,'/\n(?:\t*\n)+/'
 					 )
 					,array(
 						 '<td>&nbsp;</td>'
+                        ,'<th>&nbsp;</th>'
 						,"\n"
 					 )
 					,$survey_output['GROUPS']
