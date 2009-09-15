@@ -2,15 +2,19 @@
 
 
 if ($action=='update'){
-   if ($subaction=='step3')
-   {
-    $adminoutput=UpdateStep3();          
-   }
-   elseif ($subaction=='step2')
-   {
-    $adminoutput=UpdateStep2();          
-   }
-   else  $adminoutput=UpdateStep1();
+    if ($subaction=='step4')
+    {
+        $adminoutput=UpdateStep4();          
+    }
+    elseif ($subaction=='step3')
+    {
+        $adminoutput=UpdateStep3();          
+    }
+    elseif ($subaction=='step2')
+    {
+        $adminoutput=UpdateStep2();          
+    }
+    else $adminoutput=UpdateStep1();
 }
 
 
@@ -80,6 +84,7 @@ function UpdateStep2()
             $full_body .= $body;
         }        
         $updateinfo=json_php5decode($full_body);
+        $http->SaveCookies($site_cookies);        
     }
     else
     {
@@ -110,7 +115,7 @@ function UpdateStep2()
             //A new file, check if this already exists
             $existingfiles[]=$afile;  
         }
-        elseif (($afile['type']=='D' || $afile['type']=='M') && sha1_file($rootdir.$afile['file'])!=$afile['checksum'])  // A deleted or modified file - check if it is unmodified
+        elseif (($afile['type']=='D' || $afile['type']=='M')  && is_file($rootdir.$afile['file']) && sha1_file($rootdir.$afile['file'])!=$afile['checksum'])  // A deleted or modified file - check if it is unmodified
         {
             $modifiedfiles[]=$afile;
         }
@@ -148,6 +153,7 @@ function UpdateStep2()
   $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" >Continue with update step 3</button>";
   $output.='</div><table><tr>';
   $_SESSION['updateinfo']=$updateinfo;
+  $_SESSION['updatesession']=$site_cookies;
   return $output;
 }
 
@@ -210,12 +216,89 @@ function UpdateStep3()
     }
   
   $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with update step 3</button>";
+  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
   $output.='</div><table><tr>';
   return $output;
 }
 
 
+function UpdateStep4()
+{
+    global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
+  
+    $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="background"><br />'; 
+    if (!isset( $_SESSION['updateinfo']))
+    {
+        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
+        
+        if ($updateinfo['error']==1)
+        {
+            setGlobalSetting('updatekey','');
+            $output.=$clang->gT('Your update key is invalid and was removed. ').'<br />'; 
+        }
+        else
+        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
+    }
+    else
+    {
+      $updateinfo=$_SESSION['updateinfo'];
+    }
+    // this is the last step - Download the zip file, unpackit  and replace files accordingly
+    // Create DB and file backups now
+    require_once("classes/pclzip/pclzip.lib.php");
+    require_once($homedir."/classes/http/http.php");     
+
+    $http=new http_class;    
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
+    $http->RestoreCookies($_SESSION['updatesession']);      
+
+    $updateinfo=false;
+    $error=$http->Open($arguments);           
+    $error=$http->SendRequest($arguments);
+    $error=$http->ReadReplyHeaders($headers);
+
+    if($error=="") {
+        $body=''; $full_body=''; 
+        for(;;){
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }        
+      file_put_contents($tempdir.'/update.zip',$full_body);
+    }
+    else
+    {
+        print( $error );
+    }
+    
+    // Now remove all files that are to be deleted according to update process
+    foreach ($updateinfo['files'] as $afile)
+    {
+        if ($afile['type']=='D' && file_exists($rootdir.$afile['file']))
+        {
+            unlink($rootdir.$afile['file']);
+            $output.=sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />'; 
+        }
+    }    
+    
+    //Now unzip the new files over the existing ones.
+  $archive = new PclZip($tempdir.'/update.zip');
+  if ($archive->extract(PCLZIP_OPT_PATH, $rootdir)== 0) {
+    die("Error : ".$archive->errorInfo(true));
+  }    
+                                                                
+      
+
+  $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
+  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
+  $output.='</div><table><tr>';
+  return $output;
+}
 
 
 

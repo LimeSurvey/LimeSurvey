@@ -515,7 +515,7 @@ function createinsertquery()
 			if (isset($postedfieldnames) && $postedfieldnames)
 			{
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
-               $query .= " lastpage = '".($thisstep+1)."',";
+               $query .= " lastpage = '".$thisstep."',";
 				if ($thissurvey['datestamp'] == "Y")
 				{
 					$query .= " datestamp = '".$_SESSION['datestamp']."',";
