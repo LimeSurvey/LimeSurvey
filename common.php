@@ -3552,7 +3552,7 @@ function questionAttributes($returnByName=false)
 	
 	$qattributes["time_limit_message"]=array(
 	"types"=>"STUX",
-	"inputtype"=>"text",
+	"inputtype"=>"textarea",
 	"help"=>$clang->gT("Time limit expired message"),
 	"caption"=>$clang->gT("Time limit expired message"));
 	
@@ -3564,7 +3564,7 @@ function questionAttributes($returnByName=false)
 	
 	$qattributes["time_limit_warning_message"]=array(
 	"types"=>"STUX",
-	"inputtype"=>"text",
+	"inputtype"=>"textarea",
 	"help"=>$clang->gT("Time limit warning message"),
 	"caption"=>$clang->gT("Time limit warning message"));
 	
@@ -3590,19 +3590,19 @@ function questionAttributes($returnByName=false)
 
 	$qattributes["time_limit_message_style"]=array(
 	"types"=>"STUX",
-	"inputtype"=>"text",
+	"inputtype"=>"textarea",
 	"help"=>$clang->gT("Time Limit Message CSS Style"),
 	"caption"=>$clang->gT("Time Limit Message CSS Style"));
 
 	$qattributes["time_limit_warning_style"]=array(
 	"types"=>"STUX",
-	"inputtype"=>"text",
+	"inputtype"=>"textarea",
 	"help"=>$clang->gT("Time Limit Warning CSS Style"),
 	"caption"=>$clang->gT("Time Limit Warning CSS Style"));
 	
 	$qattributes["time_limit_timer_style"]=array(
 	"types"=>"STUX",
-	"inputtype"=>"text",
+	"inputtype"=>"textarea",
 	"help"=>$clang->gT("Time Limit Timer CSS Style"),
 	"caption"=>$clang->gT("Time Limit Timer CSS Style"));
 

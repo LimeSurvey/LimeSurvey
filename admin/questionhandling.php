@@ -840,6 +840,8 @@ if ($action == "ajaxquestionattributes")
                                     break;
                     case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
                                     break;
+					case 'textarea':	$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+										break;
                 }
                 $ajaxoutput .="</li>\n";
             }
