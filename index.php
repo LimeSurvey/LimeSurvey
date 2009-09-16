@@ -2425,18 +2425,18 @@ function surveymover()
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
 	{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; "
-		. $clang->gT("Previous")." ' name='move2' />\n";
+		. $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
 		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
+		. $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
 	}
     // here, in some lace, is where I must modify to turn the next button conditionable
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
 		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
+		. $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{

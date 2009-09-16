@@ -84,6 +84,11 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 	}
 }                  
+//CHECK FOR TIMER QUESTIONS TO SAVE TIME REMAINING
+if (isset($_POST['timerquestion'])) 
+{
+	$_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+}
 
 //Check to see if we should set a submitdate or not
 // this depends on the move, and on quesitons checks

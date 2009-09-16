@@ -909,6 +909,238 @@ function validation_popup($ia, $notvalidated=null)
 	}
 }
 
+function return_timer_script($qidattributes, $ia, $disable=null) {
+		global $thissurvey, $clang;
+		
+		$thissurvey['timercount']++; //Used to count how many timer questions in a page, and ensure scripts only load once
+		
+		if($thissurvey['format'] != "S")
+		{
+			if($thissurvey['format'] != "G") 
+			{
+				return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n"; 
+				//We don't do the timer in any format other than question-by-question
+			}
+		}
+		
+		$time_limit=$qidattributes['time_limit'];
+
+		$disable_next=trim($qidattributes['time_limit_disable_next']) != '' ? $qidattributes['time_limit_disable_next'] : 0;
+		$time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
+		$time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
+		$time_limit_message=trim($qidattributes['time_limit_message']) != '' ? $qidattributes['time_limit_message'] : $clang->gT("Your time to answer this question has expired");
+		$time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
+		$time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? $qidattributes['time_limit_warning_message'] : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+		$time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
+		$time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
+		$time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
+            top: 10px;
+            left: 35%;
+            width: 30%;
+            height: 60px;
+            padding: 16px;
+            border: 8px solid #555;
+            background-color: white;
+            z-index:1002;
+			text-align: center;
+            overflow: auto;";
+		$time_limit_message_style.="\n		display: none;"; //Important to hide time limit message at start
+		$time_limit_warning_style=trim($qidattributes['time_limit_warning_style']) != '' ? $qidattributes['time_limit_warning_style'] : "position: absolute;
+            top: 10px;
+            left: 35%;
+            width: 30%;
+            height: 60px;
+            padding: 16px;
+            border: 8px solid #555;
+            background-color: white;
+            z-index:1001;
+			text-align: center;
+            overflow: auto;";
+		$time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
+		$time_limit_timer_style=trim($qidattributes['time_limit_timer_style']) != '' ? $qidattributes['time_limit_timer_style'] : "position: relative;
+			width: 150px;
+			margin-left: auto;
+			margin-right: auto;
+			border: 1px solid #111;
+			text-align: center;
+			background-color: #EEE;
+			margin-bottom: 5px;
+			font-size: 8pt;";
+
+		$timersessionname="timer_question_".$ia[0];
+		if(isset($_SESSION[$timersessionname])) {
+			$time_limit=$_SESSION[$timersessionname];
+		} 
+		
+		$output = "
+	<input type='hidden' name='timerquestion' value='".$timersessionname."' />
+	<input type='hidden' name='".$timersessionname."' id='".$timersessionname."' value='".$time_limit."' />
+";
+	if($thissurvey['timercount'] < 2) 
+	{
+		$output .="
+    <script type='text/javascript'>
+	<!--
+		function createCookie(name,value,days) {
+			if (days) {
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+				var expires = '; expires='+date.toGMTString();
+			}
+			else var expires = '';
+			document.cookie = name+'='+value+expires+'; path=/';
+		}
+
+		function readCookie(name) {
+			var nameEQ = name + '=';
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			}
+			return null;
+		}
+
+		function eraseCookie(name) {
+			createCookie(name,'',-1);
+		}
+		
+		function freezeFrame(elementid) {
+			if(document.getElementById(elementid) !== null) {
+				var answer=document.getElementById(elementid);
+				if(answer.value == '') {
+					answer.value=' ';
+				}
+				answer.blur();
+				answer.onfocus=function() {answer.blur();};
+			}		
+		}
+	//-->
+	</script>";
+	$output .= "
+    <script type='text/javascript'>
+	<!--
+		function countdown(questionid,timer,action,warning,warninghide,disable){
+		    if(!timeleft) {var timeleft=timer;}
+			if(!warning) {var warning=0;}
+			if(!warninghide) {var warninghide=0;}";
+			
+	if($thissurvey['format'] == "G")
+	{
+		//Override all other options and just allow freezing, survey is presented in group by group mode
+		$output .="
+			action = 3;";
+	}
+	$output .="
+			var timerdisplay='LS_question'+questionid+'_Timer';
+			var warningtimedisplay='LS_question'+questionid+'_Warning';
+			var warningdisplay='LS_question'+questionid+'_warning';
+			var expireddisplay='question'+questionid+'_timer';
+			var timersessionname='timer_question_'+questionid;
+			document.getElementById(timersessionname).value=timeleft;
+			timeleft--;
+			cookietimer=readCookie(timersessionname);
+			if(cookietimer !== null && cookietimer <= timeleft) {
+			  timeleft=cookietimer;
+			}
+			eraseCookie(timersessionname);
+			createCookie(timersessionname, timeleft, 7);";
+	if($disable_next == 1) {
+		$output .= "
+		if(document.getElementById('movenextbtn') !== null) { 
+			document.getElementById('movenextbtn').disabled=true;
+		}
+		";
+	}
+	$output .="
+			if(warning > 0 && timeleft<=warning) {
+			  var wsecs=warning%60;
+			  if(wsecs<10) wsecs='0' + wsecs;
+			  var WT1 = (warning - wsecs) / 60;
+			  var wmins = WT1 % 60; if (wmins < 10) wmins = '0' + wmins;
+			  var whours = (WT1 - wmins) / 60;
+			  var dmins=''
+			  var dhours=''
+			  var dsecs=''
+			  if (whours < 10) whours = '0' + whours;
+			  if (whours > 0) dhours = whours + ' ".$clang->gT('hours').", ';
+			  if (wmins > 0) dmins = wmins + ' ".$clang->gT('mins').", ';
+			  if (wsecs > 0) dsecs = wsecs + ' ".$clang->gT('seconds')."';
+			  if(document.getElementById(warningtimedisplay) !== null) {
+			      document.getElementById(warningtimedisplay).innerHTML = dhours+dmins+dsecs;
+			  }
+			  document.getElementById(warningdisplay).style.display='';
+			}
+			if(warning > 0 && warninghide > 0 && document.getElementById(warningdisplay).style.display != 'none') {
+			  if(warninghide == 1) {
+			    document.getElementById(warningdisplay).style.display='none';
+			    warning=0;
+			  }
+			  warninghide--;
+			}
+			var secs = timeleft % 60; 
+			if (secs < 10) secs = '0'+secs;
+			var T1 = (timeleft - secs) / 60;
+			var mins = T1 % 60; if (mins < 10) mins = '0'+mins;
+			var hours = (T1 - mins) / 60; 
+			if (hours < 10) hours = '0'+hours;
+			var d2hours='';
+			var d2mins='';
+			var d2secs='';
+			if (hours > 0) d2hours = hours+' ".$clang->gT('hours').": ';
+			if (mins > 0) d2mins = mins+' ".$clang->gT('mins').": ';
+			if (secs > 0) d2secs = secs+' ".$clang->gT('seconds')."';
+			if (secs < 1) d2secs = '0 ".$clang->gT('seconds')."';
+			document.getElementById(timerdisplay).innerHTML = '".$clang->gT('Time Remaining').":<br />'+d2hours + d2mins + d2secs;
+			if (timeleft>0){
+				var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warninghide+', \"'+disable+'\")';
+				setTimeout(text,1000);
+			} else {
+			    //Countdown is finished, now do action
+				switch(action) {
+					case 2: //Just move on, no warning
+						if(document.getElementById('movenextbtn') !== null) {
+						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						}
+						freezeFrame(disable);
+						eraseCookie(timersessionname);
+						document.limesurvey.submit();
+						break;
+					case 3: //Just warn, don't move on
+						document.getElementById(expireddisplay).style.display='';
+						if(document.getElementById('movenextbtn') !== null) {
+						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						}
+						freezeFrame(disable);
+						this.onsubmit=function() {eraseCookie(timersessionname);};
+						break;
+					default: //Warn and move on
+						document.getElementById(expireddisplay).style.display='';
+						if(document.getElementById('movenextbtn') !== null) {
+						    if(document.getElementById('movenextbtn').disabled==true) document.getElementById('movenextbtn').disabled=false;
+						}
+						freezeFrame(disable);
+						eraseCookie(timersessionname);
+						setTimeout('document.limesurvey.submit()', ".$time_limit_message_delay.");
+						break;
+				}
+			}
+		}
+	//-->
+	</script>";
+	}
+		$output .= "<div id='question".$ia[0]."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
+		
+		$output .= "<div id='LS_question".$ia[0]."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
+		$output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
+		//Call the countdown script
+		$output .= "<script type='text/javascript'>
+    countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_display_time.", '".$disable."');
+</script>\n\n";
+	return $output;
+}
+
 
 // ==================================================================
 // setting constants for 'checked' and 'selected' inputs
@@ -920,7 +1152,14 @@ define('SELECTED' , ' selected="selected"' , true);
 
 function do_boilerplate($ia)
 {
-	$answer = '
+	$qidattributes=getQuestionAttributes($ia[0]);
+
+	if (trim($qidattributes['time_limit'])!='')
+	{
+		$answer .= return_timer_script($qidattributes, $ia);
+	}
+
+	$answer .= '
 		<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />
 ';
 	$inputnames[]=$ia[1];
@@ -3763,7 +4002,7 @@ function do_shortfreetext($ia)
 {
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
-	
+
     if ($qidattributes['other_numbers_only']==1)
     {
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
@@ -3849,7 +4088,11 @@ function do_shortfreetext($ia)
 		.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
 		."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";	
 	}			
-			
+	if (trim($qidattributes['time_limit'])!='')
+	{
+		$answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+	}
+
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 
@@ -3863,6 +4106,7 @@ function do_longfreetext($ia)
 {
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+	
     if (trim($qidattributes['maximum_chars'])!='')
     {
 		$maxsize=$qidattributes['maximum_chars'];
@@ -3914,6 +4158,11 @@ function do_longfreetext($ia)
 
 	$answer .= "</textarea>\n";
 
+	if (trim($qidattributes['time_limit'])!='')
+	{
+		$answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+	}
+	
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }
@@ -3924,7 +4173,9 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
+	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
+
     if (trim($qidattributes['maximum_chars'])!='')
     {
 		$maxsize=$qidattributes['maximum_chars'];
@@ -3978,6 +4229,12 @@ function do_hugefreetext($ia)
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
 	$answer .= "</textarea>\n";
+
+	if (trim($qidattributes['time_limit']) != '')
+	{
+		$answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+	}
+
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);
 }

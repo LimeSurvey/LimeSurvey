@@ -3534,6 +3534,78 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
     "caption"=>$clang->gT('SPSS export scale type'));
         
+	//Timer attributes
+	$qattributes["time_limit"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit for question"),
+	"caption"=>$clang->gT("Time limit for question (in seconds)"));
+	
+	$qattributes["time_limit_action"]=array(
+	"types"=>"STUX",
+    'inputtype'=>'singleselect',
+    'options'=>array(1=>$clang->gT('Warn and move on'),
+                     2=>$clang->gT('Move on without warning'),
+					 3=>$clang->gT('Disable only')),
+	"help"=>$clang->gT("Time limit expired action"),
+	"caption"=>$clang->gT("Time limit expired action"));
+	
+	$qattributes["time_limit_message"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"text",
+	"help"=>$clang->gT("Time limit expired message"),
+	"caption"=>$clang->gT("Time limit expired message"));
+	
+	$qattributes["time_limit_message_delay"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit expired message delay"),
+	"caption"=>$clang->gT("Time limit expired message delay"));
+	
+	$qattributes["time_limit_warning_message"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"text",
+	"help"=>$clang->gT("Time limit warning message"),
+	"caption"=>$clang->gT("Time limit warning message"));
+	
+	$qattributes["time_limit_warning"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit warning to display (in seconds)"),
+	"caption"=>$clang->gT("Time limit warning to display(in seconds)"));
+	
+	$qattributes["time_limit_warning_display_time"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit warning to display for x seconds"),
+	"caption"=>$clang->gT("Time limit warning to display for x seconds"));
+	
+	$qattributes["time_limit_disable_next"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+	"help"=>$clang->gT("Time limit disable next button"),
+	"caption"=>$clang->gT("Time limit disable next button"));
+
+	$qattributes["time_limit_message_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"text",
+	"help"=>$clang->gT("Time Limit Message CSS Style"),
+	"caption"=>$clang->gT("Time Limit Message CSS Style"));
+
+	$qattributes["time_limit_warning_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"text",
+	"help"=>$clang->gT("Time Limit Warning CSS Style"),
+	"caption"=>$clang->gT("Time Limit Warning CSS Style"));
+	
+	$qattributes["time_limit_timer_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"text",
+	"help"=>$clang->gT("Time Limit Timer CSS Style"),
+	"caption"=>$clang->gT("Time Limit Timer CSS Style"));
+
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
