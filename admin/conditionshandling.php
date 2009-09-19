@@ -62,28 +62,6 @@ if (isset($_POST['method']))
 	}
 }
 
-/**
-if (isset($_POST['ConditionConst']))
-{
-	$html_ConditionConst = html_escape(auto_unescape($_POST['ConditionConst']));
-}
-if (isset($_POST['prevQuestionSGQA']))
-{
-	$html_prevQuestionSGQA = html_escape(auto_unescape($_POST['prevQuestionSGQA']));
-}
-if (isset($_POST['tokenAttr']))
-{
-	$html_tokenAttr = html_escape(auto_unescape($_POST['tokenAttr']));
-}
-if (isset($_POST['ConditionRegexp']))
-{
-	$html_ConditionRegexp = html_escape(auto_unescape($_POST['ConditionRegexp']));
-}
-if (isset($_POST['csrctoken']))
-{
-	$html_csrctoken = html_escape(auto_unescape($_POST['csrctoken']));
-}
-**/
 
 if (isset($_POST['newscenarionum']))
 {
@@ -93,7 +71,8 @@ if (isset($_POST['newscenarionum']))
 
 include_once("login_check.php");
 include_once("database.php");
-
+// Caution (lemeur): database.php uses auto_unescape on all entries in $_POST
+// Take care to not use auto_unescape on $_POST variables after this
 
 $conditionsoutput = "";
 
@@ -217,27 +196,29 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 		}
 
 		unset($posted_condition_value);
+		// Please note that auto_unescape is already applied in database.php included above
+		// so we only need to db_quote _POST variables
 		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['ConditionConst'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['ConditionConst']);
 		}
 		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['prevQuestionSGQA'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
 		}
 		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['tokenAttr'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['tokenAttr']);
 		}
 		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['ConditionRegexp'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		}
 
 		if (isset($posted_condition_value))
 		{ 
 			$query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', ".$posted_condition_value.")";
+				. "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '".$posted_condition_value."')";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
 	}
@@ -277,26 +258,28 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
 		}
 
 		unset($posted_condition_value);
+		// Please note that auto_unescape is already applied in database.php included above
+		// so we only need to db_quote _POST variables
 		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['ConditionConst'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['ConditionConst']);
 		}
 		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['prevQuestionSGQA'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
 		}
 		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['tokenAttr'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['tokenAttr']);
 		}
 		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
 		{
-			$posted_condition_value = $connect->qstr($_POST['ConditionRegexp'],get_magic_quotes_gpc());
+			$posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		}
 
 		if (isset($posted_condition_value)) 
 		{ 
-			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value=".$posted_condition_value." "
+			$query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='".$posted_condition_value."' "
 				. " WHERE cid={$p_cid}";
 			$result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		}
@@ -1819,10 +1802,42 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	if ($subaction == "editthiscondition")
 	{
 		$multipletext = "";
+		if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
+		{
+			$EDITConditionConst=html_escape($_POST['EDITConditionConst']);
+		}
+		else
+		{
+			$EDITConditionConst="";
+		}
+		if (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
+		{
+			$EDITConditionRegexp=html_escape($_POST['EDITConditionRegexp']);
+		}
+		else
+		{
+			$EDITConditionRegexp="";
+		}
 	}
 	else
 	{
 		$multipletext = "multiple";
+		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
+		{
+			$EDITConditionConst=html_escape($_POST['ConditionConst']);
+		}
+		else
+		{
+			$EDITConditionConst="";
+		}
+		if (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
+		{
+			$EDITConditionRegexp=html_escape($_POST['ConditionRegexp']);
+		}
+		else
+		{
+			$EDITConditionRegexp="";
+		}
 	}
 
 
@@ -1844,7 +1859,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t\t</div>\n\t\t\t\n";
 	// Constant tab 
 	$conditionsoutput .= "<div id='CONST' style='display:' >"
-		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' align='left' style='width:600px;font-family:verdana; font-size:10' size='7' ></textarea>\n"
+		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' align='left' style='width:600px;font-family:verdana; font-size:10' size='7' >$EDITConditionConst</textarea>\n"
 		."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
 		."\t\t</div>\n";
 	// Previous answers tab @SGQA@ placeholders
@@ -1879,7 +1894,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// Regexp Tab
 	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
-		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align='left' ></textarea>\n"
+		."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align='left' >$EDITConditionRegexp</textarea>\n"
 		."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		."\t\t</div>\n";
 	$conditionsoutput .= "\t\t</div>\n"; // end conditiontarget div
@@ -1942,22 +1957,26 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	{ // in edit mode we read previous values in order to dusplay them in the corresponding inputs
 		if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['EDITConditionConst']))."';\n";
+			// In order to avoid issues with backslash escaping, I don't use javascript to set the value
+			// Thus the value is directly set when creating the Textarea element
+			//$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['EDITConditionConst'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		}
 		elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
 		{ // TIBO
-			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['EDITprevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['EDITprevQuestionSGQA'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		}
 		elseif (isset($_POST['EDITtokenAttr']) && $_POST['EDITtokenAttr'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['EDITtokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['EDITtokenAttr'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		}
 		elseif (isset($_POST['EDITConditionRegexp']) && $_POST['EDITConditionRegexp'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['EDITConditionRegexp']))."';\n";
+			// In order to avoid issues with backslash escaping, I don't use javascript to set the value
+			// Thus the value is directly set when creating the Textarea element
+			//$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['EDITConditionRegexp'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		}
 		elseif (isset($_POST['EDITcanswers']) && is_array($_POST['EDITcanswers']))
@@ -1968,12 +1987,12 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		}
 		else
 		{
-			$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		}
 	}
@@ -1981,41 +2000,45 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 	{ // in other modes, for the moment we do the same as for edit mode
 		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".javascript_escape(auto_unescape($_POST['ConditionConst']))."';\n";
+			// In order to avoid issues with backslash escaping, I don't use javascript to set the value
+			// Thus the value is directly set when creating the Textarea element
+			//$conditionsoutput .= "\tdocument.getElementById('ConditionConst').value='".html_escape($_POST['ConditionConst'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		}
 		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
 		{ // TIBO
-			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".javascript_escape(auto_unescape($_POST['prevQuestionSGQA']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['prevQuestionSGQA'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		}
 		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".javascript_escape(auto_unescape($_POST['tokenAttr']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('tokenAttr').value='".html_escape($_POST['tokenAttr'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
 		}
 		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".javascript_escape(auto_unescape($_POST['ConditionRegexp']))."';\n";
+			// In order to avoid issues with backslash escaping, I don't use javascript to set the value
+			// Thus the value is directly set when creating the Textarea element
+			//$conditionsoutput .= "\tdocument.getElementById('ConditionRegexp').value='".html_escape($_POST['ConditionRegexp'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
 		}
 		else
 		{ // was a predefined answers post
 			if (isset($_POST['cquestions']))
 			{
-				$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+				$conditionsoutput .= "\tdocument.getElementById('cquestions').value='".html_escape($_POST['cquestions'])."';\n";
 			}
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 		}
 
 		if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		{
-			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".javascript_escape(auto_unescape($_POST['csrctoken']))."';\n";
+			$conditionsoutput .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCTOKENATTRS';\n";
 		}
 		else
 		{
-			if (isset($_POST['cquestions'])) $conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape(auto_unescape($_POST['cquestions']))."';\n";
+			if (isset($_POST['cquestions'])) $conditionsoutput .= "\tdocument.getElementById('cquestions').value='".javascript_escape($_POST['cquestions'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		}
 	}
