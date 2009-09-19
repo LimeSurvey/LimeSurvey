@@ -2457,7 +2457,7 @@ if ($subaction == "uploadldap" &&
 						$invalidemail=false;
 						if ($filterduplicatetoken)
 						{
-							$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email='$myemail' and firstname='$myfirstname' and lastname='$mylastname'";
+							$dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".db_quoteall($myemail)." and firstname=".db_quoteall($myfirstname)." and lastname=".db_quoteall($mylastname);
 							$dupresult = $connect->Execute($dupquery);
 							if ( $dupresult->RecordCount() > 0)
 							{
