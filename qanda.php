@@ -912,7 +912,12 @@ function validation_popup($ia, $notvalidated=null)
 function return_timer_script($qidattributes, $ia, $disable=null) {
 		global $thissurvey, $clang;
 		
-		$thissurvey['timercount']++; //Used to count how many timer questions in a page, and ensure scripts only load once
+		if(isset($thissurvey['timercount'])) 
+		{
+			$thissurvey['timercount']++; //Used to count how many timer questions in a page, and ensure scripts only load once
+		} else {
+			$thissurvey['timercount']=1;
+		}
 		
 		if($thissurvey['format'] != "S")
 		{
