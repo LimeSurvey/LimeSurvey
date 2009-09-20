@@ -198,19 +198,19 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
 		unset($posted_condition_value);
 		// Please note that auto_unescape is already applied in database.php included above
 		// so we only need to db_quote _POST variables
-		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
+		if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		{
 			$posted_condition_value = db_quote($_POST['ConditionConst']);
 		}
-		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
+		elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		{
 			$posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
 		}
-		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
+		elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		{
 			$posted_condition_value = db_quote($_POST['tokenAttr']);
 		}
-		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
+		elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		{
 			$posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		}
@@ -260,19 +260,19 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
 		unset($posted_condition_value);
 		// Please note that auto_unescape is already applied in database.php included above
 		// so we only need to db_quote _POST variables
-		if (isset($_POST['ConditionConst']) && $_POST['ConditionConst']!='')
+		if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		{
 			$posted_condition_value = db_quote($_POST['ConditionConst']);
 		}
-		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA']!='')
+		elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		{
 			$posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
 		}
-		elseif (isset($_POST['tokenAttr']) && $_POST['tokenAttr']!='')
+		elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		{
 			$posted_condition_value = db_quote($_POST['tokenAttr']);
 		}
-		elseif (isset($_POST['ConditionRegexp']) && $_POST['ConditionRegexp']!='')
+		elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		{
 			$posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		}
@@ -1847,7 +1847,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t\t<ul>\n"
 		."\t\t\t<li><a href=\"#CANSWERSTAB\"><span>".$clang->gT("Predefined")."</span></a></li>\n"
 		."\t\t\t<li><a href=\"#CONST\"><span>".$clang->gT("Constant")."</span></a></li>\n"
-		."\t\t\t<li><a href=\"#PREVQUESTIONS\"><span>".$clang->gT("Questions")."</span></a></li>\n"
+		."\t\t\t<li><a href=\"#PREVQUESTIONS\" ><span>".$clang->gT("Questions")."</span></a></li>\n"
 		."\t\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token")."</span></a></li>\n"
 		."\t\t\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
 		."\t\t</ul>\n";
