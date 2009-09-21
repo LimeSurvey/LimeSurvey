@@ -77,6 +77,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7636) to 1.85+ (build 7660) [21-09-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: Dutch by Menno Dekker. (jaycburton)
+#Updated translation: Finnish by Tapio Nurminen. (jaycburton)
+#Updated translation: German (c_schmitz)
+#Updated translation: Lithuanian by Piotras Cimmperman. (jaycburton)
+#Updated translation: Swedish (maxz)
+#Updated translation: French. (b00z00)
+#Updated translation: Croatian and Italian language (idobraca)
+-Fixed #03687: LDAP import of names with apostrophes fails. Patch kindly provided by sradman. (lemeur)
+-Fixed #03699: disapearing '\' in conditions values (constant or regexp) when PHP magic_quotes are turned on. (lemeur)
+-Fixed #03700: bug in the condition editor, cannot test for empty values. (lemeur)
+-Fixed #3408: Question type F (array flexible labels) not shown right in printable survey if answer is empty (c_schmitz)
+-Fixed issue #3667: Multibyte data saved as question marks even when collation correct in database (c_schmitz)
+-Fixed issue #3680: Improve CSRF security alert to let users know what might cause the error (c_schmitz)
+-Fixed issue #3685: Notice when captchas are activated in index.php (c_schmitz)
+-Fixed issue (unreported): Removed duplicate tip on question with comments (c_schmitz)
 
 Changes from 1.85+ (build 7591) to 1.85+ (build 7636) [15-09-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: Estonian by Hando Riisikamp (c_schmitz)
