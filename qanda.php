@@ -2114,17 +2114,14 @@ function do_listwithcomment($ia)
 	$ansresult = db_execute_assoc($ansquery);      //Checked
 	$anscount = $ansresult->RecordCount();
 
-	$hint_list = $clang->gT('Please choose one of the following');
+
 	$hint_comment = $clang->gT('Please enter your comment here');
 
 	if ($lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
 	{
-		$answer .= '
-<div class="list">
-	<p class="tip">'.$hint_list.':</p>
-
-	<ul>
-';
+		$answer .= '<div class="list">
+                    	<ul>
+                   ';
 
 		while ($ansrow=$ansresult->FetchRow())
 		{
@@ -4928,6 +4925,8 @@ function do_array_flexible($ia)
 
 		$answer = '';
 		$trbc = '';
+        $inputnames=array();
+
 		while ($ansrow = $ansresult->FetchRow())
 		{
 			if (isset($repeatheadings) && $repeatheadings > 0 && ($fn-1) > 0 && ($fn-1) % $repeatheadings == 0)
