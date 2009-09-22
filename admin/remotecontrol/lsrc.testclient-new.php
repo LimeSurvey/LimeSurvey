@@ -20,238 +20,219 @@
 //// errors are ok, but warnings have nothing to say (in this case, sometimes warnings are useful!)
 //ini_set("error_reporting", "E_ALL & ~E_WARNING");
 
-class testclient {
-
-	//Configuration...
-	/**change this to the installation path, where you want to try the functions.*/
-	public $limeUrl = 'http://localhost/limesurvey'; 
-
-	/** this have to be an admin account for full functionality*/
-	public $user = 'admin'; 
-
-	/** password to the account*/
-	public $pass = 'password'; 
-
-	/** normally you do not have to change this. But sometimes you want to change this to an static wsdl file like i.e. '/admin/remotecontrol/lsrc.wsdl'.*/
-	public $wsdl = '/admin/remotecontrol/lsrc.server.php?wsdl'; 
-	
-	public $path2wsdl = ''; //will get concatinated later on
-
-	public $sid = 0; //just the initial value
-
-	public $soapClient; //the soapClient object
-
-	function prepare($sid = 0)
-	{
-		$this->path2wsdl = $this->limeUrl.$this->wsdl;
-//		$this->user = $user;
-//		$this->pass = $pass;
-		$this->sid = $sid;
-
-		ini_set("allow_url_fopen", 1);
-		$file = fopen($this->path2wsdl,"r");
-		if(class_exists(SoapClient) && $file!=FALSE)
-		{
-			$this->soapClient = new SoapClient($this->path2wsdl, array('soap_version' => SOAP_1_1,
-            'trace' => 1));   
-		}
-	}
-
-	function soapCheck ()
-	{
-		$soapCheck ='<div style="color:white;background-color:black;border: 1px solid green;">';
-		if(class_exists(SoapClient))
-		{
-			$soapCheck .= "<div style='float:left;background:green;color:white;padding:5px;margin-right:5px;'>
-						SOAP Erweiterung existiert</div> ";
-		}
-		else
-		{
-			$soapCheck .= "<div style='float:left;background:red;color:white;padding:5px;margin-right:5px;'>
-						SOAP Erweiterung fehlt!</div> ";
-		}
-		if(LIBXML_VERSION>=20540)
-		{
-			$soapCheck .= " <div style='float:left;background:green;color:white;padding:5px;margin-right:5px;'>
-						libXML version '".LIBXML_DOTTED_VERSION."' OK</div>";
-		}
-		else
-		{
-			$soapCheck .= " <div style='float:left;background:red;color:white;padding:5px;margin-right:5px;'>
-						libXML version '".(LIBXML_DOTTED_VERSION )."' nicht OK</div>";
-		}
-		// Check ob eine wsdl Datei gefunden werden kann
-		//$wsdlfile = ;
-
-		ini_set("allow_url_fopen", 1);
-		if (!fopen($this->path2wsdl,"r"))
-		{
-			$soapCheck .= "<div style='float:left;background:red;color:white;padding:5px;'>
-						Der Pfad zur WSDL Datei ist nicht korrekt oder die WSDL Datei fehlt!</div>";
-		}
-		else
-		{
-			$soapCheck .= "<div style='float:left;background:green;color:white;padding:5px;'>
-						WSDL Datei konnte gefunden werden</div>";
-		}
-		$soapCheck .= "<div style='clear:both;background-color:black;'>
-					<form action='".$_SERVER['PHP_SELF']."' method='post'>
-					<input type='text' name='wsdl' size='97' value='".$this->path2wsdl."' disabled='disabled' />
-					<input type='submit' name='validate' value='neu checken!' />
-					</form>
-					</div></div>";
-		return $soapCheck;
-	}
-	function getServerFunctions()
-	{
-		$return = "<b>Client object functions:</b> <font style='font-size:x-small'>(As given in the wsdl file. Functions could be disabled or else on the serverside. There is no guarantee the functions really have these Params nor that the functions exist on the serverside.)</font><br/>";
-		if (!(!fopen($this->path2wsdl,"r")))
-		{
-			$funcs = $this->soapClient->__getFunctions();
-	
-			foreach($funcs as $func)
-			{
-				$return .= '<p><font style="font-family:tahoma, arial;font-size:small;" >';
-				$return .= $func;
-				$return .= '</font></p>';
-			}
-		}
-		return $return;
-	}
-	function getResponse()
-	{
-		$sOutput .="<br/><br/>Dumping <b>request headers</b>:<br/><pre>"
-		.$this->soapClient->__getLastRequestHeaders()."</pre>";
-	
-		$sOutput .="Dumping <b>request</b>:<code>".htmlentities($this->soapClient->__getLastRequest())."</code>";
-	
-		$sOutput .="<br/><br/><br/> Dumping <b>response headers</b>:<br/><pre>"
-		.$this->soapClient->__getLastResponseHeaders()."</pre>";
-		$sOutput .="<br/>Dumping <b>response</b>:<br/><code>".htmlentities($this->soapClient->__getLastResponse())."</code>";
-		return $sOutput;
-		
-	}
-	function getAvailableModules ($mode = 'mod')
-	{
-		try
-		{	return $this->soapClient->sAvailableModules($this->user, $this->pass, $mode);}
-		catch (SoapFault $fault)
-		{	return "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
-	}
-	function sendStatistics ( $email, $type = 'pdf', $graph)
-	{
-
-		try
-		{
-			$sReturn = $this->soapClient->fSendStatistic($this->user, $this->pass, $this->sid, $email, $type, $graph);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-		return $sOutput;
-	}
-	function getFieldmap()
-	{
-
-	}
-	function sendMail( $type, $maxmails, $subject, $message)
-	{
-
-	}
-	function deleteSurvey()
-	{
-
-	}
-	function importMatrix ($title, $question, $help, $items, $module, $mandatory )
-	{
-
-	}
-	function importFreetext ($title, $question, $help, $module, $mandatory )
-	{
-
-	}
-	function importQuestion ($module, $mandatory)
-	{
-
-	}
-	function importGroup ($module, $name, $description)
-	{
-
-	}
-	function activateSurvey($start = '1980-01-01', $end = '1980-01-01')
-	{
-
-	}
-	function changeSurvey($table, $key, $value, $where, $mode)
-	{
-
-	}
-	function createSurvey($title, $description, $welcome, $endtext, $email, $name, $url, $urldesc, $module, $autord='N')
-	{
-		try
-		{
-			$sReturn = $this->soapClient->sCreateSurvey($this->user, $this->pass, $this->sid, $title, $description, $welcome, $endtext, $email, $name, $url, $urldesc, $module, $autord);
-		}
-		catch (SoapFault $fault)
-		{
-			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
-		}
-		//these are just outputs for testing
-		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
-		
-		return $sOutput;
-	}
-	function insertToken($tokencsv)
-	{
-
-	}
-	function insertParticipants($participantData)
-	{
-
-	}
-	function tokenReturn ()
-	{
-
-	}
-
-}
-
+include_once("lsrc.client.php");
 /**
  * initiate the testclient object
  */
-$testclient = new testclient();
+$testclient = new lsrcClient();
 
 /**
- * prepare the testclient class (initiate the soapClient, set variables, set sid if given/needed)
+ * prepare the lsrcClient class (initiate the soapClient, set variables, set sid if given/needed)
  */
 if(isset($_POST['sid']))
-	$testclient->prepare($_POST['sid']);
+$testclient->prepare($_POST['sid']);
 else
-	$testclient->prepare();
+$testclient->prepare();
+
+/**
+ * set user and password
+ */
+//$testclient->user = 'admin';
+//$testclient->pass = 'password';
 
 /**
  * set the path2wsdl to what ever is set by the user
  */
 //if(isset($_POST['wsdl']))
 //	$testclient->path2wsdl = $_POST['wsdl'];
-	
+
 $sReturn = '';
-// Calling the desired function //XXX
+
+/** call the desired function */
 reset($_POST);
 while(list($key, $value) = each($_POST))
 {
 	switch ($key)
 	{
 		case "sendStatistic":
-			
-			$sReturn = $testclient->sendStatistics($_REQUEST['type'],$_REQUEST['email'], $_REQUEST['graph']);
-		
-		break;
+
+			try
+			{
+				$sReturn = $testclient->sendStatistics($_REQUEST['type'],$_REQUEST['email'], $_REQUEST['graph']);
+			}
+			catch(SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+			break;
+		case "delsurvey":
+			try
+			{
+				$sReturn = $testclient->deleteSurvey();
+			}
+			catch(SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+		case "sendMail":
+
+			$sType = $_REQUEST['type'];
+			$maxemails = $_REQUEST['maxemails'];
+			$subject = $_REQUEST['subject'];
+			$mailText = $_REQUEST['mailText'];
+
+			try
+			{
+				$sReturn = $testclient->sendMail($sType, $maxemails, $subject, $mailText);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+		case "getField":
+
+			try
+			{
+				$sReturn = $testclient->getFieldmap();
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+		case "delsurvey":
+
+			try
+			{
+				$sReturn = $testclient->deleteSurvey();
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+		case "impMatrix":
+
+			$qText = $_REQUEST['quest'];
+			$mandatory = $_REQUEST['mandatory'];
+			for($n=1;$n<10;++$n)
+			{
+				if($_REQUEST['item'.$n]!='')
+				{
+					if($n==1)
+					{
+						$items = $_REQUEST['item'.$n];
+					}
+					else
+					{
+						$items .= ",".$_REQUEST['item'.$n];
+					}
+				}
+			}
+
+			$qHelp = $_REQUEST['help'];
+
+			try
+			{
+
+				$sReturn = $testclient->importMatrix($qTitle, $qText, $qHelp, $items, "Matrix5", $mandatory);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+
+
+		case "impFree":
+
+			$qTitle = $_REQUEST['title'];
+			$qText = $_REQUEST['quest'];
+			$qHelp = $_REQUEST['help'];
+			$mandatory = $_REQUEST['mandatory'];
+
+			try
+			{
+
+				$sReturn = $testclient->sImportFreetext($qTitle, $qText, $qHelp, "Freitext", $mandatory);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+
+		case "impQuest":
+
+			$sMod = $_REQUEST['mod'];
+			$mandatory = $_REQUEST['mandatory'];
+
+			try
+			{
+
+				$sReturn = $testclient->importQuestion($sMod, $mandatory);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			break;
+
+		case "impGroup":
+
+			$sMod = $_REQUEST['mod'];
+			$sGroupName = $_REQUEST['groupName'];
+			$sGroupDescription = $_REQUEST['groupDescription'];
+			try
+			{
+				$sReturn = $client->sImportGroup($sMod, $sGroupName, $sGroupDescription);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+			break;
+
+		case "activate":
+			$dStart = $_REQUEST['start'];
+			$dEnd = $_REQUEST['end'];
+			try
+			{
+				$sReturn = $testclient->activateSurvey( $dStart, $dEnd);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+
+			break;
+
 		case "createSurvey":
-			
 			$sVbes = $_REQUEST['sdes'];
 			$sVtit = $_REQUEST['stit'];
 			$sVwel = $_REQUEST['sVwel'];
@@ -262,15 +243,88 @@ while(list($key, $value) = each($_POST))
 			$sUbes = $_REQUEST['sUdes'];
 			$sVtyp = $_REQUEST['core'];
 
-			$sReturn = $testclient->createSurvey($sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
-				//$sReturn = $client->sCreateSurvey($user, $pass, $iVid, $sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
-		break;
-		case "delsurvey":
-		
-			$sReturn = $testclient->deleteSurvey();
+			try
+			{
+				$sReturn = $testclient->createSurvey($sVtit , $sVbes, $sVwel, $sVend, $sMail, $sName, $sUrl, $sUbes, $sVtyp);
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
+			$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+
+
+			break;
+
+		case "change":
+
+			$table = $_REQUEST['table'];
+			$key = $_REQUEST['key'];
+			$value = $_REQUEST['value'];
+			$where = $_REQUEST['whereKey'];
+			$mode = $_REQUEST['mode'];
+			//$whereValue = $_REQUEST['whereValue'];
+
+			try
+			{
+				$sReturn = $testclient->changeSurvey($table, $key, $value, $where, $mode);
+				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+
+
+			break;
+
+		case "tokens":
+
+			$sToken = $_REQUEST['token'];
+			try
+			{
+				$sReturn = $testclient->insertToken( $sToken );
+				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+
+			break;
+
+		case "tokRet":
+
+			try
+			{
+				$sReturn = $testclient->tokenReturn();
+				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+
+			break;
+
+		case "insPar":
+
+			$sParticipantData = $_REQUEST['sParticipantData'];
+			try
+			{
+				$sReturn = $testclient->insertParticipants($sParticipantData);
+				
+				$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+			}
+			catch (SoapFault $fault)
+			{
+				$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+			}
+			//these are just outputs for testing
 			
-		break;
-		
+
+			break;
 	}
 }
 
@@ -346,7 +400,7 @@ if(isset($sOutput))
 
 	echo '<div style="color:white;background-color:black;border: 1px solid white;">';
 	echo '<h3>testing output:</h3>';
-	if(isset($iVid))
+	if(isset($testclient->sid))
 	{
 		echo "<a href='{$testclient->limeUrl}/index.php?sid=".$testclient->sid."&amp;lang=de&amp;newtest=Y' target='_blank'>test Survey</a>";
 	}
