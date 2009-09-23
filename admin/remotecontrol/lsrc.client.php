@@ -16,10 +16,10 @@
 class lsrcClient {
 
 	//Configuration...
-	/**change this to the installation path, where you want to try the public functions.*/
+	/**change this to the installation path, where you want to try the functions.*/
 	public $limeUrl = 'http://localhost/limesource/limesurvey_dev'; 
 
-	/** this have to be an admin account for full public functionality*/
+	/** this have to be an admin account for full functionality*/
 	public $user = 'admin'; 
 
 	/** password to the account*/
@@ -30,7 +30,7 @@ class lsrcClient {
 	 * But sometimes you maybe want to change this to an static wsdl file like i.e. '/admin/remotecontrol/lsrc.wsdl'.*/
 	public $wsdl = '/admin/remotecontrol/lsrc.server.php?wsdl'; 
 	
-	public $path2wsdl = ''; //will get concatinated later on
+	public $path2wsdl = ''; //will get concatinated from $limeUrl and $wsdl on prepare
 
 	private $sid; //just the initial value
 
@@ -68,7 +68,10 @@ class lsrcClient {
 			return 0;
 		}
 	}
-
+	/**
+	 * Used in the testclient to show if the SOAP class is available, libXML is there in the minimum version and if the wsdl can be reached
+	 * @return HTML String
+	 */
 	public function soapCheck ()
 	{
 		$soapCheck ='<div style="color:white;background-color:black;border: 1px solid green;">';
@@ -114,6 +117,10 @@ class lsrcClient {
 					</div></div>";
 		return $soapCheck;
 	}
+	/**
+	 * Used in the testclient to show the Serverfunctions, as given in the wsdl.
+	 * @return HTML String
+	 */
 	public function getServerFunctions()
 	{
 		$return = "<b>Client object public functions:</b> <font style='font-size:x-small'>(As given in the wsdl file. Functions could be disabled or else on the serverside. There is no guarantee the public functions really have these Params nor that the public functions exist on the serverside.)</font><br/>";
@@ -130,6 +137,10 @@ class lsrcClient {
 		}
 		return $return;
 	}
+	/**
+	 * Used by testclient to show the Request and Response. This is valuable information for debugging.
+	 * @return HTML String
+	 */
 	public function getResponse()
 	{
 		$sOutput .="<br/><br/>Dumping <b>request headers</b>:<br/><pre>"
@@ -143,6 +154,11 @@ class lsrcClient {
 		return $sOutput;
 		
 	}
+	/**
+	 * Used to get the available module names for other functions like importQuestion, importGroup, createSurvey and so on
+	 * @param $mode - can be 'core'(surveys), 'mod'(groups) or 'que'(questions)
+	 * @return modules csv
+	 */
 	public function getAvailableModules ($mode = 'mod')
 	{
 		try
@@ -154,6 +170,13 @@ class lsrcClient {
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
 	}
+	/**
+	 * Sends a statistic of a particular survey, to the given E-Mail adress
+	 * @param $email - E-Mail adress of the reciever
+	 * @param $type - 'pdf', 'xls' or 'html' is possible... the Format in which the statistic is delivered. pdf and xls will be an attachment
+	 * @param $graph - '0' or '1' ... have only an effect on pdf statistics. If '1' graphs will be embedded in the pdf, '0' will embed no images in the pdf
+	 * @return 'PDF send', 'HTML send, 'XLS send' or throws a SoapFault
+	 */
 	public function sendStatistics ( $email, $type = 'pdf', $graph)
 	{
 		try
@@ -166,6 +189,10 @@ class lsrcClient {
 		}
 		return $sReturn;
 	}
+	/**
+	 * returns the fieldmap of a particular survey
+	 * @return fieldmap as csv
+	 */
 	public function getFieldmap()
 	{
 				
@@ -179,6 +206,14 @@ class lsrcClient {
 		}
 		return $sReturn;
 	}
+	/**
+	 * sends invitation, reminder or custom Mails to participants in the token list of a particular survey 
+	 * @param $type - custom, remind, invite
+	 * @param $maxmails - set the maximum amount of mails to be send in one go. repeat until all mails are send
+	 * @param $subject - set the subject for custom mails
+	 * @param $message - set the message for custom mails
+	 * @return String ('No Mails to send', 'XX Mails send', 'XX Mails send, XX Mails left to send')
+	 */
 	public function sendMail( $type, $maxmails, $subject, $message)
 	{
 		
@@ -190,9 +225,13 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
+	/**
+	 * deletes a particular survey
+	 * @return String 'Survey XX deleted' or a SoapFault
+	 */
 	public function deleteSurvey()
 	{
 		try
@@ -203,10 +242,20 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
-	public function importMatrix ($title, $question, $help, $items, $module = "Matrix5", $mandatory )
+	/**
+	 * imports a Matrix 5scale question. Normally there is a "Matrix5.csv" in directory 'que' which is used for this. But you can use an own exported Matrix 5 question with any other name of course 
+	 * @param $title - Question Code
+	 * @param $question - The Question text
+	 * @param $help - Help Text for this question
+	 * @param $items - Items to rate on the 5scale, Comma seperated
+	 * @param $module - optional Parameter, if not given, he tries with Matrix5, which should be OK
+	 * @param $mandatory - optional paramter. If not given, the question will not be mandatory. Use 'Y' to make the question mandatory
+	 * @return String 'OK' or throws a SoapFault
+	 */
+	public function importMatrix ($title, $question, $help, $items, $module = "Matrix5", $mandatory='N' )
 	{
 		try
 		{
@@ -216,10 +265,19 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
-	public function importFreetext ($title, $question, $help, $module = "Freitext", $mandatory )
+	/**
+	 * imports a Freetext Question. Normally there is a "Freitext.csv" in the directory 'que' which is used for this.
+	 * @param $title - Question Code
+	 * @param $question - The Question text
+	 * @param $help - Help Text for this question
+	 * @param $module - optional Parameter, if not given, he tries with 'Freitext', which should be OK
+	 * @param $mandatory - optional paramter. If not given, the question will not be mandatory. Use 'Y' to make the question mandatory
+	 * @return String "OK" or throws SoapFault
+	 */
+	public function importFreetext ($title, $question, $help, $module = "Freitext", $mandatory='N' )
 	{
 		try
 		{
@@ -229,10 +287,16 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
-	public function importQuestion ($module, $mandatory)
+	/**
+	 * Imports a Question in questions directory. Use getAvailableModules('que') to get all available question.csv's to import.
+	 * @param $module - name of the question file, without the filesuffix
+	 * @param $mandatory - optional paramter. If not given, the question will not be mandatory. Use 'Y' to make the question mandatory
+	 * @return String "OK" or throws SoapFault
+	 */
+	public function importQuestion ($module, $mandatory='N')
 	{	
 		try
 		{
@@ -242,9 +306,16 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 	}
+	/**
+	 * Imports a Group in groups directory. Use getAvailableModules('mod') to get all available group.csv's to import.
+	 * @param $module - name of the group file, without the filesuffix
+	 * @param $name - name of the Group 
+	 * @param $description - description text for the group
+	 * @return String "Import OK" or throws SoapFault
+	 */
 	public function importGroup ($module, $name, $description)
 	{
 		try
@@ -255,9 +326,15 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
+	/**
+	 * activates a survey
+	 * @param $start - optional, set a startdate 'YYYY-MM-DD'
+	 * @param $end - optional, set an enddate 'YYYY-MM-DD'
+	 * @return surveyid of the activated survey or throws a SoapFault
+	 */
 	public function activateSurvey($start = "1980-01-01", $end = "1980-01-01")
 	{
 		try
@@ -268,9 +345,19 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
+	/**
+	 * potential bad function. You can crash your whole database with this. It is not enabled by default in the server. 
+	 * You can change ALL the db tables in Limesurvey with this. Only enable and use it, if you know 100% what you are doing
+	 * @param $table - dbtable to change (without prefix)
+	 * @param $key - field to change
+	 * @param $value - value to set
+	 * @param $where - the where clause
+	 * @param $mode - insert or update
+	 * @return unknown_type
+	 */
 	public function changeSurvey($table, $key, $value, $where, $mode)
 	{ 
 		try
@@ -281,9 +368,23 @@ class lsrcClient {
 		{
 			throw new SoapFault($fault->faultcode, $fault->faultstring);
 		}
-		//these are just outputs for testing
+		
 		return $sReturn;
 	}
+	/**
+	 * Function to import a survey into the database and change some Values. 
+	 * @param $title
+	 * @param $description
+	 * @param $welcome
+	 * @param $endtext
+	 * @param $email
+	 * @param $name
+	 * @param $url
+	 * @param $urldesc
+	 * @param $module
+	 * @param $autord - optional
+	 * @return unknown_type
+	 */
 	public function createSurvey($title, $description, $welcome, $endtext, $email, $name, $url, $urldesc, $module, $autord='N')
 	{
 		try
@@ -296,6 +397,11 @@ class lsrcClient {
 		}
 		return $sReturn;
 	}
+	/**
+	 * add Tokens to the token table of a particular survey, or create a new one, if it does not exist
+	 * @param $tokencsv
+	 * @return unknown_type
+	 */
 	public function insertToken($tokencsv)
 	{
 		try
@@ -308,6 +414,11 @@ class lsrcClient {
 		}
 		return $sReturn;
 	}
+	/**
+	 * Function to insert Participant data while auto creating token if non is supported...
+	 * @param $participantData - (FIRSTNAME;LASTNAME;EMAIL;LANG;TOKEN;VALIDFROM;VALIDTO;attrib1,attrib2,attrib3,attrib4,attrib5::)
+	 * @return unknown_type
+	 */
 	public function insertParticipants($participantData)
 	{
 		try
@@ -320,6 +431,10 @@ class lsrcClient {
 		}
 		return $sReturn;
 	}
+	/**
+	 * function to return unused Tokens as String, seperated by commas, to get the people who did not complete the Survey
+	 * @return String unused Tokes as csv
+	 */
 	public function tokenReturn ()
 	{
 		try
