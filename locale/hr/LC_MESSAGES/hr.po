@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-19 20:18+0100\n"
-"PO-Revision-Date: 2009-09-19 20:20+0100\n"
+"POT-Creation-Date: 2009-09-23 23:00+0100\n"
+"PO-Revision-Date: 2009-09-23 23:01+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -412,8 +412,8 @@ msgstr "URL Preporuke"
 #: E:\_LimeSurvey\svn/qanda.php:1461
 #: E:\_LimeSurvey\svn/qanda.php:1770
 #: E:\_LimeSurvey\svn/qanda.php:1994
-#: E:\_LimeSurvey\svn/qanda.php:2734
-#: E:\_LimeSurvey\svn/qanda.php:3044
+#: E:\_LimeSurvey\svn/qanda.php:2731
+#: E:\_LimeSurvey\svn/qanda.php:3041
 #: E:\_LimeSurvey\svn/statistics_user.php:751
 #: E:\_LimeSurvey\svn/statistics_user.php:1411
 #: E:\_LimeSurvey\svn/statistics_user.php:1500
@@ -424,9 +424,9 @@ msgstr "Ostalo"
 #: E:\_LimeSurvey\svn/common.php:2087
 #: E:\_LimeSurvey\svn/common.php:2093
 #: E:\_LimeSurvey\svn/common.php:2109
-#: E:\_LimeSurvey\svn/qanda.php:3951
-#: E:\_LimeSurvey\svn/qanda.php:4463
-#: E:\_LimeSurvey\svn/qanda.php:4521
+#: E:\_LimeSurvey\svn/qanda.php:3948
+#: E:\_LimeSurvey\svn/qanda.php:4460
+#: E:\_LimeSurvey\svn/qanda.php:4518
 #: E:\_LimeSurvey\svn/statistics_user.php:1255
 #: E:\_LimeSurvey\svn/statistics_user.php:1380
 msgid "Yes"
@@ -434,9 +434,9 @@ msgstr "Da"
 
 #: E:\_LimeSurvey\svn/common.php:2094
 #: E:\_LimeSurvey\svn/common.php:2110
-#: E:\_LimeSurvey\svn/qanda.php:3960
-#: E:\_LimeSurvey\svn/qanda.php:4465
-#: E:\_LimeSurvey\svn/qanda.php:4539
+#: E:\_LimeSurvey\svn/qanda.php:3957
+#: E:\_LimeSurvey\svn/qanda.php:4462
+#: E:\_LimeSurvey\svn/qanda.php:4536
 #: E:\_LimeSurvey\svn/statistics_user.php:1256
 #: E:\_LimeSurvey\svn/statistics_user.php:1381
 msgid "No"
@@ -451,28 +451,28 @@ msgstr "Ne"
 #: E:\_LimeSurvey\svn/qanda.php:1536
 #: E:\_LimeSurvey\svn/qanda.php:1804
 #: E:\_LimeSurvey\svn/qanda.php:2028
-#: E:\_LimeSurvey\svn/qanda.php:2163
-#: E:\_LimeSurvey\svn/qanda.php:2230
-#: E:\_LimeSurvey\svn/qanda.php:3971
-#: E:\_LimeSurvey\svn/qanda.php:4053
-#: E:\_LimeSurvey\svn/qanda.php:4151
-#: E:\_LimeSurvey\svn/qanda.php:4240
-#: E:\_LimeSurvey\svn/qanda.php:4326
-#: E:\_LimeSurvey\svn/qanda.php:4394
-#: E:\_LimeSurvey\svn/qanda.php:4468
-#: E:\_LimeSurvey\svn/qanda.php:4559
-#: E:\_LimeSurvey\svn/qanda.php:4751
-#: E:\_LimeSurvey\svn/qanda.php:4835
-#: E:\_LimeSurvey\svn/qanda.php:4925
-#: E:\_LimeSurvey\svn/qanda.php:4945
-#: E:\_LimeSurvey\svn/qanda.php:5031
+#: E:\_LimeSurvey\svn/qanda.php:2160
+#: E:\_LimeSurvey\svn/qanda.php:2227
+#: E:\_LimeSurvey\svn/qanda.php:3968
+#: E:\_LimeSurvey\svn/qanda.php:4050
+#: E:\_LimeSurvey\svn/qanda.php:4148
+#: E:\_LimeSurvey\svn/qanda.php:4237
+#: E:\_LimeSurvey\svn/qanda.php:4323
+#: E:\_LimeSurvey\svn/qanda.php:4391
+#: E:\_LimeSurvey\svn/qanda.php:4465
+#: E:\_LimeSurvey\svn/qanda.php:4556
+#: E:\_LimeSurvey\svn/qanda.php:4748
+#: E:\_LimeSurvey\svn/qanda.php:4832
+#: E:\_LimeSurvey\svn/qanda.php:4922
+#: E:\_LimeSurvey\svn/qanda.php:4944
+#: E:\_LimeSurvey\svn/qanda.php:5030
+#: E:\_LimeSurvey\svn/qanda.php:5619
 #: E:\_LimeSurvey\svn/qanda.php:5620
-#: E:\_LimeSurvey\svn/qanda.php:5621
-#: E:\_LimeSurvey\svn/qanda.php:5907
-#: E:\_LimeSurvey\svn/qanda.php:5975
-#: E:\_LimeSurvey\svn/qanda.php:6097
-#: E:\_LimeSurvey\svn/qanda.php:6332
-#: E:\_LimeSurvey\svn/qanda.php:6386
+#: E:\_LimeSurvey\svn/qanda.php:5906
+#: E:\_LimeSurvey\svn/qanda.php:5974
+#: E:\_LimeSurvey\svn/qanda.php:6096
+#: E:\_LimeSurvey\svn/qanda.php:6331
+#: E:\_LimeSurvey\svn/qanda.php:6385
 #: E:\_LimeSurvey\svn/statistics_user.php:1507
 #: E:\_LimeSurvey\svn/statistics_user.php:1596
 #: E:\_LimeSurvey\svn/statistics_user.php:1880
@@ -484,41 +484,41 @@ msgid "No answer"
 msgstr "Bez odgovora"
 
 #: E:\_LimeSurvey\svn/common.php:2101
-#: E:\_LimeSurvey\svn/qanda.php:4028
+#: E:\_LimeSurvey\svn/qanda.php:4025
 #: E:\_LimeSurvey\svn/statistics_user.php:1374
 msgid "Male"
 msgstr "Muški"
 
 #: E:\_LimeSurvey\svn/common.php:2102
-#: E:\_LimeSurvey\svn/qanda.php:4009
+#: E:\_LimeSurvey\svn/qanda.php:4006
 #: E:\_LimeSurvey\svn/statistics_user.php:1373
 msgid "Female"
 msgstr "Ženski"
 
 #: E:\_LimeSurvey\svn/common.php:2111
-#: E:\_LimeSurvey\svn/qanda.php:4464
-#: E:\_LimeSurvey\svn/qanda.php:4529
+#: E:\_LimeSurvey\svn/qanda.php:4461
+#: E:\_LimeSurvey\svn/qanda.php:4526
 #: E:\_LimeSurvey\svn/statistics_user.php:1257
 msgid "Uncertain"
 msgstr "Neodlučan"
 
 #: E:\_LimeSurvey\svn/common.php:2117
-#: E:\_LimeSurvey\svn/qanda.php:4746
-#: E:\_LimeSurvey\svn/qanda.php:4794
+#: E:\_LimeSurvey\svn/qanda.php:4743
+#: E:\_LimeSurvey\svn/qanda.php:4791
 #: E:\_LimeSurvey\svn/statistics_user.php:1274
 msgid "Increase"
 msgstr "Povećaj"
 
 #: E:\_LimeSurvey\svn/common.php:2118
-#: E:\_LimeSurvey\svn/qanda.php:4748
-#: E:\_LimeSurvey\svn/qanda.php:4817
+#: E:\_LimeSurvey\svn/qanda.php:4745
+#: E:\_LimeSurvey\svn/qanda.php:4814
 #: E:\_LimeSurvey\svn/statistics_user.php:1276
 msgid "Decrease"
 msgstr "Smanji"
 
 #: E:\_LimeSurvey\svn/common.php:2119
-#: E:\_LimeSurvey\svn/qanda.php:4747
-#: E:\_LimeSurvey\svn/qanda.php:4805
+#: E:\_LimeSurvey\svn/qanda.php:4744
+#: E:\_LimeSurvey\svn/qanda.php:4802
 #: E:\_LimeSurvey\svn/statistics_user.php:1275
 msgid "Same"
 msgstr "Isto"
@@ -1565,8 +1565,8 @@ msgstr "Molim izaberite barem jednu opciju."
 #: E:\_LimeSurvey\svn/qanda.php:1196
 #: E:\_LimeSurvey\svn/qanda.php:1686
 #: E:\_LimeSurvey\svn/qanda.php:1876
-#: E:\_LimeSurvey\svn/qanda.php:2535
-#: E:\_LimeSurvey\svn/qanda.php:2929
+#: E:\_LimeSurvey\svn/qanda.php:2532
+#: E:\_LimeSurvey\svn/qanda.php:2926
 msgid "Other:"
 msgstr "Ostalo:"
 
@@ -1648,10 +1648,10 @@ msgid "Year"
 msgstr "Godina"
 
 #: E:\_LimeSurvey\svn/qanda.php:1089
-#: E:\_LimeSurvey\svn/qanda.php:3743
-#: E:\_LimeSurvey\svn/qanda.php:3796
-#: E:\_LimeSurvey\svn/qanda.php:3856
-#: E:\_LimeSurvey\svn/qanda.php:3922
+#: E:\_LimeSurvey\svn/qanda.php:3740
+#: E:\_LimeSurvey\svn/qanda.php:3793
+#: E:\_LimeSurvey\svn/qanda.php:3853
+#: E:\_LimeSurvey\svn/qanda.php:3919
 #: E:\_LimeSurvey\svn/statistics_user.php:1606
 #: E:\_LimeSurvey\svn/statistics_user.php:1620
 #: E:\_LimeSurvey\svn/statistics_user.php:1693
@@ -1670,8 +1670,8 @@ msgstr "Format: %s"
 #: E:\_LimeSurvey\svn/qanda.php:1156
 #: E:\_LimeSurvey\svn/qanda.php:1329
 #: E:\_LimeSurvey\svn/qanda.php:1518
-#: E:\_LimeSurvey\svn/qanda.php:6312
-#: E:\_LimeSurvey\svn/qanda.php:6366
+#: E:\_LimeSurvey\svn/qanda.php:6311
+#: E:\_LimeSurvey\svn/qanda.php:6365
 msgid "Please choose"
 msgstr "Molim izaberite"
 
@@ -1697,120 +1697,116 @@ msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan za ovaj jezik
 msgid "Other text"
 msgstr "Drugi komentar"
 
-#: E:\_LimeSurvey\svn/qanda.php:2117
-msgid "Please choose one of the following"
-msgstr "Molim izaberite jednu opciju od ponuđenih"
-
 #: E:\_LimeSurvey\svn/qanda.php:2118
 msgid "Please enter your comment here"
 msgstr "Molimo unesite komentar ovde"
 
-#: E:\_LimeSurvey\svn/qanda.php:2405
+#: E:\_LimeSurvey\svn/qanda.php:2402
 msgid "Remove this item"
 msgstr "Ukloni ovaj element"
 
-#: E:\_LimeSurvey\svn/qanda.php:2449
+#: E:\_LimeSurvey\svn/qanda.php:2446
 msgid "Your Choices"
 msgstr "Vaši izbori"
 
-#: E:\_LimeSurvey\svn/qanda.php:2458
-#: E:\_LimeSurvey\svn/qanda.php:2464
+#: E:\_LimeSurvey\svn/qanda.php:2455
+#: E:\_LimeSurvey\svn/qanda.php:2461
 msgid "Your Ranking"
 msgstr "Vaše rangiranje"
 
-#: E:\_LimeSurvey\svn/qanda.php:2472
+#: E:\_LimeSurvey\svn/qanda.php:2469
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Kliknite na ikonu škarica sa desne strane ranga kako bi izbrisali zadnje uneseni odabir"
 
-#: E:\_LimeSurvey\svn/qanda.php:2482
-#: E:\_LimeSurvey\svn/qanda.php:2498
+#: E:\_LimeSurvey\svn/qanda.php:2479
+#: E:\_LimeSurvey\svn/qanda.php:2495
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Molim rangirajte najmanje %d odgovor(a) za pitanje \"%s\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:2818
-#: E:\_LimeSurvey\svn/qanda.php:3098
+#: E:\_LimeSurvey\svn/qanda.php:2815
+#: E:\_LimeSurvey\svn/qanda.php:3095
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Molim odaberi najviše %d odgovora za pitanje \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2839
-#: E:\_LimeSurvey\svn/qanda.php:3123
+#: E:\_LimeSurvey\svn/qanda.php:2836
+#: E:\_LimeSurvey\svn/qanda.php:3120
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Molim odaberite najmanje %d odgovor(a) za pitanje \"%s\""
 
-#: E:\_LimeSurvey\svn/qanda.php:2874
-#: E:\_LimeSurvey\svn/qanda.php:3153
+#: E:\_LimeSurvey\svn/qanda.php:2871
+#: E:\_LimeSurvey\svn/qanda.php:3150
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Popunili ste polje \"ostalo\" za pitanje \"%s\". Molim ispunite i pripadajuće polje \"drugi komentar\"."
 
-#: E:\_LimeSurvey\svn/qanda.php:3026
-#: E:\_LimeSurvey\svn/qanda.php:3054
+#: E:\_LimeSurvey\svn/qanda.php:3023
+#: E:\_LimeSurvey\svn/qanda.php:3051
 msgid "Make a comment on your choice here:"
 msgstr "Unesite komentar na vaš izbor ovde:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3246
-#: E:\_LimeSurvey\svn/qanda.php:3476
-#: E:\_LimeSurvey\svn/qanda.php:4477
-#: E:\_LimeSurvey\svn/qanda.php:6160
+#: E:\_LimeSurvey\svn/qanda.php:3243
+#: E:\_LimeSurvey\svn/qanda.php:3473
+#: E:\_LimeSurvey\svn/qanda.php:4474
+#: E:\_LimeSurvey\svn/qanda.php:6159
 msgid "Error: This question has no answers."
 msgstr "Greška: Ovo pitanje nema odgovora."
 
-#: E:\_LimeSurvey\svn/qanda.php:3555
+#: E:\_LimeSurvey\svn/qanda.php:3552
 msgid "Only numbers may be entered in these fields"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: E:\_LimeSurvey\svn/qanda.php:3559
+#: E:\_LimeSurvey\svn/qanda.php:3556
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Svih ulaza ne može biti više od %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3563
+#: E:\_LimeSurvey\svn/qanda.php:3560
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Svih unosa mora biti točno %d"
 
-#: E:\_LimeSurvey\svn/qanda.php:3567
+#: E:\_LimeSurvey\svn/qanda.php:3564
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Zbroj svih unosa mora biti najmanje %s"
 
-#: E:\_LimeSurvey\svn/qanda.php:3575
+#: E:\_LimeSurvey\svn/qanda.php:3572
 msgid "Remaining: "
 msgstr "Preostalo:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3577
+#: E:\_LimeSurvey\svn/qanda.php:3574
 msgid "Total: "
 msgstr "Ukupno:"
 
-#: E:\_LimeSurvey\svn/qanda.php:3621
-#: E:\_LimeSurvey\svn/qanda.php:3629
-#: E:\_LimeSurvey\svn/qanda.php:3665
-#: E:\_LimeSurvey\svn/qanda.php:3676
+#: E:\_LimeSurvey\svn/qanda.php:3618
+#: E:\_LimeSurvey\svn/qanda.php:3626
+#: E:\_LimeSurvey\svn/qanda.php:3662
+#: E:\_LimeSurvey\svn/qanda.php:3673
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Odgovor je neispravan. Ukupnost svih odgovora ne može ići iznad"
 
-#: E:\_LimeSurvey\svn/qanda.php:3642
-#: E:\_LimeSurvey\svn/qanda.php:3650
+#: E:\_LimeSurvey\svn/qanda.php:3639
+#: E:\_LimeSurvey\svn/qanda.php:3647
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Odgovor je neispravan. Zbroj svih unosa mora biti najmanje %s."
 
-#: E:\_LimeSurvey\svn/qanda.php:3745
+#: E:\_LimeSurvey\svn/qanda.php:3742
 msgid "Only numbers may be entered in this field"
 msgstr "Samo brojevi mogu biti uneseni u ovom polju"
 
-#: E:\_LimeSurvey\svn/qanda.php:5072
-#: E:\_LimeSurvey\svn/qanda.php:5301
-#: E:\_LimeSurvey\svn/qanda.php:5590
-#: E:\_LimeSurvey\svn/qanda.php:5734
-#: E:\_LimeSurvey\svn/qanda.php:6412
+#: E:\_LimeSurvey\svn/qanda.php:5071
+#: E:\_LimeSurvey\svn/qanda.php:5300
+#: E:\_LimeSurvey\svn/qanda.php:5589
+#: E:\_LimeSurvey\svn/qanda.php:5733
+#: E:\_LimeSurvey\svn/qanda.php:6411
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Greška: Set oznaka korišten za ovo pitanje nije dostupan i/ili ne postoji za ovaj jezik."
 
-#: E:\_LimeSurvey\svn/qanda.php:5728
+#: E:\_LimeSurvey\svn/qanda.php:5727
 msgid "Error: There are no answers defined for this question."
 msgstr "Greška: Nema definiranih odgovora u ovom pitanju."
 
@@ -2539,296 +2535,296 @@ msgstr "Korisničko ime nije ispravno!"
 msgid "User name and password do not match!"
 msgstr "Vaše korisničko ime i lozinka se ne poklapaju."
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:107
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:121
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:86
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:100
 msgid "Conditions manager"
 msgstr "Upravljanje uvjetima"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:109
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:88
 msgid "You have not selected a survey"
 msgstr "Niste izabrali upitnik"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:111
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:125
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:90
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:104
 msgid "Main admin screen"
 msgstr "Glavni administratorski panel"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:123
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:102
 msgid "You have not selected a question"
 msgstr "Niste odabrali pitanje."
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:133
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:112
 msgid "Conditions designer"
 msgstr "Dizajner uvjeta"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:145
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:124
 msgid "Return to survey administration"
 msgstr "Povratak u Administraciju upitnika"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:149
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:128
 msgid "Show conditions for this question"
 msgstr "Prikaži uvjete za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:153
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:132
 msgid "Add and edit conditions"
 msgstr "Dodaj i izmijeni uvjete"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:156
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1602
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1642
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:135
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1585
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1625
 msgid "Copy conditions"
 msgstr "Kopiraj uvjete"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:162
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1835
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:141
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1850
 msgid "Questions"
 msgstr "Pitanja"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:168
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:170
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:147
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:149
 msgid "Show help"
 msgstr "Prikaži pomoć"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:196
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:256
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:175
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:237
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "Uvjeti se ne mogu dodati! Niste izabrali pitanje i/ili odgovore nad kojima će se uvjet odnositi. Molimo da izaberete pitanje i odgovor."
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:405
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:388
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
 msgstr "Uvjeti uspješno kopirani (neki su preskočeni jer su duplikati)"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:409
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:392
 msgid "Conditions successfully copied"
 msgstr "Uvjeti uspješno kopirani"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:414
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:397
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Uvjete nije moguće kopirati (radi duplikata)"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:419
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:402
 msgid "Did not copy questions"
 msgstr "Pitanja nisu kopirana"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:422
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:405
 msgid "No condition selected to copy from"
 msgstr "Nisu izabrani uvjeti za kopiranje iz"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:426
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:409
 msgid "No question selected to copy condition to"
 msgstr "Nisu izabrana pitanja za kopiranje u"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:858
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:841
 msgid "Group of checkboxes"
 msgstr "Grupa izbornih kvadratića"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:874
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:857
 msgid "Single checkbox"
 msgstr "Jedan izborni kvadratić"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:998
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:981
 msgid "Before"
 msgstr "Prije"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1019
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1002
 msgid "Current"
 msgstr "Trenutan"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1037
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1020
 msgid "After"
 msgstr "Poslije"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1141
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1124
 msgid "Only show question {QID} IF"
 msgstr "Prikaži pitanje {QID} samo AKO"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1162
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1145
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "Jeste li sigurni da želite izbrisati sve uvjete za pitanja koja ste izabrali?"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1163
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1146
 msgid "Delete all conditions"
 msgstr "Izbriši sve uvjete"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1171
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1154
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "Jeste li sigurni da želite renumerirati scenarije rastućim nizom koji započinje sa brojem 1?"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1172
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1155
 msgid "Renumber scenario automatically"
 msgstr "Automatski renumeriraj scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1202
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1352
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1185
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1335
 #: E:\_LimeSurvey\svn/admin/dataentry.php:1966
 #: E:\_LimeSurvey\svn/admin/dataentry.php:2054
 #: E:\_LimeSurvey\svn/admin/dataentry.php:2086
 msgid "OR"
 msgstr "ILI"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1218
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1201
 msgid "New scenario number"
 msgstr "Novi broj scenarija"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1225
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1208
 msgid "Update scenario"
 msgstr "Ažuriraj scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1236
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1219
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "Jeste li sigurni da želite obrisati sve uvjete postavljena u ovom scenariju?"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1237
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1220
 msgid "Delete this scenario"
 msgstr "Obriši ovaj scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1244
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1227
 msgid "Edit scenario"
 msgstr "Izmijeni scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1297
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1807
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1280
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1790
 msgid "Less than"
 msgstr "Manje od"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1298
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1808
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1281
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1791
 msgid "Less than or equal to"
 msgstr "Manje od ili jednako"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1299
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1282
 msgid "equals"
 msgstr "je jednako"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1300
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1810
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1283
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1793
 msgid "Not equal to"
 msgstr "Nije jednako"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1301
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1811
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1284
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1794
 msgid "Greater than or equal to"
 msgstr "Veći od ili jednako"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1302
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1812
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1285
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1795
 msgid "Greater than"
 msgstr "Veće od"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1303
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1813
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1883
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1286
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1796
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1898
 msgid "Regular expression"
 msgstr "Regularni izraz"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1345
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1328
 msgid "and"
 msgstr "i"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1377
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1450
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1360
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1433
 msgid "From token table"
 msgstr "Iz tablice tokena"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1381
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1454
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1364
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1437
 msgid "Inexistant token table"
 msgstr "Nepostojeća tablica tokena"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1439
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1422
 msgid "Not found"
 msgstr "Nije pronađeno"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1496
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1479
 msgid "Are you sure you want to delete this condition?"
 msgstr "Jeste li sigurni da želite obrisati ovaj uvjet?"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1497
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1480
 msgid "Delete this condition"
 msgstr "Izbriši ovaj uvjet"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1502
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1485
 msgid "Edit this condition"
 msgstr "Izmijeni ovaj uvjet"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1579
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1562
 msgid "This question is always shown."
 msgstr "Ovo pitanje je uvijek prikazano."
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1618
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1601
 msgid "Copy the selected conditions to"
 msgstr "Kopiraj odabrani uvjet u"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1642
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1625
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "Jeste li sigurni da želite kopirati ove uvjete u pitanja koja ste izabrali?"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1668
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1651
 msgid "Condition"
 msgstr "Uvjeti"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1707
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1690
 msgid "Edit condition"
 msgstr "Izmijeni uvjet"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1711
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1902
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1694
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1917
 msgid "Add condition"
 msgstr "Dodaj uvjet"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1727
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1710
 msgid "Default scenario"
 msgstr "Zadani scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1738
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1721
 msgid "Scenario"
 msgstr "Scenarij"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1750
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1733
 msgid "Previous questions"
 msgstr "Prethodno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1805
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1788
 msgid "Comparison operator"
 msgstr "Operator uspoređenja"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1809
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1792
 msgid "Equals"
 msgstr "je jednako"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1833
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1848
 msgid "Predefined"
 msgstr "Zadan"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1834
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1849
 msgid "Constant"
 msgstr "Konstanta"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1837
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1852
 msgid "RegExp"
 msgstr "RegExp"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1843
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1858
 msgid "Predefined answers for this question"
 msgstr "Zadan odgovor na trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1848
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1863
 msgid "Constant value"
 msgstr "Konstantna vrijednost"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1865
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1880
 msgid "Answers from previous questions"
 msgstr "Odgovori prethodnog pitanja"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1877
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1892
 msgid "Attributes values from the participant's token"
 msgstr "Vrijednosti atributa ispitanikovog tokena"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1896
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1911
 msgid "Update condition"
 msgstr "Ažuriraj uvjete"
 
-#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1912
+#: E:\_LimeSurvey\svn/admin/conditionshandling.php:1927
 msgid "Clear"
 msgstr "Obriši"
 
@@ -8218,6 +8214,8 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "Please choose one of the following"
+#~ msgstr "Molim izaberite jednu opciju od ponuđenih"
 #~ msgid "This group has no answer."
 #~ msgstr "Ova grupa nema odgovora."
 #~ msgid "Token Attribute Names:"
