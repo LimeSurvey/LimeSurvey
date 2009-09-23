@@ -424,7 +424,7 @@ if (!$thissurvey['templatedir'])
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'] && $thissurvey['active']!='N')
+if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
 {
 	sendcacheheaders();
 	doHeader();
@@ -441,7 +441,7 @@ if ($thissurvey['expiry']!='' and date("Y-m-d")>$thissurvey['expiry'] && $thissu
 }
 
 //MAKE SURE SURVEY IS ALREADY VALID
-if ($thissurvey['startdate']!='' and  date("Y-m-d")<$thissurvey['startdate'] && $thissurvey['active']!='N')
+if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
 {
     sendcacheheaders();
     doHeader();
