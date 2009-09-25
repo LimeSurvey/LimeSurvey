@@ -424,7 +424,7 @@ if (!$thissurvey['templatedir'])
 
 
 //MAKE SURE SURVEY HASN'T EXPIRED
-if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
+if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>date_shift($thissurvey['expiry'], "Y-m-d H:i:s", '+24 hours') && $thissurvey['active']!='N')
 {
 	sendcacheheaders();
 	doHeader();

@@ -770,7 +770,7 @@ $templatesoutput.= "</div>\n"
 //Logout Button
 
 ."<font style='boxcaption'><strong>".$clang->gT("Template:")."</strong> </font>"
-."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=\"+this.value, \"_top\")'>\n"
+."<select class=\"listboxtemplates\" name='templatedir' onchange='javascript: window.open(\"admin.php?action=templates&amp;editfile=$editfile&amp;screenname=".urlencode($screenname)."&amp;templatename=\"+escape(this.value), \"_top\")'>\n"
 .makeoptions($templates, "name", "name", $templatename)
 ."</select>\n"
 . "<a href='#' onclick=\"javascript: copyprompt('".$clang->gT("Create new template called:")."', '".$clang->gT("NewTemplate")."', 'default', 'copy')\"" 
@@ -820,7 +820,7 @@ else
              " /></a>";
     }
 $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20' height='10' />\n"
-    ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".html_escape($screenname)."&amp;templatename=$templatename\", \"_top\")'"
+    ."\t\t\t\t\t<a href='#' onclick='javascript:window.open(\"admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=".urlencode($screenname)."&amp;templatename=$templatename\", \"_top\")'"
     ."onmouseout=\"hideTooltip()\" title=\"".$clang->gTview("Export Template")."\" onmouseover=\"showTooltip(event,'".$clang->gT("Export Template", "js")."')\">" 
     ."<img name='Export' src='$imagefiles/export.png' alt='' title='' /></a>\n"
     ."<a href='#' onclick='javascript:window.open(\"admin.php?action=templates&amp;subaction=templateupload\", \"_top\")'"
@@ -833,7 +833,7 @@ $templatesoutput.= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='20'
 ."</div>\n"
 ."<div class='menubar-right'>\n"
 ."<font style='boxcaption'><strong>".$clang->gT("Screen:")."</strong> </font>"
-. "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+this.value, \"_top\")'>\n"
+. "<select class=\"listboxtemplates\" name='screenname' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;editfile=$editfile&amp;screenname=\"+escape(this.value), \"_top\")'>\n"
 . makeoptions($screens, "name", "name", html_escape($screenname) )
 . "</select>\n"
 ."<img src='$imagefiles/blank.gif' width='45' height='10' alt='' />"
@@ -911,11 +911,11 @@ if (is_template_editable($templatename)==true)
     ."</form></td>";
     $templatesoutput.= "<th class='subheader' colspan='2' align='right' width='200'>".$clang->gT("Other Files:")."</th></tr>\n";
         
-    $templatesoutput.="<tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+    $templatesoutput.="<tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".urlencode($screenname)."&amp;editfile=\"+escape(this.value), \"_top\")'>\n"
         .makeoptions($files, "name", "name", $editfile)
         ."</select><br /><br/>\n"
         .$clang->gT("CSS & Javascript files:")
-        ."<br/><select size='8' name='cssfiles' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".html_escape($screenname)."&amp;editfile=\"+this.value, \"_top\")'>\n"
+        ."<br/><select size='8' name='cssfiles' onchange='javascript: window.open(\"admin.php?action=templates&amp;templatename=$templatename&amp;screenname=".urlencode($screenname)."&amp;editfile=\"+escape(this.value), \"_top\")'>\n"
         .makeoptions($cssfiles, "name", "name", $editfile)
         . "</select>\n"
         

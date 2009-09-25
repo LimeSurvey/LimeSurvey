@@ -432,7 +432,7 @@ if(isset($surveyid))
         $attsql.='1=1';
         db_execute_assoc($attsql) or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg());
         
-   		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
+   		$keepanswers = true; // Generally we try to keep answers if the question type has changed
 		
 		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
@@ -440,7 +440,7 @@ if(isset($surveyid))
             ($_POST['type']== "T") || ($_POST['type']== "U") || ($_POST['type']== "X") ||        
             ($_POST['type']=="Y"))
 		{
-			$keepanswers = "0";
+			$keepanswers = false;
 		}
 
 		// These are the questions types that use labelsets and 
@@ -577,7 +577,7 @@ if(isset($surveyid))
 						// then change the cfieldname accordingly
 						fixmovedquestionConditions($postqid, $oldgid, $postgid);
 	                		}
-					if ($keepanswers == "0")
+					if ($keepanswers == false)
 					{
 						$query = "DELETE FROM ".db_table_name('answers')." WHERE qid=".db_quote($postqid);
 						$result = $connect->Execute($query) or safe_die("Error: ".$connect->ErrorMsg());
