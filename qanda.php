@@ -4008,7 +4008,7 @@ function do_shortfreetext($ia)
 	global $clang;
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-    if ($qidattributes['other_numbers_only']==1)
+    if (isset($qidattributes['other_numbers_only']) && $qidattributes['other_numbers_only']==1)
     {
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	}
