@@ -259,7 +259,8 @@ CREATE TABLE prefix_surveys (
     usecaptcha character(1) DEFAULT 'N'::bpchar,
     usetokens character(1) DEFAULT 'N'::bpchar,
     "bounce_email" character varying(320) NOT NULL,
-    attributedescriptions text
+    attributedescriptions text,
+	emailresponseto text
 );
 
 

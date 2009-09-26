@@ -247,6 +247,7 @@ CREATE TABLE [prefix_surveys] (
   [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
   [attributedescriptions] text,
+  [emailresponseto] text
   
   PRIMARY KEY  ([sid])
 ) 

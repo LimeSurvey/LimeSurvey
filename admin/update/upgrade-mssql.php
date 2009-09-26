@@ -335,6 +335,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
         upgrade_survey_tables139();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
     }
+	
+	if ($oldversion < 140) //Modify surveys table
+	{
+	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [emailresponseto] text"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+	}
+
     return true;
 }
 

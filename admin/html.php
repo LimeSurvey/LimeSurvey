@@ -2513,6 +2513,11 @@ if ($action == "editsurvey")
 			. "</select></span>\n"
 			. "</div>\n";
 
+			//EMAIL SURVEY RESPONSES TO
+			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Responses To:")."</span>\n"
+			. "<span class='settingentry'><input type='text' value=\"{$esrow['emailresponseto']}\" name='emailresponseto'>\n"
+			. "</span>"
+			. "</div>\n";
 
 			//ANONYMOUS
 			$editsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Anonymous answers?")."\n";
@@ -3316,7 +3321,12 @@ if ($action == "newsurvey")
 		. "</select></span>\n"
 		. "</div>\n";
 
-
+		//EMAIL SURVEY RESPONSES TO
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Responses To:")."</span>\n"
+		. "<span class='settingentry'><input type='text' name='emailresponseto'>\n"
+		. "</span>"
+		. "</div>\n";
+		
 		// ANONYMOUS
 		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Anonymous answers?")."\n";
 		// warning message if anonymous + datestamped anwsers

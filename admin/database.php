@@ -1134,7 +1134,8 @@ if(isset($surveyid))
                             'listpublic'=>$_POST['public'], 
                             'htmlemail'=>$_POST['htmlemail'], 
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'], 
-                            'usecaptcha'=>$_POST['usecaptcha'] 
+                            'usecaptcha'=>$_POST['usecaptcha'],
+							'emailresponseto'=>$_POST['emailresponseto']
                             );
               
         $usquery=$connect->GetUpdateSQL($rs, $updatearray); 
@@ -1389,7 +1390,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'publicstatistics'=>$_POST['publicstatistics'],
                             'publicgraphs'=>$_POST['publicgraphs'],
-                            'assessments'=>$_POST['assessments']
+                            'assessments'=>$_POST['assessments'],
+							'emailresponseto'=>$_POST['emailresponseto']
                             );
         $dbtablename=db_table_name_nq('surveys');                    
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    

@@ -205,6 +205,7 @@ CREATE TABLE `prefix_surveys` (
   `usetokens` char(1) default 'N',
   `bounce_email` varchar(320) default NULL,
   `attributedescriptions` text,
+  `emailresponseto` text default NULL,
   PRIMARY KEY  (`sid`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

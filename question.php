@@ -284,7 +284,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         }
 
         //Send notification to survey administrator //Thanks to Jeff Clement http://jclement.ca
-        if ($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail'])
+        if (($thissurvey['sendnotification'] > 0 && $thissurvey['adminemail']) || !empty($thissurvey['emailresponseto']))
         {
             sendsubmitnotification($thissurvey['sendnotification']);
         }

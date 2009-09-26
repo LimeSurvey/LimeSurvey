@@ -2824,30 +2824,8 @@ function templatereplace($line, $replacements=array())
 		}
 		$line=str_replace("{SUBMITREVIEW}", $strreview, $line);
 	}
-	if (isset($_SESSION['thistoken']))
-	{
-		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-	}
-	else
-	{
-		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
-		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-	}
-
-    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
-    {
-        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
-        $templine=substr($templine,0,strpos($templine, "}")+1);
-        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
-        $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
-        $line=str_replace($templine, $replacestr, $line);
-    }
-    
-    
+	
+	$line=tokenReplace($line);
     
 	if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
 	if (strpos($line, "{RESTART}") !== false)
@@ -3032,6 +3010,55 @@ function insertansReplace($line)
 		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
 		$line=str_replace($answreplace, $answreplace3, $line);
 	}
+	return $line;
+}
+
+/**
+* tokenReplace() takes a string and looks for any {TOKEN:xxxx} variables
+*  which it then, one by one, substitutes the TOKEN code with the relevant token
+*  from the session array containing token information
+*
+*  The operations of this function were previously in the templatereplace function
+*  but have been moved to a function of their own to make it available
+*  to other areas of the script.
+* 
+* @param mixed $line   string - the string to iterate, and then return
+* 
+* @return string This string is returned containing the substituted responses
+*
+*/
+function tokenReplace($line)
+{
+	global $surveyid;
+
+	if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+	{
+		//Gather survey data for tokenised surveys, for use in presenting questions
+		$_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+	}
+
+	if (isset($_SESSION['thistoken']))
+	{
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
+	}
+	else
+	{
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
+	}
+
+    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
+    {
+        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
+        $templine=substr($templine,0,strpos($templine, "}")+1);
+        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
+        $replacestr='';
+        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
+        $line=str_replace($templine, $replacestr, $line);
+    }
 	return $line;
 }
 
