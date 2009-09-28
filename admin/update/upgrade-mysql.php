@@ -317,7 +317,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	    modify_database("", "ALTER TABLE `prefix_quota_members` CHANGE `code` `code` VARCHAR(11) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
 	}
-                                     upgrade_survey_tables139();    
+
     if ($oldversion < 139) //Modify quota field
     {
         upgrade_survey_tables139();   

@@ -52,10 +52,7 @@ if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for 
 
 if ($action != 'showprintablesurvey' && $action != 'ajaxquestionattributes')
 {
-  $adminoutput = helpscreenscript();
-  $adminoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0' >\n"
-  ."\t<tr>\n"
-  ."<td valign='top' align='center' bgcolor='#F8F8FF'>\n";
+$adminoutput="<div id='wrapper'>";
 } else {$adminoutput='';}
 
 if($casEnabled==true)
@@ -567,9 +564,7 @@ elseif ($action == 'replacementfields')
 
     $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
-    $adminoutput.= "</td>\n".helpscreen()
-                    . "\t</tr>\n"
-                    . "</table>\n";
+    $adminoutput.= "</div>\n";
 	if(!isset($_SESSION['checksessionpost']))
 		$_SESSION['checksessionpost'] = '';
 	$adminoutput .= "<script type=\"text/javascript\">\n"
@@ -610,7 +605,7 @@ elseif ($action == 'replacementfields')
 	. "//-->\n"
 	. "</script>\n";
 
-	$adminoutput .= "".getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
+	$adminoutput .= getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   }
   
 }
@@ -620,9 +615,7 @@ elseif ($action == 'replacementfields')
     if (!isset($_SESSION['metaHeader'])) {$_SESSION['metaHeader']='';}
     $adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
     unset($_SESSION['metaHeader']);    
-    $adminoutput.= "</td>\n".helpscreen()
-                . "\t</tr>\n"
-                . "</table>\n"
+    $adminoutput.= "</div>\n"
                 . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey Online Manual"));
   
   }
@@ -636,87 +629,7 @@ else
 	echo $adminoutput;
 }
 
-
-  function helpscreenscript()
-  // returns the script part for online help to be included outside a table
-  {
-  	$helpoutput= "<script type='text/javascript'>\n"
-    ."\tfunction showhelp(action)\n"
-    ."{\n"
-    ."var name='help';\n"
-    ."if (action == \"hide\")\n"
-    ."\t{\n"
-    ."\tdocument.getElementById(name).style.display='none';\n"
-    ."\t}\n"
-    ."else if (action == \"show\")\n"
-    ."\t{\n"
-    ."\tdocument.getElementById(name).style.display='';\n"
-    ."\t}\n"
-    ."}\n"
-    ."</script>\n"; 
-    return $helpoutput;
-  }
-
-
-  function helpscreen()
-  // This functions loads the nescessary helpscreens for each action and hides the help window
-  // 
-  {
-  	global $homeurl, $langdir,  $imagefiles;
-  	global $surveyid, $gid, $qid, $action, $clang;
-
-    $helpoutput="<td id='help' width='200' valign='top' style='display: none' bgcolor='#F8F8FF'>\n"
-  	."\t<table width='100%'><tr><td>"
-  	."<table width='100%' align='center' cellspacing='0'>\n"
-  	."<tr>\n"
-  	."\t<td bgcolor='#D2E0F2' height='8'>\n"
-  	."<font size='1'><strong>"
-  	.$clang->gT("Help")."</strong>\n"
-  	."\t</font></td>\n"
-  	."</tr>\n"
-  	."<tr>\n"
-  	."\t<td align='center' bgcolor='#EEF6FF' style='border-style: solid; border-width: 1px; border-color: #D2E0F2'>\n"
-  	."<img src='$imagefiles/blank.gif' alt='' width='20' hspace='0' border='0' align='left' />\n"
-  	."<input type='image' src='$imagefiles/close.gif' name='CloseHelp' align='right' onclick=\"showhelp('hide')\" />\n"
-  	."\t</td>\n"
-  	."</tr>\n"
-  	."<tr>\n"
-  	."\t<td bgcolor='#EEF6FF' height='100%' style='border-width: 0px;'>\n";
-  	//determine which help document to show
-  	if (!$surveyid && $action != "editusers")
-  	{
-  		$helpdoc = "$langdir/admin.html";
-  	}
-  	elseif (!$surveyid && $action=="editusers")
-  	{
-  		$helpdoc = "$langdir/users.html";
-  	}
-  	elseif ($surveyid && !$gid)
-  	{
-  		$helpdoc = "$langdir/survey.html";
-  	}
-  	elseif ($surveyid && $gid && !$qid)
-  	{
-  		$helpdoc = "$langdir/group.html";
-  	}
-  	elseif ($surveyid && $gid && $qid && !returnglobal('viewanswer'))
-  	{
-  		$helpdoc = "$langdir/question.html";
-  	}
-  	elseif ($surveyid && $gid && $qid && (returnglobal('viewanswer')))
-  	{
-  		$helpdoc = "$langdir/answer.html";
-  	}
-  	$helpoutput.= "<iframe width='200' height='400' src='$helpdoc' marginwidth='2' marginheight='2'>\n"
-  	."</iframe>\n"
-  	."\t</td>"
-  	."</tr>\n"
-  	."\t</table></td></tr></table>\n"
-  	."</td>\n";
-  	return $helpoutput;
-  }
-  
-
+              
     
 function convertToArray($stringtoconvert, $seperator, $start, $end) 
 // this function is still used to read SQL files from version 1.0 or older

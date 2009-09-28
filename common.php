@@ -318,7 +318,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
     
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
-        $adminmenu  .="\t<div class='menubar-title'>\n"
+        $adminmenu  .="<div class='menubar-title'>\n"
                     . "<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 		{
@@ -418,13 +418,13 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
                      
             //Show help   
-            $adminmenu .= "<a href=\"#\" onclick=\"showhelp('show')\" title=\"".$clang->gTview("Show Help")."\" >"
-                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("Show Help")."'/></a>";
+            $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
+                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
                         
-	        $adminmenu .= "\t</div>\n"
+	        $adminmenu .= "</div>\n"
                         . "</div>\n"
                         . "</div>\n";
-            $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+          //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
             if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
@@ -3857,9 +3857,9 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
     }    
-	$strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>"
+	$strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n"
 	. use_firebug()
-	. "\t</head>\n\t<body>\n";
+	. "</head>\n<body>\n";
     if (isset($_SESSION['dateformat']))
     {
         $formatdata=getDateFormatData($_SESSION['dateformat']);

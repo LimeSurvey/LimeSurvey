@@ -1,20 +1,20 @@
 body {
-	font-family: verdana, arial, sans-serif;
-	text-align: left;
-	background-color: #5670A1;
-	margin: 0;
+    font-family: verdana, arial, sans-serif;
+    text-align: left;
+    background-color: #5670A1;
+    margin: 0;
     font-size: 9pt;
 }
 
 div, form {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 ul,ol {
-	text-align: left;
-	font-size: 10pt;
-	color: #000;
+    text-align: left;
+    font-size: 10pt;
+    color: #000;
 }
 
 p {
@@ -22,23 +22,24 @@ p {
 }
 
 .boxstyle {
-	border-color: #9C0;
-	border-style: solid;
-	border-width: 1px;
+    border-color: #9C0;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .footer {
-	text-align: center;
-	color: #9C0;
-	height: 30px;
-	background: #121a28;
-	margin: 0;
-	padding: 5px;
+    text-align: center;
+    color: #9C0;
+    height: 30px;
+    background: #121a28;
+    margin: 0;
+    padding: 5px;
     margin-bottom:400px;
+    clear:left;
 }
 
 img {
-	border: 0;
+    border: 0;
 }
 
 a {
@@ -48,29 +49,29 @@ a {
 }
 
 a:hover {
-	color: #819D26;
-	text-decoration: underline;
+    color: #819D26;
+    text-decoration: underline;
 }
 
 th, p, div {
-	font-size: 10pt;
+    font-size: 10pt;
 }
 
 .maintitle {
-	font-size: 14pt;
-	font-weight: 700;
-	color: #328639;
-	text-align: center;
-	background: #C4C4C4;
-	border-top: 2px solid #C9EF50;
-	border-bottom: 2px solid #6a8b03;
-	background-image: url(bkgmaintitle.gif);
-	background-repeat: repeat-x;
-	margin: auto;
+    font-size: 14pt;
+    font-weight: 700;
+    color: #328639;
+    text-align: center;
+    background: #C4C4C4;
+    border-top: 2px solid #C9EF50;
+    border-bottom: 2px solid #6a8b03;
+    background-image: url(bkgmaintitle.gif);
+    background-repeat: repeat-x;
+    width:100%;
 }
 
 table.statisticstable {
-	margin: 2px auto;
+    margin: 2px auto;
 }
 
 
@@ -79,27 +80,32 @@ table.statisticstable span {
 }
     
 .basic {
-	color: #1d2d45;
+    color: #1d2d45;
 }
 
 .statisticstable td {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 div.menubar {
-	background-color: #EEF6FF;
-	width: 99.1%;
-	margin-top: 3px;
+    background-color: #EEF6FF;
     clear:left;
+    padding:0;
+    margin:3px auto 0 auto;
+    width: 99.5%;
+    height: 60px;    
 }
 
 .menubar-main {
-	background-color: #EEF6FF;
-	width: 100%;
-	float: left;
-	border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
-	border-style: solid;
-	border-width: 1px;
+    background-color: #EEF6FF;
+    width: 99.6%;   
+    float: left;
+    border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
+    border-style: solid;
+    border-width: 1px; 
+    padding:0 0.2%;           
+    height: 43px;    
+
 }
 
 .menubar img {
@@ -112,12 +118,15 @@ div.menubar {
 .menubar-title {
 	background-color: #EEF6FF;
 	float: left;
-	width: 100%;
+	width: 99.6%;
 	font-size: 11px;
 	text-align: left;
 	border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
 	border-style: solid;
 	border-width: 1px;
+    padding:0 0.2%;
+    height:14px;
+
 }
 
 
@@ -132,6 +141,7 @@ div.menubar {
 	clear: none;
 	margin: 0;
 	padding: 0;
+      
 }
 
 .menubar-right {
@@ -186,7 +196,7 @@ table.attributetable {
 
 table.table2columns {
 	background-color: #FFF;
-	width: 99.3%;
+	width: 100%;
 	text-align: center;
 	border: 1px solid;
     border-color: #fff #8195BA #8195BA #D2E0F2;
@@ -846,18 +856,31 @@ div.loader {
     height:31px;
 }
 
-.background
-{
+#wrapper {
+     background-color:#f8f8ff;     
+     width:100%;
+     padding:1px 0px;
+}
+
+.background {
     background-color:#f8f8ff;
     padding:1% 10%;
 }
 
+
+
 #editsurvey textarea,
-#editsurvey input{
-width: 600px;
+#editsurvey input {
+    width: 600px;
 }
 
-#editsurvey td{
-padding-left: 15px;
-font-size: 9pt;
+#editsurvey td {
+    padding-left: 15px;
+    font-size: 9pt;
 } 
+
+
+#help
+{
+    float:right;
+}
