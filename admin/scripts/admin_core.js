@@ -15,23 +15,32 @@ $(document).ready(function(){
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
     }
+
+
     // Loads the tooltips for the toolbars
-    $('img[alt]').qtip({
-       style: { name: 'cream',
-                tip:true, 
-                color:'#111111', 
-                border: {
-                     width: 1,
-                     radius: 5,
-                     color: '#EADF95'}
-               },  
-       position: { adjust: { 
-                screen: true, scroll:true },
-                corner: {
-                        target: 'bottomRight'}
-                },
-       show: {effect: { length:50}}
-    });
+    $('img[alt]').each(function() {
+        if($(this).attr('alt') != '')
+        {
+             $(this).qtip({
+               style: { name: 'cream',
+                        tip:true, 
+                        color:'#111111', 
+                        border: {
+                             width: 1,
+                             radius: 5,
+                             color: '#EADF95'}
+                       },  
+               position: { adjust: { 
+                        screen: true, scroll:true },
+                        corner: {
+                                target: 'bottomRight'}
+                        },
+               show: {effect: { length:50}}
+
+           });
+        }
+    });    
+
 
     if ($('#showadvancedattributes').length>0) updatequestionattributes();
     

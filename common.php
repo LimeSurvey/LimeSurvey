@@ -324,7 +324,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 		{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
                         . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
-                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' title='".$clang->gT("Edit your personal preferences")."' /></a>"
+                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
                         . "</strong>\n";
 		}
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
@@ -3256,7 +3256,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"ABCEFR:;",
+    "types"=>"1ABCEFR:;",
     'inputtype'=>'text',
     
     "help"=>$clang->gT("Enter the code of a Multiple options question to filter the answer options in this array."),

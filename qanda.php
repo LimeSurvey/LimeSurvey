@@ -1158,15 +1158,14 @@ define('SELECTED' , ' selected="selected"' , true);
 function do_boilerplate($ia)
 {
 	$qidattributes=getQuestionAttributes($ia[0]);
+    $answer='';
 
 	if (trim($qidattributes['time_limit'])!='')
 	{
 		$answer .= return_timer_script($qidattributes, $ia);
 	}
 
-	$answer .= '
-		<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />
-';
+	$answer .= '<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />';
 	$inputnames[]=$ia[1];
 
 	return array($answer, $inputnames);
@@ -3389,7 +3388,7 @@ function do_multipleshorttext($ia)
     $answer='';
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-    if ($qidattributes['other_numbers_only']==1)
+    if ($qidattributes['numbers_only']==1)
     {
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	}

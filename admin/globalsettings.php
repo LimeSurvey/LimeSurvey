@@ -68,7 +68,7 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('timeadjust',$savetime);
                        setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
                        setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-                       $editsurvey .= "<br/>Global settings were saved.<br/>&nbsp;"   ;
+                       $editsurvey .= "<br/>".$clang->gT("Global settings were saved.")."<br/>&nbsp;";
         }                                                                
     }
 }
