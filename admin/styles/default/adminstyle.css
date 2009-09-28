@@ -9,6 +9,7 @@ body {
 div, form {
     margin: 0;
     padding: 0;
+
 }
 
 ul,ol {
@@ -19,6 +20,7 @@ ul,ol {
 
 p {
     clear: left;
+    text-align:center;
 }
 
 .boxstyle {
@@ -91,7 +93,7 @@ div.menubar {
     background-color: #EEF6FF;
     clear:left;
     padding:0;
-    margin:3px auto 0 auto;
+    margin:3px auto 3px auto;
     width: 99.5%;
     height: 60px;    
 }
@@ -100,7 +102,7 @@ div.menubar {
     background-color: #EEF6FF;
     width: 99.6%;   
     float: left;
-    border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     border-style: solid;
     border-width: 1px; 
     padding:0 0.2%;           
@@ -252,8 +254,8 @@ td {
 }
 
 .standardbtn {
-	height: 20px;
-	color: #000;
+	line-height: 20px;
+    height: 20px;
 	font-size: 11px;
 }
 
@@ -263,12 +265,12 @@ td {
 	font-size: 11px;
 }
 
-input, select {
+input, select, button {
 	color: navy;
 	font: 10px verdana, arial, sans-serif;
 }
 
-input[disabled], textarea[disabled], select[disabled] {
+input[disabled], textarea[disabled], select[disabled], button[disabled] {
 	color: #999;
 	background: #EEE;
 	font: 10px verdana, arial, sans-serif;
@@ -483,6 +485,11 @@ form.token label {
 	font-weight: 700;
 	background-color: #D2E0F2;
 	color: #1D2D45;
+}
+
+div.settingcaption{
+    clear:both;
+    margin: 3px 0;
 }
 
 .formheader
@@ -727,6 +734,7 @@ table.statisticstable, table.statisticssummary {
     border-collapse:collapse;
     border-width: 0px;
     border-style: none;
+    margin: 0 auto;
 }
 
 .statisticssummary thead th
@@ -833,7 +841,6 @@ div.messagebox .warningheader {
     text-align:right;
 }
 
-
 #frmeditquestion li label:first-child, 
 #frmglobalsettings li label:first-child {
     width: 44%;
@@ -843,6 +850,15 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#addnewsurvey li label:first-child{
+    width: 30%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+}
+       
+#addnewsurvey li,
 #frmeditquestion li,
 #frmglobalsettings li {  
     list-style-type: none;
@@ -868,6 +884,11 @@ div.loader {
 }
 
 
+
+#addnewsurvey iframe
+{
+    width:600px !important;
+}
 
 #editsurvey textarea,
 #editsurvey input {

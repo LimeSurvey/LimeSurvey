@@ -94,7 +94,7 @@ function globalsettingsdisplay()
             // beginning TABs section
             $editsurvey .= "\t<div class='tab-pane' id='tab-pane-1'>\n";
             $editsurvey .= "<form id='frmglobalsettings' name='frmglobalsettings' action='$scriptname' method='post'>\n";
-            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2><p>\n";
+            $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
             $editsurvey .= "<br /></p><div class='settingcaption'>Update settings</div><ul>"
@@ -115,7 +115,7 @@ function globalsettingsdisplay()
             . "<option value='30'"; 
             if ($thisupdatecheckperiod==30) {$editsurvey .= "selected='selected'";}
             $editsurvey .=">".$clang->gT("Every month")."</option>\n"
-            . "</select>&nbsp;<input type='button' onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" value='".$clang->gT("Check now")."' />&nbsp;<span id='lastupdatecheck'>".sprintf($clang->gT("Last check: %s"),$updatelastcheck)."</span></li></ul>\n"; 
+            . "</select>&nbsp;<input type='button' onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" value='".$clang->gT("Check now")."' />&nbsp;<span id='lastupdatecheck'>".sprintf($clang->gT("Last check: %s"),$updatelastcheck)."</span></li></ul><p>\n"; 
             
             if (isset($updateavailable) && $updateavailable==1)
             {
@@ -124,7 +124,7 @@ function globalsettingsdisplay()
             }                         
             else
             {
-              $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.').'<br />';
+              $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.');
             }
             $editsurvey .= "</div>";
             
@@ -434,7 +434,7 @@ function checksettings()
     
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1) 
     {
-    $cssummary .= "<table><tr><td><form action='$scriptname' method='post'><input type='hidden' name='action' value='showphpinfo' /><input type='submit' value='".$clang->gT("Show PHPInfo")."' /></form></td></tr></table>";
+    $cssummary .= "<p><input type='button' onclick='window.open(\"$scriptname?action=showphpinfo\")'value='".$clang->gT("Show PHPInfo")."' />";
     }
     return $cssummary;
 }

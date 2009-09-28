@@ -1825,8 +1825,7 @@ function browsemenubar($title='')
 	}
 	$browsemenubar .= "</div>\n"
                     . "\t</div>\n"
-	                . "</div>\n"
-                    ."<font style='size:12px;line-height:2px;'>&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
+	                . "</div>\n";
     
 	return $browsemenubar;
 }
