@@ -77,6 +77,18 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.85(+)
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.85+ (build 7660) to 1.85+ (build 7689) [28-09-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated translation: Croatian and Italian language (idobraca)
+#Updated translation: French. (b00z00)
+#Updated translation: Dutch by Fred Dekkers. (jaycburton)
+#Updated translation: German (c_schmitz)
+-Fixed #03687: LDAP import of names with apostrophes fails. Patch kindly provided by sradman. (lemeur)
+-Fixed #03699: disapearing '\' in conditions values (constant or regexp) when PHP magic_quotes are turned on. (lemeur)
+-Fixed #03700: bug in the condition editor, cannot test for empty values. (lemeur)
+-Fixed issue (unreported): Removed duplicate tip on question with comments (c_schmitz)
+-Fixed issue (unreported): Start & expiry date were not respecting set time differences (c_schmitz)
+-Fixed issue: Problems to edit certain pages in template editor when admin language is not English (c_schmitz)
+
 Changes from 1.85+ (build 7636) to 1.85+ (build 7660) [21-09-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: Dutch by Menno Dekker. (jaycburton)
 #Updated translation: Finnish by Tapio Nurminen. (jaycburton)
