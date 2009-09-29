@@ -1033,9 +1033,18 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			
 	if($thissurvey['format'] == "G")
 	{
+		global $gid;
+		$qcount=0;
+		foreach($_SESSION['fieldarray'] as $ib) {
+		  if($ib[5] == $gid) {
+		    $qcount++;
+		  }
+		}
 		//Override all other options and just allow freezing, survey is presented in group by group mode
-		$output .="
-			action = 3;";
+		if($qcount > 1) {
+			$output .="
+				action = 3;";
+		}
 	}
 	$output .="
 			var timerdisplay='LS_question'+questionid+'_Timer';
