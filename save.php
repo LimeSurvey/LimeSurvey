@@ -296,7 +296,7 @@ function savedcontrol()
             $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);     
 			$sdata = array("datestamp"=>$today,
 			"ipaddr"=>$_SERVER['REMOTE_ADDR'],
-			"startlanguage"=>GetBaseLanguageFromSurveyID($surveyid),
+			"startlanguage"=>$_SESSION['s_lang'],
 			"refurl"=>getenv("HTTP_REFERER"));
 			//One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
 			if ($connect->AutoExecute($thissurvey['tablename'], $sdata,'INSERT'))    // Checked    
@@ -495,7 +495,7 @@ function createinsertquery()
 			{
 				$query .= ", '".$_SERVER['REMOTE_ADDR']."'";
 			}
-			$query .= ", '".GetBaseLanguageFromSurveyID($surveyid)."'";
+			$query .= ", '".$_SESSION['s_lang']."'";
 			if ($thissurvey['refurl'] == "Y")
 			{
 				$query .= ", '".$_SESSION['refurl']."'";
