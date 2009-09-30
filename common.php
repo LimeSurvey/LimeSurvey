@@ -3838,8 +3838,8 @@ function getAdminHeader($meta=false)
     . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"    
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
-    . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'
-    . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />';
+    . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n"
+    . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n";
     
     if (getLanguageRTL($_SESSION['adminlang']))
     {

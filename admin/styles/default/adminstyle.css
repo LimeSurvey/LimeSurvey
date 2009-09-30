@@ -569,12 +569,13 @@ a.invalidemail {
 .listsurveys {
     text-align:center;
     width:70%;
+    margin:0 auto;
 }
 
 .listsurveys th {
     background-color: #D2E0F2;     
-    font-size:10pt;
-    padding:2px 4px;
+    font-size:8pt;
+    padding:2px 14px 2px 10px;
 }
 
 .browsetable th {
@@ -911,4 +912,18 @@ div.loader {
 #help
 {
     float:right;
+}
+
+thead tr .header {
+    background-image: url(bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+
+thead tr .headerSortUp {
+    background-image: url(images/asc.gif);
+}
+thead tr .headerSortDown {
+    background-image: url(images/desc.gif);
 }

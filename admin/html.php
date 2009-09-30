@@ -22,6 +22,8 @@ if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 
 if ($action == "listsurveys")
 {
+    $js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+    $js_adminheader_includes[]='scripts/listsurvey.js';    
 	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
             ." INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language "
             ." INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
@@ -37,19 +39,19 @@ if ($action == "listsurveys")
 	$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
 
 	if($result->RecordCount() > 0) {
-        $listsurveys= "<br /><table class='listsurveys'>
+        $listsurveys= "<br /><table class='listsurveys'><thead>
 				  <tr>
 				    <th>".$clang->gT("Status")."</th>
+                    <th>".$clang->gT("Survey ID")."</th>
 				    <th style='width:20%;'>".$clang->gT("Survey")."</th>
 				    <th>".$clang->gT("Date Created")."</th>
 				    <th>".$clang->gT("Owner") ."</th>
 				    <th>".$clang->gT("Access")."</th>
 				    <th>".$clang->gT("Anonymous answers")."</th>
-				    <th>".$clang->gT("Status")."</th>
 				    <th>".$clang->gT("Full Responses")."</th>
                     <th>".$clang->gT("Partial Responses")."</th>
                     <th>".$clang->gT("Total Responses")."</th>
-				  </tr>";
+				  </tr></thead><tbody>";
         $gbc = "evenrow"; 
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
@@ -162,12 +164,12 @@ if ($action == "listsurveys")
 				}			
 			}
 			
-			$listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>".$rows['surveyls_title']."</a></td>".
+            $listsurveys.="<td align='center'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['sid']}</a></td>";
+			$listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['surveyls_title']}</a></td>".
 					    "<td>".$datecreated."</td>".
 					    "<td>".$ownername."</td>".
 					    "<td>".$visibility."</td>" .
-					    "<td>".$privacy."</td>" .
-					    "<td>".$status."</td>";
+					    "<td>".$privacy."</td>";
 
 					    if ($rows['active']=="Y")
 					    {
@@ -183,9 +185,9 @@ if ($action == "listsurveys")
 					    $listsurveys .= "</tr>" ;
 		}
 
-		$listsurveys.="<tr class='header'>
-		<td colspan=\"10\">&nbsp;</td>".
-		"</tr>";
+		$listsurveys.="</tbody><tfooter><tr class='header'>
+		<td colspan=\"11\">&nbsp;</td>".
+		"</tr></tfooter>";
 		$listsurveys.="</table><br />" ;
 	}
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
