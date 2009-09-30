@@ -41,7 +41,7 @@ if (session_id() == "")
 //  ==> thus we just change the login form lang: no user profile update
 // if changelang is called from another form (after login) then update user lang
 // when a loginlang is specified at login time, the user profile is updated in usercontrol.php 
-if ((returnglobal('action') == "changelang" || returnglobal('action') == "savepersonalsettings") && (!isset($login) || !$login ))	
+if (returnglobal('action') == "savepersonalsettings" && (!isset($login) || !$login ))	
 	{
 	$_SESSION['adminlang']=returnglobal('lang');
 	}
@@ -63,8 +63,6 @@ if(isset($_SESSION['loginID'])) {GetSessionUserRights($_SESSION['loginID']);}
 // and not GET requests
 $dangerousActionsArray = Array
 	(
-		'changelang' => Array(),
-		'changehtmleditormode' => Array(),
 		'deluser' => Array(),
 		'moduser' => Array(),
 		'usertemplates' => Array(),
@@ -201,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action']) &&
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && 
 	returnglobal('action') != 'login' &&
     returnglobal('action') != 'forgotpass' &&
-    returnglobal('action') != 'changelang' &&
+    returnglobal('action') != 'ajaxquestionattributes' &&
 	returnglobal('action') != '')
 {
 	if (returnglobal('checksessionbypost') != $_SESSION['checksessionpost'])

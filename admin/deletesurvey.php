@@ -37,30 +37,30 @@ if (!isset($deleteok) || !$deleteok)
 	$tablelist = $connect->MetaTables();
 
 	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t\t\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
-	$deletesurveyoutput .= "\t\t\t<strong>".$clang->gT("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
-	$deletesurveyoutput .= "\t\t\t".$clang->gT("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
-	$deletesurveyoutput .= "\t\t\t".$clang->gT("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."\n";
+	$deletesurveyoutput .= "<td align='center'><br />\n";
+	$deletesurveyoutput .= "\t<font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n";
+	$deletesurveyoutput .= "\t<strong>".$clang->gT("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
+	$deletesurveyoutput .= "\t".$clang->gT("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
+	$deletesurveyoutput .= "\t".$clang->gT("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."\n";
 
 	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
 	{
-		$deletesurveyoutput .= "\t\t\t<br /><br />\n".$clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.")."<br /><br />\n";
+		$deletesurveyoutput .= "\t<br /><br />\n".$clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.")."<br /><br />\n";
 	}
 
 	if (in_array("{$dbprefix}tokens_$surveyid", $tablelist))
 	{
-		$deletesurveyoutput .= "\t\t\t".$clang->gT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
+		$deletesurveyoutput .= "\t".$clang->gT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey.")."<br /><br />\n";
 	}
 
-	$deletesurveyoutput .= "\t\t</td>\n";
+	$deletesurveyoutput .= "</td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
 	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
-//	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
-	$deletesurveyoutput .= "\t\t</td>\n";
+	$deletesurveyoutput .= "<td align='center'><br />\n";
+	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" /><br />\n";
+//	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;ok=Y','_top')\" />\n";
+	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
+	$deletesurveyoutput .= "</td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
 	$deletesurveyoutput .= "\n";
 }
@@ -126,10 +126,10 @@ else //delete the survey
 	$sres = $connect->Execute($sdel);
 	
 	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "\t\t<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t\t\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
-	$deletesurveyoutput .= "\t\t\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-	$deletesurveyoutput .= "\t\t</strong></td>\n";
+	$deletesurveyoutput .= "<td align='center'><br />\n";
+	$deletesurveyoutput .= "\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
+	$deletesurveyoutput .= "\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+	$deletesurveyoutput .= "</strong></td>\n";
 	$deletesurveyoutput .= "\t</tr>\n";
     $surveyid=false;
 

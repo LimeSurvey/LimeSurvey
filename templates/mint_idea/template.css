@@ -614,12 +614,17 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 	display: table-cell;
 	vertical-align: baseline;
 }
- .multiple-short-txt ul li label
-,.numeric-multi ul li label
+ .numeric-multi ul li label
 {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
 	vertical-align: baseline;
+}
+.multiple-short-txt ul li label
+{
+	padding: 0.3em 1em 0% 0%;
+	display: table-cell;
+	vertical-align: middle;
 }
 .numeric-multi ul.computed li label
 .numeric-multi ul.slider.computed li label
@@ -673,6 +678,7 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 
 
  .text-short input
+ ,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {

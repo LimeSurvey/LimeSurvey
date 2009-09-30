@@ -107,24 +107,24 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
                         --></script>";
     $assessmentsoutput.="<table width='100%' border='0' >\n"
         . "\t<tr>\n"
-        . "\t\t<td>\n"
+        . "<td>\n"
         . "<div class='menubar'>\n"
         . "\t<div class='menubar-title'>\n"
-        . "\t\t<strong>".$clang->gT("Assessments")."</strong>\n";
+        . "<strong>".$clang->gT("Assessments")."</strong>\n";
 	
 	$assessmentsoutput.= "\t</div>\n"
     . "\t<div class='menubar-main'>\n"
-    . "\t\t<div class='menubar-left'>\n"
-	. "\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."');return false\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' /></a>\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'  />\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
+    . "<div class='menubar-left'>\n"
+	. "\t<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" title='".$clang->gTview("Return to survey administration")."'>" .
+			"<img name='Administration' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+	. "\t<img src='$imagefiles/blank.gif' alt='' width='11'  />\n"
+	. "\t<img src='$imagefiles/seperator.gif' alt='' />\n";
     
     if ($surveyinfo['assessments']!='Y')
     {
         $assessmentsoutput.='<span style="font-size:11px;">'.sprintf($clang->gT("Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="admin.php?action=editsurvey&sid='.$surveyid.'">','</a>').'</span>';   
     }
-	$assessmentsoutput.= "\t\t</div>\n"
+	$assessmentsoutput.= "</div>\n"
 	. "\t</div>\n"
     . "</div>\n";
     $assessmentsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix

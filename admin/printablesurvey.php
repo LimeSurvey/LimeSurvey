@@ -24,8 +24,8 @@ function try_debug($line)
 	if($debug > 0)
 	{
 		return '<!-- printablesurvey.php: '.$line.' -->';
-	};
-};
+	}
+}
 $surveyid = $_GET['sid'];
 
 // PRESENT SURVEY DATAENTRY SCREEN
@@ -201,13 +201,13 @@ function populate_template( $template , $input  , $line = '')
 			if(empty($test_empty))
 			{
 				return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
-			};
+		}
 		}
 		else
 		{
 			define($full_constant , '');
 			return "<!--\n\t$full_path is not a propper file or is missing.\n-->";
-		};
+	}
 	}
 	else
 	{
@@ -216,8 +216,8 @@ function populate_template( $template , $input  , $line = '')
 		if(empty($test_empty))
 		{
 			return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
-		};
-	};
+		}
+	}
 
 	if(is_array($input))
 	{
@@ -225,7 +225,7 @@ function populate_template( $template , $input  , $line = '')
 		{
 			$find[] = '{'.$key.'}';
 			$replace[] = $value;
-		};
+		}
 		return str_replace( $find , $replace , $template_content ); 
 	}
 	else
@@ -237,9 +237,9 @@ function populate_template( $template , $input  , $line = '')
 				$line =  'LINE '.$line.': ';
 			}
 			return '<!-- '.$line.'There was nothing to put into the template -->'."\n";
-		};
-	};
-};
+		}
+	}
+}
 
 
 function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
@@ -249,7 +249,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	if($type == 'other' or $type == 'othercomment')
 	{
 		$x = 1;
-	};
+	}
 	$tail = substr($x , -1 , 1);
 	switch($tail)
 	{
@@ -258,7 +258,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'x':	$x_ = $x;
 				break;
 		default:	$x_ = $x / 2;
-	};
+	}
 
 	if($y < 2)
 	{
@@ -267,7 +267,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	else
 	{
 		$y_ = $y * 2;
-	};
+	}
 
 	if(!empty($title))
 	{
@@ -283,7 +283,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 		case 'text':	$style = ' style="width:'.$x_.'em; height:'.$y_.'em;"';
 				break;
 		default:	$style = '';
-	};
+	}
 
 	switch($type)
 	{
@@ -293,7 +293,7 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 					$image_dimensions = getimagesize(PRINT_TEMPLATE_DIR.'print_img_'.$type.'.png');
 					// define('IMAGE_'.$type.'_SIZE' , ' width="'.$image_dimensions[0].'" height="'.$image_dimensions[1].'"');
 					define('IMAGE_'.$type.'_SIZE' , ' width="14" height="14"');
-				};
+				}
 				$output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.$title.'" class="input-'.$type.'" />';
 				break;
 
@@ -305,9 +305,9 @@ function input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 				break;
 
 		default:	$output = '';
-	};
+	}
 	return $output;
-};
+}
 
 function star_replace($input)
 {
@@ -344,7 +344,7 @@ while ($degrow = $degresult->FetchRow())
 	else
 	{
 		$group_desc = '';
-	};
+	}
 
 	$group = array(
 			 'GROUPNAME' => $degrow['group_name']
@@ -363,7 +363,7 @@ while ($degrow = $degresult->FetchRow())
 	else
 	{
 		$group['ODD_EVEN'] = ' g-row-even';
-	};
+	}
 
 	foreach ($deqrows as $deqrow)
 	{
@@ -697,9 +697,9 @@ while ($degrow = $degresult->FetchRow())
 			if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		}
 
-		$qidattributes=getQAttributes($deqrow['qid']);
+		$qidattributes=getQuestionAttributes($deqrow['qid']);
 		
-		if (isset($qidattributes['page_break']))
+        if ($qidattributes['page_break']!=0)
         {
             $question['QUESTION_CLASS'] .=' breakbefore ';
         }
@@ -750,7 +750,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "Z": //LIST Flexible drop-down/radio-button list
-					if (isset($qidattributes["display_columns"]))
+                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -789,19 +789,19 @@ while ($degrow = $degresult->FetchRow())
 							else
 							{
 								$question['ANSWER'] .= $wrapper['col-devide'];
-							};
+							}
 							$rowcounter = 0;
 							++$colcounter;
-						};
+					}
 					}
 					if ($deqrow['other'] == "Y")
 					{
-						$qAttrib = getQAttributes($deqrow['qid']);
-						if(!isset($qAttrib["other_replace_text"]))
-						{$qAttrib["other_replace_text"]="Other";}
+						$qidattributes = getQuestionAttributes($deqrow['qid']);
+						if(trim($qidattributes["other_replace_text"])=='')
+						{$qidattributes["other_replace_text"]="Other";}
 					
-						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qAttrib["other_replace_text"]).": ________");}
+						$question['ANSWER'] .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other','')."\n".$wrapper['item-end'];
+						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT($qidattributes["other_replace_text"]).": ________");}
 					}
 					$question['ANSWER'] .= $wrapper['whole-end'];
 					//Let's break the presentation into columns.
@@ -812,7 +812,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case '!': //List - dropdown
-                    if (isset($qidattributes["display_columns"]))
+                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='') 
 					{
 						$dcols=$qidattributes['display_columns'];
 					}
@@ -820,9 +820,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 						$dcols=0;
 					}
-
-                    if (isset($qidattributes["category_separator"]))
-					{
+                    if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='') {
 						$optCategorySeparator = $qidattributes['category_separator'];
 					}
 					else
@@ -838,7 +836,7 @@ while ($degrow = $degresult->FetchRow())
 					$deacount=$dearesult->RecordCount();
 					if ($deqrow['other'] == "Y") {$deacount++;}
 
-					$wrapper = setup_columns($dcols, $deacount);
+					$wrapper = setup_columns(0, $deacount);
 
 					$question['ANSWER'] = $wrapper['whole-start'];
 
@@ -873,19 +871,19 @@ while ($degrow = $degresult->FetchRow())
 							else
 							{
 								$question['ANSWER']  .= $wrapper['col-devide'];
-							};
+							}
 							$rowcounter = 0;
 							++$colcounter;
 						}
 					}
 					if ($deqrow['other'] == 'Y')
 					{
-						$qAttrib = getQAttributes($deqrow['qid']);
-						if(!isset($qAttrib["other_replace_text"]))
-						{$qAttrib["other_replace_text"]="Other";}
+						$qidattributes = getQuestionAttributes($deqrow['qid']);
+						if(trim($qidattributes["other_replace_text"])=='')
+						{$qidattributes["other_replace_text"]="Other";}
 //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qAttrib["other_replace_text"])).' '.$clang->gT($qAttrib["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
-					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qAttrib["other_replace_text"]).": ________");}
+						$question['ANSWER']  .= $wrapper['item-start-other'].input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"])."\n\t\t\t".input_type_image('other')."\n".$wrapper['item-end'];
+					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
 				//Let's break the presentation into columns.
@@ -927,14 +925,14 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$question['ANSWER'] .="\t<li>\n\t".input_type_image('rank','',4,1)."\n\t\t".$rearow['answer']."\n\t</li>\n";
 					if(isset($_POST['printableexport'])){$pdf->intopdf("__ ".$rearow['answer']);}
-				};
+				}
 				$question['ANSWER'] .= "\n</ul>\n";
 				break;
 
 // ==================================================================
 			case "M":  //MULTIPLE OPTIONS (Quite tricky really!)
 							
-                if (isset($qidattributes["display_columns"]))
+                if (trim($qidattributes['display_columns'])!='') 
 				{
 					$dcols=$qidattributes['display_columns'];
 				}
@@ -942,8 +940,7 @@ while ($degrow = $degresult->FetchRow())
 				{
 					$dcols=0;
 				}
-                if (!isset($qidattributes["max_answers"]))
-				{
+                if (trim($qidattributes['max_answers'])=='') {
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *all* that apply:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *all* that apply:"),"U");}
 				}
@@ -980,14 +977,14 @@ while ($degrow = $degresult->FetchRow())
 						else
 						{
 							$question['ANSWER'] .= $wrapper['col-devide'];
-						};
+						}
 						$rowcounter = 0;
 						++$colcounter;
-					};
+				}
 				}
 				if ($deqrow['other'] == "Y")
 				{
-					if(!isset($qidattributes["other_replace_text"]))
+                    if (trim($qidattributes['other_replace_text'])=='') 
 					{
                         $qidattributes["other_replace_text"]="Other";
                     }
@@ -995,7 +992,7 @@ while ($degrow = $degresult->FetchRow())
 					if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
 				}
 				$question['ANSWER'] .= $wrapper['whole-end'];
-//				};
+//				}
 				break;
 				
 /*
@@ -1015,8 +1012,7 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "P":  //MULTIPLE OPTIONS WITH COMMENTS
-				if (!isset($qidattributes['max_answers']))
-				{
+                if (trim($qidattributes['max_answers'])=='') {
 					$question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose all that apply and provide a comment:");
 					if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose all that apply and provide a comment:"),"U");}
 				}
@@ -1216,7 +1212,7 @@ while ($degrow = $degresult->FetchRow())
 					{
 						$question['ANSWER'] .= "\t\t\t<td>".input_type_image('radio',$i)."</td>\n";
 						$pdfoutput[$j][$i]=" o ".$i;
-					};
+					}
 					$question['ANSWER'] .= "\t\t</tr>\n";
 					$j++;
 				}
@@ -1306,26 +1302,26 @@ while ($degrow = $degresult->FetchRow())
 // ==================================================================
 			case ":": //ARRAY (Multi Flexible) (Numbers)
 				$headstyle="style='padding-left: 20px; padding-right: 7px'";
-				if (isset($qidattributes['multiflexible_max'])) {
+                if (trim($qidattributes['multiflexible_max'])!='') {
 					$maxvalue=$qidattributes['multiflexible_max'];
 				}
 				else
 				{
 					$maxvalue=10;
 				}
-                if (isset($qidattributes['multiflexible_min'])) {
+                if (trim($qidattributes['multiflexible_min'])!='') {
 					$minvalue=$qidattributes['multiflexible_min'];
 				} else {
 					$minvalue=1;
 				}
-                if (isset($qidattributes['multiflexible_step'])) {
+                if (trim($qidattributes['multiflexible_step'])!='') {
 					$stepvalue=$qidattributes['multiflexible_step'];
 				}
 				else
 				{
 					$stepvalue=1;
 				}
-                if (isset($qidattributes['multiflexible_checkbox'])) {
+                if ($qidattributes['multiflexible_checkbox']!=0) {
 					$checkboxlayout=true;
 				} else {
 					$checkboxlayout=false;
@@ -1528,22 +1524,8 @@ while ($degrow = $degresult->FetchRow())
 
 // ==================================================================
 			case "1": //ARRAY (Flexible Labels) multi scale
-				if (isset($qidattributes['dualscale_headerA']))
-				{
 					$leftheader= $qidattributes['dualscale_headerA'];
-				}
-				else
-				{
-					$leftheader ='';
-				}
-                if (isset($qidattributes['dualscale_headerB']))
-				{
 					$rightheader= $qidattributes['dualscale_headerB'];
-				}
-				else
-				{
-					$rightheader ='';
-				}
 
 				$headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 				$meaquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -1741,7 +1723,7 @@ while($rounds < 1)
 						 '/<([^ >]+)[^>]*>(?:&nbsp;|&#160;|\r\n|\n\r|\n|\r|\t| )*<\/\1>/isU'
 						, $survey_output['GROUPS']
 					);
-	};
+	}
 
 	if($replace_count == 0)
 	{
@@ -1760,8 +1742,8 @@ while($rounds < 1)
 					,$survey_output['GROUPS']
 				);
 
-	};
-};
+	}
+}
 
 $survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
 
@@ -1772,11 +1754,11 @@ if(isset($_POST['printableexport']))
     if ($surveystartdate!='')  
 	{
     		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please submit by %s"), $surveyexpirydate));}
-	};
+	}
 	if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 	{
 		if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please fax your completed survey to: %s"),$surveyfaxto),'B');}
-	};
+	}
 	$pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
 	$pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 }

@@ -15,12 +15,37 @@
 
 include_once("login_check.php");  //Login Check dies also if the script is started directly
 
-if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true) {
+if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $demoModeOnly != true && $action=='dumpdb') {
 
+	$export=completedump();
+
+	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
+	Header("Content-type: application/octet-stream");
+	Header("Content-Disposition: attachment; filename=$file_name");
+	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	echo $export;
+	exit;
+}
+ else 
+ {
+	$dumpdboutput= "<br />\n"
+				   ."<table class='alertbox' >\n"
+			   	   ."\t<tr ><td height='4'><font size='1'><strong>".$clang->gT("Export database")."</strong></font></td></tr>\n"
+				   ."\t<tr ><td height='4'>".$clang->gT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump.")."</td></tr>"
+			       ."</table><br />";
+    return;           
+ }
+
+    /**
+    * Creates a full dump of the current LimeSurvey database
+    * 
+    * @returns string Contains the dumped data
+    */
+    function completedump()
+    {
+        global $connect, $databasename, $dbprefix, $allowexportalldb;
 	$tables = $connect->MetaTables();
-	
-	$export="";
-	$export .="#------------------------------------------"."\n";
+        $export ="#------------------------------------------"."\n";
 	$export .="# LimeSurvey Database Dump of `$databasename`"."\n";
 	if ($allowexportalldb==0) {
 		$export .="# Only prefixed tables with: ". $dbprefix ."\n";
@@ -40,25 +65,11 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
 			$export .= datadump($table);
 		}
 	}
-	
-	$file_name = "LimeSurvey_{$databasename}_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust).".sql";
-	Header("Content-type: application/octet-stream");
-	Header("Content-Disposition: attachment; filename=$file_name");
-	Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	echo $export;
-	exit;
+        return $export;
 }
- else 
- {
-	$dumpdboutput= "<br />\n"
-				   ."<table class='alertbox' >\n"
-			   	   ."\t<tr ><td height='4'><font size='1'><strong>".$clang->gT("Export database")."</strong></font></td></tr>\n"
-				   ."\t<tr ><td height='4'>".$clang->gT("The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump.")."</td></tr>"
-			       ."</table><br />";
-    return;           
- }
 
 
+ 
 	function defdump($tablename)
 	{
 		global $connect;

@@ -576,7 +576,7 @@ END;
 					$idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
 					$cqidattributes = getQuestionAttributes($cd[1]);
 
-					if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+					if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
 					{ // Numerical questions
 
 						$java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
@@ -593,7 +593,7 @@ END;
 							in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 					{
 						$comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+		if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
 		{ // Numerical questions
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
 		}
@@ -616,7 +616,7 @@ END;
         else
         {
 		$cqidattributes = getQuestionAttributes($cd[1]);
-		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+		if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
 		{ // Numerical questions
 							$java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
 		}
@@ -673,8 +673,8 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 				$appendj .= "\n";
                 $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
 				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+				$appendj .= "document.getElementById('$tbody').style.display='';\n";
+				$appendj .= "document.getElementById('$dtbody').value='on';\n";
 				$appendj .= "\t}\n";
 				$appendj .= "\telse\n";
 				$appendj .= "\t{\n";
@@ -768,7 +768,7 @@ foreach ($_SESSION['grouplist'] as $gl)
 				$help=$qa[2];
 				$questioncode=$qa[5];
 				echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-				echo "\t\t\t\t</div>\n";
+				echo "</div>\n";
 			}
 		}
 	}
@@ -817,7 +817,7 @@ echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";}
 
 
 if (is_array($conditions) && count($conditions) != 0 ) 

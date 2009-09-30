@@ -282,7 +282,7 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 
 	if ($thissurvey['active'] != "Y")
 	{
-		echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+		echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 	}
 	echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 	echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
@@ -684,7 +684,7 @@ for ($i=0;$i<count($conditions);$i++)
 
 				$newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
 				$cqidattributes = getQuestionAttributes($cd[1]);
-				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 				{ // Numerical questions
 					//$newjava .= "(parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat(document.getElementById('".$idname2."').value))";
 					$newjava .= "(parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('$idname2').value))";
@@ -704,7 +704,7 @@ for ($i=0;$i<count($conditions);$i++)
 					$cvalue=GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 					if ($conditionSourceOnPreviousPage === false)
 					{
-						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+						if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 						{
 							$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($cvalue)."')";
 						}
@@ -775,7 +775,7 @@ for ($i=0;$i<count($conditions);$i++)
 			else
 			{
 				$cqidattributes = getQuestionAttributes($cd[1]);
-				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && arraySearchByKey('numbers_only', $cqidattributes, 'attribute', 1)))
+				if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 				{ // Numerical questions
 						//$newjava .= "parseFloat(document.getElementById('" . $idname. "').value) $cd[6] parseFloat('".$cd[3]."')";
 						$newjava .= "parseFloat($JSsourceVal) $cd[6] parseFloat('".$cd[3]."')";
@@ -793,13 +793,13 @@ for ($i=0;$i<count($conditions);$i++)
 	{
 		$endzone = ")))\n";
 		$endzone .= "\t{\n";
-		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
-		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='on';\n";
+		$endzone .= "document.getElementById('question$cd[0]').style.display='';\n";
+		$endzone .= "document.getElementById('display$cd[0]').value='on';\n";
 		$endzone .= "\t}\n";
 		$endzone .= "\telse\n";
 		$endzone .= "\t{\n";
-		$endzone .= "\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
-		$endzone .= "\t\tdocument.getElementById('display$cd[0]').value='';\n";
+		$endzone .= "document.getElementById('question$cd[0]').style.display='none';\n";
+		$endzone .= "document.getElementById('display$cd[0]').value='';\n";
 		$endzone .= "\t}\n";
 		$cqcount++;
 	}
@@ -933,7 +933,7 @@ if (isset($qanda) && is_array($qanda))
 		$help=$qa[2];
 		$questioncode=$qa[5];
 		echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-		echo "\t\t\t\t</div>\n";
+		echo "</div>\n";
 	}
 }
 echo "\n\n<!-- END THE GROUP -->\n";
@@ -948,7 +948,7 @@ echo "\n";
 
 if ($thissurvey['active'] != "Y")
 {
-	echo "\t\t<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
+	echo "<center><font color='red' size='2'>".$clang->gT("This survey is not currently active. You will not be able to save your responses.")."</font></center>\n";
 }
 
 echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging

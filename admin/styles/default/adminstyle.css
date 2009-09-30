@@ -9,6 +9,7 @@ body {
 div, form {
 	margin: 0;
 	padding: 0;
+
 }
 
 ul,ol {
@@ -19,6 +20,7 @@ ul,ol {
 
 p {
     clear: left;
+    text-align:center;
 }
 
 .boxstyle {
@@ -34,10 +36,18 @@ p {
 	background: #121a28;
 	margin: 0;
 	padding: 5px;
+    margin-bottom:400px;
+    clear:left;
 }
 
 img {
 	border: 0;
+}
+
+a {
+    color: #328639;
+    text-decoration: underline;
+    cursor:pointer;
 }
 
 a:hover {
@@ -59,7 +69,7 @@ th, p, div {
 	border-bottom: 2px solid #6a8b03;
 	background-image: url(bkgmaintitle.gif);
 	background-repeat: repeat-x;
-	margin: auto;
+    width:100%;
 }
 
 table.statisticstable {
@@ -81,18 +91,24 @@ table.statisticstable span {
 
 div.menubar {
 	background-color: #EEF6FF;
-	width: 99.1%;
-	margin-top: 3px;
+    clear:left;
+    padding:0;
+    margin:3px auto 3px auto;
+    width: 99.5%;
+    height: 60px;    
     clear:left;
 }
 
 .menubar-main {
 	background-color: #EEF6FF;
-	width: 100%;
+    width: 99.6%;   
 	float: left;
 	border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
 	border-style: solid;
 	border-width: 1px;
+    padding:0 0.2%;           
+    height: 43px;    
+
 }
 
 .menubar img {
@@ -105,12 +121,15 @@ div.menubar {
 .menubar-title {
 	background-color: #EEF6FF;
 	float: left;
-	width: 100%;
+	width: 99.6%;
 	font-size: 11px;
 	text-align: left;
 	border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
 	border-style: solid;
 	border-width: 1px;
+    padding:0 0.2%;
+    height:14px;
+
 }
 
 
@@ -125,6 +144,7 @@ div.menubar {
 	clear: none;
 	margin: 0;
 	padding: 0;
+      
 }
 
 .menubar-right {
@@ -132,6 +152,18 @@ div.menubar {
 	float: right;
 	line-height: 1em;
 }
+
+.menubar-title-right {
+    float: right;
+}
+
+.menubar-title-right a {
+        font-size:10px;
+        font-weight:bold;
+        color:#ee0000 !important;
+        text-decoration: underline !important; 
+        
+    }
 
 table.menubar {
 	width: 100%;
@@ -167,7 +199,7 @@ table.attributetable {
 
 table.table2columns {
 	background-color: #FFF;
-	width: 99.3%;
+	width: 100%;
 	text-align: center;
 	border: 1px solid;
     border-color: #fff #8195BA #8195BA #D2E0F2;
@@ -223,8 +255,8 @@ td {
 }
 
 .standardbtn {
+	line-height: 20px;
 	height: 20px;
-	color: #000;
 	font-size: 11px;
 }
 
@@ -234,12 +266,12 @@ td {
 	font-size: 11px;
 }
 
-input, select {
+input, select, button {
 	color: navy;
 	font: 10px verdana, arial, sans-serif;
 }
 
-input[disabled], textarea[disabled], select[disabled] {
+input[disabled], textarea[disabled], select[disabled], button[disabled] {
 	color: #999;
 	background: #EEE;
 	font: 10px verdana, arial, sans-serif;
@@ -268,6 +300,7 @@ textarea {
 	font-size: 12px;
 	font-weight: 700;
 	line-height: 40px;
+    padding:0 4px;
 }
 
 .saveOrderbtn {
@@ -341,28 +374,6 @@ span.settingcaption {
 	clear: left;
 	margin-bottom: 20px;
 	background-color: #F8F8FF;
-}
-
-#dhtmlgoodies_tooltip {
-	border: 1px solid #000;
-	position: absolute;
-	display: none;
-	z-index: 20000;
-	-moz-border-radius: 5px;
-	background: #FDFDF5;
-	font: 1em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
-	padding: 2px;
-}
-
-#dhtmlgoodies_tooltipShadow {
-	position: absolute;
-	display: none;
-	z-index: 10000;
-    opacity: .35; 
-    filter:Alpha(Opacity=35);    
-	-khtml-opacity: 0.7px;
-	-moz-border-radius: 5px;
-	background: #555;
 }
 
 .movableList {
@@ -475,6 +486,11 @@ form.token label {
 	font-weight: 700;
 	background-color: #D2E0F2;
 	color: #1D2D45;
+}
+
+div.settingcaption{
+    clear:both;
+    margin: 3px 0;
 }
 
 .formheader
@@ -719,6 +735,7 @@ table.statisticstable, table.statisticssummary {
     border-collapse:collapse;
     border-width: 0px;
     border-style: none;
+    margin: 0 auto;
 }
 
 .statisticssummary thead th
@@ -751,7 +768,7 @@ table.statisticstable, table.statisticssummary {
     background:#D2E0F2;
     text-align:center;
     color:#1D2D45;
-    padding:4 10px;
+    padding:4px 10px;
 }
 
 .statisticstable tfoot tr {
@@ -828,4 +845,70 @@ div.messagebox .warningheader {
 /*controls the width of select boxes in group order dialog*/
 .movableNode select {
     max-width:200px;
+}
+}
+
+#frmeditquestion li label:first-child, 
+#frmglobalsettings li label:first-child {
+    width: 44%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+}
+
+#addnewsurvey li label:first-child{
+    width: 30%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+}
+       
+#addnewsurvey li,
+#frmeditquestion li,
+#frmglobalsettings li {  
+    list-style-type: none;
+    padding-bottom:5px;
+}
+
+div.loader {
+	background-image: url(images/ajax-loader.gif);
+    background-repeat: no-repeat;
+    width:31px;
+    height:31px;
+}
+
+#wrapper {
+     background-color:#f8f8ff;     
+     width:100%;
+     padding:1px 0px;
+}
+
+.background {
+    background-color:#f8f8ff;
+    padding:1% 10%;
+}
+
+
+
+#addnewsurvey iframe
+{
+    width:600px !important;
+}
+
+#editsurvey textarea,
+#editsurvey input {
+    width: 600px;
+}
+
+#editsurvey td {
+    padding-left: 15px;
+    font-size: 9pt;
+} 
+
+
+#help
+{
+    float:right;
 }

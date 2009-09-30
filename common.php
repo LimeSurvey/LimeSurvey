@@ -18,13 +18,8 @@
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {safe_die("Cannot run this script directly");}
 
-##################################################################################
-
-$versionnumber = "1.85+";
-$dbversionnumber = 138;
-$buildnumber = "";
-
-##################################################################################
+// Include version information
+require($rootdir.'/version.php');
 
 // Check for most necessary requirements
 // Now check for PHP & db version
@@ -94,7 +89,7 @@ if(function_exists("date_default_timezone_set") and function_exists("date_defaul
 
 //Every 50th time clean up the temp directory of old files (older than 1 day)
 //depending on the load the  probability might be set higher or lower
-if (rand(1,50)==1) 
+if (rand(1,50)==25) 
 {
     cleanTempDirectory();   
 }
@@ -255,6 +250,16 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 }
 
 
+// Default global values that should not appear in config-defaults.php
+$updateavailable=0;
+$updatebuild='';
+$updateversion='';
+$updatelastcheck='';
+$updatekey='';
+$updatekeyvaliduntil='';
+ 
+require ($homedir.'/globalsettings.php');
+          
 //Admin menus and standards
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 if ($sourcefrom == "admin")
@@ -280,6 +285,13 @@ if ($sourcefrom == "admin")
 	}
 }
 
+if ($sourcefrom == "admin" && $buildnumber != "" && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days")) 
+{
+  updatecheck();
+}
+
+
+
 //SET LOCAL TIME
 if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
@@ -303,145 +315,117 @@ $singleborderstyle = "style='border: 1px solid #111111'";
      */
     function showadminmenu()
         {
-        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action;
+        global $homedir, $scriptname, $surveyid, $setfont, $imagefiles, $clang, $debug, $action, $updateavailable, $updatebuild, $updateversion;
     
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
-        $adminmenu  .="\t<div class='menubar-title'>\n"
-                    . "\t\t<strong>".$clang->gT("Administration")."</strong>";
+        $adminmenu  .="<div class='menubar-title'>\n"
+                    . "<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
-                        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Edit your personal preferences", "js")."');return false\">"
-                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' "
-                        . "title='' /></a>"
+                        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=personalsettings', '_top')\" title=\"".$clang->gTview("Edit your personal preferences")."\" >"
+                        . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
                         . "</strong>\n";
 			}
-       	$adminmenu .= "\t\t</div>\n"
-                    . "\t\t\t<div class='menubar-main'>\n"
-                    . "\t\t\t\t<div class='menubar-left'>\n"
-                    . "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\"" .
-                     "onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Default Administration Page", "js")."');return false\">" .
-                     "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' "
-                    ."title=''" ." /></a>\n";
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
+        {
+            $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</div>';
+        }
+       	$adminmenu .= "</div>\n"
+                    . "<div class='menubar-main'>\n"
+                    . "<div class='menubar-left'>\n"
+                    . "<a href=\"#\" onclick=\"window.open('$scriptname', '_top')\" title=\"".$clang->gTview("Default Administration Page")."\">" 
+                    . "<img src='$imagefiles/home.png' name='HomeButton' alt='".$clang->gT("Default Administration Page")."' /></a>\n";
 
-		$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11'   />\n"
-                    . "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  />\n";
+		$adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+                    . "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-		// edit users
-		$adminmenu .= "\t\t\t\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" " .
-					"onmouseout=\"hideTooltip()\""
-					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Users", "js")."');return false\">" .
-					 "<img src='$imagefiles/security.png' name='AdminSecurity'"
-					." title='' alt='".$clang->gT("Create/Edit Users")."' /></a>";
+		// Edit users
+		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" title=\"".$clang->gTview("Create/Edit Users")."\" >" 
+                    ."<img src='$imagefiles/security.png' name='AdminSecurity' alt='".$clang->gT("Create/Edit Users")."' /></a>";
 
-		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" "
-					. "onmouseout=\"hideTooltip()\""
-					. "onmouseover=\"showTooltip(event,'".$clang->gT("Create/Edit Groups", "js")."');return false\">" .
-					"<img src='$imagefiles/usergroup.png' title=''  alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
+		$adminmenu .="<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" title=\"".$clang->gTview("Create/Edit Groups")."\" >"
+					."<img src='$imagefiles/usergroup.png' alt='".$clang->gT("Create/Edit Groups")."' /></a>\n" ;
 
-		// check settings
-						$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checksettings', '_top')\" title=\"".$clang->gTview("Show System Summary")."\" "
-					    . "onmouseout=\"hideTooltip()\""
-                      	. "onmouseover=\"showTooltip(event,'".$clang->gT("Show System Summary", "js")."');return false\">"
-						. "\t\t\t\t\t<img src='$imagefiles/summary.png' name='CheckSettings' title='"
-						. "' alt='". $clang->gT("Show System Summary")."'/></a>"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
-
-		// check data cosistency
+        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+        {
+        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=globalsettings', '_top')\" title=\"".$clang->gTview("Global settings")."\" >"
+                    . "<img src='$imagefiles/global.png' name='GlobalSettings' alt='". $clang->gT("Global settings")."' /></a>"
+                    . "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n";
+        }                    
+		// Check data integrity
         if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\" ".
-						   "onmouseout=\"hideTooltip()\""
-						  ."onmouseover=\"showTooltip(event,'".$clang->gT("Check Data Integrity", "js")."');return false\">".
-						"<img src='$imagefiles/checkdb.png' name='CheckDataINtegrity' title=''  alt='".$clang->gT("Check Data Integrity")."'  /></a>\n";
+			$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
+   						  "<img src='$imagefiles/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
 			}
 		else
 			{
-			$adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
+			$adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 			}
 
 		// list surveys
-		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" "
-		 			."onmouseout=\"hideTooltip()\""
-                    ."onmouseover=\"showTooltip(event,'".$clang->gT("List Surveys", "js")."');return false\">\n"
-		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' title=''"
-		 			."  alt='".$clang->gT("List Surveys")."'  onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
+		$adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" title=\"".$clang->gTview("List Surveys")."\" >\n"
+		 			."<img src='$imagefiles/surveylist.png' name='ListSurveys' alt='".$clang->gT("List Surveys")."' onclick=\"window.open('$scriptname?action=listsurveys', '_top')\" />"
                     ."</a>" ;
 
 		// db backup & label editor
 		if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" title=\"".$clang->gTview("Backup Entire Database")."\" "
-						. "onclick=\"window.open('$scriptname?action=dumpdb', '_top')\""
-						. "onmouseout=\"hideTooltip()\""
-						. "onmouseover=\"showTooltip(event,'".$clang->gT("Backup Entire Database", "js")."');return false\">"
-						."<img src='$imagefiles/backup.png' name='ExportDB' title='' alt='". $clang->gT("Backup Entire Database")."($surveyid)'  />"
+			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=dumpdb', '_top')\" title=\"".$clang->gTview("Backup Entire Database")."\">\n"
+						."<img src='$imagefiles/backup.png' name='ExportDB' alt='". $clang->gT("Backup Entire Database")."' />"
 						."</a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+						."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
 			}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
+			  $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
 			}
 		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
 			{
-			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\" "
-						. "onmouseout=\"hideTooltip()\""
-						. "onmouseover=\"showTooltip(event,'".$clang->gT("Edit/Add Label Sets", "js")."');return false\">" .
-						 "<img src='$imagefiles/labels.png'  name='LabelsEditor' title='' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
-						. "\t\t\t\t\t<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
+			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\">\n" 
+                        ."<img src='$imagefiles/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
+						."<img src='$imagefiles/seperator.gif' alt=''  border='0' hspace='0' />\n";
            	}
 		else
 			{
-			  $adminmenu .= "\t\t\t\t\t<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
+			  $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 			}
         if($_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 			{
-	        $adminmenu .= "<a href=\"#\" " .
-	        			  "onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" "
-	                    . "onmouseout=\"hideTooltip()\""
-	                    . "onmouseover=\"showTooltip(event,'".$clang->gT("Template Editor", "js")."');return false\">" .
-	                    "<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."'  /></a>\n";
+	        $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=templates', '_top')\" title=\"".$clang->gTview("Template Editor")."\" >"
+	                    ."<img src='$imagefiles/templates.png' name='EditTemplates' title='' alt='". $clang->gT("Template Editor")."' /></a>\n";
             }
             // survey select box
-            $adminmenu .= "\t\t\t\t\t</div><div class='menubar-right'><font class=\"boxcaption\">".$clang->gT("Surveys").":</font>"
-                        . "\t\t\t\t\t<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
+            $adminmenu .= "</div><div class='menubar-right'><span class=\"boxcaption\">".$clang->gT("Surveys").":</span>"
+                        . "<select onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n"
                         . getsurveylist()
-                        . "\t\t\t\t\t</select>\n";
+                        . "</select>\n";
             
             if($_SESSION['USER_RIGHT_CREATE_SURVEY'] == 1)
                 {
             $adminmenu .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=newsurvey', '_top')\""
-                        . "title=\"".$clang->gTview("Create or Import New Survey")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Create or Import New Survey", "js")."');return false\">" .
-                        "<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
+                        ."title=\"".$clang->gTview("Create or Import New Survey")."\" >"
+                        ."<img src='$imagefiles/add.png' name='AddSurvey' title='' alt='". $clang->gT("Create or Import New Survey")."' /></a>\n";
                  }
 
 
         if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
 	    {
-	        $adminmenu .= "\t\t<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
-                        . "\t\t<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\""
-                        . "title=\"".$clang->gTview("Logout")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-					    . "onmouseover=\"showTooltip(event,'".$clang->gT("Logout", "js")."');return false\">"
-                        . "<img src='$imagefiles/logout.png' name='Logout'"
-					    . "title='' alt='".$clang->gT("Logout")."'/></a>"
-	                    . "\t\t<a href=\"#\" onclick=\"showhelp('show')\""
-                        . "title=\"".$clang->gTview("Show Help")."\" "
-                        . "onmouseout=\"hideTooltip()\""
-                        . "onmouseover=\"showTooltip(event,'".$clang->gT("Show Help", "js")."');return false\">"
-                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''"
-                        . "alt='". $clang->gT("Show Help")."'/></a>";
+            // Logout
+	        $adminmenu .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
+                        . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
+                        . "<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
                         
-	        $adminmenu .= "\t\t\t\t</div>\n"
-                        . "\t\t\t</div>\n"
-                        . "\t\t</div>\n";
-            $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+            //Show help   
+            $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
+                        . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
+                        
+	        $adminmenu .= "</div>\n"
+                        . "</div>\n"
+                        . "</div>\n";
+          //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
             if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
@@ -668,21 +652,21 @@ function getsurveylist($returnarray=false)
             $sv['surveyls_title']=htmlspecialchars(strip_tags($sv['surveyls_title']));
             if($sv['active']!='Y') 
             { 
-              $inactivesurveys .= "\t\t\t<option ";
+              $inactivesurveys .= "<option ";
         			if($_SESSION['loginID'] == $sv['owner_id']) {$inactivesurveys .= " style=\"font-weight: bold;\"";}
         			if ($sv['sid'] == $surveyid) {$inactivesurveys .= " selected='selected'"; $svexist = 1;}
                     $inactivesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
             }
             elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
             {
-			        $expiredsurveys .="\t\t\t<option ";
+			        $expiredsurveys .="<option ";
 			        if ($_SESSION['loginID'] == $sv['owner_id']) {$expiredsurveys .= " style=\"font-weight: bold;\"";}
 			        if ($sv['sid'] == $surveyid) {$expiredsurveys .= " selected='selected'"; $svexist = 1;}
 			        $expiredsurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
 			}
             else
             {
-                $activesurveys .= "\t\t\t<option ";
+                $activesurveys .= "<option ";
         		if($_SESSION['loginID'] == $sv['owner_id']) {$activesurveys .= " style=\"font-weight: bold;\"";}
         		if ($sv['sid'] == $surveyid) {$activesurveys .= " selected='selected'"; $svexist = 1;}
                 $activesurveys .=" value='$scriptname?sid={$sv['sid']}'>{$sv['surveyls_title']}</option>\n";
@@ -692,21 +676,21 @@ function getsurveylist($returnarray=false)
     //Only show each activesurvey group if there are some 
     if ($activesurveys!='') 
     {  
-      $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
-      $surveyselecter .= $activesurveys . "\t\t\t</optgroup>";
+      $surveyselecter .= "<optgroup label='".$clang->gT("Active")."' class='activesurveyselect'>\n";
+      $surveyselecter .= $activesurveys . "</optgroup>";
     }
     if ($expiredsurveys!='')
     {
-	  $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Expired")."' class='expiredsurveyselect'>\n";
-	  $surveyselecter .= $expiredsurveys . "\t\t\t</optgroup>";
+	  $surveyselecter .= "<optgroup label='".$clang->gT("Expired")."' class='expiredsurveyselect'>\n";
+	  $surveyselecter .= $expiredsurveys . "</optgroup>";
 	}
     if ($inactivesurveys!='') 
     {  
-      $surveyselecter .= "\t\t\t<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
-      $surveyselecter .= $inactivesurveys . "\t\t\t</optgroup>";
+      $surveyselecter .= "<optgroup label='".$clang->gT("Inactive")."' class='inactivesurveyselect'>\n";
+      $surveyselecter .= $inactivesurveys . "</optgroup>";
     }    
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "\t\t\t<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "<option value='$scriptname?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
 }
 
@@ -734,7 +718,7 @@ function getquestions($surveyid,$gid,$selectedqid)
 	foreach ($qrows as $qrow)
 	{
 		$qrow['title'] = strip_tags($qrow['title']);
-		$questionselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
+		$questionselecter .= "<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
 		if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
 		$questionselecter .=">{$qrow['title']}:";
 		$questionselecter .= " ";
@@ -752,7 +736,7 @@ function getquestions($surveyid,$gid,$selectedqid)
 
 	if (!isset($qexists))
 	{
-		$questionselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$questionselecter;
+		$questionselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$questionselecter;
 	}
 	return $questionselecter;
 }
@@ -913,7 +897,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 		$qtypeselecter = "";
 		foreach($qtypes as $TypeCode=>$TypeDescription)
 		{
-			$qtypeselecter .= "\t\t<option value='$TypeCode'";
+			$qtypeselecter .= "<option value='$TypeCode'";
 			if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
 			$qtypeselecter .= ">$TypeDescription</option>\n";
 		}
@@ -1151,13 +1135,13 @@ function setup_columns($columns, $answer_count)
 
 				if($columns > 1)
 				{
-					$wrapper['col-devide']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td>\n\t\t\t\t<ul>\n";
-					$wrapper['col-devide-last']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\n\t\t\t<td class=\"last\">\n\t\t\t\t<ul>\n";
+					$wrapper['col-devide']	= "\t</ul>\n</td>\n\n<td>\n\t<ul>\n";
+					$wrapper['col-devide-last']	= "\t</ul>\n</td>\n\n<td class=\"last\">\n\t<ul>\n";
 				};
-				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<ul>\n";
-				$wrapper['whole-end']	= "\t\t\t\t</ul>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n";
-				$wrapper['item-start']	= "\t\t\t\t\t<li>\n";
-				$wrapper['item-end']	= "\t\t\t\t\t</li>\n";
+				$wrapper['whole-start']	= "\n<table$class>\n$table_cols\n\t<tbody>\n<tr>\n<td>\n\t<ul>\n";
+				$wrapper['whole-end']	= "\t</ul>\n</td>\n</tr>\n\t</tbody>\n</table>\n";
+				$wrapper['item-start']	= "<li>\n";
+				$wrapper['item-end']	= "</li>\n";
 	};
 
 	return $wrapper;
@@ -1251,7 +1235,7 @@ function getNotificationlist($notificationcode)
 	if (!isset($ntypeselector)) {$ntypeselector="";}
 	foreach($ntypes as $ntcode=>$ntdescription)
 	{
-		$ntypeselector .= "\t\t<option value='$ntcode'";
+		$ntypeselector .= "<option value='$ntcode'";
 		if ($notificationcode == $ntcode) {$ntypeselector .= " selected='selected'";}
 		$ntypeselector .= ">$ntdescription</option>\n";
 	}
@@ -1282,14 +1266,14 @@ function getgrouplist($gid)
 	$gidresult = db_execute_num($gidquery) or safe_die("Couldn't get group list in common.php<br />$gidquery<br />".$connect->ErrorMsg()); //Checked
 	while($gv = $gidresult->FetchRow())
 	{
-		$groupselecter .= "\t\t<option";
+		$groupselecter .= "<option";
 		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	if ($groupselecter)
 	{
-		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
-		else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
+		if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		else {$groupselecter .= "<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
 }
@@ -1307,14 +1291,14 @@ function getgrouplist2($gid)
 	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");   //Checked
 	while ($gv = $gidresult->FetchRow())
 	{
-		$groupselecter .= "\t\t<option";
+		$groupselecter .= "<option";
 		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	if ($groupselecter)
 	{
-		if (!$gvexist) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
-		else {$groupselecter .= "\t\t<option value=''>".$clang->gT("None")."</option>\n";}
+		if (!$gvexist) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		else {$groupselecter .= "<option value=''>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
 }
@@ -1322,7 +1306,7 @@ function getgrouplist2($gid)
 
 function getgrouplist3($gid)
 {
-	global $surveyid, $dbprefix, $connect;
+	global $surveyid, $dbprefix;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
 	$groupselecter = "";
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1332,31 +1316,39 @@ function getgrouplist3($gid)
 	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");      //Checked
 	while ($gv = $gidresult->FetchRow())
 	{
-		$groupselecter .= "\t\t<option";
+		$groupselecter .= "<option";
 		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$gv[0]'>".htmlspecialchars($gv[1])."</option>\n";
 	}
 	return $groupselecter;
 }
 
-function getgrouplist4($gid)
+/**
+* Gives back the name of a group for a certaing group id
+* 
+* @param integer $gid Group ID
+*/
+function getgroupname($gid)
 {
-	global $surveyid, $dbprefix, $connecti,$clang;
+	global $surveyid;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-	$groupselecter = "";
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$gidquery = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' and gid=$gid";
 
-
-	$gidresult = db_execute_num($gidquery) or safe_die("Plain old did not work!");      //Checked
+	$gidresult = db_execute_num($gidquery) or safe_die("Group name could not be fetched (getgroupname).");      //Checked
 	while ($gv = $gidresult->FetchRow())
 	{
-		$groupselecter .= "\t\t".htmlspecialchars($gv[0])." - ".$clang->gT("Cannot be modified (Survey is active)")."\n";
+		$groupname = htmlspecialchars($gv[0]);
 	}
-	return $groupselecter;
+	return $groupname;
 }
 
-
+/**
+* put your comment there...
+* 
+* @param mixed $gid
+* @param mixed $language
+*/
 function getgrouplistlang($gid, $language)
 {
 	global $surveyid, $scriptname, $connect, $clang;
@@ -1367,7 +1359,7 @@ function getgrouplistlang($gid, $language)
 	$gidresult = db_execute_num($gidquery) or safe_die("Couldn't get group list in common.php<br />$gidquery<br />".$connect->ErrorMsg());   //Checked
 	while($gv = $gidresult->FetchRow())
 	{
-		$groupselecter .= "\t\t<option";
+		$groupselecter .= "<option";
 		if ($gv[0] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
 		$groupselecter .= " value='$scriptname?sid=$surveyid&amp;gid=$gv[0]'>";
         if (strip_tags($gv[1]))
@@ -1380,8 +1372,8 @@ function getgrouplistlang($gid, $language)
 	}
 	if ($groupselecter)
 	{
-		if (!isset($gvexist)) {$groupselecter = "\t\t<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
-		else {$groupselecter .= "\t\t<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
+		if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$groupselecter;}
+		else {$groupselecter .= "<option value='$scriptname?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
 	}
 	return $groupselecter;
 }
@@ -1724,36 +1716,32 @@ function browsemenubar($title='')
 	$thissurvey=getSurveyInfo($surveyid);
 	//BROWSE MENU BAR
 	$browsemenubar = "<div class='menubar'>\n"
-	. "\t<div class='menubar-title'>\n"
-    . "\t<strong>$title</strong>: ({$thissurvey['name']})"
-    . "\t</div>"
-    . "\t<div class='menubar-main'>\n"
-    . "\t<div class='menubar-left'>\n"
-	. "\t\t\t<a href='$scriptname?sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-			"title=\"".$clang->gTview("Return to Survey Administration")."\" " .
-			"onmouseover=\"showTooltip(event,'".$clang->gT("Return to Survey Administration", "js")."')\">" .
-			"<img name='Administration' src='$imagefiles/home.png' title='' alt='' /></a>\n"
-	. "\t\t\t<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
-	. "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid' onmouseout=\"hideTooltip()\"" .
-			" title=\"".$clang->gTview("Show summary information")."\" " .
-			" onmouseover=\"showTooltip(event,'".$clang->gT("Show summary information", "js")."')\"" .
-			"><img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='' /></a>\n";
+	. "<div class='menubar-title'>\n"
+    . "<strong>$title</strong>: ({$thissurvey['name']})"
+    . "</div>"
+    . "<div class='menubar-main'>\n"
+    . "<div class='menubar-left'>\n"
+    //Return to survey administration
+	. "<a href='$scriptname?sid=$surveyid' title=\"".$clang->gTview("Return to survey administration")."\" >"
+	. "<img name='Administration' src='$imagefiles/home.png' title='' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
+	. "<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
+	. "<img src='$imagefiles/seperator.gif' alt='' />\n"
+    //Show summary information
+	. "<a href='$scriptname?action=browse&amp;sid=$surveyid' title=\"".$clang->gTview("Show summary information")."\" >"
+	. "<img name='SurveySummary' src='$imagefiles/summary.png' title='' alt='".$clang->gT("Show summary information")."' /></a>\n";
+    
+    //Display responses
     if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
     {
-        $browsemenubar .="\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' onmouseout=\"hideTooltip()\"" .
-        "title=\"".$clang->gTview("Display Responses")."\" " .
-        "onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."')\">" .
-        "<img name='ViewAll' src='$imagefiles/document.png' title='' alt='' /></a>\n";
+        $browsemenubar .="<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all' title=\"".$clang->gTview("Display Responses")."\" >" .
+        "<img name='ViewAll' src='$imagefiles/document.png' title='' alt='".$clang->gT("Display Responses")."' /></a>\n";
+    } 
+    else 
+        {
+            $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"document.getElementById('browsepopup').style.visibility='visible';\""
+            . "title=\"".$clang->gTview("Display Responses")."\" >" 
+            ."<img src='$imagefiles/document.png' alt='".$clang->gT("Display Responses")."' name='ViewAll' /></a>";
     
-    } else {
-            $browsemenubar .= "<a href=\"#\" accesskey='b' onclick=\"hideTooltip(); document.getElementById('browsepopup').style.visibility='visible';\""
-            . "onmouseout=\"hideTooltip()\""
-            . "title=\"".$clang->gTview("Display Responses")."\" " 
-            . "onmouseover=\"showTooltip(event,'".$clang->gT("Display Responses", "js")."');return false\">"
-            ."<img src='$imagefiles/document.png' title='".$clang->gTview("Display Responses")."' "
-            . "name='ViewAll' alt='' /></a>";
-            
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $tmp_survlangs[] = $baselang;
@@ -1771,77 +1759,74 @@ function browsemenubar($title='')
 
         }            
             
+    // Display last 50 responses        
+	$browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
+			        " title=\"".$clang->gTview("Display Last 50 Responses")."\" >" .
+			        "<img name='ViewLast' src='$imagefiles/viewlast.png' alt='".$clang->gT("Display Last 50 Responses")."' /></a>\n";
+    // Data entry
+	$browsemenubar .= "<a href='$scriptname?action=dataentry&amp;sid=$surveyid'".
+			        " title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >" .
+	                "<img name='DataEntry' src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' /></a>\n";
+    // Statistics                
+	$browsemenubar .= "<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
+	                ."title=\"".$clang->gTview("Get statistics from these responses")."\" >"
+	                ."<img name='Statistics' src='$imagefiles/statistics.png' alt='".$clang->gT("Get statistics from these responses")."' /></a>\n";
             
-	$browsemenubar .= "\t\t\t<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
-			" title=\"".$clang->gTview("Display Last 50 Responses")."\" " .
-			"onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Display Last 50 Responses", "js")."')\">" .
-			"<img name='ViewLast' src='$imagefiles/viewlast.png' title='' alt='' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=dataentry&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" ".
-			" title=\"".$clang->gTview("Dataentry Screen for Survey")."\" " .
-			" onmouseover=\"showTooltip(event,'".$clang->gT("Dataentry Screen for Survey", "js")."')\">" .
-	  "<img name='DataEntry' src='$imagefiles/dataentry.png' title='' alt='' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=statistics&amp;sid=$surveyid' "
-	."title=\"".$clang->gTview("Get statistics from these responses")."\" "
-	."onmouseout=\"hideTooltip()\" onmouseover=\"showTooltip(event,'".$clang->gT("Get statistics from these responses", "js")."')\">"
-	."<img name='Statistics' src='$imagefiles/statistics.png' title='' alt='' /></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n";
+	$browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    
 	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$browsemenubar .= "\t\t\t<a href='$scriptname?action=exportresults&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-		. "title=\"".$clang->gTview("Export Results to Application")."\" "
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export Results to Application", "js")."')\">"
+        // Export to application
+		$browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export Results to Application")."\" >"
 		. "<img name='Export' src='$imagefiles/export.png' "
-		. "title='' alt='' /></a>\n"
-		. "\t\t\t<a href='$scriptname?action=exportspss&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-		. "title=\"".$clang->gTview("Export results to an SPSS command file")."\" "
-		. "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a SPSS/PASW command file", "js")."')\">"
+		. "alt='".$clang->gT("Export Results to Application")."' /></a>\n"
+        
+        // Export to SPSS
+		. "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to an SPSS command file")."\" >"
 		. "<img src='$imagefiles/exportspss.png' "
-		. "title='' border='0' alt='". $clang->gT("Export result to a SPSS/PASW command file")."' /></a>\n"
-        . "\t\t\t<a href='$scriptname?action=exportr&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-        . "title=\"".$clang->gTview("Export result to a SPSS command file")."\" "
-        . "onmouseover=\"showTooltip(event,'".$clang->gT("Export results to a R data file", "js")."')\">"
+		. "alt='". $clang->gT("Export result to a SPSS/PASW command file")."' /></a>\n" 
+        
+        // Export to R   
+        . "<a href='$scriptname?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export result to a R data file")."\" >"
         . "<img src='$imagefiles/exportr.png' "
-        . "title='' border='0' alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
+        . "alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
 	}
-	$browsemenubar .= "\t\t\t<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" "
-	. " onmouseover=\"showTooltip(event,'".$clang->gT("Import answers from a deactivated survey table", "js")."')\" >" .
-			"<img name='ImportOld' src='$imagefiles/importold.png' title='' alt='' /></a>\n"
-	. "\t\t\t<img src='$imagefiles/seperator.gif' alt='' />\n"
-	. "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gTview("View Saved but not submitted Responses")."\" "
-	. " onmouseover=\"showTooltip(event,'".$clang->gT("View Saved but not submitted Responses", "js")."')\" >" .
-		"<img src='$imagefiles/saved.png' title='' alt='' name='BrowseSaved' /></a>\n"
-	. "\t\t\t<a href='$scriptname?action=vvimport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" "
-	. " title=\"".$clang->gTview("Import a VV survey file")."\" "
-	. " onmouseover=\"showTooltip(event,'".$clang->gT("Import a VV survey file", "js")."')\">\n"
-	. "<img src='$imagefiles/importvv.png' alt='' /></a>\n";
+    //Import old response table
+	$browsemenubar .= "<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' title=\"".$clang->gTview("Import answers from a deactivated survey table")."\" >"
+	. "<img name='ImportOldResponses' src='$imagefiles/importold.png' alt='".$clang->gT("Import answers from a deactivated survey table")."' /></a>\n";
+    
+	$browsemenubar .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
+    
+    //browse saved responses
+    $browsemenubar .= "<a href='$scriptname?action=saved&amp;sid=$surveyid' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
+	. "<img src='$imagefiles/saved.png' title='' alt='".$clang->gT("View Saved but not submitted Responses")."' name='BrowseSaved' /></a>\n"
+
+    //Import VV
+    . "<a href='$scriptname?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
+	. "<img src='$imagefiles/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
+    
+    //Export VV
 	if ($sumrows5['export'] == "1" || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$browsemenubar .= "\t\t\t<a href='$scriptname?action=vvexport&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-		" title=\"".$clang->gTview("Export a VV survey file")."\" " .
-		" onmouseover=\"showTooltip(event,'".$clang->gT("Export a VV survey file", "js")."')\">" .
-		"<img src='$imagefiles/exportvv.png' title='' alt='' /></a>\n";
+		$browsemenubar .= "<a href='$scriptname?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
+		."<img src='$imagefiles/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";
 	}
-	if (
-		( ($surrows['browse_response'] && $surrows['activate_survey']) || 
+    
+    //Iterate survey
+	if (( ($surrows['browse_response'] && $surrows['activate_survey']) || 
 			$_SESSION['USER_RIGHT_SUPERADMIN'] == 1
 		) &&
 		(
 			$thissurvey['private'] == 'N' &&
 			$thissurvey['tokenanswerspersistence'] == 'Y'
-		)
-	)
-	{ //TIBO
-		$browsemenubar .= "\t\t\t<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' onmouseout=\"hideTooltip()\" " .
-		" title=\"".$clang->gTview("Iterate surevey")."\" " .
-		" onmouseover=\"showTooltip(event,'".$clang->gT("Iterate survey", "js")."')\">" .
-		"<img src='$imagefiles/iterate.png' title='' alt='' /></a>\n";
+		))
+	{ 
+		$browsemenubar .= "<a href='$scriptname?action=iteratesurvey&amp;sid=$surveyid' title=\"".$clang->gTview("Iterate surevey")."\" >" 
+                         ."<img src='$imagefiles/iterate.png' title='' alt='".$clang->gT("Iterate surevey")."' /></a>\n";
 	}
-	$browsemenubar .= "\t\t</div>\n"
+	$browsemenubar .= "</div>\n"
     . "\t</div>\n"
-	. "</div>\n"
-    ."<font style='size:12px;line-height:2px;'>&nbsp;&nbsp;</font>"; //CSS Firefox 2 transition fix
+	                . "</div>\n";
     
 	return $browsemenubar;
 }
@@ -2621,7 +2606,7 @@ function templatereplace($line, $replacements=array())
 	if (stripos ($line,"</head>"))
 	{
 		$line=str_ireplace("</head>",
-			"\t\t<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
+			"<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
 			.use_firebug()
 			."\t</head>", $line);
 	}
@@ -2721,7 +2706,7 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{PRIVACYMESSAGE}", "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
     }
 	if (strpos($line, "{CLEARALL}") !== false) 	{
-		$clearall = "\t\t\t\t\t<div class='clearall'>"
+		$clearall = "<div class='clearall'>"
 		. "<a href='{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
 		if (returnglobal('token'))
 		{
@@ -2839,30 +2824,8 @@ function templatereplace($line, $replacements=array())
 		}
 		$line=str_replace("{SUBMITREVIEW}", $strreview, $line);
 	}
-	if (isset($_SESSION['thistoken']))
-	{
-		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-	}
-	else
-	{
-		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
-		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-	}
 
-    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
-    {
-        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
-        $templine=substr($templine,0,strpos($templine, "}")+1);
-        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
-        $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
-        $line=str_replace($templine, $replacestr, $line);
-    }
-    
-    
+	$line=tokenReplace($line);
     
 	if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
 	if (strpos($line, "{RESTART}") !== false)
@@ -3014,6 +2977,11 @@ function templatereplace($line, $replacements=array())
 		."</form>\n";
 		$line=str_replace("{REGISTERFORM}", $registerform, $line);
 	}
+    if (strpos($line, "{ASSESSMENT_CURRENT_TOTAL}") !== false && function_exists('doAssessment')) 
+    {
+        $assessmentdata=doAssessment($surveyid,true);
+        $line=str_replace("{ASSESSMENT_CURRENT_TOTAL}", $assessmentdata['total'], $line);
+    }    
 	if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
 	if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", $clang->gT("Your Assessment"), $line);
 	return $line;
@@ -3042,6 +3010,55 @@ function insertansReplace($line)
 		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
 		$line=str_replace($answreplace, $answreplace3, $line);
 	}
+	return $line;
+}
+
+/**
+* tokenReplace() takes a string and looks for any {TOKEN:xxxx} variables
+*  which it then, one by one, substitutes the TOKEN code with the relevant token
+*  from the session array containing token information
+*
+*  The operations of this function were previously in the templatereplace function
+*  but have been moved to a function of their own to make it available
+*  to other areas of the script.
+* 
+* @param mixed $line   string - the string to iterate, and then return
+* 
+* @return string This string is returned containing the substituted responses
+*
+*/
+function tokenReplace($line)
+{
+	global $surveyid;
+
+	if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+	{
+		//Gather survey data for tokenised surveys, for use in presenting questions
+		$_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+	}
+
+	if (isset($_SESSION['thistoken']))
+	{
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
+	}
+	else
+	{
+		if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
+		if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
+	}
+
+    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false) 
+    {
+        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
+        $templine=substr($templine,0,strpos($templine, "}")+1);
+        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
+        $replacestr='';
+        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
+        $line=str_replace($templine, $replacestr, $line);
+    }
 	return $line;
 }
 
@@ -3170,50 +3187,45 @@ function buildLabelSetCheckSumArray()
 
 
 /**
-* Don't use this funtion directly - please use getQAttributes instead
 * 
-* @param string $qid
+ * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
+ * @author: c_schmitz
+ * @param $qid The question ID
+ * @param $type optional The question type - saves a DB query if you provide it
+ * @return array{attribute=>value , attribute=>value}
 */
-function getQuestionAttributes($qid)
+function getQuestionAttributes($qid, $type='')
 {
-	global $dbprefix, $connect;
+     
+    if ($type=='')  // If type is not given find it out
+    {          
+        $query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid group by type";
+        $result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
+        $row=$result->FetchRow();
+        $type=$row['type'];
+    }
+    
+    $availableattributes=questionAttributes();
+    $availableattributes=$availableattributes[$type];                           
+    
+    foreach($availableattributes as $attribute){
+        $defaultattributes[$attribute['name']]=$attribute['default'];
+    }
+    $setattributes=array();
     $qid=sanitize_int($qid);
-	$query = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
+	$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
 	$result = db_execute_assoc($query) or safe_die("Error finding question attributes");  //Checked
-	$qid_attributes=array();
+	$setattributes=array();
 	while ($row=$result->FetchRow())
 	{
-		$qid_attributes[]=$row;
+		$setattributes[$row['attribute']]=$row['value'];
 	}
 	//echo "<pre>";print_r($qid_attributes);echo "</pre>";
+    $qid_attributes=array_merge($defaultattributes,$setattributes);
 	return $qid_attributes;
 }
 
 
-/**
- * 
- * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
- * @author: wahrendorff
- * @param $qid
- * @return array{attribute=>value , attribute=>value}
- */
-function getQAttributes($qid)
-{
-	$array = getQuestionAttributes($qid);
-	//$return = array();
-	$return["qid"]=$qid;
-	foreach($array as $key=>$value)
-	{
-		foreach($value as $attribute=>$single)
-		{
-			if($attribute == "attribute")
-			{
-				$return[$single] =  $value["value"] ;
-			}
-		}
-	}
-	return $return;
-}
 /**
 * Returns array of question type chars with attributes
 * 
@@ -3229,235 +3241,398 @@ function questionAttributes($returnByName=false)
 
     $qattributes["alphasort"]=array(
     "types"=>"!LOWZ",                                   
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT("Sort answers alphabetically"),
     "caption"=>$clang->gT('Sort answers alphabetically'));
     
     $qattributes["answer_width"]=array(
     "types"=>"ABCEF1:;",
-    "help"=>$clang->gT('The percentage width of the answer column'),
+    'inputtype'=>'integer',
+    'min'=>'1',
+    'max'=>'100',
+    "help"=>$clang->gT('Set the percentage width of the answer column (1-100)'),
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"ABCEF:;",
-    "help"=>$clang->gT("Filter an array's answers from a Multiple Options Question"),
+    "types"=>"1ABCEF:;",
+    'inputtype'=>'text',
+    
+    "help"=>$clang->gT("Enter the code of a Multiple options question to filter the answer options in this array."),
     "caption"=>$clang->gT('Array filter'));
     
     $qattributes["category_separator"]=array(
     "types"=>"!",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Category Separator'),
     "caption"=>$clang->gT('Category Separator'));
         
     $qattributes["code_filter"]=array(
     "types"=>"WZ",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Filter the available answers by this value'),
     "caption"=>$clang->gT('Code filter'));
 
 	$qattributes["display_columns"]=array(
 	"types"=>"GLMZ",
+    'inputtype'=>'integer',
+    'default'=>'1',
+    'min'=>'1',
+    'max'=>'100',
 	"help"=>$clang->gT('Number of columns to display'),
     "caption"=>$clang->gT('Display columns'));
     
     $qattributes["display_rows"]=array(
-    "types"=>"TU",
+    "types"=>"QSTU",
+    'inputtype'=>'text',
     "help"=>$clang->gT('How many rows to display'),
     "caption"=>$clang->gT('Display rows'));
     
 	$qattributes["hide_tip"]=array(
-	"types"=>"!KLMOPRWZ",
+	"types"=>"!KLMNOPRWZ",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
   
 	$qattributes["max_answers"]=array(
 	"types"=>"MPR",
+    'inputtype'=>'integer',
 	"help"=>$clang->gT('Limit the number of possible answers'),
     "caption"=>$clang->gT('Maximum answers'));
    
     $qattributes["max_num_value"]=array(
     "types"=>"K",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Maximum sum value of multiple numeric input'),
     "caption"=>$clang->gT('Maximum sum value'));
 
     $qattributes["maximum_chars"]=array(
     "types"=>"STUNQK",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Maximum characters allowed'),
     "caption"=>$clang->gT('Maximum characters'));
 
 	$qattributes["min_answers"]=array(
 	"types"=>"MPR",
-	"help"=>$clang->gT('Ensure a minimum number of possible answers'),
+    'inputtype'=>'integer',
+	"help"=>$clang->gT('Ensure a minimum number of possible answers (0=No limit)'),
     "caption"=>$clang->gT('Minimum answers'));
 
 	$qattributes["other_comment_mandatory"]=array(
 	"types"=>"PLW!Z",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT("Make the \"other comment\" field mandatory when the \"other\" field has been marked"),
     "caption"=>$clang->gT('Other comment mandatory'));
     
     $qattributes["numbers_only"]=array(
-    "types"=>"Q;",
+    "types"=>"Q;S",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT('Allow only numerical input'),
     "caption"=>$clang->gT('Numbers only'));
 
 
     $qattributes["other_numbers_only"]=array(
     "types"=>"LMP",
-    "help"=>$clang->gT('Allow only numerical input for `Other` text'),
-    "caption"=>$clang->gT('Numbers only for `Other`'));
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
+    "help"=>$clang->gT('Allow only numerical input for "Other" text'),
+    "caption"=>$clang->gT('Numbers only for "Other"'));
 
 
     $qattributes["random_order"]=array(
     "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
     
     $qattributes["text_input_width"]=array(
     "types"=>"KNSTUQ;",
+    'inputtype'=>'text',
     "help"=>$clang->gT('Width of text input box'),
     "caption"=>$clang->gT('Input box width'));
     
 	$qattributes["equals_num_value"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Multiple numeric inputs sum must equal this value'),
     "caption"=>$clang->gT('Equals sum value'));
     
 	$qattributes["min_num_value"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Multiple numeric inputs must be greater than this value'),
     "caption"=>$clang->gT('Minimum sum value'));
 
 	$qattributes["slider_layout"]=array(
 	"types"=>"K",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,                 
 	"help"=>$clang->gT('Use slider layout'),
     "caption"=>$clang->gT('Use slider layout'));
     
 	$qattributes["slider_min"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider minimum value'),
     "caption"=>$clang->gT('Slider minimum value'));
     
 	$qattributes["slider_max"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider maximum value'),
     "caption"=>$clang->gT('Slider maximum value'));
     
 	$qattributes["slider_accuracy"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider accuracy'),
     "caption"=>$clang->gT('Slider accuracy'));
     
 	$qattributes["slider_default"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Slider initial value'),
     "caption"=>$clang->gT('Slider initial value'));
 
 	$qattributes["prefix"]=array(
 	"types"=>"KNQS",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
     
 	$qattributes["suffix"]=array(
 	"types"=>"KNQS",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Add a suffix to the answer field'),
     "caption"=>$clang->gT('Answer suffix'));
 	
 	$qattributes["dropdown_dates"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Use accessible select boxes instead of calendar popup'),
     "caption"=>$clang->gT('Display select boxes'));
     
 	$qattributes["dropdown_dates_year_min"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',      
 	"help"=>$clang->gT('Minimum year value in calendar'),
     "caption"=>$clang->gT('Minimum dropdown year'));
     
 	$qattributes["dropdown_dates_year_max"]=array(
 	"types"=>"D",
+    'inputtype'=>'text',      
 	"help"=>$clang->gT('Maximum year value for calendar'),
     "caption"=>$clang->gT('Maximum dropdown year'));
 	
 	$qattributes["exclude_all_others"]=array(
 	"types"=>"M",
-	"help"=>$clang->gT('Excludes all other options if this is selected'),
+    'inputtype'=>'text',
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code.'),
     "caption"=>$clang->gT('Exclusive option'));
     
 	$qattributes["multiflexible_max"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Maximum value for array(mult-flexible) question type'),
     "caption"=>$clang->gT('Maximum value'));
     
 	$qattributes["multiflexible_min"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Minimum value for array(multi-flexible) question type'),
     "caption"=>$clang->gT('Minimum value'));
     
 	$qattributes["multiflexible_step"]=array(
 	"types"=>":",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Step value for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Step value'));
     
 	$qattributes["multiflexible_checkbox"]=array(
 	"types"=>":",
-	"help"=>$clang->gT('Use Checkbox layout for array (multi-flexible) question type'),
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+	"help"=>$clang->gT('Use checkbox layout for array (multi-flexible) question type'),
     "caption"=>$clang->gT('Checkbox layout'));
     
 	$qattributes["use_dropdown"]=array(
 	"types"=>"1",
-	"help"=>$clang->gT('Use Dual Dropdown instead of Dual Scale'),
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+	"help"=>$clang->gT('Use dual dropdown boxes instead of dual scales'),
     "caption"=>$clang->gT('Dual dropdown'));
     
 	$qattributes["dropdown_prepostfix"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
     "caption"=>$clang->gT('Prefix|Suffix'));
     
 	$qattributes["dualscale_headerA"]=array(
 	"types"=>"1",
-	"help"=>$clang->gT('Header for scale A'),
+    'inputtype'=>'text',
+	"help"=>$clang->gT('Enter a header text for scale A'),
     "caption"=>$clang->gT('Header scale A'));
     
 	$qattributes["dualscale_headerB"]=array(
 	"types"=>"1",
-	"help"=>$clang->gT('Header for scale B'),
+    'inputtype'=>'text',
+	"help"=>$clang->gT('Enter a header text for scale B'),
     "caption"=>$clang->gT('Header scale B'));
     
 	$qattributes["dropdown_separators"]=array(
 	"types"=>"1",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists'),
     "caption"=>$clang->gT('Dropdown separators'));
     
 	$qattributes["other_replace_text"]=array(
 	"types"=>"LMPWZ!",
+    'inputtype'=>'text',
 	"help"=>$clang->gT("Replaces the 'other' label with text"),
     "caption"=>$clang->gT('"Other" caption'));
 	
 	$qattributes["public_statistics"]=array(
 	"types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
 	"help"=>$clang->gT('Show statistics of a certain question to the user'),
     "caption"=>$clang->gT('Show in public statistics'));
 	
 	$qattributes["max_num_value_sgqa"]=array(
 	"types"=>"K",
-	"help"=>$clang->gT('SGQA identifier to use total of previous question as maximum for this question'),
+    'inputtype'=>'text',
+	"help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the maximum for this question'),
 	"caption"=>$clang->gT('Max value from SGQA'));
 	
 	$qattributes["min_num_value_sgqa"]=array(
 	"types"=>"K",
-	"help"=>$clang->gT('SGQA identifier to use total of previous question as minimum for this question'),
+    'inputtype'=>'text',
+	"help"=>$clang->gT('Enter the SGQA identifier to use the total of a previous question as the minimum for this question'),
 	"caption"=>$clang->gT('Min value from SGQA'));
 
 	$qattributes["num_value_equals_sgqa"]=array(
 	"types"=>"K",
+    'inputtype'=>'text',
 	"help"=>$clang->gT('SGQA identifier to use total of previous question as total for this question'),
 	"caption"=>$clang->gT('Value equals SGQA'));
 
     $qattributes["page_break"]=array(
     "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;",
-    "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to 1.'),
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+    "help"=>$clang->gT('Insert a page break before this question in printable view by setting this to Yes.'),
     "caption"=>$clang->gT('Insert page break in printable view'));
     
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:",
-    "help"=>$clang->gT("1=nominal 2=ordinal 3=scale."),
-    "caption"=>$clang->gT('Export scale type 1=nominal 2=ordinal 3=scale.'));
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('Default'),
+                     1=>$clang->gT('Nominal'),
+                     2=>$clang->gT('Ordinal'),
+                     3=>$clang->gT('Scale')),
+    'default'=>0,      
+    "help"=>$clang->gT("Set a specific SPSS export scale type for this question"),
+    "caption"=>$clang->gT('SPSS export scale type'));
+        
+	//Timer attributes
+	$qattributes["time_limit"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit for question"),
+	"caption"=>$clang->gT("Time limit for question (in seconds)"));
+	
+	$qattributes["time_limit_action"]=array(
+	"types"=>"STUX",
+    'inputtype'=>'singleselect',
+    'options'=>array(1=>$clang->gT('Warn and move on'),
+                     2=>$clang->gT('Move on without warning'),
+					 3=>$clang->gT('Disable only')),
+	"help"=>$clang->gT("Time limit expired action"),
+	"caption"=>$clang->gT("Time limit expired action"));
+	
+	$qattributes["time_limit_message"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"textarea",
+	"help"=>$clang->gT("Time limit expired message"),
+	"caption"=>$clang->gT("Time limit expired message"));
+	
+	$qattributes["time_limit_message_delay"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit expired message delay"),
+	"caption"=>$clang->gT("Time limit expired message delay"));
+	
+	$qattributes["time_limit_warning_message"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"textarea",
+	"help"=>$clang->gT("Time limit warning message"),
+	"caption"=>$clang->gT("Time limit warning message"));
+	
+	$qattributes["time_limit_warning"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit warning to display (in seconds)"),
+	"caption"=>$clang->gT("Time limit warning to display(in seconds)"));
+	
+	$qattributes["time_limit_warning_display_time"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"integer",
+	"help"=>$clang->gT("Time limit warning to display for x seconds"),
+	"caption"=>$clang->gT("Time limit warning to display for x seconds"));
+	
+	$qattributes["time_limit_disable_next"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"singleselect",
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+	"help"=>$clang->gT("Time limit disable next button"),
+	"caption"=>$clang->gT("Time limit disable next button"));
+
+	$qattributes["time_limit_message_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"textarea",
+	"help"=>$clang->gT("Time Limit Message CSS Style"),
+	"caption"=>$clang->gT("Time Limit Message CSS Style"));
+
+	$qattributes["time_limit_warning_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"textarea",
+	"help"=>$clang->gT("Time Limit Warning CSS Style"),
+	"caption"=>$clang->gT("Time Limit Warning CSS Style"));
+	
+	$qattributes["time_limit_timer_style"]=array(
+	"types"=>"STUX",
+	"inputtype"=>"textarea",
+	"help"=>$clang->gT("Time Limit Timer CSS Style"),
+	"caption"=>$clang->gT("Time Limit Timer CSS Style"));
+
 	//This builds a more useful array (don't modify)
     if ($returnByName!=true)
     {
@@ -3466,6 +3641,9 @@ function questionAttributes($returnByName=false)
 		    for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
 		    {
 			    $qat[substr($qvalue['types'], $i, 1)][]=array("name"=>$qname,
+                                                            "inputtype"=>$qvalue['inputtype'],
+                                                            "options"=>isset($qvalue['options'])?$qvalue['options']:'',
+                                                            "default"=>isset($qvalue['default'])?$qvalue['default']:'',
 			                                                "help"=>$qvalue['help'],
                                                             "caption"=>$qvalue['caption']);
 		    }
@@ -3564,7 +3742,7 @@ function getHeader()
         }
         $header.= ">\n\t<head>\n"
                 . $css_header
-                . "\t\t<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
+                . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
 			    . $js_header;
 			
         return $header;        
@@ -3609,13 +3787,13 @@ function getAdminFooter($url, $explanation)
    }
 
 	$strHTMLFooter = "<div class='footer'>\n"
-	. "\t\t\t<div style='float:left;width:110px;text-align:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/docs.png' "
+	. "<div style='float:left;width:110px;text-align:left;'><img alt='LimeSurvey - ".$clang->gT("Online Manual")."' title='LimeSurvey - ".$clang->gT("Online Manual")."' src='$imagefiles/docs.png' "
 	. "onclick=\"window.open('$url')\" onmouseover=\"document.body.style.cursor='pointer'\" "
 	. "onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
+	. "<div style='float:right;'><img alt='".$clang->gT("Support this project - Donate to ")."LimeSurvey' title='".$clang->gT("Support this project - Donate to ")."LimeSurvey!' src='$imagefiles/donate.png' "
 	. "onclick=\"window.open('http://www.donate.limesurvey.org')\" "
 	. "onmouseover=\"document.body.style.cursor='pointer'\" onmouseout=\"document.body.style.cursor='auto'\" /></div>\n"
-	. "\t\t\t<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$versiontitle." $versionnumber $buildtext</div>"
+	. "<div class='subtitle'><a class='subtitle' title='".$clang->gT("Visit our website!")."' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br />".$versiontitle." $versionnumber $buildtext</div>"
 	. "</div></body>\n</html>";
 	return $strHTMLFooter;
 }
@@ -3647,10 +3825,10 @@ function getAdminHeader($meta=false)
         {
         $strAdminHeader.=$meta;
         }
-	$strAdminHeader.="\t\t<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+	$strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 	. "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-	. "<script type=\"text/javascript\" src=\"scripts/tooltips.js\"></script>\n"                    
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery.qtip.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"../scripts/jquery/jquery-ui.js\"></script>\n";
     if ($_SESSION['adminlang']!='en')
     {
@@ -3665,7 +3843,7 @@ function getAdminHeader($meta=false)
     
     if (getLanguageRTL($_SESSION['adminlang']))
     {
-        $strAdminHeader.="\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
+        $strAdminHeader.="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle-rtl.css\" />\n";
     }
 
     $js_adminheader_includes = array_unique($js_adminheader_includes);
@@ -3679,9 +3857,9 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
     }    
-	$strAdminHeader.= "\t\t<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>"
+	$strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n"
 	. use_firebug()
-	. "\t</head>\n\t<body>\n";
+	. "</head>\n<body>\n";
     if (isset($_SESSION['dateformat']))
     {
         $formatdata=getDateFormatData($_SESSION['dateformat']);
@@ -3691,9 +3869,9 @@ function getAdminHeader($meta=false)
                            </script>";
     }
     
-    $strAdminHeader .="\t\t<div class=\"maintitle\">\n"
-	. "\t\t\t$sitename\n"
-	. "\t\t</div>\n";
+    $strAdminHeader .="<div class=\"maintitle\">\n"
+	. "$sitename\n"
+	. "</div>\n";
 	return $strAdminHeader;
 }
 
@@ -3755,7 +3933,7 @@ function ReplaceFields ($text,$fieldsarray)
 	return $text;
 }
 
-function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null)
+function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
 {
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
@@ -3862,6 +4040,10 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     	$mail->Body = $textbody;
         }
 
+    // add the attachment if there is one
+    if($attachment!=null)
+    $mail->AddAttachment($attachment);
+    
 	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
@@ -4229,11 +4411,11 @@ function getgroupuserlist()
         {
         foreach($surveynames as $sv)
             {
-			$surveyselecter .= "\t\t\t<option";
+			$surveyselecter .= "<option";
             $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
             }
         }
-    $surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
+    $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
 }
 
@@ -4262,13 +4444,13 @@ function getsurveyuserlist()
 			$usercontrolSameGroupPolicy == false ||
 			in_array($sv['uid'],$authorizedUsersList))
 		{
-			$surveyselecter .= "\t\t\t<option";
+			$surveyselecter .= "<option";
 			$surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
 		}
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
     return $surveyselecter;
 }
 
@@ -4300,14 +4482,14 @@ function getsurveyusergrouplist($outputformat='htmloptions')
 			$usercontrolSameGroupPolicy == false ||
 			in_array($sv['ugid'],$authorizedGroupsList))
 		{
-			$surveyselecter .= "\t\t\t<option";
+			$surveyselecter .= "<option";
 			$surveyselecter .=" value='{$sv['ugid']}'>{$sv['name']}</option>\n";
 			$simpleugidarray[] = $sv['ugid'];
 		}
             }
         }
-    if (!isset($svexist)) {$surveyselecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
-    else {$surveyselecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
+    if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$surveyselecter;}
+    else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
 
     if ($outputformat == 'simpleugidarray')
     {
@@ -4335,15 +4517,15 @@ function getusergrouplist($outputformat='optionlist')
         {
         foreach($groupnames as $gn)
             {
-		$selecter .= "\t\t\t<option ";
+		$selecter .= "<option ";
 		if($_SESSION['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
 		if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 		$selecter .=" value='$scriptname?action=editusergroups&amp;ugid={$gn['ugid']}'>{$gn['name']}</option>\n";
 		$simplegidarray[] = $gn['ugid'];
             }
         }
-    if (!isset($svexist)) {$selecter = "\t\t\t<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
-    //else {$selecter = "\t\t\t<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
+    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".$clang->gT("Please Choose...")."</option>\n".$selecter;}
+    //else {$selecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
 
     if ($outputformat == 'simplegidarray')
     {
@@ -6402,3 +6584,116 @@ function removeBOM($str=""){
         }
         return $str;
 } 
+
+/**
+* This function requests the latest update information from the LimeSurvey.org website
+*
+* @returns array Contains update information or false if the request failed for some reason 
+*/
+function GetUpdateInfo()
+{
+    global $homedir, $debug;
+    require_once($homedir."/classes/http/http.php");     
+
+    $http=new http_class;    
+               
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
+    $http->GetRequestArguments("http://update.limesurvey.org//updates/index",$arguments);
+
+    $updateinfo=false;
+    $error=$http->Open($arguments);           
+    $error=$http->SendRequest($arguments);
+
+    if($error=="") {
+        $body=''; $full_body=''; 
+        for(;;){
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }        
+        $updateinfo=json_php5decode($full_body);
+    }
+    else
+    {
+        print( $error );
+    }
+    unset( $http );
+    return $updateinfo; 
+}
+
+   /**
+   * This function converts a standard JSON array to a PHP array without having to resort to JSON_decode which is available from 5.2x and up only
+   * 
+   * @param string $json String with JSON data
+   * @return array 
+   */
+   function json_php5decode ($json) { 
+
+      //remove curly brackets to beware from regex errors
+
+      $json = substr($json, strpos($json,'{')+1, strlen($json));
+      $json = substr($json, 0, strrpos($json,'}'));
+      $json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json));
+
+      return json_decode('{'.$json.'}', true);
+   }  
+   
+   /**
+   * This function updates the actual global variables if an update is available after using GetUpdateInfo
+   * 
+   */
+   function updatecheck()
+   {
+       global $buildnumber;
+        $updateinfo=GetUpdateInfo();
+        if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber && trim($buildnumber)!='') 
+        {
+            setGlobalSetting('updateavailable',1);
+            setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
+            setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
+            setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
+        }
+        else
+        {
+            setGlobalSetting('updateavailable',0);
+        }
+   }
+   
+   /**
+   * This function removes a directory recursively
+   * 
+   * @param mixed $dirname
+   * @return bool
+   */
+   function rmdirr($dirname)
+    {
+        // Sanity check
+        if (!file_exists($dirname)) {
+            return false;
+        }
+     
+        // Simple delete for a file
+        if (is_file($dirname) || is_link($dirname)) {
+            return @unlink($dirname);
+        }
+     
+        // Loop through the folder
+        $dir = dir($dirname);
+        while (false !== $entry = $dir->read()) {
+            // Skip pointers
+            if ($entry == '.' || $entry == '..') {
+                continue;
+            }
+     
+            // Recurse
+            rmdirr($dirname . DIRECTORY_SEPARATOR . $entry);
+        }
+     
+        // Clean up
+        $dir->close();
+        return @rmdir($dirname);
+    }

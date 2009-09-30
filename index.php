@@ -41,6 +41,29 @@ else {
 if (!$publicdir) {$publicdir=".";}
 $templaterootdir="$publicdir/templates";
 
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+	$usrow = $usresult->FetchRow();
+	$stg_SessionName=$usrow['stg_value'];
+	if ($surveyid)
+	{
+		@session_name($stg_SessionName.'-runtime-'.$surveyid);
+	}
+	else
+	{
+		@session_name($stg_SessionName.'-runtime-publicportal');
+	}
+}
+else
+{
+	session_name("LimeSurveyRuntime-$surveyid");
+}
 @session_start();
 
 
@@ -74,11 +97,11 @@ if ($clienttoken != '' && isset($_SESSION['token']) &&
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
-		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-		."\t\t</center><br />\n";
+	echo "<center><br />\n"
+		."\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
+		."\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
+		."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -98,11 +121,11 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-		."\t\t\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
-		."\t\t\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-		."\t\t</center><br />\n";
+	echo "<center><br />\n"
+		."\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
+		."\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
+		."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
+		."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -147,12 +170,9 @@ if ($surveyid &&
 					// but if it throws an error then future
 					// session functions won't work because
 					// headers are already sent.
-		$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
-		$usresult = db_execute_assoc($usquery,'',true);          //Checked 
-		if ($usresult)
+		if (isset($stg_SessionName) && $stg_SessionName)
 		{
-			$usrow = $usresult->FetchRow();
-			@session_name($usrow['stg_value']);
+			@session_name($stg_SessionName);
 		}
 		else
 		{
@@ -218,11 +238,11 @@ if ($surveyid &&
 		doHeader();
 
 		echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-		echo "\t\t<center><br />\n"
-		."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-		."\t\t\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
-		."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
-		."\t\t</center><br />\n";
+		echo "<center><br />\n"
+		."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+		."\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
+		."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
+		."</center><br />\n";
 
 		echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 		doFooter();
@@ -247,11 +267,11 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
-	."\t\t</center><br />\n";
+	echo "<center><br />\n"
+	."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+	."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
+	."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -430,9 +450,9 @@ if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s",
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+	echo "<center><br />\n"
+	."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
 	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -447,9 +467,9 @@ if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i
     doHeader();
 
     echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-    echo "\t\t<center><br />\n"
-    ."\t\t\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
+    echo "<center><br />\n"
+    ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
     ."<br /><br />\n";
 
     echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -466,10 +486,10 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
+	echo "<center><br />\n"
+	."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+	."\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
 	."<br /><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
@@ -643,9 +663,9 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
 	."\t<!--\n"
-	."\t\tfunction checkconditions(value, name, type)\n"
-	."\t\t\t{\n"
-	."\t\t\t}\n"
+	."function checkconditions(value, name, type)\n"
+	."\t{\n"
+	."\t}\n"
 	."\t//-->\n"
 	."\t</script>\n\n";
 
@@ -795,6 +815,12 @@ function loadanswers()
 				$_SESSION['step']=$value;
                 $thisstep=$value-1;
 			}
+            if ($column =='lastpage' && !isset($_SESSION['step']))
+            {
+                if ($value<1) $value=1;
+                $_SESSION['step']=$value;
+                $thisstep=$value-1;                
+            }
 			if ($column == "scid")
 			{
 				$_SESSION['scid']=$value;
@@ -1362,7 +1388,7 @@ function checkpregs($move,$backok=null)
 			foreach ($fields as $field)
 			{
 				//Get question information
-				if (isset($_POST[$field]) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
+				if (isset($_POST[$field]) && isset($_SESSION['s_lang']) && ($_POST[$field] == "0" || $_POST[$field])) //Only do this if there is an answer
 				{
 					$fieldinfo=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 					$pregquery="SELECT preg\n"
@@ -1551,7 +1577,7 @@ function sendsubmitnotification($sendnotification)
 {
 	global $thissurvey, $debug;
 	global $dbprefix, $clang, $emailcharset;
-	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug;
+	global $sitename, $homeurl, $surveyid, $publicurl, $maildebug, $tokensexist;
 
 	$subject = $clang->gT("Answer Submission for Survey","unescaped")." ".$thissurvey['name'];
 
@@ -1571,9 +1597,47 @@ function sendsubmitnotification($sendnotification)
 	. "  $homeurl/admin.php?action=dataentry&sid=$surveyid&subaction=edit&surveytable=survey_$surveyid&id=".$_SESSION['srid']."\n\n"
 	. $clang->gT("View statistics by clicking here:","unescaped")."\n"
 	. "  $homeurl/admin.php?action=statistics&sid=$surveyid\n\n";
-	if ($sendnotification > 1)
+
+	$emailresponseto=null;
+	if (!empty($thissurvey['emailresponseto']))
+	{
+		if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+		{
+			//Gather token data for tokenised surveys
+			$_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+		}
+		//Make an array of email addresses to send to
+	    if($erts=explode(";", $thissurvey['emailresponseto']))
+		{
+			foreach($erts as $ert)
+			{
+				$ert=insertansReplace($ert);
+				$ert=tokenReplace($ert);
+				$emailresponsetos[]=$ert;
+			}
+		}
+		else
+		{
+			$ert=$thissurvey['emailresponseto'];
+			$ert=insertansReplace($ert);
+			$ert=tokenReplace($ert);
+			$emailresponsetos[]=$ert;
+		}
+
+		//Now check each of the email addresses that they are valid before creating/adding to the $emailresponseto array
+		foreach($emailresponsetos as $ert)
+		{
+			if(validate_email($ert))
+			{
+				$emailresponseto[]=$ert;
+			}
+		}
+	}
+	
+	$results="";
+	if ($sendnotification > 1 || $emailresponseto)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
-		$message .= "----------------------------\n";
+		$results = "----------------------------\n";
         $prevquestion='';
 		foreach ($_SESSION['insertarray'] as $value)
 		{
@@ -1582,38 +1646,39 @@ function sendsubmitnotification($sendnotification)
             {
                 $prevquestion=$qaarray[0];
                 $questiontitle=strip_tags(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
-                $message .= "\n$questiontitle: ";
+                $results .= "\n$questiontitle: ";
                 if ($qaarray[1]!='')
                 {
-                    $message .= "\n";
+                    $results .= "\n";
                 }
             }
             if ($qaarray[1]!='')
             {
 			    $answeroption=strip_tags(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
-			    $message .= "[$answeroption]:   ";
+			    $results .= "[$answeroption]:   ";
             }
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
 			if ( $details['type'] == "T" or $details['type'] == "U")
 			{
-				$message .= "\r\n";
+				$results .= "\r\n";
 				if (isset($_SESSION[$value]))
 				{
 					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) 
 					{
-					 		$message .= "\t" . strip_tags(html_entity_decode($line, ENT_QUOTES, $emailcharset));
-							$message .= "\n";
+					 		$results .= "\t" . strip_tags(html_entity_decode($line, ENT_QUOTES, $emailcharset));
+							$results .= "\n";
 					}
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
-				$message .= strip_tags(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
-				$message .= "\n";
+				$results .= strip_tags(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
+				$results .= "\n";
 			}
 		}
-		$message .= "\n\n----------------------------\n\n";
+		$results .= "\n\n----------------------------\n\n";
 	}
+	$message .= $results;
 	$message.= "LimeSurvey";
 	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
 
@@ -1634,15 +1699,28 @@ function sendsubmitnotification($sendnotification)
             if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
         }
 	}
+	
+	if($emailresponseto)
+	{
+		$ertmessage  = $clang->gT("This email contains confirmation of the responses you made to the survey")." ".$thissurvey['name']."\n";
+		$ertmessage .= $results;
+		$ertsubject  = $clang->gT("Survey Submission Confirmation");
+		
+		foreach($emailresponseto as $ert)
+		{
+			if(!MailTextMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
+			{
+				if ($debug>0) {echo '<br />Email could not be sent to EmailReponseTo field. Reason: '.$maildebug.'<br />';}
+}
+		}
+	}
 }
 
 function submitfailed($errormsg)
 {
 	global $thissurvey, $clang;
 	global $thistpl, $subquery, $surveyid, $connect;
-	sendcacheheaders();
-	doHeader();
-	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+
 	$completed = "<br /><strong><font size='2' color='red'>"
 	. $clang->gT("Did Not Save")."</strong></font><br /><br />\n\n"
 	. $clang->gT("An unexpected error has occurred and your responses cannot be saved.")."<br /><br />\n";
@@ -1660,7 +1738,7 @@ function submitfailed($errormsg)
 		. $clang->gT("ERROR MESSAGE","unescaped").":\n"
 		. $errormsg."\n\n";
 		MailTextMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
-		echo "<!-- EMAIL CONTENTS:\n$email -->\n";
+		//echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();
 		session_destroy();
@@ -2409,27 +2487,27 @@ function surveymover()
 	if (isset($_SESSION['step']) && $_SESSION['step'] > 0 && $thissurvey['format'] != "A" && !$presentinggroupdescription && $thissurvey['allowprev'] != "N")
 	{
 		$surveymover .= "<input class='submit' accesskey='p' type='button' onclick=\"javascript:document.limesurvey.move.value = 'moveprev'; document.limesurvey.submit();\" value=' &lt;&lt; "
-		. $clang->gT("Previous")." ' name='move2' />\n";
+		. $clang->gT("Previous")." ' name='move2' id='moveprevbtn' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
+		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		. $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
 	}
     // here, in some lace, is where I must modify to turn the next button conditionable
 	if (!isset($_SESSION['step']) || !$_SESSION['step'])
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
-		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
+		$surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		. $clang->gT("Next")." &gt;&gt; ' name='move2' id='movenextbtn' />\n";
 	}
 	if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
 	{
-		$surveymover .=  "\t\t\t\t\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
+		$surveymover .=  "\t<input class='submit' type='submit' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
 		. $clang->gT("Next")." &gt;&gt; ' name='move2' />\n";
 	}
 	if ($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription)
 	{
-		$surveymover .= "\t\t\t\t\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
+		$surveymover .= "\t<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
 		. $clang->gT("Submit")." ' name='move2' />\n";
 	}
 
@@ -2437,10 +2515,18 @@ function surveymover()
 	return $surveymover;
 }
 
-function doAssessment($surveyid)
+
+/**
+* Caculate assessement scores 
+* 
+* @param mixed $surveyid
+* @param mixed $returndataonly - only returns an array with data
+*/
+function doAssessment($surveyid, $returndataonly=false)
 {
 	global $dbprefix, $thistpl, $connect;
     $baselang=GetBaseLanguageFromSurveyID($surveyid);
+    $total=0;
     if (!isset($_SESSION['s_lang'])) {$_SESSION['s_lang']=$baselang;}
 	$query = "SELECT * FROM ".db_table_name('assessments')."
 			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
@@ -2564,9 +2650,9 @@ function doAssessment($surveyid)
 				{
 					foreach($assessment['group'][$key] as $assessed)
 					{
-						if ($val >= $assessed['min'] && $val <= $assessed['max'])
+						if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false)
 						{
-							$assessments .= "\t\t\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
+							$assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
         					    <table align='center'>
 								 <tr>
 								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
@@ -2587,7 +2673,7 @@ function doAssessment($surveyid)
 		{
 			foreach($assessment['total'] as $assessed)
 			{
-				if ($total >= $assessed['min'] && $total <= $assessed['max'])
+				if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
 				{
 					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
 						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
@@ -2600,9 +2686,15 @@ function doAssessment($surveyid)
 				}
 			}
 		}
-
+        if ($returndataonly==true)
+        {
+            return array('total'=>$total);
+        }
+        else
+        {
 		return $assessments;
 	}
+}
 }
 
 function UpdateSessionGroupList($language)

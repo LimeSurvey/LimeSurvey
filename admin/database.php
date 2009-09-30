@@ -432,7 +432,41 @@ if(isset($surveyid))
         $attsql.='1=1';
         db_execute_assoc($attsql) or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg());
         
-   		$keepanswers = true; // Generally we try to keep answers if the question type has changed
+        
+        //now save all valid attributes
+       $validAttributes=$qattributes[$_POST['type']];
+       foreach ($validAttributes as $validAttribute)
+       {
+           if (isset($_POST[$validAttribute['name']]))
+           {
+                
+                $query = "select qaid from ".db_table_name('question_attributes')."
+                          WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());
+                if ($result->Recordcount()>0)
+                {
+                    $query = "UPDATE ".db_table_name('question_attributes')."
+                              SET value='{$_POST[$validAttribute['name']]}' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                    $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());
+                }
+                else
+                {
+                    $query = "INSERT into ".db_table_name('question_attributes')."
+                              (qid, value, attribute) values ($qid,'{$_POST[$validAttribute['name']]}','{$validAttribute['name']}')";
+                    $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());
+                }
+           }
+       }
+        
+        if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
+        {
+            $query = "UPDATE ".db_table_name('question_attributes')."
+                      SET value='{$_POST['attribute_value']}' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
+            $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
+        }        
+        
+        
+   		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
 		
 		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
@@ -1100,7 +1134,8 @@ if(isset($surveyid))
                             'listpublic'=>$_POST['public'], 
                             'htmlemail'=>$_POST['htmlemail'], 
                             'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'], 
-                            'usecaptcha'=>$_POST['usecaptcha'] 
+                            'usecaptcha'=>$_POST['usecaptcha'],
+							'emailresponseto'=>$_POST['emailresponseto']
                             );
               
         $usquery=$connect->GetUpdateSQL($rs, $updatearray); 
@@ -1355,7 +1390,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'usecaptcha'=>$_POST['usecaptcha'],
                             'publicstatistics'=>$_POST['publicstatistics'],
                             'publicgraphs'=>$_POST['publicgraphs'],
-                            'assessments'=>$_POST['assessments']
+                            'assessments'=>$_POST['assessments'],
+							'emailresponseto'=>$_POST['emailresponseto']
                             );
         $dbtablename=db_table_name_nq('surveys');                    
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    

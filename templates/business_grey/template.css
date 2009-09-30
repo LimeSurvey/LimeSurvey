@@ -536,11 +536,19 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 
 
  .text-short input
+ ,.text-short textarea
 ,.text-long textarea
 ,.text-huge textarea
 {
 	margin-left: 1em;
 }
+
+ .multiple-short-txt textarea
+{
+	width:130px;
+}
+
+
 /* STYLES NOT YET DEFINED - - - - -
 .yes-no {}
 .gender {}

@@ -160,7 +160,20 @@ $query = "SELECT {$dbprefix}question_attributes.*
 $qadump = BuildCSVFromQuery($query);
 $fn = "limesurvey_question_$qid.csv";
 
-
+if($action=='exportstructureLsrcCsvQuestion')
+{
+	include_once($homedir.'/remotecontrol/lsrc.config.php');
+	$lsrcString = $dumphead. $qdump. $adump. $lsdump. $ls1dump. $ldump. $l1dump. $qadump;
+	//Select title as Filename and save
+	$questionTitleSql = "SELECT title  
+		             FROM {$dbprefix}questions 
+					 WHERE qid=$qid AND sid=$surveyid AND gid=$gid ";
+	$questionTitleRs = db_execute_assoc($questionTitleSql);   
+	$questionTitle = $questionTitleRs->FetchRow();
+	file_put_contents("remotecontrol/".$queDir.substr($questionTitle['title'],0,20).".csv",$lsrcString);
+}
+else
+{
 header("Content-Type: application/download");
 header("Content-Disposition: attachment; filename=$fn");
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -169,4 +182,5 @@ header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 header("Pragma: cache");                          // HTTP/1.0
 echo $dumphead, $qdump, $adump, $lsdump, $ls1dump, $ldump, $l1dump, $qadump;
 exit;
+}
 ?>

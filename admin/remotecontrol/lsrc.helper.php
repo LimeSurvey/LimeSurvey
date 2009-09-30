@@ -18,8 +18,7 @@
  *
  */
 class LsrcHelper {
-	
-	
+
 	/**
 	 * simple debug function to make life a bit easier
 	 *
@@ -44,7 +43,7 @@ class LsrcHelper {
 	function getSurveyOwner($iVid)
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$lsrcHelper= new LsrcHelper();
@@ -71,7 +70,7 @@ class LsrcHelper {
 	{//be aware that this function may be a security risk
 
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		if($mode=='' || !isset($mode) || $mode=='0')
@@ -397,7 +396,7 @@ class LsrcHelper {
 							"FROM {$dbprefix}surveys_languagesettings ".
 							"WHERE surveyls_survey_id = ".$surveyid." ";
 
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
+				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", invite ");
 					
 				$sqlResult = db_execute_assoc($sql);
 					
@@ -406,7 +405,7 @@ class LsrcHelper {
 					$_POST['message_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind'];
 					$_POST['subject_'.$languageRow['surveyls_language']] = $languageRow['surveyls_email_remind_subj'];
 				}
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
+
 				//$tokenoutput .= ("Sending Reminders")."\n";
 					
 				$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -419,7 +418,7 @@ class LsrcHelper {
 					$_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
 
 				}
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
+					
 				$SQLemailstatuscondition = " AND emailstatus = 'OK'";
 
 				if (isset($_POST['maxremindercount']) &&
@@ -432,7 +431,7 @@ class LsrcHelper {
 				{
 					$SQLremindercountcondition = "";
 				}
-				$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
+					
 				if (isset($_POST['minreminderdelay']) &&
 				$_POST['minreminderdelay'] != '' &&
 				intval($_POST['minreminderdelay']) != 0)
@@ -451,8 +450,7 @@ class LsrcHelper {
 				{
 					$SQLreminderdelaycondition = "";
 				}
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
-				
+					
 				$ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 					
 				if (isset($starttokenid)) {$ctquery .= " AND tid >= '{$starttokenid}'";}
@@ -462,10 +460,8 @@ class LsrcHelper {
 				$ctresult = $connect->Execute($ctquery) or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
 				$ctcount = $ctresult->RecordCount();
 				$ctfieldcount = $ctresult->FieldCount();
-				$emquery = "SELECT firstname, lastname, email, token, tid, language ";
-				if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
-				
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");	
+				$emquery = "SELECT * ";
+				//if ($ctfieldcount > 7) {$emquery .= ", attribute_1, attribute_2";}
 					
 				// TLR change to put date into sent
 				$emquery .= " FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
@@ -473,15 +469,10 @@ class LsrcHelper {
 				if (isset($starttokenid)) {$emquery .= " AND tid >= '{$starttokenid}'";}
 				if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 				$emquery .= " ORDER BY tid ";
-				
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind, maxemails?: $maxemails, emquery: $emquery ");
-				
-				//$emresult = db_select_limit_assoc($emquery, $maxemails) or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
-				$emresult = db_execute_assoc($emquery);
-				$emcount = $emresult->RecordCount() or $this->debugLsrc ("Database error!\n" . $connect->ErrorMsg());
-				
-					$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", remind ");
-				
+				$emresult = db_select_limit_assoc($emquery, $maxemails);
+				//$emresult = db_execute_assoc($emquery);
+				$emcount = $emresult->RecordCount();
+					
 				if ($emcount > 0)
 				{
 					while ($emrow = $emresult->FetchRow())
@@ -507,15 +498,14 @@ class LsrcHelper {
 						$fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
 						$fieldsarray["{EXPIRY-DMY}"]=date("d-m-Y",strtotime($thissurvey["expiry"]));
 						$fieldsarray["{EXPIRY-MDY}"]=date("m-d-Y",strtotime($thissurvey["expiry"]));
-							
+						
 						$emrow['language']=trim($emrow['language']);
 						if ($emrow['language']=='') {$emrow['language']=$baselanguage;} //if language is not give use default
 						if(!in_array($emrow['language'], $surveylangs)) {$emrow['language']=$baselanguage;} // if given language is not available use default
 						$found = array_search($emrow['language'], $surveylangs);
 						if ($found==false) {$emrow['language']=$baselanguage;}
-						
-						 $from = $thissurvey['adminemail']; //$from = $_POST['from_'.$emrow['language']];
-						
+							
+						$from = $_POST['from_'.$emrow['language']];
 							
 						if (getEmailFormat($surveyid) == 'html')
 						{
@@ -676,7 +666,7 @@ class LsrcHelper {
 	function surveyExists($sid)//XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 
@@ -704,7 +694,8 @@ class LsrcHelper {
 	function importSurvey($iVid, $sVtit , $sVbes, $sVwel, $sUbes, $sVtyp) //XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
+		global $clang;
 
 		include("lsrc.config.php");
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
@@ -724,7 +715,7 @@ class LsrcHelper {
 		while (!feof($handle))
 		{
 			//To allow for very long survey lines (up to 64k)
-			$buffer = fgets($handle);
+			$buffer = fgets($handle, 56550);
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
@@ -774,7 +765,7 @@ class LsrcHelper {
 			unset($bigarray[$i]);
 		}
 		$bigarray = array_values($bigarray);
-		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".print_r($bigarray));
+		//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".print_r($bigarray));
 
 
 		//SURVEYS
@@ -1542,7 +1533,7 @@ class LsrcHelper {
 					$currentqid='';
 					foreach ($questionarray as $qa) {
 						
-						$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
+						//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qa);
 						
 						if ($importversion>=111)
 						{
@@ -1644,8 +1635,8 @@ class LsrcHelper {
 							$newvalues=array_values($questionrowdata);
 							if (isset($questionrowdata['qid'])) {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions').' ON');}
 							
-							foreach($questionrowdata as $qrd)
-								$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
+							//foreach($questionrowdata as $qrd)
+								//$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ".$qrd);
 							
 								$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
 							$qinsert = "insert INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
@@ -1661,7 +1652,7 @@ class LsrcHelper {
 
 							$newrank=0;
 							$substitutions[]=array($oldsid, $oldgid, $oldqid, $newsid, $newgid, $newqid);
-							$this->debugLsrc("HALLO?!:");
+							//$this->debugLsrc("HALLO?!:");
 							//NOW DO NESTED ANSWERS FOR THIS QID
 							if (isset($answerarray) && $answerarray && $newquestion) {
 								$count=0;
@@ -2001,7 +1992,7 @@ class LsrcHelper {
 					if ($oldqid==$subs[2])  {$newqid=$subs[5];}
 					if ($oldcqid==$subs[2]) {$newcqid=$subs[5];}
 				}
-				if (preg_match('/^@([0-9]+)X([0-9]+)X([^@]+)@/',$thisvalue,$targetcfieldname))
+				if (ereg('^@([0-9]+)X([0-9]+)X([^@]+)@',$thisvalue,$targetcfieldname))
 				{
 					foreach ($substitutions as $subs) {
 						if ($targetcfieldname[1]==$subs[0])  {$targetcfieldname[1]=$subs[3];}
@@ -2070,7 +2061,7 @@ class LsrcHelper {
 	function activateSurvey($surveyid)//XXX activateSurvey
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$_GET['sid'] = $surveyid;
@@ -2705,7 +2696,7 @@ class LsrcHelper {
 	function importGroup($surveyid, $sMod) //XXX
 	{
 		global $connect ;
-		//		global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3352,7 +3343,7 @@ class LsrcHelper {
 	function importQuestion($surveyid, $sMod, $newGroup=false) //XXX
 	{
 		global $connect ;
-		//global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$newsid = $surveyid;
@@ -3384,7 +3375,7 @@ class LsrcHelper {
 		$handle = fopen($the_full_file_path, "r");
 		while (!feof($handle))
 		{
-			$buffer = fgets($handle); //To allow for very long survey welcomes (up to 10k)
+			$buffer = fgets($handle, 10240); //To allow for very long survey welcomes (up to 10k)
 			$bigarray[] = $buffer;
 		}
 		fclose($handle);
@@ -3836,7 +3827,7 @@ class LsrcHelper {
 	function deleteSurvey($surveyid)
 	{
 		global $connect ;
-		// global $dbprefix ;
+		global $dbprefix ;
 		$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 		include("lsrc.config.php");
 		$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", OK ");
@@ -3894,18 +3885,7 @@ class LsrcHelper {
 		return true;
 
 	}
-	/**
-	* This function removes the UTF-8 Byte Order Mark from a string
-	* 
-	* @param string $str
-	* @return string
-	*/
-	private function removeBOM($str=""){
-	        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
-	                $str=substr($str, 3);
-	        }
-	        return $str;
-	} 
+
 	/**
 	 * This function pulls a CSV representation of the Field map
 	 *
@@ -3939,6 +3919,73 @@ class LsrcHelper {
 		return $result;
 	}
 	
+	function sendStatistic($surveyid, $to, $tempFile, $html=null)
+	{
+		include("lsrc.config.php");
+		global $sitename;
+		global $clang;
+		
+		
+		$subject = $clang->gT("Statistics Survey #");
+		$message = $clang->gT("This is your personal statistic sheet for survey #");
+		if($tempFile==null && isset($html))
+		{
+			$css = "<style type='text/css'>"
+				."table.statisticstable, table.statisticssummary {
+				    background-color:#EEF6FF;
+				    border-collapse:collapse;
+				    border-width: 0px;
+				    border-style: none;
+				}
+				
+				.statisticssummary thead th
+				{
+				    background:#D2E0F2;
+				}
+				
+				.statisticssummary th:first-child,
+				.statisticstable td:first-child {
+				    text-align:right;
+				}
+				
+				.statisticssummary thead th:first-child
+				{
+				    text-align:center;
+				}
+				
+				.statisticssummary th, .statisticssummary td, .statisticstable td {
+				    padding:3px 10px;
+				    
+				}
+				
+				.statisticstable tr {
+				    border-color: #fff;
+				    border-style: solid;
+				    border-width: 1px;
+				}
+				
+				.statisticstable thead th
+				{
+				    background:#D2E0F2;
+				    text-align:center;
+				    color:#1D2D45;
+				    padding:4 10px;
+				}
+				
+				.statisticstable tfoot tr {
+				    background:#D2E0F2;
+				    text-align:center;
+				}"
+				."</style>";
+				
+				$message = $css."<center>".$message.$surveyid."<br/>".$html."</center>";
+			
+			return MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
+		}
+		else
+			return MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+		
+	}
 	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")
 	{
 		include("lsrc.config.php");
@@ -3982,6 +4029,64 @@ class LsrcHelper {
 				{return $qtypes;}
 	
 	
+	}
+	 /**
+	* This function removes the UTF-8 Byte Order Mark from a string
+	* 
+	* @param string $str
+	* @return string
+	*/
+	private function removeBOM($str=""){
+        if(substr($str, 0,3) == pack("CCC",0xef,0xbb,0xbf)) {
+                $str=substr($str, 3);
+        }
+        return $str;
+	} 
+	function createTokenTable($iVid)
+	{
+		global $connect;
+		include("lsrc.config.php");
+		// check if the Token table already exists, if not, create it...
+		if(!db_tables_exist("{$dbprefix}tokens_".$iVid))
+		{
+			$this->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Token Table existiert nicht ");
+			$createtokentable=
+			"tid int I NOTNULL AUTO PRIMARY,\n "
+			. "firstname C(40) ,\n "
+			. "lastname C(40) ,\n ";
+	        //MSSQL needs special treatment because of some strangeness in ADODB
+	        if ($databasetype == 'odbc_mssql' || $databasetype == 'odbtp' || $databasetype == 'mssql_n')
+			{
+				$createtokentable.= "email text ,\n "
+				."emailstatus text DEFAULT 'OK',\n ";
+			}
+	        else
+			{
+				$createtokentable.= "email text ,\n "
+				."emailstatus text DEFAULT 'OK',\n ";
+			}
+	        
+			$createtokentable.= "token C(36) ,\n "
+			. "language C(25) ,\n "
+			. "sent C(17) DEFAULT 'N',\n "
+			. "remindersent C(17) DEFAULT 'N',\n "
+			. "remindercount int I DEFAULT 0,\n "
+			. "completed C(17) DEFAULT 'N',\n "
+			. "validfrom date ,\n"
+			. "validuntil date ,\n"
+			. "mpid I ";
+			
+			$tabname = "{$dbprefix}tokens_{$iVid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+	        $taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+	                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+			$dict = NewDataDictionary($connect);
+			$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
+			$execresult=$dict->ExecuteSQLArray($sqlarray, false);
+			
+			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
+			$dict->ExecuteSQLArray($createtokentableindex, false);
+		}
+		return;
 	}
 }
 ?>

@@ -84,6 +84,11 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
 	}
 }                  
+//CHECK FOR TIMER QUESTIONS TO SAVE TIME REMAINING
+if (isset($_POST['timerquestion'])) 
+{
+	$_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+}
 
 //Check to see if we should set a submitdate or not
 // this depends on the move, and on quesitons checks
@@ -206,9 +211,9 @@ function showsaveform()
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 	."\t<script type='text/javascript'>\n"
 	."\t<!--\n"
-	."\t\tfunction checkconditions(value, name, type)\n"
-	."\t\t\t{\n"
-	."\t\t\t}\n"
+	."function checkconditions(value, name, type)\n"
+	."\t{\n"
+	."\t}\n"
 	."\t//-->\n"
 	."\t</script>\n\n";
 
@@ -369,7 +374,7 @@ function savedcontrol()
 function createinsertquery()
 {
 
-	global $thissurvey, $timeadjust, $move;
+	global $thissurvey, $timeadjust, $move, $thisstep;
 	global $deletenonvalues, $thistpl;
 	global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
@@ -466,6 +471,7 @@ function createinsertquery()
 			// INSERT NEW ROW
 			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
 			."(".implode(', ', array_map('db_quote_id',$colnames));
+            $query .= ",".db_quote_id('lastpage');                 
 			if ($thissurvey['datestamp'] == "Y")
 			{
 				$query .= ",".db_quote_id('datestamp');
@@ -486,6 +492,7 @@ function createinsertquery()
 			}
 			$query .=") ";
 			$query .="VALUES (".implode(", ", $values);
+            $query .= ",".($thisstep+1);          
 			if ($thissurvey['datestamp'] == "Y")
 			{
 				$query .= ", '".$_SESSION['datestamp']."'";
@@ -513,6 +520,7 @@ function createinsertquery()
 			if (isset($postedfieldnames) && $postedfieldnames)
 			{
 				$query = "UPDATE {$thissurvey['tablename']} SET ";
+               $query .= " lastpage = '".$thisstep."',";
 				if ($thissurvey['datestamp'] == "Y")
 				{
 					$query .= " datestamp = '".$_SESSION['datestamp']."',";

@@ -365,7 +365,7 @@ foreach ($rows as $row)
 		
 		
 		case "C": // ARRAY OF YES\No\$clang->gT("Uncertain") QUESTIONS
-		$statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+		$statisticsoutput .= "</tr>\n<tr>\n";
 		
 		//get answers
 		$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
@@ -466,7 +466,7 @@ foreach ($rows as $row)
 		
 		
         case "1": // MULTI SCALE
-        $statisticsoutput .= "\t\t\t\t</tr>\n\t\t\t\t<tr>\n";
+        $statisticsoutput .= "</tr>\n<tr>\n";
                 
         //get answers
         $query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
@@ -563,28 +563,28 @@ foreach ($rows as $row)
 		//Get qidattributes for this question
     	$qidattributes=getQuestionAttributes($flt[0]);
     	
-    	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-    		$maxvalue=$maxvalue['value'];
+        if (trim($qidattributes['multiflexible_max'])!='') {
+    		$maxvalue=$qidattributes['multiflexible_max'];
     	} 
     	else {
     		$maxvalue=10;
     	}
     	
-    	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-    		$minvalue=$minvalue['value'];
+        if (trim($qidattributes['multiflexible_min'])!='') {
+    		$minvalue=$qidattributes['multiflexible_min'];
     	} 
     	else {
     		$minvalue=1;
     	}
     	
-    	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-    		$stepvalue=$stepvalue['value'];
+        if (trim($qidattributes['multiflexible_step'])!='') {
+    		$stepvalue=$qidattributes['multiflexible_step'];
     	} 
     	else {
     		$stepvalue=1;
     	}
     	
-    	if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+        if ($qidattributes['multiflexible_checkbox']!=0) {
     		$minvalue=0;
     		$maxvalue=1;
     		$stepvalue=1;
@@ -866,9 +866,9 @@ if (isset($summary) && $summary)
 			."</td></tr>\n"
 			."\t<tr><td colspan='2' align='center'><div class='questionTitle'>"
 			."$qquestion</div></td></tr>\n"
-			."\t<tr>\n\t\t<td width='50%' align='center' ><strong>"
+			."\t<tr>\n<td width='50%' align='center' ><strong>"
 			.$clang->gT("Calculation")."</strong></td>\n"
-			."\t\t<td width='50%' align='center' ><strong>"
+			."<td width='50%' align='center' ><strong>"
 			.$clang->gT("Result")."</strong></td>\n"
 			."\t</tr>\n";
 			
@@ -1118,18 +1118,18 @@ if (isset($summary) && $summary)
 				foreach ($showem as $shw)
 				{
 					$statisticsoutput .= "\t<tr>\n"
-					."\t\t<td align='center' >$shw[0]</td>\n"
-					."\t\t<td align='center' >$shw[1]</td>\n"
+					."<td align='center' >$shw[0]</td>\n"
+					."<td align='center' >$shw[1]</td>\n"
 					."\t</tr>\n";
 				}
 				
 				//footer of question type "N"
 				$statisticsoutput .= "\t<tr>\n"
-				."\t\t<td colspan='4' align='center' bgcolor='#FFFFFF'>\n"
-				."\t\t\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
-				."\t\t\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
+				."<td colspan='4' align='center' bgcolor='#FFFFFF'>\n"
+				."\t<font size='1'>".$clang->gT("Null values are ignored in calculations")."<br />\n"
+				."\t".sprintf($clang->gT("Q1 and Q3 calculated using %s"), "<a href='http://mathforum.org/library/drmath/view/60969.html' target='_blank'>".$clang->gT("minitab method")."</a>")
 				."</font>\n"
-				."\t\t</td>\n"
+				."</td>\n"
 				."\t</tr>\n<tr style='height:30px; border-bottom: 0px solid #FFF'><td colspan='4'></td></tr></table>\n";
 				
 				//clean up
@@ -1142,7 +1142,7 @@ if (isset($summary) && $summary)
 			{
 				//output
 				$statisticsoutput .= "\t<tr>\n"
-				."\t\t<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
+				."<td align='center'  colspan='4'>".$clang->gT("Not enough values for calculation")."</td>\n"
 				."\t</tr>\n</table><br />\n";
 				unset($showem);
 			}
@@ -1284,28 +1284,28 @@ if (isset($summary) && $summary)
 
 				case ":": //Array (Multiple Flexi) (Numbers)
             	$qidattributes=getQuestionAttributes($qiqid);
-            	if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-            		$maxvalue=$maxvalue['value'];
+                if (trim($qidattributes['multiflexible_max'])!='') {
+            		$maxvalue=$qidattributes['multiflexible_max'];
             	} 
             	else {
             		$maxvalue=10;
             	}
 				
-            	if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-            		$minvalue=$minvalue['value'];
+                if (trim($qidattributes['multiflexible_min'])!='') {
+            		$minvalue=$qidattributes['multiflexible_min'];
             	} 
             	else {
             		$minvalue=1;
             	}
             	
-            	if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-            		$stepvalue=$stepvalue['value'];
+                if (trim($qidattributes['multiflexible_step'])!='') {
+            		$stepvalue=$qidattributes['multiflexible_step'];
             	} 
             	else {
             		$stepvalue=1;
             	}
             	
-				if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+                if ($qidattributes['multiflexible_checkbox']!=0) {
 					$minvalue=0;
 					$maxvalue=1;
 					$stepvalue=1;
@@ -1426,10 +1426,9 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid}' AND language='{$language}' ORDER BY sortorder, code";
                     
                     //header available?
-                    if ($dsheaderA=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))
-                    {
+                    if (trim($qidattributes['dualscale_headerA'])!='') {
                     	//output
-                        $labelheader= "[".$dsheaderA['value']."]";
+                        $labelheader= "[".$qidattributes['dualscale_headerA']."]";
                     }
                     
                     //no header
@@ -1449,10 +1448,10 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
                     
                     //header available?
-                    if ($dsheaderB=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))
+                    if (trim($qidattributes['dualscale_headerB'])!='') {
                     {
                     	//output
-                        $labelheader= "[" . $dsheaderB['value'] . "]";
+                        $labelheader= "[" . $qidattributes['dualscale_headerB'] . "]";
                     }
 
                     //no header
@@ -1526,7 +1525,7 @@ if (isset($summary) && $summary)
 			
 			//question title
 			."$qquestion</div></td></tr>\n"
-			."\t<tr>\n\t\t<td width='50%' align='center' >";
+			."\t<tr>\n<td width='50%' align='center' >";
 			
 			// this will count the answers considered completed
 			$TotalCompleted = 0;    
@@ -1604,11 +1603,11 @@ if (isset($summary) && $summary)
 							{
 								//four columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-								."\t\t<td width='20%' align='center' >"
+								."<td width='20%' align='center' >"
 								."<strong>".$clang->gT("Count")."</strong></td>\n"
-								."\t\t<td width='20%' align='center' >"
+								."<td width='20%' align='center' >"
 								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
-								."\t\t<td width='10%' align='center' >"
+								."<td width='10%' align='center' >"
 								."<strong>".$clang->gT("Sum")."</strong></td>\n"
 								."\t</tr>\n";
 								
@@ -1618,9 +1617,9 @@ if (isset($summary) && $summary)
 							{
 								//three columns
 								$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-								."\t\t<td width='25%' align='center' >"
+								."<td width='25%' align='center' >"
 								."<strong>".$clang->gT("Count")."</strong></td>\n"
-								."\t\t<td width='25%' align='center' >"
+								."<td width='25%' align='center' >"
 								."<strong>".$clang->gT("Percentage")."</strong></td>\n"
 								."\t</tr>\n";
 								
@@ -1691,9 +1690,9 @@ if (isset($summary) && $summary)
 						{						
 							//three columns
 							$statisticsoutput .= "<strong>".$clang->gT("Answer")."</strong></td>\n"
-							."\t\t<td width='25%' align='center' >"
+							."<td width='25%' align='center' >"
 							."<strong>".$clang->gT("Count")."</strong></td>\n"
-							."\t\t<td width='25%' align='center' >"
+							."<td width='25%' align='center' >"
 							."<strong>".$clang->gT("Percentage")."</strong></td>\n"
 							."\t</tr>\n";
 						
@@ -1830,18 +1829,18 @@ if (isset($summary) && $summary)
             	 * 2 (25%) = count (absolute)
             	 * 3 (25%) = percentage
             	 */
-                $statisticsoutput .= "\t<tr>\n\t\t<td width='50%' align='center' >" . $label[$i] ."\n"
-                ."\t\t</td>\n"
+                $statisticsoutput .= "\t<tr>\n<td width='50%' align='center' >" . $label[$i] ."\n"
+                ."</td>\n"
                 
                 //output absolute number of records
-                ."\t\t<td width='20%' align='center' >" . $grawdata[$i] . "\n";
+                ."<td width='20%' align='center' >" . $grawdata[$i] . "\n";
                 
                 
                 //no data
                 if ($gdata[$i] == "N/A") 
                 {
                 	//output when having no data
-                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+                	$statisticsoutput .= "</td><td width='20%' align='center' >";
                 	
                 	//percentage = 0
                     $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%"; 
@@ -1850,7 +1849,7 @@ if (isset($summary) && $summary)
                     //check if we have to adjust ouput due to $showaggregateddata setting
                     if($showaggregateddata == 1 && isset($showaggregateddata) && ($qtype == "5" || $qtype == "A"))
                     {
-                    	$statisticsoutput .= "\t\t</td><td>";
+                    	$statisticsoutput .= "</td><td>";
                 	}
                 }
                 
@@ -1910,13 +1909,13 @@ if (isset($summary) && $summary)
 	                		}
 	                		
 	                		//output
-	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center'>";
+	                		$statisticsoutput .= "</td><td width='20%' align='center'>";
 	                		
 	                		//output percentage
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 	                		
 	                		//adjust output
-	                		$statisticsoutput .= "\t\t</td><td>";	                		
+	                		$statisticsoutput .= "</td><td>";	                		
 	                	}
 	                	
 	                	//item 3 - just show results twice
@@ -1945,13 +1944,13 @@ if (isset($summary) && $summary)
 	                		}
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='20%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 							//output again (no real aggregation here)
-	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage)."%";
-	                		$statisticsoutput .= "\t\t";
+	                		$statisticsoutput .= "";
 	                	}
 	                	
 	                	//FIRST value -> add percentage of item 1 + item 2
@@ -1986,13 +1985,13 @@ if (isset($summary) && $summary)
 	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='20%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%"; 
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-	                		$statisticsoutput .= "\t\t";
+	                		$statisticsoutput .= "";
 	                	}
 	                	
 	                	//LAST value -> add item 4 + item 5
@@ -2026,13 +2025,13 @@ if (isset($summary) && $summary)
 	                		$aggregatedgdata = $percentage + $percentage2;
 	                		
 	                		//output percentage
-	                		$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='20%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $percentage) . "%";
 							
 	                		//output aggregated data
-	                		$statisticsoutput .= "\t\t</td><td width='10%' align='center' >";
+	                		$statisticsoutput .= "</td><td width='10%' align='center' >";
 	                		$statisticsoutput .= sprintf("%01.2f", $aggregatedgdata)."%";
-	                		$statisticsoutput .= "\t\t";
+	                		$statisticsoutput .= "";
 	                		
 	                		//calculate sum of items 1-5
 	                		$sumitems = $grawdata[$i] 
@@ -2060,13 +2059,13 @@ if (isset($summary) && $summary)
 	                			$casepercentage = "0";
 	                		}
 	                		
-	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "&nbsp</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tfoot><tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		
-	                		$statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "&nbsp</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
@@ -2081,15 +2080,15 @@ if (isset($summary) && $summary)
                 	else
                 	{                		
                 		//output percentage 
-	                	$statisticsoutput .= "\t\t</td><td width='20%' align='center' >";
+	                	$statisticsoutput .= "</td><td width='20%' align='center' >";
                 		$statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
-                		$statisticsoutput .= "\t\t";
+                		$statisticsoutput .= "";
                 	}
                 	                	                	
                 }	//end else -> $gdata[$i] != "N/A"                    
                 
               	//end output per line. there has to be a whitespace within the table cell to display correctly
-	            $statisticsoutput .= "\t\t&nbsp</td>\n\t</tr>\n";              
+	            $statisticsoutput .= "&nbsp</td>\n\t</tr>\n";              
                 
                 //increase counter
                 $i++;

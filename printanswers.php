@@ -45,11 +45,11 @@ if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))
 	doHeader();
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/startpage.pstpl"));
-	echo "\t\t<center><br />\n"
-	."\t\t\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-	."\t\t\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-    ."\t\t\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
-	."\t\t</center><br />\n";
+	echo "<center><br />\n"
+	."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+	."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
+	."</center><br />\n";
 
 	echo templatereplace(file_get_contents("$templaterootdir/default/endpage.pstpl"));
 	doFooter();
@@ -271,13 +271,13 @@ if (isset($_SESSION['s_lang']))
 					$aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg()); //Checked   
 					$header1=$clang->gT('First Scale');
 					$header2=$clang->gT('Second Scale');
-					if ($thisheader=arraySearchByKey("dualscale_headerA", $qidattributes, "attribute", 1))      
+					if (trim($qidattributes['dualscale_headerA'])!='')      
 					{
-						$header1=$thisheader['value'];
+						$header1=$clang->gT($qidattributes['dualscale_headerA']);
 					}
-					if ($thisheader=arraySearchByKey("dualscale_headerB", $qidattributes, "attribute", 1))      
+                    if (trim($qidattributes['dualscale_headerB'])!='')      
 					{
-						$header2=$thisheader['value'];
+                        $header2=$clang->gT($qidattributes['dualscale_headerB']);
 					}
 					while ($arows = $aresult->FetchRow())
 					{
@@ -326,8 +326,8 @@ if (isset($_SESSION['s_lang']))
 		for ($i; $i<$nfncount+1; $i++)
 		{
 			$printoutput .= "\t<tr>\n"
-			."\t\t<td>{$fnames[$i][2]}</td>\n"
-			."\t\t<td>"
+			."<td>{$fnames[$i][2]}</td>\n"
+			."<td>"
 			.getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])
 			."</td>\n"
 			."\t</tr>\n";

@@ -24,6 +24,10 @@ include("lsrc.helper.php");
 require_once($rootdir.'/classes/core/language.php');
 $clang = new limesurvey_lang($defaultlang);
 
+// to generate statistics
+include_once($rootdir."/classes/core/sanitize.php");
+include_once($rootdir.'/admin/statistics_function.php');
+		
 /**
  * if ?wsdl is set, generate wsdl with correct uri and send it back to whoever requesting
  */
@@ -87,8 +91,9 @@ else{
 	$server->addFunction("sImportFreetext");
 	$server->addFunction("sSendEmail");
 	$server->addFunction("sGetFieldmap");
+	$server->addFunction("fSendStatistic");
 	// handle the soap request!
-if($enableLsrc==true)
+if($enableLsrc===true)
 {
 	$server->handle();
 }
@@ -493,7 +498,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 		if($value!='')
 		{
 			$sInsertToken = "INSERT INTO {$dbprefix}tokens_".$iVid." 
-				(token,language) VALUES ('".preg_replace('/[^_a-z0-9-]/i', '', $value)."' , '".$_SESSION['lang']."'); ";
+				(token,language) VALUES ('".$value."' , '".$_SESSION['lang']."'); ";
 			if(!$connect->Execute($sInsertToken))
 			{
 				throw new SoapFault("Server: ", "Token could not be inserted");
@@ -509,6 +514,165 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
 	
 } //end of function sInsertToken  
 
+
+/**
+ * The new one...
+ * * Function to insert Participant data while auto creating token if non is supported...
+ * @param $sUser
+ * @param $sPass
+ * @param $iVid
+ * @param $sParticipantData (FIRSTNAME;LASTNAME;EMAIL;LANG;TOKEN;VALIDFROM;VALIDTO;attrib1,attrib2,attrib3,attrib4,attrib5::)
+ * @return unknown_type
+ */
+function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
+{
+	global $connect ;
+	global $dbprefix ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	// check for appropriate rights
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	
+	// check if there is a $iVid, else abort
+	if(!isset($iVid) || $iVid=='' || $iVid==0 )
+	{
+		throw new SoapFault("Server: ", "No SurveyId given");
+		exit;
+	}
+	
+	// check if the Survey we want to populate with data and tokens already exists, else -> Fault
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey does not exists");
+		exit;
+	}
+	
+	$lsrcHelper->createTokenTable($iVid);
+	
+	//set the Seperators to default if nothing is set in the lsrc.config.php
+	if(!isset($sDatasetSeperator) || $sDatasetSeperator=='')
+	{$sDatasetSeperator = "::";}
+	if(!isset($sDatafieldSeperator) || $sDatafieldSeperator=='')
+	{$sDatafieldSeperator = ";";}
+	
+	// prepare to fill the table lime_tokens_*
+	// this is sensitiv, if the Seperator is not the defined one, almost everything could happen, BE AWARE OF YOUR SEPERATOR!...
+	$asDataset = explode($sDatasetSeperator, $sParticipantData);
+	// write the tokens to the token_table
+	$iCountParticipants =  count($asDataset);
+	$iInsertedParticipants=0;
+	
+	
+	
+	
+	foreach($asDataset as $sData)
+	{
+		//some extra sql statement comes in here later
+		$attributes='';
+		$attributesData='';
+		$validity='';
+		$validityData='';
+		if($sData!='')
+		{
+			$asDatafield = explode($sDatafieldSeperator, $sData);			
+			$checkCnt=1;
+			// token generieren
+			while($checkCnt>0)
+			{
+				$value = randomkey(10); //change randomkey value for different tokenlength (up to 36 chars max.)
+				$cQuery= "select token from ".$dbprefix."tokens_".$iVid." where token = '".$value."'; ";
+				$result = db_execute_assoc($cQuery);
+				$checkCnt = $result->RecordCount();
+			}
+			if(!isset($asDatafield[4]) || $asDatafield[4]=='')
+			{
+				$asDatafield[4]= $value;
+			}
+			
+			
+			$iDataLength = count($asDatafield);
+			for($n=0;$n>=$iDataLength;++$n)
+			{
+				
+				if($asDatafield[$n]=='')
+				{
+					$asDatafield[$n]=null;
+				}
+			}
+			if(isset($asDatafield[5]) && $asDatafield[5]!=null)
+			{
+				$validity .= ',validfrom';
+				$validityData .=",'$asDatafield[5]'";
+			}
+			if(isset($asDatafield[6]) && $asDatafield[5]!=null)
+			{
+				$validity .= ',validuntil';
+				$validityData .=",'$asDatafield[6]'";
+			}
+			
+			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid
+							."(firstname,lastname,email,token,"
+							."language $validity $attributes) "
+							."VALUES ('{$asDatafield[0]}', '{$asDatafield[1]}' , '{$asDatafield[2]}', '{$asDatafield[4]}' , "
+							."'{$asDatafield[3]}' $validityData $attributesData) ";
+
+			$lsrcHelper->debugLsrc("$sInsertParti");				
+							
+			
+//			$sInsertParti = "INSERT INTO ".$dbprefix."tokens_".$iVid 
+//					."(firstname,lastname,email,emailstatus,token,"
+//					."language,sent,completed,attribute_1,attribute_2,mpid)"
+//					."VALUES ('".$asDatafield[0]."' , 
+//					'".$asDatafield[1]."' , '".$asDatafield[2]."' , 'OK' , '".$asDatafield[5]."',
+//					'".$_SESSION['lang']."', 'N', 'N', '".$asDatafield[3]."' , '".$asDatafield[4]."' , NULL); ";
+//				
+			if($connect->Execute($sInsertParti))
+			{
+				++$iInsertedParticipants;
+				
+				
+				
+				if(isset($asDatafield[7]) && $asDatafield[7]!='')
+				{
+					$asAttributes = explode(",", $asDatafield[7]);	
+					$n=0;
+					foreach($asAttributes as $attribute)
+					{
+						
+						++$n;
+						//$check = "SELECT attribute_$n FROM {$dbprefix}_tokens_$iVid ";
+						
+						$sql = "ALTER TABLE {$dbprefix}tokens_$iVid ADD COLUMN attribute_$n VARCHAR(255); ";
+						$attributes.=",attribute_$n";
+						$attributesData.= ",'$attribute'";
+						
+						$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.", Attribute_$n mit $attribute anlegen ,sql: $sql");
+						//modify_database("","$sql");
+						$connect->Execute($sql);
+						
+						
+						$insert = "UPDATE {$dbprefix}tokens_$iVid " 
+								. " SET attribute_$n='$attribute' WHERE token='$asDatafield[4]' ";
+						
+						$lsrcHelper->debugLsrc("$insert");
+						$connect->Execute($insert);
+					}
+				}
+			}
+
+		}
+			
+	}
+
+	return "".$iCountParticipants."Datasets given, ".$iInsertedParticipants." rows inserted. ";
+	
+	
+}
 /**
  * TODO: redo better... maybe some other function for compatibility
  * Function to insert Participants data while auto creating tokens for everyone...
@@ -518,7 +682,7 @@ function sInsertToken($sUser, $sPass, $iVid, $sToken)
  * @param $sParticipantData
  * @return unknown_type
  */
-function sInsertParticipants($sUser, $sPass, $iVid, $sParticipantData) 
+function sInsertParticipants_old($sUser, $sPass, $iVid, $sParticipantData) 
 {
 	global $connect ;
 	global $dbprefix ;
@@ -927,7 +1091,7 @@ function sImportMatrix($sUser, $sPass, $iVid, $qTitle, $qText, $qHelp, $sItems, 
 		
 	global $connect ;
 	global $dbprefix ;
-	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	//$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 	include("lsrc.config.php");
 	
 	$lsrcHelper = new lsrcHelper();
@@ -1116,7 +1280,145 @@ function sDeleteSurvey($sUser, $sPass, $iVid)
 	
 	
 }
-
+/**
+ * 
+ * Enter description here...
+ * @param $sUser Limesurvey user
+ * @param $sPass Password
+ * @param $iVid	surveyid
+ * @param $email e-mail adress of the recipient
+ * @param $docType pdf, xls or html
+ * @param $graph with 1 it includes graphs in pdf files
+ * @return "OK" or SoapFault
+ */
+function fSendStatistic($sUser, $sPass, $iVid, $email, $docType='pdf', $graph='0')
+{
+	global $connect ;
+	global $dbprefix ;
+	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
+	include("lsrc.config.php");
+	$lsrcHelper = new lsrcHelper();
+	
+	// Check if all mandatory parameters are present, else abort...
+	if(!is_int($iVid) || $iVid==0 || $email=='')
+	{
+		throw new SoapFault("Server: ", "Mandatory Parameters missing");
+		exit;
+	}
+	
+	if(!$lsrcHelper->checkUser($sUser, $sPass))
+	{
+		throw new SoapFault("Authentication: ", "User or password wrong");
+		exit;
+	}
+	if($lsrcHelper->getSurveyOwner($iVid)!=$_SESSION['loginID'] && !$_SESSION['USER_RIGHT_SUPERADMIN']=='1')
+	{
+		throw new SoapFault("Authentication: ", "You have no right to send statistics from other peoples Surveys");
+		exit;
+	}
+	if(!$lsrcHelper->surveyExists($iVid))
+	{
+		throw new SoapFault("Database: ", "Survey $iVid does not exists");
+		exit;
+	}
+	$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid email=$email doctype=$docType graph=$graph START OK ");
+	
+	/**
+	 * Build up the fields to generate statistics from
+	 */
+		$summarySql=" SELECT gid, lid, qid, type "
+			." FROM {$dbprefix}questions "
+			." WHERE sid=$surveyid ";
+		
+		$summaryRs = $connect->Execute($summarySql);
+		$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",sid=$iVid OK ");
+		foreach($summaryRs as $field)
+		{
+			$myField = $surveyid."X".$field['gid']."X".$field['qid'];
+			
+			// Multiple Options get special treatment
+			if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
+			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
+			if ($field['type'] == "N") {$myField = "N$myField";}
+			
+			if ($field['type'] == "Q") {$myField = "Q$myField";}
+			// textfields get special treatment
+			if ($field['type'] == "S" || $field['type'] == "T" || $field['type'] == "U"){$myField = "T$myField";}
+			//statistics for Date questions are not implemented yet. 
+			if ($field['type'] == "D") {$myField = "D$myField";}
+			if ($field['type'] == "F" || $field['type'] == "H")
+			{
+				$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
+				//Get answers. We always use the answer code because the label might be too long elsewise
+				$query = "SELECT code, answer FROM ".db_table_name("answers")." WHERE qid='".$field['qid']."' AND language='{$language}' ORDER BY sortorder, answer";
+				$result = $connect->Execute($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+				$counter2=0;
+	
+				//check all the answers
+				while ($row=$result->FetchRow())
+				{
+					$myField = "$myField{$row[0]}";
+				}
+				//$myField = "{$surveyid}X{$flt[1]}X{$flt[0]}{$row[0]}[]";
+			
+			
+			}
+			$summary[]=$myField;
+		
+		}
+	
+	//$lsrcHelper->debugLsrc("wir sind in ".__FUNCTION__." Line ".__LINE__.",".print_r($summary)." ");
+	switch ($docType)
+	{
+		case 'pdf':
+			$tempFile = generate_statistics($iVid,$summary,'all',$graph,$docType,'F');
+			
+			if($lsrcHelper->sendStatistic($iVid, $email, $tempFile))
+			{
+				unlink($tempFile);
+				return 'PDF send';
+			}
+			else
+			{
+				unlink($tempFile);
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
+				exit;
+			}
+		break;
+		case 'xls':
+			$tempFile = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
+			
+			if($lsrcHelper->sendStatistic($iVid, $email, $tempFile))
+			{
+				unlink($tempFile);
+				return 'XLS send';
+			}
+			else
+			{
+				unlink($tempFile);
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
+				exit;
+			}
+		break;
+		case 'html':
+			$html = generate_statistics($iVid,$summary,'all',0,$docType, 'F');
+			
+			if($lsrcHelper->sendStatistic($iVid, $email, null, $html))
+			{
+				return 'HTML send';
+			}
+			else
+			{
+				throw new SoapFault("Mail System", "Mail could not be send! Check LimeSurveys E-Mail Settings.");
+				exit;
+			}
+		break;
+	}
+	
+	
+	
+	
+}
 /**
  * 
  * This function pulls a CSV representation of the Field map
@@ -1150,4 +1452,5 @@ function sGetFieldmap($sUser, $sPass, $iVid)
 	return $returnCSV;
 	
 }
+
 ?>

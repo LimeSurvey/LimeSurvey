@@ -18,7 +18,7 @@ $wsdl = isset($_REQUEST['wsdl'])?$_REQUEST['wsdl']:'';
 #####################################################################
 ## Configuration Parameters
 //set this to your limesurvey installation path for the "test survey" link to work
-$limeUrl='https://localhost/limesource/limesurvey';
+$limeUrl='http://localhost/limesource/limesurvey';
 
 //We need authentication for every function, so just write the logindata once for all (this is the default)
 $user ="admin";
@@ -175,6 +175,13 @@ else
 if($file!=FALSE)
 {
 	try
+	{	$ques = $client->sAvailableModules($user, "password", "que");}
+	catch (SoapFault $fault)
+	{	$ques .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
+}
+if($file!=FALSE)
+{
+	try
 	{	$mods = $client->sAvailableModules($user, "password", "mod");}
 	catch (SoapFault $fault)
 	{	$mods .= "<br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";}
@@ -196,6 +203,27 @@ $iVid = $_REQUEST['sid'];
 reset($_REQUEST);
 while(list($key, $value) = each($_REQUEST))
 {
+	if(substr($key,0,13)=="sendStatistic")
+	{
+		$iVid = $_REQUEST['sid'];
+		$type = $_REQUEST['type'];
+		$email = $_REQUEST['email'];
+		$graph = $_REQUEST['graph'];
+		
+		try
+		{
+			$sReturn = $client->fSendStatistic($user, $pass, $iVid, $email, $type, $graph);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+		
+		
+		
+	}
 	if(substr($key,0,8)=="sendMail")
 	{
 		$iVid = $_REQUEST['sid'];
@@ -287,8 +315,7 @@ while(list($key, $value) = each($_REQUEST))
 		//these are just outputs for testing
 		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
 	}
-
-	if(substr($key,0,8)=="impQuest")
+	if(substr($key,0,8)=="impFree")
 	{
 		$iVid = $_REQUEST['sid'];
 		// $sMod = $_REQUEST['mod'];
@@ -301,6 +328,25 @@ while(list($key, $value) = each($_REQUEST))
 		{
 
 			$sReturn = $client->sImportFreetext($user, $pass, $iVid, $qTitle, $qText, $qHelp, "Freitext", $mandatory);
+		}
+		catch (SoapFault $fault)
+		{
+			$sOutput .= " <br/><br/><b>SOAP Error: ".$fault->faultcode." : ".$fault->faultstring."</b>";
+		}
+		//these are just outputs for testing
+		$sOutput .= "<br/><br/><b>Return</b>: ". $sReturn;
+	}
+	if(substr($key,0,8)=="impQuest")
+	{
+		$iVid = $_REQUEST['sid'];
+		// $sMod = $_REQUEST['mod'];
+		$sMod = $_REQUEST['mod'];
+		$mandatory = $_REQUEST['mandatory'];
+			
+		try
+		{
+
+			$sReturn = $client->sImportQuestion($user, $pass, $iVid, $sMod, $mandatory);
 		}
 		catch (SoapFault $fault)
 		{
@@ -490,7 +536,7 @@ if(isset($sOutput))
 	echo '</div>';
 }
 ?>
-<div style='margin-bottom: 5px'>
+<div style='float:left; margin-bottom: 5px; margin-right: 5px;'>
 <h3>sCreateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
 <b><font color='red'>* </font>VeranstaltungsTyp:</b>
@@ -529,7 +575,7 @@ Message is left blank):</b> <br />
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sActivateSurvey function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
@@ -544,7 +590,7 @@ Message is left blank):</b> <br />
 <input type='submit' name='activate' value='Start Survey!' /></form>
 </div>
 
-<div style='float: left;  margin-bottom: 5px; margin-left: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px'>
 <h3>sDeleteSurvey function</h3>(attention: no safetyquestion is asked!)<br/>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID:</b>
@@ -555,7 +601,7 @@ Message is left blank):</b> <br />
 <input type='submit' name='delsurvey' value='Delete Survey!' /></form>
 </div>
 
-<div style='float: right;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportGroup function</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
@@ -579,9 +625,8 @@ for($n=0;$n<count($aMods);++$n)
 <input type='submit' name='impGroup' value='add group to survey!' /></form>
 </div>
 
-<div
-	style='clear: both; float: left; width: 49%;  margin-bottom: 5px'>
-<h3>sImportQuestion</h3>
+<div style='float: left; margin-bottom: 5px; margin-right: 5px;'>
+<h3>sImportFreetext</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
 <br />
@@ -595,11 +640,32 @@ for($n=0;$n<count($aMods);++$n)
 <b>Helptext:</b> <br />
 <textarea name='help' cols='50' rows='3'></textarea> <br />
 <?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
-<input type='submit' name='impQuest' value='Create Question!' /></form>
+<input type='submit' name='impFree' value='Create Question!' /></form>
 </div>
 
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
+<h3>sImportQuestion</h3>
+<form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
+	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
+<br />
+<input type='text' name='sid' size='5' maxlength='5'
+	value='<?php echo $iVid ?>' /> <br />
+	<input type='checkbox' name='mandatory' value='Y' /> Mandatory <br />
+<b><font color='red'>* </font>Question csv to import:</b> <br />
+<select name='mod' size='1'>
+<?php
+$aQues = explode(",", $ques);
+for($n=0;$n<count($aQues);++$n)
+{echo "<option value='".$aQues[$n]."'>".$aQues[$n]."</option>";}
+?>
+</select> <br />
+<?php echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />" ?>
+<input type='submit' name='impFree' value='Create Question!' /></form>
+</div>
+
+
 <div
-	style='float: right; width: 49%;  margin-bottom: 5px'>
+	style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sImportMatrix</h3>
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'><b><font
 	color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b>
@@ -623,7 +689,7 @@ for($n=1;$n<10;++$n)
 </div>
 
 
-<div style='float: left;  margin-bottom: 5px'>
+<div style='float: left;  margin-bottom: 5px; margin-right: 5px;'>
 <h3>sChangeSurvey function</h3>
 ( this is not part of the lsrc, it just shows the power of it, <br/>it has to be activated in server.php on line ~60 )
 <form action='<?php echo $_SERVER['PHP_SELF'] ?>' method='post'>
@@ -643,8 +709,9 @@ for($n=1;$n<10;++$n)
 <br />--> <input type='submit' name='change' value='Change Survey!' /></form>
 
 </div>
-<div style='float:left;margin-bottom:5px'>
+
 <?php 
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sInsertToken function</h3>";
 echo "<p>Makes the Survey closed.<br/> Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -660,7 +727,7 @@ echo "</form>";
 echo "</div>";
 
 
-echo "<div style='float:right; margin-bottom:5px'>";
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sTokenReturn function</h3>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
@@ -669,14 +736,15 @@ echo "<input type='submit' name='tokRet' value='Check for unused Tokens!'/>";
 echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
 
-echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sInsertParticipants function</h3>";
 echo "<p>Makes the Survey closed. Means: It's only available to people who have an unused token</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' size='5' maxlength='5' value='".$iVid."'/>";
 echo "<br />";
-echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]::FIRSTNAME;LASTNAME;EMAIL[;[ATTRIB1];[ATTRIB2]]\" and so on :</b> <br />";
+echo "<b><font color='red'>* </font>Data in this Format [params in square brackets are optional]:<br/> \"FIRSTNAME;LASTNAME;EMAIL;LANG[;TOKEN;VALIDFROM;VALIDUNTIL;attrib1,attrib2,attrib3,attrib4,attrib5]
+<br/>::FIRSTNAME;LASTNAME;EMAIL;LANG[;TOKEN;VALIDFROM;VALIDUNTIL;attrib1,attrib2,attrib3,attrib4,attrib5]\" and so on :</b> <br />";
 echo "<textarea name='sParticipantData' cols='50' rows='3'>";
 echo "</textarea> ";
 echo "<br />";
@@ -685,7 +753,7 @@ echo "<input type='submit' name='insPar' value='Insert Personal Data!'/>";
 echo "</form>";
 echo "</div>";
 
-echo "<div style='clear:both;margin-bottom:5px'>";
+echo "<div style='float:left;margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sSendEmail function</h3>";
 echo "<p>Sends an Email to users of a specific survey. Invite, Remind and custom emails are possible</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
@@ -711,13 +779,30 @@ echo "<input type='submit' name='sendMail' value='Send Email to participants'/>"
 echo "</form>";
 echo "</div>";
 
-echo "<div style='float:right; margin-bottom:5px'>";
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
 echo "<h3>sGetFieldmap function</h3>";
 echo "<p>Gets you the fieldmap from a survey as csv</p>";
 echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
 echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
 echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
 echo "<input type='submit' name='getField' value='Get me the Fieldmap as CSV!'/>";
+echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
+echo "</form></div>";
+
+echo "<div style='float:left; margin-bottom:5px;margin-left:5px;'>";
+echo "<h3>fSendStatistic function</h3>";
+echo "<p>Gets statistic from a survey and sends it to an E-Mail recipient</p>";
+echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>";
+echo "<b><font color='red'>* </font>VeranstaltungsID / SurveyID (have to be Integer):</b> <br />";
+echo "<input type='text' name='sid' value='".$iVid."' maxlength='5'/><br />";
+echo "<b><font color='red'>* </font>E-Mail Adress:</b> <br />";
+echo "<input type='text' name='email' value='' maxlength='50' size='50'/><br />";
+echo "<input type='checkbox' name='graph' value='1' />Include graphs (only with pdf generation) <br />";
+echo "<input type='radio' name='type' value='pdf' checked='checked' />PDF attachement";
+echo "<input type='radio' name='type' value='xls' />Excel attachement";
+echo "<input type='radio' name='type' value='html' />HTML Mail<br/>";
+
+echo "<input type='submit' name='sendStatistic' value='Send a Statistic'/>";
 echo "<input type='hidden' name='wsdl' size='97' value='".$wsdl."' />";
 echo "</form></div>";
 //phpinfo();

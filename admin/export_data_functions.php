@@ -203,22 +203,24 @@ function spss_getvalues ($field = array()) {
 		$displayvaluelabel = 0;
 		//Get the labels that could apply!
 		$qidattributes=getQuestionAttributes($field["qid"]);
-		if ($maxvalue=arraySearchByKey("multiflexible_max", $qidattributes, "attribute", 1)) {
-			$maxvalue=$maxvalue['value'];
+        if (trim($qidattributes['multiflexible_max'])!='') {
+            $maxvalue=$qidattributes['multiflexible_max'];
 		} else {
 			$maxvalue=10;
 		}
-		if ($minvalue=arraySearchByKey("multiflexible_min", $qidattributes, "attribute", 1)) {
-			$minvalue=$minvalue['value'];
+        if (trim($qidattributes['multiflexible_min'])!='')
+        {
+            $minvalue=$qidattributes['multiflexible_min'];
 		} else {
 			$minvalue=1;
 		}
-		if ($stepvalue=arraySearchByKey("multiflexible_step", $qidattributes, "attribute", 1)) {
-			$stepvalue=$stepvalue['value'];
+        if (trim($qidattributes['multiflexible_step'])!='')
+        {
+			$stepvalue=$qidattributes['multiflexible_step'];
 		} else {
 			$stepvalue=1;
 		}
-		if (arraySearchByKey("multiflexible_checkbox", $qidattributes, "attribute", 1)) {
+        if ($qidattributes['multiflexible_checkbox']!=0) {
 			$minvalue=0;
 			$maxvalue=1;
 			$stepvalue=1;
@@ -257,17 +259,14 @@ function spss_getvalues ($field = array()) {
 	if (count($answers)>0) {
 		//check the max width of the answers
 		$size = 0;
-		$spssType = 'F'; //Try if we can use num and use alpha as fallback
-		$size = 1;
+		$answers['SPSStype'] = $field['SPSStype'];
 		foreach ($answers as $answer) {
 			$len = mb_strlen($answer['code']);
 			if ($len>$size) $size = $len;
-			if ($spssType =='F' && (my_is_numeric($answer['code'])===false || $size>16)) $spssType='A';
+			if ($answers['SPSStype']=='F' && (my_is_numeric($answer['code'])===false || $size>16)) $answers['SPSStype']='A';
 		}
 		$answers['size'] = $size;
-		$answers['SPSStype'] = $spssType;
 		return $answers;
-		
 	} else {
 		return false;
 	}
@@ -386,7 +385,7 @@ function spss_fieldmap($prefix = 'V') {
 				//Get default scale for this type
 				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
 				//But allow override
-				$aQuestionAttribs = getQAttributes($qid);
+				$aQuestionAttribs = getQuestionAttributes($qid);
 				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 
