@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-21 16:40+0100\n"
-"PO-Revision-Date: 2009-09-21 16:41+0100\n"
+"POT-Creation-Date: 2009-09-30 15:17+0100\n"
+"PO-Revision-Date: 2009-09-30 15:17+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -406,8 +406,8 @@ msgstr "Referrer-URL"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1461
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1770
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1994
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2734
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3044
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2731
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3041
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:751
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1411
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1500
@@ -418,9 +418,9 @@ msgstr "Sonstiges"
 #: D:\web\xampp\htdocs\limesurvey/common.php:2087
 #: D:\web\xampp\htdocs\limesurvey/common.php:2093
 #: D:\web\xampp\htdocs\limesurvey/common.php:2109
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3951
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4463
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4521
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3948
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4460
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4518
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1255
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1380
 msgid "Yes"
@@ -428,9 +428,9 @@ msgstr "Ja"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2094
 #: D:\web\xampp\htdocs\limesurvey/common.php:2110
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3960
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4465
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4539
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3957
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4462
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4536
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1256
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1381
 msgid "No"
@@ -445,28 +445,28 @@ msgstr "Nein"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1536
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1804
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:2028
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2163
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2230
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3971
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4053
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4151
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4240
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4326
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4394
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4468
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4559
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4751
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4835
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4925
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4945
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5031
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2160
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2227
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3968
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4050
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4148
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4237
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4323
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4391
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4465
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4556
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4748
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4832
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4922
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4944
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5030
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5619
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:5620
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5621
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5907
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5975
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6097
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6332
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6386
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5906
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5974
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6096
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6331
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6385
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1507
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1596
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1880
@@ -478,41 +478,41 @@ msgid "No answer"
 msgstr "keine Antwort"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2101
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4028
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4025
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1374
 msgid "Male"
 msgstr "männlich"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2102
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4009
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4006
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1373
 msgid "Female"
 msgstr "weiblich"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2111
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4464
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4529
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4461
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4526
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1257
 msgid "Uncertain"
 msgstr "Unsicher"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2117
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4746
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4794
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4743
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4791
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1274
 msgid "Increase"
 msgstr "Zunahme"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2118
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4748
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4817
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4745
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4814
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1276
 msgid "Decrease"
 msgstr "Abnahme"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:2119
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4747
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4805
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4744
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4802
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1275
 msgid "Same"
 msgstr "Unverändert"
@@ -1559,8 +1559,8 @@ msgstr "Bitte machen Sie mindestens ein Kreuz."
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1196
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1686
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1876
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2535
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2929
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2532
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2926
 msgid "Other:"
 msgstr "Sonstiges:"
 
@@ -1642,10 +1642,10 @@ msgid "Year"
 msgstr "Jahr"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1089
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3743
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3796
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3856
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3922
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3740
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3793
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3853
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3919
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1606
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1620
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1693
@@ -1664,8 +1664,8 @@ msgstr "Format: %s"
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1156
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1329
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:1518
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6312
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6366
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6311
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6365
 msgid "Please choose"
 msgstr "Bitte wählen"
 
@@ -1691,120 +1691,116 @@ msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dies
 msgid "Other text"
 msgstr "Anderer Text"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2117
-msgid "Please choose one of the following"
-msgstr "Bitte wählen Sie eine Antwort aus."
-
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:2118
 msgid "Please enter your comment here"
 msgstr "Bitte geben Sie hier Ihren Kommentar ein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2405
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2402
 msgid "Remove this item"
 msgstr "Dieses Element entfernen"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2449
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2446
 msgid "Your Choices"
 msgstr "Ihre Auswahl"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2458
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2464
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2455
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2461
 msgid "Your Ranking"
 msgstr "Ihre Rangfolge"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2472
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2469
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Klicken Sie auf die Schere rechts von jedem Element, um den letzten Eintrag in der Rangliste zu entfernen"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2482
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2498
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2479
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2495
 #, php-format
 msgid "Please rank at least %d item(s) for question \"%s\"."
 msgstr "Bitte wählen Sie mindestens %d Antworten für die Frage \"%s\" aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2818
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3098
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2815
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3095
 #, php-format
 msgid "Please choose at most %d answer(s) for question \"%s\""
 msgstr "Bitte wählen Sie maximal %d Antworten für die Frage \"%s\""
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2839
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3123
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2836
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3120
 #, php-format
 msgid "Please choose at least %d answer(s) for question \"%s\""
 msgstr "Bitte wählen Sie mindestens %d Antwort(en) für die Frage \"%s\" aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:2874
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3153
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:2871
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3150
 #, php-format
 msgid "You've marked the \"other\" field for question \"%s\". Please also fill in the accompanying \"other comment\" field."
 msgstr "Sie haben das Feld \"Sonstiges: \" für Frage  \"%s \" markiert. Bitte füllen Sie auch das dazugehörige Kommentarfeld aus."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3026
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3054
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3023
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3051
 msgid "Make a comment on your choice here:"
 msgstr "Bitte schreiben Sie einen Kommentar zu Ihrer Auswahl"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3246
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3476
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:4477
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6160
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3243
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3473
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:4474
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6159
 msgid "Error: This question has no answers."
 msgstr "Fehler: Diese Frage hat keine Antworten."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3555
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3552
 msgid "Only numbers may be entered in these fields"
 msgstr "In diese Felder dürfen nur Ziffern eingetragen werden."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3559
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3556
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Summe aller Einträge darf nicht größer als %d sein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3563
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3560
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Summe aller Einträge muss gleich %d sein"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3567
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3564
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Summe aller Einträge müssen größer sein als %s"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3575
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3572
 msgid "Remaining: "
 msgstr "Verbleibend:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3577
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3574
 msgid "Total: "
 msgstr "Gesamt:"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3621
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3629
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3665
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3676
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3618
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3626
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3662
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3673
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Antwort ist ungültig. Die Summer aller Einträge sollte nicht größer sein als"
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3642
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3650
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3639
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3647
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Antwort ist ungültig. Die Summe aller Einträge muss mindenstens %s sein."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:3745
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:3742
 msgid "Only numbers may be entered in this field"
 msgstr "In dieses Feld dürfen nur Ziffern eingetragen werden."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5072
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5301
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5590
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5734
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:6412
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5071
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5300
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5589
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5733
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:6411
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "Fehler: Das für diese Frage benutzte Beschriftungsset ist nicht in dieser Übersetzung verfügbar oder wurde nicht angegeben."
 
-#: D:\web\xampp\htdocs\limesurvey/qanda.php:5728
+#: D:\web\xampp\htdocs\limesurvey/qanda.php:5727
 msgid "Error: There are no answers defined for this question."
 msgstr "Fehler: Es sind keine Antworten für diese Frage definiert."
 
@@ -2533,296 +2529,296 @@ msgstr "Benutzername ungültig!"
 msgid "User name and password do not match!"
 msgstr "Username und Passwort stimmen nicht überein!"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:107
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:121
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:86
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:100
 msgid "Conditions manager"
 msgstr "Bedingungsdesigner"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:109
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:88
 msgid "You have not selected a survey"
 msgstr "Sie haben keine Umfrage ausgewählt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:111
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:125
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:90
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:104
 msgid "Main admin screen"
 msgstr "Hauptseite der Administration"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:123
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:102
 msgid "You have not selected a question"
 msgstr "Sie haben keine Frage ausgewählt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:133
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:112
 msgid "Conditions designer"
 msgstr "Bedingungs-Designer"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:145
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:124
 msgid "Return to survey administration"
 msgstr "Zur Umfragen-Administration zurückkehren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:149
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:128
 msgid "Show conditions for this question"
 msgstr "Bedingungen für diese Frage zeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:153
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:132
 msgid "Add and edit conditions"
 msgstr "Bedingungen bearbeiten/hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:156
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1602
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1642
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:135
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1585
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1625
 msgid "Copy conditions"
 msgstr "Bedingung kopieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:162
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1835
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:141
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1850
 msgid "Questions"
 msgstr "Fragen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:168
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:170
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:147
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:149
 msgid "Show help"
 msgstr "Hilfe anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:196
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:256
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:175
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:237
 msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
 msgstr "Ihre Bedingung konnte nicht hinzugefügt werden. Sie enthielt nicht die Frage und/oder Antworte auf der die Bedingung basiert. Bitte wählen Sie eine Frage und eine Antwort aus."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:405
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:388
 msgid "Conditions successfully copied (some were skipped because they were duplicates)"
 msgstr "Bedingungen wurden erfolgreich kopiert (einige wurden aufgrund von Duplikaten ausgelassen)"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:409
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:392
 msgid "Conditions successfully copied"
 msgstr "Bedingungen wurden erfolgreich kopiert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:414
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:397
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Bedingen konnten nicht kopiert werden (aufgrund von Duplikaten)"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:419
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:402
 msgid "Did not copy questions"
 msgstr "Fragen wurden nicht kopiert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:422
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:405
 msgid "No condition selected to copy from"
 msgstr "Keine Bedingung zum Kopieren ausgewählt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:426
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:409
 msgid "No question selected to copy condition to"
 msgstr "Keine Zielfrage zum Kopieren der Bedingung ausgewählt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:858
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:841
 msgid "Group of checkboxes"
 msgstr "Gruppe von Ankreuzfeldern"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:874
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:857
 msgid "Single checkbox"
 msgstr "Einfaches Ankreuzfeld"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:998
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:981
 msgid "Before"
 msgstr "Vor"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1019
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1002
 msgid "Current"
 msgstr "Aktiv"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1037
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1020
 msgid "After"
 msgstr "Nach"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1141
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1124
 msgid "Only show question {QID} IF"
 msgstr "Zeige die Frage {QID} nur, WENN"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1162
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1145
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "Sind sie sicher, dass sie alle gewählten Bedingungen löschen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1163
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1146
 msgid "Delete all conditions"
 msgstr "Lösche alle Bedingungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1171
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1154
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "Sind sie wirklich sicher, dass Sie ALLE Szenarien ab 1 neu durchnummerieren wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1172
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1155
 msgid "Renumber scenario automatically"
 msgstr "Szenario automatisch neu durchnummerieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1202
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1352
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1185
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1335
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:1966
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2054
 #: D:\web\xampp\htdocs\limesurvey/admin/dataentry.php:2086
 msgid "OR"
 msgstr "ODER"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1218
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1201
 msgid "New scenario number"
 msgstr "Neu Szenario Nummer"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1225
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1208
 msgid "Update scenario"
 msgstr "Szenario aktualisieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1236
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1219
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "Sind Sie sicher, dass Sie allen Bedingungen in diesem Szenario löschen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1237
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1220
 msgid "Delete this scenario"
 msgstr "Dieses Szenario löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1244
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1227
 msgid "Edit scenario"
 msgstr "Szenario bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1297
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1807
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1280
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1790
 msgid "Less than"
 msgstr "Weniger als"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1298
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1808
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1281
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1791
 msgid "Less than or equal to"
 msgstr "Kleiner oder gleich zu"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1299
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1282
 msgid "equals"
 msgstr "gleich"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1300
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1810
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1283
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1793
 msgid "Not equal to"
 msgstr "Ungleich"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1301
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1811
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1284
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1794
 msgid "Greater than or equal to"
 msgstr "Größer oder gleich zu"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1302
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1812
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1285
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1795
 msgid "Greater than"
 msgstr "Größer als"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1303
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1813
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1883
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1286
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1796
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1898
 msgid "Regular expression"
 msgstr "Regulärer Ausdruck"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1345
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1328
 msgid "and"
 msgstr "und"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1377
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1450
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1360
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1433
 msgid "From token table"
 msgstr "Von Teilnehmertabelle"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1381
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1454
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1364
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1437
 msgid "Inexistant token table"
 msgstr "Teilnehmer Tabelle fehlt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1439
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1422
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1496
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1479
 msgid "Are you sure you want to delete this condition?"
 msgstr "Sind Sie sicher, dass Sie diese Bedingung löschen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1497
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1480
 msgid "Delete this condition"
 msgstr "Diese Bedingung löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1502
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1485
 msgid "Edit this condition"
 msgstr "Diese Bedingung bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1579
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1562
 msgid "This question is always shown."
 msgstr "Diese Frage wird immer gezeigt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1618
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1601
 msgid "Copy the selected conditions to"
 msgstr "Ausgewählte Bedingung kopieren nach"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1642
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1625
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "Sind sie sicher, dass sie diese Bedingung zu den gewählten Fragen kopieren wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1668
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1651
 msgid "Condition"
 msgstr "Bedingung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1707
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1690
 msgid "Edit condition"
 msgstr "Bedingung bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1711
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1902
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1694
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1917
 msgid "Add condition"
 msgstr "Bedingung hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1727
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1710
 msgid "Default scenario"
 msgstr "Standard Szenario"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1738
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1721
 msgid "Scenario"
 msgstr "Szenario"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1750
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1733
 msgid "Previous questions"
 msgstr "Vorherige Fragen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1805
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1788
 msgid "Comparison operator"
 msgstr "Vergleichsoperator"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1809
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1792
 msgid "Equals"
 msgstr "Ergibt"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1833
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1848
 msgid "Predefined"
 msgstr "Vordefiniert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1834
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1849
 msgid "Constant"
 msgstr "Konstante"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1837
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1852
 msgid "RegExp"
 msgstr "RegAusdruck"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1843
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1858
 msgid "Predefined answers for this question"
 msgstr "Vordefinierte Antworten für diese Frage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1848
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1863
 msgid "Constant value"
 msgstr "Kontanter Wert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1865
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1880
 msgid "Answers from previous questions"
 msgstr "Antworten vorheriger Fragen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1877
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1892
 msgid "Attributes values from the participant's token"
 msgstr "Attributewerte aus dem Teilnehmer-Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1896
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1911
 msgid "Update condition"
 msgstr "Bedingung aktualisieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1912
+#: D:\web\xampp\htdocs\limesurvey/admin/conditionshandling.php:1927
 msgid "Clear"
 msgstr "Löschen"
 
@@ -8225,6 +8221,8 @@ msgstr "Thailändisch"
 msgid "Vietnamese"
 msgstr "Vietnamesisch"
 
+#~ msgid "Please choose one of the following"
+#~ msgstr "Bitte wählen Sie eine Antwort aus."
 #~ msgid "This group has no answer."
 #~ msgstr "Diese Frage hat keine Antworten."
 
