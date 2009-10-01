@@ -153,7 +153,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 			if ($lastanswfortoken != 'PrivacyProtected')
 			{
 				$errormsg .= "<br /><br />".$clang->gT("Follow the following link to update it").":\n"
-				. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage&amp;surveytable=$surveytable'"
+				. "<a href='$scriptname?action=dataentry&amp;subaction=edit&amp;id=$lastanswfortoken&amp;sid=$surveyid&amp;language=$rlanguage'"
 				. "title='".$clang->gT("Edit this entry")."'>[id:$lastanswfortoken]</a>";
 			}
 			else
@@ -201,14 +201,13 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					   <td><input type='text' name='save_language' value='".$_POST['save_language']."' />\n";
 					foreach ($_POST as $key=>$val)
 					{
-						if (substr($key, 0, 4) != "save" && $key != "action" && $key != "surveytable" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
+						if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
 						{
 							$dataentryoutput .= "<input type='hidden' name='$key' value='$val' />\n";
 						}
 					}
 					$dataentryoutput .= "</td></tr><tr><td></td><td><input type='submit' value='".$clang->gT("Submit")."' />
 					 <input type='hidden' name='sid' value='$surveyid' />
-					 <input type='hidden' name='surveytable' value='".$_POST['surveytable']."' />
 					 <input type='hidden' name='subaction' value='".$_POST['subaction']."' />
 					 <input type='hidden' name='language' value='".$_POST['language']."' />
 					 <input type='hidden' name='save' value='on' /></td>";
@@ -1561,7 +1560,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						 <input type='hidden' name='sid' value='$surveyid' />
 						 <input type='hidden' name='subaction' value='update' />
 						 <input type='hidden' name='language' value='".$_GET['language']."' />
-						 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 						</td>
 					</tr>\n";
 		}
@@ -1618,7 +1616,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					 <input type='hidden' name='sid' value='$surveyid' />
 					 <input type='hidden' name='subaction' value='insert' />
 					 <input type='hidden' name='language' value='".$datalang."' />
-					 <input type='hidden' name='surveytable' value='".db_table_name("survey_".$surveyid)."' />
 					</td>
 				</tr>\n";
 		}
@@ -3038,7 +3035,6 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 		$dataentryoutput .= "\t<tr>\n";
 		$dataentryoutput .= "\t<td>\n";
 		$dataentryoutput .= "\t<input type='hidden' name='subaction' value='insert' />\n";
-		$dataentryoutput .= "\t<input type='hidden' name='surveytable' value='$surveytable' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='sid' value='$surveyid' />\n";
 		$dataentryoutput .= "\t<input type='hidden' name='language' value='$datalang' />\n";
 		$dataentryoutput .= "\t</td>\n";

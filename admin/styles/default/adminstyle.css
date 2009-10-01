@@ -582,6 +582,7 @@ a.invalidemail {
     background-color: #D2E0F2;     
     font-size:10pt;
     padding:2px;
+    text-align: center;
 }
 
 .browsetable td {
@@ -589,6 +590,7 @@ a.invalidemail {
     min-width:120px;
     font-size:8pt;
     padding:1px 2px; 
+    text-align: center;          
 }
 
 .listsurveys td {
@@ -925,4 +927,8 @@ thead tr .headerSortUp {
 }
 thead tr .headerSortDown {
     background-image: url(images/desc.gif);
+}
+
+thead tr .headerSortDown, thead tr .headerSortUp {
+background-color: #8195BA;
 }
