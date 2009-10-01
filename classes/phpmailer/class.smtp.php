@@ -202,51 +202,6 @@ class SMTP {
   }
 
   /**
-   * Initiate a TSL communication with the server.
-   *
-   * SMTP CODE 220 Ready to start TLS
-   * SMTP CODE 501 Syntax error (no parameters allowed)
-   * SMTP CODE 454 TLS not available due to temporary reason
-   * @access public
-   * @return bool success
-   */
-  public function StartTLS() {
-    $this->error = null; # to avoid confusion
-
-    if(!$this->connected()) {
-      $this->error = array("error" => "Called StartTLS() without being connected");
-      return false;
-    }
-
-    fputs($this->smtp_conn,"STARTTLS" . $this->CRLF);
-
-    $rply = $this->get_lines();
-    $code = substr($rply,0,3);
-
-    if($this->do_debug >= 2) {
-      echo "SMTP -> FROM SERVER:" . $this->CRLF . $rply;
-    }
-
-    if($code != 220) {
-      $this->error =
-         array("error"     => "STARTTLS not accepted from server",
-               "smtp_code" => $code,
-               "smtp_msg"  => substr($rply,4));
-      if($this->do_debug >= 1) {
-        echo "SMTP -> ERROR: " . $this->error["error"] . ": " . $rply . $this->CRLF;
-      }
-      return false;
-    }
-
-    //Begin encrypted connection
-    if(!stream_socket_enable_crypto($this->smtp_conn, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
    * Performs SMTP authentication.  Must be run after running the
    * Hello() method.  Returns true if successfully authenticated.
    * @access public
@@ -442,11 +397,11 @@ class SMTP {
         // Patch to fix DOS attack
         if(!$pos) {
           $pos = $max_line_length - 1;
-        $lines_out[] = substr($line,0,$pos);
+          $lines_out[] = substr($line,0,$pos);
           $line = substr($line,$pos);
         } else {
           $lines_out[] = substr($line,0,$pos);
-        $line = substr($line,$pos + 1);
+          $line = substr($line,$pos + 1);
         }
 
         /* if processing headers add a LWSP-char to the front of new line
@@ -523,8 +478,8 @@ class SMTP {
     // Send extended hello first (RFC 2821)
     if(!$this->SendHello("EHLO", $host)) {
       if(!$this->SendHello("HELO", $host)) {
-          return false;
-    }
+        return false;
+      }
     }
 
     return true;
@@ -817,12 +772,12 @@ class SMTP {
 
   /**
   * Get the current error
-   * @access public
+  * @access public
   * @return array
-   */
+  */
   public function getError() {
     return $this->error;
-    }
+  }
 
   /////////////////////////////////////////////////
   // INTERNAL FUNCTIONS
@@ -856,4 +811,4 @@ class SMTP {
 
 }
 
- ?>
+?>

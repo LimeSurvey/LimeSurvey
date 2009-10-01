@@ -343,7 +343,7 @@ class PHPMailer {
    */
   public function IsQmail() {
     if (stristr(ini_get('sendmail_path'), 'qmail')) {
-    $this->Sendmail = '/var/qmail/bin/sendmail';
+      $this->Sendmail = '/var/qmail/bin/sendmail';
     }
     $this->Mailer = 'sendmail';
   }
@@ -490,40 +490,40 @@ class PHPMailer {
    */
   public function Send() {
     try {
-    if((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
+      if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1) {
         throw new phpmailerException($this->Lang('provide_address'), self::STOP_CRITICAL);
-    }
+      }
 
       // Set whether the message is multipart/alternative
-    if(!empty($this->AltBody)) {
-      $this->ContentType = 'multipart/alternative';
-    }
+      if(!empty($this->AltBody)) {
+        $this->ContentType = 'multipart/alternative';
+      }
 
-    $this->error_count = 0; // reset errors
-    $this->SetMessageType();
+      $this->error_count = 0; // reset errors
+      $this->SetMessageType();
       $header = $this->CreateHeader();
-    $body = $this->CreateBody();
+      $body = $this->CreateBody();
 
       if (empty($this->Body)) {
         throw new phpmailerException($this->Lang('empty_message'), self::STOP_CRITICAL);
-    }
+      }
 
       // Choose the mailer and send through it
-    switch($this->Mailer) {
-      case 'sendmail':
+      switch($this->Mailer) {
+        case 'sendmail':
           return $this->SendmailSend($header, $body);
-      case 'smtp':
+        case 'smtp':
           return $this->SmtpSend($header, $body);
-      case 'mail':
-      default:
+        case 'mail':
+        default:
           return $this->MailSend($header, $body);
-    }
+      }
 
     } catch (phpmailerException $e) {
       $this->SetError($e->getMessage());
       if ($this->exceptions) {
         throw $e;
-  }
+      }
       echo $e->getMessage()."\n";
       return false;
     }
@@ -569,7 +569,7 @@ class PHPMailer {
     $to = implode(', ', $toArr);
 
     $params = sprintf("-oi -f %s", $this->Sender);
-    if ($this->Sender != '' && strlen(ini_get('safe_mode')) < 1) {
+    if ($this->Sender != '' && strlen(ini_get('safe_mode'))< 1) {
       $old_from = ini_get('sendmail_from');
       ini_set('sendmail_from', $this->Sender);
       if ($this->SingleTo === true && count($toArr) > 1) {
@@ -637,7 +637,7 @@ class PHPMailer {
     if (count($bad_rcpt) > 0 ) { //Create error message for any bad addresses
       $badaddresses = implode(', ', $bad_rcpt);
       throw new phpmailerException($this->Lang('recipients_failed') . $badaddresses);
-        }
+    }
     if(!$this->smtp->Data($header . $body)) {
       throw new phpmailerException($this->Lang('data_not_accepted'), self::STOP_CRITICAL);
     }
@@ -667,14 +667,14 @@ class PHPMailer {
     // Retry while there is no connection
     try {
       while($index < count($hosts) && !$connection) {
-      $hostinfo = array();
+        $hostinfo = array();
         if (preg_match('/^(.+):([0-9]+)$/', $hosts[$index], $hostinfo)) {
-        $host = $hostinfo[1];
-        $port = $hostinfo[2];
-      } else {
-        $host = $hosts[$index];
-        $port = $this->Port;
-      }
+          $host = $hostinfo[1];
+          $port = $hostinfo[2];
+        } else {
+          $host = $hosts[$index];
+          $port = $this->Port;
+        }
 
         $tls = ($this->SMTPSecure == 'tls');
         $ssl = ($this->SMTPSecure == 'ssl');
@@ -693,25 +693,24 @@ class PHPMailer {
             $this->smtp->Hello($hello);
           }
 
-        $connection = true;
-        if($this->SMTPAuth) {
-          if(!$this->smtp->Authenticate($this->Username, $this->Password)) {
+          $connection = true;
+          if ($this->SMTPAuth) {
+            if (!$this->smtp->Authenticate($this->Username, $this->Password)) {
               throw new phpmailerException($this->Lang('authenticate'));
+            }
           }
         }
-      }
-      $index++;
-    if(!$connection) {
+        $index++;
+        if (!$connection) {
           throw new phpmailerException($this->Lang('connect_host'));
-    }
-  }
+        }
+      }
     } catch (phpmailerException $e) {
       $this->smtp->Reset();
       throw $e;
     }
     return true;
   }
- 
 
   /**
    * Closes the active SMTP session if one exists.
@@ -730,9 +729,9 @@ class PHPMailer {
   * Sets the language for all class error messages.
   * Returns false if it cannot load the language file.  The default language is English.
   * @param string $langcode ISO 639-1 2-character language code (e.g. Portuguese: "br")
-   * @param string $lang_path Path to the language file directory
-   * @access public
-   */
+  * @param string $lang_path Path to the language file directory
+  * @access public
+  */
   function SetLanguage($langcode = 'en', $lang_path = 'language/') {
     //Define full set of translatable strings
     $PHPMAILER_LANG = array(
@@ -785,7 +784,7 @@ class PHPMailer {
     $addresses = array();
     foreach ($addr as $a) {
       $addresses[] = $this->AddrFormat($a);
-      }
+    }
     $addr_str .= implode(', ', $addresses);
     $addr_str .= $this->LE;
 
@@ -798,7 +797,7 @@ class PHPMailer {
    * @return string
    */
   public function AddrFormat($addr) {
-    if(empty($addr[1])) {
+    if (empty($addr[1])) {
       return $this->SecureHeader($addr[0]);
     } else {
       return $this->EncodeHeader($this->SecureHeader($addr[1]), 'phrase') . " <" . $this->SecureHeader($addr[0]) . ">";
@@ -1109,27 +1108,27 @@ class PHPMailer {
         break;
     }
 
-    if($this->IsError()) {
+    if ($this->IsError()) {
       $body = '';
-    } else if ($this->sign_key_file) {
+    } elseif ($this->sign_key_file) {
       try {
         $file = tempnam('', 'mail');
         file_put_contents($file, $body); //TODO check this worked
-      $signed = tempnam("", "signed");
+        $signed = tempnam("", "signed");
         if (@openssl_pkcs7_sign($file, $signed, "file://".$this->sign_cert_file, array("file://".$this->sign_key_file, $this->sign_key_pass), NULL)) {
           @unlink($file);
           @unlink($signed);
           $body = file_get_contents($signed);
-      } else {
+        } else {
           @unlink($file);
           @unlink($signed);
           throw new phpmailerException($this->Lang("signing").openssl_error_string());
-      }
+        }
       } catch (phpmailerException $e) {
         $body = '';
         if ($this->exceptions) {
           throw $e;
-    }
+        }
       }
     }
 
@@ -1223,13 +1222,13 @@ class PHPMailer {
    */
   public function AddAttachment($path, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
     try {
-    if(!@is_file($path)) {
+      if ( !@is_file($path) ) {
         throw new phpmailerException($this->Lang('file_access') . $path, self::STOP_CONTINUE);
-    }
-    $filename = basename($path);
-    if($name == '') {
-      $name = $filename;
-    }
+      }
+      $filename = basename($path);
+      if ( $name == '' ) {
+        $name = $filename;
+      }
 
       $this->attachment[] = array(
         0 => $path,
@@ -1340,24 +1339,24 @@ class PHPMailer {
     try {
       if (!is_readable($path)) {
         throw new phpmailerException($this->Lang('file_open') . $path, self::STOP_CONTINUE);
-    }
+      }
       if (function_exists('get_magic_quotes')) {
         function get_magic_quotes() {
           return false;
         }
       }
       if (PHP_VERSION < 6) {
-    $magic_quotes = get_magic_quotes_runtime();
-    set_magic_quotes_runtime(0);
+        $magic_quotes = get_magic_quotes_runtime();
+        set_magic_quotes_runtime(0);
       }
       $file_buffer  = file_get_contents($path);
-    $file_buffer = $this->EncodeString($file_buffer, $encoding);
+      $file_buffer  = $this->EncodeString($file_buffer, $encoding);
       if (PHP_VERSION < 6) { set_magic_quotes_runtime($magic_quotes); }
-    return $file_buffer;
+      return $file_buffer;
     } catch (Exception $e) {
       $this->SetError($e->getMessage());
       return '';
-  }
+    }
   }
 
   /**
@@ -1433,8 +1432,8 @@ class PHPMailer {
     if (strlen($str)/3 < $x) {
       $encoding = 'B';
       if (function_exists('mb_strlen') && $this->HasMultiBytes($str)) {
-     // Use a custom function which correctly encodes and wraps long
-     // multibyte strings without breaking lines within a character
+        // Use a custom function which correctly encodes and wraps long
+        // multibyte strings without breaking lines within a character
         $encoded = $this->Base64EncodeWrapMB($str);
       } else {
         $encoded = base64_encode($str);
@@ -1509,13 +1508,13 @@ class PHPMailer {
   }
 
   /**
-   * Encode string to quoted-printable.
+  * Encode string to quoted-printable.
   * Only uses standard PHP, slow, but will always work
   * @access public
   * @param string $string the text to encode
   * @param integer $line_max Number of chars allowed on a line before wrapping
-   * @return string
-   */
+  * @return string
+  */
   public function EncodeQPphp( $input = '', $line_max = 76, $space_conv = false) {
     $hex = array('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
     $lines = preg_split('/(?:\r\n|\r|\n)/', $input);
@@ -1662,13 +1661,13 @@ class PHPMailer {
    */
   public function AddEmbeddedImage($path, $cid, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
 
-    if(!@is_file($path)) {
+    if ( !@is_file($path) ) {
       $this->SetError($this->Lang('file_access') . $path);
       return false;
     }
 
     $filename = basename($path);
-    if($name == '') {
+    if ( $name == '' ) {
       $name = $filename;
     }
 
@@ -1903,10 +1902,10 @@ class PHPMailer {
     $this->IsHTML(true);
     $this->Body = $message;
     $textMsg = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s','',$message)));
-    if ( !empty($textMsg) && empty($this->AltBody) ) {
+    if (!empty($textMsg) && empty($this->AltBody)) {
       $this->AltBody = html_entity_decode($textMsg);
     }
-    if ( empty($this->AltBody) ) {
+    if (empty($this->AltBody)) {
       $this->AltBody = 'To view this email message, open it in a program that understands HTML!' . "\n\n";
     }
   }
@@ -1920,123 +1919,124 @@ class PHPMailer {
    */
   public static function _mime_types($ext = '') {
     $mimes = array(
-      'ai'    =>  'application/postscript',
-      'aif'   =>  'audio/x-aiff',
-      'aifc'  =>  'audio/x-aiff',
-      'aiff'  =>  'audio/x-aiff',
-      'avi'   =>  'video/x-msvideo',
-      'bin'   =>  'application/macbinary',
-      'bmp'   =>  'image/bmp',
-      'class' =>  'application/octet-stream',
-      'cpt'   =>  'application/mac-compactpro',
-      'css'   =>  'text/css',
-      'dcr'   =>  'application/x-director',
-      'dir'   =>  'application/x-director',
-      'dll'   =>  'application/octet-stream',
-      'dms'   =>  'application/octet-stream',
-      'doc'   =>  'application/msword',
-      'dvi'   =>  'application/x-dvi',
-      'dxr'   =>  'application/x-director',
-      'eml'   =>  'message/rfc822',
-      'eps'   =>  'application/postscript',
-      'exe'   =>  'application/octet-stream',
-      'gif'   =>  'image/gif',
-      'gtar'  =>  'application/x-gtar',
-      'htm'   =>  'text/html',
-      'html'  =>  'text/html',
-      'jpe'   =>  'image/jpeg',
-      'jpeg'  =>  'image/jpeg',
-      'jpg'   =>  'image/jpeg',
       'hqx'   =>  'application/mac-binhex40',
-      'js'    =>  'application/x-javascript',
+      'cpt'   =>  'application/mac-compactpro',
+      'doc'   =>  'application/msword',
+      'bin'   =>  'application/macbinary',
+      'dms'   =>  'application/octet-stream',
       'lha'   =>  'application/octet-stream',
-      'log'   =>  'text/plain',
       'lzh'   =>  'application/octet-stream',
-      'mid'   =>  'audio/midi',
-      'midi'  =>  'audio/midi',
-      'mif'   =>  'application/vnd.mif',
-      'mov'   =>  'video/quicktime',
-      'movie' =>  'video/x-sgi-movie',
-      'mp2'   =>  'audio/mpeg',
-      'mp3'   =>  'audio/mpeg',
-      'mpe'   =>  'video/mpeg',
-      'mpeg'  =>  'video/mpeg',
-      'mpg'   =>  'video/mpeg',
-      'mpga'  =>  'audio/mpeg',
+      'exe'   =>  'application/octet-stream',
+      'class' =>  'application/octet-stream',
+      'psd'   =>  'application/octet-stream',
+      'so'    =>  'application/octet-stream',
+      'sea'   =>  'application/octet-stream',
+      'dll'   =>  'application/octet-stream',
       'oda'   =>  'application/oda',
       'pdf'   =>  'application/pdf',
-      'php'   =>  'application/x-httpd-php',
-      'php3'  =>  'application/x-httpd-php',
-      'php4'  =>  'application/x-httpd-php',
-      'phps'  =>  'application/x-httpd-php-source',
-      'phtml' =>  'application/x-httpd-php',
-      'png'   =>  'image/png',
-      'ppt'   =>  'application/vnd.ms-powerpoint',
+      'ai'    =>  'application/postscript',
+      'eps'   =>  'application/postscript',
       'ps'    =>  'application/postscript',
-      'psd'   =>  'application/octet-stream',
-      'qt'    =>  'video/quicktime',
-      'ra'    =>  'audio/x-realaudio',
+      'smi'   =>  'application/smil',
+      'smil'  =>  'application/smil',
+      'mif'   =>  'application/vnd.mif',
+      'xls'   =>  'application/vnd.ms-excel',
+      'ppt'   =>  'application/vnd.ms-powerpoint',
+      'wbxml' =>  'application/vnd.wap.wbxml',
+      'wmlc'  =>  'application/vnd.wap.wmlc',
+      'dcr'   =>  'application/x-director',
+      'dir'   =>  'application/x-director',
+      'dxr'   =>  'application/x-director',
+      'dvi'   =>  'application/x-dvi',
+      'gtar'  =>  'application/x-gtar',
+      'php'   =>  'application/x-httpd-php',
+      'php4'  =>  'application/x-httpd-php',
+      'php3'  =>  'application/x-httpd-php',
+      'phtml' =>  'application/x-httpd-php',
+      'phps'  =>  'application/x-httpd-php-source',
+      'js'    =>  'application/x-javascript',
+      'swf'   =>  'application/x-shockwave-flash',
+      'sit'   =>  'application/x-stuffit',
+      'tar'   =>  'application/x-tar',
+      'tgz'   =>  'application/x-tar',
+      'xhtml' =>  'application/xhtml+xml',
+      'xht'   =>  'application/xhtml+xml',
+      'zip'   =>  'application/zip',
+      'mid'   =>  'audio/midi',
+      'midi'  =>  'audio/midi',
+      'mpga'  =>  'audio/mpeg',
+      'mp2'   =>  'audio/mpeg',
+      'mp3'   =>  'audio/mpeg',
+      'aif'   =>  'audio/x-aiff',
+      'aiff'  =>  'audio/x-aiff',
+      'aifc'  =>  'audio/x-aiff',
       'ram'   =>  'audio/x-pn-realaudio',
       'rm'    =>  'audio/x-pn-realaudio',
       'rpm'   =>  'audio/x-pn-realaudio-plugin',
-      'rtf'   =>  'text/rtf',
-      'rtx'   =>  'text/richtext',
+      'ra'    =>  'audio/x-realaudio',
       'rv'    =>  'video/vnd.rn-realvideo',
-      'sea'   =>  'application/octet-stream',
-      'shtml' =>  'text/html',
-      'sit'   =>  'application/x-stuffit',
-      'so'    =>  'application/octet-stream',
-      'smi'   =>  'application/smil',
-      'smil'  =>  'application/smil',
-      'swf'   =>  'application/x-shockwave-flash',
-      'tar'   =>  'application/x-tar',
-      'text'  =>  'text/plain',
-      'txt'   =>  'text/plain',
-      'tgz'   =>  'application/x-tar',
-      'tif'   =>  'image/tiff',
-      'tiff'  =>  'image/tiff',
       'wav'   =>  'audio/x-wav',
-      'wbxml' =>  'application/vnd.wap.wbxml',
-      'wmlc'  =>  'application/vnd.wap.wmlc',
-      'word'  =>  'application/msword',
-      'xht'   =>  'application/xhtml+xml',
-      'xhtml' =>  'application/xhtml+xml',
-      'xl'    =>  'application/excel',
-      'xls'   =>  'application/vnd.ms-excel',
+      'bmp'   =>  'image/bmp',
+      'gif'   =>  'image/gif',
+      'jpeg'  =>  'image/jpeg',
+      'jpg'   =>  'image/jpeg',
+      'jpe'   =>  'image/jpeg',
+      'png'   =>  'image/png',
+      'tiff'  =>  'image/tiff',
+      'tif'   =>  'image/tiff',
+      'css'   =>  'text/css',
+      'html'  =>  'text/html',
+      'htm'   =>  'text/html',
+      'shtml' =>  'text/html',
+      'txt'   =>  'text/plain',
+      'text'  =>  'text/plain',
+      'log'   =>  'text/plain',
+      'rtx'   =>  'text/richtext',
+      'rtf'   =>  'text/rtf',
       'xml'   =>  'text/xml',
       'xsl'   =>  'text/xml',
-      'zip'   =>  'application/zip'
+      'mpeg'  =>  'video/mpeg',
+      'mpg'   =>  'video/mpeg',
+      'mpe'   =>  'video/mpeg',
+      'qt'    =>  'video/quicktime',
+      'mov'   =>  'video/quicktime',
+      'avi'   =>  'video/x-msvideo',
+      'movie' =>  'video/x-sgi-movie',
+      'doc'   =>  'application/msword',
+      'word'  =>  'application/msword',
+      'xl'    =>  'application/excel',
+      'eml'   =>  'message/rfc822'
     );
-    return ( ! isset($mimes[strtolower($ext)])) ? 'application/octet-stream' : $mimes[strtolower($ext)];
+    return (!isset($mimes[strtolower($ext)])) ? 'application/octet-stream' : $mimes[strtolower($ext)];
   }
 
   /**
-   * Set (or reset) Class Objects (variables)
-   *
-   * Usage Example:
-   * $page->set('X-Priority', '3');
-   *
-   * @access public
-   * @param string $name Parameter Name
-   * @param mixed $value Parameter Value
-   * NOTE: will not work with arrays, there are no arrays to set/reset
+  * Set (or reset) Class Objects (variables)
+  *
+  * Usage Example:
+  * $page->set('X-Priority', '3');
+  *
+  * @access public
+  * @param string $name Parameter Name
+  * @param mixed $value Parameter Value
+  * NOTE: will not work with arrays, there are no arrays to set/reset
   * @todo Should this not be using __set() magic function?
-   */
+  */
   public function set($name, $value = '') {
     try {
-    if ( isset($this->$name) ) {
-      $this->$name = $value;
-    } else {
+      if (isset($this->$name) ) {
+        $this->$name = $value;
+      } else {
         throw new phpmailerException($this->Lang('variable_set') . $name, self::STOP_CRITICAL);
       }
     } catch (Exception $e) {
       $this->SetError($e->getMessage());
       if ($e->getCode() == self::STOP_CRITICAL) {
-      return false;
-    }
-  }
-    return true;
+        return false;
       }
+    }
+    return true;
+  }
 
   /**
    * Strips newlines to prevent header injection.
@@ -2068,6 +2068,6 @@ class phpmailerException extends Exception {
   public function errorMessage() {
     $errorMsg = '<strong>' . $this->getMessage() . "</strong><br />\n";
     return $errorMsg;
-}
+  }
 }
 ?>
