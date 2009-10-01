@@ -118,12 +118,14 @@ $ia=$_SESSION['fieldarray'][$currentquestion];
 
 list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
-// MANAGE CONDITIONAL QUESTIONS
+// MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
+$qidattributes=getQuestionAttributes($ia[0]);
 $conditionforthisquestion=$ia[7];
 $questionsSkipped=0;
-while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET
+
+while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 { // this is a while, not an IF because if we skip the question we loop on the next question, see below
-    if (checkquestionfordisplay($ia[0]) === true)
+    if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
     { // question will be displayed
 	// we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
 	$conditionforthisquestion="N";
@@ -165,6 +167,8 @@ while ($conditionforthisquestion == "Y") //IF CONDITIONAL, CHECK IF CONDITIONS A
 		// because we skip this question, we need to loop on the same condition 'check-block'
 		//  with the new question (we have overwritten $ia)
 		$conditionforthisquestion=$ia[7];
+		$qidattributes=getQuestionAttributes($ia[0]);
+		}
     }
 } // End of while conditionforthisquestion=="Y"
 

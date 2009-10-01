@@ -320,6 +320,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
 
 	if ($ia[5] == $gid)
 	{
+		$qidattributes=getQuestionAttributes($ia[0]);
+		if ($qidattributes['hidden']==1) {
+			// Should we really skip the question here, maybe the result won't be stored if we do that
+			continue;
+		}
+
 		//Get the answers/inputnames
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)

@@ -3299,6 +3299,15 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
   
+    $qattributes['hidden']=array(
+    'types'=>'15ABCDEFGHKLMNOPQRSTUWXYZ!:;',
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,    
+    'help'=>$clang->gT('Hide this question. This is useful for including data using answer prefilling.'),
+    'caption'=>$clang->gT('Hide this question'));
+
 	$qattributes["max_answers"]=array(
 	"types"=>"MPR",
     'inputtype'=>'integer',

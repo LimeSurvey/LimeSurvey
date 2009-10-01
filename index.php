@@ -976,11 +976,15 @@ function checkgroupfordisplay($gid)
 	{
 		if ($ia[5] == $gid) //If the question is in the group we are checking:
 		{
-			$countQuestionsInThisGroup++;
-			if ($ia[7] == "Y") //This question is conditional
-			{
-				$countConditionalQuestionsInThisGroup++;
-				$QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
+			// Check if this question is hidden
+			$qidattributes=getQuestionAttributes($ia[0]);
+			if (!arraySearchByKey('hidden', $qidattributes, 'attribute', 1)) {
+				$countQuestionsInThisGroup++;
+				if ($ia[7] == "Y") //This question is conditional
+				{
+					$countConditionalQuestionsInThisGroup++;
+					$QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
+				}
 			}
 		}
 	}
