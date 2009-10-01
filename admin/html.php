@@ -141,25 +141,25 @@ if ($action == "listsurveys")
 					if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
 					{
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
-						. "title=\"".$clang->gTview("De-activate this Survey")."\" >"
+						. "title=\"".$clang->gTview("This survey is active - click here to de-activate this survey.")."\" >"
 						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
-						. "alt='".$clang->gT("De-activate this Survey")."' /></a></td>\n";
+						. "alt='".$clang->gT("This survey is active - click here to de-activate this survey.")."' /></a></td>\n";
 					} else 
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' "
-						. "alt='".$clang->gT("This survey is currently active")."' /></td>\n";
+						. "alt='".$clang->gT("This survey is currently active.")."' /></td>\n";
 					}
 				}
 			} else {
 				if ( ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey']) && $questionsCount > 0)
 				{
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
-					. "title=\"".$clang->gTview("Activate this Survey")."\" >"
-					. "<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("Activate this Survey")."' /></a></td>\n" ;	
+					. "title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
+					. "<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("This survey is currently not active - click here to activate this survey.")."' /></a></td>\n" ;	
 				} else 
 				{
 					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
-					. "title='".$clang->gT("This survey is not currently active")."' alt='".$clang->gT("This survey is not currently active")."' />"
+					. "title='".$clang->gT("This survey is currently not active.")."' alt='".$clang->gT("This survey is currently not active.")."' />"
 					. "</td>\n";
 				}			
 			}
