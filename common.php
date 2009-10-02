@@ -2588,7 +2588,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 function templatereplace($line, $replacements=array())
 {
 	global $surveylist, $sitename, $clienttoken, $rooturl;
-	global $thissurvey, $imagefiles, $defaulttemplate;
+	global $thissurvey, $imagefiles, $defaulttemplate, $templaterooturl;
 	global $percentcomplete, $move;
 	global $groupname, $groupdescription, $question;
 	global $questioncode, $answer, $navigator;
@@ -2773,6 +2773,27 @@ function templatereplace($line, $replacements=array())
         }
 		$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
 	}
+
+    if (strpos($line, "{TEMPLATECSS}") !== false) {
+        if ($thissurvey['templatedir']) 
+        {
+            $templatecss="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/".validate_templatedir($thissurvey['templatedir'])."/template.css' />\n";
+            if (getLanguageRTL($clang->langcode))
+            {
+                $templatecss.="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/".validate_templatedir($thissurvey['templatedir'])."/template-rtl.css' />\n";
+            }
+            
+        }
+        else  {
+            $templatecss="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/{$defaulttemplate}/template.css' />\n";
+            if (getLanguageRTL($clang->langcode))
+            {
+                $templatecss.="<link rel='stylesheet' type='text/css' href='{$templaterooturl}/{$defaulttemplate}/template-rtl.css' />\n";
+            }
+        }
+        $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
+    }    
+
     if ($help) {
         if (strpos($line, "{QUESTIONHELP}") !== false) 
         {

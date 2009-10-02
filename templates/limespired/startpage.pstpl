@@ -3,7 +3,8 @@
 		<title>{SURVEYNAME} &ndash; {GROUPNAME}</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
 
-		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}template.css" />
+		<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
+        {TEMPLATECSS}
 <!--[if IE 7]>
 		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
 <![endif]-->

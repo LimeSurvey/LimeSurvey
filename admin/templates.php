@@ -56,6 +56,7 @@ $files[]=array('name'=>'print_question.pstpl');
 //Standard CSS Files
 //These files may be edited or saved
 $cssfiles[]=array('name'=>'template.css');
+$cssfiles[]=array('name'=>'template-rtl.css');
 $cssfiles[]=array('name'=>'ie_fix_6.css');
 $cssfiles[]=array('name'=>'ie_fix_7.css');
 $cssfiles[]=array('name'=>'ie_fix_8.css');
