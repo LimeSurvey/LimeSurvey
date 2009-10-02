@@ -127,8 +127,8 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
 { // this is a while, not an IF because if we skip the question we loop on the next question, see below
     if (checkquestionfordisplay($ia[0]) === true && $qidattributes['hidden']==0)
     { // question will be displayed
-	// we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
-	$conditionforthisquestion="N";
+	    // we set conditionforthisquestion to N here because it is used later to select style=display:'' for the question
+	    $conditionforthisquestion="N";
     }
     else
     {
@@ -168,8 +168,7 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
 		//  with the new question (we have overwritten $ia)
 		$conditionforthisquestion=$ia[7];
 		$qidattributes=getQuestionAttributes($ia[0]);
-		}
-    }
+	}
 } // End of while conditionforthisquestion=="Y"
 
 //SUBMIT

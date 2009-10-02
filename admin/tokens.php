@@ -166,7 +166,7 @@ if ($subaction == "delete" &&
 }
 
 
-//Show Help
+
 $tokenoutput .= "<script type='text/javascript'>\n"
 ."<!--\n"
 . "function fillin(tofield, fromfield)\n"
@@ -179,29 +179,10 @@ $tokenoutput .= "<script type='text/javascript'>\n"
 . "updateFCKeditor(tofield,document.getElementById(fromfield).value);\n"
 . "\t\t}\n"
 . "\t}\n"
-."\tfunction showhelp(action)\n"
-."\t\t{\n"
-."\t\tvar name='help';\n"
-."\t\tif (action == \"hide\")\n"
-."{\n"
-."document.getElementById(name).style.display='none';\n"
-."}\n"
-."\t\telse if (action == \"show\")\n"
-."{\n"
-."document.getElementById(name).style.display='';\n"
-."}\n"
-."\t\t}\n"
 ."-->\n"
 ."</script>\n";
 
-$tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'>\n"
-."\t<tr>\n"
-."\t\t<td valign='top' align='left' >\n"
-."\t\t<table><tr><td></td></tr></table>\n";
-
-$tokenoutput .= "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr><td>\n";
-
-
+  
 // MAKE SURE THAT THERE IS A SID
 if (!isset($surveyid) || !$surveyid)
 {
@@ -234,9 +215,8 @@ if ($thissurvey===false)
 {
 	$tokenoutput .= "\t<div class='menubar'>"
     ."<div class='menubar-title'>"
-	."<strong>".$clang->gT("Token control").":</strong> "
-	    .htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
-	    $surveyprivate = $thissurvey['private'];
+	."<strong>".$clang->gT("Token control")." </strong> ".htmlspecialchars($thissurvey['surveyls_title'])."</div>\n";
+	$surveyprivate = $thissurvey['private'];
 }
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
@@ -299,8 +279,7 @@ if (!$tokenexists) //If no tokens table exists
 			."\t\t</td>\n"
 			."\t</tr>\n"
 			."</table>\n"
-			."<table><tr><td></td></tr></table>\n"
-			."</td></tr></table>\n";
+			."</div>\n";
 
 		} else {
 			$createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
@@ -357,9 +336,8 @@ if (!$tokenexists) //If no tokens table exists
 				$oldlist[]=$rows[0];
 			}
 		}
-        $tokenoutput .= "\t</div></td></tr><tr>\n"
-		."\t\t<td align='center'><div style='width:600px;'>\n"
-		."<br /><font color='red'><strong>".$clang->gT("Warning")."</strong></font><br />\n"
+        $tokenoutput .= "\t</div><div class='messagebox'>\n"
+		."<div class='header'><font color='red'><strong>".$clang->gT("Warning")."</strong></font></div>\n"
 		."<strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
 		if ($sumrows5['edit_survey_property'] ||
 			$sumrows5['activate_survey'] ||
@@ -379,10 +357,10 @@ if (!$tokenexists) //If no tokens table exists
 			$tokenoutput .= "".$clang->gT("Do you want to create a token table for this survey?");
 			$tokenoutput .= "<br /><br />\n";
 			$tokenoutput .= "<input type='submit' value='"
-			.$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" /><br /></div>\n";
+			.$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" />\n";
 		}
 		$tokenoutput .= "<input type='submit' value='"
-		.$clang->gT("Main admin screen")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /><br /><br />\n";
+		.$clang->gT("No, thanks.")."' onclick=\"window.open('$homeurl/admin.php?sid=$surveyid', '_top')\" /></div>\n";
 		// Do not offer old postgres token tables for restore since these are having an issue with missing index
         if ($tcount>0 && $databasetype!='postgres' &&
 			($sumrows5['edit_survey_property'] ||
@@ -390,30 +368,23 @@ if (!$tokenexists) //If no tokens table exists
 				$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		   )
 		{
-			$tokenoutput .= "<table width='400' border='0' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'><tr>\n"
-			."<td class='settingcaption'><font>".$clang->gT("Restore options").":\n"
-			."</font></td></tr>\n"
-			."<tr>\n"
-			."<td class='evenrow' align='center'><form method='post' action='$scriptname?action=tokens'>\n"
+			$tokenoutput .= "<div class='messagebox'>\n"
+			."<div class='header'>".$clang->gT("Restore options")."\n"
+			."</div><br />\n"
+			."<form method='post' action='$scriptname?action=tokens'>\n"
 			.$clang->gT("The following old token tables could be restored:")."<br />\n"
 			."<select size='4' name='oldtable' style='width:250px;'>\n";
 			foreach($oldlist as $ol)
 			{
 				$tokenoutput .= "<option>".$ol."</option>\n";
 			}
-			$tokenoutput .= "</select><br />\n"
+			$tokenoutput .= "</select><br /><br />\n"
 			."<input type='submit' value='".$clang->gT("Restore")."' />\n"
 			."<input type='hidden' name='restoretable' value='Y' />\n"
 			."<input type='hidden' name='sid' value='$surveyid' />\n"
-			."</form></td>\n"
-			."</tr></table>\n";
+			."</form></div>\n";
 		}
 
-		$tokenoutput .= "\t\t</td>\n"
-		."\t</tr>\n"
-		."</table>\n"
-		."<table><tr><td></td></tr></table>\n"
-		."</td></tr></table>\n";
 		return;
 	}
 }
@@ -461,7 +432,7 @@ if ($sumrows5['edit_survey_property'] ||
 
 if ($sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
-	$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=export', '_top')\" "
+	$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')\" "
 	."title='".$clang->gTview("Export tokens to CSV file")."'>".
 	"<img name='ExportButton' src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export tokens to CSV file")."' /></a>\n";
 }
@@ -494,7 +465,7 @@ $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhel
                 ."<img src='$imagefiles/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
 
 
-$tokenoutput .= "\t</div></div></div></td></tr>\n";
+$tokenoutput .= "\t</div></div></div>\n";
 
 // SEE HOW MANY RECORDS ARE IN THE TOKEN TABLE
 $tksq = "SELECT count(tid) FROM ".db_table_name("tokens_$surveyid");
@@ -502,15 +473,11 @@ $tksr = db_execute_num($tksq);
 $tkr = $tksr->FetchRow();
 $tkcount = $tkr[0];
 
-	$tokenoutput .= "\t<tr>\n"
-	."\t\t<td align='center'>\n";
 
 // GIVE SOME INFORMATION ABOUT THE TOKENS
 if ($subaction==''){
-	$tokenoutput .= "\t<tr>\n"
-	."\t\t<td align='center'>\n"
-	."\t\t<br />\n"
-	."<table align='center' class='statisticssummary'>\n"
+    $tokenoutput .= "\t<div class='header'>".$clang->gT("Token summary")."</div>\n"
+	."<br /><table align='center' class='statisticssummary'>\n"
 	."\t<tr>\n"
 	."\t\t<th>\n"
 	.$clang->gT("Total records in this token table")."</th><td> $tkcount</td></tr><tr>\n";
@@ -535,16 +502,8 @@ if ($subaction==''){
 	{$tokenoutput .= "<th>".$clang->gT("Total surveys completed")."</th><td> $tkr[0] / $tkcount\n";}
 	$tokenoutput .= "</td>\n"
 	."\t</tr>\n"
-	."</table>\n"
-	."<br />\n"
-	."\t\t</td>\n"
-	."\t</tr>\n"
-	."</table>\n"
-	."<table ><tr><td></td></tr></table>\n";
+	."</table><p>\n";
 }
-
-
-$tokenoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n";
 
 #############################################################################################
 // NOW FOR VARIOUS ACTIONS:
@@ -558,6 +517,54 @@ if(isset($surveyid) && getEmailFormat($surveyid) == 'html')
 else
 {
     $ishtml=false;
+}
+
+
+if ($subaction == "exportdialog" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1) )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+{
+    $langquery = "SELECT language FROM ".db_table_name("tokens_$surveyid")." group by language";
+    $langresult = db_execute_assoc($langquery);
+
+    
+   $tokenoutput .= "\t<div class='header'>".$clang->gT("Token export options")."</div>\n";
+   $tokenoutput .= "<form id='exportdialog' name='exportdialog' action='$scriptname' method='post'>\n"
+   ."<ul><li><label for='tokenstatus'>".$clang->gT('Token status:')."</label><select id='tokenstatus' name='tokenstatus' >"
+   ."<option selected='selected' value='0'>".$clang->gT('All tokens')."</option>"
+   ."<option value='1'>".$clang->gT('Completed')."</option>"
+   ."<option value='2'>".$clang->gT('Not started')."</option>";
+   if ($thissurvey['private']=='N')
+   {
+    $tokenoutput.="<option value='3'>".$clang->gT('Started but not yet completed')."</option>";
+   }
+   $tokenoutput.="</select></li>"
+   ."<li><label for='invitationstatus'>".$clang->gT('Invitation status:')."</label><select id='invitationstatus' name='invitationstatus' >"
+   ."<option selected='selected' value='0'>".$clang->gT('All')."</option>"
+   ."<option value='1'>".$clang->gT('Invited')."</option>"
+   ."<option value='2'>".$clang->gT('Not invited')."</option>";
+   $tokenoutput.="</select></li>"
+   ."<li><label for='reminderstatus'>".$clang->gT('Reminder status:')."</label><select id='reminderstatus' name='reminderstatus' >"
+   ."<option selected='selected' value='0'>".$clang->gT('All')."</option>"
+   ."<option value='1'>".$clang->gT('Reminder(s) sent')."</option>"
+   ."<option value='2'>".$clang->gT('No reminder(s) sent')."</option>";
+   $tokenoutput.="</select></li>"
+   ."<li><label for='tokenlanguage' >".$clang->gT('Filter by language')."</label><select id='tokenlanguage' name='tokenlanguage' >"
+   ."<option selected='selected' value=''>".$clang->gT('All')."</option>";
+    while ($lrow = $langresult->FetchRow())
+    {
+       $tokenoutput.="<option value='{$lrow['language']}'>".getLanguageNameFromCode($lrow['language'])."</option>";
+    }
+   
+   $tokenoutput.="</select> </li>"
+   ."<li><label for='filteremail' >".$clang->gT('Filter by email address')."</label><input type='text' id='filteremail' name='filteremail' /></li>"
+   ."<li>&nbsp;</li>"
+//   ."<li><label for='tokendeleteexported' >".$clang->gT('Delete exported tokens')."</label><input type='checkbox' id='tokendeleteexported' name='tokendeleteexported' /> </li>"
+   ."</ul>"
+   ."<p><input type='submit' name='submit' value='".$clang->gT('Export tokens')."' />"
+   ."<input type='hidden' name='action' id='action' value='tokens' />"
+   ."<input type='hidden' name='sid' id='sid' value='$surveyid' />"
+   ."<input type='hidden' name='subaction' id='subaction' value='export' />"
+   ."</form>";
+
 }
 
 
@@ -707,37 +714,17 @@ if ($subaction == "cleartokens" &&
 }
 
 
-if (!$subaction &&
-	($sumrows5['edit_survey_property'] ||
-		$sumrows5['activate_survey'] ||
-		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-   )
+if (!$subaction && ($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 {
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><font size='1'><strong>"
-	.$clang->gT("Token database administration options").":</strong></font></td></tr>\n"
-	."\t<tr>\n"
-	."\t\t<td align='center'>\n"
-	."<table align='center'><tr><td>\n"
-	."<br />\n"
-	."<ul><li><a href='#' onclick=\"if( confirm('"
+	$tokenoutput .= "\t<div class='header'>".$clang->gT("Token database administration options")."</div>\n"
+	."<div style='width:30%; margin:0 auto;'><ul><li><a href='#' onclick=\"if( confirm('"
 	.$clang->gT("Are you really sure you want to reset all invitation records to NO?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=clearinvites")."}\">".$clang->gT("Set all entries to 'No invitation sent'.")."</a></li>\n"
 	."<li><a href='#' onclick=\"if ( confirm('"
 	.$clang->gT("Are you sure you want to delete all unique token numbers?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=cleartokens")."}\">".$clang->gT("Delete all unique token numbers")."</a></li>\n"
 	."<li><a href='#' onclick=\" if (confirm('"
 	.$clang->gT("Are you really sure you want to delete ALL token entries?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=deleteall")."}\">".$clang->gT("Delete all token entries")."</a></li>\n";
-	$tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul>\n"
-	."</td></tr></table>\n"
-	."\t\t</td>\n"
-	."\t</tr>\n"
-	."</table>\n";
+	$tokenoutput .= "<li><a href='#' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\">".$clang->gT("Drop tokens table")."</a></li></ul></div>\n";
 }
-
-if ($subaction == "settings" &&
-	($sumrows5['export'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))  //ToDO: Which right?
-{
-
-}
-
 
 if ($subaction == "browse" || $subaction == "search")
 {
@@ -755,13 +742,14 @@ if ($subaction == "browse" || $subaction == "search")
 	$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 
 	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN
-	$tokenoutput .= "\t<tr><td colspan='3' height='4'><strong>"
-	.$clang->gT("Data view control").":</strong></td></tr>\n"
-	."\t<tr><td width='230' align='left' valign='middle'>\n"
+	$tokenoutput .= "\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
+	.$clang->gT("Data view control")."</span></div>\n"
+    ."<div class='menubar-main'>\n"
+    ."<div class='menubar-left'>\n"    
 	."<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
 	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" 
-    ." title='".$clang->gTview("Show start..")."'>"
+    ." title='".$clang->gTview("Show start...")."'>"
 	."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	" title='".$clang->gTview("Show previous...")."'>" .
@@ -774,19 +762,18 @@ if ($subaction == "browse" || $subaction == "search")
 	"title='".$clang->gTview("Show last...")."'>".
 	"<img name='DEndButton' align='left'  src='$imagefiles/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
 	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	."\n</td><td align='left'>"
-	."\t<form method='post' action='$scriptname?action=tokens'>\n"
+	."\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
 	."\t\t<input type='text' name='searchstring' value='$searchstring' />\n"
 	."\t\t<input type='submit' value='".$clang->gT("Search")."' />\n"
 	."\t<input type='hidden' name='order' value='$order' />\n"
 	."\t<input type='hidden' name='subaction' value='search' />\n"
 	."\t<input type='hidden' name='sid' value='$surveyid' />\n"
 	."\t</form>\n"
-	."\t\t</td>\n"
-	."\t\t<td align='left'><form action='$homeurl/admin.php'>\n"
+	."\t\t<form id='tokenrange' action='$homeurl/admin.php'>\n"
+    ."<img src='$imagefiles/seperator.gif' alt='' border='0' />\n"
 	."\t\t<font size='1' face='verdana'>"
-	."&nbsp;".$clang->gT("Records displayed:")."<input type='text' size='4' value='$limit' name='limit' />"
-	."&nbsp;".$clang->gT("Starting from:")."<input type='text' size='4' value='$start' name='start' />"
+	."&nbsp;<label for='limit'>".$clang->gT("Records displayed:")."</label> <input type='text' size='4' value='$limit' id='limit' name='limit' />"
+	."&nbsp;&nbsp;<label for='start'>".$clang->gT("Starting from:")."</label> <input type='text' size='4' value='$start'  id='start' name='start' />"
 	."&nbsp;<input type='submit' value='".$clang->gT("Show")."' />\n"
 	."\t\t</font>\n"
 	."\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -794,8 +781,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."\t\t<input type='hidden' name='subaction' value='browse' />\n"
 	."\t\t<input type='hidden' name='order' value='$order' />\n"
 	."\t\t<input type='hidden' name='searchstring' value='$searchstring' />\n"
-	."\t\t</form></td>\n"
-	."\t</tr>\n";
+	."\t\t</form>\n";
 	$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
 	if ($searchstring)
 	{
@@ -811,7 +797,7 @@ if ($subaction == "browse" || $subaction == "search")
 	$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());
 	$bgc="";
 
-	$tokenoutput .= "</table>\n"
+	$tokenoutput .= "</div></div></div>\n"
 	."<table class='browsetokens' cellpadding='1' cellspacing='1'>\n";
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
@@ -982,8 +968,7 @@ if ($subaction == "browse" || $subaction == "search")
 		}
 		$tokenoutput .= "\t</tr>\n";
 	}
-	$tokenoutput .= "</table>\n"
-	."</td></tr></table><br />\n";
+	$tokenoutput .= "</table>\n<br />\n";
 }
 
 if ($subaction == "kill" &&
@@ -2562,9 +2547,6 @@ if ($subaction == "uploadldap" &&
 	}
 }
 
-
-$tokenoutput .= "\t\t</td>\n"
-               ."</tr></table>\n";
 
 
 

@@ -850,6 +850,7 @@ div.messagebox .warningheader {
     max-width:200px;
 }
 
+#exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
 #frmglobalsettings li label:first-child {
     width: 44%;
@@ -866,7 +867,8 @@ div.messagebox .warningheader {
     float: left;      
     font-weight: bold;
 }
-       
+
+#exportdialog li,       
 #addnewsurvey li,
 #frmeditquestion li,
 #frmglobalsettings li {  
@@ -931,4 +933,16 @@ thead tr .headerSortDown {
 
 thead tr .headerSortDown, thead tr .headerSortUp {
 background-color: #8195BA;
+}
+
+#tokensearch, #tokenrange{
+    display:inline;
+    line-height:40px;
+    vertical-align:middle;
+    margin-left: 10px;
+}
+
+#tokensearch input, #tokenrange input{
+    vertical-align:middle;
+    margin-left: 2px;
 }

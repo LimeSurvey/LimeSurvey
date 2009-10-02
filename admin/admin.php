@@ -169,7 +169,9 @@ if (isset($surveyid) && $surveyid)
 $surquery = "SELECT * FROM {$dbprefix}surveys_rights WHERE sid=".db_quote($surveyid)." AND uid = ".db_quote($_SESSION['loginID']); //Getting rights for this survey
 $surresult = db_execute_assoc($surquery);   
 $surrows = $surresult->FetchRow();
+//if ($surrows==false) safe_die('Invalid surveyid and/or user id');
 }
+
 
 if ($action == 'activate')
     {
