@@ -194,27 +194,27 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Label Set")."</h2>\n";
 			
             $labelsoutput.= ""
-			."<form enctype='multipart/form-data' name='importlabels' action='admin.php' method='post'>\n"
-			."<table width='100%' class='form2columns'>\n"
-			."\t<tr>\n"
-			."<th colspan='2' align='center' class='settingcaption'><strong>\n"
+			."<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
+			."<div class='header'>\n"
 			.$clang->gT("Import Label Set")."\n"
-			."</strong></th>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."<td align='right'><strong>"
-			.$clang->gT("Select CSV File:")."</strong></td>\n"
-			."<td><input name=\"the_file\" type=\"file\" size=\"35\" />"
-			."\t<tr>\n"
-			."<td align='right'><strong>"
-			.$clang->gT("Convert resources links?")."</strong></td>\n"
-			."<td><input name=\"translinksfields\" type=\"checkbox\" checked=\"checked\" />\n"
-			."</td></tr>\n"
-			."\t<tr><td></td><td><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
-			."\t<input type='hidden' name='action' value='importlabels' /></td>\n"
-			."\t</tr></table></form></div>\n";
+			."</div><ul>\n"
+			."<li><label for='the_file'>"
+			.$clang->gT("Select CSV File:")."</label>\n"
+			."<input id='the_file' name='the_file' type='file' size='35' />"
+			."</li>\n"
+            ."<li><label for='checkforduplicates'>"
+            .$clang->gT("Check for duplicates?")."</label>\n"
+            ."<input name='checkforduplicates' id='checkforduplicates' type='checkbox' checked='checked' />\n"
+            ."</li>"            
+			."<li><label for='translinksfields'>"
+			.$clang->gT("Convert resources links?")."</label>\n"
+			."<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />\n"
+			."</li></ul>\n"
+			."<p><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
+			."<input type='hidden' name='action' value='importlabels' /></td>\n"
+			."</form></div>\n";
 		}
-            $labelsoutput.= "</div>\n";
+        $labelsoutput.= "</div>\n";
 	}
 	//SET SELECTED
 	if (isset($lid) && ($action != "editlabelset") && $lid)

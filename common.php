@@ -5541,7 +5541,7 @@ function getNextCode($sourcecode)
 */
 function translink($type, $oldid, $newid, $text)
 {
-	if (!isset($_POST['translinksfields']))
+	if (isset($_POST['translinksfields']))
 	{
 		return $text;
 	}

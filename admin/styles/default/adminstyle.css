@@ -850,6 +850,7 @@ div.messagebox .warningheader {
     max-width:200px;
 }
 
+#importlabels li label:first-child,
 #addattribute li label:first-child,  
 #exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
@@ -872,6 +873,7 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#importlabels li,
 #sendreminder li,
 #sendinvitation li,
 #edittoken li,

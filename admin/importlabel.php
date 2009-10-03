@@ -133,7 +133,7 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 
 		if ($labelsarray) {
 		    $count=0;
-            $lfieldorders  =convertCSVRowToArray($labelsarray[0],',','"');
+            $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
             unset($labelsarray[0]);
 			foreach ($labelsarray as $la) {
 
@@ -161,53 +161,57 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 		}
 
 		//CHECK FOR DUPLICATE LABELSETS
-		$thisset="";
-		$query2 = "SELECT code, title, sortorder, language, assessment_value 
-                   FROM ".db_table_name('labels')."
-                   WHERE lid=".$newlid."
-                   ORDER BY sortorder, code";
-		$result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
-		while($row2=$result2->FetchRow())
-		{
-			$thisset .= implode('.', $row2);
-		} // while
-		$newcs=dechex(crc32($thisset)*1);
-        unset($lsmatch);
         
-		if (isset($csarray))
-		{
-			foreach($csarray as $key=>$val)
-			{
-//			echo $val."-".$newcs."<br/>";  For debug purposes
-            	if ($val == $newcs)
-				{
-					$lsmatch=$key;
-				}
-			}
-		}
-		if (isset($lsmatch))
-		{
-			//There is a matching labelset. So, we will delete this one and refer
-			//to the matched one.
-			$query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
-			$result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
-			$query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
-			$result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
-			$newlid=$lsmatch;
-	        $importlabeloutput.="<p><i><font color='red'>".$clang->gT("There was a duplicate labelset, so this set was not imported. The duplicate will be used instead.")."</font></i>\n";
-            $importlabeloutput .= "<strong>Existing LID:</strong> $newlid</p><br />\n";
-			
-		}
-		else
-		{
-        $importlabeloutput .= "<strong>LID:</strong> $newlid<br />\n";
-        $importlabeloutput .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
-        $importlabeloutput .= "<strong><u>".$clang->gT("Label Set Import Summary")."</u></strong><br />\n";
-        $importlabeloutput .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
-        $importlabeloutput .= "\t<li>".$clang->gT("Labels").": $countlabels</li>\n";
-        $importlabeloutput .= "\t<li>".$clang->gT("Languages").": $countlang</li></ul><br />\n";
-		}
-		//END CHECK FOR DUPLICATES
+        if (isset($_POST['checkforduplicates']))
+        {
+		    $thisset="";
+		    $query2 = "SELECT code, title, sortorder, language, assessment_value 
+                       FROM ".db_table_name('labels')."
+                       WHERE lid=".$newlid."
+                       ORDER BY sortorder, code";
+		    $result2 = db_execute_num($query2) or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
+		    while($row2=$result2->FetchRow())
+		    {
+			    $thisset .= implode('.', $row2);
+		    } // while
+		    $newcs=dechex(crc32($thisset)*1);
+            unset($lsmatch);
+            
+		    if (isset($csarray))
+		    {
+			    foreach($csarray as $key=>$val)
+			    {
+    //			echo $val."-".$newcs."<br/>";  For debug purposes
+            	    if ($val == $newcs)
+				    {
+					    $lsmatch=$key;
+				    }
+			    }
+		    }
+		    if (isset($lsmatch))
+		    {
+			    //There is a matching labelset. So, we will delete this one and refer
+			    //to the matched one.
+			    $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+			    $result=$connect->Execute($query) or safe_die("Couldn't delete labels<br />$query<br />".$connect->ErrorMsg());
+			    $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+			    $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
+			    $newlid=$lsmatch;
+	            $importlabeloutput.="<p><i><font color='red'>".$clang->gT("The label set was not imported because the same labelset already exists.")."</font></i>\n";
+                $importlabeloutput .= "<strong>Existing LID:</strong> $newlid</p><br />\n";
+			    
+		    }
+		    else
+		    {
+            $importlabeloutput .= "<strong>LID:</strong> $newlid<br />\n";
+            $importlabeloutput .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+            $importlabeloutput .= "<strong><u>".$clang->gT("Label Set Import Summary")."</u></strong><br />\n";
+            $importlabeloutput .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
+            $importlabeloutput .= "\t<li>".$clang->gT("Labels").": $countlabels</li>\n";
+            $importlabeloutput .= "\t<li>".$clang->gT("Languages").": $countlang</li></ul><br />\n";
+		    }
+		    //END CHECK FOR DUPLICATES
+        }
 	}
 }
 
