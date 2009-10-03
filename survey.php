@@ -251,9 +251,11 @@ $conmandatorys=array();
 $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
+$groupUnconditionnalQuestionsCount=array();
 foreach ($_SESSION['grouplist'] as $gl)
 {
 	$gid=$gl[0];
+        $groupUnconditionnalQuestionsCount[$gid]=0;
 	foreach ($_SESSION['fieldarray'] as $ia)
 	{
 		if ($ia[5] == $gid)
@@ -306,6 +308,10 @@ foreach ($_SESSION['grouplist'] as $gl)
 			if ($plus_conditions)
 			{
 				$conditions = addtoarray_single($conditions, $plus_conditions);
+			}
+			else
+			{
+				$groupUnconditionnalQuestionsCount[$gid]++;
 			}
 		}
 	}
@@ -364,21 +370,6 @@ print <<<END
 	{
     
 END;
-
-// initialize the variables used to check if we should hide groupdescr
-// for groups having all questions hidden by conditions
-$aUniqGroupIds=array();
-foreach ($conditions as $cd)
-{
-	$aUniqGroupIds[]=$cd[8];
-}
-$aUniqGroupIds=array_unique($aUniqGroupIds);
-foreach ($aUniqGroupIds as $agroupid)
-{
-	// in fact this is the count of questions that are displayed and have conditions set
-	// if there is at least one non conditional question, then hide/show will just do nothing
-	echo "\tcountDisplayedConditionnalQuestionsInGroup_{$agroupid}=0;\n";	
-}
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) || 
@@ -639,7 +630,6 @@ END;
       . "    {\n"
       . "    document.getElementById('question$cd[0]').style.display='';\n"
       . "    document.getElementById('display$cd[0]').value='on';\n"
-      . "    countDisplayedConditionnalQuestionsInGroup_".$cd[8]."++;\n"
       . "    }\n"
       . "   else\n"
       . "    {\n"
@@ -696,9 +686,12 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 }
 
 if (isset($java)) {echo $java;}
-foreach ($aUniqGroupIds as $agroupid)
+foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
 {
-	echo "\t\tshow_hide_group_{$agroupid}();\n";	
+	if ($thecount == 0 )
+	{
+		echo "\t\tshow_hide_group({$thegid});\n";	
+	}
 }
 echo "\t}\n"
 ."\t//-->\n"
@@ -733,8 +726,6 @@ foreach ($_SESSION['grouplist'] as $gl)
 	echo "\n";
 
 	// count the number of non-conditionnal and conditionnal questions in this group
-	$count_nocond_questions=0;
-	$count_cond_questions=0;
 	echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 	if (is_array($qanda))
 	{
@@ -756,12 +747,10 @@ foreach ($_SESSION['grouplist'] as $gl)
 				if ($qa[3] != 'Y')
 				{
 					$n_q_display = '';
-					$count_nocond_questions++;
 				} 
 				else 
 				{ 
 					$n_q_display = ' style="display: none;"';
-					$count_cond_questions++;
 				}
 
 				echo '
@@ -779,42 +768,11 @@ foreach ($_SESSION['grouplist'] as $gl)
 
 	echo "\n\n<!-- END THE GROUP -->\n";
 
-	if ($hide_groupdescr_allinone == true && $count_nocond_questions==0)
-	{
-		$show_hide_group_script = "\n\n" 
-			."<script type='text/javascript'>\n"
-//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
-			."\tfunction show_hide_group_$gid() {\n"
-			."\t\tif (countDisplayedConditionnalQuestionsInGroup_$gid > 0) {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='';\n"
-			."\t\t} else {\n"
-			."\t\t\tdocument.getElementById('group-$gid').style.display='none';\n"
-			."\t\t}\n"
-			."\t}\n"
-			."</script>\n"
-			."\n";
-	}
-	else
-	{ 
-		// The groupdescr will not be hidden
-		// * either because the option to hide it when all conditional
-		//   questions are hidden is not set
-		// * or if at least one question of the group is not conditionnal
-		$show_hide_group_script = "\n\n" 
-			."<script type='text/javascript'>\n"
-//			."\tcountDisplayedConditionnalQuestionsInGroup[$gid]=$count_cond_questions+$count_nocond_questions;\n"
-			."\tfunction show_hide_group_$gid() {\n"
-			."\t}\n"
-			."</script>\n"
-			."\n";
-	}
-
-	echo $show_hide_group_script;
-
 	echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 	echo "\n\n</div>\n";
 	echo "\n";
 }
+
 //echo "&nbsp;\n";
 $navigator = surveymover();
 echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
