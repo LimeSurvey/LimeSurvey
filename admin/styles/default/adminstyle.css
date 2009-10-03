@@ -850,6 +850,7 @@ div.messagebox .warningheader {
     max-width:200px;
 }
 
+#addattribute li label:first-child,  
 #exportdialog li label:first-child, 
 #frmeditquestion li label:first-child, 
 #frmglobalsettings li label:first-child {
@@ -860,6 +861,9 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#sendreminder  li label:first-child,
+#sendinvitation li label:first-child,
+#edittoken li label:first-child,  
 #addnewsurvey li label:first-child{
     width: 30%;
     text-align: right;
@@ -868,6 +872,10 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#sendreminder li,
+#sendinvitation li,
+#edittoken li,
+#addattribute li,
 #exportdialog li,       
 #addnewsurvey li,
 #frmeditquestion li,
@@ -895,9 +903,9 @@ div.loader {
 }
 
 
-
-#addnewsurvey iframe
-{
+#sendreminder iframe,
+#sendinvitation iframe,
+#addnewsurvey iframe {
     width:600px !important;
 }
 
@@ -945,4 +953,13 @@ background-color: #8195BA;
 #tokensearch input, #tokenrange input{
     vertical-align:middle;
     margin-left: 2px;
+}
+
+.tab-page {
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2 !important;
+}
+
+.tab-pane {
+    margin:0 0.25%;
+    width:99.5% !important;
 }

@@ -4588,7 +4588,7 @@ function languageDropdownClean($surveyid,$selected)
 	$slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
 	array_unshift($slangs,$baselang);
-	$html = "<select class='listboxquestions' name='language'>\n";
+	$html = "<select class='listboxquestions' id='language' name='language'>\n";
 	foreach ($slangs as $lang)
 	{
 		if ($lang == $selected) $html .= "\t<option value='$lang' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
