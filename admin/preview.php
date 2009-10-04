@@ -82,9 +82,9 @@ else
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));     
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl")); 
-$content .= '<div id="question'.$qrows['qid'].'" class="'.$q_class.$man_class.'">';    
+$content .= '<form id="limesurvey"><div id="question'.$qrows['qid'].'" class="'.$q_class.$man_class.'">';    
 $content .= templatereplace(file_get_contents("$thistpl/question.pstpl"));
-$content .= '</div>';
+$content .= '</div></form>';
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;     
 $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));     
 if($qrows['mandatory'] == 'Y')
