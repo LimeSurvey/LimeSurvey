@@ -5502,7 +5502,11 @@ function hasTemplateManageRights($userid, $templatefolder) {
       return $row["use"];
 }
 
-// This function creates an incrementing answer code based on the previous source-code
+/**
+* This function creates an incrementing answer code based on the previous source-code
+* 
+* @param mixed $sourcecode The previous answer code
+*/
 function getNextCode($sourcecode)
 {
    $i=1; 
@@ -5524,7 +5528,7 @@ function getNextCode($sourcecode)
     else 
     {
        $foundnumber++; 
-       $result=substr($sourcecode,0,strlen($sourcecode)-$i+1).$foundnumber;
+       $result=substr($sourcecode,0,strlen($sourcecode)-strlen($foundnumber)).$foundnumber;
        return($result);
     }
     
