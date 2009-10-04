@@ -1048,7 +1048,8 @@ function checkconfield($value)
 			$masterFieldName = 'token';
 		}
 
-		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
+//		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) && $_SESSION[$value]) //Do this if there is a condition based on this answer
+		if ($sfa[1] == $masterFieldName && $sfa[7] == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
 		{
 			$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
 				." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
@@ -1096,7 +1097,6 @@ function checkconfield($value)
 				}
 
 
-//				while($rows = $result->FetchRow()) //Go through the condition on this field
 				foreach ($aAllCondrows as $rows)
 				{
 					if (preg_match("/^\+(.*)$/",$rows['cfieldname'],$cfieldnamematch))
@@ -1159,7 +1159,6 @@ function checkconfield($value)
 							{
 								if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
 								{
-									//$cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
 									$cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
 								}
 								else
@@ -1202,13 +1201,11 @@ function checkconfield($value)
 
 								if ($cqv['matchmethod'] != "RX")
 								{
-//									if (isset($_SESSION[$cqv['matchfield']]) && eval('if ($_SESSION[$cqv["matchfield"]]'.$cqv['matchmethod'].' $cqv["matchvalue"]) {return true;} else {return false;}'))
 									if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$cqv['matchmethod'].' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
 									{//plug successful matches into appropriate container
 										$addon=1;
 									}
 								}
-//								elseif ( isset($_SESSION[$cqv["matchfield"]]) && preg_match($cqv["matchvalue"],$_SESSION[$cqv["matchfield"]]))
 								elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && preg_match('/'.$cqv["matchvalue"].'/',$comparisonLeftOperand))
 								{
 										$addon=1;
@@ -2092,7 +2089,9 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	// Change query to use sub-select to see if conditions exist.
 	$query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*,\n"
 	." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
-	." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions\n"
+	." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions,\n"
+	." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+	." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".cqid) AS usedinconditions\n"
     ." FROM ".db_table_name('groups')." INNER JOIN ".db_table_name('questions')." ON ".db_table_name('groups').".gid = ".db_table_name('questions').".gid\n"
     ." WHERE ".db_table_name('questions').".sid=".$surveyid."\n"
     ." AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."'\n"
@@ -2103,6 +2102,7 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	$result = db_execute_assoc($query);    //Checked 
 
 	$arows = $result->GetRows();
+	//error_log("TIBO = ".print_r($arows,true));
 
 	$totalquestions = $result->RecordCount();
 
@@ -2416,6 +2416,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		{
 			$conditions = "N";
 		}
+		if ($arow['usedinconditions']>0)
+		{
+			$usedinconditions = "Y";
+		}
+		else
+		{
+			$usedinconditions = "N";
+		}
 
 
 		//3(b) See if any of the insertarray values have been passed in the query URL
@@ -2434,13 +2442,14 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		//4. SESSION VARIABLE: fieldarray
 		//NOW WE'RE CREATING AN ARRAY CONTAINING EACH FIELD AND RELEVANT INFO
 		//ARRAY CONTENTS - 	[0]=questions.qid,
-		//					[1]=fieldname,
-		//					[2]=questions.title,
-		//					[3]=questions.question
+		//			[1]=fieldname,
+		//			[2]=questions.title,
+		//			[3]=questions.question
 		//                 	[4]=questions.type,
-		//					[5]=questions.gid,
-		//					[6]=questions.mandatory,
-		//					[7]=conditionsexist
+		//			[5]=questions.gid,
+		//			[6]=questions.mandatory,
+		//			[7]=conditionsexist,
+		//			[8]=usedinconditions
 		$_SESSION['fieldarray'][] = array($arow['qid'],
 		$fieldname,
 		$arow['title'],
@@ -2448,7 +2457,8 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		$arow['type'],
 		$arow['gid'],
 		$arow['mandatory'],
-		$conditions);
+		$conditions,
+		$usedinconditions);
 	}
 	// Check if the current survey language is set - if not set it
 	// this way it can be changed later (for example by a special question type)

@@ -407,7 +407,11 @@ function createinsertquery()
                 $colnames[]=$value;
                 // most databases do not allow to insert an empty value into a datefield, 
                 // therefore if no date was chosen in a date question the insert value has to be NULL
-                if (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))      
+		if ($deletenonvalues==1 && !checkconfield($value))
+		{
+                    $values[]='NULL';
+		}
+                elseif (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))      
                 {                        
                     $values[]='NULL';
                 }
@@ -542,14 +546,14 @@ function createinsertquery()
 					foreach ($hiddenfields as $hiddenfield)
 					{
 						$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
-						if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
-						{
+						//if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
+						//{
 							$query .= db_quote_id($hiddenfield)." = NULL,";
-						}
-						else
-						{
-							$query .= db_quote_id($hiddenfield)." = '',";
-						}
+						//}
+						//else
+						//{
+						//	$query .= db_quote_id($hiddenfield)." = '',";
+						//}
 					}
 				}
 				else
