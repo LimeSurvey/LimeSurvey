@@ -337,15 +337,6 @@ table.question th{
    padding:2px 5px;
 }
 
-#limesurvey table.question tbody th.arraycaptionleft,
-#limesurvey table.question thead th{
-   padding:3px 10px;
-   background-color:#D1D1D1;
-   vertical-align:middle !important;
-   font-size:0.6em;
-   font-weight: bold;
-}
-
 table.question tr:first-child td:first-child{
    background-color:#fff;
 }
@@ -732,11 +723,17 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 .gender {}
 */
 
- #limesurvey table.question thead th
-,#limesurvey table.question .repeat th
-{
-    text-align: center;
-}
+ #limesurvey table.question tbody th.arraycaptionleft,
+ #limesurvey table.question thead th,
+ #limesurvey table.question .repeat th {
+   text-align: center;
+   padding:3px 10px;
+   background-color:#D1D1D1;
+   vertical-align:middle !important;
+   font-size:0.6em;
+   font-weight: bold;
+}    
+
 #limesurvey table.question .answer tbody td
 {
     text-align: center;

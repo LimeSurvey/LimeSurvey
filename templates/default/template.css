@@ -608,8 +608,9 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
     text-align: center;
     vertical-align: bottom;
-    font-weight: normal;
+    font-weight:600 !important;   
 }
+
 #limesurvey .answer table.question tbody td
 {
     text-align: center;
@@ -778,10 +779,6 @@ table.question th {
   border-collapse:separate;
   border-spacing:2px;
   font-size:11px;
-}
-
-table.question thead th {
-   font-weight:600 !important;
 }
 
 table.question td {
