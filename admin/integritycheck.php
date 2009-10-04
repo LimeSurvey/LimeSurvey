@@ -442,7 +442,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $integritycheck .= "</div><br />\n";
 
         $integritycheck2 = "<div class='messagebox'>"
-        . "<div class='header'>".$clang->gT("Data Redundancy Check")."<br />"
+        . "<div class='header'>".$clang->gT("Data redundancy check")."<br />"
 		. "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after de-activating a survey. You can delete these if you no longer require them.")."</span>\n"
 		. "</div>\n";
         if (!isset($oldsoptionaldelete) && !isset($oldsmultidelete) &&  
@@ -453,44 +453,43 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck2 .= "<form action='{$_SERVER['PHP_SELF']}?action=checkintegrity' method='post'>\n"
             . "<ul>\n";
             if(isset($oldsoptionaldelete)) {
-    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey tables contain no responses and can be deleted.").".:</li><span style='font-size: 7pt'>\n";
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey tables contain no responses and can be deleted:")."<br /><span style='font-size: 7pt'>\n";
                 foreach($oldsoptionaldelete as $ood) {
     			    list($tablename, $display)=explode("|", $ood);
-    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsoptionaldelete[]'>$display<br />\n";
+    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsoptionaldelete[]' />$display<br />\n";
     }
-                $integritycheck2 .= "</span><br />\n";
+                $integritycheck2 .= "</span><br /></li>\n";
     		}
     		if(isset($oldsmultidelete)) {
-    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey response tables exist and may be deleted if no longer required").".:</li><span style='font-size: 7pt'>\n";
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old survey response tables exist and may be deleted if no longer required:")."<br /><span style='font-size: 7pt'>\n";
                 foreach($oldsmultidelete as $omd) {
     			    list($tablename, $display)=explode("|", $omd);
-    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsmultidelete[]'>$display<br />\n";
+    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldsmultidelete[]' />$display<br />\n";
     			}
-                $integritycheck2 .= "</span><br />\n";
+                $integritycheck2 .= "</span><br /></li>\n";
     		}
             if(isset($oldtoptionaldelete)) {
-    		    $integritycheck2 .= "<li>".$clang->gT("The following old token tables contain no tokens and can be deleted.").".:</li><span style='font-size: 7pt'>\n";
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old token tables contain no tokens and can be deleted:")."<br /><span style='font-size: 7pt'>\n";
                 foreach($oldtoptionaldelete as $ood) {
     			    list($tablename, $display)=explode("|", $ood);
-    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtoptionaldelete[]'>$display<br />\n";
+    			    $integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtoptionaldelete[]' />$display<br />\n";
     			}
-                $integritycheck2 .= "</span><br />\n";
+                $integritycheck2 .= "</span><br /></li>\n";
     		}
     		if(isset($oldtmultidelete)) {
-    		    $integritycheck2 .= "<li>".$clang->gT("The following old token list tables exist and may be deleted if no longer required").".:</li><span style='font-size: 7pt'>\n";
+    		    $integritycheck2 .= "<li>".$clang->gT("The following old token list tables exist and may be deleted if no longer required:")."<br /><span style='font-size: 7pt'>\n";
                 foreach($oldtmultidelete as $omd) {
     			    list($tablename, $display)=explode("|", $omd);
-    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtmultidelete[]'>$display<br />\n";
+    				$integritycheck2 .= "<input type='checkbox' value='$tablename' name='oldtmultidelete[]' />$display<br />\n";
     			}
-                $integritycheck2 .= "</span><br />\n";
+                $integritycheck2 .= "</span></li>\n";
     		}
-            $integritycheck2 .= "<input type='hidden' name='ok' value='R'>\n"
-                              ."<center><input type='submit' value='".$clang->gT("Delete Checked Items!")."'><br />\n"
-                              ."<span style='color: red'>".$clang->gT("Note that you cannot undo a delete if you proceed. The data will be gone.")."</span><br /></center>\n"
+            $integritycheck2 .= "</ul><input type='hidden' name='ok' value='R' />\n"
+                              ."<center><input type='submit' value='".$clang->gT("Delete Checked Items!")."' /><br />\n"
+                              ."<p><span style='color: red; font-size:0.8em;'>".$clang->gT("Note that you cannot undo a delete if you proceed. The data will be gone.")."</span><br /></center>\n"
                               ."</form>\n";
     		
     		
-    		$integritycheck2 .= "</ul>";
 		}
 		$integritycheck2 .= "</div>";
 
@@ -621,16 +620,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                           ."</td></tr></table><br />\n";
     } elseif ($ok == "R")
     {
-	    $integritycheck .= "<table><tr><td height='1'></td></tr></table>\n"
-        . "<table align='center' style='border: 1px solid #555555' "
-        . "cellpadding='1' cellspacing='0' width='450'>\n"
-        . "\t<tr>\n"
-        . "\t\t<td colspan='2' align='center'>\n"
-        . "\t\t\t<strong>".$clang->gT("Data Redundancy Check")."<br />\n"
-		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from de-activation")."</strong>\n"
-        . "\t\t</td>\n"
-        . "\t</tr>\n"
-        . "\t<tr><td align='center'>";
+	    $integritycheck .= "<div class='messagebox'>\n"
+        . "<div class='header'>".$clang->gT("Data Redundancy Check")."<br />\n"
+		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from de-activation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');
         $oldsoptionaldelete=returnglobal('oldsoptionaldelete');
@@ -657,7 +649,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		}
 		
         if (isset($oldtmultidelete)) {
-		    $integritycheck .= $clang->gT("Deleting Old Token Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old token tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldtmultidelete as $oldt) {
 		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
 			    $sql = "DROP TABLE $oldt";
@@ -678,7 +670,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 
         $integritycheck .= $clang->gT("Check database again?")."<br />\n"
                           ."<a href='{$_SERVER['PHP_SELF']}?action=checkintegrity'>".$clang->gT("Check Again")."</a><br />\n"
-                          ."</td></tr></table><br />\n";
+                          ."</div><br />\n";
 			
 	}
 

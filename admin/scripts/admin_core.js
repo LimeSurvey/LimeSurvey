@@ -18,7 +18,7 @@ $(document).ready(function(){
 
 
     // Loads the tooltips for the toolbars
-    $('img[alt]').each(function() {
+    $('img[alt],input[src]').each(function() {
         if($(this).attr('alt') != '')
         {
              $(this).qtip({

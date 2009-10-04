@@ -1753,11 +1753,7 @@ function browsemenubar($title='')
                 $browsemenubar .= "<tr><td><a href=\"$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;browselang=".$tmp_lang."\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
             }
             $browsemenubar .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('browsepopup').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
-            
-            $tmp_pheight = getPopupHeight();
-            $browsemenubar .= "<script type='text/javascript'>document.getElementById('browsepopup').style.height='".$tmp_pheight."px';</script>";
-
-        }            
+                    }            
             
     // Display last 50 responses        
 	$browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
@@ -5800,38 +5796,6 @@ function br2nl( $data ) {
      return preg_replace( '!<br.*>!iU', "\n", $data );
 }
 
-function getPopupHeight() 
-{
-    global $clang, $surveyid;
-    
-    $rowheight = 20;
-    $height = 0;
-    $bottomPad = 15;
-    
-    // header text height
-    $htext = ceil(strlen($clang->gT("Please select a language:")) / 17);
-    $height += $rowheight * $htext;
-        
-    // language list height
-    $survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $survlangs[] = $baselang;
-    
-    foreach ($survlangs as $lang)
-    {
-        $ltext = ceil(strlen(getLanguageNameFromCode($lang,false)) / 17);
-        $height += $rowheight * $ltext;
-        if ($ltext > 1) $height += ($ltext * 3);
-    }
-
-    // footer height
-    $ftext = ceil(count($clang->gT("Cancel")) / 17);
-    $height += $rowheight * $ftext;
-    
-    $height += $bottomPad;
-    
-    return $height;
-}
 
 function safe_die($text)
 {

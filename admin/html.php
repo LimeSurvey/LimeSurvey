@@ -388,7 +388,7 @@ if ($surveyid)
             . "</a>\n";
 		
 		} else {
-			$surveysummary .= "<a href=\"#\" onclick=\"$('#printpopup').css({visibility,'hidden'}); $('#langpopup2').css({visibility,'visible'});\" "
+			$surveysummary .= "<a href=\"#\" onclick=\"$('#printpopup').css('visibility','hidden'); $('#langpopup2').css('visibility','visible');\" "
 			. "title=\"".$icontext2."\" accesskey='d'>"
 			. "<img  src='$imagefiles/do.png' name='DoSurvey' alt='$icontext' />"
 			. "</a>\n";
@@ -397,15 +397,14 @@ if ($surveyid)
 			$tmp_survlangs[] = $baselang;
 			rsort($tmp_survlangs);
 			// Test Survey Language Selection Popup
-			$surveysummary .="<div class=\"langpopup2\" id=\"langpopup2\"><table width=\"100%\"><tr><td>".$clang->gT("Please select a language:")."</td></tr>";
+			$surveysummary .="<div class=\"langpopup2\" id=\"langpopup2\">".$clang->gT("Please select a language:")."<ul>";
 			foreach ($tmp_survlangs as $tmp_lang)
 			{
-				$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
+				$surveysummary .= "<li><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden'; window.open('".$publicurl."/index.php?sid=$surveyid&amp;newtest=Y&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></li>";
 			}
-			$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
+			$surveysummary .= "<li class='cancellink'><a href=\"#\" accesskey='d' onclick=\"document.getElementById('langpopup2').style.visibility='hidden';\"><span style='color:#DF3030'>".$clang->gT("Cancel")."</span></a></li>"
+                             ."</ul></div>";
 			
-			$tmp_pheight = getPopupHeight();
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('langpopup2').style.height='".$tmp_pheight."px';</script>\n";
 
 		}
 
@@ -457,8 +456,6 @@ if ($surveyid)
 			
 			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.left='152px';</script>\n";
 			
-			$tmp_pheight = getPopupHeight();
-			$surveysummary .= "<script type='text/javascript'>document.getElementById('printpopup').style.height='".$tmp_pheight."px';</script>\n";
 			
 		}
 
@@ -1104,8 +1101,6 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 					$surveysummary .= "<tr><td><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden'; window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid&amp;lang=".$tmp_lang."', '_blank')\"><font color=\"#097300\"><b>".getLanguageNameFromCode($tmp_lang,false)."</b></font></a></td></tr>";
 				}
 				$surveysummary .= "<tr><td align=\"center\"><a href=\"#\" accesskey='d' onclick=\"document.getElementById('previewquestion').style.visibility='hidden';\"><font color=\"#DF3030\">".$clang->gT("Cancel")."</font></a></td></tr></table></div>";
-				$tmp_pheight = getPopupHeight();
-				$surveysummary .= "<script type='text/javascript'>document.getElementById('previewquestion').style.height='".$tmp_pheight."px';</script>";
 			}
 		}
 		else

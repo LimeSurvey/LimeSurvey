@@ -395,21 +395,35 @@ span.settingcaption {
 }
 
 .langpopup2 {
-	position: absolute;
-	width: 100px;
-	height: 110px;
-	top: 151px;
-	left: 80px;
-	z-index: 10000;
-	visibility: hidden;
-	-khtml-opacity: 0.95px;
-	-moz-border-radius: 6px;
-	background: #FDFDF5;
-	font: 11px arial, verdana, sans-serif;
-	border-color: #000;
-	border-style: solid;
-	border-width: 1px;
-	padding: 8px;
+    position: absolute;
+    height: auto !important;
+    top: 151px;
+    left: 80px;
+    z-index: 10000;
+    visibility: hidden;
+    -khtml-opacity: 0.95px;
+    -moz-border-radius: 6px;
+    background: #FDFDF5;
+    font: 11px arial, verdana, sans-serif;
+    border-color: #000;
+    border-style: solid;
+    border-width: 1px;
+    padding: 8px;
+}
+
+.langpopup2 ul {
+    font: 11px arial, verdana, sans-serif;
+     padding-left:1.2em;
+     line-height:1.5em;
+     margin-top:1em; 
+}
+
+li.cancellink
+{
+  list-style-type:none;
+  margin-top:1em;
+  margin-left:-1.2em;
+  text-align:center;
 }
 
 .langpopup1 {
@@ -566,12 +580,14 @@ a.invalidemail {
     background-color: #C5D0F2;
 }
 
+.users,
 .listsurveys {
     text-align:center;
     width:70%;
     margin:0 auto;
 }
 
+.users th,
 .listsurveys th {
     background-color: #D2E0F2;     
     font-size:8pt;
@@ -593,11 +609,20 @@ a.invalidemail {
     text-align: center;          
 }
 
+.users td,
 .listsurveys td {
     font-size:8pt;
     padding:2px 6px; 
 }
 
+.users td input
+{
+    margin-left:2px;
+}
+
+#users td form {
+    display:inline;
+}
 
 .browsetable td:first-child {
     min-width:50px;
@@ -964,4 +989,8 @@ background-color: #8195BA;
 .tab-pane {
     margin:0 0.25%;
     width:99.5% !important;
+}
+
+#questionbottom {
+    clear:both;
 }

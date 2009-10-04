@@ -17,12 +17,17 @@
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 if (isset($_POST['uid'])) {$postuserid=sanitize_int($_POST['uid']);}
 if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
-
+                      
 if (get_magic_quotes_gpc())
     {$_POST  = array_map('recursive_stripslashes', $_POST);}
 
+$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_adminheader_includes[]='scripts/users.js';    
+    
+    
 if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "addusergroup" || $action=="usergroupindb" || $action == "editusergroup" || $action == "mailusergroup")
 {
+
 	if($ugid)
 	{
 		$grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
@@ -373,18 +378,17 @@ if($action == "setasadminchild")
 
 if ($action == "editusers")
 {
-	$usersummary = "<table width='100%' border='0'>\n"
-	. "<tr><td colspan='6' class='header'>"
-	. $clang->gT("User Control")
-    ."</td></tr>\n"
+	$usersummary = "<div class=header>".$clang->gT("User Control")."</div><br />"
+    . "<table id='users' class='users' width='100%' border='0'>\n"
+	. "<thead>\n"
 	. "<tr>\n"
+    . "<th>".$clang->gT("Action")."</th>\n"
 	. "<th width='20%'>".$clang->gT("Username")."</th>\n"
 	. "<th width='20%'>".$clang->gT("Email")."</th>\n"
 	. "<th width='20%'>".$clang->gT("Full name")."</th>\n"
 	. "<th width='15%'>".$clang->gT("Password")."</th>\n"
 	. "<th width='15%'>".$clang->gT("Created by")."</th>\n"
-	. "<th></th>\n"
-	. "</tr>\n";
+	. "</tr></thead><tbody>\n";
 
 	$userlist = getuserlist();
 	$ui = count($userlist);
@@ -393,10 +397,29 @@ if ($action == "editusers")
 
 	//	output users
 	// output admin user only if the user logged in has user management rights
-//	if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN']){
+    $usersummary .= "<tr class='oddrow'>\n";    
+    
+    // Action colum first
+    $usersummary .= "<td class='oddrow' align='center' style='padding:3px;'>\n";
+        
 
+    $usersummary .= "<form method='post' action='$scriptname'>"
+    ."<input type='image' src='$imagefiles/token_edit.png' value='".$clang->gT("Edit user")."' />"
+    ."<input type='hidden' name='action' value='modifyuser' />"
+    ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+    ."</form>";
+        if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
+        {
+            $usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
+            ."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+            ."<input type='hidden' name='action' value='deluser' />"
+            ."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
+            ."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
+            ."</form>";
+        }
+    
+        $usersummary .= "</td>\n"
 
-		$usersummary .= "<tr class='oddrow'>\n"
 		. "<td class='oddrow' align='center'><strong>{$usrhimself['user']}</strong></td>\n"
 		. "<td class='oddrow' align='center'><strong>{$usrhimself['email']}</strong></td>\n"
 		. "<td class='oddrow' align='center'><strong>{$usrhimself['full_name']}</strong></td>\n"
@@ -412,37 +435,8 @@ if ($action == "editusers")
 		{
 			$usersummary .= "<td class='oddrow' align='center'><strong>---</strong></td>\n";
 		}
-		$usersummary .= "<td class='oddrow' align='center' style='padding:3px;'>\n";
-		
-//		if ($_SESSION['USER_RIGHT_DELETE_USER']||$_SESSION['USER_RIGHT_CREATE_USER']||$_SESSION['USER_RIGHT_SUPERADMIN'] || 1 == 1)
-//		{
-			$usersummary .= "<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Edit User")."' />"
-			."<input type='hidden' name='action' value='modifyuser' />"
-			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-			."</form>";
-//		}
 
-		// Standard users and SuperAdmins are allowed to delete all successor users (but the admin not himself)
-		// 
-//		if ($usrhimself['parent_id'] != 0 && ($_SESSION['USER_RIGHT_DELETE_USER'] == 1 || ($usrhimself['uid'] == $_SESSION['loginID'])))
-		if ($usrhimself['parent_id'] != 0 && $_SESSION['USER_RIGHT_DELETE_USER'] == 1 )
-		{
-			$usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-			."<input type='hidden' name='action' value='deluser' />"
-			."<input type='hidden' name='user' value='{$usrhimself['user']}' />"
-			."<input type='hidden' name='uid' value='{$usrhimself['uid']}' />"
-			."</form>";
-		}
-	
-		$usersummary .= "</td>\n"
-		. "</tr>\n";
-	
-		// empty row
-		if(count($userlist) > 0) $usersummary .= "<tr>\n<td height=\"20\" colspan=\"6\"></td>\n</tr>";
-//	}
-
+		$usersummary.="</tr>\n";
 	
 	// other users
 	$row = 0;
@@ -458,6 +452,63 @@ if ($action == "editusers")
 		$usr = $usr_arr[$i];
 		$usersummary .= "<tr class='$bgcc'>\n";
 
+        $usersummary .= "<td class='$bgcc' align='center' style='padding:3px;'>\n";
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
+        {
+            $usersummary .= "<form method='post' action='$scriptname'>"
+            ."<input type='image' src='$imagefiles/token_edit.png' alt='".$clang->gT("Edit this user")."' />"
+            ."<input type='hidden' name='action' value='modifyuser' />"
+            ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+            ."</form>";
+        }
+
+        if ( (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 &&
+            $usr['uid'] != $_SESSION['loginID'] ) || 
+             ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && 
+            $usr['parent_id'] == $_SESSION['loginID'])) && $usr['uid']!=1)
+        {
+            $usersummary .= "<form method='post' action='$scriptname'>"
+            ."<input type='image' src='$imagefiles/security_small.png' alt='".$clang->gT("Set global permissions for this user")."' />"
+            ."<input type='hidden' name='action' value='setuserrights' />"
+            ."<input type='hidden' name='user' value='{$usr['user']}' />"
+            ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+            ."</form>";
+        }
+        if ($_SESSION['loginID'] == "1" && $usr['parent_id'] !=1 )
+        {
+            $usersummary .= "<form method='post' action='$scriptname'>"
+            ."<input type='submit' value='".$clang->gT("Take Ownership")."' />"
+            ."<input type='hidden' name='action' value='setasadminchild' />"
+            ."<input type='hidden' name='user' value='{$usr['user']}' />"
+            ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+            ."</form>";
+        }
+        if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1)
+        {
+            $usersummary .= "<form method='post' action='$scriptname'>"
+            ."<input type='image' src='$imagefiles/templatepermissions_small.png' alt='".$clang->gT("Set template permissions for this user")."' />"
+            ."<input type='hidden' name='action' value='setusertemplates' />"
+            ."<input type='hidden' name='user' value='{$usr['user']}' />"
+            ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+            ."</form>";
+        }
+
+        // users are allowed to delete all successor users (but the admin not himself)
+        if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))&& $usr['uid']!=1)
+        {
+            $usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
+            ."<input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+            ."<input type='hidden' name='action' value='deluser' />"
+            ."<input type='hidden' name='user' value='{$usr['user']}' />"
+            ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
+            ."</form>";
+        }
+        
+
+        $usersummary .= "</td>\n";
+
+
+        
 		$usersummary .= "<td class='$bgcc' align='center'>{$usr['user']}</td>\n"
 		. "<td class='$bgcc' align='center'><a href='mailto:{$usr['email']}'>{$usr['email']}</a></td>\n"
 		. "<td class='$bgcc' align='center'>{$usr['full_name']}</td>\n";
@@ -471,107 +522,34 @@ if ($action == "editusers")
 		$userlist = array();
 		$srow = $uresult->FetchRow();
 		$usr['parent'] = $srow['users_name'];
-		/*
-		if($_SESSION['USER_RIGHT_SUPERADMIN'])
+			
+		//TODO: Find out why parent isn't set
+		// ==> because it is parent_id ;-)
+		if (isset($usr['parent_id']))
 		{
-			$usersummary .= "<td align='center'>"
-			."<form name='parentsform{$usr['uid']}'action='$scriptname?action=setnewparents' method='post'>"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />";
-			//."<select name='parent' size='1' onchange='document.getElementById(\"button{$usr['uid']}\").innerHTML = \"<input type=\\\"submit\\\" value=\\\"".$clang->gT("Change")."\\\">\"'>"
-			//."<select name='parent' size='1' onchange='document.getElementById(\"button{$usr['uid']}\").createElement(\"input\")'>";
-			if($usr['uid'] != $usrhimself['uid'])
-			{
-				//$usersummary .= "<option value='{$usrhimself['uid']}'";
-				if($usr['parent_id'] == $usrhimself['uid']) {
-					$usersummary .= $usrhimself['user'];
-				}
-			}
-			$usersummary .= "<div id='button{$usr['uid']}'></div>\n";
-			$usersummary .= "</form></td>\n";
+			$usersummary .= "<td class='$bgcc' align='center'>{$usr['parent']}</td>\n";
+		} else 
+		{
+			$usersummary .= "<td class='$bgcc' align='center'>-----</td>\n";
 		}
-		else
-		{*/
-			
-			
-			//TODO: Find out why parent isn't set
-			// ==> because it is parent_id ;-)
-			if (isset($usr['parent_id']))
-			{
-				$usersummary .= "<td class='$bgcc' align='center'>{$usr['parent']}</td>\n";
-			} else 
-			{
-				$usersummary .= "<td class='$bgcc' align='center'>-----</td>\n";
-			}
-		//}
+
 		
-		$usersummary .= "<td class='$bgcc' align='center' style='padding:3px;'>\n";
-		// users are allowed to delete all successor users (but the admin not himself)
-		//  || ($usr['uid'] == $_SESSION['loginID']))
-		if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || ($_SESSION['USER_RIGHT_DELETE_USER'] == 1  && $usr['parent_id'] == $_SESSION['loginID']))&& $usr['uid']!=1)
-		{
-			$usersummary .= "<form method='post' action='$scriptname?action=deluser'>"
-			."<input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-			."<input type='hidden' name='action' value='deluser' />"
-			."<input type='hidden' name='user' value='{$usr['user']}' />"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."</form>";
-		}
-		if ( (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 &&
-			$usr['uid'] != $_SESSION['loginID'] ) || 
-		     ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && 
-			$usr['parent_id'] == $_SESSION['loginID'])) && $usr['uid']!=1)
-		{
-			$usersummary .= "<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Set User Rights")."' />"
-			."<input type='hidden' name='action' value='setuserrights' />"
-			."<input type='hidden' name='user' value='{$usr['user']}' />"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."</form>";
-		}
-		if ($_SESSION['loginID'] == "1" && $usr['parent_id'] !=1 )
-		{
-			$usersummary .= "<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Take Ownership")."' />"
-			."<input type='hidden' name='action' value='setasadminchild' />"
-			."<input type='hidden' name='user' value='{$usr['user']}' />"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."</form>";
-		}
-		if (($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)  && $usr['uid']!=1)
-		{
-			$usersummary .= "<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Set Template Rights")."' />"
-			."<input type='hidden' name='action' value='setusertemplates' />"
-			."<input type='hidden' name='user' value='{$usr['user']}' />"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."</form>";
-		}
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || ($_SESSION['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $_SESSION['loginID']))
-		{
-			$usersummary .= "<form method='post' action='$scriptname'>"
-			."<input type='submit' value='".$clang->gT("Edit User")."' />"
-			."<input type='hidden' name='action' value='modifyuser' />"
-			."<input type='hidden' name='uid' value='{$usr['uid']}' />"
-			."</form>";
-		}
-		$usersummary .= "</td>\n"
-		. "</tr>\n";
+        $usersummary .= "</tr>\n";
 		$row++;
 	}
-    $usersummary .= "</table><br />";
+    $usersummary .= "</tbody></table><br />";
 
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_CREATE_USER'])
 	{
 		$usersummary .= "<form action='$scriptname' method='post'>\n"
-		. "<table width='100%'><tr>\n"
-        . "<th colspan='6'>".$clang->gT("Add User")."</th>\n"
-        . "</tr><tr>\n"
+		. "<table class='users'><tr class='oddrow'>\n"
+        . "<td>".$clang->gT("Add User")."</td>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_email' /></td>\n"
-		. "<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>&nbsp;</td><td width='15%'>&nbsp;</td>\n"
+		. "<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>".$clang->gT("(Sent by email)")."</td>\n"
 		. "<td align='center' width='15%'><input type='submit' value='".$clang->gT("Add User")."' />"
 		. "<input type='hidden' name='action' value='adduser' /></td>\n"
-		. "</tr></table></form>\n";
+		. "</tr></table></form><br />\n";
 	}
 	
 }
@@ -857,12 +835,12 @@ if ($action == "editusergroups" )
 	
 				$eguquery = "SELECT * FROM ".db_table_name("user_in_groups")." AS a INNER JOIN ".db_table_name("users")." AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
 				$eguresult = db_execute_assoc($eguquery); //Checked
-				$usergroupsummary .= "<table  width='100%' border='0'>\n"
-				. "<tr>\n"
+				$usergroupsummary .= "<table class='users'>\n"
+				. "<thead><tr>\n"
+                . "<th>".$clang->gT("Action")."</th>\n"
 				. "<th>".$clang->gT("Username")."</th>\n"
 				. "<th>".$clang->gT("Email")."</th>\n"
-				. "<th width='25%'>".$clang->gT("Action")."</th>\n"
-				. "</tr>\n";
+				. "</tr></thead><tbody>\n";
 	
 				$query2 = "SELECT ugid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND owner_id = ".$_SESSION['loginID'];
 				$result2 = db_select_limit_assoc($query2, 1);
@@ -882,53 +860,48 @@ if ($action == "editusergroups" )
 					if($egurow['uid'] == $crow['owner_id'])
 					{
 						$usergroupowner = "<tr class='$bgcc'>\n"
+                        . "<td align='center'>&nbsp;</td>\n"
 						. "<td align='center'><strong>{$egurow['users_name']}</strong></td>\n"
 						. "<td align='center'><strong>{$egurow['email']}</strong></td>\n"
-						. "<td align='center'>&nbsp;</td></tr>\n";
+                        . "</tr>";
 						continue;
 					}
+
 					//	output users
 					
-					if($row == 1){ $usergroupentries .= "<tr>\n<td height=\"20\" colspan=\"6\"></td>\n</tr>"; $row++;}
-					//if(($row % 2) == 0) $usergroupentries .= "<tr  bgcolor='#999999'>\n";
-					//else $usergroupentries .= "<tr>\n";
-					$usergroupentries .= "<tr class='$bgcc'>\n";
+					$usergroupentries .= "<tr class='$bgcc'>\n"
+                        . "<td align='center'>\n";
+    
+                    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+                    {
+                        $usergroupentries .= "<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
+                        ." <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                        ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
+                        ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
+                        ." <input name='ugid' type='hidden' value='{$ugid}' />";
+                    }
+                    $usergroupentries .= "</form>"
+                    . "</td>\n";
 					$usergroupentries .= "<td align='center'>{$egurow['users_name']}</td>\n"
 					. "<td align='center'>{$egurow['email']}</td>\n"
-					. "<td align='center' style='padding-top:10px;'>\n";
-	
-					// owner and not himself    or    not owner and himself
-//					if((isset($row2['ugid']) && $_SESSION['loginID'] != $egurow['uid']) || (!isset($row2['ugid']) && $_SESSION['loginID'] == $egurow['uid']))
-					// Currently only admin can do this
-					// So hide button unless admin
-					if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-					{
-						$usergroupentries .= "<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-						." <input type='submit' value='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
-						." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
-						." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
-						." <input name='ugid' type='hidden' value='{$ugid}' />";
-					}
-					$usergroupentries .= "</form>"
-					. "</td>\n"
 					. "</tr>\n";
 					$row++;
 				}
 				$usergroupsummary .= $usergroupowner;
 	            if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
+                $usergroupsummary .= '</tbody></table>';                      
 	
 				if(isset($row2['ugid']))
 				{
 					$usergroupsummary .= "<form action='$scriptname?ugid={$ugid}' method='post'>\n"
-					. "<tr><td></td>\n"
-					. "<td></td>"
+					. "<table class='users'><tbody><tr><td>&nbsp;</td>\n"
+					. "<td>&nbsp;</td>"
 					. "<td align='center'><select name='uid'>\n"
 					. getgroupuserlist()
 					. "</select>\n"
 					. "<input type='submit' value='".$clang->gT("Add User")."' />\n"
-					. "<input type='hidden' name='action' value='addusertogroup' /></td></form>\n"
-					. "</td>\n"
-					. "</tr>\n"
+					. "<input type='hidden' name='action' value='addusertogroup' /></td>\n"
+					. "</tr></tbody></table>\n"
 					. "</form>\n";
 				}
 			}
