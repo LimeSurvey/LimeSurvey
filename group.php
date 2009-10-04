@@ -412,6 +412,10 @@ echo "<input type='hidden' id='runonce' value='0' />
 $array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
 
 print <<<END
+	function noop_checkconditions(value, name, type)
+	{
+	}
+
 	function checkconditions(value, name, type)
 	{
     

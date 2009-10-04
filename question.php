@@ -444,6 +444,9 @@ if ($bIsGroupDescrPage)
 	echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 	echo "\t<script type='text/javascript'>\n";
 	echo "\t<!--\n";
+	echo "function noop_checkconditions(value, name, type)\n";
+	echo "\t{\n";
+	echo "\t}\n";
 	echo "function checkconditions(value, name, type)\n";
 	echo "\t{\n";
 	echo "\t}\n";

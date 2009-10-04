@@ -366,6 +366,10 @@ END;
 }
 
 print <<<END
+	function noop_checkconditions(value, name, type)
+	{
+	}
+
 	function checkconditions(value, name, type)
 	{
     

@@ -1185,6 +1185,15 @@ function do_boilerplate($ia)
 function do_5pointchoice($ia)
 {
 	global $shownoanswer, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	
 	$answer = "\n<ul>\n";
 	for ($fp=1; $fp<=5; $fp++)
@@ -1194,7 +1203,7 @@ function do_5pointchoice($ia)
 		{
 			$answer .= CHECKED;
 		}
-		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
+		$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]$fp\" class=\"answertext\">$fp</label>\n\t</li>\n";
 	}
 
 	if ($ia[6] != "Y"  && $shownoanswer == 1) // Add "No Answer" option if question is not mandatory
@@ -1204,7 +1213,7 @@ function do_5pointchoice($ia)
 		{
 			$answer .= CHECKED;
 		}
-		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+		$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
 	}
 	$answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
@@ -1222,6 +1231,16 @@ function do_date($ia)
 	$qidattributes=getQuestionAttributes($ia[0]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
     
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     
@@ -1335,7 +1354,7 @@ function do_date($ia)
                     }        
         }
 
- 		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="checkconditions(this.value, this.name, this.type)" />
+ 		$answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			</p>';
 		$answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
@@ -1376,7 +1395,7 @@ function do_date($ia)
             }
             
             $answer ="<p class=\"question\">
-				        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"checkconditions(this.value, this.name, this.type)\" />
+				        <input class='popupdate' type=\"text\" alt=\"".$clang->gT('Date picker')."\" size=\"10\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"$dateoutput\" maxlength=\"10\" onkeypress=\"return goodchars(event,'0123456789-')\" onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" />
                         <input  type='hidden' name='dateformat{$ia[1]}' id='dateformat{$ia[1]}' value='{$dateformatdetails['jsdate']}'  />
                         <input  type='hidden' name='datelanguage{$ia[1]}' id='datelanguage{$ia[1]}' value='{$clang->langcode}'  />
                         <input  type='hidden' name='dateyearrange{$ia[1]}' id='dateyearrange{$ia[1]}' value='{$minyear}:{$maxyear}'  />
@@ -1398,9 +1417,19 @@ function do_date($ia)
 function do_language($ia)
 {
 	global $dbprefix, $surveyid, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
-	$answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; checkconditions(this.value, this.name, this.type);\">\n";
+	$answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
 	if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose')."..</option>\n";}
 	foreach ($answerlangs as $ansrow)
 	{
@@ -1433,6 +1462,14 @@ function do_list_dropdown($ia)
 {
 	global $dbprefix,  $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 	if (trim($qidattributes['other_replace_text'])!='')
@@ -1605,7 +1642,7 @@ function do_list_dropdown($ia)
 	}
 	$sselect = '
 			<p class="question">
-				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="checkconditions(this.value, this.name, this.type);'.$sselect_show_hide.'">
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide.'">
 ';
 	$answer = $sselect.$answer;
 
@@ -1644,7 +1681,7 @@ function do_list_dropdown($ia)
 //		// --> END BUG FIX
 
 		// --> START NEW FEATURE - SAVE
-		$answer .= "  alt='".$clang->gT('Other answer')."' onchange='checkconditions(this.value, this.name, this.type);'";
+		$answer .= "  alt='".$clang->gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
 		$thisfieldname="$ia[1]other";
 		if (isset($_SESSION[$thisfieldname])) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
 		$answer .= ' />';
@@ -1695,6 +1732,14 @@ function do_list_flexible_dropdown($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if (trim($qidattributes['other_replace_text'])!='')	{
@@ -1793,7 +1838,7 @@ function do_list_flexible_dropdown($ia)
 	}
 	$sselect = '
 			<p class="question">
-				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="checkconditions(this.value, this.name, this.type);'.$sselect_show_hide."\">\n";
+				<select name="'.$ia[1].'" id="answer'.$ia[1].'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type);'.$sselect_show_hide."\">\n";
 	$answer = $sselect.$answer;
 
 	if (isset($other) && $other=='Y')
@@ -1873,6 +1918,16 @@ function do_list_radio($ia)
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect, $clang;
 	global $shownoanswer;
 
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 
 	unset ($defexists);
@@ -1947,7 +2002,7 @@ function do_list_radio($ia)
 		}
         //		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
         // TIBO switch to the following line in order to reset the othercomment field when the other option is unselected
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
         '.$wrapper['item-end'];
 
@@ -2000,10 +2055,10 @@ function do_list_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= $wrapper['item-start-other'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start-other'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' '.$numbersonly.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
 		</label>
         '.$wrapper['item-end'];
 
@@ -2036,7 +2091,7 @@ function do_list_radio($ia)
 			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
         '.$wrapper['item-end'];
 		// --> END NEW FEATURE - SAVE
@@ -2101,6 +2156,15 @@ function do_list_flexible_radio($ia)
 {
 	global $dbprefix, $dropdownthreshold, $lwcdropdowns, $connect;
 	global $shownoanswer, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['other_replace_text'])!='')
@@ -2174,7 +2238,7 @@ function do_list_flexible_radio($ia)
 			{
 				$check_ans ='';
 			};
-			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
+			$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['title'].'</label>
 '.$wrapper['item-end'];
 
@@ -2220,10 +2284,10 @@ function do_list_flexible_radio($ia)
 			$answer_other = ' value=""';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" value="-oth-" name="'.$ia[1].'" id="SOTH'.$ia[1].'"'.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="SOTH'.$ia[1].'" class="answertext">'.$othertext.'</label>
 		<label for="answer'.$ia[1].'othertext">
-			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; checkconditions(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
+			<input type="text" class="text" id="answer'.$ia[1].'othertext" name="'.$ia[1].'other" title="'.$clang->gT('Other').'"'.$answer_other.' onclick="javascript:document.getElementById(\'SOTH'.$ia[1].'\').checked=true; '.$checkconditionFunction.'(document.getElementById(\'SOTH'.$ia[1].'\').value, document.getElementById(\'SOTH'.$ia[1].'\').name, document.getElementById(\'SOTH'.$ia[1].'\').type);" />
 		</label>
 '.$wrapper['item-end'];
 
@@ -2256,7 +2320,7 @@ function do_list_flexible_radio($ia)
 			$check_ans = '';
 		}
 
-		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';checkconditions(this.value, this.name, this.type)" />
+		$answer .= $wrapper['item-start'].'		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'NANS" value=""'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 		<label for="answer'.$ia[1].'NANS" class="answertext">'.$clang->gT('No answer').'</label>
 '.$wrapper['item-end'];
 
@@ -2321,6 +2385,15 @@ function do_listwithcomment($ia)
 	global $maxoptionsize, $dbprefix, $dropdownthreshold, $lwcdropdowns;
 	global $shownoanswer, $clang;
 
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$answer = '';
 
 	$qidattributes=getQuestionAttributes($ia[0],'O');
@@ -2369,7 +2442,7 @@ function do_listwithcomment($ia)
 				$check_ans = '';
 			}
 			$answer .= '		<li>
-			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="checkconditions(this.value, this.name, this.type)" />
+			<input type="radio" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'" value="'.$ansrow['code'].'" class="radio" '.$check_ans.' onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			<label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
 		</li>
 ';
@@ -2386,7 +2459,7 @@ function do_listwithcomment($ia)
 				$check_ans = '';
 			}
 			$answer .= '		<li>
-			<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="checkconditions(this.value, this.name, this.type)"'.$check_ans.' />
+			<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'" value=" " onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)"'.$check_ans.' />
 			<label for="answer'.$ia[1].'" class="answertext">'.$clang->gT('No answer').'</label>
 		</li>
 ';
@@ -2423,7 +2496,7 @@ function do_listwithcomment($ia)
 	{
 		// --> START NEW FEATURE - SAVE
 		$answer .= '<p class="select">
-	<select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onclick="checkconditions(this.value, this.name, this.type)" >
+	<select class="select" name="'.$ia[1].'" id="answer'.$ia[1].'" onclick="'.$checkconditionFunction.'(this.value, this.name, this.type)" >
 ';
 		// --> END NEW FEATURE - SAVE
 		while ($ansrow=$ansresult->FetchRow())
@@ -2488,6 +2561,16 @@ function do_listwithcomment($ia)
 function do_ranking($ia)
 {
 	global $dbprefix, $imagefiles, $clang, $thissurvey, $showpopups;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$answer="";
     if ($qidattributes['random_order']==1) {
@@ -2540,7 +2623,7 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
 	. "\t\t\t\t\t\t}\n"
     . "\t\t\t\t\tdocument.limesurvey.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
-	. "\t\t\t\t\tcheckconditions(\$code);\n"
+	. "\t\t\t\t\t$checkconditionFunction(\$code);\n"
 	. "\t\t\t\t\t}\n"
 	. "\t\t\t\tfunction deletethis_{$ia[0]}(\$text, \$value, \$name, \$thisname)\n"
 	. "\t\t\t\t\t{\n"
@@ -2568,7 +2651,7 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=false;\n"
 	. "\t\t\t\t\t\t}\n"
-	. "\t\t\t\t\tcheckconditions('');\n"
+	. "\t\t\t\t\t$checkconditionFunction('');\n"
 	. "\t\t\t\t\t}\n"
 	. "\t\t\t//-->\n"
 	. "\t\t\t</script>\n";
@@ -2739,6 +2822,15 @@ function do_multiplechoice($ia)
 {
 	global $dbprefix, $clang, $connect;
 
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if (trim($qidattributes['other_replace_text'])!='')
@@ -2883,7 +2975,7 @@ function do_multiplechoice($ia)
 						 . "thiselt.checked='';\n"
 						 . "thiselt.disabled='true';\n"
 						 . "if (doconditioncheck == 'yes') {\n"
-						 . "\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
 						 . "}\n}\n";
 			$excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
 		}
@@ -2893,11 +2985,11 @@ function do_multiplechoice($ia)
 						 . "thiselt.checked='';\n"
 						 . "thiselt.disabled='true';\n"
 						 . "if (doconditioncheck == 'yes') {\n"
-						 . "\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
 						 . "}\n";
 			$excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['code']}').disabled='';\n";
 		}
-		$answer .= $callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' />\n<label for=\"answer$ia[1]{$ansrow['code']}\" class=\"answertext\">{$ansrow['answer']}</label>\n";
+		$answer .= $callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' />\n<label for=\"answer$ia[1]{$ansrow['code']}\" class=\"answertext\">{$ansrow['answer']}</label>\n";
 		// --> END NEW FEATURE - SAVE
 
 		if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -2940,7 +3032,7 @@ function do_multiplechoice($ia)
 						 . "thiselt.value='';\n"
 						 . "thiselt.disabled='true';\n"
 						 . "if (doconditioncheck == 'yes') {\n"
-						 . "\tcheckconditions(thiselt.value, thiselt.name, thiselt.type);\n"
+						 . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
 						 . "}\n";
 			$excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
 			$excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
@@ -3125,6 +3217,16 @@ function do_multiplechoice($ia)
 function do_multiplechoice_withcomments($ia)
 {
 	global $dbprefix, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
     
     if ($qidattributes['other_numbers_only']==1)
@@ -3226,7 +3328,7 @@ function do_multiplechoice_withcomments($ia)
 		{
 			$answer_main .= CHECKED;
 		}
-		$answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."checkconditions(this.value, this.name, this.type)' "
+		$answer_main .=" onclick='cancelBubbleThis(event);".$callmaxanswscriptcheckbox."$checkconditionFunction(this.value, this.name, this.type)' "
 				. " onchange='document.getElementById(\"answer$myfname2\").value=\"\";' />\n"
 				. $ansrow['answer']."</label>\n";
 
@@ -3241,7 +3343,7 @@ function do_multiplechoice_withcomments($ia)
 		."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
 		if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
 		// --> START NEW FEATURE - SAVE
-		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;checkconditions(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
+		$answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
 
 		. "\t</li>\n";
 		// --> END NEW FEATURE - SAVE
@@ -3391,6 +3493,15 @@ function do_multiplechoice_withcomments($ia)
 function do_multipleshorttext($ia)
 {
 	global $dbprefix, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
     $answer='';
 	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -3495,7 +3606,7 @@ function do_multipleshorttext($ia)
 				. "<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n"
 				. "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea" name="'.$myfname.'" id="answer'.$myfname.'" 
-				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type);" '.$numbersonly.'>';
+				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 		
 				if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 				{
@@ -3536,7 +3647,7 @@ function do_multipleshorttext($ia)
 			}
 	
 			// --> START NEW FEATURE - SAVE
-				$answer_main .= '" onkeyup="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n".$suffix."\n\t</span>\n"
+				$answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize.'" />'."\n".$suffix."\n\t</span>\n"
 			. "\t</li>\n";
 			// --> END NEW FEATURE - SAVE
 	
@@ -3558,6 +3669,15 @@ function do_multipleshorttext($ia)
 function do_multiplenumeric($ia)
 {
 	global $dbprefix, $clang, $js_header_includes, $css_header_includes;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	$qidattributes=getQuestionAttributes($ia[0],'K');
     $answer='';
 	//Must turn on the "numbers only javascript"
@@ -3751,7 +3871,7 @@ function do_multiplenumeric($ia)
 					$answer_main .= $_SESSION[$myfname];
 				}
 
-				$answer_main .= '" onkeyup="checkconditions(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
+				$answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
 
 			}
 			else
@@ -3953,6 +4073,15 @@ Style to be applied to all templates.
 function do_numerical($ia)
 {
 	global $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	$qidattributes=getQuestionAttributes($ia[0]);
     if (trim($qidattributes['prefix'])!='') {
         $prefix=$qidattributes['prefix'];
@@ -3990,7 +4119,7 @@ function do_numerical($ia)
 	}
 	// --> START NEW FEATURE - SAVE
 	$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='checkconditions(this.value, this.name, this.type)'"
+	. "id=\"answer{$ia[1]}\" value=\"{$_SESSION[$ia[1]]}\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'0123456789.')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
 	. "maxlength=\"$maxsize\" />\n\t$suffix\n</p>\n";
 	if ($qidattributes['hide_tip']==0)
 	{
@@ -4011,6 +4140,16 @@ function do_numerical($ia)
 function do_shortfreetext($ia)
 {
 	global $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if (isset($qidattributes['other_numbers_only']) && $qidattributes['other_numbers_only']==1)
@@ -4084,7 +4223,7 @@ function do_shortfreetext($ia)
 		
 	// --> START NEW FEATURE - SAVE
 		$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-		.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type);" '.$numbersonly.'>';
+		.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 		// --> END NEW FEATURE - SAVE
 	
 		if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -4096,7 +4235,7 @@ function do_shortfreetext($ia)
 		//no question attribute set, use common input text field
 		$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
 	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
-		."\" maxlength=\"$maxsize\" onkeyup=\"checkconditions(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";	
+		."\" maxlength=\"$maxsize\" onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";	
 	}			
 	if (trim($qidattributes['time_limit'])!='')
 	{
@@ -4115,6 +4254,16 @@ function do_shortfreetext($ia)
 function do_longfreetext($ia)
 {
 	global $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
    	$qidattributes=getQuestionAttributes($ia[0]);
 	
     if (trim($qidattributes['maximum_chars'])!='')
@@ -4161,7 +4310,7 @@ function do_longfreetext($ia)
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
+	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
 	if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -4184,6 +4333,16 @@ function do_longfreetext($ia)
 function do_hugefreetext($ia)
 {
 	global $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 
     if (trim($qidattributes['maximum_chars'])!='')
@@ -4230,7 +4389,7 @@ function do_hugefreetext($ia)
 
 	// --> START NEW FEATURE - SAVE
 	$answer .= '<textarea class="display" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); checkconditions(this.value, this.name, this.type)">';
+	.'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
 	// --> END NEW FEATURE - SAVE
 
 	// <-- END ENHANCEMENT - TEXT INPUT WIDTH
@@ -4256,6 +4415,16 @@ function do_hugefreetext($ia)
 function do_yesno($ia)
 {
 	global $shownoanswer, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$answer = "<ul>\n"
 	. "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
@@ -4264,7 +4433,7 @@ function do_yesno($ia)
 		$answer .= CHECKED;
 	}
 	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".$clang->gT('Yes')."\n</label>\n\t</li>\n"
+	$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}Y\" class=\"answertext\">\n\t".$clang->gT('Yes')."\n</label>\n\t</li>\n"
 	. "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
 	// --> END NEW FEATURE - SAVE
 
@@ -4273,7 +4442,7 @@ function do_yesno($ia)
 		$answer .= CHECKED;
 	}
 	// --> START NEW FEATURE - SAVE
-	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".$clang->gT('No')."\n</label>\n\t</li>\n";
+	$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}N\" class=\"answertext\" >\n\t".$clang->gT('No')."\n</label>\n\t</li>\n";
 	// --> END NEW FEATURE - SAVE
 
 	if ($ia[6] != 'Y' && $shownoanswer == 1)
@@ -4284,7 +4453,7 @@ function do_yesno($ia)
 			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".$clang->gT('No answer')."\n</label>\n\t</li>\n";
+		$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer{$ia[1]}\" class=\"answertext\">\n\t".$clang->gT('No answer')."\n</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 	}
 
@@ -4300,6 +4469,15 @@ function do_yesno($ia)
 function do_gender($ia)
 {
 	global $shownoanswer, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	
 	$qidattributes=getQuestionAttributes($ia[0]);
 
@@ -4310,7 +4488,7 @@ function do_gender($ia)
 	{
 		$answer .= CHECKED;
 	}
-	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+	$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 	. '		<label for="answer'.$ia[1].'F" class="answertext">'.$clang->gT('Female')."</label>\n\t</li>\n";
 
 	$answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
@@ -4319,7 +4497,7 @@ function do_gender($ia)
 	{
 		$answer .= CHECKED;
 	}
-	$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".$clang->gT('Male')."</label>\n\t</li>\n";
+	$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]M\" class=\"answertext\">".$clang->gT('Male')."</label>\n\t</li>\n";
 
 	if ($ia[6] != 'Y' && $shownoanswer == 1)
 	{
@@ -4343,7 +4521,7 @@ function do_gender($ia)
 			$answer .= CHECKED;
 		}
 		// --> START NEW FEATURE - SAVE
-		$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+		$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer$ia[1]\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 		// --> END NEW FEATURE - SAVE
 
 	}
@@ -4366,6 +4544,15 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 	
 	
 	$qidattributes=getQuestionAttributes($ia[0]);
@@ -4500,7 +4687,7 @@ function do_array_5point($ia)
 			{
 				$answer_t_content .= CHECKED;
 			}
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 		}
 
 		$answertext2=answer_replace($ansrow['answer']);
@@ -4523,7 +4710,7 @@ function do_array_5point($ia)
 			{
 				$answer_t_content .= CHECKED;
 			}
-			$answer_t_content .= " onclick='checkconditions(this.value, this.name, this.type)'  />\n</label>\n\t</td>\n";
+			$answer_t_content .= " onclick='$checkconditionFunction(this.value, this.name, this.type)'  />\n</label>\n\t</td>\n";
 		}
 
 		$answer_t_content .= "</tr>\n\n\t</tbody>";
@@ -4548,6 +4735,16 @@ function do_array_5point($ia)
 function do_array_10point($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);      //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -4664,7 +4861,7 @@ function do_array_10point($ia)
 				$answer_t_content .= CHECKED;
 			}
 			// --> START NEW FEATURE - SAVE
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 			// --> END NEW FEATURE - SAVE
 
 		}
@@ -4676,7 +4873,7 @@ function do_array_10point($ia)
 			{
 				$answer_t_content .= CHECKED;
 			}
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 
 		}
 		$answer_t_content .= "</tr>\n</tbody>";
@@ -4694,6 +4891,16 @@ function do_array_10point($ia)
 function do_array_yesnouncertain($ia)
 {
 	global $dbprefix, $shownoanswer, $notanswered, $thissurvey, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);	//Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
@@ -4804,7 +5011,7 @@ function do_array_yesnouncertain($ia)
 				$answer_t_content .= CHECKED;
 			}
 			// --> START NEW FEATURE - SAVE
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n\t</label>\n\t</td>\n"
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</label>\n\t</td>\n"
 			. "\t<td>\n<label for=\"answer$myfname-U\">\n"
 			. "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" title=\"".$clang->gT('Uncertain')."\"";
 			// --> END NEW FEATURE - SAVE
@@ -4814,7 +5021,7 @@ function do_array_yesnouncertain($ia)
 				$answer_t_content .= CHECKED;
 			}
 			// --> START NEW FEATURE - SAVE
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n"
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n"
 			. "\t<td>\n<label for=\"answer$myfname-N\">\n"
 			. "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" title=\"".$clang->gT('No').'"';
 			// --> END NEW FEATURE - SAVE
@@ -4824,7 +5031,7 @@ function do_array_yesnouncertain($ia)
 				$answer_t_content .= CHECKED;
 			}
 			// --> START NEW FEATURE - SAVE
-			$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n"
+			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n"
 			. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			// --> END NEW FEATURE - SAVE
 			if (isset($_SESSION[$myfname]))
@@ -4842,7 +5049,7 @@ function do_array_yesnouncertain($ia)
 					$answer_t_content .= CHECKED;
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer_t_content .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+				$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			$answer_t_content .= "</tr>\n</tbody>";
@@ -4859,6 +5066,15 @@ function do_array_increasesamedecrease($ia)
 	global $dbprefix, $thissurvey, $clang;
 	global $shownoanswer;
 	global $notanswered;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
 
 	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);   //Checked
@@ -4967,7 +5183,7 @@ function do_array_increasesamedecrease($ia)
 			$answer_body .= CHECKED;
 		}
 
-		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 		. "</label>\n"
 		. "\t</td>\n"
 		. "\t<td>\n"
@@ -4979,7 +5195,7 @@ function do_array_increasesamedecrease($ia)
 			$answer_body .= CHECKED;
 		}
 
-		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 		. "</label>\n"
 		. "\t</td>\n"
 		. "\t<td>\n"
@@ -4991,7 +5207,7 @@ function do_array_increasesamedecrease($ia)
 			$answer_body .= CHECKED;
 		}
 
-		$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+		$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 		. "</label>\n"
 		. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
@@ -5007,7 +5223,7 @@ function do_array_increasesamedecrease($ia)
 			{
 				$answer_body .= CHECKED;
 			}
-			$answer_body .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+			$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 			. "</label>\n"
 			. "\t</td>\n";
 		}
@@ -5027,6 +5243,16 @@ function do_array_flexible($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other']; $lid = $qrow['lid'];}
@@ -5179,7 +5405,7 @@ function do_array_flexible($ia)
 					$answer .= CHECKED;
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n"
+				$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 				. "</label>\n"
 				. "\t</td>\n";
 				// --> END NEW FEATURE - SAVE
@@ -5205,7 +5431,7 @@ function do_array_flexible($ia)
 					$answer .= CHECKED;
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\"  />\n</label>\n\t</td>\n";
+				$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\"  />\n</label>\n\t</td>\n";
 				// --> END NEW FEATURE - SAVE
 			}
 			
@@ -5257,6 +5483,16 @@ function do_array_multitext($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	//echo "<pre>"; print_r($_POST); echo "</pre>";
 	$defaultvaluescript = "";
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
@@ -5444,7 +5680,7 @@ function do_array_multitext($ia)
 				. "<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 				. "<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
 				. FlattenText($labelans[$thiskey]).'" '
-				. "onchange=\"getElementById('java{$myfname2}').value=this.value;checkconditions(this.value, this.name, this.type)\" size=\"$inputwidth\" "
+				. "onchange=\"getElementById('java{$myfname2}').value=this.value;$checkconditionFunction(this.value, this.name, this.type)\" size=\"$inputwidth\" "
 				. $numbersonly 
 				. ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
 				$inputnames[]=$myfname2;
@@ -5483,6 +5719,16 @@ function do_array_multiflexi($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	//echo '<pre>'; print_r($_POST); echo '</pre>';
 	$defaultvaluescript = '';
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
@@ -5688,7 +5934,7 @@ function do_array_multiflexi($ia)
 					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 					. "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
 					. html_escape($labelans[$thiskey]).'"'
-					. " onchange=\"checkconditions(this.value, this.name, this.type)\">\n"
+					. " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
 					. "<option value=\"\">...</option>\n";
 
 					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) {
@@ -5727,9 +5973,9 @@ function do_array_multiflexi($ia)
 					. " aelt=document.getElementById('answer{$myfname2}');"
 					. " jelt=document.getElementById('java{$myfname2}');"
 					. " if(this.checked) {"
-					. "  aelt.value=1;jelt.value=1;checkconditions(1,'answer{$myfname2}',aelt.type);"
+					. "  aelt.value=1;jelt.value=1;$checkconditionFunction(1,'answer{$myfname2}',aelt.type);"
 					. " } else {" 
-					. "  aelt.value=0;jelt.value=0;checkconditions(0,'answer{$myfname2}',aelt.type);"
+					. "  aelt.value=0;jelt.value=0;$checkconditionFunction(0,'answer{$myfname2}',aelt.type);"
 					. " }; return true;\" "
 //					. " onchange=\"checkconditions(this.value, this.name, this.type)\" "
 					. " />\n";
@@ -5771,6 +6017,16 @@ function do_array_flexiblecolumns($ia)
 	global $dbprefix;
 	global $shownoanswer;
 	global $notanswered, $clang;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$qidattributes=getQuestionAttributes($ia[0]);
 	$qquery = "SELECT other, lid FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);    //Checked
@@ -5873,7 +6129,7 @@ function do_array_flexiblecolumns($ia)
 						// because I think $_SESSION[$myfname] is always set (by save.php ??) !
 						// should remove the !isset part I think !!
 					}
-					$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
+					$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
 				}
 			unset($trbc);
 				$answer .= "</tr>\n";
@@ -5916,6 +6172,16 @@ function do_array_flexible_dual($ia)
 	global $repeatheadings;
 	global $notanswered;
 	global $minrepeatheadings;
+
+	if ($ia[8] == 'Y')
+	{
+		$checkconditionFunction = "checkconditions";
+	}
+	else
+	{
+		$checkconditionFunction = "noop_checkconditions";
+	}
+
 	$inputnames=array();
 	$qquery = "SELECT other, lid, lid1 FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);    //Checked
@@ -6016,7 +6282,7 @@ function do_array_flexible_dual($ia)
     	. "\t{\n"
     	. "document.getElementsByName(vname)[i].checked=false;\n"
     	. "\t}\n"
-    	. "\tcheckconditions(value, name, type);\n"
+    	. "\t$checkconditionFunction(value, name, type);\n"
 		. "}\n"
         . "\tfunction secondlabel_checkconditions(value, name, type)\n"
         . "{\n"
@@ -6026,7 +6292,7 @@ function do_array_flexible_dual($ia)
         . "\t{\n"
         . "document.getElementById(vname).checked=false;\n"
         . "\t}\n"  
-        . "\tcheckconditions(value, name, type);\n"
+        . "\t$checkconditionFunction(value, name, type);\n"
         . "}\n"        
 		. " //-->\n"
 		. " </script>\n";
@@ -6205,7 +6471,7 @@ function do_array_flexible_dual($ia)
 					$answer .= CHECKED;
 				}
 				// --> START NEW FEATURE - SAVE
-				$answer .= " onclick=\"checkconditions(this.value, this.name, this.type)\" />\n</label>\n";
+				$answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n";
 				// --> END NEW FEATURE - SAVE
 				$answer .= "\n\t</td>\n";
 				$thiskey++;
@@ -6302,7 +6568,7 @@ function do_array_flexible_dual($ia)
 		. "else if (rank == 1) { dualname = name.replace(/#1/g,\"#0\"); }\n"
 		. "document.getElementsByName(dualname)[0].value=value;\n"
 		. "\t}\n"
-		. "checkconditions(value, name, type);\n"
+		. "$checkconditionFunction(value, name, type);\n"
 		. "}\n"
 		. " //-->\n"
 		. " </script>\n";
