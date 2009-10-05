@@ -163,7 +163,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
 	$bfieldcount=$bresult->FieldCount();
 
-	$tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,languagecode,validfrom,validuntil,invited,reminded,remindercount,completed";
+	$tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed";
     $attrfieldnames=GetAttributeFieldnames($surveyid);
     foreach ($attrfieldnames as $attr_name)
     {
@@ -2080,7 +2080,7 @@ if ($subaction == "import" &&
 	$tokenoutput .= "<div class='messagebox'>\n"
 	."<div class='header'>".$clang->gT("CSV input format")."</div>\n"
 	."<p>".$clang->gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order.").'</p><span style="font-weight:bold;">'.$clang->gT("Mandatory fields:")."</span> firstname,lastname,email<br />"
-    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, languagecode, validfrom, validuntil, attribute_1, attribute_2, attribute_3, ... ."
+    .'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, ... ."
 	."</div>\n";
 }
 
@@ -2107,9 +2107,8 @@ if ($subaction == "upload" &&
     $attrfieldnames=GetAttributeFieldnames($surveyid);
    	$duplicatelist=array();
 	$invalidemaillist=array();
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Upload CSV File")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n";
+	$tokenoutput .= "\t<div class='messagebox'><div class='header'>"
+	.$clang->gT("Token file upload")."</div>\n";
 	if (!isset($tempdir))
 	{
 		$the_path = $homedir;
@@ -2123,12 +2122,12 @@ if ($subaction == "upload" &&
 	$the_full_file_path = $the_path."/".$the_file_name;
 	if (!@move_uploaded_file($the_file, $the_full_file_path))
 	{
-		$errormessage="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."</strong>\n";
+		$errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path for the upload directory")."\n";
 		form_csv_upload($errormessage);
 	}
 	else
 	{
-		$tokenoutput .= "<br /><strong>".$clang->gT("Importing CSV File")."</strong><br />\n<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n"
+		$tokenoutput .= "<p>".$clang->gT("Importing CSV file: Success")."<br /><br />\n"
 		.$clang->gT("Creating Token Entries")."<br />\n";
 		$xz = 0; $recordcount = 0; $duplicatecount = 0; $xv = 0; $invalidemailcount = 0;
 		// This allows to read file with MAC line endings too
@@ -2145,7 +2144,7 @@ if ($subaction == "upload" &&
 			{
 				// Pick apart the first line
                 $buffer=removeBOM($buffer);
-                $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','languagecode', 'validfrom', 'validuntil');
+                $allowedfieldnames=array('firstname','lastname','email','emailstatus','token','language', 'validfrom', 'validuntil');
                 $allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
                 $firstline = convertCSVRowToArray($buffer,',','"');
                 $firstline=array_map('trim',$firstline);
@@ -2185,8 +2184,22 @@ if ($subaction == "upload" &&
 
                 if ($filterduplicatetoken!=false)
 				{
-				    $dupquery = "SELECT firstname, lastname from ".db_table_name("tokens_$surveyid")." where email=".db_quoteall($writearray['email'])." and firstname = ".db_quoteall($writearray['firstname'])." and lastname= ".db_quoteall($writearray['lastname'])."";
-					$dupresult = $connect->Execute($dupquery);
+                    if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
+                    {
+                       $filterduplicatefields=array('firstname','lastname','email'); 
+                    }
+                    else
+                    {
+                       $filterduplicatefields=$_POST['filterduplicatefields']; 
+                    }
+				    $dupquery = "SELECT tid from ".db_table_name("tokens_$surveyid")." where 1=1";
+                    foreach($filterduplicatefields as $field)
+                    {
+                      if (isset($writearray[$field])) {
+                          $dupquery.=' and '.db_quote_id($field).' = '.db_quoteall($writearray[$field]);
+                      }
+                    }
+					$dupresult = $connect->Execute($dupquery) or safe_die ("Invalid field in duplicate check<br />$dupquery<br /><br />".$connect->ErrorMsg());
 					if ( $dupresult->RecordCount() > 0)
 					{
 						$dupfound = true;
@@ -2225,11 +2238,9 @@ if ($subaction == "upload" &&
                     }else{
                         $writearray['token']=sanitize_token($writearray['token']);  
                     }
-					if (!isset($writearray['languagecode']) || $writearray['languagecode'] == "") $writearray['language'] = $baselanguage;
-                        else $writearray['language']=$writearray['languagecode'];
+					if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                     if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
                     if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
-                    unset($writearray['languagecode']);
 						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
 					. "(".implode(',',array_keys($writearray)).") \n"
 					. "VALUES ('".implode("','",array_values($writearray))."')";
@@ -2248,12 +2259,12 @@ if ($subaction == "upload" &&
 		} else {
 			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
 		}
-		$message = sprintf($clang->gT("%s records in CSV"),$recordcount).".<br />\n";
-		$message .= sprintf($clang->gT("%s records met minumum requirements"),$xv).".<br />\n";
-		$message .= sprintf($clang->gT("%s records imported"),$xz).".<br />\n";
+		$message = '<ul><li>'.sprintf($clang->gT("%s records in CSV"),$recordcount)."</li>\n";
+		$message .= '<li>'.sprintf($clang->gT("%s records met minumum requirements"),$xv)."</li>\n";
+		$message .= '<li>'.sprintf($clang->gT("%s records imported"),$xz)."\n";
 		$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
-		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
-		$message .= sprintf($clang->gT("%s duplicate records removed"),$duplicatecount);
+		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script><br />&nbsp;</li>\n";
+		$message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),$duplicatecount);
         if ($duplicatecount>0)
         {
 		$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
@@ -2263,19 +2274,19 @@ if ($subaction == "upload" &&
 		}
 		$message .= "</div>";
         }
-		$message .= "<br />\n";
-		$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed");
+		$message .= "</li>\n";
+		$message .= '<li>'.sprintf($clang->gT("%s Records with invalid email address removed"),$invalidemailcount);
 		$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
-		$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
+		$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
 		foreach($invalidemaillist as $data) {
 			$message .= "<li>$data</li>\n";
 		}
-		$message .= "</div>";
-		$message .= "<br />\n";
-		$tokenoutput .= "<i>$message</i><br />\n";
+		$message .= "</ul></div>";
+		$message .= "\n";
+		$tokenoutput .= "$message<br />\n";
 		unlink($the_full_file_path);
 	}
-	$tokenoutput .= "</td></tr></table>\n";
+	$tokenoutput .= "</div>\n";
 }
 
 if ($subaction == "uploadldap" &&
@@ -2532,14 +2543,29 @@ function form_csv_upload($error=false)
     if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
     $charsetsout.=">$title ($charset)</option>";
     }
-	$tokenoutput .= "<form class='token' enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'>\n"
-	. "<input type='hidden' name='subaction' value='upload' />\n"
-	. "<input type='hidden' name='sid' value='$surveyid' />\n"
-	. "<p><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' name='the_file' size='35' /></p>\n"
-	. "<p><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select name='csvcharset' size='1'>$charsetsout</select></p>\n"
-	. "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked' /></p>\n"
-	. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked' /></p>\n"
-	. "<p><input class='submit' type='submit' value='".$clang->gT("Upload")."' /></p>\n"
+	$tokenoutput .= "<form id='tokenimport' enctype='multipart/form-data' action='$scriptname?action=tokens' method='post'><ul>\n"
+	. "<li><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' id='the_file' name='the_file' size='35' /></li>\n"
+	. "<li><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select id='csvcharset' name='csvcharset' size='1'>$charsetsout</select></li>\n"
+	. "<li><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' /></li>\n"
+	. "<li><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' /></li>"
+    . "<li><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"
+    . "<select id='filterduplicatefields[]' name='filterduplicatefields[]' multiple='multiple' size='5'>"
+    . "<option selected='selected'>firstname</option>"
+    . "<option selected='selected'>lastname</option>"
+    . "<option selected='selected'>email</option>"
+    . "<option>token</option>"
+    . "<option>language</option>";
+    $aTokenAttr=GetAttributeFieldNames($surveyid);
+    foreach ($aTokenAttr as $thisattrfieldname)
+    {
+         $tokenoutput.="<option>$thisattrfieldname</option>";  
+    }
+
+    $tokenoutput .= "</select> "
+    . "</li></ul>\n"
+	. "<p><input class='submit' type='submit' value='".$clang->gT("Upload")."' />\n"
+    . "<input type='hidden' name='subaction' value='upload' />\n"
+    . "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "</form>\n\n";
 } # END form
 

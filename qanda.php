@@ -5244,7 +5244,7 @@ function do_array_flexible($ia)
 	global $notanswered;
 	global $minrepeatheadings;
 
-	if ($ia[8] == 'Y')
+	if (isset($ia[8]) && $ia[8] == 'Y')
 	{
 		$checkconditionFunction = "checkconditions";
 	}

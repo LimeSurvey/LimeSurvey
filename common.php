@@ -490,8 +490,12 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
 	return $dataset;
 }
 
+/**
+* This functions quotes fieldnames accordingly
+* 
+* @param mixed $id Fieldname to be quoted
+*/
 function db_quote_id($id)
-// This functions quotes fieldnames accordingly 
 {
 	global $databasetype;
     // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names

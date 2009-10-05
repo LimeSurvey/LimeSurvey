@@ -492,13 +492,6 @@ th.admincell {
 	background-color: #F8BDB5;
 }
 
-form.token label {
-	margin-top: 1em;
-	width: 40%;
-	float: left;
-	text-align: right;
-	margin-right: 0.5em;
-}
 
 .submit {
 	float: none !important;
@@ -554,11 +547,6 @@ a:link, a:visited {
 	font-size: 10pt;
 }
 
-form.token select, form.token input {
-	margin-top: 1.5em;
-	float: left;
-}
-
 table.alertbox {
     width: 450px;
     margin-left:auto; 
@@ -601,6 +589,16 @@ a.invalidemail {
     margin:0 auto;
 }
 
+.quotalist,
+.assessmentlist {
+    width:90%;
+}
+
+.users
+{
+    width:80%;     
+}
+
 .listsurveys
 {
     width:70%;
@@ -608,11 +606,6 @@ a.invalidemail {
 
 .edituser {
     width:60%;
-}
-
-.quotalist,
-.assessmentlist {
-    width:90%;
 }
 
 .quotalist th,
@@ -906,7 +899,8 @@ div.messagebox .warningheader {
 .movableNode select {
     max-width:200px;
 }
-      
+   
+#tokenimport li label:first-child,            
 #vvexport li label:first-child,            
 #importlabels li label:first-child,
 #addattribute li label:first-child,  
@@ -933,6 +927,7 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#tokenimport li,
 #vvexport li,
 #exportstructure li,
 #importlabels li,
