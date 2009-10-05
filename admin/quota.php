@@ -208,6 +208,10 @@ function getQuotaAnswers($qid,$surveyid,$quota_id)
 	}
 }
 
+$js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
+$js_adminheader_includes[]='scripts/quotas.js';    
+
+
 if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
 	if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
@@ -514,14 +518,8 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 				  AND quotals_language = '".$baselang."'";
 		$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-		$quotasoutput .='<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-  						<tr>
-    					<td valign="top">
-						<table width="100%" border="0">
-       					<tbody>
-          				<tr> 
-            			<td colspan="6" class="header">'.$clang->gT("Survey Quotas").'</td>
-          				</tr>
+		$quotasoutput .='<div class="header">'.$clang->gT("Survey quotas").'</div>
+          				<br /><table id="quotalist" class="quotalist"><thead>
           				<tr> 
             				<th width="20%">'.$clang->gT("Quota Name").'</th>
             				<th width="20%">'.$clang->gT("Status").'</th>
@@ -529,7 +527,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             				<th width="5%">'.$clang->gT("Limit").'</th>
             				<th width="5%">'.$clang->gT("Completed").'</th>
             				<th width="20%">'.$clang->gT("Action").'</th>
-          				</tr>';
+          				</tr></thead><tbody>';
 
 		if ($result->RecordCount() > 0)
 		{
@@ -587,7 +585,7 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
             		<td align="center">&nbsp;</td>
             		<td align="center">&nbsp;</td>
             		<td style="padding: 3px;" align="center"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'">
+            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add Answer").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="quota_id" value="'.$quotalisting['id'].'" />
@@ -637,29 +635,26 @@ if($sumrows5['edit_survey_property'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 
 		$quotasoutput .='<tr>
             				<td align="center">&nbsp;</td>
-            				<td align="center"><a name="quota_end">&nbsp;</a></td>
+            				<td align="center"><a name="quota_end1">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">&nbsp;</td>
             				<td align="center" style="padding: 3px;"><form action="'.$scriptname.'" method="post">
-            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'">
+            				<input name="submit" type="submit" id="quota_new" value="'.$clang->gT("Add New Quota").'" />
             				<input type="hidden" name="sid" value="'.$surveyid.'" />
             				<input type="hidden" name="action" value="quotas" />
             				<input type="hidden" name="subaction" value="new_quota" /></form></td>
-            				</tr>
-            				<tr>
+            				</tr></tbody> 
+            				<tfoot><tr>
             				<td>&nbsp;</td>
-            				<td align="center"><a name="quota_end">&nbsp;</a></td>
+            				<td align="center"><a name="quota_end2">&nbsp;</a></td>
             				<td align="center">&nbsp;</td>
             				<td align="center">'.$totalquotas.'</td>
             				<td align="center">'.$totalcompleted.'</td>
-            				<td align="center" style="padding: 3px;"<input type="button" value="'.$clang->gT("Quick CSV Report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')"></td>
+            				<td align="center" style="padding: 3px;"><input type="button" value="'.$clang->gT("Quick CSV report").'" onClick="window.open(\'admin.php?action=quotas&amp;sid='.$surveyid.'&amp;quickreport=y\', \'_top\')" /></td>
           					</tr>
-        					</tbody>
-      						</table>
-    						</td>
-	 						</tr>
-							</table>';
+        					</tfoot>
+      						</table>';
 	}
 
     if(isset($_GET['quickreport']) && $_GET['quickreport'])

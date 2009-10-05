@@ -59,6 +59,20 @@ th, p, div {
 	font-size: 10pt;
 }
 
+fieldset
+{
+    padding:0 6px 6px 6px;
+    margin: 3px;
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;  
+    border-style: solid;
+    border-width: 1px;
+}
+
+legend
+{
+    font-weight: bold;
+}
+
 .maintitle {
 	font-size: 14pt;
 	font-weight: 700;
@@ -580,13 +594,32 @@ a.invalidemail {
     background-color: #C5D0F2;
 }
 
+.quotalist,
+.edituser,
 .users,
+.assessmentlist,   
 .listsurveys {
     text-align:center;
-    width:70%;
     margin:0 auto;
 }
 
+.listsurveys
+{
+    width:70%;
+}
+
+.edituser {
+    width:60%;
+}
+
+.quotalist,
+.assessmentlist {
+    width:90%;
+}
+
+.quotalist th,
+.assessmentlist th,
+.edituser th,
 .users th,
 .listsurveys th {
     background-color: #D2E0F2;     
@@ -620,6 +653,7 @@ a.invalidemail {
     margin-left:2px;
 }
 
+.assessmentlist td form,
 #users td form {
     display:inline;
 }
@@ -874,7 +908,7 @@ div.messagebox .warningheader {
 .movableNode select {
     max-width:200px;
 }
-
+      
 #importlabels li label:first-child,
 #addattribute li label:first-child,  
 #exportdialog li label:first-child, 
@@ -887,6 +921,8 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+
+
 #sendreminder  li label:first-child,
 #sendinvitation li label:first-child,
 #edittoken li label:first-child,  
@@ -898,6 +934,7 @@ div.messagebox .warningheader {
     font-weight: bold;
 }
 
+#exportstructure li,
 #importlabels li,
 #sendreminder li,
 #sendinvitation li,
@@ -993,4 +1030,38 @@ background-color: #8195BA;
 
 #questionbottom {
     clear:both;
+}
+
+div.left
+{
+float:left;
+width:300px;
+}
+
+div.right
+{
+ float:right;
+ width:300px;
+}
+
+.wrap2columns
+{ 
+width:600px;
+margin:0 auto;
+}
+
+#resultexport ul
+{
+    list-style-type:none;
+    padding:0;
+}
+
+#resultexport ul li label
+{
+}
+
+
+#resultexport ul li 
+{
+    line-height: 1.4em;
 }

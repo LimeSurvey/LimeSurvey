@@ -24,6 +24,7 @@ function jquery_goodchars(e, goods)
 
 $(document).ready(function(){
     $('#languagetabs').tabs();
+    $(".assessmentlist").tablesorter({sortList: [[0,0]] });
     $('#radiototal,#radiogroup').change(
         function()
         {

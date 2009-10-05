@@ -183,33 +183,33 @@ if ($action == "modifyuser")
     		$sresultcount > 0	
     	) )
     {	
-		$usersummary = "<table width='100%' border='0'>\n<tr><td colspan='4' class='header'>\n"
-		. "<strong>".$clang->gT("Modifying User")."</td></tr>\n"
-		. "<tr>\n"
+		$usersummary = "<div class='header'>\n".$clang->gT("Editing user")."</div><br />\n"
+        ."<form action='$scriptname' method='post'>\n"
+		. "<table class='edituser'><thead><tr>\n"
 		. "<th>".$clang->gT("Username")."</th>\n"
 		. "<th>".$clang->gT("Email")."</th>\n"
 		. "<th>".$clang->gT("Full name")."</th>\n"
 		. "<th>".$clang->gT("Password")."</th>\n"
-		. "</tr>\n";
+		. "</tr></thead>\n";
 		$muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".db_table_name('users')." AS a LEFT JOIN ".db_table_name('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
 		//echo($muq);
 
 		$mur = db_select_limit_assoc($muq, 1);
-		$usersummary .= "<tr><form action='$scriptname' method='post'>";
+		$usersummary .= "<tbody><tr>";
 		while ($mrw = $mur->FetchRow())
 		{
 			$mrw = array_map('htmlspecialchars', $mrw);
 			$usersummary .= "<td align='center'><strong>{$mrw['users_name']}</strong>\n"
-			. "<td align='center'>\n<input type='text' name='email' value=\"{$mrw['email']}\" /></td>\n"
-			. "<td align='center'>\n<input type='text' name='full_name' value=\"{$mrw['full_name']}\" /></td>\n"
-			. "<input type='hidden' name='user' value=\"{$mrw['users_name']}\" /></td>\n"
+			. "<td align='center'>\n<input type='text' size=30 name='email' value=\"{$mrw['email']}\" /></td>\n"
+			. "<td align='center'>\n<input type='text' size=30 name='full_name' value=\"{$mrw['full_name']}\" />\n"
+			. "<input type='hidden' name='user' value=\"{$mrw['users_name']}\" />\n"
 			. "<input type='hidden' name='uid' value=\"{$mrw['uid']}\" /></td>\n";	
 			$usersummary .= "<td align='center'>\n<input type='password' name='pass' value=\"\" /></td>\n";
 		}
 		$usersummary .= "</tr>\n<tr><td colspan='4' align='center'>\n"
 		. "<input type='submit' value='".$clang->gT("Update")."' />\n"
-		. "<input type='hidden' name='action' value='moduser' /></td></tr>\n"
-		. "</form></table>\n";
+		. "<input type='hidden' name='action' value='moduser' /></td></tr></tbody>\n"
+		. "</table></form>\n";
 	}
 	else
 	{
@@ -543,7 +543,7 @@ if ($action == "editusers")
 	{
 		$usersummary .= "<form action='$scriptname' method='post'>\n"
 		. "<table class='users'><tr class='oddrow'>\n"
-        . "<td>".$clang->gT("Add User")."</td>\n"
+        . "<th>".$clang->gT("Add user:")."</th>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_user' /></td>\n"
 		. "<td align='center' width='20%'><input type='text' name='new_email' /></td>\n"
 		. "<td align='center' width='20%' ><input type='text' name='new_full_name' /></td><td width='15%'>".$clang->gT("(Sent by email)")."</td>\n"

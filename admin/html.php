@@ -134,7 +134,7 @@ if ($action == "listsurveys")
 				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$listsurveys .= "<td><img src='$imagefiles/expired.png' "
-					. "alt='".$clang->gT("This survey is active but expired.")."' >";
+					. "alt='".$clang->gT("This survey is active but expired.")."' /></td>";
 				}
 				else
 				{
@@ -142,8 +142,7 @@ if ($action == "listsurveys")
 					{
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
 						. "title=\"".$clang->gTview("This survey is active - click here to de-activate this survey.")."\" >"
-						. "<img src='$imagefiles/active.png' name='DeactivateSurvey' "
-						. "alt='".$clang->gT("This survey is active - click here to de-activate this survey.")."' /></a></td>\n";
+						. "<img src='$imagefiles/active.png' alt='".$clang->gT("This survey is active - click here to de-activate this survey.")."' /></a></td>\n";
 					} else 
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' "
@@ -185,9 +184,9 @@ if ($action == "listsurveys")
 					    $listsurveys .= "</tr>" ;
 		}
 
-		$listsurveys.="</tbody><tfooter><tr class='header'>
+		$listsurveys.="</tbody><tfoot><tr class='header'>
 		<td colspan=\"11\">&nbsp;</td>".
-		"</tr></tfooter>";
+		"</tr></tfoot>";
 		$listsurveys.="</table><br />" ;
 	}
 	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
@@ -346,8 +345,7 @@ if ($surveyid)
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
 				. "title=\"".$clang->gTview("De-activate this Survey")."\" >"
-				. "<img src='$imagefiles/deactivate.png' name='DeactivateSurvey' "
-				. "alt='".$clang->gT("De-activate this Survey")."' /></a>\n" ;
+				. "<img src='$imagefiles/deactivate.png' alt='".$clang->gT("De-activate this Survey")."' /></a>\n" ;
 			}
 			else
 			{
@@ -1581,7 +1579,7 @@ if (returnglobal('viewanswer'))
 
 if($action == "addsurveysecurity")
 {
-	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
+	$addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
 	$result = db_execute_assoc($query); //Checked
@@ -1832,21 +1830,20 @@ if($action == "exportstructure")
 {
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
-	    $exportstructure = "<form name='exportstructure' action='$scriptname' method='post'>\n" 
-	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
-	    .$clang->gT("Export Survey Structure")."\n</td></tr>\n"
-	    ."<tr>\n"
-	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' 
+	    $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n" 
+	    ."<div class='header'>"
+	    .$clang->gT("Export Survey Structure")."\n</div><br />\n"
+	    ."<ul style='margin-left:35%;'>\n"
+	    ."<li><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' 
 	    onclick=\"this.form.action.value='exportstructurecsv'\" />"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label><br />\n";
+	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label></li>\n";
 	    
-	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' 
+	    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' 
 	    onclick=\"this.form.action.value='exportstructurequexml'\" />"
 	    ."<label for='queXML'>"
-	    .$clang->gT("queXML Survey XML Format (*.xml)")." "
-	    ."</label>\n";
+	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
+	    ."</label></li></ul>\n";
 	    
 	    // XXX
 	    include("../config.php");
@@ -1861,18 +1858,12 @@ if($action == "exportstructure")
 		    ."</label>\n";
 	     }
 	    
-	    $exportstructure.="<br />&nbsp;</td>\n"
-	    ."</tr>\n"
-	    ."<tr><td height='2' bgcolor='silver'></td></tr>\n"
-	    ."<tr>\n"
-	    ."<td align='center'>\n"
+	    $exportstructure.="<p>\n"
 	    ."<input type='submit' value='"
 	    .$clang->gT("Export To File")."' />\n"
 	    ."<input type='hidden' name='sid' value='$surveyid' />\n"
-	    ."<input type='hidden' name='action' value='exportstructurecsv' />\n"
-	    ."</td>\n"
-	    ."</tr>\n";
-	    $exportstructure.="</table><br /></form>\n";
+	    ."<input type='hidden' name='action' value='exportstructurecsv' />\n";
+	    $exportstructure.="</form>\n";
     }
 }
 

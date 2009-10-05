@@ -118,8 +118,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
-		$labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n"
-		."<table width='100%' class='form2columns'>\n"
+		$labelsoutput.="<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
 		."<th>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
@@ -131,8 +130,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
         if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
 		$labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$panecookie}'>\n";
-
 		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
+        $labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
 
 		$labelsoutput.= "<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
@@ -287,12 +286,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 		.$clang->gT("Labels")
 		."\t</strong></td>\n"
 		."</tr>\n"
-        ."\t<tr><td colspan='4'>\n"        
+        ."\t<tr><td colspan='4'>\n";
+        $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"    
         ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."');\">\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
 		."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
-        $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>";    
         $first=true;
         $sortorderids=''; $codeids='';
 		foreach ($lslanguages as $lslanguage)
@@ -303,7 +302,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     		$labelcount = $result->RecordCount();
             $labelsoutput.= "<div class='tab-page'>"
                 ."<h2 class='tab'>".getLanguageNameFromCode($lslanguage)."</h2>"
-                ."\t<table id='labels' class='answertable' align='center'>\n"
+                ."\t<table class='answertable' align='center'>\n"
                 ."<thead align='center'>"
         		."<tr>\n"
         		."\t<th align='right' class='settingcaption'>\n"
@@ -438,8 +437,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			{
     			$labelsoutput.= "<tr>\n"
     			."\t<td colspan='4' align='center'>\n"
-    			."<font color='green' size='1'><i><strong>"
-    			.$clang->gT("Note: Inserting new labels must be done on the first language tab.")."</i></font>\n"
+    			."<span style='font-color:green; font-size:8px; font-weight:bold; font-style: italic;'>"
+    			.$clang->gT("Note: Inserting new labels must be done on the first language tab.")."</span>\n"
     			."\t</td>\n"
     			."</tr>\n";
 			}
@@ -511,7 +510,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."<font color='red' size='1'><i><strong>"
 			.$clang->gT("Warning")."</strong>: ".$clang->gT("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
 			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
-			$labelsoutput.= "</strong></font>\n"
+			$labelsoutput.= "</font>\n"
 			."\t</td>\n"
 			."</tr>\n";
 		}

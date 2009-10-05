@@ -58,7 +58,7 @@ if (!isset($_SESSION['loginID']))
 			{
 				// wrong or unknown username and/or email
 				$loginsummary .= "<br />".$clang->gT("User name and/or email not found!")."<br />";
-				$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$loginsummary .= "<br /><br /><a href='$scriptname?action=forgotpassword'>".$clang->gT("Continue")."</a></div><br />&nbsp;\n";
 			}
 			else
 			{
@@ -311,7 +311,7 @@ elseif ($action == "logout")
 
 elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 {
-	$addsummary = "<br /><strong>".$clang->gT("Add User")."</strong><br />\n";
+    $addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
 
 	$new_user = html_entity_decode($postnew_user,ENT_QUOTES,'UTF-8');
 	$new_email = html_entity_decode($postnew_email,ENT_QUOTES,'UTF-8');        
@@ -324,12 +324,12 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 	if(!validate_email($new_email))
 	{
 		$valid_email = false;
-		$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Email address is not valid.")."<br />\n";
+		$addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
 	}
 	if(empty($new_user))
 	{
-		if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " ";
-		$addsummary .= $clang->gT("Username was not supplied.")."<br />\n";
+		if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Failed to add user")."</strong><br />\n" . " ";
+		$addsummary .= $clang->gT("A username was not supplied.")."<br />\n";
 	}
 	elseif($valid_email)
 	{
@@ -373,7 +373,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$subject = 'Registration';
 			$to = $new_user." <$new_email>";
 			$from = $siteadminname." <$siteadminemail>";
-
+            $addsummary .="<div class='messagebox'>";
 			if(MailTextMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
 			{
 				$addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
@@ -391,13 +391,13 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			."<input type='hidden' name='action' value='setuserrights'>"
 			."<input type='hidden' name='user' value='{$new_user}'>"
 			."<input type='hidden' name='uid' value='{$newqid}'>"
-			."</form>";
+			."</form></div>";
 		}
 		else{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add user.")."</strong><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
+			$addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
 		}
 	}
-	$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	$addsummary .= "<p><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a></div><br />&nbsp;\n";
 }
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
