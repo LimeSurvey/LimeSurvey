@@ -25,18 +25,16 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if  (!isset($subaction))
 { // subaction is not set, then display instructions
     $iteratesurveyoutput = browsemenubar($clang->gT('Iterate survey'));
-    $iteratesurveyoutput .= "<br />\n";
     $iteratesurveyoutput .= "<div class='header'>".$clang->gT("Iterate survey")."</div>\n";
-    $iteratesurveyoutput .=  "<h3>".$clang->gT("Important instructions")."</h3>"
-			. "<p style='width:80%;'>\n"
-			. "<div align='center'>".$clang->gT("Click on the following button if you want to").":<br /></div>\n"
-			. "<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
+    $iteratesurveyoutput .=  "<div class='messagebox'><div class='header'>".$clang->gT("Important instructions")."</div>"
+			. "<br/>".$clang->gT("Click on the following button if you want to").":<br />\n"
+			. "<ol>"
 			. "<li>".$clang->gT("Delete all incomplete answers that correspond to a token for which a completed answers is already recorded")."</li>"
 			. "<li>".$clang->gT("Reset the completed answers to the incomplete state")."</li>"
 			. "<li>".$clang->gT("Reset all your tokens to the 'not used' state")."</li>"
 			. "</ol><br />\n"
-			. "<input type='button' onclick=\"if( confirm('".$clang->gT("Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?","js")."')){".get2post("$scriptname?action=iteratesurvey&amp;sid=$surveyid&amp;subaction=unfinalizeanswers")."}\" value='".$clang->gT("Reset answers and token completed state")."'>"
-			. "<table><tr><td>";
+			. "<input type='button' onclick=\"if( confirm('".$clang->gT("Are you really sure you want to *delete* some incomplete answers and reset the completed state of both answers and tokens?","js")."')){".get2post("$scriptname?action=iteratesurvey&amp;sid=$surveyid&amp;subaction=unfinalizeanswers")."}\" value='".$clang->gT("Reset answers and token completed state")."' />"
+			. "</div>";
 }
 
 if  ($subaction=='unfinalizeanswers') 
@@ -65,5 +63,3 @@ if  ($subaction=='unfinalizeanswers')
 		. "</p>\n"
 		. "<table><tr><td>";
 }
-
-?>       

@@ -153,7 +153,7 @@ if (!$exportstyle)
 
 	$afieldcount = count($excesscols);
 	$exportoutput .= browsemenubar($clang->gT("Export Results"));
-	$exportoutput .= "<div class='header'>".$clang->gT("Export responses").'</div>'
+	$exportoutput .= "<div class='header'>".$clang->gT("Export results").'</div>'
         ."<div class='wrap2columns'>\n"
 	    ."<form id='resultexport' action='$scriptname?action=exportresults' method='post'><div class='left'>\n";
 

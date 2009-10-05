@@ -441,12 +441,7 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
   		$editquestion .= "\t<li id='Validation'>\n"
   		. "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
   		. "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
-  		. "\t</li></ul>\n";
-        $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
-                        .'<div id="advancedquestionsettingswrapper" style="display:none;">'
-                        .'<div class="loader"></div>'
-                        .'<div id="advancedquestionsettings">'.$clang->gT("Loading...").'</div>'
-                        .'</div>';
+  		. "\t</li>";
 	
 	
     if ($adding)
@@ -459,10 +454,9 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
         if ($oqresult->RecordCount())
         {
         	// select questionposition
-            $editquestion .= "\t<tr id='questionposition'>\n"
-            . "<td align='right'><strong>".$clang->gT("Position:")."</strong></td>\n"
-            . "<td align='left'>\n"
-            . "\t<select name='questionposition'>\n"
+            $editquestion .= "\t<li>\n"
+            . "<label for='questionposition'>".$clang->gT("Position:")."</label>\n"
+            . "\t<select name='questionposition' id='questionposition'>\n"
             . "<option value=''>".$clang->gT("At end")."</option>\n"
             . "<option value='0'>".$clang->gT("At beginning")."</option>\n";
             while ($oq = $oqresult->FetchRow())
@@ -472,18 +466,25 @@ if ($action == "editquestion" || $action == "editattribute" || $action == "delat
                 $editquestion .= "<option value='".$question_order_plus_one."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
             }
             $editquestion .= "\t</select>\n"
-            . "</td>\n"
-            . "\t</tr>\n";
+            . "</li>\n";
         } 
         else      
         {
             $editquestion .= "<input type='hidden' name='questionposition' value='' />";
-        }        
-        
-        $editquestion .= "\t<tr>\n"
-        . "<td align='right'></td><td align='left'>";        
-        $editquestion .= "\t<tr><td align='center' colspan='2'><input type='submit' value='".$clang->gT("Add question")."' />\n"
-        . "\t<input type='hidden' name='action' value='insertnewquestion' /><br/><br/>&nbsp;\n";   
+        }
+    } 
+     
+    $editquestion .="</ul>\n";
+    $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
+                    .'<div id="advancedquestionsettingswrapper" style="display:none;">'
+                    .'<div class="loader"></div>'
+                    .'<div id="advancedquestionsettings">'.$clang->gT("Loading...").'</div>'
+                    .'</div>';        
+               
+    if ($adding)
+    {        
+        $editquestion .="<p><input type='submit' value='".$clang->gT("Add question")."' />\n"
+            . "\t<input type='hidden' name='action' value='insertnewquestion' /><br/><br/>&nbsp;\n";   
     }
     else
     {
@@ -595,9 +596,7 @@ if($action == "orderquestions")
     $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
     $oqresult = db_execute_assoc($oqquery);
     
-    $orderquestions = "<table width='100%' border='0'>\n\t<tr ><td colspan='2' class='settingcaption'>"
-    	. "".$clang->gT("Change Question Order")."</td></tr>"
-        . "</table>\n";
+    $orderquestions = "<div class='header'>".$clang->gT("Change Question Order")."</div>";
 
     $questioncount = $oqresult->RecordCount();        
     $oqarray = $oqresult->GetArray();
@@ -607,7 +606,7 @@ if($action == "orderquestions")
     $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
     if (!is_null($questdepsarray))
     {
-	    $orderquestions .= "<ul><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+	    $orderquestions .= "<br/><div class='movableNode' style='margin:0 auto;'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
 	    foreach ($questdepsarray as $depqid => $depquestrow)
 	    {
 		    foreach ($depquestrow as $targqid => $targcid)
@@ -619,7 +618,7 @@ if($action == "orderquestions")
 		    }
 		    $orderquestions .= "</li>\n";
 	    }
-	    $orderquestions .= "</ul></li></ul>";
+	    $orderquestions .= "</ul></div>";
     }
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";	
@@ -702,11 +701,11 @@ if($action == "orderquestions")
 	
 	    $orderquestions.= "\t<input style='float:right;";
 	    if ($i == 0) {$orderquestions.="visibility:hidden;";}
-	    $orderquestions.="' type='submit' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
+	    $orderquestions.="' type='image' src='$imagefiles/up.png' name='questionordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$updisabled."/>\n";
 	    if ($i < $questioncount-1)
 	    {
 		    // Fill the sortorder hiddenfield so we know what field is moved down
-		    $orderquestions.= "\t<input type='submit' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
+		    $orderquestions.= "\t<input type='image' src='$imagefiles/down.png' style='float:right;' name='questionordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$oqarray[$i]['question_order']}'\" ".$downdisabled."/>\n";
 	    }
 	    $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".$oqarray[$i]['question'];
 	    $orderquestions.= "</li>\n" ;

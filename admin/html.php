@@ -1424,7 +1424,7 @@ if (returnglobal('viewanswer'))
 			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
 			{
 				$vasummary .= "<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
-				."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
+				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
 				." />";
 				$vasummary .= "<input type='hidden' id='previouscode_{$row['sortorder']}' name='previouscode_{$row['sortorder']}' value=\"{$row['code']}\" />";
 			}
@@ -1447,13 +1447,13 @@ if (returnglobal('viewanswer'))
             if ($assessmentvisible && $first)
             {
                 $vasummary .= "><input type='text' id='assessment_{$row['sortorder']}' name='assessment_{$row['sortorder']}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
+                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
                 ." />";
             }
             elseif ( $first)
             {
                 $vasummary .= " style='display:none;'><input type='hidden' id='assessment_{$row['sortorder']}' name='assessment_{$row['sortorder']}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
+                ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
                 ." />";
             }
             elseif ($assessmentvisible) 
@@ -1487,12 +1487,12 @@ if (returnglobal('viewanswer'))
 			."<td width='10%'>\n";
 			if ($position > 0)
 			{
-				$vasummary .= "<input type='submit' name='method' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "<input type='image' src='$imagefiles/up.png' name='method' alt='".$clang->gT("Move answer option up")."' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			};
 			if ($position < $anscount-1)
 			{
 				// Fill the sortorder hiddenfield so we now what field is moved down
-				$vasummary .= "<input type='submit' name='method' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
+				$vasummary .= "<input type='image' name='method' src='$imagefiles/down.png' alt='".$clang->gT("Move answer option down")."' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
 			}
 			$vasummary .= "</td></tr>\n";
 			$position++;
@@ -1525,13 +1525,13 @@ if (returnglobal('viewanswer'))
                 if ($assessmentvisible)
                 {
                     $vasummary .= "><input type='text' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
-                    ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
                     ." />";
                 }
                 else 
                 {
                     $vasummary .= " style='display:none;'><input type='hidden' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
-                    ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
+                    ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
                     ." />";
                 }                     
                 $vasummary .="</td>\n"
@@ -2942,7 +2942,7 @@ if ($action == "ordergroups")
 			// DROP DOWN LIST //
 			//Move to location 
 	    	//$ordergroups.="<li class='movableNode'>\n" ;
-	    	$ordergroups.="\t<select style='float:right; margin-left: 5px;";
+	    	$ordergroups.="\t<select style='float:right; margin-left: 5px; width:20em;";
 	    	$ordergroups.="' name='groupmovetomethod$i' onchange=\"this.form.groupmovefrom.value='".$ogarray[$i]['group_order']."';this.form.groupmoveto.value=this.value;submit()\">\n";
 	    	$ordergroups.="<option value=''>".$clang->gT("Place after..")."</option>\n";
 	    	//Display the "position at beginning" item
@@ -3003,12 +3003,12 @@ if ($action == "ordergroups")
 			$ordergroups.= "<input style='float:right;";
 	
 	                if ($i == 0){$ordergroups.="visibility:hidden;";}
-	                $ordergroups.="' type='submit' name='groupordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$ogarray[$i]['group_order']}'\" ".$updisabled."/>\n";
+	                $ordergroups.="' type='image' src='$imagefiles/up.png' name='groupordermethod' value='".$clang->gT("Up")."' onclick=\"this.form.sortorder.value='{$ogarray[$i]['group_order']}'\" ".$updisabled."/>\n";
 	
 	   		if ($i < $groupcount-1)
 	    			{
 	    				// Fill the hidden field 'sortorder' so we know what field is moved down
-					$ordergroups.= "<input type='submit' style='float:right;' name='groupordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$ogarray[$i]['group_order']}'\" ".$downdisabled."/>\n";
+					$ordergroups.= "<input type='image' src='$imagefiles/down.png' style='float:right;' name='groupordermethod' value='".$clang->gT("Dn")."' onclick=\"this.form.sortorder.value='{$ogarray[$i]['group_order']}'\" ".$downdisabled."/>\n";
 	    			}
 				$ordergroups.=$ogarray[$i]['group_name']."</li>\n" ;
 	

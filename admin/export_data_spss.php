@@ -73,19 +73,17 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if  (!isset($subaction))
 {
 	$exportspssoutput = browsemenubar($clang->gT('Export results'));
-	$exportspssoutput .= "<br />\n";
 	$exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
 	$exportspssoutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export SPSS syntax file")."</a></li><li>"
 	."<a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export SPSS data file")."</a></li></ul></p><br />\n"
-	."<h3>".$clang->gT("Instructions for the impatient")."</h3>"
-	."<ol style='width:500px;margin:0 auto; font-size:8pt;'>"
+	."<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+	."<br/><ol style='margin:0 auto; font-size:8pt;'>"
 	."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
 	."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"
 	."<li>".$clang->gT("Edit the 4th line and complete the filename with a full path to the downloaded data file.")."</li>"
 	."<li>".$clang->gT("Choose 'Run/All' from the menu to run the import.")."</li>"
-	."</ol><br />"
-	.$clang->gT("Your data should be imported now.")
-	."<table><tr><td>";
+	."</ol><p>"
+	.$clang->gT("Your data should be imported now.").'</div>';
 } else {
 	// Get Base Language:
 
