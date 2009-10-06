@@ -555,7 +555,7 @@ END;
 		{
 			if ($cd[3] == '' || $cd[3] == ' ')
 			{ // empty == no answer is a specific case and must be evaluated differently
-				if ($cd[3] == '' || $cd[3] == ' ')
+				if ($cd[6] == '==')
 				{
 					$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
 				}
