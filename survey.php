@@ -555,7 +555,14 @@ END;
 		{
 			if ($cd[3] == '' || $cd[3] == ' ')
 			{ // empty == no answer is a specific case and must be evaluated differently
-				$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
+				if ($cd[3] == '' || $cd[3] == ' ')
+				{
+					$java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
+				}
+				else
+				{
+					$java .= "$JSsourceElt != null && $JSsourceVal";
+				}
 			}
 	elseif($cd[4] == "M" || $cd[4] == "P")
 			{ // Type M and P questions are processed specifically
