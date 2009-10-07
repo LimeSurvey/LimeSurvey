@@ -114,46 +114,62 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 
 if ($action == "setusertemplates")
 {
-              refreshtemplates();
-              $usersummary = "<table width='50%' border='0'>\n<tr><td colspan='2' bgcolor='black' align='center'><form method='post' action='$scriptname'>\n"
-              . "<strong><font color='white'>".$clang->gT("Set templates that this user may access").": ".$_POST['user']."</td></tr>\n";
+	refreshtemplates();
+	$usersummary = "\n<form action='$scriptname' method='post'>\n\t<table id=\"user-template-rights\" width='50%' border='0'>\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
+	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t\t\t</tr>\n";
+	
+	$userlist = getuserlist();
+	foreach ($userlist as $usr)
+	{
+		if ($usr['uid'] == $postuserid)
+		{
+			$templaterights = array();
+			$squery = 'SELECT '.db_quote_id('folder').','.db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
+			$sresult = db_execute_assoc($squery) or safe_die($connect->ErrorMsg());//Checked
+			while ($srow = $sresult->FetchRow())
+			{
+				$templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
+			}
 
-              $userlist = getuserlist();
-              foreach ($userlist as $usr)
-              {
-                      if ($usr['uid'] == $postuserid)
-                      {
-                              $templaterights = array();
-                              $squery = 'SELECT '.db_quote_id('folder').','.db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid={$usr['uid']}";
-                              $sresult = db_execute_assoc($squery) or safe_die($connect->ErrorMsg());//Checked
-                              while ($srow = $sresult->FetchRow()) {
-                                      $templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
-                              }
+			$usersummary .= "\t\t\t<tr>\n\t\t\t\t<th>"
+				.$clang->gT('Template Name')
+				."</th>\n\t\t\t\t<th>"
+				.$clang->gT('Allowed')
+				."</th>\n\t\t\t</tr>\n"
+				."\t</thead>\n\n<tbody>\n";
 
-                              $usersummary .= "<tr><th>".$clang->gT("Template Name")."</th><th>".$clang->gT("Allowed")."</th></tr>\n"
-                                      ."<tr><form method='post' action='$scriptname'></tr>"
-                                      ."<form action='$scriptname' method='post'>\n";
+			$tquery = "SELECT * FROM ".$dbprefix."templates";
+			$tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
+			$table_row_odd_even = 'odd';
+			while ($trow = $tresult->FetchRow())
+			{
+				if($table_row_odd_even == 'odd' )
+				{
+					$row_class = ' class="row_odd"';
+					$table_row_odd_even = 'even';
+				}
+				else
+				{
+					$row_class = ' class="row_even"';
+					$table_row_odd_even = 'odd';
+				};
+				$usersummary .= "\t\t\t<tr$row_class>\n\t\t\t\t<td>{$trow["folder"]}</td>\n";
 
-                              $tquery = "SELECT * FROM ".$dbprefix."templates";
-                              $tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
-                              while ($trow = $tresult->FetchRow()) {
-                                      $usersummary .= "<tr><td>{$trow["folder"]}</td>";
-
-                                      $usersummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
-                                      if(isset($templaterights[$trow["folder"]]) && $templaterights[$trow["folder"]]["use"] == 1) {
-                                              $usersummary .= " checked='checked' ";
-                                      }
-                                      $usersummary .=" /></td>\n</tr>\n";
-                              }
-
-                              $usersummary .= "<tr><form method='post' action='$scriptname'></tr>"      // added by Dennis
-                              ."\n<tr><td colspan='3' align='center'>"
-                              ."<input type='submit' value='".$clang->gT("Save Settings")."' />"
-                              ."<input type='hidden' name='action' value='usertemplates' />"
-                              ."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
-                              ."</form>"
-                              . "</table>\n";
-                              continue;
+				$usersummary .= "\t\t\t\t<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
+				if(isset($templaterights[$trow["folder"]]) && $templaterights[$trow["folder"]]["use"] == 1)
+				{
+					$usersummary .= ' checked="checked"';
+				}
+				$usersummary .=" /></td>\n\t\t\t</tr>\n";
+			}
+			
+			$usersummary .= "\n\t\t</tbody>\n\n\t\t<tfoot>\n\t\t\t<tr>\t\t\t\t<td colspan='3' align='center'>\n"
+				."\t\t\t\t\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
+				."\t\t\t\t\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
+				."\t\t\t\t\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tfoot>\n"
+				."\t</table>\n"
+				."</form>\n";
+			continue;
                      }
               }
 }
