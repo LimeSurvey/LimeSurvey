@@ -322,46 +322,34 @@ if (!$exportstyle)
 		$exportoutput .= ">$i: $ec</option>\n";
 		$i++;
 	}
-	$exportoutput .= "\t</select><br />\n";
+	$exportoutput .= "\t</select>\n";
+    $exportoutput .= "</fieldset>\n";
 	if (isset($tablecount) && $tablecount > 0) //Do second column
 	{
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
 		if ($tablecount > 0)
 		{
-			$exportoutput .= "<table align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>"
-			."\t<tr>\n"
-			."<td height='8'><font face='verdana' size='1'><strong>"
-			.$clang->gT("Token Control")."</strong>\n"
-			."</font></td>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."<td height='8'><strong><font size='1'>\n"
+			$exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
 			.$clang->gT("Choose Token Fields").":"
-			."</font></font></strong></td>\n"
-			."\t</tr>\n"
-			."\t<tr>\n"
-			."<td><font size='1'>"
 			."<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' align='right' onclick='javascript:alert(\""
 			.$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
-			."\")' /><br /><br />\n"
+			."\")' /><ul><li>\n"
 			."<input type='checkbox' class='checkboxbtn' name='first_name' id='first_name' />"
-			."<label for='first_name'>".$clang->gT("First Name")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
-			."<label for='last_name'>".$clang->gT("Last Name")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
-			."<label for='email_address'>".$clang->gT("Email")."</label><br />\n"
-			."<input type='checkbox' class='checkboxbtn' name='token' id='token' />"
-			."<label for='token'>".$clang->gT("Token")."</label><br />\n";
+			."<label for='first_name'>".$clang->gT("First Name")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='last_name' id='last_name' />"
+			."<label for='last_name'>".$clang->gT("Last Name")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='email_address' id='email_address' />"
+			."<label for='email_address'>".$clang->gT("Email")."</label></li>\n"
+			."<li><input type='checkbox' class='checkboxbtn' name='token' id='token' />"
+			."<label for='token'>".$clang->gT("Token")."</label></li>\n";
 
             $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
             foreach ($attrfieldnames as $attr_name=>$attr_desc)
 			{
-				$exportoutput .= "<input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
-				."<label for='$attr_name'>".$attr_desc."</label><br />\n";
+				$exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
+				."<label for='$attr_name'>".$attr_desc."</label></li>\n";
 			}
-			$exportoutput .= "</font></font></td>\n"
-			."\t</tr>\n"
-			."</table>";
+			$exportoutput .= "</ul>\n";
 		}
 	}
 	$exportoutput .= "</fieldset></div>\n"

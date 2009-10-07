@@ -197,13 +197,27 @@ if (recursive_in_array($templatename,$templates)===false)
 
 if ($subaction == "delete" && is_template_editable($templatename)==true) 
 {
-   rmdirr($templaterootdir."/".$templatename);
-   
-   $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";    
-   $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
-   
-   $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
-   $templatename = $defaulttemplate;
+   if (rmdirr($templaterootdir."/".$templatename)==true)
+   {
+       $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";    
+       $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+
+       $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";    
+       $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+
+       $templatequery = "delete from {$dbprefix}templates_rights where folder='$templatename'\n";    
+       $connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+
+       $templatequery = "delete from {$dbprefix}templates where folder='$templatename'\n";    
+       $connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked 
+       
+       $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
+       $templatename = $defaulttemplate;
+   }
+   else
+   {
+       $flashmessage=sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename);
+   }
 }
 
 if ($action == "templateupload")
