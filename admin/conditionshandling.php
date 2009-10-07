@@ -138,10 +138,9 @@ $conditionsoutput .="\t</div><div class='menubar-right'>\n"
 		."<font class=\"boxcaption\">".$clang->gT("Questions").":</font>\n"
 		."<select id='questionNav' onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\"></select>\n"
 		."<img hspace=\"0\" border=\"0\" alt=\"\" src=\"$imagefiles/seperator.gif\"/>\n"
-		."<a href=\"#\" onclick=\"showhelp('show')\"" 
-		."title=\"".$clang->gTview("Show help")."\"" 
+		."<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey manual")."\">" 
 		."<img src='$imagefiles/showhelp.png' name='ShowHelp' title=''" 
-		."alt='". $clang->gT("Show help")."' /></a>";
+		."alt='". $clang->gT("LimeSurvey manual")."' /></a>";
 
 
 $conditionsoutput .= "\t</div></div></div>\n"
@@ -1143,7 +1142,7 @@ if ($subaction=='' ||
 			$conditionsoutput .= "<a href='#' "
 				. " onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set to the questions you have selected?","js")."')) {document.getElementById('deleteallconditions').submit();}\""
 				." title='".$clang->gTview("Delete all conditions")."' >"
-				." <img src='$imagefiles/conditions_deleteall.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditions' /></a>\n";
+				." <img src='$imagefiles/conditions_deleteall.png'  alt='".$clang->gT("Delete all conditions")."' name='DeleteAllConditionsImage' /></a>\n";
 		}
 
 		if ($scenariocount > 1)
@@ -1168,7 +1167,7 @@ if ($subaction=='' ||
 
 	if ($scenariocount > 0)
 	{
-        $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+        $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
         $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-checkgroup.js';
 		while ($scenarionr=$scenarioresult->FetchRow())
 		{
@@ -1475,8 +1474,7 @@ if ($subaction=='' ||
 							." title='".$clang->gTview("Delete this condition")."' >"
 							." <img src='$imagefiles/conditions_delete.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
 							."<a href='#' "
-							." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'"
-							."  alt='".$clang->gTview("Edit this condition")."' >" 
+							." onclick='document.getElementById(\"subaction{$rows['cid']}\").value=\"editthiscondition\";document.getElementById(\"conditionaction{$rows['cid']}\").submit();'>" 
 							." <img src='$imagefiles/conditions_edit.png'  alt='".$clang->gT("Edit this condition")."' name='EditThisCondition' /></a>\n"
 							."\t<input type='hidden' name='subaction' id='subaction{$rows['cid']}' value='delete' />\n"
 							."\t<input type='hidden' name='cid' value='{$rows['cid']}' />\n"
@@ -1729,7 +1727,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."\t</ul>\n";
 		
 	// Previous question tab
-	$conditionsoutput .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
+	$conditionsoutput .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' >\n";
 	if (isset($cquestions))
 	{
 		$js_getAnswers_onload = "";
@@ -1757,7 +1755,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."</div>\n";
 
 	// Source token Tab
-	$conditionsoutput .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' align='left'>\n";
+	$conditionsoutput .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' style='width:600px;font-family:verdana; font-size:10;' size='".($qcount+1)."' >\n";
 	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
 		// Check to select
@@ -1780,7 +1778,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		. "\t</tr>\n"
 		. "\t<tr class='conditiontbl'>\n"
 		. "<td align='right' valign='middle'>".$clang->gT("Comparison operator")."</td>\n"
-		. "<td><select name='method' id='method' style='font-family:verdana; font-size:10' align='left'>\n"
+		. "<td><select name='method' id='method' style='font-family:verdana; font-size:10' >\n"
 		. "\t<option value='<'>".$clang->gT("Less than")."</option>\n"
 		. "\t<option value='<='>".$clang->gT("Less than or equal to")."</option>\n"
 		. "\t<option selected='selected' value='=='>".$clang->gT("Equals")."</option>\n"	
@@ -1847,17 +1845,17 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."</ul>\n";
 
 	// Predefined answers tab
-	$conditionsoutput .= "\t<div id='CANSWERSTAB'><select align='left' name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
+	$conditionsoutput .= "\t<div id='CANSWERSTAB'><select  name='canswers[]' $multipletext id='canswers' style='font-family:verdana; font-size:10; width:600px;' size='7'>\n"
 		."\t</select>\n"
 		."\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answers for this question")."</span>\n"
 		."\t</div>\n\t\n";
 	// Constant tab 
 	$conditionsoutput .= "<div id='CONST' style='display:' >"
-		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' align='left' style='width:600px;font-family:verdana; font-size:10' size='7' >$EDITConditionConst</textarea>\n"
+		."\t\t<textarea name='ConditionConst' id='ConditionConst' cols='113' rows='5' style='width:600px;font-family:verdana; font-size:10' >$EDITConditionConst</textarea>\n"
 		."\t\t<br /><div id='ConditionConstLabel'>".$clang->gT("Constant value")."</div>\n"
 		."\t\t</div>\n";
 	// Previous answers tab @SGQA@ placeholders
-	$conditionsoutput .= "\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	$conditionsoutput .= "\t<div id='PREVQUESTIONS'><select name='prevQuestionSGQA' id='prevQuestionSGQA' style='font-family:verdana; font-size:10; width:600px;' size='7' >\n";
 	foreach ($cquestions as $cqn) 
 	{ // building the @SGQA@ placeholders options
 		if ($cqn[2] != 'M' && $cqn[2] != 'P')
@@ -1876,7 +1874,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// tokenAttr Tab
 
-	$conditionsoutput .= "\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' align='left'>\n";
+	$conditionsoutput .= "\t<div id='TOKENATTRS'><select name='tokenAttr' id='tokenAttr' style='font-family:verdana; font-size:10; width:600px;' size='7' >\n";
 	foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
 	{
 		$conditionsoutput .= "<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
@@ -1888,13 +1886,13 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 
 	// Regexp Tab
 	$conditionsoutput .= "<div id='REGEXP' style='display:'>"
-		."<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' align='left' ></textarea>\n"
+		."<textarea name='ConditionRegexp' id='ConditionRegexp' cols='113' rows='5' style='width:600px;' ></textarea>\n"
 		."<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		."</div>\n";
 	$conditionsoutput .= "</div>\n"; // end conditiontarget div
 
 
-    $js_adminheader_includes[]= $homeurl.'/scripts/assessments.js';
+    $js_adminheader_includes[]= $homeurl.'/scripts/conditions.js';
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
     $js_adminheader_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
     
@@ -2079,7 +2077,7 @@ function showSpeaker($hinttext)
 	}
 	else
 	{
-        $reshtml= "<span alt='".$hinttext."' title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";                
+        $reshtml= "<span title='".$htmlhinttext."'> \"$htmlhinttext\"</span>";                
 	}
 
   return $reshtml; 
