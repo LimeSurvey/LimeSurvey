@@ -33,6 +33,7 @@ if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'))
 include_once("login_check.php");
 include_once("database.php");
 $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
+$thissurvey=getSurveyInfo($surveyid);
 
 //$invitationBody = "Dear {FIRSTNAME},\n\nYou have been invited to participate in a survey.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
 //$reminderBody = "Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}";
@@ -130,6 +131,10 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
     if ($_POST['tokenstatus']==2)
     {
         $bquery .= " and completed='N'";
+        if ($thissurvey['private']=='N')
+        {
+            $bquery .=" and token not in (select token from ".db_table_name("survey_$surveyid")." group by token)";
+        }
     }
     if ($_POST['tokenstatus']==3 && $thissurvey['private']=='N')
     {
@@ -1938,9 +1943,9 @@ if ($subaction == "updatetoken" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n";
+    $tokenoutput .= "\t<div class='messagebox'><div class='header'>"      
+	.$clang->gT("Edit token entry")."</div>\n"
+	."\t<p>\n";
     if (trim($_POST['validfrom'])=='') {
         $_POST['validfrom']=null;
     }
@@ -1991,14 +1996,14 @@ if ($subaction == "updatetoken" &&
 		$tokenoutput .=  "<br /><span class='successtitle'>".$clang->gT("Success")."</span><br />\n"
 						."<br />".$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
 						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse".$_POST['urlextra']."'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
-						."\t</td></tr></table>\n";
+						."\t</div>\n";
 	}
 	  else
 	  {
 		$tokenoutput .=  "<br /><font color='red'><strong>".$clang->gT("Failed")."</strong></font><br />\n"
 						."<br />".$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
 						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=edit&amp;tid={$tokenid}'>".$clang->gT("Show this token entry")."</a><br /><br />\n"
-						."\t</td></tr></table>\n";
+						."\t</div>\n";
 
 	  }
 
@@ -2027,9 +2032,9 @@ if ($subaction == "inserttoken" &&
     }
 
 	$santitizedtoken=sanitize_token($_POST['token']);
-	$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
-	.$clang->gT("Add or Edit Token Entry")."</strong></td></tr>\n"
-	."\t<tr><td align='center'>\n";
+	$tokenoutput .= "\t<div class='messagebox'><div class='header'>"
+	.$clang->gT("Add token entry")."</div>\n"
+	."\t<P>\n";
 	$data = array('firstname' => $_POST['firstname'],
 	'lastname' => $_POST['lastname'],
 	'email' => sanitize_email($_POST['email']),
@@ -2056,7 +2061,7 @@ if ($subaction == "inserttoken" &&
 		."<br />".$clang->gT("Added New Token")."<br /><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br />\n"
 		."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew'>".$clang->gT("Add new token entry")."</a><br /><br />\n"
-		."\t</td></tr></table>\n";
+		."\t</div>\n";
 	}
 	  else
 	  {
