@@ -1106,7 +1106,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			if (mins > 0) d2mins = mins+' ".$clang->gT('mins').": ';
 			if (secs > 0) d2secs = secs+' ".$clang->gT('seconds')."';
 			if (secs < 1) d2secs = '0 ".$clang->gT('seconds')."';
-			document.getElementById(timerdisplay).innerHTML = '".$clang->gT('Time Remaining').":<br />'+d2hours + d2mins + d2secs;
+			document.getElementById(timerdisplay).innerHTML = '".$clang->gT('Time remaining').":<br />'+d2hours + d2mins + d2secs;
 			if (timeleft>0){
 				var text='countdown('+questionid+', '+timeleft+', '+action+', '+warning+', '+warninghide+', \"'+disable+'\")';
 				setTimeout(text,1000);
@@ -4152,7 +4152,7 @@ function do_shortfreetext($ia)
 
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-    if (isset($qidattributes['other_numbers_only']) && $qidattributes['other_numbers_only']==1)
+    if ($qidattributes['numbers_only']==1)
 	{
 		$numbersonly = 'onkeypress="return goodchars(event,\'0123456789.\')"';
 	}

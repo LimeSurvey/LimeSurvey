@@ -1623,7 +1623,7 @@ $viewalltext.=" /><label for='noncompleted'>".$clang->gT("Don't consider NON com
 //Output selector
 $viewalltext .= "<tr>"
 	."<td align='center'>"
-	.$clang->gT("Select Output Format").":<br/>"
+	.$clang->gT("Select output format").":<br/>"
 	."<input type='radio' name='outputtype' value='html' checked='checked' />HTML <input type='radio' name='outputtype' value='pdf' />PDF <input type='radio' onclick='nographs();' name='outputtype' value='xls' />Excel"
 	."</td>"
 	."</tr>";

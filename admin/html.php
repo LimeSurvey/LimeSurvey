@@ -589,8 +589,8 @@ if ($surveyid)
         elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
-            . "title=\"".$clang->gTview("Add New Group to Survey")."\">"
-            . "<img src='$imagefiles/add.png' alt='".$clang->gT("Add New Group to Survey")."' name='AddNewGroup' /></a>\n";
+            . "title=\"".$clang->gTview("Add new group to survey")."\">"
+            . "<img src='$imagefiles/add.png' alt='".$clang->gT("Add new group to survey")."' name='AddNewGroup' /></a>\n";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
         . "<img src='$imagefiles/blank.gif' width='19' alt=''  />\n"
@@ -1880,7 +1880,7 @@ if($action == "exportstructureGroup")
 	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv' 
 	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey Group File (*.csv)")."</label><br />\n";
+	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
 
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -1933,7 +1933,7 @@ if($action == "exportstructureQuestion")
 	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv' 
 	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
 	    ."<label for='surveycsv'>"
-	    .$clang->gT("LimeSurvey Group File (*.csv)")."</label><br />\n";
+	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
 	    
 //	    $exportstructure.="<input type='radio' class='radiobtn' name='type' value='structurequeXMLGroup'  id='queXML' onclick=\"this.form.action.value='exportstructurequexml'\" />"
 //	    ."<label for='queXML'>"
@@ -2492,7 +2492,7 @@ if ($action == "editsurvey")
 			. "</li>\n";
 
 			//EMAIL SURVEY RESPONSES TO
-			$editsurvey .= "<li><label for=''>".$clang->gT("Email Responses To:")."</label>\n"
+			$editsurvey .= "<li><label for=''>".$clang->gT("Email responses to:")."</label>\n"
 			. "<input type='text' value=\"{$esrow['emailresponseto']}\" name='emailresponseto' />\n"
 			. "</li>\n";
 
@@ -3296,7 +3296,7 @@ if ($action == "newsurvey")
 		. "</div>\n";
 
 		//EMAIL SURVEY RESPONSES TO
-		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email Responses To:")."</span>\n"
+		$newsurvey .= "<div class='settingrow'><span class='settingcaption'>".$clang->gT("Email responses to:")."</span>\n"
 		. "<span class='settingentry'><input type='text' name='emailresponseto'>\n"
 		. "</span>"
 		. "</div>\n";

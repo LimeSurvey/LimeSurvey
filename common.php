@@ -3378,8 +3378,8 @@ function questionAttributes($returnByName=false)
     'options'=>array(0=>$clang->gT('No'),
                      1=>$clang->gT('Yes')),
     'default'=>0,                 
-    "help"=>$clang->gT('Allow only numerical input for "Other" text'),
-    "caption"=>$clang->gT('Numbers only for "Other"'));
+    "help"=>$clang->gT("Allow only numerical input for 'Other' text"),
+    "caption"=>$clang->gT("Numbers only for 'Other'"));
 
 
     $qattributes["random_order"]=array(

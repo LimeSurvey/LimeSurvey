@@ -1705,7 +1705,7 @@ function sendsubmitnotification($sendnotification)
 	{
 		$ertmessage  = $clang->gT("This email contains confirmation of the responses you made to the survey")." ".$thissurvey['name']."\n";
 		$ertmessage .= $results;
-		$ertsubject  = $clang->gT("Survey Submission Confirmation");
+		$ertsubject  = $clang->gT("Survey submission confirmation");
 		
 		foreach($emailresponseto as $ert)
 		{

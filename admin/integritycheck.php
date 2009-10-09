@@ -485,7 +485,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                 $integritycheck2 .= "</span></li>\n";
     		}
             $integritycheck2 .= "</ul><input type='hidden' name='ok' value='R' />\n"
-                              ."<center><input type='submit' value='".$clang->gT("Delete Checked Items!")."' /><br />\n"
+                              ."<center><input type='submit' value='".$clang->gT("Delete checked items!")."' /><br />\n"
                               ."<p><span style='color: red; font-size:0.8em;'>".$clang->gT("Note that you cannot undo a delete if you proceed. The data will be gone.")."</span><br /></center>\n"
                               ."</form>\n";
     		
@@ -519,7 +519,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     
         
         if (isset($oldsdelete)) {
-		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old survey result tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldsdelete as $olds) {
 		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
 			    $sql = "DROP TABLE $olds";
@@ -529,7 +529,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		}
 		
         if (isset($oldtdelete)) {
-		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old survey result tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldtdelete as $oldt) {
 		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
 			    $sql = "DROP TABLE $oldt";
@@ -598,7 +598,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $integritycheck .= "</span><br />\n";
         }
         if (isset($qdelete)) {
-            $integritycheck .= $clang->gT("Deleting Questions").":<br /><span style='font-size:7pt;'>\n";
+            $integritycheck .= $clang->gT("Deleting questions").":<br /><span style='font-size:7pt;'>\n";
             foreach ($qdelete as $qd) {
                 $integritycheck .= $clang->gT("Deleting qid").":".$qd."<br />\n";
                 $sql = "DELETE FROM {$dbprefix}questions WHERE qid=$qd";
@@ -621,7 +621,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     } elseif ($ok == "R")
     {
 	    $integritycheck .= "<div class='messagebox'>\n"
-        . "<div class='header'>".$clang->gT("Data Redundancy Check")."<br />\n"
+        . "<div class='header'>".$clang->gT("Data redundancy Check")."<br />\n"
 		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from deactivation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');
@@ -629,7 +629,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
         $oldtoptionaldelete=returnglobal('oldtoptionaldelete');
         
         if (isset($oldsoptionaldelete)) { //OLD Survey Tables with zero entries
-		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old survey result tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldsoptionaldelete as $olds) {
 		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
 			    $sql = "DROP TABLE $olds";
@@ -639,7 +639,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		}
 
         if (isset($oldsmultidelete)) {
-		    $integritycheck .= $clang->gT("Deleting Old Survey Result Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old survey result tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldsmultidelete as $olds) {
 		        $integritycheck .= $clang->gT("Deleting")." $olds<br />\n";
 			    $sql = "DROP TABLE $olds";
@@ -659,7 +659,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		}
 
         if (isset($oldtoptionaldelete)) {
-		    $integritycheck .= $clang->gT("Deleting Old Token Tables").":<br /><span style='font-size: 7pt;'>\n";
+		    $integritycheck .= $clang->gT("Deleting old token tables").":<br /><span style='font-size: 7pt;'>\n";
 		    foreach ($oldtoptionaldelete as $oldt) {
 		        $integritycheck .= $clang->gT("Deleting")." $oldt<br />\n";
 			    $sql = "DROP TABLE $oldt";

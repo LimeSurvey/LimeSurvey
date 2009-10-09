@@ -34,7 +34,7 @@ function UpdateStep1()
   $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />'; 
   $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>'; 
   $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>'; 
-  $output.='<li>'.$clang->gT('Your DB and and any changed files will be backed up.').'</li>'; 
+  $output.='<li>'.$clang->gT('Your DB and any changed files will be backed up.').'</li>'; 
   $output.='<li>'.$clang->gT('New files will be downloaded and installed.').'</li>'; 
   $output.='<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul>'; 
   $output.='<br />'.$clang->gT('Checking basic requirements...'); 
