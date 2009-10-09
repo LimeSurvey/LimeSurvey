@@ -443,7 +443,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 
         $integritycheck2 = "<div class='messagebox'>"
         . "<div class='header'>".$clang->gT("Data redundancy check")."<br />"
-		. "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after de-activating a survey. You can delete these if you no longer require them.")."</span>\n"
+		. "<span style='font-size:7pt;'>".$clang->gT("The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them.")."</span>\n"
 		. "</div>\n";
         if (!isset($oldsoptionaldelete) && !isset($oldsmultidelete) &&  
 		    !isset($oldtoptionaldelete) && !isset($oldtmultidelete) ) {
@@ -622,7 +622,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
 	    $integritycheck .= "<div class='messagebox'>\n"
         . "<div class='header'>".$clang->gT("Data Redundancy Check")."<br />\n"
-		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from de-activation")."</span></div><p>\n";
+		. "<span style='font-size:7pt;'>".$clang->gT("Deleting old token and response tables leftover from deactivation")."</span></div><p>\n";
         $oldsmultidelete=returnglobal('oldsmultidelete');
         $oldtmultidelete=returnglobal('oldtmultidelete');
         $oldsoptionaldelete=returnglobal('oldsoptionaldelete');

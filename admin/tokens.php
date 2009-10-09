@@ -2280,7 +2280,7 @@ if ($subaction == "upload" &&
 		$message .= "</div>";
         }
 		$message .= "</li>\n";
-		$message .= '<li>'.sprintf($clang->gT("%s Records with invalid email address removed"),$invalidemailcount);
+		$message .= '<li>'.sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);
 		$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
 		$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
 		foreach($invalidemaillist as $data) {
@@ -2510,7 +2510,7 @@ if ($subaction == "uploadldap" &&
 			}
 			$message .= "</div>";
 			$message .= "<br />\n";
-			$message .= "$invalidemailcount ".$clang->gT("Records with invalid email address removed");
+            $message .= sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);               
 			$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
 			$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
 			foreach($invalidemaillist as $data) {

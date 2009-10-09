@@ -141,8 +141,8 @@ if ($action == "listsurveys")
 					if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
 					{
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
-						. "title=\"".$clang->gTview("This survey is active - click here to de-activate this survey.")."\" >"
-						. "<img src='$imagefiles/active.png' alt='".$clang->gT("This survey is active - click here to de-activate this survey.")."' /></a></td>\n";
+						. "title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
+						. "<img src='$imagefiles/active.png' alt='".$clang->gT("This survey is active - click here to deactivate this survey.")."' /></a></td>\n";
 					} else 
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' "
@@ -344,8 +344,8 @@ if ($surveyid)
 			if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['activate_survey'])
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
-				. "title=\"".$clang->gTview("De-activate this Survey")."\" >"
-				. "<img src='$imagefiles/deactivate.png' alt='".$clang->gT("De-activate this Survey")."' /></a>\n" ;
+				. "title=\"".$clang->gTview("Deactivate this Survey")."\" >"
+				. "<img src='$imagefiles/deactivate.png' alt='".$clang->gT("Deactivate this Survey")."' /></a>\n" ;
 			}
 			else
 			{

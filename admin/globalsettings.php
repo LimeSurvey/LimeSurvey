@@ -417,7 +417,7 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<td align='right'>\n"
-    . "<strong>".$clang->gT("De-activated surveys").":</strong>\n"
+    . "<strong>".$clang->gT("Deactivated surveys").":</strong>\n"
     . "</td><td>$deactivatedsurveys</td>\n"
     . "</tr>\n"
     . "<tr>\n"
@@ -427,7 +427,7 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<td align='right'>\n"
-    . "<strong>".$clang->gT("De-activated token tables").":</strong>\n"
+    . "<strong>".$clang->gT("Deactivated token tables").":</strong>\n"
     . "</td><td>$deactivatedtokens</td>\n"
     . "</tr>\n"
     . "</table>\n";
