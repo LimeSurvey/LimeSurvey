@@ -15,7 +15,7 @@
     <style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
-
+<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico">
 	</head>
 	<body>
 

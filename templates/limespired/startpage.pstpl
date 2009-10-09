@@ -17,6 +17,7 @@
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>    
+<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico">
 </head>
 	<body id="page_bg">
 		<div id="wrapper2">
