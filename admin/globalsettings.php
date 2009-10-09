@@ -79,7 +79,7 @@ function globalsettingsdisplay()
     
     if (isset($subaction) && $subaction == "updatecheck")
     {
-        updatecheck();
+        $updateinfo=updatecheck();
     }  
     
     if (isset($action) && $action == "globalsettings")
@@ -122,6 +122,12 @@ function globalsettingsdisplay()
               $editsurvey .=sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)").'<br />';
               $editsurvey .=sprintf($clang->gT('You can update manually or use the %s'),"<a href='$scriptname?action=update'>".$clang->gT('3-Click ComfortUpdate').'</a>').'.<br />';
             }                         
+            elseif (isset($updateinfo['errorcode']))
+            {
+              $editsurvey .=sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']).'.<br />';
+              $editsurvey .="<textarea readonly='readonly' style='width:35%; height:60px; overflow: auto;'>".strip_tags($updateinfo['errorhtml']).'</textarea>';
+                
+            }
             else
             {
               $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.');

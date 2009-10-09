@@ -6604,12 +6604,15 @@ function GetUpdateInfo()
     /* Data transfer timeout */
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
-    $http->GetRequestArguments("http://update.limesurvey.org//updates/index",$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org",$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);           
     $error=$http->SendRequest($arguments);
 
+    $http->ReadReplyHeaders($headers);
+
+    
     if($error=="") {
         $body=''; $full_body=''; 
         for(;;){
@@ -6618,10 +6621,16 @@ function GetUpdateInfo()
             $full_body .= $body;
         }        
         $updateinfo=json_php5decode($full_body);
+        if ($http->response_status!='200')
+        {
+          $updateinfo['errorcode']=$http->response_status;  
+          $updateinfo['errorhtml']=$full_body;
+        }
     }
     else
     {
-        print( $error );
+          $updateinfo['errorcode']=$error;  
+          $updateinfo['errorhtml']=$error;        
     }
     unset( $http );
     return $updateinfo; 
@@ -6646,13 +6655,13 @@ function GetUpdateInfo()
    
    /**
    * This function updates the actual global variables if an update is available after using GetUpdateInfo
-   * 
+   * @return Array with update or error information
    */
    function updatecheck()
    {
        global $buildnumber;
         $updateinfo=GetUpdateInfo();
-        if ((int)$updateinfo['Targetversion']['build']>(int)$buildnumber && trim($buildnumber)!='') 
+        if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$buildnumber && trim($buildnumber)!='') 
         {
             setGlobalSetting('updateavailable',1);
             setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
@@ -6663,6 +6672,7 @@ function GetUpdateInfo()
         {
             setGlobalSetting('updateavailable',0);
         }
+        return $updateinfo;
    }
    
    /**
