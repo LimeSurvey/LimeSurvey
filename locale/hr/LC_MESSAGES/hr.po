@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-09 09:46+0100\n"
-"PO-Revision-Date: 2009-10-09 09:47+0100\n"
+"POT-Creation-Date: 2009-10-09 10:24+0100\n"
+"PO-Revision-Date: 2009-10-09 10:25+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -2365,8 +2365,8 @@ msgid "Change survey name or description"
 msgstr "Promijeni naziv upitnika ili opis"
 
 #: E:\_LimeSurvey\svn/admin/activate.php:267
-msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
-msgstr "Jednom kada se odgovori unesu u ovaj upitnik, u slučaju da želite dodati ili obrisati grupu pitanja ili pitanje, potrebno je deaktivirati ovaj upitnik,kako bi premjestili sve podatke koji su do sada unjeti u zasebnu tablicu arhive."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Jednom kada se odgovori unesu u ovaj upitnik, u slučaju da želite dodati ili obrisati grupu pitanja ili pitanje, potrebno je deaktivirati ovaj upitnik, kako bi premjestili sve podatke koji su do sada unjeti u zasebnu tablicu arhive."
 
 #: E:\_LimeSurvey\svn/admin/activate.php:528
 msgid "Survey could not be actived."
@@ -4157,7 +4157,7 @@ msgid "Active surveys"
 msgstr "Aktivni upitnici"
 
 #: E:\_LimeSurvey\svn/admin/globalsettings.php:420
-msgid "De-activated surveys"
+msgid "Deactivated surveys"
 msgstr "Deaktivirani upitnici"
 
 #: E:\_LimeSurvey\svn/admin/globalsettings.php:425
@@ -4165,7 +4165,7 @@ msgid "Active token tables"
 msgstr "Aktivne tablice tokena"
 
 #: E:\_LimeSurvey\svn/admin/globalsettings.php:430
-msgid "De-activated token tables"
+msgid "Deactivated token tables"
 msgstr "Deaktivirane tablice tokena"
 
 #: E:\_LimeSurvey\svn/admin/globalsettings.php:437
@@ -4287,7 +4287,7 @@ msgid "This survey is active but expired."
 msgstr "Ovaj upitnik je aktivan ali je istekao."
 
 #: E:\_LimeSurvey\svn/admin/html.php:145
-msgid "This survey is active - click here to de-activate this survey."
+msgid "This survey is active - click here to deactivate this survey."
 msgstr "Upitnik je aktivan - klikni za deativaciju upitnika."
 
 #: E:\_LimeSurvey\svn/admin/html.php:149
@@ -4343,7 +4343,7 @@ msgid "This survey is currently active"
 msgstr "Ovaj upitnik je trenutno aktivan"
 
 #: E:\_LimeSurvey\svn/admin/html.php:348
-msgid "De-activate this Survey"
+msgid "Deactivate this Survey"
 msgstr "Deaktiviraj ovaj upitnik"
 
 #: E:\_LimeSurvey\svn/admin/html.php:363
@@ -5940,7 +5940,7 @@ msgid "Data redundancy check"
 msgstr "Provjera redundantnosti podataka"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:446
-msgid "The redundancy check looks for tables leftover after de-activating a survey. You can delete these if you no longer require them."
+msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 msgstr "Provjera redundantnosti traži tablice nakon deaktivacije upitnika. Možete ih obrisati ukoliko ih više ne trebate."
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:456
@@ -6052,7 +6052,7 @@ msgid "Data Redundancy Check"
 msgstr "Provjera redundantnosti podataka"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:625
-msgid "Deleting old token and response tables leftover from de-activation"
+msgid "Deleting old token and response tables leftover from deactivation"
 msgstr "Brisanje starih tokena i tablice odgovora nakon deaktivacije"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:652
@@ -8030,9 +8030,10 @@ msgid "List"
 msgstr "Lista"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:2283
+#: E:\_LimeSurvey\svn/admin/tokens.php:2513
 #, php-format
-msgid "%s Records with invalid email address removed"
-msgstr "%s zapisa sa lošim email adresama su obrisani"
+msgid "%s records with invalid email address removed"
+msgstr "%s zapisa sa krivim email adresama su obrisani"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:2306
 msgid "Uploading LDAP Query"
@@ -8053,10 +8054,6 @@ msgstr "Zapisi su uvezeni"
 #: E:\_LimeSurvey\svn/admin/tokens.php:2505
 msgid "Duplicate records removed"
 msgstr "Duplirani zapisi su obrisani"
-
-#: E:\_LimeSurvey\svn/admin/tokens.php:2513
-msgid "Records with invalid email address removed"
-msgstr "Zapisi sa lošim email adresama su obrisani"
 
 #: E:\_LimeSurvey\svn/admin/tokens.php:2524
 msgid "Can't bind to the LDAP directory"
@@ -8972,6 +8969,8 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "Records with invalid email address removed"
+#~ msgstr "Zapisi sa lošim email adresama su obrisani"
 #~ msgid "Time limit for question"
 #~ msgstr "Vremenski limit za ovo pitanje"
 #~ msgid "Time limit warning to display(in seconds)"
