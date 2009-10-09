@@ -257,7 +257,8 @@ else
                     unset($fielddata[db_quote_id($numericfield)]); 
                 }
             }
-            if ($fielddata[db_quote_id('submitdate')]=='NULL') unset ($fielddata[db_quote_id('submitdate')]); 
+            if (isset($fielddata[db_quote_id('submitdate')]) && $fielddata[db_quote_id('submitdate')]=='NULL') unset ($fielddata[db_quote_id('submitdate')]); 
+            if ($fielddata[db_quote_id('lastpage')]=='') $fielddata[db_quote_id('lastpage')]=='0'; 
             
             $recordexists=false;     
             if (isset($fielddata['[id]']))

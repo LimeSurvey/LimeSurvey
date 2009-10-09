@@ -264,7 +264,7 @@ if ($action == "personalsettings")
     $cssummary .= "</select>\n"
     . "</li>\n"
     . "</ul>\n"
-    . "<input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='".$clang->gT("Save settings")
+    . "<p><input type='hidden' name='action' value='savepersonalsettings' /><input class='submit' type='submit' value='".$clang->gT("Save settings")
     ."' /></form></div>";
 }
 
@@ -501,18 +501,6 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
-		if($activated!="Y" && getGroupSum($surveyid,$surveyinfo['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
-		{
-			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
-			. "title=\"".$clang->gTview("Change question group order")."\" >"
-			. "<img src='$imagefiles/reorder.png' alt='".$clang->gT("Change question group order")."' name='ordergroups' />"
-            . "</a>\n";
-		}
-		else
-		{
-            $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />";
-		}
-
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportstructure&amp;sid=$surveyid', '_top')\" "
@@ -567,11 +555,19 @@ if ($surveyid)
 			    . "title=\"".$clang->gTview("Token management")."\" >"
 			    . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
+        if($activated!="Y" && getGroupSum($surveyid,$surveyinfo['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+        {
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";     
+            $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
+            . "title=\"".$clang->gTview("Change question group order")."\" >"
+            . "<img src='$imagefiles/reorder.png' alt='".$clang->gT("Change question group order")."' name='ordergroups' />"
+            . "</a>\n";
+        }
+        
 		$surveysummary .= "</div>\n"
 		. "<div class='menubar-right'>\n";
-		$surveysummary .= "<font class=\"boxcaption\">".$clang->gT("Question groups").":</font>\n"
-		. "<select name='groupselect' "
-		. "onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
+		$surveysummary .= "<span class=\"boxcaption\">".$clang->gT("Question groups").":</span>"
+		. "<select name='groupselect' onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
 
 		if (getgrouplistlang($gid, $baselang))
 		{
@@ -593,7 +589,7 @@ if ($surveyid)
             . "<img src='$imagefiles/add.png' alt='".$clang->gT("Add new group to survey")."' name='AddNewGroup' /></a>\n";
         }
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-        . "<img src='$imagefiles/blank.gif' width='19' alt=''  />\n"
+        . "<img src='$imagefiles/blank.gif' width='15' alt='' />"
         . "<input type='image' src='$imagefiles/minus.gif' title='". $clang->gT("Hide details of this Survey")."' "
         . "alt='". $clang->gT("Hide details of this Survey")."' name='MinimiseSurveyWindow' "
         . "onclick='document.getElementById(\"surveydetails\").style.display=\"none\";' />\n";
@@ -835,9 +831,9 @@ if ($surveyid && $gid )   // Show the group toolbar
 		. "</div>\n"
         . "<div class='menubar-main'>\n"
         . "<div class='menubar-left'>\n"
-		. "<img src='$imagefiles/blank.gif' alt='' width='56' height='20'  />\n"
-		. "<img src='$imagefiles/seperator.gif' alt=''  />\n"
-		. "<img src='$imagefiles/blank.gif' alt='' width='170' height='20'  />\n"
+		. "<img src='$imagefiles/blank.gif' alt='' width='54' height='20'  />\n"
+		. "<img src='$imagefiles/seperator.gif' alt=''  />"
+		. "<img src='$imagefiles/blank.gif' alt='' width='168' height='20'  />"
 		. "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
@@ -875,15 +871,6 @@ if ($surveyid && $gid )   // Show the group toolbar
         $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 
 
-        if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
-        {
-            $groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Change Question Order")."\" >"
-            . "<img src='$imagefiles/reorder.png' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' /></a>\n" ;
-        }
-        else
-        {
-            $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
-        }
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
         {
 
@@ -894,11 +881,22 @@ if ($surveyid && $gid )   // Show the group toolbar
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-   		$groupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n"
-		. "</div>\n"
+   		$groupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
+        if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+        {
+            $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='146' />\n";
+            $groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Change Question Order")."\" >"
+            . "<img src='$imagefiles/reorder.png' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' /></a>\n" ;
+        }
+        else
+        {
+            $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
+        }
+        
+		$groupsummary.= "</div>\n"
         . "<div class='menubar-right'>\n"
-		. "<font class=\"boxcaption\">".$clang->gT("Questions").":</font>&nbsp;<select class=\"listboxquestions\" name='qid' "
-		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n"
+		. "<span class=\"boxcaption\">".$clang->gT("Questions").":</span><select class=\"listboxquestions\" name='qid' "
+		. "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">"
 		. getquestions($surveyid,$gid,$qid)
 		. "</select>\n";
         if ($activated == "Y")
@@ -913,8 +911,8 @@ if ($surveyid && $gid )   // Show the group toolbar
             " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
         }
         
-        $groupsummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
-        $groupsummary.= "<img src='$imagefiles/blank.gif' width='19' alt=''  />\n"
+        $groupsummary .= "<img src='$imagefiles/seperator.gif' alt=''  />";
+        $groupsummary.= "<img src='$imagefiles/blank.gif' width='18' alt='' />"
         . "<input type='image' src='$imagefiles/minus.gif' title='"
         . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimiseGroupWindow' "
         . " onclick='document.getElementById(\"groupdetails\").style.display=\"none\";' />\n";

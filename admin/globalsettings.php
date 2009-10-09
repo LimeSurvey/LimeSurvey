@@ -51,7 +51,10 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('defaulthtmleditormode',sanitize_paranoid_string($_POST['defaulthtmleditormode']));
                        setGlobalSetting('defaulttemplate',sanitize_paranoid_string($_POST['defaulttemplate']));
                        setGlobalSetting('emailsmtphost',strip_tags($_POST['emailsmtphost']));
-                       setGlobalSetting('emailsmtppassword',strip_tags($_POST['emailsmtppassword']));
+                       if ($_POST['emailsmtppassword']!='somepassword')
+                       {
+                            setGlobalSetting('emailsmtppassword',strip_tags($_POST['emailsmtppassword']));
+                       }
                        setGlobalSetting('emailsmtpssl',sanitize_paranoid_string($_POST['emailsmtpssl']));
                        setGlobalSetting('emailsmtpuser',strip_tags($_POST['emailsmtpuser']));
                        setGlobalSetting('filterxsshtml',strip_tags($_POST['filterxsshtml']));
@@ -235,7 +238,7 @@ function globalsettingsdisplay()
                 . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
                 . "\t<li><label for='emailsmtppassword'>".$clang->gT("SMTP password:")."</label>\n"
-                . "\t\t<input type='text' size='50' id='emailsmtppassword' name='emailsmtppassword' value=\"".htmlspecialchars(getGlobalSetting('emailsmtppassword'))."\" /></li>\n"
+                . "\t\t<input type='password' size='50' id='emailsmtppassword' name='emailsmtppassword' value='somepassword' /></li>\n"
                 . "\t<li><label for='emailsmtpssl'>".$clang->gT("SMTP SSL/TLS:")."</label>\n"
                 . "\t\t<select id='emailsmtpssl' name='emailsmtpssl'>\n"
                 . "\t\t\t<option value=''";

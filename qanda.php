@@ -4240,7 +4240,7 @@ function do_shortfreetext($ia)
 	if (trim($qidattributes['time_limit'])!='')
 	{
 		$answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
-	}
+	}         
 
 	$inputnames[]=$ia[1];
 	return array($answer, $inputnames);

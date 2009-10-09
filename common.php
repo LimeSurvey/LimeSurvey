@@ -414,7 +414,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         if(isset($_SESSION['loginID'])) //ADDED to prevent errors by reading db while not logged in.
 	    {
             // Logout
-	        $adminmenu .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />\n"
+	        $adminmenu .= "<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' />"
                         . "<a href=\"#\" onclick=\"window.open('$scriptname?action=logout', '_top')\" title=\"".$clang->gTview("Logout")."\" >"
                         . "<img src='$imagefiles/logout.png' name='Logout' alt='".$clang->gT("Logout")."'/></a>";
                         
@@ -422,7 +422,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
             $adminmenu .= "<a href=\"http://docs.limesurvey.org\" target='_blank' title=\"".$clang->gTview("LimeSurvey Online manual")."\" >"
                         . "<img src='$imagefiles/showhelp.png' name='ShowHelp' alt='". $clang->gT("LimeSurvey Online manual")."'/></a>";
                         
-	        $adminmenu .= "</div>\n"
+	        $adminmenu .= "</div>"
                         . "</div>\n"
                         . "</div>\n";
           //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix

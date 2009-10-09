@@ -17,10 +17,7 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
-$importgroup = "<br /><table width='100%' align='center'><tr><td>\n";
-$importgroup .= "<table class='alertbox' >\n";
-$importgroup .= "\t<tr ><td colspan='2' height='4'><strong>".$clang->gT("Import Group")."</strong></td></tr>\n";
-$importgroup .= "\t<tr><td align='center'>\n";
+$importgroup = "<div class='header'>".$clang->gT("Import question group")."</div>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -51,7 +48,7 @@ else
 
 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-$importgroup .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+$importgroup .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
 $importgroup .= $clang->gT("File upload succeeded.")."<br /><br />\n";
 $importgroup .= $clang->gT("Reading file...")."<br />\n";
 $handle = fopen($the_full_file_path, "r");
@@ -249,10 +246,11 @@ if (isset($grouparray))
 	$groupssupportbaselang = bDoesImportarraySupportsLanguage($grouparray,Array($gidfieldnum),$langfieldnum,$langcode,true);
 	if (!$groupssupportbaselang)
 	{
-		$importgroup .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-		$importgroup .= $clang->gT("You can't import a group which doesn't support the current survey's base language.")."<br /><br />\n";
-		$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-		$importgroup .= "</td></tr></table>\n";
+		$importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div>\n";
+		$importgroup .= $clang->gT("You can't import a group which doesn't support the current survey's base language.")."<br />
+        <br />\n";
+		$importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+		$importgroup .= "</div>\n";
 		unlink($the_full_file_path);
 		return;
 	}
@@ -676,7 +674,7 @@ if (isset($skippedlanguages))
 }
 else
 {
-    $importgroup .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+    $importgroup .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
 }
 $importgroup .="<strong><u>".$clang->gT("Group Import Summary")."</u></strong><br />\n"
 ."<ul>\n\t<li>".$clang->gT("Groups:");
@@ -700,8 +698,7 @@ $importgroup .= "\t<li>".$clang->gT("Question Attributes: ");
 $importgroup .= $countquestion_attributes;
 $importgroup .= "</li>\n</ul>\n";
 $importgroup .= "<strong>".$clang->gT("Import of group is completed.")."</strong><br />&nbsp;\n";
-$importgroup .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid'>".$clang->gT("Go to group")."</a><br />\n";
-$importgroup .= "</td></tr></table><br />&nbsp;\n";
+$importgroup .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid'>".$clang->gT("Go to group")."</a><br /></div><br />\n";
 
 
 unlink($the_full_file_path);

@@ -109,8 +109,7 @@ div.menubar {
     padding:0;
     margin:3px auto 3px auto;
     width: 99.5%;
-    height: 60px;    
-    clear:left;
+    min-height: 60px;    
 }
 
 .menubar-main {
@@ -121,7 +120,7 @@ div.menubar {
 	border-style: solid;
 	border-width: 1px;
     padding:0 0.2%;           
-    height: 43px;    
+    min-height: 43px;    
 
 }
 
@@ -129,7 +128,7 @@ div.menubar {
 	vertical-align: middle;
     max-height:40px;
     border:0;
-    margin-left:-2px;
+    margin:0 -2px;
 }
 
 .menubar-title {
@@ -165,6 +164,7 @@ div.menubar {
 	background-color: #EEF6FF;
 	float: right;
 	line-height: 1em;
+    white-space:nowrap;    
 }
 
 .menubar-title-right {
@@ -908,6 +908,14 @@ div.messagebox .header{
     padding:10px;  
 }
 
+div.successheader{
+    font-weight:bold;
+    color:#008000;
+    background-color: #C0FFC0;   
+    margin: 5px 0;
+    padding:2px;  
+}
+
 div.messagebox .warningheader {
     font-weight:bold;
     color:#ee0000;
@@ -970,6 +978,7 @@ div.messagebox .warningheader {
 #frmeditquestion li,
 #frmglobalsettings li {  
     list-style-type: none;
+    clear:left;
     padding-bottom:5px;
 }
 
