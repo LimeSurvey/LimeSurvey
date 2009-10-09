@@ -183,7 +183,7 @@ function upgrade_token_tables128()
 		while ( $sv = $surveyidresult->FetchRow() )
 		{
 			modify_database("","ALTER TABLE ".$sv['0']." ADD remindersent character varying(17) DEFAULT 'N'"); echo $modifyoutput; flush();
-			modify_database("","ALTER TABLE ".$sv['0']" ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
+			modify_database("","ALTER TABLE ".$sv['0']." ADD remindercount INTEGER DEFAULT 0"); echo $modifyoutput; flush();
 		}
 	}
 }
