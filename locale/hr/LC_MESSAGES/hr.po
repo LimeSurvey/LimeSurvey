@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-09 10:24+0100\n"
-"PO-Revision-Date: 2009-10-09 10:25+0100\n"
+"POT-Creation-Date: 2009-10-09 16:03+0100\n"
+"PO-Revision-Date: 2009-10-09 16:04+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -842,11 +842,11 @@ msgid "Numbers only"
 msgstr "Samo brojevi"
 
 #: E:\_LimeSurvey\svn/common.php:3381
-msgid "Allow only numerical input for \"Other\" text"
+msgid "Allow only numerical input for 'Other' text"
 msgstr "Dozvoli samo numerički unos u polje \"Other\""
 
 #: E:\_LimeSurvey\svn/common.php:3382
-msgid "Numbers only for \"Other\""
+msgid "Numbers only for 'Other'"
 msgstr "Samo unos brojeva je dozvoljen u polje \"Other\""
 
 #: E:\_LimeSurvey\svn/common.php:3391
@@ -1490,7 +1490,7 @@ msgid "This email contains confirmation of the responses you made to the survey"
 msgstr "Ova poruka sadrži potvrdu o odgovorima poslanim na anketu"
 
 #: E:\_LimeSurvey\svn/index.php:1708
-msgid "Survey Submission Confirmation"
+msgid "Survey submission confirmation"
 msgstr "Potvrda o sudjelovanju"
 
 #: E:\_LimeSurvey\svn/index.php:1727
@@ -1751,7 +1751,7 @@ msgid "seconds"
 msgstr "sekundi"
 
 #: E:\_LimeSurvey\svn/qanda.php:1109
-msgid "Time Remaining"
+msgid "Time remaining"
 msgstr "Preostalo vremena"
 
 #: E:\_LimeSurvey\svn/qanda.php:1266
@@ -4414,7 +4414,7 @@ msgid "Question groups"
 msgstr "Grupe pitanja"
 
 #: E:\_LimeSurvey\svn/admin/html.php:593
-msgid "Add New Group to Survey"
+msgid "Add new group to survey"
 msgstr "Dodaj novu grupu u upitnik"
 
 #: E:\_LimeSurvey\svn/admin/html.php:597
@@ -4913,7 +4913,7 @@ msgstr "Izvezi strukturu grupe"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1883
 #: E:\_LimeSurvey\svn/admin/html.php:1936
-msgid "LimeSurvey Group File (*.csv)"
+msgid "LimeSurvey group File (*.csv)"
 msgstr "LimeSurvey datoteka grupe (*.csv)"
 
 #: E:\_LimeSurvey\svn/admin/html.php:1930
@@ -5104,7 +5104,7 @@ msgstr "Obavijesti administratora:"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2495
 #: E:\_LimeSurvey\svn/admin/html.php:3299
-msgid "Email Responses To:"
+msgid "Email responses to:"
 msgstr "Pošalji odgovore na:"
 
 #: E:\_LimeSurvey\svn/admin/html.php:2500
@@ -5960,7 +5960,7 @@ msgid "The following old token list tables exist and may be deleted if no longer
 msgstr "Postoje sljedeće stare tablice tokena koje mogu biti obrisane ukoliko više nisu potrebne:"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:488
-msgid "Delete Checked Items!"
+msgid "Delete checked items!"
 msgstr "Obriši odabrane opcije!"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:489
@@ -5971,7 +5971,7 @@ msgstr "Akcija brisanja je nepovratna. Podaci će biti izgubljeni."
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:532
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:632
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:642
-msgid "Deleting Old Survey Result Tables"
+msgid "Deleting old survey result tables"
 msgstr "Obriši staru tablicu s odgovorima"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:524
@@ -6022,7 +6022,7 @@ msgid "Deleting answer with qid"
 msgstr "Brisanje odgovora s qid"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:601
-msgid "Deleting Questions"
+msgid "Deleting questions"
 msgstr "Brisanje pitanja"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:603
@@ -6048,7 +6048,7 @@ msgid "Check Again"
 msgstr "Provjeri ponovo"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:624
-msgid "Data Redundancy Check"
+msgid "Data redundancy Check"
 msgstr "Provjera redundantnosti podataka"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:625
@@ -6056,11 +6056,8 @@ msgid "Deleting old token and response tables leftover from deactivation"
 msgstr "Brisanje starih tokena i tablice odgovora nakon deaktivacije"
 
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:652
-msgid "Deleting old token tables"
-msgstr "Obriši staru tablicu tokena"
-
 #: E:\_LimeSurvey\svn/admin/integritycheck.php:662
-msgid "Deleting Old Token Tables"
+msgid "Deleting old token tables"
 msgstr "Obriši staru tablicu tokena"
 
 #: E:\_LimeSurvey\svn/admin/iterate_survey.php:27
@@ -6806,7 +6803,7 @@ msgid "Don't consider NON completed responses"
 msgstr "NE uzimaj u obzir odgovore koji nisu dovršeni."
 
 #: E:\_LimeSurvey\svn/admin/statistics.php:1626
-msgid "Select Output Format"
+msgid "Select output format"
 msgstr "Odaberi izlazni format"
 
 #: E:\_LimeSurvey\svn/admin/statistics.php:1667
@@ -8653,7 +8650,7 @@ msgid "Your LimeSurvey installation is checked if the update can be run successf
 msgstr "Tvoja instalacija je provjerena i nadogradnja može biti uspješno izvršena."
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:37
-msgid "Your DB and and any changed files will be backed up."
+msgid "Your DB and any changed files will be backed up."
 msgstr "Baza podataka i ostale promijenjene datoteke biti će sačuvane."
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:38
@@ -8969,6 +8966,10 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "Data Redundancy Check"
+#~ msgstr "Provjera redundantnosti podataka"
+#~ msgid "Deleting Old Token Tables"
+#~ msgstr "Obriši staru tablicu tokena"
 #~ msgid "Records with invalid email address removed"
 #~ msgstr "Zapisi sa lošim email adresama su obrisani"
 #~ msgid "Time limit for question"
