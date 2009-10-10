@@ -6190,7 +6190,7 @@ function do_array_flexible_dual($ia)
 	$lquery1 = "SELECT * FROM {$dbprefix}labels WHERE lid=$lid1  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
 	$qidattributes=getQuestionAttributes($ia[0]);
 
-    if ($qidattributes['use_dropdown']==0)
+    if ($qidattributes['use_dropdown']==1)
 	{
 		$useDropdownLayout = true;
 	}

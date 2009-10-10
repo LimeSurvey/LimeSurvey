@@ -21,7 +21,7 @@
         text-align:left;
     }
     h1,h2,h3,h4,h5,h6 {
-        font-size:100%;
+        font-size:12px;
         font-weight:normal;
     }
     q:before,q:after {
@@ -33,8 +33,8 @@
 
 body.default {
     background-color:#FFF;
-    font-size:12px;
-    line-height:150%;
+    font-size:13px;
+    line-height:120%;
     font-family:Verdana,Arial,Helvetica,sans-serif;
     color:#1d2d45;
 }
@@ -49,21 +49,21 @@ ol {
 
 
 h1 {
-    font-size:1.5em;
+    font-size:16px;
     font-weight:bold;
     color:#328639;
     padding-top:15px;
 }
 
 h2 {
-    font-size:1em;
+    font-size:12px;
     font-weight:bold;
     color:#328639;
     padding-top:5px;
 }
 
 h3 {
-    font-size:1.3em;
+    font-size:13px;
     font-weight:bold;
     color:#1D2D45;
     padding-bottom:10px;
@@ -116,7 +116,7 @@ a:link,a:visited {
 
 .asterisk {
     color:red;
-    font-size:9pt;
+    font-size:9px;
     font-family:verdana;
 }
 
@@ -134,7 +134,9 @@ td.graph
     margin-top: 0.2em;
     padding: 0.5em 0.5em 0.4em 1em;
     text-align: left;
+    font-size:12px;
 }
+
 .hide
 {
     font-weight: normal;
@@ -142,20 +144,23 @@ td.graph
     top: -9999px;
     left: -9999px;
 }
+
 #progress-graph div.zero
 {
-    width: 2.6em;
+    width: 30px;
     margin-right: 0%;
 }
+
 #progress-graph div.graph
 {
     width: 10em;
-    height: 1.0em;
+    height: 12px;
     border: 1px solid #000;
-    margin-top: -1.2em;
-    margin-left: 2.6em;
+    margin-top: -15px;
+    margin-left: 35px;
     margin-right: 0%;
 }
+
 #progress-graph div.cent
 {
     width: 3em;
@@ -189,8 +194,8 @@ font-size:18px;
 }
 
 .surveytitle {
-font-size:1.2em;
-height:1.5em;
+font-size:12px;
+height:18px;
 }
 
 .surveytitle:hover {
@@ -198,15 +203,9 @@ text-decoration:underline;
 color:#819d26;
 }
 
+/* Format the language changer combobox on the public homepage */  
 .languagechanger {
-font-size:1em;
 }
-
-.question,.answertext {
-    font-family:verdana;
-}
-
-
 
 /* Basic formatting for the three keyparts of an question */
 td.questiontext {
@@ -338,7 +337,6 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 ,.gender ul
 {
     text-align: left;
-    font-size: 80%;
     margin-top: 0.5em;
     margin-left: 0%;
     padding-left: 0%;
@@ -370,19 +368,16 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 }
 .numeric p.question
 {
-    font-size: 80%;
     margin-left: 1em;
 }
 .numeric-multi ul
 {
-    font-size: 80%;
 }
 
  .numeric-multi span
 ,.multiple-short-txt .question .answer ul li span
 {
-    font-size: 90%;
-/*    font-style: italic;*/
+    font-style: italic;
 }
  .numeric-multi p.tip.problem {
     color: #f30;
@@ -722,9 +717,8 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     position: absolute; 
     top: -19px; 
     margin-left:10px; 
-    font-family: 'Arial'; 
-    font-size: 9pt; 
     color: #284a6e; 
+    font-size:90%;
     font-weight: bold; 
     text-align: left;
 }
@@ -754,7 +748,7 @@ table.privacy {
 td.privacynote{
     text-align:center;
     background-color:#eef6ff;
-    font-size:0.8em;
+    font-size:10px;
     padding:5px;
 }
 
@@ -817,7 +811,7 @@ td.answer li input  {
 }
 
 td.rank label, td.rank td strong {
- font-size:0.9em;
+ font-size:10px;
  font-weight:bold;
 }
 
