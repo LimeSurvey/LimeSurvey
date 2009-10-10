@@ -1703,7 +1703,8 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		."<th width='75%'></th>\n"
 		."\t</tr>\n";
 
-	if (isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0))
+	if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
+		( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
 	{
 		$scenarioAddBtn = "\t<a id='scenarioaddbtn' href='#' title='".$clang->gTview('Add scenario')."' onclick=\"$('#scenarioaddbtn').hide();$('#defaultscenariotxt').hide('slow');$('#scenario').show('slow');\">"
                          ."<img src='$imagefiles/plus.png' alt='".$clang->gT('Add scenario')."' /></a>\n";
