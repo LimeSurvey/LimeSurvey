@@ -129,7 +129,7 @@ $conditionsoutput .= "\t<div class='menubar-main'>\n"
 ."<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=editconditionsform', '_top')\" title='".$clang->gTview("Add and edit conditions")."' >" 
 ."<img name='ConditionAddButton' src='$imagefiles/conditions_add.png' alt='".$clang->gT("Add and edit conditions")."' /></a>\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" title='".$clang->gT("Copy conditions")."' >" 
+."<a href=\"#\" onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;subaction=copyconditionsform', '_top')\" title='".$clang->gTview("Copy conditions")."' >" 
 ."<img name='ConditionCopyButton' src='$imagefiles/conditions_copy.png' alt='".$clang->gT("Copy conditions")."' /></a>\n";
 
 
