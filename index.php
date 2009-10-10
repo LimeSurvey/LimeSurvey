@@ -2102,7 +2102,6 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 	$result = db_execute_assoc($query);    //Checked 
 
 	$arows = $result->GetRows();
-	//error_log("TIBO = ".print_r($arows,true));
 
 	$totalquestions = $result->RecordCount();
 
@@ -2425,6 +2424,20 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 			$usedinconditions = "N";
 		}
 
+
+		// if I'm a M or P question, and if another question in this survey has array_filter set to my code, then I'm also used in a kind of condition
+		if ( ($arow['type'] == 'M' || $arow['type'] == 'P') && $usedinconditions == "N")
+		{
+			$qaquery = "SELECT count(qa.qaid) as afcount from ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
+				. "WHERE qa.qid = q.qid AND qa.attribute='array_filter' AND qa.value =".db_quoteall($arow['title'])." "
+				. "AND q.sid=$surveyid";
+			$qaresult = db_execute_assoc($qaquery);
+			$qarow = $qaresult->FetchRow();
+			if ($qarow['afcount'] >= 1)
+			{
+				$usedinconditions = "Y";
+			}
+		}
 
 		//3(b) See if any of the insertarray values have been passed in the query URL
 
