@@ -82,8 +82,7 @@ if(isset($_SESSION['loginID']) && $action!='login')
       $action == 'copynewquestion'   || $action == 'insertnewgroup' || $action == 'insertCSV'         ||
       $action == 'insertnewquestion' || $action == 'updatesurvey'   || $action == 'updatesurvey2'     || 
       $action == 'updategroup'       || $action == 'deactivate'     || $action == 'savepersonalsettings' ||
-      $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' ||
-      $action == 'delattribute'      || $action == 'addattribute'   || $action == 'editattribute')
+      $action == 'updatequestion'    || $action == 'modanswer'      || $action == 'renumberquestions' )
   {
       include('database.php');
   }
@@ -470,9 +469,8 @@ elseif ($action == 'replacementfields')
 	include('html.php');
 }
 
- if ($action=='addquestion' || $action=='copyquestion' || $action=='editquestion' || 
-     $action=='orderquestions' || $action=='editattribute' || $action=='delattribute' || 
-     $action=='addattribute' || $action=='ajaxquestionattributes')
+ if ($action=='addquestion'    || $action=='copyquestion' || $action=='editquestion' || 
+     $action=='orderquestions' || $action=='ajaxquestionattributes')
     {if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {$_SESSION['FileManagerContext']="edit:question:$surveyid";include('questionhandling.php');}
         else { include('access_denied.php');}    
     }    

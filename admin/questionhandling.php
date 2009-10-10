@@ -185,7 +185,7 @@ if ($action == "copyquestion")
 		}
 }
 
-if ($action == "editquestion" || $action == "editattribute" || $action == "delattribute" || $action == "addattribute" || $action=="addquestion")
+if ($action == "editquestion" || $action=="addquestion")
 {
 	    $adding=($action=="addquestion");
 		$questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);

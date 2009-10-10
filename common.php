@@ -1837,7 +1837,7 @@ function returnglobal($stringname)
 
 	if (isset($_REQUEST[$stringname]))
 		{
-		if ($stringname == "sid" || $stringname == "gid" || 
+		if ($stringname == "sid" || $stringname == "gid" || $stringname == "oldqid" ||  
 			$stringname == "qid" || $stringname == "tid" || 
 			$stringname == "lid" || $stringname == "ugid"|| 
 			$stringname == "thisstep" || $stringname == "scenario" ||
