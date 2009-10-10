@@ -611,10 +611,9 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = strip_tags($arows['answer']);
-
-				$shortanswer .= " [{$arows['code']}]";
-				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 
 				switch ($rows['type'])
 				{
@@ -710,12 +709,10 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = strip_tags($arows['answer']);
-
-				$shortanswer .= " [{$arows['code']}]";
 				foreach($lids as $key=>$val) 
 				{
-				    $cquestions[]=array("$shortquestion [$shortanswer [$val]] ", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
+					$shortquestion=$rows['title'].":{$arows['code']}:$key: [".strip_tags($arows['answer']). "][" .strip_tags($val). "] " . strip_tags($rows['question']);
+				    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
 				if ($rows['type'] == ":")
 				{
 					for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue) 
@@ -725,7 +722,7 @@ if ($questionscount > 0)
 				}
 				}
 			}
-
+			unset($lids);
 		} //if A,B,C,E,F,H
 		elseif ($rows['type'] == "1") //Multi Scale
 		{
@@ -739,13 +736,16 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = strip_tags($arows['answer']);
-				$shortanswer .= "[[Label 1]{$arows['code']}]";
-				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0");
+				$attr = getQAttributes($rows['qid']);
+				$label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
+				$label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
+				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "][$label1]";
+				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#0");
 
-				$shortanswer = strip_tags($arows['answer']);            
-				$shortanswer .= "[[Label 2]{$arows['code']}]";
-				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1");
+				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "][$label2]";
+				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."#1");
 
 				// first label
 				$lquery="SELECT * "
@@ -793,9 +793,9 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = strip_tags($arows['answer']);
-				$shortanswer .= "[{$arows['code']}]";
-				$cquestions[]=array("$shortquestion [$shortanswer]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
@@ -821,7 +821,7 @@ if ($questionscount > 0)
 			}
 			for ($i=1; $i<=$acount; $i++)
 			{
-				$cquestions[]=array("$shortquestion [RANK $i]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
+				$cquestions[]=array("{$rows['title']}: [RANK $i] ".strip_tags($rows['question']), $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
 				foreach ($quicky as $qck)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
@@ -836,7 +836,9 @@ if ($questionscount > 0)
 		} // End if type R
 		elseif($rows['type'] == "M" || $rows['type'] == "P")
 		{
-			$cquestions[]=array("$shortquestion [".$clang->gT("Group of checkboxes")."]", $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+			$shortanswer = " [".$clang->gT("Group of checkboxes")."]";
+			$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+			$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
 			$aquery="SELECT * "
 				."FROM {$dbprefix}answers "
 				."WHERE qid={$rows['qid']} "
@@ -850,12 +852,17 @@ if ($questionscount > 0)
 				$theanswer = addcslashes($arows['answer'], "'");
 				$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
 
-				$shortanswer = strip_tags($arows['answer']);
-				$shortanswer .= "[{$arows['code']}]";
-				$cquestions[]=array("$shortquestion ($shortanswer) [".$clang->gT("Single checkbox")."]", $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
+				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer .= "[".$clang->gT("Single checkbox")."]";
+				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);				
+				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], 'Y', 'checked');
 				$canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], '', 'not checked');
 			}
+		}
+		elseif($rows['type'] == "X") //Boilerplate question
+		{
+			//Just ignore this questiontype
 		}
 		else
 		{
