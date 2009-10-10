@@ -2112,6 +2112,7 @@ if ($subaction == "upload" &&
     $attrfieldnames=GetAttributeFieldnames($surveyid);
    	$duplicatelist=array();
 	$invalidemaillist=array();
+    $invalidformatlist=array();
 	$tokenoutput .= "\t<div class='messagebox'><div class='header'>"
 	.$clang->gT("Token file upload")."</div>\n";
 	if (!isset($tempdir))
@@ -2132,9 +2133,8 @@ if ($subaction == "upload" &&
 	}
 	else
 	{
-		$tokenoutput .= "<p>".$clang->gT("Importing CSV file: Success")."<br /><br />\n"
-		.$clang->gT("Creating Token Entries")."<br />\n";
-		$xz = 0; $recordcount = 0; $duplicatecount = 0; $xv = 0; $invalidemailcount = 0;
+		$tokenoutput .= "<div class='successheader'>".$clang->gT("Uploaded CSV file successfully")."</div>\n";
+		$xz = 0; $recordcount = 0; $xv = 0; 
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);
 		// open it and trim the ednings
@@ -2177,6 +2177,12 @@ if ($subaction == "upload" &&
 				// sanitize it before writing into table
 				$line = array_map('db_quote',$line);
 
+                if (count($firstline)!=count($line))
+                {
+                    $invalidformatlist[]=$recordcount;
+                    $recordcount++;
+                    continue;
+                }
                 $writearray=array_combine($firstline,$line);
 
                 //kick out ignored columns
@@ -2208,7 +2214,7 @@ if ($subaction == "upload" &&
 					if ( $dupresult->RecordCount() > 0)
 					{
 						$dupfound = true;
-					$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
+					    $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
 					}
 				}
 
@@ -2227,31 +2233,25 @@ if ($subaction == "upload" &&
 						$invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
 					}
 
-					if ($invalidemail)
+                    if (!$dupfound)
 					{
-					  ++$invalidemailcount;
-					}
-					elseif ($dupfound)
-					{
-                    ++$duplicatecount;
-					}
-					else
-					{
-					if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
-					if (!isset($writearray['token'])) {
-                        $writearray['token'] = '';
-                    }else{
-                        $writearray['token']=sanitize_token($writearray['token']);  
-                    }
-					if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
-                    if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
-                    if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
-						$iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
-					. "(".implode(',',array_keys($writearray)).") \n"
-					. "VALUES ('".implode("','",array_values($writearray))."')";
-						$ir = $connect->Execute($iq);
-					if (!$ir) $duplicatecount++;
-						$xz++;
+					    if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
+					    if (!isset($writearray['token'])) {
+                            $writearray['token'] = '';
+                        }else{
+                            $writearray['token']=sanitize_token($writearray['token']);  
+                        }
+					    if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
+                        if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
+                        if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
+						    $iq = "INSERT INTO ".db_table_name("tokens_$surveyid")." \n"
+					    . "(".implode(',',array_keys($writearray)).") \n"
+					    . "VALUES ('".implode("','",array_values($writearray))."')";
+						    $ir = $connect->Execute($iq);
+					    if (!$ir) 
+                        {
+                            $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
+                        }
 					}
 					$xv++;
 				}
@@ -2260,34 +2260,54 @@ if ($subaction == "upload" &&
 		$recordcount = $recordcount-1;
 		if ($xz != 0)
 		{
-			$tokenoutput .= "<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n";
+			$tokenoutput .= "<div class='successheader'>".$clang->gT("Successfully created token entries")."</div>\n";
 		} else {
-			$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
+			$tokenoutput .= "<div class='warningheader'>".$clang->gT("Failed to create token entries")."</div>\n";
 		}
 		$message = '<ul><li>'.sprintf($clang->gT("%s records in CSV"),$recordcount)."</li>\n";
 		$message .= '<li>'.sprintf($clang->gT("%s records met minumum requirements"),$xv)."</li>\n";
-		$message .= '<li>'.sprintf($clang->gT("%s records imported"),$xz)."\n";
-		$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
-		$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script><br />&nbsp;</li>\n";
-		$message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),$duplicatecount);
-        if ($duplicatecount>0)
+		$message .= '<li>'.sprintf($clang->gT("%s records imported"),$xz)."</li></ul>\n";
+        
+        
+        if (count($duplicatelist)>0 || count($invalidformatlist)>0 || count($invalidemaillist)>0)
         {
-		$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
-		$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
-		foreach($duplicatelist as $data) {
-		  $message .= "<li>$data</li>\n";
-		}
-		$message .= "</div>";
+            
+            $message .="<div class='warningheader'>".$clang->gT('Warnings')."</div><ul>";
+            if (count($duplicatelist)>0)
+            {
+                $message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),count($duplicatelist));
+		        $message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+		        $message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
+		        foreach($duplicatelist as $data) {
+		          $message .= "<li>$data</li>\n";
+		        }
+		        $message .= "</div>";
+                $message .= "</li>\n";
+            }
+            
+            if (count($invalidformatlist)>0)
+            {
+                $message .= '<li>'.sprintf($clang->gT("%s lines had a mismatching number of fields."),count($invalidformatlist));
+                $message .= " [<a href='#' onclick='$(\"#invalidformatlist\").toggle();'>".$clang->gT("List")."</a>]";
+                $message .= "<div class='badtokenlist' id='invalidformatlist' style='display: none;'><ul>";
+                foreach($invalidformatlist as $data) {
+                    $message .= "<li>Line $data</li>\n";
+                }
+            }
+
+            if (count($invalidemaillist)>0)
+            {
+		        $message .= '<li>'.sprintf($clang->gT("%s records with invalid email address removed"),count($invalidemaillist));
+		        $message .= " [<a href='#' onclick='$(\"#invalidemaillist\").toggle();'>".$clang->gT("List")."</a>]";
+		        $message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
+		        foreach($invalidemaillist as $data) {
+			        $message .= "<li>$data</li>\n";
+		        }
+            }
+            $message .= "</ul>";
         }
-		$message .= "</li>\n";
-		$message .= '<li>'.sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);
-		$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
-		$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
-		foreach($invalidemaillist as $data) {
-			$message .= "<li>$data</li>\n";
-		}
-		$message .= "</ul></div>";
-		$message .= "\n";
+		$message .= "</div>";
+
 		$tokenoutput .= "$message<br />\n";
 		unlink($the_full_file_path);
 	}
