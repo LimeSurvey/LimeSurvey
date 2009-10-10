@@ -117,14 +117,11 @@ else //delete the survey
 	$sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
 	$sres = $connect->Execute($sdel);
 	
-	$deletesurveyoutput .= "\t<tr>\n";
-	$deletesurveyoutput .= "<td align='center'><br />\n";
-	$deletesurveyoutput .= "\t<strong>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
+	$deletesurveyoutput .= "\t<p>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
 	$deletesurveyoutput .= "\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-	$deletesurveyoutput .= "</strong></td>\n";
-	$deletesurveyoutput .= "\t</tr>\n";
+
     $surveyid=false;
 
 }
-$deletesurveyoutput .= "<br />&nbsp;\n";
+$deletesurveyoutput .= "</div><br />&nbsp;\n";
 ?>

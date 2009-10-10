@@ -70,48 +70,9 @@ if(isset($surveyid))
 	$actsurresult = db_execute_assoc($actsurquery);
 	$actsurrows = $actsurresult->FetchRow();
 
-	if ($action == "delattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
-	{
-		$query = "DELETE FROM ".db_table_name('question_attributes')."
-				  WHERE qaid={$postqaid} AND qid={$postqid}";
-		$result=$connect->Execute($query) or safe_die("Couldn't delete attribute<br />".$query."<br />".$connect->ErrorMsg());
-	}
-	elseif ($action == "addattribute" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
-	{
-		if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
-		{
-            if ($_POST['attribute_name']=='dropdown_separators' || $_POST['attribute_name']=='dualscale_headerA' || $_POST['attribute_name']=='dualscale_headerB' ||
-                $_POST['attribute_name']=='dropdown_prepostfix' || $_POST['attribute_name']=='prefix' || $_POST['attribute_name']=='suffix')
-            {
-               if ($filterxsshtml)
-               {
-                   require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                   $myFilter = new InputFilter('','',1,1,1); 
-                   $_POST['attribute_value']=$myFilter->process($_POST['attribute_value']);
-                } 
-                   else
-                          {
-                            $_POST['attribute_value'] = html_entity_decode($_POST['attribute_value'], ENT_QUOTES, "UTF-8");
-                          }
-            }
-                
-			$_POST  = array_map('db_quote', $_POST);
-			$query = "INSERT INTO ".db_table_name('question_attributes')."
-					  (qid, attribute, value)
-					  VALUES ('{$postqid}', '{$_POST['attribute_name']}', '{$_POST['attribute_value']}')";
-			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
-		} 
-	}
-	elseif ($action == "editattribute" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
-	{
-		if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
-		{
-			$query = "UPDATE ".db_table_name('question_attributes')."
-					  SET value='{$_POST['attribute_value']}' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
-			$result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
-		}
-	}
-	elseif ($action == "insertnewgroup" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
+
+
+	if ($action == "insertnewgroup" && ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['define_questions']))
 	{
   		$grplangs = GetAdditionalLanguagesFromSurveyID($postsid);
   		$baselang = GetBaseLanguageFromSurveyID($postsid);
@@ -367,14 +328,7 @@ if(isset($surveyid))
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 
 			}
-			if (isset($_POST['attribute_value']) && $_POST['attribute_value'])
-			{
-				$query = "INSERT INTO ".db_table_name('question_attributes')."
-					  (qid, attribute, value)
-					  VALUES
-					  ($qid, '".$_POST['attribute_name']."', '".$_POST['attribute_value']."')";
-				$result = $connect->Execute($query);
-			}
+
             fixsortorderQuestions($postgid, $surveyid);
  		}
 	}
@@ -446,13 +400,13 @@ if(isset($surveyid))
                 if ($result->Recordcount()>0)
                 {
                     $query = "UPDATE ".db_table_name('question_attributes')."
-                              SET value='{$_POST[$validAttribute['name']]}' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                              SET value='".db_quote($_POST[$validAttribute['name']])."' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());
                 }
                 else
                 {
                     $query = "INSERT into ".db_table_name('question_attributes')."
-                              (qid, value, attribute) values ($qid,'{$_POST[$validAttribute['name']]}','{$validAttribute['name']}')";
+                              (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());
                 }
            }
@@ -461,7 +415,7 @@ if(isset($surveyid))
         if (isset($_POST['attribute_value']) && (!empty($_POST['attribute_value']) || $_POST['attribute_value'] == "0"))
         {
             $query = "UPDATE ".db_table_name('question_attributes')."
-                      SET value='{$_POST['attribute_value']}' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
+                      SET value='".db_quote($_POST['attribute_value'])."' WHERE qaid=".$postqaid." AND qid=".returnglobal('qid');
             $result = $connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());
         }        
         
