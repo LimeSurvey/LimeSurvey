@@ -1247,14 +1247,15 @@ if ($subaction=='' ||
 				."{$dbprefix}conditions.value, "
 				."{$dbprefix}questions.type "
 				."FROM {$dbprefix}conditions, "
-				."{$dbprefix}questions "
+				."{$dbprefix}questions, "
+				."{$dbprefix}groups "
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
+				."AND {$dbprefix}questions.gid={$dbprefix}groups.gid "
 				."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 				."AND {$dbprefix}conditions.qid=$qid "
 				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
 				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
-//				."AND {$dbprefix}conditions.cfieldname NOT LIKE '+%' \n" // avoid catching SRCtokenAttr conditions
-				."ORDER BY {$dbprefix}conditions.cfieldname";
+				."ORDER BY {$dbprefix}groups.group_order,{$dbprefix}questions.question_order"; 
 			$result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 			$conditionscount=$result->RecordCount();
 
@@ -1406,7 +1407,7 @@ if ($subaction=='' ||
 						$conditionsoutput .= "".html_escape($rows['value'])."\n";
 					}
 					elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0)
-					{ // TIBO SGQA
+					{ // SGQA
 						$rightOperandType = 'prevQsgqa';
 						$textfound=false;
 						foreach ($cquestions as $cqn)
@@ -1962,7 +1963,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		}
 		elseif (isset($_POST['EDITprevQuestionSGQA']) && $_POST['EDITprevQuestionSGQA'] != '')
-		{ // TIBO
+		{ 
 			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['EDITprevQuestionSGQA'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		}
@@ -2005,7 +2006,7 @@ if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
 		}
 		elseif (isset($_POST['prevQuestionSGQA']) && $_POST['prevQuestionSGQA'] != '')
-		{ // TIBO
+		{ 
 			$conditionsoutput .= "\tdocument.getElementById('prevQuestionSGQA').value='".html_escape($_POST['prevQuestionSGQA'])."';\n";
 			$conditionsoutput .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
 		}
