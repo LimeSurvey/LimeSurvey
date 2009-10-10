@@ -1332,12 +1332,12 @@ while ($degrow = $degresult->FetchRow())
 				{
 					if ($stepvalue > 1)
 					{
-						$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:");
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write a multiple of $stepvalue between $minvalue and $maxvalue for each item:"),"U");}
+						$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please write a multiple of %d between %d and %d for each item:"),$stepvalue,$minvalue,$maxvalue);
+						if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please write a multiple of %d between %d and %d for each item:"),$stepvalue,$minvalue,$maxvalue),"U");}
 					}
 					else {
-						$question['QUESTION_TYPE_HELP'] = $clang->gT("Please write a number between $minvalue and $maxvalue for each item:");
-						if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write a number between $minvalue and $maxvalue for each item:"),"U");}
+						$question['QUESTION_TYPE_HELP'] = sprintf($clang->gT("Please write a number between %d and %d for each item:"),$minvalue,$maxvalue);
+						if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT("Please write a number between %d and %d for each item:"),$minvalue,$maxvalue),"U");}
 					}
 				}
 				else
