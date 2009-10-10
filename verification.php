@@ -17,8 +17,31 @@
 
 // make sure you include this file only if the ImageCreate function does exist since it is an optional library
 // Lets get into the session
-session_start();
-require_once(dirname(__FILE__).'/config-defaults.php');    
+
+require_once(dirname(__FILE__).'/config-defaults.php');
+require_once(dirname(__FILE__).'/common.php');
+
+if (isset($_GET['sid'])) $surveyid=(int)$_GET['sid']; else die();
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
+@session_start();
 
 // header for png
 Header("Content-Type: image/png");
