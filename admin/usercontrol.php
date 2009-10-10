@@ -468,7 +468,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 elseif ($action == "moduser")
 {
-	$addsummary = "<br /><strong>".$clang->gT("Modifying User")."</strong><br />\n";
+	$addsummary = "<div class='header'>".$clang->gT("Editing user")."</div><p>\n";
 
 	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
 	$sresult = $connect->Execute($squery); //Checked
@@ -525,7 +525,7 @@ elseif ($action == "moduser")
 		}
 		else
 		{
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}
 	else
@@ -536,7 +536,7 @@ elseif ($action == "moduser")
 
 elseif ($action == "userrights")
 {
-	$addsummary = "<br /><strong>".$clang->gT("Set User Rights")."</strong><br />\n";
+	$addsummary = "<div class='header'>".$clang->gT("Set User Rights")."</div><p>\n";
 
 	// A user can't modify his own rights ;-)
 	if($postuserid != $_SESSION['loginID'])
@@ -560,7 +560,7 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 			if ($postuserid<>1) setuserrights($postuserid, $rights);
-			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
+			$addsummary .= "<br />".$clang->gT("User permissions were updated successfully.")."<br />\n";
 			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		elseif ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -600,8 +600,8 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 			setuserrights($postuserid, $rights);
-			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<br />".$clang->gT("User permissions were updated successfully.")."<br />\n";
+			$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else
 		{
@@ -617,7 +617,7 @@ elseif ($action == "userrights")
 
 elseif ($action == "usertemplates")
 {
-      $addsummary = "<br /><strong>".$clang->gT("Set Template Rights")."</strong><br />\n";
+      $addsummary = "<div class='header'>".$clang->gT("Set Template Rights")."</div><p>\n";
 
 	// SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
       if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
@@ -642,8 +642,8 @@ elseif ($action == "usertemplates")
               }
 		      if ($uresult)
 		      {
-			      $addsummary .= "<br />".$clang->gT("Update usertemplates successful.")."<br />\n";
-			      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			      $addsummary .= "<br />".$clang->gT("Template permissions were updated successfully.")."<br />\n";
+			      $addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		      }
 		      else
 		      {

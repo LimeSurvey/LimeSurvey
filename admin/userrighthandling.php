@@ -120,8 +120,10 @@ if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $actio
 if ($action == "setusertemplates")
 {
 	refreshtemplates();
-	$usersummary = "\n<form action='$scriptname' method='post'>\n\t<table id=\"user-template-rights\" width='50%' border='0'>\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
-	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t\t\t</tr>\n";
+	$usersummary = "\n<form action='$scriptname' method='post'>\n\t
+    <div class='header'>Edit template permissions</div><p>
+    <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
+	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
 
 	$userlist = getuserlist();
 	foreach ($userlist as $usr)
@@ -136,11 +138,11 @@ if ($action == "setusertemplates")
 				$templaterights[$srow["folder"]] = array("use"=>$srow["use"]);
 			}
 
-			$usersummary .= "\t\t\t<tr>\n\t\t\t\t<th>"
+			$usersummary .= "\t<tr>\n<th>"
 				.$clang->gT('Template Name')
-				."</th>\n\t\t\t\t<th>"
+				."</th>\n<th>"
 				.$clang->gT('Allowed')
-				."</th>\n\t\t\t</tr>\n"
+				."</th>\n\t</tr>\n"
 				."\t</thead>\n\n<tbody>\n";
 
 			$tquery = "SELECT * FROM ".$dbprefix."templates";
@@ -159,19 +161,19 @@ if ($action == "setusertemplates")
 					$row_class = ' class="row_even"';
 					$table_row_odd_even = 'odd';
 				};
-				$usersummary .= "\t\t\t<tr$row_class>\n\t\t\t\t<td>{$trow["folder"]}</td>\n";
-				$usersummary .= "\t\t\t\t<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
+				$usersummary .= "\t<tr$row_class>\n<td>{$trow["folder"]}</td>\n";
+				$usersummary .= "<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
 
 				if(isset($templaterights[$trow['folder']]) && $templaterights[$trow['folder']]['use'] == 1)
 				{
 					$usersummary .= ' checked="checked"';
 				}
-				$usersummary .=" /></td>\n\t\t\t</tr>\n";
+				$usersummary .=" /></td>\n\t</tr>\n";
 			}
-			$usersummary .= "\n\t\t</tbody>\n\n\t\t<tfoot>\n\t\t\t<tr>\t\t\t\t<td colspan=\"3\">\n"
-				."\t\t\t\t\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
-				."\t\t\t\t\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
-				."\t\t\t\t\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tfoot>\n"
+			$usersummary .= "\n</tbody>\n\n<tfoot>\n\t<tr><td colspan=\"3\">\n"
+				."\t<input type=\"submit\" value=\"".$clang->gT('Save Settings')."\" />\n"
+				."\t<input type=\"hidden\" name=\"action\" value=\"usertemplates\" />\n"
+				."\t<input type=\"hidden\" name=\"uid\" value=\"{$postuserid}\" />\n</td>\n\t</tr>\n</tfoot>\n"
 				."\t</table>\n"
 				."</form>\n";
 
