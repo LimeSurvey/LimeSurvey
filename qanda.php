@@ -487,10 +487,12 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	// this is an attempt to allow users (or rather system admins) some control over how the starting text is formatted.
 	
 	$question_text = array(
-				 'text' => $qtitle
+				 'all' => '' // All has been added for backwards compatibility with templates that use question_start.pstpl (now redundant)
+				,'text' => $qtitle
 				,'help' => ''
 				,'mandatory' => ''
 				,'man_message' => ''
+				,'input_error_class' => ''// provides a class.
 				,'valid_message' => ''
 			);
 
@@ -716,46 +718,67 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 
 	$qtitle .= validation_message($ia);
 	$question_text['valid_message'] = validation_message($ia);
+	if(!empty($question_text['man_message']) || !empty($question_text['valid_message']))
+	{
+		$question_text['input_error_class'] = 'input-error';// provides a class to style question wrapper differently if there is some kind of user input error;
+	};
+
 // =====================================================
+// START: legacy question_start.pstpl code
 // The following section adds to the templating system by allowing
 // templaters to control where the various parts of the question text
 // are put.
-	$qtitle_custom = '';
 
-    $replace=array();
-	foreach($question_text as $key => $value)
+	if(is_file('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl'))
 	{
-		$find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
-		$replace[] = $value; // substitue text
-	};
-	if(!defined('QUESTION_START'))
-	{
-		define('QUESTION_START' , file_get_contents('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl' , true));
-	};
-	$qtitle_custom = str_replace( $find , $replace , QUESTION_START);
+		$qtitle_custom = '';
+
+		$replace=array();
+		foreach($question_text as $key => $value)
+		{
+			$find[] = '{QUESTION_'.strtoupper($key).'}'; // Match key words from template
+			$replace[] = $value; // substitue text
+		};
+		if(!defined('QUESTION_START'))
+		{
+			define('QUESTION_START' , file_get_contents('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl' , true));
+		};
+		$qtitle_custom = str_replace( $find , $replace , QUESTION_START);
 	
-	$c = 1;
+		$c = 1;
 // START: <EMBED> work-around step 1
-	$qtitle_custom = preg_replace( '/(<embed[^>]+>)(<\/embed>)/i' , '\1NOT_EMPTY\2' , $qtitle_custom );
+		$qtitle_custom = preg_replace( '/(<embed[^>]+>)(<\/embed>)/i' , '\1NOT_EMPTY\2' , $qtitle_custom );
 // END <EMBED> work-around step 1
-	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-	{ 
-		$matches = 0;
-		$oldtitle=$qtitle_custom;
-		$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
-		$c = ($qtitle_custom!=$oldtitle)?1:0;
-	};
+		while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
+		{ 
+			$matches = 0;
+			$oldtitle=$qtitle_custom;
+			$qtitle_custom = preg_replace( '/<([^ >]+)[^>]*>[\r\n\t ]*<\/\1>[\r\n\t ]*/isU' , '' , $qtitle_custom , -1); // I removed the $count param because it is PHP 5.1 only.
+
+			$c = ($qtitle_custom!=$oldtitle)?1:0;
+		};
 // START <EMBED> work-around step 2
-	$qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
+		$qtitle_custom = preg_replace( '/(<embed[^>]+>)NOT_EMPTY(<\/embed>)/i' , '\1\2' , $qtitle_custom );
 // END <EMBED> work-around step 2
-	while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
-	{ 
-		$matches = 0;
-		$oldtitle=$qtitle_custom;
-		$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 ); // I removed the $count param because it is PHP 5.1 only.
-		$c = ($qtitle_custom!=$oldtitle)?1:0;
+		while($c > 0) // This recursively strips any empty tags to minimise rendering bugs.
+		{ 
+			$matches = 0;
+			$oldtitle=$qtitle_custom;
+			$qtitle_custom = preg_replace( '/(<br(?: ?\/)?>(?:&nbsp;|\r\n|\n\r|\r|\n| )*)+$/i' , '' , $qtitle_custom , -1 ); // I removed the $count param because it is PHP 5.1 only.
+			$c = ($qtitle_custom!=$oldtitle)?1:0;
+		};
+
+//		$qtitle = $qtitle_custom;
+		$question_text['all'] = $qtitle_custom;
+	}
+	else
+	{
+		$question_text['all'] = $qtitle;
 	};
-	$qtitle = $qtitle_custom;
+// END: legacy question_start.pstpl code
+//===================================================================
+//	echo '<pre>[qanda.php] line '.__LINE__.": $question_text =\n".htmlspecialchars(print_r($question_text,true)).'</pre>';
+	$qtitle = $question_text;
 // =====================================================
 
 	$qanda=array($qtitle, $answer, $help, $display, $name, $ia[2], $gl[0], $ia[1] );

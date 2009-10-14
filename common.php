@@ -2590,7 +2590,8 @@ function templatereplace($line, $replacements=array())
 	global $surveylist, $sitename, $clienttoken, $rooturl;
 	global $thissurvey, $imagefiles, $defaulttemplate, $templaterooturl;
 	global $percentcomplete, $move;
-	global $groupname, $groupdescription, $question;
+	global $groupname, $groupdescription;
+	global $question , $question_id , $question_class , $question_man_class , $question_display;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
 	global $completed, $register_errormsg;
@@ -2600,8 +2601,8 @@ function templatereplace($line, $replacements=array())
 	global $errormsg, $clang;
 	global $saved_id, $templaterootdir;
 	global $totalBoilerplatequestions, $relativeurl;
-    global $languagechanger;    
-    global $printoutput, $captchapath, $loadname;
+	global $languagechanger;
+	global $printoutput, $captchapath, $loadname;
                      
 	if (stripos ($line,"</head>"))
 	{
@@ -2618,10 +2619,10 @@ function templatereplace($line, $replacements=array())
 		return $line;
 	}
 
-    foreach ($replacements as $replacementkey=>$replacementvalue)
-    {
-        if (strpos($line, '{'.$replacementkey.'}') !== false) $line=str_replace('{'.$replacementkey.'}', $replacementvalue, $line);
-    }
+	foreach ($replacements as $replacementkey=>$replacementvalue)
+	{
+		if (strpos($line, '{'.$replacementkey.'}') !== false) $line=str_replace('{'.$replacementkey.'}', $replacementvalue, $line);
+	}
     
 	if (strpos($line, "{SURVEYLISTHEADING}") !== false) $line=str_replace("{SURVEYLISTHEADING}", $surveylist['listheading'], $line);
 	if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist['list'], $line);
@@ -2640,7 +2641,32 @@ function templatereplace($line, $replacements=array())
 	if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
 	if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
 	if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
-	if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
+
+	if (is_array($question))
+	{
+		if (strpos($line, "{QUESTION}") !== false)
+		{
+			$line=str_replace("{QUESTION}", $question['all'], $line);
+		}
+		else
+		{
+			if (strpos($line, "{QUESTION_TEXT}") !== false) $line=str_replace("{QUESTION_TEXT}", $question['text'], $line);
+			if (strpos($line, "{QUESTION_HELP}") !== false) $line=str_replace("{QUESTION_HELP}", $question['help'], $line);
+			if (strpos($line, "{QUESTION_MANDATORY}") !== false) $line=str_replace("{QUESTION_MANDATORY}", $question['mandatory'], $line);
+			if (strpos($line, "{QUESTION_MAN_MESSAGE}") !== false) $line=str_replace("{QUESTION_MAN_MESSAGE}", $question['man_message'], $line);
+			if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
+			if (strpos($line, "{QUESTION_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_VALID_MESSAGE}", $question['valid_message'], $line);
+		}
+	}
+	else
+	{
+		if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
+	};
+	if (strpos($line, "{QUESTION_ID}") !== false) $line=str_replace("{QUESTION_ID}", $question_id, $line);
+	if (strpos($line, "{QUESTION_CLASS}") !== false) $line=str_replace("{QUESTION_CLASS}", $question_class, $line);
+	if (strpos($line, "{QUESTION_MAN_CLASS}") !== false) $line=str_replace("{QUESTION_MAN_CLASS}", $question_man_class, $line);
+	if (strpos($line, "{QUESTION_DISPLAY}") !== false) $line=str_replace("{QUESTION_DISPLAY}", $question_display, $line);
+
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
 	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;

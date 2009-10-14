@@ -939,6 +939,15 @@ if (isset($qanda) && is_array($qanda))
 				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
 ';
 		$question=$qa[0];
+//===================================================================
+// The following four variables offer the templating system the
+// capacity to fully control the HTML output for questions making the
+// above echo redundant if desired.
+		$question_id='question'.$qa[4];
+		$question_class=$q_class;
+		$question_man_class=$man_class;
+		$question_display=$n_q_display;
+//===================================================================
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];
