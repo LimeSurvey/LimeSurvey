@@ -492,8 +492,11 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 				,'help' => ''
 				,'mandatory' => ''
 				,'man_message' => ''
-				,'input_error_class' => ''// provides a class.
 				,'valid_message' => ''
+				,'class' => ''
+				,'man_class' => ''
+				,'input_error_class' => ''// provides a class.
+				,'essentials' => ''
 			);
 
 	switch ($ia[4])

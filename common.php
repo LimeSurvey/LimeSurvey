@@ -2591,7 +2591,7 @@ function templatereplace($line, $replacements=array())
 	global $thissurvey, $imagefiles, $defaulttemplate, $templaterooturl;
 	global $percentcomplete, $move;
 	global $groupname, $groupdescription;
-	global $question , $question_id , $question_class , $question_man_class , $question_display;
+	global $question;
 	global $questioncode, $answer, $navigator;
 	global $help, $totalquestions, $surveyformat;
 	global $completed, $register_errormsg;
@@ -2654,7 +2654,6 @@ function templatereplace($line, $replacements=array())
 			if (strpos($line, "{QUESTION_HELP}") !== false) $line=str_replace("{QUESTION_HELP}", $question['help'], $line);
 			if (strpos($line, "{QUESTION_MANDATORY}") !== false) $line=str_replace("{QUESTION_MANDATORY}", $question['mandatory'], $line);
 			if (strpos($line, "{QUESTION_MAN_MESSAGE}") !== false) $line=str_replace("{QUESTION_MAN_MESSAGE}", $question['man_message'], $line);
-			if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
 			if (strpos($line, "{QUESTION_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_VALID_MESSAGE}", $question['valid_message'], $line);
 		}
 	}
@@ -2662,10 +2661,10 @@ function templatereplace($line, $replacements=array())
 	{
 		if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
 	};
-	if (strpos($line, "{QUESTION_ID}") !== false) $line=str_replace("{QUESTION_ID}", $question_id, $line);
-	if (strpos($line, "{QUESTION_CLASS}") !== false) $line=str_replace("{QUESTION_CLASS}", $question_class, $line);
-	if (strpos($line, "{QUESTION_MAN_CLASS}") !== false) $line=str_replace("{QUESTION_MAN_CLASS}", $question_man_class, $line);
-	if (strpos($line, "{QUESTION_DISPLAY}") !== false) $line=str_replace("{QUESTION_DISPLAY}", $question_display, $line);
+	if (strpos($line, '{QUESTION_ESSENTIALS}') !== false) $line=str_replace('{QUESTION_ESSENTIALS}', $question['essentials'], $line);
+	if (strpos($line, '{QUESTION_CLASS}') !== false) $line=str_replace('{QUESTION_CLASS}', $question['class'], $line);
+	if (strpos($line, '{QUESTION_MAN_CLASS}') !== false) $line=str_replace('{QUESTION_MAN_CLASS}', $question['man_class'], $line);
+	if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
 
 	if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $questioncode, $line);
 	if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);

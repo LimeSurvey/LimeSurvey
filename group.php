@@ -934,25 +934,38 @@ if (isset($qanda) && is_array($qanda))
 
 		if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
-		echo '
-	<!-- NEW QUESTION -->
-				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
-';
-		$question=$qa[0];
+		$question= $qa[0];
 //===================================================================
 // The following four variables offer the templating system the
 // capacity to fully control the HTML output for questions making the
 // above echo redundant if desired.
-		$question_id='question'.$qa[4];
-		$question_class=$q_class;
-		$question_man_class=$man_class;
-		$question_display=$n_q_display;
+		$question['essentials'] = 'id="question'.$qa[4].'"'.$n_q_display;
+		$question['class'] = $q_class;
+		$question['man_class'] = $man_class;
 //===================================================================
 		$answer=$qa[1];
 		$help=$qa[2];
 		$questioncode=$qa[5];
-		echo templatereplace(file_get_contents("$thistpl/question.pstpl"));
-		echo "</div>\n";
+
+		$question_template = file_get_contents($thistpl.'/question.pstpl');
+
+		if( (strpos( $question_template , '{QUESTION_ESSENTIALS}') == false) || (strpos( $question_template , '{QUESTION_CLASS}') == false) )
+		{
+// if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
+			$question_template = str_replace( '{QUESTION_ESSENTIALS}' , '' , $question_template );
+			echo '
+	<!-- NEW QUESTION -->
+				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
+';
+			echo templatereplace($question_template);
+			echo '
+				</div>
+';
+		}
+		else
+		{
+			echo templatereplace($question_template);
+		};
 	}
 }
 echo "\n\n<!-- END THE GROUP -->\n";
