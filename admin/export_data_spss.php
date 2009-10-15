@@ -31,7 +31,7 @@
  */
 
 $length_varlabel = '255'; // Set the max text length of Variable Labels
-$headerComment = '';
+$headerComment = '*$Rev$.\n';
 $tempFile = '';
 
 include_once('login_check.php');
@@ -183,7 +183,7 @@ if  ($subaction=='dlstructure') {
 	//Create the variable labels:
 	echo "*Define Variable Properties.\n";
 	foreach ($fields as $field) {
-		if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . "\".\n";
+		if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
 	}
 
 	// Create our Value Labels!

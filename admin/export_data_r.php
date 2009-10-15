@@ -185,7 +185,7 @@ if  ($subaction=='dlstructure') {
 	//Create the variable labels:
 	echo "#Define Variable Properties.\n";
 	foreach ($fields as $field) {
-		if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(strip_tags_full(mb_substr($field['VariableLabel'],0,$length_varlabel))) . '"' . "\n";
+		if (!$field['hide']) echo 'attributes(data)$variable.labels[which(names(data)=="' . $field['id'] . '")]="' . addslashes(mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . '"' . "\n";
 	}
 
 	// Create our Value Labels!

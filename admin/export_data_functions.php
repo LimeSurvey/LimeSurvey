@@ -180,7 +180,7 @@ function spss_getvalues ($field = array()) {
 				for ($i=0; $i < $num_results; $i++)
 				{
 					$row = $result->FetchRow();
-					$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["answer"],0,$length_vallabel)));
+					$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["answer"]),0,$length_vallabel));
 				}
 			}
 		}
@@ -196,7 +196,7 @@ function spss_getvalues ($field = array()) {
 			for ($i=0; $i < $num_results; $i++)
 			{
 				$row = $result->FetchRow();
-				$answers[] = array('code'=>$row['code'], 'value'=>strip_tags_full(mb_substr($row["title"],0,$length_vallabel)));
+				$answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["title"]),0,$length_vallabel));
 			}
 		}
 	} elseif ($field['LStype'] == ':') {
@@ -350,7 +350,7 @@ function spss_fieldmap($prefix = 'V') {
 			$val_size = 7; //Arbitrarilty restrict to 9,999,999 (7 digits) responses/survey
 		} elseif ($fieldname == 'ipaddr') {
 			$fieldtype = 'A';
-			$val_size = '15';
+			$val_size = 15;
 		} elseif ($fieldname == 'refurl') {
 			$fieldtype = 'A';
 			$val_size = 255;
@@ -367,6 +367,11 @@ function spss_fieldmap($prefix = 'V') {
 			if (count($fielddata)==0) {
 				//Field in database but no longer in survey... how is this possible?
 				//@TODO: think of a fix.
+				$qid=0;
+				$varlabel = $fieldname;
+				$ftitle = $fieldname;
+				$fieldtype = "F";
+				$val_size = 1;
 			} else {
 				$qid=$fielddata['qid'];
 				$ftype=$fielddata['type'];
