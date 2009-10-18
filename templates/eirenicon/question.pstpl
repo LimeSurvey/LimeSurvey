@@ -1,26 +1,32 @@
-<table width="75%" align="center" border="1" style="border-collapse: collapse; border-color:#111111" bgcolor="white">
-	<tr>
-		<td align="center">
-			<table width="100%" cellspacing="0">
-				<tr>
-					<td style="font-size: 120%; font-weight: bold; text-align: center; background-color: #ccc;">{QUESTION}</td>
-				</tr>
-				<tr>
-					<td>
-						{ANSWER}
-					</td>
-				</tr>
-				<tr>
-					<td style="text-align: center; background-color: #e5e5e5">
-						{QUESTIONHELP}
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
-<table>
-	<tr>
-		<td height="1"></td>
-	</tr>
-</table>
+<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
+	<table width="75%" align="center" border="1" style="border-collapse: collapse; border-color:#111111" bgcolor="white">
+		<tr>
+			<td align="center">
+				<table width="100%" cellspacing="0">
+					<tr>
+						<td style="font-size: 120%; font-weight: bold; text-align: center; background-color: #ccc;">
+							<span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br /><span class="questionhelp">{QUESTION_HELP}</span>
+							{QUESTION_MAN_MESSAGE}
+							{QUESTION_VALID_MESSAGE}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{ANSWER}
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center; background-color: #e5e5e5">
+							{QUESTIONHELP}
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td height="1"></td>
+		</tr>
+	</table>
+</div>
