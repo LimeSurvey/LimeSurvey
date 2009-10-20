@@ -808,7 +808,8 @@ if(isset($surveyid))
 				$newsortorder=sprintf("%05d", $result->fields['maxorder']+1);
 				$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 				$baselang = GetBaseLanguageFromSurveyID($surveyid);
-				$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
+				//$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
+				$query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
                 $result = $connect->Execute($query); // Checked
 								
                 if (isset($result) && $result->RecordCount()>0)
@@ -837,7 +838,7 @@ if(isset($surveyid))
                         if (!isset($_POST['insertassessment_value'])) $_POST['insertassessment_value']=0;
                         else {$_POST['insertassessment_value']=(int) $_POST['insertassessment_value'];}
             
-        				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language, assessment_value) VALUES ('{$postqid}', ".db_quote($_POST['insertcode']).", ".db_quote($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang',{$_POST['insertassessment_value']})";
+        				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language, assessment_value) VALUES ('{$postqid}', ".db_quoteall($_POST['insertcode']).", ".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang',{$_POST['insertassessment_value']})";
         	       		if (!$result = $connect->Execute($query)) // Checked
         				{
         					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -855,14 +856,14 @@ if(isset($surveyid))
         				// Last code was successfully inserted - find out the next incrementing code and remember it
 						$_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
                         //Now check if this new code doesn't exist. For now then there is no code inserted.
-                        $query = "select * from ".db_table_name('answers')." where code=".db_quote($_SESSION['nextanswercode'])." and language='$baselang' and qid={$postqid}";
-                        $result = $connect->Execute($query);  // Checked
+                        $query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_SESSION['nextanswercode'])." and language='$baselang' and qid={$postqid}";
+                        $result = $connect->Execute($query) or safe_die("Couldn't execute query:<br />$query<br />".$connect->ErrorMsg());;  // Checked
                         if ($result->RecordCount()>0) unset($_SESSION['nextanswercode']);
                         
         				foreach ($anslangs as $anslang)
         				{
         					if(!isset($_POST['default'])) $_POST['default'] = "";
-    	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ({$postqid}, ".db_quote($_POST['insertcode']).",".db_quote($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
+    	    				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language) VALUES ({$postqid}, ".db_quoteall($_POST['insertcode']).",".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$anslang')";
         	       		    if (!$result = $connect->Execute($query))   // Checked
         					{
         						$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
