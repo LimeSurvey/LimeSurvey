@@ -736,7 +736,7 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$attr = getQAttributes($rows['qid']);
+				$attr = getQuestionAttributes($rows['qid']);
 				$label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
 				$label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
 				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "][$label1]";
