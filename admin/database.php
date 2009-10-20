@@ -1300,8 +1300,9 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         }
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['expires'] , "Y-m-d H:i:s");
-            $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
+            $datetimeobj = new Date_Time_Converter($_POST['expires'] , "d.m.Y H:i:s");
+            //$browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
+			$browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
             $_POST['expires']=$browsedatafield;
         }
 
@@ -1311,8 +1312,9 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         }
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['startdate'] , "Y-m-d H:i:s");
-            $browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');                      
+            $datetimeobj = new Date_Time_Converter($_POST['startdate'] , "d.m.Y H:i:s");
+			//$browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i'); 
+			$browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");			
             $_POST['startdate']=$browsedatafield;
         }
         
@@ -1351,7 +1353,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                             'assessments'=>$_POST['assessments'],
 							'emailresponseto'=>$_POST['emailresponseto']
                             );
-        $dbtablename=db_table_name_nq('surveys');                    
+        $dbtablename=db_table_name_nq('surveys');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);    
 		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
 
