@@ -124,6 +124,7 @@ else
 	{
 		$deactivateoutput .= "\t".$clang->gT("The tokens table associated with this survey has been renamed to: ")." $tnewtable.\n";
 	}
+	$deactivateoutput .= "\t<p>".$clang->gT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details")."</p>";
 	$deactivateoutput .= "</td>\n";
 	$deactivateoutput .= "\t</tr>\n";
 	$deactivateoutput .= "</table><br/>&nbsp;\n";
