@@ -787,6 +787,35 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     text-align: left;
 }
 
+.slider_showmin {
+    overflow: hidden;
+    float: left;
+    /*margin-left: -30px;*/
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.slider_showmax {
+    overflow: hidden;
+    float: right;
+    /*margin-right: -20px;*/
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.slider_lefttext {
+    display: table-cell;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.slider_righttext {
+    display: table-cell;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+
 
 #tokenform
 {

@@ -3467,6 +3467,21 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('Slider initial value'),
     "caption"=>$clang->gT('Slider initial value'));
 
+	$qattributes["slider_showminmax"]=array(
+	"types"=>"K",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+	"help"=>$clang->gT('Display min and max value under the slider'),
+    "caption"=>$clang->gT('Display slider min and max value'));
+
+	$qattributes["slider_separator"]=array(
+	"types"=>"K",
+    'inputtype'=>'text',
+	"help"=>$clang->gT('Answer|Left-slider-text|Right-slider-text separator character'),
+    "caption"=>$clang->gT('Slider left/right text separator'));
+
 	$qattributes["prefix"]=array(
 	"types"=>"KNQS",
     'inputtype'=>'text',

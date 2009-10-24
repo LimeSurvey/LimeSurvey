@@ -3844,6 +3844,27 @@ function do_multiplenumeric($ia)
 		{
 			$slider_default = '';
 		}
+
+        if (trim($qidattributes['slider_separator'])!='')
+		{
+			$slider_separator = $qidattributes['slider_separator'];
+		}
+		else
+		{
+			$slider_separator = '';
+		}
+
+        if ($qidattributes['slider_showminmax']==1)
+		{
+			//$slider_showmin=$slider_min;
+			$slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_min</div>\n";
+			$slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_max</div>\n";
+		}
+		else
+		{
+			$slider_showmin='';
+			$slider_showmax='';
+		}
 	}
 	else
 	{
@@ -3883,7 +3904,20 @@ function do_multiplenumeric($ia)
 		{
 			$myfname = $ia[1].$ansrow['code'];
 			if ($ansrow['answer'] == "") {$ansrow['answer'] = "&nbsp;";}
-			$answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$ansrow['answer']}</label>\n";
+			if ($slider_layout === false || $slider_separator == '')
+			{
+				$theanswer = $ansrow['answer'];
+				$sliderleft='';
+				$sliderright='';
+			}
+			else
+			{
+				list($theanswer,$sliderleft,$sliderright) =explode($slider_separator,$ansrow['answer']);
+				$sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
+				$sliderright="<div class=\"slider_righttext\">$sliderright</div>";
+			}
+			$answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$theanswer}</label>\n";
+
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{
 				$label_width = strlen(trim(strip_tags($ansrow['answer'])));
@@ -3917,7 +3951,7 @@ function do_multiplenumeric($ia)
 				{
 					$slider_startvalue = 'NULL';
 				}
-				$answer_main .= "<div id='container-$myfname' class='multinum-slider'>\n"
+				$answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
 					. "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
@@ -3926,11 +3960,13 @@ function do_multiplenumeric($ia)
 					. "\t<input type=\"text\" id=\"slider-onchange-js-$myfname\" value=\"$numbersonly_slider\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-prefix-$myfname\" value=\"$prefix\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-suffix-$myfname\" value=\"$suffix\" style=\"display: none;\" />\n"
-					. "\t<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
+					. "<div id=\"slider-$myfname\" class=\"ui-slider-1\">\n"
+					.  $slider_showmin
 					. "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
 					. "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n"
-					. "\t</div>\n"
-					. "</div>\n"
+					. $slider_showmax
+					. "\t</div>"
+					. "</div>$sliderright\n"
 					. "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" style=\"display: none;\" value=\"";
 				if (isset($_SESSION[$myfname]))
 				{
