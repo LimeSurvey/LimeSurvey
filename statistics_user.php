@@ -1448,15 +1448,13 @@ if (isset($summary) && $summary)
                     $fquery = "SELECT * FROM ".db_table_name("labels")." WHERE lid='{$qlid1}' AND language='{$language}' ORDER BY sortorder, code";
                     
                     //header available?
-                    if (trim($qidattributes['dualscale_headerB'])!='') {
+                    if (trim($qidattributes['dualscale_headerB'])!='')
                     {
                     	//output
                         $labelheader= "[" . $qidattributes['dualscale_headerB'] . "]";
                     }
-
-                    //no header
                     else
-                    {
+                    { //no header
                         $labelheader ='';
                     }
                     

@@ -1916,15 +1916,31 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 					else
 					{
-						//get more data
-	
-						if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+						if ($al[0] != "")
 						{
-							// mssql cannot compare text blobs so we have to cast here
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
+							//get more data
+
+							if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+							{
+								// mssql cannot compare text blobs so we have to cast here
+								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
+							}
+							else
+								$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
 						}
 						else
-						$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+						{ // This is for the 'NoAnswer' case
+						  // We need to take into account several possibilities
+						  // * NoAnswer cause the participant clicked the NoAnswer radio
+						  //  ==> in this case value is '' or ' '
+						  // * NoAnswer in text field
+						  //  ==> value is ''
+						  // * NoAnswer due to conditions, or a page not displayed
+						  //  ==> value is NULL
+							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
+								. "OR ".db_quote_id($rt)." = '' "
+								. "OR ".db_quote_id($rt)." = ' '";
+						}
 	
 					}
 	
