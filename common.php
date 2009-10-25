@@ -3467,6 +3467,15 @@ function questionAttributes($returnByName=false)
 	"help"=>$clang->gT('Slider initial value'),
     "caption"=>$clang->gT('Slider initial value'));
 
+	$qattributes["slider_middlestart"]=array(
+	"types"=>"K",
+    'inputtype'=>'singleselect',
+    'options'=>array(0=>$clang->gT('No'),
+                     1=>$clang->gT('Yes')),
+    'default'=>0,      
+	"help"=>$clang->gT('The handle is displayed at the middle of the slider (this will not set the initial value)'),
+    "caption"=>$clang->gT('Slider starts at the middle position'));
+
 	$qattributes["slider_showminmax"]=array(
 	"types"=>"K",
     'inputtype'=>'singleselect',

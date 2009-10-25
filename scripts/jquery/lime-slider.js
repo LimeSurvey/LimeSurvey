@@ -28,6 +28,7 @@ $(document).ready(function(){
 		}
 		sliderparams['slide'] = function(e, ui) {
 				//var thevalue = ui.value / slider_divisor;
+				if ($('#slider-modifiedstate-'+basename).val() ==0) $('#slider-modifiedstate-'+basename).val('1');
 				var thevalue = slider_stepping * Math.round(ui.value / slider_stepping) / slider_divisor;
 				$('#slider-callout-'+basename).css('left', $(ui.handle).css('left')).text(slider_prefix + thevalue + slider_suffix);
 			};
@@ -49,7 +50,7 @@ $(document).ready(function(){
 		$('#slider-'+basename).slider(sliderparams);
 
 		
-		if (slider_startvalue != 'NULL')
+		if (slider_startvalue != 'NULL' && $('#slider-modifiedstate-'+basename).val() !=0)
 		{
 				var thevalue = slider_startvalue / slider_divisor;
 				$('#slider-callout-'+basename).css('left', $('#slider-handle-'+basename).css('left')).text(slider_prefix + thevalue + slider_suffix);

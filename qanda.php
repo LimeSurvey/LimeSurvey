@@ -3792,7 +3792,7 @@ function do_multiplenumeric($ia)
 		$numbersonly_slider = '';
 	}
     
-    if (trim($qidattributes['text_input_width'])!='')      
+	if (trim($qidattributes['text_input_width'])!='')      
 	{
 		$tiwidth=$qidattributes['text_input_width'];
 	}
@@ -3843,6 +3843,14 @@ function do_multiplenumeric($ia)
 		else
 		{
 			$slider_default = '';
+		}
+        if ($slider_default == '' && $qidattributes['slider_middlestart']==1)
+		{
+			$slider_middlestart = intval(($slider_max + $slider_min)/2);
+		}
+		else
+		{
+			$slider_middlestart = '';
 		}
 
         if (trim($qidattributes['slider_separator'])!='')
@@ -3942,16 +3950,24 @@ function do_multiplenumeric($ia)
 				if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
 				{
 					$slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
+					$displaycallout_atstart=1;
 				} 
 				elseif ($slider_default != "")
 				{
 					$slider_startvalue = $slider_default * $slider_divisor;
+					$displaycallout_atstart=1;
+				}
+				elseif ($slider_middlestart != '')
+				{ //TIBO
+					$slider_startvalue = $slider_middlestart;
+					$displaycallout_atstart=0;
 				}
 				else 
 				{
 					$slider_startvalue = 'NULL';
 				}
 				$answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
+					. "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-param-min-$myfname\" value=\"$slider_min\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-param-max-$myfname\" value=\"$slider_max\" style=\"display: none;\" />\n"
 					. "\t<input type=\"text\" id=\"slider-param-stepping-$myfname\" value=\"$slider_stepping\" style=\"display: none;\" />\n"
