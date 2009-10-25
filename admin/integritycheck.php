@@ -39,17 +39,24 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
             $qcount=$qresult->RecordCount();
             if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>"No matching qid");}
-            $qquery = "SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['cqid']}'";
-            $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
-            $qcount=$qresult->RecordCount();
-            if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching Cqid"));}
+
+            if ($row['cqid'] != 0)
+	    { // skip case with cqid=0 for codnitions on {TOKEN:EMAIL} for instance
+		    $qquery = "SELECT qid FROM {$dbprefix}questions WHERE qid='{$row['cqid']}'";
+		    $qresult=$connect->Execute($qquery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />".$connect->ErrorMsg());
+		    $qcount=$qresult->RecordCount();
+		    if (!$qcount) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching Cqid"));}
+	    }
             if ($row['cfieldname']) //Only do this if there actually is a "cfieldname"
             {
-                list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
-                $qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
-                $qresult = $connect->Execute($qquery) or safe_die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
-                $qcount=$qresult->RecordCount();
-                if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME Group!")." ($gid) ({$row['cfieldname']})");}
+		if (preg_match("/^\+{0,1}[0-9]+X[0-9]+X*$/",$row['cfieldname']))
+		{ // only if cfieldname isn't Tag such as {TOKEN:EMAIL} or any other token
+			list ($surveyid, $gid, $rest) = explode("X", $row['cfieldname']);
+			$qquery = "SELECT gid FROM {$dbprefix}groups WHERE gid=$gid";
+			$qresult = $connect->Execute($qquery) or safe_die ("Couldn't check conditional group matches<br />$qquery<br />".$connect->ErrorMsg());
+			$qcount=$qresult->RecordCount();
+			if ($qcount < 1) {$cdelete[]=array("cid"=>$row['cid'], "reason"=>$clang->gT("No matching CFIELDNAME Group!")." ($gid) ({$row['cfieldname']})");}
+		}
             }
             elseif (!$row['cfieldname'])
             {
