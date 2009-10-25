@@ -911,6 +911,12 @@ if ($questionscount > 0)
 				{
 					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code'], $frow['code'], $frow['title']);
 				}
+				// For dropdown questions
+				// optinnaly add the 'Other' answer
+				if ($rows['other'] == "Y")
+				{
+					$canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
+				}
 				// Only Show No-Answer if question is not mandatory
 				if ($rows['mandatory'] != 'Y')
 				{
