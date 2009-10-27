@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Chinese-simplified language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-23 14:01+0800\n"
-"PO-Revision-Date: 2009-10-23 14:08+0800\n"
+"POT-Creation-Date: 2009-10-27 09:43+0800\n"
+"PO-Revision-Date: 2009-10-27 09:47+0800\n"
 "Last-Translator: yooyooh <yooyooh@gmail.com>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -141,10 +141,10 @@ msgstr "非活动的"
 #: d:\web\lime/common.php:1279
 #: d:\web\lime/common.php:1304
 #: d:\web\lime/common.php:1379
-#: d:\web\lime/common.php:4473
-#: d:\web\lime/common.php:4507
-#: d:\web\lime/common.php:4546
-#: d:\web\lime/common.php:4582
+#: d:\web\lime/common.php:4497
+#: d:\web\lime/common.php:4531
+#: d:\web\lime/common.php:4570
+#: d:\web\lime/common.php:4606
 msgid "Please Choose..."
 msgstr "请选择..."
 
@@ -152,8 +152,8 @@ msgstr "请选择..."
 #: d:\web\lime/common.php:1280
 #: d:\web\lime/common.php:1305
 #: d:\web\lime/common.php:1380
-#: d:\web\lime/common.php:4508
-#: d:\web\lime/common.php:4547
+#: d:\web\lime/common.php:4532
+#: d:\web\lime/common.php:4571
 msgid "None"
 msgstr "无"
 
@@ -392,8 +392,8 @@ msgstr "来源网址"
 #: d:\web\lime/qanda.php:3387
 #: d:\web\lime/statistics_user.php:751
 #: d:\web\lime/statistics_user.php:1411
-#: d:\web\lime/statistics_user.php:1499
-#: d:\web\lime/statistics_user.php:1540
+#: d:\web\lime/statistics_user.php:1497
+#: d:\web\lime/statistics_user.php:1538
 msgid "Other"
 msgstr "其它"
 
@@ -408,14 +408,16 @@ msgstr "其它"
 #: d:\web\lime/common.php:3404
 #: d:\web\lime/common.php:3414
 #: d:\web\lime/common.php:3441
-#: d:\web\lime/common.php:3528
-#: d:\web\lime/common.php:3537
-#: d:\web\lime/common.php:3576
-#: d:\web\lime/common.php:3603
-#: d:\web\lime/common.php:3669
-#: d:\web\lime/qanda.php:4462
-#: d:\web\lime/qanda.php:4976
-#: d:\web\lime/qanda.php:5034
+#: d:\web\lime/common.php:3474
+#: d:\web\lime/common.php:3483
+#: d:\web\lime/common.php:3552
+#: d:\web\lime/common.php:3561
+#: d:\web\lime/common.php:3600
+#: d:\web\lime/common.php:3627
+#: d:\web\lime/common.php:3693
+#: d:\web\lime/qanda.php:4514
+#: d:\web\lime/qanda.php:5028
+#: d:\web\lime/qanda.php:5086
 #: d:\web\lime/statistics_user.php:1255
 #: d:\web\lime/statistics_user.php:1380
 msgid "Yes"
@@ -431,14 +433,16 @@ msgstr "是"
 #: d:\web\lime/common.php:3403
 #: d:\web\lime/common.php:3413
 #: d:\web\lime/common.php:3440
-#: d:\web\lime/common.php:3527
-#: d:\web\lime/common.php:3536
-#: d:\web\lime/common.php:3575
-#: d:\web\lime/common.php:3602
-#: d:\web\lime/common.php:3668
-#: d:\web\lime/qanda.php:4471
-#: d:\web\lime/qanda.php:4978
-#: d:\web\lime/qanda.php:5052
+#: d:\web\lime/common.php:3473
+#: d:\web\lime/common.php:3482
+#: d:\web\lime/common.php:3551
+#: d:\web\lime/common.php:3560
+#: d:\web\lime/common.php:3599
+#: d:\web\lime/common.php:3626
+#: d:\web\lime/common.php:3692
+#: d:\web\lime/qanda.php:4523
+#: d:\web\lime/qanda.php:5030
+#: d:\web\lime/qanda.php:5104
 #: d:\web\lime/statistics_user.php:1256
 #: d:\web\lime/statistics_user.php:1381
 msgid "No"
@@ -446,8 +450,8 @@ msgstr "否"
 
 #: d:\web\lime/common.php:2080
 #: d:\web\lime/common.php:2088
-#: d:\web\lime/common.php:5406
-#: d:\web\lime/common.php:5411
+#: d:\web\lime/common.php:5430
+#: d:\web\lime/common.php:5435
 #: d:\web\lime/qanda.php:1242
 #: d:\web\lime/qanda.php:1656
 #: d:\web\lime/qanda.php:1845
@@ -455,72 +459,72 @@ msgstr "否"
 #: d:\web\lime/qanda.php:2350
 #: d:\web\lime/qanda.php:2489
 #: d:\web\lime/qanda.php:2556
-#: d:\web\lime/qanda.php:4482
-#: d:\web\lime/qanda.php:4550
-#: d:\web\lime/qanda.php:4646
-#: d:\web\lime/qanda.php:4734
-#: d:\web\lime/qanda.php:4829
-#: d:\web\lime/qanda.php:4897
-#: d:\web\lime/qanda.php:4981
-#: d:\web\lime/qanda.php:5072
-#: d:\web\lime/qanda.php:5163
-#: d:\web\lime/qanda.php:5247
-#: d:\web\lime/qanda.php:5346
-#: d:\web\lime/qanda.php:5368
-#: d:\web\lime/qanda.php:5454
-#: d:\web\lime/qanda.php:6073
-#: d:\web\lime/qanda.php:6074
-#: d:\web\lime/qanda.php:6367
-#: d:\web\lime/qanda.php:6435
-#: d:\web\lime/qanda.php:6557
-#: d:\web\lime/qanda.php:6789
-#: d:\web\lime/qanda.php:6843
-#: d:\web\lime/statistics_user.php:1506
-#: d:\web\lime/statistics_user.php:1595
-#: d:\web\lime/statistics_user.php:1879
-#: d:\web\lime/statistics_user.php:1893
-#: d:\web\lime/statistics_user.php:1927
-#: d:\web\lime/statistics_user.php:1962
-#: d:\web\lime/statistics_user.php:2003
+#: d:\web\lime/qanda.php:4534
+#: d:\web\lime/qanda.php:4602
+#: d:\web\lime/qanda.php:4698
+#: d:\web\lime/qanda.php:4786
+#: d:\web\lime/qanda.php:4881
+#: d:\web\lime/qanda.php:4949
+#: d:\web\lime/qanda.php:5033
+#: d:\web\lime/qanda.php:5124
+#: d:\web\lime/qanda.php:5215
+#: d:\web\lime/qanda.php:5299
+#: d:\web\lime/qanda.php:5398
+#: d:\web\lime/qanda.php:5420
+#: d:\web\lime/qanda.php:5506
+#: d:\web\lime/qanda.php:6125
+#: d:\web\lime/qanda.php:6126
+#: d:\web\lime/qanda.php:6419
+#: d:\web\lime/qanda.php:6487
+#: d:\web\lime/qanda.php:6609
+#: d:\web\lime/qanda.php:6841
+#: d:\web\lime/qanda.php:6895
+#: d:\web\lime/statistics_user.php:1504
+#: d:\web\lime/statistics_user.php:1593
+#: d:\web\lime/statistics_user.php:1877
+#: d:\web\lime/statistics_user.php:1891
+#: d:\web\lime/statistics_user.php:1925
+#: d:\web\lime/statistics_user.php:1960
+#: d:\web\lime/statistics_user.php:2001
 msgid "No answer"
 msgstr "拒答"
 
 #: d:\web\lime/common.php:2086
-#: d:\web\lime/qanda.php:4526
+#: d:\web\lime/qanda.php:4578
 #: d:\web\lime/statistics_user.php:1374
 msgid "Male"
 msgstr "男"
 
 #: d:\web\lime/common.php:2087
-#: d:\web\lime/qanda.php:4518
+#: d:\web\lime/qanda.php:4570
 #: d:\web\lime/statistics_user.php:1373
 msgid "Female"
 msgstr "女"
 
 #: d:\web\lime/common.php:2096
-#: d:\web\lime/qanda.php:4977
-#: d:\web\lime/qanda.php:5042
+#: d:\web\lime/qanda.php:5029
+#: d:\web\lime/qanda.php:5094
 #: d:\web\lime/statistics_user.php:1257
 msgid "Uncertain"
 msgstr "不确定"
 
 #: d:\web\lime/common.php:2102
-#: d:\web\lime/qanda.php:5158
-#: d:\web\lime/qanda.php:5206
+#: d:\web\lime/qanda.php:5210
+#: d:\web\lime/qanda.php:5258
 #: d:\web\lime/statistics_user.php:1274
 msgid "Increase"
 msgstr "增加"
 
 #: d:\web\lime/common.php:2103
-#: d:\web\lime/qanda.php:5160
-#: d:\web\lime/qanda.php:5229
+#: d:\web\lime/qanda.php:5212
+#: d:\web\lime/qanda.php:5281
 #: d:\web\lime/statistics_user.php:1276
 msgid "Decrease"
 msgstr "减少"
 
 #: d:\web\lime/common.php:2104
-#: d:\web\lime/qanda.php:5159
-#: d:\web\lime/qanda.php:5217
+#: d:\web\lime/qanda.php:5211
+#: d:\web\lime/qanda.php:5269
 #: d:\web\lime/statistics_user.php:1275
 msgid "Same"
 msgstr "相同"
@@ -698,12 +702,12 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr "在下面填写您的详细资料，然后一封包含参与该调查的链接的邮件会立刻发送。"
 
 #: d:\web\lime/common.php:2962
-#: d:\web\lime/common.php:6410
+#: d:\web\lime/common.php:6434
 msgid "First Name"
 msgstr "名"
 
 #: d:\web\lime/common.php:2969
-#: d:\web\lime/common.php:6411
+#: d:\web\lime/common.php:6435
 msgid "Last Name"
 msgstr "姓"
 
@@ -901,362 +905,386 @@ msgstr "滑块精度"
 msgid "Slider initial value"
 msgstr "滑块初始值"
 
-#: d:\web\lime/common.php:3473
+#: d:\web\lime/common.php:3476
+msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
+msgstr "滑块中间显示操纵柄（这不会设置初始值）"
+
+#: d:\web\lime/common.php:3477
+msgid "Slider starts at the middle position"
+msgstr "滑块起始位于中间位置"
+
+#: d:\web\lime/common.php:3485
+msgid "Display min and max value under the slider"
+msgstr "在滑块下显示最小和最大值"
+
+#: d:\web\lime/common.php:3486
+msgid "Display slider min and max value"
+msgstr "显示滑块最小值和最大值"
+
+#: d:\web\lime/common.php:3491
+msgid "Answer|Left-slider-text|Right-slider-text separator character"
+msgstr "答案r|滑块左边文本|滑块右边文本分隔符"
+
+#: d:\web\lime/common.php:3492
+msgid "Slider left/right text separator"
+msgstr "滑块左/右文本分隔"
+
+#: d:\web\lime/common.php:3497
 msgid "Add a prefix to the answer field"
 msgstr "为答案项字段添加前缀"
 
-#: d:\web\lime/common.php:3474
+#: d:\web\lime/common.php:3498
 msgid "Answer prefix"
 msgstr "答案项前缀"
 
-#: d:\web\lime/common.php:3479
+#: d:\web\lime/common.php:3503
 msgid "Add a suffix to the answer field"
 msgstr "为答案项字段添加后缀"
 
-#: d:\web\lime/common.php:3480
+#: d:\web\lime/common.php:3504
 msgid "Answer suffix"
 msgstr "答案项后缀"
 
-#: d:\web\lime/common.php:3485
+#: d:\web\lime/common.php:3509
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "使用可访问选择框替代弹出日历"
 
-#: d:\web\lime/common.php:3486
+#: d:\web\lime/common.php:3510
 msgid "Display select boxes"
 msgstr "显示选择框"
 
-#: d:\web\lime/common.php:3491
+#: d:\web\lime/common.php:3515
 msgid "Minimum year value in calendar"
 msgstr "日历最小年份值"
 
-#: d:\web\lime/common.php:3492
+#: d:\web\lime/common.php:3516
 msgid "Minimum dropdown year"
 msgstr "最小下拉年份"
 
-#: d:\web\lime/common.php:3497
+#: d:\web\lime/common.php:3521
 msgid "Maximum year value for calendar"
 msgstr "日历最大年份值"
 
-#: d:\web\lime/common.php:3498
+#: d:\web\lime/common.php:3522
 msgid "Maximum dropdown year"
 msgstr "最大下拉年份"
 
-#: d:\web\lime/common.php:3503
+#: d:\web\lime/common.php:3527
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code."
 msgstr "如果选择了特定答案则排除所有其它选项-仅输入答案代码"
 
-#: d:\web\lime/common.php:3504
+#: d:\web\lime/common.php:3528
 msgid "Exclusive option"
 msgstr "排除选项"
 
-#: d:\web\lime/common.php:3509
+#: d:\web\lime/common.php:3533
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最大值"
 
-#: d:\web\lime/common.php:3510
+#: d:\web\lime/common.php:3534
 msgid "Maximum value"
 msgstr "最大值"
 
-#: d:\web\lime/common.php:3515
+#: d:\web\lime/common.php:3539
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的最小值"
 
-#: d:\web\lime/common.php:3516
+#: d:\web\lime/common.php:3540
 msgid "Minimum value"
 msgstr "最小值"
 
-#: d:\web\lime/common.php:3521
+#: d:\web\lime/common.php:3545
 msgid "Step value for array (multi-flexible) question type"
 msgstr "阵列（多重弹性）问题类型的步进值"
 
-#: d:\web\lime/common.php:3522
+#: d:\web\lime/common.php:3546
 msgid "Step value"
 msgstr "步进值"
 
-#: d:\web\lime/common.php:3530
+#: d:\web\lime/common.php:3554
 msgid "Use checkbox layout for array (multi-flexible) question type"
 msgstr "为阵列（多重弹性）问题类型使用复选框布局"
 
-#: d:\web\lime/common.php:3531
+#: d:\web\lime/common.php:3555
 msgid "Checkbox layout"
 msgstr "复选框布局"
 
-#: d:\web\lime/common.php:3539
+#: d:\web\lime/common.php:3563
 msgid "Use dual dropdown boxes instead of dual scales"
 msgstr "用双下拉框替代双尺度"
 
-#: d:\web\lime/common.php:3540
+#: d:\web\lime/common.php:3564
 msgid "Dual dropdown"
 msgstr "双下拉"
 
-#: d:\web\lime/common.php:3545
+#: d:\web\lime/common.php:3569
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "下拉列表的前缀|后缀"
 
-#: d:\web\lime/common.php:3546
+#: d:\web\lime/common.php:3570
 msgid "Prefix|Suffix"
 msgstr "前缀|后缀"
 
-#: d:\web\lime/common.php:3551
+#: d:\web\lime/common.php:3575
 msgid "Enter a header text for scale A"
 msgstr "为尺度A输入表头文本"
 
-#: d:\web\lime/common.php:3552
+#: d:\web\lime/common.php:3576
 msgid "Header scale A"
 msgstr "尺度A标题"
 
-#: d:\web\lime/common.php:3557
+#: d:\web\lime/common.php:3581
 msgid "Enter a header text for scale B"
 msgstr "为尺度B输入表头文本"
 
-#: d:\web\lime/common.php:3558
+#: d:\web\lime/common.php:3582
 msgid "Header scale B"
 msgstr "尺度B标题"
 
-#: d:\web\lime/common.php:3563
+#: d:\web\lime/common.php:3587
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "下拉列表的答案后分隔符|下拉列表内分隔符"
 
-#: d:\web\lime/common.php:3564
+#: d:\web\lime/common.php:3588
 msgid "Dropdown separators"
 msgstr "下拉隔离符"
 
-#: d:\web\lime/common.php:3569
+#: d:\web\lime/common.php:3593
 msgid "Replaces the 'other' label with text"
 msgstr "用文本替换'其它' 标签"
 
-#: d:\web\lime/common.php:3570
+#: d:\web\lime/common.php:3594
 msgid "\"Other\" caption"
 msgstr "\"其它\"标题"
 
-#: d:\web\lime/common.php:3578
+#: d:\web\lime/common.php:3602
 msgid "Show statistics of a certain question to the user"
 msgstr "向用户显示特定问题的统计"
 
-#: d:\web\lime/common.php:3579
+#: d:\web\lime/common.php:3603
 msgid "Show in public statistics"
 msgstr "在公开统计内显示"
 
-#: d:\web\lime/common.php:3584
+#: d:\web\lime/common.php:3608
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "把先前问题总计作为本题最大值的SGQA标识符"
 
-#: d:\web\lime/common.php:3585
+#: d:\web\lime/common.php:3609
 msgid "Max value from SGQA"
 msgstr "SGQA最大值"
 
-#: d:\web\lime/common.php:3590
+#: d:\web\lime/common.php:3614
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "把先前问题总计作为本题最小值的SGQA标识符"
 
-#: d:\web\lime/common.php:3591
+#: d:\web\lime/common.php:3615
 msgid "Min value from SGQA"
 msgstr "SGQA最小值"
 
-#: d:\web\lime/common.php:3596
+#: d:\web\lime/common.php:3620
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "把先前问题总计用作总计的本题SGQA标识符"
 
-#: d:\web\lime/common.php:3597
+#: d:\web\lime/common.php:3621
 msgid "Value equals SGQA"
 msgstr "值等于SGQA"
 
-#: d:\web\lime/common.php:3605
+#: d:\web\lime/common.php:3629
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "通过设置为“是”在可打印视图内的该问题前插入分页符"
 
-#: d:\web\lime/common.php:3606
+#: d:\web\lime/common.php:3630
 msgid "Insert page break in printable view"
 msgstr "在可打印视图内插入分页符"
 
-#: d:\web\lime/common.php:3611
+#: d:\web\lime/common.php:3635
 msgid "Default"
 msgstr "默认"
 
-#: d:\web\lime/common.php:3612
+#: d:\web\lime/common.php:3636
 msgid "Nominal"
 msgstr "定类"
 
-#: d:\web\lime/common.php:3613
+#: d:\web\lime/common.php:3637
 msgid "Ordinal"
 msgstr "定序"
 
-#: d:\web\lime/common.php:3614
+#: d:\web\lime/common.php:3638
 msgid "Scale"
 msgstr "尺度"
 
-#: d:\web\lime/common.php:3616
+#: d:\web\lime/common.php:3640
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "为该题设定SPSS导出尺度类型 "
 
-#: d:\web\lime/common.php:3617
+#: d:\web\lime/common.php:3641
 msgid "SPSS export scale type"
 msgstr "SPSS 导出尺度类型"
 
-#: d:\web\lime/common.php:3623
+#: d:\web\lime/common.php:3647
 msgid "Limit time to answer question (in seconds)"
 msgstr "限时答题（秒）"
 
-#: d:\web\lime/common.php:3624
+#: d:\web\lime/common.php:3648
 msgid "Time limit"
 msgstr "时间限制"
 
-#: d:\web\lime/common.php:3629
+#: d:\web\lime/common.php:3653
 msgid "Warn and move on"
 msgstr "警告并继续"
 
-#: d:\web\lime/common.php:3630
+#: d:\web\lime/common.php:3654
 msgid "Move on without warning"
 msgstr "不带警告继续"
 
-#: d:\web\lime/common.php:3631
+#: d:\web\lime/common.php:3655
 msgid "Disable only"
 msgstr "仅禁用"
 
-#: d:\web\lime/common.php:3632
+#: d:\web\lime/common.php:3656
 msgid "Action to perform when time limit is up"
 msgstr "到达时限时执行的操作"
 
-#: d:\web\lime/common.php:3633
+#: d:\web\lime/common.php:3657
 msgid "Time limit action"
 msgstr "时间限制操作"
 
-#: d:\web\lime/common.php:3638
+#: d:\web\lime/common.php:3662
 msgid "Message to display when time limit has expired"
 msgstr "超时显示的消息"
 
-#: d:\web\lime/common.php:3639
+#: d:\web\lime/common.php:3663
 msgid "Time limit expiry message"
 msgstr "超时消息"
 
-#: d:\web\lime/common.php:3644
+#: d:\web\lime/common.php:3668
 msgid "How long to display the time limit expiry message (in seconds)"
 msgstr "超时消息显示时长（秒）"
 
-#: d:\web\lime/common.php:3645
+#: d:\web\lime/common.php:3669
 msgid "Time limit expiry message delay"
 msgstr "超时消息延时"
 
-#: d:\web\lime/common.php:3650
+#: d:\web\lime/common.php:3674
 msgid "Message to display warning that time limit is about to expire"
 msgstr "警告将要超时的显示消息"
 
-#: d:\web\lime/common.php:3651
+#: d:\web\lime/common.php:3675
 msgid "Time limit warning message"
 msgstr "时限警告消息"
 
-#: d:\web\lime/common.php:3656
+#: d:\web\lime/common.php:3680
 msgid "Time until time limit expiry when time limit warning message is displayed (in seconds)"
 msgstr "直到超时发生时警告消息时长（秒）"
 
-#: d:\web\lime/common.php:3657
+#: d:\web\lime/common.php:3681
 msgid "Time limit warning message timer"
 msgstr "限时警告消息计时器"
 
-#: d:\web\lime/common.php:3662
+#: d:\web\lime/common.php:3686
 msgid "How long the time limit warning message will display (in seconds)"
 msgstr "时限警告消息显示时长（秒）"
 
-#: d:\web\lime/common.php:3663
+#: d:\web\lime/common.php:3687
 msgid "Time limit warning message display time"
 msgstr "时限警告消息显示时长"
 
-#: d:\web\lime/common.php:3670
+#: d:\web\lime/common.php:3694
 msgid "Disable the next button until time limit expires"
 msgstr "超时后禁用下一页按钮"
 
-#: d:\web\lime/common.php:3671
+#: d:\web\lime/common.php:3695
 msgid "Time limit disable next"
 msgstr "时间限制禁用下一页"
 
-#: d:\web\lime/common.php:3676
+#: d:\web\lime/common.php:3700
 msgid "CSS style for the time limit message"
 msgstr "时限消息的CSS样式"
 
-#: d:\web\lime/common.php:3677
+#: d:\web\lime/common.php:3701
 msgid "Time limit message CSS style"
 msgstr "时限消息的CSS样式"
 
-#: d:\web\lime/common.php:3682
+#: d:\web\lime/common.php:3706
 msgid "CSS style for the time limit warning message"
 msgstr "时限警告消息的CSS样式"
 
-#: d:\web\lime/common.php:3683
+#: d:\web\lime/common.php:3707
 msgid "Time limit warning CSS style"
 msgstr "时限警告CSS样式"
 
-#: d:\web\lime/common.php:3688
+#: d:\web\lime/common.php:3712
 msgid "CSS Style for the time limit countdown timer"
 msgstr "时限倒计时计时器CSS样式"
 
-#: d:\web\lime/common.php:3689
+#: d:\web\lime/common.php:3713
 msgid "Time limit timer CSS style"
 msgstr "时限计时器CSS样式"
 
-#: d:\web\lime/common.php:3836
+#: d:\web\lime/common.php:3860
 msgid "Version"
 msgstr "版本"
 
-#: d:\web\lime/common.php:3845
+#: d:\web\lime/common.php:3869
 msgid "Online Manual"
 msgstr "在线手册"
 
-#: d:\web\lime/common.php:3848
+#: d:\web\lime/common.php:3872
 msgid "Support this project - Donate to "
 msgstr "支持本项目 - 捐赠"
 
-#: d:\web\lime/common.php:3851
+#: d:\web\lime/common.php:3875
 msgid "Visit our website!"
 msgstr "请访问我们的网站！"
 
-#: d:\web\lime/common.php:4003
+#: d:\web\lime/common.php:4027
 msgid "Email was not sent because demo-mode is activated."
 msgstr "演示模式 - 邮件未能发送。"
 
-#: d:\web\lime/common.php:4356
-#: d:\web\lime/common.php:4362
+#: d:\web\lime/common.php:4380
+#: d:\web\lime/common.php:4386
 msgid "Executing"
 msgstr "执行中"
 
-#: d:\web\lime/common.php:4356
+#: d:\web\lime/common.php:4380
 msgid "Failed! Reason: "
 msgstr "失败！原因："
 
-#: d:\web\lime/common.php:4362
+#: d:\web\lime/common.php:4386
 msgid "Success!"
 msgstr "成功！"
 
-#: d:\web\lime/common.php:5420
+#: d:\web\lime/common.php:5444
 #: d:\web\lime/index.php:490
 #: d:\web\lime/save.php:627
 msgid "Error"
 msgstr "错误"
 
-#: d:\web\lime/common.php:6412
+#: d:\web\lime/common.php:6436
 msgid "Email address"
 msgstr "邮件地址"
 
-#: d:\web\lime/common.php:6413
+#: d:\web\lime/common.php:6437
 msgid "Token code"
 msgstr "操作代码编码"
 
-#: d:\web\lime/common.php:6414
+#: d:\web\lime/common.php:6438
 msgid "Language code"
 msgstr "语言编码"
 
-#: d:\web\lime/common.php:6415
+#: d:\web\lime/common.php:6439
 msgid "Invitation sent date"
 msgstr "邀请发送日期"
 
-#: d:\web\lime/common.php:6416
+#: d:\web\lime/common.php:6440
 msgid "Last Reminder sent date"
 msgstr "提醒邮件最后发送日期"
 
-#: d:\web\lime/common.php:6417
+#: d:\web\lime/common.php:6441
 msgid "Total numbers of sent reminders"
 msgstr "发送提醒邮件总数"
 
-#: d:\web\lime/common.php:6437
+#: d:\web\lime/common.php:6461
 #, php-format
 msgid "Attribute %s"
 msgstr "属性%s"
@@ -1810,12 +1838,12 @@ msgid "Year"
 msgstr "年"
 
 #: d:\web\lime/qanda.php:1383
-#: d:\web\lime/qanda.php:4148
-#: d:\web\lime/qanda.php:4338
-#: d:\web\lime/qanda.php:4417
-#: d:\web\lime/statistics_user.php:1605
-#: d:\web\lime/statistics_user.php:1619
-#: d:\web\lime/statistics_user.php:1692
+#: d:\web\lime/qanda.php:4200
+#: d:\web\lime/qanda.php:4390
+#: d:\web\lime/qanda.php:4469
+#: d:\web\lime/statistics_user.php:1603
+#: d:\web\lime/statistics_user.php:1617
+#: d:\web\lime/statistics_user.php:1690
 msgid "Answer"
 msgstr "答案"
 
@@ -1831,8 +1859,8 @@ msgstr "格式：%s"
 #: d:\web\lime/qanda.php:1459
 #: d:\web\lime/qanda.php:1638
 #: d:\web\lime/qanda.php:1827
-#: d:\web\lime/qanda.php:6769
-#: d:\web\lime/qanda.php:6823
+#: d:\web\lime/qanda.php:6821
+#: d:\web\lime/qanda.php:6875
 msgid "Please choose"
 msgstr "请选择"
 
@@ -1909,65 +1937,65 @@ msgid "Make a comment on your choice here:"
 msgstr "请为您的选择做个评论："
 
 #: d:\web\lime/qanda.php:3595
-#: d:\web\lime/qanda.php:3877
-#: d:\web\lime/qanda.php:4990
-#: d:\web\lime/qanda.php:6620
+#: d:\web\lime/qanda.php:3906
+#: d:\web\lime/qanda.php:5042
+#: d:\web\lime/qanda.php:6672
 msgid "Error: This question has no answers."
 msgstr "错误：该问题没有答案项。"
 
-#: d:\web\lime/qanda.php:3955
+#: d:\web\lime/qanda.php:4007
 msgid "Only numbers may be entered in these fields"
 msgstr "这些字段只能输入数字"
 
-#: d:\web\lime/qanda.php:3959
+#: d:\web\lime/qanda.php:4011
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "所有输入项不能超过 %d"
 
-#: d:\web\lime/qanda.php:3963
+#: d:\web\lime/qanda.php:4015
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "所有输入项总计须等于 %d"
 
-#: d:\web\lime/qanda.php:3967
+#: d:\web\lime/qanda.php:4019
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "所有输入项总计至少%s"
 
-#: d:\web\lime/qanda.php:3975
+#: d:\web\lime/qanda.php:4027
 msgid "Remaining: "
 msgstr "剩余："
 
-#: d:\web\lime/qanda.php:3977
+#: d:\web\lime/qanda.php:4029
 msgid "Total: "
 msgstr "总计："
 
-#: d:\web\lime/qanda.php:4021
-#: d:\web\lime/qanda.php:4027
-#: d:\web\lime/qanda.php:4063
-#: d:\web\lime/qanda.php:4074
+#: d:\web\lime/qanda.php:4073
+#: d:\web\lime/qanda.php:4079
+#: d:\web\lime/qanda.php:4115
+#: d:\web\lime/qanda.php:4126
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "答案无效。所有输入项总计不能超过"
 
-#: d:\web\lime/qanda.php:4040
-#: d:\web\lime/qanda.php:4048
+#: d:\web\lime/qanda.php:4092
+#: d:\web\lime/qanda.php:4100
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "答案无效。所有输入项总计至少是%s。"
 
-#: d:\web\lime/qanda.php:4152
+#: d:\web\lime/qanda.php:4204
 msgid "Only numbers may be entered in this field"
 msgstr "本字段只能输入数字"
 
-#: d:\web\lime/qanda.php:5495
-#: d:\web\lime/qanda.php:5733
-#: d:\web\lime/qanda.php:6033
-#: d:\web\lime/qanda.php:6186
-#: d:\web\lime/qanda.php:6869
+#: d:\web\lime/qanda.php:5547
+#: d:\web\lime/qanda.php:5785
+#: d:\web\lime/qanda.php:6085
+#: d:\web\lime/qanda.php:6238
+#: d:\web\lime/qanda.php:6921
 msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
 msgstr "错误：此问题的标签集在这种语言下不可用或不存在。"
 
-#: d:\web\lime/qanda.php:6180
+#: d:\web\lime/qanda.php:6232
 msgid "Error: There are no answers defined for this question."
 msgstr "错误：没有为这个问题定义答案。"
 
@@ -2064,7 +2092,7 @@ msgid "Generating summaries ..."
 msgstr "正在生成摘要..."
 
 #: d:\web\lime/statistics_user.php:865
-#: d:\web\lime/statistics_user.php:1522
+#: d:\web\lime/statistics_user.php:1520
 msgid "Field summary for"
 msgstr "字段摘要"
 
@@ -2077,13 +2105,13 @@ msgid "Result"
 msgstr "结果"
 
 #: d:\web\lime/statistics_user.php:944
-#: d:\web\lime/statistics_user.php:1611
-#: d:\web\lime/statistics_user.php:2063
+#: d:\web\lime/statistics_user.php:1609
+#: d:\web\lime/statistics_user.php:2061
 msgid "Sum"
 msgstr "总和"
 
 #: d:\web\lime/statistics_user.php:945
-#: d:\web\lime/statistics_user.php:2183
+#: d:\web\lime/statistics_user.php:2181
 msgid "Standard deviation"
 msgstr "标准差"
 
@@ -2096,9 +2124,9 @@ msgid "Minimum"
 msgstr "最小值"
 
 #: d:\web\lime/statistics_user.php:988
-#: d:\web\lime/statistics_user.php:1607
-#: d:\web\lime/statistics_user.php:1621
-#: d:\web\lime/statistics_user.php:1694
+#: d:\web\lime/statistics_user.php:1605
+#: d:\web\lime/statistics_user.php:1619
+#: d:\web\lime/statistics_user.php:1692
 msgid "Count"
 msgstr "计数"
 
@@ -2135,29 +2163,29 @@ msgstr "minitab 方法"
 msgid "Not enough values for calculation"
 msgstr "没有足够的数据进行计算"
 
-#: d:\web\lime/statistics_user.php:1609
-#: d:\web\lime/statistics_user.php:1623
-#: d:\web\lime/statistics_user.php:1696
+#: d:\web\lime/statistics_user.php:1607
+#: d:\web\lime/statistics_user.php:1621
+#: d:\web\lime/statistics_user.php:1694
 msgid "Percentage"
 msgstr "百分比"
 
-#: d:\web\lime/statistics_user.php:1777
+#: d:\web\lime/statistics_user.php:1775
 msgid "Non completed"
 msgstr "未完成"
 
-#: d:\web\lime/statistics_user.php:2063
+#: d:\web\lime/statistics_user.php:2061
 msgid "Answers"
 msgstr "答案"
 
-#: d:\web\lime/statistics_user.php:2069
+#: d:\web\lime/statistics_user.php:2067
 msgid "Number of cases"
 msgstr "实例数"
 
-#: d:\web\lime/statistics_user.php:2183
+#: d:\web\lime/statistics_user.php:2181
 msgid "Arithmetic mean"
 msgstr "算术平均数"
 
-#: d:\web\lime/statistics_user.php:2393
+#: d:\web\lime/statistics_user.php:2391
 msgid "Completed"
 msgstr "已完成"
 
@@ -2731,13 +2759,13 @@ msgid "Add and edit conditions"
 msgstr "添加并编辑条件"
 
 #: d:\web\lime/admin/conditionshandling.php:133
-#: d:\web\lime/admin/conditionshandling.php:1584
-#: d:\web\lime/admin/conditionshandling.php:1624
+#: d:\web\lime/admin/conditionshandling.php:1590
+#: d:\web\lime/admin/conditionshandling.php:1630
 msgid "Copy conditions"
 msgstr "复制条件"
 
 #: d:\web\lime/admin/conditionshandling.php:138
-#: d:\web\lime/admin/conditionshandling.php:1851
+#: d:\web\lime/admin/conditionshandling.php:1857
 msgid "Questions"
 msgstr "问题"
 
@@ -2782,213 +2810,213 @@ msgstr "复选框组"
 msgid "Single checkbox"
 msgstr "单选"
 
-#: d:\web\lime/admin/conditionshandling.php:986
+#: d:\web\lime/admin/conditionshandling.php:992
 msgid "Before"
 msgstr "之前"
 
-#: d:\web\lime/admin/conditionshandling.php:1007
+#: d:\web\lime/admin/conditionshandling.php:1013
 msgid "Current"
 msgstr "当前"
 
-#: d:\web\lime/admin/conditionshandling.php:1025
+#: d:\web\lime/admin/conditionshandling.php:1031
 msgid "After"
 msgstr "之后"
 
-#: d:\web\lime/admin/conditionshandling.php:1129
+#: d:\web\lime/admin/conditionshandling.php:1135
 msgid "Only show question {QID} IF"
 msgstr "显示问题 {QID}仅当"
 
-#: d:\web\lime/admin/conditionshandling.php:1150
+#: d:\web\lime/admin/conditionshandling.php:1156
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
 msgstr "您确认想删除选定问题的所有条件吗？"
 
-#: d:\web\lime/admin/conditionshandling.php:1152
+#: d:\web\lime/admin/conditionshandling.php:1158
 msgid "Delete all conditions"
 msgstr "删除所有条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1158
+#: d:\web\lime/admin/conditionshandling.php:1164
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "您确认要从1开始对场景重新编码吗？"
 
-#: d:\web\lime/admin/conditionshandling.php:1160
+#: d:\web\lime/admin/conditionshandling.php:1166
 msgid "Renumber scenario automatically"
 msgstr "对场景自动重新编号"
 
-#: d:\web\lime/admin/conditionshandling.php:1188
-#: d:\web\lime/admin/conditionshandling.php:1337
+#: d:\web\lime/admin/conditionshandling.php:1194
+#: d:\web\lime/admin/conditionshandling.php:1343
 #: d:\web\lime/admin/dataentry.php:1963
 #: d:\web\lime/admin/dataentry.php:2051
 #: d:\web\lime/admin/dataentry.php:2083
 msgid "OR"
 msgstr "或"
 
-#: d:\web\lime/admin/conditionshandling.php:1204
+#: d:\web\lime/admin/conditionshandling.php:1210
 msgid "New scenario number"
 msgstr "新建场景号"
 
-#: d:\web\lime/admin/conditionshandling.php:1211
+#: d:\web\lime/admin/conditionshandling.php:1217
 msgid "Update scenario"
 msgstr "更新场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1222
+#: d:\web\lime/admin/conditionshandling.php:1228
 msgid "Are you sure you want to delete all conditions set in this scenario?"
 msgstr "您确定要删除本场景所有条件吗？"
 
-#: d:\web\lime/admin/conditionshandling.php:1224
+#: d:\web\lime/admin/conditionshandling.php:1230
 msgid "Delete this scenario"
 msgstr "删除场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1230
+#: d:\web\lime/admin/conditionshandling.php:1236
 msgid "Edit scenario"
 msgstr "编辑场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1282
-#: d:\web\lime/admin/conditionshandling.php:1791
+#: d:\web\lime/admin/conditionshandling.php:1288
+#: d:\web\lime/admin/conditionshandling.php:1797
 msgid "Less than"
 msgstr "小于"
 
-#: d:\web\lime/admin/conditionshandling.php:1283
-#: d:\web\lime/admin/conditionshandling.php:1792
+#: d:\web\lime/admin/conditionshandling.php:1289
+#: d:\web\lime/admin/conditionshandling.php:1798
 msgid "Less than or equal to"
 msgstr "小于或等于"
 
-#: d:\web\lime/admin/conditionshandling.php:1284
+#: d:\web\lime/admin/conditionshandling.php:1290
 msgid "equals"
 msgstr "等于"
 
-#: d:\web\lime/admin/conditionshandling.php:1285
-#: d:\web\lime/admin/conditionshandling.php:1794
+#: d:\web\lime/admin/conditionshandling.php:1291
+#: d:\web\lime/admin/conditionshandling.php:1800
 msgid "Not equal to"
 msgstr "不等于"
 
-#: d:\web\lime/admin/conditionshandling.php:1286
-#: d:\web\lime/admin/conditionshandling.php:1795
+#: d:\web\lime/admin/conditionshandling.php:1292
+#: d:\web\lime/admin/conditionshandling.php:1801
 msgid "Greater than or equal to"
 msgstr "大于或等于"
 
-#: d:\web\lime/admin/conditionshandling.php:1287
-#: d:\web\lime/admin/conditionshandling.php:1796
+#: d:\web\lime/admin/conditionshandling.php:1293
+#: d:\web\lime/admin/conditionshandling.php:1802
 msgid "Greater than"
 msgstr "大于"
 
-#: d:\web\lime/admin/conditionshandling.php:1288
-#: d:\web\lime/admin/conditionshandling.php:1797
-#: d:\web\lime/admin/conditionshandling.php:1899
+#: d:\web\lime/admin/conditionshandling.php:1294
+#: d:\web\lime/admin/conditionshandling.php:1803
+#: d:\web\lime/admin/conditionshandling.php:1905
 msgid "Regular expression"
 msgstr "正规表达式"
 
-#: d:\web\lime/admin/conditionshandling.php:1330
+#: d:\web\lime/admin/conditionshandling.php:1336
 msgid "and"
 msgstr "和"
 
-#: d:\web\lime/admin/conditionshandling.php:1362
-#: d:\web\lime/admin/conditionshandling.php:1435
+#: d:\web\lime/admin/conditionshandling.php:1368
+#: d:\web\lime/admin/conditionshandling.php:1441
 msgid "From token table"
 msgstr "从操作代码表"
 
-#: d:\web\lime/admin/conditionshandling.php:1366
-#: d:\web\lime/admin/conditionshandling.php:1439
+#: d:\web\lime/admin/conditionshandling.php:1372
+#: d:\web\lime/admin/conditionshandling.php:1445
 msgid "Inexistant token table"
 msgstr "不存在的操作代码表"
 
-#: d:\web\lime/admin/conditionshandling.php:1424
+#: d:\web\lime/admin/conditionshandling.php:1430
 msgid "Not found"
 msgstr "未发现"
 
-#: d:\web\lime/admin/conditionshandling.php:1481
+#: d:\web\lime/admin/conditionshandling.php:1487
 msgid "Are you sure you want to delete this condition?"
 msgstr "您确定要删除这个条件吗？"
 
-#: d:\web\lime/admin/conditionshandling.php:1483
+#: d:\web\lime/admin/conditionshandling.php:1489
 msgid "Delete this condition"
 msgstr "删除本条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1486
+#: d:\web\lime/admin/conditionshandling.php:1492
 msgid "Edit this condition"
 msgstr "编辑条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1561
+#: d:\web\lime/admin/conditionshandling.php:1567
 msgid "This question is always shown."
 msgstr "本题一直显示。"
 
-#: d:\web\lime/admin/conditionshandling.php:1600
+#: d:\web\lime/admin/conditionshandling.php:1606
 msgid "Copy the selected conditions to"
 msgstr "复制选定条件至"
 
-#: d:\web\lime/admin/conditionshandling.php:1624
+#: d:\web\lime/admin/conditionshandling.php:1630
 msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "您确认想要将这些条件复制到您选择的问题上吗？"
 
-#: d:\web\lime/admin/conditionshandling.php:1650
+#: d:\web\lime/admin/conditionshandling.php:1656
 msgid "Condition"
 msgstr "条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1689
+#: d:\web\lime/admin/conditionshandling.php:1695
 msgid "Edit condition"
 msgstr "编辑条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1693
-#: d:\web\lime/admin/conditionshandling.php:1918
+#: d:\web\lime/admin/conditionshandling.php:1699
+#: d:\web\lime/admin/conditionshandling.php:1924
 msgid "Add condition"
 msgstr "添加条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1710
+#: d:\web\lime/admin/conditionshandling.php:1716
 msgid "Add scenario"
 msgstr "添加场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1711
+#: d:\web\lime/admin/conditionshandling.php:1717
 msgid "Default scenario"
 msgstr "默认场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1722
+#: d:\web\lime/admin/conditionshandling.php:1728
 msgid "Scenario"
 msgstr "场景"
 
-#: d:\web\lime/admin/conditionshandling.php:1734
+#: d:\web\lime/admin/conditionshandling.php:1740
 msgid "Previous questions"
 msgstr "先前问题"
 
-#: d:\web\lime/admin/conditionshandling.php:1789
+#: d:\web\lime/admin/conditionshandling.php:1795
 msgid "Comparison operator"
 msgstr "比较操作符"
 
-#: d:\web\lime/admin/conditionshandling.php:1793
+#: d:\web\lime/admin/conditionshandling.php:1799
 msgid "Equals"
 msgstr "等于"
 
-#: d:\web\lime/admin/conditionshandling.php:1849
+#: d:\web\lime/admin/conditionshandling.php:1855
 msgid "Predefined"
 msgstr "预定义"
 
-#: d:\web\lime/admin/conditionshandling.php:1850
+#: d:\web\lime/admin/conditionshandling.php:1856
 msgid "Constant"
 msgstr "常量"
 
-#: d:\web\lime/admin/conditionshandling.php:1853
+#: d:\web\lime/admin/conditionshandling.php:1859
 msgid "RegExp"
 msgstr "正则表达式"
 
-#: d:\web\lime/admin/conditionshandling.php:1859
+#: d:\web\lime/admin/conditionshandling.php:1865
 msgid "Predefined answers for this question"
 msgstr "该问题的预定义答案"
 
-#: d:\web\lime/admin/conditionshandling.php:1864
+#: d:\web\lime/admin/conditionshandling.php:1870
 msgid "Constant value"
 msgstr "常量值"
 
-#: d:\web\lime/admin/conditionshandling.php:1881
+#: d:\web\lime/admin/conditionshandling.php:1887
 msgid "Answers from previous questions"
 msgstr "来自先前问题的答案项"
 
-#: d:\web\lime/admin/conditionshandling.php:1893
+#: d:\web\lime/admin/conditionshandling.php:1899
 msgid "Attributes values from the participant's token"
 msgstr "参与者操作代码的属性值"
 
-#: d:\web\lime/admin/conditionshandling.php:1912
+#: d:\web\lime/admin/conditionshandling.php:1918
 msgid "Update condition"
 msgstr "更新条件"
 
-#: d:\web\lime/admin/conditionshandling.php:1928
+#: d:\web\lime/admin/conditionshandling.php:1934
 msgid "Clear"
 msgstr "清除"
 
@@ -5808,271 +5836,271 @@ msgid "Open imported template"
 msgstr "打开导入模板"
 
 #: d:\web\lime/admin/integritycheck.php:28
-#: d:\web\lime/admin/integritycheck.php:505
+#: d:\web\lime/admin/integritycheck.php:512
 msgid "Data Consistency Check"
 msgstr "数据一致性检查"
 
 #: d:\web\lime/admin/integritycheck.php:29
-#: d:\web\lime/admin/integritycheck.php:505
+#: d:\web\lime/admin/integritycheck.php:512
 msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "如果出现错误，可能是您重复执行了这个脚本。"
 
-#: d:\web\lime/admin/integritycheck.php:45
+#: d:\web\lime/admin/integritycheck.php:48
 msgid "No matching Cqid"
 msgstr "没有匹配的Cqid"
 
-#: d:\web\lime/admin/integritycheck.php:52
+#: d:\web\lime/admin/integritycheck.php:58
 msgid "No matching CFIELDNAME Group!"
 msgstr "没有匹配的CFIELDNAME组！"
 
-#: d:\web\lime/admin/integritycheck.php:56
+#: d:\web\lime/admin/integritycheck.php:63
 msgid "No \"CFIELDNAME\" field set!"
 msgstr "没有 \"CFIELDNAME\"字段集！"
 
-#: d:\web\lime/admin/integritycheck.php:61
+#: d:\web\lime/admin/integritycheck.php:68
 msgid "The following conditions should be deleted"
 msgstr "下面的条件应该被删除"
 
-#: d:\web\lime/admin/integritycheck.php:63
-#: d:\web\lime/admin/integritycheck.php:88
-#: d:\web\lime/admin/integritycheck.php:126
-#: d:\web\lime/admin/integritycheck.php:136
-#: d:\web\lime/admin/integritycheck.php:161
-#: d:\web\lime/admin/integritycheck.php:186
-#: d:\web\lime/admin/integritycheck.php:217
+#: d:\web\lime/admin/integritycheck.php:70
+#: d:\web\lime/admin/integritycheck.php:95
+#: d:\web\lime/admin/integritycheck.php:133
+#: d:\web\lime/admin/integritycheck.php:143
+#: d:\web\lime/admin/integritycheck.php:168
+#: d:\web\lime/admin/integritycheck.php:193
+#: d:\web\lime/admin/integritycheck.php:224
 msgid "because"
 msgstr "因为"
 
-#: d:\web\lime/admin/integritycheck.php:69
+#: d:\web\lime/admin/integritycheck.php:76
 msgid "All conditions meet consistency standards"
 msgstr "所有条件符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:83
+#: d:\web\lime/admin/integritycheck.php:90
 msgid "No matching qid"
 msgstr "没有匹配的Qid"
 
-#: d:\web\lime/admin/integritycheck.php:87
+#: d:\web\lime/admin/integritycheck.php:94
 msgid "The following question attributes should be deleted"
 msgstr "下面的问题属性应当被删除"
 
-#: d:\web\lime/admin/integritycheck.php:93
+#: d:\web\lime/admin/integritycheck.php:100
 msgid "All question attributes meet consistency standards"
 msgstr "所有的问题属性符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:107
-#: d:\web\lime/admin/integritycheck.php:211
+#: d:\web\lime/admin/integritycheck.php:114
+#: d:\web\lime/admin/integritycheck.php:218
 msgid "No matching survey"
 msgstr "没有匹配的调查"
 
-#: d:\web\lime/admin/integritycheck.php:119
-#: d:\web\lime/admin/integritycheck.php:205
+#: d:\web\lime/admin/integritycheck.php:126
+#: d:\web\lime/admin/integritycheck.php:212
 msgid "No matching group"
 msgstr "没有匹配的组"
 
-#: d:\web\lime/admin/integritycheck.php:125
-#: d:\web\lime/admin/integritycheck.php:135
+#: d:\web\lime/admin/integritycheck.php:132
+#: d:\web\lime/admin/integritycheck.php:142
 msgid "The following assessments should be deleted"
 msgstr "下面的评价应该被删除"
 
-#: d:\web\lime/admin/integritycheck.php:131
+#: d:\web\lime/admin/integritycheck.php:138
 msgid "All Survey (Total) assessments meet consistency standards"
 msgstr "所有的调查评价符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:141
+#: d:\web\lime/admin/integritycheck.php:148
 msgid "All Group assessments meet consistency standards"
 msgstr "所有组的评价符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:154
+#: d:\web\lime/admin/integritycheck.php:161
 msgid "No matching question"
 msgstr "没有匹配的问题"
 
-#: d:\web\lime/admin/integritycheck.php:160
+#: d:\web\lime/admin/integritycheck.php:167
 msgid "The following answers should be deleted"
 msgstr "下面的答案应该被删除"
 
-#: d:\web\lime/admin/integritycheck.php:166
+#: d:\web\lime/admin/integritycheck.php:173
 msgid "All answers meet consistency standards"
 msgstr "所有答案符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:180
+#: d:\web\lime/admin/integritycheck.php:187
 msgid "Language specific settings missing"
 msgstr "语言设定丢失"
 
-#: d:\web\lime/admin/integritycheck.php:185
+#: d:\web\lime/admin/integritycheck.php:192
 msgid "The following surveys should be deleted"
 msgstr "下面的问卷应该被删除"
 
-#: d:\web\lime/admin/integritycheck.php:191
+#: d:\web\lime/admin/integritycheck.php:198
 msgid "All survey settings meet consistency standards"
 msgstr "所有的调查设定符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:216
+#: d:\web\lime/admin/integritycheck.php:223
 msgid "The following questions should be deleted"
 msgstr "下面的这些问题应该被删除"
 
-#: d:\web\lime/admin/integritycheck.php:222
+#: d:\web\lime/admin/integritycheck.php:229
 msgid "All questions meet consistency standards"
 msgstr "所有问题符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:239
+#: d:\web\lime/admin/integritycheck.php:246
 msgid "The following groups should be deleted"
 msgstr "下面的这些组应该删除"
 
-#: d:\web\lime/admin/integritycheck.php:245
+#: d:\web\lime/admin/integritycheck.php:252
 msgid "All groups meet consistency standards"
 msgstr "所有组符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:299
+#: d:\web\lime/admin/integritycheck.php:306
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
 msgstr "下列调查表所属的调查已不存在，可予删除。"
 
-#: d:\web\lime/admin/integritycheck.php:305
+#: d:\web\lime/admin/integritycheck.php:312
 msgid "All old survey tables meet consistency standards"
 msgstr "所有的旧有调查表符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:363
+#: d:\web\lime/admin/integritycheck.php:370
 msgid "The following old token tables should be deleted because their parent survey no longer exists"
 msgstr "下列旧的操作代码表可以删除，因为它们所属的调查不再存在"
 
-#: d:\web\lime/admin/integritycheck.php:369
+#: d:\web\lime/admin/integritycheck.php:376
 msgid "All old token tables meet consistency standards"
 msgstr "所有旧的操作代码表符合一致性标准"
 
-#: d:\web\lime/admin/integritycheck.php:383
-#: d:\web\lime/admin/integritycheck.php:450
+#: d:\web\lime/admin/integritycheck.php:390
+#: d:\web\lime/admin/integritycheck.php:457
 msgid "No database action required"
 msgstr "不需要数据库操作"
 
-#: d:\web\lime/admin/integritycheck.php:385
+#: d:\web\lime/admin/integritycheck.php:392
 msgid "Should we proceed with the delete?"
 msgstr "继续删除操作吗？"
 
-#: d:\web\lime/admin/integritycheck.php:439
+#: d:\web\lime/admin/integritycheck.php:446
 msgid "Yes - Delete Them!"
 msgstr "是-删掉他们！"
 
-#: d:\web\lime/admin/integritycheck.php:445
+#: d:\web\lime/admin/integritycheck.php:452
 msgid "Data redundancy check"
 msgstr "数据冗余检查"
 
-#: d:\web\lime/admin/integritycheck.php:446
+#: d:\web\lime/admin/integritycheck.php:453
 msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
 msgstr "冗余检查在调查停用后检视多余表格。如果您不再需要它们的话可予以删除。"
 
-#: d:\web\lime/admin/integritycheck.php:456
+#: d:\web\lime/admin/integritycheck.php:463
 msgid "The following old survey tables contain no responses and can be deleted:"
 msgstr "下列旧的调查表未包含反馈，可以删除："
 
-#: d:\web\lime/admin/integritycheck.php:464
+#: d:\web\lime/admin/integritycheck.php:471
 msgid "The following old survey response tables exist and may be deleted if no longer required:"
 msgstr "下列调查反馈表如不再需要的话可予删除。"
 
-#: d:\web\lime/admin/integritycheck.php:472
+#: d:\web\lime/admin/integritycheck.php:479
 msgid "The following old token tables contain no tokens and can be deleted:"
 msgstr "下列旧的操作代码表未包含操作代码，可以删除："
 
-#: d:\web\lime/admin/integritycheck.php:480
+#: d:\web\lime/admin/integritycheck.php:487
 msgid "The following old token list tables exist and may be deleted if no longer required:"
 msgstr "如果不再需要下列旧的操作代码表的话可以删除："
 
-#: d:\web\lime/admin/integritycheck.php:488
+#: d:\web\lime/admin/integritycheck.php:495
 msgid "Delete checked items!"
 msgstr "删除勾选项！"
 
-#: d:\web\lime/admin/integritycheck.php:489
+#: d:\web\lime/admin/integritycheck.php:496
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
 msgstr "注意一旦删除无法予以还原。数据将消失。"
 
-#: d:\web\lime/admin/integritycheck.php:522
-#: d:\web\lime/admin/integritycheck.php:532
-#: d:\web\lime/admin/integritycheck.php:632
-#: d:\web\lime/admin/integritycheck.php:642
+#: d:\web\lime/admin/integritycheck.php:529
+#: d:\web\lime/admin/integritycheck.php:539
+#: d:\web\lime/admin/integritycheck.php:639
+#: d:\web\lime/admin/integritycheck.php:649
 msgid "Deleting old survey result tables"
 msgstr "正在删除旧的调查结果表"
 
-#: d:\web\lime/admin/integritycheck.php:524
-#: d:\web\lime/admin/integritycheck.php:534
-#: d:\web\lime/admin/integritycheck.php:634
-#: d:\web\lime/admin/integritycheck.php:644
-#: d:\web\lime/admin/integritycheck.php:654
-#: d:\web\lime/admin/integritycheck.php:664
+#: d:\web\lime/admin/integritycheck.php:531
+#: d:\web\lime/admin/integritycheck.php:541
+#: d:\web\lime/admin/integritycheck.php:641
+#: d:\web\lime/admin/integritycheck.php:651
+#: d:\web\lime/admin/integritycheck.php:661
+#: d:\web\lime/admin/integritycheck.php:671
 msgid "Deleting"
 msgstr "正在删除"
 
-#: d:\web\lime/admin/integritycheck.php:542
+#: d:\web\lime/admin/integritycheck.php:549
 msgid "Deleting Surveys"
 msgstr "正在删除调查"
 
-#: d:\web\lime/admin/integritycheck.php:544
+#: d:\web\lime/admin/integritycheck.php:551
 msgid "Deleting Survey ID"
 msgstr "正在删除的调查ID"
 
-#: d:\web\lime/admin/integritycheck.php:552
-#: d:\web\lime/admin/integritycheck.php:562
+#: d:\web\lime/admin/integritycheck.php:559
+#: d:\web\lime/admin/integritycheck.php:569
 msgid "Deleting Assessments"
 msgstr "正在删除的评价"
 
-#: d:\web\lime/admin/integritycheck.php:554
-#: d:\web\lime/admin/integritycheck.php:564
+#: d:\web\lime/admin/integritycheck.php:561
+#: d:\web\lime/admin/integritycheck.php:571
 msgid "Deleting ID"
 msgstr "正在删除ID"
 
-#: d:\web\lime/admin/integritycheck.php:572
+#: d:\web\lime/admin/integritycheck.php:579
 msgid "Deleting Question_Attributes"
 msgstr "正在删除问题属性"
 
-#: d:\web\lime/admin/integritycheck.php:582
+#: d:\web\lime/admin/integritycheck.php:589
 msgid "Deleting Conditions"
 msgstr "正在删除条件"
 
-#: d:\web\lime/admin/integritycheck.php:584
+#: d:\web\lime/admin/integritycheck.php:591
 msgid "Deleting cid"
 msgstr "正在删除cid"
 
-#: d:\web\lime/admin/integritycheck.php:591
+#: d:\web\lime/admin/integritycheck.php:598
 msgid "Deleting Answers"
 msgstr "正在删除回答"
 
-#: d:\web\lime/admin/integritycheck.php:594
+#: d:\web\lime/admin/integritycheck.php:601
 msgid "Deleting answer with qid"
 msgstr "正在删除qid的回答"
 
-#: d:\web\lime/admin/integritycheck.php:601
+#: d:\web\lime/admin/integritycheck.php:608
 msgid "Deleting questions"
 msgstr "正在删除问题"
 
-#: d:\web\lime/admin/integritycheck.php:603
+#: d:\web\lime/admin/integritycheck.php:610
 msgid "Deleting qid"
 msgstr "正在删除qid"
 
-#: d:\web\lime/admin/integritycheck.php:610
+#: d:\web\lime/admin/integritycheck.php:617
 msgid "Deleting Groups"
 msgstr "正在删除组"
 
-#: d:\web\lime/admin/integritycheck.php:612
+#: d:\web\lime/admin/integritycheck.php:619
 msgid "Deleting group id"
 msgstr "正在删除组id"
 
-#: d:\web\lime/admin/integritycheck.php:618
-#: d:\web\lime/admin/integritycheck.php:671
+#: d:\web\lime/admin/integritycheck.php:625
+#: d:\web\lime/admin/integritycheck.php:678
 msgid "Check database again?"
 msgstr "重新检查数据库？"
 
-#: d:\web\lime/admin/integritycheck.php:619
-#: d:\web\lime/admin/integritycheck.php:672
+#: d:\web\lime/admin/integritycheck.php:626
+#: d:\web\lime/admin/integritycheck.php:679
 msgid "Check Again"
 msgstr "重新检查"
 
-#: d:\web\lime/admin/integritycheck.php:624
+#: d:\web\lime/admin/integritycheck.php:631
 msgid "Data redundancy Check"
 msgstr "数据冗余检查"
 
-#: d:\web\lime/admin/integritycheck.php:625
+#: d:\web\lime/admin/integritycheck.php:632
 msgid "Deleting old token and response tables leftover from deactivation"
 msgstr "调查停用后将删除旧的操作代码表盒多余的反馈表。"
 
-#: d:\web\lime/admin/integritycheck.php:652
-#: d:\web\lime/admin/integritycheck.php:662
+#: d:\web\lime/admin/integritycheck.php:659
+#: d:\web\lime/admin/integritycheck.php:669
 msgid "Deleting old token tables"
 msgstr "删除旧的操作代码表"
 
@@ -6863,8 +6891,8 @@ msgid "Results"
 msgstr "结果"
 
 #: d:\web\lime/admin/statistics_function.php:569
-#: d:\web\lime/admin/statistics_function.php:1956
 #: d:\web\lime/admin/statistics_function.php:1972
+#: d:\web\lime/admin/statistics_function.php:1988
 msgid "Browse"
 msgstr "浏览"
 
