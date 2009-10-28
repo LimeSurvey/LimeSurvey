@@ -1301,6 +1301,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		$oldcqid=$conditionrowdata["cqid"];
 		$thisvalue=$conditionrowdata["value"];
 		$newvalue=$thisvalue;
+		$newcfieldname=$oldcfieldname;
 		
 		foreach ($substitutions as $subs) {
 			if ($oldqid==$subs[2])  {$newqid=$subs[5];}
@@ -1335,6 +1336,7 @@ if (isset($conditionsarray) && $conditionsarray) {//ONLY DO THIS IF THERE ARE CO
 		$conditionrowdata["qid"]=$newqid;
 		$conditionrowdata["cfieldname"]=$newcfieldname;
 		$conditionrowdata["value"]=$newvalue;
+
 		
 		if (isset($newcqid)) {
 			$conditionrowdata["cqid"]=$newcqid;
