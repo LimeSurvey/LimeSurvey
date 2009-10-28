@@ -405,7 +405,7 @@ if ($action == "templateupload")
 
     $importtemplateoutput = "<br />\n";
     $importtemplateoutput .= "<table class='alertbox'>\n";
-    $importtemplateoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
+    $importtemplateoutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Template")."</strong></td></tr>\n";
     $importtemplateoutput .= "\t<tr><td align='center'>\n";
 
     if (!is_writeable($basedestdir))
