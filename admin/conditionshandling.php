@@ -982,8 +982,6 @@ $conditionsoutput_menubar .= "\t<div class='menubar-main'>\n"
 
 
 $quesitonNavOptions = "<optgroup class='activesurveyselect' label='".$clang->gT("Before","js")."'>";
-error_log("TIBO1=".$theserows[11]['question']);
-error_log("TIBO2=$questiontext");
 foreach ($theserows as $row)
 {
 	$question=$row['question'];
@@ -1044,78 +1042,6 @@ $conditionsoutput_menubar .="\t</div><div class='menubar-right'>\n"
 $conditionsoutput_menubar .= "\t</div></div></div>\n"
 		."<p style='margin: 0pt; font-size: 1px; line-height: 1px; height: 1px;'> </p>"
 		."</td></tr>\n";
-//TIBO
-
-/****************
-// BEGIN UPDATE THE questionNav SELECT INPUT
-$conditionsoutput_main_content .= "<script type='text/javascript'>\n"
-	."<!--\n";
-$conditionsoutput_main_content .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("Before","js")."'>\").appendTo(\"#questionNav\");\n";
-foreach ($theserows as $row)
-{
-		$question=$row['question'];
-		$question=str_replace("\r","",$question);
-		$question=str_replace("\n","",$question);
-		$question=str_replace("'", "`", $question);
-		$question=strip_tags($question);
-		if (strlen($question)<35)
-		{
-			$questionselecter = $question;
-		}
-		else
-		{
-			$questionselecter = substr($question, 0, 35)."..";
-		}
-		$conditionsoutput_main_content .=  ""
-		. "$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".javascript_escape(htmlspecialchars($questionselecter,ENT_NOQUOTES))."</option>\").appendTo(\"#questionNav\");\n";
-}
-$conditionsoutput_main_content .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
-
-$conditionsoutput_main_content .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("Current","js")."'>\").appendTo(\"#questionNav\");\n";
-$question=str_replace("'", "`", $questiontext);
-$question=str_replace("\r","",$question);
-$question=str_replace("\n","",$question);
-$question=strip_tags($question);
-if (strlen($question)<35)
-{
-	$questiontextshort = $question;
-}
-else
-{
-	$questiontextshort = substr($question, 0, 35)."..";
-}
-
-$conditionsoutput_main_content .= "\t$(\"<option value='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;action=conditions' selected='selected'>$questiontitle: $questiontextshort</option>\").appendTo(\"#questionNav\");\n"; 
-$conditionsoutput_main_content .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
-
-
-$conditionsoutput_main_content .=  "\t$(\"<optgroup class='activesurveyselect' label='".$clang->gT("After","js")."'>\").appendTo(\"#questionNav\");\n";
-foreach ($postrows as $row)
-{
-		$question=$row['question'];
-		$question=str_replace("'", "`", $question);
-		$question=str_replace("\r","",$question);
-		$question=str_replace("\n","",$question);
-		$question=strip_tags($question);
-		if (strlen($question)<35)
-		{
-			$questionselecter = $question;
-		}
-		else
-		{
-			$questionselecter = substr($question, 0, 35)."..";
-		}
-		$conditionsoutput_main_content .=  ""
-		. "$(\"<option value='$scriptname?sid=$surveyid&amp;gid={$row['gid']}&amp;qid={$row['qid']}&amp;action=conditions'>{$row['title']}: ".javascript_escape(htmlspecialchars($questionselecter,ENT_NOQUOTES))."</option>\").appendTo(\"#questionNav\");\n";
-}
-$conditionsoutput_main_content .=  "\t$(\"</optgroup>\").appendTo(\"#questionNav\");\n";
-
-$conditionsoutput_main_content .=  "-->\n"
-		."</script>\n";
-// END UPDATE THE questionNav SELECT INPUT
-***************************/
-
-
 
 //Now display the information and forms
 //BEGIN: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
