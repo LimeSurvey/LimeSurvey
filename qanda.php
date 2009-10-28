@@ -3965,6 +3965,7 @@ function do_multiplenumeric($ia)
 				else 
 				{
 					$slider_startvalue = 'NULL';
+					$displaycallout_atstart=0;
 				}
 				$answer_main .= "$sliderleft<div id='container-$myfname' class='multinum-slider'>\n"
 					. "\t<input type=\"text\" id=\"slider-modifiedstate-$myfname\" value=\"$displaycallout_atstart\" style=\"display: none;\" />\n"
