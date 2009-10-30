@@ -770,6 +770,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
     border: 0; 
 }
 /** UI Slider **/
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0 0;
+	width: auto !important;
+	margin-top: 1.5em;
+	vertical-align: middle;
+}
+
 .ui-slider-handle { 
     position: absolute; 
     height: 23px; 

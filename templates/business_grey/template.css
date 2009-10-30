@@ -631,7 +631,15 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 
 
 
-/************** Slider ********************/       
+/************** Slider ********************/ 
+
+.numeric-multi label.slider-label {
+	display: table-cell;
+	padding:0 1em 0 0;
+	width: auto !important;
+	margin-top: 1.5em;
+	vertical-align: baseline;
+}      
 
 .ui-slider-disabled .ui-slider-handle {
     opacity: 0.5; 
