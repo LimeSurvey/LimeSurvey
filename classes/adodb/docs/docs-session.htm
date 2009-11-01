@@ -182,7 +182,7 @@ CREATE TABLE sessions2(
 	  expireref VARCHAR( 250 ) DEFAULT '',
 	  created DATETIME NOT NULL ,
 	  modified DATETIME NOT NULL ,
-	  sessdata LONGTEXT DEFAULT '',
+	  sessdata LONGTEXT,
 	  PRIMARY KEY ( sesskey ) ,
 	  INDEX sess2_expiry( expiry ),
 	  INDEX sess2_expireref( expireref )
@@ -242,7 +242,7 @@ So we define (before session_start() is called): </p>
 	$ADODB_SESSION_EXPIRE_NOTIFY = array('USERID','NotifyFn');
 </font></pre>
 And when the NotifyFn is called (when the session expires), the
-$USERID is passed in as the first parameter, eg. NotifyFn($userid, $sesskey). The
+$EXPIREREF holding the user id is passed in as the first parameter, eg. NotifyFn($userid, $sesskey). The
 session key (which is the primary key of the record in the sessions
 table) is the 2nd parameter.
 <p> Here is an example of a Notification function that deletes some

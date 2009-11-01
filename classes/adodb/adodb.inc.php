@@ -14,7 +14,7 @@
 /**
 	\mainpage
 	
-	 @version V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
+	 @version V5.09 25 June 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
 
 	Released under both BSD license and Lesser GPL library license. You can choose which license
 	you prefer.
@@ -177,7 +177,7 @@
 		/**
 		 * ADODB version as a string.
 		 */
-		$ADODB_vers = 'V5.08 6 Apr 2009  (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved. Released BSD & LGPL.';
+		$ADODB_vers = 'V5.09 25 June 2009  (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved. Released BSD & LGPL.';
 	
 		/**
 		 * Determines whether recordset->RecordCount() is used. 
@@ -377,6 +377,7 @@
 
 	var $sysDate = false; /// name of function that returns the current date
 	var $sysTimeStamp = false; /// name of function that returns the current timestamp
+	var $sysUTimeStamp = false; // name of function that returns the current timestamp accurate to the microsecond or nearest fraction
 	var $arrayClass = 'ADORecordSet_array'; /// name of class used to generate array recordsets, which are pre-downloaded recordsets
 	
 	var $noNullStrings = false; /// oracle specific stuff - if true ensures that '' is converted to ' '
@@ -2439,6 +2440,9 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		if (empty($d) && $d !== 0) return 'null';
 		if ($isfld) return $d;
 		
+		if (is_object($d)) return $d->format($this->fmtDate);
+		
+		
 		if (is_string($d) && !is_numeric($d)) {
 			if ($d === 'null' || strncmp($d,"'",1) === 0) return $d;
 			if ($this->isoDates) return "'$d'";
@@ -2476,6 +2480,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 	{
 		if (empty($ts) && $ts !== 0) return 'null';
 		if ($isfld) return $ts;
+		if (is_object($ts)) return $ts->format($this->fmtTimeStamp);
 		
 		# strlen(14) allows YYYYMMDDHHMMSS format
 		if (!is_string($ts) || (is_numeric($ts) && strlen($ts)<14)) 
@@ -2604,7 +2609,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		// undo magic quotes for "
 		$s = str_replace('\\"','"',$s);
 		
-		if ($this->replaceQuote == "\\'")  // ' already quoted, no need to change anything
+		if ($this->replaceQuote == "\\'" || ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
 			return $s;
 		else {// change \' to '' for sybase/mssql
 			$s = str_replace('\\\\','\\',$s);
@@ -2638,7 +2643,7 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 		// undo magic quotes for "
 		$s = str_replace('\\"','"',$s);
 		
-		if ($this->replaceQuote == "\\'")  // ' already quoted, no need to change anything
+		if ($this->replaceQuote == "\\'" || ini_get('magic_quotes_sybase'))  // ' already quoted, no need to change anything
 			return "'$s'";
 		else {// change \' to '' for sybase/mssql
 			$s = str_replace('\\\\','\\',$s);
@@ -4254,6 +4259,18 @@ http://www.stanford.edu/dept/itss/docs/oracle/10g/server.101/b10759/statements_1
 					case 'socket': $obj->socket = $v; break;
 					#oci8
 					case 'nls_date_format': $obj->NLS_DATE_FORMAT = $v; break;
+					case 'cachesecs': $obj->cacheSecs = $v; break;
+					case 'memcache': 
+						$varr = explode(':',$v);
+						$vlen = sizeof($varr);
+						if ($vlen == 0) break;	
+						$obj->memCache = true;
+						$obj->memCacheHost = explode(',',$varr[0]);
+						if ($vlen == 1) break;	
+						$obj->memCachePort = $varr[1];
+						if ($vlen == 2) break;	
+						$obj->memCacheCompress = $varr[2] ?  true : false;
+						break;
 					}
 				}
 				if (empty($persist))

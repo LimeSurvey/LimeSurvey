@@ -93,7 +93,8 @@ field. Each row has this format:</p>
 field type can be a portable type codes or the actual type for that
 database.</p>
 <p>Legal portable type codes include:</p>
-<pre>  C:  Varchar, capped to 255 characters.<br>  X:  Larger varchar, capped to 4000 characters (to be compatible with Oracle). <br>  XL: For Oracle, returns CLOB, otherwise the largest varchar size.<br><br>  C2: Multibyte varchar<br>  X2: Multibyte varchar (largest size)<br><br>  B:  BLOB (binary large object)<br><br>  D:  Date (some databases do not support this, and we return a datetime type)<br>  T:  Datetime or Timestamp<br>  L:  Integer field suitable for storing booleans (0 or 1)<br>  I:  Integer (mapped to I4)<br>  I1: 1-byte integer<br>  I2: 2-byte integer<br>  I4: 4-byte integer<br>  I8: 8-byte integer<br>  F:  Floating point number<br>  N:  Numeric or decimal number<br></pre>
+<pre>  C:  Varchar, capped to 255 characters.<br>  X:  Larger varchar, capped to 4000 characters (to be compatible with Oracle). <br>  XL: For Oracle, returns CLOB, otherwise the largest varchar size.<br><br>  C2: Multibyte varchar<br>  X2: Multibyte varchar (largest size)<br><br>  B:  BLOB (binary large object)<br><br>  D:  Date (some databases do not support this, and we return a datetime type)<br>  T:  Datetime or Timestamp accurate to the second.<br>  TS: Datetime or Timestamp supporting Sub-second accuracy.<br>       Supported by Oracle, PostgreSQL and SQL Server currently. <br>       Otherwise equivalent to T.<br>
+  L:  Integer field suitable for storing booleans (0 or 1)<br>  I:  Integer (mapped to I4)<br>  I1: 1-byte integer<br>  I2: 2-byte integer<br>  I4: 4-byte integer<br>  I8: 8-byte integer<br>  F:  Floating point number<br>  N:  Numeric or decimal number<br></pre>
 <p>The $colsize field represents the size of the field. If a decimal
 number is used, then it is assumed that the number following the dot is
 the precision, so 6.2 means a number of size 6 digits and 2 decimal

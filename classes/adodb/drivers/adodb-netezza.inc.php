@@ -1,6 +1,6 @@
 <?php
 /*
-  V5.08 6 Apr 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
+  V5.09 25 June 2009   (c) 2000-2009 John Lim (jlim#natsoft.com). All rights reserved.
  
   First cut at the Netezza Driver by Josh Eldridge joshuae74#hotmail.com
  Based on the previous postgres drivers.

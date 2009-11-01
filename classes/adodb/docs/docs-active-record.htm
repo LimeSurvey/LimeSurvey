@@ -238,6 +238,13 @@ $person = new person();
 $peopleArray = $person->Find("name like ? order by age", array('Sm%'));
 </pre>
 
+<h3><li>Quoting Identifiers</h3>
+<p>You can force column names to be quoted in INSERT and UPDATE statements, typically because you are using reserved words as column names by setting
+<pre>
+ADODB_Active_Record::$_quoteNames = true;
+</pre>
+<p>Default is false.
+
 <h3><li>Error Handling and Debugging</h3>
 <p>
 In PHP5, if adodb-exceptions.inc.php is included, then errors are thrown. Otherwise errors are handled by returning a value. False by default means an error has occurred. You can get the last error message using the ErrorMsg() function. 
@@ -1012,6 +1019,10 @@ is more powerful but more complex. My personal preference is to keep it simpler,
  <p>PHP5 specific: Change PHP5 implementation of Active Record to use __get() and __set() for better performance.
 
 <h3> Change Log</h3>
+<p>0.93
+<p>You can force column names to be quoted in INSERT and UPDATE statements, typically because you are using reserved words as column names by setting
+ADODB_Active_Record::$_quoteNames = true;
+
 <p>0.92
 <p>Fixed some issues with incompatible fetch modes (ADODB_FETCH_ASSOC) causing problems in UpdateActiveTable.
 <p>Added support for functions that support predefining one-to-many relationships:<br> 
