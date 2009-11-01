@@ -950,6 +950,7 @@ div.messagebox .warningheader {
     margin-right: 0.5em;
     float: left;      
     font-weight: bold;
+    color: #121A28;
 }
 
 
@@ -957,12 +958,16 @@ div.messagebox .warningheader {
 #sendreminder  li label:first-child,
 #sendinvitation li label:first-child,
 #edittoken li label:first-child,  
+#importsurvey li label:first-child,  
+#importgroup li label:first-child,
+#addnewgroup li label:first-child,      
 #addnewsurvey li label:first-child{
     width: 30%;
     text-align: right;
     margin-right: 0.5em;
     float: left;      
     font-weight: bold;
+    color: #121A28;
 }
 
 #tokenimport li,
@@ -975,6 +980,9 @@ div.messagebox .warningheader {
 #addattribute li,
 #exportdialog li,       
 #addnewsurvey li,
+#addnewgroup li,
+#importsurvey li,
+#importgroup li,
 #frmeditquestion li,
 #frmglobalsettings li {  
     list-style-type: none;
@@ -1002,6 +1010,7 @@ div.loader {
 
 
 #sendreminder iframe,
+#addnewgroup iframe,
 #sendinvitation iframe,
 #addnewsurvey iframe {
     width:600px !important;

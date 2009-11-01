@@ -12,8 +12,7 @@
 * 
 * $Id$
 */
-//Security Checked:
-//ToDo: POST, GET, SESSION, DB, REQUEST, returnglobal
+//Last security audit on 2009-10-11
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
