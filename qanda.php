@@ -5418,7 +5418,7 @@ function do_array_flexible($ia)
 					}
 					if ($ia[6] != 'Y' && $shownoanswer == 1) //Question is not mandatory and we can show "no answer"
 					{
-						$answer .= "\t<td>&nbsp;</td>\n\t<th>".$clang->gT('No answer')."</th>\n";
+						$answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
 					}
 					$answer .= "</tr>\n";
 				}
