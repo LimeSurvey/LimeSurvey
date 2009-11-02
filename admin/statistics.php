@@ -1639,11 +1639,11 @@ $statisticsoutput .= "<tr><td align='center' class='settingcaption'>
 
 $statisticsoutput .= "</table>";
 
-$statisticsoutput .= "<div id='vertical_slide'";
-if ($selecthide!='')
-{
-	$statisticsoutput .= " style='display:none' ";
-}
+$statisticsoutput .= "<div id='vertical_slide2'";
+//if ($selecthide!='')
+//{
+	//$statisticsoutput .= " style='display:none' ";
+//}
 //this fixes bug #2470
 $statisticsoutput.=" >"; 
 
