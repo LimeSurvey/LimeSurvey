@@ -41,7 +41,7 @@ $files[]=array('name'=>'navigator.pstpl');
 $files[]=array('name'=>'printanswers.pstpl');
 $files[]=array('name'=>'privacy.pstpl');
 $files[]=array('name'=>'question.pstpl');
-$files[]=array('name'=>'question_start.pstpl');
+//$files[]=array('name'=>'question_start.pstpl');
 $files[]=array('name'=>'register.pstpl');
 $files[]=array('name'=>'save.pstpl');
 $files[]=array('name'=>'surveylist.pstpl');
