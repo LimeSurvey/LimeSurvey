@@ -54,12 +54,18 @@ function spss_export_data ($na = null) {
 
 	$result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
 	$num_fields = $result->FieldCount();
-
-	while ($row = $result->FetchRow()) {
-		$fieldno = 0;
-		while ($fieldno < $num_fields)
+	
+	//This shouldn't occur, but just to be safe:
+	if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
+	
+	while (!$result->EOF) {
+		$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
+		reset($fields);	//Jump to the first element in the field array
+		$i = 1;
+		foreach ($fields as $field)
 		{
-			if ($fields[$fieldno]['SPSStype']=='DATETIME23.2'){
+			$fieldno = strtoupper($field['sql_name']);
+			if ($field['SPSStype']=='DATETIME23.2'){
 				#convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
 				if (isset($row[$fieldno]))
 				{
@@ -75,7 +81,7 @@ function spss_export_data ($na = null) {
 				{
 					echo ($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'Y')
+			} else if ($field['LStype'] == 'Y')
 			{
 				if ($row[$fieldno] == 'Y')    // Yes/No Question Type
 				{
@@ -85,7 +91,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'G')    //Gender
+			} else if ($field['LStype'] == 'G')    //Gender
 			{
 				if ($row[$fieldno] == 'F')
 				{
@@ -95,7 +101,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'C')    //Yes/No/Uncertain
+			} else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
 			{
 				if ($row[$fieldno] == 'Y')
 				{
@@ -107,7 +113,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} else if ($fields[$fieldno]['LStype'] == 'E')     //Increase / Same / Decrease
+			} else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
 			{
 				if ($row[$fieldno] == 'I')
 				{
@@ -119,7 +125,7 @@ function spss_export_data ($na = null) {
 				} else {
 					echo($na);
 				}
-			} elseif (($fields[$fieldno]['LStype'] == 'P' || $fields[$fieldno]['LStype'] == 'M') && (substr($fields[$fieldno]['code'],-7) != 'comment' && substr($fields[$fieldno]['code'],-5) != 'other'))
+			} elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
 			{
 				if ($row[$fieldno] == 'Y')
 				{
@@ -128,7 +134,7 @@ function spss_export_data ($na = null) {
 				{
 					echo("'0'");
 				}
-			} elseif (!$fields[$fieldno]['hide']) {
+			} elseif (!$field['hide']) {
 				$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 				if (trim($strTmp) != ''){
 					$strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
@@ -145,10 +151,11 @@ function spss_export_data ($na = null) {
 					echo $na;
 				}
 			}
-			$fieldno++;
-			if ($fieldno<$num_fields && !$fields[$fieldno]['hide']) echo ',';
+			if ($i<$num_fields && !$field['hide']) echo ',';
+			$i++;
 		}
 		echo "\n";
+		$result->MoveNext();
 	}
 }
 
