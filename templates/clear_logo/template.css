@@ -764,3 +764,9 @@ td.statsImageholder {
 .array-flexible-column col.even {
     background-color: #EFE5CA;
 }
+
+.asterisk {
+    color:red;
+    font-size:9pt;
+    font-family:arial, verdana, sans-serif;
+} 
