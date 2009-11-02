@@ -441,7 +441,6 @@ li.cancellink
 .langpopup1 {
 	position: absolute;
 	width: 100px;
-	height: 110px;
 	top: 100px;
 	left: 80px;
 	z-index: 10000;

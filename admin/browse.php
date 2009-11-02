@@ -56,7 +56,7 @@ else
 }
 
 $surveyoptions = browsemenubar($clang->gT("Browse Responses"));
-$browseoutput = "<table style='background-color:#F8F8FF;' width='100%' align='center'>\n";
+$browseoutput = "";
 
 if (!$database_exists) //DATABASE DOESN'T EXIST OR CAN'T CONNECT
 {
@@ -137,7 +137,7 @@ if ($subaction == "id") // Looking at a SINGLE entry
 {
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 	//SHOW HEADER
-	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= '<tr><td>'.$surveyoptions;} // Don't show options if coming from tokens script
+	if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 	//FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 	$fnquery = "SELECT * FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("surveys")."
 	WHERE ".db_table_name("questions").".gid=".db_table_name("groups").".gid AND ".db_table_name("groups").".sid=".db_table_name("surveys").".sid
@@ -661,8 +661,7 @@ elseif ($subaction == "all")
 	if ($next >= $dtcount) {$next=$dtcount-$limit;}
 	if ($end < 0) {$end=0;}
 
-	$browseoutput .= "<table><tr><td></td></tr></table>\n"
-	."<table class='menubar'>\n"
+	$browseoutput .= "<table class='menubar'>\n"
 	."\t<tr ><td colspan='2' height='4'><strong>"
 	. $clang->gT("Data View Control").":</strong></td></tr>\n";
 	if (!isset($_POST['sql']))
