@@ -49,7 +49,7 @@ $ia = array(0 => $qid,
             //7 => $qrows['other']); // ia[7] is conditionsexist not other
             7 => 'N',
             8 => 'N' ); // ia[8] is usedinconditions
-            
+
 $answers = retrieveAnswers($ia);
 $thistpl="$templaterootdir/".$thissurvey['template'];
 doHeader();
@@ -66,12 +66,9 @@ $dummy_js = '
             ';
 
 
-
-$question="<label for='$answers[0][7]'>" . $answers[0][0] . "</label>";
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
-$q_class = question_class($qrows['type']); 
 if ($qrows['mandatory'] == 'Y')
 {
     $man_class = ' mandatory';
@@ -79,25 +76,19 @@ if ($qrows['mandatory'] == 'Y')
 else
 {
     $man_class = '';
-}
-
+};
+$question = $answers[0][0];
+$question['class'] = question_class($qrows['type']);
+$question['essentials'] = 'id="question'.$qrows['qid'].'"';
+$question['man_class'] = $man_class;
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));     
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl")); 
-$content .= '<form id="limesurvey"><div id="question'.$qrows['qid'].'" class="'.$q_class.$man_class.'">';    
+$content .= '<form id="limesurvey">';
 $content .= templatereplace(file_get_contents("$thistpl/question.pstpl"));
-$content .= '</div></form>';
+$content .= '</form>';
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;     
-$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));     
-if($qrows['mandatory'] == 'Y')
-{
-	$mandatory = ' mandatory';
-}
-else
-{
-	$mandatory = '';
-}
-$content = str_replace('{QUESTION_CLASS}' , question_class($qrows['type']) . $mandatory , $content);
+
 echo $content;
 echo "</html>\n";
 
