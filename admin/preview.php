@@ -69,25 +69,38 @@ $dummy_js = '
 $answer=$answers[0][1];
 $help=$answers[0][2];
 $questioncode=$answers[0][5];
-if ($qrows['mandatory'] == 'Y')
-{
-    $man_class = ' mandatory';
-}
-else
-{
-    $man_class = '';
-};
+
 $question = $answers[0][0];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
-$question['man_class'] = $man_class;
+if ($qrows['mandatory'] == 'Y')
+{
+    $question['man_class'] = ' mandatory';
+}
+else
+{
+    $question['man_class'] = '';
+};
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));     
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl")); 
-$content .= '<form id="limesurvey">';
-$content .= templatereplace(file_get_contents("$thistpl/question.pstpl"));
-$content .= '</form>';
-$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;     
+
+$question_template = file_get_contents("$thistpl/question.pstpl");
+if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
+{// LS 1.87 and newer templates
+	$content .= '<form id="limesurvey">';
+	$content .= "\n".templatereplace($question_template)."\n";
+	$content .= '</form>';
+}
+else
+{// LS 1.86 and older templates
+	$content .= '<form id="limesurvey">
+	<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
+	$content .= "\n".templatereplace($question_template)."\n";
+	$content .= "\n\t</div>\n</form>";
+};
+
+$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;
 
 echo $content;
 echo "</html>\n";
