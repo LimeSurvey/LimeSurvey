@@ -284,6 +284,7 @@ font-size:11px;
 	color: #999;
 	font-size: 11px;
 	border: none !important;
+	cursor: default;
 	filter: alpha(opacity:0.5);
 	KHTMLOpacity: 0.5;
 	MozOpacity: 0.5;
