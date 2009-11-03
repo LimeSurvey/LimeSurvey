@@ -221,6 +221,20 @@ color:#999;
 font-size:11px;
 }
 
+.disabledUpDnBtn {
+	color: #999;
+	font-size: 11px;
+	border: none !important;
+	filter: alpha(opacity:0.5);
+	KHTMLOpacity: 0.5;
+	MozOpacity: 0.5;
+	-khtml-opacity:.50;
+	-ms-filter:"alpha(opacity=50)";
+	-moz-opacity:.50;
+	filter:alpha(opacity=50);
+	opacity:.50;
+}
+
 input,select {
 color:navy;
 font:10px verdana, arial, sans-serif;
