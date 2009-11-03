@@ -2926,13 +2926,13 @@ if ($action == "ordergroups")
 			   array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
 			{
-				$downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
+				$downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
 			}
 			if ( !is_null($groupdepsarray) && $i !=0  && 
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
 			{
-				$updisabled = "disabled=\"true\" class=\"disabledbtn\"";
+				$updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
 			}
 	
 			$ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;

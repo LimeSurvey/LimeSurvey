@@ -632,14 +632,14 @@ if($action == "orderquestions")
 	      array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
 	      array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
 	    {
-		    $downdisabled = "disabled=\"true\" class=\"disabledbtn\"";
+		    $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
 	    }
 	    //Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
 	    if ( !is_null($questdepsarray) && $i !=0  &&
 	      array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
 	      array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
 	    {
-		    $updisabled = "disabled=\"true\" class=\"disabledbtn\"";
+		    $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
 	    }
 
 	    //Move to location 
