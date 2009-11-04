@@ -165,7 +165,7 @@ function spss_export_data ($na = null) {
  * @param $field array field from spss_fieldmap
  * @return array or false
  */
-function spss_getvalues ($field = array()) {
+function spss_getvalues ($field = array(), $qidattributes = null ) {
 	global $surveyid, $dbprefix, $connect, $clang, $language, $length_vallabel;
 
 	if (!isset($field['LStype']) || empty($field['LStype'])) return false;
@@ -209,7 +209,7 @@ function spss_getvalues ($field = array()) {
 	} elseif ($field['LStype'] == ':') {
 		$displayvaluelabel = 0;
 		//Get the labels that could apply!
-		$qidattributes=getQuestionAttributes($field["qid"]);
+		if (is_null($qidattributes)) $qidattributes=getQuestionAttributes($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
 		} else {
@@ -342,6 +342,7 @@ function spss_fieldmap($prefix = 'V') {
 		$hide = 0;
 		$export_scale = '';
 		$code='';
+		$aQuestionAttribs=array();
 			
 		#Determine field type
 		if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
@@ -397,7 +398,7 @@ function spss_fieldmap($prefix = 'V') {
 				//Get default scale for this type
 				if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
 				//But allow override
-				$aQuestionAttribs = getQuestionAttributes($qid);
+				$aQuestionAttribs = getQuestionAttributes($qid,$ftype);
 				if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
 			}
 
@@ -410,7 +411,7 @@ function spss_fieldmap($prefix = 'V') {
 		    'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
 		    'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale);
 		//Now check if we have to retrieve value labels
-		$answers = spss_getvalues($tempArray);
+		$answers = spss_getvalues($tempArray, $aQuestionAttribs);
 		if (is_array($answers)) {
 			//Ok we have answers
 			if (isset($answers['size'])) {
