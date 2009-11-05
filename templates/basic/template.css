@@ -454,10 +454,12 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 {
 	padding: 0.3em 1em 0% 0%;
 }
-.numeric-multi div.multinum-slider
-{
+
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
 	margin-top: 1.5em;
-	width: 20em;
+	margin-bottom: 0.2em;
 }
 
  .numeric-multi ul.multiplenumerichelp
@@ -542,13 +544,13 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 /** UI Base **/
 .ui-wrapper { border: 1px solid #50A029; }
 .ui-wrapper input, .ui-wrapper textarea { border: 0; }
+
 /** UI Slider **/
 
 .numeric-multi label.slider-label {
 	display: table-cell;
-	padding:0 1em 0 0;
-	width: auto !important;
-    margin-top: 1.5em;
+	padding:0 1em 0.2em 0;
+	margin-top: 1.3em;
 	vertical-align: middle;
 }
 
@@ -563,33 +565,41 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .slider_callout { no-repeat; height: 20px; width: 100px; overflow: hidden; position: absolute; top: -17px; margin-left:+15px; font-family: 'Myriad Pro'; color: #284a6e; font-weight: bold; text-align: left;}
 
 .slider_showmin {
-    overflow: hidden;
     float: left;
-    /*margin-left: -30px;*/
-    margin-top: 20px;
-    margin-bottom: 5px;
+	width: 50px;
+    margin: 15px 0 0 -25px;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
 }
 
 .slider_showmax {
-    overflow: hidden;
     float: right;
-    /*margin-right: -20px;*/
-    margin-top: 20px;
-    margin-bottom: 15px;
+	width: 50px;
+    margin: 15px -28px 0 0;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	text-align: center;
 }
 
 .slider_lefttext {
     display: table-cell;
+	padding-right: 11px;
+	padding-bottom: 3px;
     vertical-align: middle;
-    margin-right: 15px;
+	text-align: right;
+	font-size: 0.9em;
 }
 
 .slider_righttext {
     display: table-cell;
+	padding-left: 11px;
+	padding-bottom: 3px;
     vertical-align: middle;
-    margin-left: 5px;
+	font-size: 0.9em;
 }
-
 
 #tokenform
 {
