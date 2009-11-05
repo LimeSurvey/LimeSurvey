@@ -9,11 +9,11 @@
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
-* 
+*
 * $Id$
 */
 
-//Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal      
+//Security Checked: POST, GET, SESSION, DB, REQUEST, returnglobal
 
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
@@ -23,7 +23,7 @@ if (isset($_POST['ugid'])) {$postusergroupid=sanitize_int($_POST['ugid']);}
 if ($action == "listsurveys")
 {
     $js_adminheader_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
-    $js_adminheader_includes[]='scripts/listsurvey.js';    
+    $js_adminheader_includes[]='scripts/listsurvey.js';
 	$query = " SELECT a.*, c.*, u.users_name FROM ".db_table_name('surveys')." as a "
             ." INNER JOIN ".db_table_name('surveys_languagesettings')." as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid and surveyls_language=a.language "
             ." INNER JOIN ".db_table_name('users')." as u ON (u.uid=a.owner_id) ";
@@ -52,7 +52,7 @@ if ($action == "listsurveys")
                     <th>".$clang->gT("Partial Responses")."</th>
                     <th>".$clang->gT("Total Responses")."</th>
 				  </tr></thead><tbody>";
-        $gbc = "evenrow"; 
+        $gbc = "evenrow";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 		while($rows = $result->FetchRow())
@@ -82,11 +82,11 @@ if ($action == "listsurveys")
 				if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
 				{
 					$status=$clang->gT("Expired") ;
-				} 
+				}
                 elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust))
                 {
                     $status=$clang->gT("Not yet active") ;
-                }                
+                }
                 else {
 					$status=$clang->gT("Active") ;
 				}
@@ -109,7 +109,7 @@ if ($action == "listsurveys")
 
 			
             $datetimeobj = new Date_Time_Converter($rows['datecreated'] , "Y-m-d H:i:s");
-            $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);                 
+            $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);
 
 			if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
 			{
@@ -143,7 +143,7 @@ if ($action == "listsurveys")
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
 						. "title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
 						. "<img src='$imagefiles/active.png' alt='".$clang->gT("This survey is active - click here to deactivate this survey.")."' /></a></td>\n";
-					} else 
+					} else
 					{
 						$listsurveys .= "<td><img src='$imagefiles/active.png' "
 						. "alt='".$clang->gT("This survey is currently active.")."' /></td>\n";
@@ -154,13 +154,13 @@ if ($action == "listsurveys")
 				{
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
-					. "<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("This survey is currently not active - click here to activate this survey.")."' /></a></td>\n" ;	
-				} else 
+					. "<img src='$imagefiles/inactive.png' title='' alt='".$clang->gT("This survey is currently not active - click here to activate this survey.")."' /></a></td>\n" ;
+				} else
 				{
 					$listsurveys .= "<td><img src='$imagefiles/inactive.png'"
 					. "title='".$clang->gT("This survey is currently not active.")."' alt='".$clang->gT("This survey is currently not active.")."' />"
 					. "</td>\n";
-				}			
+				}
 			}
 			
             $listsurveys.="<td align='center'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['sid']}</a></td>";
@@ -260,7 +260,7 @@ if ($action == "personalsettings")
            }
            
            $cssummary.= ">".$dateformatdata['dateformat'].'</option>';
-    }    
+    }
     $cssummary .= "</select>\n"
     . "</li>\n"
     . "</ul>\n"
@@ -273,7 +273,7 @@ if ($action == "personalsettings")
 if ($surveyid)
 {
 	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'];
-	$result = $connect->SelectLimit($query, 1); 
+	$result = $connect->SelectLimit($query, 1);
 	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $result->RecordCount() > 0)
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -412,7 +412,7 @@ if ($surveyid)
 			. "title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >"
 			. "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' name='DoDataentry' />"
 			. "</a>\n";
-		} 
+		}
 		else if (!$sumrows5['browse_response'] && $_SESSION['USER_RIGHT_SUPERADMIN'] !=1)
 		{
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
@@ -515,7 +515,7 @@ if ($surveyid)
 
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
 		{
-        $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";                 
+        $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\" "
 			. "title=\"".$clang->gTview("Set Assessment Rules")."\" >"
 			. "<img src='$imagefiles/assessments.png' alt='". $clang->gT("Set Assessment Rules")."' name='SurveyAssessment' /></a>\n";
@@ -550,14 +550,14 @@ if ($surveyid)
 		}
 		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey'])
 		{
-            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";     
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 			$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" "
 			    . "title=\"".$clang->gTview("Token management")."\" >"
 			    . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
         if($activated!="Y" && getGroupSum($surveyid,$surveyinfo['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
         {
-            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";     
+            $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
             . "title=\"".$clang->gTview("Change question group order")."\" >"
             . "<img src='$imagefiles/reorder.png' alt='".$clang->gT("Change question group order")."' name='ordergroups' />"
@@ -614,12 +614,12 @@ if ($surveyid)
 
 
 		//SURVEY SUMMARY
-		if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity" 
-                 || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity" 
-                 || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity" 
+		if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
+                 || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
+                 || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
                  || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
-                 || $action=="importsurvresources" 
+                 || $action=="importsurvresources"
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -675,14 +675,14 @@ if ($surveyid)
 		    $surveysummary .= "<td align='left'> <a href='$tmp_url/lang-".$surveyinfo['language']."' target='_blank'>$tmp_url/lang-".$surveyinfo['language']."</a>";
         foreach ($additionnalLanguagesArray as $langname)
         {
-          $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";  
+          $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
         }
     } else {
 		$tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $surveyinfo['sid'];
 		$surveysummary .= "<td align='left'> <a href='$tmp_url&amp;lang=".$surveyinfo['language']."' target='_blank'>$tmp_url&amp;lang=".$surveyinfo['language']."</a>";
         foreach ($additionnalLanguagesArray as $langname)
         {
-          $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";  
+          $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL For Language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
         }
     }
         
@@ -708,19 +708,19 @@ if ($surveyid)
         if (trim($surveyinfo['startdate'])!= '')
         {
             $datetimeobj = new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
-            $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);
         }
         else
         {
             $startdate="-";
         }
-        $surveysummary .= "<td align='left'>$startdate</td></tr>\n"		
+        $surveysummary .= "<td align='left'>$startdate</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
 		. $clang->gT("Expiry Date:")."</strong></td>\n";
         if (trim($surveyinfo['expires'])!= '')
 		{
             $datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
+            $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);
 		}
 		else
 		{
@@ -769,11 +769,11 @@ if ($surveyid)
         {
             $surveysummary .= $clang->gT("No");
         }
-         else 
+         else
                  {
                  $surveysummary .= $clang->gT("Yes");
                  }
-        $surveysummary .="</td></tr>\n";         
+        $surveysummary .="</td></tr>\n";
                  
 		if ($activated == "Y")
 		{
@@ -817,7 +817,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 	$grpresult = db_execute_assoc($grpquery); //Checked
 
 	// Check if other questions/groups are dependent upon this group
-	$condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");	
+	$condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");
 
     $groupsummary = "<div class='menubar'>\n"
         . "<div class='menubar-title'>\n";
@@ -928,7 +928,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         else
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='18' />\n";
-        }        
+        }
         $groupsummary .="</div></div>\n"
 		. "</div>\n";
       //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
@@ -954,9 +954,9 @@ if ($surveyid && $gid )   // Show the group toolbar
 			{
 				foreach ($deprow['conditions'] as $depqid => $depcid)
 				{
-					//$groupsummary .= "[QID: ".$depqid."]"; 
+					//$groupsummary .= "[QID: ".$depqid."]";
 					$listcid=implode("-",$depcid);
-					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>"; 
+					$groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>";
 				}
 			}
 			$groupsummary .= "</td></tr>";
@@ -996,7 +996,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			$questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" 
+			$questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
 			. "title=\"".$clang->gTview("Edit Current Question")."\">"
 			. "<img src='$imagefiles/edit.png' alt='".$clang->gT("Edit Current Question")."' name='EditQuestion' /></a>\n" ;
 		}
@@ -1030,7 +1030,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
 		{
 			$questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-			. " title=\"".$clang->gTview("Export this Question")."\" >" 
+			. " title=\"".$clang->gTview("Export this Question")."\" >"
             . "<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export this Question")."' name='ExportQuestion' /></a>\n";
 		}
 		else
@@ -1043,7 +1043,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			if ($activated != "Y")
 			{
-				$questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" 
+				$questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
 				. "title=\"".$clang->gTview("Copy Current Question")."\" >"
 				. "<img src='$imagefiles/copy.png'  alt='".$clang->gT("Copy Current Question")."' name='CopyQuestion' /></a>\n"
 				. "<img src='$imagefiles/seperator.gif' alt='' />\n";
@@ -1105,17 +1105,17 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
 		{
-			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" || 
-			    $qrrow['type'] == "!" || $qrrow['type'] == "!" || 
-				$qrrow['type'] == "M" || $qrrow['type'] == "Q" || 
-				$qrrow['type'] == "A" || $qrrow['type'] == "B" || 
-				$qrrow['type'] == "C" || $qrrow['type'] == "E" || 
-				$qrrow['type'] == "F" || $qrrow['type'] == "H" || 
-				$qrrow['type'] == "P" || $qrrow['type'] == "R" || 
-				$qrrow['type'] == "K" || $qrrow['type'] == "1" || 
+			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" ||
+			    $qrrow['type'] == "!" || $qrrow['type'] == "!" ||
+				$qrrow['type'] == "M" || $qrrow['type'] == "Q" ||
+				$qrrow['type'] == "A" || $qrrow['type'] == "B" ||
+				$qrrow['type'] == "C" || $qrrow['type'] == "E" ||
+				$qrrow['type'] == "F" || $qrrow['type'] == "H" ||
+				$qrrow['type'] == "P" || $qrrow['type'] == "R" ||
+				$qrrow['type'] == "K" || $qrrow['type'] == "1" ||
 				$qrrow['type'] == ":" || $qrrow['type'] == ";")
 			{
-			$questionsummary .=  "<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'" 
+			$questionsummary .=  "<a href='".$scriptname."?sid=$surveyid&amp;gid=$gid&amp;qid=$qid&amp;viewanswer=Y'"
                                 ."title=\"".$clang->gTview("Edit/Add Answers for this Question")."\">"
 			                    ."<img src='$imagefiles/answers.png' alt='".$clang->gT("Edit/Add Answers for this Question")."' name='ViewAnswers' /></a>\n" ;
 			}
@@ -1167,13 +1167,13 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		$questionsummary .= "<tr><td align='right' valign='top'><strong>"
 		.$clang->gT("Type:")."</strong></td>\n<td align='left'>{$qtypes[$qrrow['type']]}";
 		$questionsummary .="</td></tr>\n";
-		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L" 
-		               || $qrrow['type'] == "!" || $qrrow['type'] == "M" 
-					   || $qrrow['type'] == "Q" || $qrrow['type'] == "K" 
-					   || $qrrow['type'] == "A" || $qrrow['type'] == "B" 
-					   || $qrrow['type'] == "C" || $qrrow['type'] == "E" 
-					   || $qrrow['type'] == "P" || $qrrow['type'] == "R" 
-					   || $qrrow['type'] == "F" || $qrrow['type'] == "1" 
+		if ($qct == 0 && ($qrrow['type'] == "O" || $qrrow['type'] == "L"
+		               || $qrrow['type'] == "!" || $qrrow['type'] == "M"
+					   || $qrrow['type'] == "Q" || $qrrow['type'] == "K"
+					   || $qrrow['type'] == "A" || $qrrow['type'] == "B"
+					   || $qrrow['type'] == "C" || $qrrow['type'] == "E"
+					   || $qrrow['type'] == "P" || $qrrow['type'] == "R"
+					   || $qrrow['type'] == "F" || $qrrow['type'] == "1"
 					   || $qrrow['type'] == "H" || $qrrow['type'] == ":"
 					   || $qrrow['type'] == ";"))
 		{
@@ -1186,7 +1186,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		
 		// For Labelset Questions show the label set and warn if there is no label set configured
-		if (($qrrow['type'] == "1" || $qrrow['type'] == "F" || $qrrow['type'] == "H" || 
+		if (($qrrow['type'] == "1" || $qrrow['type'] == "F" || $qrrow['type'] == "H" ||
 		     $qrrow['type'] == "W" || $qrrow['type'] == "Z" || $qrrow['type'] == ":" ||
 			 $qrrow['type'] == ";" ))
 		{
@@ -1196,7 +1196,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				$questionsummary .=  "<td align='left'><font face='verdana' size='1' color='red'>"
 								 . $clang->gT("Warning")." - ".$clang->gT("You need to choose a label set for this question!")."</font>\n";
 			}
-			else 
+			else
 			// If label set ID is configured show the labelset name and ID
 			{
 
@@ -1220,7 +1220,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 					$questionsummary .=  "<td align='left'><font face='verdana' size='1' color='red'>"
 								 . $clang->gT("Warning")." - ".$clang->gT("You need to choose a second label set for this question!")."</font>\n";
 				}
-				else 
+				else
 				// If label set ID is configured show the labelset name and ID
 				{
 
@@ -1268,17 +1268,17 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			{
 				$listcid=implode("-",$depcid);
 				$questionsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>";
-			}	
-           $questionsummary .= "</td></tr>";        
+			}
+           $questionsummary .= "</td></tr>";
 		}
 		$qid_attributes=getQuestionAttributes($qid);
-        $questionsummary .= "</table>";        
+        $questionsummary .= "</table>";
 	}
 }
 
 if (returnglobal('viewanswer'))
 {
-	$_SESSION['FileManagerContext']="edit:answer:$surveyid";	
+	$_SESSION['FileManagerContext']="edit:answer:$surveyid";
 	// Get languages select on survey.
 	$anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	$baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1288,7 +1288,7 @@ if (returnglobal('viewanswer'))
     {
         $qquery = "SELECT count(*) as num_ans  FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$language."'";
         $qresult = db_execute_assoc($qquery); //Checked
-        $qrow = $qresult->FetchRow(); 
+        $qrow = $qresult->FetchRow();
         if ($qrow["num_ans"] == 0)   // means that no record for the language exists in the answers table
         {
             $qquery = "INSERT INTO ".db_table_name('answers')." (SELECT `qid`,`code`,`answer`,`default_value`,`sortorder`, '".$language."' FROM ".db_table_name('answers')." WHERE qid=$qid AND language='".$baselang."')";
@@ -1329,7 +1329,7 @@ if (returnglobal('viewanswer'))
 
      $query = "SELECT sortorder FROM ".db_table_name('answers')." WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
      $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
-     $anscount = $result->RecordCount();	
+     $anscount = $result->RecordCount();
      $row=$result->FetchRow();
      $maxsortorder=$row['sortorder']+1;
      $vasummary .= "<table width='100%' >\n"
@@ -1347,14 +1347,14 @@ if (returnglobal('viewanswer'))
 	. "<input type='hidden' name='action' value='modanswer' />\n";
 	$vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
 	$first=true;
-	$sortorderids=''; 
+	$sortorderids='';
 	$codeids='';
 
 	$vasummary .= "<div id='xToolbar'></div>\n";
     
     // the following line decides if the assessment input fields are visible or not
     // for some question types the assessment values is set in the label set instead of the answers
-    $assessmentvisible=($surveyinfo['assessments']=='Y' && !in_array($qtype,array('A','B','C','E','F','K','R','Z',':'))); 
+    $assessmentvisible=($surveyinfo['assessments']=='Y' && !in_array($qtype,array('A','B','C','E','F','K','R','Z',':')));
     
 	foreach ($anslangs as $anslang)
 	{
@@ -1379,7 +1379,7 @@ if (returnglobal('viewanswer'))
         else
         {
             $vasummary .="<th style='display:none;'>";
-        }                     
+        }
         $vasummary .="</th><th width='50%'>\n"
         		.$clang->gT("Answer")
         		."</th>\n"
@@ -1413,13 +1413,13 @@ if (returnglobal('viewanswer'))
                 }
             
             $vasummary .=" ><td align='right'>\n";
-			if ($row['default_value'] == 'Y') 
-            {     
+			if ($row['default_value'] == 'Y')
+            {
                 $vasummary .= "<font color='#FF0000'>".$clang->gT("Default")."</font>"
   			                       ."<input type='hidden' name='default_answer_{$row['sortorder']}' value=\"Y\" />";
             }
 
-			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') ))) 
+			if (($activated != 'Y' && $first) || ($activated == 'Y' && $first && (($qtype=='O')  || ($qtype=='L') || ($qtype=='!') )))
 			{
 				$vasummary .= "<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' value=\"{$row['code']}\" maxlength='5' size='5'"
 				." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
@@ -1454,14 +1454,14 @@ if (returnglobal('viewanswer'))
                 ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'-1234567890')\""
                 ." />";
             }
-            elseif ($assessmentvisible) 
+            elseif ($assessmentvisible)
             {
                 $vasummary .= '>'.$row['assessment_value'];
             }
             else
             {
                 $vasummary .= " style='display:none;'>";
-            }                
+            }
             
             $vasummary .= "</td><td>\n"
 			."<input type='text' name='answer_{$row['language']}_{$row['sortorder']}' maxlength='1000' size='80' value=\"{$row['answer']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
@@ -1507,7 +1507,7 @@ if (returnglobal('viewanswer'))
 		{
 			
             if ($first==true)
-			{                                                                                                  
+			{
 				$vasummary .= "<tr><td colspan='6'><br /></td></tr>"
                              ."<tr><td>"
 				."<strong>".$clang->gT("New Answer").":</strong> ";
@@ -1526,12 +1526,12 @@ if (returnglobal('viewanswer'))
                     ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
                     ." />";
                 }
-                else 
+                else
                 {
                     $vasummary .= " style='display:none;'><input type='hidden' id='insertassessment_value' name='insertassessment_value' value='0' maxlength='5' size='5'"
                     ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890-')\""
                     ." />";
-                }                     
+                }
                 $vasummary .="</td>\n"
 				."<td>\n"
 				."<input type='text' maxlength='1000' name='insertanswer' size='80' onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('newanswerbtn').click(); return false;}\" />\n"
@@ -1581,7 +1581,7 @@ if($action == "addsurveysecurity")
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
 	$result = db_execute_assoc($query); //Checked
-	if( ($result->RecordCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) || 
+	if( ($result->RecordCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		if($postuserid > 0){
@@ -1828,16 +1828,16 @@ if($action == "exportstructure")
 {
     if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
     {
-	    $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n" 
+	    $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n"
 	    ."<div class='header'>"
 	    .$clang->gT("Export Survey Structure")."\n</div><br />\n"
 	    ."<ul style='margin-left:35%;'>\n"
-	    ."<li><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv' 
+	    ."<li><input type='radio' class='radiobtn' name='type' value='structurecsv' checked='checked' id='surveycsv'
 	    onclick=\"this.form.action.value='exportstructurecsv'\" />"
 	    ."<label for='surveycsv'>"
 	    .$clang->gT("LimeSurvey Survey File (*.csv)")."</label></li>\n";
 	    
-	    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML' 
+	    $exportstructure.="<li><input type='radio' class='radiobtn' name='type' value='structurequeXML'  id='queXML'
 	    onclick=\"this.form.action.value='exportstructurequexml'\" />"
 	    ."<label for='queXML'>"
 	    .str_replace('queXML','<a href="http://quexml.sourceforge.net/" target="_blank">queXML</a>',$clang->gT("queXML Survey XML Format (*.xml)"))." "
@@ -1849,7 +1849,7 @@ if($action == "exportstructure")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv' 
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsv'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsv'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
@@ -1870,12 +1870,12 @@ if($action == "exportstructureGroup")
 {
     if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
     {
-	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n" 
+	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
 	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
 	    .$clang->gT("Export Group Structure")."\n</td></tr>\n"
 	    ."<tr>\n"
 	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv' 
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvGroup' checked='checked' id='surveycsv'
 	    onclick=\"this.form.action.value='exportstructurecsvGroup'\"/>"
 	    ."<label for='surveycsv'>"
 	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
@@ -1891,7 +1891,7 @@ if($action == "exportstructureGroup")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv' 
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvGroup'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsvGroup'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
@@ -1923,12 +1923,12 @@ if($action == "exportstructureQuestion")
 {
     if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
     {
-	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n" 
+	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n"
 	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
 	    .$clang->gT("Export Question Structure")."\n</td></tr>\n"
 	    ."<tr>\n"
 	    ."<td style='text-align:center;'>\n";
-	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv' 
+	    $exportstructure.="<br /><input type='radio' class='radiobtn' name='type' value='structurecsvQuestion' checked='checked' id='surveycsv'
 	    onclick=\"this.form.action.value='exportstructurecsvQuestion'\"/>"
 	    ."<label for='surveycsv'>"
 	    .$clang->gT("LimeSurvey group File (*.csv)")."</label><br />\n";
@@ -1944,7 +1944,7 @@ if($action == "exportstructureQuestion")
 		//echo $export4lsrc;
 	    if($export4lsrc)
 	    {
-		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv' 
+		    $exportstructure.="<br/><input type='radio' class='radiobtn' name='type' value='structureLsrcCsvQuestion'  id='LsrcCsv'
 		    onclick=\"this.form.action.value='exportstructureLsrcCsvQuestion'\" />"
 		    ."<label for='LsrcCsv'>"
 		    .$clang->gT("Save for Lsrc (*.csv)")." "
@@ -2013,7 +2013,7 @@ if($action == "surveysecurity")
 				}
 				
 				if(isset($group_ids) && $group_ids[0] != NULL)
-				{				
+				{
 					$group_ids_query = implode(" OR ugid=", $group_ids);
 					unset($group_ids);
 	
@@ -2110,7 +2110,7 @@ elseif ($action == "surveyrights")
 
 	if(isset($postuserid)){
 		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)  
+        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
         {
             $query.=" AND owner_id != ".$postuserid." AND owner_id = ".$_SESSION['loginID'];
         }
@@ -2234,7 +2234,7 @@ if ($action == "editsurvey")
 			. "<input type='text' size='50' id='faxto' name='faxto' value=\"{$esrow['faxto']}\" /></li>\n";
 
 		// End General TAB
-		// Create Survey Button 
+		// Create Survey Button
 //		$editsurvey .= "<li><label for=''></label><input type='button' onclick='javascript:document.getElementById(\"addnewsurvey\").submit();' value='".$clang->gT("Create Survey")."' /></li>\n";
 		$editsurvey .= "</ul></div>\n";
 
@@ -2313,7 +2313,7 @@ if ($action == "editsurvey")
             . "</select>\n"
             . "</li>\n";
 
-            //Public statistics 
+            //Public statistics
             $editsurvey .= "<li><label for='publicstatistics'>".$clang->gT("Public statistics?")."</label>\n"
             . "<select id='publicstatistics' name='publicstatistics'>\n"
             . "<option value='Y'";
@@ -2325,7 +2325,7 @@ if ($action == "editsurvey")
             . "</select>\n"
             . "</li>\n";
 
-            //Public statistics 
+            //Public statistics
             $editsurvey .= "<li><label for='publicgraphs'>".$clang->gT("Show graphs in public statistics?")."</label>\n"
             . "<select id='publicgraphs' name='publicgraphs'>\n"
             . "<option value='Y'";
@@ -2380,7 +2380,12 @@ if ($action == "editsurvey")
             if ($esrow['usetokens'] != "Y") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></li>\n";
-
+            
+            //Set token length
+			$editsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
+			. "<input type='text' value=\"{$esrow['tokenlength']}\" name='tokenlength' />\n"
+			. "</li>\n";
+			
             // Self registration
             $editsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
             . "<select id='allowregister' name='allowregister'>\n"
@@ -2400,8 +2405,8 @@ if ($action == "editsurvey")
             if (trim($esrow['startdate'])!= '')
             {
                 $datetimeobj = new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-                $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);                      
-            }            
+                $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+            }
             
             $editsurvey .= "<li><label for='startdate_$surveyid'>".$clang->gT("Start date:")."</label>\n"
             . "<input type='text' class='popupdate' id='startdate_$surveyid' size='12' name='startdate' value=\"{$startdate}\" /></li>\n";
@@ -2411,8 +2416,8 @@ if ($action == "editsurvey")
             if (trim($esrow['expires'])!= '')
             {
                 $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-                $expires=$datetimeobj->convert($dateformatdetails['phpdate']);                      
-            }            
+                $expires=$datetimeobj->convert($dateformatdetails['phpdate']);
+            }
 			$editsurvey .="<li><label for='enddate_$surveyid'>".$clang->gT("Expiry Date:")."</label>\n"
 			. "<input type='text' class='popupdate' id='enddate_$surveyid' size='12' name='expires' value=\"{$expires}\" /></li>\n";
 			//COOKIES
@@ -2428,7 +2433,7 @@ if ($action == "editsurvey")
 			. "</li>\n";
 
 
-	// Use Captcha 
+	// Use Captcha
         $editsurvey .= "<li><label for=''>".$clang->gT("Use CAPTCHA for").":</label>\n"
         . "<select name='usecaptcha'>\n"
         . "<option value='A'";
@@ -2613,7 +2618,7 @@ if ($action == "editsurvey")
 
 		// Token answers persistence
 		$editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-		. "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n" 
+		. "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
         . "<option value='Y'";
 		if ($esrow['tokenanswerspersistence'] == "Y") {$editsurvey .= " selected='selected'";}
 		$editsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2624,7 +2629,7 @@ if ($action == "editsurvey")
 
         // Enable assessments
         $editsurvey .= "<li><label for=''>".$clang->gT("Enable assessment mode?")."</label>\n"
-        . "<select id='assessments' name='assessments'>\n" 
+        . "<select id='assessments' name='assessments'>\n"
         . "<option value='Y'";
         if ($esrow['assessments'] == "Y") {$editsurvey .= " selected='selected'";}
         $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
@@ -2679,7 +2684,7 @@ if ($action == "editsurvey")
 		// End TAB Uploaded Resources Management
 		$editsurvey .= "</div>\n";
 
-		// End TAB pane 
+		// End TAB pane
 		$editsurvey .= "</div>\n";
 
 
@@ -2724,7 +2729,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
 		foreach ($grplangs as $grouplang)
 		{
             // this one is created to get the right default texts fo each language
-            $bplang = new limesurvey_lang($grouplang);		
+            $bplang = new limesurvey_lang($grouplang);
     		$esquery = "SELECT * FROM ".db_table_name("surveys_languagesettings")." WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
     		$esresult = db_execute_assoc($esquery); //Checked
     		$esrow = $esresult->FetchRow();
@@ -2758,7 +2763,7 @@ if ($action == "updatesurvey")  // Edit survey step 2  - editing language depend
             {
                $editsurvey.= "<option value='{$index}'";
                if ($esrow['surveyls_dateformat']==$index) {
-                    $editsurvey.=" selected='selected'"; 
+                    $editsurvey.=" selected='selected'";
                }
                $editsurvey.= ">".$dateformatdata['dateformat'].'</option>';
             }
@@ -2904,12 +2909,12 @@ if ($action == "ordergroups")
 		    $lastnumber=$group['group_order'];
 		}
 		//Fix bad ordering
-		if($ogarray[0]['group_order'] > 0 || !$consecutive) 
+		if($ogarray[0]['group_order'] > 0 || !$consecutive)
 		{
 		    $i=0;
 		    foreach($ogarray as $group)
 		    {
-		        $fixorderq = "UPDATE ".db_table_name('groups')." SET group_order=$i WHERE sid=$surveyid AND group_order = ".$group['group_order']; 
+		        $fixorderq = "UPDATE ".db_table_name('groups')." SET group_order=$i WHERE sid=$surveyid AND group_order = ".$group['group_order'];
 		        $foresult = db_execute_assoc($fixorderq) or safe_die($connect->ErrorMsg());
 		        $ogarray[$i]['group_order']=$i;
 				$i++;
@@ -2922,13 +2927,13 @@ if ($action == "ordergroups")
 		{
 			$downdisabled = "";
 			$updisabled = "";
-			if ( !is_null($groupdepsarray) && $i < $groupcount-1 && 
+			if ( !is_null($groupdepsarray) && $i < $groupcount-1 &&
 			   array_key_exists($ogarray[$i+1]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray[$ogarray[$i+1]['gid']]) )
 			{
 				$downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
 			}
-			if ( !is_null($groupdepsarray) && $i !=0  && 
+			if ( !is_null($groupdepsarray) && $i !=0  &&
 			   array_key_exists($ogarray[$i]['gid'],$groupdepsarray) &&
 			   array_key_exists($ogarray[$i-1]['gid'],$groupdepsarray[$ogarray[$i]['gid']]) )
 			{
@@ -2938,14 +2943,14 @@ if ($action == "ordergroups")
 			$ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
 			
 			// DROP DOWN LIST //
-			//Move to location 
+			//Move to location
 	    	//$ordergroups.="<li class='movableNode'>\n" ;
 	    	$ordergroups.="\t<select style='float:right; margin-left: 5px; width:20em;";
 	    	$ordergroups.="' name='groupmovetomethod$i' onchange=\"this.form.groupmovefrom.value='".$ogarray[$i]['group_order']."';this.form.groupmoveto.value=this.value;submit()\">\n";
 	    	$ordergroups.="<option value=''>".$clang->gT("Place after..")."</option>\n";
 	    	//Display the "position at beginning" item
 	    	if(empty($groupdepsarray) || (!is_null($groupdepsarray)  && $i != 0 &&
-	            !array_key_exists($ogarray[$i]['gid'], $groupdepsarray))) 
+	            !array_key_exists($ogarray[$i]['gid'], $groupdepsarray)))
 	       		{
 	                $ordergroups.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
 	       		}
@@ -2954,10 +2959,10 @@ if ($action == "ordergroups")
         	if ( !is_null($groupdepsarray) && $i!=0 &&
 	     	    array_key_exists($ogarray[$i]['gid'], $groupdepsarray)) //This should find out if there are any dependencies
 	     	{
-	       	    foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val) 
+	       	    foreach($groupdepsarray[$ogarray[$i]['gid']] as $key=>$val)
 				{
 		            //qet the question_order value for each of the dependencies
-		     		foreach($miniogarray as $mo) 
+		     		foreach($miniogarray as $mo)
 				    {
 			   		    if($mo['gid'] == $key && $mo['group_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
 			   			{
@@ -2981,7 +2986,7 @@ if ($action == "ordergroups")
 	        		    //Get the group_order for $gdarray;
 	        		    $goquery="SELECT group_order FROM ".db_table_name('groups')." WHERE gid = $gdarray";
 	        		    $goresult=db_execute_assoc($goquery) or safe_die($connect->ErrorMsg());
-	        		    $gorow = $goresult->FetchRow(); 
+	        		    $gorow = $goresult->FetchRow();
 	        		    $max_end_order=$gorow['group_order'];
 					}
 	    		}
@@ -2995,7 +3000,7 @@ if ($action == "ordergroups")
 	   			}
 	   			$minipos++;
 			}
-			$ordergroups.="</select>\n";			
+			$ordergroups.="</select>\n";
 
 			// BUTTONS //
 			$ordergroups.= "<input style='float:right;";
@@ -3016,7 +3021,7 @@ if ($action == "ordergroups")
 		. "<input type='hidden' name='groupmovefrom' />\n"
 		. "<input type='hidden' name='groupmoveto' />\n"
 		. "<input type='hidden' name='sortorder' />"
-		. "<input type='hidden' name='action' value='ordergroups' />" 
+		. "<input type='hidden' name='action' value='ordergroups' />"
         . "</form>" ;
 		$ordergroups .="<br />" ;
 	}
@@ -3094,7 +3099,7 @@ if ($action == "newsurvey")
 		. "<input type='text' size='50' id='faxto' name='faxto' /></li></ul>\n";
 
 		// End General TAB
-		// Create Survey Button 
+		// Create Survey Button
 		$newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
         
 		$newsurvey .= "</div>\n";
@@ -3204,7 +3209,7 @@ if ($action == "newsurvey")
         
 
 		// End Presention and navigation TAB
-		// Create Survey Button 
+		// Create Survey Button
         $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
 		$newsurvey .= "</div>\n";
 
@@ -3218,6 +3223,11 @@ if ($action == "newsurvey")
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
+        
+    // Set token length
+        $newsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
+		. "<input type='text' id='tokenlength' name='tokenlength'>\n"
+		. "</li>\n";
 
     // Public registration
         $newsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
@@ -3247,7 +3257,7 @@ if ($action == "newsurvey")
 		. "</select></li>\n";
 
 
-	// Use Captcha 
+	// Use Captcha
         $newsurvey .= "<li><label for='usecaptcha'>".$clang->gT("Use CAPTCHA for").":</label>\n"
         . "<select id='usecaptcha' name='usecaptcha'>\n"
         . "<option value='A'>".$clang->gT("Survey Access")." / ".$clang->gT("Registration")." / ".$clang->gT("Save & Load")."</option>\n"
@@ -3268,7 +3278,7 @@ if ($action == "newsurvey")
         . "</select></li></l>\n";
 
 		// End Publication and access control TAB
-		// Create Survey Button 
+		// Create Survey Button
         $newsurvey .= "<p><input type='button' onclick=\"if (isEmpty(document.getElementById('surveyls_title'), '".$clang->gT("Error: You have to enter a title for this survey.",'js')."')) { document.getElementById('addnewsurvey').submit(); }; return false;\" value='".$clang->gT("Create Survey")."' />\n";
 		$newsurvey .= "</div>\n";
 
@@ -3313,28 +3323,28 @@ if ($action == "newsurvey")
 
 		// IP Address
 		$newsurvey .= "<li><label for='ipaddr'>".$clang->gT("Save IP Address?")."</label>\n"
-		. "<select id='ipaddr' name='ipaddr'>\n"                                
+		. "<select id='ipaddr' name='ipaddr'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "</select></li>\n";
 
 		// Referring URL
 		$newsurvey .= "<li><label for='refurl'>".$clang->gT("Save Referring URL?")."</label>\n"
-		. "<select id='refurl' name='refurl'>\n"                                
+		. "<select id='refurl' name='refurl'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "</select></li>\n";
 
 		// Token answers persistence
 		$newsurvey .= "<li><label for='tokenanswerspersistence'>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-		. "<select id='tokenanswerspersistence' name='tokenanswerspersistence'>\n" 
+		. "<select id='tokenanswerspersistence' name='tokenanswerspersistence'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
 		. "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
 		. "</select></li>\n";
 
         // enable assessment mote
         $newsurvey .= "<li><label for='assessments'>".$clang->gT("Enable assessment mode?")."</label>\n"
-        . "<select id='assessments' name='assessments'>\n" 
+        . "<select id='assessments' name='assessments'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
         . "</select></li></ul>\n";
@@ -3366,7 +3376,7 @@ if ($action == "newsurvey")
 		// End Import TAB
 		$newsurvey .= "</div>\n";
 
-		// End TAB pane 
+		// End TAB pane
 		$newsurvey .= "</div>\n";
 
 	}

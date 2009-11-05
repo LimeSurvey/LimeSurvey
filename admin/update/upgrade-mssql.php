@@ -18,7 +18,7 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-/// This function does anything necessary to upgrade 
+/// This function does anything necessary to upgrade
 /// older versions to match current functionality
 global $modifyoutput, $dbprefix;
 echo str_pad('Loading... ',4096)."<br />\n";
@@ -64,7 +64,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         }
 
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));                 
+        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
         while ($datarow = $resultdata->FetchRow()){
            $toreplace=$datarow['additional_languages'];
            $toreplace=str_replace('german_informal','german-informal',$toreplace);
@@ -145,12 +145,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
            if ($toreplace2!=$toreplace) {modify_database("","update  [prefix_labelsets] set [languages]='$toreplace' where lid=".$datarow['lid']);echo $modifyoutput;flush();}
         }
 
-        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));                 
+        $resultdata=db_execute_assoc("select * from ".db_table_name("surveys"));
         while ($datarow = $resultdata->FetchRow()){
            $toreplace=$datarow['additional_languages'];
            $toreplace2=str_replace('no','nb',$toreplace);
            if ($toreplace2!=$toreplace) {modify_database("","update [prefix_surveys] set [additional_languages]='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
-        }	
+        }
         
         modify_database("","ALTER TABLE [prefix_surveys] ADD [htmlemail] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usecaptcha] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
@@ -166,7 +166,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 						  [folder] varchar(255) NOT NULL,
 						  [creator] int NOT NULL,
 						  PRIMARY KEY  ([folder])
-						  );");echo $modifyoutput; flush();        
+						  );");echo $modifyoutput; flush();
 	    //123
         modify_database("","ALTER TABLE [prefix_conditions] ALTER COLUMN [value] VARCHAR(255)"); echo $modifyoutput; flush();
         // There is no other way to remove the previous default value
@@ -178,7 +178,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 									WHERE OBJECT_NAME(SO.PARENT_OBJ) = 'lime_labels'
 									AND SO.XTYPE = 'D' AND SC.COLID =
 									(SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
-									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR 
+									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR
 	 								exec (@STR);"); echo $modifyoutput; flush();     */
 	 								
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] varchar(4000)"); echo $modifyoutput; flush();
@@ -196,19 +196,19 @@ echo str_pad('Loading... ',4096)."<br />\n";
     }
     
 	if ($oldversion < 127) {
-        modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput; 
-        modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [assessments_idx3] on [prefix_assessments] ([gid])"); echo $modifyoutput; 
-        modify_database("","create index [conditions_idx2] on [prefix_conditions] ([qid])"); echo $modifyoutput; 
-        modify_database("","create index [conditions_idx3] on [prefix_conditions] ([cqid])"); echo $modifyoutput; 
-        modify_database("","create index [groups_idx2] on [prefix_groups] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [question_attributes_idx2] on [prefix_question_attributes] ([qid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx2] on [prefix_questions] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx3] on [prefix_questions] ([gid])"); echo $modifyoutput; 
-        modify_database("","create index [questions_idx4] on [prefix_questions] ([type])"); echo $modifyoutput; 
-        modify_database("","create index [quota_idx2] on [prefix_quota] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput; 
-        modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput; 
+        modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput;
+        modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput;
+        modify_database("","create index [assessments_idx3] on [prefix_assessments] ([gid])"); echo $modifyoutput;
+        modify_database("","create index [conditions_idx2] on [prefix_conditions] ([qid])"); echo $modifyoutput;
+        modify_database("","create index [conditions_idx3] on [prefix_conditions] ([cqid])"); echo $modifyoutput;
+        modify_database("","create index [groups_idx2] on [prefix_groups] ([sid])"); echo $modifyoutput;
+        modify_database("","create index [question_attributes_idx2] on [prefix_question_attributes] ([qid])"); echo $modifyoutput;
+        modify_database("","create index [questions_idx2] on [prefix_questions] ([sid])"); echo $modifyoutput;
+        modify_database("","create index [questions_idx3] on [prefix_questions] ([gid])"); echo $modifyoutput;
+        modify_database("","create index [questions_idx4] on [prefix_questions] ([type])"); echo $modifyoutput;
+        modify_database("","create index [quota_idx2] on [prefix_quota] ([sid])"); echo $modifyoutput;
+        modify_database("","create index [saved_control_idx2] on [prefix_saved_control] ([sid])"); echo $modifyoutput;
+        modify_database("","create index [user_in_groups_idx1] on [prefix_user_in_groups] ([ugid], [uid])"); echo $modifyoutput;
         modify_database("","update [prefix_settings_global] set [stg_value]='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 }
 
@@ -233,12 +233,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
     {
         modify_database("","ALTER TABLE [prefix_surveys] ADD [publicstatistics] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }    
+    }
     if ($oldversion < 132)
     {
         modify_database("","ALTER TABLE [prefix_surveys] ADD [publicgraphs] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }    
+    }
     
     if ($oldversion < 133)
 	{
@@ -270,31 +270,31 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys_languagesettings] ADD [surveyls_endtext] text"); echo $modifyoutput; flush();
         // copy old URL fields ot language specific entries
         modify_database("","update [prefix_surveys_languagesettings] set [surveyls_url]=(select [url] from [prefix_surveys] where [sid]=[prefix_surveys_languagesettings].[surveyls_survey_id])"); echo $modifyoutput; flush();
-        // drop old URL field 
+        // drop old URL field
         mssql_drop_constraint('url','surveys');
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [url]"); echo $modifyoutput; flush();
         
         modify_database("","update [prefix_settings_global] set [stg_value]='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }   
+    }
         
     if ($oldversion < 134)
     {
         // Add new assessment setting
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usetokens] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-        mssql_drop_constraint('attribute1','surveys');        
-        mssql_drop_constraint('attribute2','surveys');        
+        mssql_drop_constraint('attribute1','surveys');
+        mssql_drop_constraint('attribute2','surveys');
         modify_database("", "ALTER TABLE [prefix_surveys] ADD [attributedescriptions] TEXT;"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute1]"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [attribute2]"); echo $modifyoutput; flush();
         upgrade_token_tables134();
         modify_database("","update [prefix_settings_global] set [stg_value]='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-    }   
+    }
      if ($oldversion < 135)
     {
-        mssql_drop_constraint('value','question_attributes');        
+        mssql_drop_constraint('value','question_attributes');
         modify_database("","ALTER TABLE [prefix_question_attributes] ALTER COLUMN [value] text"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_answers] ALTER COLUMN [answer] varchar(8000)"); echo $modifyoutput; flush();
-        modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 136) //New quota functions
     {
@@ -308,8 +308,8 @@ echo str_pad('Loading... ',4096)."<br />\n";
   							[quotals_url] varchar(255),
   							[quotals_urldescrip] varchar(255),
   							PRIMARY KEY ([quotals_id])
-							);");echo $modifyoutput; flush(); 
-        modify_database("","update [prefix_settings_global] set [stg_value]='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+							);");echo $modifyoutput; flush();
+        modify_database("","update [prefix_settings_global] set [stg_value]='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
     if ($oldversion < 137) //New date format specs
     {
@@ -317,29 +317,35 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "ALTER TABLE [prefix_users] ADD [dateformat] int NOT NULL default '1'"); echo $modifyoutput; flush();
         modify_database("", "update [prefix_surveys] set startdate=null where usestartdate='N'"); echo $modifyoutput; flush();
         modify_database("", "update [prefix_surveys] set expires=null where useexpiry='N'"); echo $modifyoutput; flush();
-        mssql_drop_constraint('usestartdate','surveys');        
-        mssql_drop_constraint('useexpiry','surveys');        
+        mssql_drop_constraint('usestartdate','surveys');
+        mssql_drop_constraint('useexpiry','surveys');
         modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN usestartdate"); echo $modifyoutput; flush();
         modify_database("", "ALTER TABLE [prefix_surveys] DROP COLUMN useexpiry"); echo $modifyoutput; flush();
-        modify_database("","update [prefix_settings_global] set [stg_value]='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update [prefix_settings_global] set [stg_value]='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
 	if ($oldversion < 138) //Modify quota field
 	{
 	    modify_database("", "ALTER TABLE [prefix_quota_members] ALTER COLUMN [code] VARCHAR(11) NULL"); echo $modifyoutput; flush();
-        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
     if ($oldversion < 139) //Modify quota field
     {
         upgrade_survey_tables139();
-        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 	
 	if ($oldversion < 140) //Modify surveys table
 	{
 	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [emailresponseto] text"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+	}
+	
+	if ($oldversion < 141) //Modify surveys table
+	{
+	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [tokenlength] text"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
     return true;
@@ -406,17 +412,17 @@ function upgrade_survey_tables133a()
               ."WHERE     (TABLE_NAME = '{$dbprefix}assessments') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
     $primarykey=$connect->GetRow($pkquery);
-    if ($primarykey!=false) 
+    if ($primarykey!=false)
     {
-        modify_database("","ALTER TABLE [prefix_assessments] DROP CONSTRAINT {$primarykey[0]}"); echo $modifyoutput; flush();    
+        modify_database("","ALTER TABLE [prefix_assessments] DROP CONSTRAINT {$primarykey[0]}"); echo $modifyoutput; flush();
     }
     // add the new primary key
-    modify_database("","ALTER TABLE [prefix_assessments] ADD CONSTRAINT pk_assessments_id_lang PRIMARY KEY ([id],[language])"); echo $modifyoutput; flush();    
+    modify_database("","ALTER TABLE [prefix_assessments] ADD CONSTRAINT pk_assessments_id_lang PRIMARY KEY ([id],[language])"); echo $modifyoutput; flush();
     $surveyidquery = "SELECT sid,additional_languages FROM ".db_table_name('surveys');
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
     {
-        FixLanguageConsistency($sv[0],$sv[1]);   
+        FixLanguageConsistency($sv[0],$sv[1]);
     }
 }
 
@@ -438,16 +444,16 @@ function mssql_drop_constraint($fieldname, $tablename)
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     // It proves how badly designer some Microsoft software is!
-    $dfquery ="SELECT c_obj.name AS constraint_name 
+    $dfquery ="SELECT c_obj.name AS constraint_name
                 FROM  sys.sysobjects AS c_obj INNER JOIN
                       sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
                       sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
                       sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
                 WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='$dbprefix$tablename')";
     $defaultname=$connect->GetRow($dfquery);
-    if ($defaultname!=false) 
+    if ($defaultname!=false)
     {
-        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();    
+        modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }
                 
 
@@ -456,7 +462,7 @@ function mssql_drop_constraint($fieldname, $tablename)
 function upgrade_survey_tables139()
 {
     global $modifyoutput,$dbprefix;
-    $surveyidquery = db_select_tables_like($dbprefix."survey_%");   
+    $surveyidquery = db_select_tables_like($dbprefix."survey_%");
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else

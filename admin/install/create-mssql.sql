@@ -247,7 +247,8 @@ CREATE TABLE [prefix_surveys] (
   [usetokens] char(1) default 'N',
   [bounce_email] VARCHAR(320) default NULL,
   [attributedescriptions] text,
-  [emailresponseto] text
+  [emailresponseto] text,
+  [tokenlength] tinyint default '15',
   
   PRIMARY KEY  ([sid])
 ) 
@@ -374,7 +375,7 @@ CREATE TABLE [prefix_templates] (
 -- Table [settings_global]
 --
 
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '140');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '141');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 

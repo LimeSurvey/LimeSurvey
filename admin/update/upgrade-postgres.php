@@ -34,37 +34,37 @@ global $modifyoutput;
         modify_database("","create index quota_idx2 on prefix_quota (sid)"); echo $modifyoutput;  flush();
         modify_database("","create index saved_control_idx2 on prefix_saved_control (sid)"); echo $modifyoutput;  flush();
         modify_database("","create index user_in_groups_idx1 on prefix_user_in_groups (ugid, uid)"); echo $modifyoutput;  flush();
-        modify_database("","update prefix_settings_global set stg_value='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='127' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
 	if ($oldversion < 128) {
 		//128
 		upgrade_token_tables128();
-	    modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update prefix_settings_global set stg_value='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
 	if ($oldversion < 129) {
 		//129
         modify_database("","ALTER TABLE prefix_surveys ADD startdate date"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys ADD usestartdate char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 	
 	if ($oldversion < 130)
 	{
 		modify_database("","ALTER TABLE prefix_conditions ADD scenario integer NOT NULL default '1'"); echo $modifyoutput; flush();
 		modify_database("","UPDATE prefix_conditions SET scenario=1 where (scenario is null) or scenario=0"); echo $modifyoutput; flush();
-	    modify_database("","update prefix_settings_global set stg_value='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+	    modify_database("","update prefix_settings_global set stg_value='130' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
     if ($oldversion < 131)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD publicstatistics char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("","update prefix_settings_global set stg_value='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='131' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 132)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD publicgraphs char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
-        modify_database("","update prefix_settings_global set stg_value='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 	if ($oldversion < 133)
     {
@@ -89,8 +89,8 @@ global $modifyoutput;
         // drop the old link field
          modify_database("","ALTER TABLE prefix_assessments DROP COLUMN link"); echo $modifyoutput; flush();
         // change the primary index to include language
-        modify_database("","ALTER TABLE prefix_assessments DROP CONSTRAINT prefix_assessments_pkey"); echo $modifyoutput; flush();    
-        modify_database("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();    
+        modify_database("","ALTER TABLE prefix_assessments DROP CONSTRAINT prefix_assessments_pkey"); echo $modifyoutput; flush();
+        modify_database("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();
         // and fix missing translations for assessments
         upgrade_survey_tables133();
         
@@ -100,11 +100,11 @@ global $modifyoutput;
         
         // copy old URL fields ot language specific entries
         modify_database("","update prefix_surveys_languagesettings set surveyls_url=(select url from prefix_surveys where sid=prefix_surveys_languagesettings.surveyls_survey_id)"); echo $modifyoutput; flush();
-        // drop old URL field 
+        // drop old URL field
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN url"); echo $modifyoutput; flush();
         
-        modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
-    }   
+        modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
+    }
            
     if ($oldversion < 134)
     {
@@ -113,13 +113,13 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute1"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         upgrade_token_tables134();
-        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();  
+        modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
                
-    } 
+    }
      if ($oldversion < 135)
     {
         modify_database("","ALTER TABLE prefix_question_attributes ALTER COLUMN value TYPE text"); echo $modifyoutput; flush();
-        modify_database("","update prefix_settings_global set stg_value='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("","update prefix_settings_global set stg_value='135' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
     if ($oldversion < 136)
     {
@@ -154,13 +154,13 @@ global $modifyoutput;
 	if ($oldversion < 138) //Modify quota field
 	{
 	    modify_database("", "ALTER TABLE prefix_quota_members ALTER COLUMN code TYPE character varying(11)"); echo $modifyoutput; flush();
-        modify_database("", "UPDATE prefix_settings_global SET stg_value='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='138' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
 	if ($oldversion < 139) //Modify quota field
 	{
         upgrade_survey_tables139();
-        modify_database("", "UPDATE prefix_settings_global SET stg_value='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();        
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
 	if ($oldversion < 140) //Modify surveys table
@@ -168,6 +168,13 @@ global $modifyoutput;
 	    modify_database("", "ALTER TABLE prefix_surveys ADD \"emailresponseto\" TEXT"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
+	
+	if ($oldversion < 141) //Modify surveys table
+	{
+	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" TEXT"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+	}
+	
 
     return true;
 }
@@ -196,7 +203,7 @@ function upgrade_survey_tables133()
     $surveyidresult = db_execute_num($surveyidquery);
     while ( $sv = $surveyidresult->FetchRow() )
     {
-        FixLanguageConsistency($sv['0'],$sv['1']);   
+        FixLanguageConsistency($sv['0'],$sv['1']);
     }
 }
 
@@ -219,7 +226,7 @@ function upgrade_token_tables134()
 function upgrade_survey_tables139()
 {
     global $modifyoutput,$dbprefix;
-    $surveyidquery = db_select_tables_like($dbprefix."survey_%");   
+    $surveyidquery = db_select_tables_like($dbprefix."survey_%");
     $surveyidresult = db_execute_num($surveyidquery);
     if (!$surveyidresult) {return "Database Error";}
     else

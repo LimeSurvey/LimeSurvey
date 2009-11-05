@@ -139,30 +139,30 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
     if ($_POST['tokenstatus']==3 && $thissurvey['private']=='N')
     {
         $bquery .= " and completed='N' and token in (select token from ".db_table_name("survey_$surveyid")." group by token)";
-    }      
+    }
   
     if ($_POST['invitationstatus']==1)
     {
         $bquery .= " and sent<>'N'";
-    }      
+    }
     if ($_POST['invitationstatus']==2)
     {
         $bquery .= " and sent='N'";
-    }      
+    }
     
     if ($_POST['reminderstatus']==1)
     {
         $bquery .= " and remindersent<>'N'";
-    }      
+    }
     if ($_POST['reminderstatus']==2)
     {
         $bquery .= " and remindersent='N'";
-    }        
+    }
     
     if ($_POST['tokenlanguage']!='')
     {
         $bquery .= " and language=".db_quoteall($_POST['tokenlanguage']);
-    }       
+    }
 	$bquery .= " ORDER BY tid";
 
 	$bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
@@ -323,9 +323,9 @@ if (!$tokenexists) //If no tokens table exists
 		{
 
 			$tokenoutput .= "\t</div><div class='messagebox'>\n"
-			."<font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font>\n" 
-			.$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n" 
-			."<pre>".htmlspecialchars(implode(" ",$sqlarray))."</pre>\n" 
+			."<font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font>\n"
+			.$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n"
+			."<pre>".htmlspecialchars(implode(" ",$sqlarray))."</pre>\n"
 			."<br />"
 			."<input type='submit' value='"
 			.$clang->gT("Main admin screen")."' onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n"
@@ -337,7 +337,7 @@ if (!$tokenexists) //If no tokens table exists
 			$dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
             if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
             {
-                $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';                
+                $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';
                 $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
             }
 
@@ -439,27 +439,27 @@ if ($row["attribute2"]) {$attr2_name = $row["attribute2"];} else {$attr2_name=$c
 $tokenoutput .= "\t<div class='menubar-main'>\n"
 ."<div class='menubar-left'>\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" "
-."title='".$clang->gTview("Return to survey administration")."'>" 
+."title='".$clang->gTview("Return to survey administration")."'>"
 ."<img name='HomeButton' src='$imagefiles/home.png' alt='".$clang->gT("Return to survey administration")."' /></a>\n"
 ."<img src='$imagefiles/blank.gif' alt='' width='11' />\n"
 ."<img src='$imagefiles/seperator.gif' alt='' />\n"
-."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >" 
+."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" title='".$clang->gTview("Show token summary")."' >"
 ."<img name='SummaryButton' src='$imagefiles/summary.png' alt='".$clang->gT("Show token summary")."' /></a>\n"
 ."<img src='$imagefiles/seperator.gif' alt='' />\n"
 ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse', '_top')\" "
-."title='".$clang->gTview("Display tokens")."' >" 
+."title='".$clang->gTview("Display tokens")."' >"
 ."<img name='ViewAllButton' src='$imagefiles/document.png' alt='".$clang->gT("Display tokens")."' /></a>\n";
 
 if ($sumrows5['edit_survey_property'] ||
 	$sumrows5['activate_survey'] ||
 	$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 {
-	$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\"" 
-    ."title='".$clang->gTview("Add new token entry")."' >" 
+	$tokenoutput .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=addnew', '_top')\""
+    ."title='".$clang->gTview("Add new token entry")."' >"
     ."<img name='AddNewButton' src='$imagefiles/add.png' title='' alt='".$clang->gT("Add new token entry")."' /></a>\n"
 	."<img src='$imagefiles/seperator.gif' alt='' />\n"
-    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" " 
-    ."title='".$clang->gTview("Manage additional attribute fields")."'>" 
+    ."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes', '_top')\" "
+    ."title='".$clang->gTview("Manage additional attribute fields")."'>"
     ."<img name='ManageAttributesButton' src='$imagefiles/token_manage.png' title='' alt='".$clang->gT("Manage additional attribute fields")."' /></a>\n"
     ."<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')\" "
@@ -487,20 +487,20 @@ if ($sumrows5['edit_survey_property'] ||
     ."title='".$clang->gTview("Send email invitation")."'>"
 	."<img name='InviteButton' src='$imagefiles/invite.png' alt='".$clang->gT("Send email invitation")."' /></a>\n"
 	."<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=remind', '_top')\" "
-    ."title='".$clang->gTview("Send email reminder")."'>" 
+    ."title='".$clang->gTview("Send email reminder")."'>"
 	."<img name='RemindButton' src='$imagefiles/remind.png' alt='".$clang->gT("Send email reminder")."' /></a>\n"
 	."<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify")."\" "
-    ." title='".$clang->gTview("Generate tokens")."'>" 
+    ." title='".$clang->gTview("Generate tokens")."'>"
 	."<img name='TokenifyButton' src='$imagefiles/tokenify.png' alt='".$clang->gT("Generate tokens")."' /></a>\n"
 	."<img src='$imagefiles/seperator.gif' alt='' />\n"
 	."<a href=\"#\" onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=kill")."\" "
-    ."title='".$clang->gTview("Drop tokens table")."' >" 
+    ."title='".$clang->gTview("Drop tokens table")."' >"
 	."<img name='DeleteTokensButton' src='$imagefiles/delete.png' alt='".$clang->gT("Drop tokens table")."' /></a>\n";
 }
 
 $tokenoutput .="</div><div class='menubar-right'><a href=\"#\" onclick=\"showhelp('show')\" "
-                ." title='".$clang->gTview("Show help")."'>" 
+                ." title='".$clang->gTview("Show help")."'>"
                 ."<img src='$imagefiles/showhelp.png' align='right' alt='".$clang->gT("Show help")."' /></a>\n";
 
 
@@ -783,10 +783,10 @@ if ($subaction == "browse" || $subaction == "search")
 	$tokenoutput .= "\t<div class='menubar'><div class='menubar-title'><span style='font-weight:bold;'>"
 	.$clang->gT("Data view control")."</span></div>\n"
     ."<div class='menubar-main'>\n"
-    ."<div class='menubar-left'>\n"    
+    ."<div class='menubar-left'>\n"
 	."<img src='$imagefiles/blank.gif' alt='' width='31' height='20' border='0' hspace='0' align='left' />\n"
 	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
-	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" 
+	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
     ." title='".$clang->gTview("Show start...")."'>"
 	."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
@@ -1640,6 +1640,20 @@ if ($subaction == "tokenify" &&
 	}
 	else
 	{
+		//get token length from survey settings
+		$tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+        $tlresult = db_execute_assoc($tlquery);
+        while ($tlrow = $tlresult->FetchRow())
+        {
+            $tokenlength = $tlrow['tokenlength'];
+        }
+		
+		//if tokenlength is not set or there are other problems use the default value (15)
+		if(!isset($tokenlength) || $tokenlength == '')
+		{
+			$tokenlength = 15;
+		}
+		
         // select all existing tokens
         $ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
         $ntresult = db_execute_assoc($ntquery);
@@ -1655,7 +1669,7 @@ if ($subaction == "tokenify" &&
 			$isvalidtoken = false;
 			while ($isvalidtoken == false)
 			{
-				$newtoken = randomkey(15);
+				$newtoken = randomkey($tokenlength);
 				if (!isset($existingtokens[$newtoken])) {
                     $isvalidtoken = true;
                     $existingtokens[$newtoken]=null;
@@ -1827,7 +1841,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     $tokenoutput .= "<div class='header'>";
     if ($subaction == "edit")
     {
-        $tokenoutput .=$clang->gT("Edit token entry");    
+        $tokenoutput .=$clang->gT("Edit token entry");
     }
     else
     {
@@ -1943,7 +1957,7 @@ if ($subaction == "updatetoken" &&
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
    )
 {
-    $tokenoutput .= "\t<div class='messagebox'><div class='header'>"      
+    $tokenoutput .= "\t<div class='messagebox'><div class='header'>"
 	.$clang->gT("Edit token entry")."</div>\n"
 	."\t<p>\n";
     if (trim($_POST['validfrom'])=='') {
@@ -2134,7 +2148,7 @@ if ($subaction == "upload" &&
 	else
 	{
 		$tokenoutput .= "<div class='successheader'>".$clang->gT("Uploaded CSV file successfully")."</div>\n";
-		$xz = 0; $recordcount = 0; $xv = 0; 
+		$xz = 0; $recordcount = 0; $xv = 0;
 		// This allows to read file with MAC line endings too
 		@ini_set('auto_detect_line_endings', true);
 		// open it and trim the ednings
@@ -2197,11 +2211,11 @@ if ($subaction == "upload" &&
 				{
                     if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
                     {
-                       $filterduplicatefields=array('firstname','lastname','email'); 
+                       $filterduplicatefields=array('firstname','lastname','email');
                     }
                     else
                     {
-                       $filterduplicatefields=$_POST['filterduplicatefields']; 
+                       $filterduplicatefields=$_POST['filterduplicatefields'];
                     }
 				    $dupquery = "SELECT tid from ".db_table_name("tokens_$surveyid")." where 1=1";
                     foreach($filterduplicatefields as $field)
@@ -2239,7 +2253,7 @@ if ($subaction == "upload" &&
 					    if (!isset($writearray['token'])) {
                             $writearray['token'] = '';
                         }else{
-                            $writearray['token']=sanitize_token($writearray['token']);  
+                            $writearray['token']=sanitize_token($writearray['token']);
                         }
 					    if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
                         if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
@@ -2248,7 +2262,7 @@ if ($subaction == "upload" &&
 					    . "(".implode(',',array_keys($writearray)).") \n"
 					    . "VALUES ('".implode("','",array_values($writearray))."')";
 						    $ir = $connect->Execute($iq);
-					    if (!$ir) 
+					    if (!$ir)
                         {
                             $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
                         }
@@ -2530,7 +2544,7 @@ if ($subaction == "uploadldap" &&
 			}
 			$message .= "</div>";
 			$message .= "<br />\n";
-            $message .= sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);               
+            $message .= sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);
 			$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
 			$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
 			foreach($invalidemaillist as $data) {
@@ -2583,7 +2597,7 @@ function form_csv_upload($error=false)
     $aTokenAttr=GetAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname)
     {
-         $tokenoutput.="<option>$thisattrfieldname</option>";  
+         $tokenoutput.="<option>$thisattrfieldname</option>";
     }
 
     $tokenoutput .= "</select> "
