@@ -94,15 +94,23 @@ td.questionhelp {
 }
 
 .numeric-multi ul li label {
-    float: left;  
-    width: 55%;  
-    text-align: right; 
+    float: left;
+	width: auto; 
+}
+
+.numeric-multi ul {
+	float: left;
+	margin: 0px 01.5em 1em;
 }
 
 .numeric-multi ul li {  
-    float: left;  
-    clear: left;  
-    width: 100%;  
+    width: 100%;
+	padding-bottom: 1em;  
+}
+
+.numeric-multi ul li.multiplenumerichelp {  
+	padding-top: 1em; 
+	padding-bottom: 0; 
 }
 
 .numeric-multi ul li span {
@@ -117,3 +125,21 @@ input.submit
 {
     padding:0px;
 }
+
+/** UI Slider **/
+
+.numeric-multi label.slider-label {
+	margin-top: 1.3em;
+}
+
+.slider_lefttext {
+	float: left;
+	margin-top: 1.5em;
+}
+
+.slider_righttext {
+	float: left;
+	margin-top: 1.5em;
+}
+
+
