@@ -2383,7 +2383,7 @@ if ($action == "editsurvey")
             
             //Set token length
 			$editsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
-			. "<input type='text' value=\"{$esrow['tokenlength']}\" name='tokenlength' />\n"
+			. "<input type='text' value=\"{$esrow['tokenlength']}\" name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />\n"
 			. "</li>\n";
 			
             // Self registration
@@ -3226,7 +3226,7 @@ if ($action == "newsurvey")
         
     // Set token length
         $newsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
-		. "<input type='text' id='tokenlength' name='tokenlength'>\n"
+		. "<input type='text' name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />"
 		. "</li>\n";
 
     // Public registration

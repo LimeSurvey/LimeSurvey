@@ -1057,6 +1057,10 @@ if(isset($surveyid))
             $datetimeobj = new Date_Time_Converter($_POST['startdate'],$formatdata['phpdate']);
             $_POST['startdate']=$datetimeobj->convert("Y-m-d H:i:s");
         }
+		
+		//make sure only numbers are passed within the $_POST variable
+		$_POST['tokenlength'] = (int) $_POST['tokenlength'];
+		
 		CleanLanguagesFromSurvey($postsid,$_POST['languageids']);
 		FixLanguageConsistency($postsid,$_POST['languageids']);
 		
@@ -1291,8 +1295,9 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
                 $_POST['urldescrip'] = html_entity_decode($_POST['urldescrip'], ENT_QUOTES, "UTF-8");
               }
 
-
+		//make sure only numbers are passed within the $_POST variable
         $_POST['dateformat'] = (int) $_POST['dateformat'];
+		$_POST['tokenlength'] = (int) $_POST['tokenlength'];
 
 
         if (trim($_POST['expires'])=='')
