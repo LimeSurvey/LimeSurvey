@@ -3924,7 +3924,17 @@ function do_multiplenumeric($ia)
 				$sliderleft="<div class=\"slider_lefttext\">$sliderleft</div>";
 				$sliderright="<div class=\"slider_righttext\">$sliderright</div>";
 			}
-			$answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$theanswer}</label>\n";
+			
+			if ($slider_layout === false)
+			{
+				$answer_main .= "\t<li>\n<label for=\"answer$myfname\">{$theanswer}</label>\n";
+
+			}
+			else
+			{
+				$answer_main .= "\t<li>\n<label for=\"answer$myfname\" class=\"slider-label\">{$theanswer}</label>\n";
+
+			}
 
 			if($label_width < strlen(trim(strip_tags($ansrow['answer']))))
 			{
