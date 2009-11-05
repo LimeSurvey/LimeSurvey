@@ -506,10 +506,12 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 	white-space: nowrap;
 	font-size: 80%;
 }
-.numeric-multi div.multinum-slider
-{
-    margin-top: 1.5em;
-	width: 20em;
+
+.numeric-multi div.multinum-slider {
+	width: auto;
+	float: left;
+	margin-top: 1.5em;
+	margin-bottom: 0.2em;
 }
 
 .numeric-multi ul.multiplenumerichelp.slider	{	display: table;	}
@@ -636,10 +638,9 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 .numeric-multi label.slider-label {
 	display: table-cell;
 	padding:0 1em 0 0;
-	width: auto !important;
-	margin-top: 1.5em;
-	vertical-align: baseline;
-}      
+	margin-top: 1.4em;
+	vertical-align: middle;
+}
 
 .ui-slider-disabled .ui-slider-handle {
     opacity: 0.5; 
@@ -663,31 +664,40 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 10%; }
 }
 
 .slider_showmin {
-    overflow: hidden;
     float: left;
-    /*margin-left: -30px;*/
-    margin-top: 20px;
-    margin-bottom: 5px;
+	width: 50px;
+    margin: 13px 0 0 -23px;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	color: #666666;
+	text-align: center;
 }
 
 .slider_showmax {
-    overflow: hidden;
     float: right;
-    /*margin-right: -20px;*/
-    margin-top: 20px;
-    margin-bottom: 15px;
+	width: 50px;
+    margin: 13px -28px 0 0;
+  	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 0.7em;
+	font-weight: normal;
+	color: #666666;
+	text-align: center;
 }
 
 .slider_lefttext {
     display: table-cell;
+	padding-right: 7px;
     vertical-align: middle;
-    margin-right: 15px;
+	text-align: right;
+	font-size: 0.9em;
 }
 
 .slider_righttext {
     display: table-cell;
+	padding-left: 9px;
     vertical-align: middle;
-    margin-left: 5px;
+	font-size: 0.9em;
 }
 
 
