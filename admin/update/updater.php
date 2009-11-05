@@ -215,7 +215,7 @@ function UpdateStep3()
         $output.=$clang->gT('Database was successfuly backed up to ').htmlspecialchars($tempdir.'/db-'.$basefilename.'.sql').'<br />'; 
     }
   
-  $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
+  $output.=$clang->gT('Please check any problems above and then proceed to the final step.').'<br />'; 
   $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
   $output.='</div><table><tr>';
   return $output;
@@ -243,7 +243,7 @@ function UpdateStep4()
     {
       $updateinfo=$_SESSION['updateinfo'];
     }
-    // this is the last step - Download the zip file, unpackit  and replace files accordingly
+    // this is the last step - Download the zip file, unpack it and replace files accordingly
     // Create DB and file backups now
     require_once("classes/pclzip/pclzip.lib.php");
 
@@ -304,22 +304,40 @@ function UpdateStep4()
       $archive = new PclZip($tempdir.'/update.zip');
       if ($archive->extract(PCLZIP_OPT_PATH, $rootdir.'/', PCLZIP_OPT_REPLACE_NEWER)== 0) {
         die("Error : ".$archive->errorInfo(true));
-        }    
+        } 
+      else
+      {
+        $output.=$clang->gT('New files were successfully installed.').'<br />'; 
+          
+      }   
   }
   else
   {
     $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />'; 
   }
   //  PclTraceDisplay();                                                              
-      
+  
+  // Now we have to update version.php
+  
+  @ini_set('auto_detect_line_endings', true);      
+  $versionlines=file($rootdir.'\version.php');
+  $handle = fopen($rootdir.'\version.php', "w");
+  foreach ($versionlines as $line)
+  {
+      if(strpos($line,'$buildnumber')!==false)
+      {
+          $line='$buildnumber'." = '{$_SESSION['updateinfo']['toversion']}';\r\n";   
+      }
+      fwrite($handle,$line);
+  }
+  fclose($handle);
+  $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />'; 
 
-  $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
-  $output.='</div><table><tr>';
+  $output.=$clang->gT('Please check any problems above - update was done.').'<br />'; 
+  $output.="<button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >Back to main menu</button>";
+  $output.='</div>';
   return $output;
 }
-
-
 
 /**
 * This functions checks if the databaseversion in the settings table is the same one as required        
