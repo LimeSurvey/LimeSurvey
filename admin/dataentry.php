@@ -2251,11 +2251,11 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 						}
                          $dataentryoutput .= "</tr></table>"; 
 						break;
+                        
 					case "L": //LIST drop-down/radio-button list
 					case "!":
-						
 						$qidattributes=getQuestionAttributes($deqrow['qid']);
-                        if (trim($qidattributes['category_separator'])!='')
+                        if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
 						{
                             $optCategorySeparator = $qidattributes['category_separator'];
 						}
