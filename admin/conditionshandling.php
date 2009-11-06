@@ -331,7 +331,7 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 				."AND cqid='".$pfc['cqid']."'\n"
 				."AND cfieldname='".$pfc['cfieldname']."'\n"
 				."AND method='".$pfc['method']."'\n"
-				."AND value='".$pfc['value']."' COLLATE utf8_bin";
+				."AND value='".$pfc['value']."'";
 				$result = $connect->Execute($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
 				$count = $result->RecordCount();
 				if ($count == 0) //If there is no match, add the condition.
