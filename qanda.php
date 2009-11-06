@@ -4770,7 +4770,7 @@ function do_array_5point($ia)
 		$answer_t_content .= "\" />\n\t</th>\n";
 		for ($i=1; $i<=5; $i++)
 		{
-			$answer_t_content .= "\t<td>\n<label for=\"answer$myfname-$i\">"
+			$answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">"
 			."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
 			{
@@ -4943,7 +4943,7 @@ function do_array_10point($ia)
 
 		for ($i=1; $i<=10; $i++)
 		{
-			$answer_t_content .= "\t<td>\n<label for=\"answer$myfname-$i\">\n"
+			$answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">\n"
 			."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
 			{
@@ -5093,7 +5093,7 @@ function do_array_yesnouncertain($ia)
 			$answer_t_content .= $htmltbody2;
 			$answer_t_content .= "<tr class=\"$trbc\">\n"
 			. "\t<th class=\"answertext\">$answertext</th>\n"
-			. "\t<td>\n<label for=\"answer$myfname-Y\">\n"
+			. "\t<td class=\"answer_cell_Y\">\n<label for=\"answer$myfname-Y\">\n"
 			. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'Y')
 			{
@@ -5101,7 +5101,7 @@ function do_array_yesnouncertain($ia)
 			}
 			// --> START NEW FEATURE - SAVE
 			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n\t</label>\n\t</td>\n"
-			. "\t<td>\n<label for=\"answer$myfname-U\">\n"
+			. "\t<td class=\"answer_cell_U\">\n<label for=\"answer$myfname-U\">\n"
 			. "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" title=\"".$clang->gT('Uncertain')."\"";
 			// --> END NEW FEATURE - SAVE
 	
@@ -5111,7 +5111,7 @@ function do_array_yesnouncertain($ia)
 			}
 			// --> START NEW FEATURE - SAVE
 			$answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n"
-			. "\t<td>\n<label for=\"answer$myfname-N\">\n"
+			. "\t<td class=\"answer_cell_N\">\n<label for=\"answer$myfname-N\">\n"
 			. "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" title=\"".$clang->gT('No').'"';
 			// --> END NEW FEATURE - SAVE
 	
@@ -5264,7 +5264,7 @@ function do_array_increasesamedecrease($ia)
 		$answer_body .= "".$htmltbody2;
 		$answer_body .= "<tr class=\"$trbc\">\n"
 		. "\t<th class=\"answertext\">$answertext</th>\n"
-		. "\t<td>\n"
+		. "\t<td class=\"answer_cell_I\">\n"
 		. "<label for=\"answer$myfname-I\">\n"
 		."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
@@ -5275,7 +5275,7 @@ function do_array_increasesamedecrease($ia)
 		$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 		. "</label>\n"
 		. "\t</td>\n"
-		. "\t<td>\n"
+		. "\t<td class=\"answer_cell_S\">\n"
 		. "<label for=\"answer$myfname-S\">\n"
 		. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
 
@@ -5287,7 +5287,7 @@ function do_array_increasesamedecrease($ia)
 		$answer_body .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n"
 		. "</label>\n"
 		. "\t</td>\n"
-		. "\t<td>\n"
+		. "\t<td class=\"answer_cell_D\">\n"
 		. "<label for=\"answer$myfname-D\">\n"
 		. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
 		// --> END NEW FEATURE - SAVE
@@ -5764,7 +5764,7 @@ function do_array_multitext($ia)
 
 				$myfname2=$myfname."_$ld";
 				$myfname2value = isset($_SESSION[$myfname2]) ? $_SESSION[$myfname2] : "";
-				$answer .= "\t<td>\n"
+				$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 				. "<label for=\"answer{$myfname2}\">\n"
 				. "<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 				. "<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
@@ -6018,7 +6018,7 @@ function do_array_multiflexi($ia)
 				if ($checkboxlayout == false)
 				{
 					$myfname2=$myfname."_$ld";
-					$answer .= "\t<td>\n"
+					$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 					. "<label for=\"answer{$myfname2}\">\n"
 					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
 					. "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
@@ -6053,7 +6053,7 @@ function do_array_multiflexi($ia)
 						$myvalue = '0';
 						$setmyvalue = '';
 					}
-					$answer .= "\t<td>\n"
+					$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 //					. "<label for=\"answer{$myfname2}\">\n"
 					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" value=\"$myvalue\"/>\n"
 					. "\t<input type=\"hidden\" name=\"$myfname2\" id=\"answer{$myfname2}\" value=\"$myvalue\" />\n";
@@ -6202,7 +6202,7 @@ function do_array_flexiblecolumns($ia)
 				{
 					//if (!isset($trbc) || $trbc == 'array1') {$trbc = 'array2';} else {$trbc = 'array1';}
 					$myfname=$ia[1].$ld;
-					$answer .= "\t<td>\n"
+					$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 					. "<label for=\"answer".$myfname.'-'.$ansrow['code']."\">\n"
 					. "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
 					. 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
@@ -6551,7 +6551,7 @@ function do_array_flexible_dual($ia)
 
 			foreach ($labelcode as $ld)
 			{
-				$answer .= "\t<td>\n"
+				$answer .= "\t<td class=\"answer_cell_1_00$ld\">\n"
 				. "<label for=\"answer$myfname-$ld\">\n"
 				. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
 				. html_escape(strip_tags($labelans[$thiskey])).'"';
@@ -6569,7 +6569,7 @@ function do_array_flexible_dual($ia)
 			{			
 				$dualgroup++;
 				$hiddenanswers='';
-				$answer .= "\t<td>&nbsp;</td>\n";		// separator
+				$answer .= "\t<td class=\"dual_scale_separator\">&nbsp;</td>\n";		// separator
 				array_push($inputnames,$myfname1);
 				$hiddenanswers .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
 				if (isset($_SESSION[$myfname1])) {$hiddenanswers .= $_SESSION[$myfname1];}
@@ -6577,7 +6577,7 @@ function do_array_flexible_dual($ia)
 				$thiskey=0;
 				foreach ($labelcode1 as $ld) // second label set
 				{
-					$answer .= "\t<td>\n";
+					$answer .= "\t<td class=\"answer_cell_2_00$ld\">\n";
 					if ($hiddenanswers!='')
 					{
 						$answer .=$hiddenanswers;
