@@ -68,12 +68,6 @@
     margin:0px 0px 0px 0px;
 }
 
-.numeric-multi label {
-    width:400px;
-    text-align:right;
-    
-}
-
 .rank select {
     margin-top:4px !important;
 }
@@ -99,15 +93,18 @@ td.questionhelp {
 }
 
 .numeric-multi ul li label {
-    float: left;  
-    width: 50%;  
-    text-align: right; 
+    float: left;
+	width: auto;  
+}
+
+.numeric-multi ul {
+	float: left; 
+	margin: 0 0 1.5em 0 !important;
+	padding: 0 ;
 }
 
 .numeric-multi ul li {  
-    float: left;  
-    clear: left;  
-    width: 100%;  
+    width: 98%;
 }
 
 .numeric-multi ul li span {
@@ -121,4 +118,38 @@ td.questionhelp {
 input.submit
 {
     padding:0px;
+}
+
+/** UI Slider **/
+
+.numeric-multi label.slider-label {
+	margin-top: 1.3em;
+}
+
+.slider_lefttext {
+	float: left;
+	margin-top: 1.45em;
+}
+
+.slider_righttext {
+	float: left;
+	margin-top: 1.45em;
+}
+
+.ui-slider-1 {
+	position: relative;
+}
+
+.slider_showmin {
+	margin: 0;
+	position: absolute;
+	top: 15px;
+	left: -25px;
+}
+
+.slider_showmax {
+	margin: 0;
+	position: absolute;
+	top: 15px;
+	left: 175px;
 }
