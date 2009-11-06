@@ -28,8 +28,39 @@ if(isset($usepdfexport) && $usepdfexport == 1)
 if (!$publicdir) {$publicdir=".";}
 $templaterootdir="$publicdir/templates";
 
+
+if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+else {
+        //This next line ensures that the $surveyid value is never anything but a number.
+        $surveyid=sanitize_int($surveyid);
+     }
+
+// Compute the Session name
+// Session name is based:
+// * on this specific limesurvey installation (Value SessionName in DB)
+// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    if ($surveyid)
+    {
+        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+    }
+    else
+    {
+        @session_name($stg_SessionName.'-runtime-publicportal');
+    }
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
 @session_start();
-if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die(); 
+
+if (isset($_SESSION['sid'])) {$surveyid=$_SESSION['sid'];}  else die('Invalid survey/session'); 
 
 //Debut session time out
 if (!isset($_SESSION['finished']) || !isset($_SESSION['srid']))

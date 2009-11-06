@@ -193,7 +193,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         if ($thissurvey['printanswers']=='Y')
         {
             $completed .= "<br /><br />"
-            ."<a class='printlink' href='printanswers.php'  target='_blank'>"
+            ."<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
             .$clang->gT("Print your answers.")
             ."</a><br />\n";
          }

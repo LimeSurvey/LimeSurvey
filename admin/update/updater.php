@@ -315,7 +315,7 @@ function UpdateStep4()
       else
       {
         $output.=$clang->gT('New files were successfully installed.').'<br />'; 
-          
+        unlink($tempdir.'/update.zip');
       }   
   }
   else
