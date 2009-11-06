@@ -1,6 +1,6 @@
 <?php
 // --------------------------------------------------------------------------------
-// PhpConcept Library - Zip Module 2.8.1
+// PhpConcept Library - Zip Module 2.8.2
 // --------------------------------------------------------------------------------
 // License GNU/LGPL - Vincent Blavet - August 2009
 // http://www.phpconcept.net
@@ -22,7 +22,7 @@
 //   The use of this software is at the risk of the user.
 //
 // --------------------------------------------------------------------------------
-// $Id: pclzip.lib.php,v 1.57 2009/08/11 14:59:47 vblavet Exp $
+// $Id: pclzip.lib.php,v 1.60 2009/09/30 21:01:04 vblavet Exp $
 // --------------------------------------------------------------------------------
 
   // ----- Constants
@@ -83,7 +83,7 @@
 // --------------------------------------------------------------------------------
 
   // ----- Global variables
-  $g_pclzip_version = "2.8.1";
+  $g_pclzip_version = "2.8.2";
 
   // ----- Error codes
   //   -1 : Unable to open file in binary write mode
@@ -2070,7 +2070,8 @@
             // ----- Look for different stored filename
             // Because the name of the folder was changed, the name of the
             // files/sub-folders also change
-            if ($v_descr['stored_filename'] != $v_descr['filename']) {
+            if (($v_descr['stored_filename'] != $v_descr['filename'])
+                 && (!isset($p_options[PCLZIP_OPT_REMOVE_ALL_PATH]))) {
               if ($v_descr['stored_filename'] != '') {
                 $v_dirlist_descr[$v_dirlist_nb]['new_full_name'] = $v_descr['stored_filename'].'/'.$v_item_handler;
               }
@@ -2618,7 +2619,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_ADD].'(PCLZIP_CB_PRE_ADD, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_ADD].'(PCLZIP_CB_PRE_ADD, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_PRE_ADD](PCLZIP_CB_PRE_ADD, $v_local_header);
       if ($v_result == 0) {
         // ----- Change the file status
         $p_header['status'] = "skipped";
@@ -2771,7 +2773,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_POST_ADD].'(PCLZIP_CB_POST_ADD, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_POST_ADD].'(PCLZIP_CB_POST_ADD, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_POST_ADD](PCLZIP_CB_POST_ADD, $v_local_header);
       if ($v_result == 0) {
         // ----- Ignored
         $v_result = 1;
@@ -2928,6 +2931,7 @@
     else {
       $p_remove_all_dir = 0;
     }
+
 
     // ----- Look for full name change
     if (isset($p_filedescr['new_full_name'])) {
@@ -3505,8 +3509,10 @@
         // ----- Look for extraction as string
         if ($p_options[PCLZIP_OPT_EXTRACT_AS_STRING]) {
 
+          $v_string = '';
+
           // ----- Extracting the file
-          $v_result1 = $this->privExtractFileAsString($v_header, $v_string);
+          $v_result1 = $this->privExtractFileAsString($v_header, $v_string, $p_options);
           if ($v_result1 < 1) {
             $this->privCloseFd();
             $this->privSwapBackMagicQuotes();
@@ -3690,7 +3696,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_EXTRACT].'(PCLZIP_CB_PRE_EXTRACT, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_EXTRACT].'(PCLZIP_CB_PRE_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_PRE_EXTRACT](PCLZIP_CB_PRE_EXTRACT, $v_local_header);
       if ($v_result == 0) {
         // ----- Change the file status
         $p_entry['status'] = "skipped";
@@ -3921,10 +3928,10 @@
       }
     }
 
-	// ----- Change abort status
-	if ($p_entry['status'] == "aborted") {
-      $p_entry['status'] = "skipped";
-	}
+  	// ----- Change abort status
+  	if ($p_entry['status'] == "aborted") {
+        $p_entry['status'] = "skipped";
+  	}
 	
     // ----- Look for post-extract callback
     elseif (isset($p_options[PCLZIP_CB_POST_EXTRACT])) {
@@ -3936,7 +3943,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_POST_EXTRACT].'(PCLZIP_CB_POST_EXTRACT, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_POST_EXTRACT].'(PCLZIP_CB_POST_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_POST_EXTRACT](PCLZIP_CB_POST_EXTRACT, $v_local_header);
 
       // ----- Look for abort result
       if ($v_result == 2) {
@@ -4056,7 +4064,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_EXTRACT].'(PCLZIP_CB_PRE_EXTRACT, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_EXTRACT].'(PCLZIP_CB_PRE_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_PRE_EXTRACT](PCLZIP_CB_PRE_EXTRACT, $v_local_header);
       if ($v_result == 0) {
         // ----- Change the file status
         $p_entry['status'] = "skipped";
@@ -4123,7 +4132,8 @@
       // ----- Call the callback
       // Here I do not use call_user_func() because I need to send a reference to the
       // header.
-      eval('$v_result = '.$p_options[PCLZIP_CB_POST_EXTRACT].'(PCLZIP_CB_POST_EXTRACT, $v_local_header);');
+//      eval('$v_result = '.$p_options[PCLZIP_CB_POST_EXTRACT].'(PCLZIP_CB_POST_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_POST_EXTRACT](PCLZIP_CB_POST_EXTRACT, $v_local_header);
 
       // ----- Look for abort result
       if ($v_result == 2) {
@@ -4141,7 +4151,7 @@
   // Parameters :
   // Return Values :
   // --------------------------------------------------------------------------------
-  function privExtractFileAsString(&$p_entry, &$p_string)
+  function privExtractFileAsString(&$p_entry, &$p_string, &$p_options)
   {
     $v_result=1;
 
@@ -4159,32 +4169,98 @@
         // TBC
     }
 
+    // ----- Look for pre-extract callback
+    if (isset($p_options[PCLZIP_CB_PRE_EXTRACT])) {
 
-    // ----- Do the extraction (if not a folder)
-    if (!(($p_entry['external']&0x00000010)==0x00000010))
-    {
-      // ----- Look for not compressed file
-//      if ($p_entry['compressed_size'] == $p_entry['size'])
-      if ($p_entry['compression'] == 0) {
+      // ----- Generate a local information
+      $v_local_header = array();
+      $this->privConvertHeader2FileInfo($p_entry, $v_local_header);
 
-        // ----- Reading the file
-        $p_string = @fread($this->zip_fd, $p_entry['compressed_size']);
+      // ----- Call the callback
+      // Here I do not use call_user_func() because I need to send a reference to the
+      // header.
+//      eval('$v_result = '.$p_options[PCLZIP_CB_PRE_EXTRACT].'(PCLZIP_CB_PRE_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_PRE_EXTRACT](PCLZIP_CB_PRE_EXTRACT, $v_local_header);
+      if ($v_result == 0) {
+        // ----- Change the file status
+        $p_entry['status'] = "skipped";
+        $v_result = 1;
+      }
+      
+      // ----- Look for abort result
+      if ($v_result == 2) {
+        // ----- This status is internal and will be changed in 'skipped'
+        $p_entry['status'] = "aborted";
+      	$v_result = PCLZIP_ERR_USER_ABORTED;
+      }
+
+      // ----- Update the informations
+      // Only some fields can be modified
+      $p_entry['filename'] = $v_local_header['filename'];
+    }
+
+
+    // ----- Look if extraction should be done
+    if ($p_entry['status'] == 'ok') {
+
+      // ----- Do the extraction (if not a folder)
+      if (!(($p_entry['external']&0x00000010)==0x00000010)) {
+        // ----- Look for not compressed file
+  //      if ($p_entry['compressed_size'] == $p_entry['size'])
+        if ($p_entry['compression'] == 0) {
+  
+          // ----- Reading the file
+          $p_string = @fread($this->zip_fd, $p_entry['compressed_size']);
+        }
+        else {
+  
+          // ----- Reading the file
+          $v_data = @fread($this->zip_fd, $p_entry['compressed_size']);
+          
+          // ----- Decompress the file
+          if (($p_string = @gzinflate($v_data)) === FALSE) {
+              // TBC
+          }
+        }
+  
+        // ----- Trace
       }
       else {
-
-        // ----- Reading the file
-        $v_data = @fread($this->zip_fd, $p_entry['compressed_size']);
-        
-        // ----- Decompress the file
-        if (($p_string = @gzinflate($v_data)) === FALSE) {
-            // TBC
-        }
+          // TBC : error : can not extract a folder in a string
       }
-
-      // ----- Trace
+      
     }
-    else {
-        // TBC : error : can not extract a folder in a string
+
+  	// ----- Change abort status
+  	if ($p_entry['status'] == "aborted") {
+        $p_entry['status'] = "skipped";
+  	}
+	
+    // ----- Look for post-extract callback
+    elseif (isset($p_options[PCLZIP_CB_POST_EXTRACT])) {
+
+      // ----- Generate a local information
+      $v_local_header = array();
+      $this->privConvertHeader2FileInfo($p_entry, $v_local_header);
+      
+      // ----- Swap the content to header
+      $v_local_header['content'] = $p_string;
+      $p_string = '';
+
+      // ----- Call the callback
+      // Here I do not use call_user_func() because I need to send a reference to the
+      // header.
+//      eval('$v_result = '.$p_options[PCLZIP_CB_POST_EXTRACT].'(PCLZIP_CB_POST_EXTRACT, $v_local_header);');
+      $v_result = $p_options[PCLZIP_CB_POST_EXTRACT](PCLZIP_CB_POST_EXTRACT, $v_local_header);
+
+      // ----- Swap back the content to header
+      $p_string = $v_local_header['content'];
+      unset($v_local_header['content']);
+
+      // ----- Look for abort result
+      if ($v_result == 2) {
+      	$v_result = PCLZIP_ERR_USER_ABORTED;
+      }
     }
 
     // ----- Return
@@ -4512,7 +4588,10 @@
         $v_byte = @fread($this->zip_fd, 1);
 
         // -----  Add the byte
-        $v_bytes = ($v_bytes << 8) | Ord($v_byte);
+        //$v_bytes = ($v_bytes << 8) | Ord($v_byte);
+        // Note we mask the old value down such that once shifted we can never end up with more than a 32bit number 
+        // Otherwise on systems where we have 64bit integers the check below for the magic number will fail. 
+        $v_bytes = ( ($v_bytes & 0xFFFFFF) << 8) | Ord($v_byte); 
 
         // ----- Compare the bytes
         if ($v_bytes == 0x504b0506)

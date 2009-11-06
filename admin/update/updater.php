@@ -188,16 +188,23 @@ function UpdateStep3()
 
     Foreach ($updateinfo['files'] as $file)
     {
-        if (file_exists($publicdir.$file['file']))
+        if (is_file($publicdir.$file['file'])===true) // Sort out directories
         {
             $filestozip[]=$publicdir.$file['file']; 
         }
     }
       
     require_once("classes/pclzip/pclzip.lib.php");
+  //  require_once('classes/pclzip/pcltrace.lib.php');
+  //  require_once('classes/pclzip/pclzip-trace.lib.php');
+  
+  //PclTraceOn(1);        
 
     $archive = new PclZip($tempdir.'/files-'.$basefilename.'.zip');
-    $v_list = $archive->create(implode(',',$filestozip),PCLZIP_OPT_REMOVE_PATH, $publicdir);
+    
+    
+    $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
+
     if ($v_list == 0) {
         die("Error : ".$archive->errorInfo(true));
     }
@@ -272,7 +279,7 @@ function UpdateStep4()
     elseif($error=='') {
         $body=''; $full_body=''; 
         for(;;){
-            $error = $http->ReadReplyBody($body,10000);
+            $error = $http->ReadReplyBody($body,100000);
             if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }        
