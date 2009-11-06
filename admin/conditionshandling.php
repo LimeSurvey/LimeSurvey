@@ -333,8 +333,18 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
 				."AND method='".$pfc['method']."'\n"
 				."AND value='".$pfc['value']."'";
 				$result = $connect->Execute($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
-				$count = $result->RecordCount();
-				if ($count == 0) //If there is no match, add the condition.
+				$count_caseinsensitivedupes = $result->RecordCount();
+
+				$countduplicates = 0;
+				if ($count_caseinsensitivedupes != 0)
+				{
+					while ($ccrow=$result->FetchRow())
+					{
+						if ($ccrow['value'] == $pfc['value']) $countduplicates++;
+					}
+				}
+
+				if ($countduplicates == 0) //If there is no match, add the condition.
 				{
 					$query = "INSERT INTO {$dbprefix}conditions ( qid,scenario,cqid,cfieldname,method,value) \n"
 					."VALUES ( '$newqid', '".$pfc['scenario']."', '".$pfc['cqid']."',"
@@ -640,23 +650,23 @@ if ($questionscount > 0)
         
 			//Get question attribute for $canswers
 		    $qidattributes=getQuestionAttributes($rows['qid'], $rows['type']);
-            if (trim($qidattributes['multiflexible_max'])!='') {              
+            if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {              
         	    $maxvalue=$qidattributes['multiflexible_max'];
         	} else {
         		$maxvalue=10;
         	}
-            if (trim($qidattributes['multiflexible_min'])!='') {              
+            if (isset($qidattributes['multiflexible_min']) && trim($qidattributes['multiflexible_min'])!='') {              
         	    $minvalue=$qidattributes['multiflexible_min'];
         	} else {
         		$minvalue=1;
         	}
-            if (trim($qidattributes['multiflexible_step'])!='') {              
+            if (isset($qidattributes['multiflexible_step']) && trim($qidattributes['multiflexible_step'])!='') {              
         	    $stepvalue=$qidattributes['multiflexible_step'];
         	} else {
         		$stepvalue=1;
         	}
             
-            if ($qidattributes['multiflexible_checkbox']!=0) {
+            if (isset($qidattributes['multiflexible_checkbox']) && $qidattributes['multiflexible_checkbox']!=0) {
 			$minvalue=0;
 			$maxvalue=1;
 			$stepvalue=1;
