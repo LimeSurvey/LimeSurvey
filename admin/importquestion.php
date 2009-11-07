@@ -518,7 +518,7 @@ $importquestion .= "</li></ul><br />\n";
 
 $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
 $importquestion .= "<a href='$scriptname?sid=$newsid&amp;gid=$newgid&amp;qid=$newqid'>".$clang->gT("Go to question")."</a><br />\n";
-$importquestion .= "</td></tr></table><br/>\n";
+$importquestion .= "</td></tr></table><br/></td></tr></table>\n";
 
 
 unlink($the_full_file_path);
