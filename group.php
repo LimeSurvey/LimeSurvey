@@ -774,8 +774,8 @@ for ($i=0;$i<count($conditions);$i++)
 			else
 			{ // right operand is a Constant or an Answer Code
 				$newjava .= "$JSsourceElt != null &&";
-			if ($cd[3]) //Well supose that we are comparing a non empty value
-			{
+			if ($cd[3] && $cd[6] != '!=') 
+			{ // if the target value isn't 'No answer' AND if operator isn't !=
 					$newjava .= "$JSsourceVal != '' && ";
 			}
 			if ($cd[6] == 'RX')
