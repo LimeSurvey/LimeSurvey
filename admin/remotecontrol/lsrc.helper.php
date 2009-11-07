@@ -3926,8 +3926,6 @@ class LsrcHelper {
 		global $clang;
 		
 		
-		$subject = $clang->gT("Statistics Survey #");
-		$message = $clang->gT("This is your personal statistic sheet for survey #");
 		if($tempFile==null && isset($html))
 		{
 			$css = "<style type='text/css'>"
@@ -3978,12 +3976,14 @@ class LsrcHelper {
 				}"
 				."</style>";
 				
-				$message = $css."<center>".$message.$surveyid."<br/>".$html."</center>";
-			
-			return MailTextMessage($message, $subject.$surveyid, $to, getBounceEmail($surveyid), $sitename, true);
+			$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$css."<center>".$message.$surveyid."<br/>".$html."</center>");
+			return MailTextMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
 		}
 		else
-			return MailTextMessage($message.$surveyid, $subject.$surveyid, $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+        {
+            $message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$surveyid);
+            return MailTextMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+        }
 		
 	}
 	private function getqtypelist($SelectedCode = "T", $ReturnType = "array")

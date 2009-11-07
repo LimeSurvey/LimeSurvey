@@ -59,8 +59,7 @@ th, p, div {
 	font-size: 10pt;
 }
 
-fieldset
-{
+fieldset {
     padding:0 6px 6px 6px;
     margin: 3px;
     border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;  
@@ -71,6 +70,7 @@ fieldset
 legend
 {
     font-weight: bold;
+    color:#2D466B;
 }
 
 .maintitle {
@@ -964,7 +964,7 @@ div.messagebox .warningheader {
     margin-right: 0.5em;
     float: left;      
     font-weight: bold;
-    color: #121A28;
+    color: #1d2d45;
 }
 
 
@@ -997,18 +997,25 @@ div.messagebox .warningheader {
 #addnewgroup li,
 #importsurvey li,
 #importgroup li,
-#frmeditquestion li,
 #frmglobalsettings li {  
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
 }
 
+#frmeditquestion li {
+    list-style-type: none;
+    clear:left;    
+    padding-bottom:7px;   
+}
+
 div.loader {
-	background-image: url(images/ajax-loader.gif);
+    background-image: url(images/ajax-loader.gif);
     background-repeat: no-repeat;
-    width:31px;
-    height:31px;
+    background-position: center;
+    width:80px;
+    margin:0 auto;
+    padding-top:75px;
 }
 
 #wrapper {
@@ -1121,4 +1128,13 @@ margin:0 auto;
 #resultexport ul li 
 {
     line-height: 1.4em;
+}
+
+#advancedquestionsettings fieldset{
+    width:600px;
+    margin:0 auto;
+}
+
+#advancedquestionsettings textarea{
+    width:200px;
 }

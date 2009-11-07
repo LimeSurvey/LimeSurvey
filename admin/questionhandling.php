@@ -477,8 +477,8 @@ if ($action == "editquestion" || $action=="addquestion")
     $editquestion .="</ul>\n";
     $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
                     .'<div id="advancedquestionsettingswrapper" style="display:none;">'
-                    .'<div class="loader"></div>'
-                    .'<div id="advancedquestionsettings">'.$clang->gT("Loading...").'</div>'
+                    .'<div class="loader">'.$clang->gT("Loading...").'</div>'
+                    .'<div id="advancedquestionsettings"></div>'
                     .'</div>';        
                
     if ($adding)
@@ -809,7 +809,9 @@ if ($action == "ajaxquestionattributes")
         $availableattributes=questionAttributes();
         if (isset($availableattributes[$type]))
         {
-            $ajaxoutput = "<ul>\n";
+            uasort($availableattributes[$type],'CategorySort');
+            $ajaxoutput = '';
+            $currentfieldset='';
             foreach ($availableattributes[$type] as $qa)
             {
                 if (isset($attributesettings[$qa['name']]))
@@ -820,6 +822,17 @@ if ($action == "ajaxquestionattributes")
                 {
                     $value=$qa['default'];
                 }
+                if ($currentfieldset!=$qa['category'])
+                {
+                    if ($currentfieldset!='') 
+                    {
+                         $ajaxoutput.='</ul></fieldset>';
+                    }
+                    $ajaxoutput.="<fieldset>\n";
+                    $ajaxoutput.="<legend>{$qa['category']}</legend>\n<ul>";
+                    $currentfieldset=$qa['category'];
+                }
+                
                 $ajaxoutput .= "<li>"
                                 ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
                 switch ($qa['inputtype']){
@@ -839,12 +852,12 @@ if ($action == "ajaxquestionattributes")
                                     break;
                     case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
                                     break;
-					case 'textarea':	$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
-										break;
+					case 'textarea':$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
+									break;
                 }
                 $ajaxoutput .="</li>\n";
             }
-            $ajaxoutput .= "</ul>";
+            $ajaxoutput .= "</ul></fieldset>";
         }
     
 }
