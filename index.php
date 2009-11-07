@@ -330,7 +330,7 @@ if (!$surveyid)
     if(!isset($defaulttemplate)) {$defaulttemplate="default";}
     $languagechanger = makelanguagechanger();
     //Find out if there are any publicly available surveys
-	$query = "SELECT a.sid, b.surveyls_title 
+	$query = "SELECT a.sid, b.surveyls_title, a.publicstatistics 
 	          FROM ".db_table_name('surveys')." AS a 
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b 
 			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) 
@@ -352,9 +352,12 @@ if (!$surveyid)
                 $languagedetails=$result2->FetchRow();
                 $rows['surveyls_title']=$languagedetails['surveyls_title'];
             }
-            $link = "<li class='surveytitle'><a href='$relativeurl/index.php?sid=".$rows['sid'];
+            $link = "<li><a href='$relativeurl/index.php?sid=".$rows['sid'];
+             if (isset($_GET['lang'])) {$link .= "&lang=".sanitize_languagecode($_GET['lang']);}
             if (isset($_GET['lang'])) {$link .= "&amp;lang=".sanitize_languagecode($_GET['lang']);}
-            $link .= "' >".$rows['surveyls_title']."</a></li>\n";
+            $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='{$relativeurl}/statistics_user.php?sid={$rows['sid']}'>({$clang->gT('View statistics')})</a>";            
+            $link .= "</li>\n";
             $list[]=$link;
 	    }
 	}
