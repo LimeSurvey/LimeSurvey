@@ -285,13 +285,11 @@ font-size:11px;
 	font-size: 11px;
 	border: none !important;
 	cursor: default;
-	filter: alpha(opacity:0.5);
 	KHTMLOpacity: 0.5;
 	MozOpacity: 0.5;
 	-khtml-opacity:.50;
 	-ms-filter:"alpha(opacity=50)";
 	-moz-opacity:.50;
-	filter:alpha(opacity=50);
 	opacity:.50;
 }
 
@@ -957,7 +955,7 @@ div.messagebox .warningheader {
 #importlabels li label:first-child,
 #addattribute li label:first-child,  
 #exportdialog li label:first-child, 
-#frmeditquestion li label:first-child, 
+#frmeditquestion li label:first-child,
 #frmglobalsettings li label:first-child {
     width: 44%;
     text-align: right;
@@ -969,6 +967,7 @@ div.messagebox .warningheader {
 
 
 
+#addnewquotaform li label:first-child,    
 #sendreminder  li label:first-child,
 #sendinvitation li label:first-child,
 #edittoken li label:first-child,  
@@ -997,6 +996,7 @@ div.messagebox .warningheader {
 #addnewgroup li,
 #importsurvey li,
 #importgroup li,
+#addnewquotaform li,
 #frmglobalsettings li {  
     list-style-type: none;
     clear:left;
