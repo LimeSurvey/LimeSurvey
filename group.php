@@ -73,9 +73,19 @@ if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
         }
         if ($_SESSION['step']>$_SESSION['totalsteps']) 
         {
-            $move = "movesubmit";
-		submitanswer(); // complete this answer (submitdate)
-            break;
+			// We are skipping groups, but we moved 'off' the last group.
+			// Now choose to implement an implicit submit (old behaviour),
+			// or create an empty page giving the user the explicit option to submit.
+			if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
+			{
+				$show_empty_group = true;
+				break;
+			} else
+			{
+            	$move = "movesubmit";
+				submitanswer(); // complete this answer (submitdate)
+            	break;
+			}
         } 
 	}
 }
@@ -297,10 +307,17 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 //******************************************************************************************************
 
 //GET GROUP DETAILS
-$grouparrayno=$_SESSION['step']-1;
-$gid=$_SESSION['grouplist'][$grouparrayno][0];
-$groupname=$_SESSION['grouplist'][$grouparrayno][1];
-$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+if ($show_empty_group) {
+	$gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
+	$groupname=$clang->gT("You can submit your answers");
+	$groupdescription=$clang->gT("There are no more questions. Please press the <submit> button to send your reponse.");
+} else
+{
+	$grouparrayno=$_SESSION['step']-1;
+	$gid=$_SESSION['grouplist'][$grouparrayno][0];
+	$groupname=$_SESSION['grouplist'][$grouparrayno][1];
+	$groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+}
 
 require_once("qanda.php"); //This should be qanda.php when finished
 
@@ -376,7 +393,12 @@ foreach ($_SESSION['fieldarray'] as $ia)
 } //end iteration
 
 
-$percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+if ($show_empty_group) {
+	$percentcomplete = makegraph($_SESSION['totalsteps']+1, $_SESSION['totalsteps']);
+} else
+{
+	$percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
+}
 $languagechanger = makelanguagechanger();
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
@@ -409,7 +431,12 @@ echo "<input type='hidden' id='runonce' value='0' />
     <!--\n";
     
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
+if ($show_empty_group) {
+	unset($array_filterqs);
+} else
+{
+	$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
+}
 
 print <<<END
 	function noop_checkconditions(value, name, type)
