@@ -60,7 +60,7 @@ th, p, div {
 }
 
 fieldset {
-    padding:0 6px 6px 6px;
+    padding:0 6px 0px 6px;
     margin: 3px;
     border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;  
     border-style: solid;

@@ -154,7 +154,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			$myField = $surveyid."X".$field['gid']."X".$field['qid'];
 			
 			// Multiple Options get special treatment
-			if ($field['type'] == "M" || $field['type'] == "P") {$myField = "M$myField";}
+			if ($field['type'] == "M") {$myField = "M$myField";}
+            if ($field['type'] == "P") {$myField = "P$myField";}
 			//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 			if ($field['type'] == "N") {$myField = "N$myField";}
 			
@@ -296,7 +297,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			 * N - Numerical Input
 			 * K - Multiple Numerical Input
 			 */
-			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "T" &&
+			if ($pv != "sid" && $pv != "display" && $firstletter != "M" && $firstletter != "P" && $firstletter != "T" &&
 			$firstletter != "Q" && $firstletter != "D" && $firstletter != "N" && $firstletter != "K" &&
 			$pv != "summary" && substr($pv, 0, 2) != "id" && substr($pv, 0, 9) != "datestamp") //pull out just the fieldnames
 			{
@@ -316,7 +317,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			}
 				
 			//M - Multiple Options
-			elseif ($firstletter == "M")
+            //P - Multiple Options with comments
+			elseif ($firstletter == "M"  || $firstletter == "P")
 			{
 				//create a list out of the $pv array
 				list($lsid, $lgid, $lqid) = explode("X", $pv);
@@ -530,7 +532,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			
 			$statisticsoutput .= "<br />\n<table class='statisticssummary' >\n"
 			."\t<thead><tr><th colspan='2'>".$clang->gT("Results")."</th></tr></thead>\n"
-			."\t<tr><th>".$clang->gT("Number of records in this query:").'</th>'
+			."\t<tr><th >".$clang->gT("Number of records in this query:").'</th>'
 			."<td>$results</td></tr>\n"
 			."\t<tr><th>".$clang->gT("Total records in survey:").'</th>'
 			."<td>$total</td></tr>\n";
@@ -565,7 +567,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		{
 			//add a buttons to browse results
 			$statisticsoutput .= "\t<tr >"
-			."\t\t<td align='right' width='50%'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
+			."\t\t<td align='center' colspan='2'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
 			."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
 			."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
@@ -605,6 +607,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							
 						//M - Multiple Options
 					case "M":
+                    case "P":
 							
 						//create a SGQ identifier
 						list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
@@ -680,7 +683,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			// 1. Get answers for question ##############################################################
 	
 			//M - Multiple Options, therefore multiple fields
-			if ($firstletter == "M")
+			if ($firstletter == "M" || $firstletter == "P")
 			{
 				//get SGQ data
 				list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
@@ -1968,8 +1971,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							
 						//"other" handling
 						//"Answers" means that we show an option to list answer to "other" text field
-						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers")
-						{$fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$al[2]&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";}
+						elseif ($al[0] == $clang->gT("Other") || $al[0] == "Answers" || $qtype == "P")
+						{
+                            if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
+                                else  $ColumnName_RM = $al[2];
+                            $fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        }
 							
 						/*
 						 * text questions:

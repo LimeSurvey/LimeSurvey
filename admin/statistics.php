@@ -422,7 +422,8 @@ foreach ($filters as $flt)
 		$statisticsoutput .= "\t\t\t\t<td align='center'>";
 
 		//multiple options:
-		if ($flt[2] == "M" || $flt[2] == "P") {$myfield = "M$myfield";}
+		if ($flt[2] == "M") {$myfield = "M$myfield";}
+        if ($flt[2] == "P") {$myfield = "P$myfield";}
 
 		//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
@@ -451,7 +452,8 @@ foreach ($filters as $flt)
 		if ($flt[2] != "N") {$statisticsoutput .= "\t\t\t\t<select name='";}
 
 		//multiple options ("M"/"P") -> add "M" to output
-		if ($flt[2] == "M" || $flt[2] == "P") {$statisticsoutput .= "M";}
+		if ($flt[2] == "M" ) {$statisticsoutput .= "M";}
+        if ($flt[2] == "P" ) {$statisticsoutput .= "P";}
 
 		//numerical -> add SGQ to output
 		if ($flt[2] != "N") {$statisticsoutput .= "{$surveyid}X{$flt[1]}X{$flt[0]}[]' multiple='multiple'>\n";}
