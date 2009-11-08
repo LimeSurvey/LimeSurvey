@@ -47,9 +47,10 @@ else    // unknown file - show error message
   {
   	if ($importingfrom == "http")
   	{
-	    $importsurvey .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	    $importsurvey .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
 	  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
-	  	$importsurvey .= "</font></td></tr></table>\n";
+		$importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+	  	$importsurvey .= "</div></div>\n";
 	  	$importsurvey .= "</body>\n</html>\n";
 	  	unlink($the_full_file_path);
 	  	return;
@@ -396,10 +397,11 @@ if (!$surveyid)
 {
 	if ($importingfrom == "http")
 	{
-		$importsurvey .= "<br /><strong><font color='red'>".$clang->gT("Error")."</strong></font><br />\n";
+		$importsurvey .= "<br /><div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
 		$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
-		$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br />\n"; //Couldn't find the SID - cannot continue
-		$importsurvey .= "</font></td></tr></table>\n";
+		$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
+		$importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+		$importsurvey .= "</div></div>\n";
 		$importsurvey .= "</body>\n</html>\n";
 		unlink($the_full_file_path); //Delete the uploaded file
 		return;
@@ -1371,7 +1373,7 @@ if (isset($fieldnames))
 
 if ($importingfrom == "http")
 {
-	$importsurvey .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br /><br />\n";
+	$importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
 	$importsurvey .= "<strong><u>".$clang->gT("Survey Import Summary")."</u></strong><br />\n";
 	$importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": $countsurveys</li>\n";
 	if ($importversion>=111)
@@ -1394,7 +1396,7 @@ if ($importingfrom == "http")
 	$importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
 			. "<a href='$scriptname?sid=$newsid'>".$clang->gT("Go to survey")."</a><br />\n";
 	if ($importwarning != "") $importsurvey .= "<br /><strong>".$clang->gT("Warnings").":</strong><br /><ul style=\"text-align:left;\">" . $importwarning . "</ul><br />\n";
-	$importsurvey .= "</td></tr></table><br /></td></tr></table>\n";
+	$importsurvey .= "</div><br />\n";
 	unlink($the_full_file_path);
 	unset ($surveyid);  // Crazy but necessary because else the html script will search for user rights
 }
