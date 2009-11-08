@@ -4411,7 +4411,7 @@ function getArrayFiltersForQuestion($qid)
 }
 
 /**
-* getArrayFiltersForQuestion($qid) finds out if a question is in the currect group or not for array filter
+* getArrayFiltersForQuestion($qid) finds out if a question is in the current group or not for array filter
 * @global string $surveyid
 * @global string $gid
 * @global string $dbprefix
