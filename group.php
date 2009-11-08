@@ -59,6 +59,7 @@ if ($thissurvey['active'] == "Y")
 }
 
 //SEE IF THIS GROUP SHOULD DISPLAY
+$show_empty_group = false;
 if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 {
 	while(checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
