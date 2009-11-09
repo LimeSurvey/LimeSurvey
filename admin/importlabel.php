@@ -18,10 +18,13 @@ include_once("login_check.php");
 
 // A FILE TO IMPORT A DUMPED SURVEY FILE, AND CREATE A NEW SURVEY
 
+/***
 $importlabeloutput = "<br />\n";
 $importlabeloutput .= "<table class='alertbox'>\n";
 $importlabeloutput .= "\t<tr><td colspan='2' height='4'><strong>".$clang->gT("Import Label Set")."</strong></td></tr>\n";
 $importlabeloutput .= "\t<tr><td align='center'>\n";
+***/
+$importlabeloutput = "<div class='header'>".$clang->gT("Import Label Set")."</div>\n";
 
 $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
@@ -29,8 +32,7 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 {
 	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
     $importlabeloutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
-	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n";
-	$importlabeloutput .= "</td></tr></table><br />&nbsp;\n";
+	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br /><br />\n";
 	return;
 }
 
@@ -39,9 +41,9 @@ if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
 $csarray=buildLabelSetCheckSumArray();
 //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
 
-$importlabeloutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+$importlabeloutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("Success")."</div><br />\n";
 $importlabeloutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-$importlabeloutput .= $clang->gT("Reading file..")."<br />\n";
+$importlabeloutput .= $clang->gT("Reading file..")."<br /><br />\n";
 $handle = fopen($the_full_file_path, "r");
 while (!feof($handle))
 {
@@ -51,11 +53,10 @@ while (!feof($handle))
 fclose($handle);
 if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" && substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
 {
-	$importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+	$importlabeloutput .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
 	$importlabeloutput .= $clang->gT("This file is not a LimeSurvey label set file. Import failed.")."<br /><br />\n";
-	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels', '_top')\">\n";
-	$importlabeloutput .= "</td></tr></table>\n";
-	$importlabeloutput .= "</body>\n</html>\n";
+	$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels', '_top')\" />\n";
+	$importlabeloutput .= "</div>\n";
     unlink($the_full_file_path);
 	return;
 }
@@ -197,16 +198,16 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 			    $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
 			    $result=$connect->Execute($query) or safe_die("Couldn't delete labelset<br />$query<br />".$connect->ErrorMsg());
 			    $newlid=$lsmatch;
-	            $importlabeloutput.="<p><i><font color='red'>".$clang->gT("The label set was not imported because the same labelset already exists.")."</font></i>\n";
+	            $importlabeloutput.="<p><i><font color='red'>".$clang->gT("The label set was not imported because the same labelset already exists.")."</font></i><br /><br />\n";
                 $importlabeloutput .= "<strong>Existing LID:</strong> $newlid</p><br />\n";
 			    
 		    }
 		    else
 		    {
             $importlabeloutput .= "<strong>LID:</strong> $newlid<br />\n";
-            $importlabeloutput .= "<br />\n<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+            $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
             $importlabeloutput .= "<strong><u>".$clang->gT("Label Set Import Summary")."</u></strong><br />\n";
-            $importlabeloutput .= "\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
+            $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label Sets").": $countlabelsets</li>\n";
             $importlabeloutput .= "\t<li>".$clang->gT("Labels").": $countlabels</li>\n";
             $importlabeloutput .= "\t<li>".$clang->gT("Languages").": $countlang</li></ul><br />\n";
 		    }
@@ -216,10 +217,13 @@ if (isset($labelsetsarray) && $labelsetsarray) {
 }
 
 
-$importlabeloutput .= "<strong>".$clang->gT("Import of Label Set is completed.")."</strong><br />\n";
-$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\">\n";
+$importlabeloutput .= "<strong>".$clang->gT("Import of Label Set is completed.")."</strong><br /><br />\n";
+$importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to Labels Admin")."' onclick=\"window.open('$scriptname?action=labels&amp;lid=$newlid', '_top')\" />\n";
 
+/***
 $importlabeloutput .= "</td></tr></table>\n";
+***/
+$importlabeloutput .= "</div><br />\n";
 unlink($the_full_file_path);
 
 
