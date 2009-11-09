@@ -50,8 +50,7 @@ else    // unknown file - show error message
 	    $importsurvey .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
 	  	$importsurvey .= $clang->gT("This file is not a LimeSurvey survey file. Import failed.")."<br /><br />\n";
 		$importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-	  	$importsurvey .= "</div></div>\n";
-	  	$importsurvey .= "</body>\n</html>\n";
+	  	$importsurvey .= "</div>\n";
 	  	unlink($the_full_file_path);
 	  	return;
 	  }
@@ -401,8 +400,7 @@ if (!$surveyid)
 		$importsurvey .= $clang->gT("Import of this survey file failed")."<br />\n";
 		$importsurvey .= $clang->gT("File does not contain LimeSurvey data in the correct format.")."<br /><br />\n"; //Couldn't find the SID - cannot continue
 		$importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-		$importsurvey .= "</div></div>\n";
-		$importsurvey .= "</body>\n</html>\n";
+		$importsurvey .= "</div>\n";
 		unlink($the_full_file_path); //Delete the uploaded file
 		return;
 	}
