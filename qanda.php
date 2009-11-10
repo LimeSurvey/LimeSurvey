@@ -1181,6 +1181,60 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	return $output;
 }
 
+function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename) {
+	/* DO ARRAY_FILTER ATTRIBUTE
+	We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
+	know whether each answer is currently being displayed. $htmltbody2 determines whether the answer row 
+	should be displayed initially. If no answers for the source question have been selected then the whole 
+	answer row should start in the display-off position. */
+	$htmltbody2 = '';
+	$hiddenfield= '';
+	if  (
+			(trim($qidattributes['array_filter'])!='' && 	// the array_filter attribute is set
+			 $thissurvey['format'] == 'G' && 				// and the survey is being presented group by group
+			 getArrayFiltersOutGroup($ia[0]) == false		// and this question _is_not_ in the current group for the array filter
+			) ||											// OR
+			(trim($qidattributes['array_filter'])!='' &&	// the array_filter attribute is set
+			 $thissurvey['format'] == 'A'					// and the survey is being presented all on one page
+			)
+		)
+	{
+		$htmltbody2 = "\n\n\t<tbody id='javatbd$rowname' style='display: none'>\n";
+		$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
+	} else if 
+		(
+		 (trim($qidattributes['array_filter'])!='' && 
+		  $thissurvey['format'] == 'S'
+		 ) || 
+		 (trim($qidattributes['array_filter'])!='' && 
+		  $thissurvey['format'] == 'G' && 
+		  getArrayFiltersOutGroup($ia[0]) == true
+		 )
+		)
+	{
+		$selected = getArrayFiltersForQuestion($ia[0]);
+		if (!in_array($ansrow['code'],$selected))
+		{
+			$htmltbody2 = "\n\n\t<tbody id='javatbd$rowname' style='display: none'>\n";
+			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
+			$_SESSION[$valuename] = '';
+		}
+		else
+		{
+			$htmltbody2 = "\n\n\t<tbody id='javatbd$rowname' style='display: '>";
+			$hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
+		}
+	}
+	else
+	{
+	$htmltbody2 = "\n\n\t<tbody id='javatbd$rowname' style='display: '>\n";
+	$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowaname' value='on' />";
+	}
+
+	//End of array_filter attribute
+	
+	return array($htmltbody2, $hiddenfield);
+}
 
 // ==================================================================
 // setting constants for 'checked' and 'selected' inputs
@@ -4716,8 +4770,6 @@ function do_array_5point($ia)
 	//return array($answer, $inputnames);
 	while ($ansrow = $ansresult->FetchRow())
 	{
-		
-		//echo $ansrow."--------------";
 		$myfname = $ia[1].$ansrow['code'];
 
 		$answertext=answer_replace($ansrow['answer']);
@@ -4731,34 +4783,12 @@ function do_array_5point($ia)
 		}
 
 		$trbc = alternation($trbc , 'row');
-		$htmltbody2 = '';
-		if((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false) || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'A'))
-		{
-			$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\n";
-			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-		}
-		elseif ((trim($qidattributes['array_filter'])!=''  && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-		{
-			$selected = getArrayFiltersForQuestion($ia[0]);
-			if (!in_array($ansrow['code'],$selected))
-			{
-				$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n\t\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-				$_SESSION[$myfname] = '';
-			}
-			else
-			{
-				$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-			}
-		}
-		else
-		{
-			$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n\t\n";
-			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-		}
 		
-		$answer_t_content .= $htmltbody2;
+		// Get array_filter stuff
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+		
+		$answer_t_content .= $htmltbody2;  
+
 		$answer_t_content .= "<tr class=\"$trbc\">\n"
 		. "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
 		. $hiddenfield
@@ -4905,32 +4935,12 @@ function do_array_10point($ia)
 			$answertext = "<span class='errormandatory'>{$answertext}</span>";
 		}
 		$trbc = alternation($trbc , 'row');
-		$htmltbody2 = "";
-		if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
-		{
-			$htmltbody2 = "\t\n\n\t<tbody id='javatbd$myfname' style='display: none'>\n";
-			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-		} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "S") || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == true))
-		{
-			$selected = getArrayFiltersForQuestion($ia[0]);
-			if (!in_array($ansrow['code'],$selected))
-			{
-				$htmltbody2 = "\t\n\n\t<tbody id='javatbd$myfname' style='display: none'>\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-				$_SESSION[$myfname] = "";
-			}
-			else
-			{
-				$htmltbody2 = "\t\n\n\t<tbody id='javatbd$myfname' style='display: '>\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-			}
-		}
-		else
-		{
-			$htmltbody2 = "\t\n\n\t<tbody id='javatbd$myfname' style='display: '>\n";
-			$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-		}
-		$answer_t_content .= "".$htmltbody2;
+		
+		//Get array filter stuff
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+
+		$answer_t_content .= $htmltbody2;
+	
 		$answer_t_content .= "<tr class=\"$trbc\">\n"
 		. "\t<th class=\"answertext\">\n$answertext\n"
 		. $hiddenfield
@@ -5044,9 +5054,7 @@ function do_array_yesnouncertain($ia)
 		$answer .= "\t<th>".$clang->gT('No answer')."</th>\n";
 	}
 	$answer .= "</tr>\n\t</thead>";
-	
 	$answer_t_content = '';
-	$htmltbody2 = '';
 	if ($anscount==0) 
 	{
 		$inputnames=array();
@@ -5066,33 +5074,16 @@ function do_array_yesnouncertain($ia)
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
 			$trbc = alternation($trbc , 'row');
-			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
-			{
-				$htmltbody2 = "\t</thead>\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-			} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-			{
-				$selected = getArrayFiltersForQuestion($ia[0]);
-				if (!in_array($ansrow['code'],$selected))
-				{
-					$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-					$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />";
-					$_SESSION[$myfname] = '';
-				}
-				else
-				{
-					$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n";
-					$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-				}
-			}
-			else
-			{
-				$htmltbody2 = "\t\n\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n";
-				$hiddenfield = "<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='on' />";
-			}
+			
+			// Get array_filter stuff
+			list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+
 			$answer_t_content .= $htmltbody2;
+			
 			$answer_t_content .= "<tr class=\"$trbc\">\n"
-			. "\t<th class=\"answertext\">$answertext</th>\n"
+			. "\t<th class=\"answertext\">\n"
+			. $hiddenfield
+			. "\t\t\t\t$answertext</th>\n"
 			. "\t<td class=\"answer_cell_Y\">\n<label for=\"answer$myfname-Y\">\n"
 			. "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
 			if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'Y')
@@ -5243,28 +5234,23 @@ function do_array_increasesamedecrease($ia)
 
 		$trbc = alternation($trbc , 'row');
 
-		$htmltbody2 = "<tbody>\n\r";
-		if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == "G" && getArrayFiltersOutGroup($ia[0]) == false)
-		{
-			$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-		}
-		elseif ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-		{
-			$selected = getArrayFiltersForQuestion($ia[0]);
-			if (!in_array($ansrow['code'],$selected))
-			{
-				$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type='hidden' name='tbdisp$myfname' id='tbdisp$myfname' value='off' />\n";
-				$_SESSION[$myfname] = '';
-			}
-			else
-			{
-				$htmltbody2 = "<tbody id=\"javatbd$myfname\" style=\"display: \">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />";
-			}
-		}
-		$answer_body .= "".$htmltbody2;
+		// Get array_filter stuff
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+
+		$answer_body .= $htmltbody2;
+		
 		$answer_body .= "<tr class=\"$trbc\">\n"
-		. "\t<th class=\"answertext\">$answertext</th>\n"
-		. "\t<td class=\"answer_cell_I\">\n"
+		. "\t<th class=\"answertext\">\n"
+		. "$answertext\n"
+		. $hiddenfield
+		. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+		if (isset($_SESSION[$myfname]))
+		{
+			$answer_body .= $_SESSION[$myfname];
+		}
+		$answer_body .= "\" />\n\t</th>\n";
+
+		$answer_body .= "\t<td class=\"answer_cell_I\">\n"
 		. "<label for=\"answer$myfname-I\">\n"
 		."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
 		if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
@@ -5436,6 +5422,10 @@ function do_array_flexible($ia)
 			$myfname = $ia[1].$ansrow['code'];
 			$trbc = alternation($trbc , 'row');
 			$answertext=answer_replace($ansrow['answer']);
+			if (strpos($answertext,'|'))
+			{
+				$answertext=substr($answertext,0, strpos($answertext,'|'));
+			}
 			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
@@ -5446,42 +5436,20 @@ function do_array_flexible($ia)
 			if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
 				$answertext = '<span class="errormandatory">'.$answertext.'</span>';
 			}
-			$htmltbody2 = '';
-			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
-			{
-				$htmltbody2 = "<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t<td class=\"answertext\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-			}
-			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-			{
-				$selected = getArrayFiltersForQuestion($ia[0]);
-				if (!in_array($ansrow['code'],$selected))
-				{
-					$htmltbody2 = "<tr id=\"javatbd$myfname\" style=\"display: none\" class=\"$trbc\">\n\t<th class=\"answertext\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-					$_SESSION[$myfname] = "";
-				}
-				else
-				{
-					$htmltbody2 = "<tr id=\"javatbd$myfname\" style=\"display: \" class=\"$trbc\">\n\t<th class=\"answertext\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
-				}
-			}
-			else 
-			{
-				$htmltbody2 = "<tr id=\"javatbd$myfname\" class=\"$trbc\">\n\t<th class=\"answertext\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
-			}
-			if (strpos($answertext,'|'))
-			{
-				$answertext=substr($answertext,0, strpos($answertext,'|'));
-			}
-
-			$answer .= $htmltbody2
-			. "$answertext\n"
+			// Get array_filter stuff
+			list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+			$answer .= $htmltbody2;
+			
+			$answer .= "<tr class=\"$trbc\">\n"
+			. "\t<th class=\"answertext\">\n$answertext"
+			. $hiddenfield
 			. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname]))
 			{
 				$answer .= $_SESSION[$myfname];
 			}
-			$answer .= "\" />\n"
-			. "\t</th>\n";
+			$answer .= "\" />\n\t</th>\n";
+
 			$thiskey=0;
 			foreach ($labelcode as $ld)
 			{
@@ -5524,7 +5492,7 @@ function do_array_flexible($ia)
 				// --> END NEW FEATURE - SAVE
 			}
 			
-			$answer .= "</tr>\n";
+			$answer .= "</tr>\n</tbody>";
 			$inputnames[]=$myfname;
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
 			$fn++;
@@ -5725,37 +5693,18 @@ function do_array_multitext($ia)
 				}
 			}
 
-			$htmltbody2 = '';  $insertinput='';
-			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
-			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-                $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n"; 
-			} else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-			{
-				$selected = getArrayFiltersForQuestion($ia[0]);
-				if (!in_array($ansrow['code'],$selected))
-				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-                    $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-					$_SESSION[$myfname] = '';
-				}
-				else
-				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">";
-                    $insertinput="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n";
-				}
-			}
-            else
-            {
-                        $htmltbody2= "\n\t<tbody>\n";
+			// Get array_filter stuff
+			list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
-            }
+			$answer .= $htmltbody2;
+
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 			$trbc = alternation($trbc , 'row');
-			$answer .= $htmltbody2."\t\t<tr class=\"$trbc\">\n"
-			. "\t\t\t<th class=\"answertext\">\n".$insertinput
-			. "\t\t\t\t$answertext\n"
-			. "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
+			$answer .= "\t\t<tr class=\"$trbc\">\n"
+			. "\t\t\t<th class=\"answertext\">\n"
+			. $hiddenfield
+			. "$answertext\n"
+			. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
 			$answer .= "\" />\n\t</th>\n";
 			$thiskey=0;
@@ -5966,44 +5915,19 @@ function do_array_multiflexi($ia)
 				}
 			}
 			
-			$htmltbody2 = '';
-			$first_hidden_field = '';
-                if (trim($qidattributes['array_filter'])!='')
+			// Get array_filter stuff
+			list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
-			if (trim($qidattributes['array_filter'])!='' && getArrayFiltersOutGroup($ia[0]) == false)
-			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-				$first_hidden_field = '<input type="hidden" name="tbdisp'.$myfname.'" id="tbdisp'.$myfname."\" value=\"off\" />\n";
-//				$htmltbody2 .= "" . $first_hidden_field; // This is how it used to be. I have moved $first_hidden_field into the first cell of the table so it validates.
-//				$first_hidden_field = ''; // These two lines have been commented because they replace badly validating code.
-			}
-			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-			{
-				$selected = getArrayFiltersForQuestion($ia[0]);
-				if (!in_array($ansrow['code'],$selected))
-				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-					$first_hidden_field = '<input type="hidden" name="tbdisp'.$myfname.'" id="tbdisp'.$myfname."\" value=\"off\" />\n";
-//					$htmltbody2 .= "" . $first_hidden_field; // This is how it used to be. I have moved $first_hidden_field into the first cell of the table so it validates.
-//					$first_hidden_field = ''; // These two lines have been commented because they replace badly validating code.
-
-					$_SESSION[$myfname] = '';
-				}
-				else
-				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">\n";
-					$first_hidden_field = '<input type="hidden" name="tbdisp'.$myfname.'" id="tbdisp'.$myfname."\" value=\"on\" />\n";
-//					$htmltbody2 .= "" . $first_hidden_field; // This is how it used to be. I have moved $first_hidden_field into the first cell of the table so it validates.
-//					$first_hidden_field = ''; // These two lines have been commented because they replace badly validating code.
-				}
-			}
+			$answer .= $htmltbody2;
+			
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
 			$trbc = alternation($trbc , 'row');
-			$answer .= $htmltbody2 . "<tr class=\"$trbc\">\n"
+
+			$answer .= "<tr class=\"$trbc\">\n"
 			. "\t<th class=\"answertext\" width=\"$answerwidth%\">\n"
 			. "$answertext\n"
-			. "" . $first_hidden_field
+			. $hiddenfield
 			. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname]))
 			{
@@ -6085,11 +6009,11 @@ function do_array_multiflexi($ia)
 				$answer .= "\t<td class=\"answertextright\" style='text-align:left;' width=\"$answerwidth%\">&nbsp;</td>\n";
 			}
 
-			$answer .= "</tr>\n";
+			$answer .= "</tr>\n\t</tbody>";
 			//IF a MULTIPLE of flexi-redisplay figure, repeat the headings
 			$fn++;
 		}
-		$answer .= "\t</tbody>\n</table>\n";
+		$answer .= "\n</table>\n";
 	}
 	else
 	{
@@ -6505,7 +6429,8 @@ function do_array_flexible_dual($ia)
 			$answertext=answer_replace($ansrow['answer']);
 			$answertextsave=$answertext;
 
-			$dualgroup=0; 
+			$dualgroup=0;
+			$myfname0= $ia[1].$ansrow['code'];
 			$myfname = $ia[1].$ansrow['code'].'#0';
 			$myfname1 = $ia[1].$ansrow['code'].'#1'; // new multi-scale-answer
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -6515,37 +6440,22 @@ function do_array_flexible_dual($ia)
 			{
 				$answertext = "<span class='errormandatory'>{$answertext}</span>";
 			}
-			$htmltbody2 = '';
-			$hiddenanswers='';
-			if (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)
-			{
-				$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-				$hiddenanswers  .="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n";
-			}
-			else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-			{
-				$selected = getArrayFiltersForQuestion($ia[0]);
-				if (!in_array($ansrow['code'],$selected))
-				{
-					$htmltbody2 = "\t<tbody id=\"javatbd$myfname\" style=\"display: none\">";
-					$hiddenanswers  .="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />";
-					$_SESSION[$myfname] = "";
-				}
-				else
-				{
-					$htmltbody2 = "\t<tbody id=\"javatbd$myfname\" style=\"display: \">";
-					$hiddenanswers  .="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />";
-				}
-			}
+
+			// Get array_filter stuff
+			list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname0, $trbc, $myfname);
+
+			$answer .= $htmltbody2;
+
 			if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 
 			array_push($inputnames,$myfname);
-			$answer .= $htmltbody2
-			. "<tr class=\"$trbc\">\n"
-			. "\t<th class=\"answertext\">\n$answertext\n"
+			$answer .= "<tr class=\"$trbc\">\n"
+			. "\t<th class=\"answertext\">\n"
+			. $hiddenfield
+			. "$answertext\n"
 			. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 			if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
-			$answer .= "\" />\n$hiddenanswers\n\t</th>\n";
+			$answer .= "\" />\n\t</th>\n";
 			$hiddenanswers='';
 			$thiskey=0;
 
@@ -6785,36 +6695,18 @@ function do_array_flexible_dual($ia)
 				}
 
 				$trbc = alternation($trbc , 'row');
-				$htmltbody2 = '';
-				if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == false)  || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'A'))
-				{
-					$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-					$hiddenanswers = "<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\"  />\n<input type=\"hidden\" name=\"tbdisp$myfname1\" id=\"tbdisp$myfname1\" value=\"off\" />\n";
-				}
-				else if ((trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'S') || (trim($qidattributes['array_filter'])!='' && $thissurvey['format'] == 'G' && getArrayFiltersOutGroup($ia[0]) == true))
-				{
-					$selected = getArrayFiltersForQuestion($ia[0]);
-					if (!in_array($ansrow['code'],$selected))
-					{
-						$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: none\">\n";
-						$hiddenanswers="<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"off\" />\n<input type=\"hidden\" name=\"tbdisp$myfname1\" id=\"tbdisp$myfname1\" value=\"off\" />\n";
-						$_SESSION[$myfname] = '';
-					}
-					else
-					{
-						$htmltbody2 = "\n\t<tbody id=\"javatbd$myfname\" style=\"display: \">";
-						$hiddenanswers="\n<input type=\"hidden\" name=\"tbdisp$myfname\" id=\"tbdisp$myfname\" value=\"on\" />\n<input type=\"hidden\" name=\"tbdisp$myfname1\" id=\"tbdisp$myfname1\" value=\"on\" />";
-					}
-				}
-				else
-				{
-				//	$htmltbody2 = "\n\t<tbody>\n";
-					$hiddenanswers="";
-				}
+				
+				// Get array_filter stuff
+				list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $myfname);
 
-				$answer .= $htmltbody2."<tr class=\"$trbc\">\n"
+				$answer .= $htmltbody2;
+				
+				$answer .= "<tr class=\"$trbc\">\n"
 				. "\t<th class=\"answertext\">\n"
-				. "<label for=\"answer$rowname\">$answertext</label>\n"
+				. "<label for=\"answer$rowname\">\n"
+				. $hiddenfield
+				. "$answertext\n"
+				. "</label>\n"
 				. "\t</th>\n";
 
 				// Label0
@@ -6924,8 +6816,7 @@ function do_array_flexible_dual($ia)
 				$answer .= "</tr>\n";
 			}
 		} // End there are answers
-		$answer .= "\t</tbody>\n</table>\n\n$hiddenanswers\n";
-		$hiddenanswers='';
+		$answer .= "\t</tbody>\n</table>\n";
 	}
 	else
 	{
