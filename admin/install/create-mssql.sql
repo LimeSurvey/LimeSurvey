@@ -138,6 +138,7 @@ CREATE TABLE [prefix_labelsets] (
   [lid] INT NOT NULL IDENTITY (1,1),
   [label_name] VARCHAR(100) NOT NULL default '',
   [languages] VARCHAR(200) default 'en',
+  [ugid] INT NOT NULL default '0',
   PRIMARY KEY  ([lid])
 ) 
 ;
@@ -336,6 +337,15 @@ CREATE TABLE [prefix_user_groups] (
 	[owner_id] INT NOT NULL  
 ) 
 ;
+
+CREATE TABLE [prefix_user_groups_rights] (
+      [ugid] INT NOT NULL,
+      [uid] INT NOT NULL,
+      [manage_group] TINYINT NOT NULL defualt '0',
+      [edit_labelset] TINYINT NOT NULL default '0'
+)
+;
+
 
 -- 
 -- Table structure for table [user_in_groups]

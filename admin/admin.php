@@ -477,11 +477,11 @@ elseif ($action == 'replacementfields')
 
       
  if ($action=='adduser' || $action=='deluser' || $action=='moduser' || $action=='setusertemplates' || $action=='usertemplates' ||                                        //Still to check 
-     $action=='userrights' || $action=='modifyuser' || $action=='editusers' || 
+     $action=='userrights'|| $action=='usergrouprights' || $action=='modifyuser' || $action=='editusers' || 
      $action=='addusergroup' || $action=='editusergroup' || $action=='mailusergroup' ||
      $action=='delusergroup' || $action=='usergroupindb' || $action=='mailsendusergroup' || 
      $action=='editusergroupindb' || $action=='editusergroups' || $action=='deleteuserfromgroup' ||
-     $action=='addusertogroup' || $action=='setuserrights' || $action=='setasadminchild') 
+     $action=='addusertogroup' || $action=='setuserrights' || $action=='setasadminchild' || $action=='setusergrouprights') 
  
  {
      include ('userrighthandling.php');

@@ -78,17 +78,27 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	$labelsoutput.= "<option value=''";
 	if (!isset($lid) || $lid<1) {$labelsoutput.= " selected='selected'";}
 	$labelsoutput.= ">".$clang->gT("Please Choose...")."</option>\n";
-	$labelsets=getlabelsets();
-	if (count($labelsets)>0)
+	// only labelsets editable will be displayed
+	$labelsets=getlabelsetseditable($_SESSION['loginID'], $_SESSION['USER_RIGHT_SUPERADMIN']);
+	$group = "";
+	if (count($labelsets) > 0)
 	{
 		foreach ($labelsets as $lb)
 		{
-			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb[0]}'";
-			if ($lb[0] == $lid) {$labelsoutput.= " selected='selected'";}
-			$labelsoutput.= ">{$lb[1]}</option>\n";
+			if ($lb['group_name'] != $group)
+			{
+				if ($group != "")
+					$labelsoutput.="</optgroup>";
+				$group = $lb['group_name'];
+				$labelsoutput.="<optgroup label='".$group."'>";
+			}
+			$labelsoutput.="<option value='admin.php?action=labels&amp;lid={$lb['lid']}'";
+			if ($lb['lid'] == $lid) {$labelsoutput.= " selected='selected'";}
+			$labelsoutput.= ">{$lb['labelset_name']}</option>\n";
 		}
 	}
 	
+	$labelsoutput.= "\t</optgroup>\n";	
 	$labelsoutput.= "\t</select>\n"
     ."<a href=\"#\" onclick=\"window.open('admin.php?action=newlabelset', '_top')\"" 
     ."title=\"".$clang->gTview("Add new label set")."\">"
@@ -114,9 +124,9 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	{
 		if ($action == "editlabelset")
 		{
-         	$query = "SELECT label_name,".db_table_name('labelsets').".lid, languages FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
+         	$query = "SELECT label_name,".db_table_name('labelsets').".lid, languages, ugid FROM ".db_table_name('labelsets')." WHERE lid=".$lid;
 			$result=db_execute_assoc($query);
-			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
+			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages']; $lbusergroup=$row['ugid'];}
 		}
 		$labelsoutput.="<table width='100%' class='form2columns'>\n"
 		."\t<tr>\n"
@@ -166,6 +176,27 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 					$labelsoutput.= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 				}
 			}
+			
+		$labelsoutput.= "\t</select></td></tr>\n"	
+		. "\t<tr><td><strong>".$clang->gT("Groups").":</strong></td>\n"
+		. "<td><select id='groups' name='groups'>";
+		
+		$groups = getusergroups($_SESSION['loginID']);
+		
+		if (count($groups) > 0)
+		{
+			foreach ($groups as $gp)
+			{
+				$labelsoutput.="<option value='{$gp['ugid']}'";
+				if ($action == "editlabelset")
+				{
+					if ($gp['ugid'] == $lbusergroup) {
+						$labelsoutput.= " selected='selected'";
+					}
+				}
+				$labelsoutput.= ">{$gp['group_name']}</option>\n";
+			}
+		}
 
 		$labelsoutput.= "\t</select></td></tr><tr>\n"
 		."<td></td><td></td>\n"
@@ -540,6 +571,11 @@ function updateset($lid)
 	{
 		$postlabel_name=sanitize_labelname($_POST['label_name']);
 	}
+	
+	if (isset($_POST['groups']))
+	{
+		$postugid=sanitize_int($_POST['groups']);
+	}
 
 	$newlanidarray=explode(" ",trim($postlanguageids));
 
@@ -602,7 +638,7 @@ function updateset($lid)
 	}
 
 	// Update the labelset itself
-	$query = "UPDATE ".db_table_name('labelsets')." SET label_name={$postlabel_name}, languages={$postlanguageids} WHERE lid=$lid";
+	$query = "UPDATE ".db_table_name('labelsets')." SET label_name={$postlabel_name}, languages={$postlanguageids}, ugid={$postugid} WHERE lid=$lid";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Update of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -650,11 +686,16 @@ function insertlabelset()
 	{
 		$postlabel_name=sanitize_labelname($_POST['label_name']);
 	}
+	
+	if (isset($_POST['groups']))
+	{
+		$postugid=sanitize_int($_POST['groups']);
+	}
 
 	$postlabel_name = db_quoteall($postlabel_name,true);
 	$postlanguageids = db_quoteall($postlanguageids,true);
 
-	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages) VALUES ({$postlabel_name},{$postlanguageids})";
+	$query = "INSERT INTO ".db_table_name('labelsets')." (label_name,languages,ugid) VALUES ({$postlabel_name},{$postlanguageids},{$postugid})";
 	if (!$result = $connect->Execute($query))
 	{
 		$labelsoutput.= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Insert of Label Set failed","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";

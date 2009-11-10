@@ -382,7 +382,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
 			{
 			  $adminmenu .= "<img src='$imagefiles/blank.gif' alt='' width='40'   />\n";
 			}
-		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1)
+		if($_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1 || islabelseteditor($_SESSION['loginID']) == 1)
 			{
 			$adminmenu  .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=labels', '_top')\" title=\"".$clang->gTview("Edit/Add Label Sets")."\">\n" 
                         ."<img src='$imagefiles/labels.png'  name='LabelsEditor' alt='". $clang->gT("Edit/Add Label Sets")."' /></a>\n"
@@ -1537,6 +1537,43 @@ function getSurveyInfo($surveyid, $languagecode='')
 	return $thissurvey;
 }
 
+function getlabelsetseditable($uid, $superadmin)
+{
+	global $connect;
+	
+	$uid = sanitize_int($uid);
+	$superadmin = sanitize_int($superadmin);
+	
+	//select only labelsets from groups in which user has editing rights
+	$query = "SELECT lid, name, label_name
+				FROM (".db_table_name('labelsets')." AS ls 
+				INNER JOIN (SELECT ugid FROM ".db_table_name('user_groups_rights')." WHERE (uid = ".$uid." AND edit_labelset = 1)) AS tugr ON ls.ugid = tugr.ugid
+				INNER JOIN ".db_table_name('user_groups')." AS ug ON ug.ugid = tugr.ugid)
+				GROUP BY name, lid, label_name";
+	$result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />".$connect->ErrorMsg());
+	
+	$labelsets=array();
+	while ($row=$result->FetchRow())
+	{
+		$labelsets[] = array('lid' => $row['lid'], 'labelset_name' => $row['label_name'], 'group_name' => $row['name']);
+	}
+	
+	//only for superadmin, uncategorized labelsets
+	if ($superadmin == 1)
+	{
+		$uncategorizedGroup = "Uncategorized";
+		$query = "SELECT lid, label_name FROM ".db_table_name('labelsets')." WHERE ugid=0";
+		
+		$result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />".$connect->ErrorMsg());
+		
+		while ($row=$result->FetchRow())
+		{
+			$labelsets[] = array('lid' => $row['lid'], 'labelset_name' => $row['label_name'], 'group_name' => $uncategorizedGroup);
+		}
+	}
+	
+	return $labelsets;
+}
 
 function getlabelsets($languages=null)
 // Returns a list with label sets
@@ -1564,6 +1601,21 @@ function getlabelsets($languages=null)
 		$labelsets[] = array($row['lid'], $row['lid'].": ".$row['label_name']);
 	}
 	return $labelsets;
+}
+
+function islabelseteditor($uid)
+{
+	global $connect;
+	
+	$uid = sanitize_int($uid);
+	
+	$query = "SELECT uid FROM ".db_table_name('user_groups_rights')." WHERE (uid = ".$uid." AND edit_labelset = 1)";
+	$result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />".$connect->ErrorMsg());
+	
+	if ($result->RecordCount() > 0)
+		return 1;
+	else
+		return 0;
 }
 
 
@@ -4582,6 +4634,48 @@ function setuserrights($uid, $rights)
  	return $connect->Execute($uquery);     //Checked
 }
 
+// set the rights of a user in a group
+function setusergrouprights($uid, $ugid, $rights)
+{
+	global $connect;
+    $uid=sanitize_int($uid);
+	$ugid=sanitize_int($ugid);
+	$updates = "manage_group=".$rights['manage_group'];
+	$updates = "edit_labelset=".$rights['edit_labelset'];
+
+	//control if user already exist in table
+	$squery = "SELECT uid FROM ".db_table_name('user_groups_rights')." WHERE uid = ".$uid;
+	$sresult = $connect->Execute($squery);
+	
+	if ($sresult->RecordCount() > 0)
+	{ //user entry already exist
+		$ugquery = "UPDATE ".db_table_name('user_groups_rights')." SET ".$updates." WHERE uid = ".$uid." AND ugid=".$ugid;
+	}
+	else
+	{ //new user entry
+		$ugquery = "INSERT INTO ".db_table_name('user_groups_rights')." VALUES ".$updates;
+	}
+ 	return $connect->Execute($ugquery);     //Checked
+}
+
+// get the uid of the group manager
+function getusergroupmanager($ugid)
+{
+	global $connect;
+	$ugid=sanitize_int($ugid);
+	$ugquery = "SELECT uid FROM ".db_table_name('user_groups_rights')." WHERE ugid = ".$ugid." AND manage_group = 1";
+	return $connect->Execute($ugquery); 
+}
+
+// get the uid of the group owner
+function getusergroupowner($ugid)
+{
+	global $connect;
+	$ugid=sanitize_int($ugid);
+	$ugquery = "SELECT uid FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid;
+	return $connect->Execute($ugquery); 
+}
+
 // set the rights for a survey
 function setsurveyrights($uids, $rights)
 {
@@ -4598,6 +4692,26 @@ function setsurveyrights($uids, $rights)
 	$uquery = "UPDATE ".db_table_name('surveys_rights')." SET ".$updates." WHERE sid = {$surveyid} AND uid = ".$uids_implode;
 	// TODO
 	return $connect->Execute($uquery);   //Checked 
+}
+
+// get list of groups in which the user is enrolled
+function getusergroups($uid)
+{
+	global $connect;
+	$uid=sanitize_int($uid);
+	
+	$query = "SELECT ug.ugid, name FROM ".db_table_name('user_groups')." AS ug INNER JOIN 
+		(SELECT ugid FROM ".db_table_name('user_in_groups')." WHERE uid = {$uid}) AS u ON ug.ugid = u.ugid";
+	
+	$result = db_execute_assoc($query) or safe_die ("Couldn't get list of groups<br />$query<br />".$connect->ErrorMsg());
+	
+	$groups=array();
+	while ($row=$result->FetchRow())
+	{
+		$groups[] = array('ugid' => $row['ugid'], 'group_name' => $row['name']);
+	}
+	
+	return $groups;
 }
 
 function createPassword()

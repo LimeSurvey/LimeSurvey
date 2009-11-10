@@ -335,6 +335,18 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `tokenlength` tinyint(2) default '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
+	if ($oldversion < 142)
+	{
+		modify_database("", "ALTER TABLE `prefix_labelsets` ADD `ugid` int(11) NOT NULL default 0"); echo $modifyoutput; flush();
+		modify_database("", "CREATE TABLE `prefix_user_groups_rights` (
+			`ugid` int(10) unsigned NOT NULL,
+			`uid` int(10) unsigned NOT NULL,
+			`manage_group` tinyint(1) NOT NULL default '0',
+			`edit_labelset` tinyint(1) NOT NULL default '0',
+			PRIMARY KEY  (`ugid`,`uid`)
+			) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
+		modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+	}
 	
     return true;
 }

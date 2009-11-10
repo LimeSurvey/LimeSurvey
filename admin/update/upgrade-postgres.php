@@ -174,7 +174,18 @@ global $modifyoutput;
 	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" TEXT"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
+	if ($oldversion < 142)
+	{
+		modify_database("", "ALTER TABLE 'prefix_labelsets' ADD ugid integer DEFAULT 0 NOT NULL"); echo $modifyoutput; flush();
+		modify_database("", "CREATE TABLE prefix_user_groups_rights (
+							ugid integer NOT NULL,
+							uid integer NOT NULL,
+							manage_group integer DEFAULT 0 NOT NULL,
+							edit_labelset integer DEFAULT 0 NOT NULL
+						);"); echo $modifyoutput; flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
+	}
 
     return true;
 }

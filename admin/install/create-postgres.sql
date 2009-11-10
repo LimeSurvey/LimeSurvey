@@ -104,7 +104,8 @@ CREATE TABLE prefix_labels (
 CREATE TABLE prefix_labelsets (
     lid serial NOT NULL,
     label_name character varying(100) DEFAULT ''::character varying NOT NULL,
-    languages character varying(200) DEFAULT 'en'::character varying
+    languages character varying(200) DEFAULT 'en'::character varying,
+    ugid integer DEFAULT 0 NOT NULL
 );
 
 
@@ -326,6 +327,14 @@ CREATE TABLE prefix_user_in_groups (
     ugid integer NOT NULL,
     uid integer NOT NULL
 );
+
+CREATE TABLE prefix_user_groups_rights (
+    ugid integer NOT NULL,
+    uid integer NOT NULL,
+    manage_group integer DEFAULT 0 NOT NULL,
+    edit_labelset integer DEFAULT 0 NOT NULL
+);
+
 
 --
 -- Name: prefix_users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
