@@ -2606,6 +2606,7 @@ function doAssessment($surveyid, $returndataonly=false)
                                 if ($field['type']=='1') //special treatment for Dual scale
                                 {
                                     $x=substr($field['fieldname'],-1,1);
+                                    if ($x==0) $x='';
                                 }  
                                 else
                                 {
