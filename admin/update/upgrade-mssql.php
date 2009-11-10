@@ -348,18 +348,6 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
-	if ($oldversion < 142) 
-	{
-		modify_database("", "ALTER TABLE [prefix_labelsets] ADD [ugid] INT NOT NULL default '0'"); echo $modifyoutput; flush();
-		modify_database("", "CREATE TABLE [prefix_user_groups_rights] (
-			[ugid] INT NOT NULL,
-			[uid] INT NOT NULL,
-			[manage_group] TINYINT NOT NULL defualt '0',
-			[edit_labelset] TINYINT NOT NULL default '0'
-				);"); echo $modifyoutput; flush();
-		modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
-	}
-
     return true;
 }
 

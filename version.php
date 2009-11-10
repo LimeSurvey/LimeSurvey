@@ -1,7 +1,7 @@
 <?php
 
     $versionnumber = "1.87beta";
-    $dbversionnumber = 142;
+    $dbversionnumber = 141;
     $buildnumber = '';
 
 ?>

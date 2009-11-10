@@ -71,7 +71,6 @@ CREATE TABLE `prefix_labelsets` (
   `lid` int(11) NOT NULL auto_increment,
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
-  `ugid` int(11) NOT NULL default 0,
   PRIMARY KEY  (`lid`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -268,13 +267,7 @@ CREATE TABLE `prefix_user_in_groups` (
      PRIMARY KEY  (`ugid`,`uid`)	
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-CREATE TABLE `prefix_user_groups_rights` (
-  `ugid` int(10) unsigned NOT NULL,
-  `uid` int(10) unsigned NOT NULL,
-  `manage_group` tinyint(1) NOT NULL default '0',
-  `edit_labelset` tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (`ugid`,`uid`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
 
 CREATE TABLE `prefix_users` (
   `uid` int(11) NOT NULL auto_increment PRIMARY KEY,

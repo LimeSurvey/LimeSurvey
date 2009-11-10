@@ -64,8 +64,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
 	if($ugid && $grpresultcount > 0 &&
-		($_SESSION['loginID'] == $grow['owner_id']
-		 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 		$usergroupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editusergroup&amp;ugid=$ugid','_top')\""
 		. "title='".$clang->gTview("Edit Current User Group")."'>" 
@@ -77,8 +76,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 	}
 
 	if($ugid && $grpresultcount > 0 &&
-		($_SESSION['loginID'] == $grow['owner_id']
-		 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
+		$_SESSION['loginID'] == $grow['owner_id'])
 	{
 //		$usergroupsummary .= "<a href='$scriptname?action=delusergroup&amp;ugid=$ugid' onclick=\"return confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')\""
 		$usergroupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=delusergroup&amp;ugid=$ugid")."}\" "
@@ -114,7 +112,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
 }
 
 
-if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights"  || $action == "usertemplates" || $action == "usergrouprights")
+if ($action == "adduser" || $action=="deluser" || $action == "moduser" || $action == "userrights"  || $action == "usertemplates")
 {
 	include("usercontrol.php");
 }
@@ -376,89 +374,6 @@ if ($action == "setuserrights")
 	}
 }	// if
 
-if ($action == "setusergrouprights") // aggiungo da Giorgio Riva
-{
-	if (isset($postuserid) && $postuserid)
-	{
-		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid";
-		$sresult = $connect->Execute($squery);//Checked
-		$sresultcount = $sresult->RecordCount();
-	}
-	else
-	{
-		include("access_denied.php");
-	}
-	
-	// RELIABLY CHECK MY RIGHTS
-	if ( $sresultcount >  0 && $_SESSION['loginID'] != $postuserid )
-	{
-		//User can or can't manage this group
-		$uggroupmanager = getusergroupmanager($ugid);
-		$uggroupowner = getusergroupowner($postusergroupid);
-	
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupmanager || $egurow['uid'] == $uggroupowner)
-		{
-			$usergroupsummary .= "<table width='100%' border='0'>\n<tr><td colspan='2' class='header' align='center'>\n"
-			. "".$clang->gT("Set User Rights").": ".htmlspecialchars(sanitize_user($_POST['user']))."</td></tr>\n";
-			
-			$squery = "SELECT * FROM {$dbprefix}user_groups_rights WHERE uid=$postuserid AND ugid=$postusergroupid";
-			$sresult = $connect->Execute($squery); //Checked
-			$usr = $sresult->FetchRow();
-		
-			// manage group checkbox if superadmin or group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $crow['owner_id'])
-			{
-				$usergroupsummary .= "<th align='center'>".$clang->gT("Manage Group")."</th>\n";
-			}
-			// edit labelset checkbox if superadmin, group manager or group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupmanager || $egurow['uid'] == $uggroupowner)
-			{
-				$usergroupsummary .= "<th align='center'>".$clang->gT("Manage Labels")."</th>\n";
-			}
-
-			$usergroupsummary .="<th></th>\n</tr>\n"
-			."<tr><form method='post' action='$scriptname'></tr>"
-			."<form action='$scriptname' method='post'>\n";
-			//content
-			
-			// manage group checkbox if superadmin or group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupowner)
-			{
-				$usergroupsummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"manage_group\" id=\"manage_group\" value=\"manage_group\"";
-				if($usr['manage_group']) {
-					$usergroupsummary .= " checked='checked' ";
-				}
-				$usergroupsummary .=" /></td>\n";
-			}
-			// edit labelset checkbox if superadmin, group manager or group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupmanager || $egurow['uid'] == $uggroupowner)
-			{
-				$usergroupsummary .= "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"edit_labelset\" id=\"edit_labelset\" value=\"edit_labelset\"";
-				if($usr['edit_labelset']) {
-					$usergroupsummary .= " checked='checked' ";
-				}
-				$usergroupsummary .=" /></td>\n";
-			}
-
-			$usergroupsummary .= "<tr><form method='post' action='$scriptname'></tr>"	// added by Dennis
-			."\n<tr><td colspan='2' align='center'>"
-			."<input type='submit' value='".$clang->gT("Save Now")."' />"
-			."<input type='hidden' name='action' value='usergrouprights' />"
-			."<input type='hidden' name='uid' value='{$postuserid}' /></td></tr>"
-			."<input type='hidden' name='ugid' value='{$postusergroupid}' /></td></tr>"
-			."</form>"
-			. "</table>\n";
-		}	// if
-		else
-		{
-			include("access_denied.php");
-		}
-	}	// if
-	else
-	{
-		include("access_denied.php");
-	}
-}	// if
 
 if($action == "setasadminchild")
 {
@@ -730,46 +645,38 @@ if ($action == "mailusergroup")
 
 if ($action == "delusergroup")
 {
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $grow['owner_id'])
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
+	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
-		if(!empty($postusergroupid) && ($postusergroupid > -1))
+	if(!empty($postusergroupid) && ($postusergroupid > -1))
+	{
+		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = ".$_SESSION['loginID'];
+		$result = db_select_limit_assoc($query, 1);
+		if($result->RecordCount() > 0)
 		{
-			$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid}";
-			$result = db_select_limit_assoc($query, 1);
-			if($result->RecordCount() > 0)
-			{
-				$row = $result->FetchRow();
+			$row = $result->FetchRow();
 
-				$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = {$_SESSION['loginID']}";
-				if($connect->Execute($remquery)) //Checked
-				{
-					// remove any entry from user_in_groups table
-					$uigremquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$postusergroupid}";
-					$connect->Execute($uigremquery);
-					
-					// update any labelset associated to this group, assigning to the uncategorized group
-					$lremquery = "UPDATE ".db_table_name('labelsets')." SET ugid=0 WHERE ugid = {$postusergroupid}";
-					$connect->Execute($lremquery);
-				
-					$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
-				}
-				else
-				{
-					$usersummary .= "<br />".$clang->gT("Could not delete user group.")."<br />\n";
-				}
+			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = {$_SESSION['loginID']}";
+			if($connect->Execute($remquery)) //Checked
+			{
+				$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
 			}
 			else
 			{
-				include("access_denied.php");
+				$usersummary .= "<br />".$clang->gT("Could not delete user group.")."<br />\n";
 			}
 		}
 		else
 		{
-			$usersummary .= "<br />".$clang->gT("Could not delete user group. No group selected.")."<br />\n";
+			include("access_denied.php");
 		}
-		$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	}
+	else
+	{
+		$usersummary .= "<br />".$clang->gT("Could not delete user group. No group selected.")."<br />\n";
+	}
+	$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
 }
 
@@ -789,12 +696,6 @@ if ($action == "usergroupindb")
 			$ugid = addUserGroupInDB($db_group_name, $db_group_description);
 			if($ugid > 0)
 			{
-				//array containing user rights
-				$rights = array();
-				$rights['manage_group']=1;
-				$rights['edit_labelset']=1;
-				$ugr = setusergrouprights($_SESSION['loginID'],$ugid,$rights);
-			
 				$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br />\n";
 	
 				if(isset($db_group_description) && strlen($db_group_description) > 0)
@@ -964,9 +865,6 @@ if ($action == "editusergroups" )
 				$result2 = db_select_limit_assoc($query2, 1);
 				$row2 = $result2->FetchRow();
 	
-				//Get group manager's id
-				$uggroupmanager = getusergroupmanager($ugid);
-	
 				$row = 1;
 				$usergroupentries='';
 				while ($egurow = $eguresult->FetchRow())
@@ -993,18 +891,7 @@ if ($action == "editusergroups" )
 					$usergroupentries .= "<tr class='$bgcc'>\n"
                         . "<td align='center'>\n";
     
-
-                                       // Edit rigths button. Visible only for superadmin, group managers and group owner
-                                       if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupmanager || $egurow['uid'] == $crow['owner_id'])
-                                        {
-                                               $usergroupentries .= "<form method='post' action='$scriptname?action=setusergrouprights&amp;ugid=$ugid'>"
-                                               ." <input type='submit' value='".$clang->gT("Set User Rights")."' />"
-                                               ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
-                                               ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
-                                               ." <input name='ugid' type='hidden' value='{$ugid}' /></form>";
-                                       }
-                                       //Delete button. Visible only for superadmin, group managers and group owner.
-                                       if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $egurow['uid'] == $uggroupmanager || $egurow['uid'] == $crow['owner_id'])
+                    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
                     {
                         $usergroupentries .= "<form method='post' action='$scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
                         ." <input type='image' src='$imagefiles/token_delete.png' alt='".$clang->gT("Delete this user group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
@@ -1023,7 +910,7 @@ if ($action == "editusergroups" )
 	            if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
                 $usergroupsummary .= '</tbody></table>';                      
 	
-				if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $crow['owner_id'] || $_SESSION['loginID'] == $uggroupmanager)
+				if(isset($row2['ugid']))
 				{
 					$usergroupsummary .= "<form action='$scriptname?ugid={$ugid}' method='post'>\n"
 					. "<table class='users'><tbody><tr><td>&nbsp;</td>\n"
@@ -1051,25 +938,19 @@ if ($action == "editusergroups" )
 
 if($action == "deleteuserfromgroup")
 {
-	$uggroupowner = getusergroupowner($ugid);
-	$uggroupmanager = getusergroupmanager($ugid);
-	//Only if current user is superadmin, group owner or group manager
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $uggroupowner || $_SESSION['loginID'] == $uggroupmanager)
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$ugid = $postusergroupid;
 		$uid = $postuserid;
 		$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
 	
-		// $query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
-		// $result = db_execute_assoc($query); //Checked
-		if($postuserid != $uggroupowner)
+		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
+		$result = db_execute_assoc($query); //Checked
+		if($result->RecordCount() > 0)
 		{
 			$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
 			if($connect->Execute($remquery)) //Checked
 			{
-				$ugrremquery = "DELETE FROM ".db_table_name('user_groups_rights')." WHERE ugid = {$ugid} AND uid = {$uid}";
-				$connect->Execute($ugrremquery);
-			
 				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string(strip_tags($_POST['user']))."<br />\n";
 			}
 			else
@@ -1102,30 +983,20 @@ if($action == "deleteuserfromgroup")
 if($action == "addusertogroup")
 { 
 	$ugid=returnglobal('ugid');
-    $uggroupowner = getusergroupowner($ugid);
-	$uggroupmanager = getusergroupmanager($ugid);
-	//Only if current user is superadmin, group owner or group manager
-    if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $uggroupowner || $_SESSION['loginID'] == $uggroupmanager)
+    if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 	
-		// $query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$ugid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
-		// $result = db_execute_assoc($query); //Checked
-		if($postuserid != $uggroupowner)
+		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$ugid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+		$result = db_execute_assoc($query); //Checked
+		if($result->RecordCount() > 0)
 		{
 			if($postuserid > 0)
 			{
 				$isrquery = "INSERT INTO {$dbprefix}user_in_groups VALUES({$ugid},{$postuserid})";
 				$isrresult = $connect->Execute($isrquery); //Checked
 	
-				//array containing user rights
-				$rights = array();
-				//new users have no rights
-				$rights['manage_group']=0;
-				$rights['edit_labelset']=0;
-				$ugrresult = setusergrouprights($postuserid,$ugid,$rights);
-	
-				if($isrresult && $ugrresult)
+				if($isrresult)
 				{
 					$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
 				}

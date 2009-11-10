@@ -448,14 +448,6 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 				// Delete user rights
 				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid=".$postuserid;
 				$dresult=$connect->Execute($dquery); //Checked
-				
-				//Delete user from his usergroups
-				$dquery="DELETE FROM {$dbprefix}user_in_groups WHERE uid=".$postuserid;
-				$dresult=$connect->Execute($dquery);
-				
-				//Delete user group rights
-				$dquery="DELETE FROM {$dbprefix}user_groups_rights WHERE uid=".$postuserid;
-				$dresult=$connect->Execute($dquery);
 
 				if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
 
@@ -620,58 +612,6 @@ elseif ($action == "userrights")
 	{
 		$addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";
 		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-	}
-}
-
-elseif ($action == "usergrouprights")
-{
-	$addsummary = "<br /><strong>".$clang->gT("Set User Rights")."</strong><br />\n";
-
-	$uggroupowner = getusergroupowner($postusergroupid);
-	$uggroupmanager = getusergroupmanager($postusergroupid);
-	
-	// A user can't modify his own rights ;-)
-	if($postuserid != $_SESSION['loginID'])
-	{
-		$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
-		$sresult = $connect->Execute($squery); // Checked
-		$sresultcount = $sresult->RecordCount();
-
-		//array containing user rights
-		$rights = array();
-		$rights['manage_group']=0;
-		$rights['edit_labelset']=0;
-		
-		// only superadmin, group manager and group owner can change user permission for groups
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $uggroupmanager || $_SESSION['loginID'] == uggroupowner)
-		{
-			// manage group right, avaible only for superadmin and group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == uggroupowner)
-			{
-				if(isset($_POST['manage_group']))
-					$rights['manage_group']=1;
-			}
-			
-			// edit labelset right, avaible only for superadmin, group manager and group owner
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['loginID'] == $uggroupmanager || $_SESSION['loginID'] == uggroupowner)
-			{
-				if(isset($_POST['edit_labelset']))
-					$rights['edit_labelset']=1;
-			}
-			
-			if ($postuserid<>1) setusergrouprights($postuserid, $postusergroupid, $rights);
-			$addsummary .= "<br />".$clang->gT("Update user rights successful.")."<br />\n";
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid=$postusergroupid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		}
-		else
-		{
-			include("access_denied.php");
-		}
-	}
-	else
-	{
-		$addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";
-		$addsummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid==$postusergroupid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 	}
 }
 
