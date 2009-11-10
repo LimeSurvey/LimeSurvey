@@ -8,9 +8,9 @@
    {QUESTION_VALID_MESSAGE}
   </div>
   <div class="answers">
-   <table style="margin:0">
+   <table>
     <tr>
-     <td style="text-align:left;">
+     <td>
      {ANSWER}
      </td>
     </tr>

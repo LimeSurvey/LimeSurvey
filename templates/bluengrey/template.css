@@ -543,17 +543,16 @@ If you want ul.multinumerichelp to float beside the input boxes, you need to unc
     margin: 0% auto 0% auto;
 }
 
-  ul.cols-2 li , ul.cols-2-ul
-, ul.cols-3 li , ul.cols-3-ul
-, ul.cols-4 li , ul.cols-4-ul
-, ul.cols-5 li , ul.cols-5-ul
-, ul.cols-6 li , ul.cols-6-ul
-, ul.cols-7 li , ul.cols-7-ul
-, ul.cols-8 li , ul.cols-8-ul
-{
+ul.cols-2 li,
+ul.cols-3 li,
+ul.cols-4 li,
+ul.cols-5 li,
+ul.cols-6 li,
+ul.cols-7 li,
+ul.cols-8 li {
     float: left;
-    padding: 0% 0.5em;
-    white-space: normal
+    padding: 0 0.5em;
+    white-space: normal;
 }
 
 ul.cols-2 li, table.cols-2 td { width: 47% }
@@ -564,13 +563,40 @@ ul.cols-6 li, table.cols-6 td { width: 15.5%; }
 ul.cols-7 li, table.cols-7 td { width: 12%; }
 ul.cols-8 li, table.cols-8 td { width: 10%; }
 
-ul.cols-2-ul { width: 44% }
-ul.cols-3-ul { width: 29%; }
-ul.cols-4-ul { width: 21%; }
-ul.cols-5-ul { width: 16%; }
-ul.cols-6-ul { width: 14%; }
-ul.cols-7-ul { width: 12%; }
-ul.cols-8-ul { width: 10%; }
+/* List/radios displayed in columns */
+
+ul.cols-2-ul,
+ul.cols-3-ul,
+ul.cols-4-ul,
+ul.cols-5-ul,
+ul.cols-6-ul,
+ul.cols-7-ul,
+ul.cols-8-ul {
+    float: left;
+	width: auto;
+    padding: 0;
+	margin-bottom: 1em;
+}
+
+ul.cols-2-ul li,
+ul.cols-3-ul li,
+ul.cols-4-ul li,
+ul.cols-5-ul li,
+ul.cols-6-ul li,
+ul.cols-7-ul li,
+ul.cols-8-ul li {
+    padding: 0 1.5em 0 0;
+}
+
+ul.cols-2-ul label,
+ul.cols-3-ul label,
+ul.cols-4-ul label,
+ul.cols-5-ul label,
+ul.cols-6-ul label,
+ul.cols-7-ul label,
+ul.cols-8-ul label {
+	text-indent: 0;
+}
 
 .list-dropdown-flexible p.question
 {
@@ -888,11 +914,18 @@ table.navigator td{
     width:33%;
 }
 
+div.answers  {
+    margin-bottom:10px;
+}
 
 div.answers table {
-    margin:0 auto !important;
+    margin:0 auto;
     border-collapse:separate;
     border-spacing: 1px;
+}
+
+div.answers td {
+	text-align: left;
 }
 
 .numeric-multi div.input 
@@ -909,9 +942,6 @@ div.answers table {
   margin-bottom:10px;
 }
 
-div.answers  {
-    margin-bottom:10px;
-}
 div #loadtable, div #savetable
 {
     padding-top:10px;
