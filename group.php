@@ -310,8 +310,8 @@ if (!isset($_SESSION['step']) || !$_SESSION['step'])
 //GET GROUP DETAILS
 if ($show_empty_group) {
 	$gid=-1; // Make sure the gid is unused. This will assure that the foreach (fieldarray as ia) has no effect.
-	$groupname=$clang->gT("You can submit your answers");
-	$groupdescription=$clang->gT("There are no more questions. Please press the <submit> button to send your reponse.");
+	$groupname=$clang->gT("Submit your answers");
+	$groupdescription=$clang->gT("There are no more questions. Please press the <Submit> button to finish this survey.");
 } else
 {
 	$grouparrayno=$_SESSION['step']-1;

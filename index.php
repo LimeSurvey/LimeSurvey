@@ -883,10 +883,10 @@ function makegraph($currentstep, $total)
 
 	$size = intval(($currentstep-1)/$total*100);
 	$graph = '<div id="progress-graph">
-	<span class="hide">You have completed '.$size.'% of this survey</span>
+	<span class="hide">'.sprintf($clang->gT('You have completed %s% of this survey'),$size).'</span>
 
 			<div class="zero">0%</div>
-			<div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="You have completed '.$size.'% of this survey" /></div>
+			<div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="'.sprintf($clang->gT('You have completed %s% of this survey'),$size).'" /></div>
 			<div class="cent">100%</div>
 		</div>';
 	return $graph;
