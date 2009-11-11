@@ -699,20 +699,18 @@ function getsurveylist($returnarray=false)
 }
 
 /**
-* getquestions() queries the database for a list of all questions matching the current survey sid
+* getQuestions() queries the database for an list of all questions matching the current survey and group id
 * 
 * @global string $surveyid
 * @global string $gid
-* @global string $qid
-* @global string $dbprefix
-* @global string $scriptname
+* @global string $selectedqid
 * 
-* @return This string is returned containing <option></option> formatted list of questions to current survey
+* @return This string is returned containing <option></option> formatted list of questions in the current survey and group
 */
-function getquestions($surveyid,$gid,$selectedqid)
+function getQuestions($surveyid,$gid,$selectedqid)
 {
 	global $dbprefix, $scriptname, $connect, $clang;
-//MOD for multilanguage surveys
+
 	$s_lang = GetBaseLanguageFromSurveyID($surveyid);
 	$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' order by question_order";
 	$qresult = db_execute_assoc($qquery); //checked
@@ -726,7 +724,7 @@ function getquestions($surveyid,$gid,$selectedqid)
 		if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
 		$questionselecter .=">{$qrow['title']}:";
 		$questionselecter .= " ";
-		$question=strip_tags($qrow['question']);
+		$question=FlattenText($qrow['question']);
 		if (strlen($question)<35)
 		{
 			$questionselecter .= $question;
