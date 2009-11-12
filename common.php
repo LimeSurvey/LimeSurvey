@@ -1077,6 +1077,8 @@ function setup_columns($columns, $answer_count)
 	{
 		$columns = $answer_count;
 	};
+	
+	$columns = ceil($answer_count/ceil($answer_count/$columns)); // # of columns is # of answers divided by # of rows (all rounded up)
 
 	$class_first = '';
 	if($columns > 1 && $colstyle != null)
