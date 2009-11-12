@@ -1228,7 +1228,7 @@ function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, 
 	else
 	{
 	$htmltbody2 = "\n\n\t<tbody id='javatbd$rowname' style='display: '>\n";
-	$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowaname' value='on' />";
+	$hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
 	}
 
 	//End of array_filter attribute
