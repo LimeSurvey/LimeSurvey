@@ -26,12 +26,15 @@ function injectglobalsettings()
     $emailmethod='smtp';
     $usquery = "SELECT * FROM ".db_table_name("settings_global"); 
     $dbvaluearray=$connect->GetAll($usquery);
-    foreach  ($dbvaluearray as $setting)
+    if ($dbvaluearray!==false)
     {
-        global $$setting['stg_name'];
-        if (isset($$setting['stg_name']))
+        foreach  ($dbvaluearray as $setting)
         {
-            $$setting['stg_name']=$setting['stg_value'];
+            global $$setting['stg_name'];
+            if (isset($$setting['stg_name']))
+            {
+                $$setting['stg_name']=$setting['stg_value'];
+            }
         }
     }
 }
@@ -71,7 +74,7 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('timeadjust',$savetime);
                        setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
                        setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-                       $editsurvey .= "<br/>".$clang->gT("Global settings were saved.")."<br/>&nbsp;";
+                       $editsurvey .= "<p>".$clang->gT("Global settings were saved.");
         }                                                                
     }
 }
