@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.86!
+Welcome to LimeSurvey v1.87RC1!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -78,13 +78,90 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.86
 Thank you to everyone who helped with this new release!
 
 
-Changes from 1.85+ (build 7689) to 1.85+ (build 7697) [28-09-2009] - Legend: + new feature, # update feature, - bug fix
+
+
+Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + new feature, # update feature, - bug fix
++New feature #3292 and #2857: slider min and max can now be displayed below the slider (using the slider_showminmax question attribute). Slider Left and Right text can be displayed before and after the slider (using the slider_separator question attribute and using specific answers format). (lemeur)
++New feature: Reworked question attributes -  they are shown as a form now and in fieldsets 
++New feature #3758: Possibility to define a favicon for a template (el-matador-69)
++New feature: Reworked Saved responses and added table sorting capabilities (c_schmitz)
++New feature: Token length can now be set for each survey (maziminke)
++New feature: CSS to differentiate alternate rows by background colour and to highlight row when mouse is hovering over it in admin/styles/default/adminstyle.css (eric_t_cruiser)
++New feature: New ID to table, <thead> and <tbody> tags to improve accessibility and rendering (eric_t_cruiser)
++New feature #2359: On token import you can configure which fields are used for the duplicate check (c_schmitz)
++New feature #3367: Browse buttons in statistics for comments in Multiple Options with comment question type (patch by rocknrole) (c_schmitz)
++New feature #3467 and #2712: All token fields are now exported - on export you can specify certain filters now (c_schmitz)
++New feature #3555: Question attribute to hide a question - patch by flohack (c_schmitz)
++New feature #3686: Option to ignore duplicate label sets on import thus being able to copy existing label sets (c_schmitz)
++New feature #3724: Link to public statistics on home page survey list (c_schmitz)
++New feature: Optimized error handling on token import (c_schmitz)
++New feature: Separate on-top template RTL CSS file is now automatically included when a RTL language is used. New TAG {TEMPLATECSS} takes care of this and template.css (c_schmitz)
++New feature: Survey list is now sortable and Survey ID is shown as additional column (c_schmitz)
+#Updated feature #2935: In Slider questions, you can make the slider cursor start at the middle position without setting the initial value of the answer (if the question is mandatory, the participant will the have to slide the cursor in order to proceed) (lemeur)
+#Updated feature #3488: improvement in condition designer, the code is now displayed before the question text (usability improvement kindly provided by mdekker) (lemeur)
+#Updated feature #3612: improve client-side performance while evaluating conditions on the same page (lemeur)
+#Updated feature #3738: Update FCKEditor to v2.6.5 (lemeur)
+#Updated feature #3799: Assure that there is always a submit button even if the last group has no questions (in group per page mode). See the new show_empty_group_if_the_last_group_is_hidden parameter in config-defaults.php (patch kindly provided by ronvdburg) (lemeur)
+#Updated feature: In the LimeSurvey answer saving engine, the answer of a question that is hidden due to conditions is now recorded in DB as NULL instead of an empty string. (lemeur)
+#Updated feature: Better handling of group description hiding in all-in-one surveys when all questions in the group are hidden by conditions. (lemeur)
+#Updated translation: French (b00z00)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Croatian (idobraca)
+#Updated translation: Galician by Carlos Neira Cortizas (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: Lithuanian - sponsored by Silberauto.ee & LimeService.com (c_schmitz)
+#Updated translation: Simplified Chinese (yooyooh)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #3805: Assignment of class attributes to <td> tags in dual-scale questions   (tpartner)
+-Fixed issue #3821: Question Attribute "Column" isn't working   (tpartner)
+-Fixed issue #3823: Layout problem after importing a question    (tpartner)
+-Fixed issue #3825: List (radio) by columns not behaving    (tpartner)
+-Fixed issue #3572: Statistics not equal to Pie Charts. (lemeur)
+-Fixed issue #3735: In printable survey the multiflexi numerical is not translatable (Patch kindly provided by mdekker). (lemeur)
+-Fixed issue #3739: Wrong order of conditionnal answers in Editor display (lemeur)
+-Fixed issue #3742: Scenario number displayed as Default if only one scenario is used (lemeur)
+-Fixed issue #3763: Double Tooltip at Condition Designer (lemeur)
+-Fixed issue #3785: No possibility to set other field as condition for 'List Flexible Labels Dropdown' and 'List Flexible Labels (Radio)' questions (lemeur)
+-Fixed issue #3818: Copy conditions function doesn't differentiate between upper and lower case. (lemeur)
+-Fixed issue #2713: SPSS export of data is in a strange order (mdekker) 
+-Fixed issue #3718: Question preview differs in design from survey at runtime (c_schmitz)
+-Fixed issue #3719: Little usability problem with automatic generated answer codes (c_schmitz)
+-Fixed issue #3720: Repeated answer header design being different to normal header in bluengrey and default template (c_schmitz)
+-Fixed issue #3747: Font size of suffix is too large in bluengrey-template  (c_schmitz)
+-Fixed issue #3750: Captchas don't work anymore due to changed session handling (c_schmitz)
+-Fixed issue #3753: Notice at VV-Import, if option "Import as not finalized answers?" is set at import (c_schmitz)
+-Fixed issue #3761: Template 'default': font size too large for some question types (c_schmitz)
+-Fixed issue #3784: Can't create survey if expiry date is set (jcleeland)
+-Fixed issue #3795: Encoding problem at Question List of Condition Editor. (lemeur)
+-Fixed issue #3798: importing conditions based on Token fields fails. (lemeur)
+-Fixed issue #3806: do_array_flexible - Repeating header no answer produce one column too much (patch by beatjoerg) (c_schmitz)
+-Fixed issue #3807: Evaluation of 'Not equal' conditions is different in Group by group mode. When the condition is Q1 is not 'Answer2', when no answer is given to Q1, the group title was displayed, but not the question. (lemeur)
+-Fixed issue #3826: Progress bar text is not translated  (c_schmitz)
+-Fixed issue #3827: Javascript code shown in question name at question dropdown list (c_schmitz)
+-Fixed issue #3829: Error on survey submission when using assessments and a dual scale question type (c_schmitz)
+-Fixed issue #3812: Layout issue at Up & Down Arrows  (tpartner)
+-Fixed issue #3791: preview question is broken in latest development version (eric_t_cruiser)
+-Fixed issue on Postgres update (c_schmitz)
+-Fixed unreported issue: When deleting a template the template rights were not removed (c_schmitz)
+-Fixed unreported issue: integrity check may be broken when specific conditions are used (conditions on token values). (lemeur)
+-Fixed unreported issue: 'Not Equals -NoAnswer-' condition doesn't work in all-in-one surveys (lemeur)
+-Fixed unreported issue: incorrect message at template import (lemeur)
+-Fixed issue 03772: made the various elements of the question wrapping <DIV> available to question.pstpl if desired. (eric_t_cruiser)
+-Fixed issue 03772: updated question.pstpl for all templates to include wrapping div previously supplied by LS system and the contents of question_start.pstpl. Removed redundant question_start.pstpl from all templates. (eric_t_cruiser)
+-Fixed issue 03791: Made keywords work in question preview. (eric_t_cruiser)
+-Fixed issue #03778: New lastpage property breaks SPSS export (mennodekker)
+-Fixed issue #3772. Allowed all template keywords from question_start.pstpl to be used in question.pstpl (eric_t_cruiser)
+-Fixed issue #3796: Slider Problem in IE - patch kindly provided by tpartner - THX! (el-matador-69)
+-Fixed issue #3809: added missing asterisk css part at template.css for clear_logo template - THX to jelo! (el-matador-69)
+-Fixed issue 03736: Removed extra <form> open tags from user template permission form in admin/userrighthandling.php. (eric_t_cruiser)
+-Fixed issue minor error while checking for SoapClient Class (wahrendorff)
+
+Changes from 1.85+ (build 7689) to 1.86 (build 7697) [28-09-2009] - Legend: + new feature, # update feature, - bug fix
 -Fixed issue #3640: Mandatory question is not working on ranking type (c_schmitz)
 -Fixed issue #3729: Survey startlanguage not being recorded accurately (c_schmitz)
 #Updated translation: Polish (elisa-ls)
 #Updated translation: Simplified Chinese (yooyooh)
 #Updated translation: German (c_schmitz)
-
 
 Changes from 1.85+ (build 7660) to 1.85+ (build 7689) [28-09-2009] - Legend: + new feature, # update feature, - bug fix
 #Updated translation: Croatian and Italian language (idobraca)
