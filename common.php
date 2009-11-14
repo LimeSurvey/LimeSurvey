@@ -4213,7 +4213,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     }
 	if ($emailmethod=="smtp")
 	{ 
-        if ($emailsmtpdebug==1)
+        if ($emailsmtpdebug>0)
         {
             $mail->SMTPDebug = true;
         }
@@ -4268,13 +4268,13 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     $mail->AddAttachment($attachment);
     
 	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
-    if ($emailsmtpdebug==1) {
+    if ($emailsmtpdebug>0) {
         ob_start();
     }
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
-    if ($emailsmtpdebug==1) {
-        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.ob_get_contents().'</pre>';
+    if ($emailsmtpdebug>0) {
+        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;

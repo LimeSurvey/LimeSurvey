@@ -735,7 +735,7 @@ if ($subaction == "clearinvites" &&
 {
 	$query="UPDATE ".db_table_name("tokens_$surveyid")." SET sent='N', remindersent='N', remindercount=0";
 	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-	$tokenoutput .= "<tr><td align='center'><strong><span class='successtitle'>".$clang->gT("All invite entries have been set to 'Not invited'.")."</font></strong></td></tr>\n";
+	$tokenoutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("All token entries have been set to 'Not invited'.")."</div></div>\n";
 	$subaction="";
 }
 
@@ -1260,6 +1260,10 @@ if ($subaction == "email" &&
 					//
 					$uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
 					$tokenoutput .= "[".$clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
+                    if ($emailsmtpdebug==2)
+                    {
+                       $tokenoutput .=$maildebug; 
+                    }
 				}
 				else
 				{
