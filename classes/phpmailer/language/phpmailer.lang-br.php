@@ -1,9 +1,9 @@
 <?php
 /**
 * PHPMailer language file: refer to English translation for definitive list
- * Portuguese Version
- * By Paulo Henrique Garcia - paulo@controllerweb.com.br
- */
+* Portuguese Version
+* By Paulo Henrique Garcia - paulo@controllerweb.com.br
+*/
 
 $PHPMAILER_LANG['authenticate']         = 'Erro de SMTP: Não foi possível autenticar.';
 $PHPMAILER_LANG['connect_host']         = 'Erro de SMTP: Não foi possível conectar com o servidor SMTP.';

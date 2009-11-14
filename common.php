@@ -4155,7 +4155,7 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang;
+	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
 
     //if ($ishtml) {$body=htmlwrap($body,110);}
@@ -4213,6 +4213,10 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     }
 	if ($emailmethod=="smtp")
 	{ 
+        if ($emailsmtpdebug==1)
+        {
+            $mail->SMTPDebug = true;
+        }
         if (strpos($emailsmtphost,':')>0)
         {
             $mail->Host = substr($emailsmtphost,0,strpos($emailsmtphost,':'));
@@ -4224,7 +4228,9 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 	    $mail->Username =$emailsmtpuser;
 	    $mail->Password =$emailsmtppassword;
 	    if ($emailsmtpuser!="")
-	    {$mail->SMTPAuth = true;}
+	    {
+            $mail->SMTPAuth = true;
+        }
 	}
 	$mail->From = $fromemail;
 	$mail->Sender = $senderemail; // Sets Return-Path for error notifications
@@ -4262,8 +4268,15 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
     $mail->AddAttachment($attachment);
     
 	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
+    if ($emailsmtpdebug==1) {
+        ob_start();
+    }
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
+    if ($emailsmtpdebug==1) {
+        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.ob_get_contents().'</pre>';
+        ob_end_clean();
+    }
     $maildebugbody=$mail->Body;
 	return $sent;
 }
@@ -6853,12 +6866,12 @@ function GetUpdateInfo()
             setGlobalSetting('updateavailable',1);
             setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
             setGlobalSetting('updateversion',$updateinfo['Targetversion']['versionnumber']);
-            setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
         }
         else
         {
             setGlobalSetting('updateavailable',0);
         }
+        setGlobalSetting('updatelastcheck',date('Y-m-d H:i:s'));
         return $updateinfo;
    }
    

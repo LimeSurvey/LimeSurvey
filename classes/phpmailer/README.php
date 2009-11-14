@@ -1,3 +1,4 @@
+<?php die(); ?>
 /*******************************************************************
 * The http://phpmailer.codeworxtech.com/ website now carries a few *
 * advertisements through the Google Adsense network. Please visit  *
@@ -9,7 +10,7 @@ PHPMailer
 Full Featured Email Transfer Class for PHP
 ==========================================
 
-Version 5.0.0 (April 02, 2009)
+Version 5.1.0 (11/11/2009)
 
 With the release of this version, we are initiating a new version numbering
 system to differentiate from the PHP4 version of PHPMailer.

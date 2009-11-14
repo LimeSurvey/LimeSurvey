@@ -1,8 +1,8 @@
 <?php
 /**
 * PHPMailer language file: refer to English translation for definitive list
- * Czech Version
- */
+* Czech Version
+*/
 
 $PHPMAILER_LANG['authenticate']         = 'SMTP Error: Chyba autentikace.';
 $PHPMAILER_LANG['connect_host']         = 'SMTP Error: Nelze navázat spojení se SMTP serverem.';

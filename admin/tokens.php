@@ -1157,7 +1157,7 @@ if ($subaction == "email" &&
 	}
 	else
 	{
-		$tokenoutput .= $clang->gT("Sending Invitations");
+		$tokenoutput .= $clang->gT("Sending invitations...");
 		if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
 		$tokenoutput .= "<br />\n";
 
@@ -1185,10 +1185,8 @@ if ($subaction == "email" &&
 		$emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
 		$emcount = $emresult->RecordCount();
 
-		$tokenoutput .= "<table width='500px' align='center' >\n"
-		."\t<tr>\n"
-		."<td><font size='1'>\n";
-
+		$tokenoutput .= "<ul>\n";
+                                                       
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 		array_unshift($surveylangs,$baselanguage);
@@ -1265,20 +1263,18 @@ if ($subaction == "email" &&
 				}
 				else
 				{
-					$tokenoutput .= ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
+					$tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray).'</li>';
 					if ($debug>0)
 					{
-						$tokenoutput .= "<br /><pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
+						$tokenoutput .= "<pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."</pre>";
 					}
 				}
 			}
 			if ($ctcount > $emcount)
 			{
 				$lefttosend = $ctcount-$maxemails;
-				$tokenoutput .= "</td>\n"
-				."\t</tr>\n"
-				."\t<tr>\n"
-				."<td align='center'><strong>".$clang->gT("Warning")."</strong><br />\n"
+				$tokenoutput .= "</ul>\n"
+				."<div class='header'>".$clang->gT("Warning")."</div>\n"
                 ."<form method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>"
 				.$clang->gT("There are more emails pending than can be sent in one batch. Continue sending emails by clicking below.")."<br /><br />\n";
 				$tokenoutput .= str_replace("{EMAILCOUNT}", "$lefttosend", $clang->gT("There are {EMAILCOUNT} emails still to be sent."));
@@ -1301,10 +1297,8 @@ if ($subaction == "email" &&
 		}
 		else
 		{
-			$tokenoutput .= "<center><strong>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.")."</center>\n";
+			$tokenoutput .= "<p>".$clang->gT("Warning")."</strong><br />\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token.");
 		}
-		$tokenoutput .= "</td>\n";
-
 	}
 	$tokenoutput .= "</div>\n";
 }

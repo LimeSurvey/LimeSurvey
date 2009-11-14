@@ -59,6 +59,7 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                             setGlobalSetting('emailsmtppassword',strip_tags($_POST['emailsmtppassword']));
                        }
                        setGlobalSetting('emailsmtpssl',sanitize_paranoid_string($_POST['emailsmtpssl']));
+                       setGlobalSetting('emailsmtpdebug',sanitize_int($_POST['emailsmtpdebug']));
                        setGlobalSetting('emailsmtpuser',strip_tags($_POST['emailsmtpuser']));
                        setGlobalSetting('filterxsshtml',strip_tags($_POST['filterxsshtml']));
                        setGlobalSetting('siteadminbounce',strip_tags($_POST['siteadminbounce']));
@@ -254,6 +255,15 @@ function globalsettingsdisplay()
                 if (getGlobalSetting('emailsmtpssl')=='tls') {$editsurvey .= " selected='selected'";}
                 $editsurvey .= ">".$clang->gT("TLS")."</option>\n"
                 . "\t\t</select></li>\n"
+                . "\t<li><label for='emailsmtpdebug'>".$clang->gT("SMTP debug mode:")."</label>\n"
+                . "\t\t<select id='emailsmtpdebug' name='emailsmtpdebug'>\n"
+                . "\t\t\t<option value=''";
+                if (getGlobalSetting('emailsmtpdebug')=='0') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Off")."</option>\n"
+                . "\t\t\t<option value='1'";
+                if (getGlobalSetting('emailsmtpdebug')=='1' || getGlobalSetting('emailsmtpssl')==1) {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("On")."</option>\n"
+                . "\t\t</select></li><br />\n"
                 . "\t<li><label for='maxemails'>".$clang->gT("Email batch size:")."</label>\n"
                 . "\t\t<input type='text' size='5' id='maxemails' name='maxemails' value=\"".htmlspecialchars(getGlobalSetting('maxemails'))."\" /></li>\n"
                 . "\t</ul>\n";
