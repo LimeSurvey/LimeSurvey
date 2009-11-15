@@ -344,7 +344,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 	
 	if ($oldversion < 141) //Modify surveys table
 	{
-	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [tokenlength] text"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [tokenlength] tinyint default '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 

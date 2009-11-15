@@ -171,7 +171,7 @@ global $modifyoutput;
 	
 	if ($oldversion < 141) //Modify surveys table
 	{
-	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" TEXT"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" smallint DEFAULT '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 	
