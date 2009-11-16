@@ -519,6 +519,22 @@ th.admincell {
 	color: #1D2D45;
 }
 
+.header_statistics {
+    height:21px;
+    padding:1px;
+    padding-left:42px; 
+}
+
+.header_statistics img {
+    cursor:pointer;   
+    
+}
+
+.header_small {
+    margin-top:2px;
+    font-size: 11px; 
+}
+
 div.settingcaption{
     clear:both;
     margin: 3px 0;
@@ -831,6 +847,7 @@ table.statisticstable, table.statisticssummary {
     border-width: 0px;
     border-style: none;
     margin: 0 auto;
+    margin-bottom:20px;
 }
 
 .statisticssummary thead th
@@ -871,24 +888,6 @@ table.statisticstable, table.statisticssummary {
     text-align:center;
 }
                    
-#filtersettings ul {
-    width:300px;
-    list-style-type:none; 
-}
-
-#filtersettings ul {
-    width:300px;
-    list-style-type:none; 
-    line-height:22px;
-}
-
-#filtersettings ul label, 
-#filtersettings ul select, 
-#filtersettings ul input {
-   vertical-align:middle;
-   margin:0 2px;
-}
-
 #personalsettings label {  
     float: left;  
     width: 20em;  
@@ -951,6 +950,7 @@ div.messagebox .warningheader {
 }
    
 #tokenimport li label:first-child,            
+#statistics_general_filter li label:first-child,            
 #vvexport li label:first-child,            
 #importlabels li label:first-child,
 #addattribute li label:first-child,  
@@ -983,6 +983,7 @@ div.messagebox .warningheader {
     color: #121A28;
 }
 
+#statistics_general_filter li,
 #tokenimport li,
 #vvexport li,
 #exportstructure li,
@@ -1137,4 +1138,22 @@ margin:0 auto;
 
 #advancedquestionsettings textarea{
     width:200px;
+}
+
+#statistics_general_filter
+{
+    width:650px;
+    margin:0 auto;
+}
+#statistics_general_filter #left
+{
+    width:300px;
+    height:105px;
+    float:left;
+}
+#statistics_general_filter #right
+{
+    width:300px;
+    height:105px;
+    float:right;
 }

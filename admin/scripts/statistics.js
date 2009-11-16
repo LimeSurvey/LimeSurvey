@@ -19,19 +19,23 @@ $(document).ready(function(){
      $('#viewsummaryall').click( function(){
         if ($('#viewsummaryall').attr('checked')==true)
         { 
-            $('#filterchoices').hide();
+            $('#filterchoices input[type=checkbox]').attr('checked', true);
         }
         else
         {
-            $('#filterchoices').show();
+            $('#filterchoices input[type=checkbox]').attr('checked', false);
             
         }
      })
      $('#hidefilter').click( function(){
-            $('#filtersettings').slideUp();
+            $('#filterchoices').hide();
+            $('#filterchoice_state').val('1');
+            $('#vertical_slide2').hide();               
      })
      $('#showfilter').click( function(){
-            $('#filtersettings').slideDown();
+            $('#filterchoices').show();
+            $('#filterchoice_state').val('');
+            $('#vertical_slide2').show();               
      })
      
      

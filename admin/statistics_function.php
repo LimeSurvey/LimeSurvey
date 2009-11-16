@@ -370,10 +370,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				{
 					$selects[]=db_quote_id(substr($pv, 0, -1))." < '".$_POST[$pv]."'";
 				}
-				if (substr($pv, strlen($pv)-1, 1) == "=" && $_POST[$pv] != "")
-				{
-					$selects[]=db_quote_id(substr($pv, 0, -1))." = '".$_POST[$pv]."'";
-				}
 			}
 				
 			//T - Long Free Text
@@ -411,20 +407,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 			elseif (substr($pv, 0, 9) == "datestamp")
 			{
 				//timestamp equals
-				if (substr($pv, -1, 1) == "=" && !empty($_POST[$pv]))
+				if (substr($pv, -1, 1) == "E" && !empty($_POST[$pv]))
 				{
 					$selects[] = db_quote_id('datestamp')." = '".$_POST[$pv]."'";
 				}
 				else
 				{
 					//timestamp less than
-					if (substr($pv, -1, 1) == "<" && !empty($_POST[$pv]))
+					if (substr($pv, -1, 1) == "L" && !empty($_POST[$pv]))
 					{
 						$selects[]= db_quote_id('datestamp')." > '".$_POST[$pv]."'";
 					}
 						
 					//timestamp greater than
-					if (substr($pv, -1, 1) == ">" && !empty($_POST[$pv]))
+					if (substr($pv, -1, 1) == "G" && !empty($_POST[$pv]))
 					{
 						$selects[]= db_quote_id('datestamp')." < '".$_POST[$pv]."'";
 					}
@@ -544,7 +540,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 				$statisticsoutput .= "\t<tr><th align='right'>".$clang->gT("Percentage of total:").'</th>'
 				."<td>$percent%</td></tr>\n";
 			}
-			
+			$statisticsoutput .="</table>\n";
 			
 		break;
 		default:
@@ -566,95 +562,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 		if($outputType=='html')
 		{
 			//add a buttons to browse results
-			$statisticsoutput .= "\t<tr >"
-			."\t\t<td align='center' colspan='2'><form action='$scriptname?action=browse' method='post' target='_blank'>\n"
-			."\t\t<input type='submit' value='".$clang->gT("Browse")."'  />\n"
+			$statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
+			."\t\t<p><input type='submit' value='".$clang->gT("Browse")."'  />\n"
 			."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
 			."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
 			."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
-			."\t\t</form></td>\n"
-			."\t\t</tr>\n";
+			."\t\t</form>";
 		}
-		//Add the fieldnames
-		if (isset($summary) && $summary)
-		{
-			$statisticsoutput .= "\t<tr ><td>";
-			//The summary array contains the fields that have been selected from the filter screen
-			//  to be displayed in the results page. So we're iterating through them one at a time
-			foreach($summary as $viewfields)
-			{
-				//We're checking the first letter of each of the selected-to-be-displayed fields
-				//  in order to deal with the special types (usually those with multiple files per question)
-				switch(substr($viewfields, 0, 1))
-				{
-					/*
-					 * some special treatment for
-					 *
-					 * N - Numerical Input
-					 * T - Long Free Text
-					 * K - Multiple Numerical Input
-					 */
-					case "N":
-					case "T":
-					case "K":
-							
-						// Now we remove the first character from the fieldname, and so are left
-						//   with just the actual SGQ code for this field/answer.
-						$field = substr($viewfields, 1, strlen($viewfields)-1);
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						break;
-							
-							
-						//M - Multiple Options
-					case "M":
-                    case "P":
-							
-						//create a SGQ identifier
-						list($lsid, $lgid, $lqid) = explode("X", substr($viewfields, 1, strlen($viewfields)-1));
-							
-						//we need all the answer codes.
-						//there might be more than one because it's a multiple options question
-						$aquery="SELECT code FROM ".db_table_name("answers")." WHERE qid=$lqid AND language='{$language}' ORDER BY sortorder, answer";
-						$aresult=db_execute_num($aquery) or safe_die ("Couldn't get answers<br />$aquery<br />".$connect->ErrorMsg());
-							
-						// go through every possible answer
-						while ($arow=$aresult->FetchRow())
-						{
-							$field = substr($viewfields, 1, strlen($viewfields)-1).$arow[0];
-							$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						}
-							
-						//check data of "other" field
-						$aquery = "SELECT other FROM ".db_table_name("questions")." WHERE qid=$lqid AND language='{$language}'";
-						$aresult = db_execute_num($aquery);
-							
-						while($arow = $aresult->FetchRow())
-						{
-							//"other" answer set?
-							if ($arow[0] == "Y") {
-									
-								//some debugging output
-								//$statisticsoutput .= $arow[0];
-									
-								$field = substr($viewfields, 1, strlen($viewfields)-1)."other";
-								$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-							}
-
-						} // while
-							
-						break;
-							
-						//default treatment for all the other question types
-					default:
-						$field = $viewfields;
-						$statisticsoutput .= "\t\t\t<input type='hidden' name='summary[]' value='$field' />\n";
-						break;
-				}
-
-			}	//end foreach	
-			$statisticsoutput .= "\t</td></tr>";
-		}	//end if (summary)
-	}	//end if (results available?)
+	}	//end if (results > 0)
 	
 	//Show Summary results
 	if (isset($summary) && $summary)
@@ -3104,7 +3019,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 						break;
 						case 'html':
-							$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1'></td></tr>";
+							$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' /></td></tr>";
 										
 						break;
 						default:
