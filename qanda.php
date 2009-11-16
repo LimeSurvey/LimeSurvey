@@ -1331,7 +1331,7 @@ function do_date($ia)
     
     $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
     
-	if (trim($qidattributes['dropdown_dates'])!='') {
+	if (trim($qidattributes['dropdown_dates'])!=0) {
 		if (!empty($_SESSION[$ia[1]]))
 		{
 			list($currentyear, $currentmonth, $currentdate) = explode('-', $_SESSION[$ia[1]]);
