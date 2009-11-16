@@ -936,77 +936,83 @@ function validation_popup($ia, $notvalidated=null)
 }
 
 function return_timer_script($qidattributes, $ia, $disable=null) {
-		global $thissurvey, $clang;
+	global $thissurvey, $clang;
 
-		if(isset($thissurvey['timercount'])) 
+	/* The following lines cover for previewing questions, because no $_SESSION['fieldarray'] exists. 
+	   This just stops error messages occuring */
+	if(!isset($_SESSION['fieldarray']))
+	{
+		$_SESSION['fieldarray'] = array();
+	}
+	/* End */
+
+	if(isset($thissurvey['timercount'])) 
+	{
+		$thissurvey['timercount']++; //Used to count how many timer questions in a page, and ensure scripts only load once
+	} else {
+		$thissurvey['timercount']=1;
+	}
+
+	if($thissurvey['format'] != "S")
+	{
+		if($thissurvey['format'] != "G") 
 		{
-			$thissurvey['timercount']++; //Used to count how many timer questions in a page, and ensure scripts only load once
-		} else {
-			$thissurvey['timercount']=1;
+			return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n"; 
+			//We don't do the timer in any format other than question-by-question
 		}
-		
-		if($thissurvey['format'] != "S")
-		{
-			if($thissurvey['format'] != "G") 
-			{
-				return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n"; 
-				//We don't do the timer in any format other than question-by-question
-			}
-		}
-		
-		$time_limit=$qidattributes['time_limit'];
+	}
 
-		$disable_next=trim($qidattributes['time_limit_disable_next']) != '' ? $qidattributes['time_limit_disable_next'] : 0;
-		$time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
-		$time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
-		$time_limit_message=trim($qidattributes['time_limit_message']) != '' ? $qidattributes['time_limit_message'] : $clang->gT("Your time to answer this question has expired");
-		$time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
-		$time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? $qidattributes['time_limit_warning_message'] : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
-		$time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
-		$time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
-		$time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
-            top: 10px;
-            left: 35%;
-            width: 30%;
-            height: 60px;
-            padding: 16px;
-            border: 8px solid #555;
-            background-color: white;
-            z-index:1002;
-			text-align: center;
-            overflow: auto;";
-		$time_limit_message_style.="\n		display: none;"; //Important to hide time limit message at start
-		$time_limit_warning_style=trim($qidattributes['time_limit_warning_style']) != '' ? $qidattributes['time_limit_warning_style'] : "position: absolute;
-            top: 10px;
-            left: 35%;
-            width: 30%;
-            height: 60px;
-            padding: 16px;
-            border: 8px solid #555;
-            background-color: white;
-            z-index:1001;
-			text-align: center;
-            overflow: auto;";
-		$time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
-		$time_limit_timer_style=trim($qidattributes['time_limit_timer_style']) != '' ? $qidattributes['time_limit_timer_style'] : "position: relative;
-			width: 150px;
-			margin-left: auto;
-			margin-right: auto;
-			border: 1px solid #111;
-			text-align: center;
-			background-color: #EEE;
-			margin-bottom: 5px;
-			font-size: 8pt;";
+	$time_limit=$qidattributes['time_limit'];
 
-		$timersessionname="timer_question_".$ia[0];
-		if(isset($_SESSION[$timersessionname])) {
-			$time_limit=$_SESSION[$timersessionname];
-		} 
-		
-		$output = "
+	$disable_next=trim($qidattributes['time_limit_disable_next']) != '' ? $qidattributes['time_limit_disable_next'] : 0;
+	$time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
+	$time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
+	$time_limit_message=trim($qidattributes['time_limit_message']) != '' ? $qidattributes['time_limit_message'] : $clang->gT("Your time to answer this question has expired");
+	$time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
+	$time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? $qidattributes['time_limit_warning_message'] : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+	$time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
+	$time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
+	$time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
+        top: 10px;
+        left: 35%;
+        width: 30%;
+        height: 60px;
+        padding: 16px;
+        border: 8px solid #555;
+        background-color: white;
+        z-index:1002;
+		text-align: center;
+        overflow: auto;";
+	$time_limit_message_style.="\n		display: none;"; //Important to hide time limit message at start
+	$time_limit_warning_style=trim($qidattributes['time_limit_warning_style']) != '' ? $qidattributes['time_limit_warning_style'] : "position: absolute;
+        top: 10px;
+        left: 35%;
+        width: 30%;
+        height: 60px;
+        padding: 16px;
+        border: 8px solid #555;
+        background-color: white;
+        z-index:1001;
+		text-align: center;
+        overflow: auto;";
+	$time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
+	$time_limit_timer_style=trim($qidattributes['time_limit_timer_style']) != '' ? $qidattributes['time_limit_timer_style'] : "position: relative;
+		width: 150px;
+		margin-left: auto;
+		margin-right: auto;
+		border: 1px solid #111;
+		text-align: center;
+		background-color: #EEE;
+		margin-bottom: 5px;
+		font-size: 8pt;";
+	$timersessionname="timer_question_".$ia[0];
+	if(isset($_SESSION[$timersessionname])) {
+		$time_limit=$_SESSION[$timersessionname];
+	} 
+
+	$output = "
 	<input type='hidden' name='timerquestion' value='".$timersessionname."' />
-	<input type='hidden' name='".$timersessionname."' id='".$timersessionname."' value='".$time_limit."' />
-";
+	<input type='hidden' name='".$timersessionname."' id='".$timersessionname."' value='".$time_limit."' />\n";
 	if($thissurvey['timercount'] < 2) 
 	{
 		$output .="
@@ -1049,30 +1055,32 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		}
 	//-->
 	</script>";
-	$output .= "
+		$output .= "
     <script type='text/javascript'>
 	<!--
 		function countdown(questionid,timer,action,warning,warninghide,disable){
 		    if(!timeleft) {var timeleft=timer;}
 			if(!warning) {var warning=0;}
 			if(!warninghide) {var warninghide=0;}";
-			
-	if($thissurvey['format'] == "G")
-	{
-		global $gid;
-		$qcount=0;
-		foreach($_SESSION['fieldarray'] as $ib) {
-		  if($ib[5] == $gid) {
-		    $qcount++;
-		  }
-		}
+	
+		if($thissurvey['format'] == "G")
+		{
+			global $gid;
+			$qcount=0;
+			foreach($_SESSION['fieldarray'] as $ib) 
+			{
+				if($ib[5] == $gid) 
+				{
+				$qcount++;
+				}
+			}
 		//Override all other options and just allow freezing, survey is presented in group by group mode
-		if($qcount > 1) {
-			$output .="
-				action = 3;";
+			if($qcount > 1) {
+				$output .="
+					action = 3;";
+			}
 		}
-	}
-	$output .="
+		$output .="
 			var timerdisplay='LS_question'+questionid+'_Timer';
 			var warningtimedisplay='LS_question'+questionid+'_Warning';
 			var warningdisplay='LS_question'+questionid+'_warning';
@@ -1086,14 +1094,13 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 			}
 			eraseCookie(timersessionname);
 			createCookie(timersessionname, timeleft, 7);";
-	if($disable_next == 1) {
-		$output .= "
+		if($disable_next == 1) {
+			$output .= "
 		if(document.getElementById('movenextbtn') !== null) { 
 			document.getElementById('movenextbtn').disabled=true;
+		}\n";
 		}
-		";
-	}
-	$output .="
+		$output .="
 			if(warning > 0 && timeleft<=warning) {
 			  var wsecs=warning%60;
 			  if(wsecs<10) wsecs='0' + wsecs;
@@ -1170,12 +1177,12 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	//-->
 	</script>";
 	}
-		$output .= "<div id='question".$ia[0]."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
-		
-		$output .= "<div id='LS_question".$ia[0]."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
-		$output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
-		//Call the countdown script
-		$output .= "<script type='text/javascript'>
+	$output .= "<div id='question".$ia[0]."_timer' style='".$time_limit_message_style."'>".$time_limit_message."</div>\n\n";
+
+	$output .= "<div id='LS_question".$ia[0]."_warning' style='".$time_limit_warning_style."'>".$time_limit_warning_message."</div>\n\n";
+	$output .= "<div id='LS_question".$ia[0]."_Timer' style='".$time_limit_timer_style."'></div>\n\n";
+	//Call the countdown script
+	$output .= "<script type='text/javascript'>
     countdown(".$ia[0].", ".$time_limit.", ".$time_limit_action.", ".$time_limit_warning.", ".$time_limit_warning_display_time.", '".$disable."');
 </script>\n\n";
 	return $output;
