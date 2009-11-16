@@ -3226,7 +3226,7 @@ if ($action == "newsurvey")
         
     // Set token length
         $newsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
-		. "<input type='text' name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />"
+		. "<input value='15' type='text' name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress=\"return goodchars(event,'0123456789')\" />"
 		. "</li>\n";
 
     // Public registration
