@@ -1710,7 +1710,7 @@ if ($subaction == "managetokenattributes" &&
     $tokenfields=GetTokenFieldsAndNames($surveyid,true);
     $nrofattributes=0;
     $tokenoutput.='<form action="'.$scriptname.'" method="post">'
-                 ."<table class='listsurveys'><tr><th>Attribute field</th><th>Field description</th><th>Example Data</th></tr>";
+                 ."<table class='listsurveys'><tr><th>".$clang->gT("Attribute field")."</th><th>".$clang->gT("Field description")."</th><th>".$clang->gT("Example data")."</th></tr>";
 
     $exampledataquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
     $exampledata = db_select_limit_assoc($exampledataquery,1) or safe_die ("Could not get example data!<br />$exampledataquery<br />".$connect->ErrorMsg());
