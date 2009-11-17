@@ -58,7 +58,7 @@ $showcombinedresults = 0;
  * this variable is used in the function shortencode() which cuts off a question/answer title
  * after $maxchars and shows the rest as tooltip
  */
-$maxchars = 13;
+$maxchars = 50;
 
 
 
@@ -381,10 +381,10 @@ foreach ($filters as $flt)
 	if ($flt[1] != $currentgroup)
 	{
 		//If the groupname has changed, start a new row
-		if ($currentgroup)
+		if ($currentgroup!='')
 		{
 			//if we've already drawn a table for a group, and we're changing - close off table
-			$statisticsoutput .= "\n\t\t\t\t<!-- --></tr>\n\t\t\t</table></div></td></tr>\n";
+			$statisticsoutput .= "<!-- Close filter group --></tr>\n</table></div></td></tr>\n";
 		}
 		
 		$statisticsoutput .= "\t\t<tr><td align='center' class='settingcaption'>\n"
@@ -392,9 +392,9 @@ foreach ($filters as $flt)
 		."<input type=\"checkbox\" id='btn_$flt[1]' onclick=\"selectCheckboxes('grp_$flt[1]', 'summary[]', 'btn_$flt[1]');\" />"
 		
 		//use current groupname and groupid as heading
-		."\t\t<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
+		."<font size='1'><strong>$flt[4]</strong> (".$clang->gT("Question group")." $flt[1])</font></td></tr>\n\t\t"
 		."<tr><td align='center'>\n"
-		."\t\t\t<div id='grp_$flt[1]'><table class='statisticstable'><tr>\n";
+		."<div id='grp_$flt[1]'><table class='filtertable'><tr>\n";
 
 		//counter which is used to adapt layout depending on counter #
 		$counter=0;
@@ -465,7 +465,7 @@ foreach ($filters as $flt)
 
 		//numerical input will get special treatment (arihtmetic mean, standard derivation, ...)
 		if ($flt[2] == "N") {$myfield = "N$myfield";}
-		$statisticsoutput .= "<input type='checkbox'  name='summary[]' value='$myfield'";
+		$statisticsoutput .= "<input type='checkbox'  id='filter$myfield' name='summary[]' value='$myfield'";
 
 		/*
 		 * one of these conditions has to be true
@@ -482,8 +482,8 @@ foreach ($filters as $flt)
 		{$statisticsoutput .= " checked='checked'";}
 
 		//show speaker symbol which contains full question text
-		$statisticsoutput .= " />".showspeaker(FlattenText($flt[5]))
-		."<br />\n";
+		$statisticsoutput .= " /><label for='filter$myfield'>".showspeaker(FlattenText($flt[5]))
+		."</label><br />\n";
 
 		//numerical question type -> add some HTML to the output
 		//if ($flt[2] == "N") {$statisticsoutput .= "</font>";}		//removed to correct font error
@@ -1629,7 +1629,7 @@ function showSpeaker($hinttext)
 
 	if(!isset($maxchars))
 	{
-		$maxchars = 15;
+		$maxchars = 100;
 	}
 	$htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
 	$jshinttext=javascript_escape($hinttext,true,true);

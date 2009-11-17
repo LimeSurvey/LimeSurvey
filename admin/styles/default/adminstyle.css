@@ -1157,3 +1157,36 @@ margin:0 auto;
     height:105px;
     float:right;
 }
+
+.filtertable  {
+    background:#EEF6FF;
+    text-align:center; 
+    margin:5px 15px;   
+    border:1px #fff solid;
+    padding:3px 10px;
+}
+
+.filtertable td {
+    padding:3px 10px 7px 10px;
+    border-right:1px #fff solid;  
+    border-bottom:1px #fff solid;  
+    vertical-align: top;
+        border-collapse:collapse !important;     
+}
+
+.filtertable td:last-child {
+    border-left:0px #D2E0F2 solid;  
+}
+
+.filtertable tr:last-child td {
+    border-top:0px #D2E0F2 solid;          
+}
+
+.filtertable span {
+    font-size:10px;
+    font-weight: bold;
+}
+
+.filtertable textarea {
+    width:210px;
+}
