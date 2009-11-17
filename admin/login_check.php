@@ -147,11 +147,11 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 					<tbody>
 					<tr>
 						<td><label for="user">'.$clang->gT('Username').'</label></td>
-						<td><input name="user" id="user" type="text" size="40" maxlength="40" value="" /></td>
+						<td><input name="user" id="user" type="text" size="60" maxlength="60" value="" /></td>
 					</tr>
 					<tr>
 						<td><label for="email">'.$clang->gT('Email').'</label></td>
-						<td><input name="email" id="email" type="text" size="40" maxlength="40" value="" /></td>
+						<td><input name="email" id="email" type="text" size="60" maxlength="60" value="" /></td>
 					</tr>
 					<tr>
 						<td>&nbsp;</td>
