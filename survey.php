@@ -348,6 +348,8 @@ print <<<END
 END;
 // Find out if there are any array_filter questions in this group
 $array_filterqs = getArrayFiltersForGroup($surveyid, "");
+$array_filterXqs = getArrayFilterExcludesForGroup($surveyid, "");
+
 // Put in the radio button reset javascript for the array filter unselect
 if (isset($array_filterqs) && is_array($array_filterqs)) {
 	print <<<END
@@ -377,7 +379,8 @@ END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) || 
-    (isset($array_filterqs) && is_array($array_filterqs)))
+    (isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
 	if (!isset($endzone)) 
 	{
@@ -656,8 +659,13 @@ END;
 }
 
 
-if (isset($array_filterqs) && is_array($array_filterqs))
+if ((isset($array_filterqs) && is_array($array_filterqs)) ||
+    (isset($array_filterXqs) && is_array($array_filterXqs)))
 {
+	$qattributes=questionAttributes(1);
+	$array_filter_types=$qattributes['array_filter']['types'];
+	$array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
+	unset($qattributes);
 	if (!isset($appendj)) {$appendj="";}
 
 	foreach ($array_filterqs as $attralist)
@@ -667,29 +675,69 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
-				$fquestans = "java".$qfbase.$fansrows['code'];
-				$tbody = "javatbd".$qbase.$fansrows['code'];
-				$dtbody = "tbdisp".$qbase.$fansrows['code'];
-				$tbodyae = $qbase.$fansrows['code'];
-				$appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
-				$appendj .= "\t{\n";
-				$appendj .= "document.getElementById('$tbody').style.display='';\n";
-				$appendj .= "document.getElementById('$dtbody').value='on';\n";
-				$appendj .= "\t}\n";
-				$appendj .= "\telse\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\t$('#$dtbody').val('off');\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input').val('');\n";
-                // This line resets any radio group in the hidden row
-                $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-				$appendj .= "\t}\n";
+				if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "document.getElementById('$tbody').style.display='';\n";
+					$appendj .= "document.getElementById('$dtbody').value='on';\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input').val('');\n";
+					// This line resets any radio group in the hidden row
+					$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+					$appendj .= "\t}\n";
+				}
+			}
+		}
+	}
+	$java .= $appendj;
+	foreach ($array_filterXqs as $attralist)
+	{
+		//die(print_r($attralist));
+		$qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+			$qresult = db_execute_assoc($qquery); //Checked
+			while ($fansrows = $qresult->FetchRow())
+			{
+				if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "document.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "document.getElementById('$dtbody').value='off';\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input').val('');\n";
+					// This line resets any radio group in the hidden row
+					$appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+					$appendj .= "\t}\n";
+				}
 			}
 		}
 	}

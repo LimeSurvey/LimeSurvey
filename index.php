@@ -1261,7 +1261,7 @@ function checkmandatorys($move, $backok=null)
 			{
 				if ((isset($multiname) && $multiname) && (isset($_POST[$multiname]) && $_POST[$multiname])) //This isn't the first time (multiname exists, and is a posted variable)
 				{
-					if ($$multiname == $$multiname2) //The number of questions not answered is equal to the number of questions
+					if ($$multiname == $$multiname2 && isset($visibleanswers) && $visibleanswers > 0) //The number of questions not answered is equal to the number of questions
 					{
 						//The number of questions not answered is equal to the number of questions
 						//This section gets used if it is a multiple choice type question
@@ -1273,7 +1273,7 @@ function checkmandatorys($move, $backok=null)
 					}
 				}
 				$multiname="MULTI$mfns[$mi]";
-				$multiname2=$multiname."2"; //POSSIBLE CORRUPTION OF PROCESS - CHECK LATER
+				$multiname2=$multiname."2"; //Make a copy, to store a second version
 				$$multiname=0;
 				$$multiname2=0;
 			}
@@ -1294,12 +1294,19 @@ function checkmandatorys($move, $backok=null)
 				//One of the mandatory questions hasn't been answered
 				$$multiname++;
 			}
+			/* We need to have some variable to use later that indicates whether any of the
+			   multiple option answers were actually displayed (since it's impossible to
+			   answer them if they aren't). The $visibleanswers field is created here to
+			   record how many of the answers were actually available to be answered */
+			if(!isset($visibleanswers) && ($_POST[$dtcm] == "off" || isset($_POST[$dtcm]))) {$visibleanswers=0;}
+			if($_POST[$dtcm] == "on") { $visibleanswers++;}
+
 			$$multiname2++;
 			$mi++;
 		}
 		if ($multiname && isset($_POST[$multiname]) && $_POST[$multiname]) // Catch the last multiple options question in the lot
 		{
-			if ($$multiname == $$multiname2) //so far all multiple choice options are unanswered
+			if ($$multiname == $$multiname2 && isset($visibleanswers) && $visibleanswers > 0) //so far all multiple choice options are unanswered
 			{
 				//The number of questions not answered is equal to the number of questions
 				if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep;}

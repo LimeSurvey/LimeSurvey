@@ -434,9 +434,11 @@ echo "<input type='hidden' id='runonce' value='0' />
 // Find out if there are any array_filter questions in this group
 if ($show_empty_group) {
 	unset($array_filterqs);
+	unset($array_filterXqs);
 } else
 {
 	$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
+	$array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
 }
 
 print <<<END
@@ -451,7 +453,8 @@ END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) ||
-    (isset($array_filterqs) && is_array($array_filterqs)))
+    (isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
     if (!isset($endzone))
     {
@@ -876,8 +879,13 @@ if (isset($sourceQuestionGid[1]) && ((isset($oldq) && $oldq != $cd[0] || !isset(
 $java .= $endzone;
 }
 
-if (isset($array_filterqs) && is_array($array_filterqs))
+if ((isset($array_filterqs) && is_array($array_filterqs)) ||
+	(isset($array_filterXqs) && is_array($array_filterXqs)))
 {
+	$qattributes=questionAttributes(1);
+	$array_filter_types=$qattributes['array_filter']['types'];
+	$array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
+	unset($qattributes);
 	if (!isset($appendj)) {$appendj="";}
 
 	foreach ($array_filterqs as $attralist)
@@ -887,29 +895,69 @@ if (isset($array_filterqs) && is_array($array_filterqs))
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT code FROM {$dbprefix}answers WHERE qid='".$attralist['qid']."' AND language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
-				$fquestans = "java".$qfbase.$fansrows['code'];
-				$tbody = "javatbd".$qbase.$fansrows['code'];
-				$dtbody = "tbdisp".$qbase.$fansrows['code'];
-				$tbodyae = $qbase.$fansrows['code'];
-                $appendj .= "\n";
-                $appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-				$appendj .= "\t\t$('#$dtbody').val('on');\n";
-				$appendj .= "\t}\n";
-				$appendj .= "\telse\n";
-				$appendj .= "\t{\n";
-				$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-				$appendj .= "\t\t$('#$dtbody').val('off');\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
-                // This line resets any radio group in the hidden row
-               $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
-				$appendj .= "\t}\n";   
+				if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					// This line resets any radio group in the hidden row
+				   $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";   
+				}
+			}
+		}
+	}
+	$java .= $appendj;
+	foreach ($array_filterXqs as $attralist)
+	{
+		//die(print_r($attrflist));
+		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
+		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
+		if ($attralist['type'] == "M")
+		{
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+			$qresult = db_execute_assoc($qquery); //Checked
+			while ($fansrows = $qresult->FetchRow())
+			{
+				if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+				{
+					$fquestans = "java".$qfbase.$fansrows['code'];
+					$tbody = "javatbd".$qbase.$fansrows['code'];
+					$dtbody = "tbdisp".$qbase.$fansrows['code'];
+					$tbodyae = $qbase.$fansrows['code'];
+					$appendj .= "\n";
+					$appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+					$appendj .= "\t\t$('#$dtbody').val('off');\n";
+					$appendj .= "\t}\n";
+					$appendj .= "\telse\n";
+					$appendj .= "\t{\n";
+					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+					$appendj .= "\t\t$('#$dtbody').val('on');\n";
+					// This line resets the text fields in the hidden row
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					// This line resets any radio group in the hidden row
+				   $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+					$appendj .= "\t}\n";
+				}
 			}
 		}
 	}

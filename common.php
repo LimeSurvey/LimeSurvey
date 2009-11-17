@@ -3295,13 +3295,21 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer width'));
 
     $qattributes["array_filter"]=array(
-    "types"=>"1ABCEF:;",
+    "types"=>"1ABCEF:;MP",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'text',
-    "help"=>$clang->gT("Enter the code of a Multiple options question to filter the answer options in this array."),
+    "help"=>$clang->gT("Enter the code of a Multiple options question to only show the matching answer options in this question."),
     "caption"=>$clang->gT('Array filter'));
     
+    $qattributes["array_filter_exclude"]=array(
+    "types"=>"1ABCEF:;MP",
+    'category'=>$clang->gT('Logic'),
+    'sortorder'=>100,
+    'inputtype'=>'text',
+    "help"=>$clang->gT("Enter the code of a Multiple options question to exclude the matching answer options in this question."),
+    "caption"=>$clang->gT('Array filter exclusion'));
+
     $qattributes["category_separator"]=array(
     "types"=>"!",
     'category'=>$clang->gT('Display'),
@@ -4372,6 +4380,53 @@ function getArrayFiltersForGroup($surveyid,$gid)
 }
 
 /**
+* getArrayFilterExcludesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
+* @global string $surveyid
+* @global string $gid
+* @global string $dbprefix
+* @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
+*/
+function getArrayFilterExcludesForGroup($surveyid,$gid)
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $dbprefix;
+    $surveyid=sanitize_int($surveyid);
+    $surveyid=sanitize_int($surveyid);
+    $gid=sanitize_int($gid);
+    // Get All Questions in Current Group
+	$qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
+	if($gid != "") {$qquery .= " AND gid='$gid'";}
+	$qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
+	$qresult = db_execute_assoc($qquery);  //Checked
+	$grows = array(); //Create an empty array in case query not return any rows
+	// Store each result as an array with in the $grows array
+	while ($qrow = $qresult->FetchRow()) {
+		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+	}
+	$attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
+	$grows2 = $grows;
+	foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
+	{
+		$qquery = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qrow['qid']."'";
+		$qresult = db_execute_num($qquery);     //Checked
+		if ($qresult->RecordCount() == 1) // We Found a array_filter attribute
+		{
+			$val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+			foreach ($grows2 as $avalue)
+			{
+				if ($avalue['title'] == $val[0])
+				{
+					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
+					array_push($attrmach,$filter);
+				}
+			}
+			reset($grows2);
+		}
+	}
+	return $attrmach;
+}
+
+/**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
 * @global string $surveyid
 * @global string $gid
@@ -4410,10 +4465,45 @@ function getArrayFiltersForQuestion($qid)
 }
 
 /**
-* getArrayFiltersForQuestion($qid) finds out if a question is in the current group or not for array filter
+* getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
 * @global string $surveyid
 * @global string $gid
 * @global string $dbprefix
+* @return returns an array of codes that were selected else returns false
+*/
+function getArrayFilterExcludesForQuestion($qid)
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $surveyid, $dbprefix;
+    $qid=sanitize_int($qid);
+	$query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
+	$result = db_execute_assoc($query);  //Checked
+	if ($result->RecordCount() == 1) // We Found a array_filter attribute
+	{
+		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+		foreach ($_SESSION['fieldarray'] as $fields)
+		{
+			if ($fields[2] == $val['value'])
+			{
+				// we found the target question, now we need to know what the answers where, we know its a multi!
+                $fields[0]=sanitize_int($fields[0]);
+				$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
+				$qresult = db_execute_assoc($query);  //Checked
+				$selected = array();
+				while ($code = $qresult->fetchRow())
+				{
+					if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
+				}
+				return $selected;
+			}
+		}
+		return false;
+	}
+	return false;
+}
+/**
+* getArrayFiltersForGroup($qid) finds out if a question is in the current group or not for array filter
+* @global string $qid
 * @return returns true if its not in currect group and false if it is..
 */
 function getArrayFiltersOutGroup($qid)
