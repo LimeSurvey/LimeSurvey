@@ -596,7 +596,7 @@ if ($questionscount > 0)
 			while ($arows = $aresult->FetchRow())
 			{
 				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
-				$shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
+				$shortquestion=$rows['title'].":$shortanswer ".FlattenText($rows['question']);
 				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 
 				switch ($rows['type'])

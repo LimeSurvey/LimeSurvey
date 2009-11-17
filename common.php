@@ -4275,7 +4275,12 @@ function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, 
 	return $sent;
 }
 
-// This functions removes all tags, CRs, linefeeds and other strange chars from a given text
+/**
+*  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+* 
+* @param string $texttoflatten  Text you want to clean
+* @return string  Cleaned text
+*/
 function FlattenText($texttoflatten)
 {
     $nicetext = strip_javascript($texttoflatten);
