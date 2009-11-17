@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.87RC1!
+Welcome to LimeSurvey v1.87RC2!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -79,6 +79,29 @@ Thank you to everyone who helped with this new release!
 
 
 
+Changes from 1.87RC1 (build 7886) to 1.87RC2 (build 7917) [18-11-2009] - Legend: + new feature, # update feature, - bug fix
+#Updated feature: Removed settings available in global settings from config.php - added $debug setting to config.php, added new database types and explanations to config.php (c_schmitz)
+#Updated feature: Statistics dialogue was reworked (c_schmitz)
+#Update of Croatian language (idobraca)
+#Updated translation: German (c_schmitz)
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Polish (elisa-ls)
++New feature - array_filter now works for multiple option questions (jcleeland)
++New feature - array_filter_exclude - hides options based on answers to previous question. Works in opposite way to array_include (jcleeland)
+-Fixed #3831: When adding HTML tag at text questions the survey crashes (c_schmitz)
+-Fixed issue #03840: Error when using time control (jcleeland)
+-Fixed issue #03841: Settings does not appear (timer text messages not appearing) - was more a bug with the entire textarea modification to the question attributes handling. Now solved. (jcleeland)
+-Fixed issue #3833: Warning during a fresh install (c_schmitz)
+-Fixed issue #3834: Date questions always are displayed as Drop Down Questions (c_schmitz)
+-Fixed issue #3835: Javascript code embedded in question text is displayed at condition editor in question list (c_schmitz)
+-Fixed issue #3836: Problem with mandatory date question (c_schmitz)
+-Fixed issue #3837: Date questions at Statistics: some parts are differently aligned  (c_schmitz)
+-Fixed issue #3839: Text not translated in token attribute field configuration (c_schmitz)
+-fixed bug 3843 "No default value set for token length" for MS SQL and Postgres (maziminke)
+-fixed bug 3843 "No default value set for token length" when creating a new survey. (maziminke)
++New feature: Emailmethod now configurable in global settings (c_schmitz)
++New feature: SMTP debug mode which can be switched on in global settings (c_schmitz)
+
 
 Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + new feature, # update feature, - bug fix
 +New feature #3292 and #2857: slider min and max can now be displayed below the slider (using the slider_showminmax question attribute). Slider Left and Right text can be displayed before and after the slider (using the slider_separator question attribute and using specific answers format). (lemeur)
@@ -97,6 +120,7 @@ Changes from 1.86 (build 7689) to 1.87RC1 (build 7886) [13-11-2009] - Legend: + 
 +New feature: Optimized error handling on token import (c_schmitz)
 +New feature: Separate on-top template RTL CSS file is now automatically included when a RTL language is used. New TAG {TEMPLATECSS} takes care of this and template.css (c_schmitz)
 +New feature: Survey list is now sortable and Survey ID is shown as additional column (c_schmitz)
++New feature: Global settings dialog for most common settings from config-defaults.php
 #Updated feature #2935: In Slider questions, you can make the slider cursor start at the middle position without setting the initial value of the answer (if the question is mandatory, the participant will the have to slide the cursor in order to proceed) (lemeur)
 #Updated feature #3488: improvement in condition designer, the code is now displayed before the question text (usability improvement kindly provided by mdekker) (lemeur)
 #Updated feature #3612: improve client-side performance while evaluating conditions on the same page (lemeur)
