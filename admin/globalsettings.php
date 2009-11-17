@@ -53,6 +53,7 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('defaultlang',sanitize_languagecode($_POST['defaultlang']));
                        setGlobalSetting('defaulthtmleditormode',sanitize_paranoid_string($_POST['defaulthtmleditormode']));
                        setGlobalSetting('defaulttemplate',sanitize_paranoid_string($_POST['defaulttemplate']));
+                       setGlobalSetting('emailmethod',strip_tags($_POST['emailmethod']));
                        setGlobalSetting('emailsmtphost',strip_tags($_POST['emailsmtphost']));
                        if ($_POST['emailsmtppassword']!='somepassword')
                        {
@@ -82,7 +83,8 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
 
 function globalsettingsdisplay() 
 {
-    global $action, $subaction, $editsurvey, $connect, $scriptname, $clang, $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
+    global $action, $connect, $js_adminheader_includes, $editsurvey, $subaction, $scriptname, $clang;
+    global $updateversion, $updatebuild, $updateavailable, $updatelastcheck;
     
     if (isset($subaction) && $subaction == "updatecheck")
     {
@@ -93,6 +95,7 @@ function globalsettingsdisplay()
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
         {
+            $js_adminheader_includes[]='scripts/globalsettings.js';                 
             // header
             $editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
             . "\t\t".$clang->gT("Global settings")."</td></tr></table>\n";
@@ -230,13 +233,27 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Email settings")."</h2><ul>\n";
 
                 //Format
-
                 $editsurvey.= "\t<li><label for='siteadminemail'>".$clang->gT("Default site admin email:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminemail' name='siteadminemail' value=\"".htmlspecialchars(getGlobalSetting('siteadminemail'))."\" /></li>\n"
                 . "\t<li><label for='siteadminbounce'>".$clang->gT("Default site bounce email:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value=\"".htmlspecialchars(getGlobalSetting('siteadminbounce'))."\" /></li>\n"
                 . "\t<li><label for='siteadminname'>".$clang->gT("Administrator name:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
+                . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
+                . "\t\t<select id='emailmethod' name='emailmethod'>\n"
+                . "\t\t\t<option value=''";
+                if (getGlobalSetting('emailmethod')=='mail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("PHP (default)")."</option>\n"
+                . "\t\t\t<option value='smtp'";
+                if (getGlobalSetting('emailmethod')=='smtp') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("SMTP")."</option>\n"
+                . "\t\t\t<option value='sendmail'";
+                if (getGlobalSetting('emailmethod')=='sendmail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Sendmail")."</option>\n"
+                . "\t\t\t<option value='qmail'";
+                if (getGlobalSetting('emailmethod')=='qmail') {$editsurvey .= " selected='selected'";}
+                $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
+                . "\t\t</select></li>\n"
                 . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>Enter your hostname and port, e.g.: my.smtp.com:25</font></li>\n"
                 . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
