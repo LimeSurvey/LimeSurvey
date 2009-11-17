@@ -36,7 +36,12 @@ function dateUpdater() {
         thisid=this.id.substr(3);
     }
 
-    if (($('#year'+thisid).val()=='') || ($('#month'+thisid).val()=='') || ($('#day'+thisid).val()=='')){
+    
+    if (($('#year'+thisid).val()=='') && ($('#month'+thisid).val()=='') && ($('#day'+thisid).val()=='')){
+        $('#qattribute_answer'+thisid).val('');
+        $('#answer'+thisid).val('');
+    }
+    else if (($('#year'+thisid).val()=='') || ($('#month'+thisid).val()=='') || ($('#day'+thisid).val()=='')){
         $('#qattribute_answer'+thisid).val('Please complete all parts of the date!');
         $('#answer'+thisid).val('');
     }
