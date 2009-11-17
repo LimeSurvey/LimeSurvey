@@ -4494,7 +4494,7 @@ function do_shortfreetext($ia)
 	{
 		//no question attribute set, use common input text field
 		$answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
-	.str_replace ("\"", "'", str_replace("\\", "", $_SESSION[$ia[1]]))
+	    .htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES,'UTF-8')
 		."\" maxlength=\"$maxsize\" onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";	
 	}			
 	if (trim($qidattributes['time_limit'])!='')

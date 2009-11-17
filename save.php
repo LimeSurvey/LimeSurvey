@@ -428,12 +428,7 @@ function createinsertquery()
                         $_SESSION[$value]=$datetimeobj->convert("Y-m-d");     
                         $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
                     }
-					//These next two functions search for lone < or > symbols, and converts them to &lt;~ or &rt;~
-					//so they get ignored by the strip_tags function
-					$tmpvalue=my_strip_ltags($_SESSION[$value]);
-					$tmpvalue=my_strip_rtags($tmpvalue);
-					$tmpvalue=strip_tags($connect->qstr($tmpvalue,get_magic_quotes_gpc()));
-					$values[]=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
+					$values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
                 }
 
             }
@@ -587,11 +582,7 @@ function createinsertquery()
                                 $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
                                 $_POST[$field]=$connect->BindDate($datetimeobj->convert("Y-m-d"));
                             }                            
-							$tmpvalue=my_strip_ltags($_POST[$field]);
-							$tmpvalue=my_strip_rtags($tmpvalue);
-							$tmpvalue=strip_tags($myFilter->process($tmpvalue),true);
-							$tmpvalue=str_replace("&lt;~", "<", str_replace("&rt;~", ">", $tmpvalue));
-                            $query .= db_quote_id($field)." = ".db_quoteall($tmpvalue).",";
+                            $query .= db_quote_id($field)." = ".db_quoteall($_POST[$field],true).",";
 						}
 					}
 				}
@@ -679,29 +670,5 @@ function submitanswer()
           return $array_remval;
     }
 
-function my_strip_ltags($str) {
-    $strs=explode('<',$str);
-    $res=$strs[0];
-    for($i=1;$i<count($strs);$i++)
-    {
-        if(!strpos($strs[$i],'>'))
-            $res = $res.'&lt;~'.$strs[$i];
-        else
-            $res = $res.'<'.$strs[$i];
-    }
-    return $res;   
-}
-function my_strip_rtags($str) {
-    $strs=explode('>',$str);
-    $res=$strs[0];
-    for($i=1;$i<count($strs);$i++)
-    {
-        if(!strpos($strs[$i],'<'))
-            $res = $res.'&rt;~'.$strs[$i];
-        else
-            $res = $res.'>'.$strs[$i];
-    }
-    return $res;
-}
 
 ?>
