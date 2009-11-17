@@ -973,17 +973,7 @@ if(!defined('COLSTYLE'))
 	};
 	define('COLSTYLE' ,strtolower($column_style), true);
 };
-if(!defined('MAX_COLUMNS'))
-{
-/**
- * The following prepares and defines the 'MAX_COLUMNS' constant which
- * dictates the maximum number of columns allowed when using display columns.
- *
- * $column_style is initialised at the end of config-defaults.php or from within config.php
- */
-	$max_columns = isset($max_columns)?$max_columns:8;
-	define('MAX_COLUMNS' , $max_columns , true);
-};
+
 
 function setup_columns($columns, $answer_count)
 {
@@ -1068,10 +1058,6 @@ function setup_columns($columns, $answer_count)
 		$colstyle = null;
 		$columns = 1;
 	}
-	elseif($columns > MAX_COLUMNS)
-	{
-		$columns = MAX_COLUMNS;
-	};
 
 	if($columns > $answer_count)
 	{
