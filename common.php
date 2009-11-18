@@ -6901,7 +6901,7 @@ function GetUpdateInfo()
             if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }        
-        $updateinfo=json_php5decode($full_body);
+        $updateinfo=json_decode($full_body);
         if ($http->response_status!='200')
         {
           $updateinfo['errorcode']=$http->response_status;  
@@ -6923,17 +6923,19 @@ function GetUpdateInfo()
    * @param string $json String with JSON data
    * @return array 
    */
-   function json_php5decode ($json) { 
+    if ( !function_exists('json_decode') ){      
+       function json_decode ($json) { 
 
-      //remove curly brackets to beware from regex errors
+          //remove curly brackets to beware from regex errors
 
-      $json = substr($json, strpos($json,'{')+1, strlen($json));
-      $json = substr($json, 0, strrpos($json,'}'));
-      $json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json));
+          $json = substr($json, strpos($json,'{')+1, strlen($json));
+          $json = substr($json, 0, strrpos($json,'}'));
+          $json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json));
 
-      return json_decode('{'.$json.'}', true);
-   }  
-   
+          return json_decode('{'.$json.'}', true);
+       }  
+    }
+    
    /**
    * This function updates the actual global variables if an update is available after using GetUpdateInfo
    * @return Array with update or error information
@@ -6991,25 +6993,4 @@ function GetUpdateInfo()
         return @rmdir($dirname);
     }
 
-    if ( !function_exists('json_decode') ){
-        function json_decode($json)
-        { 
-            $comment = false;
-            $out = '$x=';
-           
-            for ($i=0; $i<strlen($json); $i++)
-            {
-                if (!$comment)
-                {
-                    if ($json[$i] == '{')        $out .= ' array(';
-                    else if ($json[$i] == '}')    $out .= ')';
-                    else if ($json[$i] == ':')    $out .= '=>';
-                    else                         $out .= $json[$i];           
-                }
-                else $out .= $json[$i];
-                if ($json[$i] == '"')    $comment = !$comment;
-            }
-            eval($out . ';');
-            return $x;
-        } 
-    } 
+ 
