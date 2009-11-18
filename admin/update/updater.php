@@ -327,8 +327,8 @@ function UpdateStep4()
   // Now we have to update version.php
   
   @ini_set('auto_detect_line_endings', true);      
-  $versionlines=file($rootdir.'\version.php');
-  $handle = fopen($rootdir.'\version.php', "w");
+  $versionlines=file($rootdir.'/version.php');
+  $handle = fopen($rootdir.'/version.php', "w");
   foreach ($versionlines as $line)
   {
       if(strpos($line,'$buildnumber')!==false)
