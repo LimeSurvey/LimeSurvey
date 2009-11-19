@@ -41,7 +41,7 @@ function UpdateStep1()
   if ($updatekey==''){
     $output.='<br />'.$clang->gT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.'); 
     $output.="<br /><form id='keyupdate' method='post' action='$scriptname?action=update&amp;subaction=keyupdate'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
-    $output.='<input id="updateley" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
+    $output.='<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
   }
   else {
     $output.='<br />'.$clang->gT('Update key: Valid'); 
@@ -63,6 +63,7 @@ function UpdateStep2()
     // Request the list with changed files from the server
   
     require_once($homedir."/classes/http/http.php");     
+    $updatekey=getGlobalSetting('updatekey');
 
     $http=new http_class;    
     /* Connection timeout */
@@ -70,7 +71,7 @@ function UpdateStep2()
     /* Data transfer timeout */
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
-    $http->GetRequestArguments("http://update.limesurvey.org//updates/update/$buildnumber/$updatebuild/mykey",$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/update/$buildnumber/$updatebuild/$updatekey",$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);           
