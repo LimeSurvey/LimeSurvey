@@ -6875,7 +6875,7 @@ function removeBOM($str=""){
 */
 function GetUpdateInfo()
 {
-    global $homedir, $debug;
+    global $homedir, $debug, $buildnumber, $versionnumber;
     require_once($homedir."/classes/http/http.php");     
 
     $http=new http_class;    
@@ -6885,7 +6885,7 @@ function GetUpdateInfo()
     /* Data transfer timeout */
     $http->data_timeout=0;
     $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
-    $http->GetRequestArguments("http://update.limesurvey.org",$arguments);
+    $http->GetRequestArguments("http://update.limesurvey.org?build=$buildnumber",$arguments);
 
     $updateinfo=false;
     $error=$http->Open($arguments);           
@@ -6901,7 +6901,7 @@ function GetUpdateInfo()
             if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }        
-        $updateinfo=json_decode($full_body);
+        $updateinfo=json_decode($full_body,true);
         if ($http->response_status!='200')
         {
           $updateinfo['errorcode']=$http->response_status;  
@@ -6923,17 +6923,17 @@ function GetUpdateInfo()
    * @param string $json String with JSON data
    * @return array 
    */
-    if ( !function_exists('json_decode') ){      
-       function json_decode ($json) { 
-
-          //remove curly brackets to beware from regex errors
-
-          $json = substr($json, strpos($json,'{')+1, strlen($json));
-          $json = substr($json, 0, strrpos($json,'}'));
-          $json = preg_replace('/(^|,)([\\s\\t]*)([^:]*) (([\\s\\t]*)):(([\\s\\t]*))/s', '$1"$3"$4:', trim($json));
-
-          return json_decode('{'.$json.'}', true);
-       }  
+    if ( !function_exists('json_decode') ){
+        function json_decode($content, $assoc=false){
+            global $homedir;
+            require_once($homedir."/classes/json/JSON.php");   
+            if ( $assoc ){
+                        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+            } else {
+                        $json = new Services_JSON;
+                    }
+            return $json->decode($content);
+        }
     }
     
    /**

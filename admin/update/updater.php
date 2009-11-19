@@ -20,33 +20,64 @@ if ($action=='update'){
 
 function UpdateStep1()
 {
-  global $clang, $scriptname, $updatekey, $subaction;
+  global $clang, $scriptname, $updatekey, $subaction, $updatebuild, $homedir, $buildnumber;
   
     
   if ($subaction=='keyupdate')
   {
       setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
   }  
-    
-
   
-  $output='<div class="settingcaption">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="background"><br />'; 
+  $output='<div class="background"><div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><br />'; 
   $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />'; 
   $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>'; 
   $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>'; 
   $output.='<li>'.$clang->gT('Your DB and any changed files will be backed up.').'</li>'; 
   $output.='<li>'.$clang->gT('New files will be downloaded and installed.').'</li>'; 
   $output.='<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul>'; 
-  $output.='<br />'.$clang->gT('Checking basic requirements...'); 
+  $output.='<h3>'.$clang->gT('Checking basic requirements...').'</h3>'; 
   if ($updatekey==''){
-    $output.='<br />'.$clang->gT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.'); 
+    $output.=$clang->gT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.'); 
     $output.="<br /><form id='keyupdate' method='post' action='$scriptname?action=update&amp;subaction=keyupdate'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
     $output.='<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
   }
   else {
-    $output.='<br />'.$clang->gT('Update key: Valid'); 
-      
+    $output.=$clang->gT('Update key: Valid'); 
+
+    $output.='<h3>'.$clang->gT('Change log').'</h3>'; 
+    require_once($homedir."/classes/http/http.php");     
+    $updatekey=getGlobalSetting('updatekey');
+
+    $http=new http_class;    
+    /* Connection timeout */
+    $http->timeout=0;
+    /* Data transfer timeout */
+    $http->data_timeout=0;
+    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";       
+    $http->GetRequestArguments("http://update.limesurvey.org/updates/changelog/$buildnumber/$updatebuild/$updatekey",$arguments);
+
+    $updateinfo=false;
+    $error=$http->Open($arguments);           
+    $error=$http->SendRequest($arguments);
+
+    if($error=="") {
+        $body=''; $full_body=''; 
+        for(;;){
+            $error = $http->ReadReplyBody($body,10000);
+            if($error != "" || strlen($body)==0) break;
+            $full_body .= $body;
+        }        
+        $changelog=json_decode($full_body,true);
+        $output.='<textarea style="width:800px; height:300px; background-color:#fff; font-family:Monospace; font-size:11px;" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+    }
+    else
+    {
+        print( $error );
+    }
   }
+  
+
+
   $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step to start the update.').'<br />'; 
   $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
   if ($updatekey==''){    $output.="disabled='disabled'"; }
@@ -84,7 +115,7 @@ function UpdateStep2()
             if($error != "" || strlen($body)==0) break;
             $full_body .= $body;
         }        
-        $updateinfo=json_php5decode($full_body);
+        $updateinfo=json_decode($full_body,true);
         $http->SaveCookies($site_cookies);        
     }
     else
