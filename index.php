@@ -942,7 +942,7 @@ function makelanguagechanger()
     }
     if($lang != GetBaseLanguageFromSurveyID($surveyid))
     {
-      $htmlcode .= "<option value=\"$relativeurl/index.php?sid=".$surveyid."&lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
+      $htmlcode .= "<option value=\"$relativeurl/index.php?sid=".$surveyid."&amp;lang=".GetBaseLanguageFromSurveyID($surveyid)."$tokenparam\">".getLanguageNameFromCode(GetBaseLanguageFromSurveyID($surveyid),false)."</option>\n";  
     }
     
     $htmlcode .= "</select>\n";
@@ -1875,7 +1875,6 @@ function buildsurveysession()
                 <ul>
                 <li>
                     <label for='token'>".$clang->gT("Token")."</label><input class='text' id='token' type='text' name='token' />
-                </li>
                 <input type='hidden' name='sid' value='".$surveyid."' id='sid' />
                 <input type='hidden' name='tokenSEC' value='1' id='tokenSEC' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
@@ -1890,6 +1889,7 @@ function buildsurveysession()
 					<input type='hidden' name='loadname' value='".htmlspecialchars($_GET['loadname'])."' id='loadname' />
 					<input type='hidden' name='loadpass' value='".htmlspecialchars($_GET['loadpass'])."' id='loadpass' />";
 			}
+            echo "</li>";
 
             if (function_exists("ImageCreate") && captcha_enabled('surveyaccessscreen', $thissurvey['usecaptcha']))
                 { 

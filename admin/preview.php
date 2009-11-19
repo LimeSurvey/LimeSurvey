@@ -54,15 +54,15 @@ $answers = retrieveAnswers($ia);
 $thistpl="$templaterootdir/".$thissurvey['template'];
 doHeader();
 $dummy_js = '
-		            <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
-		            <script type="text/javascript">
-            <!--
-            function checkconditions(value, name, type)
-            {
-            }
-            //-->
-		            </script>
-		            <form method="post" action="index.php" id="limesurvey" name="limesurvey">
+		    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+		    <script type="text/javascript">
+            /* <![CDATA[ */
+                function checkconditions(value, name, type)
+                {
+                }
+            /* ]]> */
+		    </script>
+		    <form method="post" action="index.php" id="limesurvey" name="limesurvey">
             ';
 
 

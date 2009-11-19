@@ -19,7 +19,7 @@
     <style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
     </style>
- <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico">   
+ <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />   
 	</head>
 <body>
 <table width="500" align="center" style="border-collapse: collapse" bgcolor="#E1E1E1" border="4" cellspacing="0">

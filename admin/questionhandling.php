@@ -493,7 +493,7 @@ if ($action == "editquestion" || $action=="addquestion")
         . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
     }
 	$editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
-    . "</div></div></form><p/>\n";
+    . "</div></div></form><p>\n";
 	
 
 	    

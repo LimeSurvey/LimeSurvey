@@ -1591,9 +1591,9 @@ if($action == "addsurveysecurity")
 
 			if($isrresult)
 			{
-				$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
+				$addsummary .= "<p>".$clang->gT("User added.")."<br />\n";
 				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
+				."<p><input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
 				."<input type='hidden' name='uid' value='{$postuserid}' />"
 				."</form>\n";
@@ -1601,13 +1601,13 @@ if($action == "addsurveysecurity")
 			else
 			{
 				// Username already exists.
-				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
+				$addsummary .= "<p><strong>".$clang->gT("Failed to add user.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
 			}
-			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<p><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else
 		{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
+			$addsummary .= "<p><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
 			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 	}
