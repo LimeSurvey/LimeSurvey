@@ -1238,7 +1238,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>\n";
 			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
-			$_SESSION[$valuename] = '';
+			$_SESSION[$valuename] = ''; //Remove any saved results for this since it is no longer being displayed
 		}
 		else
 		{
@@ -1295,12 +1295,12 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";
 			$hiddenfield="<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='on' />";
-			$_SESSION[$valuename] = '';
 		}
 		else
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname' style='display: none'>";
 			$hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
+			$_SESSION[$valuename]=''; //Remove any saved results for this since it is no longer being displayed
 		}
 	}
 	else
@@ -5403,7 +5403,7 @@ function do_array_increasesamedecrease($ia)
 		. "</label>\n"
 		. "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
-		if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
+		if (isset($_SESSION[$myfname])) {$answer_body .= $_SESSION[$myfname];}
 		$answer_body .= "\" />\n\t</td>\n";
 
 		if ($ia[6] != 'Y' && $shownoanswer == 1)
