@@ -1251,7 +1251,7 @@ if ($subaction == "email" &&
 
 				$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 				$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-                if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+                if (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 				{
 					// Put date into sent
 					$today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1539,7 +1539,7 @@ if ($subaction == "remind" && //XXX
 					$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 					$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-					if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
+					if (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid)))
 					{
 
 						// Put date into remindersent
@@ -1890,12 +1890,17 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	}
 	$tokenoutput .= "</li>\n"
 
-	."\t<li><label for='sent'>".$clang->gT("Invite sent?").":</label>\n"
+	."\t<li><label for='sent'>".$clang->gT("Invite sent?")."</label>\n"
 	."\t<input type='text' size='15' id='sent' name='sent' value=\"";
 	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></li>\n"
 
-	."\t<li><label for='completed'>".$clang->gT("Completed?").":</label>\n"
+    ."\t<li><label for='remindersent'>".$clang->gT("Reminder sent?")."</label>\n"
+    ."\t<input type='text' size='15' id='remindersent' name='remindersent' value=\"";
+    if (isset($remindersent)) {$tokenoutput .= $remindersent;}    else {$tokenoutput .= "N";}
+    $tokenoutput .= "\" /></li>\n"
+
+	."\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
 	."\t<input type='text' size='15' id='completed' name='completed' value=\"";
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></li>\n"

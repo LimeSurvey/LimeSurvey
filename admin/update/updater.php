@@ -323,7 +323,7 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
   
-    $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div><div class="background"><br />'; 
+    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div><br />'; 
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
@@ -431,7 +431,7 @@ function UpdateStep4()
   $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />'; 
 
   $output.=$clang->gT('Please check any problems above - update was done.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >Back to main menu</button>";
+  $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >Back to main menu</button>";
   $output.='</div>';
   return $output;
 }

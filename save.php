@@ -356,7 +356,7 @@ function savedcontrol()
 
 				if ($clienttoken){$message.="&token=".$clienttoken;}
 				$from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-				if (MailTextMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+				if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
 				{
 					$emailsent="Y";
 				}

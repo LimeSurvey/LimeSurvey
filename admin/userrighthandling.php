@@ -772,7 +772,7 @@ if ($action == "mailsendusergroup")
 
     
         //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
-		if (MailTextMessage( $body, $subject, $to, $from,''))
+		if (SendEmailMessage( $body, $subject, $to, $from,''))
 		{
 			$usersummary = "<br /><strong>".$clang->gT("Message(s) sent successfully!")."</strong><br />\n"
 			. "<br />".$clang->gT("To:")." $addressee<br />\n"

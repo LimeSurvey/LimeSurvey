@@ -283,7 +283,7 @@ class LsrcHelper {
 						$modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 						$modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-						if (MailTextMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						if (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
 							// Put date into sent
 							$timeadjust = 0;
@@ -543,7 +543,7 @@ class LsrcHelper {
 						$msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 						$sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
-						if (MailTextMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
+						if (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename, $ishtml, getBounceEmail($surveyid)))
 						{
 								
 							// Put date into remindersent
@@ -3977,12 +3977,12 @@ class LsrcHelper {
 				."</style>";
 				
 			$message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$css."<center>".$message.$surveyid."<br/>".$html."</center>");
-			return MailTextMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
+			return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to, getBounceEmail($surveyid), $sitename, true);
 		}
 		else
         {
             $message = sprintf($clang->gT("This is your personal statistic sheet for survey #%s"),$surveyid);
-            return MailTextMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
+            return SendEmailMessage($message, sprintf($clang->gT("Statistics Survey #%s"),$surveyid), $to , getBounceEmail($surveyid), $sitename, $ishtml, getBounceEmail($surveyid), $tempFile);
         }
 		
 	}

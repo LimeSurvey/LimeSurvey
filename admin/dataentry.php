@@ -553,7 +553,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 							if (isset($tokendata['token'])) {$message.="&token=".$tokendata['token'];}
 							$from = $thissurvey['adminemail'];
 
-							if (MailTextMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
+							if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
 							{
 								$emailsent="Y";
 								$dataentryoutput .= "<font class='successtitle'>".$clang->gT("An email has been sent with details about your saved survey")."</font><br />\n";

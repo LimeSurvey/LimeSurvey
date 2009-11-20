@@ -4144,15 +4144,28 @@ function ReplaceFields ($text,$fieldsarray)
 	return $text;
 }
 
-function MailTextMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
+
+/**
+* This function mails a text $body to the recipient $to. 
+* You can use more than one recipient when using a comma separated string with recipients.
+* 
+* @param string $body Body text of the email in plain text or HTML 
+* @param mixed $subject Email subject
+* @param mixed $to 
+* @param mixed $from
+* @param mixed $sitename
+* @param mixed $ishtml
+* @param mixed $bouncemail
+* @param mixed $attachment
+* @return bool If successful returns true
+*/
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
 {
 // This function mails a text $body to the recipient $to. YOu can use more than one 
 // recipient when using a comma separated string with recipients.
 
-	global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
+    global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-
-    //if ($ishtml) {$body=htmlwrap($body,110);}
 
      if ($demoModeOnly==true)
      {

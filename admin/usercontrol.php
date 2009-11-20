@@ -75,7 +75,7 @@ if (!isset($_SESSION['loginID']))
 				$from = $siteadminemail;
 				$sitename = $siteadminname;
 
-				if(MailTextMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
+				if(SendEmailMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
 				{
 					$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
 					$connect->Execute($query); //Checked
@@ -374,7 +374,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$to = $new_user." <$new_email>";
 			$from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox'>";
-			if(MailTextMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
+			if(SendEmailMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
 			{
 				$addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
 				$addsummary .= "<br />".$clang->gT("An email with a generated password was sent to the user.");

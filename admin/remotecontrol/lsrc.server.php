@@ -190,7 +190,7 @@ function sSendEmail($sUser, $sPass, $iVid, $type, $maxLsrcEmails='', $subject=''
 			$mailsSend = 0;
 			while ($emrow = $emresult->FetchRow())
 			{
-				if (MailTextMessage($emailText, $subject, $emrow['email'] , $from, $sitename, $ishtml=false, getBounceEmail($iVid)))
+				if (SendEmailMessage($emailText, $subject, $emrow['email'] , $from, $sitename, $ishtml=false, getBounceEmail($iVid)))
 				{
 					$mailsSend++;
 				}

@@ -140,7 +140,7 @@ $subject=Replacefields($subject, $fieldsarray);
 
 $html=""; //Set variable
 
-if (MailTextMessage($message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
+if (SendEmailMessage($message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
 {
 	// TLR change to put date into sent
 	//	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"

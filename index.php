@@ -1572,7 +1572,7 @@ function submittokens($quotaexit=false)
 			    //Only send confirmation email if there is a valid email address
     		    if (validate_email($cnfrow['email']))
     		    {
-    			    MailTextMessage($message, $subject, $to, $from, $sitename,$ishtml);
+    			    SendEmailMessage($message, $subject, $to, $from, $sitename,$ishtml);
     		    }
 		    }
 		    else
@@ -1697,7 +1697,7 @@ function sendsubmitnotification($sendnotification)
 	{
 		foreach ($recips as $rc)
 		{                                        
-			if (!MailTextMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
+			if (!SendEmailMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
             {
                 if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
             }
@@ -1705,7 +1705,7 @@ function sendsubmitnotification($sendnotification)
 	}
 	else
 	{
-		if (!MailTextMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+		if (!SendEmailMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, false, getBounceEmail($surveyid)))
         {
             if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
         }
@@ -1719,7 +1719,7 @@ function sendsubmitnotification($sendnotification)
 		
 		foreach($emailresponseto as $ert)
 		{
-			if(!MailTextMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
+			if(!SendEmailMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
 			{
 				if ($debug>0) {echo '<br />Email could not be sent to EmailReponseTo field. Reason: '.$maildebug.'<br />';}
 }
@@ -1748,7 +1748,7 @@ function submitfailed($errormsg)
 		. "$subquery\n\n"
 		. $clang->gT("ERROR MESSAGE","unescaped").":\n"
 		. $errormsg."\n\n";
-		MailTextMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
+		SendEmailMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
 		//echo "<!-- EMAIL CONTENTS:\n$email -->\n";
 		//An email has been sent, so we can kill off this session.
 		session_unset();
