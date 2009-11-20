@@ -88,8 +88,8 @@ function UpdateStep1()
   
 
 
-  $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step to start the update.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+  $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step to start the update.'); 
+  $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
   if ($updatekey==''){    $output.="disabled='disabled'"; }
   $output.=">Update Step 2</button>";
   $output.='</div><table><tr>';
