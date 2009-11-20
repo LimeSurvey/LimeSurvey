@@ -1298,8 +1298,8 @@ function checkmandatorys($move, $backok=null)
 			   multiple option answers were actually displayed (since it's impossible to
 			   answer them if they aren't). The $visibleanswers field is created here to
 			   record how many of the answers were actually available to be answered */
-			if(!isset($visibleanswers) && ($_POST[$dtcm] == "off" || isset($_POST[$dtcm]))) {$visibleanswers=0;}
-			if($_POST[$dtcm] == "on") { $visibleanswers++;}
+			if(!isset($visibleanswers) && (isset($_POST[$dtcm]) && $_POST[$dtcm] == "off" || isset($_POST[$dtcm]))) {$visibleanswers=0;}
+			if(isset($_POST[$dtcm]) && $_POST[$dtcm] == "on") { $visibleanswers++;}
 
 			$$multiname2++;
 			$mi++;
