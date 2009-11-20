@@ -20,14 +20,14 @@ if ($action=='update'){
 
 function UpdateStep1()
 {
-  global $clang, $scriptname, $updatekey, $subaction, $updatebuild, $homedir, $buildnumber;
+  global $clang, $scriptname, $updatekey, $subaction, $updatebuild, $homedir, $buildnumber, $tempdir, $rootdir;
   
     
   if ($subaction=='keyupdate')
   {
       setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
   }  
-  
+  $error=false;
   $output='<div class="background"><div class="header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><br />'; 
   $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />'; 
   $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>'; 
@@ -42,8 +42,18 @@ function UpdateStep1()
     $output.='<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
   }
   else {
-    $output.=$clang->gT('Update key: Valid'); 
-
+    $output.="<ul><li>".$clang->gT('Update key: Valid')."</li>"; 
+     
+    if (!is_writable($tempdir))
+	{
+		$output.= "<li>".sprintf("Tempdir %s is not writable",$tempdir)."<li>";
+        $error=true;
+	}
+    if (!is_writable($rootdir.'/version.php'))
+	{
+		$output.= "<li>".sprintf("Version file %s is not writable",$rootdir.'/version.php')."<li>";
+        $error=true; 
+	}
     $output.='<h3>'.$clang->gT('Change log').'</h3>'; 
     require_once($homedir."/classes/http/http.php");     
     $updatekey=getGlobalSetting('updatekey');
@@ -140,12 +150,22 @@ function UpdateStep2()
     // Now check if the existing files have the mentioned checksum
     $existingfiles=array();
     $modifiedfiles=array();
+    $readonlyfiles=array();
     foreach ($updateinfo['files'] as $afile)
     {
+        if ($afile['type']=='A' && !is_writable(dirname($rootdir.$afile['file'])))
+		{
+			$readonlyfiles[]=dirname($rootdir.$afile['file']);
+		}
+		elseif (!is_writable($rootdir.$afile['file'])) {
+			$readonlyfiles[]=$rootdir.$afile['file'];
+		}  
+
+
         if ($afile['type']=='A' && file_exists($rootdir.$afile['file']))
         {
             //A new file, check if this already exists
-            $existingfiles[]=$afile;  
+            $existingfiles[]=$afile;
         }
         elseif (($afile['type']=='D' || $afile['type']=='M')  && is_file($rootdir.$afile['file']) && sha1_file($rootdir.$afile['file'])!=$afile['checksum'])  // A deleted or modified file - check if it is unmodified
         {
@@ -156,6 +176,18 @@ function UpdateStep2()
   $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="background"><br />'; 
  
   $output.=$clang->gT('Checking your existing LimeSurvey files').'<br />'; 
+  if (count($readonlyfiles)>0)
+  {
+      $output.=$clang->gT('The following files/directories need to be updated but their permissions are set to read-only.').'<br />';  
+      $output.=$clang->gT('You must set according permissions on the file(s) below before you can continue. If you are unsure what to do please contact your system administrator for advice.').'<br />';  
+      $output.='<ul>'; 
+      $readonlyfiles=array_unique($readonlyfiles);  
+      foreach ($readonlyfiles as $readonlyfile)
+      {
+          $output.='<li>'.htmlspecialchars($readonlyfile).'</li>';  
+      }
+      $output.='</ul>';  
+  }
   if (count($existingfiles)>0)
   {
       $output.=$clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';  
