@@ -4161,8 +4161,8 @@ function ReplaceFields ($text,$fieldsarray)
 */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null)
 {
-// This function mails a text $body to the recipient $to. YOu can use more than one 
-// recipient when using a comma separated string with recipients.
+// This function mails a text $body to the recipient $to. You can use more than one 
+// recipient when using a semikolon separated string with recipients.
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;

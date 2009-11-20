@@ -389,5 +389,3 @@ function sanitize_signedint($integer, $min='', $max='')
 
     return $int;
 };
-
-?>

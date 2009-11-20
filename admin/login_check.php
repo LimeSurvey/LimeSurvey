@@ -126,7 +126,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
 if( isset($_POST['user']) && isset($_POST['password']) || 
 	($action == "forgotpass") || ($action == "login") || 
 	($action == "logout") || 
-	($useWebserverAuth === true && !isset($_SESSION['loginID'])) )	// added by Dennis
+	($useWebserverAuth === true && !isset($_SESSION['loginID'])) )	
 {
 	include("usercontrol.php");
 }
@@ -175,52 +175,37 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 			$refererargs = html_escape($_SERVER['QUERY_STRING']);
 		}
 
-     	$hidden_loginlang = "<input type='hidden' name='loginlang' id='loginlang' value='".$defaultlang."' />";
 
         
 		if (!isset($logoutsummary))
 		{
-			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
+			$loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$clang->gT("You have to login first.")."</strong><br />	<br />";
 		}
 		else
 		{
-			$loginsummary = "<form name='login' id='login' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
+			$loginsummary = "<form name='loginform' id='loginform' method='post' action='$rooturl/admin/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
 		}
 
 		$loginsummary .= "
-							<table>
-								<tr>
-									<td>".$clang->gT("Username")."</td>
-									<td><input name='user' id='user' type='text' size='40' maxlength='40' value='' /></td>
-								</tr>
-								<tr>
-									<td>".$clang->gT("Password")."</td>
-									<td><input name='password' id='password' type='password' size='40' maxlength='40' /></td>
-								</tr>
-                                <tr>
-                                    <td>".$clang->gT("Language")."</td>
-                                    <td>
-                                    <select name='lang' style='width:216px;' onchange='loginlang.value=this.value;'>\n";
+							<ul>
+									<li><label for='user'>".$clang->gT("Username")."</label>
+									<input name='user' id='user' type='text' size='40' maxlength='40' value='' /></li>
+									<li><label for='password'>".$clang->gT("Password")."</label>
+									<input name='password' id='password' type='password' size='40' maxlength='40' /></li>
+                                    <li><label for='loginlang'>".$clang->gT("Language")."</label>
+                                    <select id='loginlang' name='loginlang' style='width:216px;'>\n";
                                     $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
                                     foreach (getlanguagedata() as $langkey=>$languagekind)
                                     {
                                         $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['description']." - ".$languagekind['nativedescription']."</option>\n";
                                     }
                                     $loginsummary .= "\t\t\t</select>\n"
-                                    . "</td>
-                                </tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td align='center'><input type='hidden' name='action' value='login' />
+                                    . "</li>
+                                </ul>
+									<p><input type='hidden' name='action' value='login' />
 									<input type='hidden' name='refererargs' value='".$refererargs."' />
-									$hidden_loginlang
-									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n</td>
-								</tr>
-								<tr>
-									<td>&nbsp;</td>
-									<td align='center'><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n</td>
-								</tr>
-							</table>
+									<input class='action' type='submit' value='".$clang->gT("Login")."' /><br />&nbsp;\n<br/>
+									<a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n
 						</form><br />";
 					$loginsummary .= "                                                <script type='text/javascript'>\n";
 					$loginsummary .= "                                                  document.getElementById('user').focus();\n";

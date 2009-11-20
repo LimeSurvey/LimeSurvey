@@ -949,6 +949,7 @@ div.messagebox .warningheader {
     max-width:200px;
 }
    
+
 #tokenimport li label:first-child,            
 #statistics_general_filter li label:first-child,            
 #vvexport li label:first-child,            
@@ -965,6 +966,14 @@ div.messagebox .warningheader {
     color: #1d2d45;
 }
 
+#loginform li label:first-child{
+    width: 39%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;      
+    font-weight: bold;
+    color: #1d2d45;
+}        
 
 
 #addnewquotaform li label:first-child,    
@@ -983,6 +992,7 @@ div.messagebox .warningheader {
     color: #121A28;
 }
 
+#loginform li,
 #statistics_general_filter li,
 #tokenimport li,
 #vvexport li,
