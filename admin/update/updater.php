@@ -42,19 +42,19 @@ function UpdateStep1()
     $output.='<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
   }
   else {
-    $output.="<ul><li>".$clang->gT('Update key: Valid')."</li>"; 
+    $output.="<ul><li class='successtitle'>".$clang->gT('Update key: Valid')."</li>"; 
      
     if (!is_writable($tempdir))
 	{
-		$output.= "<li>".sprintf("Tempdir %s is not writable",$tempdir)."<li>";
+		$output.= "<li>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
         $error=true;
 	}
-    if (!is_writable($rootdir.'/version.php'))
+    if (!is_writable($rootdir.DIRECTORY_SEPARATOR.'version.php'))
 	{
-		$output.= "<li>".sprintf("Version file %s is not writable",$rootdir.'/version.php')."<li>";
+		$output.= "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),$rootdir.DIRECTORY_SEPARATOR.'version.php')."</li>";
         $error=true; 
 	}
-    $output.='<h3>'.$clang->gT('Change log').'</h3>'; 
+    $output.='</ul><h3>'.$clang->gT('Change log').'</h3>'; 
     require_once($homedir."/classes/http/http.php");     
     $updatekey=getGlobalSetting('updatekey');
 
@@ -67,14 +67,14 @@ function UpdateStep1()
     $http->GetRequestArguments("http://update.limesurvey.org/updates/changelog/$buildnumber/$updatebuild/$updatekey",$arguments);
 
     $updateinfo=false;
-    $error=$http->Open($arguments);           
-    $error=$http->SendRequest($arguments);
+    $httperror=$http->Open($arguments);           
+    $httperror=$http->SendRequest($arguments);
 
-    if($error=="") {
+    if($httperror=="") {
         $body=''; $full_body=''; 
         for(;;){
-            $error = $http->ReadReplyBody($body,10000);
-            if($error != "" || strlen($body)==0) break;
+            $httperror = $http->ReadReplyBody($body,10000);
+            if($httperror != "" || strlen($body)==0) break;
             $full_body .= $body;
         }        
         $changelog=json_decode($full_body,true);
@@ -82,16 +82,24 @@ function UpdateStep1()
     }
     else
     {
-        print( $error );
+        print( $httperror );
     }
   }
   
 
-
-  $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step to start the update.'); 
-  $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
-  if ($updatekey==''){    $output.="disabled='disabled'"; }
-  $output.=">Update Step 2</button>";
+  if ($error)
+  {
+        $output.='<br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
+        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step1', '_top')\"";
+        $output.=">".$clang->gT('Check again')."</button>";
+  }
+  else
+  {
+        $output.='<br />'.$clang->gT('Everything looks alright. Please proceed to the next step.'); 
+        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+        if ($updatekey==''){    $output.="disabled='disabled'"; }
+        $output.=">".sprintf($clang->gT('Proceed to step %s'),'2')."</button>";
+  }
   $output.='</div><table><tr>';
   return $output;
 }
@@ -173,15 +181,16 @@ function UpdateStep2()
         }
     }
  
-  $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="background"><br />'; 
+  $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><br />'; 
  
-  $output.=$clang->gT('Checking your existing LimeSurvey files').'<br />'; 
+  $output.='<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>'; 
   if (count($readonlyfiles)>0)
   {
-      $output.=$clang->gT('The following files/directories need to be updated but their permissions are set to read-only.').'<br />';  
-      $output.=$clang->gT('You must set according permissions on the file(s) below before you can continue. If you are unsure what to do please contact your system administrator for advice.').'<br />';  
-      $output.='<ul>'; 
+      $output.='<span class="warningtitle">'.$clang->gT('Warning: The following files/directories need to be updated but their permissions are set to read-only.').'<br />';  
+      $output.=$clang->gT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.').'<br />';  
+      $output.='</span><ul>'; 
       $readonlyfiles=array_unique($readonlyfiles);  
+      sort($readonlyfiles);
       foreach ($readonlyfiles as $readonlyfile)
       {
           $output.='<li>'.htmlspecialchars($readonlyfile).'</li>';  
@@ -192,7 +201,8 @@ function UpdateStep2()
   {
       $output.=$clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';  
       $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';  
-      $output.='<ul>';  
+      $output.='<ul>';
+      sort($existingfiles);  
       foreach ($existingfiles as $existingfile)
       {
           $output.='<li>'.htmlspecialchars($existingfile['file']).'</li>';  
@@ -213,8 +223,20 @@ function UpdateStep2()
       $output.='</ul>';  
   }
   
-  $output.=$clang->gT('Please check any problems above and then proceed to the next step to start the update.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" >Continue with update step 3</button>";
+  if (count($readonlyfiles)>0) 
+  {
+        $output.='<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
+        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+        $output.=">".$clang->gT('Check again')."</button>";
+  }
+  else
+  {
+        $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />'; 
+        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
+        $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
+      
+  }
+  
   $output.='</div><table><tr>';
   $_SESSION['updateinfo']=$updateinfo;
   $_SESSION['updatesession']=$site_cookies;
@@ -226,7 +248,8 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
   
-    $output='<div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><div class="background"><br />'; 
+    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 3').'</div>'; 
+    $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
         $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />'; 
@@ -264,30 +287,33 @@ function UpdateStep3()
   
   //PclTraceOn(1);        
 
-    $archive = new PclZip($tempdir.'/files-'.$basefilename.'.zip');
+    $archive = new PclZip($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip');
     
     
     $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
+
+    $output.=$clang->gT('Creating file backup... ').'<br />'; 
 
     if ($v_list == 0) {
         die("Error : ".$archive->errorInfo(true));
     }
     else
     {
-        $output.=$clang->gT('Old files were successfuly backed up to ').htmlspecialchars($tempdir.'/files-'.$basefilename.'.zip').'<br />'; 
+        $output.="<span class='successtitle'>".$clang->gT('File backup created:').' '.htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip').'</span><br /><br />'; 
         
     }
 
     require_once("dumpdb.php");
 
-    $byteswritten=file_put_contents($tempdir.'/db-'.$basefilename.'.sql',completedump());
+    $output.=$clang->gT('Creating database backup... ').'<br />'; 
+    $byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
     if ($byteswritten>5000)
     {
-        $output.=$clang->gT('Database was successfuly backed up to ').htmlspecialchars($tempdir.'/db-'.$basefilename.'.sql').'<br />'; 
+        $output.="<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />'; 
     }
   
-  $output.=$clang->gT('Please check any problems above and then proceed to the final step.').'<br />'; 
-  $output.="<button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
+  $output.=$clang->gT('Please check any problems above and then proceed to the final step.'); 
+  $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
   $output.='</div><table><tr>';
   return $output;
 }

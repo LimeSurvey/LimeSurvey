@@ -432,17 +432,17 @@ require_once(dirname(__FILE__).'/config.php');
 
     //The following url and dir locations do not need to be modified unless you have a non-standard
     //LimeSurvey installation. Do not change unless you know what you are doing.
-    $homeurl        =   "$rooturl/admin";     // The website location (url) of the admin scripts
-    $publicurl      =   "$rooturl";           // The public website location (url) of the public survey script
+    $homeurl        =   "$rooturl/admin";                           // The website location (url) of the admin scripts
+    $publicurl      =   "$rooturl";                                 // The public website location (url) of the public survey script
     $tempurl        =   "$rooturl/tmp";
-    $imagefiles     =   "$rooturl/images";    // Location of button bar files for admin script
-  	$templaterootdir=   "$rootdir/templates"; // Location of the templates
-    $templaterooturl=   "$rooturl/templates"; // Location of the templates
-    $homedir        =   "$rootdir/admin";     // The physical disk location of the admin scripts
-    $publicdir      =   "$rootdir";           // The physical disk location of the public scripts
-    $tempdir        =   "$rootdir/tmp";       // The physical location where LimeSurvey can store temporary files
-                                              // Note: For OS/2 the $tempdir may need to be defined as an actual directory
-                                              // example: "x:/limesurvey/tmp". We don't know why.
+    $imagefiles     =   "$rooturl/images";                          // Location of button bar files for admin script
+  	$templaterootdir=   "$rootdir".DIRECTORY_SEPARATOR."templates"; // Location of the templates
+    $templaterooturl=   "$rooturl/templates";                       // Location of the templates
+    $homedir        =   "$rootdir".DIRECTORY_SEPARATOR."admin";     // The physical disk location of the admin scripts
+    $publicdir      =   "$rootdir";                                 // The physical disk location of the public scripts
+    $tempdir        =   "$rootdir".DIRECTORY_SEPARATOR."tmp";       // The physical location where LimeSurvey can store temporary files
+                                                                    // Note: For OS/2 the $tempdir may need to be defined as an actual directory
+                                                                    // example: "x:/limesurvey/tmp". We don't know why.
     $fckeditordir   =   "$homeurl/scripts/fckeditor.265";
     $fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
     $pdfexportdir   = '/admin/classes/tcpdf';  //Directory with the tcpdf.php extensiontcpdf.php
