@@ -1990,6 +1990,7 @@ if ($subaction == "updatetoken" &&
 //    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
     $data[] = $_POST['validfrom'];
     $data[] = $_POST['validuntil'];
+    $data[] = $_POST['remindersent'];
 
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
@@ -2000,7 +2001,7 @@ if ($subaction == "updatetoken" &&
 		// Using adodb Execute with blinding method so auto-dbquote is done
 		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
 		. "lastname=?, email=?, emailstatus=?, "
-		. "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?";
+		. "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?, remindersent=?";
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
 		{
@@ -2058,7 +2059,8 @@ if ($subaction == "inserttoken" &&
 	'emailstatus' => $_POST['emailstatus'],
 	'token' => $santitizedtoken,
 	'language' => sanitize_languagecode($_POST['language']),
-	'sent' => $_POST['sent'],
+    'sent' => $_POST['sent'],
+	'remindersent' => $_POST['remindersent'],
 	'completed' => $_POST['completed'],
 	'validfrom' => $_POST['validfrom'],
 	'validuntil' => $_POST['validuntil']);
