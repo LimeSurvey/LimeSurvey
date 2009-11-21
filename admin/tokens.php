@@ -203,10 +203,11 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
         foreach ($attrfieldnames as $attr_name)
-		{
-            $tokenoutput .=',"'.trim($brow[$attr_name]).'",';
-		}
-		$tokenoutput .= "\n";
+	{
+            $tokenoutput .='"'.trim($brow[$attr_name]).'",';
+	}
+	$tokenoutput = substr($tokenoutput,0,-1); // remove last comma
+	$tokenoutput .= "\n";
 	}
 	echo $tokenoutput;
 	exit;
@@ -2632,20 +2633,20 @@ function formldap($error=false)
 		$tokenoutput .= '<br /><br /><br />';
 	}
 	else {
-		$tokenoutput .= '<br />';
-		$tokenoutput .= $clang->gT("Select the LDAP query you want to run:");
-		$tokenoutput .= '<br />';
 		$tokenoutput .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "?action=tokens' method='post'>";
+		$tokenoutput .= '<p>';
+		$tokenoutput .= $clang->gT("Select the LDAP query you want to run:")."<br />";
 		$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";
 		foreach ($ldap_queries as $q_number => $q) {
 			$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
 		}
 		$tokenoutput .= "</select><br />";
+		$tokenoutput .= '</p>';
 		$tokenoutput .= "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked' /></p>\n"
 		. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked' /></p>\n";
 		$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
 		$tokenoutput .= "<input type='hidden' name='subaction' value='uploadldap' />";
-		$tokenoutput .= "<input type='submit' name='submit' />";
+		$tokenoutput .= "<p><input type='submit' name='submit' /></p>";
 		$tokenoutput .= '</form></font>';
 	}
 }
