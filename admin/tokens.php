@@ -169,10 +169,13 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
 	$bfieldcount=$bresult->FieldCount();
 
 	$tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed";
-    $attrfieldnames=GetAttributeFieldnames($surveyid);
+    $attrfieldnames = GetAttributeFieldnames($surveyid);
+    $attrfielddescr = GetTokenFieldsAndNames($surveyid, true);
     foreach ($attrfieldnames as $attr_name)
     {
         $tokenoutput .=", $attr_name";
+	if (isset($attrfielddescr[$attr_name]))
+			$tokenoutput .=" <".$attrfielddescr[$attr_name].">";
     }
     $tokenoutput .="\n";
 	while ($brow = $bresult->FetchRow())
@@ -2194,6 +2197,8 @@ if ($subaction == "upload" &&
                 //now check the first line for invalid fields
                 foreach ($firstline as $index=>$fieldname)
                 {
+		    $firstline[$index] = preg_replace("/(.*) <[^,]*>$/","$1",$fieldname);
+                    $fieldname = $firstline[$index];
                     if (!in_array($fieldname,$allowedfieldnames))
                     {
                         $ignoredcolumns[]=$fieldname;
@@ -2289,6 +2294,10 @@ if ($subaction == "upload" &&
                         {
                             $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
                         }
+			else
+			{
+				$xz++;
+			}
 					}
 					$xv++;
 				}
