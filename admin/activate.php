@@ -238,13 +238,19 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 		$activateoutput .= "<td>\n";
 		$activateoutput .= "\t<strong>".$clang->gT("The following problems have been found:")."</strong><br />\n";
 		$activateoutput .= "\t<ul>\n";
-		foreach ($failedcheck as $fc)
+		if (isset($failedcheck) && $failedcheck)
 		{
-			$activateoutput .= "<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
+			foreach ($failedcheck as $fc)
+			{
+				$activateoutput .= "<li> Question qid-{$fc[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fc[3]&amp;qid=$fc[0]'>{$fc[1]}</a>\"){$fc[2]}</li>\n";
+			}
 		}
-		foreach ($failedgroupcheck as $fg)
+		if (isset($failedgroupcheck) && $failedgroupcheck)
 		{
-			$activateoutput .= "\t\t\t\t<li> Group gid-{$fg[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fg[0]'>{$fg[1]}</a>\"){$fg[2]}</li>\n";
+			foreach ($failedgroupcheck as $fg)
+			{
+				$activateoutput .= "\t\t\t\t<li> Group gid-{$fg[0]} (\"<a href='$scriptname?sid=$surveyid&amp;gid=$fg[0]'>{$fg[1]}</a>\"){$fg[2]}</li>\n";
+			}
 		}
 		$activateoutput .= "\t\t\t</ul>\n";
 		$activateoutput .= "\t\t\t".$clang->gT("The survey cannot be activated until these problems have been resolved.")."\n";
