@@ -6071,19 +6071,26 @@ function randomkey($length)
 
                            
 /**
-* put your comment there...
+* used to translate simple text to html (replacing \n with <br />
 * 
 * @param mixed $mytext
 * @param mixed $ishtml
 * @return mixed
 */
-function conditional_nl2br($mytext,$ishtml)
+function conditional_nl2br($mytext,$ishtml,$encoded='')
 {
 	if ($ishtml === true)
 	{
 		// $mytext has been processed by clang->gT with html mode
 		// and thus \n has already been translated to &#10;
-		return str_replace('&#10;', '<br />',$mytext);
+		if ($encoded == '')
+		{
+			return str_replace('&#10;', '<br />',$mytext);
+		}
+		elseif ($encoded == 'unescaped')
+		{
+			return str_replace("\n", '<br />',$mytext);
+		}
 	}
 	else
 	{
