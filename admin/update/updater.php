@@ -114,6 +114,8 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");     
     $updatekey=getGlobalSetting('updatekey');
 
+    $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><br />'; 
+    
     $http=new http_class;    
     /* Connection timeout */
     $http->timeout=0;
@@ -159,85 +161,94 @@ function UpdateStep2()
     $existingfiles=array();
     $modifiedfiles=array();
     $readonlyfiles=array();
-    foreach ($updateinfo['files'] as $afile)
+    if (!isset($updateinfo['files']))
     {
-        if ($afile['type']=='A' && !is_writable(dirname($rootdir.$afile['file'])))
-		{
-			$readonlyfiles[]=dirname($rootdir.$afile['file']);
-		}
-		elseif (!is_writable($rootdir.$afile['file'])) {
-			$readonlyfiles[]=$rootdir.$afile['file'];
-		}  
-
-
-        if ($afile['type']=='A' && file_exists($rootdir.$afile['file']))
-        {
-            //A new file, check if this already exists
-            $existingfiles[]=$afile;
-        }
-        elseif (($afile['type']=='D' || $afile['type']=='M')  && is_file($rootdir.$afile['file']) && sha1_file($rootdir.$afile['file'])!=$afile['checksum'])  // A deleted or modified file - check if it is unmodified
-        {
-            $modifiedfiles[]=$afile;
-        }
+        $output.="<div class='messagebox'>
+            <div class='warningheader'>".$clang->gT('Update server busy')."</div>
+            <p>".$clang->gT('The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared.')."<br />
+               ".$clang->gT('Please be patient and try again in about 10 minutes.')."</div>
+            <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button>";
+               
     }
- 
-  $output='<div class="background"><div class="settingcaption">'.$clang->gT('ComfortUpdate Step 2').'</div><br />'; 
- 
-  $output.='<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>'; 
-  if (count($readonlyfiles)>0)
-  {
-      $output.='<span class="warningtitle">'.$clang->gT('Warning: The following files/directories need to be updated but their permissions are set to read-only.').'<br />';  
-      $output.=$clang->gT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.').'<br />';  
-      $output.='</span><ul>'; 
-      $readonlyfiles=array_unique($readonlyfiles);  
-      sort($readonlyfiles);
-      foreach ($readonlyfiles as $readonlyfile)
+    else
+    {
+        
+        foreach ($updateinfo['files'] as $afile)
+        {
+            if ($afile['type']=='A' && !is_writable(dirname($rootdir.$afile['file'])))
+		    {
+			    $readonlyfiles[]=dirname($rootdir.$afile['file']);
+		    }
+		    elseif (!is_writable($rootdir.$afile['file'])) {
+			    $readonlyfiles[]=$rootdir.$afile['file'];
+		    }  
+
+
+            if ($afile['type']=='A' && file_exists($rootdir.$afile['file']))
+            {
+                //A new file, check if this already exists
+                $existingfiles[]=$afile;
+            }
+            elseif (($afile['type']=='D' || $afile['type']=='M')  && is_file($rootdir.$afile['file']) && sha1_file($rootdir.$afile['file'])!=$afile['checksum'])  // A deleted or modified file - check if it is unmodified
+            {
+                $modifiedfiles[]=$afile;
+            }
+        }
+     
+      $output.='<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>'; 
+      if (count($readonlyfiles)>0)
       {
-          $output.='<li>'.htmlspecialchars($readonlyfile).'</li>';  
+          $output.='<span class="warningtitle">'.$clang->gT('Warning: The following files/directories need to be updated but their permissions are set to read-only.').'<br />';  
+          $output.=$clang->gT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.').'<br />';  
+          $output.='</span><ul>'; 
+          $readonlyfiles=array_unique($readonlyfiles);  
+          sort($readonlyfiles);
+          foreach ($readonlyfiles as $readonlyfile)
+          {
+              $output.='<li>'.htmlspecialchars($readonlyfile).'</li>';  
+          }
+          $output.='</ul>';  
       }
-      $output.='</ul>';  
-  }
-  if (count($existingfiles)>0)
-  {
-      $output.=$clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';  
-      $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';  
-      $output.='<ul>';
-      sort($existingfiles);  
-      foreach ($existingfiles as $existingfile)
+      if (count($existingfiles)>0)
       {
-          $output.='<li>'.htmlspecialchars($existingfile['file']).'</li>';  
+          $output.=$clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';  
+          $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';  
+          $output.='<ul>';
+          sort($existingfiles);  
+          foreach ($existingfiles as $existingfile)
+          {
+              $output.='<li>'.htmlspecialchars($existingfile['file']).'</li>';  
+          }
+          $output.='</ul>';  
       }
-      $output.='</ul>';  
-  }
-                                                       
-  if (count($modifiedfiles)>0)
-  {
-      $output.=$clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';  
-      $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';  
-      $output.='<ul>';  
-      sort($modifiedfiles);
-      foreach ($modifiedfiles as $modifiedfile)
+                                                           
+      if (count($modifiedfiles)>0)
       {
-          $output.='<li>'.htmlspecialchars($modifiedfile['file']).'</li>';  
+          $output.=$clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';  
+          $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';  
+          $output.='<ul>';  
+          sort($modifiedfiles);
+          foreach ($modifiedfiles as $modifiedfile)
+          {
+              $output.='<li>'.htmlspecialchars($modifiedfile['file']).'</li>';  
+          }
+          $output.='</ul>';  
       }
-      $output.='</ul>';  
-  }
-  
-  if (count($readonlyfiles)>0) 
-  {
-        $output.='<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
-        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
-        $output.=">".$clang->gT('Check again')."</button>";
-  }
-  else
-  {
-        $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />'; 
-        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
-        $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
       
+      if (count($readonlyfiles)>0) 
+      {
+            $output.='<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.'); 
+            $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+            $output.=">".$clang->gT('Check again')."</button>";
+      }
+      else
+      {
+            $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />'; 
+            $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
+            $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
+          
+      }
   }
-  
-  $output.='</div><table><tr>';
   $_SESSION['updateinfo']=$updateinfo;
   $_SESSION['updatesession']=$site_cookies;
   return $output;
