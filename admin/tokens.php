@@ -1921,9 +1921,17 @@ if (($subaction == "edit" || $subaction == "addnew") &&
     ."\t<li><label for='remindersent'>".$clang->gT("Reminder sent?")."</label>\n"
     ."\t<input type='text' size='15' id='remindersent' name='remindersent' value=\"";
     if (isset($remindersent)) {$tokenoutput .= $remindersent;}    else {$tokenoutput .= "N";}
-    $tokenoutput .= "\" /></li>\n"
+    $tokenoutput .= "\" /></li>\n";
 
-	."\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
+    if ($subaction == "edit")
+    {
+        $tokenoutput.="\t<li><label for='remindercount'>".$clang->gT("Reminder count:")."</label>\n"
+        ."\t<input type='text' size='15' id='remindercount' name='remindercount' value=\"";
+        $tokenoutput .= $remindercount;
+        $tokenoutput .= "\" /></li>\n";
+    }
+    
+	$tokenoutput.="\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
 	."\t<input type='text' size='15' id='completed' name='completed' value=\"";
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></li>\n"
@@ -2014,6 +2022,7 @@ if ($subaction == "updatetoken" &&
     $data[] = $_POST['validfrom'];
     $data[] = $_POST['validuntil'];
     $data[] = $_POST['remindersent'];
+    $data[] = $_POST['remindercount'];
 
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
@@ -2024,7 +2033,7 @@ if ($subaction == "updatetoken" &&
 		// Using adodb Execute with blinding method so auto-dbquote is done
 		$udquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET firstname=?, "
 		. "lastname=?, email=?, emailstatus=?, "
-		. "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?, remindersent=?";
+		. "token=?, language=?, sent=?, completed=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
 		{
