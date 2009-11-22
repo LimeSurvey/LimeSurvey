@@ -1795,7 +1795,8 @@ if ($subaction == "updatetokenattributedescriptions" &&
     }
     else
     {
-        $tokenoutput.=$clang->gT('Token descriptions were successfully updated.');
+        $tokenoutput.='<p>'.$clang->gT('Token descriptions were successfully updated.').'<br/><br />';
+        $tokenoutput.="<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes'>".$clang->gT('Back to attribute field management.').'</a>';
     }
 }
 
@@ -1828,7 +1829,7 @@ if ($subaction == "updatetokenattributes" &&
     }
     else
     {
-        $tokenoutput.='<br/>'.sprintf($clang->gT('%s field(s) were successfully added.'),$number2add).'<br/><br />';
+        $tokenoutput.='<p>'.sprintf($clang->gT('%s field(s) were successfully added.'),$number2add).'<br/><br />';
         $tokenoutput.="<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=managetokenattributes'>".$clang->gT('Back to attribute field management.').'</a><br /><br />&nbsp;';
     }
 }
