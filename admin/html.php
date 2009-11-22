@@ -2370,7 +2370,7 @@ if ($action == "editsurvey")
 
         
 
-            // Token access
+            /* Token access
             $editsurvey .= "<li><label for='usetokens'>".$clang->gT("Only users with tokens may enter the survey?")."</label>\n"
             . "<select id='usetokens' name='usetokens'>\n"
             . "<option value='Y'";
@@ -2379,7 +2379,7 @@ if ($action == "editsurvey")
             . "<option value='N'";
             if ($esrow['usetokens'] != "Y") {$editsurvey .= " selected='selected'";}
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
+            . "</select></li>\n"; */
             
             //Set token length
 			$editsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"
@@ -3217,12 +3217,12 @@ if ($action == "newsurvey")
 		$newsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Publication & Access control")."</h2><ul>\n";
 
         
-    // Use tokens
-        $newsurvey .= "<li><label for='usetokens'>".$clang->gT("Only users with tokens may enter the survey?")."</label>\n"
+    // Use tokens  
+    /*    $newsurvey .= "<li><label for='usetokens'>".$clang->gT("Only users with tokens may enter the survey?")."</label>\n"
         . "<select id='usetokens' name='usetokens'>\n"
         . "<option value='Y'>".$clang->gT("Yes")."</option>\n"
         . "<option value='N' selected='selected'>".$clang->gT("No")."</option>\n"
-        . "</select></li>\n";
+        . "</select></li>\n"; */
         
     // Set token length
         $newsurvey .= "<li><label for='tokenlength'>".$clang->gT("Set token length to:")."</label>\n"

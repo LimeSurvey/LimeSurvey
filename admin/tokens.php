@@ -621,6 +621,7 @@ if ($subaction == "emailsettings")
 	$tokenoutput .="<tr><td align='center'>"
 		. "<div class='header'>\n"
 		. "".$clang->gT("Edit email settings")."</div>\n"
+        . "<form name='addnewsurvey' action='$scriptname' method='post'>\n"
 		. '<div class="tab-pane" id="tab-pane-emailsettings-'.$surveyid.'">';
 	$surveyinfo=getSurveyInfo($surveyid);
 	foreach ($grplangs as $grouplang)
@@ -712,7 +713,7 @@ if ($subaction == "updateemailsettings" &&
 				$usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br />".$connect->ErrorMsg());
 			}
 		}
-	$tokenoutput .= "<tr><td align='center'><br /><strong><span class='successtitle'>".$clang->gT("Token email settings have been saved.")."</span></strong><br />&nbsp;</td></tr>\n";
+	$tokenoutput .= "<p><span class='successtitle'>".$clang->gT("Token email settings have been saved.")."</span>\n";
 
 	}
 
