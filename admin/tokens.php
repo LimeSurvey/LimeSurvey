@@ -43,6 +43,8 @@ $thissurvey=getSurveyInfo($surveyid);
 
 if ($subaction == "import" || $subaction == "upload" )  // THis array only needs to be defined for these two functions
 {
+    $js_adminheader_includes[]='scripts/tokens.js';                 
+                
     $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
 		                   ,"ascii"=>$clang->gT("US ASCII")
 		                   ,"auto"=>$clang->gT("Automatic")
@@ -2630,7 +2632,7 @@ function form_csv_upload($error=false)
 	. "<li><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select id='csvcharset' name='csvcharset' size='1'>$charsetsout</select></li>\n"
 	. "<li><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' /></li>\n"
 	. "<li><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' /></li>"
-    . "<li><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"
+    . "<li id='lifilterduplicatefields'><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"
     . "<select id='filterduplicatefields[]' name='filterduplicatefields[]' multiple='multiple' size='5'>"
     . "<option selected='selected'>firstname</option>"
     . "<option selected='selected'>lastname</option>"
