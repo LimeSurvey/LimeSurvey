@@ -305,7 +305,7 @@ if ($surveyid)
 		. "<div class='menubar'>\n"
 		. "<div class='menubar-title'>\n"
 		. "<strong>".$clang->gT("Survey")."</strong> "
-		. "<font class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":$surveyid)</font></div>\n"
+		. "<span class='basic'>{$surveyinfo['surveyls_title']} (".$clang->gT("ID").":$surveyid)</span></div>\n"
 		. "<div class='menubar-main'>\n"
 		. "<div class='menubar-left'>\n";
 		if ($activated == "N" )
@@ -623,7 +623,7 @@ if ($surveyid)
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
-		$surveysummary .= "<table class='table2columns' $showstyle id='surveydetails'><tr><td align='right' valign='top' width='15%'>"
+		$surveysummary .= "<table $showstyle id='surveydetails'><tr><td align='right' valign='top' width='15%'>"
 		. "<strong>".$clang->gT("Title").":</strong></td>\n"
 		. "<td align='left' class='settingentryhighlight'><strong>{$surveyinfo['surveyls_title']} "
 		. "(".$clang->gT("ID")." {$surveyinfo['sid']})</strong></td></tr>\n";
@@ -827,7 +827,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         $grow = array_map('strip_tags', $grow);
 		//$grow = array_map('htmlspecialchars', $grow);
 		$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
-		. "<font class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</font>\n"
+		. "<span class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</span>\n"
 		. "</div>\n"
         . "<div class='menubar-main'>\n"
         . "<div class='menubar-left'>\n"
@@ -936,7 +936,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		if ($qid || $action=='editgroup'|| $action=='addquestion') {$gshowstyle="style='display: none'";}
 		else	  {$gshowstyle="";}
 
-		$groupsummary .= "<table class='table2columns' id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
+		$groupsummary .= "<table id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
 		. $clang->gT("Title").":</strong></td>\n"
 		. "<td align='left'>"
 		. "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
@@ -985,7 +985,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         $qrrow = array_map('strip_tags', $qrrow);
 		//$qrrow = array_map('htmlspecialchars', $qrrow);
 		$questionsummary .= "<div class='menubar-title'>\n"
-		. "<strong>". $clang->gT("Question")."</strong> <font class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</font>\n"
+		. "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
 		. "</div>\n"
         . "<div class='menubar-main'>\n"
         . "<div class='menubar-left'>\n"
@@ -1142,7 +1142,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
         
 		if (returnglobal('viewanswer') || $action =="editquestion" || $action =="copyquestion")	{$qshowstyle = "style='display: none'";}
 		else							{$qshowstyle = "";}
-		$questionsummary .= "<table class='table2columns' id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
+		$questionsummary .= "<table  id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
 		. $clang->gT("Code:")."</strong></td>\n"
 		. "<td align='left'>{$qrrow['title']}";
 		if ($qrrow['type'] != "X")
@@ -1980,8 +1980,8 @@ if($action == "surveysecurity")
 	{
 		$query2 = "SELECT a.uid, b.users_name FROM ".db_table_name('surveys_rights')." AS a INNER JOIN ".db_table_name('users')." AS b ON a.uid = b.uid WHERE a.sid = {$surveyid} AND b.uid != ".$_SESSION['loginID'] ." ORDER BY b.users_name";
 		$result2 = db_execute_assoc($query2); //Checked
-		$surveysecurity = "<table width='100%' rules='rows' border='1' class='table2columns'>\n<tr><td colspan='3' align='center' class='settingcaption'>\n"
-		. "<strong>".$clang->gT("Survey Security")."</strong></td></tr>\n"
+        $surveysecurity ="<div class='header'>".$clang->gT("Survey Security")."</div>\n";        
+		$surveysecurity .= "<table width='100%' rules='rows' border='0'>"
 		. "<tr>\n"
 		. "<th>".$clang->gT("Username")."</th>\n"
 		. "<th>".$clang->gT("User Group")."</th>\n"

@@ -23,12 +23,7 @@ p {
     text-align:center;
 }
 
-.boxstyle {
-	border-color: #9C0;
-	border-style: solid;
-	border-width: 1px;
-}
-
+/* Administration footer box */
 .footer {
 	text-align: center;
 	color: #9C0;
@@ -67,8 +62,7 @@ fieldset {
     border-width: 1px;
 }
 
-legend
-{
+legend {
     font-weight: bold;
     color:#2D466B;
 }
@@ -90,12 +84,11 @@ table.statisticstable {
 	margin: 2px auto;
 }
 
-
 table.statisticstable span {   
      font-weight:bold;
 }
     
-.basic {
+span.basic {
 	color: #1d2d45;
 }
 
@@ -145,7 +138,6 @@ div.menubar {
 
 }
 
-
 .menubar-title img {
     margin-bottom:2px;
 }
@@ -176,42 +168,15 @@ div.menubar {
         font-weight:bold;
         color:#ee0000 !important;
         text-decoration: underline !important; 
-        
-    }
-
-table.menubar {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: #EEF6FF;
-	border-color: #8195BA;
-	border-style: solid;
-	border-width: 1px;
-	text-align: left;
-}
-
-.menubar td {
-	color: #265522;
-	font-size: 8pt;
-	border-bottom: 2px solid #D2E0F2;
 }
 
 .menubar select {
 	color: #333;
 	width: 200px;
 }
+/* END menubar CSS */    
 
-table.attributetable {
-	width: 100%;
-	text-align: center;
-	border: 1px solid #d2e0f2;
-	border-collapse: collapse;
-}
-
-.attributetable tr:first-child {
-	background-color: #d2e0f2;
-}
-
-table.table2columns {
+#surveydetails, #groupdetails, #questiondetails {
 	background-color: #FFF;
 	width: 100%;
 	text-align: center;
@@ -221,10 +186,6 @@ table.table2columns {
     margin-bottom:4px;
     padding:5px 0;
     clear:left;
-}
-
-.table2columns td:first-child {
-	width: 250px;
 }
 
 table.form2columns {
@@ -556,10 +517,6 @@ a:link, a:visited {
 
 .alertbox tr:first-child, .evenrow {
 	background-color: #EEF6FF;
-}
-
-.table2columns td+td, table.form2columns td+td, action {
-	text-align: left;
 }
 
 .checkboxbtn, .radiobtn {
@@ -1082,14 +1039,14 @@ thead tr .headerSortDown, thead tr .headerSortUp {
 background-color: #8195BA;
 }
 
-#tokensearch, #tokenrange{
+#tokensearch, #tokenrange, #browseresults{
     display:inline;
     line-height:40px;
     vertical-align:middle;
     margin-left: 10px;
 }
 
-#tokensearch input, #tokenrange input{
+#tokensearch input, #tokenrange input, #browseresults input{
     vertical-align:middle;
     margin-left: 2px;
 }

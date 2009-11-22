@@ -16,21 +16,6 @@ font-size:10pt;
 color:#000;
 }
 
-.boxstyle {
-border-color:#9C0;
-border-style:solid;
-border-width:1px;
-}
-
-.footer {
-text-align:center;
-color:#9C0;
-height:30px;
-background:#121a28;
-margin:0;
-padding:5px;
-}
-
 img {
 border:0;
 }
@@ -45,25 +30,8 @@ th,p,div {
 font-size:10pt;
 }
 
-.maintitle {
-font-size:14pt;
-font-weight:700;
-color:#328639;
-text-align:center;
-background:#C4C4C4;
-border-top:2px solid #C9EF50;
-border-bottom:2px solid #6a8b03;
-background-image:url(bkgmaintitle.gif);
-background-repeat:repeat-x;
-margin:auto;
-}
-
 table.statisticstable {
 margin:2px auto;
-}
-
-.basic {
-color:#1d2d45;
 }
 
 .statisticstable td {
@@ -119,54 +87,7 @@ background-color:#EEF6FF;
 float:left;
 line-height: 1em;
 }
-
 /* END menubar CSS */
-
-/* old css for the menubar made of tables */
-table.menubar {
-width:100%;
-border-collapse:collapse;
-background-color:#EEF6FF;
-border-color:#8195BA;
-border-style:solid;
-border-width:1px;
-}
-
-.menubar td {
-color:#265522;
-font-size:8pt;
-border-bottom:2px solid #D2E0F2;
-}
-
-.menubar select {
-color:#333;
-width:200px;
-}
-/* end old css for the menubar made of tables */
-
-
-
-table.attributetable {
-width:100%;
-text-align:center;
-border:1px solid #d2e0f2;
-border-collapse:collapse;
-}
-
-.attributetable tr:first-child {
-background-color:#d2e0f2;
-}
-
-table.table2columns {
-background-color:#FFF;
-width:100%;
-text-align:center;
-border:1px solid #555;
-}
-
-.table2columns td:first-child {
-width:250px;
-}
 
 table.form2columns {
 width:100%;
@@ -473,10 +394,6 @@ float:none !important;
 margin:0 auto;
 }
 
-.table2columns td {
-text-align:left;
-}
-
 th,.header,.headertwo,table.form2columns th,.settingcaption {
 text-align:center;
 font-size:13px;
@@ -496,24 +413,20 @@ width:170px;
 }
 
 .alertbox tr:first-child,.evenrow {
-background-color:#EEF6FF;
-}
-
-.table2columns td+td,table.form2columns td+td,action {
-text-align:right;
+    background-color:#EEF6FF;
 }
 
 .checkboxbtn,.radiobtn {
-background-color:transparent;
+    background-color:transparent;
 }
 
 .langpopup2td,.langpopup1td {
-background:#FDFDF5;
+    background:#FDFDF5;
 }
 
 .langpopup2td:first-child,.langpopup1td:first-child {
-color:#000;
-font-size:10pt;
+    color:#000;
+    font-size:10pt;
 }
 
 form.token select,form.token input {

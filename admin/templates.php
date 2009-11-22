@@ -971,19 +971,15 @@ if (is_template_editable($templatename)==true)
 }
 
 //SAMPLE ROW
-$templatesoutput.= "\t<table class='menubar'>\n"
-."\t<tr>\n"
-. "<td colspan='2' height='8'>\n"
+$templatesoutput.= "\t<div class='header'>\n"
 . "\t<strong>".$clang->gT("Preview:")."</strong>\n"
 . "\t<input type='button' value='iPhone' id='iphone' />\n"
 . "\t<input type='button' value='640x480' id='x640' />\n"
 . "\t<input type='button' value='800x600' id='x800' />\n"
 . "\t<input type='button' value='1024x768' id='x1024' />\n"
 . "\t<input type='button' value='".$clang->gt("Full")."' id='full' />\n"
-. "</td>\n"
-. "\t</tr>\n"
-."\t<tr>\n"
-."<td width='90%' align='center' >\n";
+. "</div>\n"
+."<div style='width:90%; margin:0 auto;'>\n";
 
 
 // The following lines are forcing the browser to refresh the templates on each save
@@ -1000,10 +996,9 @@ foreach($myoutput as $line) {
 }
 fclose($fnew);
 $langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-$templatesoutput.= "<br />\n"
-."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='500' name='previewiframe' style='background-color: white'>Embedded Frame</iframe>\n"
-."<br />&nbsp;<br />"
-."</td></tr></table>\n";
+$templatesoutput.= "<p>\n"
+."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe>\n"
+."</div>\n";
 }
 
 function doreplacement($file) { //Produce sample page from template file

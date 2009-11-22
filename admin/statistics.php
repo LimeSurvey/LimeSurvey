@@ -148,8 +148,6 @@ if ($chartfontfile=='auto')
 $statisticsoutput .= '<script type="text/javascript" src="scripts/statistics.js"></script>';
 
 //headline with all icons for available statistic options
-//$statisticsoutput .= "<table width='99%' class='menubar' cellpadding='1' cellspacing='0'>\n"
-//."\t<tr'><td colspan='2' height='4'><font size='1'><strong>".$clang->gT("Quick Statistics")."</strong></font></td></tr>\n";
 //Get the menubar
 $statisticsoutput .= browsemenubar($clang->gT("Quick statistics"))
 
