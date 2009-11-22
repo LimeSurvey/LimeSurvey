@@ -853,27 +853,6 @@ function loadanswers()
 	return true;
 }
 
-
-function getTokenData($surveyid, $token)
-{
-	global $dbprefix, $connect;
-	$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
-	$result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked 
-	while($row=$result->FetchRow())
-	{
-		$thistoken=array("firstname"=>$row['firstname'],
-		"lastname"=>$row['lastname'],
-		"email"=>$row['email'],
-		"language" =>$row['language']);
-         $attrfieldnames=GetAttributeFieldnames($surveyid);
-         foreach ($attrfieldnames as $attr_name)
-         {
-		   $thistoken[$attr_name]=$row[$attr_name];
-         }
-	} // while
-	return $thistoken;
-}
-
 function makegraph($currentstep, $total)
 {
 	global $thissurvey;
