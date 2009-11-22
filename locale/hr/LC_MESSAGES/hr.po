@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-22 15:43+0100\n"
-"PO-Revision-Date: 2009-11-22 15:44+0100\n"
+"POT-Creation-Date: 2009-11-22 17:41+0100\n"
+"PO-Revision-Date: 2009-11-22 17:43+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -8981,7 +8981,7 @@ msgid "When checking your installation we found one or more problems. Please che
 msgstr "Prilikom provjere instalacije pojavilo se nekoliko problema. Provjeri navedene greške i ispravi ih prije nastavka."
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:94
-#: E:\_LimeSurvey\svn/admin/update/updater.php:230
+#: E:\_LimeSurvey\svn/admin/update/updater.php:242
 msgid "Check again"
 msgstr "Provjeri ponovo"
 
@@ -8990,116 +8990,132 @@ msgid "Everything looks alright. Please proceed to the next step."
 msgstr "Sve izgleda OK. Molim nastavi na slijedeći korak."
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:101
-#: E:\_LimeSurvey\svn/admin/update/updater.php:236
+#: E:\_LimeSurvey\svn/admin/update/updater.php:248
 #, php-format
 msgid "Proceed to step %s"
 msgstr "Nastavi na korak %s"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:146
-#: E:\_LimeSurvey\svn/admin/update/updater.php:184
+#: E:\_LimeSurvey\svn/admin/update/updater.php:117
+#: E:\_LimeSurvey\svn/admin/update/updater.php:148
 msgid "ComfortUpdate Step 2"
 msgstr "ComfortUpdate Korak 2"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:147
-#: E:\_LimeSurvey\svn/admin/update/updater.php:155
-#: E:\_LimeSurvey\svn/admin/update/updater.php:255
-#: E:\_LimeSurvey\svn/admin/update/updater.php:263
-#: E:\_LimeSurvey\svn/admin/update/updater.php:329
-#: E:\_LimeSurvey\svn/admin/update/updater.php:337
+#: E:\_LimeSurvey\svn/admin/update/updater.php:149
+#: E:\_LimeSurvey\svn/admin/update/updater.php:157
+#: E:\_LimeSurvey\svn/admin/update/updater.php:266
+#: E:\_LimeSurvey\svn/admin/update/updater.php:274
+#: E:\_LimeSurvey\svn/admin/update/updater.php:340
+#: E:\_LimeSurvey\svn/admin/update/updater.php:348
 msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr "Dogodila se slijedeća greška prilikom nadogradnje sa limesurvey.org sjedišta:"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:152
-#: E:\_LimeSurvey\svn/admin/update/updater.php:260
-#: E:\_LimeSurvey\svn/admin/update/updater.php:334
+#: E:\_LimeSurvey\svn/admin/update/updater.php:154
+#: E:\_LimeSurvey\svn/admin/update/updater.php:271
+#: E:\_LimeSurvey\svn/admin/update/updater.php:345
 msgid "Your update key is invalid and was removed. "
 msgstr "Ključ nadogradnje je neispravan pa je uklonjen."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:186
+#: E:\_LimeSurvey\svn/admin/update/updater.php:167
+msgid "Update server busy"
+msgstr "Poslužitelj nadogradnji zauzet"
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:168
+msgid "The update server seems to be currently busy . This happens most likely if the necessary update files for a new version are prepared."
+msgstr "Poslužitelj nadogradnje je trenutno opterećen. Ovo se događa kad su neophodne datoteke za nadogradnju pripremaju."
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:169
+msgid "Please be patient and try again in about 10 minutes."
+msgstr "Molimo za strpljenje. Pokušajte za 10 minuta."
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:170
+msgid "Back to global settings"
+msgstr "Vrati me na globalne postavke"
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:198
 msgid "Checking existing LimeSurvey files..."
 msgstr "Provjeravam postojeće LS datoteke..."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:189
+#: E:\_LimeSurvey\svn/admin/update/updater.php:201
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr "Oprez: Sljedeće datoteke ili direktoriji trebaju biti nagodrađeni, ali imaju postavke samo za čitanje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:190
+#: E:\_LimeSurvey\svn/admin/update/updater.php:202
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 msgstr "Postavke datoteka su samo za čitanje. Izmijeni postavke ili kontaktiraj administratora za savjet."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:202
+#: E:\_LimeSurvey\svn/admin/update/updater.php:214
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
 msgstr "Sljedeće datoteke bi bile nadodane ali nadogradnja već postoji. Ovo je neobično!?"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:203
-#: E:\_LimeSurvey\svn/admin/update/updater.php:216
+#: E:\_LimeSurvey\svn/admin/update/updater.php:215
+#: E:\_LimeSurvey\svn/admin/update/updater.php:228
 msgid "We recommend that these files should be replaced by the update procedure."
 msgstr "Preporučamo da slijedeće datoteke budu zamijenjene tijekom nadogradnje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:215
+#: E:\_LimeSurvey\svn/admin/update/updater.php:227
 msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr "Sljedeće datoteke biti će izmijenjene ili obrisane, no premda ih je netko već izmijenio."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:228
+#: E:\_LimeSurvey\svn/admin/update/updater.php:240
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr "Prilikom provjere dozvola zapisivanja pojavilo se nekoliko problema. Provjeri navedene greške i ispravi ih prije nastavka."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:234
+#: E:\_LimeSurvey\svn/admin/update/updater.php:246
 msgid "Please check any problems above and then proceed to the next step."
 msgstr "Provjeri navedene probleme i onda nastavi nadogradnju."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:251
-#: E:\_LimeSurvey\svn/admin/update/updater.php:326
+#: E:\_LimeSurvey\svn/admin/update/updater.php:262
+#: E:\_LimeSurvey\svn/admin/update/updater.php:337
 msgid "ComfortUpdate Step 3"
 msgstr "ComfortUpdate Korak 3"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:252
+#: E:\_LimeSurvey\svn/admin/update/updater.php:263
 msgid "Creating DB & file backup"
 msgstr "Stvaram sigurnosnu kopiju baze i datoteka"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:295
+#: E:\_LimeSurvey\svn/admin/update/updater.php:306
 msgid "Creating file backup... "
 msgstr "Kreiram sigurnosnu kopiju datoteka..."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:302
+#: E:\_LimeSurvey\svn/admin/update/updater.php:313
 msgid "File backup created:"
 msgstr "Sigurnosna kopija kreirana:"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:308
+#: E:\_LimeSurvey\svn/admin/update/updater.php:319
 msgid "Creating database backup... "
 msgstr "Kreiram sigurnosnu kopiju baze podataka..."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:312
+#: E:\_LimeSurvey\svn/admin/update/updater.php:323
 msgid "DB backup created:"
 msgstr "Kreirana sigurnosna kopija baze podataka:"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:315
+#: E:\_LimeSurvey\svn/admin/update/updater.php:326
 msgid "Please check any problems above and then proceed to the final step."
 msgstr "Provjeri navedene probleme i onda nastavi na završni korak nadogradnje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:395
+#: E:\_LimeSurvey\svn/admin/update/updater.php:406
 #, php-format
 msgid "File deleted: %s"
 msgstr "Obrisana datoteka: %s"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:407
+#: E:\_LimeSurvey\svn/admin/update/updater.php:418
 msgid "New files were successfully installed."
 msgstr "Nove datoteke su uspješno instalirane."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:413
+#: E:\_LimeSurvey\svn/admin/update/updater.php:424
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr "Došlo je do problema prilikom preuzimanja datoteke. Potrebno je ponovo pokrenuti proces nadogradnje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:431
+#: E:\_LimeSurvey\svn/admin/update/updater.php:442
 #, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "Broj verzije je uspješno nadograđen na %s."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:433
+#: E:\_LimeSurvey\svn/admin/update/updater.php:444
 msgid "Please check any problems above - update was done."
 msgstr "Provjeri navedene probleme - nadogradnja je završena."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:456
+#: E:\_LimeSurvey\svn/admin/update/updater.php:467
 msgid "Database has been successfully upgraded to version "
 msgstr "Baza podataka je uspješno nadograđena na verziju "
 
