@@ -1820,34 +1820,47 @@ function browsemenubar($title='')
 
 function returnglobal($stringname)
 {
-
-	if (isset($_REQUEST[$stringname]))
-		{
-		if ($stringname == "sid" || $stringname == "gid" || $stringname == "oldqid" ||  
-			$stringname == "qid" || $stringname == "tid" || 
-			$stringname == "lid" || $stringname == "ugid"|| 
-			$stringname == "thisstep" || $stringname == "scenario" ||
-			$stringname == "cqid" || $stringname == "cid" || 
-			$stringname == "qaid" || $stringname == "scid")
-		{
-			return sanitize_int($_REQUEST[$stringname]);
-		}
-        elseif ($stringname =="lang" || $stringname =="adminlang")
-        {
-            return sanitize_languagecode($_REQUEST[$stringname]);
-        }
-        elseif ($stringname =="htmleditormode" || 
-		$stringname =="subaction")
-        {
-            return sanitize_paranoid_string($_REQUEST[$stringname]);    
-        }
-        elseif ( $stringname =="cquestions")
-        {
-            return sanitize_cquestions($_REQUEST[$stringname]);    
-        }
-		return $_REQUEST[$stringname];
+	global $useWebserverAuth;
+	if (isset($useWebserverAuth) && $useWebserverAuth === true)
+	{
+		if (isset($_GET[$stringname])) $urlParam = $_GET[$stringname];
+		if (isset($_POST[$stringname])) $urlParam = $_POST[$stringname];
 	}
-    else return NULL;
+	elseif (isset($_REQUEST[$stringname]))
+	{
+		 $urlParam = $_REQUEST[$stringname];
+	}
+
+	if (isset($urlParam))
+	{
+		if ($stringname == "sid" || $stringname == "gid" || $stringname == "oldqid" ||  
+				$stringname == "qid" || $stringname == "tid" || 
+				$stringname == "lid" || $stringname == "ugid"|| 
+				$stringname == "thisstep" || $stringname == "scenario" ||
+				$stringname == "cqid" || $stringname == "cid" || 
+				$stringname == "qaid" || $stringname == "scid")
+		{
+			return sanitize_int($urlParam);
+		}
+		elseif ($stringname =="lang" || $stringname =="adminlang")
+		{
+			return sanitize_languagecode($urlParam);
+		}
+		elseif ($stringname =="htmleditormode" || 
+				$stringname =="subaction")
+		{
+			return sanitize_paranoid_string($urlParam);    
+		}
+		elseif ( $stringname =="cquestions")
+		{
+			return sanitize_cquestions($urlParam);    
+		}
+		return $urlParam;
+	}
+    else
+    {
+	    return NULL;
+    }
 }
 
 
