@@ -175,7 +175,7 @@ if ($subaction == "export" && ( $sumrows5['export'] || $_SESSION['USER_RIGHT_SUP
     {
         $tokenoutput .=", $attr_name";
 	if (isset($attrfielddescr[$attr_name]))
-			$tokenoutput .=" <".$attrfielddescr[$attr_name].">";
+			$tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]).">";
     }
     $tokenoutput .="\n";
 	while ($brow = $bresult->FetchRow())
