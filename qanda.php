@@ -442,15 +442,20 @@ function setman_questionandcode_multiscale($ia)
 	return array($mandatorys, $mandatoryfns);
 }
 
+/**
+* This function returns an array containing the "question/answer" html display
+* and a list of the question/answer fieldnames associated. It is called from
+* question.php, group.php or survey.php
+* 
+* @param mixed $ia
+* @param mixed $notanswered
+* @param mixed $notvalidated
+* @return mixed
+*/
 function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 {
-	//This function returns an array containing the "question/answer" html display
-	//and a list of the question/answer fieldnames associated. It is called from
-	//question.php, group.php or survey.php
-
 	//globalise required config variables
 	global $dbprefix, $shownoanswer, $clang; //These are from the config-defaults.php file
-	//-----
 	global $thissurvey, $gl; //These are set by index.php
 	global $connect;
 
@@ -466,7 +471,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null)
 	{
 		$replace=substr($qtitle, strpos($qtitle, "{INSERTANS:"), strpos($qtitle, "}", strpos($qtitle, "{INSERTANS:"))-strpos($qtitle, "{INSERTANS:")+1);
 		$replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-		$replace3=retrieve_Answer($replace2);
+		$replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
 		$qtitle=str_replace($replace, $replace3, $qtitle);
 	} //while
 
@@ -6954,7 +6959,7 @@ function answer_replace($text)
 	{
 		$replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
 		$replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-		$replace3=retrieve_Answer($replace2);
+		$replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
 		$text=str_replace($replace, $replace3, $text);
 	} //while
 	return $text;

@@ -2011,9 +2011,6 @@ function getsidgidqidaidtype($fieldcode)
 */
 function getextendedanswer($fieldcode, $value, $format='', $dateformatphp='d.m.Y')
 {
-	// Performance optimized	: Nov 13, 2006
-	// Performance Improvement	: 36%
-	// Optimized By				: swales
 
 	global $dbprefix, $surveyid, $connect, $clang, $action;
 
@@ -3052,7 +3049,7 @@ function insertansReplace($line)
 	{
 		$answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
 		$answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-		$answreplace3=strip_tags(retrieve_Answer($answreplace2));
+		$answreplace3=strip_tags(retrieve_Answer($answreplace2, $_SESSION['dateformats']['phpdate']));
 		$line=str_replace($answreplace, $answreplace3, $line);
 	}
 	return $line;
@@ -3167,7 +3164,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 
 //For multilanguage surveys
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
-function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
+function SetSurveyLanguage($surveyid, $language)
 {
 
 		global $rootdir, $defaultlang;
@@ -3200,6 +3197,9 @@ function SetSurveyLanguage($surveyid, $language)// SetSurveyLanguage($surveyid)
 		else {
 			 $clang = new limesurvey_lang($defaultlang);
 			 }
+             
+        $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);                
+        $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
 		return $clang;
 }
 
@@ -5638,9 +5638,19 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
 	}
 }
 
-// returns the answerText from session vraiable  corresponding to a question code
-//
-function retrieve_Answer($code)
+/** This function checks to see if there is an answer saved in the survey session
+* data that matches the $code. If it does, it returns that data.
+* It is used when building a questions text to allow incorporating the answer
+* to an earlier question into the text of a later question.
+* IE: Q1: What is your name? [Jason]
+*     Q2: Hi [Jason] how are you ?
+* This function is called from the retriveAnswers function.
+* 
+* @param mixed $code
+* @param mixed $phpdateformat  The date format in which any dates are shown
+* @return mixed returns the answerText from session variable corresponding to a question code   
+*/
+function retrieve_Answer($code, $phpdateformat=null)
 {
 	//This function checks to see if there is an answer saved in the survey session
 	//data that matches the $code. If it does, it returns that data.
@@ -5694,7 +5704,7 @@ function retrieve_Answer($code)
 		}
 		else
 		{
-			$return=getextendedanswer($code, $_SESSION[$code], 'INSERTANS');
+			$return=getextendedanswer($code, $_SESSION[$code], 'INSERTANS',$phpdateformat);
 		}
 	}
 	else

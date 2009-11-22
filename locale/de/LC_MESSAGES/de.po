@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-22 12:28+0100\n"
-"PO-Revision-Date: 2009-11-22 15:11+0100\n"
+"PO-Revision-Date: 2009-11-22 16:50+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -4131,7 +4131,7 @@ msgstr "Es ist ein LimeSurvey-Update verfügbar: Version %s"
 #: D:\web\xampp\htdocs\limesurvey/admin/globalsettings.php:133
 #, php-format
 msgid "You can update manually or use the %s"
-msgstr "Sie können manuell updaten oder den %s nutzen."
+msgstr "Sie können manuell updaten oder das %s nutzen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/globalsettings.php:133
 msgid "3-Click ComfortUpdate"
