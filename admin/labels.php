@@ -106,8 +106,6 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	."\t\t</div>\n"
 	."\t</div>\n"
 	."</div>\n";
-    $labelsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-    
     	
 	//NEW SET
 	if ($action == "newlabelset" || $action == "editlabelset")
@@ -118,81 +116,69 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			$result=db_execute_assoc($query);
 			while ($row=$result->FetchRow()) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
 		}
-		$labelsoutput.="<table width='100%' class='form2columns'>\n"
-		."\t<tr>\n"
-		."<th>\n"
+		$labelsoutput.="<div class='header header_statistics'>\n"
 		."<input type='image' src='$imagefiles/close.gif' align='right' "
 		."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n";
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Create or Import New Label Set"); $langids=$_SESSION['adminlang']; $tabitem=$clang->gT("Create New Label Set");}
 		else {$labelsoutput.= $clang->gT("Edit Label Set"); $tabitem=$clang->gT("Edit Label Set");}
 		$langidsarray=explode(" ",trim($langids)); //Make an array of it
-		$labelsoutput.= "\n\t</th></tr></table>\n";
+		$labelsoutput.= "\n\t</div>\n";
 
         if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
 		$labelsoutput.= "<div class='tab-pane' id='tab-pane-labelset-{$panecookie}'>\n";
 		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$tabitem."</h2>\n";
-        $labelsoutput.= "<form style='margin-bottom:0;' method='post' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
+        $labelsoutput.= "<form method='post' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
 
-		$labelsoutput.= "<table width='100%' class='form2columns'>\n"
-		."\t<tr>\n"
-		."<td><strong>".$clang->gT("Set Name").":</strong></td>\n"
-		."<td>\n"
+		$labelsoutput.= "<ul'>\n"
+		."<li><label for='languageids'>".$clang->gT("Set name:")."</label>\n"
 		."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
 		."\t<input type='text' id='label_name' name='label_name' value='";
 		if (isset($lbname)) {$labelsoutput.= $lbname;}
 		$labelsoutput.= "' />\n"
-		."</td>\n"
-		."\t</tr>\n"
+		."</li>\n"
 		// Additional languages listbox
-    	. "\t<tr><td><strong>".$clang->gT("Languages").":</strong></td>\n"
-		. "<td><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
+    	. "\t<li><label>".$clang->gT("Languages:")."</label>\n"
+		. "<table><tr><td align='left'><select multiple='multiple' style='min-width:250px;' size='5' id='additional_languages' name='additional_languages'>";
 		foreach ($langidsarray as $langid) 
+		{
+			$labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
+			$labelsoutput.= ">".getLanguageNameFromCode($langid)."</option>\n";
+		}
+
+		//  Add/Remove Buttons
+		$labelsoutput.= "</select></td>"
+            . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
+
+		// Available languages listbox
+		. "<td align='left'><select size='5' id='available_languages' name='available_languages'>";
+		foreach (getLanguageData() as  $langkey=>$langname)
+		{
+			if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
 			{
-					$labelsoutput.=  "\t<option id='".$langid."' value='".$langid."'";
-					$labelsoutput.= ">".getLanguageNameFromCode($langid)."</option>\n";
+				$labelsoutput.= "\t<option id='".$langkey."' value='".$langkey."'";
+				$labelsoutput.= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
 			}
+		}
 
-			//  Add/Remove Buttons
-			$labelsoutput.= "</select></td>"
-			. "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
-
-			// Available languages listbox
-			. "<td align='left' width='45%'><select size='5' id='available_languages' name='available_languages'>";
-			foreach (getLanguageData() as  $langkey=>$langname)
-			{
-				if (in_array($langkey,$langidsarray)==false)  // base languag must not be shown here
-				{
-					$labelsoutput.= "\t<option id='".$langkey."' value='".$langkey."'";
-					$labelsoutput.= ">".$langname['description']." - ".$langname['nativedescription']."</option>\n";
-				}
-			}
-
-		$labelsoutput.= "\t</select></td></tr><tr>\n"
-		."<td></td><td></td>\n"
-		."<td>\n"
-    	."<br /><input type='submit' value='";
+		$labelsoutput.= "\t</select></td>"
+        ." </tr></table></li></ul>\n"
+    	."<p><input type='submit' value='";
 		if ($action == "newlabelset") {$labelsoutput.= $clang->gT("Add");}
-		  else {$labelsoutput.= $clang->gT("Update");}
+		    else {$labelsoutput.= $clang->gT("Update");}
 		$labelsoutput.= "' />\n"
 		."<input type='hidden' name='action' value='";
 		if ($action == "newlabelset") {$labelsoutput.= "insertlabelset";}
-		else {$labelsoutput.= "updateset";}
+		    else {$labelsoutput.= "updateset";}
 		$labelsoutput.= "' />\n";
 		
-        if ($action == "editlabelset") 
-        {
+        if ($action == "editlabelset") {
             $labelsoutput.= "<input type='hidden' name='lid' value='$lblid' />\n";
         }
 		
-        $labelsoutput.= "</td>\n"
-		."\t</tr>\n";
-		$labelsoutput.= "</table></form></div>\n";
+		$labelsoutput.= "</form></div>\n";
 
-		if ($action == "newlabelset")
-		{
-		$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Label Set")."</h2>\n";
-			
-            $labelsoutput.= ""
+		if ($action == "newlabelset"){
+		    $labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Import Label Set")."</h2>\n"
 			."<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
 			."<div class='header'>\n"
 			.$clang->gT("Import Label Set")."\n"
@@ -481,19 +467,19 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	}
 
 	$labelsoutput.= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-		. "\t<form enctype='multipart/form-data' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+		. "\t<form enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "\t<input type='hidden' name='lid' value='$lid' />\n"
 		. "\t<input type='hidden' name='action' value='importlabelresources' />\n"
-		. "\t<table width='100%' class='form2columns'>\n"
-		. "\t<tbody align='center'>"
-		. "\t\t<tr><td></td><td>\n"
-		. "\t\t<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></td><td><td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></td><td>&nbsp;</td></tr>\n"
-		. "\t\t<tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
-		. "\t\t<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-		. "\t\t<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"
-		. "\t\t</tr>\n"
-		. "\t</tbody></table></form>\n";
+		. "\t<ul>\n"
+		. "\t\t<li><label>&nbsp;</label>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
+        . "\t\t<li><label>&nbsp;</label>\n"
+		. "\t\t<input type='button' onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
+		. "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
+		. "\t\t<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
+        . "\t\t<li><label>&nbsp;</label>\n"
+		. "\t\t<input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></li>\n"
+		. "\t\t</ul></form>\n";
 
 	// End TAB Uploaded Resources Management
 	$labelsoutput.= "</div>";		

@@ -96,6 +96,7 @@ span.basic {
 	vertical-align: top;
 }
 
+/* Start menubar */  
 div.menubar {
 	background-color: #EEF6FF;
     clear:left;
@@ -179,7 +180,6 @@ div.menubar {
 #surveydetails, #groupdetails, #questiondetails {
 	background-color: #FFF;
 	width: 100%;
-	text-align: center;
 	border: 1px solid;
     border-color: #fff #8195BA #8195BA #D2E0F2;
     margin-top:-2px;
@@ -188,20 +188,16 @@ div.menubar {
     clear:left;
 }
 
-table.form2columns {
-	width: 100%;
-	text-align: center;
-	border: none;
-	background-color: #f8f8ff;
+#surveydetails td:first-child, 
+#groupdetails td:first-child, 
+#questiondetails td:first-child {
+    width:20%;   
 }
 
-table.form2columns td:first-child {
-	width: 30%;
-	text-align: right;
-}
-
-table.form2columns td.centered {
-	text-align: center;
+#surveydetails td+td, 
+#groupdetails td+td, 
+#questiondetails td+td {
+    text-align:left;    
 }
 
 .outlinetable {
@@ -472,7 +468,7 @@ th.admincell {
     margin-bottom: 10px;
 }
 
-.header, .formheader, .headertwo, table.form2columns th, .settingcaption {
+.header, .formheader, .headertwo, .settingcaption {
 	text-align: center;
 	font-size: 13px;
 	font-weight: 700;
@@ -907,6 +903,7 @@ div.messagebox .warningheader {
 }
    
 
+#importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
 #statistics_general_filter li label:first-child,            
 #vvexport li label:first-child,            
@@ -932,7 +929,12 @@ div.messagebox .warningheader {
     color: #1d2d45;
 }        
 
-
+#usergroupform li label:first-child,            
+#frmcopyquestion li label:first-child,        
+#labelsetform li label:first-child,        
+#importlabelresources li label:first-child,            
+#importsurveyresources li label:first-child,    
+#assessmentsform li label:first-child,    
 #addnewquotaform li label:first-child,    
 #sendreminder  li label:first-child,
 #sendinvitation li label:first-child,
@@ -949,6 +951,10 @@ div.messagebox .warningheader {
     color: #121A28;
 }
 
+#usergroupform li,
+#importtemplate li,
+#frmcopyquestion li,
+#importlabelresources li,
 #loginform li,
 #statistics_general_filter li,
 #tokenimport li,
@@ -965,6 +971,9 @@ div.messagebox .warningheader {
 #importsurvey li,
 #importgroup li,
 #addnewquotaform li,
+#assessmentsform li,
+#importsurveyresources li,
+#labelsetform li,
 #frmglobalsettings li {  
     list-style-type: none;
     clear:left;
@@ -997,7 +1006,7 @@ div.loader {
     padding:1% 10%;
 }
 
-
+#frmcopyquestion iframe,   
 #sendreminder iframe,
 #addnewgroup iframe,
 #sendinvitation iframe,

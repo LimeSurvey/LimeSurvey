@@ -182,7 +182,7 @@ elseif ($action == 'conditions')
     if($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)    {include('conditionshandling.php');}
         else { include('access_denied.php');}    
     }    
-elseif ($action == 'importsurvresources') 
+elseif ($action == 'importsurveyresources') 
   { 
       if ($surrows['define_questions'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)	{$_SESSION['FileManagerContext']="edit:survey:$surveyid";include('import_resources_zip.php');}
 	    else { include('access_denied.php');}
@@ -535,7 +535,7 @@ elseif ($action == 'replacementfields')
   if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
 
   if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
-  if (isset($importsurvresourcesoutput)) {$adminoutput.= $importsurvresourcesoutput;}
+  if (isset($importsurveyresourcesoutput)) {$adminoutput.= $importsurveyresourcesoutput;}
   if (isset($importgroup)) {$adminoutput.= $importgroup;}
   if (isset($importquestion)) {$adminoutput.= $importquestion;}
   if (isset($printablesurveyoutput)) {$adminoutput.= $printablesurveyoutput;}

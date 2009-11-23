@@ -30,17 +30,17 @@ $(document).ready(function(){
         {
               if ($('#radiototal').attr('checked')==true)
               {
-                $('#newgroupselect').attr('disabled','disabled');
+                $('#gid').attr('disabled','disabled');
               }
               else
               {
-                if ($('#newgroupselect>option').length==0){
+                if ($('#gid>option').length==0){
                   $('#radiototal').attr('checked',true);
                   alert (strnogroup);    
                 }
                 else
                 {
-                    $('#newgroupselect').attr('disabled',false);
+                    $('#gid').attr('disabled',false);
                 }
               }
         }

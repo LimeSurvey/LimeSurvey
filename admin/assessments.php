@@ -135,16 +135,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 	$assessments=getAssessments($surveyid);
 	//$assessmentsoutput.= "<pre>";print_r($assessments);echo "</pre>";
 	$groups=getGroups($surveyid);
-	$groupselect="<select name='gid' id='newgroupselect'>\n";
+	$groupselect="<select name='gid' id='gid'>\n";
 	foreach($groups as $group) {
 		$groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
 	}
 	$groupselect .="</select>\n";
 	$headings=array($clang->gT("Scope"), $clang->gT("Question group"), $clang->gT("Minimum"), $clang->gT("Maximum"));
-	$inputs=array("<input type='radio' id='radiototal' name='scope' value='T' checked='checked' /><label for='radiototal'>".$clang->gT("Total")."</label><input type='radio' id='radiogroup' name='scope' value='G' /><label for='radiogroup'>".$clang->gT("Group")."</label>",
-	$groupselect,
-	"<input type='text' name='minimum' class='numbersonly' />",
-	"<input type='text' name='maximum' class='numbersonly' />");
 	$actiontitle=$clang->gT("Add");
 	$actionvalue="assessmentadd";
 	$thisid="";
@@ -155,19 +151,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
 		while($row=$results->FetchRow()) {
 			$editdata=$row;
 		}
-		$scopeselect = "<input type='radio' id='radiototal' name='scope' ";
-		if ($editdata['scope'] == "T") {$scopeselect .= "checked='checked' ";}
-		$scopeselect .= "value='T'><label for='radiototal'>".$clang->gT("Total")."</label>";
-        $scopeselect .= "<input type='radio' name='scope' id='radiogroup' value='G'";
-		if ($editdata['scope'] == "G") {$scopeselect .= " checked='checked'";}
-		$scopeselect .= ">".$clang->gT("Question group")."</input>";
 		$groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
-		$inputs=array($scopeselect,
-		$groupselect,
-		"<input type='text' name='minimum' value='".$editdata['minimum']."' class='numbersonly' />",
-		"<input type='text' name='maximum' value='".$editdata['maximum']."' class='numbersonly' />",
-		"<input type='text' name='name' size='80' value='".htmlentities(stripslashes($editdata['name']), ENT_QUOTES,'UTF-8')."'/>",
-		"<textarea name='message' id='assessmentmessage' rows='10' cols='80'>".htmlentities(stripslashes($editdata['message']), ENT_QUOTES,'UTF-8')."</textarea>");
 		$actiontitle=$clang->gT("Edit");	
 		$actionvalue="assessmentupdate";
 		$thisid=$editdata['id'];
@@ -227,15 +211,22 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['edit_survey_property'
     
     
     //now present edit/insert form
-	$assessmentsoutput.= "<br /><form method='post' name='assessmentsform' action='$scriptname?sid=$surveyid'><table align='center' cellspacing='0' border='0' class='form2columns'>\n";
-	$assessmentsoutput.= "<tr><th colspan='2'>$actiontitle</th></tr>\n";
-	$i=0;
+	$assessmentsoutput.= "<br /><form method='post' id='assessmentsform' name='assessmentsform' action='$scriptname?sid=$surveyid'><div class='header'>\n";
+	$assessmentsoutput.= "$actiontitle</div>\n";
 	
-	foreach ($headings as $head) {
-		$assessmentsoutput.= "<tr><td>$head</td><td>".$inputs[$i]."<br /></td></tr>\n";
-		$i++;
-	}
-    
+    $assessmentsoutput.="<ul><li><label>".$clang->gT("Scope")."</label><input type='radio' id='radiototal' name='scope' value='T' ";
+    if (isset($editdata) && $editdata['scope'] == "T") {$assessmentsoutput .= " checked='checked' ";}          
+    $assessmentsoutput.=" /><label for='radiototal'>".$clang->gT("Total")."</label>
+                         <input type='radio' id='radiogroup' name='scope' value='G'";
+    if (isset($editdata) && $editdata['scope'] == "G") {$assessmentsoutput .= " checked='checked' ";}          
+    $assessmentsoutput.="/><label for='radiogroup'>".$clang->gT("Group")."</label></li>";
+    $assessmentsoutput.="<li><label for='gid'>".$clang->gT("Question group")."</label>$groupselect</li>"
+    ."<li><label for='minimum'>".$clang->gT("Minimum")."</label><input type='text' id='minimum' name='minimum' class='numbersonly'";
+    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['minimum']}' ";}          
+    $assessmentsoutput.="/></li>"
+    ."<li><label for='maximum'>".$clang->gT("Maximum")."</label><input type='text' id='maximum' name='maximum' class='numbersonly'"; 
+    if (isset($editdata)) {$assessmentsoutput .= " value='{$editdata['maximum']}' ";}          
+    $assessmentsoutput.="/></li>";
     
     // start tabs
     $assessmentsoutput.= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";

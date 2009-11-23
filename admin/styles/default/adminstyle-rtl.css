@@ -89,22 +89,6 @@ line-height: 1em;
 }
 /* END menubar CSS */
 
-table.form2columns {
-width:100%;
-text-align:center;
-border:none;
-background-color:#f8f8ff;
-}
-
-table.form2columns td:first-child {
-width:30%;
-text-align:left;
-}
-
-table.form2columns td.centered {
-text-align:center;
-}
-
 .outlinetable {
 border:1px solid #111;
 }
@@ -394,7 +378,7 @@ float:none !important;
 margin:0 auto;
 }
 
-th,.header,.headertwo,table.form2columns th,.settingcaption {
+th,.header,.headertwo,.settingcaption {
 text-align:center;
 font-size:13px;
 font-weight:700;

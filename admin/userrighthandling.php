@@ -575,18 +575,17 @@ if ($action == "editusers")
 
 if ($action == "addusergroup")
 {
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // for now only admins may do that
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)  // only admins may do that
 	{
-		$usersummary = "<form action='$scriptname'  method='post'><table  width='100%' class='form2columns'>\n<tr><th colspan='2'>\n"
-		. "<strong>".$clang->gT("Add User Group")."</strong></th></tr>\n"
-		. "<tr>\n"
-		. "<td><strong>".$clang->gT("Name:")."</strong></td>\n"
-		. "<td><input type='text' size='50' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></td></tr>\n"
-		. "<tr><td><strong>".$clang->gT("Description:")."</strong></td>\n"
-		. "<td><textarea cols='50' rows='4' name='group_description'></textarea></td></tr>\n"
-		. "<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Add Group")."' />\n"
+        $usersummary ="<div class='header'>".$clang->gT("Add User Group")."</div>\n"   
+		. "<form action='$scriptname' id='usergroupform' method='post'>"
+		. "<ul>\n"
+		. "<li><label for='group_name'>".$clang->gT("Name:")."</label>\n"
+		. "<input type='text' size='50' id='group_name' name='group_name' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
+		. "<li><label for='group_description'>".$clang->gT("Description:")."</label>\n"
+		. "<textarea cols='50' rows='4' id='group_description' name='group_description'></textarea></li>\n"
+		. "</ul><p><input type='submit' value='".$clang->gT("Add Group")."' />\n"
 		. "<input type='hidden' name='action' value='usergroupindb' />\n"
-		. "</td></table>\n"
 		. "</form>\n";
 	}
 }
@@ -598,20 +597,17 @@ if ($action == "editusergroup")
 		$query = "SELECT * FROM ".db_table_name('user_groups')." WHERE ugid = ".$_GET['ugid']." AND owner_id = ".$_SESSION['loginID'];
 		$result = db_select_limit_assoc($query, 1);
 		$esrow = $result->FetchRow();
-		$usersummary = "<form action='$scriptname' name='editusergroup' method='post'>"
-		. "<table width='100%' border='0' class='form2columns'>\n<tr><th colspan='2'>\n"
-		. "<strong>".$clang->gT("Edit User Group (Owner: ").$_SESSION['user'].")</strong></th></tr>\n"
-		. "<tr>\n"
-		. "<td><strong>".$clang->gT("Name:")."</strong></td>\n"
-		. "<td><input type='text' size='50' name='name' value=\"{$esrow['name']}\" /></td></tr>\n"
-		. "<tr><td><strong>".$clang->gT("Description:")."</strong></td>\n"
-		. "<td><textarea cols='50' rows='4' name='description'>{$esrow['description']}</textarea></td></tr>\n"
-		. "<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
+		$usersummary = "<div class='header'>".sprintf($clang->gT("Editing user group (Owner: %s)"),$_SESSION['user'])."</div>"
+        ."<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'>"
+		. "<ul>\n"
+		. "<li><label for='name'>".$clang->gT("Name:")."</label>\n"
+		. "<input type='text' size='50' id='name' name='name' value=\"{$esrow['name']}\" /></li>\n"
+		. "<li><label for='description'>".$clang->gT("Description:")."</label>\n"
+		. "<textarea cols='50' rows='4' id='description' name='description'>{$esrow['description']}</textarea></li>\n"
+		. "<ul><p><input type='submit' value='".$clang->gT("Update User Group")."' />\n"
 		. "<input type='hidden' name='action' value='editusergroupindb' />\n"
 		. "<input type='hidden' name='owner_id' value='".$_SESSION['loginID']."' />\n"
 		. "<input type='hidden' name='ugid' value='$ugid' />\n"
-		. "</td></tr>\n"
-		. "</table>\n"
 		. "</form>\n";
 	}
 }
@@ -622,24 +618,19 @@ if ($action == "mailusergroup")
 	$result = db_execute_assoc($query); //Checked
 	$crow = $result->FetchRow();
 
+    $usersummary = "<div class='header'>".$clang->gT("Mail to all Members")."</div>";
 
-	$usersummary = "<form action='$scriptname' name='mailusergroup' method='post'>"
-	. "<table width='100%' border='0' class='form2columns'>\n<tr><th colspan='2'>\n"
-	. "<strong>".$clang->gT("Mail to all Members")."</strong></th></tr>\n"
-	. "<tr>\n"
-	. "<td><strong>".$clang->gT("Send me a copy:")."</strong></td>\n"
-	. "<td><input name='copymail' type='checkbox' class='checkboxbtn' value='1' /></td></tr>\n"
-	. "<tr>\n"
-	. "<td><strong>".$clang->gT("Subject:")."</strong></td>\n"
-	. "<td><input type='text' size='50' name='subject' value='' /></td></tr>\n"
-	. "<tr><td><strong>".$clang->gT("Message:")."</strong></td>\n"
-	. "<td><textarea cols='50' rows='4' name='body'></textarea></td></tr>\n"
-	. "<tr><td colspan='2' class='centered'><input type='submit' value='".$clang->gT("Send")."' />\n"
+	$usersummary = "<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'><ul>"
+	. "<li><label for='copymail'>".$clang->gT("Send me a copy:")."</label>\n"
+	. "<input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>\n"
+	. "<li><label for='subject'>".$clang->gT("Subject:")."</label>\n"
+	. "<input type='text' id='subject' size='50' name='subject' value='' /></li>\n"
+	. "<li><label for='body'>".$clang->gT("Message:")."</label>\n"
+	. "<textarea cols='50' rows='4' id='body' name='body'></textarea></li>\n"
+	. "</ul><p><input type='submit' value='".$clang->gT("Send")."' />\n"
 	. "<input type='reset' value='".$clang->gT("Reset")."' /><br />"
 	. "<input type='hidden' name='action' value='mailsendusergroup' />\n"
 	. "<input type='hidden' name='ugid' value='$ugid' />\n"
-	. "</td></tr>\n"
-	. "</table>\n"
 	. "</form>\n";
 }
 
@@ -684,7 +675,7 @@ if ($action == "usergroupindb")
 {
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$usersummary = "<br /><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
+		$usersummary = "<p><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
 	
 		$db_group_name = db_quote($_POST['group_name']);
 		$db_group_description = db_quote($_POST['group_description']);

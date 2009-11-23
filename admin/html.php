@@ -619,7 +619,7 @@ if ($surveyid)
                  || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
                  || $action=="editsurvey" || $action=="addgroup" || $action=="importgroup"
                  || $action=="ordergroups" || $action=="updatesurvey" || $action=="deletesurvey" || $action=="resetsurveylogic"
-                 || $action=="importsurvresources"
+                 || $action=="importsurveyresources"
                  || $action=="exportstructure" || $action=="quotas" ) {$showstyle="style='display: none'";}
 		if (!isset($showstyle)) {$showstyle="";}
 		$additionnalLanguagesArray = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -2667,19 +2667,19 @@ if ($action == "editsurvey")
 		}
 
 		$editsurvey .= "<div class='tab-page'> <h2 class='tab'>".$clang->gT("Uploaded Resources Management")."</h2>\n"
-		. "<form enctype='multipart/form-data' name='importsurvresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+		. "<form enctype='multipart/form-data' id='importsurveyresources' name='importsurveyresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
 		. "<input type='hidden' name='sid' value='$surveyid' />\n"
-		. "<input type='hidden' name='action' value='importsurvresources' />\n"
-		. "<table width='100%' class='form2columns'>\n"
-		. "<tbody align='center'>"
-		. "<tr><td></td><td>\n"
-		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></td><td><td></tr>\n"
-		. "<tr><td></td><td><input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></td><td><td></tr>\n"
-		. "<tr><td>&nbsp;</td></tr><tr><td>".$clang->gT("Select ZIP File:")."</td>\n"
-		. "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-		. "<tr><td></td><td><input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></td><td></td>\n"
-		. "</tr>\n"
-		. "</tbody></table></form>\n";
+		. "<input type='hidden' name='action' value='importsurveyresources' />\n"
+		. "<ul>\n"
+		. "<li><label>&nbsp;</label>\n"
+		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
+        . "<li><label>&nbsp;</label>\n"
+		. "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li\n"
+		. "<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
+		. "<input id='the_file' name='the_file' type='file' size='50' /></li>\n"
+        . "<li><label>&nbsp;</label>\n"
+		. "<input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></li>\n"
+		. "</ul></form>\n";
 
 		// End TAB Uploaded Resources Management
 		$editsurvey .= "</div>\n";

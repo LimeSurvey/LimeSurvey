@@ -849,10 +849,8 @@ $templatesoutput.= "\t<img src='$imagefiles/blank.gif' alt='' width='20' height=
 ."<img src='$imagefiles/seperator.gif' alt='' />"
 ."<img src='$imagefiles/blank.gif' width='62' height='10' alt=''/>"
 ."</div></div></div>\n"
-."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>" //CSS Firefox 2 transition fix
-."<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
-. "\t<tr>\n"
-. "<td>\n";
+."<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+
 
 
 if ($subaction=='templateupload')
@@ -862,21 +860,22 @@ if ($subaction=='templateupload')
     {
         $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
     }    
-    $templatesoutput.= "\t<form enctype='multipart/form-data' name='importtemplate' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+    $templatesoutput.= "<div class='header'>".$clang->gT("Uploaded template file") ."</div>\n";
+
+    $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "\t<input type='hidden' name='lid' value='$lid' />\n"
         . "\t<input type='hidden' name='action' value='templateupload' />\n"
-        . "\t<table width='60%' class='form2columns'>\n"
-        . "\t<tbody align='center'>"
-        . "<tr><th colspan='2' class='settingcaption'>".$clang->gT("Uploaded template file") ."</th>\n"
-        . "<tr><td>&nbsp;</td></tr>\n"
-        . "<tr><td>".$clang->gT("Select template ZIP file:")."</td>\n"
-        . "<td><input name=\"the_file\" type=\"file\" size=\"50\" /></td><td></td></tr>\n"
-        . "<tr><td></td><td><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></td><td></td>\n"
-        . "</tr>\n"
-        . "\t</tbody></table></form>\n"; 
+        . "\t<ul>\n"
+        . "<li><label for='the_file'>".$clang->gT("Select template ZIP file:")."</label>\n"
+        . "<input id='the_file' name='the_file' type=\"file\" size=\"50\" /></li>\n"
+        . "<li><label>&nbsp;</label><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></li>\n"
+        . "\t</ul></form>\n"; 
 }
 elseif (isset($importtemplateoutput))
 {
+    $templatesoutput.="<table width='100%' border='0' bgcolor='#FFFFFF'>\n"
+    . "\t<tr>\n"
+    . "<td>\n";
     $templatesoutput.=$importtemplateoutput;
 }
 else
