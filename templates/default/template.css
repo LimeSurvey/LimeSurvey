@@ -120,11 +120,6 @@ a:link,a:visited {
     font-family:verdana;
 }
 
-td.graph
-{
-    background-color: #d2e0f2;
-    padding: 0.2em 0%;
-}
 #progress-graph
 {
     line-height: 1.5em;
@@ -168,6 +163,7 @@ td.graph
     margin-left: 13.3em;
     margin-right: 0%;    
 }
+
 
 .printouttable {
 width:100%;

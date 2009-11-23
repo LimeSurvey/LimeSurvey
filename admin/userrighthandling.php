@@ -618,9 +618,8 @@ if ($action == "mailusergroup")
 	$result = db_execute_assoc($query); //Checked
 	$crow = $result->FetchRow();
 
-    $usersummary = "<div class='header'>".$clang->gT("Mail to all Members")."</div>";
-
-	$usersummary = "<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'><ul>"
+    $usersummary = "<div class='header'>".$clang->gT("Mail to all Members")."</div>"
+	. "<form action='$scriptname' id='usergroupform' name='usergroupform' method='post'><ul>"
 	. "<li><label for='copymail'>".$clang->gT("Send me a copy:")."</label>\n"
 	. "<input id='copymail' name='copymail' type='checkbox' class='checkboxbtn' value='1' /></li>\n"
 	. "<li><label for='subject'>".$clang->gT("Subject:")."</label>\n"

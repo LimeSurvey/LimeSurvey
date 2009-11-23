@@ -3166,8 +3166,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)
 {
-
-		global $rootdir, $defaultlang;
+		global $rootdir, $defaultlang, $clang;
         $surveyid=sanitize_int($surveyid);
 		require_once($rootdir.'/classes/core/language.php');
 		if (isset($surveyid) && $surveyid>0)
@@ -3192,11 +3191,11 @@ function SetSurveyLanguage($surveyid, $language)
 				$_SESSION['s_lang'] = $language;
 				//echo "Language will be set to ".$_SESSION['s_lang']."<br />";
 			}
-		$clang = new limesurvey_lang($_SESSION['s_lang']);
+		    $clang = new limesurvey_lang($_SESSION['s_lang']);
 		}
 		else {
 			 $clang = new limesurvey_lang($defaultlang);
-			 }
+		}
              
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);                
         $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
