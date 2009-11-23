@@ -358,9 +358,9 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		       	 $jqresult=$connect->execute($jq) or safe_die($query." failed");
 		       	 $jqcount=$jqresult->RecordCount();
 		       	 if($jqcount == 0) {
-				     $oldtoptionaldelete[]=$tablename."| SID ".$four." saved at $date";	
+				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
 				 } else {
-				     $oldtmultidelete[]=$tablename."| SID ".$four." saved at $date containing ". $jqcount." record(s)";
+				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
 				 }
 			  }
 		  }
