@@ -66,3 +66,7 @@
 #progress-graph div.cent {
     margin-right: 65%;    
 }
+
+#progress-graph div.graph{
+  text-align: right;
+}
