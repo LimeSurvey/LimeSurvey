@@ -5544,11 +5544,11 @@ function do_array_flexible($ia)
 			$myfname = $ia[1].$ansrow['code'];
 			$trbc = alternation($trbc , 'row');
 			$answertext=answer_replace($ansrow['answer']);
+            $answertextsave=$answertext;
 			if (strpos($answertext,'|'))
 			{
 				$answertext=substr($answertext,0, strpos($answertext,'|'));
 			}
-			$answertextsave=$answertext;
 			/* Check if this item has not been answered: the 'notanswered' variable must be an array,
 			containing a list of unanswered questions, the current question must be in the array,
 			and there must be no answer available for the item in this session. */
