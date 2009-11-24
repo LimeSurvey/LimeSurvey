@@ -4058,7 +4058,7 @@ function getAdminHeader($meta=false)
         $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
     $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui-1.7.1.custom.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"    
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/adminstyle.css\" />\n"
     . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n"

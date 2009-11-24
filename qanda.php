@@ -1528,7 +1528,7 @@ function do_date($ia)
     else 
         {
             $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
-            $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
+            $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
             // Format the date  for output
             if (trim($_SESSION[$ia[1]])!='')
@@ -3979,7 +3979,7 @@ function do_multiplenumeric($ia)
 	if ($qidattributes['slider_layout']==1)
 	{
 		$slider_layout=true;
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui-1.7.1.custom.css';
+        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
 
         if (trim($qidattributes['slider_accuracy'])!='')

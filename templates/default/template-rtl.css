@@ -70,3 +70,19 @@
 #progress-graph div.graph{
   text-align: right;
 }
+
+
+/* line 479 */
+
+.list-with-comment div.list {
+    float: right;
+}
+
+.list-with-comment div.list p {
+    text-align: right;
+}
+
+.list-with-comment p.comment {
+    text-align: right;
+    float:left;
+}
