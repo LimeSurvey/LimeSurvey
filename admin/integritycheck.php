@@ -294,9 +294,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		       	 $jqresult=$connect->execute($jq) or safe_die($query." failed");
 		       	 $jqcount=$jqresult->RecordCount();
 		       	 if($jqcount == 0) {
-				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
+					 $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $four, $date);
+//				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
 				 } else {
-				     $oldsmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
+					 $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
+//				     $oldsmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
 				 }
 			  }
 		  }
@@ -358,9 +360,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 		       	 $jqresult=$connect->execute($jq) or safe_die($query." failed");
 		       	 $jqcount=$jqresult->RecordCount();
 		       	 if($jqcount == 0) {
-				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
+//				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
+					 $oldtoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $four, $date);
 				 } else {
-				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
+					 $oldtmultidelete[]=$tablename."| ".sprintf($clang-gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
+//				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
 				 }
 			  }
 		  }
