@@ -1258,6 +1258,7 @@ if ($subaction=='' ||
 				."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
 				."AND {$dbprefix}questions.gid={$dbprefix}groups.gid "
 				."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
+                ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' "  
 				."AND {$dbprefix}conditions.qid=$qid "
 				."AND {$dbprefix}conditions.scenario={$scenarionr['scenario']}\n"
 				."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' \n" // avoid catching SRCtokenAttr conditions
