@@ -2421,8 +2421,8 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 				. "FROM ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
 				. "WHERE qa.qid = q.qid "
 				. "AND ( "
-				. "      (qa.attribute='array_filter' AND qa.value =".db_quoteall($arow['title']).") "
-				. "   OR (qa.attribute='array_filter_exclude' AND qa.value=".db_quoteall($arow['title']).") "
+				. "      (qa.attribute='array_filter' AND qa.value LIKE ".db_quoteall($arow['title']).") "
+				. "   OR (qa.attribute='array_filter_exclude' AND qa.value LIKE ".db_quoteall($arow['title']).") "
 				. "    ) "
 				. "AND q.sid=$surveyid";
 			$qaresult = db_execute_assoc($qaquery);
