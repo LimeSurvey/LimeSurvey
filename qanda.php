@@ -20,6 +20,11 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 /*
 * Let's explain what this strange $ia var means
 *
+* The $ia string comes from the $_SESSION['insertarray'] variable which is built at the commencement of the survey. 
+* See index.php, function "buildsurveysession()"
+* One $ia array exists for every question in the survey. The $_SESSION['insertarray']
+* string is an array of $ia arrays.
+*
 * $ia[0] => question id
 * $ia[1] => fieldname
 * $ia[2] => title
@@ -27,7 +32,8 @@ if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this scri
 * $ia[4] => type --  text, radio, select, array, etc
 * $ia[5] => group id
 * $ia[6] => mandatory Y || N
-* $ia[7] => conditions ??
+* $ia[7] => conditions exist for this question
+* $ia[8] => other questions have conditions which rely on this question (including array_filter and array_filter_exclude attributes)
 *
 * $conditions element structure
 * $condition[n][0] => qid = question id
@@ -1274,7 +1280,7 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 	if  (
 			(trim($qidattributes['array_filter_exclude'])!='' && 	// the array_filter attribute is set
 			 $thissurvey['format'] == 'G' && 				// and the survey is being presented group by group
-			 getArrayFiltersOutGroup($ia[0]) == false		// and this question _is_not_ in the current group for the array filter
+			 getArrayFiltersExcludesOutGroup($ia[0]) == false		// and this question _is_not_ in the current group for the array filter
 			) ||											// OR
 			(trim($qidattributes['array_filter_exclude'])!='' &&	// the array_filter attribute is set
 			 $thissurvey['format'] == 'A'					// and the survey is being presented all on one page
@@ -1290,12 +1296,11 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
 		 ) || 
 		 (trim($qidattributes['array_filter_exclude'])!='' && 
 		  $thissurvey['format'] == 'G' && 
-		  getArrayFiltersOutGroup($ia[0]) == true
+		  getArrayFiltersExcludesOutGroup($ia[0]) == true
 		 )
 		)
 	{
 		$selected = getArrayFilterExcludesForQuestion($ia[0]);
-
 		if (!in_array($ansrow['code'],$selected))
 		{
 			$htmltbody2 = "\n\n\t<$method id='javatbd$rowname'>\n";

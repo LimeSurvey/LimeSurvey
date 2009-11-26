@@ -435,10 +435,12 @@ echo "<input type='hidden' id='runonce' value='0' />
 if ($show_empty_group) {
 	unset($array_filterqs);
 	unset($array_filterXqs);
+	unset($array_filterXqs_cascades);
 } else
 {
 	$array_filterqs = getArrayFiltersForGroup($surveyid,$gid);
 	$array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
+	$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, $gid);
 }
 
 print <<<END
@@ -875,7 +877,6 @@ if (isset($sourceQuestionGid[1]) && ((isset($oldq) && $oldq != $cd[0] || !isset(
 {
   $endzone .= "    }\n";
 }
-
 $java .= $endzone;
 }
 
@@ -890,7 +891,6 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 
 	foreach ($array_filterqs as $attralist)
 	{
-		//die(print_r($attrflist));
 		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
@@ -918,7 +918,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 					// This line resets the text fields in the hidden row
 					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
 					// This line resets any radio group in the hidden row
-				   $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
 					$appendj .= "\t}\n";   
 				}
 			}
@@ -927,12 +927,16 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 	$java .= $appendj;
 	foreach ($array_filterXqs as $attralist)
 	{
-		//die(print_r($attrflist));
 		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
 		$qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		if ($attralist['type'] == "M")
 		{
-			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+			$qquery = "SELECT {$dbprefix}answers.code, {$dbprefix}questions.type 
+					   FROM {$dbprefix}answers, {$dbprefix}questions 
+					   WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid 
+					   AND {$dbprefix}answers.qid='".$attralist['qid']."' 
+					   AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' 
+					   ORDER BY code;";
 			$qresult = db_execute_assoc($qquery); //Checked
 			while ($fansrows = $qresult->FetchRow())
 			{
@@ -943,7 +947,21 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 					$dtbody = "tbdisp".$qbase.$fansrows['code'];
 					$tbodyae = $qbase.$fansrows['code'];
 					$appendj .= "\n";
-					$appendj .= "\tif ((document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y'))\n";
+					$appendj .= "\tif (\n";
+					$appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
+					
+					/* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+					if(isset($array_filterXqs_cascades[$attralist['qid']])) 
+					{
+						foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
+						{
+							$cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['code'];
+							$appendj .= "\t\t||\n";
+							$appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
+						}
+					}
+					/* */
+					$appendj .= "\t)\n";
 					$appendj .= "\t{\n";
 					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
 					$appendj .= "\t\t$('#$dtbody').val('off');\n";
@@ -953,9 +971,9 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 					$appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
 					$appendj .= "\t\t$('#$dtbody').val('on');\n";
 					// This line resets the text fields in the hidden row
-					$appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+					$appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
 					// This line resets any radio group in the hidden row
-				   $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+				    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
 					$appendj .= "\t}\n";
 				}
 			}

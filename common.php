@@ -4410,6 +4410,98 @@ function getArrayFiltersForGroup($surveyid,$gid)
 }
 
 /**
+* getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
+* @global string $surveyid
+* @global string $gid
+* @global string $output - expects 'qid' or 'title'
+* @global string $dbprefix
+* @return returns a keyed nested array, keyed by the qid of the question, containing cascade information
+*/
+function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
+{
+	global $dbprefix;
+    $surveyid=sanitize_int($surveyid);
+    $gid=sanitize_int($gid);
+	
+	$cascaded=array();
+	$sources=array();
+	$qidtotitle=array();
+	$qquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
+	if($gid != "") {$qquery .= " AND gid='$gid'";}
+	$qquery .= " AND language='".$_SESSION['s_lang']."' ORDER BY qid";
+	$qresult = db_execute_assoc($qquery);  //Checked
+	$grows = array(); //Create an empty array in case query not return any rows
+	// Store each result as an array with in the $grows array
+	while ($qrow = $qresult->FetchRow()) {
+		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
+	}
+	$attrmach = array(); // Stores Matches of filters that have their values as questions within current group
+	foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
+	{
+		$qidtotitle[$qrow['qid']]=$qrow['title'];
+		$qquery = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qrow['qid']."'";
+		$qresult = db_execute_num($qquery);     //Checked
+		if ($qresult->RecordCount() == 1) // We Found a array_filter attribute
+		{
+			$val = $qresult->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+			foreach ($grows as $avalue) // Cycle through all the other questions in this group until we find the source question for this array_filter
+			{
+				if ($avalue['title'] == $val[0])
+				{
+					/* This question ($avalue) is the question that provides the source information we use
+					* to determine which answers show up in the question we're looking at, which is $qrow['qid']
+					* So, in other words, we're currently working on question $qrow['qid'], trying to find out more
+					* information about question $avalue['qid'], because that's the source */
+					$sources[$qrow['qid']]=$avalue['qid']; /* This question ($qrow['qid']) relies on answers in $avalue['qid'] */
+					if(isset($cascades)) {unset($cascades);}
+					$cascades=array();                     /* Create an empty array */
+					
+					/* At this stage, we know for sure that this question relies on one other question for the filter */
+					/* But this function wants to send back information about questions that rely on multiple other questions for the filter */
+					/* So we don't want to do anything yet */
+					
+					/* What we need to do now, is check whether the question this one relies on, also relies on another */
+					
+					/* The question we are now checking is $avalue['qid'] */
+					$keepgoing=1;
+					$questiontocheck=$avalue['qid'];
+					/* If there is a key in the $sources array that is equal to $avalue['qid'] then we want to add that
+					 * to the $cascades array */
+					while($keepgoing > 0)
+					{
+						if(!empty($sources[$questiontocheck])) 
+						{ 
+							$cascades[] = $sources[$questiontocheck];
+							/* Now we need to move down the chain */
+							/* We want to check the $sources[$questiontocheck] question */
+							$questiontocheck=$sources[$questiontocheck];
+						} else {
+							/* Since it was empty, there must not be any more questions down the cascade */
+							$keepgoing=0;
+						}
+					}
+					/* Now add all that info */
+					if(count($cascades) > 0) {
+						$cascaded[$qrow['qid']]=$cascades;
+					}
+				}
+			}
+		}
+	}
+	if($output == "title")
+	{
+	    foreach($cascaded as $key=>$cascade) {
+		    foreach($cascade as $item)
+			{
+			    $cascade2[$key][]=$qidtotitle[$item];
+			}
+		}
+		$cascaded=$cascade2;
+	}
+	return $cascaded;	
+}
+
+/**
 * getArrayFilterExcludesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
 * @global string $surveyid
 * @global string $gid
@@ -4433,7 +4525,7 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
 	while ($qrow = $qresult->FetchRow()) {
 		$grows[$qrow['qid']] = array('qid' => $qrow['qid'],'type' => $qrow['type'], 'mandatory' => $qrow['mandatory'], 'title' => $qrow['title'], 'gid' => $qrow['gid']);
 	}
-	$attrmach = array(); // Stores Matches of filters that have their values as questions with in current group
+	$attrmach = array(); // Stores Matches of filters that have their values as questions within current group
 	$grows2 = $grows;
 	foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
 	{
@@ -4446,7 +4538,24 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
 			{
 				if ($avalue['title'] == $val[0])
 				{
-					$filter = array('qid' => $qrow['qid'], 'mandatory' => $qrow['mandatory'], 'type' => $avalue['type'], 'fid' => $avalue['qid'], 'gid' => $qrow['gid'], 'gid2'=>$avalue['gid']);
+					//Get the code for this question, so we can see if any later questions in this group us it for an array_filter_exclude
+					$cqquery = "SELECT {$dbprefix}questions.title FROM {$dbprefix}questions WHERE {$dbprefix}questions.qid='".$qrow['qid']."'";
+					$cqresult=db_execute_assoc($cqquery);
+					$xqid="";
+					while($ftitle=$cqresult->FetchRow())
+					{
+						$xqid=$ftitle['title'];
+					}
+				
+					$filter = array('qid' 			=> $qrow['qid'], 
+								    'mandatory' 	=> $qrow['mandatory'], 
+									'type' 			=> $avalue['type'], 
+									'fid' 			=> $avalue['qid'], 
+									'gid' 			=> $qrow['gid'], 
+									'gid2'			=> $avalue['gid'], 
+									'source_title' 	=> $avalue['title'],
+									'source_qid'	=> $avalue['qid'],
+									'this_title'	=> $xqid);
 					array_push($attrmach,$filter);
 				}
 			}
@@ -4493,7 +4602,25 @@ function getArrayFiltersForQuestion($qid)
 	}
 	return false;
 }
-
+/**
+* getGroupsByQuestion($surveyid) 
+* @global string $surveyid
+* @return returns a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+*/
+function getGroupsByQuestion($surveyid) {
+    global $surveyid, $dbprefix;
+	
+	$output=array();
+	
+	$surveyid=sanitize_int($surveyid);
+	$query="SELECT qid, gid FROM ".db_table_name('questions')." WHERE sid='$surveyid'";
+	$result = db_execute_assoc($query);
+	while ($val = $result->FetchRow()) 
+	{
+	    $output[$val['qid']]=$val['gid'];
+	}
+	return $output;
+}
 /**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
 * @global string $surveyid
@@ -4508,26 +4635,45 @@ function getArrayFilterExcludesForQuestion($qid)
     $qid=sanitize_int($qid);
 	$query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
 	$result = db_execute_assoc($query);  //Checked
+	$excludevals=array();
 	if ($result->RecordCount() == 1) // We Found a array_filter attribute
 	{
-		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
-		foreach ($_SESSION['fieldarray'] as $fields)
+		$selected=array();
+		$excludevals[] = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+		/* Find any cascades and place them in the $excludevals array*/
+		$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
+		if(isset($array_filterXqs_cascades[$qid]))
 		{
-			if ($fields[2] == $val['value'])
+			foreach($array_filterXqs_cascades[$qid] as $afc)
 			{
-				// we found the target question, now we need to know what the answers where, we know its a multi!
-                $fields[0]=sanitize_int($fields[0]);
-				$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
-				$qresult = db_execute_assoc($query);  //Checked
-				$selected = array();
-				while ($code = $qresult->fetchRow())
-				{
-					if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
-				}
-				return $selected;
+				$excludevals[]=array("value"=>$afc);
+				
 			}
 		}
-		return false;
+		/* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
+		foreach ($excludevals as $val)
+		{
+			foreach ($_SESSION['fieldarray'] as $fields)
+			{
+				if ($fields[2] == $val['value'])
+				{	
+					// we found the target question, now we need to know what the answers where, we know its a multi!
+					$fields[0]=sanitize_int($fields[0]);
+					$query = "SELECT code FROM ".db_table_name('answers')." where qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by sortorder";
+					$qresult = db_execute_assoc($query);  //Checked
+					while ($code = $qresult->fetchRow())
+					{
+						if ($_SESSION[$fields[1].$code['code']] == "Y") array_push($selected,$code['code']);
+					}
+				}
+			}
+		}
+		if(count($selected) > 0)
+		{
+			return $selected;
+		} else {
+			return false;
+		}
 	}
 	return false;
 }
@@ -4561,6 +4707,35 @@ function getArrayFiltersOutGroup($qid)
 	return false;
 }
 
+/**
+* getArrayFiltersExcludesOutGroup($qid) finds out if a question is in the current group or not for array filter exclude
+* @global string $qid
+* @return returns true if its not in currect group and false if it is..
+*/
+function getArrayFiltersExcludesOutGroup($qid)
+{
+	// TODO: Check list_filter values to make sure questions are previous?
+	global $surveyid, $dbprefix, $gid;
+    $qid=sanitize_int($qid);
+	$query = "SELECT value FROM ".db_table_name('question_attributes')." WHERE attribute='array_filter_exclude' AND qid='".$qid."'";
+	$result = db_execute_assoc($query); //Checked
+	if ($result->RecordCount() == 1) // We Found a array_filter attribute
+	{
+		$val = $result->FetchRow(); // Get the Value of the Attribute ( should be a previous question's title in same group )
+
+		// we found the target question, now we need to know what the answers where, we know its a multi!
+		$query = "SELECT gid FROM ".db_table_name('questions')." where title='{$val['value']}' AND language='".$_SESSION['s_lang']."' AND sid = $surveyid";
+		$qresult = db_execute_assoc($query); //Checked
+		if ($qresult->RecordCount() == 1)
+		{
+			$val2 = $qresult->FetchRow();
+			if ($val2['gid'] != $gid) return true;
+			if ($val2['gid'] == $gid) return false;
+		}
+		return false;
+	}
+	return false;
+}
 
 /**
  * Run an arbitrary sequence of semicolon-delimited SQL commands

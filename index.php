@@ -2417,8 +2417,13 @@ UpdateSessionGroupList($_SESSION['s_lang']);
 		// if I'm a M or P question, and if another question in this survey has array_filter set to my code, then I'm also used in a kind of condition
 		if ( ($arow['type'] == 'M' || $arow['type'] == 'P') && $usedinconditions == "N")
 		{
-			$qaquery = "SELECT count(qa.qaid) as afcount from ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
-				. "WHERE qa.qid = q.qid AND qa.attribute='array_filter' AND qa.value =".db_quoteall($arow['title'])." "
+			$qaquery = "SELECT count(qa.qaid) as afcount "
+				. "FROM ".db_table_name('question_attributes')." as qa, ".db_table_name('questions')." as q "
+				. "WHERE qa.qid = q.qid "
+				. "AND ( "
+				. "      (qa.attribute='array_filter' AND qa.value =".db_quoteall($arow['title']).") "
+				. "   OR (qa.attribute='array_filter_exclude' AND qa.value=".db_quoteall($arow['title']).") "
+				. "    ) "
 				. "AND q.sid=$surveyid";
 			$qaresult = db_execute_assoc($qaquery);
 			$qarow = $qaresult->FetchRow();
