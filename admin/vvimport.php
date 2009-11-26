@@ -73,8 +73,7 @@ if ($subaction != "upload")
 	}
 
 	//Make sure that the survey is active
-	$tablelist = $connect->MetaTables();
-	if (in_array("{$dbprefix}survey_$surveyid", $tablelist))
+	if (tableExists("survey_$surveyid"))
 	{
 
         $vvoutput = browsemenubar($clang->gT("Import VV file")).             

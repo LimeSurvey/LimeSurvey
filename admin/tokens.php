@@ -282,7 +282,7 @@ else        // A survey DOES exist
 }
 
 // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
-$tokenexists=tokenTableExists($surveyid);
+$tokenexists=tableExists('token_'.$surveyid);
 if (!$tokenexists) //If no tokens table exists
 {
 	if (isset($_POST['createtable']) && $_POST['createtable']=="Y" &&

@@ -365,7 +365,7 @@ if (!$exportstyle)
 // Actual export routines start here !
 // ======================================================================
 
-$tokenTableExists=tokenTableExists($surveyid);
+$tokenTableExists=tableExists('token_'.$surveyid);
 
 if ($tokenTableExists)
 {

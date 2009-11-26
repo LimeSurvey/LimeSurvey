@@ -25,13 +25,7 @@ if (!isset($browselang)) {$browselang=returnglobal('browselang');}
 if (!isset($dbprefix) || isset($_REQUEST['dbprefix'])) {die("Cannot run this script directly");}
 
 //Check if results table exists
-$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
-foreach ($tablelist as $tbl)
-{
-	if (db_quote_id($tbl) == db_table_name('survey_'.$surveyid)) $resultsexist = 1;
-}
-
-if (!isset($resultsexist)) die("Your results table is missing!");
+if (tableExists('survey_'.$surveyid)==false) die("Your results table is missing!");
 
 $sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
 $sumresult5 = db_execute_assoc($sumquery5);

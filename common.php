@@ -198,7 +198,7 @@ else
 
 $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
-$dbexistsbutempty=($database_exists && checkifemptydb());
+$dbexistsbutempty=($database_exists && tableExists('surveys'));
 
 
 
@@ -1551,22 +1551,6 @@ function getlabelsets($languages=null)
 	}
 	return $labelsets;
 }
-
-
-function checkifemptydb()
-{
-	global $connect, $dbprefix;
-	$tablelist = $connect->MetaTables('TABLES');
-	if ( in_array($dbprefix.'surveys',$tablelist) ) {Return(false);}
-	else {Return(true);}
-}
-
-
-function sql_table_exists($tableName, $tables)
-{
-	return(in_array($tableName, $tables));
-}
-
 
 /**
 * Compares two elements from an array (passed by the usort function) 
@@ -5889,12 +5873,12 @@ function retrieve_Answer($code, $phpdateformat=null)
 }
 
 /**
-* Check if token table odes exist
+* Check if a table does exist in the database
 * 
-* @param mixed $sid  The survey id to check
-* @return boolean true if thesurvey has a token table defined       
+* @param mixed $sid  Table name to check for (without dbprefix!))
+* @return boolean True or false if table exists or not
 */
-function tokenTableExists($surveyid)
+function tableExists($tablename)
 {
 	global $connect;
 	$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
@@ -5914,7 +5898,7 @@ function tokenTableExists($surveyid)
 // Returns true otherwise
 function bIsTokenCompletedDatestamped($thesurvey)
 {
-	if ($thesurvey['private'] == 'Y' &&  tokenTableExists($thesurvey['sid']))
+	if ($thesurvey['private'] == 'Y' &&  tableExists('token_'.$thesurvey['sid']))
 	{
 		return false;
 	}
@@ -6843,9 +6827,9 @@ function filterforattributes ($fieldname)
 function GetAttributeFieldNames($surveyid)
 {
     global $dbprefix, $connect;
-    if (tokenTableExists($surveyid) === false)
+    if (tableExists('token_'.$surveyid) === false)
     {
-    return Array();
+        return Array();
     }    
     $tokenfieldnames = array_values($connect->MetaColumnNames("{$dbprefix}tokens_$surveyid", true));
     return array_filter($tokenfieldnames,'filterforattributes');
@@ -6873,7 +6857,7 @@ function GetTokenConditionsFieldNames($surveyid)
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
     global $dbprefix, $connect, $clang;
-    if (tokenTableExists($surveyid) === false)
+    if (tableExists('token_'.$surveyid) === false)
     {
 	return Array();
     }

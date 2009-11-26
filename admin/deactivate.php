@@ -38,8 +38,7 @@ if (!isset($_POST['ok']) || !$_POST['ok'])
 else
 {
 	//See if there is a tokens table for this survey
-	$tablelist = $connect->MetaTables();
-	if (in_array("{$dbprefix}tokens_{$postsid}", $tablelist))
+    if (tableExists("tokens_{$postsid}"))
 	{
 		$toldtable="tokens_{$postsid}";
 		$tnewtable="old_tokens_{$postsid}_{$date}";
