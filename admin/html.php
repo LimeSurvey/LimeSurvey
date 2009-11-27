@@ -68,7 +68,7 @@ if ($action == "listsurveys")
 			else $privacy =$clang->gT("No") ;
 
 			
-			if (tableExists('token_'.$rows['sid']))
+			if (tableExists('tokens_'.$rows['sid']))
 			{
 				$visibility = $clang->gT("Closed-access");
 			}

@@ -423,7 +423,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] = "Y") unset($_GET['token']);
 
 //SEE IF SURVEY USES TOKENS
 $i = 0; //$tokensexist = 0;
-if ($surveyexists == 1 && tableExists('token_'.$thissurvey['sid']))
+if ($surveyexists == 1 && tableExists('tokens_'.$thissurvey['sid']))
 {
 	$tokensexist = 1;
 }

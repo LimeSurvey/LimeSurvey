@@ -5898,7 +5898,7 @@ function tableExists($tablename)
 // Returns true otherwise
 function bIsTokenCompletedDatestamped($thesurvey)
 {
-	if ($thesurvey['private'] == 'Y' &&  tableExists('token_'.$thesurvey['sid']))
+	if ($thesurvey['private'] == 'Y' &&  tableExists('tokens_'.$thesurvey['sid']))
 	{
 		return false;
 	}
@@ -6827,7 +6827,7 @@ function filterforattributes ($fieldname)
 function GetAttributeFieldNames($surveyid)
 {
     global $dbprefix, $connect;
-    if (tableExists('token_'.$surveyid) === false)
+    if (tableExists('tokens_'.$surveyid) === false)
     {
         return Array();
     }    
@@ -6857,7 +6857,7 @@ function GetTokenConditionsFieldNames($surveyid)
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
     global $dbprefix, $connect, $clang;
-    if (tableExists('token_'.$surveyid) === false)
+    if (tableExists('tokens_'.$surveyid) === false)
     {
 	return Array();
     }

@@ -292,7 +292,7 @@ function spss_fieldmap($prefix = 'V') {
 	$fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
 	#See if tokens are being used
-	$tokensexist = tableExists('token_'.$surveyid);
+	$tokensexist = tableExists('tokens_'.$surveyid);
 
 	#Lookup the names of the attributes
 	$query="SELECT sid, private, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
