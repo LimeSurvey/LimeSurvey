@@ -198,7 +198,7 @@ else
 
 $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
-$dbexistsbutempty=($database_exists && tableExists('surveys'));
+$dbexistsbutempty=($database_exists && !tableExists('surveys'));
 
 
 
@@ -5884,7 +5884,7 @@ function tableExists($tablename)
 	$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
 	foreach ($tablelist as $tbl)
 	{
-		if (db_quote_id($tbl) == db_table_name('tokens_'.$surveyid)) 
+		if (db_quote_id($tbl) == db_table_name($tablename)) 
 		{
 			return true;
 		}
