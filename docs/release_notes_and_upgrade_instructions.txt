@@ -77,6 +77,46 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.86
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.87RC1 (build 7886) to 1.87RC3 (build 7922) [18-11-2009] - Legend: + new feature, # update feature, - bug fix
++New feature: Array_filter_exclude cascade functionality. If question 3 is excluding answers based on question 2, and question 2 is excluding answers based on question 1, then question 3 will also exclude answers based on question 1. (jcleeland)
++New feature: Added file permission checks on the ComfortUpdate updater (c_schmitz)
++New feature: When using the ComfortUpdate updater the changelog will be shown for the range you are updating (c_schmitz)
+#Updated Feature: Token export now adds the attribute description in the header, next to the attribute_x fieldname (lemeur)
+#Updated translation: Croatian (idobraca)
+#Updated translation: French (b00z00)
+#Updated translation: Dutch Informal by Han Velthuis 
+#Updated translation: Dutch by Han Velthuis 
+#Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi> 
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Norwegian Bokmål. By Reidar Øksnevad <reidar dot oksnevad at freecode dot no> 
+#Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br> 
+#Updated translation: Slovakian by Pavel Cerny  <pcerny at gmail dot com>
+#Updated translation: Spanish (kadejo)
+#Updated translation: Galician(calidonia)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: Simplified Chinese (yooyooh)
+-Fixed #3851: Layout Problem at Email Templates (lemeur)
+-Fixed #3855: Exporting tokens fails when having additional attributes. (lemeur)
+-Fixed #3870: issue with mod_auth_cas where mod_auth_cas is tampering with the  parameter. (lemeur)
+-Fixed #3872: minor notices at survey activation in some cases (lemeur)
+-Fixed issue #03858: Bug in new feature - wasn't checking for existence of string before evaluating string (jcleeland)
+-Fixed issue #03875: Integritycheck: some strings are not ready to be translated (jcleeland)
+-Fixed issue #03875: Integritycheck: some strings are not ready to be translated - changed translations to full sentences with placeholders (jcleeland)
+-Fixed issue #3754: Notices at generating charts at statistics (c_schmitz)
+-Fixed issue #3800: When using INSERTANS to insert a date the related date format from survey settings for that language is not used (c_schmitz)
+-Fixed issue #3848: Configured default language of a user doesn't get used (c_schmitz)
+-Fixed issue #3849: Field "Reminder sent?" is missing at edit tokens view (c_schmitz)
+-Fixed issue #3850: Layout issue at creating additional token fields (c_schmitz)
+-Fixed issue #3853: "Print answers" fails when using tokens (c_schmitz)
+-Fixed issue #3854: Invitations are send even if a token is not valid yet/anymore (lemeur)
+-Fixed issue #3882: Templating problems with List Radio Question type in RTL languages (c_schmitz)
+-Fixed issue - various bugs in or caused by new feature including overwriting of saved responses with exclude_filter, and stray printing of characters with array_increasesamedecrease question type. (jcleeland)
+-Fixed issue: Saving email settings is not working (c_schmitz)
+-Fixed issue: Security vulnerability when using the mysqli driver (c_schmitz)
+-Fixed issue: Semantic differential right text in array question not showing up (c_schmitz)
+-Fixed unreported bug: import token from CSV always return a error message because it doesn't count total imported tokens. (lemeur)
+-Fixed unreported issue: the condition editor displays duplicated conditions for multi-lingual surveys. (lemeur)
 
 
 Changes from 1.87RC1 (build 7886) to 1.87RC2 (build 7922) [18-11-2009] - Legend: + new feature, # update feature, - bug fix
