@@ -303,6 +303,8 @@ if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false
 $setfont = "<font size='2' face='verdana'>";
 $singleborderstyle = "style='border: 1px solid #111111'";
 
+
+
 /**
      * showadminmenu() function returns html text for the administration button bar
  * 
@@ -7118,24 +7120,7 @@ function GetUpdateInfo()
     return $updateinfo; 
 }
 
-   /**
-   * This function converts a standard JSON array to a PHP array without having to resort to JSON_decode which is available from 5.2x and up only
-   * 
-   * @param string $json String with JSON data
-   * @return array 
-   */
-    if ( !function_exists('json_decode') ){
-        function json_decode($content, $assoc=false){
-            global $homedir;
-            require_once($homedir."/classes/json/JSON.php");   
-            if ( $assoc ){
-                        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-            } else {
-                        $json = new Services_JSON;
-                    }
-            return $json->decode($content);
-        }
-    }
+
     
    /**
    * This function updates the actual global variables if an update is available after using GetUpdateInfo
