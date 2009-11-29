@@ -5883,7 +5883,11 @@ function retrieve_Answer($code, $phpdateformat=null)
 function tableExists($tablename)
 {
 	global $connect;
-	$tablelist = $connect->MetaTables() or safe_die ("Error getting tokens<br />".$connect->ErrorMsg());
+	$tablelist = $connect->MetaTables();
+    if ($tablelist==false)
+    {
+       return false;  
+    }
 	foreach ($tablelist as $tbl)
 	{
 		if (db_quote_id($tbl) == db_table_name($tablename)) 
