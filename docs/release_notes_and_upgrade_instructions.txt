@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.87RC3!
+Welcome to LimeSurvey v1.87RC4!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -77,7 +77,13 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.86
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7922) [27-11-2009] - Legend: + new feature, # update feature, - bug fix
+Changes from 1.87RC3 (build 7996) to 1.87RC4 (build 8002) [29-11-2009] - Legend: # updated feature, - bug fix
+#Updated translation: French (b00z00)
+#Updated translation: Portuguese Brazilian by Yoshitake 
+-Fixed issue #3913: Clean installation failing with error message "Error getting tokens" (c_schmitz)
+-Fixed issue: Json_decode error for PHP versions < 5.2 (c_schmitz)
+
+Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7996) [27-11-2009] - Legend: + new feature, # updated feature, - bug fix
 +New feature: Array_filter_exclude cascade functionality. If question 3 is excluding answers based on question 2, and question 2 is excluding answers based on question 1, then question 3 will also exclude answers based on question 1. (jcleeland)
 +New feature: Added file permission checks on the ComfortUpdate updater (c_schmitz)
 +New feature: When using the ComfortUpdate updater the changelog will be shown for the range you are updating (c_schmitz)
