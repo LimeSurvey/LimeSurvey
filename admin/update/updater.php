@@ -175,11 +175,11 @@ function UpdateStep2()
         
         foreach ($updateinfo['files'] as $afile)
         {
-            if ($afile['type']=='A' && !is_writable(dirname($rootdir.$afile['file'])))
+            if (($afile['type']=='A' || !file_exists($rootdir.$afile['file'])) && !is_writable(dirname($rootdir.$afile['file'])))
 		    {
 			    $readonlyfiles[]=dirname($rootdir.$afile['file']);
 		    }
-		    elseif (!is_writable($rootdir.$afile['file'])) {
+		    elseif (file_exists($rootdir.$afile['file']) && !is_writable($rootdir.$afile['file'])) {
 			    $readonlyfiles[]=$rootdir.$afile['file'];
 		    }  
 
