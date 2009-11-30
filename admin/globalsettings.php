@@ -283,7 +283,7 @@ function globalsettingsdisplay()
                 . "\t\t\t<option value='2'";
                 if (getGlobalSetting('emailsmtpdebug')=='2' || getGlobalSetting('emailsmtpssl')==1) {$editsurvey .= " selected='selected'";}
                 $editsurvey .= ">".$clang->gT("Always")."</option>\n"
-                . "\t\t</select></li><br />\n"
+                . "\t\t</select><br />&nbsp;</li>\n"
                 . "\t<li><label for='maxemails'>".$clang->gT("Email batch size:")."</label>\n"
                 . "\t\t<input type='text' size='5' id='maxemails' name='maxemails' value=\"".htmlspecialchars(getGlobalSetting('maxemails'))."\" /></li>\n"
                 . "\t</ul>\n";
