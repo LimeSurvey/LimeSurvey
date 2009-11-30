@@ -2885,6 +2885,7 @@ function do_ranking($ia)
 		$ranklist .= "</td></tr>\n";
 	}
 
+	$maxselectlength=0;
 	$choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
 	if (isset($choicewidth)) {$choicelist.=$choicewidth;}
     $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
@@ -2921,7 +2922,7 @@ function do_ranking($ia)
 	. "\t&nbsp;</td>\n";
 	if (isset($maxselectlength) && $maxselectlength > 60)
 	{
-		$ranklist = str_replace("<input class='text'", "<input size='60' class='text'", $ranklist);
+		$ranklist = str_replace("<input class=\"text\"", "<input size='60' class='text'", $ranklist);
 		$answer .= "</tr>\n<tr>\n"
 		. "\t<td align='left' class='output'>\n"
 		. "\t<table border='0' cellspacing='1' cellpadding='0'>\n"
