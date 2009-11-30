@@ -701,7 +701,7 @@ if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 }
 
 //Check to see if a refering URL has been captured.
-getreferringurl();
+GetReferringUrl();
 // Let's do this only if 
 //  - a saved answer record hasn't been loaded through the saved feature
 //  - the survey is not anonymous
@@ -1653,7 +1653,7 @@ function sendsubmitnotification($sendnotification)
             if ($prevquestion!=$qaarray[0])
             {
                 $prevquestion=$qaarray[0];
-                $questiontitle=strip_tags(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
+                $questiontitle=FlattenText(html_entity_decode($prevquestion, ENT_QUOTES, $emailcharset));
                 $results .= "\n$questiontitle: ";
                 if ($qaarray[1]!='')
                 {
@@ -1662,7 +1662,7 @@ function sendsubmitnotification($sendnotification)
             }
             if ($qaarray[1]!='')
             {
-			    $answeroption=strip_tags(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
+			    $answeroption=FlattenText(html_entity_decode($qaarray[1], ENT_QUOTES, $emailcharset));
 			    $results .= "[$answeroption]:   ";
             }
 			$details = arraySearchByKey($value, createFieldMap($surveyid),"fieldname", 1);
@@ -1673,14 +1673,14 @@ function sendsubmitnotification($sendnotification)
 				{
 					foreach (explode("\n",getextendedanswer($value,$_SESSION[$value])) as $line) 
 					{
-					 		$results .= "\t" . strip_tags(html_entity_decode($line, ENT_QUOTES, $emailcharset));
+					 		$results .= "\t" . FlattenText(html_entity_decode($line, ENT_QUOTES, $emailcharset));
 							$results .= "\n";
 					}
 				}
 			}
 			elseif (isset($_SESSION[$value]))
 			{
-				$results .= strip_tags(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
+				$results .= FlattenText(html_entity_decode(getextendedanswer($value, $_SESSION[$value]),ENT_QUOTES, $emailcharset));
 				$results .= "\n";
 			}
 		}
@@ -1720,7 +1720,7 @@ function sendsubmitnotification($sendnotification)
 			if(!SendEmailMessage($ertmessage, $ertsubject, $ert, $from, $sitename, false, getBounceEmail($surveyid)))
 			{
 				if ($debug>0) {echo '<br />Email could not be sent to EmailReponseTo field. Reason: '.$maildebug.'<br />';}
-}
+            }
 		}
 	}
 }
@@ -2962,43 +2962,77 @@ function check_quota($checkaction,$surveyid)
 
 }
 
-
-	function encodeEmail($mail, $text="", $class="", $params=array())
+/**
+* put your comment there...
+* 
+* @param mixed $mail
+* @param mixed $text
+* @param mixed $class
+* @param mixed $params
+*/
+function encodeEmail($mail, $text="", $class="", $params=array())
+{
+	$encmail ="";
+	for($i=0; $i<strlen($mail); $i++)
 	{
-		$encmail ="";
-		for($i=0; $i<strlen($mail); $i++)
-		{
-			$encMod = rand(0,2);
-	        switch ($encMod) {
-	        case 0: // None
-	            $encmail .= substr($mail,$i,1);
-	            break;
-	        case 1: // Decimal
-	            $encmail .= "&#".ord(substr($mail,$i,1)).';';
-	            break;
-	        case 2: // Hexadecimal
-				$encmail .= "&#x".dechex(ord(substr($mail,$i,1))).';';
-	            break;
-			}
+		$encMod = rand(0,2);
+	    switch ($encMod) {
+	    case 0: // None
+	        $encmail .= substr($mail,$i,1);
+	        break;
+	    case 1: // Decimal
+	        $encmail .= "&#".ord(substr($mail,$i,1)).';';
+	        break;
+	    case 2: // Hexadecimal
+			$encmail .= "&#x".dechex(ord(substr($mail,$i,1))).';';
+	        break;
 		}
-
-		if(!$text)
-		{
-			$text = $encmail;
-		}
-/*		$encmail = "&#109;&#97;&#105;&#108;&#116;&#111;&#58;".$encmail;
-		$querystring = "";
-		foreach($params as $key=>$val)
-		{
-			if($querystring){
-				$querystring .= "&$key=".rawurlencode($val);
-			} else {
-				$querystring = "?$key=".rawurlencode($val);
-			}
-		}
-		return "<a class='$class' href='$encmail$querystring'>$text</a>"; */
-		return $text;
 	}
 
+	if(!$text)
+	{
+		$text = $encmail;
+	}
+	return $text;
+}
 
-?>
+
+
+/**
+* GetReferringUrl() returns the reffering URL
+*/
+function GetReferringUrl()
+{
+    global $clang,$stripQueryFromRefurl;
+    if (isset($_SESSION['refurl']))
+    {
+        return; // do not overwrite refurl
+    }
+
+    // refurl is not set in session, read it from server variable
+    if(isset($_SERVER["HTTP_REFERER"]))
+    {
+        if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
+        {
+            if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
+            {
+                $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
+            }
+            else
+            {
+                $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
+                $_SESSION['refurl'] = $aRefurl[0];
+            }
+        }
+        else
+        {
+            $_SESSION['refurl'] = '-';
+        }
+    }
+    else
+    {
+        $_SESSION['refurl'] = null;
+    }
+}
+
+// Closing PHP tag intentionally left out - yes, it is okay

@@ -4303,45 +4303,9 @@ function FlattenText($texttoflatten)
 {
     $nicetext = strip_javascript($texttoflatten);
 	$nicetext = strip_tags($nicetext);
-	$nicetext = str_replace("\r", "", $nicetext);
-	$nicetext = trim(str_replace("\n", "", $nicetext));
+    $nicetext = str_replace(array("\n","\r"),array('',''), $nicetext);
+	$nicetext = trim($nicetext);
 	return  $nicetext;
-}
-/**
-* getreferringurl() returns the reffering URL
-*/
-function getreferringurl()
-{
-  global $clang,$stripQueryFromRefurl;
-  if (isset($_SESSION['refurl']))
-  {
-    return; // do not overwrite refurl
-  }
-
-  // refurl is not set in session, read it from server variable
-  if(isset($_SERVER["HTTP_REFERER"]))
-  {
-    if(!preg_match('/'.$_SERVER["SERVER_NAME"].'/', $_SERVER["HTTP_REFERER"]))
-    {
-      if (!isset($stripQueryFromRefurl) || !$stripQueryFromRefurl)
-      {
-           $_SESSION['refurl'] = $_SERVER["HTTP_REFERER"];
-      }
-      else
-      {
-	   $aRefurl = explode("?",$_SERVER["HTTP_REFERER"]);
-           $_SESSION['refurl'] = $aRefurl[0];
-      }
-    }
-    else
-    {
-       $_SESSION['refurl'] = '-';
-    }
-  }
-  else
-  {
-    $_SESSION['refurl'] = null;
-  }
 }
 
 function getRandomID()
