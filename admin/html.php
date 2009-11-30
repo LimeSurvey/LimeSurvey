@@ -189,7 +189,7 @@ if ($action == "listsurveys")
 		"</tr></tfoot>";
 		$listsurveys.="</table><br />" ;
 	}
-	else $listsurveys="<br /><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
+	else $listsurveys="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 }
 
 if ($action == "personalsettings")
