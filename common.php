@@ -3236,7 +3236,14 @@ function getQuestionAttributes($qid, $type='')
     }
     
     $availableattributes=questionAttributes();
-    $availableattributes=$availableattributes[$type];                           
+    if (isset($availableattributes[$type]))
+    {
+        $availableattributes=$availableattributes[$type];
+    }
+    else
+    {
+        return array();
+    }
     
     foreach($availableattributes as $attribute){
         $defaultattributes[$attribute['name']]=$attribute['default'];
@@ -3430,7 +3437,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
   
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHKLMNOPQRSTUWXYZ!:;',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',

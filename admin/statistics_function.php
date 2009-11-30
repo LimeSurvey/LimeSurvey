@@ -109,8 +109,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	//no survey ID? -> come and get one
 	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 	
-	// Set language for questions and labels to base language of this survey
-	//$language = GetBaseLanguageFromSurveyID($surveyid);
+    //Get an array of codes of all available languages in this survey
+    $surveylanguagecodes = GetAdditionalLanguagesFromSurveyID($surveyid);
+    $surveylanguagecodes[] = GetBaseLanguageFromSurveyID($surveyid);
+
+    // Set language for questions and labels to base language of this survey
 	$language='en';
     //$surveyid=sanitize_int($surveyid);
 	$query = "SELECT language FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -1576,8 +1579,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 	
 					case "I": //Language
-						// Using previously defined $survlangs array of language codes
-						foreach ($survlangs as $availlang)
+						// Using previously defined $surveylanguagecodes array of language codes
+						foreach ($surveylanguagecodes as $availlang)
 						{
 							$alist[]=array($availlang, getLanguageNameFromCode($availlang,false));
 						}
