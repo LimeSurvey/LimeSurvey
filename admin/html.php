@@ -290,13 +290,13 @@ if ($surveyid)
 		$sumresult2 = $connect->Execute($sumquery2); //Checked
 		$sumcount2 = $sumresult2->RecordCount();
 		$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-		$sumresult1 = db_select_limit_assoc($sumquery1, 1); //Checked
-
+		$sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked   
+        if ($sumresult1->RecordCount()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
         // Output starts here...
 		$surveysummary = "";
 
 		$surveyinfo = $sumresult1->FetchRow();
-
+        
         $surveyinfo = array_map('strip_tags', $surveyinfo);
 		//$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
 		$activated = $surveyinfo['active'];

@@ -51,7 +51,7 @@ if (!isset($deleteok) || !$deleteok)
 	$deletesurveyoutput .= "<p>\n";
     $deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Delete survey")."' onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid&amp;deleteok=Y")."\" />\n";
 	$deletesurveyoutput .= "\t<input type='submit'  value='".$clang->gT("Cancel")."' onclick=\"window.open('admin.php?sid=$surveyid', '_top')\" />\n";
-	$deletesurveyoutput .= "</div>\n";
+
 }
 
 else //delete the survey
