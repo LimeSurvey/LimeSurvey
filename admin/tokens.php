@@ -2024,7 +2024,7 @@ if ($subaction == "updatetoken" &&
     $data[] = $_POST['validfrom'];
     $data[] = $_POST['validuntil'];
     $data[] = $_POST['remindersent'];
-    $data[] = $_POST['remindercount'];
+    $data[] = intval($_POST['remindercount']);
 
 	$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 	if ($udresult->RecordCount()==0)
