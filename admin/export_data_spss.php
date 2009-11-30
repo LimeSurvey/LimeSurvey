@@ -31,7 +31,7 @@
  */
 
 $length_varlabel = '255'; // Set the max text length of Variable Labels
-$headerComment = '*$Rev$.\n';
+$headerComment = '*$Rev$.' . "\n";
 $tempFile = '';
 
 include_once('login_check.php');
