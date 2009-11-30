@@ -1,0 +1,38 @@
+/*****
+Default styles for the jQuery UI progress bar
+*****/
+
+#progress-wrapper {
+	width: 252px;
+	height: 2em;
+	margin: 10px auto 0 auto;
+	font-size:12px;
+}
+
+#progress-wrapper #progress-pre {
+	float: left;
+	margin: 0 5px 0 0;
+	width: 45px;
+	text-align: right;
+}
+
+#progress-wrapper .ui-widget-content {
+	float: left;
+	width: 150px;
+	height:1em;
+	text-align:left;
+	border:1px solid #666666;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color:#AAAAAA;
+	background-image: none;
+	border:1px solid #666666;
+}
+
+#progress-wrapper #progress-post {
+	float: left;
+	margin: 0 0 0 5px;
+	width: 45px;
+	text-align: left;
+}
