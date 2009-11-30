@@ -856,18 +856,36 @@ function loadanswers()
 function makegraph($currentstep, $total)
 {
 	global $thissurvey;
-	global $publicurl, $clang;
+	global $publicurl, $clang, $js_header_includes, $css_header_includes;
+	
+    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
+    $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+    $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
 
 	$shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
 
 	$size = intval(($currentstep-1)/$total*100);
-	$graph = '<div id="progress-graph">
+	
+	if ($size < 0.5) // Min value for progress bar - it looks dumb if 0 
+	{
+		$size = 0.5;
+	}
+	
+	$graph = '<script type="text/javascript">
+	$(function() {
+		$("#progressbar").progressbar({
+			value: '.$size.'
+		});
+	});
+	</script>
+	
+	<div id="progress-wrapper">
 	<span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
-
-			<div class="zero">0%</div>
-			<div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'" /></div>
-			<div class="cent">100%</div>
-		</div>';
+		<div id="progress-pre">0%</div>
+		<div id="progressbar"></div>
+		<div id="progress-post">100%</div>
+	</div>';
+		
 	return $graph;
 }
 
