@@ -1641,7 +1641,7 @@ function sendsubmitnotification($sendnotification)
 			}
 		}
 	}
-	
+
 	$results="";
 	if ($sendnotification > 1 || $emailresponseto)
 	{ //Send results as well. Currently just bare-bones - will be extended in later release
@@ -1688,10 +1688,10 @@ function sendsubmitnotification($sendnotification)
 	}
 	$message .= $results;
 	$message.= "LimeSurvey";
-	$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-
+	
 	if ($recips=explode(";", $thissurvey['adminemail']))
 	{
+		$from = $thissurvey['adminname'].' <'.$recips[0].'>';
 		foreach ($recips as $rc)
 		{                                        
 			if (!SendEmailMessage($message, $subject, trim($rc), $from, $sitename, false, getBounceEmail($surveyid)))
@@ -1702,6 +1702,7 @@ function sendsubmitnotification($sendnotification)
 	}
 	else
 	{
+		$from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
 		if (!SendEmailMessage($message, $subject, $thissurvey['adminemail'], $from, $sitename, false, getBounceEmail($surveyid)))
         {
             if ($debug>0) {echo '<br />Email could not be sent. Reason: '.$maildebug.'<br/>';}
