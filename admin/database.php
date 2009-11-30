@@ -91,7 +91,7 @@ if(isset($surveyid))
         $first=true;
 	   		require_once("../classes/inputfilter/class.inputfilter_clean.php");
 		    $myFilter = new InputFilter('','',1,1,1);
-         
+
     		foreach ($grplangs as $grouplang)
 	       	{
 		     	//Clean XSS
@@ -105,12 +105,12 @@ if(isset($surveyid))
                             $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
                             $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
                           }
-                
+
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['group_name_'.$grouplang]=fix_FCKeditor_text($_POST['group_name_'.$grouplang]);
                 $_POST['description_'.$grouplang]=fix_FCKeditor_text($_POST['description_'.$grouplang]);
 
-             
+
 			  	if ($first)
                   {
       			    $query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($_POST['group_name_'.$grouplang])."', '".db_quote($_POST['description_'.$grouplang])."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
@@ -188,10 +188,10 @@ if(isset($surveyid))
 
         $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
         $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-        
+
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-		
+
 		if ($result)
 		{
 			$gid = "";
@@ -230,7 +230,7 @@ if(isset($surveyid))
 		}
         $query = "DELETE FROM ".db_table_name('assessments')." WHERE sid=$surveyid AND gid=$gid";
         $result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
-        
+
 		$query = "DELETE FROM ".db_table_name('groups')." WHERE sid=$surveyid AND gid=$gid";
 		$result = $connect->Execute($query) or safe_die($connect->ErrorMsg());  // Checked
 		if ($result)
@@ -284,12 +284,12 @@ if(isset($surveyid))
                             $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
                             $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
                           }
-            
+
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=fix_FCKeditor_text($_POST['title']);
             $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
             $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
-            
+
 			$_POST  = array_map('db_quote', $_POST);
 			$query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, lid,  lid1, question_order, language)"
 			." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
@@ -319,8 +319,8 @@ if(isset($surveyid))
 					}
 				}
 			}
-			
-			
+
+
 			if (!$result)
 			{
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
@@ -339,7 +339,7 @@ if(isset($surveyid))
 
                }
            }
-            
+
            fixsortorderQuestions($postgid, $surveyid);
  		}
 	}
@@ -396,8 +396,8 @@ if(isset($surveyid))
         }
         $attsql.='1=1';
         db_execute_assoc($attsql) or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
-        
-        
+
+
         //now save all valid attributes
        $validAttributes=$qattributes[$_POST['type']];
        foreach ($validAttributes as $validAttribute)
@@ -421,10 +421,10 @@ if(isset($surveyid))
                 }
            }
        }
-            
-        
+
+
    		$keepanswers = "1"; // Generally we try to keep answers if the question type has changed
-		
+
 		// These are the questions types that have no answers and therefore we delete the answer in that case
 		if (($_POST['type']== "5") || ($_POST['type']== "D") || ($_POST['type']== "G") ||
             ($_POST['type']== "I") || ($_POST['type']== "N") || ($_POST['type']== "S") ||
@@ -450,16 +450,16 @@ if(isset($surveyid))
 		}
 
         // These are the questions types that have no validation - so zap it accordingly
-        
+
         if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" || $_POST['type']== "W" ||
             $_POST['type']== "Z" || $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
             $_POST['type']== "X" || $_POST['type']== "")
         {
             $_POST['preg']='';
         }
-        
-        
-        
+
+
+
 		if ($oldtype != $_POST['type'])
 		{
 			//Make sure there are no conditions based on this question, since we are changing the type
@@ -477,7 +477,7 @@ if(isset($surveyid))
 		{
 			if (isset($postgid) && $postgid != "")
 			{
-				
+
 				$array_result=checkMovequestionConstraintsForConditions(sanitize_int($postsid),sanitize_int($postqid), sanitize_int($postgid));
 				// If there is no blocking conditions that could prevent this move
 				if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
@@ -496,10 +496,10 @@ if(isset($surveyid))
                           {
                             $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
                           }
-                     
+
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['title']=fix_FCKeditor_text($_POST['title']);
-                    
+
 					foreach ($questlangs as $qlang)
 					{
 				     	if ($filterxsshtml)
@@ -515,7 +515,7 @@ if(isset($surveyid))
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
                         $_POST['help_'.$qlang]=fix_FCKeditor_text($_POST['help_'.$qlang]);
-                       
+
 						if (isset($qlang) && $qlang != "")
 						{ // ToDo: Sanitize the POST variables !
 							$uqquery = "UPDATE ".db_table_name('questions')
@@ -587,19 +587,19 @@ if(isset($surveyid))
 						$errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
 							. " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
 							. $clang->gT("See conditions:")."\\n";
-						
+
 						foreach ($array_result['notAbove'] as $notAboveCond)
 						{
 							$errormsg.="- cid:". $notAboveCond[3]."\\n";
 						}
-						
+
 					}
 					if (!is_null($array_result['notBelow']))
 					{
 						$errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
 							. " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
 							. $clang->gT("See conditions:")."\\n";
-						
+
 						foreach ($array_result['notBelow'] as $notBelowCond)
 						{
 							$errormsg.="- cid:". $notBelowCond[3]."\\n";
@@ -628,7 +628,7 @@ if(isset($surveyid))
 		{
     		$questlangs = GetAdditionalLanguagesFromSurveyID($postsid);
     		$baselang = GetBaseLanguageFromSurveyID($postsid);
-    		
+
 			if (!isset($_POST['lid']) || $_POST['lid']=='') {$_POST['lid']=0;}
 			if (!isset($_POST['lid1']) || $_POST['lid1']=='') {$_POST['lid1']=0;}
 			//Get maximum order from the question group
@@ -649,8 +649,8 @@ if(isset($surveyid))
                             $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
                             $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
                           }
-            
-            
+
+
             // Fix bug with FCKEditor saving strange BR types
             $_POST['title']=fix_FCKeditor_text($_POST['title']);
             $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
@@ -665,7 +665,7 @@ if(isset($surveyid))
 				$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n".htmlspecialchars($connect->ErrorMsg())."\")\n //-->\n</script>\n";
 
 			}
-            
+
             foreach ($questlangs as $qlanguage)
             {
 		     	if ($filterxsshtml)
@@ -678,11 +678,11 @@ if(isset($surveyid))
                             $_POST['question_'.$qlanguage] = html_entity_decode($_POST['question_'.$qlanguage], ENT_QUOTES, "UTF-8");
                             $_POST['help_'.$qlanguage] = html_entity_decode($_POST['help_'.$qlanguage], ENT_QUOTES, "UTF-8");
                           }
-                
+
             // Fix bug with FCKEditor saving strange BR types
             $_POST['question_'.$qlanguage]=fix_FCKeditor_text($_POST['question_'.$qlanguage]);
             $_POST['help_'.$qlanguage]=fix_FCKeditor_text($_POST['help_'.$qlanguage]);
-                
+
             if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n') {@$connect->Execute('SET IDENTITY_INSERT '.db_table_name('questions')." ON");}
 			$query = "INSERT INTO {$dbprefix}questions (qid, sid, gid, type, title, question, help, other, mandatory, lid, lid1, question_order, language)
                       VALUES ($newqid,{$postsid}, {$postgid}, '{$_POST['type']}', '{$_POST['title']}', '".$_POST['question_'.$qlanguage]."', '".$_POST['help_'.$qlanguage]."', '{$_POST['other']}', '{$_POST['mandatory']}', '{$_POST['lid']}', '{$_POST['lid1']}', $max,".db_quoteall($qlanguage).")";
@@ -713,10 +713,10 @@ if(isset($surveyid))
                             $qr1['answer'] = html_entity_decode($qr1['answer'], ENT_QUOTES, "UTF-8");
                           }
 
-                    
+
                     // Fix bug with FCKEditor saving strange BR types
                     $qr1['answer']=fix_FCKeditor_text($qr1['answer']);
-             	    
+
 					$qr1 = array_map('db_quote', $qr1);
 					$i1 = "INSERT INTO {$dbprefix}answers (qid, code, answer, default_value, sortorder, language) "
 					. "VALUES ('$newqid', '{$qr1['code']}', "
@@ -793,7 +793,7 @@ if(isset($surveyid))
         {
             $postsortorder=sanitize_int($_POST['sortorder']);
         }
-        
+
         switch($_POST['method'])
 		{
 			// Add a new answer button
@@ -810,15 +810,15 @@ if(isset($surveyid))
 				//$query = "select * from ".db_table_name('answers')." where code=".$connect->db_quote($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
 				$query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_POST['insertcode'])." and language='$baselang' and qid={$postqid}";
                 $result = $connect->Execute($query); // Checked
-								
+
                 if (isset($result) && $result->RecordCount()>0)
 				{
 					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Error adding answer: You can't use the same answer code more than once.","js")."\")\n //-->\n</script>\n";
 				}
 				 else
 				 {
-        
-	        
+
+
 		    		    if ($filterxsshtml)
 	    	 		    {
 				   		    require_once("../classes/inputfilter/class.inputfilter_clean.php");
@@ -832,17 +832,17 @@ if(isset($surveyid))
 
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['insertanswer']=fix_FCKeditor_text($_POST['insertanswer']);
-                        
+
         				// Add new Answer for Base Language Question
                         if (!isset($_POST['insertassessment_value'])) $_POST['insertassessment_value']=0;
                         else {$_POST['insertassessment_value']=(int) $_POST['insertassessment_value'];}
-            
+
         				$query = "INSERT INTO ".db_table_name('answers')." (qid, code, answer, sortorder, default_value,language, assessment_value) VALUES ('{$postqid}', ".db_quoteall($_POST['insertcode']).", ".db_quoteall($_POST['insertanswer']).", '{$newsortorder}', 'N','$baselang',{$_POST['insertassessment_value']})";
         	       		if (!$result = $connect->Execute($query)) // Checked
         				{
         					$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to insert answer","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
         				}
-                        
+
 					    // Added by lemeur for AutoSaveAll
 					    $_POST['code_'.($newsortorder+0)] = $_POST['insertcode'];
                         $_POST['assessment_'.($newsortorder+0)] = $_POST['insertassessment_value'];
@@ -851,14 +851,14 @@ if(isset($surveyid))
 					    $_POST['answer_'.$baselang.'_'.($newsortorder+0)] = $_POST['insertanswer'];
 					    $_POST['sortorderids'] = $_POST['sortorderids'] . " ".$baselang."_".($newsortorder+0);
 					    // End lemeur AutoSaveAll
-                        
+
         				// Last code was successfully inserted - find out the next incrementing code and remember it
 						$_SESSION['nextanswercode']=getNextCode($_POST['insertcode']);
                         //Now check if this new code doesn't exist. For now then there is no code inserted.
                         $query = "select * from ".db_table_name('answers')." where code=".db_quoteall($_SESSION['nextanswercode'])." and language='$baselang' and qid={$postqid}";
                         $result = $connect->Execute($query) or safe_die("Couldn't execute query:<br />$query<br />".$connect->ErrorMsg());;  // Checked
                         if ($result->RecordCount()>0) unset($_SESSION['nextanswercode']);
-                        
+
         				foreach ($anslangs as $anslang)
         				{
         					if(!isset($_POST['default'])) $_POST['default'] = "";
@@ -887,9 +887,9 @@ if(isset($surveyid))
             $count=0;
             $invalidCode = 0;
             $duplicateCode = 0;
-            
+
             $testarray = array();
-            
+
             for ($i=0; $i<count($sortorderids); $i++)
             {
             	if (isset($codeids[$i])) $testarray[]=$_POST['code_'.$codeids[$i]];
@@ -910,7 +910,7 @@ if(isset($surveyid))
 			//First delete all answers
   			$query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
             $result = $connect->Execute($query);    // Checked
-   			
+
          	foreach ($sortorderids as $sortorderid)
         	{
         		$defaultanswerset='N';
@@ -931,7 +931,7 @@ if(isset($surveyid))
                           {
                             $_POST['answer_'.$sortorderid] = html_entity_decode($_POST['answer_'.$sortorderid], ENT_QUOTES, "UTF-8");
                           }
-                    
+
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['answer_'.$sortorderid]=fix_FCKeditor_text($_POST['answer_'.$sortorderid]);
 
@@ -993,7 +993,7 @@ if(isset($surveyid))
 		    $cdquery = "UPDATE ".db_table_name('answers')." SET sortorder=$oldsortorder WHERE qid=$qid AND sortorder=-1";
 		    $cdresult=$connect->Execute($cdquery) or safe_die($connect->ErrorMsg());  // Checked
 		break;
-		
+
 		// Delete Button
 		case $clang->gT("Del", "unescaped"):
 			$query = "DELETE FROM ".db_table_name('answers')." WHERE qid={$qid} AND sortorder='{$postsortorder}'";  // Checked
@@ -1003,7 +1003,7 @@ if(isset($surveyid))
 			}
             fixsortorderAnswers($qid);
 		break;
-		
+
 		// Default Button
 		case $clang->gT("Default", "unescaped"):
 			$query = "SELECT default_value from ".db_table_name('answers')." where qid={$qid} AND sortorder='{$postsortorder}' GROUP BY default_value";
@@ -1057,13 +1057,19 @@ if(isset($surveyid))
             $datetimeobj = new Date_Time_Converter($_POST['startdate'],$formatdata['phpdate']);
             $_POST['startdate']=$datetimeobj->convert("Y-m-d H:i:s");
         }
-		
+
 		//make sure only numbers are passed within the $_POST variable
 		$_POST['tokenlength'] = (int) $_POST['tokenlength'];
-		
+
+		//token length has to be at least 5, otherwise set it to default (15)
+		if($_POST['tokenlength'] < 5)
+		{
+			$_POST['tokenlength'] = 15;
+		}
+
 		CleanLanguagesFromSurvey($postsid,$_POST['languageids']);
 		FixLanguageConsistency($postsid,$_POST['languageids']);
-		
+
 		if($_SESSION['USER_RIGHT_SUPERADMIN'] != 1 && $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights($_SESSION['loginID'], $_POST['template'])) $_POST['template'] = "default";
 
         $sql = "SELECT * FROM ".db_table_name('surveys')." WHERE sid={$postsid}";
@@ -1100,7 +1106,7 @@ if(isset($surveyid))
 							'emailresponseto'=>$_POST['emailresponseto'],
 							'tokenlength'=>$_POST['tokenlength']
                             );
-              
+
         $usquery=$connect->GetUpdateSQL($rs, $updatearray);
         if ($usquery) {
             $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
@@ -1198,14 +1204,14 @@ if(isset($surveyid))
 		$languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
 		require_once("../classes/inputfilter/class.inputfilter_clean.php");
 	    $myFilter = new InputFilter('','',1,1,1);
-		
+
 		foreach ($languagelist as $langname)
 		{
 			if ($langname)
 			{
 
                 if ($_POST['url_'.$langname] == "http://") {$_POST['url_'.$langname]="";}
-                
+
 			    // Clean XSS attacks
     	     	if ($filterxsshtml)
 		    	{
@@ -1225,13 +1231,13 @@ if(isset($surveyid))
                             $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
                             $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
                           }
-                
+
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['short_title_'.$langname]=fix_FCKeditor_text($_POST['short_title_'.$langname]);
                 $_POST['description_'.$langname]=fix_FCKeditor_text($_POST['description_'.$langname]);
                 $_POST['welcome_'.$langname]=fix_FCKeditor_text($_POST['welcome_'.$langname]);
                 $_POST['endtext_'.$langname]=fix_FCKeditor_text($_POST['endtext_'.$langname]);
-                
+
 				$usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
 				. "SET surveyls_title='".db_quote($_POST['short_title_'.$langname])."', surveyls_description='".db_quote($_POST['description_'.$langname])."',\n"
 				. "surveyls_welcometext='".db_quote($_POST['welcome_'.$langname])."',\n"
@@ -1323,8 +1329,8 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 			$browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
             $_POST['startdate']=$browsedatafield;
         }
-        
-        
+
+
         $insertarray=array( 'sid'=>$surveyid,
                             'owner_id'=>$_SESSION['loginID'],
                             'admin'=>$_POST['admin'],
@@ -1365,7 +1371,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
 
 
-                
+
         // Fix bug with FCKEditor saving strange BR types
         $_POST['surveyls_title']=fix_FCKeditor_text($_POST['surveyls_title']);
         $_POST['description']=fix_FCKeditor_text($_POST['description']);
@@ -1401,7 +1407,7 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		unset($bplang);
 
 		// Insert into survey_rights
-      
+
 		$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $_SESSION['loginID'].",1,1,1,1,1,1)"; //inserts survey rights for owner
 		$isrresult = $connect->Execute($isrquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
 		if ($isresult)

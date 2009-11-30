@@ -87,12 +87,12 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_users] ALTER COLUMN [users_name] VARCHAR( 64 ) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='112' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
     if ($oldversion < 113) {
 	//No action needed
         modify_database("","update [prefix_settings_global] set [stg_value]='113' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
     if ($oldversion < 114) {
         modify_database("","ALTER TABLE [prefix_saved_control] ALTER COLUMN [email] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [adminemail] VARCHAR(320) NOT NULL"); echo $modifyoutput; flush();
@@ -100,7 +100,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("",'INSERT INTO [prefix_settings_global] VALUES (\'SessionName\', \'$sessionname\');');echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
     if ($oldversion < 126) {
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [printanswers] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD  [listpublic] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
@@ -124,7 +124,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 						  [code] varchar(5) ,
 						  PRIMARY KEY  ([id])
 						);");echo $modifyoutput; flush();
-						
+
        // Rename Norwegian language code from NO to NB
        $oldnewlanguages=array('no'=>'nb');
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
@@ -151,7 +151,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
            $toreplace2=str_replace('no','nb',$toreplace);
            if ($toreplace2!=$toreplace) {modify_database("","update [prefix_surveys] set [additional_languages]='$toreplace' where sid=".$datarow['sid']);echo $modifyoutput;flush();}
         }
-        
+
         modify_database("","ALTER TABLE [prefix_surveys] ADD [htmlemail] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [usecaptcha] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE [prefix_surveys] ADD [tokenanswerspersistence] CHAR(1) DEFAULT 'N'"); echo $modifyoutput; flush();
@@ -180,7 +180,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 									(SELECT COLID FROM SYSCOLUMNS WHERE ID = OBJECT_ID('lime_labels') AND NAME = 'title'))
 									SET @STR = 'ALTER TABLE lime_labels DROP CONSTRAINT ' + @STR
 	 								exec (@STR);"); echo $modifyoutput; flush();     */
-	 								
+
         modify_database("","ALTER TABLE [prefix_labels] ALTER COLUMN [title] varchar(4000)"); echo $modifyoutput; flush();
         //124
         modify_database("","ALTER TABLE [prefix_surveys] ADD [bounce_email] text"); echo $modifyoutput; flush();
@@ -191,10 +191,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
         //126
         modify_database("","ALTER TABLE [prefix_questions] ADD [lid1] int NOT NULL DEFAULT '0'"); echo $modifyoutput; flush();
 	    modify_database("","UPDATE [prefix_conditions] SET [method]='==' where ( [method] is null) or [method]='' or [method]='0'"); echo $modifyoutput; flush();
-        
+
         modify_database("","update [prefix_settings_global] set [stg_value]='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
 	if ($oldversion < 127) {
         modify_database("","create index [answers_idx2] on [prefix_answers] ([sortorder])"); echo $modifyoutput;
         modify_database("","create index [assessments_idx2] on [prefix_assessments] ([sid])"); echo $modifyoutput;
@@ -216,7 +216,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 		upgrade_token_tables128();
         modify_database("","update [prefix_settings_global] set [stg_value]='128' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 129) {
 		//128
         modify_database("","ALTER TABLE [prefix_surveys] ADD [startdate] DATETIME"); echo $modifyoutput; flush();
@@ -239,7 +239,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE [prefix_surveys] ADD [publicgraphs] char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
         modify_database("","update [prefix_settings_global] set [stg_value]='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
     if ($oldversion < 133)
 	{
         modify_database("","ALTER TABLE [prefix_users] ADD [one_time_pw] text"); echo $modifyoutput; flush();
@@ -273,10 +273,10 @@ echo str_pad('Loading... ',4096)."<br />\n";
         // drop old URL field
         mssql_drop_constraint('url','surveys');
         modify_database("","ALTER TABLE [prefix_surveys] DROP COLUMN [url]"); echo $modifyoutput; flush();
-        
+
         modify_database("","update [prefix_settings_global] set [stg_value]='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-        
+
     if ($oldversion < 134)
     {
         // Add new assessment setting
@@ -335,20 +335,20 @@ echo str_pad('Loading... ',4096)."<br />\n";
         upgrade_survey_tables139();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-	
+
 	if ($oldversion < 140) //Modify surveys table
 	{
 	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [emailresponseto] text"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 141) //Modify surveys table
 	{
-	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [tokenlength] tinyint default '15'"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE [prefix_surveys] ADD [tokenlength] tinyint NOT NULL default '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
-    return true;
+	return true;
 }
 
 
@@ -455,7 +455,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     {
         modify_database("","ALTER TABLE [prefix_$tablename] DROP CONSTRAINT {$defaultname[0]}"); echo $modifyoutput; flush();
     }
-                
+
 
 }
 

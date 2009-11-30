@@ -104,7 +104,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("",'INSERT INTO `prefix_settings_global` VALUES (\'SessionName\', \'$sessionname\');');echo $modifyoutput; flush();
         modify_database("","update `prefix_settings_global` set `stg_value`='114' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-    
+
     if ($oldversion < 126) {
     //Adds new "public" field
         modify_database("","ALTER TABLE `prefix_surveys` ADD `printanswers` CHAR(1) default 'N' AFTER allowsave"); echo $modifyoutput; flush();
@@ -175,7 +175,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 						   `creator` int(11) NOT NULL,
 						   PRIMARY KEY  (`folder`)
 						   ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();
-					   
+
         //123
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `title` `title` text"); echo $modifyoutput; flush();
@@ -189,7 +189,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
 		//126
         modify_database("","ALTER TABLE `prefix_questions` ADD `lid1` integer NOT NULL default '0'"); echo $modifyoutput; flush();
         modify_database("","UPDATE `prefix_conditions` SET `method`='==' where (`method` is null) or `method`='' or `method`='0'"); echo $modifyoutput; flush();
-        
+
 		modify_database("","update `prefix_settings_global` set `stg_value`='126' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
 
@@ -237,7 +237,7 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` ADD `publicgraphs` varchar(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
     	modify_database("","update `prefix_settings_global` set `stg_value`='132' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 133)
 	{
         modify_database("","ALTER TABLE `prefix_users` ADD `one_time_pw` blob"); echo $modifyoutput; flush();
@@ -323,19 +323,19 @@ echo str_pad('Loading... ',4096)."<br />\n";
         upgrade_survey_tables139();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='139' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-	
+
 	if ($oldversion < 140) //Modify surveys table
 	{
 	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailresponseto` text DEFAULT NULL"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 141) //Modify surveys table
 	{
-	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `tokenlength` tinyint(2) default '15'"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE `prefix_surveys` ADD `tokenlength` tinyint(2) NOT NULL default '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
     return true;
 }
 
@@ -441,7 +441,7 @@ function fix_mysql_collation()
     if (!$result) {
            $modifyoutput .= 'SHOW TABLE - SQL Error';
         }
-       
+
     while ( $tables = $result->FetchRow() ) {
     // Loop through all tables in this database
        $table = $tables['Name'];
@@ -453,7 +453,7 @@ function fix_mysql_collation()
 	       modify_database("","ALTER TABLE $table COLLATE utf8_unicode_ci");
 	       echo $modifyoutput; flush();
 	       }
-	      
+
 	       # Now loop through all the fields within this table
 	       $result2 = db_execute_assoc("SHOW FULL COLUMNS FROM ".$table);
 	       while ( $column = $result2->FetchRow())
@@ -466,7 +466,7 @@ function fix_mysql_collation()
 		          if ($field_default!='NULL') {$field_default="'".$field_default."'";}
 		          # Change text based fields
 		          $skipped_field_types = array('char', 'text', 'enum', 'set');
-		         
+
 		          foreach ( $skipped_field_types as $type )
 		          {
 		             if ( strpos($field_type, $type) !== false )

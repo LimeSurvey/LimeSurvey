@@ -49,7 +49,7 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys ADD usestartdate char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
 	    modify_database("","update prefix_settings_global set stg_value='129' where stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 130)
 	{
 		modify_database("","ALTER TABLE prefix_conditions ADD scenario integer NOT NULL default '1'"); echo $modifyoutput; flush();
@@ -93,19 +93,19 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_assessments ADD CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)"); echo $modifyoutput; flush();
         // and fix missing translations for assessments
         upgrade_survey_tables133();
-        
+
         // Add new fields to survey language settings
         modify_database("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_url character varying(255)"); echo $modifyoutput; flush();
         modify_database("","ALTER TABLE prefix_surveys_languagesettings ADD surveyls_endtext text"); echo $modifyoutput; flush();
-        
+
         // copy old URL fields ot language specific entries
         modify_database("","update prefix_surveys_languagesettings set surveyls_url=(select url from prefix_surveys where sid=prefix_surveys_languagesettings.surveyls_survey_id)"); echo $modifyoutput; flush();
         // drop old URL field
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN url"); echo $modifyoutput; flush();
-        
+
         modify_database("","update prefix_settings_global set stg_value='133' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-           
+
     if ($oldversion < 134)
     {
         modify_database("","ALTER TABLE prefix_surveys ADD usetokens char(1) NOT NULL default 'N'"); echo $modifyoutput; flush();
@@ -114,7 +114,7 @@ global $modifyoutput;
         modify_database("","ALTER TABLE prefix_surveys DROP COLUMN attribute2"); echo $modifyoutput; flush();
         upgrade_token_tables134();
         modify_database("","update prefix_settings_global set stg_value='134' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-               
+
     }
      if ($oldversion < 135)
     {
@@ -137,9 +137,9 @@ global $modifyoutput;
        modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_users_pkey PRIMARY KEY (uid)"); echo $modifyoutput; flush();
        modify_database("", "ALTER TABLE ONLY prefix_users ADD CONSTRAINT prefix_user_name_key UNIQUE (users_name)"); echo $modifyoutput; flush();
        modify_database("", "update prefix_settings_global set stg_value='136' where stg_name='DBVersion'"); echo $modifyoutput; flush();
-               
+
 	}
-    
+
     if ($oldversion < 137) //New date format specs
     {
        modify_database("", "ALTER TABLE prefix_surveys_languagesettings ADD surveyls_dateformat integer NOT NULL default 1"); echo $modifyoutput; flush();
@@ -150,7 +150,7 @@ global $modifyoutput;
        modify_database("", "ALTER TABLE prefix_surveys DROP COLUMN useexpiry"); echo $modifyoutput; flush();
        modify_database("", "update prefix_settings_global set stg_value='137' where stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
-	
+
 	if ($oldversion < 138) //Modify quota field
 	{
 	    modify_database("", "ALTER TABLE prefix_quota_members ALTER COLUMN code TYPE character varying(11)"); echo $modifyoutput; flush();
@@ -168,13 +168,12 @@ global $modifyoutput;
 	    modify_database("", "ALTER TABLE prefix_surveys ADD \"emailresponseto\" TEXT"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='140' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
+
 	if ($oldversion < 141) //Modify surveys table
 	{
-	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" smallint DEFAULT '15'"); echo $modifyoutput; flush();
+	    modify_database("", "ALTER TABLE prefix_surveys ADD \"tokenlength\" smallint NOT NULL DEFAULT '15'"); echo $modifyoutput; flush();
         modify_database("", "UPDATE prefix_settings_global SET stg_value='141' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
-	
 
     return true;
 }
