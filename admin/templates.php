@@ -488,16 +488,41 @@ switch($screenname) {
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/startgroup.pstpl"));
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/groupdescription.pstpl"));
 
-	$question="How many roads must a man walk down?";
-	$questioncode="1a";
+	$question = array(
+		 'all' => 'How many roads must a man walk down?'
+		,'text' => 'How many roads must a man walk down?'
+		,'code' => '1a'
+		,'help' => 'helpful text'
+		,'mandatory' => ''
+		,'man_message' => ''
+		,'valid_message' => ''
+		,'essentials' => 'id="question1"'
+		,'class' => 'list-radio'
+		,'man_class' => ''
+		,'input_error_class' => ''
+	);
+
+//	$questioncode="1a";
 	$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
-    $myoutput[]='<div id="question1" class="list-radio">';
     $myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
-	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
-	$questioncode="2";
+//	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
+//	$questioncode="2";
 	$answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
-    $myoutput[]='<div id="question2" class="text-long mandatory">';
+	$question = array(
+		 'all' => '<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:")
+		,'text' => $clang->gT('Please explain something in detail:')
+		,'code' => '2a'
+		,'help' => ''
+		,'mandatory' => $clang->gT('*')
+		,'man_message' => ''
+		,'valid_message' => ''
+		,'essentials' => 'id="question2"'
+		,'class' => 'text-long'
+		,'man_class' => 'mandatory'
+		,'input_error_class' => ''
+	);
+
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/question.pstpl"));
 
 	$myoutput = array_merge($myoutput, doreplacement("$templaterootdir/$templatename/endgroup.pstpl"));
@@ -614,7 +639,7 @@ switch($screenname) {
         }
         $questionoutput=array();
         foreach(file("$templaterootdir/$templatename/print_question.pstpl") as $op)
-        {
+        { echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
             $questionoutput[]=templatereplace($op, array(
                                                          'QUESTION_NUMBER'=>'1',
                                                          'QUESTION_CODE'=>'Q1',
