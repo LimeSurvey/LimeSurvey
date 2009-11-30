@@ -941,7 +941,7 @@ div.messagebox .warningheader {
 #edittoken li label:first-child,  
 #importsurvey li label:first-child,  
 #importgroup li label:first-child,
-#addnewgroup li label:first-child,      
+#newquestiongroup li label:first-child,      
 #addnewsurvey li label:first-child{
     width: 30%;
     text-align: right;
@@ -967,7 +967,7 @@ div.messagebox .warningheader {
 #addattribute li,
 #exportdialog li,       
 #addnewsurvey li,
-#addnewgroup li,
+#newquestiongroup li,
 #importsurvey li,
 #importgroup li,
 #addnewquotaform li,
@@ -1008,7 +1008,7 @@ div.loader {
 
 #frmcopyquestion iframe,   
 #sendreminder iframe,
-#addnewgroup iframe,
+#newquestiongroup iframe,
 #sendinvitation iframe,
 #addnewsurvey iframe {
     width:600px !important;

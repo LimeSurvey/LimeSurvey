@@ -31,13 +31,13 @@ if ($action == "addgroup")
 //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
     $newgroupoutput .="\n"
     .  '<div class="tab-pane" id="tab-pane-newgroup">';
-    $newgroupoutput .= "<form action='$scriptname' id='addnewgroup' name='addnewgroup' method='post' onsubmit=\"if (1==0 ";
+    $newgroupoutput .= "<form action='$scriptname' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
 
     foreach ($grplangs as $grouplang)
     {
       $newgroupoutput .= "|| document.getElementById('group_name_$grouplang').value.length==0 ";
     }
-    $newgroupoutput .=" ) {alert ('".$clang->gT("Error: You have to enter a group title for each language.",'js')."'); return false;}\" ";
+    $newgroupoutput .=" ) {alert ('".$clang->gT("Error: You have to enter a group title for each language.",'js')."'); return false;}\" >";
 
     foreach ($grplangs as $grouplang)
     {
@@ -47,7 +47,7 @@ if ($action == "addgroup")
         . "<li>"
         . "<label for='group_name_$grouplang'>".$clang->gT("Title").":</label>\n"
         . "<input type='text' size='80' maxlength='100' name='group_name_$grouplang' id='group_name_$grouplang' /><font color='red' face='verdana' size='1'> ".$clang->gT("Required")."</font></li>\n"
-        . "\t<li><label for='description_$grouplang'>".$clang->gT("Description:")."</li>\n"
+        . "\t<li><label for='description_$grouplang'>".$clang->gT("Description:")."</label>\n"
         . "<textarea cols='80' rows='8' id='description_$grouplang' name='description_$grouplang'></textarea>"
 	    . getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action)
 	    . "</li>\n"
