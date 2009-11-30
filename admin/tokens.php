@@ -359,7 +359,7 @@ if (!$tokenexists) //If no tokens table exists
 	elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') &&
 	($sumrows5['edit_survey_property'] || $sumrows5['activate_survey'] || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1))
 	{
-		$query = db_rename_table(returnglobal('oldtable') , db_table_name("tokens_$surveyid"));
+		$query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
 		$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
         $tokenoutput .= "\t</div><div class='messagebox'>\n"
         ."<div class='header'>".$clang->gT("Import old tokens")."</div>"
