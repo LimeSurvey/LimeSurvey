@@ -1163,7 +1163,11 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						}
 						freezeFrame(disable);
 						eraseCookie(timersessionname);
-						document.limesurvey.submit();
+						if(document.getElementById('movenextbtn') != null) {
+						  document.limesurvey.submit();
+						} else {
+							setTimeout(\"document.limesurvey.submit();\", 1000);
+						}
 						break;
 					case 3: //Just warn, don't move on
 						document.getElementById(expireddisplay).style.display='';
