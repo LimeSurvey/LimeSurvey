@@ -120,18 +120,6 @@ a:link,a:visited {
     font-family:verdana;
 }
 
-#progress-graph
-{
-    line-height: 1.5em;
-    width: 17em;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0.2em;
-    padding: 0.5em 0.5em 0.4em 1em;
-    text-align: left;
-    font-size:12px;
-}
-
 .hide
 {
     font-weight: normal;
@@ -139,48 +127,23 @@ a:link,a:visited {
     top: -9999px;
     left: -9999px;
 }
-
-#progress-graph div.zero
-{
-    width: 30px;
-    margin-right: 0%;
-}
-
-#progress-graph div.graph
-{
-    width: 10em;
-    height: 12px;
-    border: 1px solid #000;
-    margin-top: -15px;
-    margin-left: 35px;
-    margin-right: 0%;
-}
-
-#progress-graph div.cent
-{
-    width: 3em;
-    margin-top: -1.5em;
-    margin-left: 13.3em;
-    margin-right: 0%;    
-}
-
-
+ 
 .printouttable {
-width:100%;
+    width:100%;
 }
 
 .printouttable td {
-border-color:#fff #fff #ddf;
-border-style:solid;
-border-width:1px;
+    border-color:#fff #fff #ddf;
+    border-style:solid;
+    border-width:1px;
 }
 
 .printouttable td:first-child {
-background-color:#ddf;
-font-weight:700;
-text-align:right;
-padding-right:5px;
-padding-left:5px;
+    background-color:#ddf;
+    font-weight:700;
+    text-align:right;
+    padding-right:5px;
+    padding-left:5px;
 }
 
 .printouttitle {

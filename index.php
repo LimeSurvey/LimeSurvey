@@ -881,9 +881,28 @@ function makegraph($currentstep, $total)
 	
 	<div id="progress-wrapper">
 	<span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
-		<div id="progress-pre">0%</div>
+		<div id="progress-pre">';
+    if (getLanguageRTL($clang->langcode))
+    {
+      $graph.='100%';  
+    }
+    else
+    {
+      $graph.='0%';  
+    }   
+    
+    $graph.='</div>
 		<div id="progressbar"></div>
-		<div id="progress-post">100%</div>
+		<div id="progress-post">';
+    if (getLanguageRTL($clang->langcode))
+    {
+      $graph.='0%';  
+    }
+    else
+    {
+      $graph.='100%';  
+    }           
+    $graph.='</div>
 	</div>';
 		
 	return $graph;
