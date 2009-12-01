@@ -996,14 +996,13 @@ if ($subaction == "browse" || $subaction == "search")
 			}
 		}
 
-		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N")
-
+		elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='')
 		{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_invite.png' title='"
                     .$clang->gT("Send invitation email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?action=tokens&amp;sid=$surveyid&amp;subaction=email&amp;tid=".$brow['tid']."', '_top')\" />";
 		}
 
-                elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N")  // reminder button
+                elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 		{
                     $tokenoutput .= "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_remind.png' title='"
                     .$clang->gT("Send reminder email to this entry")."' onclick=\"window.open('{$_SERVER['PHP_SELF']}?sid=$surveyid&amp;action=tokens&amp;subaction=remind&amp;tid=".$brow['tid']."', '_top')\" />";
