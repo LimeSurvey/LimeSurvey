@@ -439,7 +439,7 @@ table.question tr.array1:hover,table.question tr.array2:hover {
 , ul.cols-7 li , ul.cols-7-ul
 , ul.cols-8 li , ul.cols-8-ul {
     float: left;
-    padding: 0% 0.5em;
+    padding: 0;
     white-space: normal
 }
 
