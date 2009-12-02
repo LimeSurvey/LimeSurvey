@@ -30,10 +30,6 @@
  * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
  */
 
-$length_varlabel = '255'; // Set the max text length of Variable Labels
-$headerComment = '*$Rev$.' . "\n";
-$tempFile = '';
-
 include_once('login_check.php');
 //for scale 1=nominal, 2=ordinal, 3=scale
 $typeMap = array(
@@ -69,11 +65,70 @@ $typeMap = array(
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+$filterstate = incompleteAnsFilterstate();
+$spssver = returnglobal('spssver');
+if (is_null($spssver)) {
+	if (!isset($_SESSION['spssversion'])) {
+		$_SESSION['spssversion'] = 2;	//Set default to 2, version 16 or up
+	}
+	$spssver = $_SESSION['spssversion'];
+} else {
+	$_SESSION['spssversion'] = $spssver;
+}	
+
+$length_varlabel = '255'; // Set the max text length of Variable Labels
+$length_vallabel = '120'; // Set the max text length of Value Labels
+
+switch ($spssver) {
+	case 1:	//<16
+		$length_data	 = '255'; // Set the max text length of the Value
+		break;
+	case 2:	//>=16
+		$length_data	 = '16384'; // Set the max text length of the Value
+		break;
+	default:
+		$length_data	 = '16384'; // Set the max text length of the Value
+
+}		
+
+$headerComment = '*$Rev$' . " $filterstate $spssver.\n";
 
 if  (!isset($subaction))
 {
 	$exportspssoutput = browsemenubar($clang->gT('Export results'));
 	$exportspssoutput .= "<div class='header'>".$clang->gT("Export result data to SPSS")."</div>\n";
+	
+	$selecthide="";
+	$selectshow="";
+	$selectinc="";
+	switch ($filterstate) {
+		case "inc":
+		    $selectinc="selected='selected'";
+		    break;
+		case "filter":
+			$selecthide="selected='selected'";
+			break;
+		default: 
+			$selectshow="selected='selected'";
+	}
+	
+	$exportspssoutput .= "<form action='$scriptname' id='exportspss' method='get'><ul>\n"
+	."<li><label for='filterinc'>".$clang->gT("Data selection:")."</label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>\n"
+	."\t<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
+	."\t<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
+	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
+	."</select><li>\n";
+		
+	$exportspssoutput .= "<li><label for='spssver'>".$clang->gT("SPSS version:")."</label><select id='spssver' name='spssver' onchange='this.form.submit();'>\n";
+	if ($spssver == 1) $selected = "selected='selected'"; else $selected = "";
+	$exportspssoutput .= "\t<option value='1' $selected>".$clang->gT("Prior to 16")."</option>\n";
+	if ($spssver == 2) $selected = "selected='selected'"; else $selected = "";
+	$exportspssoutput .= "\t<option value='2' $selected>".$clang->gT("16 or up")."</option>\n";
+	$exportspssoutput .= "</select>\n";
+	$exportspssoutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='action' value='exportspss' /></li></ul>\n"
+    ."</form>\n";
+	
 	$exportspssoutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export SPSS syntax file")."</a></li><li>"
 	."<a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export SPSS data file")."</a></li></ul></p><br />\n"
 	."<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
@@ -84,6 +139,8 @@ if  (!isset($subaction))
 	."<li>".$clang->gT("Choose 'Run/All' from the menu to run the import.")."</li>"
 	."</ol><p>"
 	.$clang->gT("Your data should be imported now.").'</div>';
+	
+	
 } else {
 	// Get Base Language:
 
@@ -159,8 +216,8 @@ if  ($subaction=='dlstructure') {
 	 * be sent to the client.
 	 */
 	echo $headerComment;
-	echo "SET UNICODE=ON.\n"
-	."GET DATA\n"
+	if ($spssver == 2) echo "SET UNICODE=ON.\n";
+	echo "GET DATA\n"
 	."/TYPE=TXT\n"
 	."/FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
 	."/DELCASE=LINE\n"

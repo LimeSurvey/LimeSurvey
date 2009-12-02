@@ -30,6 +30,8 @@
  * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
  */
 
+$length_vallabel = '120'; // Set the max text length of Value Labels
+$length_data = '255'; // Set the max text length of Text Data
 $length_varlabel = '255'; // Set the max text length of Variable Labels
 $headerComment = '';
 $tempFile = '';

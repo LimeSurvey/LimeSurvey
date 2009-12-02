@@ -902,6 +902,7 @@ div.messagebox .warningheader {
 }
    
 
+#exportspss li label:first-child,            
 #importtemplate li label:first-child,            
 #tokenimport li label:first-child,            
 #statistics_general_filter li label:first-child,            
@@ -973,7 +974,8 @@ div.messagebox .warningheader {
 #assessmentsform li,
 #importsurveyresources li,
 #labelsetform li,
-#frmglobalsettings li {  
+#frmglobalsettings li,
+#exportspss li{  
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
