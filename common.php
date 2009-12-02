@@ -322,7 +322,8 @@ $singleborderstyle = "style='border: 1px solid #111111'";
         $adminmenu  = "<div class='menubar'>\n";
         if  ($_SESSION['pw_notify'] && $debug<2)  {$adminmenu .="<div class='alert'>".$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")."</div>";}
         $adminmenu  .="<div class='menubar-title'>\n"
-                    . "<strong>".$clang->gT("Administration")."</strong>";
+                    . "<div class='menubar-title-left'>\n"
+					. "<strong>".$clang->gT("Administration")."</strong>";
 		if(isset($_SESSION['loginID']))
 			{
 			$adminmenu  .= " --  ".$clang->gT("Logged in as:"). " <strong>"
@@ -330,9 +331,10 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . $_SESSION['user']." <img src='$imagefiles/profile_edit.png' name='ProfileEdit' alt='".$clang->gT("Edit your personal preferences")."' /></a>"
                         . "</strong>\n";
 			}
+        $adminmenu  .="</div>\n";
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 && isset($updateavailable) && $updateavailable==1)   
         {
-            $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</div>';
+            $adminmenu  .="<div class='menubar-title-right'><a href='$scriptname?action=globalsettings'>".sprintf($clang->gT('Update available: %s'),$updateversion."($updatebuild)").'</a></div>';
         }
        	$adminmenu .= "</div>\n"
                     . "<div class='menubar-main'>\n"
