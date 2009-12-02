@@ -143,6 +143,22 @@ div.menubar {
     margin-bottom:2px;
 }
 
+.menubar-title-left {
+    float: left;
+	font-size:11px;
+}
+
+.menubar-title-right {
+    float: right;
+}
+
+.menubar-title-right a {
+        font-size:10px;
+        font-weight:bold;
+        color:#ee0000 !important;
+        text-decoration: underline !important; 
+}
+
 .menubar-left {
 	background-color: #EEF6FF;
 	text-align: left;
@@ -158,17 +174,6 @@ div.menubar {
 	float: right;
 	line-height: 1em;
     white-space: nowrap;    
-}
-
-.menubar-title-right {
-    float: right;
-}
-
-.menubar-title-right a {
-        font-size:10px;
-        font-weight:bold;
-        color:#ee0000 !important;
-        text-decoration: underline !important; 
 }
 
 .menubar select {
