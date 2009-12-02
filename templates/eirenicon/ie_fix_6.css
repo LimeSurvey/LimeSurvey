@@ -5,7 +5,7 @@
 }
  .yes-no ul
 ,.gender ul {
-	margin-left: 1em;
+	margin-left: 2em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
@@ -19,7 +19,7 @@
 ,.multiple-short-txt ul li
 ,.multiple-opt-comments ul li
 ,.numeric-multi ul li {
-	margin-left: 0%;
+	margin-left: 0.5em;
 	padding-left: 0%;
 }
 

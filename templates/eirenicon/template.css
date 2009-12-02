@@ -217,17 +217,20 @@ background-color:#A7A9D1;
 
 /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
    START: General list styles - - -  - - -  - - - - */
- .choice-5-pt-radio ul
-,.list-radio-flexible ul
-,.list-radio ul
-,.list-with-comment ul
-,.multiple-opt ul
-,.multiple-opt-comments ul
-,.multiple-short-txt ul
-,.numeric-multi ul
-,.yes-no ul
-,.gender ul
-{
+.choice-5-pt-radio ul,
+.list-radio-flexible ul,
+.list-radio ul,
+.list-with-comment ul {
+	margin-left: 0.75em;
+	padding-left: 0%;
+}
+
+.multiple-opt ul,
+.multiple-opt-comments ul,
+.multiple-short-txt ul,
+.numeric-multi ul,
+.yes-no ul,
+.gender ul {
 	margin-left: 0%;
 	padding-left: 0%;
 }
@@ -272,7 +275,7 @@ background-color:#A7A9D1;
 {
 	text-align: left;
 	margin-left: 0% auto;
-	padding-left: 0%;
+	padding-left: 0.5em;
 }
  .choice-5-pt-radio ul li
 ,.yes-no ul li
