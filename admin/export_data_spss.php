@@ -93,6 +93,9 @@ switch ($spssver) {
 
 $headerComment = '*$Rev$' . " $filterstate $spssver.\n";
 
+if (isset($_GET['dldata'])) $subaction = "dldata";
+if (isset($_GET['dlstructure'])) $subaction = "dlstructure";
+
 if  (!isset($subaction))
 {
 	$exportspssoutput = browsemenubar($clang->gT('Export results'));
@@ -117,21 +120,21 @@ if  (!isset($subaction))
 	."\t<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
 	."\t<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
 	."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
-	."</select><li>\n";
+	."</select></li>\n";
 		
 	$exportspssoutput .= "<li><label for='spssver'>".$clang->gT("SPSS version:")."</label><select id='spssver' name='spssver' onchange='this.form.submit();'>\n";
 	if ($spssver == 1) $selected = "selected='selected'"; else $selected = "";
 	$exportspssoutput .= "\t<option value='1' $selected>".$clang->gT("Prior to 16")."</option>\n";
 	if ($spssver == 2) $selected = "selected='selected'"; else $selected = "";
 	$exportspssoutput .= "\t<option value='2' $selected>".$clang->gT("16 or up")."</option>\n";
-	$exportspssoutput .= "</select>\n";
-	$exportspssoutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
-	."<input type='hidden' name='action' value='exportspss' /></li></ul>\n"
-    ."</form>\n";
+	$exportspssoutput .= "</select></li>\n";
+    $exportspssoutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
+	."<input type='hidden' name='action' value='exportspss' /></li>\n"
+	."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export syntax") . "'/></li>\n"
+	."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export data") . "'/></li></ul>\n"
+	."</form>\n";
 	
-	$exportspssoutput .= "<p style='width:100%;'><ul style='width:300px;margin:0 auto;'><li><a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dlstructure'>".$clang->gT("Export SPSS syntax file")."</a></li><li>"
-	."<a href='$scriptname?action=exportspss&amp;sid=$surveyid&amp;subaction=dldata'>".$clang->gT("Export SPSS data file")."</a></li></ul></p><br />\n"
-	."<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
+	$exportspssoutput .= "<p><div class='messagebox'><div class='header'>".$clang->gT("Instructions for the impatient")."</div>"
 	."<br/><ol style='margin:0 auto; font-size:8pt;'>"
 	."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
 	."<li>".$clang->gT("Open the syntax file in SPSS in Unicode mode").".</li>"
