@@ -2766,7 +2766,8 @@ function do_ranking($ia)
 	. "\t<!--\n"
 	. "function rankthis_{$ia[0]}(\$code, \$value)\n"
 	. "\t{\n"
-	. "\t\$index=document.limesurvey.CHOICES_{$ia[0]}.selectedIndex;\n"
+	//. "\t\$index=document.limesurvey.CHOICES_{$ia[0]}.selectedIndex;\n"
+	. "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;\n"
 	. "\tfor (i=1; i<=$max_answers; i++)\n"
 	. "{\n"
 	. "\$b=i;\n"
@@ -2794,7 +2795,8 @@ function do_ranking($ia)
 	. "\t\t\t\t\t\t{\n"
 	. "\t\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').disabled=true;\n"
 	. "\t\t\t\t\t\t}\n"
-    . "\t\t\t\t\tdocument.limesurvey.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
+    //. "\t\t\t\t\tdocument.limesurvey.CHOICES_{$ia[0]}.selectedIndex=-1;\n"
+    . "\t\t\t\t\tdocument.getElementById('CHOICES_{$ia[0]}').selectedIndex=-1;\n"
 	. "\t\t\t\t\t$checkconditionFunction(\$code);\n"
 	. "\t\t\t\t\t}\n"
 	. "\t\t\t\tfunction deletethis_{$ia[0]}(\$text, \$value, \$name, \$thisname)\n"
@@ -2880,7 +2882,8 @@ function do_ranking($ia)
 		{
 			$ranklist .= "style=\"display:none\"";
 		}
-		$ranklist .= " id=\"cut_{$ia[0]}$i\" onclick=\"deletethis_{$ia[0]}(document.limesurvey.RANK_{$ia[0]}$i.value, document.limesurvey.fvalue_{$ia[0]}$i.value, document.limesurvey.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
+		//$ranklist .= " id=\"cut_{$ia[0]}$i\" onclick=\"deletethis_{$ia[0]}(document.limesurvey.RANK_{$ia[0]}$i.value, document.limesurvey.fvalue_{$ia[0]}$i.value, document.limesurvey.RANK_{$ia[0]}$i.name, this.id)\" /><br />\n";
+		$ranklist .= " id=\"cut_{$ia[0]}$i\" onclick=\"deletethis_{$ia[0]}(document.getElementById('RANK_{$ia[0]}$i').value, document.getElementById('fvalue_{$ia[0]}$i').value, document.getElementById('RANK_{$ia[0]}$i').name, this.id)\" /><br />\n";
 		$inputnames[]=$myfname;
 		$ranklist .= "</td></tr>\n";
 	}
@@ -2958,7 +2961,8 @@ function do_ranking($ia)
 			. "  oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
 			. "  function ensureminansw_{$ia[0]}()\n"
 			. "  {\n"
-			. "     count={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
+			//. "     count={$anscount} - document.limesurvey.CHOICES_{$ia[0]}.options.length;\n"
+			. "     count={$anscount} - document.getElementById('CHOICES_{$ia[0]}').options.length;\n"
 			. "     if (count < {$minansw} && document.getElementById('display{$ia[0]}').value == 'on'){\n";
 		if(!isset($showpopups) || $showpopups == 0)
 		{
