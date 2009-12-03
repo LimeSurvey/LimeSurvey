@@ -925,7 +925,7 @@ if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $actsurrows['browse_response'])
 					case "L": //LIST drop-down
 					case "!": //List (Radio)
 					$qidattributes=getQuestionAttributes($fnames[$i][7]);
-					if (trim($qidattributes['category_separator'])!='')
+					if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
 					{
 						$optCategorySeparator = $qidattributes['category_separator'];
 					}
