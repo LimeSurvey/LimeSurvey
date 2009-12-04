@@ -549,6 +549,25 @@ ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
 .ui-wrapper input, .ui-wrapper textarea { 
     border: 0; 
 }
+
+/** Progress bar **/
+
+#progress-pre,
+#progress-post {
+	color: #FFFFFF;
+}
+
+#progress-wrapper .ui-widget-content {
+	background-color: #EDEDED;
+	background-image: none;
+	border: 1px solid #999999;
+}
+
+#progress-wrapper .ui-widget-header {
+	background-color: #CCCCCC;
+	border: 1px solid #999999;
+} 
+
 /** UI Slider **/
 
 .numeric-multi label.slider-label {
