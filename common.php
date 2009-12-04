@@ -4103,10 +4103,6 @@ function getPrintableHeader()
     <!--[if lt IE 7]>
             <script defer type="text/javascript" src="'.$rooturl.'/scripts/pngfix.js"></script>
     <![endif]-->
-
-            <script type="text/javascript" src="'.$rooturl.'/admin/scripts/tabpane/js/tabpane.js"></script>
-            <script type="text/javascript" src="'.$rooturl.'/admin/scripts/tooltips.js"></script>
-
     '; 
     return $headelements;   
 }

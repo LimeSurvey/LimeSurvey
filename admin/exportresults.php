@@ -787,7 +787,7 @@ for ($i=0; $i<$fieldcount; $i++)
 			}
 			else
 			{
-				$firstline .= "$fquest $separator";
+				$firstline .= $fquest.$separator;
 			}
 		}
 		if($convertspacetous == "Y")

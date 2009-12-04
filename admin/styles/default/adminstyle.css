@@ -1032,9 +1032,6 @@ div.loader {
 }
 
 thead tr .header {
-    background-image: url(bg.gif);
-    background-repeat: no-repeat;
-    background-position: center right;
     cursor: pointer;
 }
 
