@@ -6074,9 +6074,17 @@ function do_array_multiflexi($ia)
 				if ($checkboxlayout == false)
 				{
 					$myfname2=$myfname."_$ld";
+					if(isset($_SESSION[$myfname2]))
+					{
+						$myfname2_java_value = " value=\"$_SESSION[$myfname2]\" ";
+					}
+					else
+					{
+						$myfname2_java_value = "";
+					}
 					$answer .= "\t<td class=\"answer_cell_00$ld\">\n"
 					. "<label for=\"answer{$myfname2}\">\n"
-					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
+					. "\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" $myfname2_java_value />\n"
 					. "\t<select class=\"multiflexiselect\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
 					. html_escape($labelans[$thiskey]).'"'
 					. " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\">\n"
