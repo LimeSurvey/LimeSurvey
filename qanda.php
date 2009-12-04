@@ -4047,18 +4047,6 @@ function do_multiplenumeric($ia)
 		{
 			$slider_separator = '';
 		}
-
-        if ($qidattributes['slider_showminmax']==1)
-		{
-			//$slider_showmin=$slider_min;
-			$slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_min</div>\n";
-			$slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_max</div>\n";
-		}
-		else
-		{
-			$slider_showmin='';
-			$slider_showmax='';
-		}
 	}
 	else
 	{
@@ -4140,6 +4128,19 @@ function do_multiplenumeric($ia)
 			}
 			else
 			{
+
+				if ($qidattributes['slider_showminmax']==1)
+				{
+					//$slider_showmin=$slider_min;
+					$slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_min</div>\n";
+					$slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_max</div>\n";
+				}
+				else
+				{
+					$slider_showmin='';
+					$slider_showmax='';
+				}
+
 				$js_header_includes[] = '/scripts/jquery/jquery-ui.js';
 				$js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
