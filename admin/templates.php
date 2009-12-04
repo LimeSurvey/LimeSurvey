@@ -1072,19 +1072,50 @@ function filetext($templatefile) {
 function makegraph($currentstep, $total)
 {
     global $thissurvey;
-    global $publicurl, $clang;
-
-    $shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
+	global $publicurl, $clang;
 
     $size = intval(($currentstep-1)/$total*100);
-    $graph = '<div id="progress-graph">
-    <span class="hide">You have completed '.$size.'% of this survey</span>
-
-            <div class="zero">0%</div>
-            <div class="graph"><img src="'.$shchart.'" width="'.$size.'%" height="100%" alt="You have completed '.$size.'% of this survey" /></div>
-            <div class="cent">100%</div>
-        </div>';
-    return $graph;
+	
+	if ($size < 0.5) // Min value for progress bar - it looks dumb if 0 
+	{
+		$size = 0.5;
+	}
+	
+	$graph = '<script type="text/javascript">
+	$(function() {
+		$("#progressbar").progressbar({
+			value: '.$size.'
+		});
+	});
+	</script>
+	
+	<div id="progress-wrapper">
+	<span class="hide">'.sprintf($clang->gT('You have completed %s%% of this survey'),$size).'</span>
+		<div id="progress-pre">';
+    if (getLanguageRTL($clang->langcode))
+    {
+      $graph.='100%';  
+    }
+    else
+    {
+      $graph.='0%';  
+    }   
+    
+    $graph.='</div>
+		<div id="progressbar"></div>
+		<div id="progress-post">';
+    if (getLanguageRTL($clang->langcode))
+    {
+      $graph.='0%';  
+    }
+    else
+    {
+      $graph.='100%';  
+    }           
+    $graph.='</div>
+	</div>';
+		
+	return $graph;
 }
 
 function mkdir_p($target){
