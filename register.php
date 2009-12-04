@@ -159,9 +159,8 @@ else
 }
 
 //PRINT COMPLETED PAGE
-if (!$publicdir) {$publicdir=".";}
-if (!$thissurvey['template']) {$thistpl="$publicdir/templates/default";} else {$thistpl="$publicdir/templates/{$thissurvey['template']}";}
-if (!is_dir($thistpl)) {$thistpl="$publicdir/templates/default";}
+if (!$thissurvey['template']) {$thistpl="$templaterootdir/default";} else {$thistpl="$templaterootdir/{$thissurvey['template']}";}
+if (!is_dir($thistpl)) {$thistpl="$templaterootdir/default";}
 
 sendcacheheaders();
 doHeader();
