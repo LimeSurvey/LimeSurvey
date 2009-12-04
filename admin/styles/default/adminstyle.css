@@ -1111,6 +1111,7 @@ margin:0 auto;
 #advancedquestionsettings fieldset{
     width:600px;
     margin:0 auto;
+	display: block;
 }
 
 #advancedquestionsettings textarea{
