@@ -363,7 +363,7 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 //				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
 					 $oldtoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $four, $date);
 				 } else {
-					 $oldtmultidelete[]=$tablename."| ".sprintf($clang-gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
+					 $oldtmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $four, $date, $jqcount);
 //				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
 				 }
 			  }
