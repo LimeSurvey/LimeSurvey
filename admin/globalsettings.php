@@ -107,7 +107,7 @@ function globalsettingsdisplay()
             $editsurvey .= "\t<div class='tab-page'> <h2 class='tab'>".$clang->gT("Overview & Update")."</h2>\n";
             $editsurvey .= checksettings();
             $thisupdatecheckperiod=getGlobalSetting('updatecheckperiod');
-            $editsurvey .= "<br /></p><div class='settingcaption'>Update settings</div><ul>"
+            $editsurvey .= "<br /></p><div class='settingcaption'>".$clang->gT("Updates")."</div><ul>"
             . "\t<li><label for='updatecheckperiod'>".$clang->gT("Check for updates:")."</label>\n"
             . "\t\t\t<select name='updatecheckperiod' id='updatecheckperiod'>\n"
             . "\t\t\t\t<option value='0'";
@@ -255,7 +255,7 @@ function globalsettingsdisplay()
                 $editsurvey .= ">".$clang->gT("Qmail")."</option>\n"
                 . "\t\t</select></li>\n"
                 . "\t<li><label for='emailsmtphost'>".$clang->gT("SMTP host:")."</label>\n"
-                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>Enter your hostname and port, e.g.: my.smtp.com:25</font></li>\n"
+                . "\t\t<input type='text' size='50' id='emailsmtphost' name='emailsmtphost' value=\"".htmlspecialchars(getGlobalSetting('emailsmtphost'))."\" />&nbsp;<font size=1>".$clang->gT("Enter your hostname and port, e.g.: my.smtp.com:25")."</font></li>\n"
                 . "\t<li><label for='emailsmtpuser'>".$clang->gT("SMTP username:")."</label>\n"
                 . "\t\t<input type='text' size='50' id='emailsmtpuser' name='emailsmtpuser' value=\"".htmlspecialchars(getGlobalSetting('emailsmtpuser'))."\" /></li>\n"
                 . "\t<li><label for='emailsmtppassword'>".$clang->gT("SMTP password:")."</label>\n"

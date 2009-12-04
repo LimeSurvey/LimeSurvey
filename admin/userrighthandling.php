@@ -121,7 +121,7 @@ if ($action == "setusertemplates")
 {
 	refreshtemplates();
 	$usersummary = "\n<form action='$scriptname' method='post'>\n\t
-    <div class='header'>Edit template permissions</div><p>
+    <div class='header'>".$clang->gT('Edit template permissions')."</div><p>
     <table id=\"user-template-rights\" width='50%' border='0' style='margin:0 auto;'>\n<thead>\n\t<tr>\n\t<th colspan=\"2\" style=\"background-color:#000; color:#fff;\">\n"
 	. $clang->gT('Set templates that this user may access').': '.$_POST['user']."</th>\n\t</tr>\n";
 
