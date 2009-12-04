@@ -39,7 +39,6 @@ function focusFirst(Event)
 	}
 	return;
 }
-*/
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
  * 
