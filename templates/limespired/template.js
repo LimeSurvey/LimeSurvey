@@ -39,6 +39,7 @@ function focusFirst(Event)
 	}
 	return;
 }
+*/
 /*
  * The focusFirst function is added to the eventlistener, when the page is loaded.
  * 
@@ -47,9 +48,13 @@ function focusFirst(Event)
 
 
 
+/** Uncomment if you want to use the focusFirst function
+
 $(document).ready(function(){
-   focusFirst();
+  // focusFirst();
 })
+	
+**/
 
 
 
