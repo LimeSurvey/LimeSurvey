@@ -517,7 +517,8 @@ class ProgressBar
             echo '<script type="text/JavaScript">'."\n"
             .'/* <![CDATA[ */'."\n"
             . $js."\n"
-            . '/* ]]> */'."\n";       
+            . '/* ]]> */'."\n"
+			.'</script>'."\n";       
 			flush ();
 		}
 	}
