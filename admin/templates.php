@@ -401,7 +401,7 @@ if ($screenname != $clang->gT("Welcome Page")) {$_SESSION['step']=1;} else {unse
 
 // ===========================   FAKE DATA FOR TEMPLATES
 $thissurvey['name']=$clang->gT("Template Sample");
-$thissurvey['description']="This is a sample survey description. It could be quite long.<br /><br />But this one isn't.";
+$thissurvey['description']=$clang->gT('This is a sample survey description. It could be quite long.').'<br /><br />'.$clang->gT("But this one isn't.");
 $thissurvey['welcome']=$clang->gT('Welcome to this sample survey').'<br />'.$clang->gT('You should have a great time doing this').'<br />';
 $thissurvey['allowsave']="Y";
 $thissurvey['active']="Y";
@@ -413,9 +413,9 @@ $thissurvey['usecaptcha']="A";
 $percentcomplete=makegraph(6, 10);
 $groupname=$clang->gT("Group 1: The first lot of questions");
 $groupdescription=$clang->gT("This group description is fairly vacuous, but quite important.");
-$navigator="<input class=\"submit\" type=\"submit\" value=\" Next &gt;&gt; \" name=\"move\" />\n";
-if ($screenname != $clang->gT("Welcome Page")) {$navigator = "<input class=\"submit\" type=\"submit\" value=\" &lt;&lt; Previous\" name=\"move\" />\n".$navigator;}
-$help="This is some help text";
+$navigator="<input class=\"submit\" type=\"submit\" value=\"".$clang->gT('Next')."&gt;&gt;\" name=\"move\" />\n";
+if ($screenname != $clang->gT("Welcome Page")) {$navigator = "<input class=\"submit\" type=\"submit\" value=\"&lt;&lt;".$clang->gT('Previous')."\" name=\"move\" />\n".$navigator;}
+$help=$clang->gT("This is some help text.");
 $totalquestions="10";
 $surveyformat="Format";
 $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />"

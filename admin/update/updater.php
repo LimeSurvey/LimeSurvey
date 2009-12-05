@@ -464,7 +464,7 @@ function CheckForDBUpgrades()
         include ('upgrade-'.$upgradedbtype.'.php');
         $tables = $connect->MetaTables();
         db_upgrade(intval($currentDBVersion));
-        $adminoutput="<br />".$clang->gT("Database has been successfully upgraded to version ".$dbversionnumber);
+        $adminoutput="<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
     }
     return $adminoutput;
 }

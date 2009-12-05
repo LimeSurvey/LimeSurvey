@@ -98,28 +98,28 @@ $showpopups         =   1;                // Show popup messages if mandatory or
 // Email Settings
 // These settings determine how LimeSurvey will send emails
 
-$siteadminemail     =   'your@email.org'; // The default email address of the site administrator
-$siteadminbounce    =   'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
-$siteadminname      =   'Your Name';      // The name of the site administrator
+$siteadminemail     = 'your@email.org'; // The default email address of the site administrator
+$siteadminbounce    = 'your@email.org'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
+$siteadminname      = 'Your Name';      // The name of the site administrator
 
-$emailmethod        =   'mail';           // The following values can be used:
-                                          // mail      -  use internal PHP Mailer
-                                          // sendmail  -  use Sendmail Mailer
-                                          // qmail     -  use Qmail MTA
-                                          // smtp      -  use SMTP relaying
+$emailmethod        = 'mail';           // The following values can be used:
+                                        // mail      -  use internal PHP Mailer
+                                        // sendmail  -  use Sendmail Mailer
+                                        // qmail     -  use Qmail MTA
+                                        // smtp      -  use SMTP relaying
 
-$emailsmtphost      =   'localhost';      // Sets the SMTP host. You can also specify a different port than 25 by using
-                                          // this format: [hostname:port] (e.g. 'smtp1.example.com:25').
+$emailsmtphost      = 'localhost';      // Sets the SMTP host. You can also specify a different port than 25 by using
+                                        // this format: [hostname:port] (e.g. 'smtp1.example.com:25').
 
-$emailsmtpuser      =   '';               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
-$emailsmtppassword  =   '';               // SMTP authorisation password - empty password is not allowed
-$emailsmtpssl       =   '';               // Set this to 'ssl' or 'tls' to use SSL/TLS for SMTP connection 
+$emailsmtpuser      = '';               // SMTP authorisation username - only set this if your server requires authorization - if you set it you HAVE to set a password too
+$emailsmtppassword  = '';               // SMTP authorisation password - empty password is not allowed
+$emailsmtpssl       = '';               // Set this to 'ssl' or 'tls' to use SSL/TLS for SMTP connection 
 
-$emailsmtpdebug      =   0;               // Settings this to 1 activates SMTP debug mode
+$emailsmtpdebug     = 0;                // Settings this to 1 activates SMTP debug mode
 
-$maxemails          =   50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+$maxemails          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-$emailcharset = "UTF-8";                  // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
+$emailcharset       = "utf-8";          // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
 
 
 // Support for Fancy URLs
