@@ -158,9 +158,10 @@ if ( !$embedded )
             $header.=" dir=\"rtl\" ";
         }
         $header.= ">\n\t<head>\n"
-        	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />"
-			. "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />"
-        	. "</head><body>";
+			. "<title>$sitename</title>\n"
+        	. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+			. "<link href=\"templates/".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
+        	. "</head>\n<body>\n";
         	
         echo $header;     
 }
@@ -659,14 +660,15 @@ for (reset($_POST); $key=key($_POST); next($_POST))
 
 //show some main data at the beginnung
 // CHANGE JSW_NZ - let's allow html formatted questions to show
-$statisticsoutput .= "\n<div id='statsContainer'><div id='statsHeader'> \n"
-."\t<div class='statsSurveyTitle'>"
+$statisticsoutput .= "\n<div id='statsContainer'>\n"
+."\t<div id='statsHeader'> \n"
+."\t\t<div class='statsSurveyTitle'>"
 ."$thisSurveyTitle</div>\n"
-."\t<div class='statsNumRecords'>"
+."\t\t<div class='statsNumRecords'>"
 .$clang->gT("Total records in survey")." : $totalrecords</div>\n";
 
-//close table
-$statisticsoutput .= "</div>\n";
+//close statsHeader
+$statisticsoutput .= "\t</div>\n";
 
 
 //push progress bar from 35 to 40
@@ -2057,18 +2059,18 @@ if (isset($summary) && $summary)
 	                			$casepercentage = "0";
 	                		}
 	                		
-	                		$statisticsoutput .= "&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "&nbsp;</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tfoot><tr><td width='50%' align='center'><strong>".$clang->gT("Sum")." (".$clang->gT("Answers").")</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>".$sumitems."</strong></td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		$statisticsoutput .= "<td width='10%' align='center' ><strong>$sumpercentage%</strong></td>";
 	                		
-	                		$statisticsoutput .= "&nbsp</td>\n\t</tr>\n";
+	                		$statisticsoutput .= "&nbsp;</td>\n\t</tr>\n";
 	                		$statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Number of cases")."</td>";	//German: "Fallzahl"
 	                		$statisticsoutput .= "<td width='20%' align='center' >".$TotalCompleted."</td>";
 	                		$statisticsoutput .= "<td width='20%' align='center' >$casepercentage%</td>";
 	                		//there has to be a whitespace within the table cell to display correctly
-	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr></tfoot>";  
+	                		$statisticsoutput .= "<td width='10%' align='center' >&nbsp;</td></tr></tfoot>";  
 	                		
 	                	}
 	                	
@@ -2086,7 +2088,7 @@ if (isset($summary) && $summary)
                 }	//end else -> $gdata[$i] != "N/A"                    
                 
               	//end output per line. there has to be a whitespace within the table cell to display correctly
-	            $statisticsoutput .= "&nbsp</td>\n\t</tr>\n";              
+	            $statisticsoutput .= "&nbsp;</td>\n\t</tr>\n";              
                 
                 //increase counter
                 $i++;
@@ -2181,7 +2183,7 @@ if (isset($summary) && $summary)
 			        $statisticsoutput .= "<tr><td width='50%' align='center'>".$clang->gT("Arithmetic mean")." | ".$clang->gT("Standard deviation")."</td>";	//German: "Fallzahl"
 			        $statisticsoutput .= "<td width='40%' align='center' colspan = '2'> $am | $stddev</td>";
 			        //there has to be a whitespace within the table cell to display correctly
-			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp</td></tr>";
+			        $statisticsoutput .= "<td width='10%' align='center' >&nbsp;</td></tr>";
             	}
             }
             
@@ -2360,11 +2362,13 @@ if (isset($summary) && $summary)
 				$ci++;
 				
 				//add graph to output
-				$statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1'></td></tr>";
+				$statisticsoutput .= "<tr>\n"
+				. "\t<td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' alt=\"\" /></td>\n"
+				. "</tr>\n";
 			}
 			
 			//close table/output
-			$statisticsoutput .= "</table><div><br /> \n";
+			$statisticsoutput .= "</table><br /> \n";
 			
 		}	//end if -> collect and display results
 		
@@ -2380,7 +2384,8 @@ if (isset($summary) && $summary)
 	}	// end foreach -> loop through all questions
 	
 	//output
-    $statisticsoutput .= "<br />&nbsp\n";
+    $statisticsoutput .= "<br />\n"
+	. "</div>\n";
     
 }	//end if -> show summary results
 
