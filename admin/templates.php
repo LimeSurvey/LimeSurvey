@@ -639,7 +639,7 @@ switch($screenname) {
         }
         $questionoutput=array();
         foreach(file("$templaterootdir/$templatename/print_question.pstpl") as $op)
-        { echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
+        { // echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
             $questionoutput[]=templatereplace($op, array(
                                                          'QUESTION_NUMBER'=>'1',
                                                          'QUESTION_CODE'=>'Q1',
