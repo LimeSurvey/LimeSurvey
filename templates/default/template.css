@@ -915,3 +915,61 @@ div#wrapper {
 .yes-no td.answer {
     padding-bottom:10px;
 }
+
+/* Public statistics
+ */
+
+#statsContainer {
+	width: 75%;
+	margin: 20px auto;
+	border: 1px solid #BBC6CC;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 13px;
+	line-height: 120%;
+}
+
+#statsHeader{
+	padding: 10px 0px;
+	background-color: #EEF6FF;
+}
+
+.statsSurveyTitle {
+	padding: 0;
+	text-align: center;
+	color: #328639;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.statsNumRecords {
+	padding: 10px 0px 0px 0px;
+	text-align: center;
+	color: #328639;
+}
+
+table.statisticstable{
+	width: 100%; 
+	margin: 0;
+	border-top: 1px solid #BBC6CC;
+}
+
+table.statisticstable td{
+	line-height: 190%;
+	border-bottom: 1px solid #BBC6CC;
+}
+
+table.statisticstable img{
+	margin: 10px auto;
+}
+
+div.fieldSummary{
+	padding: 0;
+	text-align: center;
+	background-color: #D2E0F2;
+}
+
+div.questionTitle{
+	padding: 0;
+	font-weight: bold;
+	background-color: #D2E0F2;
+}
