@@ -46,7 +46,11 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
     if (isset($action) && $action == "globalsettingssave")
     {
         if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
-        {
+        {                
+                       if (sanitize_int($_POST['maxemails'])<1)                           
+                       {
+                           $_POST['maxemails']=1;
+                       }
                        setGlobalSetting('sitename',strip_tags($_POST['sitename']));
                        setGlobalSetting('updatecheckperiod',(int)($_POST['updatecheckperiod']));   
                        setGlobalSetting('addTitleToLinks',sanitize_paranoid_string($_POST['addTitleToLinks']));
