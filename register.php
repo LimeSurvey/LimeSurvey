@@ -30,6 +30,21 @@ if (!isset($surveyid))
 	include "index.php";
 	exit;
 }
+
+
+$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='SessionName'";
+$usresult = db_execute_assoc($usquery,'',true);          //Checked 
+if ($usresult)
+{
+    $usrow = $usresult->FetchRow();
+    $stg_SessionName=$usrow['stg_value'];
+    @session_name($stg_SessionName.'-runtime-'.$surveyid);
+}
+else
+{
+    session_name("LimeSurveyRuntime-$surveyid");
+}
+
 session_start();
 
 // Get passed language from form, so that we dont loose this!
@@ -151,7 +166,7 @@ if (SendEmailMessage($message, $subject, returnglobal('register_email'), $from, 
 	$result=$connect->Execute($query) or safe_die ("$query<br />".$connect->ErrorMsg());     //Checked
 	$html="<center>".$clang->gT("Thank you for registering to participate in this survey.")."<br /><br />\n".$clang->gT("An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed.")."<br /><br />\n".$clang->gT("Survey Administrator")." {ADMINNAME} ({ADMINEMAIL})";
 	$html=Replacefields($html, $fieldsarray);
-	$html .= "<br /><br />\n<input type='submit' onclick='javascript: self.close()' value='".$clang->gT("Close this Window")."'></center>\n";
+	$html .= "<br /><br /></center>\n";
 }
 else
 {
@@ -167,35 +182,17 @@ doHeader();
 
 foreach(file("$thistpl/startpage.pstpl") as $op)
 {
-	echo templatereplace1($op);
+	echo templatereplace($op);
 }
 foreach(file("$thistpl/survey.pstpl") as $op)
 {
-	echo "\t".templatereplace1($op);
+	echo "\t".templatereplace($op);
 }
 echo $html;
 foreach(file("$thistpl/endpage.pstpl") as $op)
 {
-	echo templatereplace1($op);
+	echo templatereplace($op);
 }
 doFooter();
 
-function templatereplace1($line)
-{
-	global $thissurvey, $surveyid;
-	global $publicurl, $templatedir, $token;
-
-	if ($thissurvey['template']) {$templateurl="$publicurl/templates/{$thissurvey['template']}/";}
-	else {$templateurl="$publicurl/templates/default/";}
-
-	$line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
-	$line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
-	$line=str_replace("{TOKEN}", $token, $line);
-	$line=str_replace("{SID}", $surveyid, $line);
-	$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
-	$line=str_replace("{PERCENTCOMPLETE}", "", $line);
-	$line=str_replace("{LANGUAGECHANGER}", "", $line);
-	return $line;
-}
-
-?>
+// Closing PHP tag is intentially left out (yes, it's fine!)
