@@ -166,7 +166,7 @@ if (isset($_SESSION['s_lang']))
     $printoutput = '';
     if(isset($usepdfexport) && $usepdfexport == 1)
     {
-        $printoutput .= "<form action='printanswers.php?printableexport=pdf' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+        $printoutput .= "<form action='printanswers.php?printableexport=pdf&sid=$surveyid' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
     }
     if(isset($_POST['printableexport']))
     {
