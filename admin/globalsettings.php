@@ -101,8 +101,7 @@ function globalsettingsdisplay()
         {
             $js_adminheader_includes[]='scripts/globalsettings.js';                 
             // header
-            $editsurvey = "<table width='100%' border='0'>\n\t<tr><td colspan='4' class='settingcaption'>"
-            . "\t\t".$clang->gT("Global settings")."</td></tr></table>\n";
+            $editsurvey = "<div class='header'>".$clang->gT("Global settings")."</div>\n";
 
 
             // beginning TABs section

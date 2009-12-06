@@ -769,7 +769,7 @@ elseif ($subaction == "all")
 }
 else
 {
-	$browseoutput .= '<tr><td>'.$surveyoptions;
+	$browseoutput .= $surveyoptions;
 	$num_total_answers=0;
 	$num_completed_answers=0;
 	$gnquery = "SELECT count(id) FROM $surveytable";
@@ -779,13 +779,12 @@ else
 
 	while ($gnrow=$gnresult->FetchRow()) {$num_total_answers=$gnrow[0];}
 	while ($gnrow2=$gnresult2->FetchRow()) {$num_completed_answers=$gnrow2[0];}
-	$browseoutput .= "<table width='100%' border='0'>\n"
-	."\t<tr><td align='center'>".sprintf($clang->gT("%d responses for this survey"), $num_total_answers)." ("
-	.sprintf($clang->gT("%d full responses"), $num_completed_answers).", "
-	.sprintf($clang->gT("%d responses not completely filled out"), $num_total_answers-$num_completed_answers).")"
-	."\t</td></tr>\n"
-	."</table></table>\n";
+	$browseoutput .= "<div class='header'>".$clang->gT("Response summary")."</div>"
+    ."<p><table class='statisticssummary'>\n"
+    ."<tfoot><tr><th>".$clang->gT("Total responses:")."</th><td>".$num_total_answers."</td></tr></tfoot>"
+	."\t<tbody>"
+    ."<tr><th>".$clang->gT("Full responses:")."</th><td>".$num_completed_answers."</td></tr>"
+    ."<tr><th>".$clang->gT("Incomplete responses:")."</th><td>".($num_total_answers-$num_completed_answers)."</td></tr></tbody>"
+	."</table>";
 
 }
-
-?>

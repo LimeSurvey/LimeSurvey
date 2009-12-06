@@ -57,10 +57,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 	}
 	
 
-	$labelsoutput= "<table width='100%' border='0' >\n"
-    ."\t<tr>\n"
-    ."\t<td>\n"
-    ."\t\t<div class='menubar'>\n"
+	$labelsoutput= "<div class='menubar'>\n"
     ."\t\t<div class='menubar-title'>\n"
     ."\t\t<strong>".$clang->gT("Label Sets Administration")."</strong>\n"
 	."\t\t</div>\n"
@@ -196,7 +193,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked' />\n"
 			."</li></ul>\n"
 			."<p><input type='submit' value='".$clang->gT("Import Label Set")."' />\n"
-			."<input type='hidden' name='action' value='importlabels' /></td>\n"
+			."<input type='hidden' name='action' value='importlabels' />\n"
 			."</form></div>\n";
 		}
         $labelsoutput.= "</div>\n";
@@ -236,7 +233,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' title=\"".$clang->gTview("Edit label set")."\" >" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='".$clang->gT("Edit label set")."' align='left'  /></a>" 
 			."\t<a href='#' title='".$clang->gTview("Delete label set")."' >"
-			."<img src='$imagefiles/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' onclick=\"if (confirm('".$clang->gT("Are you sure?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" /></a>\n"
+			."<img src='$imagefiles/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' onclick=\"if (confirm('".$clang->gT("Do you really want to delete this label set?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' title=\"".$clang->gTview("Export Label Set")."\" >" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' align='left' /></a>" 
@@ -266,13 +263,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         $msorow=$maxresult->FetchRow();
         $maxsortorder=$msorow['maxsortorder']+1;        
         
-		$labelsoutput.= "\t<table width='100%'>\n"
-		."<tr>\n"
-		."\t<td colspan='4' class='header'><strong>\n"
-		.$clang->gT("Labels")
-		."\t</strong></td>\n"
-		."</tr>\n"
-        ."\t<tr><td colspan='4'>\n";
+		$labelsoutput.= "\t<div class='header'>".$clang->gT("Labels")."\t</div>\n";
         $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"    
         ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."');\">\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
@@ -346,7 +337,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 if ($first)
                 {
                     $labelsoutput.= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['assessment_value']}\" "
-                                   ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$lslanguage').click(); return false;} return goodchars(event,'1234567890-')\" />";
+                                   ." onkeypress=\"if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$lslanguage').click(); return false;} return goodchars(event,'1234567890-')\" />";
                 }
                 else
                 {
@@ -391,7 +382,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."\t</td>\n"
                 ."<td style='text-align:center;'>"
                 ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' value='0' "
-                ."onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('addnewlabelbtn').click(); return false;} return goodchars(event,'1234567890-')\" />"
+                ."onkeypress=\"if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('addnewlabelbtn').click(); return false;} return goodchars(event,'1234567890-')\" />"
                 ."\t</td>\n"
     			."\t<td>\n"
     			."\t<input type='text' maxlength='3000' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
@@ -430,16 +421,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			}
     		else
     		{
-    			$labelsoutput .= "<tr>\n"
-    			."\t<td colspan='4'><center>\n"
-    			."<font color='red' size='1'><i><strong>"
+    			$labelsoutput .= "<p>\n"
+    			."<span style='color:#ff0000; font-size:10px'><strong>"
     			.$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot change codes, add or delete entries in this label set because it is being used by an active survey.")."</i></font><br />\n";
     			if ($totaluse > 0)
     			{
     				foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
     			}
-    			$labelsoutput .= "\t</center></td>\n"
-    			."</tr>\n";
+    			$labelsoutput .= "\t</span>\n";
     		}
         unset($_SESSION['nextlabelcode']);
         $first=false;
@@ -488,22 +477,18 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
 	
 	// Here starts the hidden Fix Sort order form
-    $labelsoutput.= "</td></tr>\n";
-		if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
-		{
-			$labelsoutput.= "<tr>\n"
-			."\t<td colspan='4' align='center'>\n"
-			."<font color='red' size='1'><i><strong>"
-			.$clang->gT("Warning")."</strong>: ".$clang->gT("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
-			foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
-			$labelsoutput.= "</font>\n"
-			."\t</td>\n"
-			."</tr>\n";
-		}
-		$labelsoutput.= "\t</table>\n";
+
+	if ($totaluse > 0 && $activeuse == 0) //If there are surveys using this labelset, but none are active warn about modifying
+	{
+		$labelsoutput.= "<p>\n"
+		."<font color='red' size='1'><i><strong>"
+		.$clang->gT("Warning")."</strong>: ".$clang->gT("Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys.")."</i><br />";
+		foreach ($qidarray as $qd) {$labelsoutput.= "[<a href='".$qd['url']."'>".$qd['title']."</a>] ";}
+		$labelsoutput.= "</font>\n";
 	}
-		$labelsoutput.="</td></tr></table>";	
+
 	}
+}
 else
 	{
 	$action = "labels";
