@@ -198,8 +198,8 @@ function verifyToken($token) {
 
 function setUserRightsCas($user, $role="")
 {
-	include("../config-defaults.php");
-	include("../config.php");
+	include_once("../config-defaults.php");
+	//include("../config.php"); //Not needed since config-defaults includes config.php
 	
 	$_SESSION['user'] = $user;
 		$_SESSION['loginID'] = 1;

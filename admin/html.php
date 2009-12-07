@@ -1844,7 +1844,7 @@ if($action == "exportstructure")
 	    ."</label></li></ul>\n";
 	    
 	    // XXX
-	    include("../config.php");
+	    //include("../config.php");
 
 		//echo $export4lsrc;
 	    if($export4lsrc)
@@ -1886,7 +1886,7 @@ if($action == "exportstructureGroup")
 //	    ."</label>\n";
 	    
 	    // XXX
-	    include("../config.php");
+	    //include("../config.php");
 
 		//echo $export4lsrc;
 	    if($export4lsrc)
@@ -1939,7 +1939,7 @@ if($action == "exportstructureQuestion")
 //	    ."</label>\n";
 	    
 	    // XXX
-	    include("../config.php");
+	    //include("../config.php");
 
 		//echo $export4lsrc;
 	    if($export4lsrc)

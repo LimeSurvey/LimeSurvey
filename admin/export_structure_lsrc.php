@@ -152,7 +152,9 @@ $fn = "limesurvey_survey_$surveyid.csv";
 //header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 //header("Pragma: cache");                          // HTTP/1.0
 
-include("../config.php");
+//include("../config.php");
+include_once("../config-defaults.php");
+include_once("../common.php");
 include("remotecontrol/lsrc.config.php");
 
 $lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
