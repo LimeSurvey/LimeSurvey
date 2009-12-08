@@ -981,7 +981,7 @@ if ($subaction == "browse" || $subaction == "search")
                     ."<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='$imagefiles/token_delete.png' title='"
                     .$clang->gT("Delete token entry")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to delete this entry?","js")."')) {".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=delete&amp;tid=".$brow['tid']."&amp;limit=$limit&amp;start=$start&amp;order=$order")."}\"  />";
                 }
-		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N")
+		if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
 		{
 			// Get response Id
 			$query="SELECT id FROM ".db_table_name("survey_$surveyid")." WHERE token='".$brow['token']."' ORDER BY id desc";
