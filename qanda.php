@@ -1672,14 +1672,11 @@ function do_list_dropdown($ia)
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
-	
-	//question attribute alphasort set?
-    //question attribute random order set?
+    //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
 	{
 		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY answer";
 	}		
-		
 	//no question attributes -> order by sortorder
 	else
 	{
@@ -3041,10 +3038,8 @@ function do_multiplechoice($ia)
 
 	if (trim($qidattributes['exclude_all_others'])!='')
 	{          
-		//foreach($excludeothers as $excludeother) {
 		$excludeallothers[]=$qidattributes['exclude_all_others'];
-	//}
-	$excludeallotherscript = "
+	    $excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
 		function excludeAllOthers$ia[1](value, doconditioncheck)
@@ -3088,21 +3083,44 @@ function do_multiplechoice($ia)
 			;		
 	}
 
-	$qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
+	$qquery = "SELECT other FROM ".db_table_name('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
 	$qresult = db_execute_assoc($qquery);     //Checked
 	while($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
+    
     if ($qidattributes['random_order']==1) {
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+		$ansquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
 	}
 	else
 	{
-		$ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
+		$ansquery = "SELECT * FROM ".db_table_name('answers')." WHERE qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
 	}
 
-	$ansresult = db_execute_assoc($ansquery);  //Checked
-	$anscount = $ansresult->RecordCount();
+	$ansresult = $connect->GetAll($ansquery);  //Checked
+	$anscount = count($ansresult);
+    
+    if (trim($qidattributes['exclude_all_others'])!='' && $qidattributes['random_order']==1)
+    {
+        //if  exclude_all_others is set then the related answer should keep its position at all times
+        //thats why we have to re-position it if it has been randomized
+        $position=0;
+        foreach ($ansresult as $answer)
+        {
+            if ($answer['code']==trim($qidattributes['exclude_all_others']))
+            {
+               if ($position==$answer['sortorder']-1) break; //already in the right position
+               $tmp  = array_splice($ansresult, $position, 1);
+               array_splice($ansresult, $answer['sortorder']-1, 0, $tmp);
+               break;
+            }
+            $position++;
+        }
+    }   
+    
 
-	if ($other == 'Y') {$anscount++;} //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+	if ($other == 'Y') 
+    {
+        $anscount++; //COUNT OTHER AS AN ANSWER FOR MANDATORY CHECKING!
+    } 
 
 	$wrapper = setup_columns($dcols, $anscount);
 
@@ -3118,7 +3136,7 @@ function do_multiplechoice($ia)
 	$colcounter = 1;
 	$startitem='';
 	$postrow = '';
-	while ($ansrow = $ansresult->FetchRow())
+	foreach ($ansresult as $ansrow)
 	{
 		$myfname = $ia[1].$ansrow['code'];
 		$trbc='';
