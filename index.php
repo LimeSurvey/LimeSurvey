@@ -862,21 +862,23 @@ function makegraph($currentstep, $total)
     $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
     $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
 
-	$shchart = "$publicurl/templates/".validate_templatedir($thissurvey['templatedir'])."/chart.jpg";
-
 	$size = intval(($currentstep-1)/$total*100);
-	
-	if ($size < 0.5) // Min value for progress bar - it looks dumb if 0 
-	{
-		$size = 0.5;
-	}
 	
 	$graph = '<script type="text/javascript">
 	$(function() {
 		$("#progressbar").progressbar({
 			value: '.$size.'
 		});
-	});
+	});';
+	if (getLanguageRTL($clang->langcode))
+    {
+		$graph.='
+		$(document).ready(function() {
+			$("div.ui-progressbar-value").removeClass("ui-corner-left");
+			$("div.ui-progressbar-value").addClass("ui-corner-right");
+		});';  
+    }
+	$graph.='
 	</script>
 	
 	<div id="progress-wrapper">
@@ -904,6 +906,16 @@ function makegraph($currentstep, $total)
     }           
     $graph.='</div>
 	</div>';
+	
+	if ($size == 0) // Progress bar looks dumb if 0 
+	{
+		$graph.='
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("div.ui-progressbar-value").hide();
+			}); 
+		</script>';
+	}
 		
 	return $graph;
 }
