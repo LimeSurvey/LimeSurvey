@@ -1045,7 +1045,7 @@ if(isset($surveyid))
 		}
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['expires'],$formatdata['phpdate']);
+            $datetimeobj = new Date_Time_Converter($_POST['expires'], $formatdata['phpdate'].' H:i');
             $_POST['expires']=$datetimeobj->convert("Y-m-d H:i:s");
         }
 		if (trim($_POST['startdate'])=="")
@@ -1054,7 +1054,7 @@ if(isset($surveyid))
 		}
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['startdate'],$formatdata['phpdate']);
+            $datetimeobj = new Date_Time_Converter($_POST['startdate'],$formatdata['phpdate'].' H:i');
             $_POST['startdate']=$datetimeobj->convert("Y-m-d H:i:s");
         }
 
@@ -1265,11 +1265,6 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
 		$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a title","js")."\")\n //-->\n</script>\n";
 	} else
 	{
-		if (trim($_POST['expires'])=="")
-		{
-			$_POST['expires']='1980-01-01';
-		}
-
 		// Get random ids until one is found that is not used
 		do
 		{
@@ -1312,20 +1307,18 @@ elseif ($action == "insertnewsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         }
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['expires'] , "d.m.Y H:i:s");
-            //$browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $datetimeobj = new Date_Time_Converter($_POST['expires'] , "d.m.Y H:i");
 			$browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
             $_POST['expires']=$browsedatafield;
         }
 
         if (trim($_POST['startdate'])=='')
         {
-            $_POST['expires']=null;
+            $_POST['startdate']=null;
         }
         else
         {
-            $datetimeobj = new Date_Time_Converter($_POST['startdate'] , "d.m.Y H:i:s");
-			//$browsedatafield=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $datetimeobj = new Date_Time_Converter($_POST['startdate'] , "d.m.Y H:i");
 			$browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
             $_POST['startdate']=$browsedatafield;
         }

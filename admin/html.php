@@ -326,12 +326,12 @@ if ($surveyid)
 		}
 		elseif ($activated == "Y")
 		{
-			if ($surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+			if ($surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust)))
 			{
 				$surveysummary .= "<img src='$imagefiles/expired.png' "
 				. "alt='".$clang->gT("This survey is active but expired.")."' />\n";
 			}
-            elseif (($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust)))
+            elseif (($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust)))
             {
                 $surveysummary .= "<img src='$imagefiles/notyetstarted.png' "
                 . "alt='".$clang->gT("This survey is active but has a start date.")."' />\n";
@@ -703,12 +703,12 @@ if ($surveyid)
 		if (trim($surveyinfo['faxto'])!='') {$surveysummary .= " {$surveyinfo['faxto']}";}
 		$surveysummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Start date:")."</strong></td>\n";
+        . $clang->gT("Start date/time:")."</strong></td>\n";
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
         if (trim($surveyinfo['startdate'])!= '')
         {
             $datetimeobj = new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
-            $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+            $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
         else
         {
@@ -716,11 +716,11 @@ if ($surveyid)
         }
         $surveysummary .= "<td align='left'>$startdate</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
-		. $clang->gT("Expiry Date:")."</strong></td>\n";
+		. $clang->gT("Expiry date/time:")."</strong></td>\n";
         if (trim($surveyinfo['expires'])!= '')
 		{
             $datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $expdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+            $expdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
 		}
 		else
 		{
@@ -2405,21 +2405,21 @@ if ($action == "editsurvey")
             if (trim($esrow['startdate'])!= '')
             {
                 $datetimeobj = new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-                $startdate=$datetimeobj->convert($dateformatdetails['phpdate']);
+                $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
             
-            $editsurvey .= "<li><label for='startdate_$surveyid'>".$clang->gT("Start date:")."</label>\n"
-            . "<input type='text' class='popupdate' id='startdate_$surveyid' size='12' name='startdate' value=\"{$startdate}\" /></li>\n";
+            $editsurvey .= "<li><label for='startdate_$surveyid'>".$clang->gT("Start date/time:")."</label>\n"
+            . "<input type='text' class='popupdatetime' id='startdate_$surveyid' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
 
 			// Expiration date
             $expires='';
             if (trim($esrow['expires'])!= '')
             {
                 $datetimeobj = new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-                $expires=$datetimeobj->convert($dateformatdetails['phpdate']);
+                $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
-			$editsurvey .="<li><label for='enddate_$surveyid'>".$clang->gT("Expiry Date:")."</label>\n"
-			. "<input type='text' class='popupdate' id='enddate_$surveyid' size='12' name='expires' value=\"{$expires}\" /></li>\n";
+			$editsurvey .="<li><label for='enddate_$surveyid'>".$clang->gT("Expiry date/time:")."</label>\n"
+			. "<input type='text' class='popupdatetime' id='enddate_$surveyid' size='20' name='expires' value=\"{$expires}\" /></li>\n";
 			//COOKIES
 			$editsurvey .= "<li><label for=''>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"
 			. "<select name='usecookie'>\n"
@@ -3238,13 +3238,13 @@ if ($action == "newsurvey")
 
         // Timed Start
         $newsurvey .= "<li><label for='startdate'>".$clang->gT("Start date:")."</label>\n"
-        . "<input type='text' class='popupdate' id='startdate' size='12' name='startdate' value='' />"
-        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></li>\n";
+        . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value='' />"
+        . "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'].' hh:nn')."</font></li>\n";
 
 		// Expiration
 		$newsurvey .= "<li><label for='enddate'>".$clang->gT("Expiry Date:")."</label>\n"
-		. "<input type='text' class='popupdate' id='enddate' size='12' name='expires' value='' />"
-		. "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'])."</font></li>\n";
+		. "<input type='text' class='popupdatetime' id='enddate' size='20' name='expires' value='' />"
+		. "<font size='1'> ".sprintf($clang->gT("Date format: %s"), $dateformatdetails['dateformat'].' hh:nn')."</font></li>\n";
 
 		//COOKIES
 		$newsurvey .= "<li><label for='usecookie'>".$clang->gT("Set cookie to prevent repeated participation?")."</label>\n"

@@ -174,8 +174,8 @@ CREATE TABLE `prefix_surveys` (
   `owner_id` int(11) NOT NULL,
   `admin` varchar(50) default NULL,
   `active` char(1) NOT NULL default 'N',
-  `expires` date default NULL,
-  `startdate` date default NULL,
+  `expires` datetime default NULL,
+  `startdate` datetime default NULL,
   `adminemail` varchar(320) default NULL,
   `private` char(1) default NULL,
   `faxto` varchar(20) default NULL,
@@ -323,7 +323,7 @@ create index `saved_control_idx2` on `prefix_saved_control` (`sid`);
 
 
 -- data
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '141');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '142');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
 INSERT INTO `prefix_users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`,`create_user` ,`delete_user` ,`superadmin` ,`configurator` ,`manage_template` , `manage_label`) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
