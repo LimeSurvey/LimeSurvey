@@ -43,6 +43,12 @@ if (isset($browselang) && $browselang!='')
 elseif (isset($_SESSION['browselang']))
 {
    $language=$_SESSION['browselang'];
+   $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+   $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+   if (!in_array($language,$languagelist))
+   {
+        $language = GetBaseLanguageFromSurveyID($surveyid); 
+   }
 }
 else
 {    
