@@ -2713,7 +2713,7 @@ function doAssessment($surveyid, $returndataonly=false)
 						if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false)
 						{
 							$assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-        					    <table align='center'>
+        					    <table class='assessments' align='center'>
 								 <tr>
 								  <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
 								  </th>
@@ -2736,7 +2736,7 @@ function doAssessment($surveyid, $returndataonly=false)
 				if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false)
 				{
 					$assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-						<table align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
+						<table class='assessments' align='center'><tr><th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
 						 </th></tr>
 						 <tr>
 						  <td align='center'>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
