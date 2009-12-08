@@ -365,7 +365,7 @@ if (isset($_SESSION['s_lang']))
             
             if(isset($_POST['printableexport']))
             {
-                $pdf->intopdf(strip_tags($fnames[$i][2]).": ".strip_tags(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
+                $pdf->intopdf(FlattenText($fnames[$i][2]).": ".FlattenText(getextendedanswer($fnames[$i][0], $idrow[$fnames[$i][0]])));
                 $pdf->ln(2);
             }
 		}

@@ -2674,7 +2674,7 @@ if ($action == "editsurvey")
 		. "<li><label>&nbsp;</label>\n"
 		. "<input type='button' onclick='window.open(\"$fckeditordir/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
         . "<li><label>&nbsp;</label>\n"
-		. "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li\n"
+		. "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
 		. "<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
 		. "<input id='the_file' name='the_file' type='file' size='50' /></li>\n"
         . "<li><label>&nbsp;</label>\n"
