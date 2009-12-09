@@ -12,7 +12,7 @@
 * 
 * $Id: common.php 7566 2009-09-04 14:04:56Z c_schmitz $
 */
-
+require_once('classes/core/settingsstorage.php');
 
 //Ensure script is not run directly, avoid path disclosure
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}            
@@ -23,6 +23,7 @@ function injectglobalsettings()
 {
     
     global $connect,$emailmethod ;
+    $registry = SettingsStorage::getInstance();
     $emailmethod='smtp';
     $usquery = "SELECT * FROM ".db_table_name("settings_global"); 
     $dbvaluearray=$connect->GetAll($usquery);
@@ -31,10 +32,11 @@ function injectglobalsettings()
         foreach  ($dbvaluearray as $setting)
         {
             global $$setting['stg_name'];
-            if (isset($$setting['stg_name']))
+	        if (isset($$setting['stg_name']))
             {
                 $$setting['stg_name']=$setting['stg_value'];
             }
+            $registry->set($setting['stg_name'],$setting['stg_value']);
         }
     }
 }
@@ -373,16 +375,19 @@ function globalsettingsdisplay()
 function getGlobalSetting($settingname)
 {
     global $connect, $$settingname;
-    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'"; 
-    $dbvalue=$connect->GetOne($usquery);
-    if ($dbvalue===false)
-    {
-        if (isset($$settingname))
-        {
-            $dbvalue=$$settingname;
-        }
-    }
-    return $dbvalue;
+    $registry = SettingsStorage::getInstance();
+    if (!$registry->isRegistered($settingname)) {
+    	$usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'"; 
+	    $dbvalue=$connect->GetOne($usquery);
+	    if ($dbvalue!==false)
+	    {
+	        $registry->set($settingname,$dbvalue);
+	    }
+    } else {
+    	$dbvalue=$registry->get($settingname);
+    }    
+    if (isset($$settingname)) $$settingname=$dbvalue;
+	return $dbvalue;
 }
   
 function setGlobalSetting($settingname,$settingvalue)
@@ -395,8 +400,9 @@ function setGlobalSetting($settingname,$settingvalue)
         $usquery = "insert into  ".db_table_name("settings_global")." (stg_value,stg_name) values('".auto_escape($settingvalue)."','$settingname')"; 
         $connect->Execute($usquery);
     }
-     
-    $$settingname=$settingvalue;
+    $registry = SettingsStorage::getInstance();
+    $registry->set($settingname,$settingvalue); 
+    if (isset($$settingname)) $$settingname=$settingvalue;
 }  
 
 
@@ -482,7 +488,5 @@ function checksettings()
     $cssummary .= "<p><input type='button' onclick='window.open(\"$scriptname?action=showphpinfo\")'value='".$clang->gT("Show PHPInfo")."' />";
     }
     return $cssummary;
-}
-
-  
+} 
 ?>

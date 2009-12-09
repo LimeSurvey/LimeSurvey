@@ -56,11 +56,7 @@ if ($action == "listsurveys")
         $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
 		while($rows = $result->FetchRow())
-		{
-			$sidsecurityQ = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid='{$rows['sid']}' AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-			$sidsecurityR = db_execute_assoc($sidsecurityQ); //Checked
-			$sidsecurity = $sidsecurityR->FetchRow();
-			
+		{		
 			if($rows['private']=="Y")
 			{
 				$privacy=$clang->gT("Yes") ;
@@ -138,7 +134,7 @@ if ($action == "listsurveys")
 				}
 				else
 				{
-					if ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey'])
+					if (hasRight($rows['sid'],'activate_survey'))
 					{
 						$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
 						. "title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
@@ -150,7 +146,7 @@ if ($action == "listsurveys")
 					}
 				}
 			} else {
-				if ( ($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sidsecurity['activate_survey']) && $questionsCount > 0)
+				if ( $questionsCount > 0 && hasRight($rows['sid'],'activate_survey') )
 				{
 					$listsurveys .= "<td><a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid={$rows['sid']}', '_top')\""
 					. "title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
@@ -272,14 +268,9 @@ if ($action == "personalsettings")
 
 if ($surveyid)
 {
-	$query = "SELECT * FROM ".db_table_name('surveys_rights')." WHERE  sid = {$surveyid} AND uid = ".$_SESSION['loginID'];
-	$result = $connect->SelectLimit($query, 1);
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $result->RecordCount() > 0)
+	if(hasRight($surveyid))
 	{
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
-		$sumquery5 = "SELECT b.* FROM {$dbprefix}surveys AS a INNER JOIN {$dbprefix}surveys_rights AS b ON a.sid = b.sid WHERE a.sid=$surveyid AND b.uid = ".$_SESSION['loginID']; //Getting rights for this survey and user
-		$sumresult5 = db_execute_assoc($sumquery5); //Checked
-		$sumrows5 = $sumresult5->FetchRow();
 		$sumquery3 = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND language='".$baselang."'"; //Getting a count of questions for this survey
 		$sumresult3 = $connect->Execute($sumquery3); //Checked
 		$sumcount3 = $sumresult3->RecordCount();
@@ -312,7 +303,7 @@ if ($surveyid)
 		{
 			$surveysummary .= "<img src='$imagefiles/inactive.png' "
 			. "alt='".$clang->gT("This survey is not currently active")."' />\n";
-			if(($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['activate_survey']) && $sumcount3>0)
+			if($sumcount3>0 && hasRight($surveyid,'activate_survey'))
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=activate&amp;sid=$surveyid', '_top')\""
 				. "title=\"".$clang->gTview("Activate this Survey")."\" >"
@@ -341,7 +332,7 @@ if ($surveyid)
 				$surveysummary .= "<img src='$imagefiles/active.png' title='' "
 				. "alt='".$clang->gT("This survey is currently active")."' />\n";
 			}
-			if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['activate_survey'])
+			if(hasRight($surveyid,'activate_survey'))
 			{
 				$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deactivate&amp;sid=$surveyid', '_top')\""
 				. "title=\"".$clang->gTview("Deactivate this Survey")."\" >"
@@ -406,14 +397,14 @@ if ($surveyid)
 
 		}
 
-		if($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['browse_response']))
+		if($activated == "Y" && hasRight($surveyid,'browse_response'))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('".$homeurl."/".$scriptname."?action=dataentry&amp;sid=$surveyid', '_top')\""
 			. "title=\"".$clang->gTview("Dataentry Screen for Survey")."\" >"
 			. "<img src='$imagefiles/dataentry.png' alt='".$clang->gT("Dataentry Screen for Survey")."' name='DoDataentry' />"
 			. "</a>\n";
 		}
-		else if (!$sumrows5['browse_response'] && $_SESSION['USER_RIGHT_SUPERADMIN'] !=1)
+		else if (!hasRight($surveyid,'browse_response'))
 		{
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		} else {
@@ -457,7 +448,7 @@ if ($surveyid)
 			
 		}
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] ==1 || $sumrows5['edit_survey_property'])
+		if(hasRight($surveyid,'edit_survey_property'))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=editsurvey&amp;sid=$surveyid', '_top')\" "
 			. "title=\"".$clang->gTview("Edit survey settings")."\" >"
@@ -469,7 +460,7 @@ if ($surveyid)
 		}
 
 
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $sumrows5['delete_survey'])
+		if (hasRight($surveyid,'delete_survey'))
 		{
 //			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=deletesurvey&amp;sid=$surveyid', '_top')\""
 			$surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=deletesurvey&amp;sid=$surveyid")."\" "
@@ -481,7 +472,7 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 		}
 
-		if ( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1  || $sumrows5['define_questions'])
+		if (hasRight($surveyid,'define_questions'))
 		{
 			if ($sumcount6 > 0) {
 				$surveysummary .= "<a href=\"#\" onclick=\"".get2post("$scriptname?action=resetsurveylogic&amp;sid=$surveyid")."\" "
@@ -501,7 +492,7 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
+		if (hasRight($surveyid,'export'))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=exportstructure&amp;sid=$surveyid', '_top')\" "
 			. "title=\"".$clang->gTview("Export Survey Structure")."\">"
@@ -513,7 +504,7 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />";
 		}
 
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+		if (hasRight($surveyid,'edit_survey_property'))
 		{
         $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=assessments&amp;sid=$surveyid', '_top')\" "
@@ -525,7 +516,7 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 		}
 		
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+		if (hasRight($surveyid,'edit_survey_property'))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=quotas&amp;sid=$surveyid', '_top')\" "
 			. "title=\"".$clang->gTview("Set Survey Quotas")."\" >"
@@ -536,7 +527,7 @@ if ($surveyid)
 			$surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40'  />\n";
 		}
 
-		if ($activated == "Y" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['browse_response']))
+		if ($activated == "Y" && hasRight($surveyid,'browse_response'))
 		{
 			$surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid', '_top')\" "
 			. "title=\"".$clang->gTview("Browse Responses For This Survey")."\" >"
@@ -548,14 +539,14 @@ if ($surveyid)
 				. "<img src='$imagefiles/saved.png' name='BrowseSaved' alt='".$clang->gT("View Saved but not submitted Responses")."' /></a>\n";
 			}
 		}
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'] || $sumrows5['activate_survey'])
+		if (hasRight($surveyid,'export') || hasRight($surveyid,'activate_survey'))
 		{
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 			$surveysummary .="<a href=\"#\" onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" "
 			    . "title=\"".$clang->gTview("Token management")."\" >"
 			    . "<img src='$imagefiles/tokens.png' name='TokensControl' alt='".$clang->gT("Token management")."' /></a>\n" ;
 		}
-        if($activated!="Y" && getGroupSum($surveyid,$surveyinfo['language'])>1 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+        if($activated!="Y" && hasRight($surveyid,'define_questions' && getGroupSum($surveyid,$surveyinfo['language'])>1))
         {
             $surveysummary .= "<img src='$imagefiles/seperator.gif' alt=''  />\n";
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=ordergroups&amp;sid=$surveyid', '_top')\" "
@@ -582,7 +573,7 @@ if ($surveyid)
         {
             $surveysummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+        elseif(hasRight($surveyid,'define_questions'))
         {
             $surveysummary .= "<a href=\"#\" onclick=\"window.open('$scriptname?action=addgroup&amp;sid=$surveyid', '_top')\""
             . "title=\"".$clang->gTview("Add new group to survey")."\">"
@@ -652,7 +643,7 @@ if ($surveyid)
 			break;
 		}
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+		if(hasRight($surveyid,'edit_survey_property'))
 		{
 			$surveysummary2 .= $clang->gT("Regenerate Question Codes:")
 //			. " [<a href='$scriptname?action=renumberquestions&amp;sid=$surveyid&amp;style=straight' "
@@ -786,11 +777,11 @@ if ($surveyid)
         if ($activated == "N" && $sumcount3 == 0)
         {
 			$surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
-			if ($sumcount2 == 0 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+			if ($sumcount2 == 0 && hasRight($surveyid,'define_questions'))
 			{
 				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add groups")."]</font><br />";
 			}
-			if ($sumcount3 == 0 && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 ||$sumrows5['define_questions']))
+			if ($sumcount3 == 0 && hasRight($surveyid,'define_questions'))
 			{
 				$surveysummary .= "<font class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</font><br />";
 			}
@@ -836,7 +827,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 		. "<img src='$imagefiles/blank.gif' alt='' width='168' height='20'  />"
 		. "<img src='$imagefiles/seperator.gif' alt=''  />\n";
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			$groupsummary .=  "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
 			. "title=\"".$clang->gTview("Edit current question group")."\">"
@@ -847,7 +838,7 @@ if ($surveyid && $gid )   // Show the group toolbar
 			$groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
-		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") &&($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+		if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y") && hasRight($surveyid,'define_questions'))
 		{
 			if (is_null($condarray))
 			{
@@ -871,7 +862,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 
 
-        if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
+        if(hasRight($surveyid,'export'))
         {
 
             $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export current question group")."\" >"
@@ -882,7 +873,7 @@ if ($surveyid && $gid )   // Show the group toolbar
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
    		$groupsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
-        if(($activated!="Y" && getQuestionSum($surveyid, $gid)>1) && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+        if($activated!="Y" && hasRight($surveyid,'define_questions') && getQuestionSum($surveyid, $gid)>1)
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='146' />\n";
             $groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Change Question Order")."\" >"
@@ -903,7 +894,7 @@ if ($surveyid && $gid )   // Show the group toolbar
         {
             $groupsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
         }
-        elseif($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+        elseif(hasRight($surveyid,'define_questions'))
         {
             $groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
             ."title=\"".$clang->gTview("Add New Question to Group")."\" >"
@@ -994,7 +985,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		. "<img src='$imagefiles/blank.gif' alt='' width='171' height='20'  />\n"
 		. "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			$questionsummary .= "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
 			. "title=\"".$clang->gTview("Edit Current Question")."\">"
@@ -1005,7 +996,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
 
-		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions']))
+		if ((($qct == 0 && $activated != "Y") || $activated != "Y") && hasRight($surveyid,'define_questions'))
 		{
 			if (is_null($condarray))
 			{
@@ -1027,7 +1018,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		else {$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";}
 		$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='84' />\n";
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
+		if(hasRight($surveyid,'export'))
 		{
 			$questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
 			. " title=\"".$clang->gTview("Export this Question")."\" >"
@@ -1039,7 +1030,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		}
 		$questionsummary .= "<img src='$imagefiles/seperator.gif' alt='' />\n";
 
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			if ($activated != "Y")
 			{
@@ -1060,7 +1051,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			$questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid', '_top')\""
 			. "title=\"".$clang->gTview("Set Conditions for this Question")."\">"
@@ -1071,7 +1062,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
 			{
@@ -1103,7 +1094,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 		{
 			$questionsummary .= "<img src='$imagefiles/blank.gif' alt='' width='40' />\n";
 		}
-		if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+		if(hasRight($surveyid,'define_questions'))
 		{
 			if ($qrrow['type'] == "O" || $qrrow['type'] == "L" ||
 			    $qrrow['type'] == "!" || $qrrow['type'] == "!" ||
@@ -1204,7 +1195,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 			 	$questionsummary .= "<td align='left'>".$labelsetname." (LID: {$qrrow['lid']}) ";
 			}
 			// If the user has the right to edit the label sets show the icon for the label set administration
-			if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+			if (hasRight($surveyid,'define_questions'))
 			{
 			$questionsummary .= "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
 			. $clang->gT("Edit/Add Label Sets")."' name='EditThisLabelSet' "
@@ -1229,7 +1220,7 @@ if ($surveyid && $gid && $qid)  // Show the question toolbar
 				}
 			
 				// If the user has the right to edit the second label sets show the icon for the label set administration
-				if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['define_questions'])
+				if (hasRight($surveyid,'define_questions'))
 				{
 					$questionsummary .= "<input align='top' type='image' src='$imagefiles/labelssmall.png' title='"
 					. $clang->gT("Edit/Add second Label Sets")."' name='EditThisLabelSet' "
@@ -1826,7 +1817,7 @@ if($action == "setusergroupsurveysecurity")
 // This is the action to export the structure of a complete survey
 if($action == "exportstructure")
 {
-    if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export'])
+    if(hasRight($surveyid,'export'))
     {
 	    $exportstructure = "<form id='exportstructure' name='exportstructure' action='$scriptname' method='post'>\n"
 	    ."<div class='header'>"
@@ -1868,7 +1859,7 @@ if($action == "exportstructure")
 // This is the action to export the structure of a group
 if($action == "exportstructureGroup")
 {
-    if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
+    if($export4lsrc === true && hasRight($surveyid,'export'))
     {
 	    $exportstructure = "<form name='exportstructureGroup' action='$scriptname' method='post'>\n"
 	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
@@ -1921,7 +1912,7 @@ if($action == "exportstructureGroup")
 // This is the action to export the structure of a question
 if($action == "exportstructureQuestion")
 {
-    if($export4lsrc === true && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['export']))
+    if($export4lsrc === true && hasRight($surveyid,'export'))
     {
 	    $exportstructure = "<form name='exportstructureQuestion' action='$scriptname' method='post'>\n"
 	    ."<table width='100%' border='0' >\n<tr><td class='settingcaption'>"
@@ -2161,7 +2152,7 @@ elseif ($action == "surveyrights")
 // Editing the survey
 if ($action == "editsurvey")
 {
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+	if(hasRight($surveyid,'edit_survey_property'))
 	{
 		$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
 		$esresult = db_execute_assoc($esquery); //Checked
@@ -2703,7 +2694,7 @@ if ($action == "editsurvey")
 
 if ($action == "updatesurvey")  // Edit survey step 2  - editing language dependent settings
 {
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+	if(hasRight($surveyid,'edit_survey_property'))
 	{
 	
     	$grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -2795,7 +2786,7 @@ if($action == "quotas")
 
 if ($action == "ordergroups")
 {
-	if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $sumrows5['edit_survey_property'])
+	if(hasRight($surveyid,'edit_survey_property'))
 	{
 	// Check if one of the up/down buttons have been clicked
 	if (isset($_POST['groupordermethod']) && isset($_POST['sortorder']))

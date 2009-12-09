@@ -225,19 +225,21 @@ If ($dbexistsbutempty && $sourcefrom=='admin') {
      die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 
-
+// Default global values that should not appear in config-defaults.php
+$updateavailable=0;
+$updatebuild='';
+$updateversion='';
+$updatelastcheck='';
+$updatekey='';
+$updatekeyvaliduntil='';
+ 
+require ($homedir.'/globalsettings.php');
 
 // Check if the DB is up to date
 If (!$dbexistsbutempty && $sourcefrom=='admin')
 {
-    $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='DBVersion'"; 
-    $usresult = db_execute_assoc($usquery,'',false); //checked
-    if (!$usresult)
-    {
-     die ("<br />The configured LimeSurvey database does not seem to exist and the LimeSurvey tables weren't found. <br />Please check the <a href='http://docs.limesurvey.org'>online manual</a> for installation instructions.<br />If you already edited config.php please run the <a href='$homeurl/install/index.php'>installation script</a>.");
-	}
-    $usrow = $usresult->FetchRow();
-    if (intval($usrow['stg_value'])<$dbversionnumber)
+	$usrow = getGlobalSetting('DBVersion');
+    if (intval($usrow)<$dbversionnumber)
     {
      die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
     }
@@ -248,17 +250,6 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
     }
 
 }
-
-
-// Default global values that should not appear in config-defaults.php
-$updateavailable=0;
-$updatebuild='';
-$updateversion='';
-$updatelastcheck='';
-$updatekey='';
-$updatekeyvaliduntil='';
- 
-require ($homedir.'/globalsettings.php');
           
 //Admin menus and standards
 //IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
@@ -430,7 +421,7 @@ $singleborderstyle = "style='border: 1px solid #111111'";
                         . "</div>\n"
                         . "</div>\n";
           //  $adminmenu .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            if (count(getsurveylist(true))==0 && !isset($action) && !isset($surveyid)) {
+            if (!isset($action) && !isset($surveyid) && count(getsurveylist(true))==0) {
                 $adminmenu.= '<div style="width:500px;margin:0 auto;">'
                              .'<h2>'.sprintf($clang->gT("Welcome to %s!"),'LimeSurvey').'</h2>'
                              .'<p>'.$clang->gT("Some piece-of-cake steps to create your very own first survey:").'<br/>'
@@ -630,26 +621,29 @@ function db_tables_exist($table)
 function getsurveylist($returnarray=false)
 {
     global $surveyid, $dbprefix, $scriptname, $connect, $clang, $timeadjust;
-    $surveyidquery = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url "
-					." FROM ".db_table_name('surveys')." AS a "
-					. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
-
-	if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
-	{
-		$surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
-		$surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
-	}
-
-	$surveyidquery .= " order by active DESC, surveyls_title";
-    if ($returnarray===true)
-    {
-        $surveyidresult = $connect->GetAll($surveyidquery);  //Checked
-        return $surveyidresult;
+    static $cached = null;
+    
+    if(is_null($cached)) {
+	    $surveyidquery = " SELECT a.*, surveyls_title, surveyls_description, surveyls_welcometext, surveyls_url "
+						." FROM ".db_table_name('surveys')." AS a "
+						. "INNER JOIN ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=a.sid and surveyls_language=a.language) ";
+	
+		if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1)
+		{
+			$surveyidquery .= " INNER JOIN ".db_table_name('surveys_rights')." AS b ON a.sid = b.sid ";
+			$surveyidquery .= "WHERE b.uid =".$_SESSION['loginID'];
+		}
+	
+		$surveyidquery .= " order by active DESC, surveyls_title";
+	    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
+	    if (!$surveyidresult) {return "Database Error";}    
+	    $surveynames = $surveyidresult->GetRows();
+	    $cached=$surveynames;
+    } else {
+    	$surveynames = $cached;
     }
-    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
-    if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
-    $surveynames = $surveyidresult->GetRows();
+    if ($returnarray===true) return $surveynames;
     $activesurveys='';
     $inactivesurveys='';
     $expiredsurveys='';
@@ -7174,3 +7168,36 @@ function getTokenData($surveyid, $token)
     } // while
     return $thistoken;
 } 
+
+/**
+ * Returns true if a user has a given right in the particular survey
+ * 
+ * @param $sid
+ * @param $right
+ * @return bool
+ */
+function hasRight($sid, $right = null)
+{
+	global $dbprefix, $connect;
+	
+	static $cache = array();
+
+	if (isset($_SESSION['loginID'])) $uid = $_SESSION['loginID']; else return false;
+	
+	if ($_SESSION['USER_RIGHT_SUPERADMIN']==1) return true;	//Superadmin has access to all
+
+	if (!isset($cache[$sid][$uid])) 
+	{
+		$sql = "SELECT * FROM " . db_table_name('surveys_rights') . " WHERE sid=".db_quote($sid)." AND uid = ".db_quote($uid); //Getting rights for this survey
+		$result = db_execute_assoc($sql);   
+		$rights = $result->FetchRow();
+		if ($rights===false)
+		{
+			return false;
+		} else {
+			$cache[$sid][$uid]=$rights;
+		} 		
+	}
+	if (empty($right)) return true;
+	if (isset($cache[$sid][$uid][$right]) && $cache[$sid][$uid][$right] == 1) return true; else return false;
+}
