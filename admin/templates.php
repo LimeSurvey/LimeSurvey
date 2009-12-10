@@ -1076,17 +1076,21 @@ function makegraph($currentstep, $total)
 
     $size = intval(($currentstep-1)/$total*100);
 	
-	if ($size < 0.5) // Min value for progress bar - it looks dumb if 0 
-	{
-		$size = 0.5;
-	}
-	
 	$graph = '<script type="text/javascript">
 	$(function() {
 		$("#progressbar").progressbar({
 			value: '.$size.'
 		});
-	});
+	});';
+	if (getLanguageRTL($clang->langcode))
+    {
+		$graph.='
+		$(document).ready(function() {
+			$("div.ui-progressbar-value").removeClass("ui-corner-left");
+			$("div.ui-progressbar-value").addClass("ui-corner-right");
+		});';  
+    }
+	$graph.='
 	</script>
 	
 	<div id="progress-wrapper">
@@ -1114,6 +1118,16 @@ function makegraph($currentstep, $total)
     }           
     $graph.='</div>
 	</div>';
+	
+	if ($size == 0) // Progress bar looks dumb if 0 
+	{
+		$graph.='
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("div.ui-progressbar-value").hide();
+			}); 
+		</script>';
+	}
 		
 	return $graph;
 }
