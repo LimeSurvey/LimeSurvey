@@ -708,7 +708,7 @@ ul.cols-8-ul label {
 .multiple-short-txt ul li label {
 	padding: 0.3em 1em 0% 0%;
 	display: table-cell;
-	vertical-align: top;
+	vertical-align: middle;
 }
 
 .numeric-multi ul.computed li label
