@@ -316,11 +316,18 @@ function UpdateStep3()
 
     require_once("dumpdb.php");
 
-    $output.=$clang->gT('Creating database backup... ').'<br />'; 
-    $byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
-    if ($byteswritten>5000)
+    if ($databasetype=='mysql' || $databasetype=='mysqli')
     {
-        $output.="<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />'; 
+        $output.=$clang->gT('Creating database backup... ').'<br />'; 
+        $byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
+        if ($byteswritten>5000)
+        {
+            $output.="<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />'; 
+        }
+    }
+    else
+    {
+            $output.="<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />'; 
     }
   
   $output.=$clang->gT('Please check any problems above and then proceed to the final step.'); 
