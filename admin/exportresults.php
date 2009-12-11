@@ -323,7 +323,7 @@ if (!$exportstyle)
 		$i++;
 	}
 	$exportoutput .= "\t</select>\n";
-    $exportoutput .= "</fieldset>\n";
+    $exportoutput .= "<br />&nbsp;</fieldset>\n";
 	if (isset($tablecount) && $tablecount > 0) //Do second column
 	{
 		//OPTIONAL EXTRAS (FROM TOKENS TABLE)
@@ -349,10 +349,10 @@ if (!$exportstyle)
 				$exportoutput .= "<li><input type='checkbox' class='checkboxbtn' name='$attr_name' id='$attr_name'>"
 				."<label for='$attr_name'>".$attr_desc."</label></li>\n";
 			}
-			$exportoutput .= "</ul>\n";
+			$exportoutput .= "</ul></fieldset>\n";
 		}
 	}
-	$exportoutput .= "</fieldset></div>\n"
+	$exportoutput .= "</div>\n"
 	."\t<div style='clear:both;'><p><input type='submit' value='".$clang->gT("Export data")."' /></div></form></div>\n";
 	return;
 }
