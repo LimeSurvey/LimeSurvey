@@ -1901,7 +1901,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						{
                             if ($qtype == "P") $ColumnName_RM = $al[2]."comment";
                                 else  $ColumnName_RM = $al[2];
-                            $fname="$al[1] <input type='submit' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                            $fname="$al[1] <input type='button' value='".$clang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                         }
 							
 						/*

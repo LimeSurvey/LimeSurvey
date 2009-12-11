@@ -246,7 +246,7 @@ if ($action == "editquestion" || $action=="addquestion")
 	. "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
 	. "<span class='settingentry'>&nbsp;\n"
 	. "\t</span></div>\n";
-	$editquestion .= '</div>';
+	$editquestion .= '&nbsp;</div>';
 	
     
     if (!$adding)
@@ -263,7 +263,7 @@ if ($action == "editquestion" || $action=="addquestion")
 		    . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
 		    . getEditor("question-text","question_".$aqrow['language'], "[".$clang->gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
 		    . "\t</span></div>\n"
-		    . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
+		    . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Heltp:")."</span>\n"
 		    . "<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
 		    . getEditor("question-help","help_".$aqrow['language'], "[".$clang->gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
 		    . "\t</span></div>\n";
@@ -313,7 +313,7 @@ if ($action == "editquestion" || $action=="addquestion")
   		}
   
   		$editquestion  .="\t</li><li id='LabelSets' style='display: none'>\n"
-  		. "<label for='lid'>".$clang->gT("Label Set:")."</label>\n";
+  		. "<label for='lid'>".$clang->gT("Label set:")."</label>\n";
 
 		if (!$adding) {$qattributes=questionAttributes();}
         else
@@ -362,8 +362,8 @@ if ($action == "editquestion" || $action=="addquestion")
   		}
   		else
   		{
-  			$editquestion .= "[{$eqrow['lid']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n";
-  			$editquestion .= "[{$eqrow['lid1']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."\n"  			
+  			$editquestion .= "<span id='li'>[{$eqrow['lid']}] [{$eqrow['lid1']}] - ".$clang->gT("Cannot be modified")." - ".$clang->gT("Survey is currently active.")."</span>\n";
+  			$editquestion .= "</li>\n"  			
  			. "\t<input type='hidden' name='lid' value=\"{$eqrow['lid']}\" />\n"
  			. "<input type='hidden' name='lid1' value=\"{$eqrow['lid1']}\" />\n";
   		}

@@ -223,41 +223,6 @@ foreach ($rows as $row)
 
 $statisticsoutput .= "<div class='header'>".$clang->gT("General filters")."</div><div id='statistics_general_filter'>";
 
-$statisticsoutput .= "<fieldset id='left'><legend>".$clang->gT("Response ID")."</legend><ul><li>"
-                    ."<label for='idG'>".$clang->gT("Greater than:")."</label>\n"
-                    ."<input type='text' id='idG' name='idG' size='10' value='";
-if (isset($_POST['idG'])){$statisticsoutput .= sanitize_int($_POST['idG']);}
-$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li><li><label for='idL'>\n"
-                    .$clang->gT("Less than:")."</label>\n"
-                    ."<input type='text' id='idL' name='idL' size='10' value='";
-if (isset($_POST['idL'])) {$statisticsoutput .= sanitize_int($_POST['idL']);}
-$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li></ul></fieldset>\n";
-$statisticsoutput .= "<input type='hidden' name='summary[]' value='idG' />";
-$statisticsoutput .= "<input type='hidden' name='summary[]' value='idL' />";
-
-
-//if the survey contains timestamps you can filter by timestamp, too
-if (isset($datestamp) && $datestamp == "Y") {
-
-
-    $statisticsoutput .= "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
-    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
-    ."<input id='datestampE' name='datestampE' type='text' value='";
-    if (isset($_POST['datestampE'])) {$statisticsoutput .= $_POST['datestampE'];}
-    $statisticsoutput .= "' /></li><li><label for='datestampG'>\n"
-    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
-    ."<input id='datestampG' name='datestampG' value='";
-    if (isset($_POST['datestampG'])) {$statisticsoutput .= $_POST['datestampG'];}
-    $statisticsoutput .= "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  id='datestampL' name='datestampL' value='";
-    if (isset($_POST['datestampL'])) {$statisticsoutput .= $_POST['datestampL'];}
-    $statisticsoutput .= "' type='text' /></li></ul></fieldset>\n";
-    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampE' />";
-    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampG' />";
-    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampL' />";
-
-}
-
-
 
 $grapherror='';
 if (!function_exists("gd_info")) {
@@ -298,7 +263,12 @@ $statisticsoutput .="<li><label for='filterinc'>".$clang->gT("Include:")."</labe
 ."<option value='show' $selectshow>".$clang->gT("All records")."</option>\n"
 ."<option value='filter' $selecthide>".$clang->gT("Completed records only")."</option>\n"
 ."<option value='incomplete' $selectinc>".$clang->gT("Incomplete records only")."</option>\n"
-."</select></li>\n";
+."</select></li>\n"
+
+."<li><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label>
+                <input type='checkbox' id='viewsummaryall' name='viewsummaryall' ";
+if (isset($_POST['viewsummaryall'])) {$statisticsoutput .= "checked='checked'";}
+$statisticsoutput.="/></li>";
 
 $statisticsoutput .="<li id='vertical_slide'";
 if ($selecthide!='')
@@ -308,13 +278,44 @@ if ($selecthide!='')
 $statisticsoutput.=" ><label for='noncompleted'>".$clang->gT("Don't consider NON completed responses")."</label>
                 <input type='checkbox' id='noncompleted' name='noncompleted' ";
 if (isset($_POST['noncompleted'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput.=" />\n</li>\n"
+$statisticsoutput.=" />\n</li></ul></fieldset>\n";
 
-."<li><label for='viewsummaryall'>".$clang->gT("View summary of all available fields")."</label>
-                <input type='checkbox' id='viewsummaryall' name='viewsummaryall' ";
-if (isset($_POST['viewsummaryall'])) {$statisticsoutput .= "checked='checked'";}
-$statisticsoutput.="/></li></ul></fieldset>";
 
+
+
+$statisticsoutput .= "<fieldset id='left'><legend>".$clang->gT("Response ID")."</legend><ul><li>"
+                    ."<label for='idG'>".$clang->gT("Greater than:")."</label>\n"
+                    ."<input type='text' id='idG' name='idG' size='10' value='";
+if (isset($_POST['idG'])){$statisticsoutput .= sanitize_int($_POST['idG']);}
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li><li><label for='idL'>\n"
+                    .$clang->gT("Less than:")."</label>\n"
+                    ."<input type='text' id='idL' name='idL' size='10' value='";
+if (isset($_POST['idL'])) {$statisticsoutput .= sanitize_int($_POST['idL']);}
+$statisticsoutput .= "' onkeypress=\"return goodchars(event,'0123456789')\" /></li></ul></fieldset>\n";
+$statisticsoutput .= "<input type='hidden' name='summary[]' value='idG' />";
+$statisticsoutput .= "<input type='hidden' name='summary[]' value='idL' />";
+
+
+//if the survey contains timestamps you can filter by timestamp, too
+if (isset($datestamp) && $datestamp == "Y") {
+
+
+    $statisticsoutput .= "<fieldset id='right'><legend>".$clang->gT("Submission date")."</legend><ul><li>"
+    ."<label for='datestampE'>".$clang->gT("Equals:")."</label>\n"
+    ."<input id='datestampE' name='datestampE' type='text' value='";
+    if (isset($_POST['datestampE'])) {$statisticsoutput .= $_POST['datestampE'];}
+    $statisticsoutput .= "' /></li><li><label for='datestampG'>\n"
+    ."&nbsp;&nbsp;".$clang->gT("Later than:")."</label>\n"
+    ."<input id='datestampG' name='datestampG' value='";
+    if (isset($_POST['datestampG'])) {$statisticsoutput .= $_POST['datestampG'];}
+    $statisticsoutput .= "' type='text' /></li><li><label for='datestampL'> ".$clang->gT("Earlier than:")."</label><input  id='datestampL' name='datestampL' value='";
+    if (isset($_POST['datestampL'])) {$statisticsoutput .= $_POST['datestampL'];}
+    $statisticsoutput .= "' type='text' /></li></ul></fieldset>\n";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampE' />";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampG' />";
+    $statisticsoutput .= "<input type='hidden' name='summary[]' value='datestampL' />";
+
+}
 
 
 $statisticsoutput .="<fieldset><legend>".$clang->gT("Output options")."</legend><ul>"
