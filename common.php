@@ -241,7 +241,14 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
 	$usrow = getGlobalSetting('DBVersion');
     if (intval($usrow)<$dbversionnumber)
     {
-     die ("<br />The LimeSurvey database is not up to date. <br />Please run the <a href='$homeurl/install/index.php'>installation script</a> to upgrade your database.");
+        $action='';
+        require_once($rootdir.'/classes/core/language.php');
+        $clang = new limesurvey_lang($defaultlang);         
+        include_once($homedir.'/update/updater.php');            
+        $output=CheckForDBUpgrades();
+        echo $output;
+        echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a>";
+        die(); 
     }
 
     if (is_dir($homedir."/install") && $debug<2)
