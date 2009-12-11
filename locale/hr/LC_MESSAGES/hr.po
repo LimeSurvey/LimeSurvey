@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-08 17:16+0100\n"
-"PO-Revision-Date: 2009-12-08 17:17+0100\n"
+"POT-Creation-Date: 2009-12-11 19:14+0100\n"
+"PO-Revision-Date: 2009-12-11 19:15+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -21,384 +21,388 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: E:\\_LimeSurvey\\svn\n"
 
-#: E:\_LimeSurvey\svn/common.php:323
+#: E:\_LimeSurvey\svn/common.php:250
+msgid "Back to main menu"
+msgstr "Vrati me na glavni izbornik"
+
+#: E:\_LimeSurvey\svn/common.php:321
 msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
 msgstr "Upozorenje: Još koristite osnovnu lozinku ('password'). Molimo promjenite lozinku i onda se prijavite na sustav."
 
-#: E:\_LimeSurvey\svn/common.php:326
+#: E:\_LimeSurvey\svn/common.php:324
 msgid "Administration"
 msgstr "Administracija"
 
-#: E:\_LimeSurvey\svn/common.php:329
+#: E:\_LimeSurvey\svn/common.php:327
 msgid "Logged in as:"
 msgstr "Prijavljen kao:"
 
-#: E:\_LimeSurvey\svn/common.php:331
+#: E:\_LimeSurvey\svn/common.php:329
 msgid "Edit your personal preferences"
 msgstr "Izmijeni tvoje osobne postavke"
 
-#: E:\_LimeSurvey\svn/common.php:337
+#: E:\_LimeSurvey\svn/common.php:335
 #, php-format
 msgid "Update available: %s"
 msgstr "Nadogradnja dostupna: %s"
 
-#: E:\_LimeSurvey\svn/common.php:343
+#: E:\_LimeSurvey\svn/common.php:341
 msgid "Default Administration Page"
 msgstr "Osnovna administratorska stranica"
 
-#: E:\_LimeSurvey\svn/common.php:350
+#: E:\_LimeSurvey\svn/common.php:348
 msgid "Create/Edit Users"
 msgstr "Dodaj/Mijenjaj korisnike"
 
-#: E:\_LimeSurvey\svn/common.php:353
+#: E:\_LimeSurvey\svn/common.php:351
 msgid "Create/Edit Groups"
 msgstr "Dodaj/Mijenjaj grupe pitanja"
 
-#: E:\_LimeSurvey\svn/common.php:358
+#: E:\_LimeSurvey\svn/common.php:356
 msgid "Global settings"
 msgstr "Globalne postavke"
 
-#: E:\_LimeSurvey\svn/common.php:365
+#: E:\_LimeSurvey\svn/common.php:363
 msgid "Check Data Integrity"
 msgstr "Provjeri integritet baze podataka"
 
-#: E:\_LimeSurvey\svn/common.php:374
+#: E:\_LimeSurvey\svn/common.php:372
 msgid "List Surveys"
 msgstr "Popis upitnika"
 
-#: E:\_LimeSurvey\svn/common.php:381
+#: E:\_LimeSurvey\svn/common.php:379
 msgid "Backup Entire Database"
 msgstr "Izradi sigurnosnu kopiju cijele baze podataka"
 
-#: E:\_LimeSurvey\svn/common.php:392
+#: E:\_LimeSurvey\svn/common.php:390
 msgid "Edit/Add Label Sets"
 msgstr "Mijenjaj/Dodaj set markera"
 
-#: E:\_LimeSurvey\svn/common.php:402
+#: E:\_LimeSurvey\svn/common.php:400
 msgid "Template Editor"
 msgstr "Uređivač predložaka"
 
-#: E:\_LimeSurvey\svn/common.php:405
+#: E:\_LimeSurvey\svn/common.php:403
 msgid "Surveys"
 msgstr "Upitnici"
 
-#: E:\_LimeSurvey\svn/common.php:414
+#: E:\_LimeSurvey\svn/common.php:412
 msgid "Create or Import New Survey"
 msgstr "Stvori ili uvezi novi upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:423
+#: E:\_LimeSurvey\svn/common.php:421
 msgid "Logout"
 msgstr "Odjava"
 
-#: E:\_LimeSurvey\svn/common.php:427
+#: E:\_LimeSurvey\svn/common.php:425
 msgid "LimeSurvey Online manual"
 msgstr "LimeSurvey Online upute"
 
-#: E:\_LimeSurvey\svn/common.php:435
+#: E:\_LimeSurvey\svn/common.php:433
 #, php-format
 msgid "Welcome to %s!"
 msgstr "Dobrodošli na %s!"
 
-#: E:\_LimeSurvey\svn/common.php:436
+#: E:\_LimeSurvey\svn/common.php:434
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr "Kratke upute kako kreirati vaš prvi upitnik:"
 
-#: E:\_LimeSurvey\svn/common.php:438
+#: E:\_LimeSurvey\svn/common.php:436
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
 msgstr "Kreirajte novi upitnik tako da kliknete na ikonu %s u gornjem desnom kutu."
 
-#: E:\_LimeSurvey\svn/common.php:438
+#: E:\_LimeSurvey\svn/common.php:436
 msgid "Add survey"
 msgstr "Dodaj upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:439
+#: E:\_LimeSurvey\svn/common.php:437
 msgid "Create a new group inside your survey."
 msgstr "Kreirajte novu grupu unutar upitnika."
 
-#: E:\_LimeSurvey\svn/common.php:440
+#: E:\_LimeSurvey\svn/common.php:438
 msgid "Create one or more question inside the new group."
 msgstr "Kreirajte jedno ili više pitanja unutar nove grupe."
 
-#: E:\_LimeSurvey\svn/common.php:441
+#: E:\_LimeSurvey\svn/common.php:439
 #, php-format
 msgid "Done. Test your survey using the %s icon."
 msgstr "Gotovo. Testirajte upitnik putem %s ikone."
 
-#: E:\_LimeSurvey\svn/common.php:441
+#: E:\_LimeSurvey\svn/common.php:439
 msgid "Test survey"
 msgstr "Testiraj upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:687
+#: E:\_LimeSurvey\svn/common.php:688
 msgid "Active"
 msgstr "Aktivan"
 
-#: E:\_LimeSurvey\svn/common.php:692
+#: E:\_LimeSurvey\svn/common.php:693
 msgid "Expired"
 msgstr "Istekao"
 
-#: E:\_LimeSurvey\svn/common.php:697
+#: E:\_LimeSurvey\svn/common.php:698
 msgid "Inactive"
 msgstr "Neaktivan"
 
-#: E:\_LimeSurvey\svn/common.php:700
-#: E:\_LimeSurvey\svn/common.php:745
-#: E:\_LimeSurvey\svn/common.php:1269
-#: E:\_LimeSurvey\svn/common.php:1294
-#: E:\_LimeSurvey\svn/common.php:1369
-#: E:\_LimeSurvey\svn/common.php:4887
-#: E:\_LimeSurvey\svn/common.php:4921
-#: E:\_LimeSurvey\svn/common.php:4960
-#: E:\_LimeSurvey\svn/common.php:4996
-msgid "Please Choose..."
-msgstr "Molim izaberite..."
-
 #: E:\_LimeSurvey\svn/common.php:701
+#: E:\_LimeSurvey\svn/common.php:746
 #: E:\_LimeSurvey\svn/common.php:1270
 #: E:\_LimeSurvey\svn/common.php:1295
 #: E:\_LimeSurvey\svn/common.php:1370
+#: E:\_LimeSurvey\svn/common.php:4888
 #: E:\_LimeSurvey\svn/common.php:4922
 #: E:\_LimeSurvey\svn/common.php:4961
+#: E:\_LimeSurvey\svn/common.php:4997
+msgid "Please Choose..."
+msgstr "Molim izaberite..."
+
+#: E:\_LimeSurvey\svn/common.php:702
+#: E:\_LimeSurvey\svn/common.php:1271
+#: E:\_LimeSurvey\svn/common.php:1296
+#: E:\_LimeSurvey\svn/common.php:1371
+#: E:\_LimeSurvey\svn/common.php:4923
+#: E:\_LimeSurvey\svn/common.php:4962
 msgid "None"
 msgstr "Nema"
 
-#: E:\_LimeSurvey\svn/common.php:871
+#: E:\_LimeSurvey\svn/common.php:872
 msgid "Array (Flexible Labels) Dual Scale"
 msgstr "Niz (fleksibilni markeri) dvostruka skala"
 
-#: E:\_LimeSurvey\svn/common.php:872
+#: E:\_LimeSurvey\svn/common.php:873
 msgid "5 Point Choice"
 msgstr "Izbor u 5 opcija"
 
-#: E:\_LimeSurvey\svn/common.php:873
+#: E:\_LimeSurvey\svn/common.php:874
 msgid "Array (5 Point Choice)"
 msgstr "Niz (izbor u 5 opcija)"
 
-#: E:\_LimeSurvey\svn/common.php:874
+#: E:\_LimeSurvey\svn/common.php:875
 msgid "Array (10 Point Choice)"
 msgstr "Niz (izbor u 10 opcija)"
 
-#: E:\_LimeSurvey\svn/common.php:875
+#: E:\_LimeSurvey\svn/common.php:876
 msgid "Array (Yes/No/Uncertain)"
 msgstr "Niz (Da/Ne/Nesiguran)"
 
-#: E:\_LimeSurvey\svn/common.php:876
+#: E:\_LimeSurvey\svn/common.php:877
 msgid "Date"
 msgstr "Datum"
 
-#: E:\_LimeSurvey\svn/common.php:877
+#: E:\_LimeSurvey\svn/common.php:878
 msgid "Array (Increase, Same, Decrease)"
 msgstr "Niz (Povećaj, Isto, Smanji)"
 
-#: E:\_LimeSurvey\svn/common.php:878
+#: E:\_LimeSurvey\svn/common.php:879
 msgid "Array (Flexible Labels)"
 msgstr "Niz (fleksibilni markeri)"
 
-#: E:\_LimeSurvey\svn/common.php:879
+#: E:\_LimeSurvey\svn/common.php:880
 msgid "Gender"
 msgstr "Spol"
 
-#: E:\_LimeSurvey\svn/common.php:880
+#: E:\_LimeSurvey\svn/common.php:881
 msgid "Array (Flexible Labels) by Column"
 msgstr "Niz (fleksibilni markeri) po kolonama"
 
-#: E:\_LimeSurvey\svn/common.php:881
+#: E:\_LimeSurvey\svn/common.php:882
 msgid "Language Switch"
 msgstr "Promena jezika"
 
-#: E:\_LimeSurvey\svn/common.php:882
+#: E:\_LimeSurvey\svn/common.php:883
 msgid "Multiple Numerical Input"
 msgstr "Višestruki numerički unos"
 
-#: E:\_LimeSurvey\svn/common.php:883
+#: E:\_LimeSurvey\svn/common.php:884
 msgid "List (Radio)"
 msgstr "Lista (Radio)"
 
-#: E:\_LimeSurvey\svn/common.php:884
+#: E:\_LimeSurvey\svn/common.php:885
 msgid "Multiple Options"
 msgstr "Više opcija"
 
-#: E:\_LimeSurvey\svn/common.php:885
+#: E:\_LimeSurvey\svn/common.php:886
 msgid "Numerical Input"
 msgstr "Numerički unos"
 
-#: E:\_LimeSurvey\svn/common.php:886
+#: E:\_LimeSurvey\svn/common.php:887
 msgid "List With Comment"
 msgstr "Lista sa komentarom"
 
-#: E:\_LimeSurvey\svn/common.php:887
+#: E:\_LimeSurvey\svn/common.php:888
 msgid "Multiple Options With Comments"
 msgstr "Više opcija sa komentarima"
 
-#: E:\_LimeSurvey\svn/common.php:888
+#: E:\_LimeSurvey\svn/common.php:889
 msgid "Multiple Short Text"
 msgstr "Više kraćih tekstova"
 
-#: E:\_LimeSurvey\svn/common.php:889
+#: E:\_LimeSurvey\svn/common.php:890
 #: E:\_LimeSurvey\svn/statistics_user.php:775
 msgid "Ranking"
 msgstr "Rangiranje"
 
-#: E:\_LimeSurvey\svn/common.php:890
+#: E:\_LimeSurvey\svn/common.php:891
 msgid "Short Free Text"
 msgstr "Slobodan tekst (kratak)"
 
-#: E:\_LimeSurvey\svn/common.php:891
+#: E:\_LimeSurvey\svn/common.php:892
 msgid "Long Free Text"
 msgstr "Slobodan tekst (srednji)"
 
-#: E:\_LimeSurvey\svn/common.php:892
+#: E:\_LimeSurvey\svn/common.php:893
 msgid "Huge Free Text"
 msgstr "Slobodan tekst (dugačak)"
 
-#: E:\_LimeSurvey\svn/common.php:893
+#: E:\_LimeSurvey\svn/common.php:894
 msgid "List (Flexible Labels) (Dropdown)"
 msgstr "Lista (fleksibilni markeri) (padajuća lista)"
 
-#: E:\_LimeSurvey\svn/common.php:894
+#: E:\_LimeSurvey\svn/common.php:895
 msgid "Boilerplate Question"
 msgstr "Boilerplate pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:895
+#: E:\_LimeSurvey\svn/common.php:896
 msgid "Yes/No"
 msgstr "Da/Ne"
 
-#: E:\_LimeSurvey\svn/common.php:896
+#: E:\_LimeSurvey\svn/common.php:897
 msgid "List (Flexible Labels) (Radio)"
 msgstr "Lista (fleksibilni markeri) (radio)"
 
-#: E:\_LimeSurvey\svn/common.php:897
+#: E:\_LimeSurvey\svn/common.php:898
 msgid "List (Dropdown)"
 msgstr "Lista (padajuća lista)"
 
-#: E:\_LimeSurvey\svn/common.php:898
+#: E:\_LimeSurvey\svn/common.php:899
 msgid "Array (Multi Flexible) (Numbers)"
 msgstr "Niz (fleksibilni markeri) (Brojevi)"
 
-#: E:\_LimeSurvey\svn/common.php:899
+#: E:\_LimeSurvey\svn/common.php:900
 msgid "Array (Multi Flexible) (Text)"
 msgstr "Niz (fleksibilni markeri) (Tekst)"
 
-#: E:\_LimeSurvey\svn/common.php:1225
+#: E:\_LimeSurvey\svn/common.php:1226
 msgid "No email notification"
 msgstr "Bez obavijesti na e-mail"
 
-#: E:\_LimeSurvey\svn/common.php:1226
+#: E:\_LimeSurvey\svn/common.php:1227
 msgid "Basic email notification"
 msgstr "Osnovna obavijest elektroničkom poštom"
 
-#: E:\_LimeSurvey\svn/common.php:1227
+#: E:\_LimeSurvey\svn/common.php:1228
 msgid "Detailed email notification with result codes"
 msgstr "Detaljna obavijest putem e-maila sa kodovima rezultata"
 
-#: E:\_LimeSurvey\svn/common.php:1704
+#: E:\_LimeSurvey\svn/common.php:1705
 msgid "Return to survey administration"
 msgstr "Povratak u Administraciju upitnika"
 
-#: E:\_LimeSurvey\svn/common.php:1709
+#: E:\_LimeSurvey\svn/common.php:1710
 msgid "Show summary information"
 msgstr "Prikaži sumarne informacije"
 
-#: E:\_LimeSurvey\svn/common.php:1715
-#: E:\_LimeSurvey\svn/common.php:1721
+#: E:\_LimeSurvey\svn/common.php:1716
+#: E:\_LimeSurvey\svn/common.php:1722
 msgid "Display Responses"
 msgstr "Prikaži odgovore"
 
-#: E:\_LimeSurvey\svn/common.php:1728
+#: E:\_LimeSurvey\svn/common.php:1729
 msgid "Please select a language:"
 msgstr "Molim izaberite jezik:"
 
-#: E:\_LimeSurvey\svn/common.php:1733
+#: E:\_LimeSurvey\svn/common.php:1734
 msgid "Cancel"
 msgstr "Prekini"
 
-#: E:\_LimeSurvey\svn/common.php:1739
+#: E:\_LimeSurvey\svn/common.php:1740
 msgid "Display Last 50 Responses"
 msgstr "Prikaži posljednjih 50 odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:1743
+#: E:\_LimeSurvey\svn/common.php:1744
 msgid "Dataentry Screen for Survey"
 msgstr "Ekran za ručno unošenje podataka u upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:1747
+#: E:\_LimeSurvey\svn/common.php:1748
 msgid "Get statistics from these responses"
 msgstr "Pokaži statistiku iz ovih odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:1756
+#: E:\_LimeSurvey\svn/common.php:1757
 msgid "Export Results to Application"
 msgstr "Izvezi rezultate u aplikaciju"
 
-#: E:\_LimeSurvey\svn/common.php:1761
+#: E:\_LimeSurvey\svn/common.php:1762
 msgid "Export result to a SPSS/PASW command file"
 msgstr "Izvezi rezultate u SPSS/PASW komandnu datoteku"
 
-#: E:\_LimeSurvey\svn/common.php:1766
+#: E:\_LimeSurvey\svn/common.php:1767
 msgid "Export results to a R data file"
 msgstr "Izvezi rezultate u R komandnu datoteku"
 
-#: E:\_LimeSurvey\svn/common.php:1770
+#: E:\_LimeSurvey\svn/common.php:1771
 msgid "Import answers from a deactivated survey table"
 msgstr "Uvezi odgovore iz deaktivirane tabele upitnika"
 
-#: E:\_LimeSurvey\svn/common.php:1776
+#: E:\_LimeSurvey\svn/common.php:1777
 msgid "View Saved but not submitted Responses"
 msgstr "Pregledaj odgovore koji su snimljeni ali nisu poslani"
 
-#: E:\_LimeSurvey\svn/common.php:1780
+#: E:\_LimeSurvey\svn/common.php:1781
 msgid "Import a VV survey file"
 msgstr "Uvezi VV upitnik datoteku"
 
-#: E:\_LimeSurvey\svn/common.php:1786
+#: E:\_LimeSurvey\svn/common.php:1787
 msgid "Export a VV survey file"
 msgstr "Izvezi VV upitnik datoteku"
 
-#: E:\_LimeSurvey\svn/common.php:1799
+#: E:\_LimeSurvey\svn/common.php:1800
 msgid "Iterate surevey"
 msgstr "Iteracija upitnika"
 
-#: E:\_LimeSurvey\svn/common.php:1880
+#: E:\_LimeSurvey\svn/common.php:1881
 msgid "Preset"
 msgstr "Predefinirani"
 
-#: E:\_LimeSurvey\svn/common.php:1881
-#: E:\_LimeSurvey\svn/index.php:1894
-#: E:\_LimeSurvey\svn/index.php:2039
+#: E:\_LimeSurvey\svn/common.php:1882
+#: E:\_LimeSurvey\svn/index.php:1906
+#: E:\_LimeSurvey\svn/index.php:2051
 msgid "Token"
 msgstr "Token"
 
-#: E:\_LimeSurvey\svn/common.php:1882
+#: E:\_LimeSurvey\svn/common.php:1883
 msgid "Date Last Action"
 msgstr "Datum zadnje aktivnosti"
 
-#: E:\_LimeSurvey\svn/common.php:1883
+#: E:\_LimeSurvey\svn/common.php:1884
 msgid "Date Started"
 msgstr "Datum početka"
 
-#: E:\_LimeSurvey\svn/common.php:1884
+#: E:\_LimeSurvey\svn/common.php:1885
 #: E:\_LimeSurvey\svn/printanswers.php:210
 msgid "IP Address"
 msgstr "IP adresa"
 
-#: E:\_LimeSurvey\svn/common.php:1885
+#: E:\_LimeSurvey\svn/common.php:1886
 #: E:\_LimeSurvey\svn/printanswers.php:214
 msgid "Referring URL"
 msgstr "URL Preporuke"
 
-#: E:\_LimeSurvey\svn/common.php:1933
-#: E:\_LimeSurvey\svn/common.php:2048
-#: E:\_LimeSurvey\svn/common.php:2104
-#: E:\_LimeSurvey\svn/common.php:2312
-#: E:\_LimeSurvey\svn/common.php:2426
-#: E:\_LimeSurvey\svn/common.php:2436
-#: E:\_LimeSurvey\svn/common.php:3384
-#: E:\_LimeSurvey\svn/common.php:3392
-#: E:\_LimeSurvey\svn/common.php:3400
-#: E:\_LimeSurvey\svn/common.php:3408
-#: E:\_LimeSurvey\svn/common.php:3553
-#: E:\_LimeSurvey\svn/common.php:3594
-#: E:\_LimeSurvey\svn/common.php:3613
-#: E:\_LimeSurvey\svn/common.php:3724
-#: E:\_LimeSurvey\svn/common.php:3735
+#: E:\_LimeSurvey\svn/common.php:1934
+#: E:\_LimeSurvey\svn/common.php:2049
+#: E:\_LimeSurvey\svn/common.php:2105
+#: E:\_LimeSurvey\svn/common.php:2313
+#: E:\_LimeSurvey\svn/common.php:2427
+#: E:\_LimeSurvey\svn/common.php:2437
+#: E:\_LimeSurvey\svn/common.php:3385
+#: E:\_LimeSurvey\svn/common.php:3393
+#: E:\_LimeSurvey\svn/common.php:3401
+#: E:\_LimeSurvey\svn/common.php:3409
+#: E:\_LimeSurvey\svn/common.php:3554
+#: E:\_LimeSurvey\svn/common.php:3595
+#: E:\_LimeSurvey\svn/common.php:3614
+#: E:\_LimeSurvey\svn/common.php:3725
+#: E:\_LimeSurvey\svn/common.php:3736
 #: E:\_LimeSurvey\svn/qanda.php:1918
 #: E:\_LimeSurvey\svn/qanda.php:2230
 #: E:\_LimeSurvey\svn/qanda.php:2459
@@ -411,9 +415,35 @@ msgstr "URL Preporuke"
 msgid "Other"
 msgstr "Ostalo"
 
-#: E:\_LimeSurvey\svn/common.php:2056
-#: E:\_LimeSurvey\svn/common.php:2062
-#: E:\_LimeSurvey\svn/common.php:2078
+#: E:\_LimeSurvey\svn/common.php:2057
+#: E:\_LimeSurvey\svn/common.php:2063
+#: E:\_LimeSurvey\svn/common.php:2079
+#: E:\_LimeSurvey\svn/common.php:3290
+#: E:\_LimeSurvey\svn/common.php:3362
+#: E:\_LimeSurvey\svn/common.php:3437
+#: E:\_LimeSurvey\svn/common.php:3448
+#: E:\_LimeSurvey\svn/common.php:3539
+#: E:\_LimeSurvey\svn/common.php:3558
+#: E:\_LimeSurvey\svn/common.php:3569
+#: E:\_LimeSurvey\svn/common.php:3580
+#: E:\_LimeSurvey\svn/common.php:3599
+#: E:\_LimeSurvey\svn/common.php:3618
+#: E:\_LimeSurvey\svn/common.php:3629
+#: E:\_LimeSurvey\svn/common.php:3640
+#: E:\_LimeSurvey\svn/common.php:3683
+#: E:\_LimeSurvey\svn/common.php:3694
+#: E:\_LimeSurvey\svn/common.php:3729
+#: E:\_LimeSurvey\svn/common.php:3789
+#: E:\_LimeSurvey\svn/qanda.php:4730
+#: E:\_LimeSurvey\svn/qanda.php:5200
+#: E:\_LimeSurvey\svn/qanda.php:5239
+#: E:\_LimeSurvey\svn/statistics_user.php:1257
+#: E:\_LimeSurvey\svn/statistics_user.php:1382
+msgid "Yes"
+msgstr "Da"
+
+#: E:\_LimeSurvey\svn/common.php:2064
+#: E:\_LimeSurvey\svn/common.php:2080
 #: E:\_LimeSurvey\svn/common.php:3289
 #: E:\_LimeSurvey\svn/common.php:3361
 #: E:\_LimeSurvey\svn/common.php:3436
@@ -430,32 +460,6 @@ msgstr "Ostalo"
 #: E:\_LimeSurvey\svn/common.php:3693
 #: E:\_LimeSurvey\svn/common.php:3728
 #: E:\_LimeSurvey\svn/common.php:3788
-#: E:\_LimeSurvey\svn/qanda.php:4730
-#: E:\_LimeSurvey\svn/qanda.php:5200
-#: E:\_LimeSurvey\svn/qanda.php:5239
-#: E:\_LimeSurvey\svn/statistics_user.php:1257
-#: E:\_LimeSurvey\svn/statistics_user.php:1382
-msgid "Yes"
-msgstr "Da"
-
-#: E:\_LimeSurvey\svn/common.php:2063
-#: E:\_LimeSurvey\svn/common.php:2079
-#: E:\_LimeSurvey\svn/common.php:3288
-#: E:\_LimeSurvey\svn/common.php:3360
-#: E:\_LimeSurvey\svn/common.php:3435
-#: E:\_LimeSurvey\svn/common.php:3446
-#: E:\_LimeSurvey\svn/common.php:3537
-#: E:\_LimeSurvey\svn/common.php:3556
-#: E:\_LimeSurvey\svn/common.php:3567
-#: E:\_LimeSurvey\svn/common.php:3578
-#: E:\_LimeSurvey\svn/common.php:3597
-#: E:\_LimeSurvey\svn/common.php:3616
-#: E:\_LimeSurvey\svn/common.php:3627
-#: E:\_LimeSurvey\svn/common.php:3638
-#: E:\_LimeSurvey\svn/common.php:3681
-#: E:\_LimeSurvey\svn/common.php:3692
-#: E:\_LimeSurvey\svn/common.php:3727
-#: E:\_LimeSurvey\svn/common.php:3787
 #: E:\_LimeSurvey\svn/qanda.php:4739
 #: E:\_LimeSurvey\svn/qanda.php:5202
 #: E:\_LimeSurvey\svn/qanda.php:5257
@@ -464,10 +468,10 @@ msgstr "Da"
 msgid "No"
 msgstr "Ne"
 
-#: E:\_LimeSurvey\svn/common.php:2064
-#: E:\_LimeSurvey\svn/common.php:2072
-#: E:\_LimeSurvey\svn/common.php:5830
-#: E:\_LimeSurvey\svn/common.php:5835
+#: E:\_LimeSurvey\svn/common.php:2065
+#: E:\_LimeSurvey\svn/common.php:2073
+#: E:\_LimeSurvey\svn/common.php:5831
+#: E:\_LimeSurvey\svn/common.php:5836
 #: E:\_LimeSurvey\svn/qanda.php:1388
 #: E:\_LimeSurvey\svn/qanda.php:1799
 #: E:\_LimeSurvey\svn/qanda.php:1988
@@ -505,878 +509,878 @@ msgstr "Ne"
 msgid "No answer"
 msgstr "Bez odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:2070
+#: E:\_LimeSurvey\svn/common.php:2071
 #: E:\_LimeSurvey\svn/qanda.php:4794
 #: E:\_LimeSurvey\svn/statistics_user.php:1376
 msgid "Male"
 msgstr "Muški"
 
-#: E:\_LimeSurvey\svn/common.php:2071
+#: E:\_LimeSurvey\svn/common.php:2072
 #: E:\_LimeSurvey\svn/qanda.php:4786
 #: E:\_LimeSurvey\svn/statistics_user.php:1375
 msgid "Female"
 msgstr "Ženski"
 
-#: E:\_LimeSurvey\svn/common.php:2080
+#: E:\_LimeSurvey\svn/common.php:2081
 #: E:\_LimeSurvey\svn/qanda.php:5201
 #: E:\_LimeSurvey\svn/qanda.php:5247
 #: E:\_LimeSurvey\svn/statistics_user.php:1259
 msgid "Uncertain"
 msgstr "Neodlučan"
 
-#: E:\_LimeSurvey\svn/common.php:2086
+#: E:\_LimeSurvey\svn/common.php:2087
 #: E:\_LimeSurvey\svn/qanda.php:5363
 #: E:\_LimeSurvey\svn/qanda.php:5406
 #: E:\_LimeSurvey\svn/statistics_user.php:1276
 msgid "Increase"
 msgstr "Povećaj"
 
-#: E:\_LimeSurvey\svn/common.php:2087
+#: E:\_LimeSurvey\svn/common.php:2088
 #: E:\_LimeSurvey\svn/qanda.php:5365
 #: E:\_LimeSurvey\svn/qanda.php:5429
 #: E:\_LimeSurvey\svn/statistics_user.php:1278
 msgid "Decrease"
 msgstr "Smanji"
 
-#: E:\_LimeSurvey\svn/common.php:2088
+#: E:\_LimeSurvey\svn/common.php:2089
 #: E:\_LimeSurvey\svn/qanda.php:5364
 #: E:\_LimeSurvey\svn/qanda.php:5417
 #: E:\_LimeSurvey\svn/statistics_user.php:1277
 msgid "Same"
 msgstr "Isto"
 
-#: E:\_LimeSurvey\svn/common.php:2329
+#: E:\_LimeSurvey\svn/common.php:2330
 msgid "Comment"
 msgstr "Komentar"
 
-#: E:\_LimeSurvey\svn/common.php:2619
+#: E:\_LimeSurvey\svn/common.php:2620
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
 msgstr "Upozorenje: Izvršavanje JavaScript koda je isključeno u vašem pregledniku. Moguće je da nećete biti u prilici odgovoriti na sva pitanja u ovom upitniku. Molimo da izmjenite parametre u svom pretraživaču. "
 
-#: E:\_LimeSurvey\svn/common.php:2658
+#: E:\_LimeSurvey\svn/common.php:2659
 msgid "There are no questions in this survey"
 msgstr "Nema pitanja u ovom upitniku"
 
-#: E:\_LimeSurvey\svn/common.php:2662
+#: E:\_LimeSurvey\svn/common.php:2663
 msgid "There is 1 question in this survey"
 msgstr "Postoji 1 pitanje u ovom upitniku"
 
-#: E:\_LimeSurvey\svn/common.php:2666
+#: E:\_LimeSurvey\svn/common.php:2667
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey."
 msgstr "Postoji {NUMBEROFQUESTIONS} pitanja u ovom upitniku."
 
-#: E:\_LimeSurvey\svn/common.php:2689
-#: E:\_LimeSurvey\svn/index.php:2570
+#: E:\_LimeSurvey\svn/common.php:2690
+#: E:\_LimeSurvey\svn/index.php:2582
 msgid "Submit"
 msgstr "Pošalji"
 
-#: E:\_LimeSurvey\svn/common.php:2715
+#: E:\_LimeSurvey\svn/common.php:2716
 msgid "A Note On Privacy"
 msgstr "Informacija o privatnosti"
 
-#: E:\_LimeSurvey\svn/common.php:2715
+#: E:\_LimeSurvey\svn/common.php:2716
 msgid "This survey is anonymous."
 msgstr "Ovaj upitnik je anoniman."
 
-#: E:\_LimeSurvey\svn/common.php:2715
+#: E:\_LimeSurvey\svn/common.php:2716
 msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
 msgstr "Zapis sa vašim odgovorima na upitnik ne sadrži nikakve informacije o Vama osim u slučaju da neko pitanje to eksplicitno traži od vas. U slučaju da ste koristili token kako bi pristupili ovom upitniku, budite sigurni da token nije snimljen zajedno sa vašim odgovorima. Ovi podaci se drže u drugoj bazi podataka i biti će samo ažurirani sa informacijom da li ste (ili niste) kompletirali upitnik. Ne postoji način da se tokeni povežu sa odgovorima iz ovog upitnika."
 
-#: E:\_LimeSurvey\svn/common.php:2725
+#: E:\_LimeSurvey\svn/common.php:2726
 msgid "Are you sure you want to clear all your responses?"
 msgstr "Da li ste sigurni da želite obrisati odgovore na pitanja?"
 
-#: E:\_LimeSurvey\svn/common.php:2726
+#: E:\_LimeSurvey\svn/common.php:2727
 msgid "Exit and Clear Survey"
 msgstr "Izađi i obriši odgovore"
 
-#: E:\_LimeSurvey\svn/common.php:2750
-#: E:\_LimeSurvey\svn/common.php:2756
+#: E:\_LimeSurvey\svn/common.php:2751
+#: E:\_LimeSurvey\svn/common.php:2757
 #: E:\_LimeSurvey\svn/index.php:580
 #: E:\_LimeSurvey\svn/index.php:584
 msgid "Load Unfinished Survey"
 msgstr "Učitaj nedovršeni upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:2751
-#: E:\_LimeSurvey\svn/common.php:2764
+#: E:\_LimeSurvey\svn/common.php:2752
+#: E:\_LimeSurvey\svn/common.php:2765
 msgid "Resume Later"
 msgstr "Nastavi kasnije"
 
-#: E:\_LimeSurvey\svn/common.php:2847
+#: E:\_LimeSurvey\svn/common.php:2848
 msgid "Thank You!"
 msgstr "Hvala vam!"
 
-#: E:\_LimeSurvey\svn/common.php:2847
+#: E:\_LimeSurvey\svn/common.php:2848
 msgid "You have completed answering the questions in this survey."
 msgstr "Završili ste sa odgovaranjem na pitanja u ovom upitniku."
 
-#: E:\_LimeSurvey\svn/common.php:2847
+#: E:\_LimeSurvey\svn/common.php:2848
 msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "Izaberi 'Pošalji' kako bi završili proces i snimili svoje odgovore."
 
-#: E:\_LimeSurvey\svn/common.php:2853
+#: E:\_LimeSurvey\svn/common.php:2854
 msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
 msgstr "Ako želite provjeriti svoje odgovore na pitanja i/ili promjeniti ih to možete napraviti izborom [<<preth] dugmeta i prolaskom kroz svoje odgovore."
 
-#: E:\_LimeSurvey\svn/common.php:2860
+#: E:\_LimeSurvey\svn/common.php:2861
 msgid "Answers Cleared"
 msgstr "Odgovori obrisani"
 
-#: E:\_LimeSurvey\svn/common.php:2867
-#: E:\_LimeSurvey\svn/common.php:2875
+#: E:\_LimeSurvey\svn/common.php:2868
+#: E:\_LimeSurvey\svn/common.php:2876
 msgid "Restart this Survey"
 msgstr "Pokrenite upitnik ispočetka"
 
-#: E:\_LimeSurvey\svn/common.php:2878
+#: E:\_LimeSurvey\svn/common.php:2879
 #: E:\_LimeSurvey\svn/index.php:617
 #: E:\_LimeSurvey\svn/index.php:643
 msgid "Close this Window"
 msgstr "Zatvori ovaj prozor"
 
-#: E:\_LimeSurvey\svn/common.php:2880
+#: E:\_LimeSurvey\svn/common.php:2881
 msgid "Save Your Unfinished Survey"
 msgstr "Snimi svoj nezavršeni upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:2881
+#: E:\_LimeSurvey\svn/common.php:2882
 msgid "Enter a name and password for this survey and click save below."
 msgstr "Unesite tražene podatke te kliknite na 'Snimi sada'."
 
-#: E:\_LimeSurvey\svn/common.php:2881
+#: E:\_LimeSurvey\svn/common.php:2882
 msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
 msgstr "Vaš upitnik će biti snimljen, te možete ga završiti kasnije koristeći unesene podatke."
 
-#: E:\_LimeSurvey\svn/common.php:2881
+#: E:\_LimeSurvey\svn/common.php:2882
 msgid "If you give an email address, an email containing the details will be sent to you."
 msgstr "Ako navedete e-mail adresu, zaprimiti ćete poruku koji sadrži detalje."
 
-#: E:\_LimeSurvey\svn/common.php:2889
+#: E:\_LimeSurvey\svn/common.php:2890
 msgid "Return To Survey"
 msgstr "Povratak u upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:2894
+#: E:\_LimeSurvey\svn/common.php:2895
 #: E:\_LimeSurvey\svn/save.php:352
 msgid "Name"
 msgstr "Ime"
 
-#: E:\_LimeSurvey\svn/common.php:2897
-#: E:\_LimeSurvey\svn/common.php:2923
+#: E:\_LimeSurvey\svn/common.php:2898
+#: E:\_LimeSurvey\svn/common.php:2924
 #: E:\_LimeSurvey\svn/save.php:353
 msgid "Password"
 msgstr "Lozinka"
 
-#: E:\_LimeSurvey\svn/common.php:2900
+#: E:\_LimeSurvey\svn/common.php:2901
 msgid "Repeat Password"
 msgstr "Ponovo unesi lozinku"
 
-#: E:\_LimeSurvey\svn/common.php:2903
+#: E:\_LimeSurvey\svn/common.php:2904
 msgid "Your Email"
 msgstr "Vaš e-mail"
 
-#: E:\_LimeSurvey\svn/common.php:2908
-#: E:\_LimeSurvey\svn/common.php:2928
-#: E:\_LimeSurvey\svn/common.php:2979
-#: E:\_LimeSurvey\svn/index.php:1914
-#: E:\_LimeSurvey\svn/index.php:2066
+#: E:\_LimeSurvey\svn/common.php:2909
+#: E:\_LimeSurvey\svn/common.php:2929
+#: E:\_LimeSurvey\svn/common.php:2980
+#: E:\_LimeSurvey\svn/index.php:1926
+#: E:\_LimeSurvey\svn/index.php:2078
 msgid "Security Question"
 msgstr "Sigurnosno pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:2911
+#: E:\_LimeSurvey\svn/common.php:2912
 msgid "Save Now"
 msgstr "Snimi sada"
 
-#: E:\_LimeSurvey\svn/common.php:2916
+#: E:\_LimeSurvey\svn/common.php:2917
 msgid "Load A Previously Saved Survey"
 msgstr "Učitaj prethodno snimljen upitnik"
 
-#: E:\_LimeSurvey\svn/common.php:2917
+#: E:\_LimeSurvey\svn/common.php:2918
 msgid "You can load a survey that you have previously saved from this screen."
 msgstr "Sa ovog ekrana možete učitati prethodno snimljen upitnik."
 
-#: E:\_LimeSurvey\svn/common.php:2917
+#: E:\_LimeSurvey\svn/common.php:2918
 msgid "Type in the 'name' you used to save the survey, and the password."
 msgstr "Unesite 'ime' koje ste koristili kada ste snimili upitnik kao i lozinku."
 
-#: E:\_LimeSurvey\svn/common.php:2920
+#: E:\_LimeSurvey\svn/common.php:2921
 msgid "Saved name"
 msgstr "Ime pod kojim je snimljeno"
 
-#: E:\_LimeSurvey\svn/common.php:2933
+#: E:\_LimeSurvey\svn/common.php:2934
 msgid "Load Now"
 msgstr "Učitaj sada"
 
-#: E:\_LimeSurvey\svn/common.php:2938
+#: E:\_LimeSurvey\svn/common.php:2939
 msgid "You must be registered to complete this survey"
 msgstr "Samo registrirane osobe imaju pravo pristupa upitniku."
 
-#: E:\_LimeSurvey\svn/common.php:2939
+#: E:\_LimeSurvey\svn/common.php:2940
 msgid "You may register for this survey if you wish to take part."
 msgstr "Ukoliko želite sudjelovati u ispunjavanju upitnika morate se registrirati."
 
-#: E:\_LimeSurvey\svn/common.php:2939
+#: E:\_LimeSurvey\svn/common.php:2940
 msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Unesite tražene podatke, te na e-mail koji ste naveli zaprimiti ćete daljnje upute."
 
-#: E:\_LimeSurvey\svn/common.php:2946
-#: E:\_LimeSurvey\svn/common.php:6845
+#: E:\_LimeSurvey\svn/common.php:2947
+#: E:\_LimeSurvey\svn/common.php:6846
 msgid "First Name"
 msgstr "Ime"
 
-#: E:\_LimeSurvey\svn/common.php:2953
-#: E:\_LimeSurvey\svn/common.php:6846
+#: E:\_LimeSurvey\svn/common.php:2954
+#: E:\_LimeSurvey\svn/common.php:6847
 msgid "Last Name"
 msgstr "Prezime"
 
-#: E:\_LimeSurvey\svn/common.php:2960
+#: E:\_LimeSurvey\svn/common.php:2961
 msgid "Email Address"
 msgstr "E-mail adresa"
 
-#: E:\_LimeSurvey\svn/common.php:3004
-#: E:\_LimeSurvey\svn/index.php:1857
-#: E:\_LimeSurvey\svn/index.php:1918
-#: E:\_LimeSurvey\svn/index.php:2069
+#: E:\_LimeSurvey\svn/common.php:3005
+#: E:\_LimeSurvey\svn/index.php:1869
+#: E:\_LimeSurvey\svn/index.php:1930
+#: E:\_LimeSurvey\svn/index.php:2081
 msgid "Continue"
 msgstr "Nastavi"
 
-#: E:\_LimeSurvey\svn/common.php:3016
+#: E:\_LimeSurvey\svn/common.php:3017
 msgid "Your Assessment"
 msgstr "Vaši odgovori"
 
-#: E:\_LimeSurvey\svn/common.php:3285
-#: E:\_LimeSurvey\svn/common.php:3296
-#: E:\_LimeSurvey\svn/common.php:3322
-#: E:\_LimeSurvey\svn/common.php:3338
-#: E:\_LimeSurvey\svn/common.php:3349
-#: E:\_LimeSurvey\svn/common.php:3357
-#: E:\_LimeSurvey\svn/common.php:3368
-#: E:\_LimeSurvey\svn/common.php:3376
-#: E:\_LimeSurvey\svn/common.php:3432
-#: E:\_LimeSurvey\svn/common.php:3443
-#: E:\_LimeSurvey\svn/common.php:3510
-#: E:\_LimeSurvey\svn/common.php:3518
-#: E:\_LimeSurvey\svn/common.php:3526
-#: E:\_LimeSurvey\svn/common.php:3534
-#: E:\_LimeSurvey\svn/common.php:3586
-#: E:\_LimeSurvey\svn/common.php:3605
-#: E:\_LimeSurvey\svn/common.php:3624
-#: E:\_LimeSurvey\svn/common.php:3708
-#: E:\_LimeSurvey\svn/common.php:3716
+#: E:\_LimeSurvey\svn/common.php:3286
+#: E:\_LimeSurvey\svn/common.php:3297
+#: E:\_LimeSurvey\svn/common.php:3323
+#: E:\_LimeSurvey\svn/common.php:3339
+#: E:\_LimeSurvey\svn/common.php:3350
+#: E:\_LimeSurvey\svn/common.php:3358
+#: E:\_LimeSurvey\svn/common.php:3369
+#: E:\_LimeSurvey\svn/common.php:3377
+#: E:\_LimeSurvey\svn/common.php:3433
+#: E:\_LimeSurvey\svn/common.php:3444
+#: E:\_LimeSurvey\svn/common.php:3511
+#: E:\_LimeSurvey\svn/common.php:3519
+#: E:\_LimeSurvey\svn/common.php:3527
+#: E:\_LimeSurvey\svn/common.php:3535
+#: E:\_LimeSurvey\svn/common.php:3587
+#: E:\_LimeSurvey\svn/common.php:3606
+#: E:\_LimeSurvey\svn/common.php:3625
+#: E:\_LimeSurvey\svn/common.php:3709
+#: E:\_LimeSurvey\svn/common.php:3717
 msgid "Display"
 msgstr "Prikaži"
 
-#: E:\_LimeSurvey\svn/common.php:3291
 #: E:\_LimeSurvey\svn/common.php:3292
+#: E:\_LimeSurvey\svn/common.php:3293
 msgid "Sort answers alphabetically"
 msgstr "Sortiraj odgovore abecedno"
 
-#: E:\_LimeSurvey\svn/common.php:3301
+#: E:\_LimeSurvey\svn/common.php:3302
 msgid "Set the percentage width of the answer column (1-100)"
 msgstr "Postotak širines stupca za odgovore (1-100)"
 
-#: E:\_LimeSurvey\svn/common.php:3302
+#: E:\_LimeSurvey\svn/common.php:3303
 msgid "Answer width"
 msgstr "Širina za odgovor"
 
-#: E:\_LimeSurvey\svn/common.php:3306
-#: E:\_LimeSurvey\svn/common.php:3314
-#: E:\_LimeSurvey\svn/common.php:3330
-#: E:\_LimeSurvey\svn/common.php:3424
-#: E:\_LimeSurvey\svn/common.php:3454
-#: E:\_LimeSurvey\svn/common.php:3470
-#: E:\_LimeSurvey\svn/common.php:3486
-#: E:\_LimeSurvey\svn/common.php:3502
-#: E:\_LimeSurvey\svn/common.php:3545
-#: E:\_LimeSurvey\svn/common.php:3564
-#: E:\_LimeSurvey\svn/common.php:3575
+#: E:\_LimeSurvey\svn/common.php:3307
+#: E:\_LimeSurvey\svn/common.php:3315
+#: E:\_LimeSurvey\svn/common.php:3331
+#: E:\_LimeSurvey\svn/common.php:3425
+#: E:\_LimeSurvey\svn/common.php:3455
+#: E:\_LimeSurvey\svn/common.php:3471
+#: E:\_LimeSurvey\svn/common.php:3487
+#: E:\_LimeSurvey\svn/common.php:3503
+#: E:\_LimeSurvey\svn/common.php:3546
+#: E:\_LimeSurvey\svn/common.php:3565
+#: E:\_LimeSurvey\svn/common.php:3576
 msgid "Logic"
 msgstr "Logika"
 
-#: E:\_LimeSurvey\svn/common.php:3309
+#: E:\_LimeSurvey\svn/common.php:3310
 msgid "Enter the code of a Multiple options question to only show the matching answer options in this question."
 msgstr "Unesi kod pitanja za višestruki odabir kako bi prikazao odgovarajuće odgovore na ovo pitanje."
 
-#: E:\_LimeSurvey\svn/common.php:3310
+#: E:\_LimeSurvey\svn/common.php:3311
 msgid "Array filter"
 msgstr "Niz filtera"
 
-#: E:\_LimeSurvey\svn/common.php:3317
+#: E:\_LimeSurvey\svn/common.php:3318
 msgid "Enter the code of a Multiple options question to exclude the matching answer options in this question."
 msgstr "Unesi kod pitanja za višestruki odabir kako bi isključio neodgovarajuće odgovore na ovo pitanje."
 
-#: E:\_LimeSurvey\svn/common.php:3318
+#: E:\_LimeSurvey\svn/common.php:3319
 msgid "Array filter exclusion"
 msgstr "Isključenje niza filtera"
 
-#: E:\_LimeSurvey\svn/common.php:3325
 #: E:\_LimeSurvey\svn/common.php:3326
+#: E:\_LimeSurvey\svn/common.php:3327
 msgid "Category Separator"
 msgstr "Razdjelnik kategorija"
 
-#: E:\_LimeSurvey\svn/common.php:3333
+#: E:\_LimeSurvey\svn/common.php:3334
 msgid "Filter the available answers by this value"
 msgstr "Filtriraj dostupne odgovore sa vrijednošću"
 
-#: E:\_LimeSurvey\svn/common.php:3334
+#: E:\_LimeSurvey\svn/common.php:3335
 msgid "Code filter"
 msgstr "Šifra filtera"
 
-#: E:\_LimeSurvey\svn/common.php:3344
+#: E:\_LimeSurvey\svn/common.php:3345
 msgid "The answer options will be distributed across the number of columns set here"
 msgstr "Mogući odgovori će biti distribuirani unutar definiranog broja stupaca"
 
-#: E:\_LimeSurvey\svn/common.php:3345
+#: E:\_LimeSurvey\svn/common.php:3346
 msgid "Display columns"
 msgstr "Prikaži kolone"
 
-#: E:\_LimeSurvey\svn/common.php:3352
+#: E:\_LimeSurvey\svn/common.php:3353
 msgid "How many rows to display"
 msgstr "Koliko redaka prikazati"
 
-#: E:\_LimeSurvey\svn/common.php:3353
+#: E:\_LimeSurvey\svn/common.php:3354
 msgid "Display rows"
 msgstr "Prikaži retke"
 
-#: E:\_LimeSurvey\svn/common.php:3363
+#: E:\_LimeSurvey\svn/common.php:3364
 msgid "Use accessible select boxes instead of calendar popup"
 msgstr "Koristi polja za izbor umjesto popup kalendara"
 
-#: E:\_LimeSurvey\svn/common.php:3364
+#: E:\_LimeSurvey\svn/common.php:3365
 msgid "Display select boxes"
 msgstr "Prikaži odabrana polja"
 
-#: E:\_LimeSurvey\svn/common.php:3371
+#: E:\_LimeSurvey\svn/common.php:3372
 msgid "Minimum year value in calendar"
 msgstr "Minimalna godina u kalendaru"
 
-#: E:\_LimeSurvey\svn/common.php:3372
+#: E:\_LimeSurvey\svn/common.php:3373
 msgid "Minimum dropdown year"
 msgstr "Minimalna vrijednost godine"
 
-#: E:\_LimeSurvey\svn/common.php:3379
+#: E:\_LimeSurvey\svn/common.php:3380
 msgid "Maximum year value for calendar"
 msgstr "Maksimalna godina u kalendaru"
 
-#: E:\_LimeSurvey\svn/common.php:3380
+#: E:\_LimeSurvey\svn/common.php:3381
 msgid "Maximum dropdown year"
 msgstr "Maksimalna vrijednost godine"
 
-#: E:\_LimeSurvey\svn/common.php:3387
+#: E:\_LimeSurvey\svn/common.php:3388
 msgid "Prefix|Suffix for dropdown lists"
 msgstr "Prefiks|Sufiks za padajući niz"
 
-#: E:\_LimeSurvey\svn/common.php:3388
+#: E:\_LimeSurvey\svn/common.php:3389
 msgid "Prefix|Suffix"
 msgstr "Prefiks|Sufiks"
 
-#: E:\_LimeSurvey\svn/common.php:3395
+#: E:\_LimeSurvey\svn/common.php:3396
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
 msgstr "Post-Answer-Separator|Inter-Dropdownlist-Separator za padajući niz"
 
-#: E:\_LimeSurvey\svn/common.php:3396
+#: E:\_LimeSurvey\svn/common.php:3397
 msgid "Dropdown separators"
 msgstr "Razdjelnik padajućeg niza"
 
-#: E:\_LimeSurvey\svn/common.php:3403
+#: E:\_LimeSurvey\svn/common.php:3404
 msgid "Enter a header text for scale A"
 msgstr "Unesi tekst zaglavlja za skalu A"
 
-#: E:\_LimeSurvey\svn/common.php:3404
+#: E:\_LimeSurvey\svn/common.php:3405
 msgid "Header scale A"
 msgstr "Zaglavlje skale A"
 
-#: E:\_LimeSurvey\svn/common.php:3411
+#: E:\_LimeSurvey\svn/common.php:3412
 msgid "Enter a header text for scale B"
 msgstr "Unesi tekst zaglavlja za skalu B"
 
-#: E:\_LimeSurvey\svn/common.php:3412
+#: E:\_LimeSurvey\svn/common.php:3413
 msgid "Header scale B"
 msgstr "Zaglavlje skale B"
 
-#: E:\_LimeSurvey\svn/common.php:3416
-#: E:\_LimeSurvey\svn/common.php:3462
-#: E:\_LimeSurvey\svn/common.php:3478
-#: E:\_LimeSurvey\svn/common.php:3494
+#: E:\_LimeSurvey\svn/common.php:3417
+#: E:\_LimeSurvey\svn/common.php:3463
+#: E:\_LimeSurvey\svn/common.php:3479
+#: E:\_LimeSurvey\svn/common.php:3495
 msgid "Input"
 msgstr "Unos"
 
-#: E:\_LimeSurvey\svn/common.php:3419
+#: E:\_LimeSurvey\svn/common.php:3420
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Zbroj višestrukog numeričkog unosa mora biti jednak ovoj vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3420
+#: E:\_LimeSurvey\svn/common.php:3421
 msgid "Equals sum value"
 msgstr "Izjednačiti vrijednost zbroja"
 
-#: E:\_LimeSurvey\svn/common.php:3427
+#: E:\_LimeSurvey\svn/common.php:3428
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code."
 msgstr "Isključi sve ostale opcije ukoliko je odabran određeni odgovor - unesi kod odgovora."
 
-#: E:\_LimeSurvey\svn/common.php:3428
+#: E:\_LimeSurvey\svn/common.php:3429
 msgid "Exclusive option"
 msgstr "Isključiva opcija"
 
-#: E:\_LimeSurvey\svn/common.php:3438
+#: E:\_LimeSurvey\svn/common.php:3439
 msgid "Hide the tip that is normally shown with a question"
 msgstr "Sakrij savjet koji se prikazuje uz pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3439
+#: E:\_LimeSurvey\svn/common.php:3440
 msgid "Hide tip"
 msgstr "Sakrij savjet"
 
-#: E:\_LimeSurvey\svn/common.php:3449
+#: E:\_LimeSurvey\svn/common.php:3450
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
 msgstr "Sakrij uvijek ovo pitanje. To je korisno za uključivanje podataka koristeći predefinirane odgovore."
 
-#: E:\_LimeSurvey\svn/common.php:3450
+#: E:\_LimeSurvey\svn/common.php:3451
 msgid "Always hide this question"
 msgstr "Uvijek sakrij ovo pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3457
+#: E:\_LimeSurvey\svn/common.php:3458
 msgid "Limit the number of possible answers"
 msgstr "Limitiraj broj mogućih odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3458
+#: E:\_LimeSurvey\svn/common.php:3459
 msgid "Maximum answers"
 msgstr "Maksimalno odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3465
+#: E:\_LimeSurvey\svn/common.php:3466
 msgid "Maximum sum value of multiple numeric input"
 msgstr "Maksimalni zbroj vrijednosti višestrukog numeričkog unosa"
 
-#: E:\_LimeSurvey\svn/common.php:3466
+#: E:\_LimeSurvey\svn/common.php:3467
 msgid "Maximum sum value"
 msgstr "Maksimalni zbroj vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3473
+#: E:\_LimeSurvey\svn/common.php:3474
 msgid "Enter the SGQA identifier to use the total of a previous question as the maximum for this question"
 msgstr "Unesi SGQA identifikator za korištenje ukupnosti prethodnog pitanja kao maksimum za ovo pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3474
+#: E:\_LimeSurvey\svn/common.php:3475
 msgid "Max value from SGQA"
 msgstr "Max vrijednost iz SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3481
+#: E:\_LimeSurvey\svn/common.php:3482
 msgid "Maximum characters allowed"
 msgstr "Maksimalni dozvoljeni broj znakova"
 
-#: E:\_LimeSurvey\svn/common.php:3482
+#: E:\_LimeSurvey\svn/common.php:3483
 msgid "Maximum characters"
 msgstr "Maksimalni broj znakova"
 
-#: E:\_LimeSurvey\svn/common.php:3489
+#: E:\_LimeSurvey\svn/common.php:3490
 msgid "Ensure a minimum number of possible answers (0=No limit)"
 msgstr "Osiguraj minimalni broj mogućih odgovora (0=bez limita)"
 
-#: E:\_LimeSurvey\svn/common.php:3490
+#: E:\_LimeSurvey\svn/common.php:3491
 msgid "Minimum answers"
 msgstr "Minimalno odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3497
+#: E:\_LimeSurvey\svn/common.php:3498
 msgid "Multiple numeric inputs must be greater than this value"
 msgstr "Višestruki numerički unos mora biti veći od vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3498
+#: E:\_LimeSurvey\svn/common.php:3499
 msgid "Minimum sum value"
 msgstr "Minimalni zbroj vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3505
+#: E:\_LimeSurvey\svn/common.php:3506
 msgid "Enter the SGQA identifier to use the total of a previous question as the minimum for this question"
 msgstr "Unesi SGQA identifikator za korištenje ukupnosti prethodnog pitanja kao minimum za ovo pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3506
+#: E:\_LimeSurvey\svn/common.php:3507
 msgid "Min value from SGQA"
 msgstr "Min vrijednost iz SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3513
+#: E:\_LimeSurvey\svn/common.php:3514
 msgid "Maximum value for array(mult-flexible) question type"
 msgstr "Minimalna vrijednost za pitanje više-fleksibilni niz"
 
-#: E:\_LimeSurvey\svn/common.php:3514
+#: E:\_LimeSurvey\svn/common.php:3515
 msgid "Maximum value"
 msgstr "Maksimalna vrijednost"
 
-#: E:\_LimeSurvey\svn/common.php:3521
+#: E:\_LimeSurvey\svn/common.php:3522
 msgid "Minimum value for array(multi-flexible) question type"
 msgstr "Maksimalna vrijednost za pitanje više-fleksibilni niz"
 
-#: E:\_LimeSurvey\svn/common.php:3522
+#: E:\_LimeSurvey\svn/common.php:3523
 msgid "Minimum value"
 msgstr "Minimalna vrijednost"
 
-#: E:\_LimeSurvey\svn/common.php:3529
 #: E:\_LimeSurvey\svn/common.php:3530
+#: E:\_LimeSurvey\svn/common.php:3531
 msgid "Step value"
 msgstr "Vrijednost koraka"
 
-#: E:\_LimeSurvey\svn/common.php:3540
+#: E:\_LimeSurvey\svn/common.php:3541
 msgid "Use checkbox layout"
 msgstr "Koristi izgled izbornih kvadratića (checkbox-a)"
 
-#: E:\_LimeSurvey\svn/common.php:3541
+#: E:\_LimeSurvey\svn/common.php:3542
 msgid "Checkbox layout"
 msgstr "Izgled izbornih kvadratića (checkbox-a)"
 
-#: E:\_LimeSurvey\svn/common.php:3548
+#: E:\_LimeSurvey\svn/common.php:3549
 msgid "SGQA identifier to use total of previous question as total for this question"
 msgstr "SGQA identifikator za korištenje ukupnosti prethodnog pitanja za ovo pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3549
+#: E:\_LimeSurvey\svn/common.php:3550
 msgid "Value equals SGQA"
 msgstr "Vrijednost jednaka SGQA"
 
-#: E:\_LimeSurvey\svn/common.php:3559
+#: E:\_LimeSurvey\svn/common.php:3560
 msgid "Allow only numerical input"
 msgstr "Dozvoli samo numerički unos"
 
-#: E:\_LimeSurvey\svn/common.php:3560
+#: E:\_LimeSurvey\svn/common.php:3561
 msgid "Numbers only"
 msgstr "Samo brojevi"
 
-#: E:\_LimeSurvey\svn/common.php:3570
+#: E:\_LimeSurvey\svn/common.php:3571
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
 msgstr "Učini polje 'Ostalo:' obavezno kada je ovo polje aktivno"
 
-#: E:\_LimeSurvey\svn/common.php:3571
+#: E:\_LimeSurvey\svn/common.php:3572
 msgid "'Other:' comment mandatory"
 msgstr "'Ostalo:' komentar obavezan"
 
-#: E:\_LimeSurvey\svn/common.php:3581
+#: E:\_LimeSurvey\svn/common.php:3582
 msgid "Allow only numerical input for 'Other' text"
 msgstr "Dozvoli samo numerički unos u polje \"Other\""
 
-#: E:\_LimeSurvey\svn/common.php:3582
+#: E:\_LimeSurvey\svn/common.php:3583
 msgid "Numbers only for 'Other'"
 msgstr "Samo unos brojeva je dozvoljen u polje \"Other\""
 
-#: E:\_LimeSurvey\svn/common.php:3589
+#: E:\_LimeSurvey\svn/common.php:3590
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
 msgstr "Zamijeni labelu 'Ostalo:' sa predefiniranim tekstom"
 
-#: E:\_LimeSurvey\svn/common.php:3590
+#: E:\_LimeSurvey\svn/common.php:3591
 msgid "Label for 'Other:' option"
 msgstr "Labela za polje 'Ostalo:'"
 
-#: E:\_LimeSurvey\svn/common.php:3600
+#: E:\_LimeSurvey\svn/common.php:3601
 msgid "Insert a page break before this question in printable view by setting this to Yes."
 msgstr "Unesi prekid stranice u izgledu ispisa prije ovog pitanja tako da vrijednost postavite na Da."
 
-#: E:\_LimeSurvey\svn/common.php:3601
+#: E:\_LimeSurvey\svn/common.php:3602
 msgid "Insert page break in printable view"
 msgstr "Unesi prekid stranice u izgledu ispisa"
 
-#: E:\_LimeSurvey\svn/common.php:3608
+#: E:\_LimeSurvey\svn/common.php:3609
 msgid "Add a prefix to the answer field"
 msgstr "Dodaj prefiks polju odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3609
+#: E:\_LimeSurvey\svn/common.php:3610
 msgid "Answer prefix"
 msgstr "Prefiks odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3619
+#: E:\_LimeSurvey\svn/common.php:3620
 msgid "Show statistics of this question in the public statistics page"
 msgstr "Prikaži statistiku ovog pitanja na javnoj statistici"
 
-#: E:\_LimeSurvey\svn/common.php:3620
+#: E:\_LimeSurvey\svn/common.php:3621
 msgid "Show in public statistics"
 msgstr "Prikaži u javno dostupnoj statistici"
 
-#: E:\_LimeSurvey\svn/common.php:3630
+#: E:\_LimeSurvey\svn/common.php:3631
 msgid "Present answers in random order"
 msgstr "Postavi odgovore u nasumičnom redoslijedu"
 
-#: E:\_LimeSurvey\svn/common.php:3631
+#: E:\_LimeSurvey\svn/common.php:3632
 msgid "Random answer order"
 msgstr "Nasumični redoslijed odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3635
-#: E:\_LimeSurvey\svn/common.php:3646
-#: E:\_LimeSurvey\svn/common.php:3654
-#: E:\_LimeSurvey\svn/common.php:3662
-#: E:\_LimeSurvey\svn/common.php:3670
-#: E:\_LimeSurvey\svn/common.php:3678
-#: E:\_LimeSurvey\svn/common.php:3689
-#: E:\_LimeSurvey\svn/common.php:3700
+#: E:\_LimeSurvey\svn/common.php:3636
+#: E:\_LimeSurvey\svn/common.php:3647
+#: E:\_LimeSurvey\svn/common.php:3655
+#: E:\_LimeSurvey\svn/common.php:3663
+#: E:\_LimeSurvey\svn/common.php:3671
+#: E:\_LimeSurvey\svn/common.php:3679
+#: E:\_LimeSurvey\svn/common.php:3690
+#: E:\_LimeSurvey\svn/common.php:3701
 msgid "Slider"
 msgstr "Klizač"
 
-#: E:\_LimeSurvey\svn/common.php:3641
 #: E:\_LimeSurvey\svn/common.php:3642
+#: E:\_LimeSurvey\svn/common.php:3643
 msgid "Use slider layout"
 msgstr "Koristi slider predložak"
 
-#: E:\_LimeSurvey\svn/common.php:3649
 #: E:\_LimeSurvey\svn/common.php:3650
+#: E:\_LimeSurvey\svn/common.php:3651
 msgid "Slider minimum value"
 msgstr "Klizač minimalnih vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3657
 #: E:\_LimeSurvey\svn/common.php:3658
+#: E:\_LimeSurvey\svn/common.php:3659
 msgid "Slider maximum value"
 msgstr "Klizač maksimalnih vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3665
 #: E:\_LimeSurvey\svn/common.php:3666
+#: E:\_LimeSurvey\svn/common.php:3667
 msgid "Slider accuracy"
 msgstr "Točnost klizača"
 
-#: E:\_LimeSurvey\svn/common.php:3673
 #: E:\_LimeSurvey\svn/common.php:3674
+#: E:\_LimeSurvey\svn/common.php:3675
 msgid "Slider initial value"
 msgstr "Početna vrijednost klizača"
 
-#: E:\_LimeSurvey\svn/common.php:3684
+#: E:\_LimeSurvey\svn/common.php:3685
 msgid "The handle is displayed at the middle of the slider (this will not set the initial value)"
 msgstr "Držač je prikazan u sredini klizača (ovim neće biti zadana inicijalna vrijednost)"
 
-#: E:\_LimeSurvey\svn/common.php:3685
+#: E:\_LimeSurvey\svn/common.php:3686
 msgid "Slider starts at the middle position"
 msgstr "Klizač započinje u središnjoj poziciji"
 
-#: E:\_LimeSurvey\svn/common.php:3695
+#: E:\_LimeSurvey\svn/common.php:3696
 msgid "Display min and max value under the slider"
 msgstr "Prikaži minimalne i maksimalne vrijednosti ispod klizača"
 
-#: E:\_LimeSurvey\svn/common.php:3696
+#: E:\_LimeSurvey\svn/common.php:3697
 msgid "Display slider min and max value"
 msgstr "Prikaži klizač minimalnih i maksimalnih vrijednosti"
 
-#: E:\_LimeSurvey\svn/common.php:3703
+#: E:\_LimeSurvey\svn/common.php:3704
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
 msgstr "Odgovor|Lijevi-tekstualni-klizač|Desni-tekstualni-klizač znak odvajanja"
 
-#: E:\_LimeSurvey\svn/common.php:3704
+#: E:\_LimeSurvey\svn/common.php:3705
 msgid "Slider left/right text separator"
 msgstr "Klizač lijevi/desni tekst odvajanja"
 
-#: E:\_LimeSurvey\svn/common.php:3711
+#: E:\_LimeSurvey\svn/common.php:3712
 msgid "Add a suffix to the answer field"
 msgstr "Dodaj sufiks polju odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3712
+#: E:\_LimeSurvey\svn/common.php:3713
 msgid "Answer suffix"
 msgstr "Sufiks odgovora"
 
-#: E:\_LimeSurvey\svn/common.php:3719
+#: E:\_LimeSurvey\svn/common.php:3720
 msgid "Width of text input box"
 msgstr "Širina polja za unos teksta"
 
-#: E:\_LimeSurvey\svn/common.php:3720
+#: E:\_LimeSurvey\svn/common.php:3721
 msgid "Input box width"
 msgstr "Širina polja za unos"
 
-#: E:\_LimeSurvey\svn/common.php:3730
+#: E:\_LimeSurvey\svn/common.php:3731
 msgid "Use dual dropdown boxes instead of dual scales"
 msgstr "Koristi dvostruki padajući niz umjesto dvostruke skale"
 
-#: E:\_LimeSurvey\svn/common.php:3731
+#: E:\_LimeSurvey\svn/common.php:3732
 msgid "Dual dropdown"
 msgstr "Dvostruki padajući niz"
 
-#: E:\_LimeSurvey\svn/common.php:3738
+#: E:\_LimeSurvey\svn/common.php:3739
 msgid "Default"
 msgstr "Osnovno"
 
-#: E:\_LimeSurvey\svn/common.php:3739
+#: E:\_LimeSurvey\svn/common.php:3740
 msgid "Nominal"
 msgstr "Nominalna"
 
-#: E:\_LimeSurvey\svn/common.php:3740
+#: E:\_LimeSurvey\svn/common.php:3741
 msgid "Ordinal"
 msgstr "Ordinarna"
 
-#: E:\_LimeSurvey\svn/common.php:3741
+#: E:\_LimeSurvey\svn/common.php:3742
 msgid "Scale"
 msgstr "Skala"
 
-#: E:\_LimeSurvey\svn/common.php:3743
+#: E:\_LimeSurvey\svn/common.php:3744
 msgid "Set a specific SPSS export scale type for this question"
 msgstr "Postavi specifični SPSS tip izvozne skale za ovo pitanje"
 
-#: E:\_LimeSurvey\svn/common.php:3744
+#: E:\_LimeSurvey\svn/common.php:3745
 msgid "SPSS export scale type"
 msgstr "SPSS tip izvozne skale"
 
-#: E:\_LimeSurvey\svn/common.php:3749
-#: E:\_LimeSurvey\svn/common.php:3757
-#: E:\_LimeSurvey\svn/common.php:3768
-#: E:\_LimeSurvey\svn/common.php:3776
-#: E:\_LimeSurvey\svn/common.php:3784
-#: E:\_LimeSurvey\svn/common.php:3794
-#: E:\_LimeSurvey\svn/common.php:3802
-#: E:\_LimeSurvey\svn/common.php:3810
-#: E:\_LimeSurvey\svn/common.php:3818
-#: E:\_LimeSurvey\svn/common.php:3826
-#: E:\_LimeSurvey\svn/common.php:3834
+#: E:\_LimeSurvey\svn/common.php:3750
+#: E:\_LimeSurvey\svn/common.php:3758
+#: E:\_LimeSurvey\svn/common.php:3769
+#: E:\_LimeSurvey\svn/common.php:3777
+#: E:\_LimeSurvey\svn/common.php:3785
+#: E:\_LimeSurvey\svn/common.php:3795
+#: E:\_LimeSurvey\svn/common.php:3803
+#: E:\_LimeSurvey\svn/common.php:3811
+#: E:\_LimeSurvey\svn/common.php:3819
+#: E:\_LimeSurvey\svn/common.php:3827
+#: E:\_LimeSurvey\svn/common.php:3835
 msgid "Timing"
 msgstr "Vrijeme"
 
-#: E:\_LimeSurvey\svn/common.php:3752
+#: E:\_LimeSurvey\svn/common.php:3753
 msgid "Limit time to answer question (in seconds)"
 msgstr "Limit vremena za pitanje (u sekundama)"
 
-#: E:\_LimeSurvey\svn/common.php:3753
+#: E:\_LimeSurvey\svn/common.php:3754
 msgid "Time limit"
 msgstr "Vrijeme slanja"
 
-#: E:\_LimeSurvey\svn/common.php:3760
+#: E:\_LimeSurvey\svn/common.php:3761
 msgid "Warn and move on"
 msgstr "Upozori i nastavi dalje"
 
-#: E:\_LimeSurvey\svn/common.php:3761
+#: E:\_LimeSurvey\svn/common.php:3762
 msgid "Move on without warning"
 msgstr "Nastavi dalje bez upozorenja"
 
-#: E:\_LimeSurvey\svn/common.php:3762
+#: E:\_LimeSurvey\svn/common.php:3763
 msgid "Disable only"
 msgstr "Samo isključi"
 
-#: E:\_LimeSurvey\svn/common.php:3763
+#: E:\_LimeSurvey\svn/common.php:3764
 msgid "Action to perform when time limit is up"
 msgstr "Akcija kad istekne vrijeme"
 
-#: E:\_LimeSurvey\svn/common.php:3764
+#: E:\_LimeSurvey\svn/common.php:3765
 msgid "Time limit action"
 msgstr "Akcija po isteku limita vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3771
+#: E:\_LimeSurvey\svn/common.php:3772
 msgid "Message to display when time limit has expired"
 msgstr "Prikaz poruke po isteklom vremenu"
 
-#: E:\_LimeSurvey\svn/common.php:3772
+#: E:\_LimeSurvey\svn/common.php:3773
 msgid "Time limit expiry message"
 msgstr "Poruka o isteklom vremenu"
 
-#: E:\_LimeSurvey\svn/common.php:3779
+#: E:\_LimeSurvey\svn/common.php:3780
 msgid "How long to display the time limit expiry message (in seconds)"
 msgstr "Trajanje prikaza poruke o isteklom vremenu (u sekundama)"
 
-#: E:\_LimeSurvey\svn/common.php:3780
+#: E:\_LimeSurvey\svn/common.php:3781
 msgid "Time limit expiry message delay"
 msgstr "Vremenski otklon po isteklom vremenu"
 
-#: E:\_LimeSurvey\svn/common.php:3789
+#: E:\_LimeSurvey\svn/common.php:3790
 msgid "Disable the next button until time limit expires"
 msgstr "Isključi 'next' dugme dok ne istekne vrijeme"
 
-#: E:\_LimeSurvey\svn/common.php:3790
+#: E:\_LimeSurvey\svn/common.php:3791
 msgid "Time limit disable next"
 msgstr "Isključenje 'next' dugmeta po isteku vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3797
+#: E:\_LimeSurvey\svn/common.php:3798
 msgid "CSS style for the time limit message"
 msgstr "CSS stil za poruku o limitu vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3798
+#: E:\_LimeSurvey\svn/common.php:3799
 msgid "Time limit message CSS style"
 msgstr "CSS stil poruke limita vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3805
+#: E:\_LimeSurvey\svn/common.php:3806
 msgid "CSS Style for the time limit countdown timer"
 msgstr "CSS stil za sat odbrojavanja limita vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3806
+#: E:\_LimeSurvey\svn/common.php:3807
 msgid "Time limit timer CSS style"
 msgstr "CSS stil vremenika limita"
 
-#: E:\_LimeSurvey\svn/common.php:3813
+#: E:\_LimeSurvey\svn/common.php:3814
 msgid "Time until time limit expiry when time limit warning message is displayed (in seconds)"
 msgstr "Prikaz poruke upozorenja o isteku vremena (u sekundama)"
 
-#: E:\_LimeSurvey\svn/common.php:3814
+#: E:\_LimeSurvey\svn/common.php:3815
 msgid "Time limit warning message timer"
 msgstr "Poruka upozorenja o isteku vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3821
+#: E:\_LimeSurvey\svn/common.php:3822
 msgid "How long the time limit warning message will display (in seconds)"
 msgstr "Prikaz poruke upozorenja o isteku vremena (u sekundama)"
 
-#: E:\_LimeSurvey\svn/common.php:3822
+#: E:\_LimeSurvey\svn/common.php:3823
 msgid "Time limit warning message display time"
 msgstr "Poruka upozorenja o isteku vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3829
+#: E:\_LimeSurvey\svn/common.php:3830
 msgid "Message to display warning that time limit is about to expire"
 msgstr "Poruka o obavijesti o skorom isteku vremenskog limita"
 
-#: E:\_LimeSurvey\svn/common.php:3830
+#: E:\_LimeSurvey\svn/common.php:3831
 msgid "Time limit warning message"
 msgstr "Poruka upozorenja o isteku vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3837
+#: E:\_LimeSurvey\svn/common.php:3838
 msgid "CSS style for the time limit warning message"
 msgstr "CSS stil poruke upozorenja o isteku vremena"
 
-#: E:\_LimeSurvey\svn/common.php:3838
+#: E:\_LimeSurvey\svn/common.php:3839
 msgid "Time limit warning CSS style"
 msgstr "CSS stil upozorenja o poruci limita vremena"
 
-#: E:\_LimeSurvey\svn/common.php:4002
+#: E:\_LimeSurvey\svn/common.php:4003
 msgid "Version"
 msgstr "Verzija"
 
-#: E:\_LimeSurvey\svn/common.php:4011
+#: E:\_LimeSurvey\svn/common.php:4012
 msgid "Online Manual"
 msgstr "Uputstvo za upotrebu"
 
-#: E:\_LimeSurvey\svn/common.php:4014
+#: E:\_LimeSurvey\svn/common.php:4015
 msgid "Support this project - Donate to "
 msgstr "Podržite ovaj projekat - Doniraj "
 
-#: E:\_LimeSurvey\svn/common.php:4017
+#: E:\_LimeSurvey\svn/common.php:4018
 msgid "Visit our website!"
 msgstr "Posjetite našu web stranicu!"
 
-#: E:\_LimeSurvey\svn/common.php:4178
+#: E:\_LimeSurvey\svn/common.php:4179
 msgid "Email was not sent because demo-mode is activated."
 msgstr "E-mail nije poslan jer je aktivan DEMO način rada."
 
-#: E:\_LimeSurvey\svn/common.php:4290
+#: E:\_LimeSurvey\svn/common.php:4291
 msgid "SMTP debug output:"
 msgstr "SMTP debug izlazni podaci:"
 
-#: E:\_LimeSurvey\svn/common.php:4770
-#: E:\_LimeSurvey\svn/common.php:4776
+#: E:\_LimeSurvey\svn/common.php:4771
+#: E:\_LimeSurvey\svn/common.php:4777
 msgid "Executing"
 msgstr "Izvršavam"
 
-#: E:\_LimeSurvey\svn/common.php:4770
+#: E:\_LimeSurvey\svn/common.php:4771
 msgid "Failed! Reason: "
 msgstr "Neuspješno! Razlog: "
 
-#: E:\_LimeSurvey\svn/common.php:4776
+#: E:\_LimeSurvey\svn/common.php:4777
 msgid "Success!"
 msgstr "Uspješno!"
 
-#: E:\_LimeSurvey\svn/common.php:5844
+#: E:\_LimeSurvey\svn/common.php:5845
 #: E:\_LimeSurvey\svn/index.php:493
 #: E:\_LimeSurvey\svn/save.php:618
 msgid "Error"
 msgstr "Greška"
 
-#: E:\_LimeSurvey\svn/common.php:6847
+#: E:\_LimeSurvey\svn/common.php:6848
 msgid "Email address"
 msgstr "E-mail adresa"
 
-#: E:\_LimeSurvey\svn/common.php:6848
+#: E:\_LimeSurvey\svn/common.php:6849
 msgid "Token code"
 msgstr "Šifra tokena"
 
-#: E:\_LimeSurvey\svn/common.php:6849
+#: E:\_LimeSurvey\svn/common.php:6850
 msgid "Language code"
 msgstr "Šifra jezika"
 
-#: E:\_LimeSurvey\svn/common.php:6850
+#: E:\_LimeSurvey\svn/common.php:6851
 msgid "Invitation sent date"
 msgstr "Datum slanja pozivnice"
 
-#: E:\_LimeSurvey\svn/common.php:6851
+#: E:\_LimeSurvey\svn/common.php:6852
 msgid "Last Reminder sent date"
 msgstr "Datum slanja podsjetnika"
 
-#: E:\_LimeSurvey\svn/common.php:6852
+#: E:\_LimeSurvey\svn/common.php:6853
 msgid "Total numbers of sent reminders"
 msgstr "Ukupno poslanih podsjetnika"
 
-#: E:\_LimeSurvey\svn/common.php:6872
+#: E:\_LimeSurvey\svn/common.php:6873
 #, php-format
 msgid "Attribute %s"
 msgstr "Atribut %s"
@@ -1387,7 +1391,7 @@ msgid "Save your responses so far"
 msgstr "Snimi svoje dosadašnje odgovore"
 
 #: E:\_LimeSurvey\svn/group.php:130
-#: E:\_LimeSurvey\svn/index.php:1753
+#: E:\_LimeSurvey\svn/index.php:1765
 #: E:\_LimeSurvey\svn/question.php:212
 msgid "Did Not Save"
 msgstr "Snimanje nije uspjelo"
@@ -1541,8 +1545,8 @@ msgid "You did not provide a password"
 msgstr "Niste unijeli lozinku"
 
 #: E:\_LimeSurvey\svn/index.php:562
-#: E:\_LimeSurvey\svn/index.php:1827
-#: E:\_LimeSurvey\svn/index.php:2015
+#: E:\_LimeSurvey\svn/index.php:1839
+#: E:\_LimeSurvey\svn/index.php:2027
 #: E:\_LimeSurvey\svn/register.php:71
 #: E:\_LimeSurvey\svn/save.php:277
 msgid "The answer to the security question is incorrect."
@@ -1553,8 +1557,8 @@ msgid "This is a closed-access survey, so you must supply a valid token.  Please
 msgstr "Ovaj upitnik je zatvorenog tipa, te morate koristiti valjan token za pristup. Molimo kontaktirajte administratora za pomoć."
 
 #: E:\_LimeSurvey\svn/index.php:613
-#: E:\_LimeSurvey\svn/index.php:1948
-#: E:\_LimeSurvey\svn/index.php:1984
+#: E:\_LimeSurvey\svn/index.php:1960
+#: E:\_LimeSurvey\svn/index.php:1996
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Token koji ste unijeli ili nije ispravan ili je već iskorišten."
 
@@ -1580,129 +1584,129 @@ msgstr "Upitnik je spremljen"
 msgid "There is no matching saved survey"
 msgstr "Ne postoji odgovarajući spremljeni upitnik"
 
-#: E:\_LimeSurvey\svn/index.php:883
+#: E:\_LimeSurvey\svn/index.php:885
 #, php-format
 msgid "You have completed %s%% of this survey"
 msgstr "Već ste popunili %s%% ovog upitnika"
 
-#: E:\_LimeSurvey\svn/index.php:1609
+#: E:\_LimeSurvey\svn/index.php:1621
 msgid "Answer Submission for Survey"
 msgstr "Zaprimljeni su odgovori za upitnik"
 
-#: E:\_LimeSurvey\svn/index.php:1611
+#: E:\_LimeSurvey\svn/index.php:1623
 msgid "Survey Submitted"
 msgstr "Upitnik je poslan"
 
-#: E:\_LimeSurvey\svn/index.php:1612
+#: E:\_LimeSurvey\svn/index.php:1624
 msgid "A new response was entered for your survey"
 msgstr "Novi odgovor je unjet u Vaš upitnik"
 
-#: E:\_LimeSurvey\svn/index.php:1615
+#: E:\_LimeSurvey\svn/index.php:1627
 msgid "Click the following link to reload the survey:"
 msgstr "Izaberite sljedeći link kako bi učitali upitnik:"
 
-#: E:\_LimeSurvey\svn/index.php:1619
+#: E:\_LimeSurvey\svn/index.php:1631
 msgid "Click the following link to see the individual response:"
 msgstr "Izaberite sljedeći link kako bi vidjeli pojedinačne odgovore:"
 
-#: E:\_LimeSurvey\svn/index.php:1622
+#: E:\_LimeSurvey\svn/index.php:1634
 msgid "Click the following link to edit the individual response:"
 msgstr "Izaberite sljedeći link kako bi promijenili pojedinačne odgovore:"
 
-#: E:\_LimeSurvey\svn/index.php:1625
+#: E:\_LimeSurvey\svn/index.php:1637
 msgid "View statistics by clicking here:"
 msgstr "Pogledajte statistiku odabirom sljedećeg linka:"
 
-#: E:\_LimeSurvey\svn/index.php:1733
+#: E:\_LimeSurvey\svn/index.php:1745
 msgid "This email contains confirmation of the responses you made to the survey"
 msgstr "Ova poruka sadrži potvrdu o odgovorima poslanim na anketu"
 
-#: E:\_LimeSurvey\svn/index.php:1735
+#: E:\_LimeSurvey\svn/index.php:1747
 msgid "Survey submission confirmation"
 msgstr "Potvrda o sudjelovanju"
 
-#: E:\_LimeSurvey\svn/index.php:1754
+#: E:\_LimeSurvey\svn/index.php:1766
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Dogodila se neočekivana greška i vaši odgovori nisu pohranjeni."
 
-#: E:\_LimeSurvey\svn/index.php:1757
+#: E:\_LimeSurvey\svn/index.php:1769
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Vaši odgovori nisu izgubljeni već su poslani administratoru i biti će ručno uneseni u bazu podataka."
 
-#: E:\_LimeSurvey\svn/index.php:1758
+#: E:\_LimeSurvey\svn/index.php:1770
 msgid "An error occurred saving a response to survey id"
 msgstr "Dogodila se greška prilikom snimanja odgovora u id upitnika"
 
-#: E:\_LimeSurvey\svn/index.php:1759
+#: E:\_LimeSurvey\svn/index.php:1771
 msgid "DATA TO BE ENTERED"
 msgstr "PODACI KOJI SE UNOSE"
 
-#: E:\_LimeSurvey\svn/index.php:1764
+#: E:\_LimeSurvey\svn/index.php:1776
 msgid "SQL CODE THAT FAILED"
 msgstr "SQL KOD KOJI NIJE USPIO"
 
-#: E:\_LimeSurvey\svn/index.php:1766
+#: E:\_LimeSurvey\svn/index.php:1778
 msgid "ERROR MESSAGE"
 msgstr "PORUKA O GREŠCI"
 
-#: E:\_LimeSurvey\svn/index.php:1768
+#: E:\_LimeSurvey\svn/index.php:1780
 msgid "Error saving results"
 msgstr "Greška pri snimanju rezultata"
 
-#: E:\_LimeSurvey\svn/index.php:1776
+#: E:\_LimeSurvey\svn/index.php:1788
 msgid "Try to submit again"
 msgstr "Probaj poslati ponovo"
 
-#: E:\_LimeSurvey\svn/index.php:1830
+#: E:\_LimeSurvey\svn/index.php:1842
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Molim potvrdite pristup upitniku odgovarajući na sigurnosno pitanje. Nakon unosa kliknite na Nastavi."
 
-#: E:\_LimeSurvey\svn/index.php:1853
+#: E:\_LimeSurvey\svn/index.php:1865
 msgid "Security question:"
 msgstr "Sigurnosno pitanje:"
 
-#: E:\_LimeSurvey\svn/index.php:1887
-#: E:\_LimeSurvey\svn/index.php:1947
-#: E:\_LimeSurvey\svn/index.php:1983
-#: E:\_LimeSurvey\svn/index.php:2018
+#: E:\_LimeSurvey\svn/index.php:1899
+#: E:\_LimeSurvey\svn/index.php:1959
+#: E:\_LimeSurvey\svn/index.php:1995
+#: E:\_LimeSurvey\svn/index.php:2030
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Ovaj upitnik je pod kontrolom sustava. Potreban vam je ispravan token za učešće."
 
-#: E:\_LimeSurvey\svn/index.php:1888
+#: E:\_LimeSurvey\svn/index.php:1900
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Ako ste dobili token, molimo unesite ga u polje ispod i izaberite nastavak."
 
-#: E:\_LimeSurvey\svn/index.php:1949
-#: E:\_LimeSurvey\svn/index.php:1985
-#: E:\_LimeSurvey\svn/index.php:2158
+#: E:\_LimeSurvey\svn/index.php:1961
+#: E:\_LimeSurvey\svn/index.php:1997
+#: E:\_LimeSurvey\svn/index.php:2170
 #, php-format
 msgid "For further information contact %s"
 msgstr "Za više informacija kontaktirajte %s"
 
-#: E:\_LimeSurvey\svn/index.php:2023
+#: E:\_LimeSurvey\svn/index.php:2035
 msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Ako ste dobili token, molimo unesite ga u polje ispod i izaberite nastavak."
 
-#: E:\_LimeSurvey\svn/index.php:2043
+#: E:\_LimeSurvey\svn/index.php:2055
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Molim potvrdite token tako da odgovorite na sigurnosno pitanje."
 
-#: E:\_LimeSurvey\svn/index.php:2058
+#: E:\_LimeSurvey\svn/index.php:2070
 msgid "Token:"
 msgstr "Token:"
 
-#: E:\_LimeSurvey\svn/index.php:2157
+#: E:\_LimeSurvey\svn/index.php:2169
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Ovaj upitnik još uvijek nema pitanja i ne može biti testiran niti popunjen."
 
-#: E:\_LimeSurvey\svn/index.php:2549
-#: E:\_LimeSurvey\svn/index.php:2965
+#: E:\_LimeSurvey\svn/index.php:2561
+#: E:\_LimeSurvey\svn/index.php:2977
 msgid "Previous"
 msgstr "Prethodno"
 
-#: E:\_LimeSurvey\svn/index.php:2554
-#: E:\_LimeSurvey\svn/index.php:2560
-#: E:\_LimeSurvey\svn/index.php:2565
+#: E:\_LimeSurvey\svn/index.php:2566
+#: E:\_LimeSurvey\svn/index.php:2572
+#: E:\_LimeSurvey\svn/index.php:2577
 msgid "Next"
 msgstr "Sljedeće"
 
@@ -2560,8 +2564,8 @@ msgstr "Prebaci na zatvoreni-pristup mod rada"
 msgid "No, thanks."
 msgstr "Ne, hvala."
 
-#: E:\_LimeSurvey\svn/admin/admin.php:608
-#: E:\_LimeSurvey\svn/admin/admin.php:619
+#: E:\_LimeSurvey\svn/admin/admin.php:599
+#: E:\_LimeSurvey\svn/admin/admin.php:610
 msgid "LimeSurvey Online Manual"
 msgstr "LimeSurvey Online upute"
 
@@ -3724,9 +3728,9 @@ msgid "Single response"
 msgstr "Jedan odgovor"
 
 #: E:\_LimeSurvey\svn/admin/exportresults.php:188
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:153
-#: E:\_LimeSurvey\svn/admin/html.php:2179
-#: E:\_LimeSurvey\svn/admin/html.php:3052
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:155
+#: E:\_LimeSurvey\svn/admin/html.php:2170
+#: E:\_LimeSurvey\svn/admin/html.php:3043
 msgid "General"
 msgstr "Općenito"
 
@@ -4084,8 +4088,8 @@ msgid "Survey Format is %s:"
 msgstr "Format upitnika je %s:"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:557
-#: E:\_LimeSurvey\svn/admin/html.php:2255
-#: E:\_LimeSurvey\svn/admin/html.php:3115
+#: E:\_LimeSurvey\svn/admin/html.php:2246
+#: E:\_LimeSurvey\svn/admin/html.php:3106
 msgid "All in one"
 msgstr "Prikaži sva pitanja"
 
@@ -4100,284 +4104,284 @@ msgid "Survey mode is set to %s:"
 msgstr "Način upitnika je podešen na %s:"
 
 #: E:\_LimeSurvey\svn/admin/fck_LimeReplacementFields.php:568
-#: E:\_LimeSurvey\svn/admin/html.php:2252
-#: E:\_LimeSurvey\svn/admin/html.php:3114
+#: E:\_LimeSurvey\svn/admin/html.php:2243
+#: E:\_LimeSurvey\svn/admin/html.php:3105
 msgid "Group by Group"
 msgstr "Grupa za grupom pitanja"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:83
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:85
 msgid "Global settings were saved."
 msgstr "Globalne postavke su spremljene."
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:110
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:112
 msgid "Overview & Update"
 msgstr "Prikaz & nadogradnja"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:113
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:115
 msgid "Updates"
 msgstr "Nadogradnje"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:114
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:116
 msgid "Check for updates:"
 msgstr "Provjera nadogradnje:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:118
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:120
 msgid "Never"
 msgstr "Nikad"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:121
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:123
 msgid "Every day"
 msgstr "Svaki dan"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:124
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:126
 msgid "Every week"
 msgstr "Svaki tjedan"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:127
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:129
 msgid "Every 2 weeks"
 msgstr "Svaka dva tjedna"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:130
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:132
 msgid "Every month"
 msgstr "Svaki mjesec"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:131
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:133
 msgid "Check now"
 msgstr "Provjeri sada"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:131
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:133
 #, php-format
 msgid "Last check: %s"
 msgstr "Zadnja provjera: %s"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:135
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:137
 #, php-format
 msgid "There is a LimeSurvey update available: Version %s"
 msgstr "Postoji nadogradnj za LimeSurvey. Verzija %s"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:136
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:138
 #, php-format
 msgid "You can update manually or use the %s"
 msgstr "Možeš nadograditi računo ili koristiti %s"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:136
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:138
 msgid "3-Click ComfortUpdate"
 msgstr "3-klika komformna nadogradnja"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:140
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:142
 #, php-format
 msgid "There was an error on update check (%s)"
 msgstr "Dogodila se greška pri kontroli nadogradnje (%s)"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:146
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:148
 msgid "There is currently no newer LimeSurvey version available."
 msgstr "Trenutno ne postoji novija verzija LImeSurvey-ja."
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:156
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:158
 msgid "Site name:"
 msgstr "Ime sjedišta:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:158
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:160
 msgid "Default site language:"
 msgstr "Osnovni jezik sjedišta:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:173
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:175
 msgid "Default template:"
 msgstr "Osnovni predložak:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:186
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:188
 msgid "Default HTML editor mode:"
 msgstr "Osnovni način rada HTML editora:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:190
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:192
 msgid "Default HTML editor mode"
 msgstr "Osnovni način rada HTML editora"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:193
-#: E:\_LimeSurvey\svn/admin/html.php:246
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:195
+#: E:\_LimeSurvey\svn/admin/html.php:242
 msgid "No HTML editor"
 msgstr "Nema HTML editora"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:196
-#: E:\_LimeSurvey\svn/admin/html.php:244
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:198
+#: E:\_LimeSurvey\svn/admin/html.php:240
 msgid "Inline HTML editor"
 msgstr "Inline HTML editor"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:199
-#: E:\_LimeSurvey\svn/admin/html.php:245
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:201
+#: E:\_LimeSurvey\svn/admin/html.php:241
 msgid "Popup HTML editor"
 msgstr "Popup HTML editor"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:202
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:204
 msgid "Time difference (in hours):"
 msgstr "Vremenski razmak (u satima):"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:206
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:208
 msgid "PDF export available:"
 msgstr "PDF izvoz moguć:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:210
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:221
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:212
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:223
 msgid "On"
 msgstr "Uključeno"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:213
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:224
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:270
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:282
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:215
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:226
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:272
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:284
 msgid "Off"
 msgstr "Isključeno"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:217
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:219
 msgid "Screen reader compatibility mode:"
 msgstr "Kompatibilni mod čitača ekrana:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:226
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:228
 msgid "Session lifetime (seconds):"
 msgstr "Trajanje sesije (sekunde):"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:236
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:238
 msgid "Email settings"
 msgstr "Postavke e-maila"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:239
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:241
 msgid "Default site admin email:"
 msgstr "Zadani e-mail administratora:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:241
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:243
 msgid "Default site bounce email:"
 msgstr "Zadani e-mail za povrat:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:243
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:245
 msgid "Administrator name:"
 msgstr "Ime administratora:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:245
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:247
 msgid "Email method:"
 msgstr "E-mail metoda:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:249
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:251
 msgid "PHP (default)"
 msgstr "PHP (osnovni)"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:252
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:254
 msgid "SMTP"
 msgstr "SMTP"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:255
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:257
 msgid "Sendmail"
 msgstr "Sendmail"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:258
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:260
 msgid "Qmail"
 msgstr "Qmail"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:260
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:262
 msgid "SMTP host:"
 msgstr "SMTP poslužitelj:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:261
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:263
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr "Unesi naziv računala i port, npr. my.smtp.com:25"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:262
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:264
 msgid "SMTP username:"
 msgstr "SMTP korisničko ime:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:264
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:266
 msgid "SMTP password:"
 msgstr "SMTP lozinka:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:266
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:268
 msgid "SMTP SSL/TLS:"
 msgstr "SMTP SSL/TLS:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:273
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:275
 msgid "SSL"
 msgstr "SSL"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:276
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:278
 msgid "TLS"
 msgstr "TLS"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:278
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:280
 msgid "SMTP debug mode:"
 msgstr "SMTP debug način rada:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:285
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:287
 msgid "On errors"
 msgstr "Na greške"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:288
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:290
 msgid "Always"
 msgstr "Uvijek"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:290
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:292
 msgid "Email batch size:"
 msgstr "Veličina e-mail batcha:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:298
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:300
 msgid "Security"
 msgstr "Sigurnost"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:303
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:305
 msgid "Survey preview only for administration users"
 msgstr "Pregled  upitnika samo za administratore"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:315
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:317
 msgid "Filter HTML for XSS:"
 msgstr "Filtriraj HTML za XSS:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:326
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:328
 msgid "Group member can only see own group:"
 msgstr "Članovi grupe mogu vijdeti samo svoju grupu:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:338
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:340
 msgid "Miscellaneous"
 msgstr "Razno"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:342
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:344
 msgid "Show 'no answer' option for non-mandatory questions:"
 msgstr "Prikaži 'bez odgovora' opciju za neobavezna pitanja:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:352
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:354
 msgid "Number of answers to show before repeating the headings in array questions:"
 msgstr "Broj odgovora za prikaz prije ponavljanja zaglavlja u pitanju tipa niz:"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:362
-#: E:\_LimeSurvey\svn/admin/html.php:267
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:364
+#: E:\_LimeSurvey\svn/admin/html.php:263
 msgid "Save settings"
 msgstr "Snimi postavke"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:440
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:446
 msgid "System overview"
 msgstr "Pregled sustava"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:444
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:450
 msgid "Database name"
 msgstr "Naziv baze podataka"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:450
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:456
 msgid "Users"
 msgstr "Korisnici"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:460
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:466
 msgid "Active surveys"
 msgstr "Aktivni upitnici"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:465
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:471
 msgid "Deactivated surveys"
 msgstr "Deaktivirani upitnici"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:470
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:476
 msgid "Active token tables"
 msgstr "Aktivne tablice tokena"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:475
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:481
 msgid "Deactivated token tables"
 msgstr "Deaktivirane tablice tokena"
 
-#: E:\_LimeSurvey\svn/admin/globalsettings.php:482
+#: E:\_LimeSurvey\svn/admin/globalsettings.php:488
 msgid "Show PHPInfo"
 msgstr "Prikaži PHPInfo"
 
@@ -4399,12 +4403,12 @@ msgstr "Obvezatno"
 #: E:\_LimeSurvey\svn/admin/grouphandling.php:144
 #: E:\_LimeSurvey\svn/admin/grouphandling.php:158
 #: E:\_LimeSurvey\svn/admin/grouphandling.php:160
-#: E:\_LimeSurvey\svn/admin/html.php:691
-#: E:\_LimeSurvey\svn/admin/html.php:944
-#: E:\_LimeSurvey\svn/admin/html.php:2742
-#: E:\_LimeSurvey\svn/admin/html.php:2744
-#: E:\_LimeSurvey\svn/admin/html.php:3080
-#: E:\_LimeSurvey\svn/admin/html.php:3082
+#: E:\_LimeSurvey\svn/admin/html.php:682
+#: E:\_LimeSurvey\svn/admin/html.php:935
+#: E:\_LimeSurvey\svn/admin/html.php:2733
+#: E:\_LimeSurvey\svn/admin/html.php:2735
+#: E:\_LimeSurvey\svn/admin/html.php:3071
+#: E:\_LimeSurvey\svn/admin/html.php:3073
 msgid "Description:"
 msgstr "Opis:"
 
@@ -4417,9 +4421,9 @@ msgid "Import question group"
 msgstr "Uvoz grupe pitanja"
 
 #: E:\_LimeSurvey\svn/admin/grouphandling.php:67
-#: E:\_LimeSurvey\svn/admin/html.php:2657
-#: E:\_LimeSurvey\svn/admin/html.php:2670
-#: E:\_LimeSurvey\svn/admin/html.php:3366
+#: E:\_LimeSurvey\svn/admin/html.php:2648
+#: E:\_LimeSurvey\svn/admin/html.php:2661
+#: E:\_LimeSurvey\svn/admin/html.php:3357
 msgid "Please select a file to import!"
 msgstr "Molim izaberite datoteku za slanje!"
 
@@ -4452,7 +4456,7 @@ msgid "Survey ID"
 msgstr "ID Upitnika"
 
 #: E:\_LimeSurvey\svn/admin/html.php:46
-#: E:\_LimeSurvey\svn/admin/html.php:307
+#: E:\_LimeSurvey\svn/admin/html.php:298
 msgid "Survey"
 msgstr "Upitnik"
 
@@ -4484,1071 +4488,1071 @@ msgstr "Nekompletni odgovori"
 msgid "Total Responses"
 msgstr "Ukupno odgovora"
 
-#: E:\_LimeSurvey\svn/admin/html.php:73
+#: E:\_LimeSurvey\svn/admin/html.php:69
 msgid "Closed-access"
 msgstr "Zatvoren pristup"
 
-#: E:\_LimeSurvey\svn/admin/html.php:77
+#: E:\_LimeSurvey\svn/admin/html.php:73
 msgid "Open-access"
 msgstr "Otvoren pristup"
 
-#: E:\_LimeSurvey\svn/admin/html.php:88
+#: E:\_LimeSurvey\svn/admin/html.php:84
 msgid "Not yet active"
 msgstr "Nije još aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:137
-#: E:\_LimeSurvey\svn/admin/html.php:332
+#: E:\_LimeSurvey\svn/admin/html.php:133
+#: E:\_LimeSurvey\svn/admin/html.php:323
 msgid "This survey is active but expired."
 msgstr "Ovaj upitnik je aktivan ali je istekao."
 
-#: E:\_LimeSurvey\svn/admin/html.php:145
+#: E:\_LimeSurvey\svn/admin/html.php:141
 msgid "This survey is active - click here to deactivate this survey."
 msgstr "Upitnik je aktivan - klikni za deativaciju upitnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:149
+#: E:\_LimeSurvey\svn/admin/html.php:145
 msgid "This survey is currently active."
 msgstr "Ovaj upitnik je trenutno aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:157
+#: E:\_LimeSurvey\svn/admin/html.php:153
 msgid "This survey is currently not active - click here to activate this survey."
 msgstr "Upitnik je neaktivan - klikni za ativaciju upitnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:161
+#: E:\_LimeSurvey\svn/admin/html.php:157
 msgid "This survey is currently not active."
 msgstr "Ovaj upitnik je trenutno aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:192
+#: E:\_LimeSurvey\svn/admin/html.php:188
 msgid "No Surveys available - please create one."
 msgstr "Nema dostupnih upitnika - molimo kreirajte jedan."
 
-#: E:\_LimeSurvey\svn/admin/html.php:220
+#: E:\_LimeSurvey\svn/admin/html.php:216
 msgid "Your personal settings"
 msgstr "Tvoje osobne postavke"
 
-#: E:\_LimeSurvey\svn/admin/html.php:228
+#: E:\_LimeSurvey\svn/admin/html.php:224
 msgid "Interface language"
 msgstr "Jezik sučelja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:241
+#: E:\_LimeSurvey\svn/admin/html.php:237
 msgid "HTML editor mode"
 msgstr "Način rada HTML editora"
 
-#: E:\_LimeSurvey\svn/admin/html.php:252
+#: E:\_LimeSurvey\svn/admin/html.php:248
 msgid "Date format"
 msgstr "Format datuma"
 
-#: E:\_LimeSurvey\svn/admin/html.php:314
+#: E:\_LimeSurvey\svn/admin/html.php:305
 msgid "This survey is not currently active"
 msgstr "Ovaj upitnik nije trenutno aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:319
+#: E:\_LimeSurvey\svn/admin/html.php:310
 msgid "Activate this Survey"
 msgstr "Aktiviraj ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:324
+#: E:\_LimeSurvey\svn/admin/html.php:315
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "Upitnik se ne može aktivirati. Ili nemate privilegije ili ne postoje pitanja."
 
-#: E:\_LimeSurvey\svn/admin/html.php:337
+#: E:\_LimeSurvey\svn/admin/html.php:328
 msgid "This survey is active but has a start date."
 msgstr "Ovaj upitnik je aktivan ali ima početni datum."
 
-#: E:\_LimeSurvey\svn/admin/html.php:342
+#: E:\_LimeSurvey\svn/admin/html.php:333
 msgid "This survey is currently active"
 msgstr "Ovaj upitnik je trenutno aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:348
+#: E:\_LimeSurvey\svn/admin/html.php:339
 msgid "Deactivate this Survey"
 msgstr "Deaktiviraj ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:363
+#: E:\_LimeSurvey\svn/admin/html.php:354
 msgid "Survey Security Settings"
 msgstr "Sigurnosna podešavanja upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:373
+#: E:\_LimeSurvey\svn/admin/html.php:364
 msgid "Test This Survey"
 msgstr "Testiraj ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:377
+#: E:\_LimeSurvey\svn/admin/html.php:368
 msgid "Execute This Survey"
 msgstr "Pokreni ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:420
+#: E:\_LimeSurvey\svn/admin/html.php:411
 msgid "This survey is not active, data entry is not allowed"
 msgstr "Ovaj upitnik nije aktivan, unos podataka nije dozvoljen"
 
-#: E:\_LimeSurvey\svn/admin/html.php:431
-#: E:\_LimeSurvey\svn/admin/html.php:439
+#: E:\_LimeSurvey\svn/admin/html.php:422
+#: E:\_LimeSurvey\svn/admin/html.php:430
 msgid "Printable Version of Survey"
 msgstr "Verzija upitnika za ispis"
 
-#: E:\_LimeSurvey\svn/admin/html.php:464
+#: E:\_LimeSurvey\svn/admin/html.php:455
 msgid "Edit survey settings"
 msgstr "Izmijeni postavke upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:477
+#: E:\_LimeSurvey\svn/admin/html.php:468
 msgid "Delete Current Survey"
 msgstr "Obriši trenutni upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:489
-#: E:\_LimeSurvey\svn/admin/html.php:495
+#: E:\_LimeSurvey\svn/admin/html.php:480
+#: E:\_LimeSurvey\svn/admin/html.php:486
 msgid "Reset Survey Logic"
 msgstr "Obriši upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:493
+#: E:\_LimeSurvey\svn/admin/html.php:484
 msgid "Currently there are no conditions configured for this survey."
 msgstr "Trenutno nema zadanih uvjeta u ovom upitniku."
 
-#: E:\_LimeSurvey\svn/admin/html.php:508
-#: E:\_LimeSurvey\svn/admin/html.php:1833
+#: E:\_LimeSurvey\svn/admin/html.php:499
+#: E:\_LimeSurvey\svn/admin/html.php:1824
 msgid "Export Survey Structure"
 msgstr "Izvezi upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:521
+#: E:\_LimeSurvey\svn/admin/html.php:512
 msgid "Set Assessment Rules"
 msgstr "Podesi vrednovanja ankete"
 
-#: E:\_LimeSurvey\svn/admin/html.php:532
+#: E:\_LimeSurvey\svn/admin/html.php:523
 msgid "Set Survey Quotas"
 msgstr "Podesi ograničenja (kvote) upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:543
+#: E:\_LimeSurvey\svn/admin/html.php:534
 msgid "Browse Responses For This Survey"
 msgstr "Prođi kroz odgovore za ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:556
+#: E:\_LimeSurvey\svn/admin/html.php:547
 msgid "Token management"
 msgstr "Upravljanje tokenima"
 
-#: E:\_LimeSurvey\svn/admin/html.php:563
+#: E:\_LimeSurvey\svn/admin/html.php:554
 msgid "Change question group order"
 msgstr "Promeni redoslijed grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:569
+#: E:\_LimeSurvey\svn/admin/html.php:560
 msgid "Question groups"
 msgstr "Grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:589
+#: E:\_LimeSurvey\svn/admin/html.php:580
 msgid "Add new group to survey"
 msgstr "Dodaj novu grupu u upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:593
-#: E:\_LimeSurvey\svn/admin/html.php:594
+#: E:\_LimeSurvey\svn/admin/html.php:584
+#: E:\_LimeSurvey\svn/admin/html.php:585
 msgid "Hide details of this Survey"
 msgstr "Sakrij detalje ovog upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:596
-#: E:\_LimeSurvey\svn/admin/html.php:597
+#: E:\_LimeSurvey\svn/admin/html.php:587
+#: E:\_LimeSurvey\svn/admin/html.php:588
 msgid "Show details of this survey"
 msgstr "Prikaži detalje ovog upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:601
-#: E:\_LimeSurvey\svn/admin/html.php:602
+#: E:\_LimeSurvey\svn/admin/html.php:592
+#: E:\_LimeSurvey\svn/admin/html.php:593
 msgid "Close this survey"
 msgstr "Zatvori ovaj upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:631
-#: E:\_LimeSurvey\svn/admin/html.php:2525
+#: E:\_LimeSurvey\svn/admin/html.php:622
+#: E:\_LimeSurvey\svn/admin/html.php:2516
 msgid "Answers to this survey are anonymized."
 msgstr "Odgovori na ovaj upitnik su anonimni."
 
-#: E:\_LimeSurvey\svn/admin/html.php:632
-#: E:\_LimeSurvey\svn/admin/html.php:2524
+#: E:\_LimeSurvey\svn/admin/html.php:623
+#: E:\_LimeSurvey\svn/admin/html.php:2515
 msgid "This survey is NOT anonymous."
 msgstr "Ovaj upitnik NIJE anoniman."
 
-#: E:\_LimeSurvey\svn/admin/html.php:633
+#: E:\_LimeSurvey\svn/admin/html.php:624
 msgid "It is presented question by question."
 msgstr "Prikaz pitanja je jedno po jedno."
 
-#: E:\_LimeSurvey\svn/admin/html.php:634
+#: E:\_LimeSurvey\svn/admin/html.php:625
 msgid "It is presented group by group."
 msgstr "Prikaz pitanja grupa po grupa."
 
-#: E:\_LimeSurvey\svn/admin/html.php:635
+#: E:\_LimeSurvey\svn/admin/html.php:626
 msgid "It is presented on one single page."
 msgstr "Prikaz svih pitanja na jednoj stranici."
 
-#: E:\_LimeSurvey\svn/admin/html.php:636
+#: E:\_LimeSurvey\svn/admin/html.php:627
 msgid "Responses will be date stamped"
 msgstr "Zabilježiti će se datum ispunjavanja upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:637
+#: E:\_LimeSurvey\svn/admin/html.php:628
 msgid "IP Addresses will be logged"
 msgstr "IP adrese će biti zabilježene"
 
-#: E:\_LimeSurvey\svn/admin/html.php:638
+#: E:\_LimeSurvey\svn/admin/html.php:629
 msgid "Referer-URL will be saved"
 msgstr "URL sa kojeg je pristupljeno biti će zapisan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:639
+#: E:\_LimeSurvey\svn/admin/html.php:630
 msgid "It uses cookies for access control."
 msgstr "Koriste se cookies za kontolu pristupa"
 
-#: E:\_LimeSurvey\svn/admin/html.php:640
+#: E:\_LimeSurvey\svn/admin/html.php:631
 msgid "If tokens are used, the public may register for this survey"
 msgstr "U slučaju da se koriste tokeni, pristup upitniku može biti javan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:641
+#: E:\_LimeSurvey\svn/admin/html.php:632
 msgid "Participants can save partially finished surveys"
 msgstr "Sudionici mogu snimiti parcijalno završene upitnike"
 
-#: E:\_LimeSurvey\svn/admin/html.php:657
+#: E:\_LimeSurvey\svn/admin/html.php:648
 msgid "Regenerate Question Codes:"
 msgstr "Ponovno generiranje kodova pitanja:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:661
-#: E:\_LimeSurvey\svn/admin/html.php:666
+#: E:\_LimeSurvey\svn/admin/html.php:652
+#: E:\_LimeSurvey\svn/admin/html.php:657
 msgid "Are you sure you want regenerate the question codes?"
 msgstr "Jeste li sigurni da želite ponovo generireti kodove pitanja?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:662
+#: E:\_LimeSurvey\svn/admin/html.php:653
 msgid "Straight"
 msgstr "Na jednoj stranici"
 
-#: E:\_LimeSurvey\svn/admin/html.php:667
+#: E:\_LimeSurvey\svn/admin/html.php:658
 msgid "By Group"
 msgstr "Po grupama pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:672
+#: E:\_LimeSurvey\svn/admin/html.php:663
 msgid "Survey URL"
 msgstr "URL upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:678
-#: E:\_LimeSurvey\svn/admin/html.php:685
+#: E:\_LimeSurvey\svn/admin/html.php:669
+#: E:\_LimeSurvey\svn/admin/html.php:676
 msgid "Survey URL For Language:"
 msgstr "URL upitnika za jezike:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:678
-#: E:\_LimeSurvey\svn/admin/html.php:685
+#: E:\_LimeSurvey\svn/admin/html.php:669
+#: E:\_LimeSurvey\svn/admin/html.php:676
 msgid "Flag"
 msgstr "Zastavica"
 
-#: E:\_LimeSurvey\svn/admin/html.php:696
-#: E:\_LimeSurvey\svn/admin/html.php:2748
+#: E:\_LimeSurvey\svn/admin/html.php:687
+#: E:\_LimeSurvey\svn/admin/html.php:2739
 msgid "Welcome:"
 msgstr "Tekst dobrodošlice:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:699
-#: E:\_LimeSurvey\svn/admin/html.php:2227
-#: E:\_LimeSurvey\svn/admin/html.php:3092
+#: E:\_LimeSurvey\svn/admin/html.php:690
+#: E:\_LimeSurvey\svn/admin/html.php:2218
+#: E:\_LimeSurvey\svn/admin/html.php:3083
 msgid "Administrator:"
 msgstr "Administrator:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:702
-#: E:\_LimeSurvey\svn/admin/html.php:2233
-#: E:\_LimeSurvey\svn/admin/html.php:3098
+#: E:\_LimeSurvey\svn/admin/html.php:693
+#: E:\_LimeSurvey\svn/admin/html.php:2224
+#: E:\_LimeSurvey\svn/admin/html.php:3089
 msgid "Fax To:"
 msgstr "Faks slati na:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:706
-#: E:\_LimeSurvey\svn/admin/html.php:2411
+#: E:\_LimeSurvey\svn/admin/html.php:697
+#: E:\_LimeSurvey\svn/admin/html.php:2402
 msgid "Start date/time:"
 msgstr "Početni datum/vrijeme:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:719
-#: E:\_LimeSurvey\svn/admin/html.php:2421
+#: E:\_LimeSurvey\svn/admin/html.php:710
+#: E:\_LimeSurvey\svn/admin/html.php:2412
 msgid "Expiry date/time:"
 msgstr "Datum/vrijeme isteka:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:731
-#: E:\_LimeSurvey\svn/admin/html.php:2260
-#: E:\_LimeSurvey\svn/admin/html.php:3118
+#: E:\_LimeSurvey\svn/admin/html.php:722
+#: E:\_LimeSurvey\svn/admin/html.php:2251
+#: E:\_LimeSurvey\svn/admin/html.php:3109
 msgid "Template:"
 msgstr "Predložak:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:735
-#: E:\_LimeSurvey\svn/admin/html.php:2182
-#: E:\_LimeSurvey\svn/admin/html.php:3055
+#: E:\_LimeSurvey\svn/admin/html.php:726
+#: E:\_LimeSurvey\svn/admin/html.php:2173
+#: E:\_LimeSurvey\svn/admin/html.php:3046
 msgid "Base Language:"
 msgstr "Osnovni jezik:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:744
-#: E:\_LimeSurvey\svn/admin/html.php:2187
+#: E:\_LimeSurvey\svn/admin/html.php:735
+#: E:\_LimeSurvey\svn/admin/html.php:2178
 msgid "Additional Languages"
 msgstr "Dodatni jezici"
 
-#: E:\_LimeSurvey\svn/admin/html.php:760
+#: E:\_LimeSurvey\svn/admin/html.php:751
 msgid "Exit Link"
 msgstr "Link za izlaz"
 
-#: E:\_LimeSurvey\svn/admin/html.php:765
+#: E:\_LimeSurvey\svn/admin/html.php:756
 msgid "Number of questions/groups"
 msgstr "Broj pitanja/grupa"
 
-#: E:\_LimeSurvey\svn/admin/html.php:767
+#: E:\_LimeSurvey\svn/admin/html.php:758
 msgid "Survey currently active"
 msgstr "Upitnik trenutno aktivan"
 
-#: E:\_LimeSurvey\svn/admin/html.php:781
+#: E:\_LimeSurvey\svn/admin/html.php:772
 msgid "Survey table name"
 msgstr "Naziv tablice upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:784
+#: E:\_LimeSurvey\svn/admin/html.php:775
 msgid "Hints"
 msgstr "Savjet"
 
-#: E:\_LimeSurvey\svn/admin/html.php:788
+#: E:\_LimeSurvey\svn/admin/html.php:779
 msgid "Survey cannot be activated yet."
 msgstr "Upitnik još uvijek ne može biti aktivan."
 
-#: E:\_LimeSurvey\svn/admin/html.php:791
+#: E:\_LimeSurvey\svn/admin/html.php:782
 msgid "You need to add groups"
 msgstr "Morate dodati grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:795
+#: E:\_LimeSurvey\svn/admin/html.php:786
 msgid "You need to add questions"
 msgstr "Morate dodati pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:843
+#: E:\_LimeSurvey\svn/admin/html.php:834
 msgid "Edit current question group"
 msgstr "Izmjeni trenutnu grupu pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:855
+#: E:\_LimeSurvey\svn/admin/html.php:846
 msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
 msgstr "Brisanje ove grupe pitanja će također obrisati sva pitanja i odgovore koji postoje. Jeste li sigurni da želite nastaviti?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:857
-#: E:\_LimeSurvey\svn/admin/html.php:864
+#: E:\_LimeSurvey\svn/admin/html.php:848
+#: E:\_LimeSurvey\svn/admin/html.php:855
 msgid "Delete current question group"
 msgstr "Obriši trenutnu grupu pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:862
+#: E:\_LimeSurvey\svn/admin/html.php:853
 msgid "Impossible to delete this group because there is at least one question having a condition on its content"
 msgstr "Nije moguće brisanje grupe pitanja zbog postojanja najmanje jednog pitanja koje ima uvjet u svojoj strukturi"
 
-#: E:\_LimeSurvey\svn/admin/html.php:878
+#: E:\_LimeSurvey\svn/admin/html.php:869
 msgid "Export current question group"
 msgstr "Izvezi trenutnu grupu pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:889
+#: E:\_LimeSurvey\svn/admin/html.php:880
 msgid "Change Question Order"
 msgstr "Promeni redoslijed pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:910
+#: E:\_LimeSurvey\svn/admin/html.php:901
 msgid "Add New Question to Group"
 msgstr "Dodaj novo pitanje u grupu"
 
-#: E:\_LimeSurvey\svn/admin/html.php:917
+#: E:\_LimeSurvey\svn/admin/html.php:908
 msgid "Hide Details of this Group"
 msgstr "Sakrij detalje ove grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:920
+#: E:\_LimeSurvey\svn/admin/html.php:911
 msgid "Show Details of this Group"
 msgstr "Prikaži detalje ove grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:925
+#: E:\_LimeSurvey\svn/admin/html.php:916
 msgid "Close this Group"
 msgstr "Zatvori ovu grupu pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:951
+#: E:\_LimeSurvey\svn/admin/html.php:942
 msgid "Questions with conditions to this group"
 msgstr "Pitanja sa uvjetima u ovoj grupi"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1001
+#: E:\_LimeSurvey\svn/admin/html.php:992
 msgid "Edit Current Question"
 msgstr "Promijeni trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1015
+#: E:\_LimeSurvey\svn/admin/html.php:1006
 msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
 msgstr "Brisanje ovog pitanja će također obrisati odgovore koje sadrži. Jeste li sigurni da želite nastaviti?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1016
+#: E:\_LimeSurvey\svn/admin/html.php:1007
 msgid "Delete Current Question"
 msgstr "Obriši trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1022
+#: E:\_LimeSurvey\svn/admin/html.php:1013
 msgid "It's impossible to delete this question because there is at least one question having a condition on it."
 msgstr "Nije moguće brisanje trenutnog pitanja jer uz njega postoji najmanje jedan uvjet."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1024
+#: E:\_LimeSurvey\svn/admin/html.php:1015
 msgid "Disabled - Delete Current Question"
 msgstr "Isključeno - Obriši trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1034
+#: E:\_LimeSurvey\svn/admin/html.php:1025
 msgid "Export this Question"
 msgstr "Izvezi ovo pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1048
-#: E:\_LimeSurvey\svn/admin/html.php:1055
+#: E:\_LimeSurvey\svn/admin/html.php:1039
+#: E:\_LimeSurvey\svn/admin/html.php:1046
 msgid "Copy Current Question"
 msgstr "Kopiraj trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1054
+#: E:\_LimeSurvey\svn/admin/html.php:1045
 msgid "You can't copy a question if the survey is active."
 msgstr "Ne može se kopirati pitanje kad je upitnik aktivan."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1067
+#: E:\_LimeSurvey\svn/admin/html.php:1058
 msgid "Set Conditions for this Question"
 msgstr "Postavi uvjete za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1080
-#: E:\_LimeSurvey\svn/admin/html.php:1085
+#: E:\_LimeSurvey\svn/admin/html.php:1071
+#: E:\_LimeSurvey\svn/admin/html.php:1076
 msgid "Preview This Question"
 msgstr "Pregled trenutnog pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1120
-#: E:\_LimeSurvey\svn/admin/html.php:1184
+#: E:\_LimeSurvey\svn/admin/html.php:1111
+#: E:\_LimeSurvey\svn/admin/html.php:1175
 msgid "Edit/Add Answers for this Question"
 msgstr "Mijenjaj/dodaj odgovore na trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1130
+#: E:\_LimeSurvey\svn/admin/html.php:1121
 msgid "Hide Details of this Question"
 msgstr "Sakrij detalje za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1133
+#: E:\_LimeSurvey\svn/admin/html.php:1124
 msgid "Show Details of this Question"
 msgstr "Prikaži detalje za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1136
+#: E:\_LimeSurvey\svn/admin/html.php:1127
 msgid "Close this Question"
 msgstr "Zatvori trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1146
+#: E:\_LimeSurvey\svn/admin/html.php:1137
 msgid "Code:"
 msgstr "Kod:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1150
+#: E:\_LimeSurvey\svn/admin/html.php:1141
 msgid "Mandatory Question"
 msgstr "Obavezno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1151
+#: E:\_LimeSurvey\svn/admin/html.php:1142
 msgid "Optional Question"
 msgstr "Opcionalno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1155
+#: E:\_LimeSurvey\svn/admin/html.php:1146
 msgid "Question:"
 msgstr "Pitanje:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1157
+#: E:\_LimeSurvey\svn/admin/html.php:1148
 msgid "Help:"
 msgstr "Pomoć:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1163
+#: E:\_LimeSurvey\svn/admin/html.php:1154
 msgid "Validation:"
 msgstr "Provjera:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1168
+#: E:\_LimeSurvey\svn/admin/html.php:1159
 msgid "Type:"
 msgstr "Tip:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1182
+#: E:\_LimeSurvey\svn/admin/html.php:1173
 msgid "You need to add answers to this question"
 msgstr "Morate dodati odgovore na trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1193
+#: E:\_LimeSurvey\svn/admin/html.php:1184
 msgid "Label Set"
 msgstr "Set markera"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1197
+#: E:\_LimeSurvey\svn/admin/html.php:1188
 msgid "You need to choose a label set for this question!"
 msgstr "Morate dodati set markera za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1217
+#: E:\_LimeSurvey\svn/admin/html.php:1208
 msgid "Second Label Set"
 msgstr "Mijenjaj ovaj set markera"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1221
+#: E:\_LimeSurvey\svn/admin/html.php:1212
 msgid "You need to choose a second label set for this question!"
 msgstr "Morate dodati set markera za trenutno pitanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1235
+#: E:\_LimeSurvey\svn/admin/html.php:1226
 msgid "Edit/Add second Label Sets"
 msgstr "Mijenjaj/Dodaj set markera"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1247
+#: E:\_LimeSurvey\svn/admin/html.php:1238
 msgid "Option 'Other':"
 msgstr "Opcija 'Ostalo':"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1256
+#: E:\_LimeSurvey\svn/admin/html.php:1247
 msgid "Mandatory:"
 msgstr "Obavezno:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1265
+#: E:\_LimeSurvey\svn/admin/html.php:1256
 msgid "Other questions having conditions on this question:"
 msgstr "Ostala pitanja koja imaju uvjete za trenutno pitanje:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1338
+#: E:\_LimeSurvey\svn/admin/html.php:1329
 msgid "Edit Answers"
 msgstr "Uredi odgovore"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1341
+#: E:\_LimeSurvey\svn/admin/html.php:1332
 msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Greška: Pokušavaš kopirati odgovore."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1373
+#: E:\_LimeSurvey\svn/admin/html.php:1364
 msgid "Code"
 msgstr "Kod"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1377
+#: E:\_LimeSurvey\svn/admin/html.php:1368
 msgid "Assessment value"
 msgstr "Vrijednost zadatka"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1387
-#: E:\_LimeSurvey\svn/admin/html.php:1988
+#: E:\_LimeSurvey\svn/admin/html.php:1378
+#: E:\_LimeSurvey\svn/admin/html.php:1979
 msgid "Action"
 msgstr "Akcija"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1390
+#: E:\_LimeSurvey\svn/admin/html.php:1381
 msgid "Order"
 msgstr "Red"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1468
-#: E:\_LimeSurvey\svn/admin/html.php:1538
+#: E:\_LimeSurvey\svn/admin/html.php:1459
+#: E:\_LimeSurvey\svn/admin/html.php:1529
 msgid "Answer:"
 msgstr "Odgovor"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1488
+#: E:\_LimeSurvey\svn/admin/html.php:1479
 msgid "Move answer option up"
 msgstr "Premijesti opciju odgovora gore"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1493
+#: E:\_LimeSurvey\svn/admin/html.php:1484
 msgid "Move answer option down"
 msgstr "Premijesti opciju odgovora dolje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1513
+#: E:\_LimeSurvey\svn/admin/html.php:1504
 msgid "New Answer"
 msgstr "Novi odgovor"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1559
+#: E:\_LimeSurvey\svn/admin/html.php:1550
 msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
 msgstr "Ne možete dodati odgovor ili mijenjati kodove odgovora na ovo pitanje zbog upitnika koji nije aktivan."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1580
-#: E:\_LimeSurvey\svn/admin/html.php:2081
+#: E:\_LimeSurvey\svn/admin/html.php:1571
+#: E:\_LimeSurvey\svn/admin/html.php:2072
 msgid "Add User"
 msgstr "Dodaj korisnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1594
+#: E:\_LimeSurvey\svn/admin/html.php:1585
 msgid "User added."
 msgstr "Korisnik dodan."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1596
-#: E:\_LimeSurvey\svn/admin/html.php:1650
-#: E:\_LimeSurvey\svn/admin/html.php:1717
-#: E:\_LimeSurvey\svn/admin/html.php:1782
-#: E:\_LimeSurvey\svn/admin/html.php:2060
-#: E:\_LimeSurvey\svn/admin/html.php:2109
+#: E:\_LimeSurvey\svn/admin/html.php:1587
+#: E:\_LimeSurvey\svn/admin/html.php:1641
+#: E:\_LimeSurvey\svn/admin/html.php:1708
+#: E:\_LimeSurvey\svn/admin/html.php:1773
+#: E:\_LimeSurvey\svn/admin/html.php:2051
+#: E:\_LimeSurvey\svn/admin/html.php:2100
 msgid "Set Survey Rights"
 msgstr "Podesi privilegije upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1604
+#: E:\_LimeSurvey\svn/admin/html.php:1595
 msgid "Failed to add user."
 msgstr "Neuspješno dodavanje korisnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1604
+#: E:\_LimeSurvey\svn/admin/html.php:1595
 msgid "Username already exists."
 msgstr "Korisnik već postoji."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1610
-#: E:\_LimeSurvey\svn/admin/html.php:1665
+#: E:\_LimeSurvey\svn/admin/html.php:1601
+#: E:\_LimeSurvey\svn/admin/html.php:1656
 msgid "Failed to add User."
 msgstr "Neuspješno dodavanje korisnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1610
-#: E:\_LimeSurvey\svn/admin/html.php:1665
+#: E:\_LimeSurvey\svn/admin/html.php:1601
+#: E:\_LimeSurvey\svn/admin/html.php:1656
 msgid "No Username selected."
 msgstr "Nijedan korisnik nije izabran."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1623
-#: E:\_LimeSurvey\svn/admin/html.php:2096
+#: E:\_LimeSurvey\svn/admin/html.php:1614
+#: E:\_LimeSurvey\svn/admin/html.php:2087
 msgid "Add User Group"
 msgstr "Dodaj grupu korisnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1647
+#: E:\_LimeSurvey\svn/admin/html.php:1638
 msgid "User Group added."
 msgstr "Grupa korisnika je dodana."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1659
+#: E:\_LimeSurvey\svn/admin/html.php:1650
 msgid "Failed to add User Group."
 msgstr "Neuspješno dodavanje grupe korisnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1677
+#: E:\_LimeSurvey\svn/admin/html.php:1668
 msgid "Deleting User"
 msgstr "Brisanje korisnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1688
-#: E:\_LimeSurvey\svn/admin/html.php:1986
+#: E:\_LimeSurvey\svn/admin/html.php:1679
+#: E:\_LimeSurvey\svn/admin/html.php:1977
 msgid "Username"
 msgstr "Korisničko ime"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1692
+#: E:\_LimeSurvey\svn/admin/html.php:1683
 msgid "Could not delete user. User was not supplied."
 msgstr "Nije moguće obrisati korisnika. Korisničko ime nije uneseno."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1719
+#: E:\_LimeSurvey\svn/admin/html.php:1710
 msgid "Edit Survey Properties"
 msgstr "Promijeni podešavanja upitnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:1720
-#: E:\_LimeSurvey\svn/admin/html.php:1785
+#: E:\_LimeSurvey\svn/admin/html.php:1711
+#: E:\_LimeSurvey\svn/admin/html.php:1776
 msgid "Define Questions"
 msgstr "Definiraj pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1722
-#: E:\_LimeSurvey\svn/admin/html.php:1787
+#: E:\_LimeSurvey\svn/admin/html.php:1713
+#: E:\_LimeSurvey\svn/admin/html.php:1778
 msgid "Export"
 msgstr "Izvoz"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1723
-#: E:\_LimeSurvey\svn/admin/html.php:1788
+#: E:\_LimeSurvey\svn/admin/html.php:1714
+#: E:\_LimeSurvey\svn/admin/html.php:1779
 msgid "Delete Survey"
 msgstr "Obriši upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1784
+#: E:\_LimeSurvey\svn/admin/html.php:1775
 msgid "Edit Survey Property"
 msgstr "Promena podataka o upitniku"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1786
+#: E:\_LimeSurvey\svn/admin/html.php:1777
 msgid "Browse Response"
 msgstr "Pregled odgovora"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1838
+#: E:\_LimeSurvey\svn/admin/html.php:1829
 msgid "LimeSurvey Survey File (*.csv)"
 msgstr "LimeSurvey datoteka upitnika (*.csv)"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1843
+#: E:\_LimeSurvey\svn/admin/html.php:1834
 msgid "queXML Survey XML Format (*.xml)"
 msgstr "queXML Survey XML Format (*.xml)"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1855
-#: E:\_LimeSurvey\svn/admin/html.php:1897
-#: E:\_LimeSurvey\svn/admin/html.php:1950
+#: E:\_LimeSurvey\svn/admin/html.php:1846
+#: E:\_LimeSurvey\svn/admin/html.php:1888
+#: E:\_LimeSurvey\svn/admin/html.php:1941
 msgid "Save for Lsrc (*.csv)"
 msgstr "Snimi za Lsrc (*.csv)"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1861
-#: E:\_LimeSurvey\svn/admin/html.php:1907
-#: E:\_LimeSurvey\svn/admin/html.php:1960
+#: E:\_LimeSurvey\svn/admin/html.php:1852
+#: E:\_LimeSurvey\svn/admin/html.php:1898
+#: E:\_LimeSurvey\svn/admin/html.php:1951
 msgid "Export To File"
 msgstr "Izvezi predložak"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1875
+#: E:\_LimeSurvey\svn/admin/html.php:1866
 msgid "Export Group Structure"
 msgstr "Izvezi strukturu grupe"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1881
-#: E:\_LimeSurvey\svn/admin/html.php:1934
+#: E:\_LimeSurvey\svn/admin/html.php:1872
+#: E:\_LimeSurvey\svn/admin/html.php:1925
 msgid "LimeSurvey group File (*.csv)"
 msgstr "LimeSurvey datoteka grupe (*.csv)"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1928
+#: E:\_LimeSurvey\svn/admin/html.php:1919
 msgid "Export Question Structure"
 msgstr "Izvezi strukturu pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1983
+#: E:\_LimeSurvey\svn/admin/html.php:1974
 msgid "Survey Security"
 msgstr "Sigurnost upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:1987
+#: E:\_LimeSurvey\svn/admin/html.php:1978
 msgid "User Group"
 msgstr "Grupa korisnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2075
+#: E:\_LimeSurvey\svn/admin/html.php:2066
 msgid "User"
 msgstr "Korisnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2081
+#: E:\_LimeSurvey\svn/admin/html.php:2072
 msgid "Please select a user first"
 msgstr "Molim najprije odaberite korisnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2090
+#: E:\_LimeSurvey\svn/admin/html.php:2081
 msgid "Groups"
 msgstr "Grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2096
+#: E:\_LimeSurvey\svn/admin/html.php:2087
 msgid "Please select a user group first"
 msgstr "Molim najprije odaberite korisničku grupu"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2142
+#: E:\_LimeSurvey\svn/admin/html.php:2133
 msgid "Update survey rights successful."
 msgstr "Uspješno dodavanje privilegija upitnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2146
+#: E:\_LimeSurvey\svn/admin/html.php:2137
 msgid "Failed to update survey rights!"
 msgstr "Neuspješno dodavanje privilegija upitnika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2173
+#: E:\_LimeSurvey\svn/admin/html.php:2164
 msgid "Edit survey settings - Step 1 of 2"
 msgstr "Uređivanje upitnika - Korak 1 od 2"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2206
+#: E:\_LimeSurvey\svn/admin/html.php:2197
 msgid "Remove"
 msgstr "Obriši"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2229
-#: E:\_LimeSurvey\svn/admin/html.php:3094
+#: E:\_LimeSurvey\svn/admin/html.php:2220
+#: E:\_LimeSurvey\svn/admin/html.php:3085
 msgid "Admin Email:"
 msgstr "Email administratora:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2231
-#: E:\_LimeSurvey\svn/admin/html.php:3096
+#: E:\_LimeSurvey\svn/admin/html.php:2222
+#: E:\_LimeSurvey\svn/admin/html.php:3087
 msgid "Bounce Email:"
 msgstr "E-mail za povrat (bounce):"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2242
-#: E:\_LimeSurvey\svn/admin/html.php:3108
+#: E:\_LimeSurvey\svn/admin/html.php:2233
+#: E:\_LimeSurvey\svn/admin/html.php:3099
 msgid "Presentation & Navigation"
 msgstr "Prezentacija i navigacija"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2245
-#: E:\_LimeSurvey\svn/admin/html.php:3111
+#: E:\_LimeSurvey\svn/admin/html.php:2236
+#: E:\_LimeSurvey\svn/admin/html.php:3102
 msgid "Format:"
 msgstr "Format:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2249
-#: E:\_LimeSurvey\svn/admin/html.php:3113
+#: E:\_LimeSurvey\svn/admin/html.php:2240
+#: E:\_LimeSurvey\svn/admin/html.php:3104
 msgid "Question by Question"
 msgstr "Pitanje za pitanjem"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2278
-#: E:\_LimeSurvey\svn/admin/html.php:3134
+#: E:\_LimeSurvey\svn/admin/html.php:2269
+#: E:\_LimeSurvey\svn/admin/html.php:3125
 msgid "Template Preview:"
 msgstr "Pregled predloška:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2283
-#: E:\_LimeSurvey\svn/admin/html.php:3139
+#: E:\_LimeSurvey\svn/admin/html.php:2274
+#: E:\_LimeSurvey\svn/admin/html.php:3130
 msgid "Allow Saves?"
 msgstr "Dozvoli snimanje?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2294
-#: E:\_LimeSurvey\svn/admin/html.php:3150
+#: E:\_LimeSurvey\svn/admin/html.php:2285
+#: E:\_LimeSurvey\svn/admin/html.php:3141
 msgid "Show [<< Prev] button"
 msgstr "Prikaži [<<Pret] gumb"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2305
-#: E:\_LimeSurvey\svn/admin/html.php:3157
+#: E:\_LimeSurvey\svn/admin/html.php:2296
+#: E:\_LimeSurvey\svn/admin/html.php:3148
 msgid "Participants may print answers?"
 msgstr "Sudionici mogu ispisati odgovore na pisaču?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2317
-#: E:\_LimeSurvey\svn/admin/html.php:3164
+#: E:\_LimeSurvey\svn/admin/html.php:2308
+#: E:\_LimeSurvey\svn/admin/html.php:3155
 msgid "Public statistics?"
 msgstr "Javna statistika?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2329
-#: E:\_LimeSurvey\svn/admin/html.php:3171
+#: E:\_LimeSurvey\svn/admin/html.php:2320
+#: E:\_LimeSurvey\svn/admin/html.php:3162
 msgid "Show graphs in public statistics?"
 msgstr "Prikaži grafikone u javno dostupnoj statistici?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2341
-#: E:\_LimeSurvey\svn/admin/html.php:3178
+#: E:\_LimeSurvey\svn/admin/html.php:2332
+#: E:\_LimeSurvey\svn/admin/html.php:3169
 msgid "List survey publicly:"
 msgstr "Javno objavi upitnik:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2354
-#: E:\_LimeSurvey\svn/admin/html.php:3194
+#: E:\_LimeSurvey\svn/admin/html.php:2345
+#: E:\_LimeSurvey\svn/admin/html.php:3185
 msgid "Automatically load URL when survey complete?"
 msgstr "Automatski učitaj završni URL nakon ispunjenog upitnika?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2369
-#: E:\_LimeSurvey\svn/admin/html.php:3217
+#: E:\_LimeSurvey\svn/admin/html.php:2360
+#: E:\_LimeSurvey\svn/admin/html.php:3208
 msgid "Publication & Access control"
 msgstr "Publiciranje i kontrola pristupa"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2385
-#: E:\_LimeSurvey\svn/admin/html.php:3228
+#: E:\_LimeSurvey\svn/admin/html.php:2376
+#: E:\_LimeSurvey\svn/admin/html.php:3219
 msgid "Set token length to:"
 msgstr "Postavi dužinu tokena na:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2390
-#: E:\_LimeSurvey\svn/admin/html.php:3233
+#: E:\_LimeSurvey\svn/admin/html.php:2381
+#: E:\_LimeSurvey\svn/admin/html.php:3224
 msgid "Allow public registration?"
 msgstr "Prihvati javnu registraciju?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2424
-#: E:\_LimeSurvey\svn/admin/html.php:3250
+#: E:\_LimeSurvey\svn/admin/html.php:2415
+#: E:\_LimeSurvey\svn/admin/html.php:3241
 msgid "Set cookie to prevent repeated participation?"
 msgstr "Postavi kolačić kako bi spriječio ponovno učestovanje?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2437
-#: E:\_LimeSurvey\svn/admin/html.php:3261
+#: E:\_LimeSurvey\svn/admin/html.php:2428
+#: E:\_LimeSurvey\svn/admin/html.php:3252
 msgid "Use CAPTCHA for"
 msgstr "Koristi CAPTCHA za "
 
-#: E:\_LimeSurvey\svn/admin/html.php:2441
-#: E:\_LimeSurvey\svn/admin/html.php:2445
+#: E:\_LimeSurvey\svn/admin/html.php:2432
+#: E:\_LimeSurvey\svn/admin/html.php:2436
+#: E:\_LimeSurvey\svn/admin/html.php:2440
 #: E:\_LimeSurvey\svn/admin/html.php:2449
-#: E:\_LimeSurvey\svn/admin/html.php:2458
-#: E:\_LimeSurvey\svn/admin/html.php:3263
-#: E:\_LimeSurvey\svn/admin/html.php:3264
-#: E:\_LimeSurvey\svn/admin/html.php:3265
-#: E:\_LimeSurvey\svn/admin/html.php:3267
+#: E:\_LimeSurvey\svn/admin/html.php:3254
+#: E:\_LimeSurvey\svn/admin/html.php:3255
+#: E:\_LimeSurvey\svn/admin/html.php:3256
+#: E:\_LimeSurvey\svn/admin/html.php:3258
 msgid "Survey Access"
 msgstr "Pristup upitniku"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2441
-#: E:\_LimeSurvey\svn/admin/html.php:2445
-#: E:\_LimeSurvey\svn/admin/html.php:2453
-#: E:\_LimeSurvey\svn/admin/html.php:2461
-#: E:\_LimeSurvey\svn/admin/html.php:3263
-#: E:\_LimeSurvey\svn/admin/html.php:3264
-#: E:\_LimeSurvey\svn/admin/html.php:3266
-#: E:\_LimeSurvey\svn/admin/html.php:3268
+#: E:\_LimeSurvey\svn/admin/html.php:2432
+#: E:\_LimeSurvey\svn/admin/html.php:2436
+#: E:\_LimeSurvey\svn/admin/html.php:2444
+#: E:\_LimeSurvey\svn/admin/html.php:2452
+#: E:\_LimeSurvey\svn/admin/html.php:3254
+#: E:\_LimeSurvey\svn/admin/html.php:3255
+#: E:\_LimeSurvey\svn/admin/html.php:3257
+#: E:\_LimeSurvey\svn/admin/html.php:3259
 msgid "Registration"
 msgstr "Registracija"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2441
-#: E:\_LimeSurvey\svn/admin/html.php:2449
-#: E:\_LimeSurvey\svn/admin/html.php:2453
-#: E:\_LimeSurvey\svn/admin/html.php:2464
-#: E:\_LimeSurvey\svn/admin/html.php:3263
-#: E:\_LimeSurvey\svn/admin/html.php:3265
-#: E:\_LimeSurvey\svn/admin/html.php:3266
-#: E:\_LimeSurvey\svn/admin/html.php:3269
+#: E:\_LimeSurvey\svn/admin/html.php:2432
+#: E:\_LimeSurvey\svn/admin/html.php:2440
+#: E:\_LimeSurvey\svn/admin/html.php:2444
+#: E:\_LimeSurvey\svn/admin/html.php:2455
+#: E:\_LimeSurvey\svn/admin/html.php:3254
+#: E:\_LimeSurvey\svn/admin/html.php:3256
+#: E:\_LimeSurvey\svn/admin/html.php:3257
+#: E:\_LimeSurvey\svn/admin/html.php:3260
 msgid "Save & Load"
 msgstr "Snimanje i učitavanje"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2472
-#: E:\_LimeSurvey\svn/admin/html.php:3274
+#: E:\_LimeSurvey\svn/admin/html.php:2463
+#: E:\_LimeSurvey\svn/admin/html.php:3265
 msgid "Use HTML format for token emails?"
 msgstr "Koristi HTML format za slanje tokena?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2473
+#: E:\_LimeSurvey\svn/admin/html.php:2464
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
 msgstr "Ukoliko izmijeniš način slanja poruka, trebaš ispraviti i predložak poruke da bude u skladu sa novin načinom slanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2487
-#: E:\_LimeSurvey\svn/admin/html.php:3286
+#: E:\_LimeSurvey\svn/admin/html.php:2478
+#: E:\_LimeSurvey\svn/admin/html.php:3277
 msgid "Notification & Data Management"
 msgstr "Izvješćivanje i upravljanje podacima"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2491
-#: E:\_LimeSurvey\svn/admin/html.php:3289
+#: E:\_LimeSurvey\svn/admin/html.php:2482
+#: E:\_LimeSurvey\svn/admin/html.php:3280
 msgid "Admin Notification:"
 msgstr "Obavijesti administratora:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2498
-#: E:\_LimeSurvey\svn/admin/html.php:3295
+#: E:\_LimeSurvey\svn/admin/html.php:2489
+#: E:\_LimeSurvey\svn/admin/html.php:3286
 msgid "Email responses to:"
 msgstr "Pošalji odgovore na:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2503
-#: E:\_LimeSurvey\svn/admin/html.php:3300
+#: E:\_LimeSurvey\svn/admin/html.php:2494
+#: E:\_LimeSurvey\svn/admin/html.php:3291
 msgid "Anonymous answers?"
 msgstr "Anonimni odgovori?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2511
+#: E:\_LimeSurvey\svn/admin/html.php:2502
 msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr "Ne možeš koristiti anonimne odgovore kad je uključena opcija za obavezno korištenje tokena."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2516
-#: E:\_LimeSurvey\svn/admin/html.php:3308
+#: E:\_LimeSurvey\svn/admin/html.php:2507
+#: E:\_LimeSurvey\svn/admin/html.php:3299
 msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Ako postavite ovaj upitnik na anonimno i stvorite tablicu tokena, LimeSurvey će označiti dovršene tokene samo sa 'Y' umjesto sa datumom/vremenom kako bi osigurao anonimnost sudjelovanja ispitanika."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2526
-#: E:\_LimeSurvey\svn/admin/html.php:2550
-#: E:\_LimeSurvey\svn/admin/html.php:2575
-#: E:\_LimeSurvey\svn/admin/html.php:2601
+#: E:\_LimeSurvey\svn/admin/html.php:2517
+#: E:\_LimeSurvey\svn/admin/html.php:2541
+#: E:\_LimeSurvey\svn/admin/html.php:2566
+#: E:\_LimeSurvey\svn/admin/html.php:2592
 msgid "Cannot be changed"
 msgstr "Ne može biti promjenjeno."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2544
-#: E:\_LimeSurvey\svn/admin/html.php:3318
+#: E:\_LimeSurvey\svn/admin/html.php:2535
+#: E:\_LimeSurvey\svn/admin/html.php:3309
 msgid "Date Stamp?"
 msgstr "Datum otiska?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2548
+#: E:\_LimeSurvey\svn/admin/html.php:2539
 msgid "Responses will not be date stamped."
 msgstr "Odgovori neće imati datum otiska."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2549
+#: E:\_LimeSurvey\svn/admin/html.php:2540
 msgid "Responses will be date stamped."
 msgstr "Odgovori će imati datum otiska."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2568
-#: E:\_LimeSurvey\svn/admin/html.php:3325
+#: E:\_LimeSurvey\svn/admin/html.php:2559
+#: E:\_LimeSurvey\svn/admin/html.php:3316
 msgid "Save IP Address?"
 msgstr "Snimi IP adresu?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2573
+#: E:\_LimeSurvey\svn/admin/html.php:2564
 msgid "Responses will not have the IP address logged."
 msgstr "Odgovori neće imati zabilježenu IP adresu."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2574
+#: E:\_LimeSurvey\svn/admin/html.php:2565
 msgid "Responses will have the IP address logged"
 msgstr "Odgovori će imati zabilježenu IP adresu."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2594
-#: E:\_LimeSurvey\svn/admin/html.php:3332
+#: E:\_LimeSurvey\svn/admin/html.php:2585
+#: E:\_LimeSurvey\svn/admin/html.php:3323
 msgid "Save Referring URL?"
 msgstr "Snimi povezani URL?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2599
+#: E:\_LimeSurvey\svn/admin/html.php:2590
 msgid "Responses will not have their referring URL logged."
 msgstr "Odgovori neće imati povezani URL snimljen."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2600
+#: E:\_LimeSurvey\svn/admin/html.php:2591
 msgid "Responses will have their referring URL logged."
 msgstr "Odgovori će imati povezani URL snimljen."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2620
-#: E:\_LimeSurvey\svn/admin/html.php:3339
+#: E:\_LimeSurvey\svn/admin/html.php:2611
+#: E:\_LimeSurvey\svn/admin/html.php:3330
 msgid "Enable token-based response persistence?"
 msgstr "Aktiviraj odgovaranje uz obavezno korištenje tokena?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2621
+#: E:\_LimeSurvey\svn/admin/html.php:2612
 msgid "This option can't be set if Anonymous answers are used"
 msgstr "Ova opcija ne može biti postavljena ukoliko se koriste anonimni odgovori"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2631
-#: E:\_LimeSurvey\svn/admin/html.php:3346
+#: E:\_LimeSurvey\svn/admin/html.php:2622
+#: E:\_LimeSurvey\svn/admin/html.php:3337
 msgid "Enable assessment mode?"
 msgstr "Omogući način procjene?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2660
+#: E:\_LimeSurvey\svn/admin/html.php:2651
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "zip biblioteka nije podržana kroz PHP, ZIP isključen"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2669
+#: E:\_LimeSurvey\svn/admin/html.php:2660
 msgid "Uploaded Resources Management"
 msgstr "Upravljanje uploadanim resursima"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2675
+#: E:\_LimeSurvey\svn/admin/html.php:2666
 msgid "Browse Uploaded Resources"
 msgstr "Pregledaj učitane resurse"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2677
+#: E:\_LimeSurvey\svn/admin/html.php:2668
 msgid "Export Resources As ZIP Archive"
 msgstr "Eksportiranje resursa u ZIP arhivu"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2678
+#: E:\_LimeSurvey\svn/admin/html.php:2669
 msgid "Select ZIP File:"
 msgstr "Izaberi ZIP datoteku:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2681
+#: E:\_LimeSurvey\svn/admin/html.php:2672
 msgid "Import Resources ZIP Archive"
 msgstr "Importiranje resursa iz ZIP arhive"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2692
+#: E:\_LimeSurvey\svn/admin/html.php:2683
 msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
 msgstr "Sva pitanja, odgovori i dr za obrisani jezik biti će izgubljeni. Jeste li sigurni?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2692
+#: E:\_LimeSurvey\svn/admin/html.php:2683
 msgid "Save and Continue"
 msgstr "Snimi i nastavi"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2720
+#: E:\_LimeSurvey\svn/admin/html.php:2711
 msgid "This will replace the existing text. Continue?"
 msgstr "Ovo će zamijeniti postojeći tekst. Nastavak?"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2726
+#: E:\_LimeSurvey\svn/admin/html.php:2717
 msgid "Edit survey settings - Step 2 of 2"
 msgstr "Uređivanje upitnika - Korak 2 od 2"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2746
-#: E:\_LimeSurvey\svn/admin/html.php:3084
-#: E:\_LimeSurvey\svn/admin/html.php:3086
+#: E:\_LimeSurvey\svn/admin/html.php:2737
+#: E:\_LimeSurvey\svn/admin/html.php:3075
+#: E:\_LimeSurvey\svn/admin/html.php:3077
 msgid "Welcome message:"
 msgstr "Pozdravna poruka:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2750
-#: E:\_LimeSurvey\svn/admin/html.php:2752
-#: E:\_LimeSurvey\svn/admin/html.php:3088
-#: E:\_LimeSurvey\svn/admin/html.php:3090
+#: E:\_LimeSurvey\svn/admin/html.php:2741
+#: E:\_LimeSurvey\svn/admin/html.php:2743
+#: E:\_LimeSurvey\svn/admin/html.php:3079
+#: E:\_LimeSurvey\svn/admin/html.php:3081
 msgid "End message:"
 msgstr "Kraj poruke:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2754
-#: E:\_LimeSurvey\svn/admin/html.php:3185
+#: E:\_LimeSurvey\svn/admin/html.php:2745
+#: E:\_LimeSurvey\svn/admin/html.php:3176
 msgid "End URL:"
 msgstr "Završni URL:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2757
-#: E:\_LimeSurvey\svn/admin/html.php:3190
+#: E:\_LimeSurvey\svn/admin/html.php:2748
+#: E:\_LimeSurvey\svn/admin/html.php:3181
 msgid "URL description:"
 msgstr "Opis URL-a:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2760
-#: E:\_LimeSurvey\svn/admin/html.php:3201
+#: E:\_LimeSurvey\svn/admin/html.php:2751
+#: E:\_LimeSurvey\svn/admin/html.php:3192
 msgid "Date format:"
 msgstr "Format datuma:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2864
+#: E:\_LimeSurvey\svn/admin/html.php:2855
 msgid "Change Group Order"
 msgstr "Promijeni redoslijed grupa pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2874
+#: E:\_LimeSurvey\svn/admin/html.php:2865
 msgid "Current survey has questions with conditions outside their own group"
 msgstr "Trenutni upitnik sadrži pitanja sa uvjetima izvan njihove grupe pitanja"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2874
+#: E:\_LimeSurvey\svn/admin/html.php:2865
 msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
 msgstr "Menjanje redoslijeda grupa je ograničeno kako bi se osigurao redoslijed pitanja koja imaju uvjete i njihov redoslijed"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2874
+#: E:\_LimeSurvey\svn/admin/html.php:2865
 msgid "The following groups are concerned"
 msgstr "Sljedeće grupe pitanja su u pitanju"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2879
+#: E:\_LimeSurvey\svn/admin/html.php:2870
 #, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
 msgstr "Grupa %s ovisi o grupi %s, pogledajte označene uvjete u:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2884
+#: E:\_LimeSurvey\svn/admin/html.php:2875
 msgid "QID"
 msgstr "QID"
 
-#: E:\_LimeSurvey\svn/admin/html.php:2950
+#: E:\_LimeSurvey\svn/admin/html.php:2941
 msgid "Place after.."
 msgstr "Postavi iza..."
 
-#: E:\_LimeSurvey\svn/admin/html.php:2955
+#: E:\_LimeSurvey\svn/admin/html.php:2946
 msgid "At beginning"
 msgstr "Na početak"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3045
+#: E:\_LimeSurvey\svn/admin/html.php:3036
 msgid "Create or Import Survey"
 msgstr "Stvori ili uvezi novi upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3049
-#: E:\_LimeSurvey\svn/admin/html.php:3103
-#: E:\_LimeSurvey\svn/admin/html.php:3213
-#: E:\_LimeSurvey\svn/admin/html.php:3282
-#: E:\_LimeSurvey\svn/admin/html.php:3358
+#: E:\_LimeSurvey\svn/admin/html.php:3040
+#: E:\_LimeSurvey\svn/admin/html.php:3094
+#: E:\_LimeSurvey\svn/admin/html.php:3204
+#: E:\_LimeSurvey\svn/admin/html.php:3273
+#: E:\_LimeSurvey\svn/admin/html.php:3349
 msgid "Error: You have to enter a title for this survey."
 msgstr "Greška: Morate unjeti naziv ovog upitnika"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3074
+#: E:\_LimeSurvey\svn/admin/html.php:3065
 msgid "This setting cannot be changed later!"
 msgstr "Ova postavka ne može se naknadno promijeniti!"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3079
+#: E:\_LimeSurvey\svn/admin/html.php:3070
 msgid "(This field is mandatory.)"
 msgstr "(Ovo polje je obavezno)"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3103
-#: E:\_LimeSurvey\svn/admin/html.php:3213
-#: E:\_LimeSurvey\svn/admin/html.php:3282
-#: E:\_LimeSurvey\svn/admin/html.php:3358
+#: E:\_LimeSurvey\svn/admin/html.php:3094
+#: E:\_LimeSurvey\svn/admin/html.php:3204
+#: E:\_LimeSurvey\svn/admin/html.php:3273
+#: E:\_LimeSurvey\svn/admin/html.php:3349
 msgid "Create Survey"
 msgstr "Kreirajte upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3240
+#: E:\_LimeSurvey\svn/admin/html.php:3231
 msgid "Start date:"
 msgstr "Početni datum:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3242
-#: E:\_LimeSurvey\svn/admin/html.php:3247
+#: E:\_LimeSurvey\svn/admin/html.php:3233
+#: E:\_LimeSurvey\svn/admin/html.php:3238
 #, php-format
 msgid "Date format: %s"
 msgstr "Format datuma: %s"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3245
+#: E:\_LimeSurvey\svn/admin/html.php:3236
 msgid "Expiry Date:"
 msgstr "Datum isteka:"
 
+#: E:\_LimeSurvey\svn/admin/html.php:3354
 #: E:\_LimeSurvey\svn/admin/html.php:3363
-#: E:\_LimeSurvey\svn/admin/html.php:3372
 msgid "Import Survey"
 msgstr "Uvezi upitnik"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3368
+#: E:\_LimeSurvey\svn/admin/html.php:3359
 msgid "Select CSV/SQL File:"
 msgstr "Izaberi CSV/SQL tip datoteke:"
 
-#: E:\_LimeSurvey\svn/admin/html.php:3370
+#: E:\_LimeSurvey\svn/admin/html.php:3361
 msgid "Convert resources links and INSERTANS fields?"
 msgstr "Konvertirati linkove resursa i polja INSERTANS?"
 
@@ -6698,6 +6702,7 @@ msgid "Note: You MUST enter a new question code!"
 msgstr "Napomena: MORATE unjeti novi kod pitanja!"
 
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:71
+#: E:\_LimeSurvey\svn/admin/questionhandling.php:316
 msgid "Label set:"
 msgstr "Set markera:"
 
@@ -6741,12 +6746,7 @@ msgstr "Tip pitanja:"
 msgid "Cannot be modified (Survey is active)"
 msgstr "Ne može se promijeniti (upitnik je aktivan)"
 
-#: E:\_LimeSurvey\svn/admin/questionhandling.php:316
-msgid "Label Set:"
-msgstr "Set markera:"
-
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:365
-#: E:\_LimeSurvey\svn/admin/questionhandling.php:366
 #: E:\_LimeSurvey\svn/admin/questionhandling.php:402
 msgid "Survey is currently active."
 msgstr "Upitnik je trenutno aktivan."
@@ -7015,106 +7015,106 @@ msgstr "Brza statistika"
 msgid "General filters"
 msgstr "Općeniti filteri"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:226
-msgid "Response ID"
-msgstr "ID odgovora"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:227
-msgid "Greater than:"
-msgstr "Veće od:"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:231
-msgid "Less than:"
-msgstr "Manje od:"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:243
-msgid "Submission date"
-msgstr "Datum slanja"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:244
-msgid "Equals:"
-msgstr "je jednako:"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:248
-msgid "Later than:"
-msgstr "Nakon:"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:251
-msgid "Earlier than:"
-msgstr "Prije:"
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:264
+#: E:\_LimeSurvey\svn/admin/statistics.php:229
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
 msgstr "Nije instalirana GD biblioteka.Za prikaz grafikona potrebno je da GD biblioteka ispravno radi."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:265
-#: E:\_LimeSurvey\svn/admin/statistics.php:269
+#: E:\_LimeSurvey\svn/admin/statistics.php:230
+#: E:\_LimeSurvey\svn/admin/statistics.php:234
 msgid "visit http://us2.php.net/manual/en/ref.image.php for more information"
 msgstr "posjetite http://us2.php.net/manual/en/ref.image.php za više informacija"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:268
+#: E:\_LimeSurvey\svn/admin/statistics.php:233
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
 msgstr "Nije instalirana Freetype biblioteka. Za prikaz grafikona potrebno je da Freetype biblioteka ispravno radi."
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:296
+#: E:\_LimeSurvey\svn/admin/statistics.php:261
 msgid "Data selection"
 msgstr "Odabir datuma"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:297
+#: E:\_LimeSurvey\svn/admin/statistics.php:262
 msgid "Include:"
 msgstr "Dodaj:"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:308
-msgid "Don't consider NON completed responses"
-msgstr "NE uzimaj u obzir odgovore koji nisu dovršeni."
-
-#: E:\_LimeSurvey\svn/admin/statistics.php:313
+#: E:\_LimeSurvey\svn/admin/statistics.php:268
 msgid "View summary of all available fields"
 msgstr "Pregledaj sažetak za sve odgovore"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:320
+#: E:\_LimeSurvey\svn/admin/statistics.php:278
+msgid "Don't consider NON completed responses"
+msgstr "NE uzimaj u obzir odgovore koji nisu dovršeni."
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:286
+msgid "Response ID"
+msgstr "ID odgovora"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:287
+msgid "Greater than:"
+msgstr "Veće od:"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:291
+msgid "Less than:"
+msgstr "Manje od:"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:303
+msgid "Submission date"
+msgstr "Datum slanja"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:304
+msgid "Equals:"
+msgstr "je jednako:"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:308
+msgid "Later than:"
+msgstr "Nakon:"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:311
+msgid "Earlier than:"
+msgstr "Prije:"
+
+#: E:\_LimeSurvey\svn/admin/statistics.php:321
 msgid "Output options"
 msgstr "Izlazne opcije"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:322
+#: E:\_LimeSurvey\svn/admin/statistics.php:323
 msgid "Show graphs"
 msgstr "Prikaži grafikone"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:334
+#: E:\_LimeSurvey\svn/admin/statistics.php:335
 msgid "Select output format"
 msgstr "Odaberi izlazni format"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:339
-#: E:\_LimeSurvey\svn/admin/statistics.php:1581
+#: E:\_LimeSurvey\svn/admin/statistics.php:340
+#: E:\_LimeSurvey\svn/admin/statistics.php:1582
 msgid "View stats"
 msgstr "Prikaži statistiku"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:345
+#: E:\_LimeSurvey\svn/admin/statistics.php:346
 msgid "Response filters"
 msgstr "Fileri odgovora"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:546
-#: E:\_LimeSurvey\svn/admin/statistics.php:659
+#: E:\_LimeSurvey\svn/admin/statistics.php:547
+#: E:\_LimeSurvey\svn/admin/statistics.php:660
 msgid "Number greater than"
 msgstr "Broj veći od"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:552
-#: E:\_LimeSurvey\svn/admin/statistics.php:665
+#: E:\_LimeSurvey\svn/admin/statistics.php:553
+#: E:\_LimeSurvey\svn/admin/statistics.php:666
 msgid "Number less than"
 msgstr "Broj manji od"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:592
-#: E:\_LimeSurvey\svn/admin/statistics.php:621
-#: E:\_LimeSurvey\svn/admin/statistics.php:643
-#: E:\_LimeSurvey\svn/admin/statistics.php:1042
+#: E:\_LimeSurvey\svn/admin/statistics.php:593
+#: E:\_LimeSurvey\svn/admin/statistics.php:622
+#: E:\_LimeSurvey\svn/admin/statistics.php:644
+#: E:\_LimeSurvey\svn/admin/statistics.php:1043
 msgid "Responses containing"
 msgstr "Odgovori sadrže"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:711
+#: E:\_LimeSurvey\svn/admin/statistics.php:712
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Datum (GGGG-MM-DD) je jednak"
 
-#: E:\_LimeSurvey\svn/admin/statistics.php:717
+#: E:\_LimeSurvey\svn/admin/statistics.php:718
 msgid "OR between"
 msgstr "ILI između"
 
@@ -7143,8 +7143,8 @@ msgid "Results"
 msgstr "Rezultati"
 
 #: E:\_LimeSurvey\svn/admin/statistics_function.php:569
-#: E:\_LimeSurvey\svn/admin/statistics_function.php:1896
-#: E:\_LimeSurvey\svn/admin/statistics_function.php:1913
+#: E:\_LimeSurvey\svn/admin/statistics_function.php:1904
+#: E:\_LimeSurvey\svn/admin/statistics_function.php:1921
 msgid "Browse"
 msgstr "Pregled"
 
@@ -9083,14 +9083,14 @@ msgstr "ComfortUpdate Korak 2"
 #: E:\_LimeSurvey\svn/admin/update/updater.php:157
 #: E:\_LimeSurvey\svn/admin/update/updater.php:266
 #: E:\_LimeSurvey\svn/admin/update/updater.php:274
-#: E:\_LimeSurvey\svn/admin/update/updater.php:340
-#: E:\_LimeSurvey\svn/admin/update/updater.php:348
+#: E:\_LimeSurvey\svn/admin/update/updater.php:347
+#: E:\_LimeSurvey\svn/admin/update/updater.php:355
 msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr "Dogodila se slijedeća greška prilikom nadogradnje sa limesurvey.org sjedišta:"
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:154
 #: E:\_LimeSurvey\svn/admin/update/updater.php:271
-#: E:\_LimeSurvey\svn/admin/update/updater.php:345
+#: E:\_LimeSurvey\svn/admin/update/updater.php:352
 msgid "Your update key is invalid and was removed. "
 msgstr "Ključ nadogradnje je neispravan pa je uklonjen."
 
@@ -9144,7 +9144,7 @@ msgid "Please check any problems above and then proceed to the next step."
 msgstr "Provjeri navedene probleme i onda nastavi nadogradnju."
 
 #: E:\_LimeSurvey\svn/admin/update/updater.php:262
-#: E:\_LimeSurvey\svn/admin/update/updater.php:337
+#: E:\_LimeSurvey\svn/admin/update/updater.php:344
 msgid "ComfortUpdate Step 3"
 msgstr "ComfortUpdate Korak 3"
 
@@ -9160,41 +9160,49 @@ msgstr "Kreiram sigurnosnu kopiju datoteka..."
 msgid "File backup created:"
 msgstr "Sigurnosna kopija kreirana:"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:319
+#: E:\_LimeSurvey\svn/admin/update/updater.php:321
 msgid "Creating database backup... "
 msgstr "Kreiram sigurnosnu kopiju baze podataka..."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:323
+#: E:\_LimeSurvey\svn/admin/update/updater.php:325
 msgid "DB backup created:"
 msgstr "Kreirana sigurnosna kopija baze podataka:"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:326
+#: E:\_LimeSurvey\svn/admin/update/updater.php:330
+msgid "No DB backup created:"
+msgstr "Nije kreirana sigurnosna kopija baze podataka:"
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:330
+msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
+msgstr "Izrada sigurnosne kopije baze podataka nije podržan za tip baze koji koristiš. Izradi sigurnosnu kopiju koristeći za to posebno pripremljen program!"
+
+#: E:\_LimeSurvey\svn/admin/update/updater.php:333
 msgid "Please check any problems above and then proceed to the final step."
 msgstr "Provjeri navedene probleme i onda nastavi na završni korak nadogradnje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:406
+#: E:\_LimeSurvey\svn/admin/update/updater.php:413
 #, php-format
 msgid "File deleted: %s"
 msgstr "Obrisana datoteka: %s"
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:418
+#: E:\_LimeSurvey\svn/admin/update/updater.php:425
 msgid "New files were successfully installed."
 msgstr "Nove datoteke su uspješno instalirane."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:424
+#: E:\_LimeSurvey\svn/admin/update/updater.php:431
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr "Došlo je do problema prilikom preuzimanja datoteke. Potrebno je ponovo pokrenuti proces nadogradnje."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:442
+#: E:\_LimeSurvey\svn/admin/update/updater.php:449
 #, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "Broj verzije je uspješno nadograđen na %s."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:444
+#: E:\_LimeSurvey\svn/admin/update/updater.php:451
 msgid "Please check any problems above - update was done."
 msgstr "Provjeri navedene probleme - nadogradnja je završena."
 
-#: E:\_LimeSurvey\svn/admin/update/updater.php:467
+#: E:\_LimeSurvey\svn/admin/update/updater.php:474
 #, php-format
 msgid "Database has been successfully upgraded to version %s"
 msgstr "Baza podataka je uspješno nadograđena na verziju  %s"
@@ -9411,6 +9419,8 @@ msgstr "Thai"
 msgid "Vietnamese"
 msgstr "Vijetnamski"
 
+#~ msgid "Label Set:"
+#~ msgstr "Set markera:"
 #~ msgid "%d responses for this survey"
 #~ msgstr "%d odgovora na upitnik"
 #~ msgid "%d full responses"
