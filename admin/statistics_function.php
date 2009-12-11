@@ -1778,7 +1778,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						
 					break;
 				}
-					
+				echo '';	
 				//loop thorugh the array which contains all answer data
 				foreach ($alist as $al)
 				{
@@ -1858,9 +1858,17 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						  //  ==> value is ''
 						  // * NoAnswer due to conditions, or a page not displayed
 						  //  ==> value is NULL
-							$query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
-								. "OR ".db_quote_id($rt)." = '' "
-								. "OR ".db_quote_id($rt)." = ' '";
+                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n')
+                            {
+                                // mssql cannot compare text blobs so we have to cast here
+                                $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
+                                    . "OR cast(".db_quote_id($rt)." as varchar) = '' "
+                                    . "OR cast(".db_quote_id($rt)." as varchar) = ' '";
+                            }
+                            else
+							    $query = "SELECT count(*) FROM ".db_table_name("survey_$surveyid")." WHERE ".db_quote_id($rt)." IS NULL "
+								    . "OR ".db_quote_id($rt)." = '' "
+								    . "OR ".db_quote_id($rt)." = ' '";
 						}
 	
 					}
