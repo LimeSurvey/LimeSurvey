@@ -770,17 +770,13 @@ for ($i=0; $i<$fieldcount; $i++)
 					while ($lrow=$lr->FetchRow())
 					{
 						$strlabel = $strlabel."-".$lrow['labeltitle'];
-						$fquest .= " [".strip_tags_full($lrow['answer'])."][".strip_tags_full($strlabel)."]";
+						$fquest .= " [".FlattenText($lrow['answer'])."][".FlattenText($strlabel)."]";
 						$j++;
 					}
-						
 					break;
 
 			}
-			$fquest=strip_tags_full($fquest);
-
-			$fquest = str_replace("\n", " ", $fquest);
-			$fquest = str_replace("\r", "", $fquest);
+			$fquest=FlattenText($fquest);
 			if ($type == "csv")
 			{
 				$firstline .="\"$fquest\"$separator";
