@@ -370,7 +370,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
             $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
 
-			$subject = 'Registration';
+			$subject = sprintf($clang->gT("User registration at '%s'"),$sitename);
 			$to = $new_user." <$new_email>";
 			$from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox'>";
