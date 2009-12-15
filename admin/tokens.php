@@ -1901,7 +1901,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	}
 	$tokenoutput .= "\" /></li>\n"
 	."<li><label for='token'>".$clang->gT("Token").":</label>\n"
-	."<input type='text' size='15' name='token' id='token' value=\"";
+	."<input type='text' size='20' name='token' id='token' value=\"";
 	if (isset($token)) {$tokenoutput .= $token;}
 	$tokenoutput .= "\" />\n";
 	if ($subaction == "addnew")
@@ -1917,36 +1917,36 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 	$tokenoutput .= "</li>\n"
 
 	."\t<li><label for='sent'>".$clang->gT("Invite sent?")."</label>\n"
-	."\t<input type='text' size='15' id='sent' name='sent' value=\"";
+	."\t<input type='text' size='20' id='sent' name='sent' value=\"";
 	if (isset($sent)) {$tokenoutput .= $sent;}	else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></li>\n"
 
     ."\t<li><label for='remindersent'>".$clang->gT("Reminder sent?")."</label>\n"
-    ."\t<input type='text' size='15' id='remindersent' name='remindersent' value=\"";
+    ."\t<input type='text' size='20' id='remindersent' name='remindersent' value=\"";
     if (isset($remindersent)) {$tokenoutput .= $remindersent;}    else {$tokenoutput .= "N";}
     $tokenoutput .= "\" /></li>\n";
 
     if ($subaction == "edit")
     {
         $tokenoutput.="\t<li><label for='remindercount'>".$clang->gT("Reminder count:")."</label>\n"
-        ."\t<input type='text' size='15' id='remindercount' name='remindercount' value=\"";
+        ."\t<input type='text' size='6' id='remindercount' name='remindercount' value=\"";
         $tokenoutput .= $remindercount;
         $tokenoutput .= "\" /></li>\n";
     }
     
 	$tokenoutput.="\t<li><label for='completed'>".$clang->gT("Completed?")."</label>\n"
-	."\t<input type='text' size='15' id='completed' name='completed' value=\"";
+	."\t<input type='text' size='20' id='completed' name='completed' value=\"";
 	if (isset($completed)) {$tokenoutput .= $completed;} else {$tokenoutput .= "N";}
 	$tokenoutput .= "\" /></li>\n"
 
     ."\t<li><label for='validfrom'>".$clang->gT("Valid from").":</label>\n"
-    ."\t<input type='text' class='popupdatetime' size='22' id='validfrom' name='validfrom' value=\"";
+    ."\t<input type='text' class='popupdatetime' size='20' id='validfrom' name='validfrom' value=\"";
     if (isset($validfrom)){
                 $datetimeobj = new Date_Time_Converter($validfrom , "Y-m-d H:i:s");
                 $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
     }
     $tokenoutput .= "\" />\n <label for='validuntil'>".$clang->gT('until')
-    ."\t</label><input type='text' size='22' id='validuntil' name='validuntil' class='popupdatetime' value=\"";
+    ."\t</label><input type='text' size='20' id='validuntil' name='validuntil' class='popupdatetime' value=\"";
     if (isset($validuntil)){
                 $datetimeobj = new Date_Time_Converter($validuntil , "Y-m-d H:i:s");
                 $tokenoutput .=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
