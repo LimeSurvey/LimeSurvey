@@ -1094,7 +1094,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("1st Quartile (Q1)", $row[$fieldname]);
+								$showem[]=array($clang->gT("1st quartile (Q1)"), $row[$fieldname]);
 							}
 						}
 							
@@ -1129,7 +1129,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("Median Value", $row[$fieldname]);
+								$showem[]=array($clang->gT("Median value"), $row[$fieldname]);
 							}
 						}
 							
@@ -1171,7 +1171,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	
 							while ($row=$result->FetchRow())
 							{
-								$showem[]=array("3rd Quartile (Q3)", $row[$fieldname]);
+								$showem[]=array($clang->gT("3rd quartile (Q3)"), $row[$fieldname]);
 							}
 						}
 							
