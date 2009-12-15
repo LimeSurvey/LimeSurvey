@@ -345,7 +345,7 @@ if ($isInstertansEnabled===true)
 	
 		foreach($theserows as $rows)
 		{
-		    $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
+		    $shortquestion=$rows['title'].": ".FlattenText($rows['question']);
 	
 	    if ($rows['type'] == "A" ||
 	        $rows['type'] == "B" ||
