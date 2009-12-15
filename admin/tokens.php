@@ -24,8 +24,9 @@ if ($enableLdap)
 }
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($order)) {$order=returnglobal('order');}
-if (!isset($limit)) {$limit=returnglobal('limit');}
-if (!isset($start)) {$start=returnglobal('start');}
+if (!isset($limit)) {$limit=(int)returnglobal('limit');}
+if ($limit==0) $limit=50;
+if (!isset($start)) {$start=(int)returnglobal('start');}
 if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
 if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
 if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}
@@ -1974,8 +1975,7 @@ if (($subaction == "edit" || $subaction == "addnew") &&
 		case "edit":
 			$tokenoutput .= "<input type='submit' value='".$clang->gT("Update token entry")."' />\n"
 			."<input type='hidden' name='subaction' value='updatetoken' />\n"
-			."<input type='hidden' name='tid' value='{$tokenid}' />\n"
-			."<input type='hidden' name='urlextra' value='&amp;start=".$_GET['start']."&amp;limit=".$_GET['limit']."&amp;order=".$_GET['order']."' />\n";
+			."<input type='hidden' name='tid' value='{$tokenid}' />\n";
 			break;
 		case "addnew":
 			$tokenoutput .= "<input type='submit' value='".$clang->gT("Add token entry")."' />\n"
@@ -2047,7 +2047,7 @@ if ($subaction == "updatetoken" &&
 		$udresult = $connect->Execute($udquery, $data) or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
 		$tokenoutput .=  "<br /><span class='successtitle'>".$clang->gT("Success")."</span><br />\n"
 						."<br />".$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
-						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse".$_POST['urlextra']."'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
+						."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse'>".$clang->gT("Display Tokens")."</a><br /><br />\n"
 						."\t</div>\n";
 	}
 	  else

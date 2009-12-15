@@ -248,12 +248,13 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         $output=CheckForDBUpgrades();
         echo $output;
         echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a>";
+        updatecheck();        
         die(); 
     }
 
     if (is_dir($homedir."/install") && $debug<2)
     {
-     die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
+     	die ("<br />Everything is fine - you just forgot to delete or rename your LimeSurvey installation directory (/admin/install). <br />Please do so since it may be a security risk.");
     }
 
 }
