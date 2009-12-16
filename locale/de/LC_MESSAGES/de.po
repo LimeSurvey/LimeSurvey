@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-12 14:34+0100\n"
-"PO-Revision-Date: 2009-12-12 14:35+0100\n"
+"POT-Creation-Date: 2009-12-16 16:57+0100\n"
+"PO-Revision-Date: 2009-12-16 16:58+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2234,6 +2234,7 @@ msgid "Count"
 msgstr "Anzahl"
 
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1024
+#: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1034
 msgid "1st quartile (Q1)"
 msgstr "1ter Viertelwert (Q1 unteres Quartil)"
 
@@ -2241,7 +2242,12 @@ msgstr "1ter Viertelwert (Q1 unteres Quartil)"
 msgid "2nd quartile (Median)"
 msgstr "2ter Viertelwert (Mittleres Quartil)"
 
+#: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1069
+msgid "Median value"
+msgstr "Medianwert"
+
 #: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1101
+#: D:\web\xampp\htdocs\limesurvey/statistics_user.php:1111
 msgid "3rd quartile (Q3)"
 msgstr "3ter Viertelwert (Q3 Oberes Quartil)"
 
@@ -3858,7 +3864,7 @@ msgid "Your survey can export associated token data with each response. Select a
 msgstr "Ihre Umfragedaten können mit den zugeordneten Zugangsschlüssel-Daten exportiert werden. Wählen Sie zusätzliche Felder, die mit exportiert werden sollen."
 
 #: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:342
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1057
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1053
 msgid "Email"
 msgstr "E-Mail"
 
@@ -3871,28 +3877,28 @@ msgstr "Daten exportieren"
 msgid "General information in language: "
 msgstr "Allgemeine Informationen in Sprache:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:965
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:961
 msgid "New Record"
 msgstr "Neuer Datensatz"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:998
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1003
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:994
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:999
 msgid "NEW RECORD"
 msgstr "NEUER DATENSATZ"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1069
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1065
 msgid "Language"
 msgstr "Sprache"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1220
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1221
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1237
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1238
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1216
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1217
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1233
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1234
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1363
-#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1364
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1359
+#: D:\web\xampp\htdocs\limesurvey/admin/exportresults.php:1360
 msgid "Tokens problem - token table missing"
 msgstr "Problem - Teilnehmer Tabelle fehlt"
 
@@ -7452,820 +7458,820 @@ msgstr "Hochladen"
 msgid "Preview:"
 msgstr "Vorschau:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:48
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:49
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:21
 msgid "ARMSCII-8 Armenian"
 msgstr "ARMSCII-8 Armenisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:49
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:50
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:22
 msgid "US ASCII"
 msgstr "US ASCII"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:50
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:51
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:23
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:51
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:52
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:24
 msgid "Big5 Traditional Chinese"
 msgstr "Big5 Traditionelles Chinesisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:52
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:53
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:25
 msgid "Binary pseudo charset"
 msgstr "Binär Pseudo Zeichensatz"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:53
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:54
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:26
 msgid "Windows Central European"
 msgstr "Windows Zentral-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:54
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:55
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:27
 msgid "Windows Cyrillic"
 msgstr "Windows Kyrillisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:55
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:56
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:28
 msgid "Windows Arabic"
 msgstr "Windows Arabisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:56
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:57
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:29
 msgid "Windows Baltic"
 msgstr "Windows Baltisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:57
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:58
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:30
 msgid "DOS West European"
 msgstr "DOS West Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:58
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:59
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:31
 msgid "DOS Central European"
 msgstr "DOS Zentral-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:59
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:60
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:32
 msgid "DOS Russian"
 msgstr "DOS Russisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:60
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:61
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:33
 msgid "SJIS for Windows Japanese"
 msgstr "SJIS für Windows Japanisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:61
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:62
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:34
 msgid "DEC West European"
 msgstr "DEC West Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:62
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:63
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:35
 msgid "UJIS for Windows Japanese"
 msgstr "UJIS für Windows Japanisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:63
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:64
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:36
 msgid "EUC-KR Korean"
 msgstr "EUC-KR Koreanisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:64
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:65
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:37
 msgid "GB2312 Simplified Chinese"
 msgstr "GB2312 Vereinfachtes Chinesisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:65
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:66
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:38
 msgid "GBK Simplified Chinese"
 msgstr "GBK Vereinfachtes Chinesisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:66
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:67
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:39
 msgid "GEOSTD8 Georgian"
 msgstr "GEOSTD8 Georgisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:67
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:68
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:40
 msgid "ISO 8859-7 Greek"
 msgstr "ISO 8859-7 Griechisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:68
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:69
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:41
 msgid "ISO 8859-8 Hebrew"
 msgstr "ISO 8859-8 Hebräisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:69
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:70
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:42
 msgid "HP West European"
 msgstr "HP West Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:70
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:71
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:43
 msgid "DOS Kamenicky Czech-Slovak"
 msgstr "DOS Kamenicky Tschechisch-Slovakisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:71
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:72
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:44
 msgid "KOI8-R Relcom Russian"
 msgstr "KOI8-R Relcom Russisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:72
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:73
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:45
 msgid "KOI8-U Ukrainian"
 msgstr "KOI8-U Ukrainisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:73
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:74
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:46
 msgid "cp1252 West European"
 msgstr "cp1252 West-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:74
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:75
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:47
 msgid "ISO 8859-2 Central European"
 msgstr "ISO 8859-2 Zentral-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:75
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:76
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:48
 msgid "ISO 8859-9 Turkish"
 msgstr "ISO 8859-9 Türkisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:76
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:77
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:49
 msgid "ISO 8859-13 Baltic"
 msgstr "ISO 8859-13 Baltisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:77
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:78
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:50
 msgid "Mac Central European"
 msgstr "Mac Zentral-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:78
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:79
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:51
 msgid "Mac West European"
 msgstr "Mac West-Europäisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:79
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:80
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:52
 msgid "Shift-JIS Japanese"
 msgstr "Shift-JIS Japanisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:80
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:81
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:53
 msgid "7bit Swedish"
 msgstr "7bit Schwedisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:81
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:82
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:54
 msgid "TIS620 Thai"
 msgstr "TIS620 Thai"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:82
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:83
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:55
 msgid "UCS-2 Unicode"
 msgstr "UCS-2 Unicode"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:83
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:84
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:56
 msgid "EUC-JP Japanese"
 msgstr "EUC-JP Japanisch"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:84
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:85
 #: D:\web\xampp\htdocs\limesurvey/admin/vvimport.php:57
 msgid "UTF-8 Unicode"
 msgstr "UTF-8 Unicode"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:253
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:268
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:281
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:254
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:269
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:282
 msgid "Token control"
 msgstr "Zugangsschlüssel-Steuerung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:333
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:334
 msgid "Token table could not be created."
 msgstr "Zugangsschlüssel Tabelle konnte nicht erstellt werden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:354
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:355
 msgid "A token table has been created for this survey."
 msgstr "Es wurde eine Teilnehmertabelle für diese Umfrage erstellt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:366
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:367
 msgid "Import old tokens"
 msgstr "Importiere alte Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:367
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:368
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr "Es wurde eine Teilnehmertabelle für diese Umfrage und die alten Zugangsschlüssel wurden importiert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:387
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:388
 msgid "Tokens have not been initialised for this survey."
 msgstr "Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:392
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:393
 msgid "If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL."
 msgstr "Wenn Sie die Zugangsschlüssel-Tabelle für diese Umfrage aktivieren, wird die Umfrage nur mit einem gültigen Zugangsschlüssel ausfüllbar sein."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:399
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:400
 msgid "Note: If you turn on the -Anonymous answers- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Wenn sie die Umfrage auf -Anonyme Antworten- setzen und eine Teilnehmertabelle erstellen, wird LimeSurvey die Teilnehmer in der Teilnehmertabelle nicht mit einem Zeitstempel versehen, sondern an Stelle des Datums und der Uhrzeit nur ein 'Y' setzen, damit für ihre Teilnehmer die Anonymität gewahrt bleibt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:403
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:404
 msgid "Do you want to create a token table for this survey?"
 msgstr "Möchten Sie eine Teilnehmertabelle mit Zugangsschlüsseln für diese Umfrage erstellen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:406
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:407
 msgid "Initialise tokens"
 msgstr "Initialisiere Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:418
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:419
 msgid "Restore options"
 msgstr "Wiederherstellungsoptionen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:421
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:422
 msgid "The following old token tables could be restored:"
 msgstr "Die folgenden alten Zugangsschlüssel-Tabelle können wiederhergestellt werden:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:428
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:429
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:454
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:455
 msgid "Show token summary"
 msgstr "Zeige Zugangsschlüssel-Zusammenfassung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:458
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:459
 msgid "Display tokens"
 msgstr "Zeige Zugangsschlüssel an"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:466
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:467
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2116
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2124
 msgid "Add new token entry"
 msgstr "Neuen Teilnehmer hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:470
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:471
 msgid "Manage additional attribute fields"
 msgstr "Zusätzliche Attributfelder verwalten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:474
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:475
 msgid "Import tokens from CSV file"
 msgstr "Zugangsschlüssel-Import von einer CSV-Datei"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:476
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:477
 msgid "Import tokens from LDAP query"
 msgstr "Import von Zugangsschlüsseln aus LDAP"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:483
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:484
 msgid "Export tokens to CSV file"
 msgstr "Export von Zugansschlüsseln als CSV-Datei"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:492
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:493
 msgid "Edit email templates"
 msgstr "Email Vorlagen bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:495
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:496
 msgid "Send email invitation"
 msgstr "Sende E-Mail Einladung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:498
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1334
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:499
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1335
 msgid "Send email reminder"
 msgstr "Sende E-Mail Erinnerung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:502
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:503
 msgid "Generate tokens"
 msgstr "Generiere eindeutige Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:506
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:772
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:507
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:773
 msgid "Drop tokens table"
 msgstr "Teilnehmertabelle löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:511
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:512
 msgid "Show help"
 msgstr "Hilfe anzeigen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:525
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:526
 msgid "Token summary"
 msgstr "Zugangsschlüssel-Zusammenfassung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:529
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:530
 msgid "Total records in this token table"
 msgstr "Anzahl Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:536
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:537
 msgid "Total with no unique Token"
 msgstr "Anzahl Einträge ohne Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:543
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:544
 msgid "Total invitations sent"
 msgstr "Anzahl versandte Einladungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:548
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:549
 msgid "Total surveys completed"
 msgstr "Anzahl ausgefüllte Umfragen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:575
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:576
 msgid "Token export options"
 msgstr "Zugangsschlüssel Exportoptionen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:577
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:578
 msgid "Token status:"
 msgstr "Zugangsschlüssel-Status:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:578
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:579
 msgid "All tokens"
 msgstr "Alle Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:580
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:581
 msgid "Not started"
 msgstr "Nicht gestartet"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:583
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:584
 msgid "Started but not yet completed"
 msgstr "Gestartet aber noch nicht beendet"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:586
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:587
 msgid "Invitation status:"
 msgstr "Einladungsstatus:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:587
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:592
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:597
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:588
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:593
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:598
 msgid "All"
 msgstr "Alle"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:588
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:589
 msgid "Invited"
 msgstr "Eingeladen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:589
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:590
 msgid "Not invited"
 msgstr "Nicht eingeladen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:591
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:592
 msgid "Reminder status:"
 msgstr "Erinnerungsstatus:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:593
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:594
 msgid "Reminder(s) sent"
 msgstr "Einladung(en) gesendet"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:594
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:595
 msgid "No reminder(s) sent"
 msgstr "Keine Einladung(en) gesendet"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:596
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:597
 msgid "Filter by language"
 msgstr "Filtere nach Sprache"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:604
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:605
 msgid "Filter by email address"
 msgstr "Filtere nach Email-Adresse"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:608
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:609
 msgid "Export tokens"
 msgstr "Exportiere Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:626
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:627
 msgid "Edit email settings"
 msgstr "Email Einstellungen bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:640
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:641
 msgid "Invitation email subject:"
 msgstr "Einladungs-Email Betreff:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:643
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:649
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:654
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:660
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:665
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:671
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:676
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:682
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:644
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:650
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:655
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:661
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:666
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:672
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:677
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:683
 msgid "Use default"
 msgstr "Standardwerte setzen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:645
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:647
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:646
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:648
 msgid "Invitation email:"
 msgstr "Einladungs-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:651
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:652
 msgid "Email reminder subject:"
 msgstr "Erinnerungs-Email Betreff:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:656
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:658
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:657
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:659
 msgid "Email reminder:"
 msgstr "Erinnerungs-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:662
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:663
 msgid "Confirmation email subject:"
 msgstr "Bestätigungs-Email Betreff:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:667
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:668
 msgid "Confirmation email:"
 msgstr "Text der Bestätigung-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:669
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:670
 msgid "Confirmation email"
 msgstr "Text der Bestätigung-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:673
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:674
 msgid "Public registration email subject:"
 msgstr "Öffentliche Registrierung Email Betreff:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:675
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:676
 msgid "Survey registration confirmation"
 msgstr "Registrierungsbestätigung für Teilnahmeumfrage"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:678
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:680
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:679
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:681
 msgid "Public registration email:"
 msgstr "Text der Registrierungs-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:719
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:720
 msgid "Token email settings have been saved."
 msgstr "Email Einstellungen für Zugangsschlüssel wurden gespeichert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:734
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:735
 msgid "All token entries have been deleted."
 msgstr "Alle Teilnehmerwurden gelöscht."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:746
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:747
 msgid "All token entries have been set to 'Not invited'."
 msgstr "Alle Zugangsschlüssel-Einträge wurden auf 'Nicht eingeladen' zurückgesetzt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:758
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:759
 msgid "All unique token numbers have been removed."
 msgstr "Alle Zugangsschlüssel wurden entfernt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:765
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:766
 msgid "Token database administration options"
 msgstr "Zugangsschlüssel Datenbank-Administration"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:767
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:768
 msgid "Are you really sure you want to reset all invitation records to NO?"
 msgstr "Sind sie wirklich sicher, dass Sie für ALLE Einträge den Einladungsstatus auf Nein zurücksetzen möchten?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:767
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:768
 msgid "Set all entries to 'No invitation sent'."
 msgstr "Setze 'Eingeladen' auf Nein für alle Einträge."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:769
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:770
 msgid "Are you sure you want to delete all unique token numbers?"
 msgstr "Sind sie wirklich sicher, dass Sie ALLE Zugangsschlüssel entfernen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:769
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:770
 msgid "Delete all unique token numbers"
 msgstr "Alle Zugangsschlüssel entfernen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:771
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:772
 msgid "Are you really sure you want to delete ALL token entries?"
 msgstr "Sind Sie wirklich sicher, dass Sie ALLE Teilnehmer löschen wollen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:771
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:772
 msgid "Delete all token entries"
 msgstr "Alle Teilnehmer-Einträge löschen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:792
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:793
 msgid "Data view control"
 msgstr "Ansicht der Daten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:813
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:814
 msgid "Search"
 msgstr "Suchen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:821
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:822
 msgid "Records displayed:"
 msgstr "Angezeigte Datensätze:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:822
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:823
 msgid "Starting from:"
 msgstr "Start von:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:853
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:858
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:862
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:867
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:872
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:877
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:882
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:886
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:890
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:894
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:898
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:902
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:910
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:854
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:859
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:863
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:868
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:873
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:878
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:883
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:887
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:891
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:895
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:899
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:903
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:911
 msgid "Sort by: "
 msgstr "Sortieren nach: "
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:858
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:859
 msgid "First name"
 msgstr "Vorname"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:862
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:863
 msgid "Last name"
 msgstr "Nachname"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:882
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1918
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:883
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1919
 msgid "Invite sent?"
 msgstr "Eingeladen?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:886
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1923
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:887
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1924
 msgid "Reminder sent?"
 msgstr "Erinnerung gesendet?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:890
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:891
 msgid "Reminder count"
 msgstr "Anzahl Erinnerungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:894
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1936
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:895
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1937
 msgid "Completed?"
 msgstr "Ausgefüllt?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:898
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1941
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:899
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1942
 msgid "Valid from"
 msgstr "Gültig von"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:902
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:903
 msgid "Valid until"
 msgstr "Gültig bis"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:952
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:953
 msgid "Invalid email address:"
 msgstr "Ungültige Email-Adresse:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:973
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:974
 msgid "Do Survey"
 msgstr "Umfrage ausführen/testen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:980
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1867
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:981
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1868
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1997
 msgid "Edit token entry"
 msgstr "Zugangsschlüssel Eintrag bearbeiten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:982
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:983
 msgid "Delete token entry"
 msgstr "Zugangsschlüssel Eintrag löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:996
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:997
 msgid "View/Update response"
 msgstr "Antwort anschauen/aktualisieren"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1003
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1004
 msgid "Send invitation email to this entry"
 msgstr "Sende eine Einladungs-E-Mail für diesen Eintrag"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1009
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1010
 msgid "Send reminder email to this entry"
 msgstr "Sende eine Erinnerungs-E-Mail für diesen Eintrag"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1027
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1028
 msgid "Delete Tokens Table"
 msgstr "Teilnehmertabelle löschen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1032
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1033
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr "Wenn Sie diese Zugangsschlüssel-Tabelle löschen, benötigt man nicht länger einen Zugangsschlüssel um auf die Umfrage zuzugreifen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1032
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1033
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr "Wenn Sie fortfahren, wird eine Sicherheitskopie dieser Tabelle erstellt. Der Systemadministrator kann dann auf diese Daten zugreifen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1035
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1036
 msgid "Delete Tokens"
 msgstr "Lösche die Teilnehmertabelle "
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1058
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1059
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr "Die Teilnehmertabelle wurde gelöscht, und es sind jetzt keine Zugangsschlüssel mehr nötig, um die Umfrage auszufüllen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1058
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1059
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr "Eine Sicherheitskopie dieser Tabelle wurde erstellt. Nur der Systemadministrator kann auf diese Daten zugreifen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1083
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1084
 msgid "Send email invitations"
 msgstr "Sende E-Mail Einladungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1135
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1358
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1136
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1359
 msgid "Subject"
 msgstr "Betreff"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1142
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1143
 msgid "Invitation Email:"
 msgstr "Text der Einladungs-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1150
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1168
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1436
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1151
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1169
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1437
 msgid "Sending to Token ID"
 msgstr "Sende an Teilnehmer-ID"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1154
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1399
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1155
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1400
 msgid "Bypass token with failing email addresses"
 msgstr "Teilnehmer mit fehlerhaften Email-Adressen überspringen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1158
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1159
 msgid "Send Invitations"
 msgstr "Sende Einladungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1167
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1168
 msgid "Sending invitations..."
 msgstr "Sende Einladungen..."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1264
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1560
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1265
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1561
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Email an {FIRSTNAME} {LASTNAME} ({EMAIL})  nicht versendet: Zugangsschlüssel ist noch nicht gültig."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1268
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1564
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1269
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1565
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Email an {FIRSTNAME} {LASTNAME} ({EMAIL}) nicht versendet: Zugangsschlüssel ist nicht mehr gültig."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1278
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1279
 msgid "Invitation sent to:"
 msgstr "Einladung versandt an:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1286
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1580
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1287
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1581
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Emailversand an {FIRSTNAME} {LASTNAME} ({EMAIL})  fehlgeschlagen. Fehler-Nachricht:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1299
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1598
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1300
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1599
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Es sind mehr Mails zu versenden, als auf einmal versendbar sind. Unten klicken um weiter zu senden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1300
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1599
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1301
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1600
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Es sind noch {EMAILCOUNT} E-Mails zu versenden."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1320
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1321
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
 msgstr "Es wurden keine E-Mails versendet, da kein Teilnehmer die folgenden Bedingungen erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, die Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1381
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1382
 msgid "Reminder Email:"
 msgstr "Erinnerungs-Email:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1389
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1390
 msgid "Start at Token ID:"
 msgstr "Starte bei Token ID:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1395
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1396
 msgid "Stop at Token ID:"
 msgstr "Stoppe bei Token ID:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1405
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1406
 msgid "Min days between reminders"
 msgstr "Minimale Anzahl an Tagen zwischen Erinnerungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1409
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1410
 msgid "Max reminders"
 msgstr "Maximale Erinnerungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1412
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1413
 msgid "Send Reminders"
 msgstr "Sende Erinnerungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1422
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1423
 msgid "Sending Reminders"
 msgstr "Sende Erinnerungen.."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1435
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1436
 msgid "From Token ID"
 msgstr "Von Teilnehmer ID"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1576
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1577
 msgid "Reminder sent to:"
 msgstr "Erinnerung gesendet an:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1636
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1637
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
 msgstr "Es wurden keine E-Mails versendet, da kein Teilnehmer die folgenden Bedingungen erfüllt hat: E-Mail Adresse vorhanden, Einladung nicht schon versendet, Umfrage noch nicht ausgefüllt und eindeutiger Zugangsschlüssel zugewiesen."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1651
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1652
 msgid "Create tokens"
 msgstr "Erstelle Zugangsschlüssel"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1655
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1656
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Wenn Sie auf Ja klicken, wird für alle Teilnehmer ohne eindeutigen Zugangsschlüssel ein entsprechende Schlüssel generiert. OK?"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1704
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1705
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "{TOKENCOUNT} Zugangsschlüssel wurden generiert"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1721
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1722
 msgid "Token has been deleted."
 msgstr "Zugangsschlüssel wurde gelöscht."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1722
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1723
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:158
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:299
 msgid "Reloading Screen. Please wait."
 msgstr "Seite wird neu geladen. Bitte warten."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1733
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1734
 msgid "Manage token attribute fields"
 msgstr "Token Attribut Felder verwalten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1737
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1738
 msgid "Attribute field"
 msgstr "Attributfeld"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1737
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1738
 msgid "Field description"
 msgstr "Feldbeschreibung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1737
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1738
 msgid "Example data"
 msgstr "Beispieldaten"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1754
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1755
 msgid "<no data>"
 msgstr "<keine Daten>"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1759
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1760
 msgid "Save attribute descriptions"
 msgstr "Speichere Attributbeschreibungen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1765
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1766
 msgid "Add token attributes"
 msgstr "Hinzufügen von Zugangsschlüssel Zusatzfeldern"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1767
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1768
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "Es gibt %s Benutzerattribut-Felder in dieser Zugangsschlüssel Tabelle."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1769
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1770
 msgid "Number of attribute fields to add:"
 msgstr "Bitte geben Sie die Anzahl der Benutzer-Attributfelder ein, die Sie hinzufügen wollen:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1771
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1772
 msgid "Add fields"
 msgstr "Felder hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1800
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1801
 msgid "Token descriptions were successfully updated."
 msgstr "Attribut-Beschreibungen wurden erfolgreich gespeichert."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1801
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1835
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1802
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1836
 msgid "Back to attribute field management."
 msgstr "Zurück zur Attributfelder-Verwaltung"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1834
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1835
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "%s Felder wurden erfolgreich hinzugefügt."
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1871
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1872
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1981
 #: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:2088
 msgid "Add token entry"
 msgstr "Teilnehmer hinzufügen"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1879
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1880
 msgid "Auto"
 msgstr "Auto"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1893
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1894
 msgid "Email Status"
 msgstr "Email Status"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1908
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1909
 msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
 msgstr "Sie können dieses Feld leer lassen und automatisch eindeutige Zugangsschlüssel generieren lassen mit 'Generiere eindeutige Zugangsschlüssel'"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1930
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1931
 msgid "Reminder count:"
 msgstr "Anzahl Erinnerungen:"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1947
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1948
 msgid "until"
 msgstr "bis"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1953
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1954
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1975
+#: D:\web\xampp\htdocs\limesurvey/admin/tokens.php:1976
 msgid "Update token entry"
 msgstr "Teilnehmer aktualisieren"
 
@@ -8554,6 +8560,11 @@ msgstr "Klicken Sie hier um sich anzumelden"
 #, php-format
 msgid "If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!"
 msgstr "Wenn Sie Fragen zu dieser Email haben, zögern Sie bitte nicht den Site Administrator unter %s zu kontaktieren. Vielen Dank!"
+
+#: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:373
+#, php-format
+msgid "User registration at '%s'"
+msgstr "Benutzerregistrierung bei '%s'"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/usercontrol.php:380
 msgid "An email with a generated password was sent to the user."
