@@ -428,3 +428,12 @@ div.menubar input {
 margin-right:-5px;
 vertical-align:top;
 }
+
+#surveydetails td:first-child, #groupdetails td:first-child, #questiondetails td:first-child{
+    text-align: left;
+    
+}
+
+#surveydetails td + td, #groupdetails td + td, #questiondetails td + td {
+    text-align: right;
+}

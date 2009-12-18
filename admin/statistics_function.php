@@ -2962,7 +2962,23 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 						}
 	
 						$lblout=array();
-						if (getLanguageRTL($language))
+                        if ($language=='ar')
+                        {
+                            $lblout=$lbl; //reset text order to original
+                            include_once($rootdir.'/classes/core/Arabic.php');
+                            $Arabic = new Arabic('ArGlyphs');
+                            foreach($lblout as $kkey => $kval){
+                                if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
+                                //eng
+                                //no reversing
+                                }
+                                else{
+                                    $kval = $Arabic->utf8Glyphs($kval,50,false);
+                                    $lblout[$kkey] = $kval;
+                                }
+                            }                             
+                        }
+						elseif (getLanguageRTL($language))
 						{
 							$lblout=$lblrtl;
 						}
