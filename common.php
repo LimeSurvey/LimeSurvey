@@ -6897,7 +6897,7 @@ function GetAttributeValue($surveyid,$attrName,$token)
 {
     global $dbprefix, $connect;
     $attrName=strtolower($attrName);
-    if (!in_array($attrName,GetTokenConditionsFieldNames($surveyid)))
+    if (!tableExists('tokens_'.$surveyid) || !in_array($attrName,GetTokenConditionsFieldNames($surveyid)))
     {
 	return null;	
     }

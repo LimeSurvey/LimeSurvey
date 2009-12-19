@@ -649,6 +649,15 @@ function submitanswer()
 	$query = "";
 	if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
 	{
+		if (!isset($_SESSION['srid']))
+		{ //due to conditions no answer was displayed and yet we must submit
+			$query=createinsertquery();
+			if ($result=$connect->Execute($query))
+			{
+				$tempID=$connect->Insert_ID($thissurvey['tablename'],"id");
+				$_SESSION['srid'] = $tempID;
+			}
+		}
 		$query = "UPDATE {$thissurvey['tablename']} SET ";
 		$query .= " submitdate = ".$connect->DBDate($mysubmitdate);
 		$query .= " WHERE id=" . $_SESSION['srid'];
