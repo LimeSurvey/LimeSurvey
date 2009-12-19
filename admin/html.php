@@ -1329,7 +1329,7 @@ if (returnglobal('viewanswer'))
 	.$clang->gT("Edit Answers")
 	."</td>\n"
 	."</tr>\n"
-	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."');\">\n"
+	."<tr><td colspan='5'><form name='editanswers' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
 	. "<input type='hidden' name='sid' value='$surveyid' />\n"
 	. "<input type='hidden' name='gid' value='$gid' />\n"
 	. "<input type='hidden' name='qid' value='$qid' />\n"

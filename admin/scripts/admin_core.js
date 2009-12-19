@@ -119,7 +119,7 @@ function isEmpty(elem, helperMsg)
 	return true;
 }
 
-function codeCheck(prefix, elementcount, helperMsg)
+function codeCheck(prefix, elementcount, helperMsg, reservedKeywordMsg)
 {
     var i, j;
     var X = new Array();
@@ -129,6 +129,11 @@ function codeCheck(prefix, elementcount, helperMsg)
         if (j != undefined) 
         {
            j.value=trim(j.value);
+           if (j.value == "other")
+           {
+              alert(reservedKeywordMsg);
+              return false;
+           }
            X.push(j.value);
         }
     }   

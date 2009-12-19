@@ -265,7 +265,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         
 		$labelsoutput.= "\t<div class='header'>".$clang->gT("Labels")."\t</div>\n";
         $labelsoutput.= "<div class='tab-pane' id='tab-pane-labels-{$lid}'>"    
-        ."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."');\">\n"
+	."<form method='post' action='admin.php' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
 	    ."<input type='hidden' name='sortorder' value='{$row['sortorder']}' />\n"
 		."<input type='hidden' name='lid' value='$lid' />\n"
 		."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
@@ -378,7 +378,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             if (!isset($_SESSION['nextlabelcode'])) $_SESSION['nextlabelcode']='';
     		if ($activeuse == 0 && $first)
     		{   $labelsoutput.= "<tr><td><br /></td></tr><tr><td align='right'>"
-  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='addnewlabelcode' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
+  			    ."<strong>".$clang->gT("New label").":</strong> <input type='text' maxlength='5' name='insertcode' size='6' value='".$_SESSION['nextlabelcode']."' id='code_$maxsortorder' onkeypress=\"return catchenter(event,'addnewlabelbtn');\" />\n"
     			."\t</td>\n"
                 ."<td style='text-align:center;'>"
                 ."<input style='text-align:right;' type='text' maxlength='5' name='insertassessmentvalue' size='6' id='insertassessmentvalue' value='0' "
@@ -392,7 +392,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     			."\t<input type='submit' name='method' value='".$clang->gT("Add new label")."' id='addnewlabelbtn' />\n"
                 ."<script type='text/javascript'>\n"
     			."<!--\n"
-    			."document.getElementById('addnewlabelcode').focus();\n"
+    			."document.getElementById('code_$maxsortorder').focus();\n"
     			."function catchenter(evt, btnid)\n"
     			."{\n"
     			."\tvar mykey = window.event ? evt.keyCode : evt.which;\n"
