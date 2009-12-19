@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey HR language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-16 16:49+0100\n"
-"PO-Revision-Date: 2009-12-16 16:50+0100\n"
+"POT-Creation-Date: 2009-12-19 13:03+0100\n"
+"PO-Revision-Date: 2009-12-19 13:04+0100\n"
 "Last-Translator: Igor Dobraca <idobraca@rovinj.net>\n"
 "Language-Team: Igor Dobrača & Edita Paulišić <idobraca@rovinj.net>\n"
 "MIME-Version: 1.0\n"
@@ -4985,6 +4985,10 @@ msgstr "Uredi odgovore"
 #: E:\_LimeSurvey\svn/admin/html.php:1332
 msgid "Error: You are trying to use duplicate answer codes."
 msgstr "Greška: Pokušavaš kopirati odgovore."
+
+#: E:\_LimeSurvey\svn/admin/html.php:1332
+msgid "Error: 'other' is a reserved keyword."
+msgstr "Greška: 'ostali' je rezervirana ključna riječ."
 
 #: E:\_LimeSurvey\svn/admin/html.php:1364
 msgid "Code"
