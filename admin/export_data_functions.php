@@ -316,7 +316,7 @@ function spss_fieldmap($prefix = 'V') {
 				$fields[] = array('id'=>"$prefix$fieldno",'name'=>mb_substr($attributefield, 0, 8),
 			    'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
 			    'VariableLabel'=>$attributedescription,'sql_name'=>$attributefield,'size'=>'100',
-			    'title'=>$attributefield,'hide'=>0);
+			    'title'=>$attributefield,'hide'=>0, 'scale'=>'');
 			}
 		}
 	}
