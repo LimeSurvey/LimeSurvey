@@ -18,7 +18,9 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-global $modifyoutput;
+global $modifyoutput, $databasename, $databasetabletype; 
+
+    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
 
 	if ($oldversion < 127) {
         modify_database("","create index answers_idx2 on prefix_answers (sortorder)"); echo $modifyoutput;  flush();
@@ -182,6 +184,7 @@ global $modifyoutput;
         modify_database("", "UPDATE prefix_settings_global SET stg_value='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
 	}
 
+    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
 }
 

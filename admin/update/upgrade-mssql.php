@@ -20,10 +20,11 @@
 function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade
 /// older versions to match current functionality
-global $modifyoutput, $dbprefix;
-echo str_pad('Loading... ',4096)."<br />\n";
+    global $modifyoutput, $dbprefix;
+    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
     if ($oldversion < 111) {
-      // Language upgrades from version 110 to 111 since the language names did change
+    
+    // Language upgrades from version 110 to 111 since the language names did change
 
        $oldnewlanguages=array('german_informal'=>'german-informal',
                               'cns'=>'cn-Hans',
@@ -37,13 +38,13 @@ echo str_pad('Loading... ',4096)."<br />\n";
 
         foreach  ($oldnewlanguages as $oldlang=>$newlang)
         {
-            modify_database("","update [prefix_answers] set [language`='$newlang' where language='$oldlang'");  echo $modifyoutput;      flush();
-            modify_database("","update [prefix_questions] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update [prefix_groups] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update [prefix_labels] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update [prefix_surveys] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update [prefix_surveys_languagesettings] set [surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput;flush();
-            modify_database("","update [prefix_users] set [lang`='$newlang' where lang='$oldlang'");echo $modifyoutput;flush();
+            modify_database("","update [prefix_answers] set [language`='$newlang' where language='$oldlang'");  echo $modifyoutput; flush();
+            modify_database("","update [prefix_questions] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_groups] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_labels] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_surveys] set [language`='$newlang' where language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_surveys_languagesettings] set [surveyls_language`='$newlang' where surveyls_language='$oldlang'");echo $modifyoutput; flush();
+            modify_database("","update [prefix_users] set [lang`='$newlang' where lang='$oldlang'");echo $modifyoutput; flush();
         }
 
 
@@ -354,9 +355,9 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("", "ALTER TABLE [prefix_surveys] ALTER COLUMN [expires] datetime NULL"); echo $modifyoutput; flush();
         modify_database("", "UPDATE [prefix_settings_global] SET [stg_value]='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
   	return true;
 }
-
 
 
 function upgrade_survey_tables117()

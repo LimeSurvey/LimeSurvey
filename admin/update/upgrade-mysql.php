@@ -21,7 +21,7 @@ function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade
 /// older versions to match current functionality
 global $modifyoutput, $databasename, $databasetabletype;
-echo str_pad('Loading... ',4096)."<br />\n";
+    echo str_pad('Starting database update ('.date('Y-m-d H:i:s').')',4096)."<br />\n";
     if ($oldversion < 111) {
       // Language upgrades from version 110 to 111 since the language names did change
 
@@ -342,6 +342,8 @@ echo str_pad('Loading... ',4096)."<br />\n";
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `startdate` `startdate` datetime"); echo $modifyoutput; flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='142' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();
     }
+
+    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
     return true;
 }
 
