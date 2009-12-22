@@ -245,7 +245,7 @@ function UpdateStep2()
       {
             $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />'; 
             $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
-            $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
+            $output.=">".sprintf($clang->gT('Proceed to step %s'),'3')."</button>";
           
       }
   }
@@ -331,7 +331,8 @@ function UpdateStep3()
     }
   
   $output.=$clang->gT('Please check any problems above and then proceed to the final step.'); 
-  $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" >Continue with the last step 4</button>";
+  $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" ";
+  $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button>";
   $output.='</div><table><tr>';
   return $output;
 }
@@ -449,8 +450,10 @@ function UpdateStep4()
   $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />'; 
 
   $output.=$clang->gT('Please check any problems above - update was done.').'<br />'; 
-  $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >Back to main menu</button>";
+  $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button>";
   $output.='</div>';
+  setGlobalSetting('updatelastcheck','1980-01-01 00:00');   
+  setGlobalSetting('updateavailable','0');   
   return $output;
 }
 
