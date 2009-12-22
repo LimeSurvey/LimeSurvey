@@ -232,8 +232,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' title=\"".$clang->gTview("Edit label set")."\" >" .
 			"<img name='EditLabelsetButton' src='$imagefiles/edit.png' alt='".$clang->gT("Edit label set")."' align='left'  /></a>" 
-			."\t<a href='#' title='".$clang->gTview("Delete label set")."' >"
-			."<img src='$imagefiles/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' onclick=\"if (confirm('".$clang->gT("Do you really want to delete this label set?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" /></a>\n"
+			."\t<a href='#' title='".$clang->gTview("Delete label set")."' onclick=\"if (confirm('".$clang->gT("Do you really want to delete this label set?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" >"
+			."<img src='$imagefiles/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' /></a>\n"
 			."\t<img src='$imagefiles/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' title=\"".$clang->gTview("Export Label Set")."\" >" .
 					"<img src='$imagefiles/exportcsv.png' alt='".$clang->gT("Export Label Set")."' align='left' /></a>" 
