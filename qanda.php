@@ -4026,18 +4026,22 @@ function do_multiplenumeric($ia)
 
         if (trim($qidattributes['slider_min'])!='')
 		{
-            $slider_min = $qidattributes['slider_min'] * $slider_divisor;
+			$slider_mintext = $qidattributes['slider_min'];
+			$slider_min = $qidattributes['slider_min'] * $slider_divisor;
 		}
 		else
 		{
+			$slider_mintext = 0;
 			$slider_min = 0;
 		}
 		if (trim($qidattributes['slider_max'])!='')
 		{
+			$slider_maxtext = $qidattributes['slider_max'];
 			$slider_max = $qidattributes['slider_max'] * $slider_divisor;
 		}
 		else
 		{
+			$slider_maxtext = "100";
 			$slider_max = 100 * $slider_divisor;
 		}
         if (trim($qidattributes['slider_default'])!='')
@@ -4150,8 +4154,8 @@ function do_multiplenumeric($ia)
 				if ($qidattributes['slider_showminmax']==1)
 				{
 					//$slider_showmin=$slider_min;
-					$slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_min</div>\n";
-					$slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_max</div>\n";
+					$slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_mintext</div>\n";
+					$slider_showmax= "\t<div id=\"slider-right-$myfname\" class=\"slider_showmax\">$slider_maxtext</div>\n";
 				}
 				else
 				{
