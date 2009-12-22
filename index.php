@@ -620,32 +620,32 @@ if ($tokensexist == 1 && isset($token) && $token &&
 		exit;
 	}
 }    
-elseif ($tokensexist == 1 && isset($token) && $token && !isset($_SESSION['step'])) //check if token is in a valid time frame
+if ($tokensexist == 1 && isset($token) && $token) //check if token is in a valid time frame
+{
+    $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
+    $tkresult = db_execute_assoc($tkquery); //Checked 
+    $tokendata = $tkresult->FetchRow();
+    if ((trim($tokendata['validfrom'])!='' && convertDateTimeFormat($tokendata['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1) || 
+        (trim($tokendata['validuntil'])!='' && convertDateTimeFormat($tokendata['validuntil'],'Y-m-d H:i:s','U')*1<date('U')*1) 
+        )
     {
-        $tkquery = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."' AND (completed = 'N' or completed='')";
-        $tkresult = db_execute_assoc($tkquery); //Checked 
-        $tokendata = $tkresult->FetchRow();
-        if ((trim($tokendata['validfrom'])!='' && convertDateTimeFormat($tokendata['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1) || 
-            (trim($tokendata['validuntil'])!='' && convertDateTimeFormat($tokendata['validuntil'],'Y-m-d H:i:s','U')*1<date('U')*1) 
-            )
-        {
-            sendcacheheaders();
-            doHeader();
-            //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-            echo "\t<center><br />\n"
-            ."\t<span>".$clang->gT("We are sorry but you are not allowed to enter this survey.")."</span><br /><br />\n"
-            ."\t".$clang->gT("Your token seems to be valid but can be used only during a certain time period.")."<br />\n"
-            ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
-            ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-            ."{$thissurvey['adminemail']}</a>)")."<br /><br />\n"
-            ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
-            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-            doFooter();
-            exit;
-        }
+        sendcacheheaders();
+        doHeader();
+        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
+        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+        echo "\t<center><br />\n"
+        ."\t<span>".$clang->gT("We are sorry but you are not allowed to enter this survey.")."</span><br /><br />\n"
+        ."\t".$clang->gT("Your token seems to be valid but can be used only during a certain time period.")."<br />\n"
+        ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
+        ." (<a href='mailto:{$thissurvey['adminemail']}'>"
+        ."{$thissurvey['adminemail']}</a>)")."<br /><br />\n"
+        ."\t<a href='javascript: self.close()'>".$clang->gT("Close this Window")."</a><br />&nbsp;\n";
+        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+        doFooter();
+        exit;
     }
+}
 
 
 
