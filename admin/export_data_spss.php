@@ -221,15 +221,15 @@ if  ($subaction=='dlstructure') {
 	echo $headerComment;
 	if ($spssver == 2) echo "SET UNICODE=ON.\n";
 	echo "GET DATA\n"
-	."/TYPE=TXT\n"
-	."/FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
-	."/DELCASE=LINE\n"
-	."/DELIMITERS=\",\"\n"
-	."/QUALIFIER=\"'\"\n"
-	."/ARRANGEMENT=DELIMITED\n"
-	."/FIRSTCASE=1\n"
-	."/IMPORTCASE=ALL\n"
-	."/VARIABLES=";
+	." /TYPE=TXT\n"
+	." /FILE='survey_".$surveyid."_SPSS_data_file.dat'\n"
+	." /DELCASE=LINE\n"
+	." /DELIMITERS=\",\"\n"
+	." /QUALIFIER=\"'\"\n"
+	." /ARRANGEMENT=DELIMITED\n"
+	." /FIRSTCASE=1\n"
+	." /IMPORTCASE=ALL\n"
+	." /VARIABLES=";
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
 		if($field['SPSStype']=='F' && ($field['LStype'] == 'N' || $field['LStype']=='K')) {
