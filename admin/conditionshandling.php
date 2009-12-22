@@ -595,7 +595,7 @@ if ($questionscount > 0)
 
 			while ($arows = $aresult->FetchRow())
 			{
-				$shortanswer = "{$arows['code']}: [" . strip_tags($arows['answer']) . "]";
+				$shortanswer = "{$arows['code']}: [" . FlattenText($arows['answer']) . "]";
 				$shortquestion=$rows['title'].":$shortanswer ".FlattenText($rows['question']);
 				$cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']);
 
@@ -695,7 +695,7 @@ if ($questionscount > 0)
 			{
 				foreach($lids as $key=>$val) 
 				{
-					$shortquestion=$rows['title'].":{$arows['code']}:$key: [".strip_tags($arows['answer']). "][" .strip_tags($val). "] " . strip_tags($rows['question']);
+					$shortquestion=$rows['title'].":{$arows['code']}:$key: [".strip_tags($arows['answer']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
 				    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['code']."_".$key);
 				if ($rows['type'] == ":")
 				{
