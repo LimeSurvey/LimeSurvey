@@ -161,7 +161,7 @@ if  ($subaction=='dlstructure') {
 	 * be sent to the client.
 	 */
 	echo $headerComment;
-	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\", stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
+	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=c(\"\",\"\\"\\"\"), stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
 		if($field['LStype'] == 'N' || $field['LStype']=='K') {
