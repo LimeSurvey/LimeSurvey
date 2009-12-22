@@ -313,7 +313,7 @@ if(isset($surveyid))
 						$result2 = $connect->Execute($query);  // Checked
 						if (!$result2)
 						{
-							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question in lang={$alang} could not be created.","js")."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+							$databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
 
 						}
 					}

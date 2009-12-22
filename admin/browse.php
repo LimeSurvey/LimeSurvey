@@ -665,8 +665,8 @@ elseif ($subaction == "all")
 	if (!isset($_POST['sql']))
 	{
 		$browseoutput .= "<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=0&amp;limit=$limit' " 
-                        ."title='".$clang->gTview("Show start..")."' >" 
-						."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
+                        ."title='".$clang->gTview("Show start...")."' >" 
+						."<img name='DataBegin' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
 		                ."<a href='$scriptname?action=browse&amp;subaction=all&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit' "
                         ."title='".$clang->gTview("Show previous..")."' >" 
 				        ."<img name='DataBack' align='left'  src='$imagefiles/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"

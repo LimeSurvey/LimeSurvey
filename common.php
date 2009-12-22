@@ -1758,12 +1758,12 @@ function browsemenubar($title='')
 		. "alt='".$clang->gT("Export Results to Application")."' /></a>\n"
         
         // Export to SPSS
-		. "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to an SPSS command file")."\" >"
+		. "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a SPSS/PASW command file")."\" >"
 		. "<img src='$imagefiles/exportspss.png' "
-		. "alt='". $clang->gT("Export result to a SPSS/PASW command file")."' /></a>\n" 
+		. "alt='". $clang->gT("Export results to a SPSS/PASW command file")."' /></a>\n" 
         
         // Export to R   
-        . "<a href='$scriptname?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export result to a R data file")."\" >"
+        . "<a href='$scriptname?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a R data file")."\" >"
         . "<img src='$imagefiles/exportr.png' "
         . "alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
 	}

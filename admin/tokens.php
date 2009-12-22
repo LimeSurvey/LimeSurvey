@@ -797,7 +797,7 @@ if ($subaction == "browse" || $subaction == "search")
 	."<img src='$imagefiles/seperator.gif' alt='' border='0' hspace='0' align='left' />\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=0&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'"
     ." title='".$clang->gTview("Show start...")."'>"
-	."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start..")."' /></a>\n"
+	."<img name='DBeginButton' align='left' src='$imagefiles/databegin.png' alt='".$clang->gT("Show start...")."' /></a>\n"
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$last&amp;limit=$limit&amp;order=$order&amp;searchstring=$searchstring'" .
 	" title='".$clang->gTview("Show previous...")."'>" .
 	"<img name='DBackButton' align='left' src='$imagefiles/databack.png' alt='".$clang->gT("Show previous...")."' /></a>\n"
