@@ -31,8 +31,8 @@
  */
 
 $length_vallabel = '120'; // Set the max text length of Value Labels
-$length_data = '255'; // Set the max text length of Text Data
-$length_varlabel = '255'; // Set the max text length of Variable Labels
+$length_data = '25500'; // Set the max text length of Text Data
+$length_varlabel = '25500'; // Set the max text length of Variable Labels
 $headerComment = '';
 $tempFile = '';
 
@@ -106,7 +106,7 @@ if  ($subaction=='dldata') {
 
 	sendcacheheaders();
 
-	$na = "\"\"";
+	$na="";	//change to empty string instead of two double quotes to fix warnings on NA
 	spss_export_data($na);
 
 	exit;
@@ -161,7 +161,7 @@ if  ($subaction=='dlstructure') {
 	 * be sent to the client.
 	 */
 	echo $headerComment;
-	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\")\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
+	echo "data=read.table(\"survey_".$surveyid."_data_file.csv\", sep=\",\", quote = \"'\", na.strings=\"\", stringsAsFactors=FALSE)\n names(data)=paste(\"V\",1:dim(data)[2],sep=\"\")\n";
 	foreach ($fields as $field){
 		if($field['SPSStype'] == 'DATETIME23.2') $field['size']='';
 		if($field['LStype'] == 'N' || $field['LStype']=='K') {
@@ -238,7 +238,7 @@ if  ($subaction=='dlstructure') {
 			}
 		}
 	}
-	echo "NA); names(data)= v.names[-length(v.names)]\nprint(str(data))\n";
+	echo "NA); names(data)= v.names[-length(v.names)]\nrm(v.names)\n";
 	echo $errors;
 	exit;
 }
