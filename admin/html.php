@@ -2024,7 +2024,7 @@ if($action == "surveysecurity")
 				else
 					$surveysecurity .= "<tr>\n";
 
-				$surveysecurity .= "<td align='center'>{$resul2row['users_name']}\n"
+				$surveysecurity .= "<td align='center'>{$resul2row['users_name']}</td>\n"
 								. "<td align='center'>";
 					
 				if(isset($group_names) > 0)
