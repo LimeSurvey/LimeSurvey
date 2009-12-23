@@ -732,7 +732,7 @@ if ($subaction == "deleteall" &&
 {
 	$query="DELETE FROM ".db_table_name("tokens_$surveyid");
 	$result=$connect->Execute($query) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
-	$tokenoutput .= "<tr><td  align='center'><strong><span class='successtitle'>".$clang->gT("All token entries have been deleted.")."</span></strong></td></tr>\n";
+	$tokenoutput .= "<div class='messagebox'><div class='successheader'>".$clang->gT("All token entries have been deleted.")."</div></div>\n";
 	$subaction="";
 }
 
@@ -2342,7 +2342,7 @@ if ($subaction == "upload" &&
             if (count($duplicatelist)>0)
             {
                 $message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),count($duplicatelist));
-		        $message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+		        $message .= " [<a href='#' onclick='$(\"#duplicateslist\").toggle();'>".$clang->gT("List")."</a>]";
 		        $message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
 		        foreach($duplicatelist as $data) {
 		          $message .= "<li>$data</li>\n";
@@ -2586,10 +2586,8 @@ if ($subaction == "uploadldap" &&
 			$message = "$resultnum ".$clang->gT("Results from LDAP Query").".<br />\n";
 			$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
 			$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
-			$message .= "<script type='text/javascript'>\nfunction toggleView(id) {\nvar obj=document.getElementById(id);\n";
-			$message .= "if (obj.style.display=='') {obj.style.display='none';} else {obj.style.display='';}\n}\n</script>\n";
 			$message .= "$xy ".$clang->gT("Duplicate records removed");
-			$message .= " [<a href='#' onClick='toggleView(\"duplicateslist\")'>".$clang->gT("List")."</a>]";
+			$message .= " [<a href='#' onclick='$(\"#duplicateslist\").toggle();'>".$clang->gT("List")."</a>]";
 			$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
 			foreach($duplicatelist as $data) {
 				$message .= "<li>$data</li>\n";
@@ -2597,7 +2595,7 @@ if ($subaction == "uploadldap" &&
 			$message .= "</div>";
 			$message .= "<br />\n";
             $message .= sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);
-			$message .= " [<a href='#' onClick='toggleView(\"invalidemaillist\")'>".$clang->gT("List")."</a>]";
+			$message .= " [<a href='#' onclick='$(\"#invalidemaillist\").toggle();'>".$clang->gT("List")."</a>]";
 			$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
 			foreach($invalidemaillist as $data) {
 				$message .= "<li>$data</li>\n";
