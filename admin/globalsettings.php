@@ -412,7 +412,7 @@ function checksettings()
     //GET NUMBER OF SURVEYS
     $query = "SELECT count(sid) FROM ".db_table_name('surveys');
     $surveycount=$connect->GetOne($query);   //Checked  
-    $query = "SELECT count(sid FROM ".db_table_name('surveys')." WHERE active='Y'";
+    $query = "SELECT count(sid) FROM ".db_table_name('surveys')." WHERE active='Y'";
     $activesurveycount=$connect->GetOne($query);  //Checked  
     $query = "SELECT count(users_name) FROM ".db_table_name('users');
     $usercount = $connect->GetOne($query);   //Checked    
@@ -423,16 +423,15 @@ function checksettings()
     $tablelist = $connect->MetaTables();
     foreach ($tablelist as $table)
     {
-        $stlength=strlen($dbprefix).strlen("old");
-        if (substr($table, 0, $stlength+strlen("_tokens")) == $dbprefix."old_tokens")
+        if (strpos($table,$dbprefix."old_tokens_")!==false)
         {
             $oldtokenlist[]=$table;
         }
-        elseif (substr($table, 0, strlen($dbprefix) + strlen("tokens")) == $dbprefix."tokens")
+        elseif (strpos($table,$dbprefix."tokens_")!==false)
         {
             $tokenlist[]=$table;
         }
-        elseif (substr($table, 0, $stlength) == $dbprefix."old")
+        elseif (strpos($table,$dbprefix."old_survey_")!==false)
         {
             $oldresultslist[]=$table;
         }
@@ -468,7 +467,7 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<td align='right'>\n"
-    . "<strong>".$clang->gT("Deactivated surveys").":</strong>\n"
+    . "<strong>".$clang->gT("Deactivated result tables").":</strong>\n"
     . "</td><td>$deactivatedsurveys</td>\n"
     . "</tr>\n"
     . "<tr>\n"
