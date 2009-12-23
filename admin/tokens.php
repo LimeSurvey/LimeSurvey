@@ -1085,7 +1085,10 @@ if ($subaction == "email" &&
 	."\t<div><br/>\n";
     if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
-
+        if ($thissurvey['active']!='Y')
+        {
+          $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
+        }                             
 		$tokenoutput .= "<form id='sendinvitation' method='post' action='$scriptname?action=tokens&amp;sid=$surveyid'>";
 
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1335,6 +1338,10 @@ if ($subaction == "remind" && //XXX
 		.$clang->gT("Send email reminder")."</div><br />\n";
 	if (!isset($_POST['ok']) || !$_POST['ok'])
 	{
+        if ($thissurvey['active']!='Y')
+        {
+          $tokenoutput .="<div class='messagebox'><div class='warningheader'>".$clang->gT('Warning!')."</div>".$clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.")."</div>";
+        }                             
 		//GET SURVEY DETAILS
 		$tokenoutput .= "<form method='post' id='sendreminder' action='$scriptname?action=tokens'>";
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
