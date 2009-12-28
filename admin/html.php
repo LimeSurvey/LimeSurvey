@@ -1569,12 +1569,14 @@ if (returnglobal('viewanswer'))
 if($action == "addsurveysecurity")
 {
 	$addsummary = "<div class='header'>".$clang->gT("Add User")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
 	$result = db_execute_assoc($query); //Checked
 	if( ($result->RecordCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
 		$_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
+		
 		if($postuserid > 0){
 
 			$isrquery = "INSERT INTO {$dbprefix}surveys_rights VALUES($surveyid,". $postuserid.",0,0,0,0,0,0)";
@@ -1582,9 +1584,9 @@ if($action == "addsurveysecurity")
 
 			if($isrresult)
 			{
-				$addsummary .= "<p>".$clang->gT("User added.")."<br />\n";
+				$addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
 				$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
-				."<p><input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
+				."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
 				."<input type='hidden' name='action' value='setsurveysecurity' />"
 				."<input type='hidden' name='uid' value='{$postuserid}' />"
 				."</form>\n";
@@ -1592,26 +1594,30 @@ if($action == "addsurveysecurity")
 			else
 			{
 				// Username already exists.
-				$addsummary .= "<p><strong>".$clang->gT("Failed to add user.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
+				$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n" 
+				. "<br />" . $clang->gT("Username already exists.")."<br />\n";
+				$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
-			$addsummary .= "<p><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else
 		{
-			$addsummary .= "<p><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
-			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n" 
+			. "<br />" . $clang->gT("No Username selected.")."<br />\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
 
 if($action == "addusergroupsurveysecurity")
 {
-	$addsummary = "<br /><strong>".$clang->gT("Add User Group")."</strong><br />\n";
+	$addsummary = "<div class=\"header\">".$clang->gT("Add User Group")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID'];
 	$result = db_execute_assoc($query); //Checked
@@ -1635,7 +1641,7 @@ if($action == "addusergroupsurveysecurity")
 
 				if($isrresult)
 				{
-					$addsummary .= "<br />".$clang->gT("User Group added.")."<br />\n";
+					$addsummary .= "<div class=\"successheader\">".$clang->gT("User Group added.")."</div>\n";
 					$_SESSION['uids'] = $uid_arr;
 					$addsummary .= "<br /><form method='post' action='$scriptname?sid={$surveyid}'>"
 					."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
@@ -1647,48 +1653,52 @@ if($action == "addusergroupsurveysecurity")
 			else
 			{
 				// no user to add
-				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User Group.")."</strong><br />\n";
+				$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User Group.")."</div>\n";
+				$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid={$surveyid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
-			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 		}
 		else
 		{
-			$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
-			$addsummary .= "<br /><a href='$scriptname?action=surveysecurity&amp;sid={$surveyid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n" 
+			. "<br />" . $clang->gT("No Username selected.")."<br />\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=surveysecurity&amp;sid={$surveyid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
-if($action == "delsurveysecurity"){
+if($action == "delsurveysecurity")
+{
+	$addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
+
+	$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
+	$result = db_execute_assoc($query); //Checked
+	if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
-
-		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
-		$result = db_execute_assoc($query); //Checked
-		if($result->RecordCount() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+		if (isset($postuserid))
 		{
-			if (isset($postuserid))
-			{
-				$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
-				$dresult=$connect->Execute($dquery); //Checked
+			$dquery="DELETE FROM {$dbprefix}surveys_rights WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
+			$dresult=$connect->Execute($dquery); //Checked
 
-				$addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br />\n";
-			}
-			else
-			{
-				$addsummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
-			}
+			$addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
+			$addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 		}
 		else
 		{
-			include("access_denied.php");
+			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
 		}
-		$addsummary .= "<br /><br /><a href='$scriptname?sid={$surveyid}&amp;action=surveysecurity'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	}
+	else
+	{
+		include("access_denied.php");
+	}
+	$addsummary .= "</div>\n";
 }
 
 if($action == "setsurveysecurity")

@@ -635,46 +635,53 @@ if ($action == "mailusergroup")
 
 if ($action == "delusergroup")
 {
-		if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+	$usersummary = "<div class=\"header\">".$clang->gT("Deleting User Group")."...</div>\n";		
+	$usersummary .= "<div class=\"messagebox\">\n";
+	
+	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-	$usersummary = "<br /><strong>".$clang->gT("Deleting User Group")."</strong><br />\n";
 
-	if(!empty($postusergroupid) && ($postusergroupid > -1))
-	{
-		$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = ".$_SESSION['loginID'];
-		$result = db_select_limit_assoc($query, 1);
-		if($result->RecordCount() > 0)
+		if(!empty($postusergroupid) && ($postusergroupid > -1))
 		{
-			$row = $result->FetchRow();
-
-			$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = {$_SESSION['loginID']}";
-			if($connect->Execute($remquery)) //Checked
+			$query = "SELECT ugid, name, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = ".$_SESSION['loginID'];
+			$result = db_select_limit_assoc($query, 1);
+			if($result->RecordCount() > 0)
 			{
-				$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br />\n";
+				$row = $result->FetchRow();
+	
+				$remquery = "DELETE FROM ".db_table_name('user_groups')." WHERE ugid = {$postusergroupid} AND owner_id = {$_SESSION['loginID']}";
+				if($connect->Execute($remquery)) //Checked
+				{
+					$usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br /><br />\n";
+					$usersummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
+				}
+				else
+				{
+					$usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group.")."</div>\n";
+				}
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 			else
 			{
-				$usersummary .= "<br />".$clang->gT("Could not delete user group.")."<br />\n";
+				include("access_denied.php");
 			}
 		}
 		else
 		{
-			include("access_denied.php");
+			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group. No group selected.")."</div>\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
-	else
-	{
-		$usersummary .= "<br />".$clang->gT("Could not delete user group. No group selected.")."<br />\n";
-	}
-	$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-	}
+	$usersummary .= "</div>\n";
 }
 
 if ($action == "usergroupindb")
 {
+	$usersummary = "<div class=\"header\">".$clang->gT("Adding User Group")."...</div>\n";		
+	$usersummary .= "<div class=\"messagebox\">\n";
+	
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$usersummary = "<p><strong>".$clang->gT("Adding User Group")."...</strong><br />\n";
 	
 		$db_group_name = db_quote($_POST['group_name']);
 		$db_group_description = db_quote($_POST['group_description']);
@@ -686,40 +693,41 @@ if ($action == "usergroupindb")
 			$ugid = addUserGroupInDB($db_group_name, $db_group_description);
 			if($ugid > 0)
 			{
-				$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br />\n";
+				$usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br /><br />\n";
 	
 				if(isset($db_group_description) && strlen($db_group_description) > 0)
 				{
-					$usersummary .= $clang->gT("Description: ").$html_group_description."<br />\n";
+					$usersummary .= $clang->gT("Description: ").$html_group_description."<br /><br />\n";
 				}
 	
-	         	$usersummary .= "<br /><strong>".$clang->gT("User group successfully added!")."</strong><br />\n";
-				$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	         	$usersummary .= "<div class=\"successheader\">".$clang->gT("User group successfully added!")."</div>\n";
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 			else
 			{
-				$usersummary .= "<br /><strong>".$clang->gT("Failed to add Group!")."</strong><br />\n"
-				. $clang->gT("Group already exists!")."<br />\n"
-				. "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
+				. "<br />" . $clang->gT("Group already exists!")."<br />\n";
+				$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=addusergroup', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 		}
 		else
 		{
-			$usersummary .= "<br /><strong>".$clang->gT("Failed to add Group!")."</strong><br />\n"
-			. $clang->gT("Group name was not supplied!")."<br />\n"
-			. "<br /><a href='$scriptname?action=addusergroup'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
+			. "<br />" . $clang->gT("Group name was not supplied!")."<br />\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=addusergroup', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
-	
+	$usersummary .= "</div>\n";
 }
 
 if ($action == "mailsendusergroup")
 {
-	$usersummary = "<br /><strong>".$clang->gT("Mail to all Members")."</strong><br />\n";
+	$usersummary = "<div class=\"header\">".$clang->gT("Mail to all Members")."</div>\n";
+	$usersummary .= "<div class=\"messagebox\">\n";
 
 	// user must be in user group
 	// or superadmin
@@ -764,25 +772,26 @@ if ($action == "mailsendusergroup")
         //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
 		if (SendEmailMessage( $body, $subject, $to, $from,''))
 		{
-			$usersummary = "<br /><strong>".$clang->gT("Message(s) sent successfully!")."</strong><br />\n"
+			$usersummary = "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
 			. "<br />".$clang->gT("To:")." $addressee<br />\n"
-			. "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			. "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
-            $usersummary .= sprintf($clang->gT("Email to %s failed. Error Message:"),$to)." ".$maildebug."<br />";
+            $usersummary .= "<div class=\"warningheader\">".sprintf($clang->gT("Email to %s failed. Error Message:"),$to)." ".$maildebug."</div>";
             if ($debug>0) 
             {
                 $usersummary .= "<br /><pre>Subject : $subject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
             }
 
-			$usersummary .= "<br /><a href='$scriptname?action=mailusergroup&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=mailusergroup&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
 if ($action == "editusergroupindb")
@@ -928,11 +937,14 @@ if ($action == "editusergroups" )
 
 if($action == "deleteuserfromgroup")
 {
+	
+	$usersummary = "<div class=\"header\">".$clang->gT("Delete User")."</div>\n";
+	$usersummary .= "<div class=\"messagebox\">\n";
+	
 	if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
 		$ugid = $postusergroupid;
 		$uid = $postuserid;
-		$usersummary = "<br /><strong>".$clang->gT("Delete User")."</strong><br />\n";
 	
 		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = ".$ugid." AND ((owner_id = ".$_SESSION['loginID']." AND owner_id != ".$uid.") OR (owner_id != ".$_SESSION['loginID']." AND $uid = ".$_SESSION['loginID']."))";
 		$result = db_execute_assoc($query); //Checked
@@ -941,11 +953,12 @@ if($action == "deleteuserfromgroup")
 			$remquery = "DELETE FROM ".db_table_name('user_in_groups')." WHERE ugid = {$ugid} AND uid = {$uid}";
 			if($connect->Execute($remquery)) //Checked
 			{
-				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string(strip_tags($_POST['user']))."<br />\n";
+				$usersummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string(strip_tags($_POST['user']))."<br /><br />\n";
+				$usersummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 			}
 			else
 			{
-				$usersummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
+				$usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
 			}
 		}
 		else
@@ -954,17 +967,18 @@ if($action == "deleteuserfromgroup")
 		}
 		if($_SESSION['loginID'] != $postuserid)
 		{
-			$usersummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid=$ugid'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid=$ugid', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
-			$usersummary .= "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$usersummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$usersummary .= "</div>\n";
 }
 
 
@@ -973,9 +987,12 @@ if($action == "deleteuserfromgroup")
 if($action == "addusertogroup")
 { 
 	$ugid=returnglobal('ugid');
+	
+	$addsummary = "<div class=\"header\">".$clang->gT("Adding User to group")."...</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
+	
     if ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 	{
-		$addsummary = "<br /><strong>".$clang->gT("Adding User to group")."...</strong><br />\n";
 	
 		$query = "SELECT ugid, owner_id FROM ".db_table_name('user_groups')." WHERE ugid = {$ugid} AND owner_id = ".$_SESSION['loginID']." AND owner_id != ".$postuserid;
 		$result = db_execute_assoc($query); //Checked
@@ -988,20 +1005,21 @@ if($action == "addusertogroup")
 	
 				if($isrresult)
 				{
-					$addsummary .= "<br />".$clang->gT("User added.")."<br />\n";
+					$addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
 				}
 				else  // ToDo: for this to happen the keys on the table must still be set accordingly
 				{
 					// Username already exists.
-					$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("Username already exists.")."<br />\n";
+					$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n" 
+					. "<br />" . $clang->gT("Username already exists.")."<br />\n";
 				}
-				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
 			}
 			else
 			{
-				$addsummary .= "<br /><strong>".$clang->gT("Failed to add User.")."</strong><br />\n" . " " . $clang->gT("No Username selected.")."<br />\n";
-				$addsummary .= "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+				$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User.")."</div>\n" 
+				. "<br />" . $clang->gT("No Username selected.")."<br />\n";
 			}
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
@@ -1012,6 +1030,7 @@ if($action == "addusertogroup")
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
 

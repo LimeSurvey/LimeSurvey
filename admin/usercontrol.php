@@ -397,12 +397,13 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			$addsummary .= "<div class='messagebox'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
 		}
 	}
-	$addsummary .= "<p><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a></div><br />&nbsp;\n";
+	$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
 }
 
 elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
 {
-	$addsummary = "<br /><strong>".$clang->gT("Deleting User")."</strong><br />\n";
+	$addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	// CAN'T DELETE ORIGINAL SUPERADMIN
 	// Initial SuperAdmin has parent_id == 0
@@ -412,7 +413,7 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 	if($row['uid'] == $postuserid)	// it's the original superadmin !!!
 	{
-		$addsummary .= "<br />".$clang->gT("Initial Superadmin cannot be deleted!")."<br />\n";
+		$addsummary .= "<div class=\"warningheader\">".$clang->gT("Initial Superadmin cannot be deleted!")."</div>\n";
 	}
 	else
 	{
@@ -451,7 +452,9 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 				if($postuserid == $_SESSION['loginID']) killSession();	// user deleted himself
 
-				$addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": {$postuser}<br /><br />\n";
+				$addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
+				$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 			}
 			else
 			{
@@ -460,10 +463,11 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 		}
 		else
 		{
-			$addsummary .= "<br />".$clang->gT("Could not delete user. User was not supplied.")."<br />\n";
+			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
-	$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+	$addsummary .= "</div>\n";
 }
 
 elseif ($action == "moduser")
