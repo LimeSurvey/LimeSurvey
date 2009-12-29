@@ -772,12 +772,14 @@ if ($action == "mailsendusergroup")
         //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
 		if (SendEmailMessage( $body, $subject, $to, $from,''))
 		{
-			$usersummary = "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
-			. "<br />".$clang->gT("To:")." $addressee<br />\n"
+			$usersummary = "<div class=\"messagebox\">\n";
+			$usersummary .= "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
+			. "<br />".$clang->gT("To:")."". $addressee."<br />\n"
 			. "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusergroups&amp;ugid={$ugid}', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
+			$usersummary = "<div class=\"messagebox\">\n";
             $usersummary .= "<div class=\"warningheader\">".sprintf($clang->gT("Email to %s failed. Error Message:"),$to)." ".$maildebug."</div>";
             if ($debug>0) 
             {
