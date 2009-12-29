@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-26 11:26+0100\n"
-"PO-Revision-Date: 2009-12-26 11:26+0100\n"
+"PO-Revision-Date: 2009-12-29 19:09+0100\n"
 "Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1790,7 +1790,7 @@ msgstr "Bitte wählen Sie maximal %d Antworten."
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:654
 #, php-format
 msgid "Check at least %d answers"
-msgstr "Wählen Sie mindestensl %d Antworten aus"
+msgstr "Wählen Sie mindestens %d Antworten aus"
 
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:622
 #: D:\web\xampp\htdocs\limesurvey/qanda.php:623
@@ -6161,13 +6161,13 @@ msgstr "Alle Gruppen sind konsistent."
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:364
 #, php-format
 msgid "Survey ID %d saved at %s"
-msgstr "Umfrage-ID %d gespeichert als %s"
+msgstr "Umfrage-ID %d gespeichert am %s"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:300
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:366
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
-msgstr "Umfrage-ID %d gespeichert als %s und enthält %d Datensätze"
+msgstr "Umfrage-ID %d gespeichert am  %s und enthält %d Datensätze"
 
 #: D:\web\xampp\htdocs\limesurvey/admin/integritycheck.php:308
 msgid "The following old survey tables should be deleted because their parent survey no longer exists"
