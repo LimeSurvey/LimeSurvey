@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v1.87RC5!
+Welcome to LimeSurvey v1.87!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied, 
 including, but not limited to, the implied warranties of merchantability and fitness for a particular 
@@ -56,11 +56,11 @@ After you upgraded please check the global user rights of each user. There was a
 new superadmin right introduced. The upgrade script is guessing who to make 
 superadmin - so this is not perfect and has to be supervised by YOU. 
 
-HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.86
+HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.87
 --------------------------------------------------------------------
 1. Make backups of your files (especially config.php and config-ldap.php)
    and database.
-2. Export all templates that you added/edited or customized.
+2. Export all your customized templates.
 3. Backup your limesurvey/upload resources directory.
 4. Delete all old files. 
 5. Upload the new version to the same place.
@@ -76,6 +76,49 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.86
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.87RC5 (build 8151) [29-11-2009] to 1.87 (build 8214) - Legend: # updated feature, - bug fix
+#Updated translation: Croatian (idobraca)
+#Updated translation: Chinese Traditional (Hong Kong) by Mark Yeung http://www.pstudy.net 
+#Updated translation: French (b00z00)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Romanian by Stefaniu Criste 
+#Updated translation: Spanish (es) (kadejo)
+#Updated translation: Thai sponsored by LimeService 
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #4002: LimeReplacementfield window: no scrollbar or tooltips available    (tpartner)
+-Fixed issue #4011: Notice after changing admin user rights for a survey is not centered     (tpartner)
+-Fixed issue #4022: Some notices at the admin panel are not centered     (tpartner)
+-Fixed issue #4023: Use Full name instead of User/Login name at sender name     (tpartner)
+-Fixed issue #3727: Valid from and Valid until dates on tokens do not control access when user had already an open session on the token (c_schmitz)
+-Fixed issue #4017: Open source SPSS alternative PSPP has issues with syntax (mennodekker)
+-Fixed issue #4016: error with slider-max value displayed in slider when setting slider accuracy (lemeur)
+-Fixed issue #3835: Javascript code embedded in question text is displayed at condition editor in question list  (c_schmitz)
+-Fixed issue #3872: now the other keyword if forbidden in answer and label codes. (lemeur)
+-Fixed issue #3940: PHP error when running a a survey with conditions based on Tokens but no token table exists. (lemeur)
+-Fixed issue #3968: Arabic text in statistics graphs did not display correctly (c_schmitz)
+-Fixed issue #3980: Notices at viewing token information via browse responses (c_schmitz)
+-Fixed issue #3981: Tokens screen - some fields are too small when editing (c_schmitz)
+-Fixed issue #3983: Unable to show some template pages for editing when using Croatian or French as admin language (c_schmitz)
+-Fixed issue #3984: Admin registration email subject untranslated (c_schmitz)
+-Fixed issue #3985: Untranslated text in statistics (c_schmitz)
+-Fixed issue #3987: Upgrade now showing start and endtime (c_schmitz)
+-Fixed issue #3989: Javascript code in (Excel) export (c_schmitz)
+-Fixed issue #3990: Javascript code visible in LimeReplacementFields window (c_schmitz)
+-Fixed issue #3993: After updating using the ComfortUpdate the message 'Update available ...' remains in the upper right (c_schmitz)
+-Fixed issue #4000: Some untranslated strings (c_schmitz)
+-Fixed issue #4001: Deleting a label set under some old browser does not work (c_schmitz)
+-Fixed issue #4005: Number of active and deactivated surveys is not correctly displayed (c_schmitz)
+-Fixed issue #4008: No warning when invitations are to be sent for an inactive survey (c_schmitz)
+-Fixed issue #4009: List of failed tokens isn't displayed (c_schmitz)
+-Fixed issue #4015: SQL-error when updating label set code using MSSQL server db (c_schmitz)
+-Fixed issue: DB is not properly updating in ComfortUpdate due to missing /install dir (c_schmitz)
+-Fixed unreported issue: missing </td> (mennodekker)
+-Fixed unreported issue: duplicate label code isn't checked in the new label input box (lemeur)
+-Fixed unreported issue: issue when a survey doesn't display any question due to conditions (based on tokens). (lemeur)
+-Fixed issue #4006: Possible inaccurate data when exporting to R (mennodekker)
+
 
 Changes from 1.87RC4 (build 8002) [29-11-2009] to 1.87RC5 (build 8151) - Legend: # updated feature, - bug fix
 +New feature: Multiple choice questions: When using excludeAllOthers feature in connection with RandomizeAnswers the excludeAllOthers option stays on its predefined position now (c_schmitz)
