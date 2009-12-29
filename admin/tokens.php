@@ -2343,11 +2343,11 @@ if ($subaction == "upload" &&
             {
                 $message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),count($duplicatelist));
 		        $message .= " [<a href='#' onclick='$(\"#duplicateslist\").toggle();'>".$clang->gT("List")."</a>]";
-		        $message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
+		        $message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'><ul>";
 		        foreach($duplicatelist as $data) {
 		          $message .= "<li>$data</li>\n";
 		        }
-		        $message .= "</div>";
+		        $message .= "</ul></div>";
                 $message .= "</li>\n";
             }
             
