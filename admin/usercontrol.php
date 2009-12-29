@@ -472,7 +472,8 @@ elseif ($action == "deluser" && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SE
 
 elseif ($action == "moduser")
 {
-	$addsummary = "<div class='header'>".$clang->gT("Editing user")."</div><p>\n";
+	$addsummary = "<div class='header'>".$clang->gT("Editing user")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	$squery = "SELECT uid FROM {$dbprefix}users WHERE uid=$postuserid AND parent_id=".$_SESSION['loginID'];
 	$sresult = $connect->Execute($squery); //Checked
@@ -492,7 +493,8 @@ elseif ($action == "moduser")
 		{
 			$valid_email = false;
 			$failed = true;
-			$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address is not valid.")."<br />\n";
+			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n" 
+			. " ".$clang->gT("Email address is not valid.")."<br />\n";
 		}
 		elseif($valid_email)
 		{
@@ -508,20 +510,23 @@ elseif ($action == "moduser")
 
 			if($uresult && empty($pass))
 			{
-				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {".$clang->gT("Unchanged")."}<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": {".$clang->gT("Unchanged")."}<br /><br />\n";
+				$addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 			} elseif($uresult && !empty($pass))
 			{
-				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": $pass<br />\n";
+				$addsummary .= "<br />".$clang->gT("Username").": $users_name<br />".$clang->gT("Password").": $pass<br /><br />\n";
+				$addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 			}
 			else
 			{
 				// Username and/or email adress already exists.
-				$addsummary .= "<br /><strong>".$clang->gT("Could not modify User Data.")."</strong><br />\n" . " ".$clang->gT("Email address already exists.")."<br />\n";
+				$addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not modify User Data.")."</div><br />\n" 
+				. " ".$clang->gT("Email address already exists.")."<br />\n";
 			}
 		}
 		if($failed)
 		{
-			$addsummary .= "<br /><br /><form method='post' action='$scriptname'>"
+			$addsummary .= "<br /><form method='post' action='$scriptname'>"
 			."<input type='submit' value='".$clang->gT("Back")."'>"
 			."<input type='hidden' name='action' value='modifyuser'>"
 			."<input type='hidden' name='uid' value='{$postuserid}'>"
@@ -529,18 +534,20 @@ elseif ($action == "moduser")
 		}
 		else
 		{
-			$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
 elseif ($action == "userrights")
 {
-	$addsummary = "<div class='header'>".$clang->gT("Set User Rights")."</div><p>\n";
+	$addsummary = "<div class='header'>".$clang->gT("Set User Rights")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	// A user can't modify his own rights ;-)
 	if($postuserid != $_SESSION['loginID'])
@@ -564,8 +571,8 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_label']) && $_SESSION['USER_RIGHT_MANAGE_LABEL'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 			if ($postuserid<>1) setuserrights($postuserid, $rights);
-			$addsummary .= "<br />".$clang->gT("User permissions were updated successfully.")."<br />\n";
-			$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		elseif ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
 		{
@@ -604,8 +611,8 @@ elseif ($action == "userrights")
 			if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 			setuserrights($postuserid, $rights);
-			$addsummary .= "<br />".$clang->gT("User permissions were updated successfully.")."<br />\n";
-			$addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+			$addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
+			$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 		}
 		else
 		{
@@ -614,53 +621,55 @@ elseif ($action == "userrights")
 	}
 	else
 	{
-		$addsummary .= "<br />".$clang->gT("You are not allowed to change your own rights!")."<br />\n";
-		$addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+		$addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own rights!")."</div>\n";
+		$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	}
+	$addsummary .= "</div>\n";
 }
 
 elseif ($action == "usertemplates")
 {
-      $addsummary = "<div class='header'>".$clang->gT("Set Template Rights")."</div><p>\n";
+    $addsummary = "<div class='header'>".$clang->gT("Set Template Rights")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	// SUPERADMINS AND MANAGE_TEMPLATE USERS CAN SET THESE RIGHTS
-      if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
-      {
-              $templaterights = array();
-              $tquery = "SELECT * FROM ".$dbprefix."templates";
-              $tresult = db_execute_assoc($tquery);
-              while ($trow = $tresult->FetchRow()) {
-                      if (isset($_POST[$trow["folder"]."_use"]))
-                            $templaterights[$trow["folder"]] = 1;
-                      else
-                              $templaterights[$trow["folder"]] = 0;
-              }
-              foreach ($templaterights as $key => $value) {
-                      $uquery = "INSERT INTO {$dbprefix}templates_rights (uid,".db_quote_id('folder').",".db_quote_id('use').")  VALUES ({$postuserid},'".$key."',$value)";
-                      $uresult = $connect->execute($uquery);
-                      if (!$uresult)
-                      {
-                            $uquery = "UPDATE {$dbprefix}templates_rights  SET  ".db_quote_id('use')."=$value where ".db_quote_id('folder')."='$key' AND uid=".$postuserid;
-                            $uresult = $connect->execute($uquery);
-                      }
-              }
-		      if ($uresult)
-		      {
-			      $addsummary .= "<br />".$clang->gT("Template permissions were updated successfully.")."<br />\n";
-			      $addsummary .= "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		      }
-		      else
-		      {
-			      $addsummary .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
-			      $addsummary .= "<br />".$clang->gT("Error while updating usertemplates.")."<br />\n";
-			      $addsummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
-		      }
-
-              }
-              else
-              {
-                      include("access_denied.php");
-              }
+	if( $_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
+	{
+		$templaterights = array();
+		$tquery = "SELECT * FROM ".$dbprefix."templates";
+		$tresult = db_execute_assoc($tquery);
+		while ($trow = $tresult->FetchRow()) {
+			if (isset($_POST[$trow["folder"]."_use"]))
+				$templaterights[$trow["folder"]] = 1;
+			else
+			    $templaterights[$trow["folder"]] = 0;
+		}
+		foreach ($templaterights as $key => $value) {
+			  $uquery = "INSERT INTO {$dbprefix}templates_rights (uid,".db_quote_id('folder').",".db_quote_id('use').")  VALUES ({$postuserid},'".$key."',$value)";
+			  $uresult = $connect->execute($uquery);
+			  if (!$uresult)
+			  {
+			      $uquery = "UPDATE {$dbprefix}templates_rights  SET  ".db_quote_id('use')."=$value where ".db_quote_id('folder')."='$key' AND uid=".$postuserid;
+			      $uresult = $connect->execute($uquery);
+			  }
+		}
+		if ($uresult)
+		{
+			 $addsummary .= "<div class=\"successheader\">".$clang->gT("Template permissions were updated successfully.")."</div>\n";
+			 $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+		}
+		else
+		{
+			 $addsummary .= "<div class=\"warningheader\">".$clang->gT("Error")."</div>\n";
+			 $addsummary .= "<br />".$clang->gT("Error while updating usertemplates.")."<br />\n";
+			 $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+		}
+	}
+	else
+	{
+		include("access_denied.php");
+	}
+	$addsummary .= "</div>\n";
 }
 
 
