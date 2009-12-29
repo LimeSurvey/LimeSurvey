@@ -82,7 +82,11 @@ global $action, $editsurvey, $connect, $scriptname, $clang;
                        setGlobalSetting('timeadjust',$savetime);
                        setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
                        setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
-                       $editsurvey .= "<p>".$clang->gT("Global settings were saved.");
+					   $editsurvey .= "<div class='header'>".$clang->gT("Global settings")."</div>\n"
+					   . "<div class=\"messagebox\">\n"
+                       . "<br /><div class=\"successheader\">".$clang->gT("Global settings were saved.")."</div>\n"
+					   . "<br/><input type=\"submit\" onclick=\"window.open('admin.php', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n"
+					   . "</div>\n";
         }                                                                
     }
 }
@@ -147,7 +151,7 @@ function globalsettingsdisplay()
             {
               $editsurvey .=$clang->gT('There is currently no newer LimeSurvey version available.');
             }
-            $editsurvey .= "</div>";
+            $editsurvey .= "</p></div>";
             
 
 
