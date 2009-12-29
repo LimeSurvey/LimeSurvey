@@ -2108,6 +2108,7 @@ if($action == "surveysecurity")
 elseif ($action == "surveyrights")
 {
 	$addsummary = "<div class=\"header\">".$clang->gT("Set Survey Rights")."</div>\n";
+	$addsummary .= "<div class=\"messagebox\">\n";
 
 	if(isset($postuserid)){
 		$query = "SELECT sid, owner_id FROM ".db_table_name('surveys')." WHERE sid = {$surveyid} ";
@@ -2139,7 +2140,6 @@ elseif ($action == "surveyrights")
 			unset($_SESSION['uids']);
 		}
 		
-		$addsummary .= "<div class=\"messagebox\">\n";
 		if(setsurveyrights($uids, $rights))
 		{
 			$addsummary .= "<div class=\"successheader\">".$clang->gT("Update survey rights successful.")."</div>\n";
@@ -2148,13 +2148,13 @@ elseif ($action == "surveyrights")
 		{
 			$addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey rights!")."</div>\n";
 		}
-		$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n"
-		."</div>\n";
+		$addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?sid={$surveyid}&amp;action=surveysecurity', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	}
 	else
 	{
 		include("access_denied.php");
 	}
+	$addsummary .= "</div>\n";
 }
 
 // *************************************************
