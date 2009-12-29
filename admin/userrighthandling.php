@@ -750,12 +750,18 @@ if ($action == "mailsendusergroup")
     	$to = substr("$to", 0, -2);
     	$addressee = substr("$addressee", 0, -2);
 
-		$from_user = "SELECT email, users_name FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
+		$from_user = "SELECT email, users_name, full_name FROM ".db_table_name("users")." WHERE uid = " .$_SESSION['loginID'];
 		$from_user_result = db_execute_assoc($from_user); //Checked
 		$from_user_row = $from_user_result->FetchRow();
-
-		$from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
-
+		if ($from_user_row['full_name'])
+		{
+			$from = $from_user_row['full_name'].' <'.$from_user_row['email'].'> ';
+		}
+		else
+		{
+			$from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
+		}
+		
 		$ugid = $postusergroupid;
 		$body = $_POST['body'];
 		$subject = $_POST['subject'];
